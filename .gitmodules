@@ -1,0 +1,4 @@
+[submodule "ios"]
+	path = ios
+	url = git@git.fhptbet.com:seven/fhcpIOSapp.git
+	branch = dev_master
