@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text, TouchableNativeFeedback,
-  TouchableOpacity,
+  Image,
   View
 } from "react-native";
 import BasePage from "../../base/BasePage";
@@ -14,7 +14,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, Divider, Image, ListItem} from "react-native-elements";
+import {Avatar, Button, Divider, ListItem} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
@@ -36,7 +36,7 @@ import {Res} from "../../../../res/Resources";
  *
  */
 const {
-  loadingBackground, colorText, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
+  loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
 } = UGTheme.getInstance().currentTheme();
 
 class HomePage extends BasePage<IHomeProps, IHomePageState> {
@@ -100,8 +100,14 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderMyInfoIcon = ({url: url, text: text}) => {
     return (
       <View style={_styles.myInfoBottomWalletIconContainer}>
-        <Image resizeMode='stretch' containerStyle={_styles.myInfoBottomWalletIcon} source={url}/>
-        <Text style={_styles.myInfoBottomWalletIconText}>{text}</Text>
+        <Image resizeMode='stretch' style={[
+          _styles.myInfoBottomWalletIcon,
+          {tintColor: primary}
+        ]} source={url}/>
+        <Text style={[
+          _styles.myInfoBottomWalletIconText,
+          {color: primary}
+        ]}>{text}</Text>
       </View>
     )
   }
@@ -143,8 +149,14 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
         ]}>
           <View>
             <View style={_styles.myInfoBottomWalletMoneyContainer}>
-              <Text style={_styles.myInfoBottomWalletMoneyFlag}>¥</Text>
-              <Text style={_styles.myInfoBottomWalletMoney}>0.00</Text>
+              <Text style={[
+                _styles.myInfoBottomWalletMoneyFlag,
+                {color: homeMoney}
+              ]}>¥</Text>
+              <Text style={[
+                _styles.myInfoBottomWalletMoney,
+                {color: homeMoney}
+              ]}>0.00</Text>
             </View>
             <Text style={_styles.myInfoBottomWalletMe}>我的钱包</Text>
           </View>
@@ -224,7 +236,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           ]}
           items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
           renderItem={({item}) => (
-            <Image resizeMode='stretch' containerStyle={_styles.gameHeightTabImage} source={Res.back}/>
+            <Image resizeMode='stretch' style={_styles.gameHeightTabImage} source={Res.back}/>
           )}
         />
       </View>
@@ -239,20 +251,24 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
-      <ScrollView contentContainerStyle={_styles.scrollViewH}
-                  horizontal={true}>
+      <View>
+        <View style={_styles.couponTitleContainer}>
+          <Image style={_styles.couponTitleIcon} source={Res.home}/>
+          <Text style={_styles.couponTitleText}>优惠活动</Text>
+          <Text style={_styles.couponTitleText2}>查看更多</Text>
+        </View>
         {
           data.data.movies.map((movie, index) => (
-            <ListItem
-              key={index}
-              title={movie.title}
-              subtitle={movie.releaseYear}
-              leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
-              bottomDivider
-            />
+            <View style={[
+              _styles.couponItemContainer,
+              {backgroundColor: colorSecondBackground}
+            ]}>
+              <Text style={_styles.couponItemTitle}>优惠活动1</Text>
+              <Image style={_styles.couponItemImage} source={Res.home}/>
+            </View>
           ))
         }
-      </ScrollView>
+      </View>
     );
   }
 
@@ -348,6 +364,24 @@ const _styles = StyleSheet.create({
     // alignItems: 'center',
   },
 
+  //滑屏
+  wrapper: {
+    aspectRatio: 16 / 9
+  },
+  slide1: {
+    flex: 1,
+    margin: 8,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold'
+  },
+
+  //公告
   noticeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -374,6 +408,7 @@ const _styles = StyleSheet.create({
     marginBottom: 8,
   },
 
+  //个人钱包
   myInfoTopContainer: {
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
@@ -392,13 +427,13 @@ const _styles = StyleSheet.create({
   },
 
   myInfoTopButton: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 999,
     borderColor: 'white',
     paddingLeft: 8,
     paddingRight: 8,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 2,
+    paddingBottom: 2,
   },
 
   myInfoBottomContainer: {
@@ -457,6 +492,7 @@ const _styles = StyleSheet.create({
     marginTop: 8,
   },
 
+  //游戏彩票
   gameContainer: {
     flexDirection: 'row',
     paddingLeft: 16,
@@ -483,31 +519,52 @@ const _styles = StyleSheet.create({
     borderRadius: 4,
   },
 
-  scrollViewH: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  scrollViewV: {},
-  button: {
-    width: 140,
-    margin: 4,
-    marginTop: 40,
-  },
-  wrapper: {
-    aspectRatio: 16 / 9
-  },
-  slide1: {
-    flex: 1,
-    margin: 8,
-    borderRadius: 4,
+  //优惠券
+  couponTitleContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 12,
+    marginBottom: 12,
   },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold'
-  }
+
+  couponTitleIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 4,
+  },
+
+  couponTitleText: {
+    fontSize: 14,
+    flex: 1,
+    color: 'white'
+  },
+
+  couponTitleText2: {
+    fontSize: 12,
+    color: 'white'
+  },
+
+  couponItemContainer: {
+    borderRadius: 4,
+    padding: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 12,
+  },
+
+  couponItemTitle: {
+    fontSize: 16,
+    marginBottom: 12,
+  },
+
+  couponItemImage: {
+    height: 60,
+    resizeMode: 'stretch'
+  },
+
 });
 
 /**

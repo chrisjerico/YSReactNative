@@ -34,5 +34,7 @@ export const ColorBlue: IColor = {
   colorBtn: '#0000ff',    //按钮背影色
   colorBtnText: '#0000ff',  //按钮文本色
 
+  homeMoney: '#3f5bcd', //主页金额
+
   //TODO 在这里面扩展
 };

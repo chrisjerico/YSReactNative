@@ -49,4 +49,6 @@ export default interface IColor {
   // 按钮相关
   colorBtn: string,   //按钮背影色
   colorBtnText: string,  //按钮文本色
+
+  homeMoney: string, //主页金额
 }
