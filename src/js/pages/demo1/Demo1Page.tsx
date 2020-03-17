@@ -32,27 +32,27 @@ class Demo1Page extends BasePage<IGlobalProps, IBasePageState> {
     let tabs: Array<IUGBottomTabBarBean> = [
       {
         title: '主页',
-        icon: Res.home,
+        icon: Res.zy,
         page: <HomePage title='主页' />,
       },
       {
-        title: '游戏大厅',
-        icon: Res.home,
+        title: '优惠',
+        icon: Res.yh,
         page: <GameRoomPage hideHeader={true} />,
       },
       {
-        title: '钱包',
-        icon: Res.home,
+        title: '客服',
+        icon: Res.kf,
         page: <MoneyPage hideHeader={true} />,
       },
       {
-        title: '利息宝',
-        icon: Res.home,
+        title: '注单',
+        icon: Res.zd,
         page: <BalancePage hideHeader={true} />,
       },
       {
         title: '我的',
-        icon: Res.home,
+        icon: Res.wd,
         page: <MePage hideHeader={true} />,
       },
     ];

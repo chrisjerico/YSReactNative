@@ -31,7 +31,7 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
     // const {activeTextColor, inactiveTextColor, textStyle} = this.props;
     const {tabs} = this.props;
     const curTab = tabs[page];
-    const textColor = isTabActive ? 'white' : colorTextNormal;
+    const textColor = isTabActive ? primary : colorTextNormal;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <TouchableHighlight underlayColor='#00000000'
@@ -43,7 +43,7 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
         <Image source={curTab.icon}
                style={[
                  _styles.tabIcon,
-                 {tintColor: isTabActive ? 'white' : null}
+                 {tintColor: textColor}
                ]}/>
         <Text numberOfLines={1}
               style={[

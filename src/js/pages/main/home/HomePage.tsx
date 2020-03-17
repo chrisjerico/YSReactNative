@@ -97,6 +97,12 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     )
   }
 
+  /**
+   * 绘制存款 取款 等图标
+   * @param url
+   * @param text
+   * @private
+   */
   _renderMyInfoIcon = ({url: url, text: text}) => {
     return (
       <View style={_styles.myInfoBottomWalletIconContainer}>
@@ -120,16 +126,16 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const iconTexArr = [
       {
-        url: Res.home,
+        url: Res.ck,
         text: '存款',
       }, {
-        url: Res.home,
+        url: Res.edzh,
         text: '额度转换',
       }, {
-        url: Res.home,
+        url: Res.qk,
         text: '取款',
       }, {
-        url: Res.home,
+        url: Res.zjmx,
         text: '资金明细',
       }];
     return (
@@ -176,11 +182,30 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderGames(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     let gameTabIndex = this.state?.gameTabIndex ?? 0;
-    const menus = ['真人娱乐', '彩票投注', '电子竞技', '捕鱼电玩', '棋牌游戏', '体育游戏'];
+    const menuArr = [
+      {
+        url: Res.zryl,
+        text: '真人娱乐',
+      }, {
+        url: Res.cptz,
+        text: '彩票投注',
+      }, {
+        url: Res.dzjj,
+        text: '电子竞技',
+      }, {
+        url: Res.bydw,
+        text: '捕鱼电玩',
+      }, {
+        url: Res.qpyo,
+        text: '棋牌游戏',
+      }, {
+        url: Res.tyyx,
+        text: '体育游戏',
+      }];
     const tabHeight = 44;//每块高度
     const tabSpacing = 4;//间隙
     //game栏的总高度
-    const gameContainerHeight = menus.length * tabHeight + (menus.length) * tabSpacing;
+    const gameContainerHeight = menuArr.length * (tabHeight + tabSpacing);
 
     return (
       <View style={[
@@ -189,7 +214,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
       ]}>
         <View>
           {
-            menus.map((item, index) => {
+            menuArr.map((item, index) => {
               return (
                 <TouchableNativeFeedback
                   onPress={() => {
@@ -206,10 +231,14 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
                       height: tabHeight
                     }
                   ]}>
+                    <Image source={item.url} style={[
+                      _styles.gameHeightLeftIcon,
+                      {tintColor: gameTabIndex == index ? 'white' : null}
+                    ]}/>
                     <Text style={[
                       _styles.gameHeightLeftText,
                       {color: gameTabIndex == index ? 'white' : colorAccent}
-                    ]}>{item}</Text>
+                    ]}>{item.text}</Text>
                   </View>
                 </TouchableNativeFeedback>
               )
@@ -253,9 +282,10 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     return (
       <View>
         <View style={_styles.couponTitleContainer}>
-          <Image style={_styles.couponTitleIcon} source={Res.home}/>
+          <Image style={_styles.couponTitleIcon} source={Res.yhhdIcon}/>
           <Text style={_styles.couponTitleText}>优惠活动</Text>
           <Text style={_styles.couponTitleText2}>查看更多</Text>
+          <Image style={_styles.couponTitleArrow} source={Res.yhhdArraw}/>
         </View>
         {
           data.data.movies.map((movie, index) => (
@@ -263,7 +293,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
               _styles.couponItemContainer,
               {backgroundColor: colorSecondBackground}
             ]}>
-              <Text style={_styles.couponItemTitle}>优惠活动1</Text>
+              <Text style={_styles.couponItemTitle}>{movie.title}</Text>
               <Image style={_styles.couponItemImage} source={Res.home}/>
             </View>
           ))
@@ -280,15 +310,32 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderNews(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
-      data.data.movies.map((movie, index) => (
-        <ListItem
-          key={index}
-          title={movie.title}
-          subtitle={movie.releaseYear}
-          leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
-          bottomDivider
-        />
-      ))
+      <View>
+        <View style={_styles.betTitleContainer}>
+          <Text style={_styles.betTitle}>投注专栏</Text>
+        </View>
+        {
+          data.data.movies.map((movie, index) => (
+            <View style={[
+              _styles.betContainer,
+              {backgroundColor: colorSecondBackground}
+            ]}>
+              <View style={_styles.betUserContainer}>
+                <Avatar rounded containerStyle={_styles.betUserAvatar} source={Res.home}/>
+                <Text style={_styles.betUserName}>j***01</Text>
+                <Text style={_styles.betUserDate}>2020-02-12  11:28:44</Text>
+              </View>
+              <View style={_styles.betMessageContainer}>
+                <Image style={_styles.betMessageImage} source={Res.home}/>
+                <Text style={_styles.betMessageText}>{movie.title}
+                  <Text style={_styles.betMessageText2}>¥100.00</Text>
+                  <Text style={_styles.betMessageText}>{movie.title}</Text>
+                </Text>
+              </View>
+            </View>
+          ))
+        }
+      </View>
     );
   }
 
@@ -401,7 +448,6 @@ const _styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8,
   },
-
   myInfoContainer: {
     paddingLeft: 16,
     paddingRight: 16,
@@ -419,13 +465,11 @@ const _styles = StyleSheet.create({
     paddingTop: 4,
     paddingBottom: 4,
   },
-
   myInfoTopText: {
     flex: 1,
     fontSize: 12,
     color: 'white',
   },
-
   myInfoTopButton: {
     borderWidth: 1,
     borderRadius: 999,
@@ -435,7 +479,6 @@ const _styles = StyleSheet.create({
     paddingTop: 2,
     paddingBottom: 2,
   },
-
   myInfoBottomContainer: {
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
@@ -447,41 +490,33 @@ const _styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 16,
   },
-
   myInfoBottomWalletContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   myInfoBottomWalletMoneyContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   myInfoBottomWalletMoneyFlag: {
     fontSize: 14,
   },
-
   myInfoBottomWalletMoney: {
     fontSize: 20,
   },
-
   myInfoBottomWalletMe: {
     fontSize: 12,
     marginTop: 6,
   },
-
   myInfoBottomWalletDivider: {
     width: 1,
     height: 38,
   },
-
   myInfoBottomWalletIconContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   myInfoBottomWalletIcon: {
     width: 24,
     height: 18,
@@ -499,10 +534,17 @@ const _styles = StyleSheet.create({
     paddingRight: 12,
   },
   gameHeightLeftTab: {
+    flexDirection: 'row',
     width: 100,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
+  },
+  gameHeightLeftIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 4,
+    resizeMode: 'contain'
   },
   gameHeightLeftText: {
     fontSize: 12,
@@ -529,24 +571,26 @@ const _styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 12,
   },
-
   couponTitleIcon: {
     width: 16,
     height: 16,
     marginRight: 4,
   },
-
   couponTitleText: {
     fontSize: 14,
     flex: 1,
     color: 'white'
   },
-
   couponTitleText2: {
     fontSize: 12,
     color: 'white'
   },
-
+  couponTitleArrow: {
+    width: 12,
+    height: 12,
+    marginLeft: 4,
+    resizeMode: 'contain',
+  },
   couponItemContainer: {
     borderRadius: 4,
     padding: 12,
@@ -554,15 +598,77 @@ const _styles = StyleSheet.create({
     marginRight: 16,
     marginBottom: 12,
   },
-
   couponItemTitle: {
     fontSize: 16,
     marginBottom: 12,
   },
-
   couponItemImage: {
     height: 60,
     resizeMode: 'stretch'
+  },
+
+  //下注
+  betTitleContainer: {
+    fontSize: 14,
+    marginBottom: 12,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  betTitle: {
+    fontSize: 14,
+    color: 'white',
+  },
+  betContainer: {
+    borderRadius: 4,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 12,
+  },
+  betUserContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+  betUserAvatar: {
+    width: 20,
+    height: 20,
+  },
+  betUserName: {
+    fontSize: 12,
+    marginLeft: 12,
+    flex: 1,
+  },
+  betUserDate: {
+    fontSize: 12,
+    marginLeft: 12,
+  },
+  betUser: {
+    fontSize: 12,
+  },
+  betMessageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: 'white',
+  },
+  betMessageImage: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+  },
+  betMessageText: {
+    fontSize: 18,
+    flex: 1,
+  },
+  betMessageText2: {
+    fontSize: 18,
+    color: 'red',
   },
 
 });
