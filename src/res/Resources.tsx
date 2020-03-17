@@ -7,13 +7,13 @@
  * 普通资源
  */
 export const Res = {
-  back: require('./img/other/back.png'),
-  home: require('./img/other/home.png'),
+  back: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'},
+  home: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'},
 };
 
 /**
  * 图标
  */
 export const RIcons = {
-  c199: require('./img/icon/c199.png'),
+  c199: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'},
 };
