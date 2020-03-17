@@ -14,7 +14,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, Image, ListItem} from "react-native-elements";
+import {Avatar, Button, Divider, Image, ListItem} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
@@ -97,23 +97,62 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     )
   }
 
+  _renderMyInfoIcon = ({url: url, text: text}) => {
+    return (
+      <View style={_styles.myInfoBottomWalletIconContainer}>
+        <Image resizeMode='stretch' containerStyle={_styles.myInfoBottomWalletIcon} source={url}/>
+        <Text style={_styles.myInfoBottomWalletIconText}>{text}</Text>
+      </View>
+    )
+  }
+
   /**
    * 绘制 个个信息 存款 等等内容
    * @private
    */
   _renderMyInfo(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const iconTexArr = [
+      {
+        url: Res.home,
+        text: '存款',
+      }, {
+        url: Res.home,
+        text: '额度转换',
+      }, {
+        url: Res.home,
+        text: '取款',
+      }, {
+        url: Res.home,
+        text: '资金明细',
+      }];
     return (
       <View style={_styles.myInfoContainer}>
-        <Text style={
-          {..._styles.noticeText, color: primaryDark}
-        }>公告</Text>
-        <Text style={
-          {..._styles.noticeText, color: primaryDark}
-        }>公告</Text>
-        <Text style={
-          {..._styles.noticeText, color: primaryDark}
-        }>公告</Text>
+        <View style={[
+          _styles.myInfoTopContainer,
+          {backgroundColor: primaryBright}
+        ]}>
+          <Text style={_styles.myInfoTopText}>晚上好，adam</Text>
+          <View style={_styles.myInfoTopButton}>
+            <Text style={_styles.myInfoTopText}>个人资料</Text>
+          </View>
+        </View>
+        <View style={[
+          _styles.myInfoBottomContainer,
+          {backgroundColor: colorSecondBackground}
+        ]}>
+          <View>
+            <View style={_styles.myInfoBottomWalletMoneyContainer}>
+              <Text style={_styles.myInfoBottomWalletMoneyFlag}>¥</Text>
+              <Text style={_styles.myInfoBottomWalletMoney}>0.00</Text>
+            </View>
+            <Text style={_styles.myInfoBottomWalletMe}>我的钱包</Text>
+          </View>
+          <Divider style={_styles.myInfoBottomWalletDivider}/>
+          {
+            iconTexArr.map(this._renderMyInfoIcon)
+          }
+        </View>
       </View>
     )
   }
@@ -309,28 +348,6 @@ const _styles = StyleSheet.create({
     // alignItems: 'center',
   },
 
-  myInfoContainer: {
-    borderRadius: 4,
-  },
-
-  myInfoTopContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 4,
-    paddingBottom: 4,
-  },
-
-  myInfoBottomContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 26,
-    paddingRight: 12,
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-
   noticeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -339,7 +356,6 @@ const _styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 12,
   },
-
   noticeText: {
     fontSize: 14,
     color: 'white',
@@ -352,10 +368,99 @@ const _styles = StyleSheet.create({
     paddingRight: 8,
   },
 
+  myInfoContainer: {
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginBottom: 8,
+  },
+
+  myInfoTopContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+
+  myInfoTopText: {
+    flex: 1,
+    fontSize: 12,
+    color: 'white',
+  },
+
+  myInfoTopButton: {
+    borderWidth: 2,
+    borderRadius: 999,
+    borderColor: 'white',
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+
+  myInfoBottomContainer: {
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingLeft: 26,
+    paddingRight: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+
+  myInfoBottomWalletContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  myInfoBottomWalletMoneyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  myInfoBottomWalletMoneyFlag: {
+    fontSize: 14,
+  },
+
+  myInfoBottomWalletMoney: {
+    fontSize: 20,
+  },
+
+  myInfoBottomWalletMe: {
+    fontSize: 12,
+    marginTop: 6,
+  },
+
+  myInfoBottomWalletDivider: {
+    width: 1,
+    height: 38,
+  },
+
+  myInfoBottomWalletIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  myInfoBottomWalletIcon: {
+    width: 24,
+    height: 18,
+  },
+
+  myInfoBottomWalletIconText: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+
   gameContainer: {
     flexDirection: 'row',
     paddingLeft: 16,
-    paddingRight: 16,
+    paddingRight: 12,
   },
   gameHeightLeftTab: {
     width: 100,
