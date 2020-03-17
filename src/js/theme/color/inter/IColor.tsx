@@ -38,10 +38,12 @@ export default interface IColor {
 
   colorText: string,           // 主文本色
   colorTextSecondary: string,  // 次文本色
+  colorTextNormal: string,  // 普通文本色
   colorTextTint: string,    //提示文本
 
   // background
   colorBackground: string,   //背影色
+  colorSecondBackground: string,   //次背影色
 
   // 按钮相关
   colorBtn: string,   //按钮背影色

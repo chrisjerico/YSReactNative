@@ -5,7 +5,7 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
+  Text, TouchableNativeFeedback,
   TouchableOpacity,
   View
 } from "react-native";
@@ -14,7 +14,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, ListItem} from "react-native-elements";
+import {Avatar, Button, Image, ListItem} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
@@ -25,6 +25,9 @@ import UGTheme from "../../../theme/UGTheme";
 import AppDefine from "../../../../../js/rn/公共类/AppDefine";
 import {requestUserInfo} from "../../../redux/action/Demo2Action";
 import {anyNull} from "../../../utils/Ext";
+import {FlatGrid} from "react-native-super-grid";
+import IHomePageState from "./IHomePageState";
+import {Res} from "../../../../res/Resources";
 
 /**
  * Arc
@@ -32,47 +35,23 @@ import {anyNull} from "../../../utils/Ext";
  * 主界面
  *
  */
-const {primaryBright} = UGTheme.getInstance().currentTheme();
+const {grey, primaryDark, primaryBright} = UGTheme.getInstance().currentTheme();
 
-class HomePage extends BasePage<IHomeProps, IBasePageState> {
+class HomePage extends BasePage<IHomeProps, IHomePageState> {
 
-
-  requestData() {
+  constructor(props) {
+    super(props);
   }
 
+
   /**
-   * 绘制没有请求前的内容
+   * 请求数据
    */
-  _renderDefault(): React.ReactNode {
-    const {requestHomeData, reducerData, requestUserInfo, demo2Reducer} = this.props;
-    return (
-      <View style={_styles.container}>
-        <Button buttonStyle={_styles.button} title='请求home数据' onPress={() => {
-          requestHomeData({
-            type: 'test 3'
-          });
-        }}/>
-        <Button buttonStyle={_styles.button} title='请求demo2数据' onPress={() => {
-          requestUserInfo('home action');
-        }}/>
-        <Button buttonStyle={_styles.button} title='切到原生的存款' onPress={() => {
-          AppDefine.ocHelper.performSelectors(JSON.stringify({
-            type: 'OPEN_PAGE',
-            data: {
-              className: 'DepositActivity',
-              packageName: 'com.phoenix.lotterys.my.activity',
-              toActivity: true,
-              intentParams: {
-                fromReact: true,
-                page: 0,
-              },
-            }
-          }));
-        }}/>
-        <Text>{'主页=' + JSON.stringify(reducerData)}</Text>
-        <Text>{'demo2=' + JSON.stringify(demo2Reducer)}</Text>
-      </View>
-    );
+  requestData() {
+    const {requestHomeData} = this.props;
+    requestHomeData({
+      type: 'test 4'
+    });
   }
 
   /**
@@ -101,9 +80,92 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
   }
 
   /**
-   * 横向滑动的数据
+   * 绘制 公告,信息 等等内容
+   * @private
    */
-  _renderScrollH(): React.ReactNode {
+  _renderNotice(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    return (
+      <View style={_styles.noticeContainer}>
+        <Text style={_styles.noticeText}>公告</Text>
+        <Text style={_styles.noticeDesText}>欢迎来到UG测试平台，UG集团给你别人给不起的。</Text>
+      </View>
+    )
+  }
+
+  /**
+   * 绘制 彩票、游戏、视讯 等等内容
+   * @private
+   */
+  _renderGames(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    let gameTabIndex = this.state?.gameTabIndex ?? 0;
+    const menus = ['真人娱乐', '彩票投注', '电子竞技', '捕鱼电玩', '棋牌游戏', '体育游戏'];
+    const tabHeight = 60;//每块高度
+    const tabSpacing = 4;//间隙
+    //game栏的总高度
+    const gameContainerHeight = menus.length * tabHeight + (menus.length) * tabSpacing;
+
+    return (
+      <View style={[
+        _styles.gameContainer,
+        {height: gameContainerHeight}
+      ]}>
+        <View>
+          {
+            menus.map((item, index) => {
+              return (
+                <TouchableNativeFeedback
+                  onPress={()=>{
+                    this.setState({
+                      gameTabIndex: index
+                    })
+                  }}
+                >
+                  <View style={[
+                    _styles.gameHeightLeftTab,
+                    {backgroundColor: gameTabIndex == index ? primaryDark : primaryBright, marginTop: tabSpacing, height: tabHeight}
+                  ]}>
+                    <Text>{item}</Text>
+                  </View>
+                </TouchableNativeFeedback>
+              )
+            })
+          }
+        </View>
+        <FlatGrid
+          showsVerticalScrollIndicator={false}
+          onTouchStart={() => {
+            this.setState({
+              scrollEnable: false
+            })
+          }}
+          onTouchCancel={() => {
+            this.setState({
+              scrollEnable: true
+            })
+          }}
+          spacing={tabSpacing}
+          style={_styles.flatGrid}
+          itemContainerStyle={[
+            _styles.gameHeightRightTab,
+            {height: tabHeight, backgroundColor: grey}
+          ]}
+          items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
+          renderItem={({item}) => (
+            <Image resizeMode='stretch' containerStyle={_styles.gameHeightTabImage} source={Res.back}/>
+            )}
+        />
+      </View>
+    )
+  }
+
+  /**
+   * 绘制优惠活动
+   *
+   * @private
+   */
+  _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
       <ScrollView contentContainerStyle={_styles.scrollViewH}
@@ -124,55 +186,22 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
   }
 
   /**
-   * 绘制内容
+   * 绘制投注专栏
+   *
+   * @private
    */
-  _renderData(): React.ReactNode | null {
+  _renderNews(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if (anyNull(data?.data)) {
-      return null
-    }
-
-    const {requestHomeData, requestUserInfo} = this.props;
-    const {bRefreshing} = this.props.reducerData;
-
     return (
-      <View style={_styles.container}>
-
-        <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={bRefreshing}
-            onRefresh={()=>{
-              requestHomeData({
-                type: 'test 4'
-              });
-            }}
-          />
-        }
-        >
-          {
-            this._renderSwiper()
-          }
-          {
-            this._renderScrollH()
-          }
-
-          {/*竖线滑动的数据*/}
-          {
-            data.data.movies.map((movie, index) => (
-              <ListItem
-                containerStyle={{borderRadius: 8, margin: 4}}
-                key={index}
-                title={movie.title}
-                subtitle={movie.releaseYear}
-                leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
-                bottomDivider
-              />
-            ))
-          }
-        </ScrollView>
-
-      </View>
+      data.data.movies.map((movie, index) => (
+        <ListItem
+          key={index}
+          title={movie.title}
+          subtitle={movie.releaseYear}
+          leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
+          bottomDivider
+        />
+      ))
     );
   }
 
@@ -180,8 +209,42 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
    * 绘制内容
    */
   renderContent(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const {requestHomeData, requestUserInfo} = this.props;
+    const {bRefreshing} = this.props.reducerData;
+    const scrollEnable = this.state?.scrollEnable ?? true;
+
     return (
-      this._renderData() ?? this._renderDefault()
+      <View style={_styles.container}>
+
+        <ScrollView
+          scrollEnabled={scrollEnable}
+          refreshControl={
+            <RefreshControl
+              refreshing={bRefreshing}
+              onRefresh={() => {
+                this.requestData();
+              }}
+            />
+          }>
+          {
+            this._renderSwiper()
+          }
+          {
+            this._renderNotice()
+          }
+          {
+            this._renderGames()
+          }
+          {
+            this._renderCoupon()
+          }
+          {
+            this._renderNews()
+          }
+        </ScrollView>
+
+      </View>
     );
   }
 
@@ -210,6 +273,43 @@ const _styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
   },
+  noticeContainer: {
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  noticeText: {
+    fontSize: 12,
+    color: 'white',
+  },
+  noticeDesText: {
+    fontSize: 12,
+    color: 'white',
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  gameContainer: {
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 16,
+  },
+  gameHeightLeftTab: {
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  gameHeightTabImage: {
+    flex: 1,
+    borderRadius: 4,
+  },
+  flatGrid: {
+    padding: 0,
+    margin: 0,
+  },
+  gameHeightRightTab: {
+    borderRadius: 4,
+  },
   scrollViewH: {
     justifyContent: 'center',
     alignItems: 'center'
@@ -221,7 +321,7 @@ const _styles = StyleSheet.create({
     marginTop: 40,
   },
   wrapper: {
-    aspectRatio: 16/9
+    aspectRatio: 16 / 9
   },
   slide1: {
     flex: 1,

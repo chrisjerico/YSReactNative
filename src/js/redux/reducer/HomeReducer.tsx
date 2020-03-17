@@ -12,6 +12,7 @@ import IHomeBean from "../inter/bean/IHomeBean";
 const _initialState: IReducerState<IHomeBean> = {
   ...initialReducerState,
   // data: null, //数据
+  bLoading: true, //默认一进入打开 loading
 };
 
 /**
@@ -29,7 +30,7 @@ export default function homeReducer(state = _initialState, action) {
         ...action,
 
         //重置状态为加载中
-        bRefreshing: true,
+        bLoading: true,
         status: ReducerStatus.LOADING,
       };
     case HomeActionType_LOAD_SUCCESS:
@@ -38,7 +39,7 @@ export default function homeReducer(state = _initialState, action) {
         ...action,
 
         //重置状态为成功
-        bRefreshing: false,
+        bLoading: false,
         status: ReducerStatus.SUCCESS,
       };
     case HomeActionType_LOAD_ERROR:
@@ -47,7 +48,7 @@ export default function homeReducer(state = _initialState, action) {
         ...action,
 
         //重置状态为失败
-        bRefreshing: false,
+        bLoading: false,
         status: ReducerStatus.FAILED,
       };
     default:

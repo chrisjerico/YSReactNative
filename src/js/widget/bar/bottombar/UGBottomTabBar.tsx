@@ -11,7 +11,7 @@ import IUGBottomTabBarProps from "./IUGBottomTabBarProps";
 /**
  * 底部 tab bar
  */
-const {colorBackground, primary, colorText} = UGTheme.getInstance().currentTheme();
+const {colorBackground, colorSecondBackground, colorTextNormal, colorAccent, primary, colorText} = UGTheme.getInstance().currentTheme();
 export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBaseWidgetState> {
 
   constructor(props) {
@@ -61,9 +61,9 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
       <ScrollableTabView
         style={_styles.container}
         renderTabBar={() => <UGDefaultTabBar renderTab={this._renderTab}/>}
-        tabBarActiveTextColor={primary}
-        tabBarInactiveTextColor={colorText}
-        tabBarBackgroundColor={primary}
+        tabBarActiveTextColor={colorAccent}
+        tabBarInactiveTextColor={colorTextNormal}
+        tabBarBackgroundColor={colorSecondBackground}
         tabBarUnderlineStyle={[
           _styles.underlineStyle,
           {backgroundColor: primary},
