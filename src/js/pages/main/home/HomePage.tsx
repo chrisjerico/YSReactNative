@@ -35,7 +35,9 @@ import {Res} from "../../../../res/Resources";
  * 主界面
  *
  */
-const {grey, primaryDark, primaryBright} = UGTheme.getInstance().currentTheme();
+const {
+  loadingBackground, colorText, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
+} = UGTheme.getInstance().currentTheme();
 
 class HomePage extends BasePage<IHomeProps, IHomePageState> {
 
@@ -67,7 +69,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
               return (
                 <View style={[
                   _styles.slide1,
-                  {backgroundColor: primaryBright}
+                  {backgroundColor: loadingBackground}
                 ]}>
                   <Text style={_styles.text}>{`${movie.title}\n${movie.releaseYear}`}</Text>
                 </View>
@@ -87,8 +89,31 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
       <View style={_styles.noticeContainer}>
-        <Text style={_styles.noticeText}>公告</Text>
+        <Text style={
+          {..._styles.noticeText, color: primaryDark}
+        }>公告</Text>
         <Text style={_styles.noticeDesText}>欢迎来到UG测试平台，UG集团给你别人给不起的。</Text>
+      </View>
+    )
+  }
+
+  /**
+   * 绘制 个个信息 存款 等等内容
+   * @private
+   */
+  _renderMyInfo(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    return (
+      <View style={_styles.myInfoContainer}>
+        <Text style={
+          {..._styles.noticeText, color: primaryDark}
+        }>公告</Text>
+        <Text style={
+          {..._styles.noticeText, color: primaryDark}
+        }>公告</Text>
+        <Text style={
+          {..._styles.noticeText, color: primaryDark}
+        }>公告</Text>
       </View>
     )
   }
@@ -101,7 +126,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     let gameTabIndex = this.state?.gameTabIndex ?? 0;
     const menus = ['真人娱乐', '彩票投注', '电子竞技', '捕鱼电玩', '棋牌游戏', '体育游戏'];
-    const tabHeight = 60;//每块高度
+    const tabHeight = 44;//每块高度
     const tabSpacing = 4;//间隙
     //game栏的总高度
     const gameContainerHeight = menus.length * tabHeight + (menus.length) * tabSpacing;
@@ -116,7 +141,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             menus.map((item, index) => {
               return (
                 <TouchableNativeFeedback
-                  onPress={()=>{
+                  onPress={() => {
                     this.setState({
                       gameTabIndex: index
                     })
@@ -124,9 +149,16 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
                 >
                   <View style={[
                     _styles.gameHeightLeftTab,
-                    {backgroundColor: gameTabIndex == index ? primaryDark : primaryBright, marginTop: tabSpacing, height: tabHeight}
+                    {
+                      backgroundColor: gameTabIndex == index ? colorAccent : colorSecondBackground,
+                      marginTop: tabSpacing,
+                      height: tabHeight
+                    }
                   ]}>
-                    <Text>{item}</Text>
+                    <Text style={[
+                      _styles.gameHeightLeftText,
+                      {color: gameTabIndex == index ? 'white' : colorAccent}
+                    ]}>{item}</Text>
                   </View>
                 </TouchableNativeFeedback>
               )
@@ -149,12 +181,12 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           style={_styles.flatGrid}
           itemContainerStyle={[
             _styles.gameHeightRightTab,
-            {height: tabHeight, backgroundColor: grey}
+            {height: tabHeight, backgroundColor: loadingBackground}
           ]}
           items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
           renderItem={({item}) => (
             <Image resizeMode='stretch' containerStyle={_styles.gameHeightTabImage} source={Res.back}/>
-            )}
+          )}
         />
       </View>
     )
@@ -234,6 +266,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             this._renderNotice()
           }
           {
+            this._renderMyInfo()
+          }
+          {
             this._renderGames()
           }
           {
@@ -273,14 +308,42 @@ const _styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
   },
+
+  myInfoContainer: {
+    borderRadius: 4,
+  },
+
+  myInfoTopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+
+  myInfoBottomContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 26,
+    paddingRight: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+
   noticeContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     paddingLeft: 16,
     paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
   },
+
   noticeText: {
-    fontSize: 12,
+    fontSize: 14,
     color: 'white',
+    fontWeight: 'bold',
   },
   noticeDesText: {
     fontSize: 12,
@@ -288,6 +351,7 @@ const _styles = StyleSheet.create({
     paddingLeft: 8,
     paddingRight: 8,
   },
+
   gameContainer: {
     flexDirection: 'row',
     paddingLeft: 16,
@@ -298,6 +362,9 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
+  },
+  gameHeightLeftText: {
+    fontSize: 12,
   },
   gameHeightTabImage: {
     flex: 1,
@@ -310,6 +377,7 @@ const _styles = StyleSheet.create({
   gameHeightRightTab: {
     borderRadius: 4,
   },
+
   scrollViewH: {
     justifyContent: 'center',
     alignItems: 'center'

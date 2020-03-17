@@ -5,7 +5,9 @@
 export const CommonColors = {
   white: '#ffffff',
   black: '#000000',
-  grey: '#333333',
+  grey: '#666666',
+  greyDark: '#333333',
+  greyBright: '#999999',
   transparent: '#00000000',
 
   //TODO 在这里面扩展

@@ -28,6 +28,7 @@ export const ColorGold: IColor = {
   // background
   colorBackground: '#a99d91',   //背影色
   colorSecondBackground: '#edebea',   //次背影色
+  loadingBackground: '#edebea',   //加载背影色
 
   // 按钮相关
   colorBtn: '#9e7e66',    //按钮背影色

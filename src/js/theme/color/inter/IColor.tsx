@@ -44,6 +44,7 @@ export default interface IColor {
   // background
   colorBackground: string,   //背影色
   colorSecondBackground: string,   //次背影色
+  loadingBackground: string,   //加载背影色
 
   // 按钮相关
   colorBtn: string,   //按钮背影色
