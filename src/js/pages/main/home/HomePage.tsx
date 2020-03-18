@@ -14,7 +14,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, Divider, ListItem} from "react-native-elements";
+import {Avatar, Button, Divider, ListItem, Tile} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
@@ -89,9 +89,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
       <View style={_styles.noticeContainer}>
-        <Text style={
-          {..._styles.noticeText, color: primaryDark}
-        }>公告</Text>
+        <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
         <Text style={_styles.noticeDesText}>欢迎来到UG测试平台，UG集团给你别人给不起的。</Text>
       </View>
     )
@@ -116,7 +114,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
         ]}>{text}</Text>
       </View>
     )
-  }
+  };
 
   /**
    * 绘制 个个信息 存款 等等内容
@@ -138,6 +136,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
         url: Res.zjmx,
         text: '资金明细',
       }];
+
     return (
       <View style={_styles.myInfoContainer}>
         <View style={[
@@ -175,6 +174,16 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     )
   }
 
+  /**
+   * 切换tab
+   * @param index
+   * @private
+   */
+  _changeTab = (index: number) => {
+    this.setState({
+      gameTabIndex: index
+    })
+  };
   /**
    * 绘制 彩票、游戏、视讯 等等内容
    * @private
@@ -217,11 +226,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             menuArr.map((item, index) => {
               return (
                 <TouchableNativeFeedback
-                  onPress={() => {
-                    this.setState({
-                      gameTabIndex: index
-                    })
-                  }}
+                  onPress={() => {this._changeTab(index)}}
                 >
                   <View style={[
                     _styles.gameHeightLeftTab,
@@ -265,7 +270,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           ]}
           items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
           renderItem={({item}) => (
-            <Image resizeMode='stretch' style={_styles.gameHeightTabImage} source={Res.back}/>
+            <Image style={_styles.gameHeightTabImage} source={Res.back}/>
           )}
         />
       </View>
@@ -437,10 +442,10 @@ const _styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 12,
   },
-  noticeText: {
-    fontSize: 14,
-    color: 'white',
-    fontWeight: 'bold',
+  noticeTextImage: {
+    width: 27,
+    height: 13,
+    resizeMode: 'contain',
   },
   noticeDesText: {
     fontSize: 12,
@@ -552,6 +557,7 @@ const _styles = StyleSheet.create({
   gameHeightTabImage: {
     flex: 1,
     borderRadius: 4,
+    resizeMode: 'stretch'
   },
   flatGrid: {
     padding: 0,

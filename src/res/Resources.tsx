@@ -26,6 +26,7 @@ export const Res = {
   kf: {uri: 'https://i.ibb.co/smCsdF1/kefu.png'},
   wd: {uri: 'https://i.ibb.co/qpsybW9/wode.png'},
   zd: {uri: 'https://i.ibb.co/JB408Fq/zhudan.png'},
+  gd: {uri: 'https://i.ibb.co/NxZbGJK/gonggao.png'},
 };
 
 /**
