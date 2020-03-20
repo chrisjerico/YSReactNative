@@ -2,6 +2,7 @@ import {HomeActionType_LOAD_ERROR, HomeActionType_LOAD_SUCCESS, HomeActionType_L
 import {ugLog} from "../../utils/UgLog";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {ServerApi} from "../../net/ServerApi";
+import ServerHttp from "../../net/ServerHttp";
 
 /**
  * 处理主页数据
@@ -57,43 +58,20 @@ export function requestHomeData(params: requestHomeDataParams) {
  * @private
  */
 async function _requestMovies() {
-  try {
-    //模拟 4个接口请求数据
-    let response1 = await fetch(
-      'https://facebook.github.io/react-native/movies.json',
-    );
+  //模拟 4个接口请求数据
+  let response1 = await fetch(
+    'https://facebook.github.io/react-native/movies.json',
+  );
 
-    let baseUrl = await AppDefine.ocHelper.performSelectors(JSON.stringify({
-      type: 'AppDefine.shared.Host',
-    }));
-    let params = await AppDefine.ocHelper.performSelectors(JSON.stringify({
-      type: 'ASK_FOR_TOKEN_AND_RSA',
-    }));
-    let tokenRsa = JSON.parse(params)?.tokenRsa;
+  let xx = 0;
+  let banner = await ServerHttp({}, ServerApi.HOMEADS, false);
+  let responseJson1 = await response1.json();
 
-    let response2 = await fetch(
-      baseUrl + ServerApi.HOMEADS + '&' +  tokenRsa,
-    );
-    // let response3 = await fetch(
-    //   'https://facebook.github.io/react-native/movies.json',
-    // );
-    // let response4 = await fetch(
-    //   'https://facebook.github.io/react-native/movies.json',
-    // );
-    let responseJson1 = await response1.json();
-    // let responseJson2 = await response2.json();
-    // let responseJson3 = await response3.json();
-    // let responseJson4 = await response4.json();
-
-    return {...responseJson1};
-    // return {
-    //   responseJson1: responseJson1,
-    //   responseJson2: responseJson2,
-    //   responseJson3: responseJson3,
-    //   responseJson4: responseJson4,
-    // };
-  } catch (error) {
-    ugLog(error);
-    throw error;
-  }
+  return {...responseJson1};
+  // return {
+  //   responseJson1: responseJson1,
+  //   responseJson2: responseJson2,
+  //   responseJson3: responseJson3,
+  //   responseJson4: responseJson4,
+  // };
 }

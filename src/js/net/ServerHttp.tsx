@@ -1,7 +1,15 @@
 import AppDefine from "../../../js/rn/公共类/AppDefine";
 import {NativeCommand} from "../site/NativeCommand";
 import {ugError, ugLog} from "../utils/UgLog";
+import {anyNull, textEmpty} from "../utils/Ext";
 
+/**
+ * http 请求
+ * @param params json对象参数
+ * @param url 相对地址
+ * @param post  是否post请求，默认是
+ * @constructor
+ */
 export default async function ServerHttp(params: object, url: string, post = true) {
 
   //得到host
@@ -12,7 +20,7 @@ export default async function ServerHttp(params: object, url: string, post = tru
 
   //拿到token和sign
   const tokenSign = await AppDefine.ocHelper.performSelectors(JSON.stringify({
-    type: NativeCommand.ASK_FOR_TOKEN_AND_RSA,
+    type: NativeCommand.ASK_FOR_TOKEN_AND_RSA.toString(),
   }));
 
   const newParams = {
@@ -37,7 +45,9 @@ export default async function ServerHttp(params: object, url: string, post = tru
 
     } else {
       for (let paramsKey in newParams) {
-        fullUrl += `&${paramsKey}=${params[paramsKey]}`
+        if (!textEmpty(paramsKey) && !textEmpty(newParams[paramsKey])) {
+          fullUrl += `&${paramsKey}=${newParams[paramsKey]}`
+        }
       }
       ugLog("get, fullUrl=" + fullUrl);
       let response = await fetch(fullUrl);
