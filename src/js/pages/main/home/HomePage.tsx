@@ -61,6 +61,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderSwiper(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    if(data?.data?.movies == null) return null;
     return (
       <View style={_styles.wrapper}>
         <UGSwiper>
@@ -284,6 +285,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    if(data?.data?.movies == null) return null;
+
     return (
       <View>
         <View style={_styles.couponTitleContainer}>
@@ -314,6 +317,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderNews(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    if(data?.data?.movies == null) return null;
+
     return (
       <View>
         <View style={_styles.betTitleContainer}>
@@ -560,6 +565,7 @@ const _styles = StyleSheet.create({
     resizeMode: 'stretch'
   },
   flatGrid: {
+    marginTop: 0,
     padding: 0,
     margin: 0,
   },

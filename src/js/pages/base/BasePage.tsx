@@ -89,7 +89,7 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
       case ReducerStatus.FAILED:
         msg = '请求出错，请稍后重试';
         break;
-      case ReducerStatus.NO_DATE:
+      case ReducerStatus.NO_DATA:
         msg = '当前没有数据';
         break;
       default:
@@ -171,7 +171,16 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
    */
   _renderContentOrLoading(): ReactNode {
     //根据刷新状态，决定显示刷新界面还是具体内容
-    return checkTrue(this.props?.reducerData?.bLoading) ? this._renderLoading() : this.renderContent();
+    switch (this.props?.reducerData?.status) {
+      case ReducerStatus.LOADING:
+        return this._renderLoading();
+      case ReducerStatus.FAILED:
+      case ReducerStatus.NO_DATA:
+        return this._renderRetry();
+      default:
+        return this.renderContent();
+    }
+    // return checkTrue(this.props?.reducerData?.bLoading) ? this._renderLoading() : this.renderContent();
   }
 
   /**
