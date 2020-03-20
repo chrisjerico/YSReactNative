@@ -1,1 +1,1 @@
-react-native run-android --variant UGCCDebug
+react-native run-android --variant txt60Debug
