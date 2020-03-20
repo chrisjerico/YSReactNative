@@ -418,7 +418,7 @@ const _styles = StyleSheet.create({
 
   //滑屏
   wrapper: {
-    aspectRatio: 16 / 9
+    aspectRatio: 343 / 153
   },
   slide1: {
     flex: 1,
