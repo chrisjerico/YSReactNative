@@ -1,4 +1,6 @@
 import objectPath from 'object-path';
+import {func} from 'prop-types';
+import md5 from 'blueimp-md5';
 
 export default class FPrototypes {
   static setupAll() {
@@ -157,6 +159,16 @@ export default class FPrototypes {
     // IPv6地址
     String.prototype.isIPv6 = function(): boolean {
       return /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){5}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(this);
+    };
+
+    // 去除首尾的空格和换行
+    String.prototype.stringByTrim = function(): string {
+      return this.replace(/^[ \n]*/, '').replace(/[ \n]*$/, '');
+    };
+
+    // 获取md5
+    String.prototype.md5 = function(): string {
+      return md5(this);
     };
   }
 }

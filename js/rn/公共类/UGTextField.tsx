@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {Input, InputProps, Card, Icon, Button, IconNode} from 'react-native-elements';
-import NetworkRequest1 from './网络/NetworkRequest1';
+import React, {Component, useState} from 'react';
+import {Text} from 'react-native';
+import {Input, InputProps, Icon, Button} from 'react-native-elements';
 import FUtils from './FishUtils';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface IPorps extends InputProps {
   // 父类变量
@@ -23,15 +23,16 @@ interface IPorps extends InputProps {
 
 interface IState {
   text: string; // 文本
+  secureTextEntry: boolean; // 安全文本输入
 }
 
 export default class UGTextField extends Component<IPorps, IState> {
   newProps: IPorps; // 自定义props
-  willRefreshCode: boolean = false; // 是否刷新验证码验证码
+  code: string = '';
 
   constructor(props: IPorps) {
     super(props);
-    this.state = {text: null};
+    this.state = {text: null, secureTextEntry: !!props.secureTextEntry};
     var iconSize = 20;
 
     var defaultProps: IPorps = {
@@ -41,8 +42,6 @@ export default class UGTextField extends Component<IPorps, IState> {
       placeholderTextColor: 'rgba(255, 255, 255, 0.3)',
       clearButtonMode: 'while-editing',
     };
-
-    var input = React.createRef();
 
     var other = ((): IPorps => {
       switch (props.type) {
@@ -63,9 +62,17 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {
             placeholder: '请输入密码',
             leftIcon: {name: 'lock', type: 'material', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
-            rightIcon: <Icon name="md-eye" type="ionicon" size={22} color="rgba(255, 255, 255, 0.3)" containerStyle={{marginLeft: 15, marginRight: 4}} onPress={() => {}} />,
-            rightIconContainerStyle: {marginLeft: -6, marginRight: 3, height: iconSize},
+            rightIcon: (
+              <this.Eye
+                secureTextEntry={true}
+                didClick={selected => {
+                  this.newProps.secureTextEntry = selected;
+                  this.setState({});
+                }}
+              />
+            ),
             secureTextEntry: true,
+            rightIconContainerStyle: {marginLeft: -6, marginRight: 3, height: iconSize},
             keyboardType: 'email-address',
             onlyVisibleASCII: true,
           };
@@ -88,7 +95,13 @@ export default class UGTextField extends Component<IPorps, IState> {
             keyboardType: 'email-address',
             onlyNumbersAndLetters: true,
             leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
-            rightIcon: this.renderLetterVerificationCode(),
+            rightIcon: (
+              <this.LetterVerificationCode
+                didClick={code => {
+                  this.code = code;
+                }}
+              />
+            ),
           };
         case '短信验证码':
           return {
@@ -102,11 +115,29 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {};
       }
     })();
-
-    this.newProps = FUtils.props_merge(FUtils.props_merge(defaultProps, other), props);
+    this.newProps = FUtils.props_merge(defaultProps, other);
   }
 
-  renderLetterVerificationCode() {
+  // 安全输入的眼睛图标
+  Eye(props: {secureTextEntry: boolean; didClick: (selected: boolean) => void}) {
+    var {secureTextEntry, didClick} = props;
+    var [selected, setSelected] = useState(secureTextEntry);
+    var name = selected ? 'md-eye-off' : 'md-eye';
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSelected((selected = !selected));
+          didClick(selected);
+        }}>
+        <Icon name={name} type="ionicon" size={22} color="rgba(255, 255, 255, 0.3)" containerStyle={{marginLeft: 15, marginRight: 4}} />
+      </TouchableOpacity>
+    );
+  }
+
+  // 验证码
+  LetterVerificationCode(props: {didClick: (code: string) => void}) {
+    var [count, setCount] = useState(0);
+
     var code = '';
     var codeLength = 4; //验证码的长度，可变
     var selectChar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -130,27 +161,22 @@ export default class UGTextField extends Component<IPorps, IState> {
           marginRight: 3,
         }}
         onPress={() => {
-          this.willRefreshCode = true;
-          this.setState({});
+          setCount(count + 1);
+          props.didClick(code);
         }}>
         {code}
       </Text>
     );
   }
 
+  // 刷新UI
   render() {
-    if (this.props.type === '字母验证码' && this.willRefreshCode) {
-      this.willRefreshCode = false;
-      this.newProps.rightIcon = this.renderLetterVerificationCode();
-    }
-
+    var props = FUtils.props_merge(this.newProps, this.props);
     return (
       <Input
-        {...this.newProps}
+        {...props}
         value={this.state.text ?? null}
-        clearTextOnFocus
         onChangeText={text => {
-          console.log(text);
           var {onlyNumbers, onlyNumbersWithDecimals, onlyNumbersAndLetters, onlyVisibleASCII, additionalAllowedCharacters: chars = '', forbiddenCharacters} = this.newProps;
 
           // 禁用指定字符

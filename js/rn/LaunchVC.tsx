@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry} from 'react-native';
+import {AppRegistry, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -24,6 +24,15 @@ FPrototypes.setupAll();
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function LoadingVC() {
+  AppDefine.navController?.setOptions({title: ''});
+  return (
+    <View style={{flex: 1}}>
+      <Text style={{marginTop: AppDefine.height * 0.4, textAlign: 'center', fontSize: 18, color: Skin1.textColor1}}>正在加载中...</Text>
+    </View>
+  );
+}
+
 // TabbarController
 class TabBarController extends Component<{navigation?: ProfileScreenNavigationProp}> {
   constructor(props) {
@@ -37,11 +46,12 @@ class TabBarController extends Component<{navigation?: ProfileScreenNavigationPr
 
     return (
       <Tab.Navigator initialRouteName="UpdateVersionVC" screenOptions={{tabBarVisible: false}}>
-        <Tab.Screen name="XBJLoginVC" component={XBJLoginVC} options={{}} />
-        <Tab.Screen name="XBJRegisterVC" component={XBJRegisterVC} options={{}} />
-        <Tab.Screen name="XBJMineVC" component={XBJMineVC} options={{}} />
-        <Tab.Screen name="UGPromotionsController" component={UGPromotionsController} options={{}} />
         <Tab.Screen name="UpdateVersionVC" component={UpdateVersionVC} options={{}} />
+        <Tab.Screen name="LoadingVC" component={LoadingVC} options={{unmountOnBlur: true}} />
+        <Tab.Screen name="XBJLoginVC" component={XBJLoginVC} options={{unmountOnBlur: true}} />
+        <Tab.Screen name="XBJRegisterVC" component={XBJRegisterVC} options={{unmountOnBlur: true}} />
+        <Tab.Screen name="XBJMineVC" component={XBJMineVC} options={{unmountOnBlur: true}} />
+        <Tab.Screen name="UGPromotionsController" component={UGPromotionsController} options={{unmountOnBlur: true}} />
       </Tab.Navigator>
     );
   }

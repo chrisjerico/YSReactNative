@@ -1,7 +1,7 @@
-import { NativeModules } from "react-native";
-import { object } from "prop-types";
-import { promises, Resolver } from "dns";
-import AppDefine from "../AppDefine";
+import {NativeModules} from 'react-native';
+import {object} from 'prop-types';
+import {promises, Resolver} from 'dns';
+import AppDefine from '../AppDefine';
 
 interface Dictionary {
   [x: string]: any;
@@ -26,10 +26,10 @@ export default class CCSessionModel {
       return new Promise(resolve => resolve(params));
     }
     var temp = Object.assign({}, params);
-    temp["checkSign"] = 1;
+    temp['checkSign'] = 1;
 
-    console.log("开始加密");
-    return AppDefine.ocCall("CMNetwork.encryptionCheckSign:", [temp]);
+    console.log('开始加密');
+    return AppDefine.ocCall('CMNetwork.encryptionCheckSign:', [temp]);
   }
 
   // 发起请求
@@ -46,7 +46,7 @@ export default class CCSessionModel {
     var promise = this.encryptParams(params)
       .then((params: Dictionary) => {
         if (this.isEncrypt) {
-          url += "&checkSign=1";
+          url += '&checkSign=1';
         }
 
         // 若是GET请求则拼接参数到URL
@@ -58,35 +58,35 @@ export default class CCSessionModel {
           params = null;
         }
 
-        console.log("url = " + url);
-        console.log("发起请求B");
+        console.log('url = ' + url);
+        console.log('发起请求B');
         return fetch(url, {
-          method: isPost ? "POST" : "GET",
+          method: isPost ? 'POST' : 'GET',
           body: params ? JSON.stringify(params) : null,
           headers: new Headers({
-            "Content-Type": "application/json"
-          })
+            'Content-Type': 'application/json',
+          }),
         })
           .then(function(response) {
             // 检查是否正常返回
             if (response.ok) {
               // 返回的是一个promise对象, 值就是后端返回的数据, 调用then()可以接收
-              console.log("req succ!");
+              console.log('req succ!');
               return response.json();
             }
-            throw new Error("请求失败：" + response.statusText);
+            return Promise.reject(new Error('请求失败：' + response.statusText));
           })
           .then((responseObject: ResponseObject) => {
             if (responseObject.code != 0) {
-              throw new Error(responseObject.msg);
+              return Promise.reject(new Error(responseObject.msg));
             }
             return Promise.resolve(responseObject.data);
           });
       })
       .catch(err => {
-        console.log("请求失败， err = ");
+        console.log('请求失败， err = ');
         console.log(err);
-        // rejects(err);
+        return Promise.reject(err);
       });
     return promise;
   }

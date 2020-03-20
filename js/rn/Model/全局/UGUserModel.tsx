@@ -1,9 +1,21 @@
 export class UGLoginModel {
+  'API-SID': string; // sessid
+  'API-TOKEN': string; // token
 
+  // 自定义参数
+  sessid: string;
+  token: string;
 }
 
 export default class UGUserModel extends UGLoginModel {
   static mine = new UGUserModel();
+  static getYS(user: UGLoginModel): UGUserModel {
+    var temp = Object.assign(new UGUserModel(), user);
+    temp['clsName'] = 'UGUserModel';
+    temp.sessid = user['API-SID'];
+    temp.token = user['API-SID'];
+    return temp;
+  }
 
   uid: string; // 用户ID
   avatar: string; // 头像

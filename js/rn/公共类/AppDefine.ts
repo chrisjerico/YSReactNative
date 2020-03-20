@@ -120,7 +120,14 @@ export default class AppDefine {
     });
 
     // 移除页面
-    AppDefine.ocEvent.addListener('RemoveVC', params => {});
+    AppDefine.ocEvent.addListener('RemoveVC', params => {
+      console.log('退出页面');
+      // 退到root
+      AppDefine.navController?.canGoBack() && AppDefine.navController?.popToTop();
+      // 再push
+      AppDefine.tabController?.navigate('LoadingVC');
+      AppDefine.navigationRef?.current?.navigate('LoadingVC');
+    });
 
     // 设置接口域名
     AppDefine.ocCall('AppDefine.shared.Host').then((host: string) => {
@@ -143,6 +150,7 @@ export default class AppDefine {
     // AppDefine.ocHelper.launchFinish();
   }
 
+  // 调用原生OC函数
   static ocCall(
     selectors: string | ((vars: OCFuncVariable) => {[x: string]: OCFuncModel}),
     args1: Array<any | OCFuncModel> = [],
