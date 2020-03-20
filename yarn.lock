@@ -1201,6 +1201,11 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
 
+"@types/object-path@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@types/object-path/-/object-path-0.11.0.tgz#0b744309b2573dc8bf867ef589b6288be998e602"
+  integrity sha512-/tuN8jDbOXcPk+VzEVZzzAgw1Byz7s/itb2YI10qkSyy6nykJH02DuhfrflxVdAdE7AZ91h5X6Cn0dmVdFw2TQ==
+
 "@types/prop-types@*", "@types/prop-types@^15.7.3":
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -5364,6 +5369,11 @@ object-keys@^1.0.11, object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
+
+object-path@^0.11.4:
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/object-path/-/object-path-0.11.4.tgz#370ae752fbf37de3ea70a861c23bba8915691949"
+  integrity sha1-NwrnUvvzfePqcKhhwju6iRVpGUk=
 
 object-visit@^1.0.0:
   version "1.0.1"
