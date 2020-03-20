@@ -61,7 +61,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderSwiper(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if(data?.data?.movies == null) return null;
+
     return (
       <View style={_styles.wrapper}>
         <UGSwiper>
@@ -285,7 +285,6 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if(data?.data?.movies == null) return null;
 
     return (
       <View>
@@ -317,7 +316,6 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderNews(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if(data?.data?.movies == null) return null;
 
     return (
       <View>
@@ -354,6 +352,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   renderContent(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    if(data?.data == null) return null;
+
     const {requestHomeData, requestUserInfo} = this.props;
     const {bRefreshing} = this.props.reducerData;
     const scrollEnable = this.state?.scrollEnable ?? true;

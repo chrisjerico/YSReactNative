@@ -11,6 +11,7 @@ import UGProgressCircle from "../../widget/progress/UGProgressCircle";
 import {ReducerStatus} from "../../redux/inter/IReducerState";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {checkTrue} from "../../utils/Ext";
+import {NativeCommand} from "../../site/NativeCommand";
 
 /**
  * Arc
@@ -113,7 +114,7 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
     //当前界面是否由原生打开，原生Android需要做前后台切换操作
     if (checkTrue(this.props?.fromNative)) {
       AppDefine.ocHelper.performSelectors(JSON.stringify({
-        type: 'MOVE_TO_BACK',
+        type: NativeCommand.MOVE_TO_BACK,
       }));
     }
 

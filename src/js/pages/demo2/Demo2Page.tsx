@@ -15,6 +15,7 @@ import MePage from "../main/me/MePage";
 import UGTopTabBar from "../../widget/bar/topbar/UGTopTabBar";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {ugLog} from "../../utils/UgLog";
+import {NativeCommand} from "../../site/NativeCommand";
 
 class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
 
@@ -77,7 +78,7 @@ class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
         }}/>
         <Button buttonStyle={_styles.button} title='切到原生的优惠券' onPress={() => {
           AppDefine.ocHelper.performSelectors(JSON.stringify({
-            type: 'OPEN_PAGE',
+            type: NativeCommand.OPEN_PAGE,
             data: {
               className: 'CouponsFragment',
               packageName: 'com.phoenix.lotterys.coupons',

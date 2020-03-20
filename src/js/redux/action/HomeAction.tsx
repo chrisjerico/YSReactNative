@@ -63,14 +63,17 @@ async function _requestMovies() {
       'https://facebook.github.io/react-native/movies.json',
     );
 
-    // let params = await AppDefine.ocHelper.performSelectors(JSON.stringify({
-    //   type: 'ASK_FOR_TOKEN_AND_RSA',
-    // }));
-    // let tokenRsa = JSON.parse(params)?.tokenRsa;
-    //
-    // let response2 = await fetch(
-    //   ServerApi.HOMEADS + '$' +  tokenRsa,
-    // );
+    let baseUrl = await AppDefine.ocHelper.performSelectors(JSON.stringify({
+      type: 'AppDefine.shared.Host',
+    }));
+    let params = await AppDefine.ocHelper.performSelectors(JSON.stringify({
+      type: 'ASK_FOR_TOKEN_AND_RSA',
+    }));
+    let tokenRsa = JSON.parse(params)?.tokenRsa;
+
+    let response2 = await fetch(
+      baseUrl + ServerApi.HOMEADS + '&' +  tokenRsa,
+    );
     // let response3 = await fetch(
     //   'https://facebook.github.io/react-native/movies.json',
     // );
