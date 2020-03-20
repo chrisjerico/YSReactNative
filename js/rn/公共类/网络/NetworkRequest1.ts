@@ -52,8 +52,8 @@ export default class NetworkRequest1 {
   }
 
   // 登录
-  static user_login(uname: string, pwd: string, googleCode?: string, ): Promise<UGLoginModel> {
-    return CCSessionModel.req('c=user&a=login', {usr: uname, pwd: pwd, ggCode: googleCode}, true);
+  static user_login(uname: string, pwd: string, googleCode?: string, slideCode?: {'slideCode[nc_sid]': string; 'slideCode[nc_token]': string; 'slideCode[nc_sig]': string}): Promise<UGLoginModel> {
+    return CCSessionModel.req('c=user&a=login', {usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode}, true);
   }
 
   // 退出登录

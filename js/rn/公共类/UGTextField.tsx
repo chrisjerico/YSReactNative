@@ -1,7 +1,6 @@
 import React, {Component, useState} from 'react';
-import {View, Text} from 'react-native';
-import {Input, InputProps, Card, Icon, Button, IconNode} from 'react-native-elements';
-import NetworkRequest1 from './网络/NetworkRequest1';
+import {Text} from 'react-native';
+import {Input, InputProps, Icon, Button} from 'react-native-elements';
 import FUtils from './FishUtils';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -43,8 +42,6 @@ export default class UGTextField extends Component<IPorps, IState> {
       placeholderTextColor: 'rgba(255, 255, 255, 0.3)',
       clearButtonMode: 'while-editing',
     };
-
-    var input = React.createRef();
 
     var other = ((): IPorps => {
       switch (props.type) {
@@ -118,8 +115,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {};
       }
     })();
-
-    this.newProps = FUtils.props_merge(FUtils.props_merge(defaultProps, other), props);
+    this.newProps = FUtils.props_merge(defaultProps, other);
   }
 
   // 安全输入的眼睛图标
@@ -173,10 +169,12 @@ export default class UGTextField extends Component<IPorps, IState> {
     );
   }
 
+  // 刷新UI
   render() {
+    var props = FUtils.props_merge(this.newProps, this.props);
     return (
       <Input
-        {...this.newProps}
+        {...props}
         value={this.state.text ?? null}
         onChangeText={text => {
           var {onlyNumbers, onlyNumbersWithDecimals, onlyNumbersAndLetters, onlyVisibleASCII, additionalAllowedCharacters: chars = '', forbiddenCharacters} = this.newProps;
