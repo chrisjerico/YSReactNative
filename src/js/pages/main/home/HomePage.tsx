@@ -28,6 +28,7 @@ import {anyNull, arrayEmpty} from "../../../utils/Ext";
 import {FlatGrid} from "react-native-super-grid";
 import IHomePageState from "./IHomePageState";
 import {Res} from "../../../../res/Resources";
+import StringUtils from "../../../utils/StringUtils";
 
 /**
  * Arc
@@ -97,7 +98,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     return (
       <View style={_styles.noticeContainer} key='_renderNotice'>
         <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
-        <Text style={_styles.noticeDesText}>{noticeArr[0].content}</Text>
+        <Text style={_styles.noticeDesText}>{StringUtils.getInstance().deleteHtml(noticeArr[0].content)}</Text>
       </View>
     )
   }
