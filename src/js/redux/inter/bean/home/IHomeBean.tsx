@@ -1,5 +1,5 @@
 import {object, string} from "prop-types";
-import BaseBean from "./base/BaseBean";
+import BaseBean from "../base/BaseBean";
 
 /**
  * Home的Reducer数据结构

@@ -18,7 +18,7 @@ import {Avatar, Button, Divider, ListItem, Tile} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
-import IHomeBean from "../../../redux/inter/bean/IHomeBean";
+import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
 import Swiper from 'react-native-swiper'
 import UGSwiper from "../../../widget/swp/UGSwiper";
 import UGTheme from "../../../theme/UGTheme";

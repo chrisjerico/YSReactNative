@@ -4,7 +4,7 @@ import {
   HomeActionType_LOAD_SUCCESS,
   HomeActionType_LOADING
 } from "../action/type/ActionTypes";
-import IHomeBean from "../inter/bean/IHomeBean";
+import IHomeBean from "../inter/bean/home/IHomeBean";
 
 /**
  * 初始数据结构

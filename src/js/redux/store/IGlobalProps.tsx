@@ -1,7 +1,7 @@
 import IBasePageProps from "../../pages/base/IBasePageProps";
 import IReducerState from "../inter/IReducerState";
 import IDemo2Bean from "../inter/bean/IDemo2Bean";
-import IHomeBean from "../inter/bean/IHomeBean";
+import IHomeBean from "../inter/bean/home/IHomeBean";
 
 /**
  * Arc
