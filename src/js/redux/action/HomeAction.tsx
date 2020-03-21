@@ -64,10 +64,12 @@ async function _requestMovies() {
   );
 
   let banner = await ServerHttp({}, ServerApi.BANNER, false);
+  let notice = await ServerHttp({}, ServerApi.NOTICE, false);
   let responseJson1 = await response1.json();
 
   return {
     banner: banner,
+    notice: notice,
     movie: responseJson1,
   };
   // return {

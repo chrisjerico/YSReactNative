@@ -24,7 +24,7 @@ import UGSwiper from "../../../widget/swp/UGSwiper";
 import UGTheme from "../../../theme/UGTheme";
 import AppDefine from "../../../../../js/rn/公共类/AppDefine";
 import {requestUserInfo} from "../../../redux/action/Demo2Action";
-import {anyNull} from "../../../utils/Ext";
+import {anyNull, arrayEmpty} from "../../../utils/Ext";
 import {FlatGrid} from "react-native-super-grid";
 import IHomePageState from "./IHomePageState";
 import {Res} from "../../../../res/Resources";
@@ -65,7 +65,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     if (anyNull(pics)) return null;
 
     return (
-      <View style={_styles.wrapper} key={pics.toString()}>
+      <View style={_styles.bannerWrapper} key={pics.toString()}>
         <UGSwiper>
           {
             pics.map((adv) => {
@@ -91,10 +91,13 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderNotice(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    let noticeArr = data?.data?.notice?.data?.scroll;
+    if (arrayEmpty(noticeArr)) return null;
+
     return (
       <View style={_styles.noticeContainer} key='_renderNotice'>
         <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
-        <Text style={_styles.noticeDesText}>欢迎来到UG测试平台，UG集团给你别人给不起的。</Text>
+        <Text style={_styles.noticeDesText}>{noticeArr[0].content}</Text>
       </View>
     )
   }
@@ -428,7 +431,7 @@ const _styles = StyleSheet.create({
   },
 
   //滑屏
-  wrapper: {
+  bannerWrapper: {
     aspectRatio: 343 / 153
   },
   bannerContainer: {
