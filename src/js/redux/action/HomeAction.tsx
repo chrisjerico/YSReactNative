@@ -63,7 +63,7 @@ async function _requestMovies() {
     'https://facebook.github.io/react-native/movies.json',
   );
 
-  let banner = await ServerHttp({}, ServerApi.HOMEADS, false);
+  let banner = await ServerHttp({}, ServerApi.BANNER, false);
   let responseJson1 = await response1.json();
 
   return {

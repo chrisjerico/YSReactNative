@@ -61,18 +61,21 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderSwiper(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const pics = data?.data?.banner?.data?.list;
+    if (anyNull(pics)) return null;
 
     return (
-      <View style={_styles.wrapper} key='_renderSwiper'>
+      <View style={_styles.wrapper} key={pics.toString()}>
         <UGSwiper>
           {
-            data.data.movie.movies.map((movie) => {
+            pics.map((adv) => {
               return (
-                <View style={[
-                  _styles.slide1,
-                  {backgroundColor: loadingBackground}
-                ]}>
-                  <Text style={_styles.text}>{`${movie.title}\n${movie.releaseYear}`}</Text>
+                <View key={adv.pic}
+                      style={[
+                        _styles.bannerContainer,
+                        {backgroundColor: loadingBackground}
+                      ]}>
+                  <Image style={_styles.bannerImage} source={{uri: adv.pic}}/>
                 </View>
               )
             })
@@ -185,6 +188,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
       gameTabIndex: index
     })
   };
+
   /**
    * 绘制 彩票、游戏、视讯 等等内容
    * @private
@@ -227,7 +231,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             menuArr.map((item, index) => {
               return (
                 <TouchableNativeFeedback
-                  onPress={() => {this._changeTab(index)}}
+                  onPress={() => {
+                    this._changeTab(index)
+                  }}
                 >
                   <View style={[
                     _styles.gameHeightLeftTab,
@@ -331,7 +337,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
               <View style={_styles.betUserContainer}>
                 <Avatar rounded containerStyle={_styles.betUserAvatar} source={Res.home}/>
                 <Text style={_styles.betUserName}>j***01</Text>
-                <Text style={_styles.betUserDate}>2020-02-12  11:28:44</Text>
+                <Text style={_styles.betUserDate}>2020-02-12 11:28:44</Text>
               </View>
               <View style={_styles.betMessageContainer}>
                 <Image style={_styles.betMessageImage} source={Res.home}/>
@@ -352,7 +358,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   renderContent(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if(data?.data == null) return null;
+    if (data?.data == null) return null;
 
     // const {requestHomeData, requestUserInfo} = this.props;
     const {bRefreshing} = this.props.reducerData;
@@ -425,17 +431,17 @@ const _styles = StyleSheet.create({
   wrapper: {
     aspectRatio: 343 / 153
   },
-  slide1: {
+  bannerContainer: {
     flex: 1,
     margin: 8,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold'
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'stretch'
   },
 
   //公告
