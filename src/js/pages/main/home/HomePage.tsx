@@ -200,27 +200,37 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderGames(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const games = data?.data?.game?.data?.icons;
+    if(arrayEmpty(games)) return null;
+
     let gameTabIndex = this.state?.gameTabIndex ?? 0;
-    const menuArr = [
-      {
-        url: Res.zryl,
-        text: '真人娱乐',
-      }, {
-        url: Res.cptz,
-        text: '彩票投注',
-      }, {
-        url: Res.dzjj,
-        text: '电子竞技',
-      }, {
-        url: Res.bydw,
-        text: '捕鱼电玩',
-      }, {
-        url: Res.qpyo,
-        text: '棋牌游戏',
-      }, {
-        url: Res.tyyx,
-        text: '体育游戏',
-      }];
+    // const menuArr = [
+    //   {
+    //     url: Res.zryl,
+    //     text: '真人娱乐',
+    //   }, {
+    //     url: Res.cptz,
+    //     text: '彩票投注',
+    //   }, {
+    //     url: Res.dzjj,
+    //     text: '电子竞技',
+    //   }, {
+    //     url: Res.bydw,
+    //     text: '捕鱼电玩',
+    //   }, {
+    //     url: Res.qpyo,
+    //     text: '棋牌游戏',
+    //   }, {
+    //     url: Res.tyyx,
+    //     text: '体育游戏',
+    //   }];
+    const menuArr = games.map((item) => {
+      return {
+        text: item.name,
+        url: item.logo,
+      }
+    });
+    const gameIcons = games[gameTabIndex].list;
     const tabHeight = 44;//每块高度
     const tabSpacing = 4;//间隙
     //game栏的总高度
@@ -250,7 +260,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
                   ]}>
                     <Image source={item.url} style={[
                       _styles.gameHeightLeftIcon,
-                      {tintColor: gameTabIndex == index ? 'white' : null}
+                      {tintColor: gameTabIndex == index ? 'white' : colorAccent}
                     ]}/>
                     <Text style={[
                       _styles.gameHeightLeftText,
@@ -280,9 +290,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             _styles.gameHeightRightTab,
             {height: tabHeight, backgroundColor: loadingBackground}
           ]}
-          items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
+          items={gameIcons}
           renderItem={({item}) => (
-            <Image style={_styles.gameHeightTabImage} source={Res.back} key={item}/>
+            <Image style={_styles.gameHeightTabImage} source={{uri: item.icon}} key={item}/>
           )}
         />
       </View>
@@ -582,6 +592,7 @@ const _styles = StyleSheet.create({
   },
   gameHeightRightTab: {
     borderRadius: 4,
+    aspectRatio: 116/92,
   },
 
   //优惠券
