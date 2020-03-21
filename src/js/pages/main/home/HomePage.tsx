@@ -201,29 +201,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderGames(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const games = data?.data?.game?.data?.icons;
-    if(arrayEmpty(games)) return null;
+    if (arrayEmpty(games)) return null;
 
     let gameTabIndex = this.state?.gameTabIndex ?? 0;
-    // const menuArr = [
-    //   {
-    //     url: Res.zryl,
-    //     text: '真人娱乐',
-    //   }, {
-    //     url: Res.cptz,
-    //     text: '彩票投注',
-    //   }, {
-    //     url: Res.dzjj,
-    //     text: '电子竞技',
-    //   }, {
-    //     url: Res.bydw,
-    //     text: '捕鱼电玩',
-    //   }, {
-    //     url: Res.qpyo,
-    //     text: '棋牌游戏',
-    //   }, {
-    //     url: Res.tyyx,
-    //     text: '体育游戏',
-    //   }];
     const menuArr = games.map((item) => {
       return {
         text: item.name,
@@ -231,6 +211,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
       }
     });
     const gameIcons = games[gameTabIndex].list;
+
     const tabHeight = 44;//每块高度
     const tabSpacing = 4;//间隙
     //game栏的总高度
@@ -241,15 +222,15 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
         _styles.gameContainer,
         {height: gameContainerHeight}
       ]} key='_renderGames'>
+        {/*左侧的栏目*/}
         <View>
           {
             menuArr.map((item, index) => {
               return (
-                <TouchableNativeFeedback
-                  onPress={() => {
-                    this._changeTab(index)
-                  }}
-                >
+                <TouchableNativeFeedback key={index}
+                                         onPress={() => {
+                                           this._changeTab(index)
+                                         }}>
                   <View style={[
                     _styles.gameHeightLeftTab,
                     {
@@ -258,7 +239,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
                       height: tabHeight
                     }
                   ]}>
-                    <Image source={item.url} style={[
+                    <Image source={{uri: item.url}} style={[
                       _styles.gameHeightLeftIcon,
                       {tintColor: gameTabIndex == index ? 'white' : colorAccent}
                     ]}/>
@@ -272,6 +253,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             })
           }
         </View>
+        {/*右侧的图标*/}
         <FlatGrid
           showsVerticalScrollIndicator={false}
           onTouchStart={() => {
@@ -306,6 +288,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const coupon = data?.data?.coupon?.data;
+    if (arrayEmpty(coupon?.list)) return null;
 
     return (
       <View key='_renderCoupon'>
@@ -316,13 +300,14 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           <Image style={_styles.couponTitleArrow} source={Res.yhhdArraw}/>
         </View>
         {
-          data.data.movie.movies.map((movie, index) => (
-            <View style={[
-              _styles.couponItemContainer,
-              {backgroundColor: colorSecondBackground}
-            ]} key={index}>
-              <Text style={_styles.couponItemTitle}>{movie.title}</Text>
-              <Image style={_styles.couponItemImage} source={Res.home}/>
+          coupon.list.map((item, index) => (
+            <View key={index}
+                  style={[
+                    _styles.couponItemContainer,
+                    {backgroundColor: colorSecondBackground}
+                  ]}>
+              <Text style={_styles.couponItemTitle}>{item.title}</Text>
+              <Image style={_styles.couponItemImage} source={{uri: item.pic}}/>
             </View>
           ))
         }
@@ -592,7 +577,7 @@ const _styles = StyleSheet.create({
   },
   gameHeightRightTab: {
     borderRadius: 4,
-    aspectRatio: 116/92,
+    aspectRatio: 116 / 92,
   },
 
   //优惠券

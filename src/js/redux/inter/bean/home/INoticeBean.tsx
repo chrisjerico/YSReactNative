@@ -1,6 +1,6 @@
 //   "addTime":"2020-02-22 22:08:32"
 /**
- * banner公告
+ * 主页公告
  */
 export interface INoticeScroll {
   id: string,
@@ -11,7 +11,7 @@ export interface INoticeScroll {
 }
 
 /**
- * banner公告
+ * 主页公告
  */
 export interface INoticePop {
   id: string,
@@ -23,7 +23,7 @@ export interface INoticePop {
 }
 
 /**
- * banner公告
+ * 主页公告
  */
 export default interface INoticeBean {
   scroll: Array<INoticeScroll>,

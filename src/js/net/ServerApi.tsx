@@ -9,6 +9,7 @@ export const ServerApi = {
   HOME_BANNER: _path + 'c=system&a=banners',//主页广告banner
   HOME_NOTICE: _path + 'c=notice&a=latest',//主页公告
   HOME_GAME: _path + 'c=game&a=homeGames',//主页游戏
+  HOME_COUPON: _path + 'c=system&a=promotions',//主页优惠活动
 
 
 };
