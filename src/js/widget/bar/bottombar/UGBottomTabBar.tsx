@@ -34,7 +34,8 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
     const textColor = isTabActive ? primary : colorTextNormal;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
-    return <TouchableHighlight underlayColor='#00000000'
+    return <TouchableHighlight key={name}
+                               underlayColor='#00000000'
                                style={_styles.tabContainer}
                                onPress={() => onPressHandler(page)}>
       <View

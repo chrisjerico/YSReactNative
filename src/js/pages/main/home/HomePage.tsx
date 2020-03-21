@@ -63,10 +63,10 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
 
     return (
-      <View style={_styles.wrapper}>
+      <View style={_styles.wrapper} key='_renderSwiper'>
         <UGSwiper>
           {
-            data.data.movies.map((movie) => {
+            data.data.movie.movies.map((movie) => {
               return (
                 <View style={[
                   _styles.slide1,
@@ -89,7 +89,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderNotice(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     return (
-      <View style={_styles.noticeContainer}>
+      <View style={_styles.noticeContainer} key='_renderNotice'>
         <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
         <Text style={_styles.noticeDesText}>欢迎来到UG测试平台，UG集团给你别人给不起的。</Text>
       </View>
@@ -139,7 +139,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
       }];
 
     return (
-      <View style={_styles.myInfoContainer}>
+      <View style={_styles.myInfoContainer} key='_renderMyInfo'>
         <View style={[
           _styles.myInfoTopContainer,
           {backgroundColor: primaryBright}
@@ -221,7 +221,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
       <View style={[
         _styles.gameContainer,
         {height: gameContainerHeight}
-      ]}>
+      ]} key='_renderGames'>
         <View>
           {
             menuArr.map((item, index) => {
@@ -271,7 +271,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           ]}
           items={[1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]}
           renderItem={({item}) => (
-            <Image style={_styles.gameHeightTabImage} source={Res.back}/>
+            <Image style={_styles.gameHeightTabImage} source={Res.back} key={item}/>
           )}
         />
       </View>
@@ -287,7 +287,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
 
     return (
-      <View>
+      <View key='_renderCoupon'>
         <View style={_styles.couponTitleContainer}>
           <Image style={_styles.couponTitleIcon} source={Res.yhhdIcon}/>
           <Text style={_styles.couponTitleText}>优惠活动</Text>
@@ -295,11 +295,11 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           <Image style={_styles.couponTitleArrow} source={Res.yhhdArraw}/>
         </View>
         {
-          data.data.movies.map((movie, index) => (
+          data.data.movie.movies.map((movie, index) => (
             <View style={[
               _styles.couponItemContainer,
               {backgroundColor: colorSecondBackground}
-            ]}>
+            ]} key={index}>
               <Text style={_styles.couponItemTitle}>{movie.title}</Text>
               <Image style={_styles.couponItemImage} source={Res.home}/>
             </View>
@@ -318,16 +318,16 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
 
     return (
-      <View>
+      <View key='_renderNews'>
         <View style={_styles.betTitleContainer}>
           <Text style={_styles.betTitle}>投注专栏</Text>
         </View>
         {
-          data.data.movies.map((movie, index) => (
+          data.data.movie.movies.map((movie, index) => (
             <View style={[
               _styles.betContainer,
               {backgroundColor: colorSecondBackground}
-            ]}>
+            ]} key={index}>
               <View style={_styles.betUserContainer}>
                 <Avatar rounded containerStyle={_styles.betUserAvatar} source={Res.home}/>
                 <Text style={_styles.betUserName}>j***01</Text>
@@ -354,7 +354,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     if(data?.data == null) return null;
 
-    const {requestHomeData, requestUserInfo} = this.props;
+    // const {requestHomeData, requestUserInfo} = this.props;
     const {bRefreshing} = this.props.reducerData;
     const scrollEnable = this.state?.scrollEnable ?? true;
 

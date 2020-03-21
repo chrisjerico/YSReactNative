@@ -52,6 +52,7 @@ export default async function ServerHttp(params: object, url: string, post = tru
       ugLog("get, fullUrl=" + fullUrl);
       let response = await fetch(fullUrl);
       responseJson = await response.json();
+      ugLog("get, responseJson=" + JSON.stringify(responseJson));
 
     }
   } catch (e) {
