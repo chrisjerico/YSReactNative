@@ -72,8 +72,8 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
         tabBarPosition='bottom'
       >
         {
-          tabs.map((tab) =>
-            <View key={tab.title}
+          tabs.map((tab, index) =>
+            <View key={index}
                   style={_styles.content}
                   tabLabel={tab.title}>
               {

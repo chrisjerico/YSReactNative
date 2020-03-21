@@ -111,7 +111,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderMyInfoIcon = ({url: url, text: text}) => {
     return (
-      <View style={_styles.myInfoBottomWalletIconContainer}>
+      <View key={text}
+            style={_styles.myInfoBottomWalletIconContainer}>
         <Image resizeMode='stretch' style={[
           _styles.myInfoBottomWalletIcon,
           {tintColor: primary}
