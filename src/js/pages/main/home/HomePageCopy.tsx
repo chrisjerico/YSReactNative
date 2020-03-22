@@ -56,7 +56,7 @@
 //           requestUserInfo('home action');
 //         }}/>
 //         <Button buttonStyle={_styles.button} title='切到原生的存款' onPress={() => {
-//           AppDefine.ocHelper.performSelectors(JSON.stringify({
+//           AppDefine.ocHelper.executeCmd(JSON.stringify({
 //             type: 'OPEN_PAGE',
 //             data: {
 //               className: 'DepositActivity',

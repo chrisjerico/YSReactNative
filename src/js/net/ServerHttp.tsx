@@ -13,13 +13,13 @@ import {anyNull, textEmpty} from "../utils/Ext";
 export default async function ServerHttp(params: object, url: string, post = true) {
 
   //得到host
-  const baseUrl = await AppDefine.ocHelper.performSelectors(JSON.stringify({
+  const baseUrl = await AppDefine.ocHelper.executeCmd(JSON.stringify({
     type: NativeCommand.APP_HOST,
   }));
   let fullUrl = baseUrl + url;
 
   //拿到token和sign
-  const tokenSign = await AppDefine.ocHelper.performSelectors(JSON.stringify({
+  const tokenSign = await AppDefine.ocHelper.executeCmd(JSON.stringify({
     type: NativeCommand.ASK_FOR_TOKEN_AND_RSA.toString(),
   }));
 

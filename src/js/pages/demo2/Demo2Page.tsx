@@ -77,7 +77,7 @@ class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
           requestUserInfo('xiao wang')
         }}/>
         <Button buttonStyle={_styles.button} title='切到原生的优惠券' onPress={() => {
-          AppDefine.ocHelper.performSelectors(JSON.stringify({
+          AppDefine.ocHelper.executeCmd(JSON.stringify({
             type: NativeCommand.OPEN_PAGE,
             data: {
               className: 'CouponsFragment',

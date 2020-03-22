@@ -113,7 +113,7 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
   clickLeftFunc = () => {
     //当前界面是否由原生打开，原生Android需要做前后台切换操作
     if (checkTrue(this.props?.fromNative)) {
-      AppDefine.ocHelper.performSelectors(JSON.stringify({
+      AppDefine.ocHelper.executeCmd(JSON.stringify({
         type: NativeCommand.MOVE_TO_BACK,
       }));
     }
