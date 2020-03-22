@@ -155,7 +155,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           _styles.myInfoTopContainer,
           {backgroundColor: primaryBright}
         ]}>
-          <Text style={_styles.myInfoTopText}>晚上好，adam</Text>
+          <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.data.usr}`}</Text>
           <View style={_styles.myInfoTopButton}>
             <Text style={_styles.myInfoTopText}>个人资料</Text>
           </View>
