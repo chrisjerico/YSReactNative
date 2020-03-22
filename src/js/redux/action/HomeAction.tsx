@@ -67,6 +67,7 @@ async function _requestMovies() {
   let notice = await ServerHttp({}, ServerApi.HOME_NOTICE, false);
   let game = await ServerHttp({}, ServerApi.HOME_GAME, false);
   let coupon = await ServerHttp({}, ServerApi.HOME_COUPON, false);
+  let userInfo = await ServerHttp({}, ServerApi.USER_INFO, false);
   let responseJson1 = await response1.json();
 
   return {
@@ -74,6 +75,7 @@ async function _requestMovies() {
     notice: notice,
     game: game,
     coupon: coupon,
+    userInfo: userInfo,
     movie: responseJson1,
   };
   // return {

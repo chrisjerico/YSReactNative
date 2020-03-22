@@ -131,6 +131,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    */
   _renderMyInfo(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const userInfo = data?.data?.userInfo;
+    if(anyNull(userInfo?.data)) return null;
+
     const iconTexArr = [
       {
         url: Res.ck,
@@ -170,7 +173,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
               <Text style={[
                 _styles.myInfoBottomWalletMoney,
                 {color: homeMoney}
-              ]}>0.00</Text>
+              ]}>{userInfo.data.balance}</Text>
             </View>
             <Text style={_styles.myInfoBottomWalletMe}>我的钱包</Text>
           </View>
@@ -274,7 +277,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           ]}
           items={gameIcons}
           renderItem={({item}) => (
-            <Image style={_styles.gameHeightTabImage} source={{uri: item.icon}} key={item}/>
+            <Image style={_styles.gameHeightTabImage} source={{uri: item.icon}} key={item.title}/>
           )}
         />
       </View>
