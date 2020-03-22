@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ActionConst, Actions, Router, Scene, Stack} from "react-native-router-flux";
 import Demo2Page from "../../pages/demo2/Demo2Page";
-import Demo1Page from "../../pages/demo1/Demo1Page";
+import MainPage from "../../pages/main/MainPage";
 import HomePage from "../../pages/main/home/HomePage";
 import GameRoomPage from "../../pages/main/game/GameRoomPage";
 import BalancePage from "../../pages/main/balance/BalancePage";
@@ -41,13 +41,13 @@ export default class AppRouter extends React.Component<any, any> {
     return (
       <Router>
         <Stack key='root'>
-          {/*demo1界面，底部tab示例，包括了redux请求到显示的过程*/}
-          <Scene key='demo1'
+          {/*main界面，底部tab示例，包括了redux请求到显示的过程*/}
+          <Scene key='main'
                  initial={true}
                  title='示例1'
                  hideHeader={true}
                  {..._sceneProps}
-                 component={Demo1Page}/>
+                 component={MainPage}/>
           {/*demo2界面，顶部tab示例，包括了redux请求到显示的过程*/}
           <Scene key='demo2'
                  title='示例2'

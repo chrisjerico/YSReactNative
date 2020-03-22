@@ -7,11 +7,11 @@ import IBasePageState from "../base/IBasePageState";
 import IGlobalProps from "../../redux/store/IGlobalProps";
 import UGBottomTabBar from "../../widget/bar/bottombar/UGBottomTabBar";
 import {Res} from "../../../res/Resources";
-import HomePage from "../main/home/HomePage";
-import GameRoomPage from "../main/game/GameRoomPage";
-import MoneyPage from "../main/money/MoneyPage";
-import BalancePage from "../main/balance/BalancePage";
-import MePage from "../main/me/MePage";
+import HomePage from "./home/HomePage";
+import GameRoomPage from "./game/GameRoomPage";
+import MoneyPage from "./money/MoneyPage";
+import BalancePage from "./balance/BalancePage";
+import MePage from "./me/MePage";
 import {IUGBottomTabBarBean} from "../../widget/bar/bottombar/IUGBottomTabBarProps";
 
 /**
@@ -20,7 +20,7 @@ import {IUGBottomTabBarBean} from "../../widget/bar/bottombar/IUGBottomTabBarPro
  * 测试工程
  *
  */
-class Demo1Page extends BasePage<IGlobalProps, IBasePageState> {
+class MainPage extends BasePage<IGlobalProps, IBasePageState> {
 
   requestData() {}
 
@@ -107,4 +107,4 @@ const _mapStateToProps = (state) => {
 /**
  * 进行第二层包装, 生成的新组件拥有 接受和发送 数据的能力
  */
-export default connect(_mapStateToProps, _mapDispatchToProps)(Demo1Page)
+export default connect(_mapStateToProps, _mapDispatchToProps)(MainPage)
