@@ -12,10 +12,11 @@ interface IPorps extends InputProps {
   onChangeText?: (text: string) => void;
 
   // 自定义变量
-  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | '手机号' | '字母验证码' | '短信验证码' | '空';
-  onlyNumbers?: boolean; // 仅数字
-  onlyNumbersWithDecimals?: number; // 仅数字含小数
-  onlyNumbersAndLetters?: boolean; // 仅数字加字母
+  type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空';
+  hidden?: boolean; // 隐藏
+  onlyInteger?: boolean; // 仅数字
+  onlyNumber?: number; // 仅数字含小数
+  onlyIntegerAndLetter?: boolean; // 仅数字加字母
   onlyVisibleASCII?: boolean; // 仅可见的ASCII
   additionalAllowedCharacters?: string; // 额外允许的字符
   forbiddenCharacters?: string; // 禁止的字符
@@ -36,9 +37,9 @@ export default class UGTextField extends Component<IPorps, IState> {
     var iconSize = 20;
 
     var defaultProps: IPorps = {
-      containerStyle: [{marginTop: 12, height: 46, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 23, overflow: 'hidden'}],
-      inputStyle: {marginLeft: 8, height: 46, color: 'white', fontSize: 15},
-      leftIconContainerStyle: {marginLeft: 6, width: iconSize, height: iconSize},
+      containerStyle: [{marginTop: 12, height: 45, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 22.5, overflow: 'hidden'}],
+      inputStyle: {marginLeft: 8, height: 45, color: 'white', fontSize: 15},
+      leftIconContainerStyle: {marginLeft: 2, width: iconSize + 10, height: iconSize},
       placeholderTextColor: 'rgba(255, 255, 255, 0.3)',
       clearButtonMode: 'while-editing',
     };
@@ -47,16 +48,17 @@ export default class UGTextField extends Component<IPorps, IState> {
       switch (props.type) {
         case '推荐人ID':
           return {
-            placeholder: '推荐人ID（选填）',
+            placeholder: '推荐人ID',
             leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             keyboardType: 'number-pad',
-            onlyNumbersAndLetters: true,
+            onlyIntegerAndLetter: true,
           };
         case '账号':
           return {
             placeholder: '请输入账号',
             leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             keyboardType: 'email-address',
+            onlyIntegerAndLetter: true,
           };
         case '密码':
           return {
@@ -81,19 +83,37 @@ export default class UGTextField extends Component<IPorps, IState> {
             placeholder: '真实姓名',
             leftIcon: {name: 'user', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
           };
+        case 'QQ':
+          return {
+            placeholder: 'QQ号',
+            leftIcon: {name: 'qq', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            keyboardType: 'number-pad',
+            onlyInteger: true,
+          };
+        case '微信':
+          return {
+            placeholder: '微信号',
+            leftIcon: {name: 'wechat', type: 'font-awesome', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            keyboardType: 'email-address',
+          };
+        case '邮箱':
+          return {
+            placeholder: '邮箱地址',
+            leftIcon: {name: 'mail', type: 'entypo', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
+            keyboardType: 'email-address',
+          };
         case '手机号':
           return {
             placeholder: '手机号',
             leftIcon: {name: 'device-mobile', type: 'octicon', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             keyboardType: 'phone-pad',
-            onlyNumbers: true,
-            additionalAllowedCharacters: '+',
+            onlyInteger: true,
           };
         case '字母验证码':
           return {
             placeholder: '验证码',
             keyboardType: 'email-address',
-            onlyNumbersAndLetters: true,
+            onlyIntegerAndLetter: true,
             leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             rightIcon: (
               <this.LetterVerificationCode
@@ -107,7 +127,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {
             placeholder: '验证码',
             keyboardType: 'email-address',
-            onlyNumbersAndLetters: true,
+            onlyIntegerAndLetter: true,
             leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             rightIcon: <Button title="发送验证码" buttonStyle={{marginRight: 3, backgroundColor: 'rgba(255, 255, 255, 0.3)'}} titleStyle={{fontSize: 11}} />,
           };
@@ -172,12 +192,22 @@ export default class UGTextField extends Component<IPorps, IState> {
   // 刷新UI
   render() {
     var props = FUtils.props_merge(this.newProps, this.props);
+    if (this.props.hidden) {
+      FUtils.props_merge(props, {containerStyle: {marginTop: 0, height: 0}});
+    }
     return (
       <Input
         {...props}
         value={this.state.text ?? null}
         onChangeText={text => {
-          var {onlyNumbers, onlyNumbersWithDecimals, onlyNumbersAndLetters, onlyVisibleASCII, additionalAllowedCharacters: chars = '', forbiddenCharacters} = this.newProps;
+          var {
+            onlyInteger: onlyNumbers,
+            onlyNumber: onlyNumbersWithDecimals,
+            onlyIntegerAndLetter: onlyNumbersAndLetters,
+            onlyVisibleASCII,
+            additionalAllowedCharacters: chars = '',
+            forbiddenCharacters,
+          } = this.newProps;
 
           // 禁用指定字符
           if (forbiddenCharacters) {

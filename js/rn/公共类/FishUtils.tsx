@@ -1,7 +1,7 @@
 import {ViewProps} from 'react-native';
 
 export default class FUtils {
-  static props_merge(defaultProps: ViewProps, props: ViewProps): any {
+  static props_merge(defaultProps: any, props: any): any {
     var retProps = Object.assign({}, defaultProps);
     for (var k in props) {
       if (k.toLowerCase().indexOf('style') != -1) {

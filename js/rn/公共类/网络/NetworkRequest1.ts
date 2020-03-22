@@ -4,6 +4,7 @@ import {UGPromoteListModel} from '../../Model/常规/UGPromoteModel';
 import {ParserOptions} from '@babel/core';
 import {UGAgentApplyInfo} from '../../Model/全局/UGSysConfModel';
 import UGUserModel, {UGLoginModel} from '../../Model/全局/UGUserModel';
+import {SlideCodeModel} from '../../Model/常规/SlideCodeModel';
 
 export default class NetworkRequest1 {
   // 获取下一期开奖数据
@@ -52,8 +53,35 @@ export default class NetworkRequest1 {
   }
 
   // 登录
-  static user_login(uname: string, pwd: string, googleCode?: string, slideCode?: {'slideCode[nc_sid]': string; 'slideCode[nc_token]': string; 'slideCode[nc_sig]': string}): Promise<UGLoginModel> {
+  static user_login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel): Promise<UGLoginModel> {
+    slideCode = SlideCodeModel.get(slideCode);
     return CCSessionModel.req('c=user&a=login', {usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode}, true);
+  }
+
+  // 注册
+  static async user_reg(params: {
+    inviter: string; // 推荐人ID
+    usr: string; // 账号
+    pwd: string; // 密码
+    fundPwd: string; // 取款密码
+    fullName: string; // 真实姓名
+    qq: string; // QQ号
+    wx: string; // 微信号
+    phone: string; // 手机号
+    smsCode: string; // 短信验证码
+    imgCode: string; // 字母验证码
+    slideCode: SlideCodeModel; // 滑动验证码
+    email: string; // 邮箱
+    regType: 'user' | 'agent'; // 用户注册 或 代理注册
+  }): Promise<void> {
+    var accessToken = await AppDefine.ocCall('OpenUDID.value');
+    params = Object.assign({device: '3', accessToken: accessToken}, params);
+    return await CCSessionModel.req('c=user&a=reg', params, true);
+  }
+
+  // 检查用户是否已存在
+  static user_exists(usr: string): Promise<void> {
+    return CCSessionModel.req('c=user&a=exists', {usr: usr}, true);
   }
 
   // 退出登录

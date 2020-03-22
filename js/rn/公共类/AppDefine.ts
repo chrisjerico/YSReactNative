@@ -39,6 +39,7 @@ interface RnPageModel {
   // 替换oc页面
   vcName: string; // oc页面类名
   rnName: string; // rn页面类名
+  fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
   fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
   允许游客访问?: boolean;
   允许未登录访问?: boolean;

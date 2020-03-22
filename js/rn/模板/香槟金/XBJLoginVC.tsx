@@ -12,15 +12,10 @@ import WebView from 'react-native-webview';
 import NetworkRequest1 from '../../公共类/网络/NetworkRequest1';
 import FUtils from '../../公共类/FishUtils';
 import UGUserModel from '../../Model/全局/UGUserModel';
+import {SlideCodeModel} from '../../Model/常规/SlideCodeModel';
 
 interface IState {
   rememberPassword: boolean;
-}
-
-interface SlideCodeModel {
-  nc_csessionid: string;
-  nc_token: string;
-  nc_value: string;
 }
 
 export default class XBJLoginVC extends Component<{}, IState> {
@@ -62,12 +57,7 @@ export default class XBJLoginVC extends Component<{}, IState> {
       return;
     }
     AppDefine.ocCall('SVProgressHUD.showWithStatus:', ['正在登录...']);
-
-    NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, {
-      'slideCode[nc_sid]': this.slideCode?.nc_csessionid,
-      'slideCode[nc_sig]': this.slideCode?.nc_value,
-      'slideCode[nc_token]': this.slideCode?.nc_token,
-    })
+    NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
       .then(data => {
         console.log('登录成功');
         AppDefine.ocCall('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);

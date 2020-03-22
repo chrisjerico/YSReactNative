@@ -85,6 +85,16 @@ export default class FPrototypes {
       return /^-?\d+$/.test(this);
     };
 
+    // 数字加字母
+    String.prototype.isIntegerAndLetter = function(): boolean {
+      return /^[0-9A-Za-z]+$/.test(this);
+    };
+
+    // 可见的ASCII码（数字+字母+符号）
+    String.prototype.isVisibleASCII = function(): boolean {
+      return /^[\x20-\x7E]+$/.test(this);
+    };
+
     // 纯ASCII码
     String.prototype.isASCII = function(): boolean {
       return /^[\x00-\xFF]+$/.test(this);
@@ -122,7 +132,7 @@ export default class FPrototypes {
 
     // 手机号码
     String.prototype.isMobile = function(): boolean {
-      return /^1(3[0-9]|4[57]|5[0-35-9]|7[01678]|8[0-9])\d{8}$/.test(this);
+      return /^[1]([3-9])[0-9]{9}$/.test(this);
     };
 
     // 身份证号码

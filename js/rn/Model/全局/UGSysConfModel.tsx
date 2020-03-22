@@ -251,7 +251,7 @@ export default class UGSysConfModel {
   mkCheckinSwitch: string; // 0=开启；1=关闭 补签开关：
   agent_m_apply: string; // 允许会员中心申请代理
   mobile_logo: string; // 首页navBar 图片
-  agentRegbutton: string; // 0=关闭；1=开启；  手机端注册页面显示“代理注册”
+  agentRegbutton: string; // 是否开启代理注册，0=关闭；1=开启
   oftenLoginArea: string; // 1=关闭；0=开启； 常用登录地
   mobileTemplateBackground: string; // 配色方案
   mobileTemplateCategory: string; // 模板号      9 简约
@@ -271,22 +271,23 @@ export default class UGSysConfModel {
   easyRememberDomain: string; // 黑色模板易记的网址*/
   chatLink: string; // 聊天的链接*/
 
-  hide_reco: number; // 代理人
-  reg_name: number; // 真实姓名
-  reg_fundpwd: number; // 取款密码
-  reg_qq: number; // QQ
-  reg_wx: number; // 微信
-  reg_phone: number; // 手机
-  reg_email: number; // 邮箱
-  reg_vcode: number; // 0无验证码，1图形验证码 3点击显示图形验证码 2滑块验证码
+  // 注册页
+  hide_reco: number; // 代理人 0不填，1选填，2必填
+  reg_name: number; // 真实姓名 0不填，1选填，2必填
+  reg_fundpwd: number; // 取款密码 0不填，1选填，2必填
+  reg_qq: number; // QQ 0不填，1选填，2必填
+  reg_wx: number; // 微信 0不填，1选填，2必填
+  reg_phone: number; // 手机 0不填，1选填，2必填
+  reg_email: number; // 邮箱 0不填，1选填，2必填
+  reg_vcode: number; // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
   pass_limit: number; // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
   pass_length_min: number; // 注册密码最小长度
   pass_length_max: number; // 注册密码最大长度
-  rankingListSwitch: number; // 是否显示中奖/投注排行榜
+  smsVerify: boolean; // 手机短信验证
 
+  rankingListSwitch: number; // 是否显示中奖/投注排行榜
   googleVerifier: boolean; // 是否开启google 验证
   recharge: boolean; // 上级充值开关
-  smsVerify: boolean; // 手机短信验证
   allowreg: boolean; // 是否开启注册功能。
   allowMemberCancelBet: boolean; // 是否允许会员撤单，1允许 0不允许
   m_promote_pos: boolean; // 优惠活动显示在首页还是内页，1首页，0内页
