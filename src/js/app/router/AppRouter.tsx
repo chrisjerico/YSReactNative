@@ -14,6 +14,7 @@ import {connect} from 'react-redux'
 import {ugLog} from "../../utils/UgLog";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {Toast} from "../../utils/ToastUtils";
+import CouponPage from "../../pages/main/coupon/CouponPage";
 
 
 /**
@@ -59,6 +60,11 @@ export default class AppRouter extends React.Component<any, any> {
                  {..._sceneProps}
                  component={HomePage}/>
           {/*游戏大厅界面，redux请求到显示的过程*/}
+          <Scene key='coupon'
+                 title='优惠券'
+                 {..._sceneProps}
+                 component={CouponPage}/>
+          {/*钱包界面，redux请求到显示的过程*/}
           <Scene key='gameRoom'
                  title='游戏大厅'
                  {..._sceneProps}

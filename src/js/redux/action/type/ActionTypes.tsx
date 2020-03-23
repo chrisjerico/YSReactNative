@@ -19,3 +19,8 @@ export const HomeActionType_LOAD_ERROR =    "HomeActionType_LOAD_ERROR";  //加�
 export const GameRoomActionType_LOADING =       "GameRoomActionType_LOADING";   //加载中
 export const GameRoomActionType_LOAD_SUCCESS =  "GameRoomActionType_LOAD_SUCCESS";  //加载成功
 export const GameRoomActionType_LOAD_ERROR =    "GameRoomActionType_LOAD_ERROR";  //加载失败
+
+//CouponAction
+export const CouponActionType_LOADING =       "CouponActionType_LOADING";   //加载中
+export const CouponActionType_LOAD_SUCCESS =  "CouponActionType_LOAD_SUCCESS";  //加载成功
+export const CouponActionType_LOAD_ERROR =    "CouponActionType_LOAD_ERROR";  //加载失败
