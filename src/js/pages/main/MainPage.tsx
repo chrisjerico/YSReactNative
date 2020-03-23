@@ -13,6 +13,7 @@ import MoneyPage from "./money/MoneyPage";
 import BalancePage from "./balance/BalancePage";
 import MePage from "./me/MePage";
 import {IUGBottomTabBarBean} from "../../widget/bar/bottombar/IUGBottomTabBarProps";
+import CouponPage from "./coupon/CouponPage";
 
 /**
  * Arc
@@ -38,7 +39,7 @@ class MainPage extends BasePage<IGlobalProps, IBasePageState> {
       {
         title: '优惠',
         icon: Res.yh,
-        page: <GameRoomPage hideHeader={true} />,
+        page: <CouponPage title='优惠券' />,
       },
       {
         title: '客服',

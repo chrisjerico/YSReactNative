@@ -1,14 +1,21 @@
 import * as React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BasePage from "../../base/BasePage";
 
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import {Actions} from "react-native-router-flux";
-import {Button} from "react-native-elements";
 import {requestGameData} from "../../../redux/action/GameRoomAction";
 import ICouponProps from "./ICouponProps";
 import {requestCouponData} from "../../../redux/action/CouponAction";
+import {arrayEmpty} from "../../../utils/Ext";
+import IReducerState from "../../../redux/inter/IReducerState";
+import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
+import {Res} from "../../../../res/Resources";
+import UGTheme from "../../../theme/UGTheme";
+import ICouponBean, {ICouponListItem} from "../../../redux/inter/bean/home/ICouponBean";
+import IBaseBean from "../../../redux/inter/bean/base/IBaseBean";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 /**
  * Arc
@@ -16,47 +23,96 @@ import {requestCouponData} from "../../../redux/action/CouponAction";
  * 优惠券
  *
  */
+const {colorBackground, colorSecondBackground, colorTextNormal, colorAccent, primary, colorText} = UGTheme.getInstance().currentTheme();
 class CouponPage extends BasePage<ICouponProps, IBasePageState> {
 
-  requestData() {}
+  requestData() {
+    const {requestCouponData} = this.props;
+    requestCouponData();
+  }
+
+  /**
+   * 绘制第一条数据
+   * @param item
+   * @param index
+   * @private
+   */
+  _renderItem = (itemData) => {
+    const item: ICouponListItem = itemData?.item;
+    return (
+      <View style={_styles.itemContainer}>
+        <View style={[
+          _styles.textContainer,
+          {backgroundColor: colorSecondBackground}
+        ]}>
+          <Text style={_styles.text}>{item.title}</Text>
+          <Icon name='chevron-right' size={14}/>
+        </View>
+        <View style={_styles.imageContainer}>
+          <Image source={{uri: item.pic}} style={_styles.image}/>
+        </View>
+      </View>
+    )
+  };
 
   renderContent(): React.ReactNode {
-    const {requestCouponData, reducerData} = this.props;
-    return (
-      <View style={_styles.container}>
-        <Button buttonStyle={_styles.button} title='跳转demo2' onPress={() => {
-          Actions.demo2();
-        }}/>
-        <Button buttonStyle={_styles.button} title='跳转 游戏中心' onPress={() => {
-          Actions.gameRoom();
-        }}/>
-        <Button buttonStyle={_styles.button} title='请求数据' onPress={() => {
-          requestCouponData({
-            type: 'game type'
-          });
-        }}/>
-        <TouchableOpacity onPress={() => {
+    let data: IReducerState<IBaseBean<ICouponBean>> = this.props.reducerData;
+    const coupon = data?.data?.data;
+    if (arrayEmpty(coupon?.list)) return null;
 
-        }}>
-          <Text>{'游戏中心=' + JSON.stringify(reducerData)}</Text>
-        </TouchableOpacity>
-      </View>
+    return (
+      <FlatList
+        data={coupon.list}
+        renderItem={this._renderItem}
+      />
     );
   }
 
 }
 
 const _styles = StyleSheet.create({
-  container: {
+  itemContainer: {
     flex: 1,
+    marginTop: 8,
+    marginBottom: 8,
+    paddingLeft: 16,
+    paddingRight: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    width: 140,
-    margin: 4,
-    marginTop: 40,
+  imageContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    left: 0,
+    top: 0,
+    right: 0,
+
   },
+  image: {
+    borderRadius: 4,
+    width: '90%',
+    aspectRatio: 335/120,
+    resizeMode: 'stretch',
+  },
+  textContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    marginTop: 55,
+    aspectRatio: 343/113,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 4,
+  },
+  text: {
+    flex: 1,
+    marginRight: 8,
+    fontSize: 16,
+  },
+
 });
 
 /**

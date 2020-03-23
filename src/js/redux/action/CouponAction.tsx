@@ -1,35 +1,37 @@
-import {GameRoomActionType_LOAD_ERROR, GameRoomActionType_LOAD_SUCCESS, GameRoomActionType_LOADING} from "./type/ActionTypes";
+import {CouponActionType_LOAD_ERROR, CouponActionType_LOAD_SUCCESS, CouponActionType_LOADING} from "./type/ActionTypes";
 import {ugError, ugLog} from "../../utils/UgLog";
+import ServerHttp from "../../net/ServerHttp";
+import {ServerApi} from "../../net/ServerApi";
 
-/**
- * 处理游戏大厅数据
- *
- * @param params
- */
-export interface RequestCouponDataParams {
-  type: string; //模拟参数
-}
+// /**
+//  * 处理优惠券数据
+//  *
+//  * @param params
+//  */
+// export interface RequestCouponDataParams {
+//   type: string; //模拟参数
+// }
 
 /**
  * 触发 游戏大厅请求数据
  *
  * @param params
  */
-export function requestCouponData(params: RequestCouponDataParams) {
-  ugLog(`actGameGame params=${JSON.stringify(params)}`);
+export function requestCouponData() {
+  ugLog(`requestCouponData`);
   return dispatch => {
     dispatch({
-      type: GameRoomActionType_LOADING,
+      type: CouponActionType_LOADING,
       msg: '请稍等...',
       // data: {
       //   name
       // }
     });
 
-    _requestMovies()
+    _requestCouponData()
       .then((value => {
         dispatch({
-          type: GameRoomActionType_LOAD_SUCCESS,
+          type: CouponActionType_LOAD_SUCCESS,
           msg: '',
           data: {
             ...value
@@ -38,7 +40,7 @@ export function requestCouponData(params: RequestCouponDataParams) {
       }))
       .catch((error) => {
         dispatch({
-          type: GameRoomActionType_LOAD_ERROR,
+          type: CouponActionType_LOAD_ERROR,
           msg: '请求失败',
           // data: {
           //
@@ -54,35 +56,8 @@ export function requestCouponData(params: RequestCouponDataParams) {
  *
  * @private
  */
-async function _requestMovies() {
-  try {
-    //模拟 4个接口请求数据
-    let response1 = await fetch(
-      'https://facebook.github.io/react-native/movies.json',
-    );
-    let response2 = await fetch(
-      'https://facebook.github.io/react-native/movies.json',
-    );
-    let response3 = await fetch(
-      'https://facebook.github.io/react-native/movies.json',
-    );
-    let response4 = await fetch(
-      'https://facebook.github.io/react-native/movies.json',
-    );
-    let responseJson1 = await response1.json();
-    let responseJson2 = await response2.json();
-    let responseJson3 = await response3.json();
-    let responseJson4 = await response4.json();
+async function _requestCouponData() {
+  let coupon = await ServerHttp({}, ServerApi.HOME_COUPON, false);
 
-    return {...responseJson1};
-    // return {
-    //   responseJson1: responseJson1,
-    //   responseJson2: responseJson2,
-    //   responseJson3: responseJson3,
-    //   responseJson4: responseJson4,
-    // };
-  } catch (error) {
-    ugError(error);
-    throw error;
-  }
+  return coupon;
 }

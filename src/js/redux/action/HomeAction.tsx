@@ -19,7 +19,7 @@ export interface requestHomeDataParams {
  * @param params
  */
 export function requestHomeData(params: requestHomeDataParams) {
-  ugLog(`actionHomeData params=${JSON.stringify(params)}`);
+  ugLog(`requestHomeData params=${JSON.stringify(params)}`);
   return dispatch => {
     dispatch({
       type: HomeActionType_LOADING,
@@ -29,7 +29,7 @@ export function requestHomeData(params: requestHomeDataParams) {
       // }
     });
 
-    _requestMovies()
+    _requesHometData()
       .then((value => {
         dispatch({
           type: HomeActionType_LOAD_SUCCESS,
@@ -57,7 +57,7 @@ export function requestHomeData(params: requestHomeDataParams) {
  *
  * @private
  */
-async function _requestMovies() {
+async function _requesHometData() {
   //模拟 4个接口请求数据
   let response1 = await fetch(
     'https://facebook.github.io/react-native/movies.json',
