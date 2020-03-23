@@ -21,7 +21,7 @@ export const ColorGold: IColor = {
   colorTitleSecondary: '#ffffff',         // 次标题色
 
   colorText: '#854d24',            // 主文本色
-  colorTextSecondary: '#000000',  // 次文本色
+  colorTextSecondary: '#332F2D',  // 次文本色
   colorTextNormal: '#999391',  // 普通文本色
   colorTextTint: '#999999',     //提示文本
 

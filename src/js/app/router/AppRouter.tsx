@@ -47,6 +47,7 @@ export default class AppRouter extends React.Component<any, any> {
                  initial={true}
                  title='示例1'
                  hideHeader={true}
+                 hideLeftIcon={true}
                  {..._sceneProps}
                  component={MainPage}/>
           {/*demo2界面，顶部tab示例，包括了redux请求到显示的过程*/}

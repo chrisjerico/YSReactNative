@@ -23,7 +23,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
  * 优惠券
  *
  */
-const {colorBackground, colorSecondBackground, colorTextNormal, colorAccent, primary, colorText} = UGTheme.getInstance().currentTheme();
+const {colorBackground, colorSecondBackground, colorTextSecondary, colorAccent, primary, colorText} = UGTheme.getInstance().currentTheme();
 class CouponPage extends BasePage<ICouponProps, IBasePageState> {
 
   requestData() {
@@ -45,8 +45,11 @@ class CouponPage extends BasePage<ICouponProps, IBasePageState> {
           _styles.textContainer,
           {backgroundColor: colorSecondBackground}
         ]}>
-          <Text style={_styles.text}>{item.title}</Text>
-          <Icon name='chevron-right' size={14}/>
+          <Text style={[
+            _styles.text,
+            {color: colorTextSecondary}
+          ]}>{item.title}</Text>
+          <Icon name='chevron-right' size={14} style={{color: colorAccent}}/>
         </View>
         <View style={_styles.imageContainer}>
           <Image source={{uri: item.pic}} style={_styles.image}/>

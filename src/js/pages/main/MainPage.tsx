@@ -23,7 +23,8 @@ import CouponPage from "./coupon/CouponPage";
  */
 class MainPage extends BasePage<IGlobalProps, IBasePageState> {
 
-  requestData() {}
+  requestData() {
+  }
 
   /**
    * 绘制内容
@@ -34,27 +35,32 @@ class MainPage extends BasePage<IGlobalProps, IBasePageState> {
       {
         title: '主页',
         icon: Res.zy,
-        page: <HomePage title='主页' />,
+        page: <HomePage title='主页'
+                        hideLeftIcon={true}/>,
       },
       {
         title: '优惠',
         icon: Res.yh,
-        page: <CouponPage title='优惠券' />,
+        page: <CouponPage title='优惠券'
+                          hideLeftIcon={true}/>,
       },
       {
         title: '客服',
         icon: Res.kf,
-        page: <MoneyPage hideHeader={true} />,
+        page: <MoneyPage hideHeader={true}
+                         hideLeftIcon={true}/>,
       },
       {
         title: '注单',
         icon: Res.zd,
-        page: <BalancePage hideHeader={true} />,
+        page: <BalancePage hideHeader={true}
+                           hideLeftIcon={true}/>,
       },
       {
         title: '我的',
         icon: Res.wd,
-        page: <MePage hideHeader={true} />,
+        page: <MePage hideHeader={true}
+                      hideLeftIcon={true}/>,
       },
     ];
 
