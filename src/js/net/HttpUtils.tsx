@@ -15,7 +15,7 @@ export async function requestHome() {
   let banner = await ServerHttp({}, ServerApi.HOME_BANNER, false);
   let notice = await ServerHttp({}, ServerApi.HOME_NOTICE, false);
   let game = await ServerHttp({}, ServerApi.HOME_GAME, false);
-  let coupon = await ServerHttp({}, ServerApi.HOME_COUPON, false);
+  let coupon = await requestCoupon();
   let userInfo = await ServerHttp({}, ServerApi.USER_INFO, false);
   let responseJson1 = await response1.json();
 
