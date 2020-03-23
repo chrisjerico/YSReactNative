@@ -1,7 +1,6 @@
 import {CouponActionType_LOAD_ERROR, CouponActionType_LOAD_SUCCESS, CouponActionType_LOADING} from "./type/ActionTypes";
-import {ugError, ugLog} from "../../utils/UgLog";
-import ServerHttp from "../../net/ServerHttp";
-import {ServerApi} from "../../net/ServerApi";
+import {ugLog} from "../../utils/UgLog";
+import {requestCoupon} from "../../net/HttpUtils";
 
 // /**
 //  * 处理优惠券数据
@@ -28,7 +27,7 @@ export function requestCouponData() {
       // }
     });
 
-    _requestCouponData()
+    requestCoupon()
       .then((value => {
         dispatch({
           type: CouponActionType_LOAD_SUCCESS,
@@ -49,15 +48,4 @@ export function requestCouponData() {
         })
       });
   }
-}
-
-/**
- * 请求接口数据
- *
- * @private
- */
-async function _requestCouponData() {
-  let coupon = await ServerHttp({}, ServerApi.HOME_COUPON, false);
-
-  return coupon;
 }

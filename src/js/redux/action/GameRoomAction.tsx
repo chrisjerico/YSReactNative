@@ -50,8 +50,7 @@ export function requestGameData(params: RequestGameDataParams) {
 }
 
 /**
- * 请求接口数据
- *
+ * 测试，正式接口写在 HttpUtils 里面
  * @private
  */
 async function _requestMovies() {

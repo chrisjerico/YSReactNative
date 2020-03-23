@@ -64,6 +64,10 @@ export function requestUserInfo(name: string) {
   }
 }
 
+/**
+ * 测试，正式接口写在 HttpUtils 里面
+ * @private
+ */
 async function _getMoviesFromApi() {
   try {
     // 注意这里的await语句，其所在的函数必须有async关键字声明
