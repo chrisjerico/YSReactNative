@@ -1,5 +1,5 @@
 import {object, string} from "prop-types";
-export enum ReducerStatus { NONE, LOADING, SUCCESS, FAILED, NO_DATE}
+export enum ReducerStatus { NONE, LOADING, SUCCESS, FAILED, NO_DATA}
 
 /**
  * Reducer数据结构

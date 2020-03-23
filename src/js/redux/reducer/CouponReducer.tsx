@@ -1,18 +1,17 @@
 import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
 import {
-  HomeActionType_LOAD_ERROR,
-  HomeActionType_LOAD_SUCCESS,
-  HomeActionType_LOADING
+  CouponActionType_LOAD_ERROR,
+  CouponActionType_LOAD_SUCCESS,
+  CouponActionType_LOADING
 } from "../action/type/ActionTypes";
-import IHomeBean from "../inter/bean/home/IHomeBean";
+import ICouponBean from "../inter/bean/home/ICouponBean";
 
 /**
  * 初始数据结构
  */
-const _initialState: IReducerState<IHomeBean> = {
+const _initialState: IReducerState<ICouponBean> = {
   ...initialReducerState,
   // data: null, //数据
-  bLoading: true, //默认一进入打开 loading
 };
 
 /**
@@ -22,9 +21,9 @@ const _initialState: IReducerState<IHomeBean> = {
  * @param state   初始状态
  * @param action  返回数据
  */
-export default function homeReducer(state = _initialState, action) {
+export default function couponReducer(state = _initialState, action) {
   switch(action.type){
-    case HomeActionType_LOADING:
+    case CouponActionType_LOADING:
       return {
         ...state,
         ...action,
@@ -33,7 +32,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: true,
         status: ReducerStatus.LOADING,
       };
-    case HomeActionType_LOAD_SUCCESS:
+    case CouponActionType_LOAD_SUCCESS:
       return {
         ...state,
         ...action,
@@ -42,7 +41,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: false,
         status: ReducerStatus.SUCCESS,
       };
-    case HomeActionType_LOAD_ERROR:
+    case CouponActionType_LOAD_ERROR:
       return {
         ...state,
         ...action,

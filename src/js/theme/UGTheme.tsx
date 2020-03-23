@@ -8,11 +8,11 @@ import {UGThemeProvider} from "./provider/UGThemeProvider";
  */
 export default class UGTheme {
 
-  static _instance: UGTheme;
+  static _instance = new UGTheme();
   static getInstance(): UGTheme {
-    if(this._instance == null) {
-      this._instance = new UGTheme();
-    }
+    // if(this._instance == null) {
+    //   this._instance = new UGTheme();
+    // }
     return this._instance;
   }
 

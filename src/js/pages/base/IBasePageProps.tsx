@@ -9,6 +9,8 @@ export default interface IBasePageProps {
 
   //BEGIN Scene 具有的参数
   title?: string, //标题
+  hideLeftIcon?: boolean, //隐藏左边的icon
+  showRightIcon?: boolean, //显示右边的icon
   hideHeader?: boolean, //是否隐藏header
   //END
 

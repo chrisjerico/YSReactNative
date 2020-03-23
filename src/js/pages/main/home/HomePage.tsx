@@ -5,8 +5,8 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
+  Text, TouchableNativeFeedback,
+  Image,
   View
 } from "react-native";
 import BasePage from "../../base/BasePage";
@@ -14,17 +14,21 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, ListItem} from "react-native-elements";
+import {Avatar, Button, Divider, ListItem, Tile} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
-import IHomeBean from "../../../redux/inter/bean/IHomeBean";
+import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
 import Swiper from 'react-native-swiper'
 import UGSwiper from "../../../widget/swp/UGSwiper";
 import UGTheme from "../../../theme/UGTheme";
 import AppDefine from "../../../../../js/rn/公共类/AppDefine";
 import {requestUserInfo} from "../../../redux/action/Demo2Action";
-import {anyNull} from "../../../utils/Ext";
+import {anyNull, arrayEmpty} from "../../../utils/Ext";
+import {FlatGrid} from "react-native-super-grid";
+import IHomePageState from "./IHomePageState";
+import {Res} from "../../../../res/Resources";
+import StringUtils from "../../../utils/StringUtils";
 
 /**
  * Arc
@@ -32,47 +36,25 @@ import {anyNull} from "../../../utils/Ext";
  * 主界面
  *
  */
-const {primaryBright} = UGTheme.getInstance().currentTheme();
+const {
+  loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
+} = UGTheme.getInstance().currentTheme();
 
-class HomePage extends BasePage<IHomeProps, IBasePageState> {
+class HomePage extends BasePage<IHomeProps, IHomePageState> {
 
-
-  requestData() {
+  constructor(props) {
+    super(props);
   }
 
+
   /**
-   * 绘制没有请求前的内容
+   * 请求数据
    */
-  _renderDefault(): React.ReactNode {
-    const {requestHomeData, reducerData, requestUserInfo, demo2Reducer} = this.props;
-    return (
-      <View style={_styles.container}>
-        <Button buttonStyle={_styles.button} title='请求home数据' onPress={() => {
-          requestHomeData({
-            type: 'test 3'
-          });
-        }}/>
-        <Button buttonStyle={_styles.button} title='请求demo2数据' onPress={() => {
-          requestUserInfo('home action');
-        }}/>
-        <Button buttonStyle={_styles.button} title='切到原生的存款' onPress={() => {
-          AppDefine.ocHelper.performSelectors(JSON.stringify({
-            type: 'OPEN_PAGE',
-            data: {
-              className: 'DepositActivity',
-              packageName: 'com.phoenix.lotterys.my.activity',
-              toActivity: true,
-              intentParams: {
-                fromReact: true,
-                page: 0,
-              },
-            }
-          }));
-        }}/>
-        <Text>{'主页=' + JSON.stringify(reducerData)}</Text>
-        <Text>{'demo2=' + JSON.stringify(demo2Reducer)}</Text>
-      </View>
-    );
+  requestData() {
+    const {requestHomeData} = this.props;
+    requestHomeData({
+      type: 'test 4'
+    });
   }
 
   /**
@@ -80,17 +62,21 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
    */
   _renderSwiper(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const pics = data?.data?.banner?.data?.list;
+    if (anyNull(pics)) return null;
+
     return (
-      <View style={_styles.wrapper}>
+      <View style={_styles.bannerWrapper} key={pics.toString()}>
         <UGSwiper>
           {
-            data.data.movies.map((movie) => {
+            pics.map((adv) => {
               return (
-                <View style={[
-                  _styles.slide1,
-                  {backgroundColor: primaryBright}
-                ]}>
-                  <Text style={_styles.text}>{`${movie.title}\n${movie.releaseYear}`}</Text>
+                <View key={adv.pic}
+                      style={[
+                        _styles.bannerContainer,
+                        {backgroundColor: loadingBackground}
+                      ]}>
+                  <Image style={_styles.bannerImage} source={{uri: adv.pic}}/>
                 </View>
               )
             })
@@ -101,77 +87,271 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
   }
 
   /**
-   * 横向滑动的数据
+   * 绘制 公告,信息 等等内容
+   * @private
    */
-  _renderScrollH(): React.ReactNode {
+  _renderNotice(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
+    let noticeArr = data?.data?.notice?.data?.scroll;
+    if (arrayEmpty(noticeArr)) return null;
+
     return (
-      <ScrollView contentContainerStyle={_styles.scrollViewH}
-                  horizontal={true}>
+      <View style={_styles.noticeContainer} key='_renderNotice'>
+        <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
+        <Text style={_styles.noticeDesText}>{StringUtils.getInstance().deleteHtml(noticeArr[0].content)}</Text>
+      </View>
+    )
+  }
+
+  /**
+   * 绘制存款 取款 等图标
+   * @param url
+   * @param text
+   * @private
+   */
+  _renderMyInfoIcon = ({url: url, text: text}) => {
+    return (
+      <View key={text}
+            style={_styles.myInfoBottomWalletIconContainer}>
+        <Image resizeMode='stretch' style={[
+          _styles.myInfoBottomWalletIcon,
+          {tintColor: primary}
+        ]} source={url}/>
+        <Text style={[
+          _styles.myInfoBottomWalletIconText,
+          {color: primary}
+        ]}>{text}</Text>
+      </View>
+    )
+  };
+
+  /**
+   * 绘制 个个信息 存款 等等内容
+   * @private
+   */
+  _renderMyInfo(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const userInfo = data?.data?.userInfo;
+    if(anyNull(userInfo?.data)) return null;
+
+    const iconTexArr = [
+      {
+        url: Res.ck,
+        text: '存款',
+      }, {
+        url: Res.edzh,
+        text: '额度转换',
+      }, {
+        url: Res.qk,
+        text: '取款',
+      }, {
+        url: Res.zjmx,
+        text: '资金明细',
+      }];
+
+    return (
+      <View style={_styles.myInfoContainer} key='_renderMyInfo'>
+        <View style={[
+          _styles.myInfoTopContainer,
+          {backgroundColor: primaryBright}
+        ]}>
+          <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.data.usr}`}</Text>
+          <View style={_styles.myInfoTopButton}>
+            <Text style={_styles.myInfoTopText}>个人资料</Text>
+          </View>
+        </View>
+        <View style={[
+          _styles.myInfoBottomContainer,
+          {backgroundColor: colorSecondBackground}
+        ]}>
+          <View>
+            <View style={_styles.myInfoBottomWalletMoneyContainer}>
+              <Text style={[
+                _styles.myInfoBottomWalletMoneyFlag,
+                {color: homeMoney}
+              ]}>¥</Text>
+              <Text style={[
+                _styles.myInfoBottomWalletMoney,
+                {color: homeMoney}
+              ]}>{userInfo.data.balance}</Text>
+            </View>
+            <Text style={_styles.myInfoBottomWalletMe}>我的钱包</Text>
+          </View>
+          <Divider style={_styles.myInfoBottomWalletDivider}/>
+          {
+            iconTexArr.map(this._renderMyInfoIcon)
+          }
+        </View>
+      </View>
+    )
+  }
+
+  /**
+   * 切换tab
+   * @param index
+   * @private
+   */
+  _changeTab = (index: number) => {
+    this.setState({
+      gameTabIndex: index
+    })
+  };
+
+  /**
+   * 绘制 彩票、游戏、视讯 等等内容
+   * @private
+   */
+  _renderGames(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const games = data?.data?.game?.data?.icons;
+    if (arrayEmpty(games)) return null;
+
+    let gameTabIndex = this.state?.gameTabIndex ?? 0;
+    const menuArr = games.map((item) => {
+      return {
+        text: item.name,
+        url: item.logo,
+      }
+    });
+    const gameIcons = games[gameTabIndex].list;
+
+    const tabHeight = 44;//每块高度
+    const tabSpacing = 4;//间隙
+    //game栏的总高度
+    const gameContainerHeight = menuArr.length * (tabHeight + tabSpacing);
+
+    return (
+      <View style={[
+        _styles.gameContainer,
+        {height: gameContainerHeight}
+      ]} key='_renderGames'>
+        {/*左侧的栏目*/}
+        <View>
+          {
+            menuArr.map((item, index) => {
+              return (
+                <TouchableNativeFeedback key={index}
+                                         onPress={() => {
+                                           this._changeTab(index)
+                                         }}>
+                  <View style={[
+                    _styles.gameHeightLeftTab,
+                    {
+                      backgroundColor: gameTabIndex == index ? colorAccent : colorSecondBackground,
+                      marginTop: tabSpacing,
+                      height: tabHeight
+                    }
+                  ]}>
+                    <Image source={{uri: item.url}} style={[
+                      _styles.gameHeightLeftIcon,
+                      {tintColor: gameTabIndex == index ? 'white' : colorAccent}
+                    ]}/>
+                    <Text style={[
+                      _styles.gameHeightLeftText,
+                      {color: gameTabIndex == index ? 'white' : colorAccent}
+                    ]}>{item.text}</Text>
+                  </View>
+                </TouchableNativeFeedback>
+              )
+            })
+          }
+        </View>
+        {/*右侧的图标*/}
+        <FlatGrid
+          showsVerticalScrollIndicator={false}
+          onTouchStart={() => {
+            this.setState({
+              scrollEnable: false
+            })
+          }}
+          onTouchCancel={() => {
+            this.setState({
+              scrollEnable: true
+            })
+          }}
+          spacing={tabSpacing}
+          style={_styles.flatGrid}
+          itemContainerStyle={[
+            _styles.gameHeightRightTab,
+            {height: tabHeight, backgroundColor: loadingBackground}
+          ]}
+          items={gameIcons}
+          renderItem={({item}) => (
+            <Image style={_styles.gameHeightTabImage} source={{uri: item.icon}} key={item.title}/>
+          )}
+        />
+      </View>
+    )
+  }
+
+  /**
+   * 绘制优惠活动
+   *
+   * @private
+   */
+  _renderCoupon(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const coupon = data?.data?.coupon?.data;
+    if (arrayEmpty(coupon?.list)) return null;
+
+    return (
+      <View key='_renderCoupon'>
+        <View style={_styles.couponTitleContainer}>
+          <Image style={_styles.couponTitleIcon} source={Res.yhhdIcon}/>
+          <Text style={_styles.couponTitleText}>优惠活动</Text>
+          <Text style={_styles.couponTitleText2}>查看更多</Text>
+          <Image style={_styles.couponTitleArrow} source={Res.yhhdArraw}/>
+        </View>
         {
-          data.data.movies.map((movie, index) => (
-            <ListItem
-              key={index}
-              title={movie.title}
-              subtitle={movie.releaseYear}
-              leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
-              bottomDivider
-            />
+          coupon.list.map((item, index) => (
+            <View key={index}
+                  style={[
+                    _styles.couponItemContainer,
+                    {backgroundColor: colorSecondBackground}
+                  ]}>
+              <Text style={_styles.couponItemTitle}>{item.title}</Text>
+              <Image style={_styles.couponItemImage} source={{uri: item.pic}}/>
+            </View>
           ))
         }
-      </ScrollView>
+      </View>
     );
   }
 
   /**
-   * 绘制内容
+   * 绘制投注专栏
+   *
+   * @private
    */
-  _renderData(): React.ReactNode | null {
+  _renderNews(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    if (anyNull(data?.data)) {
-      return null
-    }
-
-    const {requestHomeData, requestUserInfo} = this.props;
-    const {bRefreshing} = this.props.reducerData;
 
     return (
-      <View style={_styles.container}>
-
-        <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={bRefreshing}
-            onRefresh={()=>{
-              requestHomeData({
-                type: 'test 4'
-              });
-            }}
-          />
+      <View key='_renderNews'>
+        <View style={_styles.betTitleContainer}>
+          <Text style={_styles.betTitle}>投注专栏</Text>
+        </View>
+        {
+          data.data.movie.movies.map((movie, index) => (
+            <View style={[
+              _styles.betContainer,
+              {backgroundColor: colorSecondBackground}
+            ]} key={index}>
+              <View style={_styles.betUserContainer}>
+                <Avatar rounded containerStyle={_styles.betUserAvatar} source={Res.home}/>
+                <Text style={_styles.betUserName}>j***01</Text>
+                <Text style={_styles.betUserDate}>2020-02-12 11:28:44</Text>
+              </View>
+              <View style={_styles.betMessageContainer}>
+                <Image style={_styles.betMessageImage} source={Res.home}/>
+                <Text style={_styles.betMessageText}>{movie.title}
+                  <Text style={_styles.betMessageText2}>¥100.00</Text>
+                  <Text style={_styles.betMessageText}>{movie.title}</Text>
+                </Text>
+              </View>
+            </View>
+          ))
         }
-        >
-          {
-            this._renderSwiper()
-          }
-          {
-            this._renderScrollH()
-          }
-
-          {/*竖线滑动的数据*/}
-          {
-            data.data.movies.map((movie, index) => (
-              <ListItem
-                containerStyle={{borderRadius: 8, margin: 4}}
-                key={index}
-                title={movie.title}
-                subtitle={movie.releaseYear}
-                leftAvatar={{source: {uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg'}}}
-                bottomDivider
-              />
-            ))
-          }
-        </ScrollView>
-
       </View>
     );
   }
@@ -180,8 +360,47 @@ class HomePage extends BasePage<IHomeProps, IBasePageState> {
    * 绘制内容
    */
   renderContent(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    if (data?.data == null) return null;
+
+    // const {requestHomeData, requestUserInfo} = this.props;
+    const {bRefreshing} = this.props.reducerData;
+    const scrollEnable = this.state?.scrollEnable ?? true;
+
     return (
-      this._renderData() ?? this._renderDefault()
+      <View style={_styles.container}>
+
+        <ScrollView
+          scrollEnabled={scrollEnable}
+          refreshControl={
+            <RefreshControl
+              refreshing={bRefreshing}
+              onRefresh={() => {
+                this.requestData();
+              }}
+            />
+          }>
+          {
+            this._renderSwiper()
+          }
+          {
+            this._renderNotice()
+          }
+          {
+            this._renderMyInfo()
+          }
+          {
+            this._renderGames()
+          }
+          {
+            this._renderCoupon()
+          }
+          {
+            this._renderNews()
+          }
+        </ScrollView>
+
+      </View>
     );
   }
 
@@ -210,31 +429,270 @@ const _styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
   },
-  scrollViewH: {
-    justifyContent: 'center',
-    alignItems: 'center'
+
+  //滑屏
+  bannerWrapper: {
+    aspectRatio: 343 / 153
   },
-  scrollViewV: {},
-  button: {
-    width: 140,
-    margin: 4,
-    marginTop: 40,
-  },
-  wrapper: {
-    aspectRatio: 16/9
-  },
-  slide1: {
+  bannerContainer: {
     flex: 1,
     margin: 8,
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold'
-  }
+  bannerImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'stretch'
+  },
+
+  //公告
+  noticeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+  noticeTextImage: {
+    width: 27,
+    height: 13,
+    resizeMode: 'contain',
+  },
+  noticeDesText: {
+    fontSize: 12,
+    color: 'white',
+    paddingLeft: 8,
+    paddingRight: 8,
+  },
+  myInfoContainer: {
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginBottom: 8,
+  },
+
+  //个人钱包
+  myInfoTopContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 4,
+    paddingBottom: 4,
+  },
+  myInfoTopText: {
+    flex: 1,
+    fontSize: 12,
+    color: 'white',
+  },
+  myInfoTopButton: {
+    borderWidth: 1,
+    borderRadius: 999,
+    borderColor: 'white',
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 2,
+    paddingBottom: 2,
+  },
+  myInfoBottomContainer: {
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingLeft: 26,
+    paddingRight: 12,
+    paddingTop: 16,
+    paddingBottom: 16,
+  },
+  myInfoBottomWalletContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  myInfoBottomWalletMoneyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  myInfoBottomWalletMoneyFlag: {
+    fontSize: 14,
+  },
+  myInfoBottomWalletMoney: {
+    fontSize: 20,
+  },
+  myInfoBottomWalletMe: {
+    fontSize: 12,
+    marginTop: 6,
+  },
+  myInfoBottomWalletDivider: {
+    width: 1,
+    height: 38,
+  },
+  myInfoBottomWalletIconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  myInfoBottomWalletIcon: {
+    width: 24,
+    height: 18,
+  },
+
+  myInfoBottomWalletIconText: {
+    fontSize: 12,
+    marginTop: 8,
+  },
+
+  //游戏彩票
+  gameContainer: {
+    flexDirection: 'row',
+    paddingLeft: 16,
+    paddingRight: 12,
+  },
+  gameHeightLeftTab: {
+    flexDirection: 'row',
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  gameHeightLeftIcon: {
+    width: 18,
+    height: 18,
+    marginRight: 4,
+    resizeMode: 'contain'
+  },
+  gameHeightLeftText: {
+    fontSize: 12,
+  },
+  gameHeightTabImage: {
+    flex: 1,
+    borderRadius: 4,
+    resizeMode: 'stretch'
+  },
+  flatGrid: {
+    marginTop: 0,
+    padding: 0,
+    margin: 0,
+  },
+  gameHeightRightTab: {
+    borderRadius: 4,
+    aspectRatio: 116 / 92,
+  },
+
+  //优惠券
+  couponTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 12,
+    marginBottom: 12,
+  },
+  couponTitleIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 4,
+  },
+  couponTitleText: {
+    fontSize: 14,
+    flex: 1,
+    color: 'white'
+  },
+  couponTitleText2: {
+    fontSize: 12,
+    color: 'white'
+  },
+  couponTitleArrow: {
+    width: 12,
+    height: 12,
+    marginLeft: 4,
+    resizeMode: 'contain',
+  },
+  couponItemContainer: {
+    borderRadius: 4,
+    padding: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 12,
+  },
+  couponItemTitle: {
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  couponItemImage: {
+    height: 60,
+    resizeMode: 'stretch'
+  },
+
+  //下注
+  betTitleContainer: {
+    fontSize: 14,
+    marginBottom: 12,
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  betTitle: {
+    fontSize: 14,
+    color: 'white',
+  },
+  betContainer: {
+    borderRadius: 4,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginLeft: 16,
+    marginRight: 16,
+    marginBottom: 12,
+  },
+  betUserContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+  betUserAvatar: {
+    width: 20,
+    height: 20,
+  },
+  betUserName: {
+    fontSize: 12,
+    marginLeft: 12,
+    flex: 1,
+  },
+  betUserDate: {
+    fontSize: 12,
+    marginLeft: 12,
+  },
+  betUser: {
+    fontSize: 12,
+  },
+  betMessageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: 'white',
+  },
+  betMessageImage: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+  },
+  betMessageText: {
+    fontSize: 18,
+    flex: 1,
+  },
+  betMessageText2: {
+    fontSize: 18,
+    color: 'red',
+  },
+
 });
 
 /**

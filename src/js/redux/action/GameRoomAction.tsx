@@ -16,7 +16,7 @@ export interface RequestGameDataParams {
  * @param params
  */
 export function requestGameData(params: RequestGameDataParams) {
-  ugLog(`actGameGame params=${JSON.stringify(params)}`);
+  ugLog(`requestGameData params=${JSON.stringify(params)}`);
   return dispatch => {
     dispatch({
       type: GameRoomActionType_LOADING,

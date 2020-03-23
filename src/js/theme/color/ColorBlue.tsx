@@ -22,14 +22,19 @@ export const ColorBlue: IColor = {
 
   colorText: '#333333',            // 主文本色
   colorTextSecondary: '#666666',  // 次文本色
+  colorTextNormal: '#999391',  // 普通文本色
   colorTextTint: '#999999',     //提示文本
 
   // background
   colorBackground: '#f2f2f2',   //背影色
+  colorSecondBackground: '#edebea',   //次背影色
+  loadingBackground: '#edebea',   //加载背影色
 
   // 按钮相关
   colorBtn: '#0000ff',    //按钮背影色
   colorBtnText: '#0000ff',  //按钮文本色
+
+  homeMoney: '#3f5bcd', //主页金额
 
   //TODO 在这里面扩展
 };

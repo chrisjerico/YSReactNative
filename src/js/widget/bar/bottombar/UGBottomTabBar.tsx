@@ -11,7 +11,7 @@ import IUGBottomTabBarProps from "./IUGBottomTabBarProps";
 /**
  * 底部 tab bar
  */
-const {colorBackground, primary, colorText} = UGTheme.getInstance().currentTheme();
+const {colorBackground, colorSecondBackground, colorTextNormal, colorAccent, primary, colorText} = UGTheme.getInstance().currentTheme();
 export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBaseWidgetState> {
 
   constructor(props) {
@@ -31,10 +31,11 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
     // const {activeTextColor, inactiveTextColor, textStyle} = this.props;
     const {tabs} = this.props;
     const curTab = tabs[page];
-    const textColor = isTabActive ? 'white' : colorText;
+    const textColor = isTabActive ? primary : colorTextNormal;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
-    return <TouchableHighlight underlayColor='#00000000'
+    return <TouchableHighlight key={name}
+                               underlayColor='#00000000'
                                style={_styles.tabContainer}
                                onPress={() => onPressHandler(page)}>
       <View
@@ -43,7 +44,7 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
         <Image source={curTab.icon}
                style={[
                  _styles.tabIcon,
-                 {tintColor: isTabActive ? 'white' : null}
+                 {tintColor: textColor}
                ]}/>
         <Text numberOfLines={1}
               style={[
@@ -61,9 +62,9 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
       <ScrollableTabView
         style={_styles.container}
         renderTabBar={() => <UGDefaultTabBar renderTab={this._renderTab}/>}
-        tabBarActiveTextColor={primary}
-        tabBarInactiveTextColor={colorText}
-        tabBarBackgroundColor={primary}
+        tabBarActiveTextColor={colorAccent}
+        tabBarInactiveTextColor={colorTextNormal}
+        tabBarBackgroundColor={colorSecondBackground}
         tabBarUnderlineStyle={[
           _styles.underlineStyle,
           {backgroundColor: primary},
@@ -71,8 +72,8 @@ export default class UGBottomTabBar extends BaseWidget<IUGBottomTabBarProps, IBa
         tabBarPosition='bottom'
       >
         {
-          tabs.map((tab) =>
-            <View key={tab.title}
+          tabs.map((tab, index) =>
+            <View key={index}
                   style={_styles.content}
                   tabLabel={tab.title}>
               {

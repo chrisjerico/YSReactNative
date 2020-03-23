@@ -11,6 +11,7 @@ import UGProgressCircle from "../../widget/progress/UGProgressCircle";
 import {ReducerStatus} from "../../redux/inter/IReducerState";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {checkTrue} from "../../utils/Ext";
+import {NativeCommand} from "../../site/NativeCommand";
 
 /**
  * Arc
@@ -89,7 +90,7 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
       case ReducerStatus.FAILED:
         msg = '请求出错，请稍后重试';
         break;
-      case ReducerStatus.NO_DATE:
+      case ReducerStatus.NO_DATA:
         msg = '当前没有数据';
         break;
       default:
@@ -112,8 +113,8 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
   clickLeftFunc = () => {
     //当前界面是否由原生打开，原生Android需要做前后台切换操作
     if (checkTrue(this.props?.fromNative)) {
-      AppDefine.ocHelper.performSelectors(JSON.stringify({
-        type: 'MOVE_TO_BACK',
+      AppDefine.ocHelper.executeCmd(JSON.stringify({
+        type: NativeCommand.MOVE_TO_BACK,
       }));
     }
 
@@ -123,7 +124,8 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
   /**
    * 默认点击右键
    */
-  clickRightFunc = () => {};
+  clickRightFunc = () => {
+  };
 
   /**
    * 绘制顶部 header
@@ -136,6 +138,22 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
 
     //当前界面配置的 title信息
     const title = this.props?.title;
+    const leftIcon = checkTrue(this.props?.hideLeftIcon) ?
+      null :
+      {
+        icon: 'chevron-thin-left',
+        type: 'entypo',
+        color,
+        onPress: this.clickLeftFunc
+      };
+    const rightIcon = checkTrue(this.props?.showRightIcon) ?
+      {
+        icon: 'close',
+        color,
+        onPress: this.clickRightFunc
+      } :
+      null;
+
 
     return (
       <Header
@@ -145,21 +163,12 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
           translucent: true,
           backgroundColor: 'transparent'
         }}
-        leftComponent={{
-          icon: 'chevron-thin-left',
-          type: 'entypo',
-          color,
-          onPress: this.clickLeftFunc
-        }}
+        leftComponent={leftIcon}
         centerComponent={{
           text: title,
-          style: {color}
+          style: {color, fontSize: 18}
         }}
-        rightComponent={{
-          icon: 'close',
-          color,
-          onPress: this.clickRightFunc
-        }}
+        rightComponent={rightIcon}
       />
     );
   }
@@ -171,7 +180,16 @@ export default abstract class BasePage<P extends IBasePageProps, S extends IBase
    */
   _renderContentOrLoading(): ReactNode {
     //根据刷新状态，决定显示刷新界面还是具体内容
-    return checkTrue(this.props?.reducerData?.bLoading) ? this._renderLoading() : this.renderContent();
+    switch (this.props?.reducerData?.status) {
+      case ReducerStatus.LOADING:
+        return this._renderLoading();
+      case ReducerStatus.FAILED:
+      case ReducerStatus.NO_DATA:
+        return this._renderRetry();
+      default:
+        return this.renderContent();
+    }
+    // return checkTrue(this.props?.reducerData?.bLoading) ? this._renderLoading() : this.renderContent();
   }
 
   /**
