@@ -4,6 +4,7 @@ import INoticeBean from "./INoticeBean";
 import IGameBean from "./IGameBean";
 import ICouponBean from "./ICouponBean";
 import IUserBean from "../user/IUserBean";
+import IRedBagBean from "./IRedBagBean";
 
 export interface IHomeBeanMovies {
   id?: string, //id
@@ -20,6 +21,7 @@ export default interface IHomeBean {
   game: IBaseBean<IGameBean>, //公告
   coupon: IBaseBean<ICouponBean>, //优惠
   userInfo: IBaseBean<IUserBean>, //个人信息
+  redBag: IBaseBean<IRedBagBean>, //红包
 
   movie: {
     title?: string, //标题

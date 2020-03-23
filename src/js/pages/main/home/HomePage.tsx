@@ -14,7 +14,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import IHomeProps from "./IHomeProps";
-import {Avatar, Button, Divider, ListItem, Tile} from "react-native-elements";
+import {Avatar, Button, Divider, ListItem, Overlay, Tile} from "react-native-elements";
 import {requestHomeData} from "../../../redux/action/HomeAction";
 import {Actions} from "react-native-router-flux";
 import IReducerState from "../../../redux/inter/IReducerState";
@@ -29,6 +29,7 @@ import {FlatGrid} from "react-native-super-grid";
 import IHomePageState from "./IHomePageState";
 import {Res} from "../../../../res/Resources";
 import StringUtils from "../../../utils/StringUtils";
+import Icon from 'react-native-vector-icons/Feather';
 
 /**
  * Arc
@@ -357,6 +358,25 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   }
 
   /**
+   * 绘制红包
+   * @private
+   */
+  _rendRedBag(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const redBag = data?.data?.redBag;
+    if (anyNull(redBag.data)) return null;
+
+    return (
+      <View style={_styles.redContainer}>
+        <Image style={_styles.redImage} source={{uri: redBag.data.redBagLogo}}/>
+        <Icon name='x-circle'
+              color={colorAccent} size={25}
+              style={_styles.redImageClose}/>
+      </View>
+    )
+  }
+
+  /**
    * 绘制内容
    */
   renderContent(): React.ReactNode {
@@ -397,6 +417,9 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           }
           {
             this._renderNews()
+          }
+          {
+            this._rendRedBag()
           }
         </ScrollView>
 
@@ -691,6 +714,26 @@ const _styles = StyleSheet.create({
   betMessageText2: {
     fontSize: 18,
     color: 'red',
+  },
+
+  //红包
+  redContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    top: 200,
+    right: 16,
+  },
+  redImage: {
+    width: 60,
+    height: 60,
+    marginTop: 12,
+    resizeMode: 'contain',
+  },
+  redImageClose: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
 
 });

@@ -10,6 +10,7 @@ export const ServerApi = {
   HOME_NOTICE: _path + 'c=notice&a=latest',//主页公告
   HOME_GAME: _path + 'c=game&a=homeGames',//主页游戏
   HOME_COUPON: _path + 'c=system&a=promotions',//主页优惠活动
+  HOME_RED_BAG: _path + 'c=activity&a=redBagDetail',//红包详情
 
   //用户相关
   USER_INFO: _path + 'c=user&a=info',//用户信息

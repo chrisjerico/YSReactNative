@@ -17,6 +17,7 @@ export async function requestHome() {
   let game = await ServerHttp({}, ServerApi.HOME_GAME, false);
   let coupon = await requestCoupon();
   let userInfo = await ServerHttp({}, ServerApi.USER_INFO, false);
+  let redBag = await ServerHttp({}, ServerApi.HOME_RED_BAG, false);
   let responseJson1 = await response1.json();
 
   return {
@@ -25,6 +26,7 @@ export async function requestHome() {
     game: game,
     coupon: coupon,
     userInfo: userInfo,
+    redBag: redBag,
     movie: responseJson1,
   };
 }
