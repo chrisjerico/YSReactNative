@@ -1,5 +1,5 @@
-import {GameRoomActionType_LOAD_ERROR, GameRoomActionType_LOAD_SUCCESS, GameRoomActionType_LOADING} from "./type/ActionTypes";
 import {ugError, ugLog} from "../../utils/UgLog";
+import {GameRoomActionType} from "./type/ActionTypes";
 
 /**
  * 处理游戏大厅数据
@@ -19,7 +19,7 @@ export function requestGameData(params: RequestGameDataParams) {
   ugLog(`requestGameData params=${JSON.stringify(params)}`);
   return dispatch => {
     dispatch({
-      type: GameRoomActionType_LOADING,
+      type: GameRoomActionType.LOADING,
       msg: '请稍等...',
       // data: {
       //   name
@@ -29,7 +29,7 @@ export function requestGameData(params: RequestGameDataParams) {
     _requestMovies()
       .then((value => {
         dispatch({
-          type: GameRoomActionType_LOAD_SUCCESS,
+          type: GameRoomActionType.LOAD_SUCCESS,
           msg: '',
           data: {
             ...value
@@ -38,7 +38,7 @@ export function requestGameData(params: RequestGameDataParams) {
       }))
       .catch((error) => {
         dispatch({
-          type: GameRoomActionType_LOAD_ERROR,
+          type: GameRoomActionType.LOAD_ERROR,
           msg: '请求失败',
           // data: {
           //
