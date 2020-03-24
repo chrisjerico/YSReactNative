@@ -44,6 +44,28 @@ const {
 
 class HomePage extends BasePage<IHomeProps, IHomePageState> {
 
+  /**
+   * 个人菜单
+   */
+  iconTexArr = [
+    {
+      url: Res.ck,
+      text: '存款',
+      onPress: () => {},
+    }, {
+      url: Res.edzh,
+      text: '额度转换',
+      onPress: () => {},
+    }, {
+      url: Res.qk,
+      text: '取款',
+      onPress: () => {},
+    }, {
+      url: Res.zjmx,
+      text: '资金明细',
+      onPress: () => {},
+    }];
+
   constructor(props) {
     super(props);
   }
@@ -135,21 +157,6 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     const userInfo = data?.data?.userInfo;
     if (anyNull(userInfo?.data)) return null;
 
-    const iconTexArr = [
-      {
-        url: Res.ck,
-        text: '存款',
-      }, {
-        url: Res.edzh,
-        text: '额度转换',
-      }, {
-        url: Res.qk,
-        text: '取款',
-      }, {
-        url: Res.zjmx,
-        text: '资金明细',
-      }];
-
     return (
       <View style={_styles.myInfoContainer} key='_renderMyInfo'>
         <View style={[
@@ -180,7 +187,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           </View>
           <Divider style={_styles.myInfoBottomWalletDivider}/>
           {
-            iconTexArr.map(this._renderMyInfoIcon)
+            this.iconTexArr.map(this._renderMyInfoIcon)
           }
         </View>
       </View>
