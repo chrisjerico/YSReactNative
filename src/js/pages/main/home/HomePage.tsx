@@ -130,7 +130,7 @@ const _styles = StyleSheet.create({
  */
 export interface IHomeProps extends IGlobalProps{
   requestHomeData?: (params: requestHomeDataParams) => ((dis)=>{});   //action方法 请求首页数据方法
-  requestUserInfo?: (s: string) => ((dis)=>{});   //action方法 请求用户信息
+  requestDemo2?: (s: string) => ((dis)=>{});   //action方法 请求用户信息
 
 }
 

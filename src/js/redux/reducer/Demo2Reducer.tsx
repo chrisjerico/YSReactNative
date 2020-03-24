@@ -44,7 +44,7 @@ export default function demo2Reducer(state = _initialState, action) {
   }
 }
 
-export function requestUserInfo(name: string) {
+export function requestDemo2(name: string) {
   // return {
   //   type: Demo222Action.LOADING,
   //   data: {
