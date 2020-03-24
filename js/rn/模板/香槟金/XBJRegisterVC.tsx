@@ -291,6 +291,15 @@ export default class XBJRegisterVC extends Component<{}, IState> {
               <UGTextField
                 type="短信验证码"
                 hidden={!smsVerify}
+                didSmsButtonClick={startCountdown => {
+                  NetworkRequest1.secure_smsCaptcha(this.phone)
+                    .then(() => {
+                      startCountdown();
+                    })
+                    .catch(err => {
+                      AppDefine.ocCall('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                    });
+                }}
                 onChangeText={text => {
                   this.smsCode = text;
                 }}

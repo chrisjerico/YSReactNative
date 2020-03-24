@@ -20,6 +20,7 @@ interface IPorps extends InputProps {
   onlyVisibleASCII?: boolean; // 仅可见的ASCII
   additionalAllowedCharacters?: string; // 额外允许的字符
   forbiddenCharacters?: string; // 禁止的字符
+  didSmsButtonClick?: (startCountdown: () => void) => void; // 发送验证码按钮被点击
 }
 
 interface IState {
@@ -129,13 +130,51 @@ export default class UGTextField extends Component<IPorps, IState> {
             keyboardType: 'email-address',
             onlyIntegerAndLetter: true,
             leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
-            rightIcon: <Button title="发送验证码" buttonStyle={{marginRight: 3, backgroundColor: 'rgba(255, 255, 255, 0.3)'}} titleStyle={{fontSize: 11}} />,
+            rightIcon: <this.SysButton didClick={this.props.didSmsButtonClick} />,
           };
         default:
           return {};
       }
     })();
     this.newProps = FUtils.props_merge(defaultProps, other);
+  }
+
+  SysButton(props: {didClick: (startCountdown: () => void) => void}) {
+    let {didClick} = props;
+    let [count, setCount] = useState(59);
+    let [willCountdown, setWillCountdown] = useState(0);
+
+    let title: string = '发送验证码';
+    let disabled = false;
+    if (willCountdown) {
+      title = `${count}秒后重新获取`;
+      disabled = true;
+      setTimeout(() => {
+        if (count == 1) {
+          setCount(59);
+          setWillCountdown(0);
+        } else {
+          setCount(count - 1);
+        }
+      }, 1000);
+    }
+
+    return (
+      <Button
+        title={title}
+        disabled={disabled}
+        disabledStyle={{backgroundColor: 'rgba(255, 255, 255, 0.2)'}}
+        disabledTitleStyle={{color: '#CCC'}}
+        buttonStyle={{marginRight: 3, backgroundColor: 'rgba(255, 255, 255, 0.25)'}}
+        titleStyle={{fontSize: 11}}
+        onPress={() => {
+          didClick &&
+            didClick(() => {
+              setWillCountdown(1);
+            });
+        }}
+      />
+    );
   }
 
   // 安全输入的眼睛图标

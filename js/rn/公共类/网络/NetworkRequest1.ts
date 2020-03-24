@@ -79,6 +79,11 @@ export default class NetworkRequest1 {
     return await CCSessionModel.req('c=user&a=reg', params, true);
   }
 
+  // 发送短信验证码
+  static secure_smsCaptcha(phone: string): Promise<void> {
+    return CCSessionModel.req('c=secure&a=smsCaptcha', {phone: phone}, true);
+  }
+
   // 检查用户是否已存在
   static user_exists(usr: string): Promise<void> {
     return CCSessionModel.req('c=user&a=exists', {usr: usr}, true);
