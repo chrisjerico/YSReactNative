@@ -377,6 +377,55 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   }
 
   /**
+   * 绘制广告
+   * @private
+   */
+  _rendFloatAd(): React.ReactNode {
+    let data: IReducerState<IHomeBean> = this.props.reducerData;
+    const floatAd = data?.data?.floatAd;
+    if (arrayEmpty(floatAd.data)) return null;
+
+    return (
+      <View style={_styles.floatAdContainer}>
+        <View>
+          <View style={_styles.floatAdItemContainer}>
+            <Image style={_styles.floatAdImage} source={{uri: floatAd.data[0].image}}/>
+            <Icon name='x-circle'
+                  color={colorAccent} size={25}
+                  style={_styles.floatAdClose}/>
+          </View>
+          {
+            floatAd.data.length > 1 && <View style={_styles.floatAdItemContainer}>
+              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[1].image}}/>
+              <Icon name='x-circle'
+                    color={colorAccent} size={25}
+                    style={_styles.floatAdClose}/>
+            </View>
+          }
+        </View>
+        <View>
+          {
+            floatAd.data.length > 2 && <View style={_styles.floatAdItemContainer}>
+              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[2].image}}/>
+              <Icon name='x-circle'
+                    color={colorAccent} size={25}
+                    style={_styles.floatAdClose}/>
+            </View>
+          }
+          {
+            floatAd.data.length > 3 && <View style={_styles.floatAdItemContainer}>
+              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[3].image}}/>
+              <Icon name='x-circle'
+                    color={colorAccent} size={25}
+                    style={_styles.floatAdClose}/>
+            </View>
+          }
+        </View>
+      </View>
+    )
+  }
+
+  /**
    * 绘制内容
    */
   renderContent(): React.ReactNode {
@@ -418,10 +467,13 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           {
             this._renderNews()
           }
-          {
-            this._rendRedBag()
-          }
         </ScrollView>
+        {
+          this._rendRedBag()
+        }
+        {
+          this._rendFloatAd()
+        }
 
       </View>
     );
@@ -721,7 +773,7 @@ const _styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    top: 200,
+    top: 150,
     right: 16,
   },
   redImage: {
@@ -731,6 +783,32 @@ const _styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   redImageClose: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+
+  //悬浮广告
+  floatAdContainer: {
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    top: 230,
+    left: 16,
+    right: 16,
+  },
+  floatAdItemContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  floatAdImage: {
+    width: 120,
+    height: 120,
+    marginTop: 12,
+    resizeMode: 'contain',
+  },
+  floatAdClose: {
     position: 'absolute',
     top: 0,
     right: 0,

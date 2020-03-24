@@ -5,6 +5,7 @@ import IGameBean from "./IGameBean";
 import ICouponBean from "./ICouponBean";
 import IUserBean from "../user/IUserBean";
 import IRedBagBean from "./IRedBagBean";
+import IFloatAdBean from "./IFloatAdBean";
 
 export interface IHomeBeanMovies {
   id?: string, //id
@@ -22,6 +23,7 @@ export default interface IHomeBean {
   coupon: IBaseBean<ICouponBean>, //优惠
   userInfo: IBaseBean<IUserBean>, //个人信息
   redBag: IBaseBean<IRedBagBean>, //红包
+  floatAd: IBaseBean<Array<IFloatAdBean>>, //悬浮广告
 
   movie: {
     title?: string, //标题
