@@ -10,4 +10,7 @@ import IBasePageState from "../../base/IBasePageState";
 export default interface IHomeProps extends IBasePageState{
   scrollEnable?: boolean, // scrollView 是否可以滑动
   gameTabIndex?: number, // 选中的gameTab
+
+  hideRedBag?: boolean, //隐藏红包
+  hideFloatAd?: Array<boolean>, //隐藏的广告
 }

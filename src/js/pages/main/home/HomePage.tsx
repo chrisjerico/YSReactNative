@@ -24,12 +24,13 @@ import UGSwiper from "../../../widget/swp/UGSwiper";
 import UGTheme from "../../../theme/UGTheme";
 import AppDefine from "../../../../../js/rn/公共类/AppDefine";
 import {requestUserInfo} from "../../../redux/action/Demo2Action";
-import {anyNull, arrayEmpty} from "../../../utils/Ext";
+import {anyNull, arrayEmpty, checkTrue} from "../../../utils/Ext";
 import {FlatGrid} from "react-native-super-grid";
 import IHomePageState from "./IHomePageState";
 import {Res} from "../../../../res/Resources";
 import StringUtils from "../../../utils/StringUtils";
 import Icon from 'react-native-vector-icons/Feather';
+import IFloatAdBean from "../../../redux/inter/bean/home/IFloatAdBean";
 
 /**
  * Arc
@@ -46,7 +47,6 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   constructor(props) {
     super(props);
   }
-
 
   /**
    * 请求数据
@@ -133,7 +133,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _renderMyInfo(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const userInfo = data?.data?.userInfo;
-    if(anyNull(userInfo?.data)) return null;
+    if (anyNull(userInfo?.data)) return null;
 
     const iconTexArr = [
       {
@@ -364,17 +364,58 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   _rendRedBag(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const redBag = data?.data?.redBag;
-    if (anyNull(redBag.data)) return null;
+    if (checkTrue(this.state?.hideRedBag) || anyNull(redBag.data)) return null;
 
     return (
       <View style={_styles.redContainer}>
         <Image style={_styles.redImage} source={{uri: redBag.data.redBagLogo}}/>
         <Icon name='x-circle'
               color={colorAccent} size={25}
-              style={_styles.redImageClose}/>
+              style={_styles.redImageClose}
+              onPress={() => {
+                this.setState({
+                  hideRedBag: true,
+                })
+              }}/>
       </View>
     )
   }
+
+  /**
+   * 隐藏悬浮广告
+   * @param index
+   * @private
+   */
+  _hideFloatAd = (index: number) => {
+    const hideArr = anyNull(this.state?.hideFloatAd) ? [false, false, false, false] : [...this.state.hideFloatAd];
+    hideArr[index] = true;
+    this.setState({
+      hideFloatAd: hideArr
+    })
+  };
+
+  /**
+   * 显示某个广告
+   * @param index 广告位置
+   * @param arr 广告数据
+   * @private
+   */
+  _showFloatAd = (index: number, arr: Array<IFloatAdBean>) => {
+    return (
+      arr.length > index && <View style={[
+        _styles.floatAdItemContainer,
+        {opacity: !anyNull(this.state?.hideFloatAd) && this.state.hideFloatAd[index] ? 0 : 100}
+      ]}>
+        <Image style={_styles.floatAdImage} source={{uri: arr[index].image}}/>
+        <Icon name='x-circle'
+              color={colorAccent} size={25}
+              style={_styles.floatAdClose}
+              onPress={() => {
+                this._hideFloatAd(index);
+              }}/>
+      </View>
+    );
+  };
 
   /**
    * 绘制广告
@@ -388,37 +429,19 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     return (
       <View style={_styles.floatAdContainer}>
         <View>
-          <View style={_styles.floatAdItemContainer}>
-            <Image style={_styles.floatAdImage} source={{uri: floatAd.data[0].image}}/>
-            <Icon name='x-circle'
-                  color={colorAccent} size={25}
-                  style={_styles.floatAdClose}/>
-          </View>
           {
-            floatAd.data.length > 1 && <View style={_styles.floatAdItemContainer}>
-              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[1].image}}/>
-              <Icon name='x-circle'
-                    color={colorAccent} size={25}
-                    style={_styles.floatAdClose}/>
-            </View>
+            this._showFloatAd(0, floatAd.data)
+          }
+          {
+            this._showFloatAd(1, floatAd.data)
           }
         </View>
         <View>
           {
-            floatAd.data.length > 2 && <View style={_styles.floatAdItemContainer}>
-              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[2].image}}/>
-              <Icon name='x-circle'
-                    color={colorAccent} size={25}
-                    style={_styles.floatAdClose}/>
-            </View>
+            this._showFloatAd(2, floatAd.data)
           }
           {
-            floatAd.data.length > 3 && <View style={_styles.floatAdItemContainer}>
-              <Image style={_styles.floatAdImage} source={{uri: floatAd.data[3].image}}/>
-              <Icon name='x-circle'
-                    color={colorAccent} size={25}
-                    style={_styles.floatAdClose}/>
-            </View>
+            this._showFloatAd(3, floatAd.data)
           }
         </View>
       </View>
