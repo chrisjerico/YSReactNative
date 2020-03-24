@@ -1,37 +1,14 @@
 import * as React from "react";
-import {
-  BackHandler,
-  NativeModules,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text, TouchableNativeFeedback,
-  Image,
-  View
-} from "react-native";
+import {RefreshControl, ScrollView, StyleSheet, View} from "react-native";
 import BasePage from "../../base/BasePage";
 
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
-import IHomeProps from "./IHomeProps";
-import {Avatar, Button, Divider, ListItem, Overlay, Tile} from "react-native-elements";
-import {requestHomeData} from "../../../redux/action/HomeAction";
-import {Actions} from "react-native-router-flux";
+import {requestHomeData, requestHomeDataParams} from "../../../redux/action/HomeAction";
 import IReducerState from "../../../redux/inter/IReducerState";
 import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
-import Swiper from 'react-native-swiper'
-import UGSwiper from "../../../widget/swp/UGSwiper";
 import UGTheme from "../../../theme/UGTheme";
-import AppDefine from "../../../../../js/rn/公共类/AppDefine";
 import {requestUserInfo} from "../../../redux/action/Demo2Action";
-import {anyNull, arrayEmpty, checkTrue} from "../../../utils/Ext";
-import {FlatGrid} from "react-native-super-grid";
-import IHomePageState from "./IHomePageState";
-import {Res} from "../../../../res/Resources";
-import StringUtils from "../../../utils/StringUtils";
-import Icon from 'react-native-vector-icons/Feather';
-import IFloatAdBean from "../../../redux/inter/bean/home/IFloatAdBean";
-import {IBannerDataItem} from "../../../redux/inter/bean/home/IBannerAdvBean";
 import HomeMyInfoComponent from "./cp/HomeMyInfoComponent";
 import HomeGameComponent from "./cp/HomeGameComponent";
 import HomeBannerComponent from "./cp/HomeBannerComponent";
@@ -40,6 +17,7 @@ import HomeFloatAdvComponent from "./cp/HomeFloatAdvComponent";
 import HomeNewsComponent from "./cp/HomeNewsComponent";
 import HomeRedBagComponent from "./cp/HomeRedBagComponent";
 import HomeNoticeComponent from "./cp/HomeNoticeComponent";
+import IGlobalProps from "../../../redux/store/IGlobalProps";
 
 /**
  * Arc
@@ -67,7 +45,16 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
     });
   }
 
-
+  /**
+   * 设置是否允许滚动
+   * @param bl
+   * @private
+   */
+  _setScrollable = (bl: boolean) => {
+    this.setState({
+      scrollEnable: bl
+    })
+  };
 
   /**
    * 绘制内容
@@ -95,7 +82,8 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           <HomeBannerComponent reducerData={data}/>
           <HomeNoticeComponent reducerData={data}/>
           <HomeMyInfoComponent reducerData={data}/>
-          <HomeGameComponent reducerData={data}/>
+          <HomeGameComponent reducerData={data}
+                             setScrollable={this._setScrollable}/>
           <HomeCouponComponent reducerData={data}/>
           <HomeNewsComponent reducerData={data}/>
 
@@ -133,8 +121,31 @@ const _styles = StyleSheet.create({
   },
 
 
-
 });
+
+
+/**
+ * Arc
+ *
+ * redux的全局数据 以及 当前界面的操作Action
+ */
+export interface IHomeProps extends IGlobalProps{
+  requestHomeData?: (params: requestHomeDataParams) => ((dis)=>{});   //action方法 请求首页数据方法
+  requestUserInfo?: (s: string) => ((dis)=>{});   //action方法 请求用户信息
+
+}
+
+
+/**
+ * Arc
+ *
+ * redux的全局数据 以及 当前界面的操作Action
+ */
+export interface IHomePageState extends IBasePageState{
+  scrollEnable?: boolean, // scrollView 是否可以滑动
+  gameTabIndex?: number, // 选中的gameTab
+}
+
 
 /**
  * 当前所使用到的 Action方法

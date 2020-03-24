@@ -1,10 +1,6 @@
 import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
 import IDemo2Bean from "../inter/bean/IDemo2Bean";
-import {
-  Demo2ActionType_LOAD_ERROR,
-  Demo2ActionType_LOAD_SUCCESS,
-  Demo2ActionType_LOADING
-} from "../action/type/ActionTypes";
+import {Demo2ActionType} from "../action/type/ActionTypes";
 
 /**
  * 初始数据结构
@@ -16,7 +12,7 @@ const _initialState: IReducerState<IDemo2Bean> = {
 
 export default function demo2Reducer(state = _initialState, action) {
   switch(action.type){
-    case Demo2ActionType_LOADING:
+    case Demo2ActionType.LOADING:
       return {
         ...state,
         ...action,
@@ -25,7 +21,7 @@ export default function demo2Reducer(state = _initialState, action) {
         bLoading: true,
         status: ReducerStatus.LOADING,
       };
-    case Demo2ActionType_LOAD_SUCCESS:
+    case Demo2ActionType.LOAD_SUCCESS:
       return {
         ...state,
         ...action,
@@ -34,7 +30,7 @@ export default function demo2Reducer(state = _initialState, action) {
         bLoading: false,
         status: ReducerStatus.SUCCESS,
       };
-    case Demo2ActionType_LOAD_ERROR:
+    case Demo2ActionType.LOAD_ERROR:
       return {
         ...state,
         ...action,

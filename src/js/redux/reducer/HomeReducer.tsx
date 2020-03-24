@@ -1,10 +1,6 @@
 import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
-import {
-  HomeActionType_LOAD_ERROR,
-  HomeActionType_LOAD_SUCCESS,
-  HomeActionType_LOADING
-} from "../action/type/ActionTypes";
 import IHomeBean from "../inter/bean/home/IHomeBean";
+import {HomeActionType} from "../action/type/ActionTypes";
 
 /**
  * 初始数据结构
@@ -24,7 +20,7 @@ const _initialState: IReducerState<IHomeBean> = {
  */
 export default function homeReducer(state = _initialState, action) {
   switch(action.type){
-    case HomeActionType_LOADING:
+    case HomeActionType.LOADING:
       return {
         ...state,
         ...action,
@@ -33,7 +29,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: true,
         status: ReducerStatus.LOADING,
       };
-    case HomeActionType_LOAD_SUCCESS:
+    case HomeActionType.LOAD_SUCCESS:
       return {
         ...state,
         ...action,
@@ -42,7 +38,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: false,
         status: ReducerStatus.SUCCESS,
       };
-    case HomeActionType_LOAD_ERROR:
+    case HomeActionType.LOAD_ERROR:
       return {
         ...state,
         ...action,

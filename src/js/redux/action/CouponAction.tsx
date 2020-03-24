@@ -1,6 +1,6 @@
-import {CouponActionType_LOAD_ERROR, CouponActionType_LOAD_SUCCESS, CouponActionType_LOADING} from "./type/ActionTypes";
 import {ugLog} from "../../utils/UgLog";
 import {requestCoupon} from "../../net/HttpUtils";
+import {CouponActionType} from "./type/ActionTypes";
 
 // /**
 //  * 处理优惠券数据
@@ -20,7 +20,7 @@ export function requestCouponData() {
   ugLog(`requestCouponData`);
   return dispatch => {
     dispatch({
-      type: CouponActionType_LOADING,
+      type: CouponActionType.LOADING,
       msg: '请稍等...',
       // data: {
       //   name
@@ -30,7 +30,7 @@ export function requestCouponData() {
     requestCoupon()
       .then((value => {
         dispatch({
-          type: CouponActionType_LOAD_SUCCESS,
+          type: CouponActionType.LOAD_SUCCESS,
           msg: '',
           data: {
             ...value
@@ -39,7 +39,7 @@ export function requestCouponData() {
       }))
       .catch((error) => {
         dispatch({
-          type: CouponActionType_LOAD_ERROR,
+          type: CouponActionType.LOAD_ERROR,
           msg: '请求失败',
           // data: {
           //

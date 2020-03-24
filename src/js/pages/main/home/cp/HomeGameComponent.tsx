@@ -1,15 +1,13 @@
 import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
 import * as React from "react";
+import {Component} from "react";
 import IReducerState from "../../../../redux/inter/IReducerState";
 import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
-import {anyNull, arrayEmpty} from "../../../../utils/Ext";
-import {Divider} from "react-native-elements";
-import {Component} from "react";
-import {Res} from "../../../../../res/Resources";
+import {arrayEmpty} from "../../../../utils/Ext";
 import UGTheme from "../../../../theme/UGTheme";
-import IHomeProps from "../IHomeProps";
-import IHomePageState from "../IHomePageState";
 import {FlatGrid} from "react-native-super-grid";
+import IGlobalProps from "../../../../redux/store/IGlobalProps";
+import IBasePageState from "../../../base/IBasePageState";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
@@ -17,7 +15,7 @@ const {
 /**
  * 主页游戏列表
  */
-export default class HomeGameComponent extends Component<IHomeProps, IHomePageState> {
+export default class HomeGameComponent extends Component<IHomeGameProps, IHomeGameState> {
 
   /**
    * 切换tab
@@ -93,14 +91,10 @@ export default class HomeGameComponent extends Component<IHomeProps, IHomePageSt
         <FlatGrid
           showsVerticalScrollIndicator={false}
           onTouchStart={() => {
-            this.setState({
-              scrollEnable: false
-            })
+            this.props.setScrollable(false);
           }}
           onTouchCancel={() => {
-            this.setState({
-              scrollEnable: true
-            })
+            this.props.setScrollable(true);
           }}
           spacing={tabSpacing}
           style={_styles.flatGrid}
@@ -163,3 +157,23 @@ const _styles = StyleSheet.create({
   },
 
 });
+
+/**
+ * Arc
+ *
+ * redux的全局数据 以及 当前界面的操作Action
+ */
+export interface IHomeGameProps extends IGlobalProps{
+  setScrollable?: (bl: boolean) => void;   //设置是否滚动
+
+}
+
+
+/**
+ * Arc
+ *
+ * redux的全局数据 以及 当前界面的操作Action
+ */
+export interface IHomeGameState extends IBasePageState{
+  gameTabIndex?: number, // 选中的gameTab
+}

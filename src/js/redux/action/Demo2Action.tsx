@@ -1,8 +1,4 @@
-import {
-  Demo2ActionType_LOAD_ERROR,
-  Demo2ActionType_LOAD_SUCCESS,
-  Demo2ActionType_LOADING
-} from "./type/ActionTypes";
+import {Demo2ActionType} from "./type/ActionTypes";
 
 export function requestUserInfo(name: string) {
   // return {
@@ -14,7 +10,7 @@ export function requestUserInfo(name: string) {
   // }
   return dispatch => {
     dispatch({
-      type: Demo2ActionType_LOADING,
+      type: Demo2ActionType.LOADING,
       msg: '请稍等...',
       // data: {
       //   name
@@ -24,7 +20,7 @@ export function requestUserInfo(name: string) {
     _getMoviesFromApi()
       .then((value => {
         dispatch({
-          type: Demo2ActionType_LOAD_SUCCESS,
+          type: Demo2ActionType.LOAD_SUCCESS,
           msg: '',
           data: {
             ...value
@@ -33,7 +29,7 @@ export function requestUserInfo(name: string) {
       }))
       .catch((error) => {
         dispatch({
-          type: Demo2ActionType_LOAD_ERROR,
+          type: Demo2ActionType.LOAD_ERROR,
           msg: 'demo2 error',
           // data: {
           //

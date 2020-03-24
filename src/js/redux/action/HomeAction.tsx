@@ -1,6 +1,6 @@
-import {HomeActionType_LOAD_ERROR, HomeActionType_LOAD_SUCCESS, HomeActionType_LOADING} from "./type/ActionTypes";
 import {ugLog} from "../../utils/UgLog";
 import {requestHome} from "../../net/HttpUtils";
+import {HomeActionType} from "./type/ActionTypes";
 
 /**
  * 处理主页数据
@@ -20,7 +20,7 @@ export function requestHomeData(params: requestHomeDataParams) {
   ugLog(`requestHomeData params=${JSON.stringify(params)}`);
   return dispatch => {
     dispatch({
-      type: HomeActionType_LOADING,
+      type: HomeActionType.LOADING,
       msg: '请稍等...',
       // data: {
       //   name
@@ -30,7 +30,7 @@ export function requestHomeData(params: requestHomeDataParams) {
     requestHome()
       .then((value => {
         dispatch({
-          type: HomeActionType_LOAD_SUCCESS,
+          type: HomeActionType.LOAD_SUCCESS,
           msg: '',
           data: {
             ...value
@@ -39,7 +39,7 @@ export function requestHomeData(params: requestHomeDataParams) {
       }))
       .catch((error) => {
         dispatch({
-          type: HomeActionType_LOAD_ERROR,
+          type: HomeActionType.LOAD_ERROR,
           msg: '请求失败',
           // data: {
           //

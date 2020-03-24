@@ -1,15 +1,13 @@
-import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
+import {Image, StyleSheet, View} from "react-native";
 import * as React from "react";
+import {Component} from "react";
 import IReducerState from "../../../../redux/inter/IReducerState";
 import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
 import {anyNull, checkTrue} from "../../../../utils/Ext";
-import {Avatar, Divider} from "react-native-elements";
-import {Component} from "react";
-import {Res} from "../../../../../res/Resources";
 import UGTheme from "../../../../theme/UGTheme";
-import IHomeProps from "../IHomeProps";
-import IHomePageState from "../IHomePageState";
 import Icon from "react-native-vector-icons/Feather";
+import IBasePageProps from "../../../base/IBasePageProps";
+import IBasePageState from "../../../base/IBasePageState";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
@@ -17,8 +15,7 @@ const {
 /**
  * 主页红包
  */
-export default class HomeRedBagComponent extends Component<IHomeProps, IHomePageState> {
-
+export default class HomeRedBagComponent extends Component<IBasePageProps, IFloatRedBagState> {
 
 
   /**
@@ -74,3 +71,13 @@ const _styles = StyleSheet.create({
   },
 
 });
+
+
+/**
+ * Arc
+ *
+ * redux的全局数据 以及 当前界面的操作Action
+ */
+export interface IFloatRedBagState extends IBasePageState{
+  hideRedBag?: boolean, //隐藏红包
+}
