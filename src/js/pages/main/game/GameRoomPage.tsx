@@ -7,8 +7,7 @@ import IBasePageState from "../../base/IBasePageState";
 import IGameRoomProps from "./IGameRoomProps";
 import {Actions} from "react-native-router-flux";
 import {Button} from "react-native-elements";
-import {requestHomeData} from "../../../redux/action/HomeAction";
-import {requestGameData} from "../../../redux/action/GameRoomAction";
+import {requestGameData} from "../../../redux/reducer/GameRoomReducer";
 
 /**
  * Arc

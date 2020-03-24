@@ -5,9 +5,7 @@ import BasePage from "../../base/BasePage";
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
 import {Actions} from "react-native-router-flux";
-import {requestGameData} from "../../../redux/action/GameRoomAction";
 import ICouponProps from "./ICouponProps";
-import {requestCouponData} from "../../../redux/action/CouponAction";
 import {arrayEmpty} from "../../../utils/Ext";
 import IReducerState from "../../../redux/inter/IReducerState";
 import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
@@ -16,6 +14,7 @@ import UGTheme from "../../../theme/UGTheme";
 import ICouponBean, {ICouponListItem} from "../../../redux/inter/bean/home/ICouponBean";
 import IBaseBean from "../../../redux/inter/bean/base/IBaseBean";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {requestCouponData} from "../../../redux/reducer/CouponReducer";
 
 /**
  * Arc

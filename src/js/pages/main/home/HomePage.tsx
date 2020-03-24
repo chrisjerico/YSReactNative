@@ -4,11 +4,9 @@ import BasePage from "../../base/BasePage";
 
 import {connect} from 'react-redux'
 import IBasePageState from "../../base/IBasePageState";
-import {requestHomeData, requestHomeDataParams} from "../../../redux/action/HomeAction";
 import IReducerState from "../../../redux/inter/IReducerState";
 import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
 import UGTheme from "../../../theme/UGTheme";
-import {requestUserInfo} from "../../../redux/action/Demo2Action";
 import HomeMyInfoComponent from "./cp/HomeMyInfoComponent";
 import HomeGameComponent from "./cp/HomeGameComponent";
 import HomeBannerComponent from "./cp/HomeBannerComponent";
@@ -18,6 +16,7 @@ import HomeNewsComponent from "./cp/HomeNewsComponent";
 import HomeRedBagComponent from "./cp/HomeRedBagComponent";
 import HomeNoticeComponent from "./cp/HomeNoticeComponent";
 import IGlobalProps from "../../../redux/store/IGlobalProps";
+import {requestHomeData, requestHomeDataParams} from "../../../redux/reducer/HomeReducer";
 
 /**
  * Arc
@@ -152,7 +151,6 @@ export interface IHomePageState extends IBasePageState{
  */
 const _mapDispatchToProps = ({
   requestHomeData: requestHomeData,
-  requestUserInfo: requestUserInfo
 });
 
 /**

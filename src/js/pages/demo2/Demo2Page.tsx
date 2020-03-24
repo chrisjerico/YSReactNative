@@ -4,7 +4,6 @@ import BasePage from "../base/BasePage";
 
 import {connect} from 'react-redux'
 import IBasePageState from "../base/IBasePageState";
-import {requestUserInfo} from "../../redux/action/Demo2Action";
 import IDemo2Props from "./IDemo2Props";
 import {Button} from "react-native-elements";
 import {IUGTopTabBarData} from "../../widget/bar/topbar/IUGTopTabBarProps";
@@ -16,6 +15,7 @@ import UGTopTabBar from "../../widget/bar/topbar/UGTopTabBar";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {ugLog} from "../../utils/UgLog";
 import {NativeCommand} from "../../site/NativeCommand";
+import {requestUserInfo} from "../../redux/reducer/Demo2Reducer";
 
 class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
 

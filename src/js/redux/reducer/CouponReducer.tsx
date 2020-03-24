@@ -1,6 +1,8 @@
 import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
 import ICouponBean from "../inter/bean/home/ICouponBean";
 import {CouponActionType} from "../action/type/ActionTypes";
+import {ugLog} from "../../utils/UgLog";
+import {requestCoupon} from "../../net/HttpUtils";
 
 /**
  * 初始数据结构
@@ -50,3 +52,44 @@ export default function couponReducer(state = _initialState, action) {
       return state;
   }
 }
+
+
+/**
+ * 触发 游戏大厅请求数据
+ *
+ * @param params
+ */
+export function requestCouponData() {
+  ugLog(`requestCouponData`);
+  return dispatch => {
+    dispatch({
+      type: CouponActionType.LOADING,
+      msg: '请稍等...',
+      // data: {
+      //   name
+      // }
+    });
+
+    requestCoupon()
+      .then((value => {
+        dispatch({
+          type: CouponActionType.LOAD_SUCCESS,
+          msg: '',
+          data: {
+            ...value
+          }
+        })
+      }))
+      .catch((error) => {
+        dispatch({
+          type: CouponActionType.LOAD_ERROR,
+          msg: '请求失败',
+          // data: {
+          //
+          // },
+          error: error
+        })
+      });
+  }
+}
+
