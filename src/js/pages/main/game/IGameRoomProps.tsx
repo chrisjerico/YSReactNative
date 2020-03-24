@@ -1,5 +1,5 @@
 import IGlobalProps from "../../../redux/store/IGlobalProps";
-import {RequestGameDataParams} from "../../../redux/action/GameRoomAction";
+import {RequestGameDataParams} from "../../../redux/reducer/GameRoomReducer";
 
 /**
  * Arc

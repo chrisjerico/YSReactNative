@@ -4,7 +4,6 @@ import BasePage from "../base/BasePage";
 
 import {connect} from 'react-redux'
 import IBasePageState from "../base/IBasePageState";
-import {requestUserInfo} from "../../redux/action/Demo2Action";
 import IDemo2Props from "./IDemo2Props";
 import {Button} from "react-native-elements";
 import {IUGTopTabBarData} from "../../widget/bar/topbar/IUGTopTabBarProps";
@@ -16,6 +15,7 @@ import UGTopTabBar from "../../widget/bar/topbar/UGTopTabBar";
 import AppDefine from "../../../../js/rn/公共类/AppDefine";
 import {ugLog} from "../../utils/UgLog";
 import {NativeCommand} from "../../site/NativeCommand";
+import {requestDemo2} from "../../redux/reducer/Demo2Reducer";
 
 class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
 
@@ -26,8 +26,8 @@ class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
 
   requestData() {
     // setTimeout(()=>{
-    //   let {requestUserInfo} = this.props;
-    //   requestUserInfo('第一次请求')
+    //   let {requestDemo2} = this.props;
+    //   requestDemo2('第一次请求')
     // }, 2000)
   }
 
@@ -68,13 +68,13 @@ class Demo2Page extends BasePage<IDemo2Props, IBasePageState> {
    * @private
    */
   _renderRequest(): React.ReactNode {
-    let {requestUserInfo, reducerData} = this.props;
+    let {requestDemo2, reducerData} = this.props;
 
     return (
       <View style={_styles.container}>
         <Text>第2页</Text>
         <Button title='按钮 请求数据' onPress={() => {
-          requestUserInfo('xiao wang')
+          requestDemo2('xiao wang')
         }}/>
         <Button buttonStyle={_styles.button} title='切到原生的优惠券' onPress={() => {
           AppDefine.ocHelper.executeCmd(JSON.stringify({
@@ -121,7 +121,7 @@ const _styles = StyleSheet.create({
  * 当前所使用到的 Action方法
  */
 const _mapDispatchToProps = ({
-  requestUserInfo: requestUserInfo
+  requestDemo2: requestDemo2
 });
 
 /**

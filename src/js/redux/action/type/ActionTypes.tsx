@@ -5,22 +5,29 @@
  */
 
 //Demo2Action
-export const Demo2ActionType_LOADING =        "Demo2ActionType_LOADING";   //加载中
-export const Demo2ActionType_LOAD_SUCCESS =   "Demo2ActionType_LOAD_SUCCESS";  //加载成功
-export const Demo2ActionType_LOAD_ERROR =     "Demo2ActionType_LOAD_ERROR";  //加载失败
+export const Demo2ActionType = {
+  LOADING: "Demo2ActionType.LOADING",//加载中
+  LOAD_SUCCESS: "Demo2ActionType.LOAD_SUCCESS",//加载成功
+  LOAD_ERROR: "Demo2ActionType.LOAD_ERROR",//加载失败
+};
 
 //HomeAction
-export const HomeActionType_LOADING =       "HomeActionType_LOADING";   //加载中
-export const HomeActionType_LOAD_SUCCESS =  "HomeActionType_LOAD_SUCCESS";  //加载成功
-export const HomeActionType_LOAD_ERROR =    "HomeActionType_LOAD_ERROR";  //加载失败
-
+export const HomeActionType = {
+  LOADING: "HomeActionType.LOADING",//加载中
+  LOAD_SUCCESS: "HomeActionType.LOAD_SUCCESS",//加载成功
+  LOAD_ERROR: "HomeActionType.LOAD_ERROR",//加载失败
+};
 
 //GameRoomAction
-export const GameRoomActionType_LOADING =       "GameRoomActionType_LOADING";   //加载中
-export const GameRoomActionType_LOAD_SUCCESS =  "GameRoomActionType_LOAD_SUCCESS";  //加载成功
-export const GameRoomActionType_LOAD_ERROR =    "GameRoomActionType_LOAD_ERROR";  //加载失败
+export const GameRoomActionType = {
+  LOADING: "GameRoomActionType.LOADING",//加载中
+  LOAD_SUCCESS: "GameRoomActionType.LOAD_SUCCESS",//加载成功
+  LOAD_ERROR: "GameRoomActionType.LOAD_ERROR",//加载失败
+};
 
 //CouponAction
-export const CouponActionType_LOADING =       "CouponActionType_LOADING";   //加载中
-export const CouponActionType_LOAD_SUCCESS =  "CouponActionType_LOAD_SUCCESS";  //加载成功
-export const CouponActionType_LOAD_ERROR =    "CouponActionType_LOAD_ERROR";  //加载失败
+export const CouponActionType = {
+  LOADING: "CouponActionType.LOADING",//加载中
+  LOAD_SUCCESS: "CouponActionType.LOAD_SUCCESS",//加载成功
+  LOAD_ERROR: "CouponActionType.LOAD_ERROR",//加载失败
+};

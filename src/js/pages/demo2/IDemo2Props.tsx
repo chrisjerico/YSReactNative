@@ -7,5 +7,5 @@ import IGlobalProps from "../../redux/store/IGlobalProps";
  * redux的全局数据 以及 当前界面的操作Action
  */
 export default interface IDemo2Props extends IGlobalProps {
-  requestUserInfo?: (s: string) => ((dis)=>{});   //action方法
+  requestDemo2?: (s: string) => ((dis)=>{});   //action方法
 }

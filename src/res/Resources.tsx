@@ -13,7 +13,7 @@ export const Res = {
   qpyo: {uri: 'https://i.ibb.co/W6YP6ML/qipaiyouxi.png'},
   ck: {uri: 'https://i.ibb.co/wcMCXYX/cunkuan.png'},
   qk: {uri: 'https://i.ibb.co/k49WNfY/qukuan.png'},
-  dzjj: {uri: 'https://i.ibb.co/9h0F1Dx/dianzijingji.pngf'},
+  dzjj: {uri: 'https://i.ibb.co/9h0F1Dx/dianzijingji.png'},
   edzh: {uri: 'https://i.ibb.co/KqrqbFb/eduzhuanhuan.png'},
   cptz: {uri: 'https://i.ibb.co/YkMfqgf/caipiaotouzhu.png'},
   bydw: {uri: 'https://i.ibb.co/H42HyFd/buyudianwan.png'},

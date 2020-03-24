@@ -1,17 +1,14 @@
-import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
+import {Image, StyleSheet, TouchableNativeFeedback, View} from "react-native";
 import * as React from "react";
+import {Component} from "react";
 import IReducerState from "../../../../redux/inter/IReducerState";
 import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
-import {anyNull, arrayEmpty} from "../../../../utils/Ext";
-import {Divider} from "react-native-elements";
-import {Component} from "react";
-import {Res} from "../../../../../res/Resources";
+import {anyNull} from "../../../../utils/Ext";
 import UGTheme from "../../../../theme/UGTheme";
-import IHomeProps from "../IHomeProps";
-import IHomePageState from "../IHomePageState";
-import {FlatGrid} from "react-native-super-grid";
 import {IBannerDataItem} from "../../../../redux/inter/bean/home/IBannerAdvBean";
 import UGSwiper from "../../../../widget/swp/UGSwiper";
+import IBasePageProps from "../../../base/IBasePageProps";
+import IBasePageState from "../../../base/IBasePageState";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
@@ -19,7 +16,7 @@ const {
 /**
  * 主页banner
  */
-export default class HomeBannerComponent extends Component<IHomeProps, IHomePageState> {
+export default class HomeBannerComponent extends Component<IBasePageProps, IBasePageState> {
 
   /**
    * 广告跳转

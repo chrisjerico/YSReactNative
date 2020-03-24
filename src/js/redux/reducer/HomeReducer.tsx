@@ -1,10 +1,8 @@
 import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
-import {
-  HomeActionType_LOAD_ERROR,
-  HomeActionType_LOAD_SUCCESS,
-  HomeActionType_LOADING
-} from "../action/type/ActionTypes";
 import IHomeBean from "../inter/bean/home/IHomeBean";
+import {HomeActionType} from "../action/type/ActionTypes";
+import {ugLog} from "../../utils/UgLog";
+import {requestHome} from "../../net/HttpUtils";
 
 /**
  * 初始数据结构
@@ -24,7 +22,7 @@ const _initialState: IReducerState<IHomeBean> = {
  */
 export default function homeReducer(state = _initialState, action) {
   switch(action.type){
-    case HomeActionType_LOADING:
+    case HomeActionType.LOADING:
       return {
         ...state,
         ...action,
@@ -33,7 +31,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: true,
         status: ReducerStatus.LOADING,
       };
-    case HomeActionType_LOAD_SUCCESS:
+    case HomeActionType.LOAD_SUCCESS:
       return {
         ...state,
         ...action,
@@ -42,7 +40,7 @@ export default function homeReducer(state = _initialState, action) {
         bLoading: false,
         status: ReducerStatus.SUCCESS,
       };
-    case HomeActionType_LOAD_ERROR:
+    case HomeActionType.LOAD_ERROR:
       return {
         ...state,
         ...action,
@@ -53,5 +51,54 @@ export default function homeReducer(state = _initialState, action) {
       };
     default:
       return state;
+  }
+}
+
+
+/**
+ * 处理主页数据
+ *
+ * @param params
+ */
+export interface requestHomeDataParams {
+  type: string; //模拟参数
+}
+
+/**
+ * 触发 home请求数据
+ *
+ * @param params
+ */
+export function requestHomeData(params: requestHomeDataParams) {
+  ugLog(`requestHomeData params=${JSON.stringify(params)}`);
+  return dispatch => {
+    dispatch({
+      type: HomeActionType.LOADING,
+      msg: '请稍等...',
+      // data: {
+      //   name
+      // }
+    });
+
+    requestHome()
+      .then((value => {
+        dispatch({
+          type: HomeActionType.LOAD_SUCCESS,
+          msg: '',
+          data: {
+            ...value
+          }
+        })
+      }))
+      .catch((error) => {
+        dispatch({
+          type: HomeActionType.LOAD_ERROR,
+          msg: '请求失败',
+          // data: {
+          //
+          // },
+          error: error
+        })
+      });
   }
 }
