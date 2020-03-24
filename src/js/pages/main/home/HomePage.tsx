@@ -31,6 +31,7 @@ import {Res} from "../../../../res/Resources";
 import StringUtils from "../../../utils/StringUtils";
 import Icon from 'react-native-vector-icons/Feather';
 import IFloatAdBean from "../../../redux/inter/bean/home/IFloatAdBean";
+import {IBannerDataItem} from "../../../redux/inter/bean/home/IBannerAdvBean";
 
 /**
  * Arc
@@ -47,23 +48,31 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   /**
    * 个人菜单
    */
-  iconTexArr = [
+  myInfoMenuArr = [
     {
       url: Res.ck,
       text: '存款',
-      onPress: () => {},
+      onPress: () => {
+        //TODO
+      },
     }, {
       url: Res.edzh,
       text: '额度转换',
-      onPress: () => {},
+      onPress: () => {
+        //TODO
+      },
     }, {
       url: Res.qk,
       text: '取款',
-      onPress: () => {},
+      onPress: () => {
+        //TODO
+      },
     }, {
       url: Res.zjmx,
       text: '资金明细',
-      onPress: () => {},
+      onPress: () => {
+        //TODO
+      },
     }];
 
   constructor(props) {
@@ -81,9 +90,18 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
   }
 
   /**
+   * 广告跳转
+   * @param adv
+   * @private
+   */
+  _gotoBanner = (adv: IBannerDataItem) => {
+    //TODO
+  };
+
+  /**
    * 绘制滑屏
    */
-  _renderSwiper(): React.ReactNode {
+  _renderBanner(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const pics = data?.data?.banner?.data?.list;
     if (anyNull(pics)) return null;
@@ -132,20 +150,30 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
    * @param text
    * @private
    */
-  _renderMyInfoIcon = ({url: url, text: text}) => {
+  _renderMyInfoIcon = (item) => {
     return (
-      <View key={text}
-            style={_styles.myInfoBottomWalletIconContainer}>
-        <Image resizeMode='stretch' style={[
-          _styles.myInfoBottomWalletIcon,
-          {tintColor: primary}
-        ]} source={url}/>
-        <Text style={[
-          _styles.myInfoBottomWalletIconText,
-          {color: primary}
-        ]}>{text}</Text>
-      </View>
+      <TouchableNativeFeedback onPress={item.onPress}>
+        <View key={item.text}
+              style={_styles.myInfoBottomWalletIconContainer}>
+          <Image resizeMode='stretch' style={[
+            _styles.myInfoBottomWalletIcon,
+            {tintColor: primary}
+          ]} source={item.url}/>
+          <Text style={[
+            _styles.myInfoBottomWalletIconText,
+            {color: primary}
+          ]}>{item.text}</Text>
+        </View>
+      </TouchableNativeFeedback>
     )
+  };
+
+  /**
+   * 跳转个人中心
+   * @private
+   */
+  _gotoMyInfo = () => {
+    //TODO
   };
 
   /**
@@ -164,9 +192,11 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           {backgroundColor: primaryBright}
         ]}>
           <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.data.usr}`}</Text>
-          <View style={_styles.myInfoTopButton}>
-            <Text style={_styles.myInfoTopText}>个人资料</Text>
-          </View>
+          <TouchableNativeFeedback onPress={this._gotoMyInfo}>
+            <View style={_styles.myInfoTopButton}>
+              <Text style={_styles.myInfoTopText}>个人资料</Text>
+            </View>
+          </TouchableNativeFeedback>
         </View>
         <View style={[
           _styles.myInfoBottomContainer,
@@ -187,7 +217,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
           </View>
           <Divider style={_styles.myInfoBottomWalletDivider}/>
           {
-            this.iconTexArr.map(this._renderMyInfoIcon)
+            this.myInfoMenuArr.map(this._renderMyInfoIcon)
           }
         </View>
       </View>
@@ -480,7 +510,7 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
             />
           }>
           {
-            this._renderSwiper()
+            this._renderBanner()
           }
           {
             this._renderNotice()
@@ -531,8 +561,6 @@ class HomePage extends BasePage<IHomeProps, IHomePageState> {
 const _styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
 
   //滑屏
