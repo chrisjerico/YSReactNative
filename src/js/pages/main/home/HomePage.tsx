@@ -32,14 +32,14 @@ import StringUtils from "../../../utils/StringUtils";
 import Icon from 'react-native-vector-icons/Feather';
 import IFloatAdBean from "../../../redux/inter/bean/home/IFloatAdBean";
 import {IBannerDataItem} from "../../../redux/inter/bean/home/IBannerAdvBean";
-import HomeMyInfoComponent from "./HomeMyInfoComponent";
-import HomeGameComponent from "./HomeGameComponent";
-import HomeBannerComponent from "./HomeBannerComponent";
-import HomeCouponComponent from "./HomeCouponComponent";
-import HomeFloatAdvComponent from "./HomeFloatAdvComponent";
-import HomeNewsComponent from "./HomeNewsComponent";
-import HomeRedBagComponent from "./HomeRedBagComponent";
-import HomeNoticeComponent from "./HomeNoticeComponent";
+import HomeMyInfoComponent from "./cp/HomeMyInfoComponent";
+import HomeGameComponent from "./cp/HomeGameComponent";
+import HomeBannerComponent from "./cp/HomeBannerComponent";
+import HomeCouponComponent from "./cp/HomeCouponComponent";
+import HomeFloatAdvComponent from "./cp/HomeFloatAdvComponent";
+import HomeNewsComponent from "./cp/HomeNewsComponent";
+import HomeRedBagComponent from "./cp/HomeRedBagComponent";
+import HomeNoticeComponent from "./cp/HomeNoticeComponent";
 
 /**
  * Arc

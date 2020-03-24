@@ -1,25 +1,25 @@
 import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
 import * as React from "react";
-import IReducerState from "../../../redux/inter/IReducerState";
-import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
-import {anyNull, arrayEmpty} from "../../../utils/Ext";
+import IReducerState from "../../../../redux/inter/IReducerState";
+import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
+import {anyNull, arrayEmpty} from "../../../../utils/Ext";
 import {Divider} from "react-native-elements";
 import {Component} from "react";
-import {Res} from "../../../../res/Resources";
-import UGTheme from "../../../theme/UGTheme";
-import IHomeProps from "./IHomeProps";
-import IHomePageState from "./IHomePageState";
+import {Res} from "../../../../../res/Resources";
+import UGTheme from "../../../../theme/UGTheme";
+import IHomeProps from "../IHomeProps";
+import IHomePageState from "../IHomePageState";
 import {FlatGrid} from "react-native-super-grid";
-import {IBannerDataItem} from "../../../redux/inter/bean/home/IBannerAdvBean";
-import UGSwiper from "../../../widget/swp/UGSwiper";
-import IFloatAdBean from "../../../redux/inter/bean/home/IFloatAdBean";
+import {IBannerDataItem} from "../../../../redux/inter/bean/home/IBannerAdvBean";
+import UGSwiper from "../../../../widget/swp/UGSwiper";
+import IFloatAdBean from "../../../../redux/inter/bean/home/IFloatAdBean";
 import Icon from "react-native-vector-icons/Feather";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
 } = UGTheme.getInstance().currentTheme();
 /**
- * 主页banner
+ * 主页悬浮广告
  */
 export default class HomeFloatAdvComponent extends Component<IHomeProps, IHomePageState> {
 

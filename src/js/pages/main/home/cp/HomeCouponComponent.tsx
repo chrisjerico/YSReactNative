@@ -1,23 +1,23 @@
 import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
 import * as React from "react";
-import IReducerState from "../../../redux/inter/IReducerState";
-import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
-import {anyNull, arrayEmpty} from "../../../utils/Ext";
+import IReducerState from "../../../../redux/inter/IReducerState";
+import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
+import {anyNull, arrayEmpty} from "../../../../utils/Ext";
 import {Divider} from "react-native-elements";
 import {Component} from "react";
-import {Res} from "../../../../res/Resources";
-import UGTheme from "../../../theme/UGTheme";
-import IHomeProps from "./IHomeProps";
-import IHomePageState from "./IHomePageState";
+import {Res} from "../../../../../res/Resources";
+import UGTheme from "../../../../theme/UGTheme";
+import IHomeProps from "../IHomeProps";
+import IHomePageState from "../IHomePageState";
 import {FlatGrid} from "react-native-super-grid";
-import {IBannerDataItem} from "../../../redux/inter/bean/home/IBannerAdvBean";
-import UGSwiper from "../../../widget/swp/UGSwiper";
+import {IBannerDataItem} from "../../../../redux/inter/bean/home/IBannerAdvBean";
+import UGSwiper from "../../../../widget/swp/UGSwiper";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
 } = UGTheme.getInstance().currentTheme();
 /**
- * 主页banner
+ * 主页优惠活动
  */
 export default class HomeCouponComponent extends Component<IHomeProps, IHomePageState> {
 

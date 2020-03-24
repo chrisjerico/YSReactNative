@@ -1,20 +1,20 @@
 import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
 import * as React from "react";
-import IReducerState from "../../../redux/inter/IReducerState";
-import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
-import {anyNull} from "../../../utils/Ext";
+import IReducerState from "../../../../redux/inter/IReducerState";
+import IHomeBean from "../../../../redux/inter/bean/home/IHomeBean";
+import {anyNull} from "../../../../utils/Ext";
 import {Avatar, Divider} from "react-native-elements";
 import {Component} from "react";
-import {Res} from "../../../../res/Resources";
-import UGTheme from "../../../theme/UGTheme";
-import IHomeProps from "./IHomeProps";
-import IHomePageState from "./IHomePageState";
+import {Res} from "../../../../../res/Resources";
+import UGTheme from "../../../../theme/UGTheme";
+import IHomeProps from "../IHomeProps";
+import IHomePageState from "../IHomePageState";
 
 const {
   loadingBackground, colorText, homeMoney, colorAccent, colorSecondBackground, primary, primaryDark, primaryBright
 } = UGTheme.getInstance().currentTheme();
 /**
- * 主页个人信息
+ * 主页投注专栏
  */
 export default class HomeNewsComponent extends Component<IHomeProps, IHomePageState> {
 
