@@ -87,7 +87,7 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
   _renderMyInfo(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props?.reducerData;
     const userInfo = data?.data?.userInfo;
-    if (anyNull(userInfo?.data)) return null;
+    if (anyNull(userInfo)) return null;
 
     return (
       <View style={_styles.myInfoContainer} key='_renderMyInfo'>
@@ -95,7 +95,7 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
           _styles.myInfoTopContainer,
           {backgroundColor: primaryBright}
         ]}>
-          <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.data.usr}`}</Text>
+          <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.usr}`}</Text>
           <TouchableNativeFeedback onPress={this._gotoMyInfo}>
             <View style={_styles.myInfoTopButton}>
               <Text style={_styles.myInfoTopText}>个人资料</Text>
@@ -115,7 +115,7 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
               <Text style={[
                 _styles.myInfoBottomWalletMoney,
                 {color: homeMoney}
-              ]}>{userInfo.data.balance}</Text>
+              ]}>{userInfo.balance}</Text>
             </View>
             <Text style={_styles.myInfoBottomWalletMe}>我的钱包</Text>
           </View>

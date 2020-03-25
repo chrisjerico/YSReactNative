@@ -3,6 +3,7 @@ import ICouponBean from "../inter/bean/home/ICouponBean";
 import {CouponActionType} from "../action/type/ActionTypes";
 import {ugLog} from "../../utils/UgLog";
 import {requestCoupon} from "../../net/HttpUtils";
+import NetworkRequest1 from "../../../../js/rn/公共类/网络/NetworkRequest1";
 
 /**
  * 初始数据结构
@@ -70,7 +71,7 @@ export function requestCouponData() {
       // }
     });
 
-    requestCoupon()
+    NetworkRequest1.couponList()
       .then((value => {
         dispatch({
           type: CouponActionType.LOAD_SUCCESS,

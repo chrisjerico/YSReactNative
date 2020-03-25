@@ -12,7 +12,6 @@ import IHomeBean from "../../../redux/inter/bean/home/IHomeBean";
 import {Res} from "../../../../res/Resources";
 import UGTheme from "../../../theme/UGTheme";
 import ICouponBean, {ICouponListItem} from "../../../redux/inter/bean/home/ICouponBean";
-import IBaseBean from "../../../redux/inter/bean/base/IBaseBean";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {requestCouponData} from "../../../redux/reducer/CouponReducer";
 
@@ -58,8 +57,8 @@ class CouponPage extends BasePage<ICouponProps, IBasePageState> {
   };
 
   renderContent(): React.ReactNode {
-    let data: IReducerState<IBaseBean<ICouponBean>> = this.props.reducerData;
-    const coupon = data?.data?.data;
+    let data: IReducerState<ICouponBean> = this.props.reducerData;
+    const coupon = data?.data;
     if (arrayEmpty(coupon?.list)) return null;
 
     return (

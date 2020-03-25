@@ -25,11 +25,11 @@ export default class HomeRedBagComponent extends Component<IBasePageProps, IFloa
   _rendRedBag(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const redBag = data?.data?.redBag;
-    if (checkTrue(this.state?.hideRedBag) || anyNull(redBag.data)) return null;
+    if (checkTrue(this.state?.hideRedBag) || anyNull(redBag)) return null;
 
     return (
       <View style={_styles.redContainer}>
-        <Image style={_styles.redImage} source={{uri: redBag.data.redBagLogo}}/>
+        <Image style={_styles.redImage} source={{uri: redBag.redBagLogo}}/>
         <Icon name='x-circle'
               color={colorAccent} size={25}
               style={_styles.redImageClose}

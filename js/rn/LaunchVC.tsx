@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, View, Text} from 'react-native';
+import {AppRegistry, View, Text, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -90,8 +90,10 @@ class Root extends Component {
   }
 }
 
-// 注册组件到原生APP（ReactNativeVC）
-AppRegistry.registerComponent('Main', () => Root);
+if (Platform.OS == 'ios') {
+  // 注册组件到原生APP（ReactNativeVC）
+  AppRegistry.registerComponent('Main', () => Root);
+}
 
 // 初始化 AppDefine
 AppDefine.setup();
@@ -108,9 +110,12 @@ AppDefine.setup();
     // 配置替换rn的页面
     AppDefine.setRnPageInfo();
   }
-  AppDefine.ocCall('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-    setupSysConf(sysConf);
-  });
+
+  if (Platform.OS == 'ios') {
+    AppDefine.ocCall('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+      setupSysConf(sysConf);
+    });
+  }
   AppDefine.ocBlocks['UGSystemConfigModel.currentConfig'] = (sysConf: UGSysConfModel) => {
     setupSysConf(sysConf);
   };

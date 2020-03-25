@@ -32,7 +32,7 @@ export default class HomeBannerComponent extends Component<IBasePageProps, IBase
    */
   _renderBanner(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    const pics = data?.data?.banner?.data?.list;
+    const pics = data?.data?.banner?.list;
     if (anyNull(pics)) return null;
 
     return (
