@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as React from "react";
 import {Component} from "react";
 import IReducerState from "../../../../redux/inter/IReducerState";
@@ -56,7 +56,7 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
    */
   _renderMyInfoIcon = (item) => {
     return (
-      <TouchableNativeFeedback onPress={item.onPress}>
+      <TouchableOpacity onPress={item.onPress}>
         <View key={item.text}
               style={_styles.myInfoBottomWalletIconContainer}>
           <Image resizeMode='stretch' style={[
@@ -68,7 +68,7 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
             {color: primary}
           ]}>{item.text}</Text>
         </View>
-      </TouchableNativeFeedback>
+      </TouchableOpacity>
     )
   };
 
@@ -96,11 +96,11 @@ export default class HomeMyInfoComponent extends Component<IBasePageProps, IBase
           {backgroundColor: primaryBright}
         ]}>
           <Text style={_styles.myInfoTopText}>{`晚上好，${userInfo.usr}`}</Text>
-          <TouchableNativeFeedback onPress={this._gotoMyInfo}>
+          <TouchableOpacity onPress={this._gotoMyInfo}>
             <View style={_styles.myInfoTopButton}>
               <Text style={_styles.myInfoTopText}>个人资料</Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
         </View>
         <View style={[
           _styles.myInfoBottomContainer,

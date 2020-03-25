@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Animated, Platform, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, View} from 'react-native';
+import {Animated, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {TabBarProps} from 'react-native-tab-view';
-
 
 export default class UGDefaultTabBar extends Component {
   constructor(props: TabBarProps) {
@@ -21,20 +20,13 @@ export default class UGDefaultTabBar extends Component {
 
     const Button = Platform.OS == 'ios' ? ButtonIos : ButtonAndroid;
 
-    return (<Button
-      style={{flex: 1}}
-      key={name}
-      accessible={true}
-      accessibilityLabel={name}
-      accessibilityTraits='button'
-      onPress={() => onPressHandler(page)}
-    >
-      <View style={styles.tab}>
-        <Text style={[{color: textColor, fontWeight}]}>
-          {name}
-        </Text>
-      </View>
-    </Button>);
+    return (
+      <Button style={{flex: 1}} key={name} accessible={true} accessibilityLabel={name} accessibilityTraits="button" onPress={() => onPressHandler(page)}>
+        <View style={styles.tab}>
+          <Text style={[{color: textColor, fontWeight}]}>{name}</Text>
+        </View>
+      </Button>
+    );
   }
 
   _renderUnderline() {
@@ -58,13 +50,16 @@ export default class UGDefaultTabBar extends Component {
       outputRange: [0, containerWidth / numberOfTabs],
     });
 
-    const scaleValue = (defaultScale) => {
+    const scaleValue = defaultScale => {
       let arr = new Array(numberOfTabs * 2);
-      return arr.fill(0).reduce(function (pre, cur, idx) {
-        idx === 0 ? pre.inputRange.push(cur) : pre.inputRange.push(pre.inputRange[idx - 1] + 0.5);
-        idx % 2 ? pre.outputRange.push(defaultScale) : pre.outputRange.push(1);
-        return pre;
-      }, {inputRange: [], outputRange: []});
+      return arr.fill(0).reduce(
+        function(pre, cur, idx) {
+          idx === 0 ? pre.inputRange.push(cur) : pre.inputRange.push(pre.inputRange[idx - 1] + 0.5);
+          idx % 2 ? pre.outputRange.push(defaultScale) : pre.outputRange.push(1);
+          return pre;
+        },
+        {inputRange: [], outputRange: []},
+      );
     };
 
     const scaleX = this.props.scrollValue.interpolate(scaleValue(scale));
@@ -74,10 +69,7 @@ export default class UGDefaultTabBar extends Component {
         style={[
           tabUnderlineStyle,
           {
-            transform: [
-              {translateX},
-              {scaleX},
-            ],
+            transform: [{translateX}, {scaleX}],
           },
           this.props.underlineStyle,
         ]}
@@ -93,28 +85,19 @@ export default class UGDefaultTabBar extends Component {
           const isTabActive = this.props.activeTab === page;
           return renderTab(name, page, isTabActive, this.props.goToPage);
         })}
-        {
-          this._renderUnderline()
-        }
+        {this._renderUnderline()}
       </View>
     );
-  };
+  }
 }
 
-
-const ButtonAndroid = (props) => (
-  <TouchableNativeFeedback
-    delayPressIn={0}
-    background={TouchableNativeFeedback.SelectableBackground()}
-    {...props}
-  >
+const ButtonAndroid = props => (
+  <TouchableOpacity delayPressIn={0} background={TouchableOpacity.SelectableBackground()} {...props}>
     {props.children}
-  </TouchableNativeFeedback>);
+  </TouchableOpacity>
+);
 
-const ButtonIos = (props) => (<TouchableOpacity {...props}>
-  {props.children}
-</TouchableOpacity>);
-
+const ButtonIos = props => <TouchableOpacity {...props}>{props.children}</TouchableOpacity>;
 
 const styles = StyleSheet.create({
   tab: {

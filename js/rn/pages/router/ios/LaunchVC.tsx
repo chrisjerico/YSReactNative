@@ -57,7 +57,7 @@ class Root extends Component {
               <Scene key="XBJMineVC" component={XBJMineVC} title="我的" renderLeftButton={this.renderLeftButton} />
               <Scene key="LoadingVC" component={LoadingVC} renderLeftButton={this.renderLeftButton} />
               <Scene key="UGPromotionsController" component={UGPromotionsController} title="优惠活动" renderLeftButton={this.renderLeftButton} />
-              <Scene key="HomePage" component={HomePage} renderLeftButton={this.renderLeftButton} />
+              <Scene key="HomePage" component={HomePage} hideNavBar />
             </Stack>
           </Router>
         </ThemeProvider>

@@ -61,7 +61,7 @@ export default class NetworkRequest1 {
     contentId: string, // 帖子ID
     replyPId: string = '', // 回复ID
     page: number = 1, // 页码
-    rows: number = AppDefine.pageCount, // 每页条数
+    rows: number = 20, // 每页条数
   ): Promise<void> {
     return CCSessionModel.req('c=lhcdoc&a=contentReplyList', {contentId: contentId, replyPId: replyPId, page: page, rows: rows}, false);
   }

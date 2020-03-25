@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, TouchableNativeFeedback, View} from "react-native";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as React from "react";
 import {Component} from "react";
 import IReducerState from "../../../../redux/inter/IReducerState";
@@ -61,7 +61,7 @@ export default class HomeGameComponent extends Component<IHomeGameProps, IHomeGa
           {
             menuArr.map((item, index) => {
               return (
-                <TouchableNativeFeedback key={index}
+                <TouchableOpacity key={index}
                                          onPress={() => {
                                            this._changeTab(index)
                                          }}>
@@ -82,7 +82,7 @@ export default class HomeGameComponent extends Component<IHomeGameProps, IHomeGa
                       {color: gameTabIndex == index ? 'white' : colorAccent}
                     ]}>{item.text}</Text>
                   </View>
-                </TouchableNativeFeedback>
+                </TouchableOpacity>
               )
             })
           }
