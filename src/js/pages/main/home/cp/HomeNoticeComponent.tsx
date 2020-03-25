@@ -32,7 +32,7 @@ export default class HomeNoticeComponent extends Component<IBasePageProps, IBase
     return (
       <View style={_styles.noticeContainer} key='_renderNotice'>
         <Image resizeMode='stretch' style={_styles.noticeTextImage} source={Res.gd}/>
-        <Text style={_styles.noticeDesText}>{StringUtils.getInstance().deleteHtml(noticeArr[0].content)}</Text>
+        <Text numberOfLines={1} ellipsizeMode='tail' style={_styles.noticeDesText}>{StringUtils.getInstance().deleteHtml(noticeArr[0].content)}</Text>
       </View>
     )
   }

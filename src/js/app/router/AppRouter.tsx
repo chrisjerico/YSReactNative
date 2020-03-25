@@ -12,7 +12,7 @@ import IGlobalProps from "../../redux/store/IGlobalProps";
 import IBasePageState from "../../pages/base/IBasePageState";
 import {connect} from 'react-redux'
 import {ugLog} from "../../utils/UgLog";
-import AppDefine from "../../../../js/rn/公共类/AppDefine";
+import AppDefine from "../../../../js/rn/public/define/AppDefine";
 import {Toast} from "../../utils/ToastUtils";
 import CouponPage from "../../pages/main/coupon/CouponPage";
 
