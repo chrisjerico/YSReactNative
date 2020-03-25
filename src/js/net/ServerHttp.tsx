@@ -1,7 +1,7 @@
-import AppDefine from "../../../js/rn/公共类/AppDefine";
-import {NativeCommand} from "../site/NativeCommand";
-import {ugError, ugLog} from "../utils/UgLog";
-import {anyNull, textEmpty} from "../utils/Ext";
+import {NativeCommand} from '../site/NativeCommand';
+import {ugError, ugLog} from '../utils/UgLog';
+import {anyNull, textEmpty} from '../utils/Ext';
+import AppDefine from '../../../js/rn/public/define/AppDefine';
 
 /**
  * http 请求
@@ -11,27 +11,30 @@ import {anyNull, textEmpty} from "../utils/Ext";
  * @constructor
  */
 export default async function ServerHttp(params: object, url: string, post = true) {
-
   //得到host
-  const baseUrl = await AppDefine.ocHelper.executeCmd(JSON.stringify({
-    type: NativeCommand.APP_HOST,
-  }));
+  const baseUrl = await AppDefine.ocHelper.executeCmd(
+    JSON.stringify({
+      type: NativeCommand.APP_HOST,
+    }),
+  );
   let fullUrl = baseUrl + url;
 
   //拿到token和sign
-  const tokenSign = await AppDefine.ocHelper.executeCmd(JSON.stringify({
-    type: NativeCommand.ASK_FOR_TOKEN_AND_RSA.toString(),
-  }));
+  const tokenSign = await AppDefine.ocHelper.executeCmd(
+    JSON.stringify({
+      type: NativeCommand.ASK_FOR_TOKEN_AND_RSA.toString(),
+    }),
+  );
 
   const newParams = {
     ...params,
-    ...JSON.parse(tokenSign)
+    ...JSON.parse(tokenSign),
   };
 
   let responseJson: JSON;
   try {
     if (post) {
-      ugLog("post, fullUrl=" + fullUrl + ", params=" + JSON.stringify(newParams));
+      ugLog('post, fullUrl=' + fullUrl + ', params=' + JSON.stringify(newParams));
 
       let response = await fetch(fullUrl, {
         method: 'POST',
@@ -42,18 +45,16 @@ export default async function ServerHttp(params: object, url: string, post = tru
         body: JSON.stringify(newParams),
       });
       responseJson = await response.json();
-
     } else {
       for (let paramsKey in newParams) {
         if (!textEmpty(paramsKey) && !textEmpty(newParams[paramsKey])) {
-          fullUrl += `&${paramsKey}=${newParams[paramsKey]}`
+          fullUrl += `&${paramsKey}=${newParams[paramsKey]}`;
         }
       }
-      ugLog("get, fullUrl=" + fullUrl);
+      ugLog('get, fullUrl=' + fullUrl);
       let response = await fetch(fullUrl);
       responseJson = await response.json();
-      ugLog("get, responseJson=" + JSON.stringify(responseJson));
-
+      ugLog('get, responseJson=' + JSON.stringify(responseJson));
     }
   } catch (e) {
     ugError(e);

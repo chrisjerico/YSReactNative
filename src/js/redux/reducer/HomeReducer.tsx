@@ -1,9 +1,8 @@
-import IReducerState, {initialReducerState, ReducerStatus} from "../inter/IReducerState";
-import IHomeBean from "../inter/bean/home/IHomeBean";
-import {HomeActionType} from "../action/type/ActionTypes";
-import {ugLog} from "../../utils/UgLog";
-import {requestHome} from "../../net/HttpUtils";
-import NetworkRequest1 from "../../../../js/rn/公共类/网络/NetworkRequest1";
+import IReducerState, {initialReducerState, ReducerStatus} from '../inter/IReducerState';
+import IHomeBean from '../inter/bean/home/IHomeBean';
+import {HomeActionType} from '../action/type/ActionTypes';
+import {ugLog} from '../../utils/UgLog';
+import NetworkRequest1 from '../../../../js/rn/public/network/NetworkRequest1';
 
 /**
  * 初始数据结构
@@ -22,7 +21,7 @@ const _initialState: IReducerState<IHomeBean> = {
  * @param action  返回数据
  */
 export default function homeReducer(state = _initialState, action) {
-  switch(action.type){
+  switch (action.type) {
     case HomeActionType.LOADING:
       return {
         ...state,
@@ -55,7 +54,6 @@ export default function homeReducer(state = _initialState, action) {
   }
 }
 
-
 /**
  * 处理主页数据
  *
@@ -82,24 +80,24 @@ export function requestHomeData(params: requestHomeDataParams) {
     });
 
     NetworkRequest1.homeInfo()
-      .then((value => {
+      .then(value => {
         dispatch({
           type: HomeActionType.LOAD_SUCCESS,
           msg: '',
           data: {
-            ...value
-          }
-        })
-      }))
-      .catch((error) => {
+            ...value,
+          },
+        });
+      })
+      .catch(error => {
         dispatch({
           type: HomeActionType.LOAD_ERROR,
           msg: '请求失败',
           // data: {
           //
           // },
-          error: error
-        })
+          error: error,
+        });
       });
-  }
+  };
 }
