@@ -3,6 +3,7 @@ import IHomeBean from "../inter/bean/home/IHomeBean";
 import {HomeActionType} from "../action/type/ActionTypes";
 import {ugLog} from "../../utils/UgLog";
 import {requestHome} from "../../net/HttpUtils";
+import NetworkRequest1 from "../../../../js/rn/公共类/网络/NetworkRequest1";
 
 /**
  * 初始数据结构
@@ -80,7 +81,7 @@ export function requestHomeData(params: requestHomeDataParams) {
       // }
     });
 
-    requestHome()
+    NetworkRequest1.homeInfo()
       .then((value => {
         dispatch({
           type: HomeActionType.LOAD_SUCCESS,

@@ -5,6 +5,9 @@ import {ParserOptions} from '@babel/core';
 import {UGAgentApplyInfo} from '../../Model/全局/UGSysConfModel';
 import UGUserModel, {UGLoginModel} from '../../Model/全局/UGUserModel';
 import {SlideCodeModel} from '../../Model/常规/SlideCodeModel';
+import ServerHttp from "../../../../src/js/net/ServerHttp";
+import {ServerApi} from "../../../../src/js/net/ServerApi";
+import IHomeBean from "../../../../src/js/redux/inter/bean/home/IHomeBean";
 
 export default class NetworkRequest1 {
   // 获取下一期开奖数据
@@ -20,6 +23,47 @@ export default class NetworkRequest1 {
   // 获取帖子详情
   static lhdoc_contentDetail(id: string) {
     return CCSessionModel.req('c=lhcdoc&a=contentDetail', {id: id}, false);
+  }
+
+  // 获取优惠券
+  static async couponList() {
+    return await CCSessionModel.req('c=system&a=promotions');
+  }
+
+  // 获取主页数据
+  static async homeInfo() {
+    let response1 = await fetch(
+      'https://facebook.github.io/react-native/movies.json',
+    );
+
+    //广告
+    let banner = await CCSessionModel.req('c=system&a=banners');
+    //通知
+    let notice = await CCSessionModel.req('c=notice&a=latest');
+    //游戏
+    let game = await CCSessionModel.req('c=game&a=homeGames');
+    //优惠
+    let coupon = await NetworkRequest1.couponList();
+    //用户
+    let userInfo = await CCSessionModel.req('c=user&a=info');
+    //红包
+    let redBag = await CCSessionModel.req('c=activity&a=redBagDetail');
+    //悬浮广告
+    let floatAd = await CCSessionModel.req('c=system&a=floatAds');
+    //测试
+    let responseJson1 = await response1.json();
+
+    let bean: IHomeBean = {
+      banner: banner,
+      notice: notice,
+      game: game,
+      coupon: coupon,
+      userInfo: userInfo,
+      redBag: redBag,
+      floatAd: floatAd,
+      movie: responseJson1,
+    };
+    return bean;
   }
 
   // 获取评论列表

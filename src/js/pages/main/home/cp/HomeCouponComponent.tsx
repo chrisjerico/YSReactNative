@@ -25,7 +25,7 @@ export default class HomeCouponComponent extends Component<IBasePageProps, IBase
    */
   _renderCoupon(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    const coupon = data?.data?.coupon?.data;
+    const coupon = data?.data?.coupon;
     if (arrayEmpty(coupon?.list)) return null;
 
     return (

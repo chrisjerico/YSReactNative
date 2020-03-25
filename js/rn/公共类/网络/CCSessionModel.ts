@@ -1,7 +1,8 @@
-import {NativeModules} from 'react-native';
+import {NativeModules, Platform} from 'react-native';
 import {object} from 'prop-types';
 import {promises, Resolver} from 'dns';
 import AppDefine from '../AppDefine';
+import {NativeCommand} from "../../../../src/js/site/NativeCommand";
 
 interface Dictionary {
   [x: string]: any;
@@ -29,7 +30,14 @@ export default class CCSessionModel {
     temp['checkSign'] = 1;
 
     console.log('开始加密');
-    return AppDefine.ocCall('CMNetwork.encryptionCheckSign:', [temp]);
+    if (Platform.OS == 'ios') {
+      return AppDefine.ocCall('CMNetwork.encryptionCheckSign:', [temp]);
+    } else {
+      return AppDefine.ocHelper.executeCmd(JSON.stringify({
+        type: NativeCommand.ENCRYPTION_PARAMS,
+        params: params
+      }))
+    }
   }
 
   // 发起请求
@@ -44,17 +52,29 @@ export default class CCSessionModel {
 
     // 参数加密
     var promise = this.encryptParams(params)
-      .then((params: Dictionary) => {
-        if (this.isEncrypt) {
-          url += '&checkSign=1';
+      .then((params: any) => {
+        if (typeof params == 'string') {
+          params = JSON.parse(params);
+        }
+
+        if (Platform.OS == 'ios') {
+          if (this.isEncrypt) {
+            url += '&checkSign=1';
+          }
         }
 
         // 若是GET请求则拼接参数到URL
         if (!isPost) {
-          Object.keys(params).map(key => {
-            var value = params[key];
-            url += `&${key}=${value}`;
-          });
+          if (Platform.OS == 'ios') {
+            Object.keys(params).map(key => {
+              var value = params[key];
+              url += `&${key}=${value}`;
+            });
+          } else {
+            for (let paramsKey in params) {
+              url += `&${paramsKey}=${params[paramsKey]}`;
+            }
+          }
           params = null;
         }
 

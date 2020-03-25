@@ -1,8 +1,9 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
 import objectPath from 'object-path';
+import {NativeCommand} from "../../../src/js/site/NativeCommand";
 
 type RootStackParamList = {
   Home: undefined;
@@ -130,22 +131,39 @@ export default class AppDefine {
       AppDefine.navigationRef?.current?.navigate('LoadingVC');
     });
 
-    // 设置接口域名
-    AppDefine.ocCall('AppDefine.shared.Host').then((host: string) => {
-      AppDefine.host = host;
-    });
+    if (Platform.OS == 'ios') {
+      // 设置接口域名
+      AppDefine.ocCall('AppDefine.shared.Host').then((host: string) => {
+        AppDefine.host = host;
+      });
 
-    // 设置站点编号
-    AppDefine.ocCall('AppDefine.shared.SiteId').then((siteId: string) => {
-      AppDefine.siteId = siteId;
-    });
+      // 设置站点编号
+      AppDefine.ocCall('AppDefine.shared.SiteId').then((siteId: string) => {
+        AppDefine.siteId = siteId;
+      });
 
-    // isFish
-    AppDefine.ocCall('AppDefine.shared.isFish').then((isFish: boolean) => {
-      AppDefine.isFish = isFish;
-      // 配置需要被替换的oc页面（替换成rn）
-      AppDefine.setRnPageInfo();
-    });
+      // isFish
+      AppDefine.ocCall('AppDefine.shared.isFish').then((isFish: boolean) => {
+        AppDefine.isFish = isFish;
+        // 配置需要被替换的oc页面（替换成rn）
+        AppDefine.setRnPageInfo();
+      });
+
+    } else {
+      // 设置接口域名
+      AppDefine.ocHelper.executeCmd(JSON.stringify({
+        type: NativeCommand.APP_HOST,
+      })).then((host: string) => {
+        AppDefine.host = host;
+      });
+      // 设置站点编号
+      AppDefine.ocHelper.executeCmd(JSON.stringify({
+        type: NativeCommand.APP_SITE,
+      })).then((siteId: string) => {
+        AppDefine.siteId = siteId;
+      });
+
+    }
 
     // 必须在注册监听之后执行
     // AppDefine.ocHelper.launchFinish();

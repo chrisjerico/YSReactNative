@@ -26,7 +26,7 @@ export default class HomeNoticeComponent extends Component<IBasePageProps, IBase
    */
   _renderNotice(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    let noticeArr = data?.data?.notice?.data?.scroll;
+    let noticeArr = data?.data?.notice?.scroll;
     if (arrayEmpty(noticeArr)) return null;
 
     return (

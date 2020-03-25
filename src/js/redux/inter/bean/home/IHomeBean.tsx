@@ -1,4 +1,3 @@
-import IBaseBean from "../base/IBaseBean";
 import IBannerAdvBean from "./IBannerAdvBean";
 import INoticeBean from "./INoticeBean";
 import IGameBean from "./IGameBean";
@@ -17,13 +16,13 @@ export interface IHomeBeanMovies {
  * Home的Reducer数据结构
  */
 export default interface IHomeBean {
-  banner: IBaseBean<IBannerAdvBean>, //广告
-  notice: IBaseBean<INoticeBean>, //公告
-  game: IBaseBean<IGameBean>, //公告
-  coupon: IBaseBean<ICouponBean>, //优惠
-  userInfo: IBaseBean<IUserBean>, //个人信息
-  redBag: IBaseBean<IRedBagBean>, //红包
-  floatAd: IBaseBean<Array<IFloatAdBean>>, //悬浮广告
+  banner: IBannerAdvBean, //广告
+  notice: INoticeBean, //公告
+  game: IGameBean, //公告
+  coupon: ICouponBean, //优惠
+  userInfo: IUserBean, //个人信息
+  redBag: IRedBagBean, //红包
+  floatAd: Array<IFloatAdBean>, //悬浮广告
 
   movie: {
     title?: string, //标题

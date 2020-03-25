@@ -34,7 +34,7 @@ export default class HomeGameComponent extends Component<IHomeGameProps, IHomeGa
    */
   _renderGames(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
-    const games = data?.data?.game?.data?.icons;
+    const games = data?.data?.game?.icons;
     if (arrayEmpty(games)) return null;
 
     let gameTabIndex = this.state?.gameTabIndex ?? 0;

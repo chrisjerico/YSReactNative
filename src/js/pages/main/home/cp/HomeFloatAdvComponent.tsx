@@ -61,24 +61,24 @@ export default class HomeFloatAdvComponent extends Component<IBasePageProps, IFl
   _rendFloatAd(): React.ReactNode {
     let data: IReducerState<IHomeBean> = this.props.reducerData;
     const floatAd = data?.data?.floatAd;
-    if (arrayEmpty(floatAd.data)) return null;
+    if (arrayEmpty(floatAd)) return null;
 
     return (
       <View style={_styles.floatAdContainer}>
         <View>
           {
-            this._showFloatAd(0, floatAd.data)
+            this._showFloatAd(0, floatAd)
           }
           {
-            this._showFloatAd(1, floatAd.data)
+            this._showFloatAd(1, floatAd)
           }
         </View>
         <View>
           {
-            this._showFloatAd(2, floatAd.data)
+            this._showFloatAd(2, floatAd)
           }
           {
-            this._showFloatAd(3, floatAd.data)
+            this._showFloatAd(3, floatAd)
           }
         </View>
       </View>
