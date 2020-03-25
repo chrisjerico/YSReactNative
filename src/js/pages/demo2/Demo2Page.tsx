@@ -12,7 +12,7 @@ import MoneyPage from "../main/money/MoneyPage";
 import BalancePage from "../main/balance/BalancePage";
 import MePage from "../main/me/MePage";
 import UGTopTabBar from "../../widget/bar/topbar/UGTopTabBar";
-import AppDefine from "../../../../js/rn/公共类/AppDefine";
+import AppDefine from "../../../../js/rn/public/define/AppDefine";
 import {ugLog} from "../../utils/UgLog";
 import {NativeCommand} from "../../site/NativeCommand";
 import {requestDemo2} from "../../redux/reducer/Demo2Reducer";

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, Text, View} from 'react-native';
+import {AppRegistry, Platform, Text, View} from 'react-native';
 import {Provider} from 'react-redux';
 import {Button, ThemeProvider} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
@@ -84,9 +84,12 @@ AppDefine.setup();
     // 配置替换rn的页面
     AppDefine.setRnPageInfo();
   }
-  AppDefine.ocCall('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-    setupSysConf(sysConf);
-  });
+
+  if (Platform.OS == 'ios') {
+    AppDefine.ocCall('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+      setupSysConf(sysConf);
+    });
+  }
   AppDefine.ocBlocks['UGSystemConfigModel.currentConfig'] = (sysConf: UGSysConfModel) => {
     setupSysConf(sysConf);
   };
