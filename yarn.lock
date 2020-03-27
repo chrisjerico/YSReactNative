@@ -6186,6 +6186,11 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-android-fragment@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-android-fragment/-/react-native-android-fragment-1.1.1.tgz#41fea381982b71eb0ae53032b334aad2fa13249a"
+  integrity sha512-sFIZnPoQuEtnhSkEXfdw4YkuhJQZLBRHVzscUwy3exIgpwtPky6gM55Lp1nwC3DZCTuUjRKf3n9rpk8c/mQBKA==
+
 react-native-code-push@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-6.1.0.tgz#462755e1b302a896d0abf230af4a833562f5ddc9"
