@@ -1,6 +1,6 @@
+import {Skin1} from './../../../public/theme/UGSkinManagers';
 import {PageName} from '../Navigation';
 import AppDefine from '../../../public/define/AppDefine';
-import {concat} from 'react-native-reanimated';
 
 interface RnPageModel {
   // 替换oc页面
@@ -43,40 +43,42 @@ export function setRnPageInfo() {
   });
 
   // 香槟金模板页面
-  pages = pages.concat([
-    {
-      // 首页
-      tabbarItemPath: '/home',
-      rnName: PageName.XBJHomePage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    },
-    {
-      // 登录
-      vcName: 'UGLoginViewController',
-      rnName: PageName.XBJLoginPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    },
-    {
-      // 注册
-      vcName: 'UGRegisterViewController',
-      rnName: PageName.XBJRegisterPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    },
-    {
-      // 我的页
-      tabbarItemPath: '/user',
-      rnName: PageName.XBJMinePage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: false,
-    },
-  ]);
+  if (Skin1.skitType.indexOf('香槟金') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.XBJHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.XBJLoginPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.XBJRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.XBJMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ]);
+  }
 
   AppDefine.ocCall('AppDefine.shared.setRnPageInfos:', [pages]);
 }

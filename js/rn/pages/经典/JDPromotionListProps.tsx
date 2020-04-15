@@ -4,6 +4,7 @@ import {IGlobalState} from '../../redux/store/UGStore';
 import {UGPromoteModel} from '../../redux/model/other/UGPromoteModel';
 import {PageName} from '../router/Navigation';
 import {mergeProps} from '../../public/tools/FUtils';
+import {Skin1} from '../../public/theme/UGSkinManagers';
 
 // 声明Props
 export interface JDPromotionListProps extends UGBasePageProps {
@@ -32,5 +33,5 @@ export function JDPromotionListReducer(prevState: JDPromotionListProps = default
 
 // 从全局数据中传递到Props（mapStateToProps）
 export function JDPromotionListStateToProps(state: IGlobalState): JDPromotionListProps {
-  return mergeProps(state.JDPromotionListReducer, {});
+  return mergeProps(state.JDPromotionListReducer, {backgroundColor: Skin1.bgColor});
 }

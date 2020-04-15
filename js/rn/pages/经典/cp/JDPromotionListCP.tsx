@@ -6,31 +6,36 @@ import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
 import AppDefine, {NSValue} from '../../../public/define/AppDefine';
 import {UGPromoteModel} from '../../../redux/model/other/UGPromoteModel';
+import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import LinearGradient from 'react-native-linear-gradient';
+import { UGColor } from '../../../public/theme/UGThemeColor';
+import { UGStore } from '../../../redux/store/UGStore';
+import { ActionType } from '../../../redux/store/ActionTypes';
 
-interface IProps {}
+interface IProps {
+  list: Array<UGPromoteModel>;
+  style2: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
+}
 interface IState {
   selectedIndex: number;
 }
 
 export default class JDPromotionListCP extends Component<IProps, IState> {
-  style1: '贴边' | '外边框' | '内间距' = '内间距';
+  style1: '贴边' | '边框' | '内间距' = '内间距';
   style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
 
   constructor(props) {
     super(props);
-    var {
-      route: {
-        params: {list, style},
-      },
-    } = props;
+    const { list, style2 } = props;
 
     if ('c190'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '贴边';
-    } else if ('c199'.indexOf(AppDefine.siteId) != -1) {
-      this.style1 = '外边框';
+    } else if ('c199,c200,c213,c018'.indexOf(AppDefine.siteId) != -1) {
+      this.style1 = '边框';
     }
-    this.style2 = style;
+    this.style2 = style2;
+    this.style2 = 'slide';
     this.list = list.map((item: UGPromoteModel) => {
       return Object.assign({}, item);
     });
@@ -39,11 +44,11 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     };
   }
 
-  renderCell(pm: UGPromoteModel, idx: number) {
-    var margin1 = this.style1 === '贴边' ? 0 : 10;
-    var margin2 = this.style1 === '贴边' ? 0 : 5;
+  renderCell(pm: UGPromoteModel, idx: number, margin:number) {
+    var marginHorizontal = this.style1 === '贴边' ? 0 : 5;
+    var marginVertical = this.style1 === '贴边' ? 0 : 5;
     let contentView = (
-      <View style={{marginHorizontal: margin1, marginVertical: margin2}}>
+      <View style={{marginHorizontal: marginHorizontal, marginVertical: marginVertical}}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -79,13 +84,13 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
               }
             }
           }}>
-          {pm.title?.length > 0 && <Text style={{marginTop: 10, marginBottom: 10, marginLeft: 5, color: 'gray'}}>{pm.title}</Text>}
+          {pm.title?.length > 0 && <Text style={{marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize:16, fontWeight:'500'}}>{pm.title}</Text>}
           <FastImage
-            style={{height: pm.picHeight ?? 100, backgroundColor: '#EEE'}}
+            style={{height: pm.picHeight ?? 100}}
             source={{uri: pm.pic}}
             onLoad={(e) => {
               if (!pm.picHeight) {
-                pm.picHeight = ((AppDefine.width - 20) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
+                pm.picHeight = ((AppDefine.width - (margin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
                 this.setState({});
               }
             }}
@@ -120,16 +125,20 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       </View>
     );
 
-    if (this.style1 === '外边框') {
-      return <Card containerStyle={{borderRadius: 8, padding: 3}}>{contentView}</Card>;
+    if (this.style1 === '边框') {
+      return <Card containerStyle={{margin:11, borderRadius: 8, padding: 3, backgroundColor:Skin1.homeContentColor}}>{contentView}</Card>;
     }
     return contentView;
   }
 
   render() {
     if (!this.list.length) {
-      return <Text style={{marginTop: 50, textAlign: 'center', color: 'gray'}}>暂无</Text>;
+      return (
+        <Text style={{ marginTop: 50, textAlign: 'center', color: 'gray' }}>暂无</Text>
+      );
     }
-    return <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{height: 100}} />} />;
+    return (
+      <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index, 11)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
+    );
   }
 }
