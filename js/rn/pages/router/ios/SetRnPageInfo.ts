@@ -1,8 +1,23 @@
+import {Router, RouterType} from './../Router';
 import {Skin1} from './../../../public/theme/UGSkinManagers';
 import {PageName} from '../Navigation';
 import AppDefine from '../../../public/define/AppDefine';
 
-interface RnPageModel {
+export class RnPageModel {
+  static pages: RnPageModel[] = [];
+  static getPageName(vcName: PageName) {
+    if (Router.getPageRouterType(vcName) != RouterType.None) {
+      return vcName;
+    } else {
+      for (const rpm of this.pages) {
+        if (rpm.vcName == vcName) {
+          return rpm.rnName;
+        }
+      }
+    }
+    return null;
+  }
+
   // 替换oc页面
   vcName?: string; // oc页面类名
   rnName: PageName; // rn页面类名
@@ -80,5 +95,6 @@ export function setRnPageInfo() {
     ]);
   }
 
+  RnPageModel.pages = pages;
   AppDefine.ocCall('AppDefine.shared.setRnPageInfos:', [pages]);
 }

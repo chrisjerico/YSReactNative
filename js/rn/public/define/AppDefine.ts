@@ -2,6 +2,7 @@ import {Navigation, PageName} from './../../pages/router/Navigation';
 import {Dimensions, Platform} from 'react-native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
 import {NativeCommand} from './NativeCommand';
+import {RnPageModel} from '../../pages/router/ios/SetRnPageInfo';
 
 class OCFuncVariable {
   vc: string = '';
@@ -54,7 +55,7 @@ export default class AppDefine {
     AppDefine.ocEvent.addListener('SelectVC', (params: {vcName: PageName}) => {
       console.log('跳转到rn页面：', params.vcName);
       if (params.vcName) {
-        Navigation.jump(params.vcName);
+        Navigation.jump(params.vcName) || Navigation.jump(RnPageModel.getPageName(params.vcName));
       }
     });
 

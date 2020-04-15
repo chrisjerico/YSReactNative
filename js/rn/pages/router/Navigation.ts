@@ -27,8 +27,8 @@ export class Navigation {
   }
 
   // 去新的导航页
-  static push<P extends UGBasePageProps>(page: PageName, props?: P) {
-    this.smartNavigate(RouterType.Stack, page);
+  static push<P extends UGBasePageProps>(page: PageName, props?: P): boolean {
+    return this.smartNavigate(RouterType.Stack, page);
   }
 
   // 回到上一页
@@ -40,13 +40,13 @@ export class Navigation {
   }
 
   // 切换标签页
-  static jump(page: PageName) {
-    this.smartNavigate(RouterType.Tab, page);
+  static jump(page: PageName): boolean {
+    return this.smartNavigate(RouterType.Tab, page);
   }
 
   // 智能跳转
-  static smartNavigate(priorityType: RouterType, page: PageName, props?: object) {
-    if (!this.navigation) return;
+  static smartNavigate(priorityType: RouterType, page: PageName, props?: object): boolean {
+    if (!this.navigation) return false;
     const routerType = Router.getPageRouterType(page, priorityType);
     switch (routerType) {
       case RouterType.Stack: {
@@ -54,20 +54,21 @@ export class Navigation {
         console.log(page);
         this.navigation.push(page, props);
         this.pages.push(page);
-        break;
+        return true;
       }
       case RouterType.Tab: {
         console.log('跳转到底部标签页面');
         console.log(page);
         this.navigation.jumpTo(page, props);
         this.pages[0] = page;
-        break;
+        return true;
       }
       case RouterType.Drawer: {
         console.log('跳转到侧边栏页面');
         console.log(page);
-        break;
+        return true;
       }
     }
+    return false;
   }
 }
