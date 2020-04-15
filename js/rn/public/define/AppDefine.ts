@@ -1,7 +1,7 @@
-import {NativeCommand} from './../../../../src/js/site/NativeCommand';
+import {Navigation, PageName} from './../../pages/router/Navigation';
 import {Dimensions, Platform} from 'react-native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {NativeCommand} from './NativeCommand';
 
 class OCFuncVariable {
   vc: string = '';
@@ -26,77 +26,18 @@ interface OCFuncModel {
   args5?: Array<any | OCFuncModel>;
 }
 
-interface RnPageModel {
-  // 替换oc页面
-  vcName: string; // oc页面类名
-  rnName: string; // rn页面类名
-  fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
-  fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
-  允许游客访问?: boolean;
-  允许未登录访问?: boolean;
-
-  // 新增彩种
-  gameType?: string; // 彩种类型
-
-  // 新增我的页Item跳转
-  userCenterItemCode?: number; // 页面标识
-  userCenterItemIcon?: string; // 默认图标URL
-  userCenterItemTitle?: string; // 默认标题
-
-  // 新增TabbarItem跳转
-  tabbarItemPath?: string; // 页面标识
-  tabbarItemIcon?: string; // 默认图标URL
-  tabbarItemTitle?: string; // 默认标题
-
-  // 新增linkCategory跳转
-  linkCategory?: number; // linkCategory ： 1=彩票游戏；2=真人视讯；3=捕鱼游戏；4=电子游戏；5=棋牌游戏；6=体育赛事；7=导航链接；8=电竞游戏；9=聊天室；10=手机资料栏目
-  linkPosition?: number;
-}
-
 export default class AppDefine {
   static host = 'http://接口域名'; // 接口域名
   static siteId = '未知站点';
   static width = Dimensions.get('window').width;
   static height = Dimensions.get('window').height;
 
+  static currentPages: Array<string> = []; // 存活的页面
+
   //
   static ocHelper = NativeModules.ReactNativeHelper; // oc助手
   static ocEvent = new NativeEventEmitter(AppDefine.ocHelper); // oc事件
   static ocBlocks = {};
-
-  static setRnPageInfo() {
-    // 配置需要被替换的oc页面（替换成rn）
-    var pages: Array<RnPageModel> = [];
-
-    // 优惠活动列表页
-    pages.push({
-      vcName: 'UGPromotionsController',
-      rnName: 'UGPromotionsController',
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    });
-
-    // // 优惠活动列表页
-    // pages.push({
-    //   vcName: 'UGLoginViewController',
-    //   rnName: 'XBJLoginVC',
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // });
-
-    // // 优惠活动列表页
-    // pages.push({
-    //   vcName: 'UGRegisterViewController',
-    //   rnName: 'XBJRegisterVC',
-    //   fd_prefersNavigationBarHidden: true,
-    //   允许游客访问: true,
-    //   允许未登录访问: true,
-    // });
-
-    AppDefine.ocCall('AppDefine.shared.setRnPageInfos:', [pages]);
-  }
 
   static setup() {
     // 监听原生发过来的事件通知
@@ -110,16 +51,23 @@ export default class AppDefine {
     });
 
     // 跳转到指定页面
-    AppDefine.ocEvent.addListener('SelectVC', (params: {vcName: string}) => {
-      console.log('跳转到rn页面：');
-      console.log(params.vcName);
-      params.vcName && Actions.replace(params.vcName);
+    AppDefine.ocEvent.addListener('SelectVC', (params: {vcName: PageName}) => {
+      console.log('跳转到rn页面：', params.vcName);
+      if (params.vcName) {
+        Navigation.jump(params.vcName);
+      }
     });
 
     // 移除页面
-    AppDefine.ocEvent.addListener('RemoveVC', () => {
-      console.log('退出页面');
-      Actions.replace('LoadingVC');
+    AppDefine.ocEvent.addListener('RemoveVC', (params: {vcName: PageName}) => {
+      console.log('退出页面', params.vcName);
+      if (params.vcName == Navigation.pages[Navigation.pages.length - 1]) {
+        if (Navigation.pages.length > 1) {
+          Navigation.pop();
+        } else {
+          Navigation.jump(PageName.LoadingPage);
+        }
+      }
     });
 
     if (Platform.OS == 'ios') {

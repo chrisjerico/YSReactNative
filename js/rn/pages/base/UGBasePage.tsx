@@ -1,0 +1,235 @@
+import React, {Component} from 'react';
+import {ReactNode} from 'react';
+import {BackHandler, SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps} from 'react-native';
+
+import {Button, Header} from 'react-native-elements';
+import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
+import {checkTrue} from '../../public/tools/Ext';
+import AppDefine from '../../public/define/AppDefine';
+import LinearGradient from 'react-native-linear-gradient';
+import {ugLog} from '../../public/tools/UgLog';
+import {UGBasePageProps, UGLoadingType} from './UGBasePageProps';
+import {NativeCommand} from '../../public/define/NativeCommand';
+import {Dispatch} from '../../redux/store/Dispatch';
+import {Skin1} from '../../public/theme/UGSkinManagers';
+import {UGStore} from '../../redux/store/UGStore';
+import {Navigation} from '../router/Navigation';
+import {BottomTabNavigationProp, BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {Router, RouterType} from '../router/Router';
+import UGNavigationBar from '../../public/widget/UGNavigationBar';
+import FUtils, {mergeProps} from '../../public/tools/FUtils';
+
+/**
+ * Arc
+ *
+ * 基础界面功能，包括：
+ * 1，顶部 statusBar
+ * 2，顶部titleBar
+ * 3，中间内容区域
+ *
+ */
+export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageProps, S = {}> extends Component<P, S> {
+  // 更新Props（给子类调用）
+  setProps(props: P | UGBasePageProps) {
+    UGStore.dispatch({type: this.props.actType, props: props});
+  }
+
+  constructor(props) {
+    super(props);
+
+    const {navigation, navbarOpstions = {}, tabbarOpetions = {}, pageName} = this.props;
+
+    navigation.removeListener('focus', () => {
+      navigation.addListener('focus', e => {
+        console.log('viewWillAppier');
+        console.log(this.props.pageName);
+      });
+    });
+    navigation.setOptions({header: null});
+    console.log('页面初始化');
+    console.log(pageName);
+    console.log(navbarOpstions);
+
+    if (navigation.push && navigation.jumpTo) {
+      Navigation.setNavigation(navigation);
+    }
+    if (navigation.pop) {
+      navigation.setOptions(navbarOpstions);
+    } else if (navigation.jumpTo) {
+      navigation.setOptions(tabbarOpetions);
+    }
+  }
+
+  /**
+   * 请求数据
+   */
+  abstract requestData(): void;
+
+  /**
+   * 绘制中间区域，实际内容
+   */
+  abstract renderContent(): ReactNode;
+
+  /**
+   * 请求重试，根据需要是否重写
+   */
+  requestRetry() {
+    this.requestData();
+  }
+
+  /**
+   * 绘制进度条
+   *
+   * @private
+   */
+  _renderLoading(): ReactNode {
+    return (
+      <View style={_styles.loading}>
+        <UGProgressCircle />
+      </View>
+    );
+  }
+
+  /**
+   * 绘制 重试界面
+   *
+   * @private
+   */
+  _renderRetry(): ReactNode {
+    const status = this.props.status;
+    let msg = '';
+    switch (status) {
+      case UGLoadingType.Failed:
+        msg = '请求出错，请稍后重试';
+        break;
+      case UGLoadingType.NoData:
+        msg = '当前没有数据';
+        break;
+      default:
+        msg = '没有数据，请稍后重试';
+        break;
+    }
+
+    return (
+      <View style={_styles.retry}>
+        <Text style={_styles.retryHintText}>{msg}</Text>
+        <Button buttonStyle={_styles.retryButton} title="重试" onPress={() => this.requestRetry()} />
+      </View>
+    );
+  }
+
+  /**
+   * 默认点击返回
+   */
+  clickLeftFunc = () => {
+    //当前界面是否由原生打开，原生Android需要做前后台切换操作
+    if (checkTrue(this.props.fromNative)) {
+      AppDefine.ocHelper.executeCmd(
+        JSON.stringify({
+          type: NativeCommand.MOVE_TO_BACK,
+        }),
+      );
+    }
+
+    Navigation.pop();
+    AppDefine.ocCall('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+  };
+
+  /**
+   * 默认点击右键
+   */
+  clickRightFunc = () => {};
+
+  /**
+   * 绘制顶部 header
+   */
+  renderHeader(): ReactNode {
+    let {navbarOpstions = {}} = this.props;
+    if (navbarOpstions.hidden) {
+      return null;
+    }
+    if (!navbarOpstions.backgroundColor) {
+      navbarOpstions = mergeProps({gradientColor: Skin1.navBarBgColor}, navbarOpstions);
+    }
+    return <UGNavigationBar {...navbarOpstions} />;
+  }
+
+  /**
+   * 绘制 加载框 或者 具体内容
+   *
+   * @private
+   */
+  _renderContentOrLoading(): ReactNode {
+    //根据刷新状态，决定显示刷新界面还是具体内容
+    switch (this.props.status) {
+      case UGLoadingType.Loading:
+        return this._renderLoading();
+      case UGLoadingType.Failed:
+      case UGLoadingType.NoData:
+        return this._renderRetry();
+      default:
+        return this.renderContent();
+    }
+  }
+
+  /**
+   * 绘制整个界面
+   */
+  render(): ReactNode {
+    let {backgroundColor = []} = this.props;
+    if (backgroundColor.length < 1) {
+      backgroundColor = ['#fff', '#fff'];
+    } else if (backgroundColor.length < 2) {
+      backgroundColor.push(backgroundColor[0]);
+    }
+    return (
+      <LinearGradient colors={backgroundColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1}}>
+        {this.renderHeader()}
+        <SafeAreaView style={_styles.safeContainer}>{this._renderContentOrLoading()}</SafeAreaView>
+      </LinearGradient>
+    );
+  }
+
+  componentDidMount(): void {
+    this.requestData();
+    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
+  }
+
+  /**
+   * 响应 Android物理返回键
+   */
+  _onBackAndroid = () => {
+    this.clickLeftFunc();
+    // BackHandler.exitApp();
+    return true;
+  };
+
+  componentWillUnmount(): void {
+    BackHandler.removeEventListener('hardwareBackPress', this._onBackAndroid);
+  }
+}
+
+const _styles = StyleSheet.create({
+  safeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  retry: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  retryButton: {
+    width: 80,
+  },
+  retryHintText: {
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 15,
+  },
+});

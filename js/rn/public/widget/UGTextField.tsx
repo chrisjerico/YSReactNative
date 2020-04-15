@@ -2,7 +2,7 @@ import React, {Component, useState} from 'react';
 import {Text} from 'react-native';
 import {Input, InputProps, Icon, Button} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import FUtils from '../tools/FUtils';
+import FUtils, { mergeProps } from '../tools/FUtils';
 
 interface IPorps extends InputProps {
   // 父类变量
@@ -35,9 +35,9 @@ export default class UGTextField extends Component<IPorps, IState> {
   constructor(props: IPorps) {
     super(props);
     this.state = {text: null, secureTextEntry: !!props.secureTextEntry};
-    var iconSize = 20;
+    const iconSize = 20;
 
-    var defaultProps: IPorps = {
+    const defaultProps: IPorps = {
       containerStyle: [{marginTop: 12, height: 45, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 22.5, overflow: 'hidden'}],
       inputStyle: {marginLeft: 8, height: 45, color: 'white', fontSize: 15},
       leftIconContainerStyle: {marginLeft: 2, width: iconSize + 10, height: iconSize},
@@ -45,7 +45,7 @@ export default class UGTextField extends Component<IPorps, IState> {
       clearButtonMode: 'while-editing',
     };
 
-    var other = ((): IPorps => {
+    const other = ((): IPorps => {
       switch (props.type) {
         case '推荐人ID':
           return {
@@ -68,7 +68,7 @@ export default class UGTextField extends Component<IPorps, IState> {
             rightIcon: (
               <this.Eye
                 secureTextEntry={true}
-                didClick={selected => {
+                didClick={(selected) => {
                   this.newProps.secureTextEntry = selected;
                   this.setState({});
                 }}
@@ -118,7 +118,7 @@ export default class UGTextField extends Component<IPorps, IState> {
             leftIcon: {name: 'Safety', type: 'antdesign', color: 'rgba(255, 255, 255, 0.6)', size: iconSize},
             rightIcon: (
               <this.LetterVerificationCode
-                didClick={code => {
+                didClick={(code) => {
                   this.code = code;
                 }}
               />
@@ -136,7 +136,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {};
       }
     })();
-    this.newProps = FUtils.props_merge(defaultProps, other);
+    this.newProps = mergeProps(defaultProps, other);
   }
 
   SysButton(props: {didClick: (startCountdown: () => void) => void}) {
@@ -230,15 +230,15 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   // 刷新UI
   render() {
-    var props = FUtils.props_merge(this.newProps, this.props);
+    var props = mergeProps(this.newProps, this.props);
     if (this.props.hidden) {
-      FUtils.props_merge(props, {containerStyle: {marginTop: 0, height: 0}});
+      mergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
     }
     return (
       <Input
         {...props}
         value={this.state.text ?? null}
-        onChangeText={text => {
+        onChangeText={(text) => {
           var {
             onlyInteger: onlyNumbers,
             onlyNumber: onlyNumbersWithDecimals,

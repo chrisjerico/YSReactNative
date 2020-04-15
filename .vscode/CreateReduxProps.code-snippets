@@ -1,0 +1,35 @@
+{
+  "crp": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "ugprops",
+    "body": [
+      "",
+      "// 声明Props",
+      "export interface $1Props extends UGBasePageProps {",
+      "\t",
+      "}",
+      "",
+      "// Props默认值",
+      "const defaultProps = props_merge<$1Props>(basePageDefaultProps, {",
+      "\tactType: ActionType.$1_SetProps,",
+      "\tpageName:PageName.$1Page,",
+      "});",
+      "",
+      "// 更新Props到全局数据",
+      "export function $1Reducer(prevState: $1Props = defaultProps, act: UGAction<$1Props>): $1Props {",
+      "\tif (act.type === ActionType.UpdateAll) return {...prevState, ...act.state.$1Reducer};",
+      "\tif (act.type === ActionType.$1_SetProps) return {...prevState, ...act.props};",
+      "",
+      "\treturn prevState;",
+      "}",
+      "",
+      "// 从全局数据中传递到Props（mapStateToProps）",
+      "export function $1StateToProps(state: IGlobalState): $1Props {",
+      "\treturn props_merge(state.$1Reducer, {",
+      "\t\t",
+      "\t};",
+      "}"
+    ],
+    "description": "生成 Props、mapStateToProps、defaultProps、Reducer"
+  }
+}

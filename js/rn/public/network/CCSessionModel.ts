@@ -1,6 +1,6 @@
 import {Platform} from 'react-native';
-import {NativeCommand} from '../../../../src/js/site/NativeCommand';
 import AppDefine from '../define/AppDefine';
+import { NativeCommand } from '../define/NativeCommand';
 
 interface Dictionary {
   [x: string]: any;

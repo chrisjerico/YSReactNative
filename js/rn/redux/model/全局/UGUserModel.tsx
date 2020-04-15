@@ -57,5 +57,3 @@ export default class UGUserModel extends UGLoginModel {
   unreadFaq: number;
   unreadMsg: number; // 站内信未读消息数量
 }
-
-export var UserI = UGUserModel.mine;

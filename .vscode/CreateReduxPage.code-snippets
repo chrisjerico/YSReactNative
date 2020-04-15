@@ -1,0 +1,25 @@
+{
+  "crp": {
+    "scope": "typescript,typescriptreact",
+    "prefix": "ugpage",
+    "body": [
+      "import React from 'react';",
+      "import {connect} from 'react-redux';",
+      "import {View} from 'react-native';",
+      "",
+      "class $1Page extends UGBasePage<$1Props> {",
+      "\t// 请求数据",
+      "\trequestData() {}",
+      "\t",
+      "\t// 渲染内容",
+      "\trenderContent(): React.ReactNode {",
+      "\t\treturn <View />;",
+      "\t};",
+      "}",
+      "",
+      "// 绑定Redux",
+      "export default connect($1StateToProps)($1Page);"
+    ],
+    "description": "生成 UGPage"
+  }
+}

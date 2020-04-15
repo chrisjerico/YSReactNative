@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {AppRegistry, Platform, Text, View} from 'react-native';
+import {AppRegistry, Platform, Text} from 'react-native';
 import {Provider} from 'react-redux';
-import {Button, ThemeProvider} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 
 // Tools
@@ -9,58 +8,66 @@ import AppDefine from '../../../public/define/AppDefine';
 import FPrototypes from '../../../public/tools/prototype/FPrototypes';
 import UGSkinManagers, {Skin1} from '../../../public/theme/UGSkinManagers';
 
-// // 页面
-import UpdateVersionVC from './UpdateVersionVC';
-import XBJMineVC from '../../香槟金/XBJMineVC';
-import XBJRegisterVC from '../../香槟金/XBJRegisterVC';
-import XBJLoginVC from '../../香槟金/XBJLoginVC';
-import UGPromotionsController from '../../经典/UGPromotionsController';
+// 页面
+import UpdateVersionPage from './UpdateVersionPage';
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel';
-import {Router, Scene, Stack} from 'react-native-router-flux';
-import {configureStore} from '../../../../../src/js/redux/store/Store';
-import HomePage from '../../../../../src/js/pages/main/home/HomePage';
+import UGNavigationBar from '../../../public/widget/UGNavigationBar';
+import {UGStore} from '../../../redux/store/UGStore';
+import XBJLoginPage from '../../香槟金/XBJLoginPage';
+import XBJRegisterPage from '../../香槟金/XBJRegisterPage';
+import XBJMinePage from '../../香槟金/XBJMinePage';
+import JDPromotionListPage from '../../经典/JDPromotionListPage';
+import {NavigationContainer} from '@react-navigation/native';
+import {BottomTabBarOptions} from '@react-navigation/bottom-tabs';
+import {PageName} from '../Navigation';
+import {Router} from '../Router';
+import {StackNavigationOptions, StackNavigationProp} from '@react-navigation/stack';
+import {setRnPageInfo} from './SetRnPageInfo';
+import LoadingPage from '../../base/LoadingPage';
+import XBJHomePage from '../../香槟金/XBJHomePage';
+import {ActionType} from '../../../redux/store/ActionTypes';
 
 // 配置fish拓展方法
 FPrototypes.setupAll();
 
-function LoadingVC() {
-  return (
-    <LinearGradient style={{flex: 1}} colors={Skin1.bgColor}>
-      <Text style={{marginTop: AppDefine.height * 0.4, textAlign: 'center', fontSize: 18, color: Skin1.textColor1}}>正在加载中...</Text>
-    </LinearGradient>
-  );
+// TabbarController
+class TabBarController extends Component<{navigation: StackNavigationProp<{}>}> {
+  newProps = {
+    hideNavBar: true,
+    hideTabBar: true,
+  };
+  tabBarOptions: BottomTabBarOptions = {};
+
+  constructor(props) {
+    super(props);
+    const {navigation} = this.props;
+    navigation.setOptions({headerStyle: {height: 0}});
+  }
+  render() {
+    return (
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
+        <Router.TabScreen name={PageName.LoadingPage} component={LoadingPage} />
+        <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
+        <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
+        <Router.TabScreen name={PageName.XBJMinePage} component={XBJMinePage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.XBJHomePage} component={XBJHomePage} options={{unmountOnBlur: false}} />
+      </Router.TabNavigator>
+    );
+  }
 }
 
 // NavController
 class Root extends Component {
-  renderLeftButton() {
-    return (
-      <Button
-        buttonStyle={{backgroundColor: 'transparent'}}
-        icon={{name: 'ios-arrow-back', size: 30, type: 'ionicon', color: 'white'}}
-        onPress={() => {
-          AppDefine.ocCall('UGNavigationController.current.popViewControllerAnimated:', [true]);
-        }}
-      />
-    );
-  }
-
   render() {
     return (
-      <Provider store={configureStore}>
-        <ThemeProvider>
-          <Router>
-            <Stack navigationBarStyle={{backgroundColor: Skin1.navBarBgColor[0]}} tintColor="white">
-              <Scene key="UpdateVersionVC" component={UpdateVersionVC} renderLeftButton={this.renderLeftButton} />
-              <Scene key="XBJLoginVC" component={XBJLoginVC} hideNavBar />
-              <Scene key="XBJRegisterVC" component={XBJRegisterVC} hideNavBar />
-              <Scene key="XBJMineVC" component={XBJMineVC} title="我的" renderLeftButton={this.renderLeftButton} />
-              <Scene key="LoadingVC" component={LoadingVC} renderLeftButton={this.renderLeftButton} />
-              <Scene key="UGPromotionsController" component={UGPromotionsController} title="优惠活动" renderLeftButton={this.renderLeftButton} />
-              <Scene key="HomePage" component={HomePage} hideNavBar />
-            </Stack>
-          </Router>
-        </ThemeProvider>
+      <Provider store={UGStore.store}>
+        <NavigationContainer>
+          <Router.StackNavigator headerMode="screen">
+            <Router.StackScreen name="Tabbar" component={TabBarController} />
+          </Router.StackNavigator>
+        </NavigationContainer>
       </Provider>
     );
   }
@@ -77,20 +84,21 @@ AppDefine.setup();
   function setupSysConf(sysConf: UGSysConfModel) {
     if (sysConf) {
       // 设置当前配置
-      Object.assign(UGSysConfModel.current, sysConf);
+      UGStore.dispatch({type: ActionType.UpdateSysConf, props: sysConf});
+
       // 设置皮肤
-      Object.assign(Skin1, UGSkinManagers.sysConf());
+      UGSkinManagers.updateSkin(sysConf);
     }
     // 配置替换rn的页面
-    AppDefine.setRnPageInfo();
+    setRnPageInfo();
   }
 
   if (Platform.OS == 'ios') {
     AppDefine.ocCall('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
       setupSysConf(sysConf);
     });
+    AppDefine.ocBlocks['UGSystemConfigModel.currentConfig'] = (sysConf: UGSysConfModel) => {
+      setupSysConf(sysConf);
+    };
   }
-  AppDefine.ocBlocks['UGSystemConfigModel.currentConfig'] = (sysConf: UGSysConfModel) => {
-    setupSysConf(sysConf);
-  };
 }

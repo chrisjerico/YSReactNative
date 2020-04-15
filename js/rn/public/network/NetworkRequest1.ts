@@ -1,5 +1,5 @@
+import {XBJHomeProps} from '../../pages/香槟金/XBJHomeProps';
 import CCSessionModel from './CCSessionModel';
-import IHomeBean from '../../../../src/js/redux/inter/bean/home/IHomeBean';
 import AppDefine from '../define/AppDefine';
 import {UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
@@ -35,7 +35,7 @@ export default class NetworkRequest1 {
     //优惠
     let coupon = await NetworkRequest1.couponList();
     //用户
-    let userInfo = await CCSessionModel.req('c=user&a=info');
+    // let userInfo = await CCSessionModel.req('c=user&a=info');
     //红包
     let redBag = await CCSessionModel.req('c=activity&a=redBagDetail');
     //悬浮广告
@@ -43,12 +43,12 @@ export default class NetworkRequest1 {
     //测试
     let responseJson1 = await response1.json();
 
-    let bean: IHomeBean = {
+    let bean: XBJHomeProps = {
       banner: banner,
       notice: notice,
       game: game,
       coupon: coupon,
-      userInfo: userInfo,
+      // userInfo: userInfo,
       redBag: redBag,
       floatAd: floatAd,
       movie: responseJson1,
