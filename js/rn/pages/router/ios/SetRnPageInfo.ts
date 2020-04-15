@@ -44,7 +44,7 @@ export function setRnPageInfo() {
 
   // 香槟金模板页面
   if (Skin1.skitType.indexOf('香槟金') != -1) {
-    pages = pages.concat([
+    pages.concat([
       {
         // 首页
         tabbarItemPath: '/home',
