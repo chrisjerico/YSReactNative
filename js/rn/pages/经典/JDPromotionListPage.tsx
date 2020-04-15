@@ -49,9 +49,10 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
     if (props.hidden) {
       return null;
     }
+    const {titles = []} = props;
     return (
       <View style={{marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45}}>
-        {props.titles.map((title, idx) => {
+        {titles.map((title, idx) => {
           return (
             <Text
               onPress={() => {

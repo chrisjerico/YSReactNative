@@ -27,7 +27,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
 
   constructor(props) {
     super(props);
-    const { list, style2 } = props;
+    const { list = [], style2 } = props;
 
     if ('c190'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '贴边';
@@ -35,7 +35,6 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       this.style1 = '边框';
     }
     this.style2 = style2;
-    this.style2 = 'slide';
     this.list = list.map((item: UGPromoteModel) => {
       return Object.assign({}, item);
     });
@@ -134,7 +133,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   render() {
     if (!this.list.length) {
       return (
-        <Text style={{ marginTop: 50, textAlign: 'center', color: 'gray' }}>暂无</Text>
+        <Text style={{ marginTop: 50, textAlign: 'center', color: 'white' }}>暂无</Text>
       );
     }
     return (
