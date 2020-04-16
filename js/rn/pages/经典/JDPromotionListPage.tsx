@@ -16,10 +16,11 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
       if (data.showCategory) {
         const temp: {[x: number]: Array<UGPromoteModel>} = [];
         data.list.map(pm => {
-          let list = (temp[pm.category] = temp[pm.category]);
+          let list = temp[pm.category];
           if (!list) {
             list = [];
           }
+          temp[pm.category] = list;
           list.push(pm);
         });
 
