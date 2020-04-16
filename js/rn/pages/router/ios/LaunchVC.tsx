@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import {AppRegistry, Platform, Text} from 'react-native';
+import {AppRegistry, Platform} from 'react-native';
 import {Provider} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
 
 // Tools
 import AppDefine from '../../../public/define/AppDefine';
 import FPrototypes from '../../../public/tools/prototype/FPrototypes';
-import UGSkinManagers, {Skin1} from '../../../public/theme/UGSkinManagers';
+import UGSkinManagers from '../../../public/theme/UGSkinManagers';
 
 // 页面
 import UpdateVersionPage from './UpdateVersionPage';
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel';
-import UGNavigationBar from '../../../public/widget/UGNavigationBar';
 import {UGStore} from '../../../redux/store/UGStore';
 import XBJLoginPage from '../../香槟金/XBJLoginPage';
 import XBJRegisterPage from '../../香槟金/XBJRegisterPage';
@@ -21,7 +19,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {BottomTabBarOptions} from '@react-navigation/bottom-tabs';
 import {PageName} from '../Navigation';
 import {Router} from '../Router';
-import {StackNavigationOptions, StackNavigationProp} from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {setRnPageInfo} from './SetRnPageInfo';
 import LoadingPage from '../../base/LoadingPage';
 import XBJHomePage from '../../香槟金/XBJHomePage';

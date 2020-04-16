@@ -25,3 +25,13 @@ export const StationConfig = {
     domain: 'www.baidu.com',
   },
 };
+
+export class SiteModel {
+  siteId: string; // 站点id
+  type: string; // 打包类型
+  appName: string; // app名
+  appId: string; // bundleId
+  host: string; // 接口域名
+  uploadId: string; // 上传ID
+  uploadNum: string; // 上传编号
+}

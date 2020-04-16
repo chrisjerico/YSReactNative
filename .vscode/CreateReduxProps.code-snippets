@@ -10,7 +10,7 @@
       "}",
       "",
       "// Props默认值",
-      "const defaultProps = props_merge<$1Props>(basePageDefaultProps, {",
+      "const defaultProps = mergeProps<$1Props>(basePageDefaultProps, {",
       "\tactType: ActionType.$1_SetProps,",
       "\tpageName:PageName.$1Page,",
       "});",
@@ -25,9 +25,9 @@
       "",
       "// 从全局数据中传递到Props（mapStateToProps）",
       "export function $1StateToProps(state: IGlobalState): $1Props {",
-      "\treturn props_merge(state.$1Reducer, {",
+      "\treturn mergeProps(state.$1Reducer, {",
       "\t\t",
-      "\t};",
+      "\t});",
       "}"
     ],
     "description": "生成 Props、mapStateToProps、defaultProps、Reducer"
