@@ -11,37 +11,22 @@ import PushHelper from '../../public/define/PushHelper';
 import {connect} from 'react-redux';
 import {XBJMineProps, XBJMineStateToProps} from './XBJMineProps';
 import UGBasePage from '../base/UGBasePage';
-import {Dispatch} from '../../redux/store/Dispatch';
+import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
 import {ActionType} from '../../redux/store/ActionTypes';
 import {UGColor} from '../../public/theme/UGThemeColor';
 import {Skin1} from '../../public/theme/UGSkinManagers';
+import {OCHelper} from '../../public/define/OCHelper/OCHelper';
 
 class XBJMinePage extends UGBasePage<XBJMineProps> {
-  // componentDidMount() {
-  //   AppDefine.navController?.setOptions({
-  //     title: '我的',
-  //     headerStyle: {backgroundColor: Skin1.navBarBgColor[0]},
-  //     headerLeft: null,
-  //     headerRight: () => (
-  //       <TouchableOpacity
-  //         onPress={() => {
-  //           OCHelper.pushUserCenterType(UGUserCenterType.站内信);
-  //         }}>
-  //         <FastImage source={{uri: 'https://i.ibb.co/q0Pgt4B/2x.png'}} style={{marginRight: 16, width: 20, height: 20}} />
-  //       </TouchableOpacity>
-  //     ),
-  //   });
-  // }
-
   requestData() {
     // 获取功能按钮列表
-    AppDefine.ocCall('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
+    OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
       let dataArray = list.map(item => new UGUserCenterItem(item));
       this.setProps({dataArray: dataArray});
     });
 
     // 获取用户信息
-    Dispatch.updateUserInfo();
+    IGlobalStateHelper.updateUserInfo();
   }
 
   renderContent(): React.ReactNode {
@@ -113,7 +98,7 @@ class XBJMinePage extends UGBasePage<XBJMineProps> {
               <Text style={{marginTop: 11, fontSize: 12}}>资金管理</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{alignItems: 'center', borderRadius: 100}}>
-              <Text style={{marginTop: 4, fontWeight: '500', color: UGColor.RedColor2}}>{'¥' + UserI.balance}</Text>
+              <Text style={{marginTop: 4, fontWeight: '500', color: UGColor.RedColor2}}>{'¥' + (UserI.balance ? UserI.balance : '0.00')}</Text>
               <Text style={{marginTop: 11, fontSize: 12}}>中心钱包</Text>
             </TouchableOpacity>
           </View>
@@ -161,8 +146,8 @@ class XBJMinePage extends UGBasePage<XBJMineProps> {
                 onPress: () => {
                   NetworkRequest1.user_logout();
                   // Todo 安卓
-                  AppDefine.ocCall('UGUserModel.setCurrentUser:', [null]);
-                  AppDefine.ocCall('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                  OCHelper.call('UGUserModel.setCurrentUser:', [null]);
+                  OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
                 },
               },
             ]);

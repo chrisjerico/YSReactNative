@@ -31,7 +31,9 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
           if (!title) {
             continue;
           }
-          const obj = dataArray.objectWithValue(title, 'title');
+          const obj = dataArray.filter(v => {
+            return v.title == title;
+          })[0];
           if (obj) {
             obj.list = obj.list.concat(temp[k]);
           } else {

@@ -1,6 +1,7 @@
+import {ANHelper, NativeCommand} from './../define/ANHelper/ANHelper';
 import {Platform} from 'react-native';
 import AppDefine from '../define/AppDefine';
-import { NativeCommand } from '../define/NativeCommand';
+import {OCHelper} from '../define/OCHelper/OCHelper';
 
 interface Dictionary {
   [x: string]: any;
@@ -29,14 +30,9 @@ export default class CCSessionModel {
 
     console.log('开始加密');
     if (Platform.OS == 'ios') {
-      return AppDefine.ocCall('CMNetwork.encryptionCheckSign:', [temp]);
+      return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
     } else {
-      return AppDefine.ocHelper.executeCmd(
-        JSON.stringify({
-          type: NativeCommand.ENCRYPTION_PARAMS,
-          params: params,
-        }),
-      );
+      return ANHelper.call(NativeCommand.ENCRYPTION_PARAMS, {params: params});
     }
   }
 

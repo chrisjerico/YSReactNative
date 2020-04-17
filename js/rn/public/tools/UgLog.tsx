@@ -3,9 +3,9 @@
  */
 export const B_DEBUG = __DEV__;
 
-export const ugLog = (s: string) => {
-  if(B_DEBUG) console.log(s)
+export const ugLog = (...s: any) => {
+  if (B_DEBUG) console.log(...s);
 };
-export const ugError = (s: string) => {
-  if(B_DEBUG) console.error(s)
+export const ugError = (...s: any) => {
+  if (B_DEBUG) console.error(...s);
 };

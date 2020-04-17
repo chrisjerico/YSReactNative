@@ -9,7 +9,7 @@ import {UGUserCenterType} from '../../../redux/model/全局/UGSysConfModel';
 import IUserBean from '../../../redux/model/user/IUserBean';
 import {UGColor} from '../../../public/theme/UGThemeColor';
 import {Skin1} from '../../../public/theme/UGSkinManagers';
-import {Navigation, PageName} from '../../router/Navigation';
+import {Navigation, PageName} from '../../../public/navigation/Navigation';
 
 interface IProps {
   reducerData: IUserBean;

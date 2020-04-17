@@ -7,10 +7,10 @@ import {XBJMineProps, XBJMineReducer} from '../../pages/香槟金/XBJMineProps';
 import {XBJRegisterProps, XBJRegisterReducer} from '../../pages/香槟金/XBJRegisterProps';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import {SysConfReducer, UserInfoReducer} from './Dispatch';
+import {SysConfReducer, UserInfoReducer} from './IGlobalStateHelper';
 import {UGAction, ActionType} from './ActionTypes';
 import {AsyncStorage} from 'react-native';
-import {UpdateVersionProps, UpdateVersionReducer} from '../../pages/router/ios/UpdateVersionProps';
+import {UpdateVersionProps, UpdateVersionReducer} from '../../pages/router/UpdateVersionProps';
 import {LoadingProps, LoadingReducer} from '../../pages/base/LoadingProps';
 
 // 整个State的树结构

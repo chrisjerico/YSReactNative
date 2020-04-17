@@ -2,7 +2,7 @@ import {Skin1} from '../../public/theme/UGSkinManagers';
 import {UGBasePageProps, basePageDefaultProps} from '../base/UGBasePageProps';
 import {ActionType, UGAction} from '../../redux/store/ActionTypes';
 import {IGlobalState} from '../../redux/store/UGStore';
-import {PageName} from '../router/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import {mergeProps} from '../../public/tools/FUtils';
 
 // 声明Props

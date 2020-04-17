@@ -9,7 +9,7 @@ import ICouponBean from '../../redux/model/home/ICouponBean';
 import IUserBean from '../../redux/model/user/IUserBean';
 import IRedBagBean from '../../redux/model/home/IRedBagBean';
 import IFloatAdBean from '../../redux/model/home/IFloatAdBean';
-import {PageName} from '../router/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import {mergeProps} from '../../public/tools/FUtils';
 
 export interface IHomeBeanMovies {

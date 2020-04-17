@@ -1,4 +1,5 @@
 export default class FUtils {
+  // 深度比较
   static isExactlyEqual(x: any, y: any): boolean {
     // 指向同一内存时
     if (x === y) {

@@ -21,7 +21,7 @@ export enum ActionType {
   JDPromotionList_SetProps,
   XBJLogin_SetProps,
   UpdateVersion_SetProps,
-  Loading_SetProps
+  Loading_SetProps,
 }
 
 // 声明UGAction

@@ -4,7 +4,7 @@ import {UGAction, ActionType} from '../../redux/store/ActionTypes';
 import {IGlobalState} from '../../redux/store/UGStore';
 import {UGUserCenterItem, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
-import {PageName} from '../router/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import {UGBasePageProps, basePageDefaultProps} from '../base/UGBasePageProps';
 import {mergeProps} from '../../public/tools/FUtils';
 import {TouchableOpacity} from 'react-native-gesture-handler';

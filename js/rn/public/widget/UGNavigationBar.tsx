@@ -3,8 +3,8 @@ import {Header, HeaderProps, Button} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {mergeProps} from '../tools/FUtils';
 import {View, ViewProps} from 'react-native';
-import AppDefine from '../define/AppDefine';
-import {Navigation} from '../../pages/router/Navigation';
+import {Navigation} from '../navigation/Navigation';
+import {OCHelper} from '../define/OCHelper/OCHelper';
 
 export interface UGNavigationBarProps extends HeaderProps {
   hidden?: boolean; // 隐藏导航条
@@ -32,7 +32,7 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
         buttonStyle={[{backgroundColor: 'transparent', marginLeft: -8}, style]}
         onPress={() => {
           Navigation.pop();
-          AppDefine.ocCall('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+          OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         }}
       />
     );

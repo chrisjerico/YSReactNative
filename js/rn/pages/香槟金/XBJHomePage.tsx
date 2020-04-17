@@ -12,7 +12,7 @@ import HomeNoticeComponent from './cp/HomeNoticeComponent';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGBasePage from '../base/UGBasePage';
 import {XBJHomeProps, XBJHomeStateToProps} from './XBJHomeProps';
-import {Dispatch} from '../../redux/store/Dispatch';
+import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
 import {ActionType} from '../../redux/store/ActionTypes';
 import {UGLoadingType} from '../base/UGBasePageProps';
 
@@ -32,7 +32,7 @@ class XBJHomePage extends UGBasePage<XBJHomeProps, IHomePageState> {
   requestData() {
     this.setProps({status: UGLoadingType.Loading});
 
-    Dispatch.updateUserInfo();
+    IGlobalStateHelper.updateUserInfo();
     NetworkRequest1.homeInfo()
       .then(value => {
         this.setProps({...value, status: UGLoadingType.Success});

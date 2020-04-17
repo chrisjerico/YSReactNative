@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import {View} from 'react-native';
-import {Button, Text, Icon, Card} from 'react-native-elements';
+import {Text, Card} from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
-import AppDefine, {NSValue} from '../../../public/define/AppDefine';
 import {UGPromoteModel} from '../../../redux/model/other/UGPromoteModel';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import LinearGradient from 'react-native-linear-gradient';
-import { UGColor } from '../../../public/theme/UGThemeColor';
-import { UGStore } from '../../../redux/store/UGStore';
-import { ActionType } from '../../../redux/store/ActionTypes';
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
+import AppDefine from '../../../public/define/AppDefine';
+import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
 
 interface IProps {
   list: Array<UGPromoteModel>;
@@ -57,7 +55,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             switch (this.style2) {
               // 内页
               case 'page': {
-                AppDefine.ocCall(({vc}) => ({
+                OCHelper.call(({vc}) => ({
                   vc: {
                     selectors: 'UGPromoteDetailController.new[setItem:]',
                     args1: [pm],
@@ -71,7 +69,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
               }
               // 弹框
               case 'popup': {
-                AppDefine.ocCall('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
                 break;
               }
               // 折叠

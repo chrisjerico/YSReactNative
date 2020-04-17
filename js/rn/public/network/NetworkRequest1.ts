@@ -1,10 +1,11 @@
 import {XBJHomeProps} from '../../pages/香槟金/XBJHomeProps';
 import CCSessionModel from './CCSessionModel';
 import AppDefine from '../define/AppDefine';
-import {UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
+import UGSysConfModel, {UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import UGUserModel, {UGLoginModel} from '../../redux/model/全局/UGUserModel';
 import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
+import { OCHelper } from '../define/OCHelper/OCHelper';
 
 export default class NetworkRequest1 {
   // 获取首页游戏列表
@@ -110,7 +111,7 @@ export default class NetworkRequest1 {
     email: string; // 邮箱
     regType: 'user' | 'agent'; // 用户注册 或 代理注册
   }): Promise<void> {
-    var accessToken = await AppDefine.ocCall('OpenUDID.value');
+    var accessToken = await OCHelper.call('OpenUDID.value');
     params = Object.assign({device: '3', accessToken: accessToken}, params);
     return await CCSessionModel.req('c=user&a=reg', params, true);
   }
@@ -140,6 +141,11 @@ export default class NetworkRequest1 {
       },
       true,
     );
+  }
+
+  // 获取系统配置信息
+  static system_config(): Promise<UGSysConfModel> {
+    return CCSessionModel.req('c=system&a=config');
   }
 
   // 上传错误日志

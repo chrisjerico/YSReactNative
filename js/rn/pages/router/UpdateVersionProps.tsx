@@ -1,9 +1,9 @@
-import {UGBasePageProps, basePageDefaultProps} from '../../base/UGBasePageProps';
-import {ActionType, UGAction} from '../../../redux/store/ActionTypes';
-import {PageName} from '../Navigation';
-import {IGlobalState} from '../../../redux/store/UGStore';
-import {mergeProps} from '../../../public/tools/FUtils';
-import {Skin1} from '../../../public/theme/UGSkinManagers';
+import {UGBasePageProps, basePageDefaultProps} from '../base/UGBasePageProps';
+import {ActionType, UGAction} from '../../redux/store/ActionTypes';
+import {PageName} from '../../public/navigation/Navigation';
+import {IGlobalState} from '../../redux/store/UGStore';
+import {mergeProps} from '../../public/tools/FUtils';
+import {Skin1} from '../../public/theme/UGSkinManagers';
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps {

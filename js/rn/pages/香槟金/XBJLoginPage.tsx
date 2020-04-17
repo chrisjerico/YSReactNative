@@ -15,7 +15,8 @@ import PushHelper from '../../public/define/PushHelper';
 import UGBasePage from '../base/UGBasePage';
 import {connect} from 'react-redux';
 import {XBJLoginStateToProps, XBJLoginProps} from './XBJLoginProps';
-import { Navigation, PageName } from '../router/Navigation';
+import { Navigation, PageName } from '../../public/navigation/Navigation';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 
 class XBJLoginPage extends UGBasePage<XBJLoginProps> {
   account: string = null; // 账号
@@ -27,10 +28,10 @@ class XBJLoginPage extends UGBasePage<XBJLoginProps> {
   constructor(props) {
     super(props);
     async function getLocalPwd(this: XBJLoginPage) {
-      let isRemember : boolean = await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
+      let isRemember : boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
       if (isRemember) {
-        this.account = await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
-        this.pwd = await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
+        this.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
+        this.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
       }
       if (this.props.rememberPassword == isRemember) {
         this.setState({});
@@ -52,50 +53,50 @@ class XBJLoginPage extends UGBasePage<XBJLoginProps> {
       err = '请完成滑动验证';
     }
     if (err) {
-      AppDefine.ocCall('HUDHelper.showMsg:', [err]);
+      OCHelper.call('HUDHelper.showMsg:', [err]);
       return;
     }
-    AppDefine.ocCall('SVProgressHUD.showWithStatus:', ['正在登录...']);
+    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
     NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
       .then((data) => {
         console.log('登录成功');
-        AppDefine.ocCall('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
 
         async function didLogin(this: XBJLoginPage) {
           // 退出旧账号（试玩账号）
-          var user = await AppDefine.ocCall('UGUserModel.currentUser');
+          var user = await OCHelper.call('UGUserModel.currentUser');
           if (user) {
             console.log('退出旧账号');
             console.log(user);
-            var sessid = await AppDefine.ocCall('UGUserModel.currentUser.sessid');
-            await AppDefine.ocCall('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
-            await AppDefine.ocCall('UGUserModel.setCurrentUser:');
-            await AppDefine.ocCall('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+            var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
+            await OCHelper.call('UGUserModel.setCurrentUser:');
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
           }
 
           // 保存数据
-          await AppDefine.ocCall('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
-          await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
-          await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
-          await AppDefine.ocCall('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
-          await AppDefine.ocCall('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
+          await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
+          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
+          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
+          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
 
           // 去下一页
           var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
           if (simplePwds.indexOf(this.pwd) > -1) {
-            await AppDefine.ocCall('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await AppDefine.ocCall('UGNavigationController.current.pushViewController:animated:', [
+            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
               {selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController']},
               true,
             ]);
           } else {
-            await AppDefine.ocCall('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
           }
         }
         didLogin.bind(this)();
       })
       .catch((err: Error) => {
-        AppDefine.ocCall('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
         if ((this.errorTimes += 1) > 3) {
           this.setState({});
         }
@@ -180,8 +181,8 @@ class XBJLoginPage extends UGBasePage<XBJLoginProps> {
               buttonStyle={{marginTop: 15, marginBottom: -5, backgroundColor: 'transparent'}}
               titleStyle={{fontSize: 12}}
               onPress={() => {
-                AppDefine.ocCall('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-                AppDefine.ocCall('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+                OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
               }}
             />
           </View>

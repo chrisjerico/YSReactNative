@@ -1,23 +1,20 @@
 import React, {Component} from 'react';
 import {ReactNode} from 'react';
-import {BackHandler, SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps} from 'react-native';
+import {BackHandler, SafeAreaView, StyleSheet, Text, View, Platform} from 'react-native';
 
-import {Button, Header} from 'react-native-elements';
+import {Button} from 'react-native-elements';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import {checkTrue} from '../../public/tools/Ext';
 import AppDefine from '../../public/define/AppDefine';
 import LinearGradient from 'react-native-linear-gradient';
-import {ugLog} from '../../public/tools/UgLog';
 import {UGBasePageProps, UGLoadingType} from './UGBasePageProps';
-import {NativeCommand} from '../../public/define/NativeCommand';
-import {Dispatch} from '../../redux/store/Dispatch';
 import {Skin1} from '../../public/theme/UGSkinManagers';
 import {UGStore} from '../../redux/store/UGStore';
-import {Navigation} from '../router/Navigation';
-import {BottomTabNavigationProp, BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {Router, RouterType} from '../router/Router';
+import {Navigation} from '../../public/navigation/Navigation';
 import UGNavigationBar from '../../public/widget/UGNavigationBar';
-import FUtils, {mergeProps} from '../../public/tools/FUtils';
+import {mergeProps} from '../../public/tools/FUtils';
+import {OCHelper} from '../../public/define/OCHelper/OCHelper';
+import {ANHelper, NativeCommand} from '../../public/define/ANHelper/ANHelper';
 
 /**
  * Arc
@@ -40,7 +37,7 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
     const {navigation, navbarOpstions = {}, tabbarOpetions = {}, pageName} = this.props;
 
     navigation.removeListener('focus', () => {
-      navigation.addListener('focus', e => {
+      navigation.addListener('focus', () => {
         console.log('viewWillAppier');
         console.log(this.props.pageName);
       });
@@ -124,15 +121,16 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
   clickLeftFunc = () => {
     //当前界面是否由原生打开，原生Android需要做前后台切换操作
     if (checkTrue(this.props.fromNative)) {
-      AppDefine.ocHelper.executeCmd(
-        JSON.stringify({
-          type: NativeCommand.MOVE_TO_BACK,
-        }),
-      );
+      ANHelper.call(NativeCommand.MOVE_TO_BACK);
     }
 
     Navigation.pop();
-    AppDefine.ocCall('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+
+    if (Platform.OS == 'ios') {
+      OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+    } else {
+      // TODO 安卓
+    }
   };
 
   /**

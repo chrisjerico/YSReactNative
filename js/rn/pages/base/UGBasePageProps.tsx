@@ -3,7 +3,7 @@ import {ActionType} from '../../redux/store/ActionTypes';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {BottomTabNavigationProp, BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {PageName} from '../router/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import {UGNavigationBarProps} from '../../public/widget/UGNavigationBar';
 
 export enum UGLoadingType {

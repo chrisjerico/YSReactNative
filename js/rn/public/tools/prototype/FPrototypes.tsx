@@ -1,27 +1,9 @@
-import objectPath from 'object-path';
 import md5 from 'blueimp-md5';
 
 export default class FPrototypes {
   static setupAll() {
-    this.setupArray();
     this.setupString();
     this.setupDate();
-  }
-
-  static setupArray() {
-    // 根据keyPath值获取元素
-    Array.prototype.objectWithValue = function(value: any, keyPath: string): any {
-      if (!value) {
-        return null;
-      }
-      for (var idx in this) {
-        var ele = this[idx];
-        if (objectPath.get(ele, keyPath) === value) {
-          return ele;
-        }
-      }
-      return null;
-    };
   }
 
   static setupDate() {

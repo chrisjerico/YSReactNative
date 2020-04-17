@@ -10,12 +10,10 @@ import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import AppDefine from '../../public/define/AppDefine';
 import UGTextField from '../../public/widget/UGTextField';
 import UGBasePage from '../base/UGBasePage';
-import {Dispatch} from '../../redux/store/Dispatch';
-import {ActionType} from '../../redux/store/ActionTypes';
 import {XBJRegisterProps, XBJRegisterStateToProps} from './XBJRegisterProps';
 import {connect} from 'react-redux';
-import { UGStore } from '../../redux/store/UGStore';
-import { Navigation, PageName } from '../router/Navigation';
+import { Navigation, PageName } from '../../public/navigation/Navigation';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 
 export class XBJRegisterPage extends UGBasePage<XBJRegisterProps> {
   referrerId: string = ''; // 推荐人ID
@@ -96,7 +94,7 @@ export class XBJRegisterPage extends UGBasePage<XBJRegisterProps> {
       err = '请输入短信验证码';
     }
     if (err) {
-      AppDefine.ocCall('HUDHelper.showMsg:', [err]);
+      OCHelper.call('HUDHelper.showMsg:', [err]);
       return;
     }
 
@@ -120,7 +118,7 @@ export class XBJRegisterPage extends UGBasePage<XBJRegisterProps> {
         console.log(data);
       })
       .catch((err: Error) => {
-        AppDefine.ocCall('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
       });
   }
 
@@ -288,7 +286,7 @@ export class XBJRegisterPage extends UGBasePage<XBJRegisterProps> {
                     startCountdown();
                   })
                   .catch(err => {
-                    AppDefine.ocCall('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
                   });
               }}
               onChangeText={text => {

@@ -1,5 +1,5 @@
 import {Platform, ToastAndroid} from 'react-native';
-import AppDefine from '../define/AppDefine';
+import {OCHelper} from '../define/OCHelper/OCHelper';
 
 /**
  * Toast 提示
@@ -8,7 +8,7 @@ import AppDefine from '../define/AppDefine';
  */
 export const Toast = (s?: string) => {
   if (Platform.OS == 'ios') {
-    AppDefine.ocCall('HUDHelper.showMsg:', [s]);
+    OCHelper.call('HUDHelper.showMsg:', [s]);
   } else {
     ToastAndroid.show(s, ToastAndroid.SHORT);
   }

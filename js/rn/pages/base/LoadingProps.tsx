@@ -1,7 +1,7 @@
 import {UGBasePageProps, basePageDefaultProps} from './UGBasePageProps';
 import {mergeProps} from '../../public/tools/FUtils';
 import {ActionType, UGAction} from '../../redux/store/ActionTypes';
-import {PageName} from '../router/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import {IGlobalState} from '../../redux/store/UGStore';
 import {Skin1} from '../../public/theme/UGSkinManagers';
 
