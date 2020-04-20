@@ -13,7 +13,6 @@ export interface XBJLoginProps extends UGBasePageProps {
 // Props默认值
 const defaultProps = mergeProps<XBJLoginProps>(basePageDefaultProps, {
   actType: ActionType.XBJLogin_SetProps,
-  pageName: PageName.XBJLoginPage,
   navbarOpstions: {backgroundColor: 'transparent', hideUnderline: true, back: true},
   rememberPassword: true,
 });

@@ -7,15 +7,15 @@ import {XBJMineProps, XBJMineReducer} from '../../pages/香槟金/XBJMineProps';
 import {XBJRegisterProps, XBJRegisterReducer} from '../../pages/香槟金/XBJRegisterProps';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import {SysConfReducer, UserInfoReducer} from './IGlobalStateHelper';
+import {SysConfReducer, UserInfoReducer, AsyncStorageKey} from './IGlobalStateHelper';
 import {UGAction, ActionType} from './ActionTypes';
 import {AsyncStorage} from 'react-native';
 import {UpdateVersionProps, UpdateVersionReducer} from '../../pages/router/UpdateVersionProps';
-import {LoadingProps, LoadingReducer} from '../../pages/base/LoadingProps';
+import {TransitionProps, TransitionReducer} from '../../pages/base/TransitionProps';
 
 // 整个State的树结构
 export interface IGlobalState {
-  LoadingReducer: LoadingProps;
+  TransitionReducer: TransitionProps;
   // 经典
   JDPromotionListReducer: JDPromotionListProps; // 优惠活动
 
@@ -37,7 +37,7 @@ export interface IGlobalState {
 const rootReducer = combineReducers({
   // 经典
   JDPromotionListReducer, // 优惠活动页
-  LoadingReducer, // 占位页面
+  TransitionReducer, // 占位页面
 
   // 香槟金
   XBJHomeReducer, // 首页
@@ -64,13 +64,13 @@ export class UGStore {
 
   // 从本地获取所有数据，并刷新UI
   static refreshFromLocalData() {
-    AsyncStorage.getItem('IGlobalState').then(value => {
+    AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
       UGStore.dispatch({type: ActionType.UpdateAll, state: JSON.parse(value)});
     });
   }
 
   // 存储到本地
   static save() {
-    AsyncStorage.setItem('IGlobalState', JSON.stringify(this.store.getState()));
+    AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.store.getState()));
   }
 }

@@ -4,20 +4,19 @@ import {PageName} from '../../public/navigation/Navigation';
 import {IGlobalState} from '../../redux/store/UGStore';
 import {mergeProps} from '../../public/tools/FUtils';
 import {Skin1} from '../../public/theme/UGSkinManagers';
+import {UGColor} from '../../public/theme/UGThemeColor';
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps {
-  rnProgress?: number;
-  jspProgress?: number;
+  progress?: number;
 }
 
 // Props默认值
 const defaultProps = mergeProps<UpdateVersionProps>(basePageDefaultProps, {
   actType: ActionType.UpdateVersion_SetProps,
-  pageName: PageName.UpdateVersionPage,
-  rnProgress: 0,
-  jspProgress: 0,
-  navbarOpstions: {backgroundColor: 'transparent', hideUnderline: true},
+  progress: 0,
+  navbarOpstions: {hidden: true},
+  backgroundColor: [UGColor.BackgroundColor2],
 });
 
 // 更新Props到全局数据
@@ -30,7 +29,5 @@ export function UpdateVersionReducer(prevState: UpdateVersionProps = defaultProp
 
 // 从全局数据中传递到Props（mapStateToProps）
 export function UpdateVersionStateToProps(state: IGlobalState): UpdateVersionProps {
-  return mergeProps(state.UpdateVersionReducer, {
-    backgroundColor: Skin1.bgColor,
-  });
+  return mergeProps(state.UpdateVersionReducer, {});
 }

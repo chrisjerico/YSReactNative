@@ -7,6 +7,11 @@ import UGSkinManagers from '../../public/theme/UGSkinManagers';
 import {Platform} from 'react-native';
 import {setRnPageInfo} from '../../public/define/OCHelper/SetRnPageInfo';
 
+export const AsyncStorageKey = {
+  IGlobalState: 'IGlobalState',
+  currentPage: 'currentPage',
+};
+
 export class IGlobalStateHelper {
   // 获取用户信息
   static updateUserInfo() {

@@ -16,7 +16,6 @@ export interface XBJRegisterProps extends UGBasePageProps {
 // Props默认值
 const defaultProps = mergeProps<XBJRegisterProps>(basePageDefaultProps, {
   actType: ActionType.XBJRegister_SetProps,
-  pageName: PageName.XBJRegisterPage,
   navbarOpstions: {backgroundColor: 'transparent', hideUnderline: true, back: true},
   isAgent: false,
   accountErr: null,

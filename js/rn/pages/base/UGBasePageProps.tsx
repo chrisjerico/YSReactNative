@@ -18,14 +18,15 @@ export enum UGLoadingType {
 export interface UGBasePageProps {
   // React-Navigation
   navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}>; // 导航助手
+  route?: {name: PageName; params: any};
 
   // 无需处理的值
   actType?: ActionType; // SetProps的ActionType
   status?: UGLoadingType; // loading状态
-  pageName?: PageName; // 页面名
 
   // —————————— 预设值 ——————————
   backgroundColor?: string[]; // 背景色
+  backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps; // 顶部导航条Options
   tabbarOpetions?: BottomTabNavigationOptions; // 底部标签栏Options
 

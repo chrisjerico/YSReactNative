@@ -1,5 +1,4 @@
 import {IGlobalStateHelper} from './../../../../redux/store/IGlobalStateHelper';
-import {ugLog} from '../../../tools/UgLog';
 import {OCCall} from './OCCall';
 import {PageName, Navigation} from '../../../navigation/Navigation';
 import {RnPageModel} from '../SetRnPageInfo';
@@ -21,7 +20,7 @@ export class OCEvent extends OCCall {
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: {_EventName: OCEventType; params: any}) => {
-      ugLog('rn收到oc通知：', params);
+      console.log('rn收到oc通知：', params);
       this.events
         .filter(v => {
           return v.type == params._EventName;
@@ -46,7 +45,7 @@ export class OCEvent extends OCCall {
         if (Navigation.pages.length > 1) {
           Navigation.pop();
         } else {
-          Navigation.jump(PageName.LoadingPage);
+          Navigation.jump(PageName.TransitionPage);
         }
       }
     });

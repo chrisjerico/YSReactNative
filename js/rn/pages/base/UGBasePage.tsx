@@ -5,7 +5,6 @@ import {BackHandler, SafeAreaView, StyleSheet, Text, View, Platform} from 'react
 import {Button} from 'react-native-elements';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import {checkTrue} from '../../public/tools/Ext';
-import AppDefine from '../../public/define/AppDefine';
 import LinearGradient from 'react-native-linear-gradient';
 import {UGBasePageProps, UGLoadingType} from './UGBasePageProps';
 import {Skin1} from '../../public/theme/UGSkinManagers';
@@ -15,6 +14,7 @@ import UGNavigationBar from '../../public/widget/UGNavigationBar';
 import {mergeProps} from '../../public/tools/FUtils';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
 import {ANHelper, NativeCommand} from '../../public/define/ANHelper/ANHelper';
+import FastImage from 'react-native-fast-image';
 
 /**
  * Arc
@@ -34,26 +34,23 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
   constructor(props) {
     super(props);
 
-    const {navigation, navbarOpstions = {}, tabbarOpetions = {}, pageName} = this.props;
-
-    navigation.removeListener('focus', () => {
+    // 配置导航
+    {
+      const {navigation, navbarOpstions = {}, tabbarOpetions = {}, route} = this.props;
+      navigation.removeListener('focus', null);
       navigation.addListener('focus', () => {
-        console.log('viewWillAppier');
-        console.log(this.props.pageName);
+        const {name, params} = this.props.route;
+        console.log('成为焦点', name, params);
+        this.didFocus && this.didFocus(params);
+        this.setProps(params);
       });
-    });
-    navigation.setOptions({header: null});
-    console.log('页面初始化');
-    console.log(pageName);
-    console.log(navbarOpstions);
-
-    if (navigation.push && navigation.jumpTo) {
-      Navigation.setNavigation(navigation);
-    }
-    if (navigation.pop) {
-      navigation.setOptions(navbarOpstions);
-    } else if (navigation.jumpTo) {
-      navigation.setOptions(tabbarOpetions);
+      navigation.setOptions({header: null});
+      if (navigation.push && navigation.jumpTo) {
+        Navigation.setNavigation(navigation);
+      }
+      navigation.pop && navigation.setOptions(navbarOpstions);
+      navigation.jumpTo && navigation.setOptions(tabbarOpetions);
+      console.log('页面初始化', route.name);
     }
   }
 
@@ -61,6 +58,11 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
    * 请求数据
    */
   abstract requestData(): void;
+
+  /**
+   * 成为焦点页面
+   */
+  abstract didFocus(params: P): void;
 
   /**
    * 绘制中间区域，实际内容
@@ -174,7 +176,8 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
    * 绘制整个界面
    */
   render(): ReactNode {
-    let {backgroundColor = []} = this.props;
+    console.log('渲染', this.props.route.name);
+    let {backgroundColor = [], backgroundImage = ''} = this.props;
     if (backgroundColor.length < 1) {
       backgroundColor = ['#fff', '#fff'];
     } else if (backgroundColor.length < 2) {
@@ -182,13 +185,16 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
     }
     return (
       <LinearGradient colors={backgroundColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1}}>
-        {this.renderHeader()}
-        <SafeAreaView style={_styles.safeContainer}>{this._renderContentOrLoading()}</SafeAreaView>
+        <FastImage source={{uri: backgroundImage}} style={{flex: 1}}>
+          {this.renderHeader()}
+          <SafeAreaView style={_styles.safeContainer}>{this._renderContentOrLoading()}</SafeAreaView>
+        </FastImage>
       </LinearGradient>
     );
   }
 
   componentDidMount(): void {
+    console.log('componentDidMount', this.props.route.name);
     this.requestData();
     BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
   }

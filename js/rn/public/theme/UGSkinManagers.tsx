@@ -10,9 +10,9 @@ import chroma from 'chroma-js';
 import FUtils from '../tools/FUtils';
 import {Platform} from 'react-native';
 import AppDefine from '../define/AppDefine';
-import {ugLog} from '../tools/UgLog';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
+import { B_DEBUG } from '../tools/UgLog';
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: {[x: string]: UGThemeColor} = {
@@ -44,6 +44,9 @@ export default class UGSkinManagers extends UGThemeColor {
       9: `简约模板${mobileTemplateStyle}`,
     };
     let key = dict[mobileTemplateCategory];
+    if (B_DEBUG) {
+      // key = '香槟金3';
+    }
     let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
@@ -81,7 +84,6 @@ export default class UGSkinManagers extends UGThemeColor {
             .hex()
             .slice(0, 7);
           const a2 = chroma(v[1]).alpha();
-          ugLog(c1);
           await OCHelper.call('UGSkinManagers.currentSkin.setValue:forKey:', [
             {
               selectors: 'UIColor.colorWithPatternImage:',

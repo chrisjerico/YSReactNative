@@ -6,7 +6,7 @@ import {DrawerNavigationProp} from '@react-navigation/drawer';
 import React from 'react';
 
 export enum PageName {
-  LoadingPage = 'LoadingPage',
+  TransitionPage = 'TransitionPage',
   XBJLoginPage = 'XBJLoginPage',
   XBJRegisterPage = 'XBJRegisterPage',
   XBJMinePage = 'XBJMinePage',
@@ -19,7 +19,7 @@ export class Navigation {
   // 当前存活的页面（第一个页面是Tabbar的当前页面）
   static pages: PageName[] = [PageName.UpdateVersionPage];
 
-  private static navigation: StackNavigationProp<{[x: string]: object}> & BottomTabNavigationProp<{[x: string]: object}>;
+  private static navigation: StackNavigationProp<{[x: string]: any}> & BottomTabNavigationProp<{[x: string]: any}>;
   static setNavigation(navigation) {
     if (!this.navigation) {
       this.navigation = navigation;
@@ -40,32 +40,34 @@ export class Navigation {
   }
 
   // 切换标签页
-  static jump(page: PageName): boolean {
-    return this.smartNavigate(RouterType.Tab, page);
+  static jump<P>(page: PageName, props?: P): boolean {
+    return this.smartNavigate(RouterType.Tab, page, props);
   }
 
   // 智能跳转
-  static smartNavigate(priorityType: RouterType, page: PageName, props?: object): boolean {
+  static smartNavigate<P>(priorityType: RouterType, page: PageName, props?: P): boolean {
     if (!this.navigation) return false;
+
     const routerType = Router.getPageRouterType(page, priorityType);
     switch (routerType) {
       case RouterType.Stack: {
-        console.log('跳转到堆栈页面');
-        console.log(page);
         this.navigation.push(page, props);
         this.pages.push(page);
         return true;
       }
       case RouterType.Tab: {
-        console.log('跳转到底部标签页面');
-        console.log(page);
-        this.navigation.jumpTo(page, props);
-        this.pages[0] = page;
+        if (page == PageName.TransitionPage || this.pages[0] == PageName.TransitionPage) {
+          this.pages[0] = page;
+          this.navigation.jumpTo(page, props);
+          console.log('跳转到', page);
+        } else {
+          this.pages[0] = PageName.TransitionPage;
+          this.navigation.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props });
+          console.log('跳转到过渡页');
+        }
         return true;
       }
       case RouterType.Drawer: {
-        console.log('跳转到侧边栏页面');
-        console.log(page);
         return true;
       }
     }

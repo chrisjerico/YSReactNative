@@ -41,9 +41,9 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     };
   }
 
-  renderCell(pm: UGPromoteModel, idx: number, margin:number) {
-    var marginHorizontal = this.style1 === '贴边' ? 0 : 5;
-    var marginVertical = this.style1 === '贴边' ? 0 : 5;
+  renderCell(pm: UGPromoteModel, idx: number) {
+    let marginHorizontal = this.style1 === '贴边' ? 0 : 5 + (this.style1 == '边框' ? 11 : 0);
+    const marginVertical = this.style1 === '贴边' ? 0 : 5;
     let contentView = (
       <View style={{marginHorizontal: marginHorizontal, marginVertical: marginVertical}}>
         <TouchableOpacity
@@ -87,7 +87,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             source={{uri: pm.pic}}
             onLoad={(e) => {
               if (!pm.picHeight) {
-                pm.picHeight = ((AppDefine.width - (margin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
+                pm.picHeight = ((AppDefine.width - (marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
                 this.setState({});
               }
             }}
@@ -135,7 +135,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       );
     }
     return (
-      <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index, 11)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
+      <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
     );
   }
 }

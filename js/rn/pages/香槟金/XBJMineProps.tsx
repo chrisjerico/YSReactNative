@@ -21,7 +21,6 @@ export interface XBJMineProps extends UGBasePageProps {
 // Props默认值
 const defaultProps = mergeProps<XBJMineProps>(basePageDefaultProps, {
   actType: ActionType.XBJMine_SetProps,
-  pageName: PageName.XBJMinePage,
   tabbarOpetions: {unmountOnBlur: false},
   navbarOpstions: {
     title: '我的',

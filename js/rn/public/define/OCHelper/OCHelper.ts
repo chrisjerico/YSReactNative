@@ -23,19 +23,19 @@ export class OCHelper extends OCEvent {
   }
 
   // 配置
-  static setup() {
+  static async setup() {
     super.setup();
 
     // 设置接口域名
-    OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+    await OCHelper.call('AppDefine.shared.Host').then((host: string) => {
       AppDefine.host = host;
     });
     // 设置站点编号
-    OCHelper.call('AppDefine.shared.SiteId').then((siteId: string) => {
+    await OCHelper.call('AppDefine.shared.SiteId').then((siteId: string) => {
       AppDefine.siteId = siteId;
     });
     // 获取系统配置信息
-    OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+    await OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
       IGlobalStateHelper.updateSysConf(sysConf);
     });
   }

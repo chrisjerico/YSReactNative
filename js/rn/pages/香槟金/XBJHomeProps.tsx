@@ -40,7 +40,6 @@ const defaultProps = mergeProps<XBJHomeProps>(basePageDefaultProps, {
   navbarOpstions: {hidden: true},
   tabbarOpetions: {unmountOnBlur: false},
   actType: ActionType.XBJHome_SetProps,
-  pageName: PageName.XBJHomePage,
   status: UGLoadingType.Loading, //默认一进入打开 loading
 });
 

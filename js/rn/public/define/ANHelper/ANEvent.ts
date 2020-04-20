@@ -1,5 +1,4 @@
 import {UGBridge} from './UGBridge';
-import {ugLog} from '../../tools/UgLog';
 import {PageName, Navigation} from '../../navigation/Navigation';
 import {RnPageModel} from '../OCHelper/SetRnPageInfo';
 
@@ -14,14 +13,14 @@ export class ANEvent extends UGBridge {
     // 监听原生发过来的事件通知
     this.emitter.addListener('UGEventEmitter', params => {
       // Toast('params='+ params);
-      ugLog(`params=${params}`);
+      console.log(`params=${params}`);
       let pms = JSON.parse(params);
       Navigation.push(pms.sceneKey, { fromNative: true, type: ActionConst.REPLACE, ...pms?.props, });
     });
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: {_EventName: ANEventType; params: any}) => {
-      ugLog('rn收到oc通知：', params);
+      console.log('rn收到oc通知：', params);
       this.events
         .filter(v => {
           return v.type == params._EventName;
@@ -46,7 +45,7 @@ export class ANEvent extends UGBridge {
         if (Navigation.pages.length > 1) {
           Navigation.pop();
         } else {
-          Navigation.jump(PageName.LoadingPage);
+          Navigation.jump(PageName.TransitionPage);
         }
       }
     });

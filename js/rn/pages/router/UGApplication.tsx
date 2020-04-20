@@ -6,7 +6,7 @@ import {BottomTabBarOptions} from '@react-navigation/bottom-tabs';
 import {Router} from '../../public/navigation/Router';
 import {PageName} from '../../public/navigation/Navigation';
 import UpdateVersionPage from './UpdateVersionPage';
-import LoadingPage from '../base/LoadingPage';
+import TransitionPage from '../base/TransitionPage';
 import XBJLoginPage from '../香槟金/XBJLoginPage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import XBJMinePage from '../香槟金/XBJMinePage';
@@ -31,12 +31,12 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
     return (
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
-        <Router.TabScreen name={PageName.LoadingPage} component={LoadingPage} />
+        <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
         <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
         <Router.TabScreen name={PageName.XBJMinePage} component={XBJMinePage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
-        <Router.TabScreen name={PageName.XBJHomePage} component={XBJHomePage} options={{unmountOnBlur: false}} />
+        <Router.TabScreen name={PageName.XBJHomePage} component={XBJHomePage} />
       </Router.TabNavigator>
     );
   }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Alert} from 'react-native';
+import {View, Alert, Platform} from 'react-native';
 import {Button, Text, Avatar} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
@@ -16,6 +16,7 @@ import {ActionType} from '../../redux/store/ActionTypes';
 import {UGColor} from '../../public/theme/UGThemeColor';
 import {Skin1} from '../../public/theme/UGSkinManagers';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
+import {Toast} from '../../public/tools/ToastUtils';
 
 class XBJMinePage extends UGBasePage<XBJMineProps> {
   requestData() {
@@ -25,6 +26,7 @@ class XBJMinePage extends UGBasePage<XBJMineProps> {
       this.setProps({dataArray: dataArray});
     });
 
+    console.log('获取用户信息');
     // 获取用户信息
     IGlobalStateHelper.updateUserInfo();
   }
@@ -143,11 +145,17 @@ class XBJMinePage extends UGBasePage<XBJMineProps> {
               {text: '取消', style: 'cancel'},
               {
                 text: '确定',
-                onPress: () => {
+                onPress: async () => {
                   NetworkRequest1.user_logout();
-                  // Todo 安卓
-                  OCHelper.call('UGUserModel.setCurrentUser:', [null]);
-                  OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+
+                  if (Platform.OS == 'ios') {
+                    await OCHelper.call('UGUserModel.setCurrentUser:', []);
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                    await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+                    Toast('退出成功');
+                  } else {
+                    // TODO 安卓
+                  }
                 },
               },
             ]);

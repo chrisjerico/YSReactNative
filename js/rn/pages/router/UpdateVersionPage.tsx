@@ -1,27 +1,31 @@
 import CodePush from 'react-native-code-push';
-import React, {Component} from 'react';
-import {View, Text, Platform} from 'react-native';
-import {Card} from 'react-native-elements';
+import React from 'react';
+import {View, Text, Platform, AsyncStorage} from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
-import FastImage from 'react-native-fast-image';
 import AppDefine from '../../public/define/AppDefine';
-import {Skin1} from '../../public/theme/UGSkinManagers';
-import {Navigation, PageName} from '../../public/navigation/Navigation';
 import UGBasePage from '../base/UGBasePage';
 import {UpdateVersionStateToProps, UpdateVersionProps} from './UpdateVersionProps';
 import {connect} from 'react-redux';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
 import {OCEventType} from '../../public/define/OCHelper/OCBridge/OCEvent';
+import {AsyncStorageKey} from '../../redux/store/IGlobalStateHelper';
+import {Navigation, PageName} from '../../public/navigation/Navigation';
 
 class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
-  newVersion: string = '';
+  rnInstalled: boolean = false;
+  type: 'rn' | 'jspatch' = 'rn';
 
   constructor(props) {
     super(props);
     // 必须在注册监听之后执行
     if (Platform.OS == 'ios') {
       OCHelper.launchFinish();
+      OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
+        if (pics && pics.length) {
+          this.setProps({backgroundImage: pics[0]});
+        }
+      });
     } else {
       // TODO 安卓
     }
@@ -29,22 +33,39 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
 
   requestData(): void {}
 
+  didFocus() {}
+
   updateJspatch() {
-    this.setProps({rnProgress: 1});
+    this.setProps({progress: 0});
+
     CodePush.getUpdateMetadata(2)
       .then(localPackage => {
         console.log('rn版本号为：' + localPackage.description);
         // 开始更新jspatch
         OCHelper.call('JSPatchHelper.updateVersion:progress:completion:', [localPackage.description]);
         OCHelper.addEvent(OCEventType.JspatchDownloadProgress, (progress: number) => {
-          this.setProps({jspProgress: progress});
+          this.setProps({progress: progress});
         });
         OCHelper.addEvent(OCEventType.JspatchUpdateComplete, (ret: boolean) => {
-          this.setProps({jspProgress: 1});
+          this.setProps({progress: 1});
+
           if (ret) {
             console.log('更新成功，重启APP生效');
-            // 弹框提示。。。
-            // OCHelper.call("ReactNativeHelper.exit");
+            // if (this.rnInstalled) {
+            //   console.log('重启APP');
+            //   AsyncStorage.setItem(AsyncStorageKey.currentPage, Navigation.pages[0], () => {
+            //     CodePush.restartApp(true);
+            //   });
+            // } else {
+            //   AsyncStorage.getItem(AsyncStorageKey.currentPage, (err, ret: PageName) => {
+            //     if (ret) {
+            //       if (ret != PageName.UpdateVersionPage) {
+            //         Navigation.jump(ret);
+            //       }
+            //       AsyncStorage.setItem(AsyncStorageKey.currentPage, null);
+            //     }
+            //   });
+            // }
           } else {
             console.log('jsp下载失败');
             // 弹框让用户去外部链接下载
@@ -108,45 +129,38 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
             console.log('rn热更新出错❌');
             break;
           case CodePush.SyncStatus.UPDATE_INSTALLED:
-            console.log('rn热更新安装成功下次启动生效');
+            console.log('rn热更新安装成功，jspatch安装后生效');
+            this.rnInstalled = true;
             this.updateJspatch();
-            // 弹框提示
-            OCHelper.call('AppDefine.shared.Test').then((isTest: boolean) => {
-              isTest && OCHelper.call('AlertHelper.showAlertView:msg:btnTitles:', ['更新提示', '热更新成功重启APP生效', ['确认']]);
-            });
             break;
         }
       },
       progress => {
         var p = progress.receivedBytes / progress.totalBytes;
-        this.setProps({rnProgress: p});
+        this.setProps({progress: p});
         console.log('rn热更新包下载进度：' + p);
       },
     );
   }
 
   renderContent(): React.ReactNode {
-    var p = this.props.rnProgress * 0.5 + this.props.jspProgress * 0.5;
+    let {progress} = this.props;
     return (
       <View style={{flex: 1}}>
-        {/* 7F9493 , 5389B3 */}
-        <LinearGradient colors={Skin1.bgColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1, padding: 25, justifyContent: 'center'}}>
-          <Card containerStyle={{borderWidth: 8, borderRadius: 12}}>
-            <FastImage source={{uri: 'https://i.ibb.co/0jFrhHw/1.png'}} resizeMode="stretch" style={{marginLeft: -16, marginRight: -16, marginTop: -51, height: 140}} />
-            <View>
-              <Text style={{margin: 10, fontSize: 15}}>更新内容：</Text>
-              <Text style={{margin: 10, marginTop: 5, fontSize: 15, color: '#222'}}>1. 更新了太多人吐槽的界面。</Text>
-              <Text style={{margin: 10, marginTop: 0, fontSize: 15, color: '#222'}}>2. 修复了一些bug。</Text>
-              <Text style={{marginTop: 20, fontSize: 13, color: '#AAA', textAlign: 'center'}}>Wi-Fi情况下更新不到30秒哦</Text>
-            </View>
-            <Progress.Bar progress={p} borderWidth={0.5} borderRadius={9} unfilledColor="white" height={15} width={AppDefine.width - 130} style={{marginTop: 50}} />
-            {p >= 1 ? (
-              <Text style={{textAlign: 'center', marginTop: 15, marginBottom: 20, color: '#000'}}>更新完成，重启APP生效</Text>
-            ) : (
-              <Text style={{textAlign: 'center', marginTop: 15, marginBottom: 20, color: '#000'}}>版本正在努力更新中，请等候...</Text>
-            )}
-          </Card>
-          <View style={{height: AppDefine.height * 0.11}} />
+        <View style={{flex: 1}} />
+        <LinearGradient colors={['transparent', '#00000066']}>
+          <View style={{height: 120}} />
+          <Text style={{marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500'}}>正在努力更新中...</Text>
+          <Progress.Bar
+            progress={progress}
+            borderWidth={0.5}
+            borderRadius={4}
+            unfilledColor="#aaa"
+            color="white"
+            height={4}
+            width={AppDefine.width - 40}
+            style={{marginLeft: 20, marginTop: 10, marginBottom: 60}}
+          />
         </LinearGradient>
       </View>
     );
