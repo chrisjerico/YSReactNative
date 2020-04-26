@@ -1,5 +1,5 @@
 import CodePush from 'react-native-code-push';
-import React from 'react';
+import React, {version} from 'react';
 import {View, Text, Platform, AsyncStorage} from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
@@ -54,26 +54,16 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
 
           // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
           OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
-            const ret = ver.split('.')[0] + ver.split('.')[1] + localPackage.description.split('.')[2];
+            const ret = ver.split('.')[0] + '.' + ver.split('.')[1] + '.' + localPackage.description.split('.')[2];
             OCHelper.call('AppDefine.shared.setVersion:', [ret]);
           });
 
           if (ret) {
-            console.log('更新成功，重启APP生效');
-            if (this.rnInstalled) {
+            console.log('更新成功，重启APP生效', Navigation.pages);
+            if (this.rnInstalled && Navigation.pages[0] == PageName.UpdateVersionPage) {
               console.log('正在重启RN');
-              AsyncStorage.setItem(AsyncStorageKey.currentPage, Navigation.pages[0], () => {
-                CodePush.restartApp(true);
-              });
+              CodePush.restartApp(true);
             } else {
-              AsyncStorage.getItem(AsyncStorageKey.currentPage, (err, ret: PageName) => {
-                if (ret) {
-                  if (ret != PageName.UpdateVersionPage) {
-                    Navigation.jump(ret);
-                  }
-                  AsyncStorage.setItem(AsyncStorageKey.currentPage, null);
-                }
-              });
             }
           } else {
             console.log('jsp下载失败');

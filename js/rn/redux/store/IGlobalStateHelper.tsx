@@ -9,7 +9,6 @@ import {setRnPageInfo} from '../../public/define/OCHelper/SetRnPageInfo';
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
-  currentPage: 'currentPage',
 };
 
 export class IGlobalStateHelper {
