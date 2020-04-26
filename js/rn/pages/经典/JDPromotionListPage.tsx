@@ -11,6 +11,8 @@ import {Text} from 'react-native-elements';
 import {View} from 'react-native';
 
 class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
+  didFocus(params: JDPromotionListProps): void { }
+  
   requestData() {
     NetworkRequest1.systeam_promotions().then(data => {
       if (data.showCategory) {
@@ -70,7 +72,7 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
                 backgroundColor: idx == props.activeTab ? Skin1.themeColor : 'transparent',
                 textAlign: 'center',
                 fontSize: 15,
-                color: idx == props.activeTab ? 'white' : '#eee',
+                color: idx == props.activeTab ? 'white' : Skin1.bgTextColor,
                 borderRadius: 3,
                 overflow: true,
               }}>

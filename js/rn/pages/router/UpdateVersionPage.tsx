@@ -36,6 +36,9 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
   didFocus() {}
 
   updateJspatch() {
+    Navigation.jump(PageName.UpdateVersionPage);
+    if (Platform.OS != 'ios') return;
+
     this.setProps({progress: 0});
 
     CodePush.getUpdateMetadata(2)
@@ -51,21 +54,21 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
 
           if (ret) {
             console.log('更新成功，重启APP生效');
-            // if (this.rnInstalled) {
-            //   console.log('重启APP');
-            //   AsyncStorage.setItem(AsyncStorageKey.currentPage, Navigation.pages[0], () => {
-            //     CodePush.restartApp(true);
-            //   });
-            // } else {
-            //   AsyncStorage.getItem(AsyncStorageKey.currentPage, (err, ret: PageName) => {
-            //     if (ret) {
-            //       if (ret != PageName.UpdateVersionPage) {
-            //         Navigation.jump(ret);
-            //       }
-            //       AsyncStorage.setItem(AsyncStorageKey.currentPage, null);
-            //     }
-            //   });
-            // }
+            if (this.rnInstalled) {
+              console.log('正在重启RN');
+              AsyncStorage.setItem(AsyncStorageKey.currentPage, Navigation.pages[0], () => {
+                CodePush.restartApp(true);
+              });
+            } else {
+              AsyncStorage.getItem(AsyncStorageKey.currentPage, (err, ret: PageName) => {
+                if (ret) {
+                  if (ret != PageName.UpdateVersionPage) {
+                    Navigation.jump(ret);
+                  }
+                  AsyncStorage.setItem(AsyncStorageKey.currentPage, null);
+                }
+              });
+            }
           } else {
             console.log('jsp下载失败');
             // 弹框让用户去外部链接下载
@@ -150,7 +153,7 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
         <View style={{flex: 1}} />
         <LinearGradient colors={['transparent', '#00000066']}>
           <View style={{height: 120}} />
-          <Text style={{marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500'}}>正在努力更新中...</Text>
+          <Text style={{marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500'}}>{this.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
           <Progress.Bar
             progress={progress}
             borderWidth={0.5}

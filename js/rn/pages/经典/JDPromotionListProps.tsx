@@ -17,6 +17,7 @@ export interface JDPromotionListProps extends UGBasePageProps {
 const defaultProps = mergeProps<JDPromotionListProps>(basePageDefaultProps, {
   actType: ActionType.JDPromotionList_SetProps,
   navbarOpstions: {title: '优惠活动', back: true},
+  tabbarOpetions: {unmountOnBlur: false},
   dataArray: [],
   style: 'page',
   showTopBar: false,

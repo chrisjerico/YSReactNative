@@ -3,10 +3,6 @@ export class UGThemeColor {
   skitType = '默认';
   skitString = '默认'; // 皮肤类型
 
-  themeColor?: string; // 主题色
-  themeDarkColor?: string; // 主题色加深
-  themeLightColor?: string; // 主题色加浅
-
   bgColor = ['#7F9493', '#5389B3']; // 背景 渐变色
   navBarBgColor = ['#609AC5', '#609AC5']; // 导航条背景色
   progressBgColor = ['#d80000', '#fb5959']; // 进度条背景渐变色
@@ -25,6 +21,12 @@ export class UGThemeColor {
   conversionCellColor = '#7BA2C2'; // 内容Cell
   intoViewColor = '#7BA2C2'; // 转入View
   moneyCellColor = '#9BB8CB'; // 金额Cell
+
+  // 根据主题色自动生成色值
+  themeColor?: string; // 主题色
+  themeDarkColor?: string; // 主题色加深
+  themeLightColor?: string; // 主题色加浅
+  bgTextColor?: string; // bgColor上的文本颜色
 }
 
 /**

@@ -22,6 +22,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   style1: '贴边' | '边框' | '内间距' = '内间距';
   style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
+  once: boolean = true;
 
   constructor(props) {
     super(props);
@@ -98,7 +99,10 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             onNavigationStateChange={(title) => {
               if (!pm.webViewHeight && parseInt(title.title)) {
                 pm.webViewHeight = parseInt(title.title);
-                this.setState({});
+                if (this.once) {
+                  this.once = false;
+                  this.setState({});
+                }
               }
             }}
             style={{flex: 1}}
