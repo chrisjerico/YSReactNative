@@ -52,6 +52,12 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
         OCHelper.addEvent(OCEventType.JspatchUpdateComplete, (ret: boolean) => {
           this.setProps({progress: 1});
 
+          // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
+          OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
+            const ret = ver.split('.')[0] + ver.split('.')[1] + localPackage.description.split('.')[2];
+            OCHelper.call('AppDefine.shared.setVersion:', [ret]);
+          });
+
           if (ret) {
             console.log('更新成功，重启APP生效');
             if (this.rnInstalled) {

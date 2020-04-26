@@ -38,5 +38,10 @@ export class OCHelper extends OCEvent {
     await OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
       IGlobalStateHelper.updateSysConf(sysConf);
     });
+
+    // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
+    OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
+      OCHelper.call('AppDefine.shared.setVersion:', [ver]);
+    });
   }
 }
