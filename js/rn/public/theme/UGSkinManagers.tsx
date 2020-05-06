@@ -42,10 +42,14 @@ export default class UGSkinManagers extends UGThemeColor {
       7: '火山橙',
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
+      12: '综合体育',
+      14: `六合厅${mobileTemplateStyle}`,
+      16: `尊龙${mobileTemplateStyle}`,
     };
+    console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
-      // key = '香槟金3';
+      key = '综合体育';
     }
     let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
@@ -58,7 +62,7 @@ export default class UGSkinManagers extends UGThemeColor {
     Object.assign(skin, theme);
     if (!FUtils.isExactlyEqual(skin, Skin1)) {
       Skin1 = skin;
-      console.log('当前为皮肤：' + skin.skitString);
+      console.log('当前为皮肤：' + skin.skitString, skin);
     }
 
     this.updateOcSkin();
@@ -68,7 +72,7 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1;
     if (Platform.OS != 'ios') return;
-    if (skin.skitType.indexOf('香槟金') == -1) return;
+    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);
     for (const k in skin) {

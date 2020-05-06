@@ -1,26 +1,25 @@
-import React, {Component} from 'react';
-import {View, Alert, Platform} from 'react-native';
-import {Button, Text, Avatar} from 'react-native-elements';
-import LinearGradient from 'react-native-linear-gradient';
-import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
-import FastImage from 'react-native-fast-image';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
-import {UGUserCenterItem, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
-import AppDefine from '../../public/define/AppDefine';
-import PushHelper from '../../public/define/PushHelper';
+import React from 'react';
 import {connect} from 'react-redux';
-import {XBJMineProps, XBJMineStateToProps} from './XBJMineProps';
+import {View, ScrollView, Alert, Platform, Text} from 'react-native';
 import UGBasePage from '../base/UGBasePage';
-import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
-import {ActionType} from '../../redux/store/ActionTypes';
-import {UGColor} from '../../public/theme/UGThemeColor';
-import {Skin1} from '../../public/theme/UGSkinManagers';
+import {ZHTYMineProps, ZHTYMineStateToProps} from './ZHTYMineProps';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
+import {UGUserCenterItem, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
+import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
+import PushHelper from '../../public/define/PushHelper';
+import FastImage from 'react-native-fast-image';
+import {Skin1} from '../../public/theme/UGSkinManagers';
+import {Avatar, Button} from 'react-native-elements';
+import LinearGradient from 'react-native-linear-gradient';
+import {UGColor} from '../../public/theme/UGThemeColor';
+import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import {Toast} from '../../public/tools/ToastUtils';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-class XBJMinePage extends UGBasePage<XBJMineProps> {
-  didFocus(params: XBJMineProps): void { }
-  
+class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
+  // 成为焦点页面
+  didFocus(params: ZHTYMineProps) {}
+
   requestData() {
     // 获取功能按钮列表
     OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
@@ -170,7 +169,5 @@ class XBJMinePage extends UGBasePage<XBJMineProps> {
   }
 }
 
-/**
- * 进行第二层包装, 生成的新组件拥有 接受和发送 数据的能力
- */
-export default connect(XBJMineStateToProps)(XBJMinePage);
+// 绑定Redux
+export default connect(ZHTYMineStateToProps)(ZHTYMinePage);

@@ -13,6 +13,10 @@ export enum PageName {
   JDPromotionListPage = 'JDPromotionListPage',
   XBJHomePage = 'XBJHomePage',
   UpdateVersionPage = 'UpdateVersionPage',
+  ZHTYHomePage = 'ZHTYHomePage',
+  ZHTYLoginPage = 'ZHTYLoginPage',
+  ZHTYRegisterPage = 'ZHTYRegisterPage',
+  ZHTYMinePage = 'ZHTYMinePage',
 }
 
 export class Navigation {
@@ -27,8 +31,8 @@ export class Navigation {
   }
 
   // 去新的导航页
-  static push<P extends UGBasePageProps>(page: PageName, props?: P): boolean {
-    return this.smartNavigate(RouterType.Stack, page);
+  static push<P extends UGBasePageProps>(page: PageName, props?: P, transition: boolean = true): boolean {
+    return this.smartNavigate(RouterType.Stack, page, undefined, transition);
   }
 
   // 回到上一页
@@ -40,12 +44,12 @@ export class Navigation {
   }
 
   // 切换标签页
-  static jump<P>(page: PageName, props?: P): boolean {
-    return this.smartNavigate(RouterType.Tab, page, props);
+  static jump<P>(page: PageName, props?: P, transition: boolean = true): boolean {
+    return this.smartNavigate(RouterType.Tab, page, props, transition);
   }
 
   // 智能跳转
-  static smartNavigate<P>(priorityType: RouterType, page: PageName, props?: P): boolean {
+  static smartNavigate<P>(priorityType: RouterType, page: PageName, props?: P, transition: boolean = true): boolean {
     if (!this.navigation) return false;
 
     const routerType = Router.getPageRouterType(page, priorityType);
@@ -56,13 +60,13 @@ export class Navigation {
         return true;
       }
       case RouterType.Tab: {
-        if (page == PageName.TransitionPage || this.pages[0] == PageName.TransitionPage) {
+        if (!transition || page == PageName.TransitionPage || this.pages[0] == PageName.TransitionPage) {
           this.pages[0] = page;
           this.navigation.jumpTo(page, props);
           console.log('跳转到', page);
         } else {
           this.pages[0] = PageName.TransitionPage;
-          this.navigation.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props });
+          this.navigation.jumpTo(PageName.TransitionPage, {jumpTo: page, props: props});
           console.log('跳转到过渡页');
         }
         return true;

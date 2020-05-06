@@ -1,7 +1,6 @@
 import {Router, RouterType} from '../../navigation/Router';
 import {Skin1} from '../../theme/UGSkinManagers';
 import {PageName} from '../../navigation/Navigation';
-import AppDefine from '../AppDefine';
 import {OCHelper} from './OCHelper';
 
 export class RnPageModel {
@@ -95,6 +94,44 @@ export function setRnPageInfo() {
       },
     ]);
   }
+
+  // 综合体育页面
+  // if (Skin1.skitType.indexOf('综合体育') != -1) {
+  //   pages = pages.concat([
+  //     // {
+  //     //   // 首页
+  //     //   tabbarItemPath: '/home',
+  //     //   rnName: PageName.ZHTYHomePage,
+  //     //   fd_prefersNavigationBarHidden: true,
+  //     //   允许游客访问: true,
+  //     //   允许未登录访问: true,
+  //     // },
+  //     {
+  //       // 登录
+  //       vcName: 'UGLoginViewController',
+  //       rnName: PageName.ZHTYLoginPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 注册
+  //       vcName: 'UGRegisterViewController',
+  //       rnName: PageName.ZHTYRegisterPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       rnName: PageName.ZHTYMinePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: false,
+  //     },
+  //   ]);
+  // }
 
   RnPageModel.pages = pages;
   OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);

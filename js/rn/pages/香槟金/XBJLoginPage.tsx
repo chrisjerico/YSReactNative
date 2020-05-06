@@ -42,6 +42,8 @@ class XBJLoginPage extends UGBasePage<XBJLoginProps> {
     getLocalPwd.bind(this)();
   }
 
+  didFocus(params: XBJLoginProps): void {}
+
   onLoginBtnClick() {
     this.context
     var err: string;
@@ -123,8 +125,7 @@ class XBJLoginPage extends UGBasePage<XBJLoginProps> {
 
   renderContent(): React.ReactNode {
     return (
-      <View style={{marginTop: -AppDefine.height * 0.2}}>
-        <View style={{height: 100}}></View>
+      <View style={{marginTop: AppDefine.height * 0.08}}>
         <FastImage source={{uri: 'https://i.ibb.co/PrsPnxF/m-logo.png'}} style={{marginLeft: AppDefine.width * 0.5 - 50, width: 100, height: 36}} />
         <View style={{marginLeft: 24, marginTop: 56, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row'}}>
           <View style={{flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24}}>

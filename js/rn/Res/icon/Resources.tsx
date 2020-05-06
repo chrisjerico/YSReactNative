@@ -27,6 +27,8 @@ export const Res = {
   wd: {uri: 'https://i.ibb.co/qpsybW9/wode.png'},
   zd: {uri: 'https://i.ibb.co/JB408Fq/zhudan.png'},
   gd: {uri: 'https://i.ibb.co/NxZbGJK/gonggao.png'},
+  zhtyLoginBg: {uri: 'https://i.ibb.co/Hh2m2Zt/register-modal-bg.jpg'},
+  zhtyLoginSponsor: {uri: 'https://i.ibb.co/GCKn120/logo1.png'},
 };
 
 /**

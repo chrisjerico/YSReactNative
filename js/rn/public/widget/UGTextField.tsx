@@ -13,6 +13,7 @@ interface IPorps extends InputProps {
 
   // 自定义变量
   type?: '推荐人ID' | '账号' | '密码' | '确认密码' | '真实姓名' | 'QQ' | '微信' | '邮箱' | '手机号' | '字母验证码' | '短信验证码' | '空';
+  styleType?: '下划线样式' | '圆角背景样式';
   hidden?: boolean; // 隐藏
   onlyInteger?: boolean; // 仅数字
   onlyNumber?: number; // 仅数字含小数
@@ -37,13 +38,17 @@ export default class UGTextField extends Component<IPorps, IState> {
     this.state = {text: null, secureTextEntry: !!props.secureTextEntry};
     const iconSize = 20;
 
-    const defaultProps: IPorps = {
+    let defaultProps: IPorps = {
+      styleType:'圆角背景样式',
       containerStyle: [{marginTop: 12, height: 45, backgroundColor: 'rgba(0, 0, 0, 0.6)', borderRadius: 22.5, overflow: 'hidden'}],
       inputStyle: {marginLeft: 8, height: 45, color: 'white', fontSize: 15},
       leftIconContainerStyle: {marginLeft: 2, width: iconSize + 10, height: iconSize},
       placeholderTextColor: 'rgba(255, 255, 255, 0.3)',
       clearButtonMode: 'while-editing',
     };
+    if (props.styleType == '下划线样式') {
+      defaultProps = mergeProps(defaultProps, {containerStyle:{backgroundColor:'transparent', height:50}});
+    }
 
     const other = ((): IPorps => {
       switch (props.type) {

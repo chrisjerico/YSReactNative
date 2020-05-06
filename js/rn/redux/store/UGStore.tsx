@@ -12,10 +12,19 @@ import {UGAction, ActionType} from './ActionTypes';
 import {AsyncStorage} from 'react-native';
 import {UpdateVersionProps, UpdateVersionReducer} from '../../pages/router/UpdateVersionProps';
 import {TransitionProps, TransitionReducer} from '../../pages/base/TransitionProps';
+import {ZHTYHomeProps, ZHTYHomeReducer} from '../../pages/综合体育/ZHTYHomeProps';
+import {ZHTYRegisterProps, ZHTYRegisterReducer} from '../../pages/综合体育/ZHTYRegisterProps';
+import {ZHTYLoginProps, ZHTYLoginReducer} from '../../pages/综合体育/ZHTYLoginProps';
+import {ZHTYMineProps, ZHTYMineReducer} from '../../pages/综合体育/ZHTYMineProps';
 
 // 整个State的树结构
 export interface IGlobalState {
-  TransitionReducer: TransitionProps;
+  // 综合体育
+  ZHTYRegisterReducer: ZHTYRegisterProps;
+  ZHTYLoginReducer: ZHTYLoginProps;
+  ZHTYMineReducer: ZHTYMineProps;
+  ZHTYHomeReducer: ZHTYHomeProps;
+
   // 经典
   JDPromotionListReducer: JDPromotionListProps; // 优惠活动
 
@@ -24,6 +33,9 @@ export interface IGlobalState {
   XBJMineReducer: XBJMineProps; // 我的页
   XBJLoginReducer: XBJLoginProps; // 登录
   XBJRegisterReducer: XBJRegisterProps; // 注册
+
+  // 过渡页
+  TransitionReducer: TransitionProps;
 
   // 纯数据
   UserInfoReducer: UGUserModel;
@@ -35,6 +47,12 @@ export interface IGlobalState {
 
 // 整合项目所有reducer
 const rootReducer = combineReducers({
+  // 综合体育
+  ZHTYHomeReducer,
+  ZHTYLoginReducer,
+  ZHTYRegisterReducer,
+  ZHTYMineReducer,
+
   // 经典
   JDPromotionListReducer, // 优惠活动页
   TransitionReducer, // 占位页面

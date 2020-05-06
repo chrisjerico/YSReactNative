@@ -16,6 +16,8 @@ import { Navigation, PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 
 export class XBJRegisterPage extends UGBasePage<XBJRegisterProps> {
+  didFocus(params: XBJRegisterProps): void { }
+  
   referrerId: string = ''; // 推荐人ID
   account: string = ''; // 账号
   pwd1: string = ''; // 密码

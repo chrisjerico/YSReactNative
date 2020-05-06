@@ -16,6 +16,7 @@ const defaultProps = mergeProps<UpdateVersionProps>(basePageDefaultProps, {
   actType: ActionType.UpdateVersion_SetProps,
   progress: 0,
   navbarOpstions: {hidden: true},
+  tabbarOpetions: {unmountOnBlur: false},
   backgroundColor: [UGColor.BackgroundColor2],
 });
 

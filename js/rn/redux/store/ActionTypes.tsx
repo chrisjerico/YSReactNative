@@ -22,6 +22,11 @@ export enum ActionType {
   XBJLogin_SetProps,
   UpdateVersion_SetProps,
   Transition_SetProps,
+  // 综合体育
+  ZHTYHomePage_SetProps,
+  ZHTYMinePage_SetProps,
+  ZHTYLoginPage_SetProps,
+  ZHTYRegisterPage_SetProps // 声明UGAction
 }
 
 // 声明UGAction

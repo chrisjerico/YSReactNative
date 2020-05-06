@@ -26,6 +26,8 @@ class XBJHomePage extends UGBasePage<XBJHomeProps, IHomePageState> {
     super(props);
   }
 
+  didFocus(params: XBJHomeProps): void { }
+  
   /**
    * 请求数据
    */

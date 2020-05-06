@@ -31,6 +31,21 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
     UGStore.dispatch({type: this.props.actType, props: props});
   }
 
+  /**
+   * 请求数据
+   */
+  abstract requestData(): void;
+
+  /**
+   * 成为焦点页面
+   */
+  abstract didFocus(params: P): void;
+
+  /**
+   * 绘制中间区域，实际内容
+   */
+  abstract renderContent(): ReactNode;
+
   constructor(props) {
     super(props);
 
@@ -50,24 +65,28 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
       }
       navigation.pop && navigation.setOptions(navbarOpstions);
       navigation.jumpTo && navigation.setOptions(tabbarOpetions);
-      console.log('页面初始化', route.name);
+      console.log('页面初始化', route.name, navigation.jumpTo, tabbarOpetions);
     }
   }
 
-  /**
-   * 请求数据
-   */
-  abstract requestData(): void;
+  componentDidMount(): void {
+    console.log('componentDidMount', this.props.route.name);
+    this.requestData();
+    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
+  }
 
   /**
-   * 成为焦点页面
+   * 响应 Android物理返回键
    */
-  abstract didFocus(params: P): void;
+  _onBackAndroid = () => {
+    this.clickLeftFunc();
+    // BackHandler.exitApp();
+    return true;
+  };
 
-  /**
-   * 绘制中间区域，实际内容
-   */
-  abstract renderContent(): ReactNode;
+  componentWillUnmount(): void {
+    BackHandler.removeEventListener('hardwareBackPress', this._onBackAndroid);
+  }
 
   /**
    * 请求重试，根据需要是否重写
@@ -75,6 +94,29 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
   requestRetry() {
     this.requestData();
   }
+
+  /**
+   * 默认点击返回
+   */
+  clickLeftFunc = () => {
+    //当前界面是否由原生打开，原生Android需要做前后台切换操作
+    if (checkTrue(this.props.fromNative)) {
+      ANHelper.call(NativeCommand.MOVE_TO_BACK);
+    }
+
+    Navigation.pop();
+
+    if (Platform.OS == 'ios') {
+      OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+    } else {
+      // TODO 安卓
+    }
+  };
+
+  /**
+   * 默认点击右键
+   */
+  clickRightFunc = () => {};
 
   /**
    * 绘制进度条
@@ -116,29 +158,6 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
       </View>
     );
   }
-
-  /**
-   * 默认点击返回
-   */
-  clickLeftFunc = () => {
-    //当前界面是否由原生打开，原生Android需要做前后台切换操作
-    if (checkTrue(this.props.fromNative)) {
-      ANHelper.call(NativeCommand.MOVE_TO_BACK);
-    }
-
-    Navigation.pop();
-
-    if (Platform.OS == 'ios') {
-      OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-    } else {
-      // TODO 安卓
-    }
-  };
-
-  /**
-   * 默认点击右键
-   */
-  clickRightFunc = () => {};
 
   /**
    * 绘制顶部 header
@@ -187,37 +206,14 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
       <LinearGradient colors={backgroundColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1}}>
         <FastImage source={{uri: backgroundImage}} style={{flex: 1}}>
           {this.renderHeader()}
-          <SafeAreaView style={_styles.safeContainer}>{this._renderContentOrLoading()}</SafeAreaView>
+          <SafeAreaView>{this._renderContentOrLoading()}</SafeAreaView>
         </FastImage>
       </LinearGradient>
     );
   }
-
-  componentDidMount(): void {
-    console.log('componentDidMount', this.props.route.name);
-    this.requestData();
-    BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
-  }
-
-  /**
-   * 响应 Android物理返回键
-   */
-  _onBackAndroid = () => {
-    this.clickLeftFunc();
-    // BackHandler.exitApp();
-    return true;
-  };
-
-  componentWillUnmount(): void {
-    BackHandler.removeEventListener('hardwareBackPress', this._onBackAndroid);
-  }
 }
 
 const _styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   loading: {
     flex: 1,
     justifyContent: 'center',

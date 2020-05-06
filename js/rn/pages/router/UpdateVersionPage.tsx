@@ -1,6 +1,6 @@
 import CodePush from 'react-native-code-push';
-import React, {version} from 'react';
-import {View, Text, Platform, AsyncStorage} from 'react-native';
+import React from 'react';
+import {View, Text, Platform} from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
@@ -9,7 +9,6 @@ import {UpdateVersionStateToProps, UpdateVersionProps} from './UpdateVersionProp
 import {connect} from 'react-redux';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
 import {OCEventType} from '../../public/define/OCHelper/OCBridge/OCEvent';
-import {AsyncStorageKey} from '../../redux/store/IGlobalStateHelper';
 import {Navigation, PageName} from '../../public/navigation/Navigation';
 
 class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
@@ -36,7 +35,9 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
   didFocus() {}
 
   updateJspatch() {
-    Navigation.jump(PageName.UpdateVersionPage);
+    if (!this.props.tabbarOpetions.unmountOnBlur) {
+      Navigation.jump(PageName.UpdateVersionPage);
+    }
     if (Platform.OS != 'ios') return;
 
     this.setProps({progress: 0});
@@ -59,11 +60,12 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
           });
 
           if (ret) {
-            console.log('更新成功，重启APP生效', Navigation.pages);
+            console.log('更新成功', Navigation.pages);
             if (this.rnInstalled && Navigation.pages[0] == PageName.UpdateVersionPage) {
               console.log('正在重启RN');
               CodePush.restartApp(true);
             } else {
+              console.log('请手动重启APP');
             }
           } else {
             console.log('jsp下载失败');

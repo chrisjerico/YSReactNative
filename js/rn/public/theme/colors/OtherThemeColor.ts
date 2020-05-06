@@ -96,4 +96,15 @@ export const OtherThemeColor: {[x: string]: UGThemeColor} = {
     intoViewColor: '#7BA2C2',
     moneyCellColor: '#9BB8CB',
   },
+  //综合体育
+  综合体育: {
+    skitType: '综合体育',
+    skitString: '综合体育',
+    bgColor: ['#FFFFFF', '#FFFFFF'],
+    navBarBgColor: ['#46ABFF', '#46ABFF'],
+    tabBarBgColor: '#FFFFFF',
+    tabNoSelectColor: '#999999',
+    tabSelectedColor: '#6B54F5',
+    homeContentColor: '#46ABFF44',
+  },
 };
