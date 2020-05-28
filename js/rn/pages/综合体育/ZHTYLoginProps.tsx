@@ -3,6 +3,7 @@ import {mergeProps} from '../../public/tools/FUtils';
 import {ActionType, UGAction} from '../../redux/store/ActionTypes';
 import {IGlobalState} from '../../redux/store/UGStore';
 import {Res} from '../../Res/icon/Resources';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
 
 // 声明Props
 export interface ZHTYLoginProps extends UGBasePageProps {
@@ -27,6 +28,7 @@ export function ZHTYLoginReducer(prevState: ZHTYLoginProps = defaultProps, act: 
 // 从全局数据中传递到Props（mapStateToProps）
 export function ZHTYLoginStateToProps(state: IGlobalState): ZHTYLoginProps {
   return mergeProps(state.ZHTYLoginReducer, {
+    backgroundColor: Skin1.bgColor,
     backgroundImage: Res.zhtyLoginBg.uri,
   });
 }

@@ -32,7 +32,7 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
         buttonStyle={[{backgroundColor: 'transparent', marginLeft: -8}, style]}
         onPress={() => {
           Navigation.pop();
-          OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
         }}
       />
     );
