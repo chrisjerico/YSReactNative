@@ -56,9 +56,9 @@ class LHTHomePage extends UGBasePage<LHTHomeProps> {
                 <View style={{ paddingLeft: 16, paddingRight: 16 }}>
                     <HomeNoticeComponent reducerData={notice} />
                     <HomeRecommendComponent />
-                    <HomeHeadlineComponent containerStyle={{marginTop: 10}}/>
-                    <HomeTabComponent containerStyle={{marginTop: 10}}/>
-                    <HomeBottomToolComponent containerStyle={{marginTop: 10, marginBottom: 10}}/>
+                    <HomeHeadlineComponent containerStyle={{ marginTop: 10 }} />
+                    <HomeTabComponent containerStyle={{ marginTop: 10 }} />
+                    <HomeBottomToolComponent containerStyle={{ marginTop: 10 }} />
                 </View>
             </ScrollView>)
     };

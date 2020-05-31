@@ -32,6 +32,7 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
     const { navigation } = this.props;
     navigation.setOptions({ headerStyle: { height: 0 } });
   }
+  
   render() {
     return (
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
