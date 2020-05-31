@@ -1,7 +1,7 @@
-import {Router, RouterType} from '../../navigation/Router';
-import {Skin1} from '../../theme/UGSkinManagers';
-import {PageName} from '../../navigation/Navigation';
-import {OCHelper} from './OCHelper';
+import { Router, RouterType } from '../../navigation/Router';
+import { Skin1 } from '../../theme/UGSkinManagers';
+import { PageName } from '../../navigation/Navigation';
+import { OCHelper } from './OCHelper';
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -93,6 +93,18 @@ export function setRnPageInfo() {
         允许未登录访问: false,
       },
     ]);
+  }
+
+  if (Skin1.skitType.indexOf('综合体育') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LHTHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }])
   }
 
   // 综合体育页面

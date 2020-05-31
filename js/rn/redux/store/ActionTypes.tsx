@@ -26,7 +26,9 @@ export enum ActionType {
   ZHTYHomePage_SetProps,
   ZHTYMinePage_SetProps,
   ZHTYLoginPage_SetProps,
-  ZHTYRegisterPage_SetProps // 声明UGAction
+  ZHTYRegisterPage_SetProps, // 声明UGAction
+  // 六合厅
+  LHTHome_SetProps
 }
 
 // 声明UGAction
