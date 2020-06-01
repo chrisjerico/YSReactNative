@@ -1,16 +1,14 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import * as React from 'react';
-import { Component } from 'react';
-import { Res } from '../../../Res/icon/Resources';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import React, {Component} from 'react';
+import {Res} from '../../../Res/icon/Resources';
 import StringUtils from '../../../public/tools/StringUtils';
 import INoticeBean from '../../../redux/model/home/INoticeBean';
+import {serviceImage} from '../helpers/config';
 
-const defaultElements = [{}, {}, {}]
-const Element = () => <View style={{ backgroundColor: '#ffffff', width: '27%', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20 }}>
-
-</View>
+const defaultElements = [{}, {}];
+const Element = () => <View style={{backgroundColor: '#ffffff', width: '27%', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20}} />;
 interface IProps {
-  containerStyle?: {}
+  containerStyle?: {};
 }
 
 /**
@@ -30,12 +28,13 @@ export default class HomeBottomToolComponent extends Component<IProps> {
       */
 
   render(): React.ReactNode {
-    const { containerStyle } = this.props
+    const {containerStyle} = this.props;
     return (
-      <View style={[{ width: '100%', aspectRatio: 540 / 130, borderRadius: 15, flexDirection: 'row', justifyContent: 'space-between' }, containerStyle]}>
-        {
-          defaultElements.map((ele, index) => <Element key={index} {...ele} />)
-        }
+      <View style={[{width: '100%', aspectRatio: 540 / 130, borderRadius: 15, flexDirection: 'row', justifyContent: 'space-between'}, containerStyle]}>
+        <Image style={{width: 50, height: 50}} source={{uri: serviceImage}} />
+        {defaultElements.map((ele, index) => (
+          <Element key={index} {...ele} />
+        ))}
       </View>
     );
   }
