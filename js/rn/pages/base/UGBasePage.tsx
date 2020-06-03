@@ -206,7 +206,7 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
       <LinearGradient colors={backgroundColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1}}>
         <FastImage source={{uri: backgroundImage}} style={{flex: 1}}>
           {this.renderHeader()}
-          <SafeAreaView>{this._renderContentOrLoading()}</SafeAreaView>
+          <SafeAreaView style={{flex:1}}>{this._renderContentOrLoading()}</SafeAreaView>
         </FastImage>
       </LinearGradient>
     );
