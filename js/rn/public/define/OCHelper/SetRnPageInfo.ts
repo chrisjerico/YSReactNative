@@ -1,7 +1,7 @@
-import { Router, RouterType } from '../../navigation/Router';
-import { Skin1 } from '../../theme/UGSkinManagers';
-import { PageName } from '../../navigation/Navigation';
-import { OCHelper } from './OCHelper';
+import {Router, RouterType} from '../../navigation/Router';
+import {Skin1} from '../../theme/UGSkinManagers';
+import {PageName} from '../../navigation/Navigation';
+import {OCHelper} from './OCHelper';
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -47,7 +47,7 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
-
+  console.log('----Skin1.skitType----', Skin1.skitType);
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -104,7 +104,8 @@ export function setRnPageInfo() {
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
-      }])
+      },
+    ]);
   }
 
   // 综合体育页面

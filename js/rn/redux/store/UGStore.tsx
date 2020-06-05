@@ -16,7 +16,7 @@ import {ZHTYHomeProps, ZHTYHomeReducer} from '../../pages/综合体育/ZHTYHomeP
 import {ZHTYRegisterProps, ZHTYRegisterReducer} from '../../pages/综合体育/ZHTYRegisterProps';
 import {ZHTYLoginProps, ZHTYLoginReducer} from '../../pages/综合体育/ZHTYLoginProps';
 import {ZHTYMineProps, ZHTYMineReducer} from '../../pages/综合体育/ZHTYMineProps';
-import { LHTHomeProps, LHTHomeReducer } from '../../pages/六合厅/LHTHomeProps'
+import {LHTHomeProps, LHTHomeReducer} from '../../pages/六合厅/LHTHomeProps';
 
 // 整个State的树结构
 export interface IGlobalState {
@@ -49,7 +49,7 @@ export interface IGlobalState {
 }
 
 // 整合项目所有reducer
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   // 六合厅
   LHTHomeReducer,
   // 综合体育

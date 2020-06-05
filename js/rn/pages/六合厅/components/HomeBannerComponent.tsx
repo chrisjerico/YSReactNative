@@ -1,61 +1,43 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import * as React from 'react';
-import { Component } from 'react';
-import { anyNull } from '../../../public/tools/Ext';
-import UGSwiper from '../../../public/widget/swp/UGSwiper';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
-import IBannerAdvBean, { IBannerDataItem } from '../../../redux/model/home/IBannerAdvBean';
 import { UGColor } from '../../../public/theme/UGThemeColor';
+import UGSwiper from '../../../public/widget/swp/UGSwiper';
+import IBannerAdvBean, { IBannerDataItem } from '../../../redux/model/home/IBannerAdvBean';
 
-interface IProps {
+const defaultBanners = [{ "pic": "https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_3.jpg?v=1581317567" }, { "pic": "https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_4.jpg?v=1583055564" }]
+
+interface HomeBannerComponentProps {
   reducerData: IBannerAdvBean;
 }
-/**
- * 主页banner
- */
-export default class HomeBannerComponent extends Component<IProps> {
-  /**
-   * 广告跳转
-   * @param adv
-   * @private
-   */
-  gotoBanner = (adv: IBannerDataItem) => {
+
+const HomeBannerComponent = ({ reducerData }: HomeBannerComponentProps) => {
+  
+  const banners: any = reducerData?.list || defaultBanners;
+
+  const gotoBanner = (adv: IBannerDataItem) => {
     //TODO 安卓
     PushHelper.pushCategory(adv.linkCategory, adv.linkPosition);
   };
 
-  /**
-   * 绘制滑屏
-   */
-  renderBanner(): React.ReactNode {
-    const pics: any = this.props.reducerData?.list || defaultPics;
-    console.log("------pics------", pics)
-    return (
-      <View style={styles.bannerWrapper} >
-        <UGSwiper>
-          {pics.map((adv: any, index: number) => {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[styles.bannerContainer, { backgroundColor: UGColor.placeholderColor2 }]}
-                onPress={() => {
-                  this.gotoBanner(adv);
-                }}>
-                <Image style={styles.bannerImage} source={{ uri: adv.pic }} resizeMode={'cover'} />
-              </TouchableOpacity>
-            );
-          })}
-        </UGSwiper>
-      </View>
-    );
-  }
-
-  render(): React.ReactNode {
-    return this.renderBanner();
-  }
+  return (
+  <View style={styles.bannerWrapper} >
+  <UGSwiper>
+    {banners.map((adv: any, index: number) => {
+      return (
+        <TouchableOpacity
+          key={index}
+          style={[styles.bannerContainer, { backgroundColor: UGColor.placeholderColor2 }]}
+          onPress={() => {
+            gotoBanner(adv);
+          }}>
+          <Image style={styles.bannerImage} source={{ uri: adv.pic }} resizeMode={'cover'} />
+        </TouchableOpacity>
+      );
+    })}
+  </UGSwiper>
+</View>)
 }
-
-const defaultPics = [{ "pic": "https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_3.jpg?v=1581317567" }, { "pic": "https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_4.jpg?v=1583055564" }]
 
 const styles = StyleSheet.create({
   bannerWrapper: {
@@ -70,3 +52,5 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
+
+export default HomeBannerComponent

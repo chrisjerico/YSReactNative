@@ -1,76 +1,64 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {adImage, defaultCircleButtons, recommendImage, smileImage} from '../helpers/config';
 import {scale} from '../helpers/function';
-import {recommendImage, smileImage, adImage, defaultCircleButtons} from '../helpers/config';
+import ScoreCircle from '../views/ScoreCircle';
+import CircleButton from '../views/CircleButton';
 
-const CircleButton = ({uri = null, title = ''}) => (
-  <TouchableOpacity style={{width: '25%', height: '50%', alignItems: 'center'}}>
-    <Image resizeMode={'contain'} style={{width: '65%', aspectRatio: 1}} source={{uri: uri}} />
-    <Text style={{paddingVertical: 5}}>{title}</Text>
-  </TouchableOpacity>
-);
+const defaultScoreCircles = [{}, {}, {}, {}, {}, {}, {}];
 
-interface IProps {
-  containerStyle: {};
+interface HomeRecommendProps {
+  containerStyle: ViewStyle;
   //reducerData: INoticeBean;
 }
-/**
- * 主页公告,信息 等等内容
- */
-class HomeRecommendComponent extends Component<IProps> {
-  /**
-   * 绘制 公告,信息 等等内容
-   * @private
-   */
 
-  render(): React.ReactNode {
-    const {containerStyle} = this.props;
-
-    return (
-      <View style={[styles.container, containerStyle]}>
-        <View style={styles.topBlock}>
-          <View style={styles.topBlockLeft}>
-            <Text>{'余额'}</Text>
-            <Text>{'0.00'}</Text>
-            <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
-          </View>
-          <View style={styles.topBlockRight}>
-            <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} />
-            <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} />
-            <Image
-              style={styles.image}
-              source={{
-                uri: smileImage,
-              }}
-            />
-          </View>
-        </View>
-        <View style={styles.titleBlock}>
-          <View style={styles.titleBlockLeft}>
-            <Image style={styles.recommendImage} source={{uri: recommendImage}} />
-            <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
-          </View>
-          <View style={styles.awardsBlock}>
-            <Text>{'第 '}</Text>
-            <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
-            <Text>{' 期开奖结果'}</Text>
-          </View>
-        </View>
-        <View style={{flex: 90}} />
-        <View style={{flex: 90}}>
-          <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
-        </View>
-        <View style={styles.circleButtonBlock}>
-          {defaultCircleButtons.map((ele, index) => (
-            <CircleButton key={index} {...ele} />
-          ))}
-        </View>
+const HomeRecommendComponent = ({containerStyle}: HomeRecommendProps) => (
+  <View style={[styles.container, containerStyle]}>
+    <View style={styles.topBlock}>
+      <View style={styles.topBlockLeft}>
+        <Text>{'余额'}</Text>
+        <Text>{'0.00'}</Text>
+        <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
       </View>
-    );
-  }
-}
+      <View style={styles.topBlockRight}>
+        <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} />
+        <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} />
+        <Image
+          style={styles.image}
+          source={{
+            uri: smileImage,
+          }}
+        />
+      </View>
+    </View>
+    <View style={styles.titleBlock}>
+      <View style={styles.titleBlockLeft}>
+        <Image style={styles.recommendImage} source={{uri: recommendImage}} />
+        <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
+      </View>
+      <View style={styles.awardsBlock}>
+        <Text>{'第 '}</Text>
+        <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
+        <Text>{' 期开奖结果'}</Text>
+      </View>
+    </View>
+    <View style={{flex: 90, flexDirection: 'row'}}>
+      {defaultScoreCircles.map((ele, index) => (
+        <ScoreCircle key={index} {...ele} />
+      ))}
+    </View>
+    <View style={{flex: 90}}>
+      <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
+    </View>
+    <View style={styles.circleButtonBlock}>
+      {defaultCircleButtons.map((ele, index) => (
+        <CircleButton key={index} {...ele} />
+      ))}
+    </View>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {

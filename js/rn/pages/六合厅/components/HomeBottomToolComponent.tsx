@@ -1,64 +1,38 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, {Component} from 'react';
-import {Res} from '../../../Res/icon/Resources';
-import StringUtils from '../../../public/tools/StringUtils';
-import INoticeBean from '../../../redux/model/home/INoticeBean';
-import {serviceImage} from '../helpers/config';
+import React from 'react';
+import {Image, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {chatRoomImage, DowloadAppImage, serviceImage} from '../helpers/config';
 
-const defaultElements = [{}, {}];
-const Element = () => <View style={{backgroundColor: '#ffffff', width: '27%', height: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20}} />;
-interface IProps {
-  containerStyle?: {};
+const defaultTools = [{uri: serviceImage, onPress: null}, {uri: chatRoomImage, onPress: null}, {uri: DowloadAppImage, onPress: null}];
+
+interface HomeBottomToolComponentProps {
+  containerStyle?: ViewStyle;
 }
 
-/**
- * 主页公告,信息 等等内容
- */
-export default class HomeBottomToolComponent extends Component<IProps> {
-  /**
-   * 绘制 公告,信息 等等内容
-   * @private
-   */
+const HomeBottomToolComponent = ({containerStyle}: HomeBottomToolComponentProps) => {
+  return (
+    <View style={[styles.container, containerStyle]}>
+      {defaultTools.map(({uri, onPress}, index) => (
+        <TouchableOpacity style={styles.toolContainer} key={index} onPress={onPress}>
+          <Image style={styles.image} source={{uri: uri}} resizeMode={'contain'} />
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+};
 
-  /*
-        <View style={styles.noticeContainer}>
-        <Image resizeMode="stretch" style={styles.noticeTextImage} source={Res.gd} />
-        <Text style={styles.noticeDesText}>{StringUtils.getInstance().deleteHtml(noticeArr[0].content)}</Text>
-      </View>
-      */
-
-  render(): React.ReactNode {
-    const {containerStyle} = this.props;
-    return (
-      <View style={[{width: '100%', aspectRatio: 540 / 130, borderRadius: 15, flexDirection: 'row', justifyContent: 'space-between'}, containerStyle]}>
-        <Image style={{width: 50, height: 50}} source={{uri: serviceImage}} />
-        {defaultElements.map((ele, index) => (
-          <Element key={index} {...ele} />
-        ))}
-      </View>
-    );
-  }
-}
+export default HomeBottomToolComponent;
 
 const styles = StyleSheet.create({
-  //公告
-  noticeContainer: {
+  container: {
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 12,
-    paddingBottom: 12,
+    justifyContent: 'space-between',
   },
-  noticeTextImage: {
-    width: 27,
-    height: 13,
-    resizeMode: 'contain',
+  toolContainer: {
+    width: '32%',
+    aspectRatio: 165 / 85,
   },
-  noticeDesText: {
-    fontSize: 12,
-    color: '#000000',
-    paddingLeft: 8,
-    paddingRight: 8,
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
