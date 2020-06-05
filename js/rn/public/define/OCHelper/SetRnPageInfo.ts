@@ -105,10 +105,19 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LHTMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
     ]);
   }
 
   // 综合体育页面
+
   // if (Skin1.skitType.indexOf('综合体育') != -1) {
   //   pages = pages.concat([
   //     // {

@@ -17,7 +17,8 @@ export enum PageName {
   ZHTYLoginPage = 'ZHTYLoginPage',
   ZHTYRegisterPage = 'ZHTYRegisterPage',
   ZHTYMinePage = 'ZHTYMinePage',
-  LHTHomePage = 'LHTHomePage'
+  LHTHomePage = 'LHTHomePage',
+  LHTMinePage = 'LHTMinePage'
 }
 
 export class Navigation {

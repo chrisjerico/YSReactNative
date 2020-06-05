@@ -21,6 +21,7 @@ export class OCEvent extends OCCall {
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: {_EventName: OCEventType; params: any}) => {
       console.log('rn收到oc通知：', params);
+
       this.events
         .filter(v => {
           return v.type == params._EventName;
@@ -33,6 +34,7 @@ export class OCEvent extends OCCall {
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: {vcName: PageName}) => {
       console.log('跳转到rn页面：', params.vcName);
+
       if (params.vcName) {
         Navigation.jump(params.vcName) || Navigation.jump(RnPageModel.getPageName(params.vcName));
       }

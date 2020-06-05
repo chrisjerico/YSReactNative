@@ -7,8 +7,8 @@ import {defaultNoticeMessage, noticeImage} from '../helpers/config';
 import {scale} from '../helpers/function';
 
 interface HomeNoticeComponentProps {
-  reducerData: INoticeBean;
-  containerStyle: ViewStyle;
+  //reducerData: INoticeBean;
+  containerStyle?: ViewStyle;
 }
 /**
  * 主页公告,信息 等等内容

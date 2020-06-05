@@ -12,10 +12,20 @@ export default class PushHelper {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
+  // 登入註冊
+  static pushLogin() {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController']}, true]);
+    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+  }
 
+  static pushRegister() {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController']}, true]);
+    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+  }
   // 去彩票下注页
   static pushLottery() {}
-
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
     if (Platform.OS != 'ios') return;

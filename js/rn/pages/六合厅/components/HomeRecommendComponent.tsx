@@ -10,7 +10,7 @@ import CircleButton from '../views/CircleButton';
 const defaultScoreCircles = [{}, {}, {}, {}, {}, {}, {}];
 
 interface HomeRecommendProps {
-  containerStyle: ViewStyle;
+  containerStyle?: ViewStyle;
   //reducerData: INoticeBean;
 }
 
