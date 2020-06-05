@@ -12,7 +12,7 @@ const HomeHeaderComponent = () => {
       style={{
         paddingTop: top,
         width: '100%',
-        height: 50 + top,
+        height: 44 + top,
         backgroundColor: '#2894FF',
         flexDirection: 'row',
         paddingHorizontal: scale(25),

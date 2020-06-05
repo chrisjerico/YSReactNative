@@ -1,17 +1,18 @@
 import React from 'react';
 import {RefreshControl, ScrollView, StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import MineHeaderComponent from './components/MineHeaderComponent';
 import MineListComponent from './components/MineListComponent';
-import MineTopComponent from './components/MineTopComponent';
+import MineProfileComponent from './components/MineProfileComponent';
 
 const LHTMinePage = () => {
   return (
-    <SafeAreaView>
+    <>
+      <MineHeaderComponent />
       <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}} />}>
-        <MineTopComponent />
+        <MineProfileComponent />
         <MineListComponent />
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 

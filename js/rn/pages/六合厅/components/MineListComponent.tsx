@@ -3,6 +3,12 @@ import MineList from '../views/MineList';
 
 const defaultMineLists = [{}, {}, {}, {}, {}, {}, {}, {}];
 
-const MineListComponent = () => defaultMineLists.map((ele, index) => <MineList key={index} {...ele} />);
+const MineListComponent = () => (
+  <React.Fragment>
+    {defaultMineLists.map((ele, index) => (
+      <MineList key={index} {...ele} />
+    ))}
+  </React.Fragment>
+);
 
 export default MineListComponent;

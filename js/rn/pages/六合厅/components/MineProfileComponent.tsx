@@ -4,7 +4,7 @@ import MineButton from '../views/MineButton';
 import {scale} from '../helpers/function';
 import {Icon, Avatar, Badge} from 'react-native-elements';
 
-const MineTopComponent = () => (
+const MineProfileComponent = () => (
   <View style={{width: '100%', aspectRatio: 540 / 205, borderBottomWidth: 1, borderColor: '#d9d9d9', paddingHorizontal: scale(25)}}>
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{flex: 3, flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineTopComponent;
+export default MineProfileComponent;
