@@ -9,8 +9,8 @@ import { scale } from '../helpers/function';
 import PushHelper from '../../../public/define/PushHelper';
 
 interface HomeHeadlineComponentProps {
-  headlines: INoticePop[];
   containerStyle?: ViewStyle;
+  headlines: INoticePop[];
 }
 
 const HomeHeadlineComponent = ({headlines = defaultHeadLines, containerStyle}: HomeHeadlineComponentProps) => {

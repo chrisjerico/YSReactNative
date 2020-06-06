@@ -1,7 +1,6 @@
 import React from 'react';
 import MineList from '../views/MineList';
-
-const defaultMineLists = [{}, {}, {}, {}, {}, {}, {}, {}];
+import {defaultMineLists} from '../helpers/config';
 
 const MineListComponent = () => (
   <React.Fragment>

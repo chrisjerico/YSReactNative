@@ -1,17 +1,13 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {scale} from '../helpers/function';
-import {useSafeArea} from 'react-native-safe-area-context';
 
 const MineHeaderComponent = () => {
-  const {top} = useSafeArea();
-
   return (
     <View
       style={{
-        paddingTop: top,
         width: '100%',
-        height: 44 + top,
+        aspectRatio: 540 / 60,
         backgroundColor: '#2894FF',
         flexDirection: 'row',
         paddingHorizontal: scale(25),
