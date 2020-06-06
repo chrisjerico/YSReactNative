@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    borderBottomRightRadius: scale(10),
+    borderBottomLeftRadius: scale(10),
   },
 });
 
