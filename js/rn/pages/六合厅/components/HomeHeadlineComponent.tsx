@@ -1,39 +1,32 @@
-import {Image, StyleSheet, Text, View, StyleProp, ViewStyle, TouchableOpacity} from 'react-native';
-import * as React from 'react';
-import {Component} from 'react';
-import {Res} from '../../../Res/icon/Resources';
-import StringUtils from '../../../public/tools/StringUtils';
-import INoticeBean from '../../../redux/model/home/INoticeBean';
-import {headImage} from '../helpers/config';
-import {scale} from '../helpers/function';
-import {MarqueeVertical} from 'react-native-marquee-ab';
+import React, { useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { MarqueeVertical } from 'react-native-marquee-ab';
 import Icon from 'react-native-vector-icons/AntDesign';
-
-const defaultHeadLine = [
-  {
-    label: '0',
-    value: '【六合厅公告】彩民必读→这里有彩民都想了解的问题，如有其他问题可以在评论区说出自己的想法！',
-  },
-  {
-    label: '1',
-    value: '009期【尺寸之功】、17中15、吉美凶丑中特、全网最稳资料',
-  },
-];
+import StringUtils from '../../../public/tools/StringUtils';
+import { INoticePop } from '../../../redux/model/home/INoticeBean';
+import { defaultHeadLines, headLineImage } from '../helpers/config';
+import { scale } from '../helpers/function';
+import PushHelper from '../../../public/define/PushHelper';
 
 interface HomeHeadlineComponentProps {
+  headlines: INoticePop[];
   containerStyle?: ViewStyle;
 }
 
-const HomeHeadlineComponent = ({containerStyle}: HomeHeadlineComponentProps) => {
+const HomeHeadlineComponent = ({headlines = defaultHeadLines, containerStyle}: HomeHeadlineComponentProps) => {
+  
+  const [display,setDisplay] = useState(true)
+  const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
+  const gotoHeadLine =() => PushHelper.pushLogin()
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle, display ? {} : {display: 'none'}]}>
       <View style={{flex: 70}}>
-        <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headImage}} />
+        <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineImage}} />
       </View>
       <View style={{flex: 300}}>
-        <MarqueeVertical width={scale(390)} height={scale(100)} textList={defaultHeadLine} />
+        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={gotoHeadLine}/>
       </View>
-      <TouchableOpacity style={styles.closeButton}>
+      <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
         <Icon name={'close'} color={'#ffffff'} />
       </TouchableOpacity>
     </View>

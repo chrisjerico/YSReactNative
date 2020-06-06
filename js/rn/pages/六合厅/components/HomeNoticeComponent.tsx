@@ -1,31 +1,30 @@
 import React from 'react';
-import {Image, StyleSheet, View, ViewStyle} from 'react-native';
-import {MarqueeHorizontal} from 'react-native-marquee-ab';
+import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { MarqueeHorizontal } from 'react-native-marquee-ab';
+import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
-import INoticeBean from '../../../redux/model/home/INoticeBean';
-import {defaultNoticeMessage, noticeImage} from '../helpers/config';
-import {scale} from '../helpers/function';
+import { INoticeScroll } from '../../../redux/model/home/INoticeBean';
+import { defaultNotices, noticeImage } from '../helpers/config';
+import { scale } from '../helpers/function';
 
 interface HomeNoticeComponentProps {
-  //reducerData: INoticeBean;
+  notices: INoticeScroll[];
   containerStyle?: ViewStyle;
 }
-/**
- * 主页公告,信息 等等内容
- */
-const HomeNoticeComponent = ({containerStyle}: HomeNoticeComponentProps) => {
-  //const noticeMessageArr = this.props.reducerData?.scroll
-  //const containerStyle = this.props.containerStyle;
+
+const HomeNoticeComponent = ({notices = defaultNotices, containerStyle}: HomeNoticeComponentProps) => {
+  const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(notice?.title)}) )
+  const gotoNotice = () => PushHelper.pushLogin();
+
   return (
-    <View style={[styles.container, containerStyle]}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={gotoNotice}>
       <View style={styles.iconContainer}>
         <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: noticeImage}} />
       </View>
       <View style={styles.noticContainer}>
-        {/* noticeMessageArr[0].content */}
-        <MarqueeHorizontal width={scale(430)} height={'70%'} textStyle={styles.textStyle} textList={[{label: '0', value: StringUtils.getInstance().deleteHtml(defaultNoticeMessage)}]} />
+        <MarqueeHorizontal width={scale(430)} height={'70%'} textStyle={styles.textStyle} textList={cleanContents} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

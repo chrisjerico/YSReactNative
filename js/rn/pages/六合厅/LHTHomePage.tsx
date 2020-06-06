@@ -3,7 +3,6 @@ import {RefreshControl, SafeAreaView, ScrollView, StyleSheet, View} from 'react-
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
-import {XBJHomeProps} from '../香槟金/XBJHomeProps';
 import HomeBannerComponent from './components/HomeBannerComponent';
 import HomeBottomToolComponent from './components/HomeBottomToolComponent';
 import HomeHeaderComponent from './components/HomeHeaderComponent';
@@ -12,54 +11,63 @@ import HomeNoticeComponent from './components/HomeNoticeComponent';
 import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
 import {scale} from './helpers/function';
-import {useSafeArea} from 'react-native-safe-area-context';
 
 const LHTHomePage = () => {
-  const [loading, setLoading] = useState(true);
-  const [response, setResponse] = useState<XBJHomeProps>();
-  const {top} = useSafeArea();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [response, setResponse] = useState<any>(null);
 
   useEffect(() => {
-    IGlobalStateHelper.updateUserInfo();
+    //IGlobalStateHelper.updateUserInfo();
     NetworkRequest1.homeInfo()
       .then(value => {
         setResponse(value);
-        //setLoading(true);
         setLoading(false);
-        console.log('--------response--------', response);
+        // ["banner", "notice", "game", "coupon", "redBag", "floatAd", "movie"]
+        // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
+        console.log('--------value.notice.popup--------', value.notice.popup);
       })
       .catch(error => {
-        setLoading(false);
         console.log('--------error--------', error);
       });
   }, []);
 
+  const banners = response?.banner?.list
+  const notices = response?.notice?.scroll
+  const headlines = response?.notice?.popup
+
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <UGProgressCircle />
-        </View>
+        <UGProgressCircle />
       ) : (
         <>
           <HomeHeaderComponent />
           <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}} />}>
-            <HomeBannerComponent />
+            <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
-              <HomeNoticeComponent containerStyle={styles.subComponent} />
-              <HomeRecommendComponent containerStyle={styles.subComponent} />
-              <HomeHeadlineComponent containerStyle={styles.subComponent} />
+              <HomeNoticeComponent notices={notices} containerStyle={styles.subComponent} />
+              <HomeRecommendComponent  containerStyle={styles.subComponent} />
+              <HomeHeadlineComponent headlines={headlines} containerStyle={styles.subComponent} />
               <HomeTabComponent containerStyle={styles.subComponent} />
               <HomeBottomToolComponent />
             </View>
           </ScrollView>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  loadingSafeArea: {
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  safeArea: {
+    backgroundColor: '#2894FF',
+  },
   container: {
     backgroundColor: '#D0D0D0',
   },

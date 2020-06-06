@@ -1,42 +1,35 @@
-import * as React from 'react';
+import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
 import {UGColor} from '../../../public/theme/UGThemeColor';
 import UGSwiper from '../../../public/widget/swp/UGSwiper';
 import {IBannerDataItem} from '../../../redux/model/home/IBannerAdvBean';
-
-const defaultBanners = [
-  {pic: 'https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_3.jpg?v=1581317567'},
-  {pic: 'https://cdn01.dalianshutong.cn/upload/t061/customise/images/m_banner_4.jpg?v=1583055564'},
-];
+import {defaultBanners} from '../helpers/config';
 
 interface HomeBannerComponentProps {
-  banners?: BannerProps[];
-}
-interface BannerProps {
-  pic: string;
+  banners: IBannerDataItem[];
 }
 
 const HomeBannerComponent = ({banners = defaultBanners}: HomeBannerComponentProps) => {
-  //const banners: any = reducerData?.list || defaultBanners;
-
-  const gotoBanner = (adv: IBannerDataItem) => {
-    //TODO 安卓
-    PushHelper.pushCategory(adv.linkCategory, adv.linkPosition);
+  const gotoBanner = (banner: IBannerDataItem) => {
+    const {linkCategory, linkPosition} = banner;
+    console.log('-----linkCategory-----', linkCategory);
+    console.log('-----linkPosition-----', linkPosition);
+    PushHelper.pushCategory(linkCategory, linkPosition);
   };
 
   return (
     <View style={styles.bannerWrapper}>
       <UGSwiper>
-        {banners.map((adv: any, index: number) => {
+        {banners.map((banner: IBannerDataItem, index: number) => {
           return (
             <TouchableOpacity
               key={index}
               style={[styles.bannerContainer, {backgroundColor: UGColor.placeholderColor2}]}
               onPress={() => {
-                gotoBanner(adv);
+                gotoBanner(banner);
               }}>
-              <Image style={styles.bannerImage} source={{uri: adv.pic}} resizeMode={'cover'} />
+              <Image style={styles.bannerImage} source={{uri: banner.pic}} resizeMode={'cover'} />
             </TouchableOpacity>
           );
         })}

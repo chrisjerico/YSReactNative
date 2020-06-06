@@ -6,59 +6,68 @@ import {adImage, defaultCircleButtons, recommendImage, smileImage} from '../help
 import {scale} from '../helpers/function';
 import ScoreCircle from '../views/ScoreCircle';
 import CircleButton from '../views/CircleButton';
+import PushHelper from '../../../public/define/PushHelper';
 
 const defaultScoreCircles = [{}, {}, {}, {}, {}, {}, {}];
 
 interface HomeRecommendProps {
   containerStyle?: ViewStyle;
-  //reducerData: INoticeBean;
 }
 
-const HomeRecommendComponent = ({containerStyle}: HomeRecommendProps) => (
-  <View style={[styles.container, containerStyle]}>
-    <View style={styles.topBlock}>
-      <View style={styles.topBlockLeft}>
-        <Text>{'余额'}</Text>
-        <Text>{'0.00'}</Text>
-        <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
+const HomeRecommendComponent = ({containerStyle}: HomeRecommendProps) => {
+  const gotoSavePoint = () => PushHelper.pushLogin();
+  const gotoGetPoint = () => PushHelper.pushLogin();
+  const gotoCustomerService = () => PushHelper.pushLogin();
+  const goToBetPage = () => PushHelper.pushCategory(9, 0);
+
+  return (
+    <View style={[styles.container, containerStyle]}>
+      <View style={styles.topBlock}>
+        <View style={styles.topBlockLeft}>
+          <Text>{'余额'}</Text>
+          <Text>{'0.00'}</Text>
+          <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
+        </View>
+        <View style={styles.topBlockRight}>
+          <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} onPress={gotoSavePoint} />
+          <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} onPress={gotoGetPoint} />
+          <TouchableOpacity style={styles.smileImageContainer} onPress={gotoCustomerService}>
+            <Image
+              style={styles.smileImage}
+              source={{
+                uri: smileImage,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View style={styles.topBlockRight}>
-        <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} />
-        <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} />
-        <Image
-          style={styles.image}
-          source={{
-            uri: smileImage,
-          }}
-        />
+      <View style={styles.titleBlock}>
+        <View style={styles.titleBlockLeft}>
+          <Image style={styles.recommendImage} source={{uri: recommendImage}} />
+          <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
+        </View>
+        <View style={styles.awardsBlock}>
+          <Text>{'第 '}</Text>
+          <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
+          <Text>{' 期开奖结果'}</Text>
+        </View>
+      </View>
+      <View style={{flex: 90, flexDirection: 'row'}}>
+        {defaultScoreCircles.map((ele, index) => (
+          <ScoreCircle key={index} {...ele} />
+        ))}
+      </View>
+      <TouchableOpacity style={{flex: 90}} onPress={goToBetPage}>
+        <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
+      </TouchableOpacity>
+      <View style={styles.circleButtonBlock}>
+        {defaultCircleButtons.map((ele, index) => (
+          <CircleButton key={index} {...ele} />
+        ))}
       </View>
     </View>
-    <View style={styles.titleBlock}>
-      <View style={styles.titleBlockLeft}>
-        <Image style={styles.recommendImage} source={{uri: recommendImage}} />
-        <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
-      </View>
-      <View style={styles.awardsBlock}>
-        <Text>{'第 '}</Text>
-        <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
-        <Text>{' 期开奖结果'}</Text>
-      </View>
-    </View>
-    <View style={{flex: 90, flexDirection: 'row'}}>
-      {defaultScoreCircles.map((ele, index) => (
-        <ScoreCircle key={index} {...ele} />
-      ))}
-    </View>
-    <View style={{flex: 90}}>
-      <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
-    </View>
-    <View style={styles.circleButtonBlock}>
-      {defaultCircleButtons.map((ele, index) => (
-        <CircleButton key={index} {...ele} />
-      ))}
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -87,9 +96,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  image: {
+  smileImageContainer: {
     width: '15%',
     aspectRatio: 1,
+  },
+  smileImage: {
+    width: '100%',
+    height: '100%',
   },
   button: {
     aspectRatio: 3.25 / 1.5625,

@@ -6,23 +6,23 @@ import {IGameIconListItem} from '../../redux/model/home/IGameBean';
 import {OCHelper} from './OCHelper/OCHelper';
 
 export default class PushHelper {
-  // 首页游戏列表跳转
-  static pushHomeGame(game: IGameIconListItem) {
-    game = Object.assign({clsName: 'GameModel'}, game);
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
-  }
-  // 登入註冊
+  // 登入
   static pushLogin() {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController']}, true]);
     // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
   }
-
+  // 註冊
   static pushRegister() {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController']}, true]);
     // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+  }
+  // 首页游戏列表跳转
+  static pushHomeGame(game: IGameIconListItem) {
+    game = Object.assign({clsName: 'GameModel'}, game);
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
   // 去彩票下注页
   static pushLottery() {}
