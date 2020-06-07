@@ -116,6 +116,27 @@ export function setRnPageInfo() {
     ]);
   }
 
+  // if (Skin1.skitType.indexOf('六合厅') != -1) {
+  //   pages = pages.concat([
+  //     {
+  //       // 首页
+  //       tabbarItemPath: '/home',
+  //       rnName: PageName.LHTHomePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       rnName: PageName.LHTMinePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //   ]);
+  // }
+
   // 综合体育页面
 
   // if (Skin1.skitType.indexOf('综合体育') != -1) {
