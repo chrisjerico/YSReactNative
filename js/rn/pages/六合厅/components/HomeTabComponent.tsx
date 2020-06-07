@@ -73,9 +73,6 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
   const subScenes = {};
   tabs.forEach((tab, index) => {
     const {list}: ITab = tab;
-    if (index == 3) {
-      console.log('-----list-----', list);
-    }
     subScenes[index] = () => {
       return (
         <View style={styles.scene}>
@@ -103,7 +100,23 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
       <TabView
         navigationState={{index, routes: mainTabRoutes}}
         renderTabBar={(props: any) => {
-          return <TabBar {...props} style={styles.tab} tabStyle={styles.mainTabStyle} />;
+          console.log(props);
+          return (
+            <TabBar
+              {...props}
+              style={styles.tab}
+              tabStyle={styles.mainTabStyle}
+              indicatorStyle={{backgroundColor: 'transparent'}}
+              renderLabel={({route, focused}) => {
+                console.log('-------focused------', focused);
+                return (
+                  <View style={[styles.mainTab, focused ? styles.activeMainTab : styles.inactiveMainTab, route.key == '0' ? styles.leftMainTab : styles.rightMainTab]}>
+                    <Text style={{color: '#ffffff'}}>{route.title}</Text>
+                  </View>
+                );
+              }}
+            />
+          );
         }}
         renderScene={SceneMap({
           0: LeftTab,
@@ -124,9 +137,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   mainTabStyle: {
-    backgroundColor: '#ff6b1b',
+    backgroundColor: 'transparent',
+    paddingBottom: 0,
+  },
+  mainTab: {
+    width: scale(250),
+    aspectRatio: 250 / 55,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderTopRightRadius: scale(10),
     borderTopLeftRadius: scale(10),
+  },
+  activeMainTab: {
+    backgroundColor: '#ff6b1b',
+  },
+  inactiveMainTab: {
+    backgroundColor: '#bbbbbb',
+  },
+  leftMainTab: {
+    marginRight: scale(5),
+  },
+  rightMainTab: {
+    marginLeft: scale(5),
   },
   subTabStyle: {
     backgroundColor: '#ffffff',

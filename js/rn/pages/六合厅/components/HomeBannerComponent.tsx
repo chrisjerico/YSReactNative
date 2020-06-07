@@ -10,11 +10,9 @@ interface HomeBannerComponentProps {
   banners: IBannerDataItem[];
 }
 
-const HomeBannerComponent = ({banners = defaultBanners}: HomeBannerComponentProps) => {
+const HomeBannerComponent = ({banners}: HomeBannerComponentProps) => {
   const gotoBanner = (banner: IBannerDataItem) => {
     const {linkCategory, linkPosition} = banner;
-    console.log('-----linkCategory-----', linkCategory);
-    console.log('-----linkPosition-----', linkPosition);
     PushHelper.pushCategory(linkCategory, linkPosition);
   };
 

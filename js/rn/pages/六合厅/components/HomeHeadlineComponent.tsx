@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeVertical } from 'react-native-marquee-ab';
 import Icon from 'react-native-vector-icons/AntDesign';
+import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
 import { INoticePop } from '../../../redux/model/home/INoticeBean';
-import { defaultHeadLines, headLineImage } from '../helpers/config';
+import { headLineImage } from '../helpers/config';
 import { scale } from '../helpers/function';
-import PushHelper from '../../../public/define/PushHelper';
 
 interface HomeHeadlineComponentProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
 }
 
-const HomeHeadlineComponent = ({headlines = defaultHeadLines, containerStyle}: HomeHeadlineComponentProps) => {
+const HomeHeadlineComponent = ({headlines, containerStyle}: HomeHeadlineComponentProps) => {
   
   const [display,setDisplay] = useState(true)
   const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )

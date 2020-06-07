@@ -9,7 +9,9 @@ import HomeHeadlineComponent from './components/HomeHeadlineComponent';
 import HomeNoticeComponent from './components/HomeNoticeComponent';
 import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
+import { defaultBanners, defaultHeadLines, defaultNotices } from './helpers/config';
 import { scale } from './helpers/function';
+
 
 const LHTHomePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -26,14 +28,14 @@ const LHTHomePage = () => {
         //console.log('--------value.game.icons--------', value.game.icons);
       })
       .catch(error => {
-        console.log('--------error--------', error);
+        // console.log('--------error--------', error);
       });
   }, []);
 
-  const banners = response?.banner?.list
-  const notices = response?.notice?.scroll
-  const headlines = response?.notice?.popup
-  const tabs = response?.game?.icons
+  const banners = response?.banner?.list??defaultBanners
+  const notices = response?.notice?.scroll??defaultNotices
+  const headlines = response?.notice?.popup??defaultHeadLines
+  const tabs = response?.game?.icons??[]
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -45,10 +47,10 @@ const LHTHomePage = () => {
           <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
             <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
-              <HomeNoticeComponent notices={notices} containerStyle={styles.subComponent} />
+              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices}/>
               <HomeRecommendComponent  containerStyle={styles.subComponent} />
-              <HomeHeadlineComponent headlines={headlines} containerStyle={styles.subComponent} />
-              <HomeTabComponent tabs={tabs} containerStyle={styles.subComponent} />
+              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines}/>
+              <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
               <HomeBottomToolComponent />
             </View>
           </ScrollView>

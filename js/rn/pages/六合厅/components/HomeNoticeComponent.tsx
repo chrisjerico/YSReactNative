@@ -4,7 +4,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean';
-import { defaultNotices, noticeImage } from '../helpers/config';
+import { noticeImage } from '../helpers/config';
 import { scale } from '../helpers/function';
 
 interface HomeNoticeComponentProps {
@@ -12,7 +12,7 @@ interface HomeNoticeComponentProps {
   containerStyle?: ViewStyle;
 }
 
-const HomeNoticeComponent = ({notices = defaultNotices, containerStyle}: HomeNoticeComponentProps) => {
+const HomeNoticeComponent = ({notices , containerStyle}: HomeNoticeComponentProps) => {
   const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(notice?.title)}) )
   const gotoNotice = () => PushHelper.pushLogin();
 

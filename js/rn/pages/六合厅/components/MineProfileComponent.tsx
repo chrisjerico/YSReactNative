@@ -1,8 +1,8 @@
 import React from 'react';
-import {RefreshControl, ScrollView, StyleSheet, View, Text, Image} from 'react-native';
-import MineButton from '../views/MineButton';
+import {StyleSheet, Text, View} from 'react-native';
+import {Avatar, Badge, Icon} from 'react-native-elements';
 import {scale} from '../helpers/function';
-import {Icon, Avatar, Badge} from 'react-native-elements';
+import MineButton from '../views/MineButton';
 
 const MineProfileComponent = () => (
   <View style={{width: '100%', aspectRatio: 540 / 205, borderBottomWidth: 1, borderColor: '#d9d9d9', paddingHorizontal: scale(25)}}>
