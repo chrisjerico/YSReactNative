@@ -1,43 +1,68 @@
-import React, {useState} from 'react';
-import {Dimensions, Image, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 
 interface TabCircleButtonProps {
-  logoUri?: string;
+  logo?: string;
   mainTitle?: string;
   subTitle?: string;
   showSubTitle?: boolean;
   onPress?: any;
+  category?: string;
+  gameId?: string;
+  show?: boolean;
 }
 
-const TabCircleButton = ({logoUri = 'https://7478.com/img/1201.4cc317f2.png', mainTitle = '六合彩', subTitle = '一周开三期', showSubTitle = false, onPress}: TabCircleButtonProps) => (
-  <TouchableOpacity style={styles.conatiner} onPress={onPress}>
-    <View style={{width: '85%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <View style={{width: '80%', aspectRatio: 1, backgroundColor: '#A6A6D2', borderRadius: scale(85)}}>
-        <Image style={{width: '100%', height: '100%'}} source={{uri: logoUri}} resizeMode={'contain'} />
+const TabCircleButton = ({
+  logo = 'https://7478.com/img/1201.4cc317f2.png',
+  mainTitle = '?',
+  subTitle = '?',
+  showSubTitle = false,
+  onPress,
+  category = '0',
+  gameId = '0',
+  show = true,
+}: TabCircleButtonProps) => {
+  const goToCategory = () => PushHelper.pushCategory(category, gameId);
+  return (
+    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} onPress={onPress || goToCategory} activeOpacity={show ? 0.2 : 0}>
+      <View style={styles.circleContainer}>
+        <Image style={styles.image} source={{uri: logo}} resizeMode={'contain'} />
       </View>
-    </View>
-    <View style={styles.titleContainer}>
-      <Text>{mainTitle}</Text>
-      {showSubTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
-    </View>
-    <View style={{flex: 1}} />
-  </TouchableOpacity>
-);
+      <View style={styles.titleContainer}>
+        <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>
+        {showSubTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   conatiner: {
-    width: '32%',
-    aspectRatio: 0.75,
+    width: scale(150),
+    aspectRatio: 150 / 200,
     alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  circleContainer: {
+    width: '80%',
+    aspectRatio: 1,
+    backgroundColor: '#A6A6D2',
+    borderRadius: scale(85),
   },
   titleContainer: {
     justifyContent: 'space-around',
     alignItems: 'center',
-    flex: 2,
+    width: '100%',
+    aspectRatio: 150 / 60,
   },
   subTitle: {
     color: '#999999',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
 
