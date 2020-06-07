@@ -24,7 +24,7 @@ const HomeHeadlineComponent = ({headlines, containerStyle}: HomeHeadlineComponen
         <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineImage}} />
       </View>
       <View style={{flex: 300}}>
-        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={gotoHeadLine}/>
+        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={gotoHeadLine} speed={60}/>
       </View>
       <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
         <Icon name={'close'} color={'#ffffff'} />

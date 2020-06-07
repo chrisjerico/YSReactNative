@@ -4,6 +4,7 @@ import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import {scale} from '../helpers/function';
 import TabCircleButton from '../views/TabCircleButton';
 import PushHelper from '../../../public/define/PushHelper';
+import StringUtils from '../../../public/tools/StringUtils';
 
 const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
 
@@ -68,7 +69,7 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
   // set state
   const [index, setIndex] = useState(0);
   // filter props
-  const subTabNames = tabs.map((tab, index) => ({key: index, title: tab.name}));
+  const subTabNames = tabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
 
   const subScenes = {};
   tabs.forEach((tab, index) => {
@@ -100,7 +101,6 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
       <TabView
         navigationState={{index, routes: mainTabRoutes}}
         renderTabBar={(props: any) => {
-          console.log(props);
           return (
             <TabBar
               {...props}
@@ -108,7 +108,6 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
               tabStyle={styles.mainTabStyle}
               indicatorStyle={{backgroundColor: 'transparent'}}
               renderLabel={({route, focused}) => {
-                console.log('-------focused------', focused);
                 return (
                   <View style={[styles.mainTab, focused ? styles.activeMainTab : styles.inactiveMainTab, route.key == '0' ? styles.leftMainTab : styles.rightMainTab]}>
                     <Text style={{color: '#ffffff'}}>{route.title}</Text>

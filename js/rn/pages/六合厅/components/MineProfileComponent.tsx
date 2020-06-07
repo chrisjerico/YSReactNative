@@ -35,8 +35,8 @@ const MineProfileComponent = () => (
       </View>
     </View>
     <View style={styles.mineButtonContainer}>
-      {defaultMineButtons.map(button => (
-        <MineButton {...button} />
+      {defaultMineButtons.map((button,index) => (
+        <MineButton key={index} {...button} />
       ))}
     </View>
   </View>

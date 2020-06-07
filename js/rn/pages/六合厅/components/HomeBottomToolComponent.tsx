@@ -1,19 +1,23 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {chatRoomImage, DowloadAppImage, serviceImage} from '../helpers/config';
-
-const defaultTools = [{uri: serviceImage, onPress: null}, {uri: chatRoomImage, onPress: null}, {uri: DowloadAppImage, onPress: null}];
+import {defaultHomeBottomTools} from '../helpers/config';
+import PushHelper from '../../../public/define/PushHelper';
 
 interface HomeBottomToolComponentProps {
   containerStyle?: ViewStyle;
 }
 
+interface HomeBottomTool {
+  logo: string;
+  userCenterType: number;
+}
+
 const HomeBottomToolComponent = ({containerStyle}: HomeBottomToolComponentProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      {defaultTools.map(({uri, onPress}, index) => (
-        <TouchableOpacity style={styles.toolContainer} key={index} onPress={onPress}>
-          <Image style={styles.image} source={{uri: uri}} resizeMode={'contain'} />
+      {defaultHomeBottomTools.map(({logo, userCenterType = 0}: HomeBottomTool, index) => (
+        <TouchableOpacity key={index} style={styles.toolContainer} onPress={() => PushHelper.pushUserCenterType(userCenterType)}>
+          <Image style={styles.image} source={{uri: logo}} resizeMode={'contain'} />
         </TouchableOpacity>
       ))}
     </View>

@@ -19,10 +19,14 @@ const LHTHomePage = () => {
 
   useEffect(() => {
     //IGlobalStateHelper.updateUserInfo();
+    // NetworkRequest1.user_info().then(
+    //   value => console.log('------value-----',value)
+    // ).catch(error => console.log('------error-----',error))
     NetworkRequest1.homeInfo()
       .then(value => {
         setResponse(value);
         setLoading(false);
+        console.log("---------value.game---------",value.game)
         // ["banner", "notice", "game", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
         //console.log('--------value.game.icons--------', value.game.icons);
