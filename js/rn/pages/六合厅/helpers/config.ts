@@ -1,4 +1,8 @@
 // configs
+export const defaultMineButtonImage =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAhFBMVEVMaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8NoezaAAAAK3RSTlMAeT33/kvu+xYCyvIFcim3iKIK1pvrOIIewd5UqV6wWDNm0I4SCETmTpXF+M2xIAAAAT5JREFUeNqN0OeWgyAUBOARjIItxmhM73Xn/d9vj0ZM2UX9/nEY7gD413XsyWN8QZ+UtUCh24aNMbotaQh8y+5O6qyeVQlbJb6NWXGP8RlnwdYD3wI2wtu2c+KOrSKa0tjfFT7p16Y7E6lTntZTl5NzGMaRbWSOhtpka5KLOd4Jl43jahOXZbxLNHCo7yLwMpP8o3jMclbCGYy5xy6hadcLdvvRqMWsSJ9WG1QudfEpyia0WWqo1Sqtr66BTNJGwPy0VwXt5SfQSHWU02oBtryQdjdwGDk86HKQAgEHCaByyQEmAOZr9jsAgHLZx1eobNlnjFoi2WOEJ6f3zcaEna4wos7kAm8cn1YC7/ZBz5NbI0vO3Q8MbmEJetNCknJpBia2oAMg0u1yjW+CNak+zvkJ/sj9qviAJ1V3hzGefgGcsK0Pe5ychwAAAABJRU5ErkJggg==';
+export const defaultMineListLogo =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAALVBMVEVMaXE0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNsxW0r6AAAADnRSTlMAiM27C+1D3JkwHXthsbvXp2IAAADDSURBVHjapZXtDoMgDEUvWsqX8v6POxu3ROKoN9v5YTQ5iIV6ASBt6R4pVxg19SeiApDUCQrQbEQOc7K9aQeWw6vwECtBcFwyfDab28QAHz0cZcTaexRGhLYCRjR+FmXL6zf2sWppcbrhV1HWPucq7ufY5UYcxc20JrgTBlFsnAKPor7vRIsv2lM9eyV4opUSP19aPTFfRGGnZov5b3n4Bee3kG8Kvs34xiWgRfp3pQOAjhQ6pOjYo4OUj2YULuzp4+MFyO4g/6NmsTUAAAAASUVORK5CYII=';
 export const noticeImage =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAMAAADX9CSSAAAARVBMVEVMaXFChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfRChfSGTGvrAAAAFnRSTlMAEDbwUPirgOFBB5wft3VjksWG0S7US4iuhQAAAJlJREFUeNp90u0KhCAQheHJ0jRL+9pz/5e6e2oTJ6L3j/AIgo6iyj5xCe2keAZ6soWvdHCgk1tT8YTTJ8XNAmyHB2cOGNn+syiefrbiapXa7cVJlANzYLvcvZPSqwfnXHpw3sM+uIkx5pfzY8fCzW25lvZUNqJyGRo2LoAbiutn9qCnzch9LPQP379uVvOq6unnhqjCkv//4QupOg1ell2GMwAAAABJRU5ErkJggg==';
 export const recommendImage =
@@ -93,40 +97,69 @@ export const defaultMineLists = [
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAALVBMVEVMaXE0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNsxW0r6AAAADnRSTlMAiM27C+1D3JkwHXthsbvXp2IAAADDSURBVHjapZXtDoMgDEUvWsqX8v6POxu3ROKoN9v5YTQ5iIV6ASBt6R4pVxg19SeiApDUCQrQbEQOc7K9aQeWw6vwECtBcFwyfDab28QAHz0cZcTaexRGhLYCRjR+FmXL6zf2sWppcbrhV1HWPucq7ufY5UYcxc20JrgTBlFsnAKPor7vRIsv2lM9eyV4opUSP19aPTFfRGGnZov5b3n4Bee3kG8Kvs34xiWgRfp3pQOAjhQ6pOjYo4OUj2YULuzp4+MFyO4g/6NmsTUAAAAASUVORK5CYII=',
     title: '我的钱包',
+    userCenterType: 999,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAKlBMVEVMaXE/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXw/sXzOh7uKAAAADXRSTlMAiJap3gz00Xclu1o8V3uehQAAAMBJREFUeNrNlUEOxCAIRVGkgNb7X3ewmaSxGZHFLPpWNnmhQMwXAEj46A4HC4Gh3LewAlDpAQqBjOKYHHA0JsDmKbiomQxmI2xAk4aYv9+Uav5ZPD/EOtqlgHht89yLdIktULEEK0Kzc40MQ9x7aOpm/5bt1GTa4EjqiPPdOD1R601zxJl/iIRlQdVJlL4EJ7GtxTz3KLggUXiYt4jEjxgRuPH3SLfn7rGsemxpQvRF6wmHVDj2wkEajuZw2Iefjw+oKB/TyMMiwAAAAABJRU5ErkJggg==',
     title: '帐户讯息',
+    userCenterType: 12,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAPFBMVEVMaXHnTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDznTDyzPJcZAAAAE3RSTlMAZCLbSzztlhF3LvqiywWvjb5XDCsD4gAAAT9JREFUeNrVlUuWhSAMBQlBDBBAZf97bczh0T4/OOhR10ikjJeoqL5JHpbV2nUBn9QD2riMoXQCZmf0l0ITzFGUKyHOMNFu+YynKWTG02WYvTpqLVvPelTV5w7sDKkTZBx/Mu1i3B6XKMW32MRZvTDfitoxO/0qpiVI5iW9iFwaPBZBuiRFYShGMcSPIzHJPVuC9CgSuDrKUMn1wAHdi2TLCUu34lQuTH8XQXdgKBrVMf9e3KiznURbSn7rYy7F7u8LvolYSpSyfvys/R5PMi9K0OC+AK0EllWmWid4NcCHmi4p5aqP9OwRtu8ixaGpdy8mObR7bnPvGZnULYQsN/ubeFkW7/sYSyVkk45WMqIVPFQgbo1joHZm49ZWpu8s+LtJMsfe+2iusddyYTX3nXAxHHdvpwfdlV9DwHzZf38A968wfs8I3SQAAAAASUVORK5CYII=',
     title: '安全中心',
+    userCenterType: 10,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAUVBMVEVMaXHmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLmfiLd8AGVAAAAGnRSTlMA86vNLTRUiJZp3PwDHRQGQwxenoN4teW8kHWf/5gAAAEMSURBVHjazdLpjoMwDEZRGzekIQs7tN/7P+hoWhWEldBZpNHc30eW7IQGRjl2tKWcljvEaXKAYkvN6QCvVE7DbrLFpnqHBqcNG3Tn8PozeKF8/wxGc+gSCnCESvosbD10XX7iTTtOedjWqvRn54mz+l+mAAUqjr88z8xH5qvwnWUEcF+C0bqgYDkFa2leLfEEBsZetYH7EvTEFXsjfRaGGBixd/EAzVi9uqcH7LCuADewb5ZpBWjEg+Mb2AtsoM5705IAQwlOgO+J6AY0lFxNJTizR3o8zvpcrnzwBUtqZ3BPOxytygXqBfAMcLfBXBMZNJWHVLD0bMjCiqhLJDBk2tcZbhnXmOeQ8aE+AEDGSndo1DbXAAAAAElFTkSuQmCC',
     title: '我的报表',
+    userCenterType: 6,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAh1BMVEVMaXH/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axv/axvmT+23AAAALHRSTlMAbPzAsAoBUPBg3uPWu0zRJQX4pzwtEDUa9I8DtWVzmcl6FB7rrIJXoF1EhbYZC/4AAAF/SURBVHjahdTZbqtAEEXRYyab2YDBYzw7vsnd//99ESgRmG6S9YZUUnWf6kIj611eQlQ9C/2mdvkRf2jaW8lA5WvCkVbpVmlMK51o/wkQh76kYOUCnGTjx4DbSJ3gHWAlixmQD461A1xZJMBavSICljJsANdoMZMhA44augH/ZAiBTEOBAwdL2Eah7IVz40Qbe+slcDB6HGWKwKnV2ydALdMFOBejb1k0d8DzhymSyWYOkGRBd+IHQCW7d1qLJE9zWmdfdsGJobSZKJvnDCyOe1ktXXrbdNbILtzSVXjHbLW6Sioup9rS9j+t/MPXNz+FSIYdwD0M+lDPQLm3rp+7GbyHHNugVw5QFYOLRQBu2MuKn/U77F/20eB9DyTxhx0wOdJ1O1o/+RGGh3QxfwlNNh/53CuIwLnpb2vAG8d6X4zEYZfhUy9qTFt5wFUvbg6GWIllpvOH14sBFmstINUvng5wr6Uuo2m3EoiWkraw+yOUZNOtZZksNS2onLS76xc8j0xKSGRebgAAAABJRU5ErkJggg==',
     title: '团队报表',
+    userCenterType: 6,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAANlBMVEVMaXHXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXfXQXenXbMOAAAAEXRSTlMAMt34ewiriOtXFr0ol9BnRZowxHsAAAFOSURBVHja3ZTbcsMgDAUFSJirbf3/z1YWtDEzQKev3ZcksDkcORMAgPB0vMadSPBQLP+GLU9e9/amZKK8hnqsqUEMBLDiJdiRxDwBHHOFPVWyACT3gD3HvxVLfFHW4sUDcSn6UfRLMbq35+51x2RepD9OTRWUyJx3orGcPZrHxLQWCXttG0FpIkV8oVuX446nj4g8gCCUk3PQjyfB9jkSil2f4EzfoglvLxgd5kog3M/WtZm6OA6kX3As79ZilJ0Cgg4Q96JpXSXST8R0IA0iZGY7Eb2uqHj//F/dRDyZcxdDK3nMRT0IgE41+xlhItY+blKTACgw54l4t6VumlYCJyJZqWTUzJxJLymXQJ/RSGy/oqo9F7W6izCSWRaRNP4K/SKNLAT7IRcNETXX6gO/Zx/xWm68wjW88kjtJyqtQ6dg9R9qglbOW+dCvhIoXwfzKSNyQTjsAAAAAElFTkSuQmCC',
     title: '投注记录',
+    userCenterType: 6,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAANlBMVEVMaXEavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJwavJytiFGDAAAAEXRSTlMA99UvmAm94bNBW4XrHspNbi24jE4AAAEoSURBVHjapZTrcoQgDEa/gEG5w/u/bA2zawtrzXR6fqBOzsQQMuA3qjORocJbP4nQsKYLRksXqQ92PJKLSGnXxDDSuXw8i3yIRg34FK3/JiTxjMWnyKWvRMaNuK3a7oFJDKlkAPviJcYiUu+Fx+Pwb4oEf4o2WkjzG3CuG67gImbqZC3Jf57FKi0Y26jPIhdxsjjPIqyEpUqjiOIUeSVNdLJKkX/L+P8a2Vy71vtYrj5qJ+NJcms1tqyc9Tw9joF0frs36U4Mu8uQjs5Qm8WL0FeOfCsiFJn/UpKM1C5mqrci/BkLQDwfzLELG2si4EdSYxXxusgoOk0EauqCLiI7XXzRSESHiTFzo/M0X6XkMZOky27JwDVkLLT+wkNh64MGleooHRZPfAH4wCTS6817wAAAAABJRU5ErkJggg==',
     title: '消息中心',
+    userCenterType: 11,
   },
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAOVBMVEVMaXGbWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbabWbbI3OfbAAAAEnRSTlMAk8HYsPlQCZzwF3goNEKHbWBZkIeEAAABfklEQVR42qVV65qEIAiVyTTv1vs/7EJGOE5ts9/yYxzlyOUIpAaxet5QHKgH0dsh4QE4M3C6Q5ga8TciRJfy2rbZ4jYFM4ZGqmLVisCs9iUpC7i87Igjd5lCRE3CBfJEZ4IUnARnOdQBSbi5uHa+8AmKC46QZx6EyyqS1i2ejvxCCO1VppUzCkxb1fV0Y6teRdkkkSWvLsWTxcS7hdzwJgWAkPqXAsl6OgMx05F72670t+PHsEkQVoANZokjk+/aYiAG5hMZiK/sd7fgmtaTYTpPGOd+w6C2KR1YNCI8U3yrkuBwFfVxRaPB3PDCBNr2+gAoeiITT+IjA+NJdDT0ZAQshw4w0q6EhcDyF+DXrvtk0m/JfE8PE+4sEx7R2yfhN0/IPurxhCz5uSikzNarMqvvZQZD4S4h9X1XhLL7VogOY2ZyK99a35vL8KvUvl2N8pftOnftqvT9ACDcq5ueTyNFkBdDysiQGpAwjr293xnHkh8G6dNo/v+w93efjx+wxy3Z0Nh48AAAAABJRU5ErkJggg==',
     title: '设置中心',
+    userCenterType: 17,
+  },
+];
+
+export const defaultMineButtons = [
+  {
+    title: ' 我要充值',
+    logo:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAhFBMVEVMaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8NoezaAAAAK3RSTlMAeT33/kvu+xYCyvIFcim3iKIK1pvrOIIewd5UqV6wWDNm0I4SCETmTpXF+M2xIAAAAT5JREFUeNqN0OeWgyAUBOARjIItxmhM73Xn/d9vj0ZM2UX9/nEY7gD413XsyWN8QZ+UtUCh24aNMbotaQh8y+5O6qyeVQlbJb6NWXGP8RlnwdYD3wI2wtu2c+KOrSKa0tjfFT7p16Y7E6lTntZTl5NzGMaRbWSOhtpka5KLOd4Jl43jahOXZbxLNHCo7yLwMpP8o3jMclbCGYy5xy6hadcLdvvRqMWsSJ9WG1QudfEpyia0WWqo1Sqtr66BTNJGwPy0VwXt5SfQSHWU02oBtryQdjdwGDk86HKQAgEHCaByyQEmAOZr9jsAgHLZx1eobNlnjFoi2WOEJ6f3zcaEna4wos7kAm8cn1YC7/ZBz5NbI0vO3Q8MbmEJetNCknJpBia2oAMg0u1yjW+CNak+zvkJ/sj9qviAJ1V3hzGefgGcsK0Pe5ychwAAAABJRU5ErkJggg==',
+    userCenterType: 1,
+  },
+  {
+    title: '我要提现',
+    logo:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAclBMVEVMaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+MC121AAAAJXRSTlMAERYCuoH9qt1mj0qYXr3N73npC6D6n+EvprEe8jfFVdU+rQOGYAGmhQAAANdJREFUeNrN0+cKwzAMRtHPaZw6e4+me+j9X7EBle7KhlLo/SXwQRiDIae2XWU8yM3W5SagqVJSXrqo6JL/CR3XOg/oVlt/WFXQU/HLqv0ppzclD2oZHgp6X3+vRiO0xC8amrlDuoYhpw4gt1qQYz+H39/Rl2Gx8blISTCPj7gmwI6ZFWaTi6MotsIBaGiqscAdkPKUynABjDyNMkyAjKdMgHysedIybBWUoSmjZEgR4CV9n3jWB9+Cs8JA13bIVV0ZcnuGDmlXuPrzz8Vw5eZ2CAsHFuTDGVr2omSvHclzAAAAAElFTkSuQmCC',
+    userCenterType: 2,
+  },
+  {
+    title: '资金明细',
+    logo:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAkFBMVEVMaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+X6JXfAAAAL3RSTlMAqtfdtOK77zNmDgb+di76S/U9pQqfFESU8jjJA68bjFzpKmvCYVWZfHIl0kiDt2iWfhMAAAGuSURBVHjazZTZbqswEEAnTgwUs4SdEgIJ2UPb+f+/62AHcAvct0r3SIxt6djjRQP0HEyegc49YB5MsX1EDhoNIp5hioeEDSNbGvO/FuN/i6IESbhGolbizey5KJFRDGqpSg9zJUbYc1Iil4MLECi5Vd3UcjWKIYX2Ja5GcQfkfJbrQczFGZ1L5cjBZhTxCoUHLg4EjQifkOBE9OswzB0cOT6Kjw1OxGX+Xvw6vU1x2UTcwSypr4uqO4swf4vO3Zoh3P8v17OMGT2uB3cf6OJxsxpgL+0UAwj67O0o8hQ0Enm1FYTRkZZIChjFFehcOy9O96hwInsQ3wv9Pc6Ut0pbVMhZUlSqOeB0pQC0XmJFiDer6y2d2owzWTMfiAVwym4tiBFEXZJKcFY25jtiviC6QOcNtZ8BG0S+fnGUlSwoPLIsKwWFO2LwEk1PuxwH8SAo7AzDiFMKLW0D+j1prLvU/GfqduZlLB9x373OzXVdYVOgfg39NRo9Z/IwsAtV5Halyr4BnOcOkWy3B9nksCQGT3uHA4YA4Atmm9qJgxI/Jw8KtmCyJ3g5C3xWN0B8A0vxrdroB81PAAAAAElFTkSuQmCC',
+    userCenterType: 3,
   },
 ];

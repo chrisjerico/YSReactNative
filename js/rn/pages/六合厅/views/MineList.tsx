@@ -1,33 +1,53 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import PushHelper from '../../../public/define/PushHelper';
+import {defaultMineListLogo} from '../helpers/config';
 import {scale} from '../helpers/function';
 
 interface MineListProps {
   logo?: string;
   title?: string;
+  userCenterType?: number;
+  onPress?: () => any;
 }
 
-const MineList = ({
-  logo = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAALVBMVEVMaXE0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNsxW0r6AAAADnRSTlMAiM27C+1D3JkwHXthsbvXp2IAAADDSURBVHjapZXtDoMgDEUvWsqX8v6POxu3ROKoN9v5YTQ5iIV6ASBt6R4pVxg19SeiApDUCQrQbEQOc7K9aQeWw6vwECtBcFwyfDab28QAHz0cZcTaexRGhLYCRjR+FmXL6zf2sWppcbrhV1HWPucq7ufY5UYcxc20JrgTBlFsnAKPor7vRIsv2lM9eyV4opUSP19aPTFfRGGnZov5b3n4Bee3kG8Kvs34xiWgRfp3pQOAjhQ6pOjYo4OUj2YULuzp4+MFyO4g/6NmsTUAAAAASUVORK5CYII=',
-  title = '我的钱包',
-}: MineListProps) => (
-  <TouchableOpacity
-    style={{
-      width: '100%',
-      aspectRatio: 490 / 75,
-      borderBottomColor: '#d9d9d9',
-      borderBottomWidth: 1,
-      paddingHorizontal: scale(25),
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    }}>
-    <View style={{flexDirection: 'row'}}>
-      <Image resizeMode={'contain'} style={{width: scale(25), aspectRatio: 1}} source={{uri: logo}} />
-      <Text style={{fontSize: scale(25), paddingLeft: scale(25)}}>{title}</Text>
-    </View>
-    <Text style={{fontSize: scale(25)}}>{'>'}</Text>
-  </TouchableOpacity>
-);
+const MineList = ({logo = defaultMineListLogo, title = '我的钱包', userCenterType = 0, onPress}: MineListProps) => {
+  const goToUserCenter = () => {
+    PushHelper.pushUserCenterType(userCenterType);
+  };
+
+  return (
+    <TouchableOpacity style={styles.container} onPress={onPress || goToUserCenter}>
+      <View style={styles.imageContainer}>
+        <Image resizeMode={'contain'} style={styles.image} source={{uri: logo}} />
+        <Text style={[styles.text, {paddingLeft: scale(25)}]}>{title}</Text>
+      </View>
+      <Text style={styles.text}>{'>'}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    aspectRatio: 490 / 75,
+    borderBottomColor: '#d9d9d9',
+    borderBottomWidth: 1,
+    paddingHorizontal: scale(25),
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  imageContainer: {
+    flexDirection: 'row',
+  },
+  image: {
+    width: scale(25),
+    aspectRatio: 1,
+  },
+  text: {
+    fontSize: scale(25),
+  },
+});
 
 export default MineList;
