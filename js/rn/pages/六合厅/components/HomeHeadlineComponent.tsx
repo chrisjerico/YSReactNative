@@ -5,15 +5,15 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
 import { INoticePop } from '../../../redux/model/home/INoticeBean';
-import { headLineImage } from '../helpers/config';
 import { scale } from '../helpers/function';
 
 interface HomeHeadlineComponentProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
+  headLineLogo: string
 }
 
-const HomeHeadlineComponent = ({headlines, containerStyle}: HomeHeadlineComponentProps) => {
+const HomeHeadlineComponent = ({headlines, headLineLogo= '',containerStyle}: HomeHeadlineComponentProps) => {
   
   const [display,setDisplay] = useState(true)
   const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
@@ -21,7 +21,7 @@ const HomeHeadlineComponent = ({headlines, containerStyle}: HomeHeadlineComponen
   return (
     <View style={[styles.container, containerStyle, display ? {} : {display: 'none'}]}>
       <View style={{flex: 70}}>
-        <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineImage}} />
+        <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineLogo}} />
       </View>
       <View style={{flex: 300}}>
         <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={gotoHeadLine} speed={60}/>

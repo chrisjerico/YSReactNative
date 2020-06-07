@@ -30,7 +30,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  text: {color: '#ffffff', fontSize: scale(25)},
+  text: {
+    color: '#ffffff',
+    fontSize: scale(25),
+  },
 });
 
 export default MineHeaderComponent;

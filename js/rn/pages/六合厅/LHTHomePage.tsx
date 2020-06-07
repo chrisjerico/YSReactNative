@@ -9,9 +9,8 @@ import HomeHeadlineComponent from './components/HomeHeadlineComponent';
 import HomeNoticeComponent from './components/HomeNoticeComponent';
 import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
-import { defaultBanners, defaultHeadLines, defaultNotices } from './helpers/config';
+import { defaultHeadLineLogo, defaultCustomerServiceLogo, defaultMarkSixLogo, defaultAdvertisement, defaultBanners, defaultHeadLines, defaultHomeBottomTools, defaultHomeHeaderLeftLogo, defaultHomeHeaderRightLogo, defaultNavs, defaultNoticeLogo, defaultNotices } from './helpers/config';
 import { scale } from './helpers/function';
-
 
 const LHTHomePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -42,7 +41,7 @@ const LHTHomePage = () => {
   const notices = response?.notice?.scroll??defaultNotices
   const headlines = response?.notice?.popup??defaultHeadLines
   const tabs = response?.game?.icons??[]
-  const navs = response?.game?.navs??[]
+  const navs = response?.game?.navs??defaultNavs
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -50,15 +49,15 @@ const LHTHomePage = () => {
         <UGProgressCircle />
       ) : (
         <>
-          <HomeHeaderComponent />
+          <HomeHeaderComponent leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo}/>
           <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
             <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
-              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices}/>
-              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs}/>
-              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines}/>
+              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo}/>
+              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
+              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo}/>
               <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
-              <HomeBottomToolComponent />
+              <HomeBottomToolComponent tools={defaultHomeBottomTools}/>
             </View>
           </ScrollView>
         </>

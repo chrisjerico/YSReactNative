@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View, ViewStyle, ScrollView} from 'react-native';
+import {Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
-import {scale} from '../helpers/function';
-import TabCircleButton from '../views/TabCircleButton';
-import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
+import {scale} from '../helpers/function';
+import TabCircle from '../views/TabCircle';
 
 const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
 
@@ -78,7 +77,7 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
           renderItem={({item}) => {
             const {name, logo, icon, category, gameId, show, realName} = item;
             const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-            return <TabCircleButton logo={logo ? logo : icon} mainTitle={mainTitle} category={category} gameId={gameId} show={show} />;
+            return <TabCircle logo={logo ? logo : icon} mainTitle={mainTitle} category={category} gameId={gameId} show={show} />;
           }}
         />
       );
@@ -107,7 +106,7 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
           );
         }}
         renderScene={SceneMap({
-          0: () => <Scene data={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]} renderItem={({item}) => <TabCircleButton />} />,
+          0: () => <Scene data={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]} renderItem={({item}) => <TabCircle />} />,
           1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,
         })}
         onIndexChange={setIndex}
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff6b1b',
   },
   inactiveMainTab: {
-    backgroundColor: '#bbbbbb',
+    backgroundColor: '#7B7B7B',
   },
   leftMainTab: {
     marginRight: scale(5),

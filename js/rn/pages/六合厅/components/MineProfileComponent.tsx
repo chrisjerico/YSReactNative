@@ -3,10 +3,13 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Badge, Icon} from 'react-native-elements';
 import {scale} from '../helpers/function';
 import MineButton from '../views/MineButton';
-import {defaultMineButtons} from '../helpers/config';
 import PushHelper from '../../../public/define/PushHelper';
 
-const MineProfileComponent = () => (
+interface MineProfileComponentProps {
+  mineButtons: any[];
+}
+
+const MineProfileComponent = ({mineButtons = []}: MineProfileComponentProps) => (
   <View style={styles.container}>
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{flex: 3, flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -23,19 +26,19 @@ const MineProfileComponent = () => (
         </View>
       </View>
       <View style={{flex: 2, justifyContent: 'flex-end'}}>
-        <View style={styles.shareBlock}>
+        <View style={styles.shareContainer}>
           <Text>{'分享'}</Text>
           <Icon type={'AntDesign'} name={'link'} size={10} color={'#4F4F4F'} reverse />
         </View>
-        <View style={styles.shareBlock}>
+        <View style={styles.shareContainer}>
           <Text>{'邀请码'}</Text>
           <Text>{'|'}</Text>
-          <Text style={styles.shareId}>{3099936}</Text>
+          <Text style={styles.shareIdText}>{3099936}</Text>
         </View>
       </View>
     </View>
     <View style={styles.mineButtonContainer}>
-      {defaultMineButtons.map((button,index) => (
+      {mineButtons.map((button, index) => (
         <MineButton key={index} {...button} />
       ))}
     </View>
@@ -50,19 +53,19 @@ const styles = StyleSheet.create({
     borderColor: '#d9d9d9',
     paddingHorizontal: scale(25),
   },
-  shareBlock: {
+  shareContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  shareId: {
-    color: '#00A600',
   },
   mineButtonContainer: {
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  shareIdText: {
+    color: '#00A600',
   },
 });
 

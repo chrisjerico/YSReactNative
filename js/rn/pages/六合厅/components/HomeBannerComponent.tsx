@@ -4,7 +4,6 @@ import PushHelper from '../../../public/define/PushHelper';
 import {UGColor} from '../../../public/theme/UGThemeColor';
 import UGSwiper from '../../../public/widget/swp/UGSwiper';
 import {IBannerDataItem} from '../../../redux/model/home/IBannerAdvBean';
-import {defaultBanners} from '../helpers/config';
 
 interface HomeBannerComponentProps {
   banners: IBannerDataItem[];

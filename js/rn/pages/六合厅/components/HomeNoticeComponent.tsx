@@ -3,22 +3,22 @@ import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-nati
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import PushHelper from '../../../public/define/PushHelper';
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean';
-import { noticeImage } from '../helpers/config';
 import { scale } from '../helpers/function';
 
 interface HomeNoticeComponentProps {
+  logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
 }
 
-const HomeNoticeComponent = ({notices , containerStyle}: HomeNoticeComponentProps) => {
+const HomeNoticeComponent = ({logo = '', notices , containerStyle}: HomeNoticeComponentProps) => {
   const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: notice?.title}) )
   const gotoNotice = () => PushHelper.pushLogin();
 
   return (
     <TouchableOpacity style={[styles.container, containerStyle]} onPress={gotoNotice}>
       <View style={styles.iconContainer}>
-        <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: noticeImage}} />
+        <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: logo}} />
       </View>
       <View style={styles.noticContainer}>
         <MarqueeHorizontal width={scale(430)} height={'70%'} textStyle={styles.textStyle} textList={cleanContents} speed={60}/>

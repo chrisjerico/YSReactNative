@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
-import {defaultMineListLogo} from '../helpers/config';
 import {scale} from '../helpers/function';
 
 interface MineListProps {
@@ -11,7 +10,7 @@ interface MineListProps {
   onPress?: () => any;
 }
 
-const MineList = ({logo = defaultMineListLogo, title = '我的钱包', userCenterType = 0, onPress}: MineListProps) => {
+const MineList = ({logo = '', title = '我的钱包', userCenterType = 0, onPress}: MineListProps) => {
   const goToUserCenter = () => {
     PushHelper.pushUserCenterType(userCenterType);
   };

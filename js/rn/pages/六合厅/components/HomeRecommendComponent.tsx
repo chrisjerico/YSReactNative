@@ -3,17 +3,19 @@ import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PushHelper from '../../../public/define/PushHelper';
-import {adImage, defaultNavs, defaultScoreCircles, recommendImage, smileImage} from '../helpers/config';
 import {scale} from '../helpers/function';
-import CircleButton from '../views/CircleButton';
+import NavCircle from '../views/NavCircle';
 import ScoreCircle from '../views/ScoreCircle';
 
 interface HomeRecommendProps {
+  customerServiceLogo: string;
+  markSixLogo: string;
+  advertisement: string;
   navs: any[];
   containerStyle?: ViewStyle;
 }
 
-const HomeRecommendComponent = ({navs = defaultNavs, containerStyle}: HomeRecommendProps) => {
+const HomeRecommendComponent = ({navs = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
   const gotoSavePoint = () => PushHelper.pushLogin();
   const gotoGetPoint = () => PushHelper.pushLogin();
   const gotoCustomerService = () => PushHelper.pushLogin();
@@ -21,48 +23,54 @@ const HomeRecommendComponent = ({navs = defaultNavs, containerStyle}: HomeRecomm
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.topBlock}>
-        <View style={styles.topBlockLeft}>
+      <View style={styles.topContainer}>
+        <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
           <Text>{'0.00'}</Text>
           <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
         </View>
-        <View style={styles.topBlockRight}>
+        <View style={styles.topRightContainer}>
           <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} onPress={gotoSavePoint} />
           <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} onPress={gotoGetPoint} />
           <TouchableOpacity style={styles.smileImageContainer} onPress={gotoCustomerService}>
             <Image
               style={styles.smileImage}
               source={{
-                uri: smileImage,
+                uri: customerServiceLogo,
               }}
             />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.titleBlock}>
-        <View style={styles.titleBlockLeft}>
-          <Image style={styles.recommendImage} source={{uri: recommendImage}} />
+      <View style={styles.titleContainer}>
+        <View style={styles.titleLeftContainer}>
+          <Image style={styles.recommendImage} source={{uri: markSixLogo}} />
           <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
         </View>
-        <View style={styles.awardsBlock}>
+        <View style={styles.awardsContainer}>
           <Text>{'第 '}</Text>
           <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
           <Text>{' 期开奖结果'}</Text>
         </View>
       </View>
       <View style={{flex: 90, flexDirection: 'row'}}>
-        {defaultScoreCircles.map((ele, index) => (
-          <ScoreCircle key={index} {...ele} />
-        ))}
+        {Array(7)
+          .fill({})
+          .map((ele, index) => (
+            <ScoreCircle key={index} {...ele} />
+          ))}
       </View>
       <TouchableOpacity style={{flex: 90}} onPress={goToBetPage}>
-        <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
+        <Image resizeMode={'contain'} style={styles.adImage} source={{uri: advertisement}} />
       </TouchableOpacity>
-      <View style={styles.circleButtonBlock}>
-        {navs.map((button: any, index) => {
-          const {icon, title, logo} = button;
-          return <CircleButton key={index} logo={icon ? icon : logo} title={title} />;
+      <View style={styles.navsContainer}>
+        {navs.map((nav: any, index) => {
+          const {icon, title, logo} = nav;
+          return (
+            <View style={styles.navContainer}>
+              <NavCircle key={index} logo={icon ? icon : logo} title={title} nav={nav} />
+            </View>
+          );
         })}
       </View>
     </View>
@@ -78,19 +86,19 @@ const styles = StyleSheet.create({
     paddingLeft: scale(15),
     paddingRight: scale(15),
   },
-  topBlock: {
+  topContainer: {
     flexDirection: 'row',
     flex: 55,
     justifyContent: 'space-between',
     borderBottomColor: '#d9d9d9',
     borderBottomWidth: 1,
   },
-  topBlockLeft: {
+  topLeftContainer: {
     flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  topBlockRight: {
+  topRightContainer: {
     flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
@@ -111,18 +119,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
   },
-  titleBlock: {
+  titleContainer: {
     flex: 65,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  titleBlockLeft: {
+  titleLeftContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  awardsBlock: {
+  awardsContainer: {
     flex: 1,
     backgroundColor: '#eeeeee',
     aspectRatio: 3.25 / 0.5625,
@@ -139,10 +147,17 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-  circleButtonBlock: {
+  navsContainer: {
     flex: 270,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  navContainer: {
+    width: '25%',
+    height: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

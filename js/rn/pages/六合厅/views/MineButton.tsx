@@ -1,7 +1,6 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity} from 'react-native';
+import {Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
-import {defaultMineButtonImage} from '../helpers/config';
 import {scale} from '../helpers/function';
 
 interface MineButtonProps {
@@ -11,26 +10,16 @@ interface MineButtonProps {
   onPress?: () => any;
 }
 
-const MineButton = ({title = 'title', logo = defaultMineButtonImage, userCenterType = 0, onPress}: MineButtonProps) => {
+const MineButton = ({title = 'title', logo = '', userCenterType = 0, onPress}: MineButtonProps) => {
   const goToUserCenter = () => {
     PushHelper.pushUserCenterType(userCenterType);
   };
 
   return (
-    <TouchableOpacity
-      style={{
-        width: scale(158),
-        aspectRatio: 158 / 60,
-        backgroundColor: '#ff861b',
-        borderRadius: scale(10),
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      onPress={onPress || goToUserCenter}>
+    <TouchableOpacity style={styles.container} onPress={onPress || goToUserCenter}>
       <Text style={{paddingRight: scale(5)}}>{title}</Text>
       <Image
-        style={{width: '15%', aspectRatio: 1, paddingLeft: scale(5)}}
+        style={styles.image}
         resizeMode={'contain'}
         source={{
           uri: logo,
@@ -39,5 +28,22 @@ const MineButton = ({title = 'title', logo = defaultMineButtonImage, userCenterT
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: scale(158),
+    aspectRatio: 158 / 60,
+    backgroundColor: '#ff861b',
+    borderRadius: scale(10),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '15%',
+    aspectRatio: 1,
+    paddingLeft: scale(5),
+  },
+});
 
 export default MineButton;

@@ -2,8 +2,9 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
+import {placeholderLogo} from '../helpers/config';
 
-interface TabCircleButtonProps {
+interface TabCircleProps {
   logo?: string;
   mainTitle?: string;
   subTitle?: string;
@@ -14,16 +15,7 @@ interface TabCircleButtonProps {
   show?: boolean;
 }
 
-const TabCircleButton = ({
-  logo = 'https://7478.com/img/1201.4cc317f2.png',
-  mainTitle = '?',
-  subTitle = '?',
-  showSubTitle = false,
-  onPress,
-  category = '0',
-  gameId = '0',
-  show = true,
-}: TabCircleButtonProps) => {
+const TabCircle = ({logo = placeholderLogo, mainTitle = '?', subTitle = '?', showSubTitle = false, onPress, category = '0', gameId = '0', show = true}: TabCircleProps) => {
   const goToCategory = () => PushHelper.pushCategory(category, gameId);
   return (
     <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} onPress={onPress || goToCategory} activeOpacity={show ? 0.2 : 0}>
@@ -63,7 +55,8 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    borderRadius: scale(85),
   },
 });
 
-export default TabCircleButton;
+export default TabCircle;
