@@ -2,19 +2,18 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {adImage, defaultCircleButtons, recommendImage, smileImage} from '../helpers/config';
-import {scale} from '../helpers/function';
-import ScoreCircle from '../views/ScoreCircle';
-import CircleButton from '../views/CircleButton';
 import PushHelper from '../../../public/define/PushHelper';
-
-const defaultScoreCircles = [{}, {}, {}, {}, {}, {}, {}];
+import {adImage, defaultNavs, defaultScoreCircles, recommendImage, smileImage} from '../helpers/config';
+import {scale} from '../helpers/function';
+import CircleButton from '../views/CircleButton';
+import ScoreCircle from '../views/ScoreCircle';
 
 interface HomeRecommendProps {
+  navs: any[];
   containerStyle?: ViewStyle;
 }
 
-const HomeRecommendComponent = ({containerStyle}: HomeRecommendProps) => {
+const HomeRecommendComponent = ({navs = defaultNavs, containerStyle}: HomeRecommendProps) => {
   const gotoSavePoint = () => PushHelper.pushLogin();
   const gotoGetPoint = () => PushHelper.pushLogin();
   const gotoCustomerService = () => PushHelper.pushLogin();
@@ -61,9 +60,10 @@ const HomeRecommendComponent = ({containerStyle}: HomeRecommendProps) => {
         <Image resizeMode={'contain'} style={styles.adImage} source={{uri: adImage}} />
       </TouchableOpacity>
       <View style={styles.circleButtonBlock}>
-        {defaultCircleButtons.map((ele, index) => (
-          <CircleButton key={index} {...ele} />
-        ))}
+        {navs.map((button: any, index) => {
+          const {icon, title, logo} = button;
+          return <CircleButton key={index} logo={icon ? icon : logo} title={title} />;
+        })}
       </View>
     </View>
   );

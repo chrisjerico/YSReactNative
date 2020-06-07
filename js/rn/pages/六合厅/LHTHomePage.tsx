@@ -26,8 +26,10 @@ const LHTHomePage = () => {
       .then(value => {
         setResponse(value);
         setLoading(false);
-        console.log("---------value.game---------",value.game)
-        // ["banner", "notice", "game", "coupon", "redBag", "floatAd", "movie"]
+        console.log("---------value.game.navs---------",value.game.navs)
+        //console.log("-----coupon-----",value.coupon)
+        //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
+        // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
         //console.log('--------value.game.icons--------', value.game.icons);
       })
@@ -40,6 +42,7 @@ const LHTHomePage = () => {
   const notices = response?.notice?.scroll??defaultNotices
   const headlines = response?.notice?.popup??defaultHeadLines
   const tabs = response?.game?.icons??[]
+  const navs = response?.game?.navs??[]
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -52,7 +55,7 @@ const LHTHomePage = () => {
             <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
               <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices}/>
-              <HomeRecommendComponent  containerStyle={styles.subComponent} />
+              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs}/>
               <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines}/>
               <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
               <HomeBottomToolComponent />

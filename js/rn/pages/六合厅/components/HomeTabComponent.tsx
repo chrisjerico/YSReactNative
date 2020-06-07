@@ -64,7 +64,6 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
   const [index, setIndex] = useState(0);
   // filter props
   const subTabNames = tabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
-
   const subScenes = {};
   tabs.forEach((tab, index) => {
     const {list}: ITab = tab;
@@ -73,9 +72,6 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
       const remainder = data.length % 3;
       const patch = remainder > 0 ? 3 - (data.length % 3) : 0;
       data = data.concat(Array(patch).fill({show: false})).map((ele, index) => Object.assign({}, {key: index}, ele));
-      if (index == 0) {
-        console.log('----data----', data);
-      }
       return (
         <Scene
           data={data}
