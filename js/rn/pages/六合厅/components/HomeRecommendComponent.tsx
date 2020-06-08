@@ -14,6 +14,7 @@ interface HomeRecommendProps {
   navs: any[];
   lotterys: Lottery[];
   containerStyle?: ViewStyle;
+  date: string;
 }
 
 interface Lottery {
@@ -23,8 +24,8 @@ interface Lottery {
   showMore?: boolean;
 }
 
-const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
-  const gotoSavePoint = () => PushHelper.pushLogin();
+const HomeRecommendComponent = ({date = 'date', navs = [], lotterys = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
+  const gotoSavePoint = () => PushHelper.pushCategory(6, 0);
   const gotoGetPoint = () => PushHelper.pushLogin();
   const gotoCustomerService = () => PushHelper.pushLogin();
   const goToBetPage = () => PushHelper.pushCategory(9, 0);
@@ -57,7 +58,7 @@ const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', m
         </View>
         <View style={styles.awardsContainer}>
           <Text>{'第 '}</Text>
-          <Text style={{color: '#ff861b'}}>{'2020008'}</Text>
+          <Text style={{color: '#ff861b'}}>{date}</Text>
           <Text>{' 期开奖结果'}</Text>
         </View>
       </View>

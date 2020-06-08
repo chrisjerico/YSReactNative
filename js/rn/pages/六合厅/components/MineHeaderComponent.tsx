@@ -3,12 +3,12 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 
-const MineHeaderComponent = () => {
+const MineHeaderComponent = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          console.log('跳回首頁');
+          navigation.navigate('LHTHomePage');
         }}>
         <Text style={styles.text}>{'<'}</Text>
       </TouchableOpacity>

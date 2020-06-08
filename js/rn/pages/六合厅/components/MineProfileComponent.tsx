@@ -1,27 +1,31 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Badge, Icon} from 'react-native-elements';
+import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 import MineButton from '../views/MineButton';
-import PushHelper from '../../../public/define/PushHelper';
 
 interface MineProfileComponentProps {
   mineButtons: any[];
+  avatar: string;
+  name: string;
+  level: string;
+  balance: string;
 }
 
-const MineProfileComponent = ({mineButtons = []}: MineProfileComponentProps) => (
+const MineProfileComponent = ({avatar, name = '', level = '', balance = '', mineButtons = []}: MineProfileComponentProps) => (
   <View style={styles.container}>
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{flex: 3, flexDirection: 'row', alignItems: 'flex-end'}}>
-        <Avatar size={'medium'} rounded onPress={() => PushHelper.pushUserCenterType(12)} />
+        <Avatar size={'medium'} rounded onPress={() => PushHelper.pushUserCenterType(12)} source={{uri: avatar}} />
         <View style={{paddingLeft: scale(30)}}>
           <View style={{flexDirection: 'row', flex: 2, alignItems: 'flex-end'}}>
-            <Text style={{fontWeight: '500', fontSize: scale(25), paddingRight: scale(5)}}>{'我帅'}</Text>
-            <Badge status={'error'} value={'VIP0'} />
+            <Text style={{fontWeight: '500', fontSize: scale(25), paddingRight: scale(5)}}>{name}</Text>
+            <Badge status={'error'} value={level} textStyle={{fontSize: scale(20)}} />
           </View>
           <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
             <Text>{'余额'}</Text>
-            <Text>{'0.00'}</Text>
+            <Text>{balance}</Text>
           </View>
         </View>
       </View>

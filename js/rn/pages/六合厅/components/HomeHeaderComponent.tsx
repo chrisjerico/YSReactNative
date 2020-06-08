@@ -1,29 +1,52 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
+import {Badge, Avatar} from 'react-native-elements';
 
 interface HomeHeaderComponentProps {
+  name: string;
+  avatar: string;
   leftLogo: string;
   rightLogo: string;
+  showLogout: boolean;
+  onPressSignOut: () => any;
+  onPressSignIn: () => any;
+  onPressSignUp: () => any;
 }
 
-const HomeHeaderComponent = ({leftLogo = '', rightLogo = ''}: HomeHeaderComponentProps) => {
+const HomeHeaderComponent = ({avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp}: HomeHeaderComponentProps) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
         <Image resizeMode={'contain'} style={styles.image} source={{uri: leftLogo}} />
       </View>
       <View style={{flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-        <Image style={{width: scale(40), aspectRatio: 1}} resizeMode={'contain'} source={{uri: rightLogo}} />
-        <Text style={styles.text}>{' | '}</Text>
-        <Text style={styles.text} onPress={PushHelper.pushLogin}>
-          {'登入'}
-        </Text>
-        <Text style={styles.text}>{' | '}</Text>
-        <Text style={styles.text} onPress={PushHelper.pushRegister}>
-          {'註冊'}
-        </Text>
+        {showLogout ? (
+          <>
+            <Avatar size={'small'} rounded source={{uri: avatar}} />
+            <Text style={{color: '#ffffff', fontSize: scale(23), paddingHorizontal: scale(5)}}>{name}</Text>
+            <Badge
+              value={'退出'}
+              onPress={onPressSignOut}
+              badgeStyle={{backgroundColor: '#ffffff', paddingLeft: scale(10), paddingRight: scale(10), width: scale(75), height: scale(32), borderRadius: scale(75)}}
+              textStyle={{color: '#2894FF', fontSize: scale(20)}}
+            />
+            <Text style={styles.text}>{' | '}</Text>
+            <Image style={{width: scale(40), aspectRatio: 1}} resizeMode={'contain'} source={{uri: rightLogo}} />
+          </>
+        ) : (
+          <>
+            <Image style={{width: scale(40), aspectRatio: 1}} resizeMode={'contain'} source={{uri: rightLogo}} />
+            <Text style={styles.text}>{' | '}</Text>
+            <Text style={styles.text} onPress={onPressSignIn}>
+              {'登入'}
+            </Text>
+            <Text style={styles.text}>{' | '}</Text>
+            <Text style={styles.text} onPress={onPressSignUp}>
+              {'註冊'}
+            </Text>
+          </>
+        )}
       </View>
     </View>
   );

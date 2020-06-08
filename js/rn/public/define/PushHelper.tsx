@@ -4,8 +4,16 @@ import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSys
 import NetworkRequest1 from '../network/NetworkRequest1';
 import AppDefine from './AppDefine';
 import {OCHelper} from './OCHelper/OCHelper';
+import {Toast} from '../tools/ToastUtils';
 
 export default class PushHelper {
+  // 登出
+  static async pushLogout() {
+    await OCHelper.call('UGUserModel.setCurrentUser:', []);
+    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+    await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    Toast('退出成功');
+  }
   // 登入
   static pushLogin() {
     if (Platform.OS != 'ios') return;

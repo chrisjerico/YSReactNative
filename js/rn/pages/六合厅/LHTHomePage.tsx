@@ -9,25 +9,22 @@ import HomeHeadlineComponent from './components/HomeHeadlineComponent';
 import HomeNoticeComponent from './components/HomeNoticeComponent';
 import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
-import { defaultHeadLineLogo, defaultCustomerServiceLogo, defaultMarkSixLogo, defaultAdvertisement, defaultBanners, defaultHeadLines, defaultHomeBottomTools, defaultHomeHeaderLeftLogo, defaultHomeHeaderRightLogo, defaultNavs, defaultNoticeLogo, defaultNotices } from './helpers/config';
+import { defaultAdvertisement, defaultBanners, defaultCustomerServiceLogo, defaultHeadLineLogo, defaultHeadLines, defaultHomeBottomTools, defaultHomeHeaderLeftLogo, defaultHomeHeaderRightLogo, defaultMarkSixLogo, defaultNavs, defaultNoticeLogo, defaultNotices } from './helpers/config';
 import { scale } from './helpers/function';
+import PushHelper from '../../public/define/PushHelper';
 
-const LHTHomePage = () => {
+const LHTHomePage = ({navigation}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<any>(null);
+  const [userIsLogIn,setUserIsLogIn] =useState<boolean>(false);
+  const [name,setName] =useState<string>('');
+  const [avatar,setAvatar] =useState<string>('');
 
   useEffect(() => {
-    //IGlobalStateHelper.updateUserInfo();
-    NetworkRequest1.lotteryNumber().then(
-      value => console.log('------value-----',value)
-    ).catch(error => console.log('------error-----',error))
     NetworkRequest1.homeInfo()
       .then(value => {
         setResponse(value);
         setLoading(false);
-        //console.log('----value----',value)
-        // console.log("---------value.game.navs---------",value.game.navs)
-        //console.log("-----coupon-----",value.coupon)
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
@@ -35,7 +32,20 @@ const LHTHomePage = () => {
       .catch(error => {
         // console.log('--------error--------', error);
       });
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      NetworkRequest1.user_info().then(value => {
+        console.log('-----成為焦點-----',value)
+        const { uid, avatar, usr } = value
+        if (uid) {
+          setUserIsLogIn(true)
+          setName(usr)
+          setAvatar(avatar)
+        }
+      })
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const banners : [] = response?.banner?.list??defaultBanners
   const notices : [] = response?.notice?.scroll??defaultNotices
@@ -58,9 +68,12 @@ const LHTHomePage = () => {
     },
     ...lotterys.slice(6)
   ]
+  const date = response?.lotteryNumber?.issue
 
-  console.log('-------navs-------', navs);
-
+  const onPressSignOut = async () => {
+    await PushHelper.pushLogout()
+    setUserIsLogIn(false)
+  }
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -68,12 +81,12 @@ const LHTHomePage = () => {
         <UGProgressCircle />
       ) : (
         <>
-          <HomeHeaderComponent leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo}/>
+          <HomeHeaderComponent avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister}/>
           <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
             <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
               <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo}/>
-              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} lotterys={lotterys} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
+              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} lotterys={lotterys} date={date} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
               <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo}/>
               <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
               <HomeBottomToolComponent tools={defaultHomeBottomTools}/>

@@ -8,8 +8,11 @@ import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
 import {OCHelper} from '../define/OCHelper/OCHelper';
 
 export default class NetworkRequest1 {
+  // 拿我的頁列表
+  static async userCenterList() {
+    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+  }
   // 獲取中獎號碼
-
   static async lotteryNumber() {
     return await CCSessionModel.req('c=lhcdoc&a=lotteryNumber'); // c=game&a=lotteryHistoryy
   }
@@ -31,7 +34,7 @@ export default class NetworkRequest1 {
   // 获取主页数据
   static async homeInfo() {
     let response1 = await fetch('https://facebook.github.io/react-native/movies.json');
-
+    // user
     //中獎號碼
     let lotteryNumber = await NetworkRequest1.lotteryNumber();
     //广告
@@ -65,6 +68,16 @@ export default class NetworkRequest1 {
     return bean;
   }
 
+  // 獲取我的頁數據
+  static async mineInfo() {
+    let userCenterLists = await NetworkRequest1.userCenterList();
+    let user = await NetworkRequest1.user_info();
+    let bean: any = {
+      userCenterLists,
+      user,
+    };
+    return bean;
+  }
   // 获取评论列表
   static lhcdoc_contentReplyList(
     contentId: string, // 帖子ID
