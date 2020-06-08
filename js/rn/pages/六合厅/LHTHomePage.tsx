@@ -31,9 +31,6 @@ const LHTHomePage = () => {
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
-        console.log('--------value.lotteryNumber--------', value.lotteryNumber);
-        const numColor = value.lotteryNumber.numSx
-        console.log('----numColor----',numColor)
       })
       .catch(error => {
         // console.log('--------error--------', error);
@@ -44,15 +41,26 @@ const LHTHomePage = () => {
   const notices : [] = response?.notice?.scroll??defaultNotices
   const headlines  : []= response?.notice?.popup??defaultHeadLines
   const tabs : []= response?.game?.icons??[]
-  const navs : [] = response?.game?.navs??defaultNavs
+  const navs : [] = response?.game?.navs.sort((nav: any) => -nav.sort)??defaultNavs
   const numbers : [] = response?.lotteryNumber?.numbers?.split(',')??[]
   const numColors : []= response?.lotteryNumber?.numColor?.split(',')??[]
   const numSxs : [] = response?.lotteryNumber?.numSx?.split(',')??[]
-  const lotterys = numbers.map((number,index) => ({
+  let lotterys : any[] = numbers.map((number,index) => ({
     number,
     color: numColors[index],
     sx: numSxs[index]
   }))
+
+  lotterys = [
+    ...lotterys.slice(0, 6),
+    {
+      showMore: true
+    },
+    ...lotterys.slice(6)
+  ]
+
+  console.log('-------navs-------', navs);
+
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>

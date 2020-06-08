@@ -1,8 +1,8 @@
-import {UGUserCenterType, UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
-import AppDefine from './AppDefine';
 import {Alert, AlertButton, Platform} from 'react-native';
-import NetworkRequest1 from '../network/NetworkRequest1';
 import {IGameIconListItem} from '../../redux/model/home/IGameBean';
+import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
+import NetworkRequest1 from '../network/NetworkRequest1';
+import AppDefine from './AppDefine';
 import {OCHelper} from './OCHelper/OCHelper';
 
 export default class PushHelper {

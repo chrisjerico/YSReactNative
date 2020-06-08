@@ -17,9 +17,10 @@ interface HomeRecommendProps {
 }
 
 interface Lottery {
-  number: string;
-  color: string;
-  sx: string;
+  number?: string;
+  color?: string;
+  sx?: string;
+  showMore?: boolean;
 }
 
 const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
@@ -60,10 +61,10 @@ const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', m
           <Text>{' 期开奖结果'}</Text>
         </View>
       </View>
-      <View style={{flex: 90, flexDirection: 'row'}}>
+      <View style={styles.scoreCircleCintainer}>
         {lotterys.map((lottery, index) => {
           const {number, color, sx} = lottery;
-          return <ScoreCircle key={index} score={number} color={color} text={sx} />;
+          return <ScoreCircle key={index} score={number} color={color} text={sx} showMore={index == 6} />;
         })}
       </View>
       <TouchableOpacity style={{flex: 90}} onPress={goToBetPage}>
@@ -71,10 +72,10 @@ const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', m
       </TouchableOpacity>
       <View style={styles.navsContainer}>
         {navs.map((nav: any, index) => {
-          const {icon, title, logo} = nav;
+          const {icon, name, logo} = nav;
           return (
             <View style={styles.navContainer}>
-              <NavCircle key={index} logo={icon ? icon : logo} title={title} nav={nav} />
+              <NavCircle key={index} logo={icon ? icon : logo} title={name} nav={nav} />
             </View>
           );
         })}
@@ -164,6 +165,11 @@ const styles = StyleSheet.create({
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  scoreCircleCintainer: {
+    flex: 90,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
