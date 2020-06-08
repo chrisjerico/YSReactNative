@@ -95,7 +95,7 @@ export function setRnPageInfo() {
   //   ]);
   // }
 
-  if (Skin1.skitType.indexOf('综合体育') != -1) {
+  if (Skin1.skitType.indexOf('经典1') != -1) {
     pages = pages.concat([
       {
         // 首页

@@ -1,6 +1,7 @@
 import React from 'react';
 import {scale} from '../helpers/function';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import PushHelper from '../../../public/define/PushHelper';
 
 interface ScoreCircleProps {
   score?: number | string;
@@ -12,10 +13,12 @@ interface ScoreCircleProps {
 const factor = 1.3;
 
 const ScoreCircle = ({score = 10, size = 35, color = '#ff0000', text = ''}: ScoreCircleProps) => (
-  <TouchableOpacity style={styles.container}>
-    <View style={[styles.circleConatiner, {backgroundColor: color, width: scale(size * factor), aspectRatio: 1, borderRadius: scale(size * factor)}]}>
-      <View style={[styles.inlineContainer, {width: scale(size), aspectRatio: 1, borderRadius: scale(size)}]}>
-        <Text style={{fontSize: scale(size * 0.6)}}>{score}</Text>
+  <TouchableOpacity style={styles.container} onPress={() => PushHelper.pushLogin()}>
+    <View style={styles.circleConatiner}>
+      <View style={[styles.circle, {backgroundColor: color, width: scale(size * factor), aspectRatio: 1, borderRadius: scale(size * factor)}]}>
+        <View style={[styles.scoreContainer, {width: scale(size), aspectRatio: 1, borderRadius: scale(size)}]}>
+          <Text style={{fontSize: scale(size * 0.6)}}>{score}</Text>
+        </View>
       </View>
     </View>
     <View style={styles.textContainer}>
@@ -31,10 +34,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   circleConatiner: {
+    flex: 3,
+    justifyContent: 'center',
+  },
+  circle: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  inlineContainer: {
+  scoreContainer: {
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
