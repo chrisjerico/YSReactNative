@@ -4,6 +4,7 @@ import {ActionType, UGAction} from '../../redux/store/ActionTypes';
 import {IGlobalState} from '../../redux/store/UGStore';
 import {Res} from '../../Res/icon/Resources';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
 
 // 声明Props
 export interface ZHTYRegisterProps extends UGBasePageProps {
@@ -32,6 +33,7 @@ export function ZHTYRegisterReducer(prevState: ZHTYRegisterProps = defaultProps,
 export function ZHTYRegisterStateToProps(state: IGlobalState): ZHTYRegisterProps {
   return mergeProps(state.ZHTYRegisterReducer, {
     sysConf: state.SysConfReducer,
+    backgroundColor: Skin1.bgColor,
     backgroundImage: Res.zhtyLoginBg.uri,
   });
 }

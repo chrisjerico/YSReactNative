@@ -8,6 +8,7 @@ import PushHelper from '../../public/define/PushHelper';
 import {UGUserCenterType, UGUserCenterItem} from '../../redux/model/全局/UGSysConfModel';
 import FastImage from 'react-native-fast-image';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
+import {Skin1} from '../../public/theme/UGSkinManagers';
 
 // 声明Props
 export interface ZHTYMineProps extends UGBasePageProps {
@@ -45,5 +46,5 @@ export function ZHTYMineReducer(prevState: ZHTYMineProps = defaultProps, act: UG
 
 // 从全局数据中传递到Props（mapStateToProps）
 export function ZHTYMineStateToProps(state: IGlobalState): ZHTYMineProps {
-  return mergeProps(state.ZHTYMineReducer, {userInfo: state.UserInfoReducer});
+  return mergeProps(state.ZHTYMineReducer, {backgroundColor: Skin1.bgColor, userInfo: state.UserInfoReducer});
 }

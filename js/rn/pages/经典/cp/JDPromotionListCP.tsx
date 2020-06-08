@@ -19,7 +19,7 @@ interface IState {
 }
 
 export default class JDPromotionListCP extends Component<IProps, IState> {
-  style1: '贴边' | '边框' | '内间距' = '内间距';
+  style1: '贴边' | '行边框' |'外边框' | '不贴边' = '不贴边';
   style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
   once: boolean = true;
@@ -31,7 +31,9 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     if ('c190'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '贴边';
     } else if ('c199,c200,c213,c018'.indexOf(AppDefine.siteId) != -1) {
-      this.style1 = '边框';
+      this.style1 = '行边框';
+    } else if ('c012'.indexOf(AppDefine.siteId) != -1) {
+      this.style1 = '外边框';
     }
     this.style2 = style2;
     this.list = list.map((item: UGPromoteModel) => {
@@ -43,7 +45,8 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   }
 
   renderCell(pm: UGPromoteModel, idx: number) {
-    let marginHorizontal = this.style1 === '贴边' ? 0 : 5 + (this.style1 == '边框' ? 11 : 0);
+    const cardMargin = this.style1 == '行边框' ? 11 : 0;
+    const marginHorizontal = this.style1 === '贴边' ? 0 : 10;
     const marginVertical = this.style1 === '贴边' ? 0 : 5;
     let contentView = (
       <View style={{marginHorizontal: marginHorizontal, marginVertical: marginVertical}}>
@@ -88,7 +91,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             source={{uri: pm.pic}}
             onLoad={(e) => {
               if (!pm.picHeight) {
-                pm.picHeight = ((AppDefine.width - (marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
+                pm.picHeight = ((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
                 this.setState({});
               }
             }}
@@ -126,8 +129,8 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       </View>
     );
 
-    if (this.style1 === '边框') {
-      return <Card containerStyle={{margin:11, borderRadius: 8, padding: 3, backgroundColor:Skin1.homeContentColor}}>{contentView}</Card>;
+    if (this.style1 === '行边框') {
+      return <Card containerStyle={{margin:cardMargin, borderRadius: 8, paddingHorizontal: 0, paddingVertical:3, backgroundColor:Skin1.homeContentColor}}>{contentView}</Card>;
     }
     return contentView;
   }
@@ -137,6 +140,13 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       return (
         <Text style={{ marginTop: 50, textAlign: 'center', color: 'white' }}>暂无</Text>
       );
+    }
+    if (this.style1 == '外边框') {
+      return (
+        <View style={{margin: 7, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor:Skin1.homeContentColor}} >
+          <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
+        </View>
+      )
     }
     return (
       <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />

@@ -100,11 +100,11 @@ export const OtherThemeColor: {[x: string]: UGThemeColor} = {
   综合体育: {
     skitType: '综合体育',
     skitString: '综合体育',
-    bgColor: ['#FFFFFF', '#FFFFFF'],
+    bgColor: ['#F1F1F1', '#F1F1F1'],
     navBarBgColor: ['#46ABFF', '#46ABFF'],
     tabBarBgColor: '#FFFFFF',
     tabNoSelectColor: '#999999',
     tabSelectedColor: '#6B54F5',
-    homeContentColor: '#46ABFF44',
+    homeContentColor: '#fff',
   },
 };
