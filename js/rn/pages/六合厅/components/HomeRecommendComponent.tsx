@@ -12,10 +12,17 @@ interface HomeRecommendProps {
   markSixLogo: string;
   advertisement: string;
   navs: any[];
+  lotterys: Lottery[];
   containerStyle?: ViewStyle;
 }
 
-const HomeRecommendComponent = ({navs = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
+interface Lottery {
+  number: string;
+  color: string;
+  sx: string;
+}
+
+const HomeRecommendComponent = ({navs = [], lotterys = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
   const gotoSavePoint = () => PushHelper.pushLogin();
   const gotoGetPoint = () => PushHelper.pushLogin();
   const gotoCustomerService = () => PushHelper.pushLogin();
@@ -54,11 +61,10 @@ const HomeRecommendComponent = ({navs = [], advertisement = '', markSixLogo = ''
         </View>
       </View>
       <View style={{flex: 90, flexDirection: 'row'}}>
-        {Array(7)
-          .fill({})
-          .map((ele, index) => (
-            <ScoreCircle key={index} {...ele} />
-          ))}
+        {lotterys.map((lottery, index) => {
+          const {number, color, sx} = lottery;
+          return <ScoreCircle key={index} score={number} color={color} text={sx} />;
+        })}
       </View>
       <TouchableOpacity style={{flex: 90}} onPress={goToBetPage}>
         <Image resizeMode={'contain'} style={styles.adImage} source={{uri: advertisement}} />

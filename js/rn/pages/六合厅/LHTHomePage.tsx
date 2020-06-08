@@ -13,35 +13,46 @@ import { defaultHeadLineLogo, defaultCustomerServiceLogo, defaultMarkSixLogo, de
 import { scale } from './helpers/function';
 
 const LHTHomePage = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<any>(null);
 
   useEffect(() => {
     //IGlobalStateHelper.updateUserInfo();
-    // NetworkRequest1.user_info().then(
-    //   value => console.log('------value-----',value)
-    // ).catch(error => console.log('------error-----',error))
+    NetworkRequest1.lotteryNumber().then(
+      value => console.log('------value-----',value)
+    ).catch(error => console.log('------error-----',error))
     NetworkRequest1.homeInfo()
       .then(value => {
         setResponse(value);
         setLoading(false);
-        console.log("---------value.game.navs---------",value.game.navs)
+        //console.log('----value----',value)
+        // console.log("---------value.game.navs---------",value.game.navs)
         //console.log("-----coupon-----",value.coupon)
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
-        //console.log('--------value.game.icons--------', value.game.icons);
+        console.log('--------value.lotteryNumber--------', value.lotteryNumber);
+        const numColor = value.lotteryNumber.numSx
+        console.log('----numColor----',numColor)
       })
       .catch(error => {
         // console.log('--------error--------', error);
       });
   }, []);
 
-  const banners = response?.banner?.list??defaultBanners
-  const notices = response?.notice?.scroll??defaultNotices
-  const headlines = response?.notice?.popup??defaultHeadLines
-  const tabs = response?.game?.icons??[]
-  const navs = response?.game?.navs??defaultNavs
+  const banners : [] = response?.banner?.list??defaultBanners
+  const notices : [] = response?.notice?.scroll??defaultNotices
+  const headlines  : []= response?.notice?.popup??defaultHeadLines
+  const tabs : []= response?.game?.icons??[]
+  const navs : [] = response?.game?.navs??defaultNavs
+  const numbers : [] = response?.lotteryNumber?.numbers?.split(',')??[]
+  const numColors : []= response?.lotteryNumber?.numColor?.split(',')??[]
+  const numSxs : [] = response?.lotteryNumber?.numSx?.split(',')??[]
+  const lotterys = numbers.map((number,index) => ({
+    number,
+    color: numColors[index],
+    sx: numSxs[index]
+  }))
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -54,7 +65,7 @@ const LHTHomePage = () => {
             <HomeBannerComponent banners={banners} />
             <View style={styles.contentContainer}>
               <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo}/>
-              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
+              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} lotterys={lotterys} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
               <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo}/>
               <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
               <HomeBottomToolComponent tools={defaultHomeBottomTools}/>
