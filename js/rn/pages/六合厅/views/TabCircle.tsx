@@ -1,26 +1,48 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
-import {scale} from '../helpers/function';
+import {Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {placeholderLogo} from '../helpers/config';
+import {scale} from '../helpers/function';
 
 interface TabCircleProps {
   logo?: string;
   mainTitle?: string;
   subTitle?: string;
   showSubTitle?: boolean;
-  onPress?: any;
+  onPress?: (category: string | number, gameId: string | number) => any;
   category?: string;
   gameId?: string;
   show?: boolean;
+  imageStyle?: ImageStyle;
+  backgroundColor?: string;
 }
 
-const TabCircle = ({logo = placeholderLogo, mainTitle = '?', subTitle = '?', showSubTitle = false, onPress, category = '0', gameId = '0', show = true}: TabCircleProps) => {
-  const goToCategory = () => PushHelper.pushCategory(category, gameId);
+const TabCircle = ({
+  backgroundColor,
+  imageStyle,
+  logo = placeholderLogo,
+  mainTitle = '?',
+  subTitle = '?',
+  showSubTitle = false,
+  onPress = () => {},
+  category = '0',
+  gameId = '0',
+  show = true,
+}: TabCircleProps) => {
   return (
-    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} onPress={onPress || goToCategory} activeOpacity={show ? 0.2 : 0}>
-      <View style={styles.circleContainer}>
-        <Image style={styles.image} source={{uri: logo}} resizeMode={'contain'} />
+    <TouchableOpacity
+      style={[styles.conatiner, show ? {} : {opacity: 0}]}
+      activeOpacity={show ? 0.2 : 0}
+      onPress={() => {
+        onPress(category, gameId);
+      }}>
+      <View
+        style={[
+          styles.circleContainer,
+          {
+            backgroundColor: backgroundColor ? backgroundColor : '#ACD6FF',
+          },
+        ]}>
+        <Image style={[styles.image, imageStyle]} source={{uri: logo}} resizeMode={'contain'} />
       </View>
       <View style={styles.titleContainer}>
         <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>
@@ -40,8 +62,9 @@ const styles = StyleSheet.create({
   circleContainer: {
     width: '80%',
     aspectRatio: 1,
-    backgroundColor: '#A6A6D2',
     borderRadius: scale(85),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   titleContainer: {
     justifyContent: 'space-around',
@@ -53,8 +76,8 @@ const styles = StyleSheet.create({
     color: '#999999',
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: '75%',
+    height: '75%',
     borderRadius: scale(85),
   },
 });

@@ -12,22 +12,36 @@ import HomeHeadlineComponent from './components/HomeHeadlineComponent';
 import HomeNoticeComponent from './components/HomeNoticeComponent';
 import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
-import { defaultAdvertisement, defaultBanners, defaultCustomerServiceLogo, defaultHeadLineLogo, defaultHeadLines, defaultHomeBottomTools, defaultHomeHeaderLeftLogo, defaultHomeHeaderRightLogo, defaultMarkSixLogo, defaultNavs, defaultNoticeLogo, defaultNotices } from './helpers/config';
+import {
+  defaultAdvertisement,
+  defaultBanners,
+  defaultCustomerServiceLogo,
+  defaultHeadLineLogo,
+  defaultHeadLines,
+  defaultHomeBottomTools,
+  defaultHomeHeaderLeftLogo,
+  defaultHomeHeaderRightLogo,
+  defaultMarkSixLogo,
+  defaultNavs,
+  defaultNoticeLogo,
+  defaultNotices,
+  defaultLeftTabs
+} from './helpers/config';
 import { scale } from './helpers/function';
 
-const LHTHomePage = ({navigation}) => {
+const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [response, setResponse] = useState<any>(null);
-  const [userIsLogIn,setUserIsLogIn] =useState<boolean>(false);
-  const [name,setName] =useState<string>('');
-  const [avatar,setAvatar] =useState<string>('');
+  const [userIsLogIn, setUserIsLogIn] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
+  const [avatar, setAvatar] = useState<string>('');
 
   useEffect(() => {
     NetworkRequest1.homeInfo()
       .then(value => {
         setResponse(value);
         setLoading(false);
-        console.log('--------value-------',value.lotteryNumber)
+        console.log('--------value-------', value.lotteryNumber)
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
@@ -37,7 +51,7 @@ const LHTHomePage = ({navigation}) => {
       });
     const unsubscribe = navigation.addListener('focus', () => {
       NetworkRequest1.user_info().then(value => {
-        console.log('-----成為焦點-----',value)
+        console.log('-----成為焦點-----', value)
         const { uid, avatar, usr } = value
         if (uid) {
           setUserIsLogIn(true)
@@ -50,15 +64,15 @@ const LHTHomePage = ({navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
-  const banners : [] = response?.banner?.list??defaultBanners
-  const notices : [] = response?.notice?.scroll??defaultNotices
-  const headlines  : []= response?.notice?.popup??defaultHeadLines
-  const tabs : []= response?.game?.icons??[]
-  const navs : [] = response?.game?.navs.sort((nav: any) => -nav.sort)??defaultNavs
-  const numbers : [] = response?.lotteryNumber?.numbers?.split(',')??[]
-  const numColors : []= response?.lotteryNumber?.numColor?.split(',')??[]
-  const numSxs : [] = response?.lotteryNumber?.numSx?.split(',')??[]
-  let lotterys : any[] = numbers.map((number,index) => ({
+  const banners: [] = response?.banner?.list ?? defaultBanners
+  const notices: [] = response?.notice?.scroll ?? defaultNotices
+  const headlines: [] = response?.notice?.popup ?? defaultHeadLines
+  const tabs: [] = response?.game?.icons ?? []
+  const navs: [] = response?.game?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
+  const numbers: [] = response?.lotteryNumber?.numbers?.split(',') ?? []
+  const numColors: [] = response?.lotteryNumber?.numColor?.split(',') ?? []
+  const numSxs: [] = response?.lotteryNumber?.numSx?.split(',') ?? []
+  let lotterys: any[] = numbers.map((number, index) => ({
     number,
     color: numColors[index],
     sx: numSxs[index]
@@ -90,12 +104,12 @@ const LHTHomePage = ({navigation}) => {
 
   }
 
-  const onPressSmileLogo =() => {
+  const onPressSmileLogo = () => {
     //PushHelper.pushLogin()
   }
 
   const onPressBanner = (banner: IBannerDataItem) => {
-    const {linkCategory, linkPosition} = banner;
+    const { linkCategory, linkPosition } = banner;
     PushHelper.pushCategory(linkCategory, linkPosition);
   };
 
@@ -107,39 +121,41 @@ const LHTHomePage = ({navigation}) => {
     PushHelper.pushUserCenterType(userCenterType)
   }
 
+  const onPressNotice = () => {
+    PushHelper.pushCategory(9, 10)
+  }
+
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
         <UGProgressCircle />
       ) : (
-        <>
-          <HomeHeaderComponent avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister}/>
-          <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-            <HomeBannerComponent banners={banners} onPressBanner={onPressBanner}/>
-            <View style={styles.contentContainer}>
-              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPress={() => {
-                PushHelper.pushCategory(9,10)
-              }}/>
-              <HomeRecommendComponent  
-                containerStyle={styles.subComponent} 
-                navs={navs} 
-                lotterys={lotterys} 
-                date={date} 
-                advertisement={defaultAdvertisement} 
-                markSixLogo={defaultMarkSixLogo} 
-                customerServiceLogo={defaultCustomerServiceLogo} 
-                onPressSavePoint={onPressSavePoint} 
-                onPressGetPoint={onPressGetPoint} 
-                onPressAd={onPressAd} 
-                onPressSmileLogo={onPressSmileLogo}
-              />
-              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline}/>
-              <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
-              <HomeBottomToolComponent tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool}/>
-            </View>
-          </ScrollView>
-        </>
-      )}
+          <>
+            <HomeHeaderComponent avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister} />
+            <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
+              <HomeBannerComponent banners={banners} onPressBanner={onPressBanner} />
+              <View style={styles.contentContainer}>
+                <HomeNoticeComponent containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPressNotice={onPressNotice} />
+                <HomeRecommendComponent
+                  containerStyle={styles.subComponent}
+                  navs={navs}
+                  lotterys={lotterys}
+                  date={date}
+                  advertisement={defaultAdvertisement}
+                  markSixLogo={defaultMarkSixLogo}
+                  customerServiceLogo={defaultCustomerServiceLogo}
+                  onPressSavePoint={onPressSavePoint}
+                  onPressGetPoint={onPressGetPoint}
+                  onPressAd={onPressAd}
+                  onPressSmileLogo={onPressSmileLogo}
+                />
+                <HomeHeadlineComponent containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
+                <HomeTabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={PushHelper.pushCategory}/>
+                <HomeBottomToolComponent tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
+              </View>
+            </ScrollView>
+          </>
+        )}
     </SafeAreaView>
   );
 };

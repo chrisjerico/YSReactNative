@@ -8,7 +8,9 @@ import TabCircle from '../views/TabCircle';
 const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
 
 interface HomeTabComponentProps {
-  tabs: ITab[];
+  onPressTab: (category: string | number, gameId: string | number) => any;
+  leftTabs: any[];
+  rightTabs: ITab[];
   containerStyle?: ViewStyle;
 }
 
@@ -58,13 +60,13 @@ const SubTab = ({routes, renderScene}) => {
 
 const Scene = ({data, renderItem}) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) => {
+const HomeTabComponent = ({onPressTab, leftTabs = [], rightTabs = [], containerStyle}: HomeTabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
   // filter props
-  const subTabNames = tabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
+  const subTabNames = rightTabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
   const subScenes = {};
-  tabs.forEach((tab, index) => {
+  rightTabs.forEach((tab, index) => {
     const {list}: ITab = tab;
     subScenes[index] = () => {
       let data = list.filter(ele => ele.levelType == '1');
@@ -77,7 +79,7 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
           renderItem={({item}) => {
             const {name, logo, icon, category, gameId, show, realName} = item;
             const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-            return <TabCircle logo={logo ? logo : icon} mainTitle={mainTitle} category={category} gameId={gameId} show={show} />;
+            return <TabCircle logo={logo ? logo : icon} mainTitle={mainTitle} category={category} gameId={gameId} show={show} onPress={onPressTab} />;
           }}
         />
       );
@@ -106,7 +108,7 @@ const HomeTabComponent = ({tabs = [], containerStyle}: HomeTabComponentProps) =>
           );
         }}
         renderScene={SceneMap({
-          0: () => <Scene data={[{key: 1}, {key: 2}, {key: 3}, {key: 4}, {key: 5}, {key: 6}]} renderItem={({item}) => <TabCircle />} />,
+          0: () => <Scene data={leftTabs} renderItem={({item}) => <TabCircle {...item} />} />,
           1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,
         })}
         onIndexChange={setIndex}

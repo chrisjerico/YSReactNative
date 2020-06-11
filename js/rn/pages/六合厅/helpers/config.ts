@@ -178,3 +178,28 @@ export const defaultHomeBottomTools = [
     userCenterType: 3,
   },
 ];
+
+export const defaultLeftTabs = [
+  {
+    key: 1,
+    logo: 'https://7478.com/img/1201.4cc317f2.png',
+    mainTitle: '六合彩',
+    subTitle: '一週開三期',
+    showSubTitle: true,
+  },
+  {
+    key: 2,
+    logo: 'https://7478.com/img/1301.23846282.png',
+    mainTitle: '北京PK10',
+    subTitle: '全天44期',
+    showSubTitle: true,
+  },
+  {
+    key: 3,
+    logo:
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAOCAMAAABEkI/mAAAAG1BMVEUzMzNMaXEzMzMzMzMzMzMzMzMzMzMzMzMzMzPyvRPcAAAACXRSTlOAAHoqQmgKC2pkuzJFAAAAX0lEQVR42qWTQQoAMQgDk6jt/v/FC3sQYS8Bc3MYoVQFyZMlVR6OWBhkCF8UQ7EwGOgMzcK4Qke3JQsjMZJtWRg1y2rLwtAs1ZaFV82rZ68+bDWqzZJs15M8+fwuwMIvpeEDaoZuTa4AAAAASUVORK5CYII=',
+    mainTitle: '更多彩种',
+    subTitle: '好挣好玩',
+    showSubTitle: true,
+  },
+];

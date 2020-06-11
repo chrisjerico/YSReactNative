@@ -8,14 +8,14 @@ interface HomeNoticeComponentProps {
   logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
-  onPress: () => any
+  onPressNotice: () => any
 }
 
-const HomeNoticeComponent = ({logo = '', notices , containerStyle, onPress}: HomeNoticeComponentProps) => {
+const HomeNoticeComponent = ({logo = '', notices , containerStyle, onPressNotice}: HomeNoticeComponentProps) => {
   const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: notice?.title}) )
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPressNotice}>
       <View style={styles.iconContainer}>
         <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: logo}} />
       </View>
