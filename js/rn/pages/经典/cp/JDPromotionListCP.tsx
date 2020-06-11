@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
-import {View} from 'react-native';
-import {Text, Card} from 'react-native-elements';
+import React, { Component } from 'react';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+import { Text, Card } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
-import {UGPromoteModel} from '../../../redux/model/other/UGPromoteModel';
+import { UGPromoteModel } from '../../../redux/model/other/UGPromoteModel';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import AppDefine from '../../../public/define/AppDefine';
@@ -19,7 +19,7 @@ interface IState {
 }
 
 export default class JDPromotionListCP extends Component<IProps, IState> {
-  style1: '贴边' | '行边框' |'外边框' | '不贴边' = '不贴边';
+  style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边';
   style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
   once: boolean = true;
@@ -49,7 +49,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     const marginHorizontal = this.style1 === '贴边' ? 0 : 10;
     const marginVertical = this.style1 === '贴边' ? 0 : 5;
     let contentView = (
-      <View style={{marginHorizontal: marginHorizontal, marginVertical: marginVertical}}>
+      <View style={{ marginHorizontal: marginHorizontal, marginVertical: marginVertical }}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -59,7 +59,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             switch (this.style2) {
               // 内页
               case 'page': {
-                OCHelper.call(({vc}) => ({
+                OCHelper.call(({ vc }) => ({
                   vc: {
                     selectors: 'UGPromoteDetailController.new[setItem:]',
                     args1: [pm],
@@ -85,10 +85,10 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
               }
             }
           }}>
-          {pm.title?.length > 0 && <Text style={{marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize:16, fontWeight:'500'}}>{pm.title}</Text>}
+          {pm.title?.length > 0 && <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize: 16, fontWeight: '500' }}>{pm.title}</Text>}
           <FastImage
-            style={{height: pm.picHeight ?? 100}}
-            source={{uri: pm.pic}}
+            style={{ height: pm.picHeight ?? 100 }}
+            source={{ uri: pm.pic }}
             onLoad={(e) => {
               if (!pm.picHeight) {
                 pm.picHeight = ((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
@@ -97,7 +97,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             }}
           />
         </TouchableOpacity>
-        <View style={{height: this.state.selectedIndex === idx ? pm.webViewHeight ?? 200 : 0}}>
+        <View style={{ height: this.state.selectedIndex === idx ? pm.webViewHeight ?? 200 : 0 }}>
           <WebView
             onNavigationStateChange={(title) => {
               if (!pm.webViewHeight && parseInt(title.title)) {
@@ -108,7 +108,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
                 }
               }
             }}
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             source={{
               html:
                 `<head>
@@ -130,7 +130,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     );
 
     if (this.style1 === '行边框') {
-      return <Card containerStyle={{margin:cardMargin, borderRadius: 8, paddingHorizontal: 0, paddingVertical:3, backgroundColor:Skin1.homeContentColor}}>{contentView}</Card>;
+      return <Card containerStyle={{ margin: cardMargin, borderRadius: 8, paddingHorizontal: 0, paddingVertical: 3, backgroundColor: Skin1.homeContentColor }}>{contentView}</Card>;
     }
     return contentView;
   }
@@ -143,7 +143,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     }
     if (this.style1 == '外边框') {
       return (
-        <View style={{margin: 7, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor:Skin1.homeContentColor}} >
+        <View style={{ margin: 7, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
           <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         </View>
       )

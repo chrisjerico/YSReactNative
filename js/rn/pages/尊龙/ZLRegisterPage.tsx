@@ -1,0 +1,382 @@
+import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image } from "react-native"
+import React, { useEffect, useState, useRef } from 'react'
+import { useSafeArea } from "react-native-safe-area-context"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { Navigation, PageName } from "../../public/navigation/Navigation"
+import { OCHelper } from "../../public/define/OCHelper/OCHelper"
+import { Icon } from "react-native-elements"
+import { push, navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
+import { Controller, useForm, Control } from "react-hook-form"
+import APIRouter from "../../public/network/APIRouter"
+import { useSelector } from "react-redux"
+import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
+import { IGlobalState } from "../../redux/store/UGStore"
+import WebView from "react-native-webview"
+import AppDefine from "../../public/define/AppDefine"
+import UGUserModel from "../../redux/model/全局/UGUserModel"
+enum FormName {
+    inviter = "inviter",
+    usr = "usr",
+    pwd = "pwd",
+    repwd = "repwd",
+    account = "account",
+    fundPwd = "fundPwd",
+    fullName = "fullName",
+    qq = "qq", // QQ号
+    wx = "wx", // 微信号
+    phone = "phone", // 手机号
+    smsCode = "smsCode", // 短信验证码
+    imgCode = "imgCode", // 字母验证码
+    slideCode = "slideCode", // 滑动验证码,
+    email = "email"
+}
+const ZLRegisterPage = () => {
+    const { control, register, getValues, errors, triggerValidation, handleSubmit } = useForm()
+    const [regType, setRegType] = useState<'user' | 'agent'>("user")
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const [repwdSecureTextEntry, setRepwdSecureTextEntry] = useState(true)
+    const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const [code, setCode] = useState("")
+    const {
+        hide_reco, // 代理人 0不填，1选填，2必填
+        reg_name, // 真实姓名 0不填，1选填，2必填
+        reg_fundpwd, // 取款密码 0不填，1选填，2必填
+        reg_qq, // QQ 0不填，1选填，2必填
+        reg_wx, // 微信 0不填，1选填，2必填
+        reg_phone, // 手机 0不填，1选填，2必填
+        reg_email, // 邮箱 0不填，1选填，2必填
+        reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+        pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+        pass_length_min, // 注册密码最小长度
+        pass_length_max, // 注册密码最大长度
+        // smsVerify: boolean; // 手机短信验证
+    } = SystemStore
+    const onSubmit = async (requestData) => {
+        try {
+            const password = requestData?.pwd?.md5()
+            const fundPwd = requestData?.fundPwd?.md5()
+            delete requestData?.repwd;
+            const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
+            reRenderCode()
+            if (data.data == null)
+                throw { message: data.msg }
+            IGlobalStateHelper.updateUserInfo()
+            popToRoot();
+        } catch (error) {
+            reRenderCode()
+            console.log(error.message)
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+        }
+    }
+
+    useEffect(() => {
+        if (reg_vcode == 1) {
+            reRenderCode()
+        }
+    }, [reg_vcode])
+
+    const reRenderCode = async () => {
+        try {
+            const { data, status } = await APIRouter.secure_imgCaptcha()
+            setCode(data)
+        } catch (error) {
+        }
+    }
+    const SlidingVerification = () => {
+        return (
+            <View style={{ marginTop: 13, height: 52, borderRadius: 26, overflow: 'hidden' }}>
+                <WebView
+                    style={{ marginLeft: -15, marginRight: -14, marginTop: -22, flex: 1 }}
+                    javaScriptEnabled
+                    startInLoadingState
+                    source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
+                    onMessage={e => {
+                        console.log('e=');
+                        console.log(e);
+                    }}
+                />
+            </View>
+        );
+    }
+    const getVcode = () => {
+        if (reg_vcode == 0) {
+            return null
+        } else if (reg_vcode == 1) {
+            return <LetterVerificationCode onPress={reRenderCode} control={control} code={code} />
+        } else {
+            return <SlidingVerification />
+        }
+    }
+    useEffect(() => {
+        console.log(errors)
+        Object.keys(errors).map((res) => {
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [errors?.[res]?.message]);
+            return
+        })
+    }, [errors])
+    return (
+        <View style={{ flex: 1 }}>
+            <Header />
+            <ScrollView style={{ flex: 1, backgroundColor: 'black', paddingHorizontal: 10 }}>
+                <Text style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>账户注册</Text>
+                <Text style={{ textAlign: 'left', color: 'white', fontSize: 14, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>为了您的资金安全，请使用真实资料!</Text>
+                <ZLRegInput iconName={"user"} message={"请输入推荐人ID"} placeholder={"请输入推荐人ID"} regConfig={hide_reco} control={control} name={FormName.inviter} />
+                <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
+                    <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon name="user" type="font-awesome" color="black" size={24} />
+                    </View>
+                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
+                    <Controller
+                        maxLength={15}
+                        onChange={args => {
+                            return args[0].nativeEvent.text
+                        }}
+                        style={{ flex: 1 }}
+                        placeholderTextColor={'black'}
+                        as={TextInput}
+                        rules={{
+                            required: {
+                                value: true, message
+                                    : "请输入帐号"
+                            },
+                            maxLength: {
+                                value: 15,
+                                message: "6-15位英文或数字的组合"
+                            },
+                            minLength: {
+                                value: 6,
+                                message: "6-15位英文或数字的组合"
+                            }
+                        }}
+                        name={FormName.usr}
+                        control={control}
+                        defaultValue=""
+                        placeholder={'6-15位英文或数字的组合'}
+                    />
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
+                    <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon name="lock" type="font-awesome" color="black" size={24} />
+                    </View>
+                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
+                    <Controller
+                        maxLength={15}
+                        placeholderTextColor={'black'}
+                        onChange={args => {
+                            return args[0].nativeEvent.text
+                        }}
+                        style={{ flex: 1 }}
+                        as={TextInput}
+                        secureTextEntry={secureTextEntry}
+                        rules={{
+                            required: {
+                                value: true, message
+                                    : "请输入密码"
+                            },
+                            maxLength: {
+                                value: pass_length_max,
+                                message: "最多" + pass_length_max + "位英文或数字的组合"
+                            },
+                            minLength: {
+                                value: pass_length_min,
+                                message: "最少" + pass_length_min + "位英文或数字的组合"
+                            }
+                        }}
+                        name={FormName.pwd}
+                        control={control}
+                        defaultValue=""
+                        placeholder={pass_length_min + '-' + pass_length_max + '位英文或数字的组合'}
+                    />
+                    <TouchableOpacity
+                        style={{}}
+                        onPress={() => {
+                            setSecureTextEntry(secureTextEntry => !secureTextEntry)
+                        }}>
+                        <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
+                    <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon name="lock" type="font-awesome" color="black" size={24} />
+                    </View>
+                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
+                    <Controller
+                        secureTextEntry={repwdSecureTextEntry}
+                        placeholderTextColor={'black'}
+                        onChange={args => {
+                            triggerValidation(FormName.repwd)
+                            return args[0].nativeEvent.text
+                        }}
+                        style={{ flex: 1 }}
+                        as={TextInput}
+                        maxLength={15}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: "请重新输入密码"
+                            },
+                            validate: (value) => {
+                                const passwordValue = getValues("pwd");
+                                return value === passwordValue || "密码不一致"
+                            }
+                        }}
+                        onBlur={() => {
+                            triggerValidation("repwd")
+                        }}
+                        name={FormName.repwd}
+                        control={control}
+                        defaultValue=""
+                        placeholder={'请再次确认密码'}
+                    />
+                    <TouchableOpacity
+                        style={{}}
+                        onPress={() => {
+                            setRepwdSecureTextEntry(secureTextEntry => !secureTextEntry)
+                        }}>
+                        <Icon name={repwdSecureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+                    </TouchableOpacity>
+                </View>
+                <ZLRegInput iconName={"user"} message={"请输入真实姓名"} placeholder={"请输入真实姓名"} regConfig={reg_name} control={control} name={FormName.fullName} />
+                {/* <ZLRegInput iconName={"user"} message={"请输入银行户口"} placeholder={"必须与提款银行户口相同否则无法提款"} regConfig={2} control={control} name={FormName.account} /> */}
+                <ZLRegInput iconName={"lock"} isPassword={true} message={"请输入取款密码"} placeholder={"请输入4数字取款密码"} regConfig={reg_fundpwd} control={control} name={FormName.fundPwd} />
+                <ZLRegInput iconName={"qq"} message={"请输入QQ帐号"} placeholder={"请输入QQ帐号"} regConfig={reg_qq} control={control} name={FormName.qq} />
+                <ZLRegInput iconName={"wechat"} message={"请输入微信号"} placeholder={"请输入微信号"} regConfig={reg_wx} control={control} name={FormName.wx} />
+                <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机号码"} placeholder={"请输入手机号码"} regConfig={reg_phone} control={control} name={FormName.phone} />
+                <ZLRegInput iconName={"mail"} iconType={'entypo'} message={"请输入邮箱地址"} placeholder={"请输入邮箱地址"} regConfig={reg_email} control={control} name={FormName.email} />
+                {getVcode()}
+                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={() => {
+                        setRegType('user')
+                    }} style={{ backgroundColor: regType == 'user' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
+                        <Text style={{ color: 'white' }}>普通用户</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        setRegType('agent')
+                    }} style={{ backgroundColor: regType == 'agent' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
+                        <Text style={{ color: 'white' }}>注册代理</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <TouchableWithoutFeedback onPress={handleSubmit(onSubmit)}>
+                    <View style={{
+                        flex: 1,
+                        height: 50, backgroundColor: "#b67866",
+                        borderRadius: 8,
+                        marginTop: 20, justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <Text style={{ color: "white", fontSize: 20 }}>注册</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={{ height: 100 }}></View>
+            </ScrollView>
+        </View>
+    )
+}
+
+const Header = () => {
+    const { top } = useSafeArea()
+    return (
+        <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
+            <TouchableWithoutFeedback onPress={() => {
+                pop();
+                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            }}>
+                <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => {
+                navigate(PageName.ZLLoginPage, {})
+            }}>
+                <Text style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>登录</Text>
+            </TouchableWithoutFeedback>
+
+        </View>
+    )
+}
+const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPassword, iconType = "font-awesome", iconName = "" }:
+    {
+        regConfig: number, name: FormName, control: Control<Record<string, any>>,
+        placeholder: string, message: string,
+        isPassword?: boolean,
+        iconType?: string,
+        iconName: string
+    }) => {
+    const [secureTextEntry, setSecureTextEntry] = useState(true)
+    if (regConfig == 0) {
+        return null
+    } else {
+        return <View style={{
+            flexDirection: 'row', alignItems: 'center', height: 50,
+            backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10
+        }}>
+            <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                <Icon name={iconName} type={iconType} color="black" size={24} />
+            </View>
+            <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
+            <Controller
+                placeholderTextColor={'black'}
+                onChange={args => {
+                    return args[0].nativeEvent.text
+                }}
+                secureTextEntry={isPassword ? secureTextEntry : false}
+                style={{ flex: 1 }}
+                as={TextInput}
+                rules={{
+                    required: {
+                        value: regConfig == 2, message
+                            : message
+                    }
+                }}
+                name={name}
+                control={control}
+                defaultValue=""
+                placeholder={placeholder}
+            />
+            {isPassword ? <TouchableOpacity
+                style={{}}
+                onPress={() => {
+                    setSecureTextEntry(secureTextEntry => !secureTextEntry)
+                }}>
+                <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+            </TouchableOpacity> : null}
+
+        </View>
+    }
+}
+const LetterVerificationCode = ({ control, code, onPress }: { code: string, control: any, onPress: () => {} }) => {
+    return (
+        <View style={{
+            flexDirection: 'row', alignItems: 'center', height: 50,
+            backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10
+        }}>
+            <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
+                <Icon name={"Safety"} type={"antdesign"} color="black" size={24} />
+            </View>
+            <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
+            <Controller
+                placeholderTextColor={'black'}
+                onChange={args => {
+                    return args[0].nativeEvent.text
+                }}
+                secureTextEntry={false}
+                style={{ flex: 1 }}
+                as={TextInput}
+                rules={{
+                    required: {
+                        value: true, message
+                            : "请输入验证码"
+                    }
+                }}
+                name={FormName.imgCode}
+                control={control}
+                defaultValue=""
+                placeholder={"请输入验证码"}
+            />
+            <TouchableWithoutFeedback onPress={onPress}>
+                <Image resizeMode={'contain'} style={{ height: "100%", aspectRatio: 2 }} source={{ uri: code }} />
+            </TouchableWithoutFeedback>
+        </View>
+
+
+    )
+}
+export default ZLRegisterPage

@@ -4,6 +4,10 @@ import { Platform } from 'react-native';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import { HomeGamesModel } from './Model/HomeGamesModel';
+import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
+import { UGStore } from '../../redux/store/UGStore';
+import { ActionType } from '../../redux/store/ActionTypes';
+import { Toast } from '../tools/ToastUtils';
 interface Dictionary {
     [x: string]: any;
 }
@@ -11,7 +15,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
     isEncrypt?: boolean
 }
 export const httpClient = axios.create({
-    baseURL: `${AppDefine.host}/wjapp`,
+    baseURL: `${AppDefine.host}`,
     timeout: 1000,
     headers: { 'Content-Type': 'application/json', }
 });
@@ -21,18 +25,61 @@ const publicParams = {
 };
 const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary> => {
     if (!isEncrypt) {
-        return new Promise(resolve => resolve(params));
+        return params
     }
     var temp = Object.assign({}, params);
-    temp['checkSign'] = 1;
-    if (Platform.OS == 'ios') {
-        return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
-    } else {
-        return ANHelper.call(NativeCommand.ENCRYPTION_PARAMS, { params: params });
+
+    try {
+        temp['checkSign'] = 1;
+
+        if (Platform.OS == 'ios') {
+            return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
+        } else {
+            return ANHelper.call(NativeCommand.ENCRYPTION_PARAMS, { params: params });
+        }
+    } catch (error) {
+        console.warn(error)
+        return null
     }
 }
+httpClient.interceptors.response.use(response => {
+    return response;
+},
+    err => {
+        if (err && err.response) {
+            switch (err.response.status) {
+                case 401:
+                    OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
+                        OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
+                            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
+                                IGlobalStateHelper.updateUserInfo()
+                                UGStore.dispatch(ActionType.Clear_User)
+                                Toast('帐号已被登出');
+                            })
+                        })
+                    })
+
+
+                    break;
+                case 500:
+                    console.warn("伺服器出錯");
+                    break;
+                case 503:
+                    console.warn("服務失效");
+                    break;
+                default:
+                    console.warn(`連接錯誤${err.response.status}`);
+            }
+        } else {
+            console.warn("連接到服務器失敗");
+        }
+        return Promise.resolve(err.response);
+    })
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
-    const params = Object.assign({}, publicParams, config.params);
+    if (!config.url.includes('wjapp')) {
+        config.url = 'wjapp/api.php?' + config.url
+    }
+    const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
     const { isEncrypt = true } = config
     const encryptData = await encryptParams(params, isEncrypt)
     if (isEncrypt) {
@@ -45,6 +92,16 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
                     }
                     config.params[res] = encryptData[res]
                 })
+            } else if (config.method == 'post' || config.method == 'POST') {
+                config.url += '&checkSign=1'
+                if (!config.params)
+                    config.params = {}
+                if (!config.data)
+                    config.data = {}
+                for (let paramsKey in encryptData) {
+
+                    config.data[paramsKey] = `${encryptData[paramsKey]}`;
+                }
             }
 
         }

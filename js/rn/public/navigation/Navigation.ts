@@ -18,7 +18,9 @@ export enum PageName {
   ZHTYRegisterPage = 'ZHTYRegisterPage',
   ZHTYMinePage = 'ZHTYMinePage',
   ZLHomePage = 'ZLHomePage',
-  ZLLoginPage = 'ZLLoginPage'
+  ZLLoginPage = 'ZLLoginPage',
+  ZLMinePage = 'ZLMinePage',
+  ZLRegisterPage = 'ZLRegisterPage'
 }
 
 export class Navigation {
