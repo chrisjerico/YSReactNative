@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import PushHelper from '../../public/define/PushHelper';
+import APIRouter from '../../public/network/APIRouter';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
@@ -26,7 +27,6 @@ import Header from './views/homes/Header';
 import Headline from './views/homes/Headline';
 import Nav from './views/homes/Nav';
 import Notice from './views/homes/Notice';
-import APIRouter from '../../public/network/APIRouter';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -36,17 +36,26 @@ const LHTHomePage = ({ navigation }) => {
   const [avatar, setAvatar] = useState<string>('');
 
   useEffect(() => {
-    NetworkRequest1.homeInfo()
-      .then(value => {
-        setResponse(value);
-        setLoading(false);
-        //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
-        // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
-        // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
-      })
-      .catch(error => {
-        // console.log('--------error--------', error);
+    Promise.all([
+      APIRouter.system_banners(),
+      APIRouter.notice_latest(),
+      APIRouter.game_homeGames(),
+      APIRouter.lhcdoc_lotteryNumber(),
+      APIRouter.lhcdoc_categoryList()
+    ]).then((response) => {
+      console.log('--------data-------',response[0].data.data)
+      setResponse({
+        banner: response[0].data.data,
+        notice: response[1].data.data,
+        game: response[2].data.data,
+        lottery: response[3].data.data,
+        popular: response[4].data.data
       });
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.log("----err----",err)
+    })
     const unsubscribe = navigation.addListener('focus', () => {
       NetworkRequest1.user_info().then(value => {
         console.log('-----成為焦點-----', value)
@@ -62,14 +71,15 @@ const LHTHomePage = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const populars = response?.popular?? []
   const banners: [] = response?.banner?.list ?? defaultBanners
   const notices: [] = response?.notice?.scroll ?? defaultNotices
   const headlines: [] = response?.notice?.popup ?? defaultHeadLines
   const tabs: [] = response?.game?.icons ?? []
   const navs: [] = response?.game?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
-  const numbers: [] = response?.lotteryNumber?.numbers?.split(',') ?? []
-  const numColors: [] = response?.lotteryNumber?.numColor?.split(',') ?? []
-  const numSxs: [] = response?.lotteryNumber?.numSx?.split(',') ?? []
+  const numbers: [] = response?.lottery?.numbers?.split(',') ?? []
+  const numColors: [] = response?.lottery?.numColor?.split(',') ?? []
+  const numSxs: [] = response?.lottery?.numSx?.split(',') ?? []
   let lotterys: any[] = numbers.map((number, index) => ({
     number,
     color: numColors[index],
@@ -83,7 +93,7 @@ const LHTHomePage = ({ navigation }) => {
     },
     ...lotterys.slice(6)
   ]
-  const date = response?.lotteryNumber?.issue
+  const date = response?.lottery?.issue
 
   const onPressSignOut = async () => {
     await PushHelper.pushLogout()
@@ -165,7 +175,7 @@ const LHTHomePage = ({ navigation }) => {
                   onPressNav={onPressNav}
                 />
                 <Headline containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
-                <TabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={onPressTab} date={date} lotterys={lotterys}/>
+                <TabComponent containerStyle={styles.subComponent} leftTabs={populars} rightTabs={tabs} onPressTab={onPressTab} date={date} />
                 <BottomToolBar tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
               </View>
             </ScrollView>

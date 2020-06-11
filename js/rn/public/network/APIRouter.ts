@@ -10,10 +10,12 @@ import { OCHelper } from '../define/OCHelper/OCHelper';
 import { BalanceModel } from './Model/BalanceModel';
 import { OnlineModel } from './Model/OnlineModel';
 import { RegisterModel } from './Model/RegisterModel';
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
 class APIRouter {
+
     /**
      * 首頁遊戲資料
      */
@@ -98,6 +100,13 @@ class APIRouter {
         params = { ...params, device: '3', accessToken: accessToken, }
         debugger
         return httpClient.post<RegisterModel>('c=user&a=reg', params);
+    }
+    static lhcdoc_categoryList = async () =>{
+        return httpClient.get<LhcdocCategoryListModel>("c=lhcdoc&a=categoryList")
+    }
+
+    static lhcdoc_lotteryNumber = async () =>{
+        return httpClient.get("c=lhcdoc&a=lotteryNumber")
     }
 }
 export default APIRouter;

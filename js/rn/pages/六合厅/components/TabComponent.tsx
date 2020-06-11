@@ -14,7 +14,6 @@ interface TabComponentProps {
   leftTabs: any[];
   rightTabs: ITab[];
   containerStyle?: ViewStyle;
-  lotterys: Lottery[];
 }
 
 interface ITab {
@@ -29,13 +28,6 @@ interface IList {
   category: string;
   gameId: number;
   levelType: string;
-}
-
-interface Lottery {
-  number?: string;
-  color?: string;
-  sx?: string;
-  showMore?: boolean;
 }
 
 const SubTab = ({routes, renderScene}) => {
@@ -70,11 +62,11 @@ const SubTab = ({routes, renderScene}) => {
 
 const Scene = ({data, renderItem}) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: TabComponentProps) => {
+const TabComponent = ({date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: TabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
-  const [showDropScene, setShowDropScene] = useState(false);
-  const [square, setSquare] = useState(false);
+  // const [showDropScene, setShowDropScene] = useState(false);
+  // const [square, setSquare] = useState(false);
   // filter props
   const subTabNames = rightTabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
   const subScenes = {};
@@ -124,25 +116,14 @@ const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], righ
         }}
         renderScene={SceneMap({
           0: () => (
-            <View style={styles.leftScene}>
-              {leftTabs.map((item, index) => (
-                <TabButton
-                  key={index}
-                  {...item}
-                  onPress={() => {
-                    if (index == 2) {
-                    } else {
-                      setShowDropScene(true);
-                      if (index == 0) {
-                        setSquare(false);
-                      } else if (index == 1) {
-                        setSquare(true);
-                      }
-                    }
-                  }}
-                />
-              ))}
-            </View>
+            <Scene
+              data={leftTabs}
+              renderItem={({item}) => {
+                console.log('--------item------', item);
+                const {name, icon} = item;
+                return <TabButton {...item} logo={icon} mainTitle={name} onPress={() => {}} />;
+              }}
+            />
           ),
           1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,
         })}
@@ -152,7 +133,7 @@ const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], righ
           width: Dimensions.get('window').width,
         }}
       />
-      {showDropScene ? (
+      {/* {showDropScene ? (
         <DropScene
           onPress={() => setShowDropScene(false)}
           square={square}
@@ -165,7 +146,7 @@ const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], righ
             </>
           )}
         />
-      ) : null}
+      ) : null} */}
     </View>
   );
 };
