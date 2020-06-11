@@ -1,9 +1,9 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {scale} from '../helpers/function';
+import {scale} from '../../helpers/function';
 import {Badge, Avatar} from 'react-native-elements';
 
-interface HomeHeaderComponentProps {
+interface HeaderProps {
   name: string;
   avatar: string;
   leftLogo: string;
@@ -14,7 +14,7 @@ interface HomeHeaderComponentProps {
   onPressSignUp: () => any;
 }
 
-const HomeHeaderComponent = ({avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp}: HomeHeaderComponentProps) => {
+const Header = ({avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp}: HeaderProps) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'flex-start'}}>
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeHeaderComponent;
+export default Header;

@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {UGUserCenterType} from '../../../redux/model/全局/UGSysConfModel';
 
-interface HomeBottomToolComponentProps {
+interface BottomToolBarProps {
   containerStyle?: ViewStyle;
   tools: HomeBottomTool[];
   onPressBottomTool: (userCenterType: UGUserCenterType) => any;
@@ -13,7 +13,7 @@ interface HomeBottomTool {
   userCenterType: number;
 }
 
-const HomeBottomToolComponent = ({onPressBottomTool, tools, containerStyle}: HomeBottomToolComponentProps) => {
+const BottomToolBar = ({onPressBottomTool, tools, containerStyle}: BottomToolBarProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       {tools.map((tool: HomeBottomTool, index) => {
@@ -28,7 +28,7 @@ const HomeBottomToolComponent = ({onPressBottomTool, tools, containerStyle}: Hom
   );
 };
 
-export default HomeBottomToolComponent;
+export default BottomToolBar;
 
 const styles = StyleSheet.create({
   container: {

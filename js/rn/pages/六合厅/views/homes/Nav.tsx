@@ -2,11 +2,11 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {scale} from '../helpers/function';
-import NavCircle from '../views/NavCircle';
-import ScoreCircle from '../views/ScoreCircle';
+import {scale} from '../../helpers/function';
+import NavCircle from '../../views/NavCircle';
+import ScoreCircle from '../../views/ScoreCircle';
 
-interface HomeRecommendProps {
+interface NavProps {
   customerServiceLogo: string;
   markSixLogo: string;
   advertisement: string;
@@ -27,7 +27,7 @@ interface Lottery {
   showMore?: boolean;
 }
 
-const HomeRecommendComponent = ({
+const Nav = ({
   onPressSmileLogo,
   onPressAd,
   onPressSavePoint,
@@ -39,7 +39,7 @@ const HomeRecommendComponent = ({
   markSixLogo = '',
   customerServiceLogo = '',
   containerStyle,
-}: HomeRecommendProps) => {
+}: NavProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topContainer}>
@@ -194,4 +194,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeRecommendComponent;
+export default Nav;

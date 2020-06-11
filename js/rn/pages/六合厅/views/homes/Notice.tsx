@@ -1,17 +1,17 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
-import { INoticeScroll } from '../../../redux/model/home/INoticeBean';
-import { scale } from '../helpers/function';
+import { INoticeScroll } from '../../../../redux/model/home/INoticeBean';
+import { scale } from '../../helpers/function';
 
-interface HomeNoticeComponentProps {
+interface NoticeProps {
   logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
   onPressNotice: () => any
 }
 
-const HomeNoticeComponent = ({logo = '', notices , containerStyle, onPressNotice}: HomeNoticeComponentProps) => {
+const Notice = ({logo = '', notices , containerStyle, onPressNotice}: NoticeProps) => {
   const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: notice?.title}) )
 
   return (
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeNoticeComponent;
+export default Notice;

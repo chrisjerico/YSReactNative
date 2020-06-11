@@ -3,14 +3,7 @@ import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'reac
 import PushHelper from '../../public/define/PushHelper';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
-import { IBannerDataItem } from '../../redux/model/home/IBannerAdvBean';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import HomeBannerComponent from './components/HomeBannerComponent';
-import HomeBottomToolComponent from './components/HomeBottomToolComponent';
-import HomeHeaderComponent from './components/HomeHeaderComponent';
-import HomeHeadlineComponent from './components/HomeHeadlineComponent';
-import HomeNoticeComponent from './components/HomeNoticeComponent';
-import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
 import {
   defaultAdvertisement,
@@ -21,13 +14,18 @@ import {
   defaultHomeBottomTools,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
-  defaultMarkSixLogo,
+  defaultLeftTabs, defaultMarkSixLogo,
   defaultNavs,
   defaultNoticeLogo,
-  defaultNotices,
-  defaultLeftTabs
+  defaultNotices
 } from './helpers/config';
 import { scale } from './helpers/function';
+import Banner from './views/homes/Banner';
+import BottomToolBar from './views/homes/BottomToolBar';
+import Header from './views/homes/Header';
+import Headline from './views/homes/Headline';
+import Nav from './views/homes/Nav';
+import Notice from './views/homes/Notice';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -108,7 +106,8 @@ const LHTHomePage = ({ navigation }) => {
     //PushHelper.pushLogin()
   }
 
-  const onPressBanner = (banner: IBannerDataItem) => {
+  const onPressBanner = (banner) => {
+    // console.log("-----banner-----",banner)
     const { linkCategory, linkPosition } = banner;
     PushHelper.pushCategory(linkCategory, linkPosition);
   };
@@ -126,8 +125,8 @@ const LHTHomePage = ({ navigation }) => {
   }
 
   const onPressTab = ({category,gameId, gameCode}) => {
-    console.log("-----category-----",category)
-    console.log("-----gameCode-----",gameCode)
+    // console.log("-----category-----",category)
+    // console.log("-----gameCode-----",gameCode)
     PushHelper.pushCategory(category,gameId)
   }
 
@@ -137,12 +136,12 @@ const LHTHomePage = ({ navigation }) => {
         <UGProgressCircle />
       ) : (
           <>
-            <HomeHeaderComponent avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister} />
+            <Header avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister} />
             <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <HomeBannerComponent banners={banners} onPressBanner={onPressBanner} />
+              <Banner banners={banners} onPressBanner={onPressBanner} />
               <View style={styles.contentContainer}>
-                <HomeNoticeComponent containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPressNotice={onPressNotice} />
-                <HomeRecommendComponent
+                <Notice containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPressNotice={onPressNotice} />
+                <Nav
                   containerStyle={styles.subComponent}
                   navs={navs}
                   lotterys={lotterys}
@@ -155,9 +154,9 @@ const LHTHomePage = ({ navigation }) => {
                   onPressAd={onPressAd}
                   onPressSmileLogo={onPressSmileLogo}
                 />
-                <HomeHeadlineComponent containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
+                <Headline containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
                 <HomeTabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={onPressTab} date={date} lotterys={lotterys}/>
-                <HomeBottomToolComponent tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
+                <BottomToolBar tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
               </View>
             </ScrollView>
           </>

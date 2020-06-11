@@ -1,15 +1,16 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {UGColor} from '../../../public/theme/UGThemeColor';
-import UGSwiper from '../../../public/widget/swp/UGSwiper';
-import {IBannerDataItem} from '../../../redux/model/home/IBannerAdvBean';
+import {UGColor} from '../../../../public/theme/UGThemeColor';
+import UGSwiper from '../../../../public/widget/swp/UGSwiper';
+import {IBannerDataItem} from '../../../../redux/model/home/IBannerAdvBean';
 
-interface HomeBannerComponentProps {
+interface BannerProps {
   banners: IBannerDataItem[];
   onPressBanner: (banner: IBannerDataItem) => any;
 }
 
-const HomeBannerComponent = ({banners, onPressBanner}: HomeBannerComponentProps) => {
+const Banner = (props: BannerProps) => {
+  const {banners = [], onPressBanner = () => {}} = props;
   return (
     <View style={styles.container}>
       <UGSwiper>
@@ -44,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeBannerComponent;
+export default Banner;

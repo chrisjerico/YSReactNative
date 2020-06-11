@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeVertical } from 'react-native-marquee-ab';
 import Icon from 'react-native-vector-icons/AntDesign';
-import StringUtils from '../../../public/tools/StringUtils';
-import { INoticePop } from '../../../redux/model/home/INoticeBean';
-import { scale } from '../helpers/function';
+import StringUtils from '../../../../public/tools/StringUtils';
+import { INoticePop } from '../../../../redux/model/home/INoticeBean';
+import { scale } from '../../helpers/function';
 
-interface HomeHeadlineComponentProps {
+interface HeadlineProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
   headLineLogo: string
   onPressHeadline: () => any
 }
 
-const HomeHeadlineComponent = ({onPressHeadline,headlines, headLineLogo= '',containerStyle}: HomeHeadlineComponentProps) => {
+const Headline = ({onPressHeadline,headlines, headLineLogo= '',containerStyle}: HeadlineProps) => {
   
   const [display,setDisplay] = useState(true)
   const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeHeadlineComponent;
+export default Headline;
