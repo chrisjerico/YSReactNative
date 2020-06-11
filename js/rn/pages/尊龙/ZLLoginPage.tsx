@@ -169,7 +169,7 @@ const ZLLoginPage = () => {
                     </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                    Navigation.pop();
+                    pop();
 
                     if (Platform.OS == 'ios') {
                         OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
