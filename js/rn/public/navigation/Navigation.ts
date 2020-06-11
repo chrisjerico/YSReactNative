@@ -1,8 +1,8 @@
-import {RouterType, Router} from './Router';
-import {UGBasePageProps} from '../../pages/base/UGBasePageProps';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import { RouterType, Router } from './Router';
+import { UGBasePageProps } from '../../pages/base/UGBasePageProps';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
 import React from 'react';
 
 export enum PageName {
@@ -18,13 +18,17 @@ export enum PageName {
   ZHTYLoginPage = 'ZHTYLoginPage',
   ZHTYRegisterPage = 'ZHTYRegisterPage',
   ZHTYMinePage = 'ZHTYMinePage',
+  ZLHomePage = 'ZLHomePage',
+  ZLLoginPage = 'ZLLoginPage',
+  ZLMinePage = 'ZLMinePage',
+  ZLRegisterPage = 'ZLRegisterPage'
 }
 
 export class Navigation {
   // 当前存活的页面（第一个页面是Tabbar的当前页面）
   static pages: PageName[] = [PageName.UpdateVersionPage];
 
-  private static navigation: StackNavigationProp<{[x: string]: any}> & BottomTabNavigationProp<{[x: string]: any}>;
+  private static navigation: StackNavigationProp<{ [x: string]: any }> & BottomTabNavigationProp<{ [x: string]: any }>;
   static setNavigation(navigation) {
     if (!this.navigation) {
       this.navigation = navigation;
@@ -52,7 +56,6 @@ export class Navigation {
   // 智能跳转
   static smartNavigate<P>(priorityType: RouterType, page: PageName, props?: P, transition: boolean = true): boolean {
     if (!this.navigation) return false;
-
     const routerType = Router.getPageRouterType(page, priorityType);
     switch (routerType) {
       case RouterType.Stack: {
@@ -67,7 +70,7 @@ export class Navigation {
           console.log('跳转到', page);
         } else {
           this.pages[0] = PageName.TransitionPage;
-          this.navigation.jumpTo(PageName.TransitionPage, {jumpTo: page, props: props});
+          this.navigation.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props });
           console.log('跳转到过渡页');
         }
         return true;
