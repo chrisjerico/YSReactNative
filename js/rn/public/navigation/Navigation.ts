@@ -18,7 +18,9 @@ export enum PageName {
   ZHTYRegisterPage = 'ZHTYRegisterPage',
   ZHTYMinePage = 'ZHTYMinePage',
   LHTHomePage = 'LHTHomePage',
-  LHTMinePage = 'LHTMinePage'
+  LHTMinePage = 'LHTMinePage',
+  ZLHomePage = 'ZLHomePage',
+  ZLLoginPage = 'ZLLoginPage',
 }
 
 export class Navigation {
@@ -53,7 +55,6 @@ export class Navigation {
   // 智能跳转
   static smartNavigate<P>(priorityType: RouterType, page: PageName, props?: P, transition: boolean = true): boolean {
     if (!this.navigation) return false;
-
     const routerType = Router.getPageRouterType(page, priorityType);
     switch (routerType) {
       case RouterType.Stack: {

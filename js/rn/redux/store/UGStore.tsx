@@ -16,8 +16,7 @@ import {ZHTYHomeProps, ZHTYHomeReducer} from '../../pages/综合体育/ZHTYHomeP
 import {ZHTYRegisterProps, ZHTYRegisterReducer} from '../../pages/综合体育/ZHTYRegisterProps';
 import {ZHTYLoginProps, ZHTYLoginReducer} from '../../pages/综合体育/ZHTYLoginProps';
 import {ZHTYMineProps, ZHTYMineReducer} from '../../pages/综合体育/ZHTYMineProps';
-import {LHTHomeProps, LHTHomeReducer} from '../../pages/六合厅/LHTHomeProps';
-
+import {composeWithDevTools} from 'redux-devtools-extension';
 // 整个State的树结构
 export interface IGlobalState {
   // 综合体育
@@ -71,10 +70,12 @@ export const rootReducer = combineReducers({
   // iOS独有
   UpdateVersionReducer,
 });
-
+const composeEnhancers = composeWithDevTools({
+  // Specify here name, actionsBlacklist, actionsCreators and other options
+});
 export class UGStore {
   // Store
-  static store: Store<IGlobalState, UGAction> = createStore(rootReducer, {}, applyMiddleware(thunk));
+  static store: Store<IGlobalState, UGAction> = createStore(rootReducer, __DEV__ ? composeEnhancers(applyMiddleware(thunk)) : applyMiddleware(thunk));
 
   // 发送通知
   static dispatch<P>(act: UGAction<P>) {

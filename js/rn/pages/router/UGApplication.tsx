@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Provider} from 'react-redux';
 import {UGStore} from '../../redux/store/UGStore';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {StackNavigationProp, createStackNavigator} from '@react-navigation/stack';
 import {BottomTabBarOptions} from '@react-navigation/bottom-tabs';
 import {Router} from '../../public/navigation/Router';
 import {PageName} from '../../public/navigation/Navigation';
@@ -19,6 +19,8 @@ import ZHTYMinePage from '../综合体育/ZHTYMinePage';
 import ZHTYHomePage from '../综合体育/ZHTYHomePage';
 import LHTHomePage from '../六合厅/LHTHomePage';
 import LHTMinePage from '../六合厅/LHTMinePage';
+import ZLHomePage from '../尊龙/ZLHomePage';
+import ZLLoginPage from '../尊龙/ZLLoginPage';
 
 // TabbarController
 class TabBarController extends React.Component<{navigation: StackNavigationProp<{}>}> {
@@ -36,7 +38,7 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
 
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.LHTMinePage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.LHTHomePage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
@@ -50,6 +52,7 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
+        <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
       </Router.TabNavigator>
     );
   }
@@ -63,6 +66,7 @@ export default class UGApplication extends React.Component {
         <NavigationContainer>
           <Router.StackNavigator headerMode="screen">
             <Router.StackScreen name="Tabbar" component={TabBarController} />
+            <Router.StackScreen options={{headerShown: false}} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           </Router.StackNavigator>
         </NavigationContainer>
       </Provider>
