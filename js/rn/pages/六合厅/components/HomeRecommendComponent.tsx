@@ -89,7 +89,7 @@ const HomeRecommendComponent = ({
           );
         })}
       </View>
-      <TouchableOpacity style={{flex: 90}} onPress={onPressAd}>
+      <TouchableOpacity style={{flex: 90, alignItems: 'center'}} onPress={onPressAd}>
         <Image resizeMode={'contain'} style={styles.adImage} source={{uri: advertisement}} />
       </TouchableOpacity>
       <View style={styles.navsContainer}>
@@ -112,8 +112,7 @@ const styles = StyleSheet.create({
     aspectRatio: 540 / 580,
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
-    paddingLeft: scale(15),
-    paddingRight: scale(15),
+    paddingHorizontal: scale(15),
   },
   topContainer: {
     flexDirection: 'row',
@@ -173,8 +172,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   adImage: {
-    height: '100%',
-    width: '100%',
+    height: '95%',
+    width: '95%',
   },
   navsContainer: {
     flex: 270,
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
   navContainer: {
     width: '25%',
     height: '50%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   scoreCircleCintainer: {

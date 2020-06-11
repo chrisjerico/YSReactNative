@@ -125,6 +125,12 @@ const LHTHomePage = ({ navigation }) => {
     PushHelper.pushCategory(9, 10)
   }
 
+  const onPressTab = ({category,gameId, gameCode}) => {
+    console.log("-----category-----",category)
+    console.log("-----gameCode-----",gameCode)
+    PushHelper.pushCategory(category,gameId)
+  }
+
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -150,7 +156,7 @@ const LHTHomePage = ({ navigation }) => {
                   onPressSmileLogo={onPressSmileLogo}
                 />
                 <HomeHeadlineComponent containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
-                <HomeTabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={PushHelper.pushCategory}/>
+                <HomeTabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={onPressTab} date={date} lotterys={lotterys}/>
                 <HomeBottomToolComponent tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
               </View>
             </ScrollView>

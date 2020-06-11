@@ -18,7 +18,8 @@ const HomeHeadlineComponent = ({onPressHeadline,headlines, headLineLogo= '',cont
   const [display,setDisplay] = useState(true)
   const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
   return (
-    <View style={[styles.container, containerStyle, display ? {} : {display: 'none'}]}>
+    display ? 
+    <View style={styles.container}>
       <View style={{flex: 70}}>
         <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineLogo}} />
       </View>
@@ -28,7 +29,7 @@ const HomeHeadlineComponent = ({onPressHeadline,headlines, headLineLogo= '',cont
       <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
         <Icon name={'close'} color={'#ffffff'} />
       </TouchableOpacity>
-    </View>
+    </View> : null
   );
 };
 

@@ -8,7 +8,7 @@ interface TabCircleProps {
   mainTitle?: string;
   subTitle?: string;
   showSubTitle?: boolean;
-  onPress?: (category: string | number, gameId: string | number) => any;
+  onPress?: (props: TabCircleProps) => any;
   category?: string;
   gameId?: string;
   show?: boolean;
@@ -16,25 +16,10 @@ interface TabCircleProps {
   backgroundColor?: string;
 }
 
-const TabCircle = ({
-  backgroundColor,
-  imageStyle,
-  logo = placeholderLogo,
-  mainTitle = '?',
-  subTitle = '?',
-  showSubTitle = false,
-  onPress = () => {},
-  category = '0',
-  gameId = '0',
-  show = true,
-}: TabCircleProps) => {
+const TabCircle = (props: TabCircleProps) => {
+  const {backgroundColor, imageStyle, logo = placeholderLogo, mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => {}, show = true} = props;
   return (
-    <TouchableOpacity
-      style={[styles.conatiner, show ? {} : {opacity: 0}]}
-      activeOpacity={show ? 0.2 : 0}
-      onPress={() => {
-        onPress(category, gameId);
-      }}>
+    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} activeOpacity={show ? 0.2 : 0} onPress={() => onPress && onPress(props)}>
       <View
         style={[
           styles.circleContainer,

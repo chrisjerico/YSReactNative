@@ -1,17 +1,21 @@
 import React, {useState} from 'react';
 import {Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import StringUtils from '../../../public/tools/StringUtils';
 import {scale} from '../helpers/function';
+import DropScene from '../views/DropScene';
 import TabCircle from '../views/TabCircle';
 
 const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
 
 interface HomeTabComponentProps {
-  onPressTab: (category: string | number, gameId: string | number) => any;
+  date: string;
+  onPressTab: (props: any) => any;
   leftTabs: any[];
   rightTabs: ITab[];
   containerStyle?: ViewStyle;
+  lotterys: Lottery[];
 }
 
 interface ITab {
@@ -26,6 +30,13 @@ interface IList {
   category: string;
   gameId: number;
   levelType: string;
+}
+
+interface Lottery {
+  number?: string;
+  color?: string;
+  sx?: string;
+  showMore?: boolean;
 }
 
 const SubTab = ({routes, renderScene}) => {
@@ -60,9 +71,11 @@ const SubTab = ({routes, renderScene}) => {
 
 const Scene = ({data, renderItem}) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const HomeTabComponent = ({onPressTab, leftTabs = [], rightTabs = [], containerStyle}: HomeTabComponentProps) => {
+const HomeTabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: HomeTabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
+  const [showDropScene, setShowDropScene] = useState(false);
+  const [square, setSquare] = useState(false);
   // filter props
   const subTabNames = rightTabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
   const subScenes = {};
@@ -77,9 +90,9 @@ const HomeTabComponent = ({onPressTab, leftTabs = [], rightTabs = [], containerS
         <Scene
           data={data}
           renderItem={({item}) => {
-            const {name, logo, icon, category, gameId, show, realName} = item;
+            const {name, logo, icon, realName} = item;
             const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-            return <TabCircle logo={logo ? logo : icon} mainTitle={mainTitle} category={category} gameId={gameId} show={show} onPress={onPressTab} />;
+            return <TabCircle {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={onPressTab} />;
           }}
         />
       );
@@ -108,7 +121,27 @@ const HomeTabComponent = ({onPressTab, leftTabs = [], rightTabs = [], containerS
           );
         }}
         renderScene={SceneMap({
-          0: () => <Scene data={leftTabs} renderItem={({item}) => <TabCircle {...item} />} />,
+          0: () => (
+            <View style={styles.leftScene}>
+              {leftTabs.map((item, index) => (
+                <TabCircle
+                  key={index}
+                  {...item}
+                  onPress={() => {
+                    if (index == 2) {
+                    } else {
+                      setShowDropScene(true);
+                      if (index == 0) {
+                        setSquare(false);
+                      } else if (index == 1) {
+                        setSquare(true);
+                      }
+                    }
+                  }}
+                />
+              ))}
+            </View>
+          ),
           1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,
         })}
         onIndexChange={setIndex}
@@ -117,6 +150,20 @@ const HomeTabComponent = ({onPressTab, leftTabs = [], rightTabs = [], containerS
           width: Dimensions.get('window').width,
         }}
       />
+      {showDropScene ? (
+        <DropScene
+          onPress={() => setShowDropScene(false)}
+          square={square}
+          lotterys={lotterys}
+          date={date}
+          renderText={() => (
+            <>
+              <Text>{'下期开奖时间 '}</Text>
+              <Text style={{color: '#ff861b'}}>{'2020-07-15 21:30'}</Text>
+            </>
+          )}
+        />
+      ) : null}
     </View>
   );
 };
@@ -164,6 +211,14 @@ const styles = StyleSheet.create({
   },
   columnWrapperStyle: {
     justifyContent: 'space-evenly',
+  },
+  leftScene: {
+    flexDirection: 'row',
+    backgroundColor: '#ffffff',
+    justifyContent: 'space-around',
+    height: scale(410),
+    borderBottomRightRadius: scale(10),
+    borderBottomLeftRadius: scale(10),
   },
 });
 
