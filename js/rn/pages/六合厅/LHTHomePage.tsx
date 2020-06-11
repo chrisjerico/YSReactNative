@@ -26,6 +26,7 @@ import Header from './views/homes/Header';
 import Headline from './views/homes/Headline';
 import Nav from './views/homes/Nav';
 import Notice from './views/homes/Notice';
+import APIRouter from '../../public/network/APIRouter';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,7 +40,6 @@ const LHTHomePage = ({ navigation }) => {
       .then(value => {
         setResponse(value);
         setLoading(false);
-        console.log('--------value-------', value.lotteryNumber)
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]

@@ -86,14 +86,17 @@ const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], righ
       const patch = remainder > 0 ? 3 - (data.length % 3) : 0;
       data = data.concat(Array(patch).fill({show: false})).map((ele, index) => Object.assign({}, {key: index}, ele));
       return (
-        <Scene
-          data={data}
-          renderItem={({item}) => {
-            const {name, logo, icon, realName} = item;
-            const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-            return <TabButton {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={() => onPressTab && onPressTab(item)} />;
-          }}
-        />
+        <>
+          <Scene
+            data={data}
+            renderItem={({item}) => {
+              const {name, logo, icon, realName} = item;
+              const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
+              return <TabButton {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={() => onPressTab && onPressTab(item)} />;
+            }}
+          />
+          <View />
+        </>
       );
     };
   });
