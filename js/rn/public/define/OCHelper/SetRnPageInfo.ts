@@ -87,7 +87,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
-        rnName: PageName.XBJMinePage,
+        rnName: PageName.ZLMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,

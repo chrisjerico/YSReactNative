@@ -21,6 +21,11 @@ import LHTHomePage from '../六合厅/LHTHomePage';
 import LHTMinePage from '../六合厅/LHTMinePage';
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
+import AppDefine from '../../public/define/AppDefine';
+import {navigationRef} from '../../public/navigation/RootNavigation';
+import ZLHomeMine from '../尊龙/ZLHomeMine';
+import ZLRegisterPage from '../尊龙/ZLRegisterPage';
+import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
 
 // TabbarController
 class TabBarController extends React.Component<{navigation: StackNavigationProp<{}>}> {
@@ -53,23 +58,28 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
+        <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
       </Router.TabNavigator>
     );
   }
 }
-
+const UGApplication = () => {
+  return (
+    <Provider store={UGStore.store}>
+      <NavigationContainer
+        onStateChange={() => {
+          IGlobalStateHelper.updateUserInfo();
+        }}
+        ref={navigationRef}>
+        <Router.StackNavigator headerMode="screen">
+          <Router.StackScreen name="Tabbar" component={TabBarController} />
+          <Router.StackScreen options={{headerShown: false}} name={PageName.ZLLoginPage} component={ZLLoginPage} />
+          <Router.StackScreen options={{headerShown: false}} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
+          <Router.StackScreen options={{headerShown: false}} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        </Router.StackNavigator>
+      </NavigationContainer>
+    </Provider>
+  );
+};
+export default UGApplication;
 // NavController
-export default class UGApplication extends React.Component {
-  render() {
-    return (
-      <Provider store={UGStore.store}>
-        <NavigationContainer>
-          <Router.StackNavigator headerMode="screen">
-            <Router.StackScreen name="Tabbar" component={TabBarController} />
-            <Router.StackScreen options={{headerShown: false}} name={PageName.ZLLoginPage} component={ZLLoginPage} />
-          </Router.StackNavigator>
-        </NavigationContainer>
-      </Provider>
-    );
-  }
-}

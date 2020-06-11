@@ -1,11 +1,11 @@
-import {ANHelper} from './ANHelper/ANHelper';
-import {Dimensions, Platform} from 'react-native';
-import {OCHelper} from './OCHelper/OCHelper';
+import { ANHelper } from './ANHelper/ANHelper';
+import { Dimensions, Platform } from 'react-native';
+import { OCHelper } from './OCHelper/OCHelper';
 import FPrototypes from '../tools/prototype/FPrototypes';
-import {UGStore} from '../../redux/store/UGStore';
+import { UGStore } from '../../redux/store/UGStore';
 
 export default class AppDefine {
-  static host = 'http://接口域名'; // 接口域名
+  static host = 'http://c91398.com'; // 接口域名
   static siteId = '未知站点';
   static width = Dimensions.get('window').width;
   static height = Dimensions.get('window').height;

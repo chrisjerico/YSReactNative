@@ -28,7 +28,8 @@ export enum ActionType {
   ZHTYLoginPage_SetProps,
   ZHTYRegisterPage_SetProps, // 声明UGAction
   // 六合厅
-  LHTHome_SetProps
+  LHTHome_SetProps,
+  Clear_User = 'Clear_User',
 }
 
 // 声明UGAction

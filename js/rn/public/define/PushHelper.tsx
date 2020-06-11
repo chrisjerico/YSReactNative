@@ -1,11 +1,12 @@
-import {Alert, AlertButton, Platform} from 'react-native';
-import {IGameIconListItem} from '../../redux/model/home/IGameBean';
-import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
-import NetworkRequest1 from '../network/NetworkRequest1';
+import {UGUserCenterType, UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
+import {Alert, AlertButton, Platform} from 'react-native';
+import NetworkRequest1 from '../network/NetworkRequest1';
+import {IGameIconListItem} from '../../redux/model/home/IGameBean';
 import {OCHelper} from './OCHelper/OCHelper';
+import {HomeGamesModel} from '../network/Model/HomeGamesModel';
+import {NSValue} from './OCHelper/OCBridge/OCCall';
 import {Toast} from '../tools/ToastUtils';
-
 export default class PushHelper {
   // 登出
   static async pushLogout() {
@@ -27,20 +28,35 @@ export default class PushHelper {
     // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
   }
   // 首页游戏列表跳转
-  static pushHomeGame(game: IGameIconListItem) {
+  static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
     game = Object.assign({clsName: 'GameModel'}, game);
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
+
+  // 去彩票下注页
+  static pushLottery() {}
+
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
   }
-  // 去彩票下注页
-  static pushLottery() {
+  static pushNoticePopUp(notice: string) {
     if (Platform.OS != 'ios') return;
-    //OCHelper.call('UGNavigationController.current.:', [Number(linkCategory), Number(linkPosition)]);
+    OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
+  }
+  static openWebView(url: string) {
+    OCHelper.call(({vc}) => ({
+      vc: {
+        selectors: 'TGWebViewController.new[setUrl:]',
+        args1: [url],
+      },
+      ret: {
+        selectors: 'UGNavigationController.current.pushViewController:animated:',
+        args1: [vc, true],
+      },
+    }));
   }
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
