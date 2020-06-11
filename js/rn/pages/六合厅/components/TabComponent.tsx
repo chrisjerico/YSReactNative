@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import {Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import StringUtils from '../../../public/tools/StringUtils';
 import {scale} from '../helpers/function';
 import DropScene from '../views/DropScene';
-import TabCircle from '../views/TabCircle';
+import TabButton from '../views/TabButton';
 
 const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
 
-interface HomeTabComponentProps {
+interface TabComponentProps {
   date: string;
   onPressTab: (props: any) => any;
   leftTabs: any[];
@@ -71,7 +70,7 @@ const SubTab = ({routes, renderScene}) => {
 
 const Scene = ({data, renderItem}) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const HomeTabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: HomeTabComponentProps) => {
+const TabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: TabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
   const [showDropScene, setShowDropScene] = useState(false);
@@ -92,7 +91,7 @@ const HomeTabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], 
           renderItem={({item}) => {
             const {name, logo, icon, realName} = item;
             const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-            return <TabCircle {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={onPressTab} />;
+            return <TabButton {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={() => onPressTab && onPressTab(item)} />;
           }}
         />
       );
@@ -124,7 +123,7 @@ const HomeTabComponent = ({lotterys = [], date = '', onPressTab, leftTabs = [], 
           0: () => (
             <View style={styles.leftScene}>
               {leftTabs.map((item, index) => (
-                <TabCircle
+                <TabButton
                   key={index}
                   {...item}
                   onPress={() => {
@@ -222,4 +221,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeTabComponent;
+export default TabComponent;

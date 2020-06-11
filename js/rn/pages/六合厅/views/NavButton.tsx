@@ -1,24 +1,19 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
 import {IGameIconListItem} from '../../../redux/model/home/IGameBean';
 import {scale} from '../helpers/function';
 
-interface NavCircleProps {
+interface NavButtonProps {
   containerStyle?: ViewStyle;
-  logo?: string;
-  title?: string;
-  onPress?: () => any;
+  logo: string;
+  title: string;
+  onPress: () => any;
   nav: IGameIconListItem;
 }
 
-const NavCircle = ({logo = 'https://7478.com/img/img_xstj.1c6a8ad8.png', title = '?', containerStyle, onPress, nav}: NavCircleProps) => {
-  const goToUserCenter = () => {
-    nav && PushHelper.pushHomeGame(nav);
-  };
-
+const NavButton = ({logo = '', title = '?', containerStyle, onPress, nav}: NavButtonProps) => {
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress || goToUserCenter}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
       <Image resizeMode={'contain'} style={{width: '65%', aspectRatio: 1}} source={{uri: logo}} />
       <Text style={{paddingVertical: 5}}>{title}</Text>
     </TouchableOpacity>
@@ -34,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NavCircle;
+export default NavButton;

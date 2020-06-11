@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {scale} from '../helpers/function';
-import ScoreCircle from './ScoreCircle';
+import ScoreCircle from './LotteryBall';
 
 interface DropSceneProps {
   lotterys: Lottery[];

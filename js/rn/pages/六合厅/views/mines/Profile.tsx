@@ -1,19 +1,20 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Badge, Icon} from 'react-native-elements';
-import PushHelper from '../../../public/define/PushHelper';
-import {scale} from '../helpers/function';
-import MineButton from '../views/MineButton';
+import PushHelper from '../../../../public/define/PushHelper';
+import {scale} from '../../helpers/function';
+import ProfileButton from '../ProfileButton';
 
-interface MineProfileComponentProps {
+interface ProfileProps {
   mineButtons: any[];
   avatar: string;
   name: string;
   level: string;
   balance: string;
+  onPressProfileButton: (button: any) => any;
 }
 
-const MineProfileComponent = ({avatar, name = '', level = '', balance = '', mineButtons = []}: MineProfileComponentProps) => (
+const Profile = ({avatar, name = '', level = '', balance = '', mineButtons = [], onPressProfileButton}: ProfileProps) => (
   <View style={styles.container}>
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{flex: 3, flexDirection: 'row', alignItems: 'flex-end'}}>
@@ -43,7 +44,7 @@ const MineProfileComponent = ({avatar, name = '', level = '', balance = '', mine
     </View>
     <View style={styles.mineButtonContainer}>
       {mineButtons.map((button, index) => (
-        <MineButton key={index} {...button} />
+        <ProfileButton key={index} {...button} onPress={() => onPressProfileButton && onPressProfileButton(button)} />
       ))}
     </View>
   </View>
@@ -73,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineProfileComponent;
+export default Profile;

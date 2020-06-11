@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {scale} from '../helpers/function';
 
-interface ScoreCircleProps {
+interface LotteryBallProps {
   score?: number | string;
   size?: number;
   color?: string;
@@ -15,7 +15,7 @@ interface ScoreCircleProps {
 
 const factor = 1.3;
 
-const ScoreCircle = ({score = 10, size = 35, color = '#ff0000', text = '', showMore = false, onPress, square = false}: ScoreCircleProps) => (
+const LotteryBall = ({score = 10, size = 35, color = '#ff0000', text = '', showMore = false, onPress, square = false}: LotteryBallProps) => (
   <TouchableOpacity style={showMore ? styles.showMoreContainer : styles.container} onPress={onPress}>
     <View
       style={[
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScoreCircle;
+export default LotteryBall;

@@ -3,14 +3,14 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 
-interface MineListProps {
+interface FeatureListProps {
   logo?: string;
   title?: string;
   userCenterType?: number;
   onPress?: () => any;
 }
 
-const MineList = ({logo = '', title = '我的钱包', userCenterType = 0, onPress}: MineListProps) => {
+const FeatureList = ({logo = '', title = '我的钱包', userCenterType = 0, onPress}: FeatureListProps) => {
   const goToUserCenter = () => {
     PushHelper.pushUserCenterType(userCenterType);
   };
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineList;
+export default FeatureList;

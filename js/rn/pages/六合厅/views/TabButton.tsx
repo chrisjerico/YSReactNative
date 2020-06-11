@@ -1,14 +1,13 @@
 import React from 'react';
 import {Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {placeholderLogo} from '../helpers/config';
 import {scale} from '../helpers/function';
 
-interface TabCircleProps {
+interface TabButtonProps {
   logo?: string;
   mainTitle?: string;
   subTitle?: string;
   showSubTitle?: boolean;
-  onPress?: (props: TabCircleProps) => any;
+  onPress?: () => any;
   category?: string;
   gameId?: string;
   show?: boolean;
@@ -16,10 +15,10 @@ interface TabCircleProps {
   backgroundColor?: string;
 }
 
-const TabCircle = (props: TabCircleProps) => {
-  const {backgroundColor, imageStyle, logo = placeholderLogo, mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => {}, show = true} = props;
+const TabButton = (props: TabButtonProps) => {
+  const {backgroundColor, imageStyle, logo = '', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => {}, show = true} = props;
   return (
-    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} activeOpacity={show ? 0.2 : 0} onPress={() => onPress && onPress(props)}>
+    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} activeOpacity={show ? 0.2 : 0} onPress={onPress}>
       <View
         style={[
           styles.circleContainer,
@@ -67,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabCircle;
+export default TabButton;

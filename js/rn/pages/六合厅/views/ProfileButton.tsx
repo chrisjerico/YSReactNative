@@ -1,22 +1,16 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {scale} from '../helpers/function';
 
-interface MineButtonProps {
-  title?: string;
-  logo?: string;
-  userCenterType?: number;
-  onPress?: () => any;
+interface ProfileButtonProps {
+  title: string;
+  logo: string;
+  onPress: () => any;
 }
 
-const MineButton = ({title = 'title', logo = '', userCenterType = 0, onPress}: MineButtonProps) => {
-  const goToUserCenter = () => {
-    PushHelper.pushUserCenterType(userCenterType);
-  };
-
+const ProfileButton = ({title = 'title', logo = '', onPress}: ProfileButtonProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress || goToUserCenter}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={{paddingRight: scale(5)}}>{title}</Text>
       <Image
         style={styles.image}
@@ -46,4 +40,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineButton;
+export default ProfileButton;

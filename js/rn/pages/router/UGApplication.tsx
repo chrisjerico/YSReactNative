@@ -36,7 +36,7 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
 
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.LHTHomePage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.LHTMinePage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />

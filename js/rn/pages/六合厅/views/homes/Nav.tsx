@@ -3,8 +3,8 @@ import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {scale} from '../../helpers/function';
-import NavCircle from '../../views/NavCircle';
-import ScoreCircle from '../../views/ScoreCircle';
+import NavButton from '../../views/NavButton';
+import LotteryBall from '../../views/LotteryBall';
 
 interface NavProps {
   customerServiceLogo: string;
@@ -18,6 +18,8 @@ interface NavProps {
   onPressGetPoint: () => any;
   onPressAd: () => any;
   onPressSmileLogo: () => any;
+  onPressLotteryBall: () => any;
+  onPressNav: (nav: any) => any;
 }
 
 interface Lottery {
@@ -28,6 +30,8 @@ interface Lottery {
 }
 
 const Nav = ({
+  onPressNav,
+  onPressLotteryBall,
   onPressSmileLogo,
   onPressAd,
   onPressSavePoint,
@@ -72,21 +76,10 @@ const Nav = ({
           <Text>{' 期开奖结果'}</Text>
         </View>
       </View>
-      <View style={styles.scoreCircleCintainer}>
+      <View style={styles.lotterysCintainer}>
         {lotterys.map((lottery, index) => {
           const {number, color, sx} = lottery;
-          return (
-            <ScoreCircle
-              key={index}
-              score={number}
-              color={color}
-              text={sx}
-              showMore={index == 6}
-              onPress={() => {
-                console.log('轉跳');
-              }}
-            />
-          );
+          return <LotteryBall key={index} score={number} color={color} text={sx} showMore={index == 6} onPress={onPressLotteryBall} />;
         })}
       </View>
       <TouchableOpacity style={{flex: 90, alignItems: 'center'}} onPress={onPressAd}>
@@ -97,7 +90,7 @@ const Nav = ({
           const {icon, name, logo} = nav;
           return (
             <View style={styles.navContainer}>
-              <NavCircle key={index} logo={icon ? icon : logo} title={name} nav={nav} />
+              <NavButton key={index} logo={icon ? icon : logo} title={name} nav={nav} onPress={() => onPressNav && onPressNav(nav)} />
             </View>
           );
         })}
@@ -187,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
-  scoreCircleCintainer: {
+  lotterysCintainer: {
     flex: 90,
     flexDirection: 'row',
     justifyContent: 'space-between',

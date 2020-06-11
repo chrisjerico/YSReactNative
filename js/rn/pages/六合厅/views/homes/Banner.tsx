@@ -1,6 +1,5 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {UGColor} from '../../../../public/theme/UGThemeColor';
 import UGSwiper from '../../../../public/widget/swp/UGSwiper';
 import {IBannerDataItem} from '../../../../redux/model/home/IBannerAdvBean';
 
@@ -15,14 +14,15 @@ const Banner = (props: BannerProps) => {
     <View style={styles.container}>
       <UGSwiper>
         {banners.map((banner: IBannerDataItem, index: number) => {
+          const {pic} = banner;
           return (
             <TouchableOpacity
               key={index}
-              style={[styles.bannerContainer, {backgroundColor: UGColor.placeholderColor2}]}
+              style={styles.bannerContainer}
               onPress={() => {
                 onPressBanner(banner);
               }}>
-              <Image style={styles.bannerImage} source={{uri: banner.pic}} resizeMode={'cover'} />
+              <Image style={styles.bannerImage} source={{uri: pic}} resizeMode={'cover'} />
             </TouchableOpacity>
           );
         })}

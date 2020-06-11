@@ -89,7 +89,7 @@ export const defaultNavs = [
 
 export const defaultScores = [{}, {}, {}, {}, {}, {}, {}];
 
-export const defaultMineLists = [
+export const defaultFeatures = [
   {
     logo:
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAALVBMVEVMaXE0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNs0mNsxW0r6AAAADnRSTlMAiM27C+1D3JkwHXthsbvXp2IAAADDSURBVHjapZXtDoMgDEUvWsqX8v6POxu3ROKoN9v5YTQ5iIV6ASBt6R4pVxg19SeiApDUCQrQbEQOc7K9aQeWw6vwECtBcFwyfDab28QAHz0cZcTaexRGhLYCRjR+FmXL6zf2sWppcbrhV1HWPucq7ufY5UYcxc20JrgTBlFsnAKPor7vRIsv2lM9eyV4opUSP19aPTFfRGGnZov5b3n4Bee3kG8Kvs34xiWgRfp3pQOAjhQ6pOjYo4OUj2YULuzp4+MFyO4g/6NmsTUAAAAASUVORK5CYII=',

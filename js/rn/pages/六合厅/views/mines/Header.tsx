@@ -1,19 +1,19 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
-import {scale} from '../helpers/function';
+import {scale} from '../../helpers/function';
 
-const MineHeaderComponent = ({navigation}) => {
+interface HeaderProps {
+  onPressBack: () => any;
+  onPressCustomerService: () => any;
+}
+const Header = ({onPressBack, onPressCustomerService}: HeaderProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('LHTHomePage');
-        }}>
+      <TouchableOpacity onPress={onPressBack}>
         <Text style={styles.text}>{'<'}</Text>
       </TouchableOpacity>
       <Text style={styles.text}>{'我的'}</Text>
-      <TouchableOpacity onPress={() => PushHelper.pushUserCenterType(19)}>
+      <TouchableOpacity onPress={onPressCustomerService}>
         <Text>{'客服'}</Text>
       </TouchableOpacity>
     </View>
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MineHeaderComponent;
+export default Header;

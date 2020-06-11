@@ -4,7 +4,7 @@ import PushHelper from '../../public/define/PushHelper';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import HomeTabComponent from './components/HomeTabComponent';
+import TabComponent from './components/TabComponent';
 import {
   defaultAdvertisement,
   defaultBanners,
@@ -106,7 +106,15 @@ const LHTHomePage = ({ navigation }) => {
     //PushHelper.pushLogin()
   }
 
-  const onPressBanner = (banner) => {
+  const onPressLotteryBall = () => {
+
+  }
+
+  const onPressNav = (nav: any) => {
+    PushHelper.pushHomeGame(nav)
+  }
+
+  const onPressBanner = (banner: any) => {
     // console.log("-----banner-----",banner)
     const { linkCategory, linkPosition } = banner;
     PushHelper.pushCategory(linkCategory, linkPosition);
@@ -153,9 +161,11 @@ const LHTHomePage = ({ navigation }) => {
                   onPressGetPoint={onPressGetPoint}
                   onPressAd={onPressAd}
                   onPressSmileLogo={onPressSmileLogo}
+                  onPressLotteryBall={onPressLotteryBall}
+                  onPressNav={onPressNav}
                 />
                 <Headline containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
-                <HomeTabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={onPressTab} date={date} lotterys={lotterys}/>
+                <TabComponent containerStyle={styles.subComponent} leftTabs={defaultLeftTabs} rightTabs={tabs} onPressTab={onPressTab} date={date} lotterys={lotterys}/>
                 <BottomToolBar tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
               </View>
             </ScrollView>
