@@ -17,6 +17,7 @@ import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
 import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
 import ZHTYMinePage from '../综合体育/ZHTYMinePage';
 import ZHTYHomePage from '../综合体育/ZHTYHomePage';
+import SLHHomePage from "../石榴红/SLHHomePage";
 
 // TabbarController
 class TabBarController extends React.Component<{navigation: StackNavigationProp<{}>}> {
@@ -33,7 +34,8 @@ class TabBarController extends React.Component<{navigation: StackNavigationProp<
   }
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.SLHHomePage} screenOptions={{tabBarVisible: false}} tabBarOptions={this.tabBarOptions}>
+        <Router.TabScreen name={PageName.SLHHomePage} component={SLHHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />

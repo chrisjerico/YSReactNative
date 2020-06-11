@@ -12,6 +12,7 @@ export enum PageName {
   XBJMinePage = 'XBJMinePage',
   JDPromotionListPage = 'JDPromotionListPage',
   XBJHomePage = 'XBJHomePage',
+  SLHHomePage = 'SLHHomePage',
   UpdateVersionPage = 'UpdateVersionPage',
   ZHTYHomePage = 'ZHTYHomePage',
   ZHTYLoginPage = 'ZHTYLoginPage',
