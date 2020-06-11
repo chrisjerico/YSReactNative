@@ -4,8 +4,8 @@
  * 所有 redux 的 Action
  */
 
-import {Action} from 'redux';
-import {IGlobalState} from './UGStore';
+import { Action } from 'redux';
+import { IGlobalState } from './UGStore';
 
 export enum ActionType {
   None,
@@ -26,7 +26,8 @@ export enum ActionType {
   ZHTYHomePage_SetProps,
   ZHTYMinePage_SetProps,
   ZHTYLoginPage_SetProps,
-  ZHTYRegisterPage_SetProps // 声明UGAction
+  ZHTYRegisterPage_SetProps, // 声明UGAction
+  Clear_User = "Clear_User"
 }
 
 // 声明UGAction

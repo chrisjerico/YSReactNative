@@ -1,7 +1,7 @@
-import {Router, RouterType} from '../../navigation/Router';
-import {Skin1} from '../../theme/UGSkinManagers';
-import {PageName} from '../../navigation/Navigation';
-import {OCHelper} from './OCHelper';
+import { Router, RouterType } from '../../navigation/Router';
+import { Skin1 } from '../../theme/UGSkinManagers';
+import { PageName } from '../../navigation/Navigation';
+import { OCHelper } from './OCHelper';
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -58,42 +58,42 @@ export function setRnPageInfo() {
   });
 
   // 香槟金模板页面
-  // if (Skin1.skitType.indexOf('香槟金') != -1) {
-  //   pages = pages.concat([
-  //     {
-  //       // 首页
-  //       tabbarItemPath: '/home',
-  //       rnName: PageName.XBJHomePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 登录
-  //       vcName: 'UGLoginViewController',
-  //       rnName: PageName.XBJLoginPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 注册
-  //       vcName: 'UGRegisterViewController',
-  //       rnName: PageName.XBJRegisterPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 我的页
-  //       tabbarItemPath: '/user',
-  //       rnName: PageName.XBJMinePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: false,
-  //     },
-  //   ]);
-  // }
+  if (Skin1.skitType.indexOf('经典1') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.ZLHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.ZLLoginPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.XBJRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.ZLMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ]);
+  }
 
   // 综合体育页面
   // if (Skin1.skitType.indexOf('综合体育') != -1) {
