@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeVertical } from 'react-native-marquee-ab';
 import Icon from 'react-native-vector-icons/AntDesign';
-import PushHelper from '../../../public/define/PushHelper';
 import StringUtils from '../../../public/tools/StringUtils';
 import { INoticePop } from '../../../redux/model/home/INoticeBean';
 import { scale } from '../helpers/function';
@@ -11,20 +10,20 @@ interface HomeHeadlineComponentProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
   headLineLogo: string
+  onPressHeadline: () => any
 }
 
-const HomeHeadlineComponent = ({headlines, headLineLogo= '',containerStyle}: HomeHeadlineComponentProps) => {
+const HomeHeadlineComponent = ({onPressHeadline,headlines, headLineLogo= '',containerStyle}: HomeHeadlineComponentProps) => {
   
   const [display,setDisplay] = useState(true)
   const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
-  const gotoHeadLine =() => PushHelper.pushLogin()
   return (
     <View style={[styles.container, containerStyle, display ? {} : {display: 'none'}]}>
       <View style={{flex: 70}}>
         <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineLogo}} />
       </View>
       <View style={{flex: 300}}>
-        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={gotoHeadLine} speed={60}/>
+        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={onPressHeadline} speed={60}/>
       </View>
       <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
         <Icon name={'close'} color={'#ffffff'} />

@@ -2,7 +2,6 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 import NavCircle from '../views/NavCircle';
 import ScoreCircle from '../views/ScoreCircle';
@@ -15,6 +14,10 @@ interface HomeRecommendProps {
   lotterys: Lottery[];
   containerStyle?: ViewStyle;
   date: string;
+  onPressSavePoint: () => any;
+  onPressGetPoint: () => any;
+  onPressAd: () => any;
+  onPressSmileLogo: () => any;
 }
 
 interface Lottery {
@@ -24,12 +27,19 @@ interface Lottery {
   showMore?: boolean;
 }
 
-const HomeRecommendComponent = ({date = 'date', navs = [], lotterys = [], advertisement = '', markSixLogo = '', customerServiceLogo = '', containerStyle}: HomeRecommendProps) => {
-  const gotoSavePoint = () => PushHelper.pushCategory(6, 0);
-  const gotoGetPoint = () => PushHelper.pushLogin();
-  const gotoCustomerService = () => PushHelper.pushLogin();
-  const goToBetPage = () => PushHelper.pushCategory(9, 0);
-
+const HomeRecommendComponent = ({
+  onPressSmileLogo,
+  onPressAd,
+  onPressSavePoint,
+  onPressGetPoint,
+  date = 'date',
+  navs = [],
+  lotterys = [],
+  advertisement = '',
+  markSixLogo = '',
+  customerServiceLogo = '',
+  containerStyle,
+}: HomeRecommendProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topContainer}>
@@ -39,9 +49,9 @@ const HomeRecommendComponent = ({date = 'date', navs = [], lotterys = [], advert
           <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
         </View>
         <View style={styles.topRightContainer}>
-          <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} onPress={gotoSavePoint} />
-          <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} onPress={gotoGetPoint} />
-          <TouchableOpacity style={styles.smileImageContainer} onPress={gotoCustomerService}>
+          <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} onPress={onPressSavePoint} />
+          <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} onPress={onPressGetPoint} />
+          <TouchableOpacity style={styles.smileImageContainer} onPress={onPressSmileLogo}>
             <Image
               style={styles.smileImage}
               source={{
@@ -65,10 +75,21 @@ const HomeRecommendComponent = ({date = 'date', navs = [], lotterys = [], advert
       <View style={styles.scoreCircleCintainer}>
         {lotterys.map((lottery, index) => {
           const {number, color, sx} = lottery;
-          return <ScoreCircle key={index} score={number} color={color} text={sx} showMore={index == 6} />;
+          return (
+            <ScoreCircle
+              key={index}
+              score={number}
+              color={color}
+              text={sx}
+              showMore={index == 6}
+              onPress={() => {
+                console.log('轉跳');
+              }}
+            />
+          );
         })}
       </View>
-      <TouchableOpacity style={{flex: 90}} onPress={goToBetPage}>
+      <TouchableOpacity style={{flex: 90}} onPress={onPressAd}>
         <Image resizeMode={'contain'} style={styles.adImage} source={{uri: advertisement}} />
       </TouchableOpacity>
       <View style={styles.navsContainer}>

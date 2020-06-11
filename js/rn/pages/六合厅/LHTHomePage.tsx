@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import PushHelper from '../../public/define/PushHelper';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
+import { IBannerDataItem } from '../../redux/model/home/IBannerAdvBean';
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import HomeBannerComponent from './components/HomeBannerComponent';
 import HomeBottomToolComponent from './components/HomeBottomToolComponent';
 import HomeHeaderComponent from './components/HomeHeaderComponent';
@@ -11,10 +14,9 @@ import HomeRecommendComponent from './components/HomeRecommendComponent';
 import HomeTabComponent from './components/HomeTabComponent';
 import { defaultAdvertisement, defaultBanners, defaultCustomerServiceLogo, defaultHeadLineLogo, defaultHeadLines, defaultHomeBottomTools, defaultHomeHeaderLeftLogo, defaultHomeHeaderRightLogo, defaultMarkSixLogo, defaultNavs, defaultNoticeLogo, defaultNotices } from './helpers/config';
 import { scale } from './helpers/function';
-import PushHelper from '../../public/define/PushHelper';
 
 const LHTHomePage = ({navigation}) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [response, setResponse] = useState<any>(null);
   const [userIsLogIn,setUserIsLogIn] =useState<boolean>(false);
   const [name,setName] =useState<string>('');
@@ -25,6 +27,7 @@ const LHTHomePage = ({navigation}) => {
       .then(value => {
         setResponse(value);
         setLoading(false);
+        console.log('--------value-------',value.lotteryNumber)
         //  ["存取款", "", "任务大厅", "开奖网", "长龙助手", "", "优惠活动", "利息宝", "QQ客服", "聊天室"]
         // ["banner", "notice", "game:{navs, icons}", "coupon", "redBag", "floatAd", "movie"]
         // notice: ["scroll", "popup", "popupSwitch", "popupInterval"]
@@ -75,6 +78,35 @@ const LHTHomePage = ({navigation}) => {
     setUserIsLogIn(false)
   }
 
+  const onPressSavePoint = () => {
+    PushHelper.pushUserCenterType(UGUserCenterType.存款)
+  }
+
+  const onPressGetPoint = () => {
+    PushHelper.pushUserCenterType(UGUserCenterType.取款)
+  }
+
+  const onPressAd = () => {
+
+  }
+
+  const onPressSmileLogo =() => {
+    //PushHelper.pushLogin()
+  }
+
+  const onPressBanner = (banner: IBannerDataItem) => {
+    const {linkCategory, linkPosition} = banner;
+    PushHelper.pushCategory(linkCategory, linkPosition);
+  };
+
+  const onPressHeadline = () => {
+
+  }
+
+  const onPressBottomTool = (userCenterType: UGUserCenterType) => {
+    PushHelper.pushUserCenterType(userCenterType)
+  }
+
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -83,13 +115,27 @@ const LHTHomePage = ({navigation}) => {
         <>
           <HomeHeaderComponent avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister}/>
           <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-            <HomeBannerComponent banners={banners} />
+            <HomeBannerComponent banners={banners} onPressBanner={onPressBanner}/>
             <View style={styles.contentContainer}>
-              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo}/>
-              <HomeRecommendComponent  containerStyle={styles.subComponent} navs={navs} lotterys={lotterys} date={date} advertisement={defaultAdvertisement} markSixLogo={defaultMarkSixLogo} customerServiceLogo={defaultCustomerServiceLogo}/>
-              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo}/>
+              <HomeNoticeComponent  containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPress={() => {
+                PushHelper.pushCategory(9,10)
+              }}/>
+              <HomeRecommendComponent  
+                containerStyle={styles.subComponent} 
+                navs={navs} 
+                lotterys={lotterys} 
+                date={date} 
+                advertisement={defaultAdvertisement} 
+                markSixLogo={defaultMarkSixLogo} 
+                customerServiceLogo={defaultCustomerServiceLogo} 
+                onPressSavePoint={onPressSavePoint} 
+                onPressGetPoint={onPressGetPoint} 
+                onPressAd={onPressAd} 
+                onPressSmileLogo={onPressSmileLogo}
+              />
+              <HomeHeadlineComponent  containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline}/>
               <HomeTabComponent  containerStyle={styles.subComponent} tabs={tabs}/>
-              <HomeBottomToolComponent tools={defaultHomeBottomTools}/>
+              <HomeBottomToolComponent tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool}/>
             </View>
           </ScrollView>
         </>

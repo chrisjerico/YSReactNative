@@ -32,14 +32,16 @@ export default class PushHelper {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
-  // 去彩票下注页
-  static pushLottery() {}
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
   }
-
+  // 去彩票下注页
+  static pushLottery() {
+    if (Platform.OS != 'ios') return;
+    //OCHelper.call('UGNavigationController.current.:', [Number(linkCategory), Number(linkPosition)]);
+  }
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
     if (Platform.OS != 'ios') return;

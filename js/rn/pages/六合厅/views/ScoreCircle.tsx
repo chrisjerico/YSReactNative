@@ -9,12 +9,13 @@ interface ScoreCircleProps {
   color?: string;
   text?: string;
   showMore?: boolean;
+  onPress: () => any;
 }
 
 const factor = 1.3;
 
-const ScoreCircle = ({score = 10, size = 35, color = '#ff0000', text = '', showMore = false}: ScoreCircleProps) => (
-  <TouchableOpacity style={showMore ? styles.showMoreContainer : styles.container} onPress={() => PushHelper.pushLogin()}>
+const ScoreCircle = ({score = 10, size = 35, color = '#ff0000', text = '', showMore = false, onPress}: ScoreCircleProps) => (
+  <TouchableOpacity style={showMore ? styles.showMoreContainer : styles.container} onPress={onPress}>
     <View style={styles.circleConatiner}>
       {showMore ? (
         <Icon type={'antdesign'} name={'plus'} color={'#9D9D9D'} />

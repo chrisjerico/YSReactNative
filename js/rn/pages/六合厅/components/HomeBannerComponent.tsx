@@ -1,22 +1,17 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
 import {UGColor} from '../../../public/theme/UGThemeColor';
 import UGSwiper from '../../../public/widget/swp/UGSwiper';
 import {IBannerDataItem} from '../../../redux/model/home/IBannerAdvBean';
 
 interface HomeBannerComponentProps {
   banners: IBannerDataItem[];
+  onPressBanner: (banner: IBannerDataItem) => any;
 }
 
-const HomeBannerComponent = ({banners}: HomeBannerComponentProps) => {
-  const gotoBanner = (banner: IBannerDataItem) => {
-    const {linkCategory, linkPosition} = banner;
-    PushHelper.pushCategory(linkCategory, linkPosition);
-  };
-
+const HomeBannerComponent = ({banners, onPressBanner}: HomeBannerComponentProps) => {
   return (
-    <View style={styles.bannerWrapper}>
+    <View style={styles.container}>
       <UGSwiper>
         {banners.map((banner: IBannerDataItem, index: number) => {
           return (
@@ -24,7 +19,7 @@ const HomeBannerComponent = ({banners}: HomeBannerComponentProps) => {
               key={index}
               style={[styles.bannerContainer, {backgroundColor: UGColor.placeholderColor2}]}
               onPress={() => {
-                gotoBanner(banner);
+                onPressBanner(banner);
               }}>
               <Image style={styles.bannerImage} source={{uri: banner.pic}} resizeMode={'cover'} />
             </TouchableOpacity>
@@ -36,7 +31,7 @@ const HomeBannerComponent = ({banners}: HomeBannerComponentProps) => {
 };
 
 const styles = StyleSheet.create({
-  bannerWrapper: {
+  container: {
     width: '100%',
     aspectRatio: 540 / 217,
   },

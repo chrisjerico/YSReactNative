@@ -1,10 +1,11 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
+import {UGUserCenterType} from '../../../redux/model/全局/UGSysConfModel';
 
 interface HomeBottomToolComponentProps {
   containerStyle?: ViewStyle;
   tools: HomeBottomTool[];
+  onPressBottomTool: (userCenterType: UGUserCenterType) => any;
 }
 
 interface HomeBottomTool {
@@ -12,13 +13,13 @@ interface HomeBottomTool {
   userCenterType: number;
 }
 
-const HomeBottomToolComponent = ({tools, containerStyle}: HomeBottomToolComponentProps) => {
+const HomeBottomToolComponent = ({onPressBottomTool, tools, containerStyle}: HomeBottomToolComponentProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       {tools.map((tool: HomeBottomTool, index) => {
         const {logo, userCenterType} = tool;
         return (
-          <TouchableOpacity key={index} style={styles.toolContainer} onPress={() => PushHelper.pushUserCenterType(userCenterType)}>
+          <TouchableOpacity key={index} style={styles.toolContainer} onPress={() => onPressBottomTool(userCenterType)}>
             <Image style={styles.image} source={{uri: logo}} resizeMode={'contain'} />
           </TouchableOpacity>
         );

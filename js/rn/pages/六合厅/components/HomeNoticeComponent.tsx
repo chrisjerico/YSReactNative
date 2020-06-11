@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
-import PushHelper from '../../../public/define/PushHelper';
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean';
 import { scale } from '../helpers/function';
 
@@ -9,14 +8,14 @@ interface HomeNoticeComponentProps {
   logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
+  onPress: () => any
 }
 
-const HomeNoticeComponent = ({logo = '', notices , containerStyle}: HomeNoticeComponentProps) => {
+const HomeNoticeComponent = ({logo = '', notices , containerStyle, onPress}: HomeNoticeComponentProps) => {
   const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: notice?.title}) )
-  const gotoNotice = () => PushHelper.pushLogin();
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={gotoNotice}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
       <View style={styles.iconContainer}>
         <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: logo}} />
       </View>
