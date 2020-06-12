@@ -1,12 +1,12 @@
-import {UGUserCenterType, UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
+import { UGUserCenterType, UGAgentApplyInfo } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import {Alert, AlertButton, Platform} from 'react-native';
+import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
-import {IGameIconListItem} from '../../redux/model/home/IGameBean';
-import {OCHelper} from './OCHelper/OCHelper';
-import {HomeGamesModel} from '../network/Model/HomeGamesModel';
-import {NSValue} from './OCHelper/OCBridge/OCCall';
-import {Toast} from '../tools/ToastUtils';
+import { IGameIconListItem } from '../../redux/model/home/IGameBean';
+import { OCHelper } from './OCHelper/OCHelper';
+import { HomeGamesModel } from '../network/Model/HomeGamesModel';
+import { NSValue } from './OCHelper/OCBridge/OCCall';
+import { Toast } from '../tools/ToastUtils';
 export default class PushHelper {
   // 登出
   static async pushLogout() {
@@ -18,24 +18,24 @@ export default class PushHelper {
   // 登入
   static pushLogin() {
     if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController']}, true]);
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController'] }, true]);
     // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
   }
   // 註冊
   static pushRegister() {
     if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController']}, true]);
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController'] }, true]);
     // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
   }
   // 首页游戏列表跳转
   static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
-    game = Object.assign({clsName: 'GameModel'}, game);
+    game = Object.assign({ clsName: 'GameModel' }, game);
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
 
   // 去彩票下注页
-  static pushLottery() {}
+  static pushLottery() { }
 
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
@@ -47,7 +47,7 @@ export default class PushHelper {
     OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
   }
   static openWebView(url: string) {
-    OCHelper.call(({vc}) => ({
+    OCHelper.call(({ vc }) => ({
       vc: {
         selectors: 'TGWebViewController.new[setUrl:]',
         args1: [url],
@@ -63,11 +63,11 @@ export default class PushHelper {
     if (Platform.OS != 'ios') return;
     switch (code) {
       case UGUserCenterType.存款: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0]}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0] }, true]);
         break;
       }
       case UGUserCenterType.取款: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1]}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1] }, true]);
         break;
       }
       case UGUserCenterType.银行卡管理: {
@@ -75,13 +75,13 @@ export default class PushHelper {
           let hasBankCard: boolean = await OCHelper.call('UGUserModel.currentUser.hasBankCard');
           let hasFundPwd: boolean = await OCHelper.call('UGUserModel.currentUser.hasFundPwd');
           var vcName = hasBankCard ? 'UGBankCardInfoController' : hasFundPwd ? 'UGBindCardViewController' : 'UGSetupPayPwdController';
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: [vcName]}, true]);
+          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: [vcName] }, true]);
         }
         func1();
         break;
       }
       case UGUserCenterType.利息宝: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGYubaoViewController']}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGYubaoViewController'] }, true]);
         break;
       }
       case UGUserCenterType.推荐收益: {
@@ -89,7 +89,7 @@ export default class PushHelper {
           let isTest: boolean = await OCHelper.call('UGUserModel.currentUser.isTest');
           if (isTest) {
             // 试玩账号去阉割版的推荐收益页
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGPromotionIncomeController.new'}, true]);
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
           } else {
             // ShowLoading
             OCHelper.call('SVProgressHUD.showWithStatus:');
@@ -97,15 +97,15 @@ export default class PushHelper {
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
             if (info.reviewStatus === 2) {
               // 去推荐收益页
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGPromotionIncomeController.new'}, true]);
+              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
             } else {
               let agent_m_apply = await OCHelper.call('UGSystemConfigModel.currentConfig.agent_m_apply');
               if (parseInt(agent_m_apply) === 1) {
                 OCHelper.call('HUDHelper.showMsg:', ['在线注册代理已关闭']);
               } else {
                 // 去申请代理
-                info = Object.assign({clsName: 'UGagentApplyInfo'}, info);
-                OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGAgentViewController.new[setItem:]', args1: []}, true]);
+                info = Object.assign({ clsName: 'UGagentApplyInfo' }, info);
+                OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGAgentViewController.new[setItem:]', args1: [] }, true]);
               }
             }
             // HideLoading
@@ -116,38 +116,38 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.彩票注单记录: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGBetRecordViewController.new'}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGBetRecordViewController.new' }, true]);
         break;
       }
       case UGUserCenterType.其他注单记录: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-          {selectors: 'AppDefine.viewControllerWithStoryboardID:[setGameType:]', args1: ['UGRealBetRecordViewController', 'real']},
+          { selectors: 'AppDefine.viewControllerWithStoryboardID:[setGameType:]', args1: ['UGRealBetRecordViewController', 'real'] },
           true,
         ]);
         break;
       }
       case UGUserCenterType.额度转换: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGBalanceConversionController']}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGBalanceConversionController'] }, true]);
         break;
       }
       case UGUserCenterType.站内信: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGMailBoxTableViewController.new'}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGMailBoxTableViewController.new' }, true]);
         break;
       }
       case UGUserCenterType.安全中心: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGSecurityCenterViewController.new'}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSecurityCenterViewController.new' }, true]);
         break;
       }
       case UGUserCenterType.任务中心: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGMissionCenterViewController']}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGMissionCenterViewController'] }, true]);
         break;
       }
       case UGUserCenterType.个人信息: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGUserInfoViewController']}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGUserInfoViewController'] }, true]);
         break;
       }
       case UGUserCenterType.建议反馈: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGFeedBackController']}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGFeedBackController'] }, true]);
         break;
       }
       case UGUserCenterType.在线客服: {
@@ -162,17 +162,17 @@ export default class PushHelper {
           } else if (!hasScheme) {
             urlStr = 'http://' + urlStr;
           }
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'SLWebViewController.new[setUrlStr:]', args1: [urlStr]}, true]);
+          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'SLWebViewController.new[setUrlStr:]', args1: [urlStr] }, true]);
         }
         func1();
         break;
       }
       case UGUserCenterType.活动彩金: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGMosaicGoldViewController.new'}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGMosaicGoldViewController.new' }, true]);
         break;
       }
       case UGUserCenterType.长龙助手: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGChangLongController.new'}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChangLongController.new' }, true]);
         break;
       }
       case UGUserCenterType.全民竞猜: {
@@ -198,14 +198,22 @@ export default class PushHelper {
                 };
               },
             );
-            btns.push({text: '取消', style: 'cancel'});
+            btns.push({ text: '取消', style: 'cancel' });
             Alert.alert('请选择QQ客服', null, btns);
           }
         });
         break;
       }
       case UGUserCenterType.资金明细: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [4]}, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [4] }, true]);
+        break;
+      }
+      case UGUserCenterType.六合彩: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true]);
+        break;
+      }
+      case UGUserCenterType.聊天室: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChatViewController.new' }, true]);
         break;
       }
     }

@@ -9,7 +9,7 @@ interface BottomToolBarProps {
 
 interface HomeBottomTool {
   logo: string;
-  userCenterType: number;
+  userCenterType?: number;
 }
 
 const BottomToolBar = ({ onPressBottomTool, tools, containerStyle }: BottomToolBarProps) => {

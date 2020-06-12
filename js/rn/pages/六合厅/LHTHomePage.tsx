@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import PushHelper from '../../public/define/PushHelper';
 import APIRouter from '../../public/network/APIRouter';
+import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
+import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import TabComponent from './components/TabComponent';
 import {
   defaultAdvertisement,
   defaultBanners,
+  defaultBottomTools,
   defaultCustomerServiceLogo,
+  defaultDowloadUrl,
   defaultHeadLineLogo,
   defaultHeadLines,
-  defaultBottomTools,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultMarkSixLogo,
@@ -26,10 +29,6 @@ import Header from './views/homes/Header';
 import Headline from './views/homes/Headline';
 import Nav from './views/homes/Nav';
 import Notice from './views/homes/Notice';
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { push, navigate } from "../../public/navigation/RootNavigation"
-import { PageName } from '../../public/navigation/Navigation';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -125,6 +124,10 @@ const LHTHomePage = ({ navigation }) => {
     PushHelper.pushNoticePopUp(message)
   }
 
+  const gotoWebView = (url: string) => {
+    PushHelper.openWebView(url)
+  }
+
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -164,10 +167,10 @@ const LHTHomePage = ({ navigation }) => {
                   customerServiceLogo={defaultCustomerServiceLogo}
                   onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
                   onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
-                  onPressAd={() => push(PageName.JDPromotionListPage)}
+                  onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
                   onPressSmileLogo={() => gotoUserCenter(UGUserCenterType.在线客服)}
                   onPressLotteryBall={() => {
-                    console.log("-----不知道要跳到哪----")
+                    gotoUserCenter(UGUserCenterType.六合彩)
                   }}
                   onPressNav={gotoHomeGame}
                 />
@@ -189,7 +192,13 @@ const LHTHomePage = ({ navigation }) => {
                 />
                 <BottomToolBar
                   tools={defaultBottomTools}
-                  onPressBottomTool={({ userCenterType }) => gotoUserCenter(userCenterType)}
+                  onPressBottomTool={({ userCenterType }) => {
+                    if (userCenterType) {
+                      gotoUserCenter(userCenterType)
+                    } else {
+                      gotoWebView(defaultDowloadUrl)
+                    }
+                  }}
                 />
               </View>
             </ScrollView>
