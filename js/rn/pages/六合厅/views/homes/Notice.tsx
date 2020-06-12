@@ -8,19 +8,19 @@ interface NoticeProps {
   logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
-  onPressNotice: () => any
+  onPressNotice: (item: any) => any
 }
 
-const Notice = ({logo = '', notices , containerStyle, onPressNotice}: NoticeProps) => {
-  const cleanContents = notices.map((notice,index) => ({label: index.toString() , value: notice?.title}) )
+const Notice = ({ logo = '', notices, containerStyle, onPressNotice }: NoticeProps) => {
+  const cleanContents = notices.map((notice, index) => ({ label: index.toString(), value: notice?.title }))
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPressNotice}>
+    <TouchableOpacity style={[styles.container, containerStyle]} >
       <View style={styles.iconContainer}>
-        <Image resizeMode={'stretch'} style={styles.iconImage} source={{uri: logo}} />
+        <Image resizeMode={'stretch'} style={styles.iconImage} source={{ uri: logo }} />
       </View>
       <View style={styles.noticContainer}>
-        <MarqueeHorizontal width={scale(430)} height={'70%'} textStyle={styles.textStyle} textList={cleanContents} speed={60}/>
+        <MarqueeHorizontal width={scale(430)} height={'70%'} textStyle={styles.textStyle} textList={cleanContents} speed={60} onTextClick={onPressNotice} />
       </View>
     </TouchableOpacity>
   );

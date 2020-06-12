@@ -11,7 +11,7 @@ import {
   defaultCustomerServiceLogo,
   defaultHeadLineLogo,
   defaultHeadLines,
-  defaultHomeBottomTools,
+  defaultBottomTools,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultMarkSixLogo,
@@ -106,13 +106,7 @@ const LHTHomePage = ({ navigation }) => {
   const onPressAd = () => {
   }
 
-  const onPressSmileLogo = () => {
-  }
-
   const onPressLotteryBall = () => {
-  }
-
-  const onPressHeadline = () => {
   }
 
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
@@ -125,6 +119,10 @@ const LHTHomePage = ({ navigation }) => {
 
   const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
     PushHelper.pushHomeGame(game)
+  }
+
+  const goToNotice = (message: string) => {
+    PushHelper.pushNoticePopUp(message)
   }
 
   return (
@@ -152,7 +150,7 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   notices={notices}
                   logo={defaultNoticeLogo}
-                  onPressNotice={() => gotoCategory(9, 10)}
+                  onPressNotice={({ value }) => goToNotice(value)}
                 />
                 <Nav
                   containerStyle={styles.subComponent}
@@ -165,7 +163,7 @@ const LHTHomePage = ({ navigation }) => {
                   onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
                   onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
                   onPressAd={onPressAd}
-                  onPressSmileLogo={onPressSmileLogo}
+                  onPressSmileLogo={() => gotoUserCenter(UGUserCenterType.在线客服)}
                   onPressLotteryBall={onPressLotteryBall}
                   onPressNav={(nav) => {
                     gotoHomeGame(nav)
@@ -175,7 +173,7 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
-                  onPressHeadline={onPressHeadline}
+                  onPressHeadline={({ value }) => goToNotice(value)}
                 />
                 <TabComponent
                   containerStyle={styles.subComponent}
@@ -187,7 +185,7 @@ const LHTHomePage = ({ navigation }) => {
                   date={date}
                 />
                 <BottomToolBar
-                  tools={defaultHomeBottomTools}
+                  tools={defaultBottomTools}
                   onPressBottomTool={({ userCenterType }) => gotoUserCenter(userCenterType)}
                 />
               </View>

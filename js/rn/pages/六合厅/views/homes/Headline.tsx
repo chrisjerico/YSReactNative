@@ -10,26 +10,26 @@ interface HeadlineProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
   headLineLogo: string
-  onPressHeadline: () => any
+  onPressHeadline: (item: any) => any
 }
 
-const Headline = ({onPressHeadline,headlines, headLineLogo= '',containerStyle}: HeadlineProps) => {
-  
-  const [display,setDisplay] = useState(true)
-  const cleanContents = headlines.map((headline,index) => ({label: index.toString() , value: StringUtils.getInstance().deleteHtml(headline?.content)}) )
+const Headline = ({ onPressHeadline, headlines, headLineLogo = '', containerStyle }: HeadlineProps) => {
+
+  const [display, setDisplay] = useState(true)
+  const cleanContents = headlines.map((headline, index) => ({ label: index.toString(), value: StringUtils.getInstance().deleteHtml(headline?.content) }))
   return (
-    display ? 
-    <View style={styles.container}>
-      <View style={{flex: 70}}>
-        <Image resizeMode={'contain'} style={{width: '90%', height: '90%'}} source={{uri: headLineLogo}} />
-      </View>
-      <View style={{flex: 300}}>
-        <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={onPressHeadline} speed={60}/>
-      </View>
-      <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
-        <Icon name={'close'} color={'#ffffff'} />
-      </TouchableOpacity>
-    </View> : null
+    display ?
+      <View style={styles.container}>
+        <View style={{ flex: 70 }}>
+          <Image resizeMode={'contain'} style={{ width: '90%', height: '90%' }} source={{ uri: headLineLogo }} />
+        </View>
+        <View style={{ flex: 300 }}>
+          <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={onPressHeadline} speed={60} onPressText={onPressHeadline} />
+        </View>
+        <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
+          <Icon name={'close'} color={'#ffffff'} />
+        </TouchableOpacity>
+      </View> : null
   );
 };
 

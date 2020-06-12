@@ -5,7 +5,7 @@ import PushHelper from '../../public/define/PushHelper';
 import APIRouter from '../../public/network/APIRouter';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { defaultFeatures, defaultMineButtons } from './helpers/config';
+import { defaultFeatures, defaultProfileButtons } from './helpers/config';
 import FeatureList from './views/FeatureList';
 import Header from './views/mines/Header';
 import Profile from './views/mines/Profile';
@@ -56,7 +56,9 @@ const LHTMinePage = ({ navigation }) => {
               gotoUserCenter(UGUserCenterType.QQ客服)
             }} />
             <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <Profile mineButtons={defaultMineButtons} name={name} avatar={avatar} level={level} balance={balance} onPressProfileButton={gotoUserCenter} />
+              <Profile profileButtons={defaultProfileButtons} name={name} avatar={avatar} level={level} balance={balance} onPressProfileButton={({ userCenterType }) => {
+                gotoUserCenter(userCenterType)
+              }} />
               {features.map((list, index) => {
                 const { name, logo, code } = list;
                 return <FeatureList key={index} title={name} logo={logo} onPress={() => gotoUserCenter(code)} />;
