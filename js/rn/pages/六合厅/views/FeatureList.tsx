@@ -1,22 +1,16 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import PushHelper from '../../../public/define/PushHelper';
 import {scale} from '../helpers/function';
 
 interface FeatureListProps {
-  logo?: string;
-  title?: string;
-  userCenterType?: number;
-  onPress?: () => any;
+  logo: string;
+  title: string;
+  onPress: () => any;
 }
 
-const FeatureList = ({logo = '', title = '我的钱包', userCenterType = 0, onPress}: FeatureListProps) => {
-  const goToUserCenter = () => {
-    PushHelper.pushUserCenterType(userCenterType);
-  };
-
+const FeatureList = ({logo = '', title = '我的钱包', onPress}: FeatureListProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress || goToUserCenter}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
         <Image resizeMode={'contain'} style={styles.image} source={{uri: logo}} />
         <Text style={[styles.text, {paddingLeft: scale(25)}]}>{title}</Text>

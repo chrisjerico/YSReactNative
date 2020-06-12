@@ -2,65 +2,68 @@ import React, { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PushHelper from '../../public/define/PushHelper';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
+import APIRouter from '../../public/network/APIRouter';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { defaultMineButtons, defaultFeatures } from './helpers/config';
+import { defaultFeatures, defaultMineButtons } from './helpers/config';
 import FeatureList from './views/FeatureList';
 import Header from './views/mines/Header';
 import Profile from './views/mines/Profile';
 
-const LHTMinePage = ({navigation}) => {
+const LHTMinePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<any>(null);
 
   useEffect(() => {
-    NetworkRequest1.mineInfo()
-      .then(value => {
-        setLoading(false);
-        setResponse(value);
-        console.log('--------user_info-----', value);
+    Promise.all([APIRouter.user_info(), APIRouter.user_centerList()]).then(response => {
+      // console.log('--------response-----', response[0]?.data);
+      setResponse({
+        user: response[0]?.data?.data,
+        userCenterLists: response[1],
+      });
+      setLoading(false);
+    }).catch(
+      error => {
+        console.log('------error-----', error)
       })
-      .catch(error => console.log('------error-----', error));
   }, []);
-  // userCenterLists
-  const features: any[] = response?.userCenterLists??defaultFeatures;
-  //
-  const user = response?.user??{}
+
+  const user = response?.user ?? {}
   // user
   const level = user.curLevelGrade
   const name = user.usr
   const avatar = user.avatar
   const balance = user.balance
+  // userCenterLists
+  const features: any[] = response?.userCenterLists ?? defaultFeatures;
+  //
 
-  const onPressCustomerService =() => {
-    PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+  const gotoHome = () => {
+    navigation.navigate('LHTHomePage')
   }
 
-  const onPressBack = () => {
-   navigation.navigate('LHTHomePage')
-  }
-
-  const onPressProfileButton = ({userCenterType}) => {
-    PushHelper.pushUserCenterType(userCenterType)
+  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
+    PushHelper.pushUserCenterType(userCenterType);
   }
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
-    {loading ? (
-      <UGProgressCircle />
-    ) : (
-      <>
-      <Header onPressBack={onPressBack} onPressCustomerService={onPressCustomerService}/>
-      <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-        <Profile mineButtons={defaultMineButtons} name={name} avatar={avatar} level={level} balance={balance} onPressProfileButton={onPressProfileButton}/>
-        {features.map((list, index) => {
-          const {name, logo, code } = list;
-          return <FeatureList key={index} title={name} logo={logo} userCenterType={code}/>;
-        })}
-      </ScrollView>
-      </>
-      )}
+      {loading ? (
+        <UGProgressCircle />
+      ) : (
+          <>
+            <Header onPressBack={gotoHome} onPressCustomerService={() => {
+              gotoUserCenter(UGUserCenterType.QQ客服)
+            }} />
+            <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
+              <Profile mineButtons={defaultMineButtons} name={name} avatar={avatar} level={level} balance={balance} onPressProfileButton={gotoUserCenter} />
+              {features.map((list, index) => {
+                const { name, logo, code } = list;
+                return <FeatureList key={index} title={name} logo={logo} onPress={() => gotoUserCenter(code)} />;
+              })}
+            </ScrollView>
+          </>
+        )}
     </SafeAreaView>
   );
 };

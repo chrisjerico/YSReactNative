@@ -119,7 +119,7 @@ const TabComponent = ({date = '', onPressTab, leftTabs = [], rightTabs = [], con
             <Scene
               data={leftTabs}
               renderItem={({item}) => {
-                console.log('--------item------', item);
+                // console.log('--------item------', item);
                 const {name, icon} = item;
                 return <TabButton {...item} logo={icon} mainTitle={name} onPress={() => {}} />;
               }}

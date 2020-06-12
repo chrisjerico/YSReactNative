@@ -1,11 +1,10 @@
 import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {UGUserCenterType} from '../../../redux/model/全局/UGSysConfModel';
+import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 interface BottomToolBarProps {
   containerStyle?: ViewStyle;
   tools: HomeBottomTool[];
-  onPressBottomTool: (userCenterType: UGUserCenterType) => any;
+  onPressBottomTool: (tool: HomeBottomTool) => any;
 }
 
 interface HomeBottomTool {
@@ -13,14 +12,14 @@ interface HomeBottomTool {
   userCenterType: number;
 }
 
-const BottomToolBar = ({onPressBottomTool, tools, containerStyle}: BottomToolBarProps) => {
+const BottomToolBar = ({ onPressBottomTool, tools, containerStyle }: BottomToolBarProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       {tools.map((tool: HomeBottomTool, index) => {
-        const {logo, userCenterType} = tool;
+        const { logo } = tool;
         return (
-          <TouchableOpacity key={index} style={styles.toolContainer} onPress={() => onPressBottomTool(userCenterType)}>
-            <Image style={styles.image} source={{uri: logo}} resizeMode={'contain'} />
+          <TouchableOpacity key={index} style={styles.toolContainer} onPress={() => onPressBottomTool(tool)}>
+            <Image style={styles.image} source={{ uri: logo }} resizeMode={'contain'} />
           </TouchableOpacity>
         );
       })}

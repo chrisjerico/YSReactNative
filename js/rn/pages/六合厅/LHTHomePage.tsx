@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import PushHelper from '../../public/define/PushHelper';
 import APIRouter from '../../public/network/APIRouter';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import TabComponent from './components/TabComponent';
@@ -15,7 +14,7 @@ import {
   defaultHomeBottomTools,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
-  defaultLeftTabs, defaultMarkSixLogo,
+  defaultMarkSixLogo,
   defaultNavs,
   defaultNoticeLogo,
   defaultNotices
@@ -27,6 +26,8 @@ import Header from './views/homes/Header';
 import Headline from './views/homes/Headline';
 import Nav from './views/homes/Nav';
 import Notice from './views/homes/Notice';
+import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
+import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,35 +44,37 @@ const LHTHomePage = ({ navigation }) => {
       APIRouter.lhcdoc_lotteryNumber(),
       APIRouter.lhcdoc_categoryList()
     ]).then((response) => {
-      console.log('--------data-------',response[0].data.data)
+      // console.log('--------data-------',response[0].data.data)
       setResponse({
-        banner: response[0].data.data,
-        notice: response[1].data.data,
-        game: response[2].data.data,
-        lottery: response[3].data.data,
-        popular: response[4].data.data
+        banner: response[0]?.data?.data,
+        notice: response[1]?.data?.data,
+        game: response[2]?.data?.data,
+        lottery: response[3]?.data?.data,
+        popular: response[4]?.data?.data
       });
       setLoading(false);
     })
-    .catch((err) => {
-      console.log("----err----",err)
-    })
+      .catch((err) => {
+        // console.log("----err----",err)
+      })
     const unsubscribe = navigation.addListener('focus', () => {
-      NetworkRequest1.user_info().then(value => {
-        console.log('-----成為焦點-----', value)
-        const { uid, avatar, usr } = value
+      APIRouter.user_info().then(response => {
+        // console.log('-----成為焦點-----', response?.data)
+        const { uid, avatar, usr } = response?.data?.data
         if (uid) {
           setUserIsLogIn(true)
           setName(usr)
           setAvatar(avatar)
         }
+      }).catch(error => {
+        console.log('--------error-------', error)
       })
     });
 
     return unsubscribe;
   }, [navigation]);
 
-  const populars = response?.popular?? []
+  const populars = response?.popular ?? []
   const banners: [] = response?.banner?.list ?? defaultBanners
   const notices: [] = response?.notice?.scroll ?? defaultNotices
   const headlines: [] = response?.notice?.popup ?? defaultHeadLines
@@ -100,52 +103,28 @@ const LHTHomePage = ({ navigation }) => {
     setUserIsLogIn(false)
   }
 
-  const onPressSavePoint = () => {
-    PushHelper.pushUserCenterType(UGUserCenterType.存款)
-  }
-
-  const onPressGetPoint = () => {
-    PushHelper.pushUserCenterType(UGUserCenterType.取款)
-  }
-
   const onPressAd = () => {
-
   }
 
   const onPressSmileLogo = () => {
-    //PushHelper.pushLogin()
   }
 
   const onPressLotteryBall = () => {
-
   }
-
-  const onPressNav = (nav: any) => {
-    PushHelper.pushHomeGame(nav)
-  }
-
-  const onPressBanner = (banner: any) => {
-    // console.log("-----banner-----",banner)
-    const { linkCategory, linkPosition } = banner;
-    PushHelper.pushCategory(linkCategory, linkPosition);
-  };
 
   const onPressHeadline = () => {
-
   }
 
-  const onPressBottomTool = (userCenterType: UGUserCenterType) => {
-    PushHelper.pushUserCenterType(userCenterType)
+  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
+    PushHelper.pushUserCenterType(userCenterType);
   }
 
-  const onPressNotice = () => {
-    PushHelper.pushCategory(9, 10)
+  const gotoCategory = (category: string | number, position: string | number) => {
+    PushHelper.pushCategory(category, position)
   }
 
-  const onPressTab = ({category,gameId, gameCode}) => {
-    // console.log("-----category-----",category)
-    // console.log("-----gameCode-----",gameCode)
-    PushHelper.pushCategory(category,gameId)
+  const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
+    PushHelper.pushHomeGame(game)
   }
 
   return (
@@ -154,11 +133,27 @@ const LHTHomePage = ({ navigation }) => {
         <UGProgressCircle />
       ) : (
           <>
-            <Header avatar={avatar} name={name} showLogout={userIsLogIn} leftLogo={defaultHomeHeaderLeftLogo} rightLogo={defaultHomeHeaderRightLogo} onPressSignOut={onPressSignOut} onPressSignIn={PushHelper.pushLogin} onPressSignUp={PushHelper.pushRegister} />
+            <Header
+              avatar={avatar}
+              name={name}
+              showLogout={userIsLogIn}
+              leftLogo={defaultHomeHeaderLeftLogo}
+              rightLogo={defaultHomeHeaderRightLogo}
+              onPressSignOut={onPressSignOut}
+              onPressSignIn={PushHelper.pushLogin}
+              onPressSignUp={PushHelper.pushRegister}
+            />
             <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <Banner banners={banners} onPressBanner={onPressBanner} />
+              <Banner banners={banners} onPressBanner={({ linkCategory, linkPosition }) => {
+                gotoCategory(linkCategory, linkPosition)
+              }} />
               <View style={styles.contentContainer}>
-                <Notice containerStyle={styles.subComponent} notices={notices} logo={defaultNoticeLogo} onPressNotice={onPressNotice} />
+                <Notice
+                  containerStyle={styles.subComponent}
+                  notices={notices}
+                  logo={defaultNoticeLogo}
+                  onPressNotice={() => gotoCategory(9, 10)}
+                />
                 <Nav
                   containerStyle={styles.subComponent}
                   navs={navs}
@@ -167,16 +162,34 @@ const LHTHomePage = ({ navigation }) => {
                   advertisement={defaultAdvertisement}
                   markSixLogo={defaultMarkSixLogo}
                   customerServiceLogo={defaultCustomerServiceLogo}
-                  onPressSavePoint={onPressSavePoint}
-                  onPressGetPoint={onPressGetPoint}
+                  onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
+                  onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
                   onPressAd={onPressAd}
                   onPressSmileLogo={onPressSmileLogo}
                   onPressLotteryBall={onPressLotteryBall}
-                  onPressNav={onPressNav}
+                  onPressNav={(nav) => {
+                    gotoHomeGame(nav)
+                  }}
                 />
-                <Headline containerStyle={styles.subComponent} headlines={headlines} headLineLogo={defaultHeadLineLogo} onPressHeadline={onPressHeadline} />
-                <TabComponent containerStyle={styles.subComponent} leftTabs={populars} rightTabs={tabs} onPressTab={onPressTab} date={date} />
-                <BottomToolBar tools={defaultHomeBottomTools} onPressBottomTool={onPressBottomTool} />
+                <Headline
+                  containerStyle={styles.subComponent}
+                  headlines={headlines}
+                  headLineLogo={defaultHeadLineLogo}
+                  onPressHeadline={onPressHeadline}
+                />
+                <TabComponent
+                  containerStyle={styles.subComponent}
+                  leftTabs={populars}
+                  rightTabs={tabs}
+                  onPressTab={({ category, gameId }) => {
+                    gotoCategory(category, gameId)
+                  }}
+                  date={date}
+                />
+                <BottomToolBar
+                  tools={defaultHomeBottomTools}
+                  onPressBottomTool={({ userCenterType }) => gotoUserCenter(userCenterType)}
+                />
               </View>
             </ScrollView>
           </>
