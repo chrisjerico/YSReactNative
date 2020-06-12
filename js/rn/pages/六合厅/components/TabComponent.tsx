@@ -1,16 +1,17 @@
-import React, {useState} from 'react';
-import {Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
+import React, { useState } from 'react';
+import { Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import StringUtils from '../../../public/tools/StringUtils';
-import {scale} from '../helpers/function';
+import { scale } from '../helpers/function';
 import DropScene from '../views/DropScene';
 import TabButton from '../views/TabButton';
 
-const mainTabRoutes = [{key: '0', title: '热门资讯'}, {key: '1', title: '购彩大厅'}];
+const mainTabRoutes = [{ key: '0', title: '热门资讯' }, { key: '1', title: '购彩大厅' }];
 
 interface TabComponentProps {
   date: string;
-  onPressTab: (props: any) => any;
+  onPressRightTabButton: (button: any) => any;
+  onPressLeftTabButton: (button: any) => any;
   leftTabs: any[];
   rightTabs: ITab[];
   containerStyle?: ViewStyle;
@@ -30,14 +31,14 @@ interface IList {
   levelType: string;
 }
 
-const SubTab = ({routes, renderScene}) => {
+const SubTab = ({ routes, renderScene }) => {
   const [index, setIndex] = useState(0);
   return (
     <TabView
-      navigationState={{index, routes}}
+      navigationState={{ index, routes }}
       renderTabBar={(props: any) => {
         return (
-          <ScrollView horizontal={true} style={{flexGrow: 0}} showsHorizontalScrollIndicator={false} scrollEventThrottle={200} decelerationRate="fast">
+          <ScrollView horizontal={true} style={{ flexGrow: 0 }} showsHorizontalScrollIndicator={false} scrollEventThrottle={200} decelerationRate="fast">
             <TabBar
               {...props}
               style={styles.tab}
@@ -45,7 +46,7 @@ const SubTab = ({routes, renderScene}) => {
               labelStyle={styles.subTabLabelStyle}
               activeColor={'red'}
               inactiveColor={'red'}
-              indicatorStyle={{backgroundColor: 'red'}}
+              indicatorStyle={{ backgroundColor: 'red' }}
             />
           </ScrollView>
         );
@@ -60,31 +61,30 @@ const SubTab = ({routes, renderScene}) => {
   );
 };
 
-const Scene = ({data, renderItem}) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
+const Scene = ({ data, renderItem }) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const TabComponent = ({date = '', onPressTab, leftTabs = [], rightTabs = [], containerStyle}: TabComponentProps) => {
+const TabComponent = ({ date = '', onPressRightTabButton, onPressLeftTabButton, leftTabs = [], rightTabs = [], containerStyle }: TabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
   // const [showDropScene, setShowDropScene] = useState(false);
   // const [square, setSquare] = useState(false);
   // filter props
-  const subTabNames = rightTabs.map((tab, index) => ({key: index, title: StringUtils.getInstance().deleteHtml(tab.name)}));
+  const subTabNames = rightTabs.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }));
   const subScenes = {};
   rightTabs.forEach((tab, index) => {
-    const {list}: ITab = tab;
+    const { list }: ITab = tab;
     subScenes[index] = () => {
       let data = list.filter(ele => ele.levelType == '1');
       const remainder = data.length % 3;
       const patch = remainder > 0 ? 3 - (data.length % 3) : 0;
-      data = data.concat(Array(patch).fill({show: false})).map((ele, index) => Object.assign({}, {key: index}, ele));
+      data = data.concat(Array(patch).fill({ show: false })).map((ele, index) => Object.assign({}, { key: index }, ele));
       return (
         <>
           <Scene
             data={data}
-            renderItem={({item}) => {
-              const {name, logo, icon, realName} = item;
-              const mainTitle = name ? (name.length > 0 ? name : realName) : realName;
-              return <TabButton {...item} logo={logo ? logo : icon} mainTitle={mainTitle} onPress={() => onPressTab && onPressTab(item)} />;
+            renderItem={({ item }) => {
+              const { logo, icon, title } = item;
+              return <TabButton {...item} logo={logo ? logo : icon} mainTitle={title} onPress={() => onPressRightTabButton && onPressRightTabButton(item)} />;
             }}
           />
           <View />
@@ -96,18 +96,18 @@ const TabComponent = ({date = '', onPressTab, leftTabs = [], rightTabs = [], con
   return (
     <View style={containerStyle}>
       <TabView
-        navigationState={{index, routes: mainTabRoutes}}
+        navigationState={{ index, routes: mainTabRoutes }}
         renderTabBar={(props: any) => {
           return (
             <TabBar
               {...props}
               style={styles.tab}
               tabStyle={styles.mainTabStyle}
-              indicatorStyle={{backgroundColor: 'transparent'}}
-              renderLabel={({route, focused}) => {
+              indicatorStyle={{ backgroundColor: 'transparent' }}
+              renderLabel={({ route, focused }) => {
                 return (
                   <View style={[styles.mainTab, focused ? styles.activeMainTab : styles.inactiveMainTab, route.key == '0' ? styles.leftMainTab : styles.rightMainTab]}>
-                    <Text style={{color: '#ffffff'}}>{route.title}</Text>
+                    <Text style={{ color: '#ffffff' }}>{route.title}</Text>
                   </View>
                 );
               }}
@@ -118,10 +118,10 @@ const TabComponent = ({date = '', onPressTab, leftTabs = [], rightTabs = [], con
           0: () => (
             <Scene
               data={leftTabs}
-              renderItem={({item}) => {
-                // console.log('--------item------', item);
-                const {name, icon} = item;
-                return <TabButton {...item} logo={icon} mainTitle={name} onPress={() => {}} />;
+              renderItem={({ item }) => {
+                console.log('--------item------', item);
+                const { name, icon } = item;
+                return <TabButton {...item} logo={icon} mainTitle={name} onPress={() => onPressLeftTabButton && onPressLeftTabButton(item)} />;
               }}
             />
           ),

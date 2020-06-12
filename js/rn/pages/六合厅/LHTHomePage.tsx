@@ -28,6 +28,8 @@ import Nav from './views/homes/Nav';
 import Notice from './views/homes/Notice';
 import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
+import { push, navigate } from "../../public/navigation/RootNavigation"
+import { PageName } from '../../public/navigation/Navigation';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -103,21 +105,19 @@ const LHTHomePage = ({ navigation }) => {
     setUserIsLogIn(false)
   }
 
-  const onPressAd = () => {
-  }
-
-  const onPressLotteryBall = () => {
-  }
-
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
+    console.log("------userCenterType------", userCenterType)
     PushHelper.pushUserCenterType(userCenterType);
   }
 
   const gotoCategory = (category: string | number, position: string | number) => {
+    console.log("-----category-----", category)
+    console.log("-----position-----", position)
     PushHelper.pushCategory(category, position)
   }
 
   const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
+    console.log("---------game---------", game)
     PushHelper.pushHomeGame(game)
   }
 
@@ -142,7 +142,9 @@ const LHTHomePage = ({ navigation }) => {
               onPressSignUp={PushHelper.pushRegister}
             />
             <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <Banner banners={banners} onPressBanner={({ linkCategory, linkPosition }) => {
+              <Banner banners={banners} onPressBanner={(banner) => {
+                const { linkCategory, linkPosition } = banner
+                console.log("-------banner------", banner)
                 gotoCategory(linkCategory, linkPosition)
               }} />
               <View style={styles.contentContainer}>
@@ -162,12 +164,12 @@ const LHTHomePage = ({ navigation }) => {
                   customerServiceLogo={defaultCustomerServiceLogo}
                   onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
                   onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
-                  onPressAd={onPressAd}
+                  onPressAd={() => push(PageName.JDPromotionListPage)}
                   onPressSmileLogo={() => gotoUserCenter(UGUserCenterType.在线客服)}
-                  onPressLotteryBall={onPressLotteryBall}
-                  onPressNav={(nav) => {
-                    gotoHomeGame(nav)
+                  onPressLotteryBall={() => {
+                    console.log("-----不知道要跳到哪----")
                   }}
+                  onPressNav={gotoHomeGame}
                 />
                 <Headline
                   containerStyle={styles.subComponent}
@@ -179,8 +181,9 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   leftTabs={populars}
                   rightTabs={tabs}
-                  onPressTab={({ category, gameId }) => {
-                    gotoCategory(category, gameId)
+                  onPressRightTabButton={gotoHomeGame}
+                  onPressLeftTabButton={(item) => {
+                    console.log("-----不知道要跳到哪----", item)
                   }}
                   date={date}
                 />

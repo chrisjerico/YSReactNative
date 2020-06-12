@@ -1,8 +1,8 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {Button} from 'react-native-elements';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {scale} from '../../helpers/function';
+import { scale } from '../../helpers/function';
 import NavButton from '../../views/NavButton';
 import LotteryBall from '../../views/LotteryBall';
 
@@ -18,7 +18,7 @@ interface NavProps {
   onPressGetPoint: () => any;
   onPressAd: () => any;
   onPressSmileLogo: () => any;
-  onPressLotteryBall: () => any;
+  onPressLotteryBall: (lottery: Lottery) => any;
   onPressNav: (nav: any) => any;
 }
 
@@ -53,8 +53,8 @@ const Nav = ({
           <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
         </View>
         <View style={styles.topRightContainer}>
-          <Button title={'充值'} buttonStyle={[styles.button, {backgroundColor: '#ff8610'}]} titleStyle={styles.title} onPress={onPressSavePoint} />
-          <Button title={'提现'} buttonStyle={[styles.button, {backgroundColor: '#4285f4'}]} titleStyle={styles.title} onPress={onPressGetPoint} />
+          <Button title={'充值'} buttonStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />
+          <Button title={'提现'} buttonStyle={[styles.button, { backgroundColor: '#4285f4' }]} titleStyle={styles.title} onPress={onPressGetPoint} />
           <TouchableOpacity style={styles.smileImageContainer} onPress={onPressSmileLogo}>
             <Image
               style={styles.smileImage}
@@ -67,27 +67,27 @@ const Nav = ({
       </View>
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
-          <Image style={styles.recommendImage} source={{uri: markSixLogo}} />
-          <Text style={{paddingLeft: scale(5)}}>{'六合彩推荐资讯'}</Text>
+          <Image style={styles.recommendImage} source={{ uri: markSixLogo }} />
+          <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
         </View>
         <View style={styles.awardsContainer}>
           <Text>{'第 '}</Text>
-          <Text style={{color: '#ff861b'}}>{date}</Text>
+          <Text style={{ color: '#ff861b' }}>{date}</Text>
           <Text>{' 期开奖结果'}</Text>
         </View>
       </View>
       <View style={styles.lotterysCintainer}>
         {lotterys.map((lottery, index) => {
-          const {number, color, sx} = lottery;
-          return <LotteryBall key={index} score={number} color={color} text={sx} showMore={index == 6} onPress={onPressLotteryBall} />;
+          const { number, color, sx } = lottery;
+          return <LotteryBall key={index} score={number} color={color} text={sx} showMore={index == 6} onPress={() => onPressLotteryBall(lottery)} />;
         })}
       </View>
-      <TouchableOpacity style={{flex: 90, alignItems: 'center'}} onPress={onPressAd}>
-        <Image resizeMode={'contain'} style={styles.adImage} source={{uri: advertisement}} />
+      <TouchableOpacity style={{ flex: 90, alignItems: 'center' }} onPress={onPressAd}>
+        <Image resizeMode={'contain'} style={styles.adImage} source={{ uri: advertisement }} />
       </TouchableOpacity>
       <View style={styles.navsContainer}>
         {navs.map((nav: any, index) => {
-          const {icon, name, logo} = nav;
+          const { icon, name, logo } = nav;
           return (
             <View style={styles.navContainer}>
               <NavButton key={index} logo={icon ? icon : logo} title={name} nav={nav} onPress={() => onPressNav && onPressNav(nav)} />
