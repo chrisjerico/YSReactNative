@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {scale} from '../helpers/function';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { scale } from '../helpers/function';
 
 interface FeatureListProps {
   logo: string;
@@ -8,12 +8,12 @@ interface FeatureListProps {
   onPress: () => any;
 }
 
-const FeatureList = ({logo = '', title = '我的钱包', onPress}: FeatureListProps) => {
+const FeatureList = ({ logo = 'url', title = '我的钱包', onPress }: FeatureListProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
-        <Image resizeMode={'contain'} style={styles.image} source={{uri: logo}} />
-        <Text style={[styles.text, {paddingLeft: scale(25)}]}>{title}</Text>
+        <Image resizeMode={'contain'} style={styles.image} source={{ uri: logo }} />
+        <Text style={[styles.text, { paddingLeft: scale(25) }]}>{title}</Text>
       </View>
       <Text style={styles.text}>{'>'}</Text>
     </TouchableOpacity>

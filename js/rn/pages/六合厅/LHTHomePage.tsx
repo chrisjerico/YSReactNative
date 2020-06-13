@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import PushHelper from '../../public/define/PushHelper';
 import APIRouter from '../../public/network/APIRouter';
 import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import UGUserModel from '../../redux/model/全局/UGUserModel';
+import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
+import { IGlobalState, UGStore } from '../../redux/store/UGStore';
 import TabComponent from './components/TabComponent';
 import {
   defaultAdvertisement,
@@ -17,14 +21,15 @@ import {
   defaultHeadLines,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
+  defaultMainTabs,
   defaultMarkSixLogo,
   defaultNavs,
   defaultNoticeLogo,
-  defaultNotices,
-  defaultMainTabs
+  defaultNotices
 } from './helpers/config';
 import { scale } from './helpers/function';
 import Banner from './views/Banner';
+import BottomTool from './views/BottomTool';
 import BannerBlock from './views/homes/BannerBlock';
 import BottomToolBlock from './views/homes/BottomToolBlock';
 import Header from './views/homes/Header';
@@ -33,17 +38,16 @@ import NavBlock from './views/homes/NavBlock';
 import NoticeBlock from './views/homes/NoticeBlock';
 import LotteryBall from './views/LotteryBall';
 import NavButton from './views/NavButton';
-import BottomTool from './views/BottomTool';
 import TabButton from './views/TabButton';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
+import { ActionType } from '../../redux/store/ActionTypes';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [response, setResponse] = useState<any>(null);
-  const [userIsLogIn, setUserIsLogIn] = useState<boolean>(false);
-  const [name, setName] = useState<string>('');
-  const [avatar, setAvatar] = useState<string>('');
-
+  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { uid, avatar, usr }: UGUserModel = userStore
+  console.log("------uid-----", uid)
   useEffect(() => {
     Promise.all([
       APIRouter.system_banners(),
@@ -52,7 +56,6 @@ const LHTHomePage = ({ navigation }) => {
       APIRouter.lhcdoc_lotteryNumber(),
       APIRouter.lhcdoc_categoryList()
     ]).then((response) => {
-      // console.log('--------data-------',response[0].data.data)
       setResponse({
         banner: response[0]?.data?.data,
         notice: response[1]?.data?.data,
@@ -65,28 +68,8 @@ const LHTHomePage = ({ navigation }) => {
       // console.log("--------error-------",error)
     })
     const unsubscribe = navigation.addListener('focus', () => {
-      NetworkRequest1.user_info().then(response => {
-        console.log('-----成為焦點-----', response?.uid)
-        const { uid, avatar, usr } = response
-        if (uid) {
-          setUserIsLogIn(true)
-          setName(usr)
-          setAvatar(avatar)
-        }
-      }).catch(error => {
-        console.log('--------error-------', error)
-      })
-      // APIRouter.user_info().then(response => {
-      //   console.log('-----成為焦點-----', response?.data)
-      //   const { uid, avatar, usr } = response?.data?.data
-      //   if (uid) {
-      //     setUserIsLogIn(true)
-      //     setName(usr)
-      //     setAvatar(avatar)
-      //   }
-      // }).catch(error => {
-      //   console.log('--------error-------', error)
-      // })
+      console.log('-----成為焦點-----')
+      IGlobalStateHelper.updateUserInfo()
     });
 
     return unsubscribe;
@@ -116,9 +99,25 @@ const LHTHomePage = ({ navigation }) => {
   ]
   const date = response?.lottery?.issue
 
-  const onPressSignOut = async () => {
-    await PushHelper.pushLogout()
-    setUserIsLogIn(false)
+  const onPressSignOut = () => {
+    // PushHelper.pushLogout().then(response => {
+    //   console.log('-----response-----', response)
+    //   IGlobalStateHelper.updateUserInfo()
+    // })
+    APIRouter.user_logout().then(async response => {
+      const { status } = response
+      console.log('-----status-----', status)
+      if (status == 200) {
+        console.log("-----登出成功囉-----")
+        // await OCHelper.call('UGUserModel.setCurrentUser:', []);
+        // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+        // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+        UGStore.dispatch({ type: ActionType.Clear_User });
+        UGStore.save();
+      }
+    }).catch((error) => {
+      console.log("--------error-------", error)
+    })
   }
 
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
@@ -153,8 +152,8 @@ const LHTHomePage = ({ navigation }) => {
           <>
             <Header
               avatar={avatar}
-              name={name}
-              showLogout={userIsLogIn}
+              name={usr}
+              showLogout={uid ? true : false}
               leftLogo={defaultHomeHeaderLeftLogo}
               rightLogo={defaultHomeHeaderRightLogo}
               onPressSignOut={onPressSignOut}

@@ -10,35 +10,39 @@ import FeatureList from './views/FeatureList';
 import Header from './views/mines/Header';
 import ProfileBlock from './views/mines/ProfileBlock';
 import ProfileButton from './views/ProfileButton'
+import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
+import { IGlobalState } from '../../redux/store/UGStore';
+import { useSelector } from 'react-redux';
+import UGUserModel from '../../redux/model/全局/UGUserModel';
 
 const LHTMinePage = ({ navigation }) => {
+
   const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<any>(null);
+  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { avatar, usr, curLevelGrade, balance }: UGUserModel = userStore
 
   useEffect(() => {
-    Promise.all([APIRouter.user_info(), APIRouter.user_centerList()]).then(response => {
-      // console.log('--------response-----', response[0]?.data);
+    APIRouter.user_centerList().then(response => {
       setResponse({
-        user: response[0]?.data?.data,
-        userCenterLists: response[1],
+        feature: response,
       });
       setLoading(false);
     }).catch(
       error => {
         console.log('------error-----', error)
       })
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('-----成為焦點-----')
+      IGlobalStateHelper.updateUserInfo()
+    })
+    return unsubscribe;
+  }, [navigation]);
 
-  const user = response?.user ?? {}
-  // user
-  const level = user.curLevelGrade
-  const name = user.usr
-  const avatar = user.avatar
-  const balance = user.balance
-  // userCenterLists
-  const features: any[] = response?.userCenterLists ?? defaultFeatures;
-  //
+  // features
+  const features: any[] = response?.feature ?? defaultFeatures;
 
+  // functions
   const gotoHome = () => {
     navigation.navigate('LHTHomePage')
   }
@@ -59,18 +63,18 @@ const LHTMinePage = ({ navigation }) => {
             <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
               <ProfileBlock
                 profileButtons={defaultProfileButtons}
-                name={name}
+                name={usr}
                 avatar={avatar}
-                level={level}
+                level={curLevelGrade}
                 balance={balance}
                 renderProfileButton={(item, index) => {
-                  const { userCenterType } = item
-                  return <ProfileButton key={index} {...item} onPress={() => { gotoUserCenter(userCenterType) }} />
+                  const { title, logo, userCenterType } = item
+                  return <ProfileButton key={index} title={title} logo={logo} onPress={() => { gotoUserCenter(userCenterType) }} />
                 }}
               />
               {features.map((item, index) => {
-                const { code } = item;
-                return <FeatureList key={index} {...item} onPress={() => gotoUserCenter(code)} />;
+                const { code, name, logo } = item;
+                return <FeatureList key={index} title={name} logo={logo} onPress={() => gotoUserCenter(code)} />;
               })}
             </ScrollView>
           </>

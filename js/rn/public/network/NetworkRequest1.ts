@@ -35,8 +35,6 @@ export default class NetworkRequest1 {
   static async homeInfo() {
     let response1 = await fetch('https://facebook.github.io/react-native/movies.json');
     // user
-    //中獎號碼
-    let lotteryNumber = await NetworkRequest1.lotteryNumber();
     //广告
     let banner = await CCSessionModel.req('c=system&a=banners');
     //通知
@@ -55,7 +53,6 @@ export default class NetworkRequest1 {
     let responseJson1 = await response1.json();
 
     let bean: XBJHomeProps = {
-      lotteryNumber: lotteryNumber,
       banner: banner,
       notice: notice,
       game: game,
@@ -68,16 +65,6 @@ export default class NetworkRequest1 {
     return bean;
   }
 
-  // 獲取我的頁數據
-  static async mineInfo() {
-    let userCenterLists = await NetworkRequest1.userCenterList();
-    let user = await NetworkRequest1.user_info();
-    let bean: any = {
-      userCenterLists,
-      user,
-    };
-    return bean;
-  }
   // 获取评论列表
   static lhcdoc_contentReplyList(
     contentId: string, // 帖子ID
