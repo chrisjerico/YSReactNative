@@ -1,9 +1,7 @@
-import {RouterType, Router} from './Router';
-import {UGBasePageProps} from '../../pages/base/UGBasePageProps';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import React from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {UGBasePageProps} from '../../pages/base/UGBasePageProps';
+import {Router, RouterType} from './Router';
 
 export enum PageName {
   TransitionPage = 'TransitionPage',
@@ -23,6 +21,8 @@ export enum PageName {
   ZLLoginPage = 'ZLLoginPage',
   ZLMinePage = 'ZLMinePage',
   ZLRegisterPage = 'ZLRegisterPage',
+  BZHHomePage = 'BZHHomePage',
+  BZHMinePage = 'BZHMinePage',
 }
 
 export class Navigation {

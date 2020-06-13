@@ -8,6 +8,7 @@ import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
+import { ActionType } from '../../redux/store/ActionTypes';
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
 import { IGlobalState, UGStore } from '../../redux/store/UGStore';
 import TabComponent from './components/TabComponent';
@@ -39,8 +40,6 @@ import NoticeBlock from './views/homes/NoticeBlock';
 import LotteryBall from './views/LotteryBall';
 import NavButton from './views/NavButton';
 import TabButton from './views/TabButton';
-import { ActionType } from '../../redux/store/ActionTypes';
-import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);

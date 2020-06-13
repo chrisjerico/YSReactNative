@@ -25,6 +25,8 @@ import XBJLoginPage from '../香槟金/XBJLoginPage';
 import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
+import BZHHomePage from '../宝石红/BZHHomePage';
+import BZHMinePage from '../宝石红/BZHMinePage';
 
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
@@ -42,7 +44,7 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
 
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.BZHHomePage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
@@ -58,6 +60,8 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
       </Router.TabNavigator>
     );
   }

@@ -100,7 +100,7 @@ export function setRnPageInfo() {
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.LHTHomePage,
+        rnName: PageName.BZHHomePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
@@ -108,7 +108,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
-        rnName: PageName.LHTMinePage,
+        rnName: PageName.BZHMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
