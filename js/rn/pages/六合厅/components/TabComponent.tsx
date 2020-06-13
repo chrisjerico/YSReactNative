@@ -3,18 +3,14 @@ import { Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle } f
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import StringUtils from '../../../public/tools/StringUtils';
 import { scale } from '../helpers/function';
-import DropScene from '../views/DropScene';
-import TabButton from '../views/TabButton';
-
-const mainTabRoutes = [{ key: '0', title: '热门资讯' }, { key: '1', title: '购彩大厅' }];
 
 interface TabComponentProps {
-  date: string;
-  onPressRightTabButton: (button: any) => any;
-  onPressLeftTabButton: (button: any) => any;
+  containerStyle?: ViewStyle;
+  mainTabs: any[];
   leftTabs: any[];
   rightTabs: ITab[];
-  containerStyle?: ViewStyle;
+  renderLeftTab: (item: any, index: number) => any
+  renderRightTab: (item: any, index: number) => any
 }
 
 interface ITab {
@@ -63,7 +59,7 @@ const SubTab = ({ routes, renderScene }) => {
 
 const Scene = ({ data, renderItem }) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
 
-const TabComponent = ({ date = '', onPressRightTabButton, onPressLeftTabButton, leftTabs = [], rightTabs = [], containerStyle }: TabComponentProps) => {
+const TabComponent = ({ renderLeftTab, renderRightTab, mainTabs = [], leftTabs = [], rightTabs = [], containerStyle }: TabComponentProps) => {
   // set state
   const [index, setIndex] = useState(0);
   // const [showDropScene, setShowDropScene] = useState(false);
@@ -79,16 +75,10 @@ const TabComponent = ({ date = '', onPressRightTabButton, onPressLeftTabButton, 
       const patch = remainder > 0 ? 3 - (data.length % 3) : 0;
       data = data.concat(Array(patch).fill({ show: false })).map((ele, index) => Object.assign({}, { key: index }, ele));
       return (
-        <>
-          <Scene
-            data={data}
-            renderItem={({ item }) => {
-              const { logo, icon, title } = item;
-              return <TabButton {...item} logo={logo ? logo : icon} mainTitle={title} onPress={() => onPressRightTabButton && onPressRightTabButton(item)} />;
-            }}
-          />
-          <View />
-        </>
+        <Scene
+          data={data}
+          renderItem={({ item, index }) => renderRightTab(item, index)}
+        />
       );
     };
   });
@@ -96,7 +86,7 @@ const TabComponent = ({ date = '', onPressRightTabButton, onPressLeftTabButton, 
   return (
     <View style={containerStyle}>
       <TabView
-        navigationState={{ index, routes: mainTabRoutes }}
+        navigationState={{ index, routes: mainTabs }}
         renderTabBar={(props: any) => {
           return (
             <TabBar
@@ -118,11 +108,7 @@ const TabComponent = ({ date = '', onPressRightTabButton, onPressLeftTabButton, 
           0: () => (
             <Scene
               data={leftTabs}
-              renderItem={({ item }) => {
-                console.log('--------item------', item);
-                const { name, icon } = item;
-                return <TabButton {...item} logo={icon} mainTitle={name} onPress={() => onPressLeftTabButton && onPressLeftTabButton(item)} />;
-              }}
+              renderItem={({ item, index }) => renderLeftTab(item, index)}
             />
           ),
           1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {scale} from '../helpers/function';
+import { Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { scale } from '../helpers/function';
 
 interface TabButtonProps {
   logo?: string;
@@ -16,9 +16,9 @@ interface TabButtonProps {
 }
 
 const TabButton = (props: TabButtonProps) => {
-  const {backgroundColor, imageStyle, logo = '', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => {}, show = true} = props;
+  const { backgroundColor, imageStyle, logo = '', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, show = true } = props;
   return (
-    <TouchableOpacity style={[styles.conatiner, show ? {} : {opacity: 0}]} activeOpacity={show ? 0.2 : 0} onPress={onPress}>
+    <TouchableOpacity style={[styles.conatiner, show ? {} : { opacity: 0 }]} activeOpacity={show ? 0.2 : 0} onPress={onPress}>
       <View
         style={[
           styles.circleContainer,
@@ -26,7 +26,7 @@ const TabButton = (props: TabButtonProps) => {
             backgroundColor: backgroundColor ? backgroundColor : '#ACD6FF',
           },
         ]}>
-        <Image style={[styles.image, imageStyle]} source={{uri: logo}} resizeMode={'contain'} />
+        <Image style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'contain'} />
       </View>
       <View style={styles.titleContainer}>
         <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>

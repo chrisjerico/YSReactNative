@@ -4,14 +4,14 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { INoticeScroll } from '../../../../redux/model/home/INoticeBean';
 import { scale } from '../../helpers/function';
 
-interface NoticeProps {
+interface NoticeBlockProps {
   logo: string;
   notices: INoticeScroll[];
   containerStyle?: ViewStyle;
   onPressNotice: (item: any) => any
 }
 
-const Notice = ({ logo = '', notices, containerStyle, onPressNotice }: NoticeProps) => {
+const NoticeBlock = ({ logo = '', notices, containerStyle, onPressNotice }: NoticeBlockProps) => {
   const cleanContents = notices.map((notice, index) => ({ label: index.toString(), value: notice?.title }))
 
   return (
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Notice;
+export default NoticeBlock;

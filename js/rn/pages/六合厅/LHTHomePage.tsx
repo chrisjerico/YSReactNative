@@ -20,15 +20,22 @@ import {
   defaultMarkSixLogo,
   defaultNavs,
   defaultNoticeLogo,
-  defaultNotices
+  defaultNotices,
+  defaultMainTabs
 } from './helpers/config';
 import { scale } from './helpers/function';
-import Banner from './views/homes/Banner';
-import BottomToolBar from './views/homes/BottomToolBar';
+import Banner from './views/Banner';
+import BannerBlock from './views/homes/BannerBlock';
+import BottomToolBlock from './views/homes/BottomToolBlock';
 import Header from './views/homes/Header';
-import Headline from './views/homes/Headline';
-import Nav from './views/homes/Nav';
-import Notice from './views/homes/Notice';
+import HeadlineBlock from './views/homes/HeadlineBlock';
+import NavBlock from './views/homes/NavBlock';
+import NoticeBlock from './views/homes/NoticeBlock';
+import LotteryBall from './views/LotteryBall';
+import NavButton from './views/NavButton';
+import BottomTool from './views/BottomTool';
+import TabButton from './views/TabButton';
+import NetworkRequest1 from '../../public/network/NetworkRequest1';
 
 const LHTHomePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,14 +61,13 @@ const LHTHomePage = ({ navigation }) => {
         popular: response[4]?.data?.data
       });
       setLoading(false);
+    }).catch((error) => {
+      // console.log("--------error-------",error)
     })
-      .catch((err) => {
-        // console.log("----err----",err)
-      })
     const unsubscribe = navigation.addListener('focus', () => {
-      APIRouter.user_info().then(response => {
-        // console.log('-----成為焦點-----', response?.data)
-        const { uid, avatar, usr } = response?.data?.data
+      NetworkRequest1.user_info().then(response => {
+        console.log('-----成為焦點-----', response?.uid)
+        const { uid, avatar, usr } = response
         if (uid) {
           setUserIsLogIn(true)
           setName(usr)
@@ -70,6 +76,17 @@ const LHTHomePage = ({ navigation }) => {
       }).catch(error => {
         console.log('--------error-------', error)
       })
+      // APIRouter.user_info().then(response => {
+      //   console.log('-----成為焦點-----', response?.data)
+      //   const { uid, avatar, usr } = response?.data?.data
+      //   if (uid) {
+      //     setUserIsLogIn(true)
+      //     setName(usr)
+      //     setAvatar(avatar)
+      //   }
+      // }).catch(error => {
+      //   console.log('--------error-------', error)
+      // })
     });
 
     return unsubscribe;
@@ -105,18 +122,18 @@ const LHTHomePage = ({ navigation }) => {
   }
 
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    console.log("------userCenterType------", userCenterType)
+    // console.log("------userCenterType------", userCenterType)
     PushHelper.pushUserCenterType(userCenterType);
   }
 
   const gotoCategory = (category: string | number, position: string | number) => {
-    console.log("-----category-----", category)
-    console.log("-----position-----", position)
+    // console.log("-----category-----", category)
+    // console.log("-----position-----", position)
     PushHelper.pushCategory(category, position)
   }
 
   const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    console.log("---------game---------", game)
+    // console.log("---------game---------", game)
     PushHelper.pushHomeGame(game)
   }
 
@@ -145,19 +162,23 @@ const LHTHomePage = ({ navigation }) => {
               onPressSignUp={PushHelper.pushRegister}
             />
             <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <Banner banners={banners} onPressBanner={(banner) => {
-                const { linkCategory, linkPosition } = banner
-                console.log("-------banner------", banner)
-                gotoCategory(linkCategory, linkPosition)
-              }} />
+              <BannerBlock
+                banners={banners}
+                renderBanner={(item, index) => {
+                  const { linkCategory, linkPosition, pic } = item
+                  return <Banner key={index} pic={pic} onPress={() => {
+                    gotoCategory(linkCategory, linkPosition)
+                  }} />
+                }}
+              />
               <View style={styles.contentContainer}>
-                <Notice
+                <NoticeBlock
                   containerStyle={styles.subComponent}
                   notices={notices}
                   logo={defaultNoticeLogo}
                   onPressNotice={({ value }) => goToNotice(value)}
                 />
-                <Nav
+                <NavBlock
                   containerStyle={styles.subComponent}
                   navs={navs}
                   lotterys={lotterys}
@@ -169,12 +190,18 @@ const LHTHomePage = ({ navigation }) => {
                   onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
                   onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
                   onPressSmileLogo={() => gotoUserCenter(UGUserCenterType.在线客服)}
-                  onPressLotteryBall={() => {
-                    gotoUserCenter(UGUserCenterType.六合彩)
+                  renderNav={(item, index) => {
+                    const { icon, name, logo } = item;
+                    return (
+                      <NavButton key={index} logo={icon ? icon : logo} title={name} nav={item} onPress={() => gotoHomeGame(item)} />
+                    );
                   }}
-                  onPressNav={gotoHomeGame}
+                  renderLottery={(item, index) => {
+                    const { number, color, sx } = item;
+                    return <LotteryBall key={index} score={number} color={color} text={sx} showMore={index == 6} onPress={() => gotoUserCenter(UGUserCenterType.六合彩)} />;
+                  }}
                 />
-                <Headline
+                <HeadlineBlock
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
@@ -182,22 +209,36 @@ const LHTHomePage = ({ navigation }) => {
                 />
                 <TabComponent
                   containerStyle={styles.subComponent}
+                  mainTabs={defaultMainTabs}
                   leftTabs={populars}
                   rightTabs={tabs}
-                  onPressRightTabButton={gotoHomeGame}
-                  onPressLeftTabButton={(item) => {
-                    console.log("-----不知道要跳到哪----", item)
+                  renderLeftTab={(item, index) => {
+                    // console.log('--------tab------', item);
+                    const { name, icon } = item;
+                    return <TabButton key={index} logo={icon} mainTitle={name} onPress={() => {
+                      // console.log("-----不知道要跳到哪----", item)
+                    }} />;
                   }}
-                  date={date}
+                  renderRightTab={(item, index) => {
+                    // console.log('--------tab------', item);
+                    const { logo, icon, title } = item;
+                    return <TabButton key={index} logo={logo ? logo : icon} mainTitle={title} onPress={() => gotoHomeGame(item)}
+                    />;
+                  }}
                 />
-                <BottomToolBar
+                <BottomToolBlock
                   tools={defaultBottomTools}
-                  onPressBottomTool={({ userCenterType }) => {
-                    if (userCenterType) {
-                      gotoUserCenter(userCenterType)
-                    } else {
-                      gotoWebView(defaultDowloadUrl)
-                    }
+                  renderBottomTool={(item, index) => {
+                    const { logo, userCenterType } = item;
+                    return (
+                      <BottomTool key={index} logo={logo} onPress={() => {
+                        if (userCenterType) {
+                          gotoUserCenter(userCenterType)
+                        } else {
+                          gotoWebView(defaultDowloadUrl)
+                        }
+                      }} />
+                    );
                   }}
                 />
               </View>

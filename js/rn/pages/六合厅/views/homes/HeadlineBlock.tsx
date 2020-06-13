@@ -6,14 +6,14 @@ import StringUtils from '../../../../public/tools/StringUtils';
 import { INoticePop } from '../../../../redux/model/home/INoticeBean';
 import { scale } from '../../helpers/function';
 
-interface HeadlineProps {
+interface HeadlineBlockProps {
   containerStyle?: ViewStyle;
   headlines: INoticePop[];
   headLineLogo: string
   onPressHeadline: (item: any) => any
 }
 
-const Headline = ({ onPressHeadline, headlines, headLineLogo = '', containerStyle }: HeadlineProps) => {
+const HeadlineBlock = ({ onPressHeadline, headlines, headLineLogo = '', containerStyle }: HeadlineBlockProps) => {
 
   const [display, setDisplay] = useState(true)
   const cleanContents = headlines.map((headline, index) => ({ label: index.toString(), value: StringUtils.getInstance().deleteHtml(headline?.content) }))
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Headline;
+export default HeadlineBlock;

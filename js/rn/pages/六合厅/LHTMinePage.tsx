@@ -8,7 +8,8 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import { defaultFeatures, defaultProfileButtons } from './helpers/config';
 import FeatureList from './views/FeatureList';
 import Header from './views/mines/Header';
-import Profile from './views/mines/Profile';
+import ProfileBlock from './views/mines/ProfileBlock';
+import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = ({ navigation }) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -56,12 +57,20 @@ const LHTMinePage = ({ navigation }) => {
               gotoUserCenter(UGUserCenterType.QQ客服)
             }} />
             <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <Profile profileButtons={defaultProfileButtons} name={name} avatar={avatar} level={level} balance={balance} onPressProfileButton={({ userCenterType }) => {
-                gotoUserCenter(userCenterType)
-              }} />
-              {features.map((list, index) => {
-                const { name, logo, code } = list;
-                return <FeatureList key={index} title={name} logo={logo} onPress={() => gotoUserCenter(code)} />;
+              <ProfileBlock
+                profileButtons={defaultProfileButtons}
+                name={name}
+                avatar={avatar}
+                level={level}
+                balance={balance}
+                renderProfileButton={(item, index) => {
+                  const { userCenterType } = item
+                  return <ProfileButton key={index} {...item} onPress={() => { gotoUserCenter(userCenterType) }} />
+                }}
+              />
+              {features.map((item, index) => {
+                const { code } = item;
+                return <FeatureList key={index} {...item} onPress={() => gotoUserCenter(code)} />;
               })}
             </ScrollView>
           </>

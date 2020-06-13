@@ -3,18 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Badge, Icon } from 'react-native-elements';
 import PushHelper from '../../../../public/define/PushHelper';
 import { scale } from '../../helpers/function';
-import ProfileButton from '../ProfileButton';
 
-interface ProfileProps {
+interface ProfileBlockProps {
   profileButtons: any[];
   avatar: string;
   name: string;
   level: string;
   balance: string;
-  onPressProfileButton: (button: any) => any;
+  renderProfileButton: (item: any, index: number) => any
 }
 
-const Profile = ({ avatar, name = '', level = '', balance = '', profileButtons = [], onPressProfileButton }: ProfileProps) => (
+const ProfileBlock = ({ avatar, name = '', level = '', balance = '', profileButtons = [], renderProfileButton }: ProfileBlockProps) => (
   <View style={styles.container}>
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
@@ -43,9 +42,7 @@ const Profile = ({ avatar, name = '', level = '', balance = '', profileButtons =
       </View>
     </View>
     <View style={styles.profileButtonsContainer}>
-      {profileButtons.map((button, index) => (
-        <ProfileButton key={index} {...button} onPress={() => onPressProfileButton && onPressProfileButton(button)} />
-      ))}
+      {profileButtons.map(renderProfileButton)}
     </View>
   </View>
 );
@@ -74,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default ProfileBlock;
