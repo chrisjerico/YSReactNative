@@ -4,7 +4,8 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
+  Text
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
@@ -29,7 +30,7 @@ import {
   defaultHomeHeaderRightLogo,
   defaultMainTabs,
   defaultMarkSixLogo,
-  defaultNavs, 
+  defaultNavs,
   defaultNoticeLogo,
   defaultNotices
 } from './helpers/config'
@@ -42,6 +43,7 @@ import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import NoticeBlock from './views/homes/NoticeBlock'
+import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
@@ -250,6 +252,9 @@ const LHTHomePage = ({ navigation }) => {
                     />
                   )
                 }}
+              />
+              <WinningBlock
+                containerStyle={styles.subComponent}
               />
               <BottomToolBlock
                 tools={defaultBottomTools}
