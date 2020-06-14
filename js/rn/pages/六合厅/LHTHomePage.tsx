@@ -40,6 +40,7 @@ import NoticeBlock from './views/homes/NoticeBlock';
 import LotteryBall from './views/LotteryBall';
 import NavButton from './views/NavButton';
 import TabButton from './views/TabButton';
+import useGetHomeInfo from '../../public/hooks/useGetHomeInfo';
 
 const LHTHomePage = ({ navigation }) => {
 
@@ -49,6 +50,11 @@ const LHTHomePage = ({ navigation }) => {
   const { uid, avatar, usr }: UGUserModel = userStore
   console.log("------LHTHomePage uid-----", uid)
 
+  // const {
+  //   loading,
+  //   banner,
+  //   homeGames,
+  // } = useGetHomeInfo(['system_banners', 'notice_latest', 'game_homeGames', 'lhcdoc_lotteryNumber', 'lhcdoc_categoryList'])
   useEffect(() => {
     Promise.all([
       APIRouter.system_banners(),
@@ -57,6 +63,7 @@ const LHTHomePage = ({ navigation }) => {
       APIRouter.lhcdoc_lotteryNumber(),
       APIRouter.lhcdoc_categoryList()
     ]).then((response) => {
+      console.log("------lottery-----",response[3]?.data?.data)
       setResponse({
         banner: response[0]?.data?.data,
         notice: response[1]?.data?.data,
@@ -76,12 +83,12 @@ const LHTHomePage = ({ navigation }) => {
     return unsubscribe;
   }, []);
 
+  const banners = response?.banner?.data?.list
   const populars = response?.popular ?? []
-  const banners: [] = response?.banner?.list ?? defaultBanners
-  const notices: [] = response?.notice?.scroll ?? defaultNotices
-  const headlines: [] = response?.notice?.popup ?? defaultHeadLines
-  const tabs: [] = response?.game?.icons ?? []
-  const navs: [] = response?.game?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
+  const notices = response?.notice?.scroll ?? defaultNotices
+  const headlines = response?.notice?.popup ?? defaultHeadLines
+  const tabs = response?.game?.data?.icons ?? []
+  const navs = response?.game?.data?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
   const numbers: [] = response?.lottery?.numbers?.split(',') ?? []
   const numColors: [] = response?.lottery?.numColor?.split(',') ?? []
   const numSxs: [] = response?.lottery?.numSx?.split(',') ?? []

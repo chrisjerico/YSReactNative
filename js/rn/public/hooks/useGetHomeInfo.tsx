@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
+import Axios from 'axios'
+import { useEffect, useState } from 'react'
+import { OCHelper } from '../define/OCHelper/OCHelper'
+import APIRouter from '../network/APIRouter'
+import { httpClient } from '../network/httpClient'
+import { BannerModel } from '../network/Model/BannerModel'
+import { CouponListModel } from '../network/Model/CouponListModel'
 import { FloatADModel } from '../network/Model/FloatADModel'
 import { HomeGamesModel } from '../network/Model/HomeGamesModel'
-import { BannerModel } from '../network/Model/BannerModel'
+import { LotteryNumberModel } from '../network/Model/LotteryNumberModel'
 import { RankListModel } from '../network/Model/RankListModel'
-import { CouponListModel } from '../network/Model/CouponListModel'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import { httpClient } from '../network/httpClient'
-import Axios from 'axios'
-import APIRouter from '../network/APIRouter'
+import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 type APIListType = 'game_homeGames' | 'system_banners' | 'notice_latest' | 'system_promotions' | 'system_rankingList' | 'system_onlineCount' | 'activity_redBagDetail'
-    | 'system_floatAds'
+    | 'system_floatAds' |'lhcdoc_lotteryNumber'|'lhcdoc_categoryList'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     const [onlineNum, setOnlineNum] = useState(0)
     const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
@@ -23,6 +24,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     const [couponListData, setCouponListData] = useState<CouponListModel>()
     const [rankList, setRankList] = useState<RankListModel>()
     const [loading, setLoading] = useState(true)
+    const [lotteryNumber,setLotteryNumber] = useState<LotteryNumberModel>()
     useEffect(() => {
         init()
         console.log("render")
@@ -76,6 +78,12 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                                     case 'system_onlineCount':
                                         setOnlineNum(res[key].data.data.onlineUserCount)
                                         break
+                                    case 'activity_redBagDetail':
+                                        setRedBag(res[key].data)
+                                        break
+                                    case 'lhcdoc_lotteryNumber':
+                                        setLotteryNumber(res[key].data)
+                                        break
                                     default:
                                         break;
                                 }
@@ -95,7 +103,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                 APIRouter.system_rankingList(),
                 APIRouter.system_onlineCount(),
                 APIRouter.activity_redBagDetail(),
-                APIRouter.system_floatAds()])
+                APIRouter.system_floatAds(),])
                     .then(Axios.spread((...res) => {
                         setHomeGames(res[0].data)
                         setBanner(res[1].data)
@@ -122,6 +130,6 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
 
         });
     }
-    return { onlineNum, redBag, redBagVisiable, floatAds, homeGames, banner, notice, originalNoticeString, rankList, loading, couponListData }
+    return { onlineNum, redBag, redBagVisiable, floatAds, homeGames, banner, notice, originalNoticeString, rankList, loading,lotteryNumber, couponListData }
 }
 export default useGetHomeInfo
