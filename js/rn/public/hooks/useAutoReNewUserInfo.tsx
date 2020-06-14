@@ -8,6 +8,6 @@ const useAutoRenewUserInfo = (navigation) => {
         });
         return unsubscribe;
     }, [])
-    return null
+    return []
 }
 export default useAutoRenewUserInfo

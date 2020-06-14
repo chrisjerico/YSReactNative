@@ -41,57 +41,40 @@ import LotteryBall from './views/LotteryBall';
 import NavButton from './views/NavButton';
 import TabButton from './views/TabButton';
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo';
+import useLoginOut from '../../public/hooks/useLoginOut';
+import { PageName } from '../../public/navigation/Navigation';
 
 const LHTHomePage = ({ navigation }) => {
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [response, setResponse] = useState<any>(null);
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
-  console.log("------LHTHomePage uid-----", uid)
 
-  // const {
-  //   loading,
-  //   banner,
-  //   homeGames,
-  // } = useGetHomeInfo(['system_banners', 'notice_latest', 'game_homeGames', 'lhcdoc_lotteryNumber', 'lhcdoc_categoryList'])
+  const {
+    loading,
+    banner,
+    homeGames,
+    notice,
+    lotteryNumber,
+    categoryList
+  } = useGetHomeInfo(['system_banners', 'notice_latest', 'game_homeGames', 'lhcdoc_lotteryNumber', 'lhcdoc_categoryList'])
+  const {loginOut} = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
-    Promise.all([
-      APIRouter.system_banners(),
-      APIRouter.notice_latest(),
-      APIRouter.game_homeGames(),
-      APIRouter.lhcdoc_lotteryNumber(),
-      APIRouter.lhcdoc_categoryList()
-    ]).then((response) => {
-      console.log("------lottery-----",response[3]?.data?.data)
-      setResponse({
-        banner: response[0]?.data?.data,
-        notice: response[1]?.data?.data,
-        game: response[2]?.data?.data,
-        lottery: response[3]?.data?.data,
-        popular: response[4]?.data?.data
-      });
-      setLoading(false);
-    }).catch((error) => {
-      // console.log("--------error-------",error)
-    })
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('-----成為焦點-----')
+      // console.log('-----成為焦點-----')
       updateUserInfo()
     });
-
     return unsubscribe;
   }, []);
 
-  const banners = response?.banner?.data?.list
-  const populars = response?.popular ?? []
-  const notices = response?.notice?.scroll ?? defaultNotices
-  const headlines = response?.notice?.popup ?? defaultHeadLines
-  const tabs = response?.game?.data?.icons ?? []
-  const navs = response?.game?.data?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
-  const numbers: [] = response?.lottery?.numbers?.split(',') ?? []
-  const numColors: [] = response?.lottery?.numColor?.split(',') ?? []
-  const numSxs: [] = response?.lottery?.numSx?.split(',') ?? []
+  const banners = banner?.data?.list
+  const populars = categoryList?.data ?? []
+  const notices = notice?.data.scroll ?? defaultNotices
+  const headlines = notice?.data.popup ?? defaultHeadLines
+  const tabs = homeGames?.data?.icons ?? []
+  const navs = homeGames?.data?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
+  const numbers = lotteryNumber?.numbers?.split(',') ?? []
+  const numColors = lotteryNumber?.numColor?.split(',') ?? []
+  const numSxs = lotteryNumber?.numSx?.split(',') ?? []
   let lotterys: any[] = numbers.map((number, index) => ({
     number,
     color: numColors[index],
@@ -105,28 +88,7 @@ const LHTHomePage = ({ navigation }) => {
     },
     ...lotterys.slice(6)
   ]
-  const date = response?.lottery?.issue
-
-  const onPressSignOut = () => {
-    // PushHelper.pushLogout().then(response => {
-    //   console.log('-----response-----', response)
-    //   IGlobalStateHelper.updateUserInfo()
-    // })
-    APIRouter.user_logout().then(async response => {
-      const { status } = response
-      console.log('-----status-----', status)
-      if (status == 200) {
-        console.log("-----登出成功囉-----")
-        // await OCHelper.call('UGUserModel.setCurrentUser:', []);
-        // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-        // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-        UGStore.dispatch({ type: ActionType.Clear_User });
-        UGStore.save();
-      }
-    }).catch((error) => {
-      console.log("--------error-------", error)
-    })
-  }
+  const lotteryDate = lotteryNumber?.issue
 
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
     // console.log("------userCenterType------", userCenterType)
@@ -164,7 +126,7 @@ const LHTHomePage = ({ navigation }) => {
               showLogout={uid ? true : false}
               leftLogo={defaultHomeHeaderLeftLogo}
               rightLogo={defaultHomeHeaderRightLogo}
-              onPressSignOut={onPressSignOut}
+              onPressSignOut={loginOut}
               onPressSignIn={PushHelper.pushLogin}
               onPressSignUp={PushHelper.pushRegister}
             />
@@ -189,7 +151,7 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   navs={navs}
                   lotterys={lotterys}
-                  date={date}
+                  date={lotteryDate}
                   advertisement={defaultAdvertisement}
                   markSixLogo={defaultMarkSixLogo}
                   customerServiceLogo={defaultCustomerServiceLogo}
