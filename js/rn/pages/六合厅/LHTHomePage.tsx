@@ -49,6 +49,8 @@ import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
 
 const LHTHomePage = ({ navigation }) => {
+  // yellowBox
+  console.disableYellowBox = true;
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
@@ -99,6 +101,7 @@ const LHTHomePage = ({ navigation }) => {
   ]
   const lotteryDate = lotteryNumber?.issue
 
+  // functions
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
     // console.log("------userCenterType------", userCenterType)
     PushHelper.pushUserCenterType(userCenterType)
