@@ -1,101 +1,113 @@
-import React, { useEffect, useState } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import PushHelper from '../../public/define/PushHelper';
-import APIRouter from '../../public/network/APIRouter';
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
-import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import UGUserModel from '../../redux/model/全局/UGUserModel';
-import { ActionType } from '../../redux/store/ActionTypes';
-import { updateUserInfo, IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
-import { IGlobalState, UGStore } from '../../redux/store/UGStore';
-import TabComponent from './components/TabComponent';
+import React, { useEffect } from 'react'
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
+import { useSelector } from 'react-redux'
+import PushHelper from '../../public/define/PushHelper'
+import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import useLoginOut from '../../public/hooks/useLoginOut'
+import { PageName } from '../../public/navigation/Navigation'
+import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
+import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
+import { IGameIconListItem } from '../../redux/model/home/IGameBean'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
+import { IGlobalState } from '../../redux/store/UGStore'
+import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
-  defaultBanners,
   defaultBottomTools,
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
   defaultHeadLineLogo,
-  defaultHeadLines,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultMainTabs,
   defaultMarkSixLogo,
-  defaultNavs,
   defaultNoticeLogo,
-  defaultNotices
-} from './helpers/config';
-import { scale } from './helpers/function';
-import Banner from './views/Banner';
-import BottomTool from './views/BottomTool';
-import BannerBlock from './views/homes/BannerBlock';
-import BottomToolBlock from './views/homes/BottomToolBlock';
-import Header from './views/homes/Header';
-import HeadlineBlock from './views/homes/HeadlineBlock';
-import NavBlock from './views/homes/NavBlock';
-import NoticeBlock from './views/homes/NoticeBlock';
-import LotteryBall from './views/LotteryBall';
-import NavButton from './views/NavButton';
-import TabButton from './views/TabButton';
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo';
-import useLoginOut from '../../public/hooks/useLoginOut';
-import { PageName } from '../../public/navigation/Navigation';
+  defaultNavs,
+  defaultBanners,
+  defaultNotices,
+  defaultHeadLines,
+} from './helpers/config'
+import { scale } from './helpers/function'
+import Banner from './views/Banner'
+import BottomTool from './views/BottomTool'
+import BannerBlock from './views/homes/BannerBlock'
+import BottomToolBlock from './views/homes/BottomToolBlock'
+import Header from './views/homes/Header'
+import HeadlineBlock from './views/homes/HeadlineBlock'
+import NavBlock from './views/homes/NavBlock'
+import NoticeBlock from './views/homes/NoticeBlock'
+import LotteryBall from './views/LotteryBall'
+import NavButton from './views/NavButton'
+import TabButton from './views/TabButton'
 
 const LHTHomePage = ({ navigation }) => {
-
+  // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
-
   const {
     loading,
     banner,
     homeGames,
     notice,
     lotteryNumber,
-    categoryList
-  } = useGetHomeInfo(['system_banners', 'notice_latest', 'game_homeGames', 'lhcdoc_lotteryNumber', 'lhcdoc_categoryList'])
-  const {loginOut} = useLoginOut(PageName.LHTHomePage)
+    categoryList,
+  } = useGetHomeInfo([
+    'system_banners',
+    'notice_latest',
+    'game_homeGames',
+    'lhcdoc_lotteryNumber',
+    'lhcdoc_categoryList',
+  ])
+  const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      // console.log('-----成為焦點-----')
       updateUserInfo()
-    });
-    return unsubscribe;
-  }, []);
+    })
+    return unsubscribe
+  }, [])
 
-  const banners = banner?.data?.list
+  // data handle
+  const banners = banner?.data?.list ?? defaultBanners
   const populars = categoryList?.data ?? []
-  const notices = notice?.data.scroll ?? defaultNotices
-  const headlines = notice?.data.popup ?? defaultHeadLines
+  const notices = notice?.data?.scroll ?? defaultNotices
+  const headlines = notice?.data?.popup ?? defaultHeadLines
   const tabs = homeGames?.data?.icons ?? []
-  const navs = homeGames?.data?.navs.sort((nav: any) => -nav.sort) ?? defaultNavs
-  const numbers = lotteryNumber?.numbers?.split(',') ?? []
+  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? defaultNavs
+  const numbers = lotteryNumber?.numbers?.split(',')?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []
-  let lotterys: any[] = numbers.map((number, index) => ({
+  let lotterys: any[] = numbers?.map((number, index) => ({
     number,
     color: numColors[index],
-    sx: numSxs[index]
+    sx: numSxs[index],
   }))
 
   lotterys = [
     ...lotterys.slice(0, 6),
     {
-      showMore: true
+      showMore: true,
     },
-    ...lotterys.slice(6)
+    ...lotterys.slice(6),
   ]
   const lotteryDate = lotteryNumber?.issue
 
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
     // console.log("------userCenterType------", userCenterType)
-    PushHelper.pushUserCenterType(userCenterType);
+    PushHelper.pushUserCenterType(userCenterType)
   }
 
-  const gotoCategory = (category: string | number, position: string | number) => {
+  const gotoCategory = (
+    category: string | number,
+    position: string | number
+  ) => {
     // console.log("-----category-----", category)
     // console.log("-----position-----", position)
     PushHelper.pushCategory(category, position)
@@ -119,104 +131,148 @@ const LHTHomePage = ({ navigation }) => {
       {loading ? (
         <UGProgressCircle />
       ) : (
-          <>
-            <Header
-              avatar={avatar}
-              name={usr}
-              showLogout={uid ? true : false}
-              leftLogo={defaultHomeHeaderLeftLogo}
-              rightLogo={defaultHomeHeaderRightLogo}
-              onPressSignOut={loginOut}
-              onPressSignIn={PushHelper.pushLogin}
-              onPressSignUp={PushHelper.pushRegister}
+        <>
+          <Header
+            avatar={avatar}
+            name={usr}
+            showLogout={uid ? true : false}
+            leftLogo={defaultHomeHeaderLeftLogo}
+            rightLogo={defaultHomeHeaderRightLogo}
+            onPressSignOut={loginOut}
+            onPressSignIn={PushHelper.pushLogin}
+            onPressSignUp={PushHelper.pushRegister}
+          />
+          <ScrollView
+            style={[styles.container]}
+            scrollEnabled={true}
+            refreshControl={<RefreshControl refreshing={false} />}
+          >
+            <BannerBlock
+              banners={banners}
+              renderBanner={(item, index) => {
+                const { linkCategory, linkPosition, pic } = item
+                return (
+                  <Banner
+                    key={index}
+                    pic={pic}
+                    onPress={() => {
+                      gotoCategory(linkCategory, linkPosition)
+                    }}
+                  />
+                )
+              }}
             />
-            <ScrollView style={[styles.container]} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
-              <BannerBlock
-                banners={banners}
-                renderBanner={(item, index) => {
-                  const { linkCategory, linkPosition, pic } = item
-                  return <Banner key={index} pic={pic} onPress={() => {
-                    gotoCategory(linkCategory, linkPosition)
-                  }} />
+            <View style={styles.contentContainer}>
+              <NoticeBlock
+                containerStyle={styles.subComponent}
+                notices={notices}
+                logo={defaultNoticeLogo}
+                onPressNotice={({ value }) => goToNotice(value)}
+              />
+              <NavBlock
+                containerStyle={styles.subComponent}
+                navs={navs}
+                lotterys={lotterys}
+                date={lotteryDate}
+                advertisement={defaultAdvertisement}
+                markSixLogo={defaultMarkSixLogo}
+                customerServiceLogo={defaultCustomerServiceLogo}
+                onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
+                onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
+                onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                onPressSmileLogo={() =>
+                  gotoUserCenter(UGUserCenterType.在线客服)
+                }
+                renderNav={(item, index) => {
+                  const { icon, name, logo } = item
+                  return (
+                    <NavButton
+                      key={index}
+                      logo={icon ? icon : logo}
+                      title={name}
+                      nav={item}
+                      onPress={() => gotoHomeGame(item)}
+                    />
+                  )
+                }}
+                renderLottery={(item, index) => {
+                  const { number, color, sx } = item
+                  return (
+                    <LotteryBall
+                      key={index}
+                      score={number}
+                      color={color}
+                      text={sx}
+                      showMore={index == 6}
+                      onPress={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                    />
+                  )
                 }}
               />
-              <View style={styles.contentContainer}>
-                <NoticeBlock
-                  containerStyle={styles.subComponent}
-                  notices={notices}
-                  logo={defaultNoticeLogo}
-                  onPressNotice={({ value }) => goToNotice(value)}
-                />
-                <NavBlock
-                  containerStyle={styles.subComponent}
-                  navs={navs}
-                  lotterys={lotterys}
-                  date={lotteryDate}
-                  advertisement={defaultAdvertisement}
-                  markSixLogo={defaultMarkSixLogo}
-                  customerServiceLogo={defaultCustomerServiceLogo}
-                  onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
-                  onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
-                  onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
-                  onPressSmileLogo={() => gotoUserCenter(UGUserCenterType.在线客服)}
-                  renderNav={(item, index) => {
-                    const { icon, name, logo } = item;
-                    return (
-                      <NavButton key={index} logo={icon ? icon : logo} title={name} nav={item} onPress={() => gotoHomeGame(item)} />
-                    );
-                  }}
-                  renderLottery={(item, index) => {
-                    const { number, color, sx } = item;
-                    return <LotteryBall key={index} score={number} color={color} text={sx} showMore={index == 6} onPress={() => gotoUserCenter(UGUserCenterType.六合彩)} />;
-                  }}
-                />
-                <HeadlineBlock
-                  containerStyle={styles.subComponent}
-                  headlines={headlines}
-                  headLineLogo={defaultHeadLineLogo}
-                  onPressHeadline={({ value }) => goToNotice(value)}
-                />
-                <TabComponent
-                  containerStyle={styles.subComponent}
-                  mainTabs={defaultMainTabs}
-                  leftTabs={populars}
-                  rightTabs={tabs}
-                  renderLeftTab={(item, index) => {
-                    // console.log('--------tab------', item);
-                    const { name, icon } = item;
-                    return <TabButton key={index} logo={icon} mainTitle={name} onPress={() => {
-                      // console.log("-----不知道要跳到哪----", item)
-                    }} />;
-                  }}
-                  renderRightTab={(item, index) => {
-                    // console.log('--------tab------', item);
-                    const { logo, icon, title } = item;
-                    return <TabButton key={index} logo={logo ? logo : icon} mainTitle={title} onPress={() => gotoHomeGame(item)}
-                    />;
-                  }}
-                />
-                <BottomToolBlock
-                  tools={defaultBottomTools}
-                  renderBottomTool={(item, index) => {
-                    const { logo, userCenterType } = item;
-                    return (
-                      <BottomTool key={index} logo={logo} onPress={() => {
+              <HeadlineBlock
+                containerStyle={styles.subComponent}
+                headlines={headlines}
+                headLineLogo={defaultHeadLineLogo}
+                onPressHeadline={({ value }) => goToNotice(value)}
+              />
+              <TabComponent
+                containerStyle={styles.subComponent}
+                mainTabs={defaultMainTabs}
+                leftTabs={populars}
+                rightTabs={tabs}
+                renderLeftTab={(item, index) => {
+                  // console.log('--------tab------', item);
+                  const { name, icon } = item
+                  return (
+                    <TabButton
+                      key={index}
+                      logo={icon}
+                      mainTitle={name}
+                      onPress={() => {
+                        // console.log("-----不知道要跳到哪----", item)
+                      }}
+                    />
+                  )
+                }}
+                renderRightTab={(item, index) => {
+                  // console.log('--------tab------', item);
+                  const { logo, icon, title } = item
+                  return (
+                    <TabButton
+                      key={index}
+                      logo={logo ? logo : icon}
+                      mainTitle={title}
+                      onPress={() => gotoHomeGame(item)}
+                    />
+                  )
+                }}
+              />
+              <BottomToolBlock
+                tools={defaultBottomTools}
+                renderBottomTool={(item, index) => {
+                  const { logo, userCenterType } = item
+                  return (
+                    <BottomTool
+                      key={index}
+                      logo={logo}
+                      onPress={() => {
                         if (userCenterType) {
                           gotoUserCenter(userCenterType)
                         } else {
                           gotoWebView(defaultDowloadUrl)
                         }
-                      }} />
-                    );
-                  }}
-                />
-              </View>
-            </ScrollView>
-          </>
-        )}
+                      }}
+                    />
+                  )
+                }}
+              />
+            </View>
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   loadingSafeArea: {
@@ -239,6 +295,6 @@ const styles = StyleSheet.create({
   subComponent: {
     marginBottom: scale(10),
   },
-});
+})
 
-export default LHTHomePage;
+export default LHTHomePage
