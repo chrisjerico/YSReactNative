@@ -61,9 +61,8 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
 const UGApplication = () => {
   return (
     <Provider store={UGStore.store}>
-      <NavigationContainer onStateChange={() => {
-        updateUserInfo()
-      }} ref={navigationRef}>
+      <NavigationContainer
+        ref={navigationRef}>
         <Router.StackNavigator headerMode="screen">
           <Router.StackScreen name="Tabbar" component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />

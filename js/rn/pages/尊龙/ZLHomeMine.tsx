@@ -1,4 +1,4 @@
-import { View, useWindowDimensions, TouchableOpacity, Text, ScrollView, FlatList } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, FlatList } from "react-native"
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { useSelector, useDispatch } from "react-redux"
@@ -18,9 +18,10 @@ import useMemberItems from "../../public/hooks/useMemberItems"
 import useLoginOut from "../../public/hooks/useLoginOut"
 import { useFocusEffect } from "@react-navigation/native"
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
+import { useDimensions } from "@react-native-community/hooks"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { width } = useWindowDimensions()
+    const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance } = userStore
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
@@ -149,7 +150,7 @@ const ZLHomeMine = ({ navigation }) => {
     </View>
 }
 const ZLHeader = () => {
-    const { width, height } = useWindowDimensions()
+    const { width, height } = useDimensions().window
     const insets = useSafeArea();
 
     return (
