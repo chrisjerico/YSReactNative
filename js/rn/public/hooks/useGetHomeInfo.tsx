@@ -59,7 +59,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                   const element: APIListType = coustomArray[key]
                   switch (element) {
                     case 'game_homeGames':
-                      console.log(res[key].data)
+                      console.log('----------game_homeGames--------',res[key].data)
                       setHomeGames(res[key].data)
                       break
                     case 'system_banners':

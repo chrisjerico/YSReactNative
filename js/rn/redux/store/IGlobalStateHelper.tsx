@@ -72,8 +72,6 @@ export async function updateUserInfo() {
     return
   try {
     const { data, status } = await APIRouter.user_info()
-    console.log('-----------------updateUserInfo-----------------', data)
-
     if (data.data == null)
       throw { message: data.msg }
     if (data?.data) {

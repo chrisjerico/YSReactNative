@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
@@ -25,15 +25,13 @@ import {
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
   defaultHeadLineLogo,
-  defaultHomeHeaderLeftLogo,
+  defaultHeadLines, defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultMainTabs,
   defaultMarkSixLogo,
+  defaultNavs, 
   defaultNoticeLogo,
-  defaultNavs,
-  defaultBanners,
-  defaultNotices,
-  defaultHeadLines,
+  defaultNotices
 } from './helpers/config'
 import { scale } from './helpers/function'
 import Banner from './views/Banner'
@@ -61,12 +59,14 @@ const LHTHomePage = ({ navigation }) => {
     notice,
     lotteryNumber,
     categoryList,
+    onlineNum
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'lhcdoc_lotteryNumber',
     'lhcdoc_categoryList',
+    'system_onlineCount'
   ])
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
@@ -77,7 +77,7 @@ const LHTHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
-  const banners = banner?.data?.list ?? defaultBanners
+  const banners = banner?.data?.list ?? []
   const populars = categoryList?.data ?? []
   const notices = notice?.data?.scroll ?? defaultNotices
   const headlines = notice?.data?.popup ?? defaultHeadLines
@@ -151,6 +151,7 @@ const LHTHomePage = ({ navigation }) => {
             refreshControl={<RefreshControl refreshing={false} />}
           >
             <BannerBlock
+              onlineNum={onlineNum}
               banners={banners}
               renderBanner={(item, index) => {
                 const { linkCategory, linkPosition, pic } = item
