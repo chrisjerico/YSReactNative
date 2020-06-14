@@ -37,11 +37,6 @@ const ZLHomeMine = ({ navigation }) => {
 
         }
     }
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            IGlobalStateHelper.updateUserInfo()
-        })
-    }, [])
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
@@ -74,18 +69,24 @@ const ZLHomeMine = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row' }} >
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 21 }}> 存款</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
                         <Text style={{ color: 'white', fontSize: 21 }}> 额度转换</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 21 }}> 取款</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </LinearGradient>
             <LinearGradient colors={colorEnum.gradientColor} style={{ paddingVertical: 20, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, paddingHorizontal: 10, paddingTop: 20 }}>
@@ -111,7 +112,7 @@ const ZLHomeMine = ({ navigation }) => {
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={{ textAlign: 'right', marginRight: 20, color: 'white' }}>距离下一级还差{(parseInt(userStore.nextLevelInt) - parseInt(userStore.curLevelInt)).toFixed(2)}分</Text>
                         <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            <View style={{ height: "100%", flex: parseInt(userStore.curLevelInt) / parseInt(userStore.nextLevelInt) }}></View>
+                            <View style={{ height: "100%", width: userStore?.curLevelInt && userStore?.nextLevelInt ? width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt)) : 0 }}></View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>

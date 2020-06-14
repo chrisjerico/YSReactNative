@@ -1,4 +1,4 @@
-import { IGlobalStateHelper } from './../../../redux/store/IGlobalStateHelper';
+import { IGlobalStateHelper, updateUserInfo } from './../../../redux/store/IGlobalStateHelper';
 import { UGBridge } from '../ANHelper/UGBridge';
 import AppDefine from '../AppDefine';
 import { OCCall } from './OCBridge/OCCall';
@@ -30,8 +30,9 @@ export class OCHelper extends OCEvent {
     // 设置接口域名
     await OCHelper.call('AppDefine.shared.Host').then((host: string) => {
       AppDefine.host = host;
-      // debugger
-      // httpClient.defaults.baseURL = host
+      httpClient.defaults.baseURL = host
+      updateUserInfo()
+
     });
     // 设置站点编号
     await OCHelper.call('AppDefine.shared.SiteId').then((siteId: string) => {

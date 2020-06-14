@@ -12,6 +12,9 @@ import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import APIRouter from '../../public/network/APIRouter';
 import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
+import UGUserModel from '../../redux/model/全局/UGUserModel';
+import { UGStore } from '../../redux/store/UGStore';
+import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
 const ZLLoginPage = () => {
     const { control, errors, triggerValidation, handleSubmit } = useForm()
@@ -42,6 +45,28 @@ const ZLLoginPage = () => {
             return
         }
     }, [errors])
+    const testPlay = async () => {
+        try {
+            const { data, status } = await APIRouter.user_guestLogin()
+            if (Platform.OS == 'ios') {
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+                //@ts-ignore
+                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: data?.data });
+                UGStore.save();
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        pop();
+
+
+    }
     const { loginSuccessHandle } = useLoginIn()
     const onSubmit = async ({ account, pwd }) => {
         const simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
@@ -168,18 +193,7 @@ const ZLLoginPage = () => {
                         <Text style={{ color: "white", fontSize: 20 }}>登录</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => {
-                    pop();
-
-                    if (Platform.OS == 'ios') {
-                        OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-                        OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-                        setTimeout(() => {
-                            IGlobalStateHelper.updateUserInfo()
-                        }, 100);
-                    }
-
-                }}>
+                <TouchableWithoutFeedback onPress={testPlay}>
                     <View style={{
                         flex: 1,
                         height: 50, backgroundColor: "#a09e9d",

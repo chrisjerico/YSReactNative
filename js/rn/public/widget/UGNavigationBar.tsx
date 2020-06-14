@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
-import {Header, HeaderProps, Button} from 'react-native-elements';
+import React, { Component } from 'react';
+import { Header, HeaderProps, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import {mergeProps} from '../tools/FUtils';
-import {View, ViewProps} from 'react-native';
-import {Navigation} from '../navigation/Navigation';
-import {OCHelper} from '../define/OCHelper/OCHelper';
+import { mergeProps } from '../tools/FUtils';
+import { View, ViewProps } from 'react-native';
+import { Navigation } from '../navigation/Navigation';
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { pop } from '../navigation/RootNavigation';
 
 export interface UGNavigationBarProps extends HeaderProps {
   hidden?: boolean; // 隐藏导航条
@@ -25,13 +26,14 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
   };
 
   // 返回按钮
-  BackButton({style}: ViewProps) {
+  BackButton({ style }: ViewProps) {
     return (
       <Button
-        icon={{name: 'ios-arrow-back', type: 'ionicon', color: 'white'}}
-        buttonStyle={[{backgroundColor: 'transparent', marginLeft: -8}, style]}
+        icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
+        buttonStyle={[{ backgroundColor: 'transparent', marginLeft: -8 }, style]}
         onPress={() => {
           Navigation.pop();
+          pop()
           OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
         }}
       />
@@ -43,23 +45,23 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
 
     // 标题
     if (props.title) {
-      Object.assign(props, {centerComponent: {text: props.title, style: {color: 'white', fontSize: 18}}});
+      Object.assign(props, { centerComponent: { text: props.title, style: { color: 'white', fontSize: 18 } } });
     }
     // 左侧按钮
     props.leftComponent = (
-      <View style={{flexDirection: 'row'}}>
-        <this.BackButton style={{height: this.props.back ? 40 : 0}} />
+      <View style={{ flexDirection: 'row' }}>
+        <this.BackButton style={{ height: this.props.back ? 40 : 0 }} />
         {this.props.leftComponent}
       </View>
     );
     // 隐藏下划线
     if (props.hideUnderline) {
-      props = mergeProps(props, {containerStyle: {borderBottomWidth: 0}});
+      props = mergeProps(props, { containerStyle: { borderBottomWidth: 0 } });
     }
 
     // 渐变色
     if (props.gradientColor) {
-      props = mergeProps(props, {ViewComponent: LinearGradient, linearGradientProps: {colors: props.gradientColor, start: {x: 0, y: 1}, end: {x: 1, y: 1}}});
+      props = mergeProps(props, { ViewComponent: LinearGradient, linearGradientProps: { colors: props.gradientColor, start: { x: 0, y: 1 }, end: { x: 1, y: 1 } } });
     }
     return <Header {...props} />;
   }
