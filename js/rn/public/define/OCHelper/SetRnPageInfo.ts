@@ -57,50 +57,51 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  // 香槟金模板页面
-  // if (Skin1.skitType.indexOf('经典1') != -1) {
-  //   pages = pages.concat([
-  //     {
-  //       // 首页
-  //       tabbarItemPath: '/home',
-  //       rnName: PageName.ZLHomePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 登录
-  //       vcName: 'UGLoginViewController',
-  //       rnName: PageName.ZLLoginPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 注册
-  //       vcName: 'UGRegisterViewController',
-  //       rnName: PageName.XBJRegisterPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 我的页
-  //       tabbarItemPath: '/user',
-  //       rnName: PageName.ZLMinePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: false,
-  //     },
-  //   ]);
-  // }
-
-  if (Skin1.skitType.indexOf('经典1') != -1) {
+  // 測試開發
+  if (true) {
     pages = pages.concat([
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.BZHHomePage,
+        rnName: PageName.LHTHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LHTMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+    ]);
+  }
+
+  // 尊龙模板页面
+  if (Skin1.skitType.indexOf('尊龙') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.ZLHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.ZLLoginPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.ZLRegisterPage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
@@ -116,26 +117,26 @@ export function setRnPageInfo() {
     ]);
   }
 
-  // if (Skin1.skitType.indexOf('六合厅') != -1) {
-  //   pages = pages.concat([
-  //     {
-  //       // 首页
-  //       tabbarItemPath: '/home',
-  //       rnName: PageName.LHTHomePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 我的页
-  //       tabbarItemPath: '/user',
-  //       rnName: PageName.LHTMinePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //   ]);
-  // }
+  if (Skin1.skitType.indexOf('六合厅') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LHTHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LHTMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+    ]);
+  }
 
   // 综合体育页面
 

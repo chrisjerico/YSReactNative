@@ -127,7 +127,7 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.额度转换: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGBalanceConversionController'] }, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['LineConversionHeaderVC'] }, true]);
         break;
       }
       case UGUserCenterType.站内信: {

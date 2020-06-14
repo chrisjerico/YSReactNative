@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
-import {ReactNode} from 'react';
-import {BackHandler, SafeAreaView, StyleSheet, Text, View, Platform} from 'react-native';
+import React, { Component } from 'react';
+import { ReactNode } from 'react';
+import { BackHandler, SafeAreaView, StyleSheet, Text, View, Platform } from 'react-native';
 
-import {Button} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle';
-import {checkTrue} from '../../public/tools/Ext';
+import { checkTrue } from '../../public/tools/Ext';
 import LinearGradient from 'react-native-linear-gradient';
-import {UGBasePageProps, UGLoadingType} from './UGBasePageProps';
-import {Skin1} from '../../public/theme/UGSkinManagers';
-import {UGStore} from '../../redux/store/UGStore';
-import {Navigation} from '../../public/navigation/Navigation';
+import { UGBasePageProps, UGLoadingType } from './UGBasePageProps';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
+import { UGStore } from '../../redux/store/UGStore';
+import { Navigation } from '../../public/navigation/Navigation';
 import UGNavigationBar from '../../public/widget/UGNavigationBar';
-import {mergeProps} from '../../public/tools/FUtils';
-import {OCHelper} from '../../public/define/OCHelper/OCHelper';
-import {ANHelper, NativeCommand} from '../../public/define/ANHelper/ANHelper';
+import { mergeProps } from '../../public/tools/FUtils';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
+import { ANHelper, NativeCommand } from '../../public/define/ANHelper/ANHelper';
 import FastImage from 'react-native-fast-image';
 
 /**
@@ -28,7 +28,7 @@ import FastImage from 'react-native-fast-image';
 export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageProps, S = {}> extends Component<P, S> {
   // 更新Props（给子类调用）
   setProps(props: P | UGBasePageProps) {
-    UGStore.dispatch({type: this.props.actType, props: props});
+    UGStore.dispatch({ type: this.props.actType, props: props });
   }
 
   /**
@@ -51,15 +51,15 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
 
     // 配置导航
     {
-      const {navigation, navbarOpstions = {}, tabbarOpetions = {}, route} = this.props;
+      const { navigation, navbarOpstions = {}, tabbarOpetions = {}, route } = this.props;
       navigation.removeListener('focus', null);
       navigation.addListener('focus', () => {
-        const {name, params} = this.props.route;
+        const { name, params } = this.props.route;
         console.log('成为焦点', name, params);
         this.didFocus && this.didFocus(params);
         this.setProps(params);
       });
-      navigation.setOptions({header: null});
+      navigation.setOptions({ header: null });
       if (navigation.push && navigation.jumpTo) {
         Navigation.setNavigation(navigation);
       }
@@ -105,7 +105,7 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
     }
 
     Navigation.pop();
-
+    debugger
     if (Platform.OS == 'ios') {
       OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
     } else {
@@ -116,7 +116,7 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
   /**
    * 默认点击右键
    */
-  clickRightFunc = () => {};
+  clickRightFunc = () => { };
 
   /**
    * 绘制进度条
@@ -163,12 +163,12 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
    * 绘制顶部 header
    */
   renderHeader(): ReactNode {
-    let {navbarOpstions = {}} = this.props;
+    let { navbarOpstions = {} } = this.props;
     if (navbarOpstions.hidden) {
       return null;
     }
     if (!navbarOpstions.backgroundColor) {
-      navbarOpstions = mergeProps({gradientColor: Skin1.navBarBgColor}, navbarOpstions);
+      navbarOpstions = mergeProps({ gradientColor: Skin1.navBarBgColor }, navbarOpstions);
     }
     return <UGNavigationBar {...navbarOpstions} />;
   }
@@ -196,17 +196,17 @@ export default abstract class UGBasePage<P extends UGBasePageProps = UGBasePageP
    */
   render(): ReactNode {
     console.log('渲染', this.props.route.name);
-    let {backgroundColor = [], backgroundImage = ''} = this.props;
+    let { backgroundColor = [], backgroundImage = '' } = this.props;
     if (backgroundColor.length < 1) {
       backgroundColor = ['#fff', '#fff'];
     } else if (backgroundColor.length < 2) {
       backgroundColor.push(backgroundColor[0]);
     }
     return (
-      <LinearGradient colors={backgroundColor} start={{x: 0, y: 1}} end={{x: 1, y: 1}} style={{flex: 1}}>
-        <FastImage source={{uri: backgroundImage}} style={{flex: 1}}>
+      <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
+        <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }}>
           {this.renderHeader()}
-          <SafeAreaView style={{flex: 1}}>{this._renderContentOrLoading()}</SafeAreaView>
+          <SafeAreaView style={{ flex: 1 }}>{this._renderContentOrLoading()}</SafeAreaView>
         </FastImage>
       </LinearGradient>
     );

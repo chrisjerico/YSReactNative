@@ -1,12 +1,12 @@
-import axios, {AxiosRequestConfig} from 'axios';
-import {Platform} from 'react-native';
-import {ActionType} from '../../redux/store/ActionTypes';
-import {IGlobalStateHelper} from '../../redux/store/IGlobalStateHelper';
-import {UGStore} from '../../redux/store/UGStore';
-import {ANHelper, NativeCommand} from '../define/ANHelper/ANHelper';
+import axios, { AxiosRequestConfig } from 'axios';
+import { Platform } from 'react-native';
+import { ActionType } from '../../redux/store/ActionTypes';
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
+import { UGStore } from '../../redux/store/UGStore';
+import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
-import {OCHelper} from '../define/OCHelper/OCHelper';
-import {Toast} from '../tools/ToastUtils';
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { Toast } from '../tools/ToastUtils';
 interface Dictionary {
   [x: string]: any;
 }
@@ -14,9 +14,9 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
   isEncrypt?: boolean;
 }
 export const httpClient = axios.create({
-  baseURL: `${AppDefine.host}`,
-  timeout: 1000,
-  headers: {'Content-Type': 'application/json'},
+    baseURL: `${AppDefine?.host}`,
+    timeout: 1000,
+    headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {
   // 公共参数
@@ -44,20 +44,21 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
 httpClient.interceptors.response.use(
   response => {
     return response;
-  },
-  err => {
-    if (err && err.response) {
-      switch (err.response.status) {
-        case 401:
-          OCHelper.call('UGUserModel.setCurrentUser:', []).then(res => {
-            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then(res => {
-              OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(res => {
-                IGlobalStateHelper.updateUserInfo();
-                UGStore.dispatch({type: ActionType.Clear_User});
-                Toast('帐号已被登出');
-              });
-            });
-          });
+},
+    err => {
+        if (err && err.response) {
+            switch (err.response.status) {
+                case 401:
+                    OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
+                        OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
+                            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
+                                updateUserInfo()
+                                UGStore.dispatch({ type: ActionType.Clear_User })
+                                Toast('帐号已被登出');
+                            })
+                        })
+                    })
+
 
           break;
         case 500:

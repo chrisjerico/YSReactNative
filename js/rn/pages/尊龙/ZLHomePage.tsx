@@ -1,7 +1,7 @@
 import { View, useWindowDimensions, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
-import FastImage from "react-native-fast-image"
+import FastImage, { FastImageProperties } from "react-native-fast-image"
 import { colorEnum, } from "./enum/colorEnum"
 import LinearGradient from "react-native-linear-gradient"
 import PushHelper from "../../public/define/PushHelper"
@@ -25,6 +25,9 @@ import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
+import AppDefine from "../../public/define/AppDefine"
+import { RedBagDetailActivityModel } from "../../public/network/Model/RedBagDetailActivityModel"
+import { FloatADModel } from "../../public/network/Model/FloatADModel"
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useWindowDimensions()
     const [homeGames, setHomeGames] = useState<HomeGamesModel>()
@@ -39,22 +42,29 @@ const ZLHomePage = ({ navigation }) => {
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
     const [onlineNum, setOnlineNum] = useState(0)
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            IGlobalStateHelper.updateUserInfo()
-        })
-    }, [])
+    const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
+    const [redBagVisiable, setRedBagVisiable] = useState(false)
+    const [floatAds, setFloatAds] = useState<FloatADModel>()
     const init = async () => {
-        IGlobalStateHelper.updateUserInfo()
         await OCHelper.call('AppDefine.shared.Host').then((host: string) => {
             httpClient.defaults.baseURL = host
 
-            Axios.all([APIRouter.game_homeGames(), APIRouter.system_banners(), APIRouter.notice_latest(), APIRouter.system_promotions(), APIRouter.system_rankingList(), APIRouter.system_onlineCount()])
+            Axios.all([APIRouter.game_homeGames(),
+            APIRouter.system_banners(),
+            APIRouter.notice_latest(),
+            APIRouter.system_promotions(),
+            APIRouter.system_rankingList(),
+            APIRouter.system_onlineCount(),
+            APIRouter.activity_redBagDetail(),
+            APIRouter.system_floatAds()])
                 .then(Axios.spread((...res) => {
                     setHomeGames(res[0].data)
                     setBanner(res[1].data)
                     setCouponListData(res[3].data)
                     setRankList(res[4].data)
+                    setRedBag(res[6].data)
+                    debugger
+                    setFloatAds(res[7].data)
                     let noticeString = ""
                     const noticeData = res[2].data.data.scroll.map((res) => {
                         noticeString += res.content
@@ -237,10 +247,10 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
                 <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
-                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, 'popup')}>
+                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10 }}>{item.title}</Text>
-                            <FastImage resizeMode={"contain"} style={{ width: width - 40, aspectRatio: 3, marginBottom: 10 }} source={{ uri: item.pic }} />
+                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
+                            <FastImageAutoHeight resizeMode={"contain"} style={{ width: width - 40, marginBottom: 10 }} source={{ uri: item.pic }} />
                         </View>
                     </TouchableWithoutFeedback>
                 }} />
@@ -249,7 +259,7 @@ const ZLHomePage = ({ navigation }) => {
                     <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
                     <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
                 </View>
-                <View >
+                {systemStore.rankingListSwitch == 0 ? null : <View >
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white' }}>用户名称</Text>
@@ -263,7 +273,7 @@ const ZLHomePage = ({ navigation }) => {
                     </View>
                     <FlatList keyExtractor={(item, index) => {
                         return item.username + index
-                    }} style={{ marginTop: 20 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
+                    }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
                         return <View style={{ flexDirection: 'row', }}>
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ color: 'white' }}>{item.username}</Text>
@@ -276,7 +286,8 @@ const ZLHomePage = ({ navigation }) => {
                             </View>
                         </View>
                     }} />
-                </View>
+                </View>}
+
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text onPress={() => {
                         console.log(httpClient.defaults.baseURL + '/index2.php')
@@ -297,12 +308,14 @@ const ZLHeader = () => {
     const insets = useSafeArea();
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { uid = "" } = userStore
+    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const { mobile_logo = "" } = sysStore
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center'
         }}>
-            <FastImage style={{ width: 210, height: 58 }} source={{ uri: "https://cdn01.njhthb.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928" }} />
+            <FastImage resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
                 {
                     uid != "" ? <TouchableOpacity onPress={() => {
@@ -478,6 +491,15 @@ const AcctountDetail = () => {
         return null
     }
 
+}
+const FastImageAutoHeight = (props: FastImageProperties) => {
+    const [picHeight, setPicHeight] = useState(100)
+    const { cardMargin, marginHorizontal } = usePopUpView()
+    return (
+        <FastImage {...props} style={[props.style, { height: picHeight }]} onLoad={(e) => {
+            setPicHeight(((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
+        }} />
+    )
 }
 const styles = StyleSheet.create({
     buttonContainer: {

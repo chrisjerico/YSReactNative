@@ -10,10 +10,11 @@ import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
 import { useSelector } from "react-redux"
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
-import { IGlobalState } from "../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import WebView from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
+import { ActionType } from "../../redux/store/ActionTypes"
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -56,12 +57,22 @@ const ZLRegisterPage = () => {
             const password = requestData?.pwd?.md5()
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
+            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
-            if (data.data == null)
+            if (data?.data == null)
                 throw { message: data.msg }
-            IGlobalStateHelper.updateUserInfo()
-            popToRoot();
+            if (data?.data.autoLogin) {
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+                const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
+                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: loginData?.data });
+                UGStore.save();
+                popToRoot();
+            }
+            if (data?.data.autoLogin == false) {
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+            }
         } catch (error) {
             reRenderCode()
             console.log(error.message)

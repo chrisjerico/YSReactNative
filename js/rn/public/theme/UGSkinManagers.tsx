@@ -1,26 +1,28 @@
-import {UGThemeColor} from './UGThemeColor';
-import {XBJThemeColor} from './colors/XBJThemeColor';
-import {JDThemeColor} from './colors/JDThemeColor';
-import {JYThemeColor} from './colors/JYThemeColor';
-import {LHThemeColor} from './colors/LHThemeColor';
-import {XNHThemeColor} from './colors/XNHThemeColor';
-import {OtherThemeColor} from './colors/OtherThemeColor';
+import { UGThemeColor } from './UGThemeColor';
+import { XBJThemeColor } from './colors/XBJThemeColor';
+import { JDThemeColor } from './colors/JDThemeColor';
+import { JYThemeColor } from './colors/JYThemeColor';
+import { LHThemeColor } from './colors/LHThemeColor';
+import { XNHThemeColor } from './colors/XNHThemeColor';
+import { OtherThemeColor } from './colors/OtherThemeColor';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import chroma from 'chroma-js';
 import FUtils from '../tools/FUtils';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
 import { B_DEBUG } from '../tools/UgLog';
+import { ZLThemeColor } from './colors/ZLThemeColor';
 
 export default class UGSkinManagers extends UGThemeColor {
-  static allThemeColor: {[x: string]: UGThemeColor} = {
+  static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
     ...JYThemeColor, // 简约
     ...LHThemeColor, // 六合
     ...XBJThemeColor, // 香槟金
     ...XNHThemeColor, // 新年红
+    ...ZLThemeColor,//尊龙
     ...OtherThemeColor, // 其他
   };
 
@@ -44,14 +46,14 @@ export default class UGSkinManagers extends UGThemeColor {
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
       14: `六合厅${mobileTemplateStyle}`,
-      16: `尊龙${mobileTemplateStyle}`,
+      16: `尊龙`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
       // key = '综合体育';
     }
-    let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
+    let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
     theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
@@ -72,7 +74,7 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1;
     if (Platform.OS != 'ios') return;
-    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1) return;
+    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1 && skin.skitType.indexOf('尊龙') == -1) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);
     for (const k in skin) {
@@ -98,8 +100,8 @@ export default class UGSkinManagers extends UGThemeColor {
                   args1: [
                     NSValue.CGRectMake(0, 0, AppDefine.width, AppDefine.height),
                     [
-                      {selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c1], args2: [a1]},
-                      {selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c2], args2: [a2]},
+                      { selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c1], args2: [a1] },
+                      { selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c2], args2: [a2] },
                     ],
                     1,
                   ],
@@ -114,7 +116,7 @@ export default class UGSkinManagers extends UGThemeColor {
             .hex()
             .slice(0, 7);
           const a = chroma(v).alpha();
-          await OCHelper.call('UGSkinManagers.currentSkin.setValue:forKey:', [{selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c], args2: [a]}, key]);
+          await OCHelper.call('UGSkinManagers.currentSkin.setValue:forKey:', [{ selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:', args1: [c], args2: [a] }, key]);
         }
       }
     }
