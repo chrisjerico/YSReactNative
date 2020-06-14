@@ -9,7 +9,7 @@ import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { ActionType } from '../../redux/store/ActionTypes';
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
+import { updateUserInfo, IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
 import { IGlobalState, UGStore } from '../../redux/store/UGStore';
 import TabComponent from './components/TabComponent';
 import {
@@ -42,11 +42,13 @@ import NavButton from './views/NavButton';
 import TabButton from './views/TabButton';
 
 const LHTHomePage = ({ navigation }) => {
+
   const [loading, setLoading] = useState<boolean>(true);
   const [response, setResponse] = useState<any>(null);
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
-  console.log("------uid-----", uid)
+  console.log("------LHTHomePage uid-----", uid)
+
   useEffect(() => {
     Promise.all([
       APIRouter.system_banners(),
@@ -68,11 +70,11 @@ const LHTHomePage = ({ navigation }) => {
     })
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('-----成為焦點-----')
-      IGlobalStateHelper.updateUserInfo()
+      updateUserInfo()
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   const populars = response?.popular ?? []
   const banners: [] = response?.banner?.list ?? defaultBanners

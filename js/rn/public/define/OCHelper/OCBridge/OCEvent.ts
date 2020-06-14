@@ -1,4 +1,4 @@
-import {IGlobalStateHelper} from './../../../../redux/store/IGlobalStateHelper';
+import {IGlobalStateHelper, updateUserInfo} from './../../../../redux/store/IGlobalStateHelper';
 import {OCCall} from './OCCall';
 import {PageName, Navigation} from '../../../navigation/Navigation';
 import {RnPageModel} from '../SetRnPageInfo';

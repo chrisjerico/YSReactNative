@@ -67,10 +67,13 @@ export function SysConfReducer(prevState: UGSysConfModel | any = {}, act: UGActi
 }
 
 export async function updateUserInfo() {
+
   if (httpClient.defaults.baseURL == "undefined" || !httpClient.defaults.baseURL)
     return
   try {
     const { data, status } = await APIRouter.user_info()
+    console.log('-----------------updateUserInfo-----------------', data)
+
     if (data.data == null)
       throw { message: data.msg }
     if (data?.data) {
@@ -80,11 +83,12 @@ export async function updateUserInfo() {
 
 
   } catch (error) {
+
     console.log(error)
-    await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-    UGStore.dispatch({ type: ActionType.Clear_User }),
-      UGStore.save();
+    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
+    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    // UGStore.dispatch({ type: ActionType.Clear_User });
+    // UGStore.save();
   }
 }
