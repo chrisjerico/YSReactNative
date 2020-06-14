@@ -1,15 +1,15 @@
 import CodePush from 'react-native-code-push';
 import React from 'react';
-import {View, Text, Platform} from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
 import UGBasePage from '../base/UGBasePage';
-import {UpdateVersionStateToProps, UpdateVersionProps} from './UpdateVersionProps';
-import {connect} from 'react-redux';
-import {OCHelper} from '../../public/define/OCHelper/OCHelper';
-import {OCEventType} from '../../public/define/OCHelper/OCBridge/OCEvent';
-import {Navigation, PageName} from '../../public/navigation/Navigation';
+import { UpdateVersionStateToProps, UpdateVersionProps } from './UpdateVersionProps';
+import { connect } from 'react-redux';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
+import { OCEventType } from '../../public/define/OCHelper/OCBridge/OCEvent';
+import { Navigation, PageName } from '../../public/navigation/Navigation';
 
 class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
   rnInstalled: boolean = false;
@@ -22,7 +22,7 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
       OCHelper.launchFinish();
       OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
         if (pics && pics.length) {
-          this.setProps({backgroundImage: pics[0]});
+          this.setProps({ backgroundImage: pics[0] });
         }
       });
     } else {
@@ -30,9 +30,9 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
     }
   }
 
-  requestData(): void {}
+  requestData(): void { }
 
-  didFocus() {}
+  didFocus() { }
 
   updateJspatch() {
     if (!this.props.tabbarOpetions.unmountOnBlur) {
@@ -40,7 +40,7 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
     }
     if (Platform.OS != 'ios') return;
 
-    this.setProps({progress: 0});
+    this.setProps({ progress: 0 });
 
     CodePush.getUpdateMetadata(2)
       .then(localPackage => {
@@ -48,10 +48,10 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
         // 开始更新jspatch
         OCHelper.call('JSPatchHelper.updateVersion:progress:completion:', [localPackage.description]);
         OCHelper.addEvent(OCEventType.JspatchDownloadProgress, (progress: number) => {
-          this.setProps({progress: progress});
+          this.setProps({ progress: progress });
         });
         OCHelper.addEvent(OCEventType.JspatchUpdateComplete, (ret: boolean) => {
-          this.setProps({progress: 1});
+          this.setProps({ progress: 1 });
 
           // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
           OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
@@ -81,7 +81,6 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
   }
 
   componentDidMount() {
-    console.log('更新页面（rn）加载完毕');
     CodePush.sync(
       {
         deploymentKey: OCHelper.CodePushKey,
@@ -138,20 +137,21 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
       },
       progress => {
         var p = progress.receivedBytes / progress.totalBytes;
-        this.setProps({progress: p});
+        this.setProps({ progress: p });
         console.log('rn热更新包下载进度：' + p);
       },
     );
+
   }
 
   renderContent(): React.ReactNode {
-    let {progress} = this.props;
+    let { progress } = this.props;
     return (
-      <View style={{flex: 1}}>
-        <View style={{flex: 1}} />
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} />
         <LinearGradient colors={['transparent', '#00000066']}>
-          <View style={{height: 120}} />
-          <Text style={{marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500'}}>{this.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
+          <View style={{ height: 120 }} />
+          <Text style={{ marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500' }}>{this.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
           <Progress.Bar
             progress={progress}
             borderWidth={0.5}
@@ -160,7 +160,7 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
             color="white"
             height={4}
             width={AppDefine.width - 40}
-            style={{marginLeft: 20, marginTop: 10, marginBottom: 60}}
+            style={{ marginLeft: 20, marginTop: 10, marginBottom: 60 }}
           />
         </LinearGradient>
       </View>

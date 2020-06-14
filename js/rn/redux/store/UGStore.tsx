@@ -1,22 +1,22 @@
-import { applyMiddleware, combineReducers, createStore, Store } from 'redux';
+import {applyMiddleware, combineReducers, createStore, Store} from 'redux';
 import thunk from 'redux-thunk';
-import { JDPromotionListProps, JDPromotionListReducer } from '../../pages/经典/JDPromotionListProps';
-import { XBJHomeProps, XBJHomeReducer } from '../../pages/香槟金/XBJHomeProps';
-import { XBJLoginProps, XBJLoginReducer } from '../../pages/香槟金/XBJLoginProps';
-import { XBJMineProps, XBJMineReducer } from '../../pages/香槟金/XBJMineProps';
-import { XBJRegisterProps, XBJRegisterReducer } from '../../pages/香槟金/XBJRegisterProps';
+import {JDPromotionListProps, JDPromotionListReducer} from '../../pages/经典/JDPromotionListProps';
+import {XBJHomeProps, XBJHomeReducer} from '../../pages/香槟金/XBJHomeProps';
+import {XBJLoginProps, XBJLoginReducer} from '../../pages/香槟金/XBJLoginProps';
+import {XBJMineProps, XBJMineReducer} from '../../pages/香槟金/XBJMineProps';
+import {XBJRegisterProps, XBJRegisterReducer} from '../../pages/香槟金/XBJRegisterProps';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import { SysConfReducer, UserInfoReducer, AsyncStorageKey } from './IGlobalStateHelper';
-import { UGAction, ActionType } from './ActionTypes';
-import { AsyncStorage } from 'react-native';
-import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
-import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
-import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
-import { ZHTYRegisterProps, ZHTYRegisterReducer } from '../../pages/综合体育/ZHTYRegisterProps';
-import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';
-import { ZHTYMineProps, ZHTYMineReducer } from '../../pages/综合体育/ZHTYMineProps';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {SysConfReducer, UserInfoReducer, AsyncStorageKey} from './IGlobalStateHelper';
+import {UGAction, ActionType} from './ActionTypes';
+import {AsyncStorage} from 'react-native';
+import {UpdateVersionProps, UpdateVersionReducer} from '../../pages/router/UpdateVersionProps';
+import {TransitionProps, TransitionReducer} from '../../pages/base/TransitionProps';
+import {ZHTYHomeProps, ZHTYHomeReducer} from '../../pages/综合体育/ZHTYHomeProps';
+import {ZHTYRegisterProps, ZHTYRegisterReducer} from '../../pages/综合体育/ZHTYRegisterProps';
+import {ZHTYLoginProps, ZHTYLoginReducer} from '../../pages/综合体育/ZHTYLoginProps';
+import {ZHTYMineProps, ZHTYMineReducer} from '../../pages/综合体育/ZHTYMineProps';
+import {composeWithDevTools} from 'redux-devtools-extension';
 // 整个State的树结构
 export interface IGlobalState {
   // 综合体育
@@ -46,7 +46,7 @@ export interface IGlobalState {
 }
 
 // 整合项目所有reducer
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   // 综合体育
   ZHTYHomeReducer,
   ZHTYLoginReducer,
@@ -85,7 +85,7 @@ export class UGStore {
   // 从本地获取所有数据，并刷新UI
   static refreshFromLocalData() {
     AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
-      UGStore.dispatch({ type: ActionType.UpdateAll, state: JSON.parse(value) });
+      UGStore.dispatch({type: ActionType.UpdateAll, state: JSON.parse(value)});
     });
   }
 

@@ -1,30 +1,32 @@
+import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { UGStore } from '../../redux/store/UGStore';
-import { StackNavigationProp, createStackNavigator } from '@react-navigation/stack';
-import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
-import { Router } from '../../public/navigation/Router';
 import { PageName } from '../../public/navigation/Navigation';
-import UpdateVersionPage from './UpdateVersionPage';
+import { navigationRef } from '../../public/navigation/RootNavigation';
+import { Router } from '../../public/navigation/Router';
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
+import { UGStore } from '../../redux/store/UGStore';
 import TransitionPage from '../base/TransitionPage';
-import XBJLoginPage from '../香槟金/XBJLoginPage';
-import XBJRegisterPage from '../香槟金/XBJRegisterPage';
-import XBJMinePage from '../香槟金/XBJMinePage';
-import JDPromotionListPage from '../经典/JDPromotionListPage';
-import XBJHomePage from '../香槟金/XBJHomePage';
-import { NavigationContainer } from '@react-navigation/native';
-import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
-import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
-import ZHTYMinePage from '../综合体育/ZHTYMinePage';
-import ZHTYHomePage from '../综合体育/ZHTYHomePage';
+import LHTHomePage from '../六合厅/LHTHomePage';
+import LHTMinePage from '../六合厅/LHTMinePage';
+import BZHHomePage from '../宝石红/BZHHomePage';
+import BZHMinePage from '../宝石红/BZHMinePage';
+import ZLHomeMine from '../尊龙/ZLHomeMine';
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
-import AppDefine from '../../public/define/AppDefine';
-import { navigationRef } from '../../public/navigation/RootNavigation';
-import ZLHomeMine from '../尊龙/ZLHomeMine';
 import ZLRegisterPage from '../尊龙/ZLRegisterPage';
-import { IGlobalStateHelper, updateUserInfo } from '../../redux/store/IGlobalStateHelper';
-import { httpClient } from '../../public/network/httpClient';
+import JDPromotionListPage from '../经典/JDPromotionListPage';
+import ZHTYHomePage from '../综合体育/ZHTYHomePage';
+import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
+import ZHTYMinePage from '../综合体育/ZHTYMinePage';
+import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
+import XBJHomePage from '../香槟金/XBJHomePage';
+import XBJLoginPage from '../香槟金/XBJLoginPage';
+import XBJMinePage from '../香槟金/XBJMinePage';
+import XBJRegisterPage from '../香槟金/XBJRegisterPage';
+import UpdateVersionPage from './UpdateVersionPage';
 
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
@@ -34,11 +36,12 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
   };
   tabBarOptions: BottomTabBarOptions = {};
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     const { navigation } = this.props;
     navigation.setOptions({ headerStyle: { height: 0 } });
   }
+
   render() {
     return (
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
@@ -52,8 +55,13 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
         <Router.TabScreen name={PageName.ZHTYLoginPage} component={ZHTYLoginPage} />
         <Router.TabScreen name={PageName.ZHTYRegisterPage} component={ZHTYRegisterPage} />
         <Router.TabScreen name={PageName.ZHTYMinePage} component={ZHTYMinePage} />
+        <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
+        <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
+        <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
       </Router.TabNavigator>
     );
   }
@@ -71,7 +79,7 @@ const UGApplication = () => {
         </Router.StackNavigator>
       </NavigationContainer>
     </Provider>
-  )
-}
-export default UGApplication
+  );
+};
+export default UGApplication;
 // NavController
