@@ -31,7 +31,19 @@ const ZLHomePage = ({ navigation }) => {
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
     const [redBagVisiable, setRedBagVisiable] = useState(false)
-    const { banner, notice, homeGames, originalNoticeString, couponListData, rankList, redBag, floatAds, onlineNum, loading } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading } = useGetHomeInfo()
+    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+    const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
+    useEffect(() => {
+        let string = ""
+        const noticeData = notice?.data?.scroll?.map((res) => {
+            string += res.content
+            return { label: res.id, value: res.title }
+        }) ?? []
+        setnoticeFormat(noticeData)
+        setOriginalNoticeString(string)
+    }, [notice])
+
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
         const timer = setInterval(() => {
@@ -78,7 +90,7 @@ const ZLHomePage = ({ navigation }) => {
                             PushHelper.pushNoticePopUp(originalNoticeString)
                         }}
 
-                        textList={notice} />
+                        textList={noticeFormat} />
                 </View>
 
                 <AcctountDetail />

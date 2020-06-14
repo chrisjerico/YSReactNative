@@ -9,17 +9,16 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { httpClient } from '../network/httpClient'
 import Axios from 'axios'
 import APIRouter from '../network/APIRouter'
+import { NoticeModel } from '../network/Model/NoticeModel'
 type APIListType = 'game_homeGames' | 'system_banners' | 'notice_latest' | 'system_promotions' | 'system_rankingList' | 'system_onlineCount' | 'activity_redBagDetail'
     | 'system_floatAds'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     const [onlineNum, setOnlineNum] = useState(0)
     const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
-    const [redBagVisiable, setRedBagVisiable] = useState(false)
     const [floatAds, setFloatAds] = useState<FloatADModel>()
     const [homeGames, setHomeGames] = useState<HomeGamesModel>()
     const [banner, setBanner] = useState<BannerModel>()
-    const [notice, setNotice] = useState<{ label: string, value: string }[]>()
-    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+    const [notice, setNotice] = useState<NoticeModel>()
     const [couponListData, setCouponListData] = useState<CouponListModel>()
     const [rankList, setRankList] = useState<RankListModel>()
     const [loading, setLoading] = useState(true)
@@ -52,14 +51,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                                         setBanner(res[key].data)
                                         break
                                     case 'notice_latest':
-                                        debugger
-                                        let noticeString = ""
-                                        const noticeData = res[key].data.data.scroll.map((res) => {
-                                            noticeString += res.content
-                                            return { label: res.id, value: res.title }
-                                        })
-                                        setOriginalNoticeString(noticeString)
-                                        setNotice(noticeData)
+
+                                        setNotice(res[key].data)
                                         break
                                     case 'system_promotions':
                                         setCouponListData(res[key].data)
@@ -122,6 +115,6 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
 
         });
     }
-    return { onlineNum, redBag, redBagVisiable, floatAds, homeGames, banner, notice, originalNoticeString, rankList, loading, couponListData }
+    return { onlineNum, redBag, floatAds, homeGames, banner, notice, rankList, loading, couponListData }
 }
 export default useGetHomeInfo
