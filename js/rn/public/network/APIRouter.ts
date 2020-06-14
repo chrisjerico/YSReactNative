@@ -10,6 +10,8 @@ import { OCHelper } from '../define/OCHelper/OCHelper';
 import { BalanceModel } from './Model/BalanceModel';
 import { OnlineModel } from './Model/OnlineModel';
 import { RegisterModel } from './Model/RegisterModel';
+import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
+import { FloatADModel } from './Model/FloatADModel';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -38,14 +40,21 @@ class APIRouter {
     static system_promotions = () => {
         return httpClient.get("c=system&a=promotions")
     }
-    static user_info = () => {
-        return httpClient.get("c=user&a=info")
+    static user_info = async () => {
+        const user = await OCHelper.call('UGUserModel.currentUser');
+        return httpClient.get("c=user&a=info&token=" + user?.token)
+    }
+    static user_guestLogin = () => {
+        return httpClient.post<LoginModel>("c=user&a=guestLogin", {
+            usr: '46da83e1773338540e1e1c973f6c8a68',
+            pwd: '46da83e1773338540e1e1c973f6c8a68',
+        })
     }
     static activity_redBagDetail = () => {
-        return httpClient.get("c=activity&a=redBagDetail")
+        return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
     }
     static system_floatAds = () => {
-        return httpClient.get("c=system&a=floatAds")
+        return httpClient.get<FloatADModel>("c=system&a=floatAds")
     }
     static system_rankingList = () => {
         return httpClient.get<RankListModel>("c=system&a=rankingList")
@@ -77,6 +86,8 @@ class APIRouter {
             }
         })
     }
+
+
     static user_reg = async (params: {
         inviter: string; // 推荐人ID
         usr: string; // 账号
@@ -96,7 +107,6 @@ class APIRouter {
     }) => {
         var accessToken = await OCHelper.call('OpenUDID.value');
         params = { ...params, device: '3', accessToken: accessToken, }
-        debugger
         return httpClient.post<RegisterModel>('c=user&a=reg', params);
     }
 }

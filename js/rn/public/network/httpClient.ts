@@ -4,7 +4,7 @@ import { Platform } from 'react-native';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import { HomeGamesModel } from './Model/HomeGamesModel';
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
+import { IGlobalStateHelper, updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 import { Toast } from '../tools/ToastUtils';
@@ -15,7 +15,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
     isEncrypt?: boolean
 }
 export const httpClient = axios.create({
-    baseURL: `${AppDefine.host}`,
+    baseURL: `${AppDefine?.host}`,
     timeout: 1000,
     headers: { 'Content-Type': 'application/json', }
 });
@@ -52,8 +52,8 @@ httpClient.interceptors.response.use(response => {
                     OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
                         OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
                             OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                                IGlobalStateHelper.updateUserInfo()
-                                UGStore.dispatch(ActionType.Clear_User)
+                                updateUserInfo()
+                                UGStore.dispatch({ type: ActionType.Clear_User })
                                 Toast('帐号已被登出');
                             })
                         })

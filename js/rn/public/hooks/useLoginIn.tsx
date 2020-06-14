@@ -1,6 +1,6 @@
 import { OCHelper } from "../define/OCHelper/OCHelper";
 import { LoginModel } from "../network/Model/LoginModel";
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper";
+import { IGlobalStateHelper, updateUserInfo } from "../../redux/store/IGlobalStateHelper";
 import { pop, popToRoot } from "../navigation/RootNavigation";
 import UGUserModel from "../../redux/model/全局/UGUserModel";
 
@@ -29,7 +29,7 @@ const useLoginIn = () => {
         await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [isRemember ? pwd : '', 'userPsw']);
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-        IGlobalStateHelper.updateUserInfo()
+        updateUserInfo()
         popToRoot();
     }
     return { loginSuccessHandle }

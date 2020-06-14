@@ -23,7 +23,8 @@ import AppDefine from '../../public/define/AppDefine';
 import { navigationRef } from '../../public/navigation/RootNavigation';
 import ZLHomeMine from '../尊龙/ZLHomeMine';
 import ZLRegisterPage from '../尊龙/ZLRegisterPage';
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
+import { IGlobalStateHelper, updateUserInfo } from '../../redux/store/IGlobalStateHelper';
+import { httpClient } from '../../public/network/httpClient';
 
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
@@ -61,7 +62,7 @@ const UGApplication = () => {
   return (
     <Provider store={UGStore.store}>
       <NavigationContainer onStateChange={() => {
-        IGlobalStateHelper.updateUserInfo()
+        updateUserInfo()
       }} ref={navigationRef}>
         <Router.StackNavigator headerMode="screen">
           <Router.StackScreen name="Tabbar" component={TabBarController} />
