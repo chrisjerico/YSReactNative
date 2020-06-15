@@ -1,7 +1,7 @@
 import {FlatList} from "react-native";
-import {ImageButton} from "../../ImageButton";
+import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
-import {fillArray} from "../../../utils/fillArray";
+import {fillArray} from "../../../../utils/fillArray";
 
 export const GameListView = () => {
     return (

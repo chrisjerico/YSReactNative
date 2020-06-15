@@ -1,20 +1,30 @@
 import * as React from "react";
-import {SafeAreaView, View, Text, Dimensions, TouchableHighlight, TouchableOpacity} from "react-native";
+import {
+    SafeAreaView,
+    View,
+    Text,
+    Dimensions,
+    TouchableHighlight,
+    TouchableOpacity,
+    StyleProp,
+    ViewStyle
+} from "react-native";
 import {ImageButton} from "./ImageButton";
-import {Res} from "../../../../Res/icon/Resources";
-import {Navigation} from "../../../../public/navigation/Navigation";
+import {Res} from "../../../Res/icon/Resources";
+import {Navigation} from "../../../public/navigation/Navigation";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ReactChildren} from "react";
 
 interface BaseScreenProps {
-    children?: ReactChildren
+    children?: any
     screenName: string
+    style?: StyleProp<ViewStyle>
 }
 
-export const BaseScreen = ({children, screenName}: BaseScreenProps) => {
+export const BaseScreen = ({children, screenName, style}: BaseScreenProps) => {
     return (
-        <View>
-            <SafeAreaView style={{backgroundColor: "#ffffff"}}>
+        <View style={style}>
+            <SafeAreaView style={{backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
                 <View style={{
                     width: Dimensions.get("screen").width,
                     flexDirection: "row",

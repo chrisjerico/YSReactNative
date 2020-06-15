@@ -5,6 +5,7 @@ export const WinningListView = () => {
     return (
         <View>
             <FlatList
+                keyExtractor={(item, index) => `winning-${index}`}
                 style={{borderRadius: 10, backgroundColor: "#ffffff"}}
                 ListHeaderComponent={() => (
                     <View style={{flexDirection: "row"}}>

@@ -1,5 +1,5 @@
 import {Text, View} from "react-native";
-import {ImageButton} from "../../ImageButton";
+import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
 
 export const RecommendMustPlayView = () => {
