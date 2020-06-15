@@ -16,11 +16,8 @@ class TransitionPage extends UGBasePage<TransitionProps> {
   didFocus(p: TransitionProps) {
     const { jumpTo, pushTo, props } = p;
     if (jumpTo) {
-      debugger
-      console.log(jumpTo, "-----------")
       Navigation.jump(jumpTo, props);
     } else if (pushTo) {
-      debugger
       Navigation.push(pushTo, props);
     }
   }
