@@ -16,7 +16,7 @@ interface TabButtonProps {
 }
 
 const TabButton = (props: TabButtonProps) => {
-  const { backgroundColor, imageStyle, logo = '', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, show = true } = props;
+  const { backgroundColor, imageStyle, logo = 'logo', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, show = true } = props;
   return (
     <TouchableOpacity style={[styles.conatiner, show ? {} : { opacity: 0 }]} activeOpacity={show ? 0.2 : 0} onPress={onPress}>
       <View

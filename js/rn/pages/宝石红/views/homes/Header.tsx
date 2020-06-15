@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { scale } from '../../helpers/function';
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { scale } from '../../helpers/function'
 
 interface HeaderProps {
   name: string;
@@ -15,8 +15,8 @@ const Header = ({ name = '', money = '' }: HeaderProps) => {
         <Text>{'￥' + money}</Text>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     color: '#ffffff',
   },
-});
+})
 
-export default Header;
+export default Header

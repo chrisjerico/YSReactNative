@@ -19,7 +19,7 @@ const HeadlineBlock = ({ onPressHeadline, headlines, headLineLogo = '', containe
   const cleanContents = headlines.map((headline, index) => ({ label: index.toString(), value: StringUtils.getInstance().deleteHtml(headline?.content) }))
   return (
     display ?
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         <View style={{ flex: 70 }}>
           <Image resizeMode={'contain'} style={{ width: '90%', height: '90%' }} source={{ uri: headLineLogo }} />
         </View>

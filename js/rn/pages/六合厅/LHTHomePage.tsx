@@ -4,8 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
-  Text
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
@@ -19,6 +18,7 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
+import BannerBlock from '../../views/BannerBlock'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -26,7 +26,8 @@ import {
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
   defaultHeadLineLogo,
-  defaultHeadLines, defaultHomeHeaderLeftLogo,
+  defaultHeadLines,
+  defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultMainTabs,
   defaultMarkSixLogo,
@@ -34,10 +35,9 @@ import {
   defaultNoticeLogo,
   defaultNotices
 } from './helpers/config'
-import { scale } from './helpers/function'
+import { scale, three } from './helpers/function'
 import Banner from './views/Banner'
 import BottomTool from './views/BottomTool'
-import BannerBlock from './views/homes/BannerBlock'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
@@ -47,13 +47,15 @@ import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
+import StringUtils from '../../public/tools/StringUtils'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
-  console.disableYellowBox = true;
+  console.disableYellowBox = true
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
+
   const {
     loading,
     banner,
@@ -61,14 +63,14 @@ const LHTHomePage = ({ navigation }) => {
     notice,
     lotteryNumber,
     categoryList,
-    onlineNum
+    onlineNum,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'lhcdoc_lotteryNumber',
     'lhcdoc_categoryList',
-    'system_onlineCount'
+    'system_onlineCount',
   ])
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
@@ -80,12 +82,12 @@ const LHTHomePage = ({ navigation }) => {
 
   // data handle
   const banners = banner?.data?.list ?? []
-  const populars = categoryList?.data ?? []
   const notices = notice?.data?.scroll ?? defaultNotices
-  const headlines = notice?.data?.popup ?? defaultHeadLines
-  const tabs = homeGames?.data?.icons ?? []
   const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? defaultNavs
-  const numbers = lotteryNumber?.numbers?.split(',')?? []
+  const headlines = notice?.data?.popup ?? defaultHeadLines
+  const leftGames = three(categoryList?.data ?? [])
+  const icons = homeGames?.data?.icons ?? []
+  const numbers = lotteryNumber?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []
   let lotterys: any[] = numbers?.map((number, index) => ({
@@ -103,6 +105,12 @@ const LHTHomePage = ({ navigation }) => {
   ]
   const lotteryDate = lotteryNumber?.issue
 
+  const rightGames = icons.map((tab) => {
+    const { list } = tab;
+    const games = three(list?.filter(ele => ele.levelType == '1'));
+    return games
+  })
+  const subTabs = icons.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }))
   // functions
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
     // console.log("------userCenterType------", userCenterType)
@@ -136,149 +144,149 @@ const LHTHomePage = ({ navigation }) => {
       {loading ? (
         <UGProgressCircle />
       ) : (
-        <>
-          <Header
-            avatar={avatar}
-            name={usr}
-            showLogout={uid ? true : false}
-            leftLogo={defaultHomeHeaderLeftLogo}
-            rightLogo={defaultHomeHeaderRightLogo}
-            onPressSignOut={loginOut}
-            onPressSignIn={PushHelper.pushLogin}
-            onPressSignUp={PushHelper.pushRegister}
-          />
-          <ScrollView
-            style={[styles.container]}
-            scrollEnabled={true}
-            refreshControl={<RefreshControl refreshing={false} />}
-          >
-            <BannerBlock
-              onlineNum={onlineNum}
-              banners={banners}
-              renderBanner={(item, index) => {
-                const { linkCategory, linkPosition, pic } = item
-                return (
-                  <Banner
-                    key={index}
-                    pic={pic}
-                    onPress={() => {
-                      gotoCategory(linkCategory, linkPosition)
-                    }}
-                  />
-                )
-              }}
+          <>
+            <Header
+              avatar={avatar}
+              name={usr}
+              showLogout={uid ? true : false}
+              leftLogo={defaultHomeHeaderLeftLogo}
+              rightLogo={defaultHomeHeaderRightLogo}
+              onPressSignOut={loginOut}
+              onPressSignIn={PushHelper.pushLogin}
+              onPressSignUp={PushHelper.pushRegister}
             />
-            <View style={styles.contentContainer}>
-              <NoticeBlock
-                containerStyle={styles.subComponent}
-                notices={notices}
-                logo={defaultNoticeLogo}
-                onPressNotice={({ value }) => goToNotice(value)}
-              />
-              <NavBlock
-                containerStyle={styles.subComponent}
-                navs={navs}
-                lotterys={lotterys}
-                date={lotteryDate}
-                advertisement={defaultAdvertisement}
-                markSixLogo={defaultMarkSixLogo}
-                customerServiceLogo={defaultCustomerServiceLogo}
-                onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
-                onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
-                onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
-                onPressSmileLogo={() =>
-                  gotoUserCenter(UGUserCenterType.在线客服)
-                }
-                renderNav={(item, index) => {
-                  const { icon, name, logo } = item
+            <ScrollView
+              style={[styles.container]}
+              scrollEnabled={true}
+              refreshControl={<RefreshControl refreshing={false} />}
+            >
+              <BannerBlock
+                onlineNum={onlineNum}
+                banners={banners}
+                renderBanner={(item, index) => {
+                  const { linkCategory, linkPosition, pic } = item
                   return (
-                    <NavButton
+                    <Banner
                       key={index}
-                      logo={icon ? icon : logo}
-                      title={name}
-                      nav={item}
-                      onPress={() => gotoHomeGame(item)}
-                    />
-                  )
-                }}
-                renderLottery={(item, index) => {
-                  const { number, color, sx } = item
-                  return (
-                    <LotteryBall
-                      key={index}
-                      score={number}
-                      color={color}
-                      text={sx}
-                      showMore={index == 6}
-                      onPress={() => gotoUserCenter(UGUserCenterType.六合彩)}
-                    />
-                  )
-                }}
-              />
-              <HeadlineBlock
-                containerStyle={styles.subComponent}
-                headlines={headlines}
-                headLineLogo={defaultHeadLineLogo}
-                onPressHeadline={({ value }) => goToNotice(value)}
-              />
-              <TabComponent
-                containerStyle={styles.subComponent}
-                mainTabs={defaultMainTabs}
-                leftTabs={populars}
-                rightTabs={tabs}
-                renderLeftTab={(item, index) => {
-                  // console.log('--------tab------', item);
-                  const { name, icon } = item
-                  return (
-                    <TabButton
-                      key={index}
-                      logo={icon}
-                      mainTitle={name}
+                      pic={pic}
                       onPress={() => {
-                        // console.log("-----不知道要跳到哪----", item)
-                      }}
-                    />
-                  )
-                }}
-                renderRightTab={(item, index) => {
-                  // console.log('--------tab------', item);
-                  const { logo, icon, title } = item
-                  return (
-                    <TabButton
-                      key={index}
-                      logo={logo ? logo : icon}
-                      mainTitle={title}
-                      onPress={() => gotoHomeGame(item)}
-                    />
-                  )
-                }}
-              />
-              <WinningBlock
-                containerStyle={styles.subComponent}
-              />
-              <BottomToolBlock
-                tools={defaultBottomTools}
-                renderBottomTool={(item, index) => {
-                  const { logo, userCenterType } = item
-                  return (
-                    <BottomTool
-                      key={index}
-                      logo={logo}
-                      onPress={() => {
-                        if (userCenterType) {
-                          gotoUserCenter(userCenterType)
-                        } else {
-                          gotoWebView(defaultDowloadUrl)
-                        }
+                        gotoCategory(linkCategory, linkPosition)
                       }}
                     />
                   )
                 }}
               />
-            </View>
-          </ScrollView>
-        </>
-      )}
+              <View style={styles.contentContainer}>
+                <NoticeBlock
+                  containerStyle={styles.subComponent}
+                  notices={notices}
+                  logo={defaultNoticeLogo}
+                  onPressNotice={({ value }) => goToNotice(value)}
+                />
+                <NavBlock
+                  containerStyle={styles.subComponent}
+                  navs={navs}
+                  lotterys={lotterys}
+                  date={lotteryDate}
+                  advertisement={defaultAdvertisement}
+                  markSixLogo={defaultMarkSixLogo}
+                  customerServiceLogo={defaultCustomerServiceLogo}
+                  onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
+                  onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
+                  onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                  onPressSmileLogo={() =>
+                    gotoUserCenter(UGUserCenterType.在线客服)
+                  }
+                  renderNav={(item, index) => {
+                    const { icon, name, logo } = item
+                    return (
+                      <NavButton
+                        key={index}
+                        logo={icon ? icon : logo}
+                        title={name}
+                        nav={item}
+                        onPress={() => gotoHomeGame(item)}
+                      />
+                    )
+                  }}
+                  renderLottery={(item, index) => {
+                    const { number, color, sx } = item
+                    return (
+                      <LotteryBall
+                        key={index}
+                        score={number}
+                        color={color}
+                        text={sx}
+                        showMore={index == 6}
+                        onPress={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                      />
+                    )
+                  }}
+                />
+                <HeadlineBlock
+                  containerStyle={styles.subComponent}
+                  headlines={headlines}
+                  headLineLogo={defaultHeadLineLogo}
+                  onPressHeadline={({ value }) => goToNotice(value)}
+                />
+                <TabComponent
+                  containerStyle={styles.subComponent}
+                  subTabs={subTabs}
+                  leftGames={leftGames}
+                  rightGames={rightGames}
+                  renderLeftGame={(item, index) => {
+                    // console.log('--------tab------', item);
+                    const { name, icon, show } = item
+                    return (
+                      <TabButton
+                        key={index}
+                        logo={icon}
+                        mainTitle={name}
+                        show={show}
+                        onPress={() => {
+                          // console.log("-----不知道要跳到哪----", item)
+                        }}
+                      />
+                    )
+                  }}
+                  renderRightGame={(item, index) => {
+                    // console.log('--------tab------', item);
+                    const { logo, icon, title, show } = item
+                    return (
+                      <TabButton
+                        key={index}
+                        logo={logo ? logo : icon}
+                        mainTitle={title}
+                        show={show}
+                        onPress={() => gotoHomeGame(item)}
+                      />
+                    )
+                  }}
+                />
+                <WinningBlock containerStyle={styles.subComponent} />
+                <BottomToolBlock
+                  tools={defaultBottomTools}
+                  renderBottomTool={(item, index) => {
+                    const { logo, userCenterType } = item
+                    return (
+                      <BottomTool
+                        key={index}
+                        logo={logo}
+                        onPress={() => {
+                          if (userCenterType) {
+                            gotoUserCenter(userCenterType)
+                          } else {
+                            gotoWebView(defaultDowloadUrl)
+                          }
+                        }}
+                      />
+                    )
+                  }}
+                />
+              </View>
+            </ScrollView>
+          </>
+        )}
     </SafeAreaView>
   )
 }
