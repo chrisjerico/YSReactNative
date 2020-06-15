@@ -1,10 +1,10 @@
 import * as React from "react";
 import {SafeAreaView, ScrollView, Text, View} from "react-native";
-import {BannerView} from "./component/BannerView";
-import {MarqueeView} from "./component/MarqueeView";
-import {HomeHeaderButtonBar} from "./component/HomeHeaderButtonBar";
-import {HomeTabView} from "./component/homeTabView/HomeTabView";
-import {WinningListView} from "./component/WinningListView";
+import {BannerView} from "./component/homePage/BannerView";
+import {MarqueeView} from "./component/homePage/MarqueeView";
+import {HomeHeaderButtonBar} from "./component/homePage/HomeHeaderButtonBar";
+import {WinningListView} from "./component/homePage/WinningListView";
+import {HomeTabView} from "./component/homePage/homeTabView/HomeTabView";
 
 const SLHHomePage = () => {
     return (
