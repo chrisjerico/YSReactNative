@@ -19,8 +19,8 @@ import {OCHelper} from '../../public/define/OCHelper/OCHelper';
 import {Toast} from '../../public/tools/ToastUtils';
 
 class XBJMinePage extends UGBasePage<XBJMineProps> {
-  didFocus(params: XBJMineProps): void { }
-  
+  didFocus(params: XBJMineProps): void {}
+
   requestData() {
     // 获取功能按钮列表
     OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {

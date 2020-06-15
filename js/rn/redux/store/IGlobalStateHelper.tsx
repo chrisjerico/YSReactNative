@@ -6,20 +6,21 @@ import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGSkinManagers from '../../public/theme/UGSkinManagers';
 import { Platform } from 'react-native';
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
+import APIRouter from '../../public/network/APIRouter';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
+import { httpClient } from '../../public/network/httpClient';
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
 };
 
 export class IGlobalStateHelper {
-  // 获取用户信息
   static updateUserInfo() {
     NetworkRequest1.user_info().then(user => {
       UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: user });
       UGStore.save();
     });
   }
-
   // 获取系统配置信息
   static updateSysConf(sysConf: UGSysConfModel) {
     function refreshUI(sysConf: UGSysConfModel) {
@@ -63,4 +64,29 @@ export function SysConfReducer(prevState: UGSysConfModel | any = {}, act: UGActi
   if (act.type === ActionType.UpdateSysConf) return { ...prevState, ...act.props };
 
   return prevState;
+}
+
+export async function updateUserInfo() {
+
+  if (httpClient.defaults.baseURL == "undefined" || !httpClient.defaults.baseURL)
+    return
+  try {
+    const { data, status } = await APIRouter.user_info()
+    if (data.data == null)
+      throw { message: data.msg }
+    if (data?.data) {
+      UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: data?.data });
+      UGStore.save();
+    }
+
+
+  } catch (error) {
+
+    console.log(error)
+    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
+    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    // UGStore.dispatch({ type: ActionType.Clear_User });
+    // UGStore.save();
+  }
 }

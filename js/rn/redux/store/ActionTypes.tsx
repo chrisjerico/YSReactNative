@@ -27,7 +27,9 @@ export enum ActionType {
   ZHTYMinePage_SetProps,
   ZHTYLoginPage_SetProps,
   ZHTYRegisterPage_SetProps, // 声明UGAction
-  Clear_User = "Clear_User"
+  // 六合厅
+  LHTHome_SetProps,
+  Clear_User,
 }
 
 // 声明UGAction

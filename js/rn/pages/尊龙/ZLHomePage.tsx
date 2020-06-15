@@ -1,77 +1,50 @@
-import { View, useWindowDimensions, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
-import FastImage from "react-native-fast-image"
+import FastImage, { FastImageProperties } from "react-native-fast-image"
 import { colorEnum, } from "./enum/colorEnum"
 import LinearGradient from "react-native-linear-gradient"
 import PushHelper from "../../public/define/PushHelper"
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
-import { Navigation, PageName } from '../../public/navigation/Navigation';
+import { PageName } from '../../public/navigation/Navigation';
 import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState } from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
-import { HomeGamesModel } from "../../public/network/Model/HomeGamesModel"
-import Axios from "axios"
 import { BannerModel } from "../../public/network/Model/BannerModel"
 import { Icon, Button } from 'react-native-elements';
-import { CouponListModel } from "../../public/network/Model/CouponListModel"
-import { RankListModel } from "../../public/network/Model/RankListModel"
-import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { httpClient } from "../../public/network/httpClient"
 import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
+import AppDefine from "../../public/define/AppDefine"
+import useGetHomeInfo from "../../public/hooks/useGetHomeInfo"
+import { useDimensions } from '@react-native-community/hooks'
+import useAutoRenewUserInfo from "../../public/hooks/useAutoReNewUserInfo"
 const ZLHomePage = ({ navigation }) => {
-    const { width, } = useWindowDimensions()
-    const [homeGames, setHomeGames] = useState<HomeGamesModel>()
-    const [banner, setBanner] = useState<BannerModel>()
-    const [notice, setNotice] = useState<{ label: string, value: string }[]>()
-    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
-    const [couponListData, setCouponListData] = useState<CouponListModel>()
-    const [rankList, setRankList] = useState<RankListModel>()
+    const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const [onlineNum, setOnlineNum] = useState(0)
+    const [redBagVisiable, setRedBagVisiable] = useState(false)
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading } = useGetHomeInfo()
+    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+    const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            IGlobalStateHelper.updateUserInfo()
-        })
-    }, [])
-    const init = async () => {
-        IGlobalStateHelper.updateUserInfo()
-        await OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-            httpClient.defaults.baseURL = host
+        let string = ""
+        const noticeData = notice?.data?.scroll?.map((res) => {
+            string += res.content
+            return { label: res.id, value: res.title }
+        }) ?? []
+        setnoticeFormat(noticeData)
+        setOriginalNoticeString(string)
+    }, [notice])
 
-            Axios.all([APIRouter.game_homeGames(), APIRouter.system_banners(), APIRouter.notice_latest(), APIRouter.system_promotions(), APIRouter.system_rankingList(), APIRouter.system_onlineCount()])
-                .then(Axios.spread((...res) => {
-                    setHomeGames(res[0].data)
-                    setBanner(res[1].data)
-                    setCouponListData(res[3].data)
-                    setRankList(res[4].data)
-                    let noticeString = ""
-                    const noticeData = res[2].data.data.scroll.map((res) => {
-                        noticeString += res.content
-                        return { label: res.id, value: res.title }
-                    })
-                    console.log(couponListData.data.list)
-                    setOriginalNoticeString(noticeString)
-                    setNotice(noticeData)
-                    setOnlineNum(res[5].data.data.onlineUserCount)
-
-                }))
-                .catch((err) => {
-                })
-        });
-
-    }
-
+    const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
         const timer = setInterval(() => {
             getRandomString()
@@ -82,14 +55,18 @@ const ZLHomePage = ({ navigation }) => {
         const num = ((2 + Math.random()) * 100000).toFixed(2)
         setRandomString("¥ " + num)
     }
-    useEffect(() => {
-        init()
-    }, [])
-    const thirdPartGamePress = (index1: number, index2: number) => {
+    const thirdPartGamePress = (id: string, gameID?: string) => {
         if (uid != "") {
-            if (homeGames?.data?.icons?.[index1]?.list?.[index2]) {
+            console.log(homeGames.data.icons)
+            const result = homeGames.data.icons.filter((res) => res.id == id)
+            if (gameID && result.length > 0) {
+                const gameData = result[0].list.filter((res) => res.id == gameID)
                 //@ts-ignore
-                PushHelper.pushHomeGame(homeGames.data.icons[index1].list[index2])
+                PushHelper.pushHomeGame(gameData[0])
+            } else if (!gameID && result.length > 0) {
+
+            } else {
+
             }
         } else {
             push(PageName.ZLLoginPage)
@@ -113,13 +90,13 @@ const ZLHomePage = ({ navigation }) => {
                             PushHelper.pushNoticePopUp(originalNoticeString)
                         }}
 
-                        textList={notice} />
+                        textList={noticeFormat} />
                 </View>
 
                 <AcctountDetail />
                 <Banner onlineNum={onlineNum} bannerData={banner} />
                 <View style={{ flex: 1, height: 233 / 375 * width, flexDirection: 'row', }}>
-                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0, 1)}>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "38")}>
                         <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agqjt.png" }} style={{
                             flex: 0.6,
                             backgroundColor: 'white', marginRight: 5,
@@ -132,12 +109,12 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
 
                     <View style={{ flexDirection: 'column', flex: 0.4, justifyContent: 'space-between', borderRadius: 10, }}>
-                        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0, 1)}>
+                        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "39")}>
                             <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 5, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
                                 <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG国际厅</Text>
                             </FastImage>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 3, 0)}>
+                        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "5", "68")}>
                             <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aszrqp.png" }} style={{ flex: 4, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
                                 <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>开元棋牌</Text>
                             </FastImage>
@@ -191,7 +168,7 @@ const ZLHomePage = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 5, 4)}>
+                    <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, "3", "51")}>
                         <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agbyw.png" }}
                             style={{ flex: 0.35, backgroundColor: 'red', borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
                             <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG捕鱼王</Text>
@@ -217,7 +194,7 @@ const ZLHomePage = ({ navigation }) => {
                             <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>体育</Text>
                         </FastImage>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 1, 3)}>
+                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, "2", "43")}>
                         <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/bbinzr.png" }}
                             style={{ flex: 1, backgroundColor: 'red', borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
                             <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>BBIN真人</Text>
@@ -237,10 +214,10 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
                 <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
-                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, 'popup')}>
+                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10 }}>{item.title}</Text>
-                            <FastImage resizeMode={"contain"} style={{ width: width - 40, aspectRatio: 3, marginBottom: 10 }} source={{ uri: item.pic }} />
+                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
+                            <FastImageAutoHeight resizeMode={"contain"} style={{ width: width - 40, marginBottom: 10 }} source={{ uri: item.pic }} />
                         </View>
                     </TouchableWithoutFeedback>
                 }} />
@@ -249,7 +226,7 @@ const ZLHomePage = ({ navigation }) => {
                     <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
                     <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
                 </View>
-                <View >
+                {systemStore.rankingListSwitch == 0 ? null : <View >
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white' }}>用户名称</Text>
@@ -263,7 +240,7 @@ const ZLHomePage = ({ navigation }) => {
                     </View>
                     <FlatList keyExtractor={(item, index) => {
                         return item.username + index
-                    }} style={{ marginTop: 20 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
+                    }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
                         return <View style={{ flexDirection: 'row', }}>
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ color: 'white' }}>{item.username}</Text>
@@ -276,7 +253,8 @@ const ZLHomePage = ({ navigation }) => {
                             </View>
                         </View>
                     }} />
-                </View>
+                </View>}
+
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text onPress={() => {
                         console.log(httpClient.defaults.baseURL + '/index2.php')
@@ -293,16 +271,18 @@ const ZLHomePage = ({ navigation }) => {
     )
 }
 const ZLHeader = () => {
-    const { width, height } = useWindowDimensions()
+    const { width, height } = useDimensions().window
     const insets = useSafeArea();
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { uid = "" } = userStore
+    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const { mobile_logo = "" } = sysStore
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center'
         }}>
-            <FastImage style={{ width: 210, height: 58 }} source={{ uri: "https://cdn01.njhthb.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928" }} />
+            <FastImage resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
                 {
                     uid != "" ? <TouchableOpacity onPress={() => {
@@ -378,8 +358,9 @@ const UserStatusBar = () => {
     )
 }
 const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
-    const { width, } = useWindowDimensions()
+    const { width, } = useDimensions().window
     const BannerRef = useRef<Carousel>()
+    const [height, setHeight] = useState(100)
     useEffect(() => {
         const timer = setInterval(() => {
             //@ts-ignore
@@ -401,7 +382,11 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                     pageSize={width - 20}
                 >
                     {bannerData?.data?.list?.map((res, index) => {
-                        return <FastImage key={'banner' + index} style={{ width: width - 20, aspectRatio: 2, borderRadius: 10 }} source={{ uri: res.pic }} >
+                        return <FastImage onLoad={(e) => {
+                            console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                            setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+
+                        }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
 
                         </FastImage>
                     })}
@@ -478,6 +463,15 @@ const AcctountDetail = () => {
         return null
     }
 
+}
+const FastImageAutoHeight = (props: FastImageProperties) => {
+    const [picHeight, setPicHeight] = useState(100)
+    const { cardMargin, marginHorizontal } = usePopUpView()
+    return (
+        <FastImage {...props} style={[props.style, { height: picHeight }]} onLoad={(e) => {
+            setPicHeight(((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
+        }} />
+    )
 }
 const styles = StyleSheet.create({
     buttonContainer: {

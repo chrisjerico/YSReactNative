@@ -56,6 +56,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             if (!pm.clsName) {
               pm.clsName = 'UGPromoteModel';
             }
+            debugger
             switch (this.style2) {
               // 内页
               case 'page': {

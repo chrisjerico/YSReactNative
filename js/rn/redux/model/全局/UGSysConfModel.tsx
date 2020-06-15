@@ -10,7 +10,7 @@ export interface UGAgentApplyInfo {
 }
 
 // 底部Tab按钮
-export class UGTabbarItem {}
+export class UGTabbarItem { }
 
 export enum UGUserCenterType {
   存款 = 1,
@@ -35,6 +35,8 @@ export enum UGUserCenterType {
 
   // 自定义
   资金明细 = 999,
+  六合彩 = 20,
+  聊天室 = 21
 }
 
 // 我的页功能按钮
@@ -44,7 +46,7 @@ export class UGUserCenterItem {
   name?: string;
 
   // 默认图标
-  static defaultLogos: {[x: number]: string} = {
+  static defaultLogos: { [x: number]: string } = {
     1: 'https://i.ibb.co/hghhbCs/chongzhi-2x.png', // 存款
     2: 'https://i.ibb.co/4drXB18/tixian-2x.png', // 取款
     3: 'https://i.ibb.co/VVPPpRM/yinhangqia-2x.png', // 银行卡管理
@@ -76,7 +78,7 @@ export class UGUserCenterItem {
 }
 
 // 六合发帖价格范围
-export class LHPriceModel {}
+export class LHPriceModel { }
 
 // 系统配置Model
 export default class UGSysConfModel {

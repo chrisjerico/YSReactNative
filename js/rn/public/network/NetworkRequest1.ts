@@ -5,9 +5,17 @@ import UGSysConfModel, {UGAgentApplyInfo} from '../../redux/model/全局/UGSysCo
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import UGUserModel, {UGLoginModel} from '../../redux/model/全局/UGUserModel';
 import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
-import { OCHelper } from '../define/OCHelper/OCHelper';
+import {OCHelper} from '../define/OCHelper/OCHelper';
 
 export default class NetworkRequest1 {
+  // 拿我的頁列表
+  static async userCenterList() {
+    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+  }
+  // 獲取中獎號碼
+  static async lotteryNumber() {
+    return await CCSessionModel.req('c=lhcdoc&a=lotteryNumber'); // c=game&a=lotteryHistoryy
+  }
   // 获取首页游戏列表
   static game_homeGames(): Promise<void> {
     return CCSessionModel.req('c=game&a=homeGames');
@@ -26,7 +34,7 @@ export default class NetworkRequest1 {
   // 获取主页数据
   static async homeInfo() {
     let response1 = await fetch('https://facebook.github.io/react-native/movies.json');
-
+    // user
     //广告
     let banner = await CCSessionModel.req('c=system&a=banners');
     //通知
