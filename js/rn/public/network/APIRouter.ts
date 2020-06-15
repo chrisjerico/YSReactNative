@@ -1,18 +1,18 @@
-import { httpClient } from './httpClient';
-import { HomeGamesModel } from './Model/HomeGamesModel';
-import { RankListModel } from './Model/RankListModel';
-import { BannerModel } from './Model/BannerModel';
-import { NoticeModel } from './Model/NoticeModel';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
-import { LoginModel } from './Model/LoginModel';
-import { UGStore } from '../../redux/store/UGStore';
 import { OCHelper } from '../define/OCHelper/OCHelper';
+import { httpClient } from './httpClient';
 import { BalanceModel } from './Model/BalanceModel';
-import { OnlineModel } from './Model/OnlineModel';
-import { RegisterModel } from './Model/RegisterModel';
-import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
+import { BannerModel } from './Model/BannerModel';
 import { FloatADModel } from './Model/FloatADModel';
+import { HomeGamesModel } from './Model/HomeGamesModel';
+import { LoginModel } from './Model/LoginModel';
+import { NoticeModel } from './Model/NoticeModel';
+import { OnlineModel } from './Model/OnlineModel';
+import { RankListModel } from './Model/RankListModel';
+import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
 import { TurntableListModel } from './Model/TurntableListModel';
+import { RegisterModel } from './Model/RegisterModel';
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -113,5 +113,20 @@ class APIRouter {
         params = { ...params, device: '3', accessToken: accessToken, }
         return httpClient.post<RegisterModel>('c=user&a=reg', params);
     }
+
+    static lhcdoc_categoryList = async () => {
+        return httpClient.get<LhcdocCategoryListModel>('c=lhcdoc&a=categoryList');
+    };
+
+    static lhcdoc_lotteryNumber = async () => {
+        return httpClient.get('c=lhcdoc&a=lotteryNumber');
+    };
+
+    static user_centerList = async () => {
+        return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+    };
+
+
 }
 export default APIRouter
+

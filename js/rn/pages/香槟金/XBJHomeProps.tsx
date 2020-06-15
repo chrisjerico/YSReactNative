@@ -1,16 +1,16 @@
 import {Skin1} from '../../public/theme/UGSkinManagers';
-import {UGBasePageProps, basePageDefaultProps, UGLoadingType} from '../base/UGBasePageProps';
+import {mergeProps} from '../../public/tools/FUtils';
+import IBannerAdvBean from '../../redux/model/home/IBannerAdvBean';
+import ICouponBean from '../../redux/model/home/ICouponBean';
+import IFloatAdBean from '../../redux/model/home/IFloatAdBean';
+import IGameBean from '../../redux/model/home/IGameBean';
+import ILotteryNumberBean from '../../redux/model/home/ILotteryNumberBean';
+import INoticeBean from '../../redux/model/home/INoticeBean';
+import IRedBagBean from '../../redux/model/home/IRedBagBean';
+import IUserBean from '../../redux/model/user/IUserBean';
 import {ActionType, UGAction} from '../../redux/store/ActionTypes';
 import {IGlobalState} from '../../redux/store/UGStore';
-import IBannerAdvBean from '../../redux/model/home/IBannerAdvBean';
-import INoticeBean from '../../redux/model/home/INoticeBean';
-import IGameBean from '../../redux/model/home/IGameBean';
-import ICouponBean from '../../redux/model/home/ICouponBean';
-import IUserBean from '../../redux/model/user/IUserBean';
-import IRedBagBean from '../../redux/model/home/IRedBagBean';
-import IFloatAdBean from '../../redux/model/home/IFloatAdBean';
-import {PageName} from '../../public/navigation/Navigation';
-import {mergeProps} from '../../public/tools/FUtils';
+import {basePageDefaultProps, UGBasePageProps, UGLoadingType} from '../base/UGBasePageProps';
 
 export interface IHomeBeanMovies {
   id?: string; //id
@@ -20,6 +20,7 @@ export interface IHomeBeanMovies {
 
 // 声明Props
 export interface XBJHomeProps extends UGBasePageProps {
+  lotteryNumber?: ILotteryNumberBean; // 六合彩
   banner?: IBannerAdvBean; //广告
   notice?: INoticeBean; //公告
   game?: IGameBean; //公告
