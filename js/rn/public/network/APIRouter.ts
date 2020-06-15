@@ -12,6 +12,7 @@ import { OnlineModel } from './Model/OnlineModel';
 import { RegisterModel } from './Model/RegisterModel';
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
 import { FloatADModel } from './Model/FloatADModel';
+import { TurntableListModel } from './Model/TurntableListModel';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -52,6 +53,9 @@ class APIRouter {
     }
     static activity_redBagDetail = () => {
         return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
+    }
+    static activity_turntableList = () => {
+        return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
     }
     static system_floatAds = () => {
         return httpClient.get<FloatADModel>("c=system&a=floatAds")

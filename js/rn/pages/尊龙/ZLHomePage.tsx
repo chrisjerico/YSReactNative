@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -23,6 +23,10 @@ import AppDefine from "../../public/define/AppDefine"
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo"
 import { useDimensions } from '@react-native-community/hooks'
 import useAutoRenewUserInfo from "../../public/hooks/useAutoReNewUserInfo"
+import { RedBagDetailActivityModel } from "../../public/network/Model/RedBagDetailActivityModel"
+import { OCHelper } from "../../public/define/OCHelper/OCHelper"
+import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
+import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -30,8 +34,7 @@ const ZLHomePage = ({ navigation }) => {
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const [redBagVisiable, setRedBagVisiable] = useState(false)
-    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, turntableList } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     useEffect(() => {
@@ -267,8 +270,118 @@ const ZLHomePage = ({ navigation }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
+            <RedBagItem redBag={redBag} />
+            <TurntableListItem />
         </View >
     )
+}
+const RedBagItem = ({ redBag }: { redBag: RedBagDetailActivityModel }) => {
+    const { width } = useDimensions().screen
+    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const [redBagVisiable, setRedBagVisiable] = useState(false)
+    useEffect(() => {
+        if (redBag) {
+            setRedBagVisiable(true)
+        }
+    }, [redBag])
+    if (redBagVisiable) {
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                if (uid == "") {
+                    Alert.alert("温馨提示", "您还未登录", [
+                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "马上登录", onPress: () => {
+                                navigate(PageName.ZLLoginPage, {})
+                            },
+                        }
+                    ])
+                } else if (isTest) {
+                    Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "马上登录", onPress: () => {
+                                navigate(PageName.ZLLoginPage, {})
+                            },
+                        }
+                    ])
+                } else {
+                    PushHelper.pushRedBag(redBag)
+                }
+            }}>
+                <FastImage style={{ width: 95, height: 95, position: 'absolute', top: 100, right: 20 }} source={{ uri: redBag?.data?.redBagLogo }} >
+                    <TouchableWithoutFeedback onPress={() => {
+                        setRedBagVisiable(false)
+                    }}>
+                        <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: "dialog_close" }} />
+                    </TouchableWithoutFeedback>
+                </FastImage>
+            </TouchableWithoutFeedback>)
+    } else {
+        return null
+    }
+
+}
+const TurntableListItem = () => {
+    const { width, height } = useDimensions().screen
+    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const [turntableListVisiable, setTurntableListVisiable] = useState(false)
+    const [turntableList, setTurntableList] = useState<TurntableListModel>()
+    useEffect(() => {
+        if (turntableList && turntableList != null) {
+            setTurntableListVisiable(true)
+        }
+    }, [turntableList])
+    const getTurntableList = async () => {
+        try {
+            const { data, status } = await APIRouter.activity_turntableList()
+            setTurntableList(data.data)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        if (uid != "") {
+            getTurntableList()
+        }
+    }, [uid])
+    if (turntableListVisiable) {
+        return (
+            <TouchableWithoutFeedback onPress={() => {
+                if (uid == "") {
+                    Alert.alert("温馨提示", "您还未登录", [
+                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "马上登录", onPress: () => {
+                                navigate(PageName.ZLLoginPage, {})
+                            },
+                        }
+                    ])
+                } else if (isTest) {
+                    Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "马上登录", onPress: () => {
+                                navigate(PageName.ZLLoginPage, {})
+                            },
+                        }
+                    ])
+                } else {
+                    PushHelper.pushWheel(turntableList)
+                }
+            }}>
+                <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
+                    <TouchableWithoutFeedback onPress={() => {
+                        setTurntableListVisiable(false)
+                    }}>
+                        <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: "dialog_close" }} />
+                    </TouchableWithoutFeedback>
+                </ImageBackground>
+            </TouchableWithoutFeedback>)
+    } else {
+        return null
+    }
+
 }
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
