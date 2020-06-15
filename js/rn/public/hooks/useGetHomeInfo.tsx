@@ -9,20 +9,21 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { httpClient } from '../network/httpClient'
 import Axios from 'axios'
 import APIRouter from '../network/APIRouter'
+import { NoticeModel } from '../network/Model/NoticeModel'
+import { TurntableListModel } from '../network/Model/TurntableListModel'
 type APIListType = 'game_homeGames' | 'system_banners' | 'notice_latest' | 'system_promotions' | 'system_rankingList' | 'system_onlineCount' | 'activity_redBagDetail'
-    | 'system_floatAds'
+    | 'system_floatAds' | 'activity_turntableList'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     const [onlineNum, setOnlineNum] = useState(0)
     const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
-    const [redBagVisiable, setRedBagVisiable] = useState(false)
     const [floatAds, setFloatAds] = useState<FloatADModel>()
     const [homeGames, setHomeGames] = useState<HomeGamesModel>()
     const [banner, setBanner] = useState<BannerModel>()
-    const [notice, setNotice] = useState<{ label: string, value: string }[]>()
-    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+    const [notice, setNotice] = useState<NoticeModel>()
     const [couponListData, setCouponListData] = useState<CouponListModel>()
     const [rankList, setRankList] = useState<RankListModel>()
     const [loading, setLoading] = useState(true)
+    const [turntableList, setTurntableList] = useState<TurntableListModel>()
     useEffect(() => {
         init()
         console.log("render")
@@ -52,14 +53,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                                         setBanner(res[key].data)
                                         break
                                     case 'notice_latest':
-                                        debugger
-                                        let noticeString = ""
-                                        const noticeData = res[key].data.data.scroll.map((res) => {
-                                            noticeString += res.content
-                                            return { label: res.id, value: res.title }
-                                        })
-                                        setOriginalNoticeString(noticeString)
-                                        setNotice(noticeData)
+
+                                        setNotice(res[key].data)
                                         break
                                     case 'system_promotions':
                                         setCouponListData(res[key].data)
@@ -95,7 +90,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                 APIRouter.system_rankingList(),
                 APIRouter.system_onlineCount(),
                 APIRouter.activity_redBagDetail(),
-                APIRouter.system_floatAds()])
+                APIRouter.system_floatAds(),])
                     .then(Axios.spread((...res) => {
                         setHomeGames(res[0].data)
                         setBanner(res[1].data)
@@ -103,14 +98,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                         setRankList(res[4].data)
                         setRedBag(res[6].data)
                         setFloatAds(res[7].data)
-                        let noticeString = ""
-                        const noticeData = res[2].data.data.scroll.map((res) => {
-                            noticeString += res.content
-                            return { label: res.id, value: res.title }
-                        })
-                        console.log(couponListData.data.list)
-                        setOriginalNoticeString(noticeString)
-                        setNotice(noticeData)
+                        setNotice(res[2].data)
                         setOnlineNum(res[5].data.data.onlineUserCount)
                         setLoading(false)
                     }))
@@ -122,6 +110,6 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
 
         });
     }
-    return { onlineNum, redBag, redBagVisiable, floatAds, homeGames, banner, notice, originalNoticeString, rankList, loading, couponListData }
+    return { onlineNum, redBag, floatAds, homeGames, banner, notice, rankList, loading, couponListData, turntableList }
 }
 export default useGetHomeInfo
