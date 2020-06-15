@@ -19,6 +19,7 @@ import useLoginOut from "../../public/hooks/useLoginOut"
 import { useFocusEffect } from "@react-navigation/native"
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { useDimensions } from "@react-native-community/hooks"
+import { PageName } from "../../public/navigation/Navigation"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
@@ -28,7 +29,7 @@ const ZLHomeMine = ({ navigation }) => {
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
         [dispatch]
     )
-    const { loginOut } = useLoginOut()
+    const { loginOut } = useLoginOut(PageName.ZLHomePage)
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
