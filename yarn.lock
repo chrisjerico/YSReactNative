@@ -652,7 +652,7 @@
     pirates "^4.0.0"
     source-map-support "^0.5.16"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.10.2", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4":
   version "7.10.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.2.tgz#d103f21f2602497d38348a32e008637d506db839"
   integrity sha512-6sF3uQw2ivImfVIl62RZ7MXhO2tap69WeWK57vAaimT6AZbE4FbqjdEJIN1UqoD6wI6B+1n9UiagafH1sxjOtg==
@@ -1106,6 +1106,11 @@
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.10.tgz#5dda643e19e587793bc2034dd9bf7398ad43d401"
   integrity sha512-rk4sWFsmtOw8oyx8SD3KSvawwaK7gRBSEIy2TAwURyGt+3TizssXP1r8nx3zY+R7v2vYYHXZ+k2/GULAT/bcaQ==
+
+"@react-native-community/picker@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/picker/-/picker-1.6.3.tgz#4aed45449476b18f43008f3a790537c4a959ee34"
+  integrity sha512-8oPcwimsz14BDu0a8smuqw52uuaXgWrUKAVhv1mXMFvZq3Spt23UVH8Q0Zogi4t7WNlwx4dNXB08iUUP8ltKzg==
 
 "@react-native-community/viewpager@^2.0.1":
   version "2.0.2"
@@ -2393,7 +2398,7 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
-create-react-class@^15.6.2, create-react-class@^15.6.3:
+create-react-class@*, create-react-class@^15.6.2, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -2616,6 +2621,16 @@ depd@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
   integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
+
+deprecated-react-native-listview@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/deprecated-react-native-listview/-/deprecated-react-native-listview-0.0.5.tgz#fc8a6dc45b0a8ba611e6014e13b38d6d763e763f"
+  integrity sha512-Cy7nDdd+KU+nR3tY1BSMuoZpsYC6OVSZyAiUSTDBop2lIgzCseDx7XI57x6h+NXer/8aor2yiQDQfeFcmBMwgQ==
+  dependencies:
+    create-react-class "*"
+    fbjs "*"
+    invariant "*"
+    react-clone-referenced-element "*"
 
 destroy@~1.0.4:
   version "1.0.4"
@@ -3205,12 +3220,13 @@ fbjs-scripts@^1.1.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@^0.8.9:
-  version "0.8.17"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
-  integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
+fbjs@*, fbjs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
+  integrity sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
   dependencies:
-    core-js "^1.0.0"
+    core-js "^2.4.1"
+    fbjs-css-vars "^1.0.0"
     isomorphic-fetch "^2.1.1"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
@@ -3218,13 +3234,12 @@ fbjs@^0.8.9:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
-fbjs@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
-  integrity sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
+fbjs@^0.8.9:
+  version "0.8.17"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
+  integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
   dependencies:
-    core-js "^2.4.1"
-    fbjs-css-vars "^1.0.0"
+    core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
@@ -3797,7 +3812,7 @@ inquirer@^7.0.0, inquirer@^7.1.0:
     strip-ansi "^6.0.0"
     through "^2.3.6"
 
-invariant@2.2.4, invariant@^2.2.4:
+invariant@*, invariant@2.2.4, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -6120,6 +6135,11 @@ raw-body@^2.2.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
+react-clone-referenced-element@*:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.1.0.tgz#9cdda7f2aeb54fea791f3ab8c6ab96c7a77d0158"
+  integrity sha512-FKOsfKbBkPxYE8576EM6uAfHC4rnMpLyH6/TJUL4WcHUEB3EUn8AxPjnnV/IiwSSzsClvHYK+sDELKN/EJ0WYg==
+
 react-devtools-core@^3.6.3:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.6.3.tgz#977d95b684c6ad28205f0c62e1e12c5f16675814"
@@ -6223,6 +6243,19 @@ react-native-marquee-ab@^1.2.6:
   resolved "https://registry.yarnpkg.com/react-native-marquee-ab/-/react-native-marquee-ab-1.2.6.tgz#5bbbed6f48894d84926210b68453f815b7d38380"
   integrity sha512-2/XJ3qCiyaY6n69mQ1hb7FLhEPz2ZsAr3W3JlL1Jxk+wwOnzfuZcSbnEUAzjuXon8srebgu9W+TgmPkLxan9uA==
 
+react-native-modal-dropdown@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal-dropdown/-/react-native-modal-dropdown-0.7.0.tgz#d030c4159ff026bedd5c20aa59b146495b860814"
+  integrity sha512-h2UrozBByQhL56XDboj/wjc/5Ny787eLQ++4ql7TecBdbLqbf+tlE62VeXKz30XVMN3iUVYUR/XmM/RIwLIXEg==
+  dependencies:
+    deprecated-react-native-listview "0.0.5"
+    prop-types "^15.6.0"
+
+react-native-picker@^4.3.7:
+  version "4.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-picker/-/react-native-picker-4.3.7.tgz#9842e8c62ff0d8b676e9514d9f9172413c0518a8"
+  integrity sha1-mELoxi/w2LZ26VFNn5FyQTwFGKg=
+
 react-native-progress@^4.0.3:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
@@ -6298,6 +6331,11 @@ react-native-tab-view@^2.14.4:
   version "2.14.4"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.14.4.tgz#740007e62c8723c6813b8c8a05caaaf82c816620"
   integrity sha512-oqkCflPFuZwDTbyY2WaN0377akSsmcttuYACR9LT7htZfO/tKR2Z/ynj1tbv2cz2esGuVICoga9cetN1lPimog==
+
+react-native-text-ticker@^1.0.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-text-ticker/-/react-native-text-ticker-1.5.0.tgz#c3291e770cd4e5c2456e471ea216847f292cf7f2"
+  integrity sha512-jl+4+RAD6Rc9NNh4MG2UGKoW0kb154Z/Ilg3bGWXinhw5RUnRJjh0LfYA1mYB0ZQc9aoHN7v3j+xG7a5o3jBHA==
 
 react-native-vector-icons@^6.6.0:
   version "6.6.0"

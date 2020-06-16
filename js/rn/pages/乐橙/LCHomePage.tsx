@@ -6,7 +6,7 @@ import {HomeHeaderButtonBar} from "./component/homePage/HomeHeaderButtonBar";
 import {WinningListView} from "./component/homePage/WinningListView";
 import {HomeTabView} from "./component/homePage/homeTabView/HomeTabView";
 
-const SLHHomePage = () => {
+const LCHomePage = () => {
     return (
         <ScrollView bounces={false} style={{flex: 1}}>
             <HomeHeaderButtonBar/>
@@ -22,4 +22,4 @@ const SLHHomePage = () => {
     )
 }
 
-export default SLHHomePage
+export default LCHomePage

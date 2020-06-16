@@ -3,8 +3,19 @@ import {FlatList, View, Image, Text, TouchableOpacity} from "react-native";
 import {BaseScreen} from "./component/BaseScreen";
 import {CardView} from "./component/minePage/CardView";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useEffect, useState} from "react";
+import APIRouter from "../../public/network/APIRouter";
 
-const SLHMinePage = () => {
+const LCMinePage = () => {
+    const [buttonList, setButtonList] = useState<any[]>([])
+    useEffect(() => {
+        APIRouter.user_centerList().then((result) => {
+            debugger
+            setButtonList(result)
+            console.log(result);
+        })
+    }, [])
+
     return (
         <BaseScreen style={{backgroundColor: "#ffffff", flex: 1}} screenName={"我的"}>
             <CardView/>
@@ -37,4 +48,4 @@ const SLHMinePage = () => {
     )
 }
 
-export default SLHMinePage
+export default LCMinePage
