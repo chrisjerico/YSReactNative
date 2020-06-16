@@ -9,7 +9,7 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import { defaultProfileButtons } from './helpers/config'
-import FeatureList from './views/FeatureList'
+import FeatureList from '../../views/FeatureList'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
@@ -87,12 +87,6 @@ const LHTMinePage = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  loadingSafeArea: {
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
   safeArea: {
     backgroundColor: '#2894FF',
     flex: 1,

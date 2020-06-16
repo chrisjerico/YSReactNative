@@ -9,15 +9,13 @@ import {
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import useLoginOut from '../../public/hooks/useLoginOut'
-import { PageName } from '../../public/navigation/Navigation'
 import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
 import { IGameIconListItem } from '../../redux/model/home/IGameBean'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
+import BannerBlock from '../../views/BannerBlock'
 import { scale, three } from './helpers/function'
 import Banner from './views/Banner'
 import GameBlock from './views/homes/GameBlock'
@@ -26,14 +24,13 @@ import NavBlock from './views/homes/NavBlock'
 import NoticeBlock from './views/homes/NoticeBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import BannerBlock from '../../views/BannerBlock'
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { uid, avatar, usr, balance }: UGUserModel = userStore
+  const { usr, balance }: UGUserModel = userStore
   const {
     loading,
     banner,
@@ -46,7 +43,6 @@ const BZHHomePage = ({ navigation }) => {
     'game_homeGames',
     'system_onlineCount',
   ])
-  const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       updateUserInfo()
@@ -57,15 +53,11 @@ const BZHHomePage = ({ navigation }) => {
   // data handle
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? []
+  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
   const games = homeGames?.data?.icons ?? []
   const lotterys = games?.filter((ele) => ele?.name == '彩票')[0]?.list?.filter(ele => ele.levelType == '1') ?? []
   const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
   const videos = games?.filter((ele) => ele?.name == '视讯')[0]?.list ?? []
-
-  // const lotterys = games[0]?.list?.filter(ele => ele.levelType == '1') ?? []
-  // const chess = games[1]?.list ?? []
-  // const videos = games[2]?.list ?? []
   const threeLotterys = three(lotterys)
   const threeChess = three(chess)
   const threeVideos = three(videos)
@@ -84,11 +76,6 @@ const BZHHomePage = ({ navigation }) => {
       games: threeVideos
     }
   ]
-  // functions
-  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    // console.log("------userCenterType------", userCenterType)
-    PushHelper.pushUserCenterType(userCenterType)
-  }
 
   const gotoCategory = (
     category: string | number,
