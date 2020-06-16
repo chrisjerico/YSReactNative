@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginBottom: scale(10),
-  },
+  }
 })
 
 export default LHTHomePage

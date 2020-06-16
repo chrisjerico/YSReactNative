@@ -24,7 +24,7 @@ const Scene = ({ data, renderItem }) => {
 
 const TabComponent = ({ renderLeftGame, renderRightGame, leftGames = [], rightGames = [], subTabs = [], containerStyle, }: TabComponentProps) => {
 
-  const initHeight = scale((rightGames[0].length / 3 * 230) + 45)
+  const initHeight = scale((rightGames[0].length / 3 * 200) + 45)
   // set state
   const [index, setIndex] = useState(0)
   const [subIndex, setSubIndex] = useState(0)
@@ -70,8 +70,11 @@ const TabComponent = ({ renderLeftGame, renderRightGame, leftGames = [], rightGa
                   <TabBar
                     {...props}
                     tabStyle={styles.subTabStyle}
-                    labelStyle={styles.subTabLabelStyle}
-                    activeColor={'blue'}
+                    renderLabel={({ route, focused }) => {
+                      return (
+                        <Text style={[{ fontWeight: '600' }, focused ? styles.focusedText : styles.text]}>{route.title}</Text>
+                      );
+                    }}
                   />
                 </ScrollView>
               );
@@ -79,7 +82,7 @@ const TabComponent = ({ renderLeftGame, renderRightGame, leftGames = [], rightGa
             renderScene={SceneMap(subScenes)}
             onIndexChange={(index) => {
               setSubIndex(index)
-              setHeight(scale(rightGames[index].length / 3 * 230) + 45)
+              setHeight(scale(rightGames[index].length / 3 * 200) + 45)
             }}
           />
       }
@@ -117,9 +120,12 @@ const styles = StyleSheet.create({
   subTabStyle: {
     backgroundColor: '#ffffff',
   },
-  subTabLabelStyle: {
-    color: '#000000',
+  focusedText: {
+    color: '#46A3FF'
   },
+  text: {
+    color: '#000000'
+  }
 })
 
 export default TabComponent
