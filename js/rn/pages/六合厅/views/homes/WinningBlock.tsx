@@ -21,7 +21,11 @@ const WinningBlock = ({ containerStyle }: WinningBlockProps) => {
         <Text style={{ paddingLeft: scale(5) }}>{'中奖排行榜'}</Text>
       </View>
       <View style={[styles.container, containerStyle]}>
-        <Text>{'Text'}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <Text style={styles.title}>{'用户名称'}</Text>
+          <Text style={styles.title}>{'游戏名称'}</Text>
+          <Text style={styles.title}>{'投注金额'}</Text>
+        </View>
       </View>
     </>
   )
@@ -37,6 +41,11 @@ const styles = StyleSheet.create({
     paddingRight: scale(15),
     marginTop: scale(10),
   },
+  title: {
+    paddingTop: scale(5),
+    fontWeight: '500',
+    fontSize: scale(25)
+  }
 })
 
 export default WinningBlock

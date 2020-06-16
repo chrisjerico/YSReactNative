@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {
-  RefreshControl,
+  Image, RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -12,6 +12,7 @@ import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import { PageName } from '../../public/navigation/Navigation'
 import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
+import StringUtils from '../../public/tools/StringUtils'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
 import { IGameIconListItem } from '../../redux/model/home/IGameBean'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -29,7 +30,6 @@ import {
   defaultHeadLines,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
-  defaultMainTabs,
   defaultMarkSixLogo,
   defaultNavs,
   defaultNoticeLogo,
@@ -39,6 +39,7 @@ import { scale, three } from './helpers/function'
 import Banner from './views/Banner'
 import BottomTool from './views/BottomTool'
 import BottomToolBlock from './views/homes/BottomToolBlock'
+import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
@@ -47,7 +48,7 @@ import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import StringUtils from '../../public/tools/StringUtils'
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -64,6 +65,7 @@ const LHTHomePage = ({ navigation }) => {
     lotteryNumber,
     categoryList,
     onlineNum,
+    couponListData
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -71,6 +73,7 @@ const LHTHomePage = ({ navigation }) => {
     'lhcdoc_lotteryNumber',
     'lhcdoc_categoryList',
     'system_onlineCount',
+    'system_promotions'
   ])
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
@@ -87,6 +90,7 @@ const LHTHomePage = ({ navigation }) => {
   const headlines = notice?.data?.popup ?? defaultHeadLines
   const leftGames = three(categoryList?.data ?? [])
   const icons = homeGames?.data?.icons ?? []
+  const coupons = couponListData?.data?.list
   const numbers = lotteryNumber?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []
@@ -111,6 +115,8 @@ const LHTHomePage = ({ navigation }) => {
     return games
   })
   const subTabs = icons.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }))
+
+  console.log('------couponListData?.data-------', couponListData)
   // functions
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
     // console.log("------userCenterType------", userCenterType)
@@ -154,6 +160,7 @@ const LHTHomePage = ({ navigation }) => {
               onPressSignOut={loginOut}
               onPressSignIn={PushHelper.pushLogin}
               onPressSignUp={PushHelper.pushRegister}
+              onPressTryPlay={() => { }}
             />
             <ScrollView
               style={[styles.container]}
@@ -235,7 +242,7 @@ const LHTHomePage = ({ navigation }) => {
                   leftGames={leftGames}
                   rightGames={rightGames}
                   renderLeftGame={(item, index) => {
-                    // console.log('--------tab------', item);
+                    console.log('--------renderLeftGame------', item);
                     const { name, icon, show } = item
                     return (
                       <TabButton
@@ -263,6 +270,17 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
+                <CouponBlock
+                  containerStyle={styles.subComponent}
+                  coupons={coupons}
+                  renderCoupon={(item) => {
+                    const { pic, linkCategory, linkPosition } = item
+                    return (
+                      <TouchableOpacity onPress={() => gotoCategory(linkCategory, linkPosition)}>
+                        <Image source={{ uri: pic }} resizeMode={'contain'} style={{ width: '100%', aspectRatio: 2 }} />
+                      </TouchableOpacity>
+                    )
+                  }} />
                 <WinningBlock containerStyle={styles.subComponent} />
                 <BottomToolBlock
                   tools={defaultBottomTools}
