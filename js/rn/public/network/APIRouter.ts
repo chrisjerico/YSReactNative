@@ -43,7 +43,14 @@ class APIRouter {
     }
     static user_info = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');
-        return httpClient.get("c=user&a=info&token=" + user?.token)
+        if (user?.token) {
+            return httpClient.get("c=user&a=info&token=" + user.token)
+        } else {
+            return Promise.reject({
+
+            })
+        }
+
     }
     static user_guestLogin = () => {
         return httpClient.post<LoginModel>("c=user&a=guestLogin", {
