@@ -28,6 +28,7 @@
     "react-hook-form": "^5.7.2",
     "react-native": "0.61.5",
     "react-native-banner-carousel": "^1.0.3",
+    "react-native-android-fragment": "^1.1.1",
     "react-native-code-push": "^6.1.0",
     "react-native-elements": "^1.2.7",
     "react-native-fast-image": "^7.0.2",
