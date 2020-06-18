@@ -8,7 +8,6 @@ import {useFocusEffect} from "@react-navigation/native";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 
 export const RecommendTabView = ({list}: {list: List[]}) => {
-    console.log("tetet", list.slice(3, list.length))
     return (
         <View style={{paddingHorizontal: 8, paddingVertical: 10}}>
             <RecommendMustPlayView list={list.slice(0, 3)}/>

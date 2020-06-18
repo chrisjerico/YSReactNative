@@ -1,23 +1,16 @@
 import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-view";
 import * as React from "react";
+import {useEffect, useState} from "react";
 import {RecommendTabView} from "./recommendTab/RecommendTabView";
 import {LotteryTabView} from "./lotteyTab/LotteryTabView";
 import {GameListView} from "./lotteyTab/GameListView";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
-import {useEffect, useState} from "react";
 import {Icon} from "../../../../../public/network/Model/HomeGamesModel";
 import {View} from "react-native";
-import PushHelper from "../../../../../public/define/PushHelper";
-import {push} from "../../../../../public/navigation/RootNavigation";
-import {PageName} from "../../../../../public/navigation/Navigation";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../redux/store/UGStore";
 
 export const HomeTabView = () => {
-    const {banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading} = useGetHomeInfo()
+    const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "" } = userStore
 
     useEffect(() => {
         if (homeGames && homeGames.data && homeGames.data.icons) {
