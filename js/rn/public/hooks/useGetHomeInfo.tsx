@@ -134,6 +134,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
       }
     })
   }
+  debugger
   return {
     onlineNum,
     redBag,

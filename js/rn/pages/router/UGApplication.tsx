@@ -33,6 +33,7 @@ import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
 import LCTransferPage from "../乐橙/LCTransferPage";
 import {LCPromotionsPage} from "../乐橙/LCPromotionsPage";
+import LXBView from "../乐橙/component/minePage/LXBView";
 
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
@@ -50,8 +51,9 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
 
     render() {
         return (
-            <Router.TabNavigator initialRouteName={PageName.LCPromotionsPage} screenOptions={{tabBarVisible: false}}
+            <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}}
                                  tabBarOptions={this.tabBarOptions}>
+                <Router.TabScreen name={PageName.LXBView} component={LXBView} />
                 <Router.TabScreen name={PageName.LCPromotionsPage} component={LCPromotionsPage}/>
                 <Router.TabScreen name={PageName.LCTransferPage} component={LCTransferPage} />
                 <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage}/>

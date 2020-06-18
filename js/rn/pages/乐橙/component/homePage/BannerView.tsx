@@ -5,9 +5,9 @@ import * as React from "react";
 const width = Dimensions.get("screen").width;
 
 interface BannerViewProps {
-    imgs: string[],
+    list: any[],
 }
-export const BannerView = ({imgs}: BannerViewProps) => {
+export const BannerView = ({list}: BannerViewProps) => {
     return (
         <View style={{height: 200}}>
             <Swiper
@@ -48,14 +48,9 @@ export const BannerView = ({imgs}: BannerViewProps) => {
                     right: 10
                 }}
             >
-                {imgs.map((img) =>
+                {list.map((item) =>
                     <Image style={{width, height: 200}}
-                           source={{uri: img}}/>)}
-
-                <Image style={{width, height: 200}}
-                       source={{uri: 'https://www.changsclub.com/wp-content/uploads/2016/01/free.jpg'}}/>
-                <Image style={{width, height: 200}}
-                       source={{uri: 'https://osmhow2s.files.wordpress.com/2018/01/free-converted-01.png?w=2280&h=1762'}}/>
+                           source={{uri: item.pic}}/>)}
             </Swiper>
         </View>
     )

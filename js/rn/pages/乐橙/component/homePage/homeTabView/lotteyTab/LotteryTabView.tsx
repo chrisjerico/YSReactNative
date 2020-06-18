@@ -1,6 +1,7 @@
 import * as React from "react";
 import {FlatList, Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import {HotLotteryView} from "./HotLotteryView";
+import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 
 const lottery = [
     {
@@ -19,7 +20,7 @@ const lottery = [
     }
 ]
 
-export const LotteryTabView = () => {
+export const LotteryTabView = ({list}: {list: List[]}) => {
     return (
         <View>
             <View>

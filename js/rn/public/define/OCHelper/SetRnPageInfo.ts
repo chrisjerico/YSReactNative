@@ -77,7 +77,42 @@ export function setRnPageInfo() {
   //   },
   // ]);
   // return;
-
+  if (Skin1.skitType.indexOf('默认') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LCHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      // {
+      //   // 登录
+      //   vcName: 'UGLoginViewController',
+      //   rnName: PageName.ZLLoginPage,
+      //   fd_prefersNavigationBarHidden: true,
+      //   允许游客访问: true,
+      //   允许未登录访问: true,
+      // },
+      // {
+      //   // 注册
+      //   vcName: 'UGRegisterViewController',
+      //   rnName: PageName.ZLRegisterPage,
+      //   fd_prefersNavigationBarHidden: true,
+      //   允许游客访问: true,
+      //   允许未登录访问: true,
+      // },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LCMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) {
     pages = pages.concat([

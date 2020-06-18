@@ -14,6 +14,7 @@ export enum PageName {
   LCMinePage = 'LCMinePage',
   LCTransferPage = 'LCTransferPage',
   LCPromotionsPage = 'LCPromotionsPage',
+  LXBView = 'LXBView',
   UpdateVersionPage = 'UpdateVersionPage',
   ZHTYHomePage = 'ZHTYHomePage',
   ZHTYLoginPage = 'ZHTYLoginPage',

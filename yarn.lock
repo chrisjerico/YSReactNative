@@ -6332,7 +6332,7 @@ react-native-tab-view@^2.14.4:
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.14.4.tgz#740007e62c8723c6813b8c8a05caaaf82c816620"
   integrity sha512-oqkCflPFuZwDTbyY2WaN0377akSsmcttuYACR9LT7htZfO/tKR2Z/ynj1tbv2cz2esGuVICoga9cetN1lPimog==
 
-react-native-text-ticker@^1.0.0:
+react-native-text-ticker@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/react-native-text-ticker/-/react-native-text-ticker-1.5.0.tgz#c3291e770cd4e5c2456e471ea216847f292cf7f2"
   integrity sha512-jl+4+RAD6Rc9NNh4MG2UGKoW0kb154Z/Ilg3bGWXinhw5RUnRJjh0LfYA1mYB0ZQc9aoHN7v3j+xG7a5o3jBHA==

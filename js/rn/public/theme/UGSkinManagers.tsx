@@ -49,7 +49,7 @@ export default class UGSkinManagers extends UGThemeColor {
       12: '综合体育',
       14: `六合厅${mobileTemplateStyle}`,
       16: `尊龙`,
-      30: `乐橙`,
+      23: `乐橙`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];

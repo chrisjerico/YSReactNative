@@ -1,7 +1,7 @@
 import {Text, TouchableOpacity, View} from "react-native";
 import * as React from "react";
 
-export const QuickSelect = ({setAmount}: { setAmount: (text: string) => void }) => {
+export const QuickSelectView = ({setAmount}: { setAmount: (text: string) => void }) => {
     return (
         <>
             <View style={{paddingTop: 10}}>

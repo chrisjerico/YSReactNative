@@ -5,13 +5,15 @@ import {RecommendLoveView} from "./RecommendLoveView";
 import {RecommendMustPlayView} from "./RecommendMustPlayView";
 import {useEffect, useRef} from "react";
 import {useFocusEffect} from "@react-navigation/native";
+import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 
-export const RecommendTabView = () => {
+export const RecommendTabView = ({list}: {list: List[]}) => {
+    console.log("tetet", list.slice(3, list.length))
     return (
         <View style={{paddingHorizontal: 8, paddingVertical: 10}}>
-            <RecommendMustPlayView/>
+            <RecommendMustPlayView list={list.slice(0, 3)}/>
             <MonthlyBonus bonus={'10,769,492.44'}/>
-            <RecommendLoveView/>
+            <RecommendLoveView list={list.slice(3, list.length)}/>
         </View>
     )
 }
