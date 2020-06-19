@@ -1,6 +1,7 @@
 import {FlatList, Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const RecommendLoveView = ({list}: { list: List[] }) => {
     return (
@@ -18,8 +19,10 @@ export const RecommendLoveView = ({list}: { list: List[] }) => {
                 renderItem={({item}) => (
                     <TouchableWithoutFeedback style={{flex: 1}} onPress={() => {
                     }}>
-                        <Image style={{flex: 1, height: 100, width: 100, margin: 5, resizeMode: 'stretch'}}
-                               source={{uri: item.icon}}/>
+                        {item.icon == "" ?
+                        <Icon style={{flex: 1, height: 100, width: 100, margin: 5}} name={'image-inverted'} /> :
+                            <Image style={{flex: 1, height: 100, width: 100, margin: 5, resizeMode: 'stretch'}}
+                                source={{uri: item.icon}}/>}
                     </TouchableWithoutFeedback>
                 )}/>
         </>

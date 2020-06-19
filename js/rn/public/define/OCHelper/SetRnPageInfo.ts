@@ -77,7 +77,7 @@ export function setRnPageInfo() {
   //   },
   // ]);
   // return;
-  if (Skin1.skitType.indexOf('默认') != -1) {
+  if (Skin1.skitType.indexOf('乐橙') != -1) {
     pages = pages.concat([
       {
         // 首页

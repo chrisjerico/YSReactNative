@@ -1,28 +1,17 @@
 import * as React from "react";
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 import {FlatList, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {BaseScreen} from "./component/BaseScreen";
 import {CardView} from "./component/minePage/CardView";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {IGlobalState} from "../../redux/store/UGStore";
-import {useDimensions} from "@react-native-community/hooks";
-import UGUserModel from "../../redux/model/全局/UGUserModel";
-import {ActionType} from "../../redux/store/ActionTypes";
-import useLoginOut from "../../public/hooks/useLoginOut";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import PushHelper from "../../public/define/PushHelper";
 
 const LCMinePage = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const {uid = "", balance, fullName, curLevelGrade} = userStore
-    const {width,} = useDimensions().window
-    const dispatch = useDispatch()
-    const updateUserInfo = useCallback(
-        (props: UGUserModel) => dispatch({type: ActionType.UpdateUserInfo, props: props}),
-        [dispatch]
-    )
-    const {loginOut} = useLoginOut()
+    const {uid = ""} = userStore
     const {UGUserCenterItem} = useMemberItems()
     useEffect(() => {
         userStore && uid == "" && PushHelper.pushLogin()
