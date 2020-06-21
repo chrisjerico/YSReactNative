@@ -63,6 +63,7 @@ const LHTMinePage = ({ navigation }) => {
           onPressTaskCenter={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
+          onPressReload={updateUserInfo}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (

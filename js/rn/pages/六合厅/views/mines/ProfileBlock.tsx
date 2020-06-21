@@ -12,8 +12,9 @@ interface ProfileBlockProps {
   level?: string;
   balance: string;
   renderProfileButton: (item: any, index: number) => any;
-  onPressDaySign: () => any
-  onPressTaskCenter: () => any
+  onPressDaySign: () => any;
+  onPressTaskCenter: () => any;
+  onPressReload: () => any;
 }
 
 const Tag = ({ title, color, onPress }) => (
@@ -42,14 +43,14 @@ const ProfileBlock = ({
   profileButtons = [],
   renderProfileButton,
   onPressDaySign,
-  onPressTaskCenter
+  onPressTaskCenter,
+  onPressReload,
 }: ProfileBlockProps) => {
-
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
+    outputRange: ['0deg', '360deg'],
   })
 
   return (
@@ -64,7 +65,11 @@ const ProfileBlock = ({
           />
           <View style={{ paddingLeft: scale(30) }}>
             <View
-              style={{ flexDirection: 'row', flex: 1.5, alignItems: 'flex-end' }}
+              style={{
+                flexDirection: 'row',
+                flex: 1.5,
+                alignItems: 'flex-end',
+              }}
             >
               <Text
                 style={{
@@ -77,26 +82,37 @@ const ProfileBlock = ({
               </Text>
               {/* <Badge status={'error'} value={level} textStyle={{ fontSize: scale(20) }} /> */}
             </View>
-            <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
+            <View
+              style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
+            >
               <Text>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b', marginRight: scale(10) }}>{balance}</Text>
-              <Animated.View style={{ transform: [{ rotateZ: spinDeg }] }} >
-                <TouchableOpacity onPress={() => {
-                  if (!reload.current) {
-                    reload.current = true
-                    console.log("-----動畫-----")
-                    Animated.timing(spinValue, {
-                      toValue: 1,
-                      duration: 3000,
-                      easing: Easing.linear,
-                      useNativeDriver: true
-                    }).start(() => {
-                      setSpinValue(new Animated.Value(0))
-                      reload.current = false
-                    })
-                  }
-                }}>
-                  <Icon name={'reload1'} type={'antdesign'} size={scale(20)} color={'#ff861b'} />
+              <Text style={{ color: '#ff861b', marginRight: scale(10) }}>
+                {balance}
+              </Text>
+              <Animated.View style={{ transform: [{ rotateZ: spinDeg }] }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!reload.current) {
+                      reload.current = true
+                      onPressReload && onPressReload()
+                      Animated.timing(spinValue, {
+                        toValue: 1,
+                        duration: 3000,
+                        easing: Easing.linear,
+                        useNativeDriver: true,
+                      }).start(() => {
+                        setSpinValue(new Animated.Value(0))
+                        reload.current = false
+                      })
+                    }
+                  }}
+                >
+                  <Icon
+                    name={'reload1'}
+                    type={'antdesign'}
+                    size={scale(20)}
+                    color={'#ff861b'}
+                  />
                 </TouchableOpacity>
               </Animated.View>
             </View>
@@ -110,7 +126,11 @@ const ProfileBlock = ({
               alignItems: 'flex-end',
             }}
           >
-            <Tag title={'任务中心'} color={'rgb(91, 91, 220)'} onPress={onPressTaskCenter} />
+            <Tag
+              title={'任务中心'}
+              color={'rgb(91, 91, 220)'}
+              onPress={onPressTaskCenter}
+            />
           </View>
           <View
             style={{
@@ -119,7 +139,11 @@ const ProfileBlock = ({
               alignItems: 'flex-end',
             }}
           >
-            <Tag title={'每日签到'} color={'#FFD306'} onPress={onPressDaySign} />
+            <Tag
+              title={'每日签到'}
+              color={'#FFD306'}
+              onPress={onPressDaySign}
+            />
           </View>
         </View>
       </View>
