@@ -1,9 +1,9 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useRef, useState } from 'react'
+import { Animated, Easing, StyleSheet, Text, View } from 'react-native'
 import { Avatar, Icon } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../../../helpers/function'
 import PushHelper from '../../../../public/define/PushHelper'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface ProfileBlockProps {
   profileButtons: any[];
@@ -43,7 +43,16 @@ const ProfileBlock = ({
   renderProfileButton,
   onPressDaySign,
   onPressTaskCenter
-}: ProfileBlockProps) => (
+}: ProfileBlockProps) => {
+
+  const [spinValue, setSpinValue] = useState(new Animated.Value(0))
+  const reload = useRef(false)
+  const spinDeg = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  })
+
+  return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
         <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
@@ -60,7 +69,7 @@ const ProfileBlock = ({
               <Text
                 style={{
                   fontWeight: '500',
-                  fontSize: scale(25),
+                  fontSize: scale(20),
                   paddingRight: scale(5),
                 }}
               >
@@ -70,7 +79,26 @@ const ProfileBlock = ({
             </View>
             <View style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
               <Text>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b' }}>{balance}</Text>
+              <Text style={{ color: '#ff861b', marginRight: scale(10) }}>{balance}</Text>
+              <Animated.View style={{ transform: [{ rotateZ: spinDeg }] }} >
+                <TouchableOpacity onPress={() => {
+                  if (!reload.current) {
+                    reload.current = true
+                    console.log("-----動畫-----")
+                    Animated.timing(spinValue, {
+                      toValue: 1,
+                      duration: 3000,
+                      easing: Easing.linear,
+                      useNativeDriver: true
+                    }).start(() => {
+                      setSpinValue(new Animated.Value(0))
+                      reload.current = false
+                    })
+                  }
+                }}>
+                  <Icon name={'reload1'} type={'antdesign'} size={scale(20)} color={'#ff861b'} />
+                </TouchableOpacity>
+              </Animated.View>
             </View>
           </View>
         </View>
@@ -100,7 +128,7 @@ const ProfileBlock = ({
       </View>
     </View>
   )
-
+}
 const styles = StyleSheet.create({
   container: {
     width: '100%',
