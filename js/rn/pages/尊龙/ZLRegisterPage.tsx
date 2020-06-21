@@ -31,7 +31,7 @@ enum FormName {
     smsCode = "smsCode", // 短信验证码
     imgCode = "imgCode", // 字母验证码
     slideCode = "slideCode", // 滑动验证码,
-    email = "email"
+    email = "email",
 }
 const ZLRegisterPage = () => {
     const { control, register, getValues, errors, triggerValidation, handleSubmit } = useForm()
@@ -53,7 +53,7 @@ const ZLRegisterPage = () => {
         pass_length_min, // 注册密码最小长度
         pass_length_max, // 注册密码最大长度,
         agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
-        // smsVerify: boolean; // 手机短信验证
+        smsVerify // 手机短信验证
     } = SystemStore
     const onSubmit = async (requestData) => {
         try {
@@ -324,8 +324,10 @@ const ZLRegisterPage = () => {
                 <ZLRegInput iconName={"qq"} message={"请输入QQ帐号"} placeholder={"请输入QQ帐号"} regConfig={reg_qq} control={control} name={FormName.qq} />
                 <ZLRegInput iconName={"wechat"} message={"请输入微信号"} placeholder={"请输入微信号"} regConfig={reg_wx} control={control} name={FormName.wx} />
                 <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机号码"} placeholder={"请输入手机号码"} regConfig={reg_phone} control={control} name={FormName.phone} />
+                <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机短信验证码"} placeholder={"请输入手机短信验证码"} regConfig={smsVerify} control={control} name={FormName.smsCode} />
                 <ZLRegInput iconName={"mail"} iconType={'entypo'} message={"请输入邮箱地址"} placeholder={"请输入邮箱地址"} regConfig={reg_email} control={control} name={FormName.email} />
                 {getVcode()}
+
                 {agentRegbutton == "1" ? <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
                         setRegType('user')
@@ -377,14 +379,29 @@ const Header = () => {
 }
 const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPassword, iconType = "font-awesome", iconName = "" }:
     {
-        regConfig: number | string, name: FormName, control: Control<Record<string, any>>,
+        regConfig: number | string | boolean, name: FormName, control: Control<Record<string, any>>,
         placeholder: string, message: string,
         isPassword?: boolean,
         iconType?: string,
         iconName: string
     }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
-    if (regConfig == 0 || regConfig == "0") {
+    const requestSms = async () => {
+        try {
+            const phone = control.getValues(FormName.phone)
+            const { data, status } = await APIRouter.secure_smsCaptcha(phone)
+            if (data?.code != 0) {
+                throw { message: data.msg }
+            } else {
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg]);
+            }
+
+        } catch (error) {
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message]);
+        }
+
+    }
+    if (regConfig == 0 || regConfig == "0" || regConfig == false) {
         return null
     } else {
         return <View style={{
@@ -414,6 +431,9 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
                 defaultValue=""
                 placeholder={placeholder + (regConfig == 1 || regConfig == '1' ? "(选填)" : "")}
             />
+            {name == FormName.smsCode ? <TouchableOpacity onPress={requestSms}>
+                <Text>获取验证码</Text>
+            </TouchableOpacity> : null}
             {isPassword ? <TouchableOpacity
                 style={{}}
                 onPress={() => {

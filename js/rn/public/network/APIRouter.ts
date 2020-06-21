@@ -98,6 +98,9 @@ class APIRouter {
             }
         })
     }
+    static secure_smsCaptcha = async (phone) => {
+        return httpClient.post('c=secure&a=smsCaptcha', { phone: phone },);
+    }
 
 
     static user_reg = async (params: {
