@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import {
-  Image, RefreshControl,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import { scale, three } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -35,9 +36,6 @@ import {
   defaultNoticeLogo,
   defaultNotices
 } from './helpers/config'
-import { scale, three } from './helpers/function'
-import Banner from './views/Banner'
-import BottomTool from './views/BottomTool'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
@@ -48,7 +46,7 @@ import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler'
+import TouchableImage from './views/TouchableImage'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -56,7 +54,6 @@ const LHTHomePage = ({ navigation }) => {
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
-
   const {
     loading,
     banner,
@@ -116,10 +113,8 @@ const LHTHomePage = ({ navigation }) => {
   })
   const subTabs = icons.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }))
 
-  console.log('------couponListData?.data-------', couponListData)
   // functions
   const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    // console.log("------userCenterType------", userCenterType)
     PushHelper.pushUserCenterType(userCenterType)
   }
 
@@ -127,13 +122,10 @@ const LHTHomePage = ({ navigation }) => {
     category: string | number,
     position: string | number
   ) => {
-    // console.log("-----category-----", category)
-    // console.log("-----position-----", position)
     PushHelper.pushCategory(category, position)
   }
 
   const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    // console.log("---------game---------", game)
     PushHelper.pushHomeGame(game)
   }
 
@@ -173,7 +165,7 @@ const LHTHomePage = ({ navigation }) => {
                 renderBanner={(item, index) => {
                   const { linkCategory, linkPosition, pic } = item
                   return (
-                    <Banner
+                    <TouchableImage
                       key={index}
                       pic={pic}
                       onPress={() => {
@@ -242,7 +234,6 @@ const LHTHomePage = ({ navigation }) => {
                   leftGames={leftGames}
                   rightGames={rightGames}
                   renderLeftGame={(item, index) => {
-                    console.log('--------renderLeftGame------', item);
                     const { name, icon, show } = item
                     return (
                       <TabButton
@@ -257,7 +248,6 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                   renderRightGame={(item, index) => {
-                    // console.log('--------tab------', item);
                     const { logo, icon, title, show } = item
                     return (
                       <TabButton
@@ -273,12 +263,10 @@ const LHTHomePage = ({ navigation }) => {
                 <CouponBlock
                   containerStyle={styles.subComponent}
                   coupons={coupons}
-                  renderCoupon={(item) => {
+                  renderCoupon={(item, index) => {
                     const { pic, linkCategory, linkPosition } = item
                     return (
-                      <TouchableOpacity onPress={() => gotoCategory(linkCategory, linkPosition)}>
-                        <Image source={{ uri: pic }} resizeMode={'contain'} style={{ width: '100%', aspectRatio: 2 }} />
-                      </TouchableOpacity>
+                      <TouchableImage key={index} pic={pic} containerStyle={styles.couponBanner} onPress={() => gotoCategory(linkCategory, linkPosition)} />
                     )
                   }} />
                 <WinningBlock containerStyle={styles.subComponent} />
@@ -287,9 +275,13 @@ const LHTHomePage = ({ navigation }) => {
                   renderBottomTool={(item, index) => {
                     const { logo, userCenterType } = item
                     return (
-                      <BottomTool
+                      <TouchableImage
                         key={index}
-                        logo={logo}
+                        containerStyle={{
+                          width: '32%',
+                          aspectRatio: 165 / 85,
+                        }}
+                        pic={logo}
                         onPress={() => {
                           if (userCenterType) {
                             gotoUserCenter(userCenterType)
@@ -329,6 +321,10 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginBottom: scale(10),
+  },
+  couponBanner: {
+    width: '100%',
+    aspectRatio: 2
   }
 })
 

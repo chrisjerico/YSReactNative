@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { MarqueeVertical } from 'react-native-marquee-ab';
-import Icon from 'react-native-vector-icons/AntDesign';
 import StringUtils from '../../../../public/tools/StringUtils';
 import { INoticePop } from '../../../../redux/model/home/INoticeBean';
-import { scale } from '../../helpers/function';
+import { scale } from '../../../../helpers/function';
+import FastImage from 'react-native-fast-image';
+import { Icon } from 'react-native-elements'
 
 interface HeadlineBlockProps {
   containerStyle?: ViewStyle;
@@ -21,13 +22,13 @@ const HeadlineBlock = ({ onPressHeadline, headlines, headLineLogo = '', containe
     display ?
       <View style={[styles.container, containerStyle]}>
         <View style={{ flex: 70 }}>
-          <Image resizeMode={'contain'} style={{ width: '90%', height: '90%' }} source={{ uri: headLineLogo }} />
+          <FastImage resizeMode={'contain'} style={{ width: '90%', height: '90%' }} source={{ uri: headLineLogo }} />
         </View>
         <View style={{ flex: 300 }}>
           <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={onPressHeadline} speed={60} onPressText={onPressHeadline} />
         </View>
         <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
-          <Icon name={'close'} color={'#ffffff'} />
+          <Icon type={'antdesign'} name={'close'} color={'#ffffff'} size={scale(12)} />
         </TouchableOpacity>
       </View> : null
   );

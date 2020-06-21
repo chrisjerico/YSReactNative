@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { scale } from '../helpers/function';
+import { ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { scale } from '../../../helpers/function';
 
 interface TabButtonProps {
   logo?: string;
@@ -26,7 +27,7 @@ const TabButton = (props: TabButtonProps) => {
             backgroundColor: backgroundColor ? backgroundColor : '#ACD6FF',
           },
         ]}>
-        <Image style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'contain'} />
+        <FastImage style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'contain'} />
       </View>
       <View style={styles.titleContainer}>
         <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>

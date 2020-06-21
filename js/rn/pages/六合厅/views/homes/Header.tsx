@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-elements';
-import { scale } from '../../helpers/function';
+import FastImage from 'react-native-fast-image';
+import { scale } from '../../../../helpers/function';
 
 interface HeaderProps {
   name: string;
@@ -19,7 +20,7 @@ const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLog
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
-        <Image resizeMode={'contain'} style={styles.image} source={{ uri: leftLogo }} />
+        <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: leftLogo }} />
       </View>
       <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
         {showLogout ? (
@@ -33,11 +34,11 @@ const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLog
               textStyle={{ color: '#2894FF', fontSize: scale(20) }}
             />
             <Text style={styles.text}>{' | '}</Text>
-            <Image style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+            <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
           </>
         ) : (
             <>
-              <Image style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+              <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
               <Text style={styles.text}>{' | '}</Text>
               <Text style={styles.text} onPress={onPressSignIn}>
                 {'登入'}

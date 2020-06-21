@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { scale } from '../../helpers/function'
+import { scale } from '../../../../helpers/function';
 import { Icon } from 'react-native-elements'
 
 interface WinningBlockProps {

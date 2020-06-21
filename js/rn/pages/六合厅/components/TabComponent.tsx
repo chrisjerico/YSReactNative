@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
-import { scale } from '../helpers/function'
+import { scale } from '../../../helpers/function'
+import Icons from 'react-native-vector-icons/FontAwesome5'
 
 interface TabComponentProps {
   containerStyle?: ViewStyle;
@@ -24,7 +25,7 @@ const Scene = ({ data, renderItem }) => {
 
 const TabComponent = ({ renderLeftGame, renderRightGame, leftGames = [], rightGames = [], subTabs = [], containerStyle, }: TabComponentProps) => {
 
-  const initHeight = scale((rightGames[0].length / 3 * 200) + 45)
+  const initHeight = scale(rightGames[0] ? (rightGames[0].length / 3 * 200) + 45 : 0)
   // set state
   const [index, setIndex] = useState(0)
   const [subIndex, setSubIndex] = useState(0)
@@ -50,11 +51,13 @@ const TabComponent = ({ renderLeftGame, renderRightGame, leftGames = [], rightGa
         <TouchableOpacity style={[styles.mainTab, {
           backgroundColor: index == 0 ? '#ff6b1b' : '#7B7B7B'
         }]} onPress={() => setIndex(0)}>
+          <Icons name={'fire'} color={'#ffffff'} style={{ paddingRight: scale(5) }} size={scale(20)} />
           <Text style={styles.tabText}>{'热门资讯'}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.mainTab, {
           backgroundColor: index == 0 ? '#7B7B7B' : '#ff6b1b'
         }]} onPress={() => setIndex(1)}>
+          <Icons name={'award'} color={'#ffffff'} style={{ paddingRight: scale(5) }} size={scale(20)} />
           <Text style={styles.tabText}>{'购彩大厅'}</Text>
         </TouchableOpacity>
       </View>
@@ -98,15 +101,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   mainTab: {
-    width: '45%',
+    width: '49%',
     backgroundColor: '#ff6b1b',
     borderTopRightRadius: scale(10),
     borderTopLeftRadius: scale(10),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   tabText: {
-    color: '#ffffff'
+    color: '#ffffff',
+    paddingLeft: scale(5)
   },
   scene: {
     flex: 1,

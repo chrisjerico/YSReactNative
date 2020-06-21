@@ -1,8 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { scale } from '../../helpers/function';
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Button, Icon } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
+import { scale } from '../../../../helpers/function';
 
 interface NavBlockProps {
   customerServiceLogo: string;
@@ -47,14 +47,14 @@ const NavBlock = ({
       <View style={styles.topContainer}>
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
-          <Text>{'0.00'}</Text>
-          <Icon name={'autorenew'} size={30} color={'#4F8EF7'} />
+          <Icon type={'material'} name={'attach-money'} size={scale(25)} color={'#ff8610'} />
+          <Text style={{ color: '#ff8610' }}>{'0.00'}</Text>
         </View>
         <View style={styles.topRightContainer}>
           <Button title={'充值'} buttonStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />
           <Button title={'提现'} buttonStyle={[styles.button, { backgroundColor: '#4285f4' }]} titleStyle={styles.title} onPress={onPressGetPoint} />
           <TouchableOpacity style={styles.smileImageContainer} onPress={onPressSmileLogo}>
-            <Image
+            <FastImage
               style={styles.smileImage}
               source={{
                 uri: customerServiceLogo,
@@ -65,7 +65,7 @@ const NavBlock = ({
       </View>
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
-          <Image style={styles.recommendImage} source={{ uri: markSixLogo }} />
+          <FastImage style={styles.recommendImage} source={{ uri: markSixLogo }} />
           <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
         </View>
         <View style={styles.awardsContainer}>
@@ -76,7 +76,7 @@ const NavBlock = ({
       </View>
       <View style={styles.lotterysCintainer}>{lotterys.map(renderLottery)}</View>
       <TouchableOpacity style={{ flex: 90, alignItems: 'center' }} onPress={onPressAd}>
-        <Image resizeMode={'contain'} style={styles.adImage} source={{ uri: advertisement }} />
+        <FastImage resizeMode={'contain'} style={styles.adImage} source={{ uri: advertisement }} />
       </TouchableOpacity>
       <View style={styles.navsContainer}>{navs.map(renderNav)}</View>
     </View>

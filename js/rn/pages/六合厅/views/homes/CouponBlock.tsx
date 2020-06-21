@@ -1,6 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, ViewStyle, Text, TouchableOpacity } from 'react-native'
-import { scale } from '../../helpers/function'
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { scale } from '../../../../helpers/function'
 
 interface CouponBlock {
   containerStyle?: ViewStyle
@@ -11,7 +11,7 @@ interface CouponBlock {
 
 const CouponBlock = ({
   containerStyle,
-  coupons,
+  coupons = [],
   renderCoupon,
   onPress
 }: CouponBlock) => {
@@ -24,7 +24,7 @@ const CouponBlock = ({
       </View>
       <View style={styles.couponsContainer}>
         {
-          coupons.map(renderCoupon)
+          coupons?.map(renderCoupon)
         }
       </View>
     </View>)

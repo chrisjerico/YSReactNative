@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { scale } from '../helpers/function';
+import { scale } from '../../../helpers/function';
 
 interface LotteryBallProps {
   score?: number | string;

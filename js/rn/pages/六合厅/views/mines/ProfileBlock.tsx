@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Badge, Icon } from 'react-native-elements';
+import { scale } from '../../../../helpers/function';
 import PushHelper from '../../../../public/define/PushHelper';
-import { scale } from '../../helpers/function';
 
 interface ProfileBlockProps {
   profileButtons: any[];
