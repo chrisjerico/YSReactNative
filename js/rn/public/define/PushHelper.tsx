@@ -43,8 +43,8 @@ export default class PushHelper {
   }
   static pushWheel(turntableList: TurntableListModel) {
     if (Platform.OS != 'ios') return;
-    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.data[0]);
-
+    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+    debugger
     OCHelper.call('DZPMainView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(0, 0, AppDefine.width * 0.8, AppDefine.height * 0.8)], [turntableListModel]);
 
   }
