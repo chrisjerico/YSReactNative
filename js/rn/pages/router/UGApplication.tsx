@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import * as React from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { PageName } from '../../public/navigation/Navigation';
 import { navigationRef } from '../../public/navigation/RootNavigation';
@@ -32,17 +32,19 @@ import GDBMinePage from '../金星黑/GDBMinePage';
 import GDLoginPage from '../金星黑/GDLoginPage';
 import PromotionListPage from '../common/PromotionListPage';
 // TabbarController
-class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
+class TabBarController extends Component<{
+  navigation: StackNavigationProp<{}>,
+}> {
   newProps = {
     hideNavBar: true,
     hideTabBar: true,
-  };
-  tabBarOptions: BottomTabBarOptions = {};
+  }
+  tabBarOptions: BottomTabBarOptions = {}
 
   constructor(props: any) {
-    super(props);
-    const { navigation } = this.props;
-    navigation.setOptions({ headerStyle: { height: 0 } });
+    super(props)
+    const { navigation } = this.props
+    navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
   render() {
@@ -68,14 +70,13 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
         <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
       </Router.TabNavigator>
-    );
+    )
   }
 }
 const UGApplication = () => {
   return (
     <Provider store={UGStore.store}>
-      <NavigationContainer
-        ref={navigationRef}>
+      <NavigationContainer ref={navigationRef}>
         <Router.StackNavigator headerMode="screen">
           <Router.StackScreen name="Tabbar" component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
@@ -85,7 +86,7 @@ const UGApplication = () => {
         </Router.StackNavigator>
       </NavigationContainer>
     </Provider>
-  );
-};
-export default UGApplication;
+  )
+}
+export default UGApplication
 // NavController

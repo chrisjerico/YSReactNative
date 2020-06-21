@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { scale } from '../helpers/function';
+import { ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { scale } from '../../../helpers/function';
 
 interface TabButtonProps {
   logo?: string;
@@ -16,7 +17,7 @@ interface TabButtonProps {
 }
 
 const TabButton = (props: TabButtonProps) => {
-  const { backgroundColor, imageStyle, logo = '', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, show = true } = props;
+  const { backgroundColor, imageStyle, logo = 'logo', mainTitle = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, show = true } = props;
   return (
     <TouchableOpacity style={[styles.conatiner, show ? {} : { opacity: 0 }]} activeOpacity={show ? 0.2 : 0} onPress={onPress}>
       <View
@@ -26,11 +27,11 @@ const TabButton = (props: TabButtonProps) => {
             backgroundColor: backgroundColor ? backgroundColor : '#ACD6FF',
           },
         ]}>
-        <Image style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'contain'} />
+        <FastImage style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'cover'} />
       </View>
       <View style={styles.titleContainer}>
         <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>
-        {showSubTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+        {showSubTitle && <Text style={styles.subTitle} numberOfLines={1}>{subTitle}</Text>}
       </View>
     </TouchableOpacity>
   );
@@ -39,14 +40,14 @@ const TabButton = (props: TabButtonProps) => {
 const styles = StyleSheet.create({
   conatiner: {
     width: scale(150),
-    aspectRatio: 150 / 200,
+    height: scale(200),
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   circleContainer: {
-    width: '80%',
+    width: '70%',
     aspectRatio: 1,
-    borderRadius: scale(85),
+    borderRadius: scale(150),
     justifyContent: 'center',
     alignItems: 'center',
   },
