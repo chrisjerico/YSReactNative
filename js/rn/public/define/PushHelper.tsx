@@ -6,6 +6,8 @@ import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { OCHelper } from './OCHelper/OCHelper';
 import { HomeGamesModel } from '../network/Model/HomeGamesModel';
 import { NSValue } from './OCHelper/OCBridge/OCCall';
+import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
+import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
 export default class PushHelper {
   // 登出
@@ -33,7 +35,18 @@ export default class PushHelper {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
+  static pushRedBag(redBag: RedBagDetailActivityModel) {
+    if (Platform.OS != 'ios') return;
+    const redbagModel = Object.assign({ clsName: 'UGRedEnvelopeModel' }, redBag?.data);
+    OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
+  }
+  static pushWheel(turntableList: TurntableListModel) {
+    if (Platform.OS != 'ios') return;
+    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.data[0]);
 
+    OCHelper.call('DZPMainView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(0, 0, AppDefine.width * 0.8, AppDefine.height * 0.8)], [turntableListModel]);
+
+  }
   // 去彩票下注页
   static pushLottery() { }
 

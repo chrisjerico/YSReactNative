@@ -10,8 +10,9 @@ import { NoticeModel } from './Model/NoticeModel';
 import { OnlineModel } from './Model/OnlineModel';
 import { RankListModel } from './Model/RankListModel';
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
+import { TurntableListModel } from './Model/TurntableListModel';
 import { RegisterModel } from './Model/RegisterModel';
-import { LhcdocCategoryListModel} from './Model/LhcdocCategoryListModel'
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -52,6 +53,9 @@ class APIRouter {
     }
     static activity_redBagDetail = () => {
         return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
+    }
+    static activity_turntableList = () => {
+        return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
     }
     static system_floatAds = () => {
         return httpClient.get<FloatADModel>("c=system&a=floatAds")
@@ -111,18 +115,18 @@ class APIRouter {
     }
 
     static lhcdoc_categoryList = async () => {
-      return httpClient.get<LhcdocCategoryListModel>('c=lhcdoc&a=categoryList');
+        return httpClient.get<LhcdocCategoryListModel>('c=lhcdoc&a=categoryList');
     };
-  
+
     static lhcdoc_lotteryNumber = async () => {
-      return httpClient.get('c=lhcdoc&a=lotteryNumber');
+        return httpClient.get('c=lhcdoc&a=lotteryNumber');
     };
 
     static user_centerList = async () => {
-      return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+        return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
     };
-  
-  
+
+
 }
 export default APIRouter
 
