@@ -27,11 +27,11 @@ const TabButton = (props: TabButtonProps) => {
             backgroundColor: backgroundColor ? backgroundColor : '#ACD6FF',
           },
         ]}>
-        <FastImage style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'contain'} />
+        <FastImage style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={'cover'} />
       </View>
       <View style={styles.titleContainer}>
         <Text>{mainTitle.length > 0 ? mainTitle : '?'}</Text>
-        {showSubTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
+        {showSubTitle && <Text style={styles.subTitle} numberOfLines={1}>{subTitle}</Text>}
       </View>
     </TouchableOpacity>
   );
@@ -40,14 +40,14 @@ const TabButton = (props: TabButtonProps) => {
 const styles = StyleSheet.create({
   conatiner: {
     width: scale(150),
-    aspectRatio: 150 / 200,
+    height: scale(200),
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   circleContainer: {
-    width: '80%',
+    width: '70%',
     aspectRatio: 1,
-    borderRadius: scale(85),
+    borderRadius: scale(150),
     justifyContent: 'center',
     alignItems: 'center',
   },

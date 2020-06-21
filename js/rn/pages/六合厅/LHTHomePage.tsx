@@ -61,6 +61,7 @@ const LHTHomePage = ({ navigation }) => {
     onlineNum,
     couponListData,
     redBag,
+    rankList
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -70,6 +71,7 @@ const LHTHomePage = ({ navigation }) => {
     'system_onlineCount',
     'system_promotions',
     'activity_redBagDetail',
+    'system_rankingList'
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -116,6 +118,9 @@ const LHTHomePage = ({ navigation }) => {
     title: StringUtils.getInstance().deleteHtml(tab.name),
   })) ?? []
 
+  console.log('-----rankList-----', rankList?.data)
+  console.log('-----rankList-----', categoryList?.data)
+  console.log("------leftGames------", leftGames)
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -218,15 +223,17 @@ const LHTHomePage = ({ navigation }) => {
                   leftGames={leftGames}
                   rightGames={rightGames}
                   renderLeftGame={(item, index) => {
-                    const { name, icon, show } = item
+                    const { name, icon, show, id, desc } = item
                     return (
                       <TabButton
                         key={index}
                         logo={icon}
                         mainTitle={name}
+                        subTitle={desc}
+                        showSubTitle
                         show={show}
                         onPress={() => {
-                          // console.log("-----不知道要跳到哪----", item)
+                          PushHelper.pushUserCenterType(parseInt(id))
                         }}
                       />
                     )
