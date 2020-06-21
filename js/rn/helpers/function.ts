@@ -1,4 +1,4 @@
-import AppDefine from '../../../public/define/AppDefine'
+import AppDefine from '../public/define/AppDefine'
 
 // functions
 export const scale = (layout: number): number =>

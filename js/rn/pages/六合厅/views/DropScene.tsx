@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {scale} from '../helpers/function';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { scale } from '../../../helpers/function';
 import ScoreCircle from './LotteryBall';
 
 interface DropSceneProps {
@@ -18,17 +18,17 @@ interface Lottery {
   showMore?: boolean;
 }
 
-const DropScene = ({lotterys, date, renderText, square, onPress}: DropSceneProps) => {
+const DropScene = ({ lotterys, date, renderText, square, onPress }: DropSceneProps) => {
   return (
-    <TouchableOpacity style={{backgroundColor: '#ADADAD', aspectRatio: 515 / 590}} onPress={onPress}>
+    <TouchableOpacity style={{ backgroundColor: '#ADADAD', aspectRatio: 515 / 590 }} onPress={onPress}>
       <View style={styles.awardsContainer}>
         <Text>{'第 '}</Text>
-        <Text style={{color: '#ff861b'}}>{date}</Text>
+        <Text style={{ color: '#ff861b' }}>{date}</Text>
         <Text>{' 期开奖结果'}</Text>
       </View>
       <View style={styles.scoreCircleCintainer}>
         {lotterys.map((lottery, index) => {
-          const {number, color, sx} = lottery;
+          const { number, color, sx } = lottery;
           return (
             <ScoreCircle
               key={index}
@@ -45,12 +45,12 @@ const DropScene = ({lotterys, date, renderText, square, onPress}: DropSceneProps
         })}
       </View>
       <View style={styles.nextAwardTimeContainer}>
-        <View style={{flexDirection: 'row'}}>{renderText && renderText()}</View>
+        <View style={{ flexDirection: 'row' }}>{renderText && renderText()}</View>
         <View>
-          <Text style={{color: '#ff861b'}}>{'星期三'}</Text>
+          <Text style={{ color: '#ff861b' }}>{'星期三'}</Text>
         </View>
       </View>
-      <View style={{flex: 231}} />
+      <View style={{ flex: 231 }} />
     </TouchableOpacity>
   );
 };

@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {scale} from '../../helpers/function';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { scale } from '../../../../helpers/function';
 
 interface HeaderProps {
   onPressBack: () => any;
   onPressCustomerService: () => any;
 }
-const Header = ({onPressBack, onPressCustomerService}: HeaderProps) => {
+const Header = ({ onPressBack, onPressCustomerService }: HeaderProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPressBack}>

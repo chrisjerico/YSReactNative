@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, ViewStyle} from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 interface BottomToolBlockProps {
   containerStyle?: ViewStyle;
@@ -12,8 +12,8 @@ interface HomeBottomTool {
   userCenterType?: number;
 }
 
-const BottomToolBlock = ({renderBottomTool, tools, containerStyle}: BottomToolBlockProps) => {
-  return <View style={[styles.container, containerStyle]}>{tools.map(renderBottomTool)}</View>;
+const BottomToolBlock = ({ renderBottomTool, tools, containerStyle }: BottomToolBlockProps) => {
+  return <View style={[styles.container, containerStyle]}>{tools?.map(renderBottomTool)}</View>;
 };
 
 const styles = StyleSheet.create({

@@ -1,194 +1,219 @@
-import React, { useState } from 'react';
-import { Dimensions, FlatList, ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import StringUtils from '../../../public/tools/StringUtils';
-import { scale } from '../helpers/function';
+import React, { useState } from 'react'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
+import Icons from 'react-native-vector-icons/FontAwesome5'
+import { scale } from '../../../helpers/function'
+import AppDefine from '../../../public/define/AppDefine'
 
 interface TabComponentProps {
   containerStyle?: ViewStyle;
-  mainTabs: any[];
-  leftTabs: any[];
-  rightTabs: ITab[];
-  renderLeftTab: (item: any, index: number) => any
-  renderRightTab: (item: any, index: number) => any
+  subTabs: any[];
+  leftGames: any[];
+  rightGames: any[];
+  renderLeftGame: (item: any, index: number) => any;
+  renderRightGame: (item: any, index: number) => any;
 }
 
-interface ITab {
-  name: string;
-  list: IList[];
+interface SceneProps {
+  data: any[];
+  renderItem: (item: any, index: number) => any;
+  containerStyle?: ViewStyle;
 }
 
-interface IList {
-  logo: string;
-  name: string;
-  icon: string;
-  category: string;
-  gameId: number;
-  levelType: string;
-}
-
-const SubTab = ({ routes, renderScene }) => {
-  const [index, setIndex] = useState(0);
+const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderTabBar={(props: any) => {
-        return (
-          <ScrollView horizontal={true} style={{ flexGrow: 0 }} showsHorizontalScrollIndicator={false} scrollEventThrottle={200} decelerationRate="fast">
-            <TabBar
-              {...props}
-              style={styles.tab}
-              tabStyle={styles.subTabStyle}
-              labelStyle={styles.subTabLabelStyle}
-              activeColor={'red'}
-              inactiveColor={'red'}
-              indicatorStyle={{ backgroundColor: 'red' }}
-            />
-          </ScrollView>
-        );
-      }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{
-        height: 0,
-        width: Dimensions.get('window').width,
-      }}
-    />
-  );
-};
+    <View style={[styles.scene, containerStyle]}>{data.map(renderItem)}</View>
+  )
+}
 
-const Scene = ({ data, renderItem }) => <FlatList style={styles.scene} columnWrapperStyle={styles.columnWrapperStyle} numColumns={3} data={data} renderItem={renderItem} />;
-
-const TabComponent = ({ renderLeftTab, renderRightTab, mainTabs = [], leftTabs = [], rightTabs = [], containerStyle }: TabComponentProps) => {
+const TabComponent = ({
+  renderLeftGame,
+  renderRightGame,
+  leftGames = [],
+  rightGames = [],
+  subTabs = [],
+  containerStyle,
+}: TabComponentProps) => {
+  const initHeight = scale(
+    rightGames[0] ? (rightGames[0].length / 3) * 200 + 60 : 0
+  )
   // set state
-  const [index, setIndex] = useState(0);
-  // const [showDropScene, setShowDropScene] = useState(false);
-  // const [square, setSquare] = useState(false);
+  const [index, setIndex] = useState(0)
+  const [subIndex, setSubIndex] = useState(0)
+  const [height, setHeight] = useState(initHeight)
   // filter props
-  const subTabNames = rightTabs.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }));
-  const subScenes = {};
-  rightTabs.forEach((tab, index) => {
-    const { list }: ITab = tab;
+  let subScenes = {}
+  rightGames.forEach((games, index) => {
     subScenes[index] = () => {
-      let data = list.filter(ele => ele.levelType == '1');
-      const remainder = data.length % 3;
-      const patch = remainder > 0 ? 3 - (data.length % 3) : 0;
-      data = data.concat(Array(patch).fill({ show: false })).map((ele, index) => Object.assign({}, { key: index }, ele));
       return (
         <Scene
-          data={data}
-          renderItem={({ item, index }) => renderRightTab(item, index)}
+          data={games}
+          renderItem={renderRightGame}
+          containerStyle={{
+            paddingTop: scale(25),
+            borderTopColor: '#d9d9d9',
+            borderTopWidth: scale(1),
+          }}
         />
-      );
-    };
-  });
+      )
+    }
+  })
   // render
   return (
     <View style={containerStyle}>
-      <TabView
-        navigationState={{ index, routes: mainTabs }}
-        renderTabBar={(props: any) => {
-          return (
-            <TabBar
-              {...props}
-              style={styles.tab}
-              tabStyle={styles.mainTabStyle}
-              indicatorStyle={{ backgroundColor: 'transparent' }}
-              renderLabel={({ route, focused }) => {
-                return (
-                  <View style={[styles.mainTab, focused ? styles.activeMainTab : styles.inactiveMainTab, route.key == '0' ? styles.leftMainTab : styles.rightMainTab]}>
-                    <Text style={{ color: '#ffffff' }}>{route.title}</Text>
-                  </View>
-                );
-              }}
-            />
-          );
-        }}
-        renderScene={SceneMap({
-          0: () => (
-            <Scene
-              data={leftTabs}
-              renderItem={({ item, index }) => renderLeftTab(item, index)}
-            />
-          ),
-          1: () => <SubTab routes={subTabNames} renderScene={SceneMap(subScenes)} />,
-        })}
-        onIndexChange={setIndex}
-        initialLayout={{
-          height: 0,
-          width: Dimensions.get('window').width,
-        }}
-      />
-      {/* {showDropScene ? (
-        <DropScene
-          onPress={() => setShowDropScene(false)}
-          square={square}
-          lotterys={lotterys}
-          date={date}
-          renderText={() => (
-            <>
-              <Text>{'下期开奖时间 '}</Text>
-              <Text style={{color: '#ff861b'}}>{'2020-07-15 21:30'}</Text>
-            </>
-          )}
+      <View style={styles.mainTabContainer}>
+        <TouchableOpacity
+          style={[
+            styles.mainTab,
+            {
+              backgroundColor: index == 0 ? '#ff6b1b' : '#7B7B7B',
+            },
+          ]}
+          onPress={() => setIndex(0)}
+        >
+          <Icons
+            name={'fire'}
+            color={'#ffffff'}
+            style={{ paddingRight: scale(5) }}
+            size={scale(20)}
+          />
+          <Text style={styles.tabText}>{'热门资讯'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.mainTab,
+            {
+              backgroundColor: index == 0 ? '#7B7B7B' : '#ff6b1b',
+            },
+          ]}
+          onPress={() => setIndex(1)}
+        >
+          <Icons
+            name={'award'}
+            color={'#ffffff'}
+            style={{ paddingRight: scale(5) }}
+            size={scale(20)}
+          />
+          <Text style={styles.tabText}>{'购彩大厅'}</Text>
+        </TouchableOpacity>
+      </View>
+      {index == 0 ? (
+        <Scene
+          data={leftGames}
+          renderItem={renderLeftGame}
+          containerStyle={{
+            paddingTop: scale(25),
+            borderBottomRightRadius: 10,
+            borderBottomLeftRadius: 10,
+          }}
         />
-      ) : null} */}
+      ) : (
+          <TabView
+            initialLayout={{ width: AppDefine.width, height: 0 }}
+            style={{
+              height,
+              borderBottomRightRadius: scale(10),
+              borderBottomLeftRadius: scale(10),
+            }}
+            navigationState={{ index: subIndex, routes: subTabs }}
+            renderTabBar={(props: any) => {
+              return (
+                <ScrollView
+                  horizontal={true}
+                  style={{ flexGrow: 0 }}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEventThrottle={200}
+                  decelerationRate={'fast'}
+                >
+                  <TabBar
+                    {...props}
+                    tabStyle={styles.subTabStyle}
+                    renderLabel={({ route, focused }) => {
+                      return (
+                        <>
+                          <Text
+                            style={[
+                              { fontWeight: '600', alignSelf: 'auto' },
+                              focused ? styles.focusedText : styles.text,
+                            ]}
+                          >
+                            {route.title}
+                          </Text>
+                          {focused ? (
+                            <View
+                              style={{
+                                height: scale(5),
+                                width: '100%',
+                                backgroundColor: '#46A3FF',
+                                borderRadius: scale(100),
+                                marginTop: scale(5),
+                              }}
+                            ></View>
+                          ) : null}
+                        </>
+                      )
+                    }}
+                  />
+                </ScrollView>
+              )
+            }}
+            renderScene={SceneMap(subScenes)}
+            onIndexChange={(index) => {
+              const height = rightGames[index]
+                ? scale((rightGames[index].length / 3) * 200) + 60
+                : 0
+              setSubIndex(index)
+              setHeight(height)
+            }}
+          />
+        )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  tab: {
-    backgroundColor: 'transparent',
-  },
-  mainTabStyle: {
-    backgroundColor: 'transparent',
-    paddingBottom: 0,
+  mainTabContainer: {
+    width: '100%',
+    aspectRatio: 540 / 55,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   mainTab: {
-    width: scale(250),
-    aspectRatio: 250 / 55,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '49%',
+    backgroundColor: '#ff6b1b',
     borderTopRightRadius: scale(10),
     borderTopLeftRadius: scale(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
-  activeMainTab: {
-    backgroundColor: '#ff6b1b',
+  tabText: {
+    color: '#ffffff',
+    paddingLeft: scale(5),
   },
-  inactiveMainTab: {
-    backgroundColor: '#7B7B7B',
-  },
-  leftMainTab: {
-    marginRight: scale(5),
-  },
-  rightMainTab: {
-    marginLeft: scale(5),
+  scene: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    backgroundColor: '#ffffff',
+    justifyContent: 'space-between',
   },
   subTabStyle: {
     backgroundColor: '#ffffff',
-    width: scale(100),
+    height: scale(60),
   },
-  subTabLabelStyle: {
+  focusedText: {
+    color: '#46A3FF',
+  },
+  text: {
     color: '#000000',
   },
-  scene: {
-    backgroundColor: '#ffffff',
-    borderBottomRightRadius: scale(10),
-    borderBottomLeftRadius: scale(10),
-    height: scale(350),
-  },
-  columnWrapperStyle: {
-    justifyContent: 'space-evenly',
-  },
-  leftScene: {
-    flexDirection: 'row',
-    backgroundColor: '#ffffff',
-    justifyContent: 'space-around',
-    height: scale(410),
-    borderBottomRightRadius: scale(10),
-    borderBottomLeftRadius: scale(10),
-  },
-});
+})
 
-export default TabComponent;
+export default TabComponent

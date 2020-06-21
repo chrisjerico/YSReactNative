@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, ViewStyle, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { scale } from '../../../helpers/function';
 import { IGameIconListItem } from '../../../redux/model/home/IGameBean';
-import { scale } from '../helpers/function';
 
 interface NavButtonProps {
   containerStyle?: ViewStyle;
@@ -15,7 +16,7 @@ const NavButton = ({ logo = '', title = '?', containerStyle, onPress, nav }: Nav
   return (
     <TouchableOpacity style={styles.navContainer} onPress={onPress}>
       <View style={[styles.container, containerStyle]} >
-        <Image resizeMode={'contain'} style={{ width: '65%', aspectRatio: 1 }} source={{ uri: logo }} />
+        <FastImage resizeMode={'contain'} style={{ width: '65%', aspectRatio: 1 }} source={{ uri: logo }} />
         <Text style={{ paddingVertical: 5 }}>{title}</Text>
       </View>
     </TouchableOpacity>

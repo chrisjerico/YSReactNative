@@ -1,6 +1,7 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {scale} from '../helpers/function';
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { scale } from '../../../helpers/function'
 
 interface ProfileButtonProps {
   title: string;
@@ -8,11 +9,15 @@ interface ProfileButtonProps {
   onPress: () => any;
 }
 
-const ProfileButton = ({title = 'title', logo = '', onPress}: ProfileButtonProps) => {
+const ProfileButton = ({
+  title = 'title',
+  logo = '',
+  onPress,
+}: ProfileButtonProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={{paddingRight: scale(5)}}>{title}</Text>
-      <Image
+      <Text style={{ paddingRight: scale(5), color: '#ffffff' }}>{title}</Text>
+      <FastImage
         style={styles.image}
         resizeMode={'contain'}
         source={{
@@ -20,8 +25,8 @@ const ProfileButton = ({title = 'title', logo = '', onPress}: ProfileButtonProps
         }}
       />
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -38,6 +43,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     paddingLeft: scale(5),
   },
-});
+})
 
-export default ProfileButton;
+export default ProfileButton
