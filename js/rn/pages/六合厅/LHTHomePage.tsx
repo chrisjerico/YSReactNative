@@ -12,10 +12,9 @@ import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import { PageName } from '../../public/navigation/Navigation'
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
+import { push } from '../../public/navigation/RootNavigation'
 import StringUtils from '../../public/tools/StringUtils'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
-import { IGameIconListItem } from '../../redux/model/home/IGameBean'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -31,7 +30,7 @@ import {
   defaultHeadLines,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
-  defaultMarkSixLogo,
+  defaultLotteryLogo,
   defaultNavs,
   defaultNoticeLogo,
   defaultNotices
@@ -52,6 +51,7 @@ const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
   const {
@@ -62,7 +62,8 @@ const LHTHomePage = ({ navigation }) => {
     lotteryNumber,
     categoryList,
     onlineNum,
-    couponListData
+    couponListData,
+    redBag,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -70,9 +71,9 @@ const LHTHomePage = ({ navigation }) => {
     'lhcdoc_lotteryNumber',
     'lhcdoc_categoryList',
     'system_onlineCount',
-    'system_promotions'
+    'system_promotions',
+    'activity_redBagDetail',
   ])
-  const { loginOut } = useLoginOut(PageName.LHTHomePage)
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       updateUserInfo()
@@ -81,9 +82,11 @@ const LHTHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
+  const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? defaultNotices
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? defaultNavs
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? defaultNavs
   const headlines = notice?.data?.popup ?? defaultHeadLines
   const leftGames = three(categoryList?.data ?? [])
   const icons = homeGames?.data?.icons ?? []
@@ -91,13 +94,13 @@ const LHTHomePage = ({ navigation }) => {
   const numbers = lotteryNumber?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []
-  let lotterys: any[] = numbers?.map((number, index) => ({
+  const lotterys = numbers?.map((number, index) => ({
     number,
     color: numColors[index],
     sx: numSxs[index],
   }))
 
-  lotterys = [
+  const plusLotterys = [
     ...lotterys.slice(0, 6),
     {
       showMore: true,
@@ -106,36 +109,15 @@ const LHTHomePage = ({ navigation }) => {
   ]
   const lotteryDate = lotteryNumber?.issue
 
-  const rightGames = icons.map((tab) => {
-    const { list } = tab;
-    const games = three(list?.filter(ele => ele.levelType == '1'));
+  const rightGames = icons?.map((tab) => {
+    const { list } = tab
+    const games = three(list?.filter((ele) => ele.levelType == '1'))
     return games
-  })
-  const subTabs = icons.map((tab, index) => ({ key: index, title: StringUtils.getInstance().deleteHtml(tab.name) }))
-
-  // functions
-  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    PushHelper.pushUserCenterType(userCenterType)
-  }
-
-  const gotoCategory = (
-    category: string | number,
-    position: string | number
-  ) => {
-    PushHelper.pushCategory(category, position)
-  }
-
-  const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    PushHelper.pushHomeGame(game)
-  }
-
-  const goToNotice = (message: string) => {
-    PushHelper.pushNoticePopUp(message)
-  }
-
-  const gotoWebView = (url: string) => {
-    PushHelper.openWebView(url)
-  }
+  }) ?? []
+  const subTabs = icons?.map((tab, index) => ({
+    key: index,
+    title: StringUtils.getInstance().deleteHtml(tab.name),
+  })) ?? []
 
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
@@ -152,7 +134,12 @@ const LHTHomePage = ({ navigation }) => {
               onPressSignOut={loginOut}
               onPressSignIn={PushHelper.pushLogin}
               onPressSignUp={PushHelper.pushRegister}
-              onPressTryPlay={() => { }}
+              onPressTryPlay={() => {
+                console.log('試玩')
+              }}
+              onPressLogo={() => {
+                push(PageName.JDPromotionListPage)
+              }}
             />
             <ScrollView
               style={[styles.container]}
@@ -169,7 +156,7 @@ const LHTHomePage = ({ navigation }) => {
                       key={index}
                       pic={pic}
                       onPress={() => {
-                        gotoCategory(linkCategory, linkPosition)
+                        PushHelper.pushCategory(linkCategory, linkPosition)
                       }}
                     />
                   )
@@ -180,21 +167,21 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   notices={notices}
                   logo={defaultNoticeLogo}
-                  onPressNotice={({ value }) => goToNotice(value)}
+                  onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
                 />
                 <NavBlock
                   containerStyle={styles.subComponent}
                   navs={navs}
-                  lotterys={lotterys}
+                  lotterys={plusLotterys}
                   date={lotteryDate}
                   advertisement={defaultAdvertisement}
-                  markSixLogo={defaultMarkSixLogo}
+                  lotteryLogo={defaultLotteryLogo}
                   customerServiceLogo={defaultCustomerServiceLogo}
-                  onPressSavePoint={() => gotoUserCenter(UGUserCenterType.存款)}
-                  onPressGetPoint={() => gotoUserCenter(UGUserCenterType.取款)}
-                  onPressAd={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                  onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
+                  onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
+                  onPressAd={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)}
                   onPressSmileLogo={() =>
-                    gotoUserCenter(UGUserCenterType.在线客服)
+                    PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                   }
                   renderNav={(item, index) => {
                     const { icon, name, logo } = item
@@ -204,7 +191,7 @@ const LHTHomePage = ({ navigation }) => {
                         logo={icon ? icon : logo}
                         title={name}
                         nav={item}
-                        onPress={() => gotoHomeGame(item)}
+                        onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
                   }}
@@ -217,7 +204,7 @@ const LHTHomePage = ({ navigation }) => {
                         color={color}
                         text={sx}
                         showMore={index == 6}
-                        onPress={() => gotoUserCenter(UGUserCenterType.六合彩)}
+                        onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)}
                       />
                     )
                   }}
@@ -226,7 +213,7 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
-                  onPressHeadline={({ value }) => goToNotice(value)}
+                  onPressHeadline={({ value }) => PushHelper.pushNoticePopUp(value)}
                 />
                 <TabComponent
                   containerStyle={styles.subComponent}
@@ -255,7 +242,7 @@ const LHTHomePage = ({ navigation }) => {
                         logo={logo ? logo : icon}
                         mainTitle={title}
                         show={show}
-                        onPress={() => gotoHomeGame(item)}
+                        onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
                   }}
@@ -266,9 +253,15 @@ const LHTHomePage = ({ navigation }) => {
                   renderCoupon={(item, index) => {
                     const { pic, linkCategory, linkPosition } = item
                     return (
-                      <TouchableImage key={index} pic={pic} containerStyle={styles.couponBanner} onPress={() => gotoCategory(linkCategory, linkPosition)} />
+                      <TouchableImage
+                        key={index}
+                        pic={pic}
+                        containerStyle={styles.couponBanner}
+                        onPress={() => PushHelper.pushCategory(linkCategory, linkPosition)}
+                      />
                     )
-                  }} />
+                  }}
+                />
                 <WinningBlock containerStyle={styles.subComponent} />
                 <BottomToolBlock
                   tools={defaultBottomTools}
@@ -284,9 +277,9 @@ const LHTHomePage = ({ navigation }) => {
                         pic={logo}
                         onPress={() => {
                           if (userCenterType) {
-                            gotoUserCenter(userCenterType)
+                            PushHelper.pushUserCenterType(userCenterType)
                           } else {
-                            gotoWebView(defaultDowloadUrl)
+                            PushHelper.openWebView(defaultDowloadUrl)
                           }
                         }}
                       />
@@ -295,6 +288,18 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
+            {
+              // 紅包活動
+              uid ? (
+                <TouchableImage
+                  pic={redBags?.redBagLogo}
+                  onPress={() => {
+                    PushHelper.pushRedBag(redBag)
+                  }}
+                  containerStyle={styles.redEnvelope}
+                />
+              ) : null
+            }
           </>
         )}
     </SafeAreaView>
@@ -324,8 +329,15 @@ const styles = StyleSheet.create({
   },
   couponBanner: {
     width: '100%',
-    aspectRatio: 2
-  }
+    aspectRatio: 2,
+  },
+  redEnvelope: {
+    width: scale(200),
+    aspectRatio: 1,
+    position: 'absolute',
+    top: scale(500),
+    right: 0,
+  },
 })
 
 export default LHTHomePage

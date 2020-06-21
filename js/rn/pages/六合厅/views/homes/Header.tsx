@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { scale } from '../../../../helpers/function';
 
 interface HeaderProps {
@@ -14,9 +15,10 @@ interface HeaderProps {
   onPressSignIn: () => any;
   onPressSignUp: () => any;
   onPressTryPlay: () => any
+  onPressLogo: () => any
 }
 
-const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay }: HeaderProps) => {
+const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay, onPressLogo }: HeaderProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
@@ -34,11 +36,15 @@ const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLog
               textStyle={{ color: '#2894FF', fontSize: scale(20) }}
             />
             <Text style={styles.text}>{' | '}</Text>
-            <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+            <TouchableOpacity onPress={onPressLogo}>
+              <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+            </TouchableOpacity>
           </>
         ) : (
             <>
-              <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+              <TouchableOpacity onPress={onPressLogo}>
+                <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+              </TouchableOpacity>
               <Text style={styles.text}>{' | '}</Text>
               <Text style={styles.text} onPress={onPressSignIn}>
                 {'登入'}
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '80%',
+    height: '100%',
   },
   text: {
     fontSize: scale(20),

@@ -83,9 +83,6 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                     case 'system_onlineCount':
                       setOnlineNum(res[key].data.data.onlineUserCount)
                       break
-                    case 'activity_redBagDetail':
-                      setRedBag(res[key].data)
-                      break
                     case 'lhcdoc_lotteryNumber':
                       setLotteryNumber(res[key].data)
                       break

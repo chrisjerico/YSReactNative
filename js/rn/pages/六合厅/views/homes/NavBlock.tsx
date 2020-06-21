@@ -6,7 +6,7 @@ import { scale } from '../../../../helpers/function';
 
 interface NavBlockProps {
   customerServiceLogo: string;
-  markSixLogo: string;
+  lotteryLogo: string;
   advertisement: string;
   navs: any[];
   lotterys: Lottery[];
@@ -38,7 +38,7 @@ const NavBlock = ({
   navs = [],
   lotterys = [],
   advertisement = '',
-  markSixLogo = '',
+  lotteryLogo = '',
   customerServiceLogo = '',
   containerStyle,
 }: NavBlockProps) => {
@@ -65,7 +65,7 @@ const NavBlock = ({
       </View>
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
-          <FastImage style={styles.recommendImage} source={{ uri: markSixLogo }} />
+          <FastImage style={styles.recommendImage} source={{ uri: lotteryLogo }} />
           <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
         </View>
         <View style={styles.awardsContainer}>
