@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewStyle, ImageResizeMode, ImageResizeModeStatic } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface TouchableImageProps {
   pic: string;
   onPress: () => any;
-  containerStyle?: ViewStyle
+  containerStyle?: ViewStyle;
+  resizeMode?: 'cover' | 'contain'
 }
 
-const TouchableImage = ({ onPress, pic, containerStyle }: TouchableImageProps) => {
+const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover' }: TouchableImageProps) => {
   return (
     <TouchableOpacity style={containerStyle ? containerStyle : styles.container} onPress={onPress}>
-      <FastImage style={styles.image} source={{ uri: pic }} resizeMode={'cover'} />
+      <FastImage style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} />
     </TouchableOpacity>
   );
 };

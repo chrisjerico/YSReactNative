@@ -81,6 +81,7 @@ const LHTHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
+  const rankLists = rankList?.data?.list ?? []
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -118,9 +119,7 @@ const LHTHomePage = ({ navigation }) => {
     title: StringUtils.getInstance().deleteHtml(tab.name),
   })) ?? []
 
-  console.log('-----rankList-----', rankList?.data)
-  console.log('-----rankList-----', categoryList?.data)
-  console.log("------leftGames------", leftGames)
+  console.log('-----rankList-----', rankLists)
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -261,12 +260,13 @@ const LHTHomePage = ({ navigation }) => {
                         key={index}
                         pic={pic}
                         containerStyle={styles.couponBanner}
+                        resizeMode={'contain'}
                         onPress={() => PushHelper.pushCategory(linkCategory, linkPosition)}
                       />
                     )
                   }}
                 />
-                <WinningBlock containerStyle={styles.subComponent} />
+                <WinningBlock containerStyle={styles.subComponent} rankLists={rankLists} />
                 <BottomToolBlock
                   tools={defaultBottomTools}
                   renderBottomTool={(item, index) => {

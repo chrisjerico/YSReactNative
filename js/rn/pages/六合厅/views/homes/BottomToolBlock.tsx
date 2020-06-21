@@ -13,7 +13,7 @@ interface HomeBottomTool {
 }
 
 const BottomToolBlock = ({ renderBottomTool, tools, containerStyle }: BottomToolBlockProps) => {
-  return <View style={[styles.container, containerStyle]}>{tools.map(renderBottomTool)}</View>;
+  return <View style={[styles.container, containerStyle]}>{tools?.map(renderBottomTool)}</View>;
 };
 
 const styles = StyleSheet.create({

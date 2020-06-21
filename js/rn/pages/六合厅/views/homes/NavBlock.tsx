@@ -78,7 +78,7 @@ const NavBlock = ({
       <TouchableOpacity style={{ flex: 90, alignItems: 'center' }} onPress={onPressAd}>
         <FastImage resizeMode={'contain'} style={styles.adImage} source={{ uri: advertisement }} />
       </TouchableOpacity>
-      <View style={styles.navsContainer}>{navs.map(renderNav)}</View>
+      <View style={styles.navsContainer}>{navs?.map(renderNav)}</View>
     </View>
   );
 };
