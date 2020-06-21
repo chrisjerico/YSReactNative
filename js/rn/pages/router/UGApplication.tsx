@@ -27,7 +27,9 @@ import XBJLoginPage from '../香槟金/XBJLoginPage';
 import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
-
+import GDBHomePage from '../金星黑/GDBHomePage'
+import GDBMinePage from '../金星黑/GDBMinePage';
+import GDLoginPage from '../金星黑/GDLoginPage';
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
   newProps = {
@@ -62,6 +64,8 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
+        <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
+        <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
       </Router.TabNavigator>
     );
   }
@@ -76,6 +80,7 @@ const UGApplication = () => {
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
         </Router.StackNavigator>
       </NavigationContainer>
     </Provider>

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image } from "react-native"
+import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
 import React, { useEffect, useState, useRef } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -11,10 +11,12 @@ import APIRouter from "../../public/network/APIRouter"
 import { useSelector } from "react-redux"
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
-import WebView from "react-native-webview"
+import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { ActionType } from "../../redux/store/ActionTypes"
+import { httpClient } from "../../public/network/httpClient"
+import { string } from "prop-types"
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -49,7 +51,8 @@ const ZLRegisterPage = () => {
         reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
         pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
         pass_length_min, // 注册密码最小长度
-        pass_length_max, // 注册密码最大长度
+        pass_length_max, // 注册密码最大长度,
+        agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
         // smsVerify: boolean; // 手机短信验证
     } = SystemStore
     const onSubmit = async (requestData) => {
@@ -58,25 +61,66 @@ const ZLRegisterPage = () => {
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+            console.log(requestData)
+
+            if (requestData.slideCode) {
+                console.log(requestData.slideCode)
+                requestData.smsCode = ""
+                requestData.imgCode = ""
+                requestData["slideCode[nc_sid]"] = requestData.slideCode["nc_csessionid"]
+                requestData["slideCode[nc_token]"] = requestData.slideCode["nc_token"]
+                requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_value"]
+                delete requestData.slideCode
+            }
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
+            console.log(data)
             reRenderCode()
             if (data?.data == null)
                 throw { message: data.msg }
-            if (data?.data.autoLogin) {
+            if (data?.data?.autoLogin) {
+                const user = await OCHelper.call('UGUserModel.currentUser');
+
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
-                OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
                 const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: loginData?.data });
+                if (user) {
+                    console.log('退出旧账号');
+                    console.log(user);
+                    const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                    await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+                    await OCHelper.call('UGUserModel.setCurrentUser:');
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                    UGStore.dispatch({ type: ActionType.Clear_User })
+                }
+                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [false, 'isRememberPsd']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                const { data: UserInfo, } = await APIRouter.user_info()
+
+                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: UserInfo?.data });
+
                 UGStore.save();
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
                 popToRoot();
             }
-            if (data?.data.autoLogin == false) {
+            if (data?.data?.autoLogin == false) {
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                popToRoot();
+                navigate(PageName.ZLLoginPage, {})
             }
         } catch (error) {
+
             reRenderCode()
             console.log(error.message)
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+            if (error.message.includes("推荐人")) {
+                Alert.alert(error?.message, "")
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+            } else {
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+            }
+
         }
     }
 
@@ -93,29 +137,43 @@ const ZLRegisterPage = () => {
         } catch (error) {
         }
     }
-    const SlidingVerification = () => {
+    const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
+        const webViewScript = `setTimeout(function() { 
+            document.getElementById('app').style.background = 'black'
+            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight); 
+          }, 500);
+          true;`;
+        const [webviewHeight, setWebViewHeight] = useState(0)
+        const hadnleMessage = (e: WebViewMessageEvent) => {
+            if (typeof e?.nativeEvent?.data == 'string') {
+                setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+            } else {
+                onChange(e?.nativeEvent?.data)
+            }
+        }
         return (
-            <View style={{ marginTop: 13, height: 52, borderRadius: 26, overflow: 'hidden' }}>
-                <WebView
-                    style={{ marginLeft: -15, marginRight: -14, marginTop: -22, flex: 1 }}
-                    javaScriptEnabled
-                    startInLoadingState
-                    source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
-                    onMessage={e => {
-                        console.log('e=');
-                        console.log(e);
-                    }}
-                />
-            </View>
+            <WebView
+                style={{ flex: 1, minHeight: webviewHeight, backgroundColor: 'black' }}
+                containerStyle={{ backgroundColor: 'black' }}
+                javaScriptEnabled
+                injectedJavaScript={webViewScript}
+
+                startInLoadingState
+                source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
+                onMessage={hadnleMessage}
+            />
         );
     }
     const getVcode = () => {
+        console.log(reg_vcode)
         if (reg_vcode == 0) {
             return null
-        } else if (reg_vcode == 1) {
-            return <LetterVerificationCode onPress={reRenderCode} control={control} code={code} />
+        } else if (reg_vcode == 3 || reg_vcode == 1) {
+            return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} control={control} code={code} />
         } else {
-            return <SlidingVerification />
+            return <Controller control={control} onChange={args => {
+                return args[0]
+            }} as={SlidingVerification} name={"slideCode"} />
         }
     }
     useEffect(() => {
@@ -157,7 +215,8 @@ const ZLRegisterPage = () => {
                             minLength: {
                                 value: 6,
                                 message: "6-15位英文或数字的组合"
-                            }
+                            },
+
                         }}
                         name={FormName.usr}
                         control={control}
@@ -191,6 +250,18 @@ const ZLRegisterPage = () => {
                             minLength: {
                                 value: pass_length_min,
                                 message: "最少" + pass_length_min + "位英文或数字的组合"
+                            },
+                            validate: (value) => {
+                                if (pass_limit == 0) {
+                                    return true
+                                } else if (pass_limit == 1) {
+                                    const regex = /^(?=.*\d)(?=.*[a-zA-Z])/
+                                    return regex.test(value) || '密码须有数字及字母'
+                                } else if (pass_limit == 2) {
+                                    const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/
+                                    return regex.test(value) || '密码须有数字及字母及字符'
+                                }
+
                             }
                         }}
                         name={FormName.pwd}
@@ -255,7 +326,7 @@ const ZLRegisterPage = () => {
                 <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机号码"} placeholder={"请输入手机号码"} regConfig={reg_phone} control={control} name={FormName.phone} />
                 <ZLRegInput iconName={"mail"} iconType={'entypo'} message={"请输入邮箱地址"} placeholder={"请输入邮箱地址"} regConfig={reg_email} control={control} name={FormName.email} />
                 {getVcode()}
-                <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                {agentRegbutton == "1" ? <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
                         setRegType('user')
                     }} style={{ backgroundColor: regType == 'user' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
@@ -266,7 +337,8 @@ const ZLRegisterPage = () => {
                     }} style={{ backgroundColor: regType == 'agent' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
                         <Text style={{ color: 'white' }}>注册代理</Text>
                     </TouchableOpacity>
-                </View>
+                </View> : null}
+
 
                 <TouchableWithoutFeedback onPress={handleSubmit(onSubmit)}>
                     <View style={{
@@ -305,14 +377,14 @@ const Header = () => {
 }
 const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPassword, iconType = "font-awesome", iconName = "" }:
     {
-        regConfig: number, name: FormName, control: Control<Record<string, any>>,
+        regConfig: number | string, name: FormName, control: Control<Record<string, any>>,
         placeholder: string, message: string,
         isPassword?: boolean,
         iconType?: string,
         iconName: string
     }) => {
     const [secureTextEntry, setSecureTextEntry] = useState(true)
-    if (regConfig == 0) {
+    if (regConfig == 0 || regConfig == "0") {
         return null
     } else {
         return <View style={{
@@ -333,14 +405,14 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
                 as={TextInput}
                 rules={{
                     required: {
-                        value: regConfig == 2, message
+                        value: regConfig == 2 || regConfig == '2', message
                             : message
                     }
                 }}
                 name={name}
                 control={control}
                 defaultValue=""
-                placeholder={placeholder}
+                placeholder={placeholder + (regConfig == 1 || regConfig == '1' ? "(选填)" : "")}
             />
             {isPassword ? <TouchableOpacity
                 style={{}}
@@ -353,7 +425,8 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
         </View>
     }
 }
-const LetterVerificationCode = ({ control, code, onPress }: { code: string, control: any, onPress: () => {} }) => {
+const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: string, control: any, onPress: () => {}, reg_vcode: 1 | 3 }) => {
+    const [hide, setHide] = useState(reg_vcode == 1 ? false : true)
     return (
         <View style={{
             flexDirection: 'row', alignItems: 'center', height: 50,
@@ -382,9 +455,15 @@ const LetterVerificationCode = ({ control, code, onPress }: { code: string, cont
                 defaultValue=""
                 placeholder={"请输入验证码"}
             />
-            <TouchableWithoutFeedback onPress={onPress}>
+            {!hide ? <TouchableWithoutFeedback onPress={onPress}>
                 <Image resizeMode={'contain'} style={{ height: "100%", aspectRatio: 2 }} source={{ uri: code }} />
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> : <TouchableWithoutFeedback onPress={() => {
+                setHide(false)
+                onPress()
+            }}>
+                    <Text>点击显示验证码</Text>
+                </TouchableWithoutFeedback>}
+
         </View>
 
 

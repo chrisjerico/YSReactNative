@@ -57,8 +57,10 @@ const ZLLoginPage = () => {
                 await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: data?.data });
+                const { data: userInfo } = await APIRouter.user_info()
+                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
                 UGStore.save();
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
             }
         } catch (error) {
             console.log(error)

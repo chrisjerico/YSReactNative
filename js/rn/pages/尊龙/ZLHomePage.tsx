@@ -27,6 +27,7 @@ import { RedBagDetailActivityModel } from "../../public/network/Model/RedBagDeta
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
+import RedBagItem from "../../public/components/RedBagItem"
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -275,53 +276,7 @@ const ZLHomePage = ({ navigation }) => {
         </View >
     )
 }
-const RedBagItem = ({ redBag }: { redBag: RedBagDetailActivityModel }) => {
-    const { width } = useDimensions().screen
-    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const [redBagVisiable, setRedBagVisiable] = useState(false)
-    useEffect(() => {
-        if (redBag) {
-            setRedBagVisiable(true)
-        }
-    }, [redBag])
-    if (redBagVisiable) {
-        return (
-            <TouchableWithoutFeedback onPress={() => {
-                if (uid == "") {
-                    Alert.alert("温馨提示", "您还未登录", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
-                        {
-                            text: "马上登录", onPress: () => {
-                                navigate(PageName.ZLLoginPage, {})
-                            },
-                        }
-                    ])
-                } else if (isTest) {
-                    Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
-                        {
-                            text: "马上登录", onPress: () => {
-                                navigate(PageName.ZLLoginPage, {})
-                            },
-                        }
-                    ])
-                } else {
-                    PushHelper.pushRedBag(redBag)
-                }
-            }}>
-                <FastImage style={{ width: 95, height: 95, position: 'absolute', top: 100, right: 20 }} source={{ uri: redBag?.data?.redBagLogo }} >
-                    <TouchableWithoutFeedback onPress={() => {
-                        setRedBagVisiable(false)
-                    }}>
-                        <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: "dialog_close" }} />
-                    </TouchableWithoutFeedback>
-                </FastImage>
-            </TouchableWithoutFeedback>)
-    } else {
-        return null
-    }
 
-}
 const TurntableListItem = () => {
     const { width, height } = useDimensions().screen
     const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)

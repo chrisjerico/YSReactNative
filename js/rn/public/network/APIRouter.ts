@@ -43,7 +43,14 @@ class APIRouter {
     }
     static user_info = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');
-        return httpClient.get("c=user&a=info&token=" + user?.token)
+        if (user?.token) {
+            return httpClient.get("c=user&a=info&token=" + user.token)
+        } else {
+            return Promise.reject({
+
+            })
+        }
+
     }
     static user_guestLogin = () => {
         return httpClient.post<LoginModel>("c=user&a=guestLogin", {
@@ -103,7 +110,9 @@ class APIRouter {
         phone: string; // 手机号
         smsCode: string; // 短信验证码
         imgCode: string; // 字母验证码
-        slideCode: SlideCodeModel; // 滑动验证码
+        "slideCode[nc_sid]": string,
+        "slideCode[nc_token]": string,
+        "slideCode[nc_sig]": string,
         email: string; // 邮箱
         regType: 'user' | 'agent'; // 用户注册 或 代理注册,
         device: string,

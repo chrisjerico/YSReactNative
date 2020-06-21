@@ -5,7 +5,7 @@ import FPrototypes from '../tools/prototype/FPrototypes';
 import { UGStore } from '../../redux/store/UGStore';
 
 export default class AppDefine {
-  static host = 'http://c91398.com'; // 接口域名
+  static host = 'http://450app.cc'; // 接口域名
   static siteId = '未知站点';
   static width = Dimensions.get('window').width;
   static height = Dimensions.get('window').height;

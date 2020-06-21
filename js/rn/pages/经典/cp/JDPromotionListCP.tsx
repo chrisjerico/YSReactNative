@@ -60,22 +60,28 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             switch (this.style2) {
               // 内页
               case 'page': {
-                OCHelper.call(({ vc }) => ({
-                  vc: {
-                    selectors: 'UGPromoteDetailController.new[setItem:]',
-                    args1: [pm],
-                  },
-                  ret: {
-                    selectors: 'UGNavigationController.current.pushViewController:animated:',
-                    args1: [vc, true],
-                  },
-                }));
-                break;
+                // OCHelper.call(({ vc }) => ({
+                //   vc: {
+                //     selectors: 'UGPromoteDetailController.new[setItem:]',
+                //     args1: [pm],
+                //   },
+                //   ret: {
+                //     selectors: 'UGNavigationController.current.pushViewController:animated:',
+                //     args1: [vc, true],
+                //   },
+                // }));
+                // break;
+                this.setState({
+                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
+                });
               }
               // 弹框
               case 'popup': {
-                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
-                break;
+                // OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                // break;
+                this.setState({
+                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
+                });
               }
               // 折叠
               case 'slide': {
