@@ -30,6 +30,7 @@ import UpdateVersionPage from './UpdateVersionPage';
 import GDBHomePage from '../金星黑/GDBHomePage'
 import GDBMinePage from '../金星黑/GDBMinePage';
 import GDLoginPage from '../金星黑/GDLoginPage';
+import PromotionListPage from '../common/PromotionListPage';
 // TabbarController
 class TabBarController extends React.Component<{ navigation: StackNavigationProp<{}> }> {
   newProps = {
@@ -49,7 +50,7 @@ class TabBarController extends React.Component<{ navigation: StackNavigationProp
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={PromotionListPage} />
         <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
         <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
         <Router.TabScreen name={PageName.XBJMinePage} component={XBJMinePage} />
@@ -79,7 +80,7 @@ const UGApplication = () => {
           <Router.StackScreen name="Tabbar" component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={PromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
         </Router.StackNavigator>
       </NavigationContainer>

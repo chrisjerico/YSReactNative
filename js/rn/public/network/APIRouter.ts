@@ -13,6 +13,7 @@ import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
 import { TurntableListModel } from './Model/TurntableListModel';
 import { RegisterModel } from './Model/RegisterModel';
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
+import { PromotionsModel } from './Model/PromotionsModel';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -39,7 +40,7 @@ class APIRouter {
     * 優惠活動
     */
     static system_promotions = () => {
-        return httpClient.get("c=system&a=promotions")
+        return httpClient.get<PromotionsModel>("c=system&a=promotions")
     }
     static user_info = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');

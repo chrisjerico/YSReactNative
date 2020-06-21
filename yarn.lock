@@ -6154,6 +6154,13 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-autoheight-webview@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-autoheight-webview/-/react-native-autoheight-webview-1.5.1.tgz#67cbfb672212d93dedecf723d1914cbc40287545"
+  integrity sha512-jm/LGq+lW9MD3jdmbtDqjrBna/nkZqSIi3eajGbLM7SPlDuwDkmiMiBgonglZ6WeGqHyKbRa+f15MxqpVr+kUA==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-banner-carousel@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-banner-carousel/-/react-native-banner-carousel-1.0.3.tgz#83d760233cd7496b595a3c1e51399ffcb16edcb2"
