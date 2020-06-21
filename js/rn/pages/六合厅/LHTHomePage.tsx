@@ -27,13 +27,10 @@ import {
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
   defaultHeadLineLogo,
-  defaultHeadLines,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNavs,
-  defaultNoticeLogo,
-  defaultNotices
+  defaultNoticeLogo
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -84,13 +81,13 @@ const LHTHomePage = ({ navigation }) => {
   // data handle
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
-  const notices = notice?.data?.scroll ?? defaultNotices
+  const notices = notice?.data?.scroll ?? []
   const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? defaultNavs
-  const headlines = notice?.data?.popup ?? defaultHeadLines
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? []
+  const headlines = notice?.data?.popup ?? []
   const leftGames = three(categoryList?.data ?? [])
   const icons = homeGames?.data?.icons ?? []
-  const coupons = couponListData?.data?.list
+  const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []

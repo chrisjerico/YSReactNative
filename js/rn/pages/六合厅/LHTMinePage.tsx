@@ -1,15 +1,19 @@
 import React, { useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
+import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
+import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
+import { PageName } from '../../public/navigation/Navigation'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import FeatureList from '../../views/FeatureList'
-import { defaultProfileButtons } from './helpers/config'
+import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
@@ -18,6 +22,7 @@ const LHTMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { avatar, usr, curLevelGrade, balance }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
@@ -33,16 +38,12 @@ const LHTMinePage = ({ navigation }) => {
     navigation.navigate('LHTHomePage')
   }
 
-  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    PushHelper.pushUserCenterType(userCenterType)
-  }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
         onPressBack={gotoHome}
         onPressCustomerService={() => {
-          gotoUserCenter(UGUserCenterType.QQ客服)
+          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
         }}
       />
       <ScrollView
@@ -56,6 +57,12 @@ const LHTMinePage = ({ navigation }) => {
           avatar={avatar}
           level={curLevelGrade}
           balance={balance}
+          onPressDaySign={() => {
+            PushHelper.openWebView(defaultDaySignUrl)
+          }}
+          onPressTaskCenter={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+          }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (
@@ -64,7 +71,7 @@ const LHTMinePage = ({ navigation }) => {
                 title={title}
                 logo={logo}
                 onPress={() => {
-                  gotoUserCenter(userCenterType)
+                  PushHelper.pushUserCenterType(userCenterType)
                 }}
               />
             )
@@ -77,10 +84,15 @@ const LHTMinePage = ({ navigation }) => {
               key={index}
               title={name}
               logo={logo}
-              onPress={() => gotoUserCenter(code)}
+              onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
         })}
+        <Button
+          title={'退出登录'}
+          buttonStyle={styles.logOutButton}
+          onPress={loginOut}
+        />
       </ScrollView>
     </SafeAreaView>
   )
@@ -93,6 +105,12 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#ffffff',
+  },
+  logOutButton: {
+    backgroundColor: '#ff861b',
+    marginHorizontal: scale(25),
+    marginVertical: scale(25),
+    height: scale(70),
   },
 })
 
