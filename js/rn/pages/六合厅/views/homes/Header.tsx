@@ -46,17 +46,23 @@ const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLog
                 <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
               </TouchableOpacity>
               <Text style={styles.text}>{' | '}</Text>
-              <Text style={styles.text} onPress={onPressSignIn}>
-                {'登入'}
-              </Text>
+              <TouchableOpacity onPress={onPressSignIn}>
+                <Text style={styles.text} >
+                  {'登入'}
+                </Text>
+              </TouchableOpacity>
               <Text style={styles.text}>{' | '}</Text>
-              <Text style={styles.text} onPress={onPressSignUp}>
-                {'註冊'}
-              </Text>
+              <TouchableOpacity onPress={onPressSignUp}>
+                <Text style={styles.text} >
+                  {'註冊'}
+                </Text>
+              </TouchableOpacity>
               <Text style={styles.text}>{' | '}</Text>
-              <Text style={styles.text} onPress={onPressTryPlay}>
-                {'試玩'}
-              </Text>
+              <TouchableOpacity onPress={onPressTryPlay}>
+                <Text style={styles.text} >
+                  {'試玩'}
+                </Text>
+              </TouchableOpacity>
             </>
           )}
       </View>

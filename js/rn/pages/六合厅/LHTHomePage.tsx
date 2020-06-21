@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import {
+  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -8,11 +9,13 @@ import {
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
 import StringUtils from '../../public/tools/StringUtils'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -61,7 +64,7 @@ const LHTHomePage = ({ navigation }) => {
     onlineNum,
     couponListData,
     redBag,
-    rankList
+    rankList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -71,10 +74,11 @@ const LHTHomePage = ({ navigation }) => {
     'system_onlineCount',
     'system_promotions',
     'activity_redBagDetail',
-    'system_rankingList'
+    'system_rankingList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('------focus------')
       updateUserInfo()
     })
     return unsubscribe
@@ -85,8 +89,7 @@ const LHTHomePage = ({ navigation }) => {
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? []
+  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? []
   const headlines = notice?.data?.popup ?? []
   const leftGames = three(categoryList?.data ?? [])
   const icons = homeGames?.data?.icons ?? []
@@ -109,17 +112,60 @@ const LHTHomePage = ({ navigation }) => {
   ]
   const lotteryDate = lotteryNumber?.issue
 
-  const rightGames = icons?.map((tab) => {
-    const { list } = tab
-    const games = three(list?.filter((ele) => ele.levelType == '1'))
-    return games
-  }) ?? []
-  const subTabs = icons?.map((tab, index) => ({
-    key: index,
-    title: StringUtils.getInstance().deleteHtml(tab.name),
-  })) ?? []
+  const rightGames =
+    icons?.map((tab) => {
+      const { list } = tab
+      const games = three(list?.filter((ele) => ele.levelType == '1'))
+      return games
+    }) ?? []
+  const subTabs =
+    icons?.map((tab, index) => ({
+      key: index,
+      title: StringUtils.getInstance().deleteHtml(tab.name),
+    })) ?? []
 
-  console.log('-----rankList-----', rankLists)
+  // functions
+  const tryPlay = async () => {
+    try {
+      const { data } = await APIRouter.user_guestLogin()
+      const user: any = data?.data
+      if (Platform.OS == 'ios') {
+        Promise.all([
+          OCHelper.call(
+            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+            ['UGNotificationTryPlay']
+          ),
+          await OCHelper.call('UGUserModel.setCurrentUser:', [
+            UGUserModel.getYS(user),
+          ]),
+          await OCHelper.call(
+            'NSUserDefaults.standardUserDefaults.setBool:forKey:',
+            ['', 'isRememberPsd']
+          ),
+          await OCHelper.call(
+            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+            ['', 'userName']
+          ),
+          await OCHelper.call(
+            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+            ['', 'userPsw']
+          ),
+          await OCHelper.call(
+            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+            ['UGNotificationLoginComplete']
+          ),
+          await OCHelper.call(
+            'UGNavigationController.current.popToRootViewControllerAnimated:',
+            [true]
+          ),
+        ]).then(updateUserInfo)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // render
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -135,9 +181,7 @@ const LHTHomePage = ({ navigation }) => {
               onPressSignOut={loginOut}
               onPressSignIn={PushHelper.pushLogin}
               onPressSignUp={PushHelper.pushRegister}
-              onPressTryPlay={() => {
-                console.log('試玩')
-              }}
+              onPressTryPlay={tryPlay}
               onPressLogo={() => {
                 push(PageName.JDPromotionListPage)
               }}
@@ -178,9 +222,15 @@ const LHTHomePage = ({ navigation }) => {
                   advertisement={defaultAdvertisement}
                   lotteryLogo={defaultLotteryLogo}
                   customerServiceLogo={defaultCustomerServiceLogo}
-                  onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
-                  onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
-                  onPressAd={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)}
+                  onPressSavePoint={() =>
+                    PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                  }
+                  onPressGetPoint={() =>
+                    PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                  }
+                  onPressAd={() =>
+                    PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
+                  }
                   onPressSmileLogo={() =>
                     PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                   }
@@ -205,7 +255,9 @@ const LHTHomePage = ({ navigation }) => {
                         color={color}
                         text={sx}
                         showMore={index == 6}
-                        onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)}
+                        onPress={() =>
+                          PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
+                        }
                       />
                     )
                   }}
@@ -214,7 +266,9 @@ const LHTHomePage = ({ navigation }) => {
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
-                  onPressHeadline={({ value }) => PushHelper.pushNoticePopUp(value)}
+                  onPressHeadline={({ value }) =>
+                    PushHelper.pushNoticePopUp(value)
+                  }
                 />
                 <TabComponent
                   containerStyle={styles.subComponent}
@@ -261,12 +315,17 @@ const LHTHomePage = ({ navigation }) => {
                         pic={pic}
                         containerStyle={styles.couponBanner}
                         resizeMode={'contain'}
-                        onPress={() => PushHelper.pushCategory(linkCategory, linkPosition)}
+                        onPress={() =>
+                          PushHelper.pushCategory(linkCategory, linkPosition)
+                        }
                       />
                     )
                   }}
                 />
-                <WinningBlock containerStyle={styles.subComponent} rankLists={rankLists} />
+                <WinningBlock
+                  containerStyle={styles.subComponent}
+                  rankLists={rankLists}
+                />
                 <BottomToolBlock
                   tools={defaultBottomTools}
                   renderBottomTool={(item, index) => {
