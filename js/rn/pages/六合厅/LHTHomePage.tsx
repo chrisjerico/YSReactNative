@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
@@ -33,7 +33,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo
+  defaultNoticeLogo,
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -65,6 +65,7 @@ const LHTHomePage = ({ navigation }) => {
     couponListData,
     redBag,
     rankList,
+    // turntableList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -75,6 +76,7 @@ const LHTHomePage = ({ navigation }) => {
     'system_promotions',
     'activity_redBagDetail',
     'system_rankingList',
+    // 'activity_turntableList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -85,6 +87,7 @@ const LHTHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
+  // const turntables = turntableList?.data ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
@@ -357,12 +360,26 @@ const LHTHomePage = ({ navigation }) => {
                 <TouchableImage
                   pic={redBags?.redBagLogo}
                   onPress={() => {
+                    // console.log("--------redBag-------", redBag)
                     PushHelper.pushRedBag(redBag)
                   }}
                   containerStyle={styles.redEnvelope}
                 />
               ) : null
             }
+            {/* {
+              // 輪盤活動
+              uid ? (
+                <TouchableImage
+                  pic={turntables[0]?.param?.chassis_img}
+                  onPress={() => {
+                    // console.log("--------redBag-------", redBag)
+                    PushHelper.pushWheel(turntableList)
+                  }}
+                  containerStyle={styles.turntables}
+                />
+              ) : null
+            } */}
           </>
         )}
     </SafeAreaView>
@@ -399,6 +416,13 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     position: 'absolute',
     top: scale(500),
+    right: 0,
+  },
+  turntables: {
+    width: scale(200),
+    aspectRatio: 1,
+    position: 'absolute',
+    top: scale(300),
     right: 0,
   },
 })

@@ -95,7 +95,7 @@ export function setRnPageInfo() {
     ]);
   }
 
-  if (Skin1.skitType.indexOf('经典') != -1) {
+  if (Skin1.skitType.indexOf('六合厅') != -1) {
     pages = pages.concat([
       {
         // 首页

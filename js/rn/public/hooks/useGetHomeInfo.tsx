@@ -12,6 +12,7 @@ import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { NoticeModel } from '../network/Model/NoticeModel'
 import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
+import { TurntableListModel } from '../network/Model/TurntableListModel'
 
 type APIListType =
   | 'game_homeGames'
@@ -24,6 +25,7 @@ type APIListType =
   | 'system_floatAds'
   | 'lhcdoc_lotteryNumber'
   | 'lhcdoc_categoryList'
+  | 'activity_turntableList'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
@@ -36,6 +38,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [loading, setLoading] = useState(true)
   const [lotteryNumber, setLotteryNumber] = useState<LotteryNumberModel>()
   const [categoryList, setCategoryList] = useState<LhcdocCategoryListModel>()
+  const [turntableList, setTurntableList] = useState<TurntableListModel>()
   useEffect(() => {
     init()
     console.log('render')
@@ -89,6 +92,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                     case 'lhcdoc_categoryList':
                       setCategoryList(res[key].data)
                       break
+                    case 'activity_turntableList':
+                      setTurntableList(res[key].data)
                     default:
                       break
                   }
@@ -143,6 +148,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     couponListData,
     lotteryNumber,
     categoryList,
+    turntableList
   }
 }
 export default useGetHomeInfo
