@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { useDimensions } from '@react-native-community/hooks'
 import React, { useEffect, useState, useRef } from 'react'
 import { useSafeArea } from "react-native-safe-area-context";
-import { pop } from "../../public/navigation/RootNavigation";
+import { pop, popToRoot } from "../../public/navigation/RootNavigation";
 import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import { useNavigationState } from "@react-navigation/native";
 import ScrollableTabView, { TabBarProps, ScrollableTabBar } from "react-native-scrollable-tab-view";
@@ -24,9 +24,18 @@ const PromotionListPage = ({ navigation }) => {
   const [categories, setCategories] = useState<string[]>()
   useEffect(() => {
     init()
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
+      setCurrentNativeSelectedTab(index)
+    });
+
+    return unsubscribe;
   }, [])
   const [promotionData, setPromotionData] = useState<PromotionsModel>()
+  const [currentNativeSelectedTab, setCurrentNativeSelectedTab] = useState(-1)
+
   const init = async () => {
+
     try {
       const { data, status } = await APIRouter.system_promotions()
       setPromotionData(data)
@@ -46,16 +55,19 @@ const PromotionListPage = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
       <LinearGradient style={{ height: 44, width, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} colors={Skin1.navBarBgColor}>
-        {state.index == 2 ? null : <Button
-          icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
-          buttonStyle={[{ backgroundColor: 'transparent', position: 'absolute', left: 8 },]}
-          onPress={() => {
-            pop()
-            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-          }}
-        />}
+        {state.index != 2 || currentNativeSelectedTab == 0 ?
+          <View style={{ position: 'absolute', left: 8 }}>
+            <Button
+              icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
+              buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
+              onPress={() => {
+                popToRoot()
+                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              }}
+            />
+          </View> : null}
+        <Text style={{ textAlign: 'center', color: Skin1.textColor4, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
 
-        <Text style={{ textAlign: 'center', position: 'absolute', color: Skin1.textColor4, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
       </LinearGradient>
 
       <LinearGradient style={{ flex: 1, paddingBottom: 50 }} colors={Skin1.bgColor}>
@@ -80,7 +92,7 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
   const { onPopViewPress } = usePopUpView()
   console.log(dataSource.data.list.filter((res) => res.category == filter))
   return (
-    <FlatList data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list} renderItem={({ item, index }) => {
+    <FlatList keyExtractor={(item, index) => item.id + index} data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list} renderItem={({ item, index }) => {
       return <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
         <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
           if (selectId == index) {
