@@ -1,8 +1,10 @@
-import {AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import AppDefine from './js/rn/public/define/AppDefine';
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
 import UGApplication from './js/rn/pages/router/UGApplication';
-
+if (__DEV__) {
+  import('./js/rn/public/config/ReactotronConfig').then(() => console.log('Reactotron Configured'))
+}
 // 初始化APP配置
 AppDefine.setup();
 

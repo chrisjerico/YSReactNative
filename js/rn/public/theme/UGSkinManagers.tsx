@@ -5,6 +5,7 @@ import { JYThemeColor } from './colors/JYThemeColor';
 import { LHThemeColor } from './colors/LHThemeColor';
 import { XNHThemeColor } from './colors/XNHThemeColor';
 import { OtherThemeColor } from './colors/OtherThemeColor';
+import { GDBThemeColor } from './colors/GDBThemeColor';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import chroma from 'chroma-js';
 import FUtils from '../tools/FUtils';
@@ -23,9 +24,9 @@ export default class UGSkinManagers extends UGThemeColor {
     ...XBJThemeColor, // 香槟金
     ...XNHThemeColor, // 新年红
     ...ZLThemeColor,//尊龙
+    ...GDBThemeColor,
     ...OtherThemeColor, // 其他
   };
-
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
     const {
@@ -47,6 +48,7 @@ export default class UGSkinManagers extends UGThemeColor {
       12: '综合体育',
       14: `六合厅${mobileTemplateStyle}`,
       16: `尊龙`,
+      18: `金星黑`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
