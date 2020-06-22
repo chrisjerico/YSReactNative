@@ -14,6 +14,7 @@ import { TurntableListModel } from './Model/TurntableListModel';
 import { RegisterModel } from './Model/RegisterModel';
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { PromotionsModel } from './Model/PromotionsModel';
+import { del } from 'object-path';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -102,7 +103,9 @@ class APIRouter {
         return httpClient.post('c=secure&a=smsCaptcha', { phone: phone },);
     }
 
-
+    static system_config = async () => {
+        return httpClient.get("c=system&a=config")
+    }
     static user_reg = async (params: {
         inviter: string; // 推荐人ID
         usr: string; // 账号
@@ -113,18 +116,21 @@ class APIRouter {
         wx: string; // 微信号
         phone: string; // 手机号
         smsCode: string; // 短信验证码
-        imgCode: string; // 字母验证码
+        imgCode: string; // 字母验证码,
         "slideCode[nc_sid]": string,
         "slideCode[nc_token]": string,
         "slideCode[nc_sig]": string,
         email: string; // 邮箱
         regType: 'user' | 'agent'; // 用户注册 或 代理注册,
         device: string,
-        accessToken: string
+        accessToken: string,
+        slideCode: any
     }) => {
         var accessToken = await OCHelper.call('OpenUDID.value');
-        params = { ...params, device: '3', accessToken: accessToken, }
-        return httpClient.post<RegisterModel>('c=user&a=reg', params);
+        params = {
+            ...params, device: '3', accessToken: accessToken,
+        }
+        return httpClient.post<RegisterModel>('c=user&a=reg', params,);
     }
 
     static lhcdoc_categoryList = async () => {

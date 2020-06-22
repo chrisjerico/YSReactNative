@@ -78,7 +78,6 @@ export function setRnPageInfo() {
       },
     ])
   }
-
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) {
     pages = pages.concat([

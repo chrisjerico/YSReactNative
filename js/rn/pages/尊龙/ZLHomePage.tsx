@@ -52,6 +52,7 @@ const ZLHomePage = ({ navigation }) => {
 
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
+        APIRouter.system_config()
         const timer = setInterval(() => {
             getRandomString()
         }, 500)
