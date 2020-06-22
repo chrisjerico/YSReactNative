@@ -47,6 +47,7 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
+  console.log(Skin1.skitType);
 
   // 优惠活动列表页
   pages.push({
@@ -79,6 +80,26 @@ export function setRnPageInfo() {
     ])
   }
 
+  if (Skin1.skitType.indexOf('乐橙') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LCHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LCMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) {
     pages = pages.concat([
