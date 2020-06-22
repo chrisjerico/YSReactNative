@@ -23,14 +23,22 @@ import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { usr, balance }: UGUserModel = userStore
-  const { loading, banner, homeGames, notice, onlineNum, rankList } = useGetHomeInfo([
+  const { uid, usr, balance }: UGUserModel = userStore
+  const {
+    loading,
+    banner,
+    homeGames,
+    notice,
+    onlineNum,
+    rankList,
+  } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
@@ -39,6 +47,7 @@ const BZHHomePage = ({ navigation }) => {
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('------focus------')
       updateUserInfo()
     })
     return unsubscribe
@@ -82,7 +91,14 @@ const BZHHomePage = ({ navigation }) => {
         <UGProgressCircle />
       ) : (
           <>
-            <Header name={usr} money={balance} />
+            <Header
+              uid={uid}
+              name={usr}
+              money={balance}
+              onPressSignIn={PushHelper.pushLogin}
+              onPressSignUp={PushHelper.pushRegister}
+              onPressUser={() => { { PushHelper.pushUserCenterType(UGUserCenterType.个人信息) } }}
+            />
             <ScrollView
               style={[styles.container]}
               scrollEnabled={true}

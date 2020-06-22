@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
@@ -25,6 +25,7 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
 import NoticeBlock from '../../views/NoticeBlock'
 import RankBlock from '../../views/RankBlock'
+import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -35,7 +36,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo,
+  defaultNoticeLogo
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -45,7 +46,6 @@ import NavBlock from './views/homes/NavBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import TouchableImage from '../../views/TouchableImage'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
