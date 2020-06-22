@@ -30,6 +30,7 @@ import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
 import BZHSignInPage from '../宝石红/BZHSignInPage';
+import BZHRegisterPage from '../宝石红/BZHRegisterPage';
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -83,6 +84,7 @@ const UGApplication = () => {
           <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
         </Router.StackNavigator>
       </NavigationContainer>
     </Provider>

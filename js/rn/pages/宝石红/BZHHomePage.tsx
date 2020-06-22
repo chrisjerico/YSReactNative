@@ -98,7 +98,7 @@ const BZHHomePage = ({ navigation }) => {
               name={usr}
               money={balance}
               onPressSignIn={() => push(PageName.BZHSignInPage)}
-              onPressSignUp={PushHelper.pushRegister}
+              onPressSignUp={() => push(PageName.BZHRegisterPage)}
               onPressUser={() => {
                 {
                   PushHelper.pushUserCenterType(UGUserCenterType.个人信息)

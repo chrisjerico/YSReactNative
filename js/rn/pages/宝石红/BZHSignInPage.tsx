@@ -1,10 +1,10 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { Button, Icon, Input } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { scale } from '../../helpers/function'
 import { pop } from '../../public/navigation/RootNavigation'
 import Header from '../../views/Header'
-import { Input, CheckBox, Button, Icon } from 'react-native-elements'
-import { scale } from '../../helpers/function'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const BZHSignInPage = () => {
   return (
