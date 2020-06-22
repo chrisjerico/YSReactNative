@@ -16,12 +16,13 @@ import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
-const ZLLoginPage = () => {
+const ZLLoginPage = ({ route }) => {
     const { control, errors, triggerValidation, handleSubmit } = useForm()
     const [accountFocus, setAccountFocus] = useState(false)
     const [pwdFocus, setPwdFocus] = useState(false)
     const [isRemember, setIsRemember] = useState(false)
     const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const { usr, pwd } = route.params;
     const init = async () => {
         let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
         setIsRemember(isRemember)
@@ -34,6 +35,10 @@ const ZLLoginPage = () => {
     }
     useEffect(() => {
         init()
+        if (usr && pwd) {
+            control.setValue("account", usr)
+            control.setValue("pwd", pwd)
+        }
     }, [])
     useEffect(() => {
         if (errors?.account) {

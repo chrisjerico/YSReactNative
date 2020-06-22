@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
-import React, { useEffect, useState, useRef, useMemo } from 'react'
+import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import { Navigation, PageName } from "../../public/navigation/Navigation"
@@ -91,9 +91,9 @@ const ZLRegisterPage = () => {
                     UGStore.dispatch({ type: ActionType.Clear_User })
                 }
                 await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [false, 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: UserInfo, } = await APIRouter.user_info()
@@ -107,7 +107,7 @@ const ZLRegisterPage = () => {
             if (data?.data?.autoLogin == false) {
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
                 popToRoot();
-                navigate(PageName.ZLLoginPage, {})
+                navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
             EventRegister.emit('reload')
@@ -181,7 +181,7 @@ const ZLRegisterPage = () => {
                 return args[0]
             }} as={SlidingVerification} name={"slideCode"} />
         }
-    }, [reg_vcode])
+    }, [reg_vcode, code])
     useEffect(() => {
         console.log(errors)
         Object.keys(errors).map((res) => {
@@ -258,13 +258,19 @@ const ZLRegisterPage = () => {
                                 message: "最少" + pass_length_min + "位英文或数字的组合"
                             },
                             validate: (value) => {
+                                console.log(pass_limit)
                                 if (pass_limit == 0) {
                                     return true
                                 } else if (pass_limit == 1) {
+
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])/
+                                    console.log(regex.test(value))
+                                    debugger
                                     return regex.test(value) || '密码须有数字及字母'
                                 } else if (pass_limit == 2) {
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/
+                                    console.log(regex.test(value))
+                                    debugger
                                     return regex.test(value) || '密码须有数字及字母及字符'
                                 }
 

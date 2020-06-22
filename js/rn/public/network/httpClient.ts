@@ -95,11 +95,11 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
         });
       } else if (config.method == 'post' || config.method == 'POST') {
         config.url += '&checkSign=1';
-        debugger
+
         if (!config.params) config.params = {};
         if (!config.data) config.data = {};
         console.log(encryptData)
-        debugger
+
         if (encryptData["slideCode[nc_sid]"]) {
           config.data.slideCode = {}
           config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
@@ -113,7 +113,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
           delete config.data["slideCode[nc_sid]"]
         }
         console.log(config)
-        debugger
+
         for (let paramsKey in encryptData) {
           // if (paramsKey.includes("slideCode")) {
           //   config.data[paramsKey] = config.data[paramsKey];
@@ -126,6 +126,6 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     }
   }
   console.log(config)
-  debugger
+
   return config;
 });
