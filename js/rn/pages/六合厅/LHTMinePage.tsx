@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -17,11 +17,14 @@ import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
+import APIRouter from '../../public/network/APIRouter'
+import { ActionType } from '../../redux/store/ActionTypes'
 
 const LHTMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { avatar, usr, curLevelGrade, balance }: UGUserModel = userStore
@@ -63,7 +66,10 @@ const LHTMinePage = ({ navigation }) => {
           onPressTaskCenter={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
-          onPressReload={updateUserInfo}
+          onPressReload={async () => {
+            const { data, status } = await APIRouter.user_balance_token()
+            dispatch({ type: ActionType.UpdateUserInfo, props: { ...userStore, balance: data.data.balance } })
+          }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (

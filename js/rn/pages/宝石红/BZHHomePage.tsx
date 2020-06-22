@@ -4,18 +4,19 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
 import NoticeBlock from '../../views/NoticeBlock'
+import ProgressCircle from '../../views/ProgressCircle'
 import RankBlock from '../../views/RankBlock'
 import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
@@ -23,7 +24,8 @@ import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { PageName } from '../../public/navigation/Navigation'
+import { push, navigate } from "../../public/navigation/RootNavigation"
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -86,18 +88,22 @@ const BZHHomePage = ({ navigation }) => {
   ]
 
   return (
-    <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       {loading ? (
-        <UGProgressCircle />
+        <ProgressCircle />
       ) : (
           <>
             <Header
               uid={uid}
               name={usr}
               money={balance}
-              onPressSignIn={PushHelper.pushLogin}
+              onPressSignIn={() => push(PageName.BZHSignInPage)}
               onPressSignUp={PushHelper.pushRegister}
-              onPressUser={() => { { PushHelper.pushUserCenterType(UGUserCenterType.个人信息) } }}
+              onPressUser={() => {
+                {
+                  PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+                }
+              }}
             />
             <ScrollView
               style={[styles.container]}
@@ -184,12 +190,6 @@ const BZHHomePage = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  loadingSafeArea: {
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
   safeArea: {
     backgroundColor: '#e53333',
     flex: 1,

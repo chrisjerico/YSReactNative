@@ -23,6 +23,7 @@ export enum PageName {
   ZLRegisterPage = 'ZLRegisterPage',
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
+  BZHSignInPage = 'BZHSignInPage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
   GDLoginPage = "GDLoginPage"

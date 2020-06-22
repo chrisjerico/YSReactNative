@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { PageName } from '../../public/navigation/Navigation';
 import { navigationRef } from '../../public/navigation/RootNavigation';
 import { Router } from '../../public/navigation/Router';
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import TransitionPage from '../base/TransitionPage';
 import LHTHomePage from '../六合厅/LHTHomePage';
@@ -22,14 +21,15 @@ import ZHTYHomePage from '../综合体育/ZHTYHomePage';
 import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
 import ZHTYMinePage from '../综合体育/ZHTYMinePage';
 import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
+import GDBHomePage from '../金星黑/GDBHomePage';
+import GDBMinePage from '../金星黑/GDBMinePage';
+import GDLoginPage from '../金星黑/GDLoginPage';
 import XBJHomePage from '../香槟金/XBJHomePage';
 import XBJLoginPage from '../香槟金/XBJLoginPage';
 import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
-import GDBHomePage from '../金星黑/GDBHomePage'
-import GDBMinePage from '../金星黑/GDBMinePage';
-import GDLoginPage from '../金星黑/GDLoginPage';
+import BZHSignInPage from '../宝石红/BZHSignInPage';
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -48,7 +48,7 @@ class TabBarController extends Component<{
 
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.BZHHomePage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
@@ -76,12 +76,13 @@ const UGApplication = () => {
   return (
     <Provider store={UGStore.store}>
       <NavigationContainer ref={navigationRef}>
-        <Router.StackNavigator headerMode="screen">
-          <Router.StackScreen name="Tabbar" component={TabBarController} />
+        <Router.StackNavigator headerMode={'screen'}>
+          <Router.StackScreen name={'Tabbar'} component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
         </Router.StackNavigator>
       </NavigationContainer>
     </Provider>

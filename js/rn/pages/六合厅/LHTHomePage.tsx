@@ -17,13 +17,13 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import StringUtils from '../../public/tools/StringUtils'
-import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
 import NoticeBlock from '../../views/NoticeBlock'
+import ProgressCircle from '../../views/ProgressCircle'
 import RankBlock from '../../views/RankBlock'
 import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
@@ -170,9 +170,9 @@ const LHTHomePage = ({ navigation }) => {
 
   // render
   return (
-    <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       {loading ? (
-        <UGProgressCircle />
+        <ProgressCircle />
       ) : (
           <>
             <Header
@@ -388,12 +388,6 @@ const LHTHomePage = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  loadingSafeArea: {
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
   safeArea: {
     backgroundColor: '#2894FF',
     flex: 1,
