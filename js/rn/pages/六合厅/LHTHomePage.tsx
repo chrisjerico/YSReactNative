@@ -23,6 +23,7 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import RankBlock from '../../views/RankBlock'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -41,7 +42,6 @@ import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import NoticeBlock from './views/homes/NoticeBlock'
-import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
@@ -325,8 +325,9 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <WinningBlock
+                <RankBlock
                   containerStyle={styles.subComponent}
+                  iconContainerStyle={styles.rankBlockIconContainerStyle}
                   rankLists={rankLists}
                 />
                 <BottomToolBlock
@@ -425,6 +426,10 @@ const styles = StyleSheet.create({
     top: scale(300),
     right: 0,
   },
+  rankBlockIconContainerStyle: {
+    paddingLeft: 0,
+    paddingVertical: 0,
+  }
 })
 
 export default LHTHomePage

@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
@@ -24,6 +24,7 @@ import NavBlock from './views/homes/NavBlock'
 import NoticeBlock from './views/homes/NoticeBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
+import RankBlock from '../../views/RankBlock'
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -31,13 +32,7 @@ const BZHHomePage = ({ navigation }) => {
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { usr, balance }: UGUserModel = userStore
-  const {
-    loading,
-    banner,
-    homeGames,
-    notice,
-    onlineNum
-  } = useGetHomeInfo([
+  const { loading, banner, homeGames, notice, onlineNum } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
@@ -53,9 +48,13 @@ const BZHHomePage = ({ navigation }) => {
   // data handle
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
   const games = homeGames?.data?.icons ?? []
-  const lotterys = games?.filter((ele) => ele?.name == '彩票')[0]?.list?.filter(ele => ele.levelType == '1') ?? []
+  const lotterys =
+    games
+      ?.filter((ele) => ele?.name == '彩票')[0]
+      ?.list?.filter((ele) => ele.levelType == '1') ?? []
   const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
   const videos = games?.filter((ele) => ele?.name == '视讯')[0]?.list ?? []
   const threeLotterys = three(lotterys)
@@ -65,16 +64,16 @@ const BZHHomePage = ({ navigation }) => {
   const totalGames = [
     {
       title: '彩票',
-      games: threeLotterys
+      games: threeLotterys,
     },
     {
       title: '棋牌',
-      games: threeChess
+      games: threeChess,
     },
     {
       title: '视讯',
-      games: threeVideos
-    }
+      games: threeVideos,
+    },
   ]
 
   const gotoCategory = (
@@ -146,21 +145,34 @@ const BZHHomePage = ({ navigation }) => {
                 }}
               />
               <View style={styles.contentContainer}>
-                {
-                  totalGames.map(item => {
-                    const { title, games } = item
-                    return (<GameBlock
+                {totalGames.map((item) => {
+                  const { title, games } = item
+                  return (
+                    <GameBlock
                       title={title}
                       containerStyle={styles.subComponent}
                       games={games}
                       renderGame={(item, index) => {
                         const { title, logo, show } = item
-                        return <TabButton key={index} logo={logo} mainTitle={title} show={show} />
+                        return (
+                          <TabButton
+                            key={index}
+                            logo={logo}
+                            mainTitle={title}
+                            show={show}
+                          />
+                        )
                       }}
-                    />)
-                  })
-                }
+                    />
+                  )
+                })}
               </View>
+              <RankBlock
+                containerStyle={styles.subComponent}
+                rankContainerStyle={{ width: '95%', borderWidth: scale(1), borderColor: '#d9d9d9', alignSelf: 'center' }}
+                iconContainerStyle={{ backgroundColor: '#ffffff', borderBottomColor: '#d9d9d9', borderBottomWidth: scale(1) }}
+                rankLists={[]}
+              />
             </ScrollView>
           </>
         )}
@@ -188,6 +200,7 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginTop: scale(10),
+    backgroundColor: '#ffffff'
   },
 })
 
