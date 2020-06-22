@@ -1,6 +1,6 @@
-import { UGUserCenterType, UGAgentApplyInfo } from '../../redux/model/全局/UGSysConfModel';
+import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import { Alert, AlertButton, Platform } from 'react-native';
+import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { OCHelper } from './OCHelper/OCHelper';

@@ -2,10 +2,10 @@ import {UGThemeColor} from '../UGThemeColor';
 
 // 其他
 export const OtherThemeColor: {[x: string]: UGThemeColor} = {
-  //石榴红
+  //乐橙
   石榴红: {
     skitType: '石榴红',
-    skitString: '石榴红 ',
+    skitString: '乐橙 ',
     bgColor: ['#F5F5F5', '#F5F5F5'],
     navBarBgColor: ['#CC022C', '#CC022C'],
     tabBarBgColor: '#CC022C',
