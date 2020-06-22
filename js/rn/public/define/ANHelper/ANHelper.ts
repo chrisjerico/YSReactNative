@@ -42,7 +42,7 @@ export class ANHelper extends ANEvent {
     });
 
     // 设置站点编号
-    AppDefine.call(NativeCommand.APP_SITE).then((siteId: string) => {
+    this.call(NativeCommand.APP_SITE).then((siteId: string) => {
       AppDefine.siteId = siteId;
     });
   }
