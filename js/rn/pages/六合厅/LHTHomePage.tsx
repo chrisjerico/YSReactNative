@@ -23,6 +23,7 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import NoticeBlock from '../../views/NoticeBlock'
 import RankBlock from '../../views/RankBlock'
 import TabComponent from './components/TabComponent'
 import {
@@ -41,11 +42,10 @@ import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
-import NoticeBlock from '../../views/NoticeBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import TouchableImage from './views/TouchableImage'
+import TouchableImage from '../../views/TouchableImage'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   rankBlockIconContainerStyle: {
     paddingLeft: 0,
     paddingVertical: 0,
-  }
+  },
 })
 
 export default LHTHomePage

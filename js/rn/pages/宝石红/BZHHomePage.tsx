@@ -4,27 +4,25 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
-import { IGameIconListItem } from '../../redux/model/home/IGameBean'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import NoticeBlock from '../../views/NoticeBlock'
+import RankBlock from '../../views/RankBlock'
+import TouchableImage from '../../views/TouchableImage'
 import { scale, three } from './helpers/function'
-import Banner from './views/Banner'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
-import NoticeBlock from '../../views/NoticeBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import RankBlock from '../../views/RankBlock'
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -76,28 +74,6 @@ const BZHHomePage = ({ navigation }) => {
     },
   ]
 
-  const gotoCategory = (
-    category: string | number,
-    position: string | number
-  ) => {
-    // console.log("-----category-----", category)
-    // console.log("-----position-----", position)
-    PushHelper.pushCategory(category, position)
-  }
-
-  const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    // console.log("---------game---------", game)
-    PushHelper.pushHomeGame(game)
-  }
-
-  const goToNotice = (message: string) => {
-    PushHelper.pushNoticePopUp(message)
-  }
-
-  const gotoWebView = (url: string) => {
-    PushHelper.openWebView(url)
-  }
-
   return (
     <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
       {loading ? (
@@ -116,11 +92,11 @@ const BZHHomePage = ({ navigation }) => {
                 renderBanner={(item, index) => {
                   const { linkCategory, linkPosition, pic } = item
                   return (
-                    <Banner
+                    <TouchableImage
                       key={index}
                       pic={pic}
                       onPress={() => {
-                        gotoCategory(linkCategory, linkPosition)
+                        PushHelper.pushCategory(linkCategory, linkPosition)
                       }}
                     />
                   )
@@ -128,7 +104,7 @@ const BZHHomePage = ({ navigation }) => {
               />
               <NoticeBlock
                 notices={notices}
-                onPressNotice={({ value }) => goToNotice(value)}
+                onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
               />
               <NavBlock
                 navs={navs}
@@ -139,7 +115,7 @@ const BZHHomePage = ({ navigation }) => {
                       key={index}
                       logo={icon ? icon : logo}
                       title={name}
-                      onPress={() => gotoHomeGame(item)}
+                      onPress={() => PushHelper.pushHomeGame(item)}
                     />
                   )
                 }}
@@ -169,8 +145,17 @@ const BZHHomePage = ({ navigation }) => {
               </View>
               <RankBlock
                 containerStyle={styles.subComponent}
-                rankContainerStyle={{ width: '95%', borderWidth: scale(1), borderColor: '#d9d9d9', alignSelf: 'center' }}
-                iconContainerStyle={{ backgroundColor: '#ffffff', borderBottomColor: '#d9d9d9', borderBottomWidth: scale(1) }}
+                rankContainerStyle={{
+                  width: '95%',
+                  borderWidth: scale(1),
+                  borderColor: '#d9d9d9',
+                  alignSelf: 'center',
+                }}
+                iconContainerStyle={{
+                  backgroundColor: '#ffffff',
+                  borderBottomColor: '#d9d9d9',
+                  borderBottomWidth: scale(1),
+                }}
                 rankLists={[]}
               />
             </ScrollView>
@@ -200,7 +185,7 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginTop: scale(10),
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   },
 })
 
