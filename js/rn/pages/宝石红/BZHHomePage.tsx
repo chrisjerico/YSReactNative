@@ -7,6 +7,7 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import { scale, three } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
@@ -17,7 +18,6 @@ import BannerBlock from '../../views/BannerBlock'
 import NoticeBlock from '../../views/NoticeBlock'
 import RankBlock from '../../views/RankBlock'
 import TouchableImage from '../../views/TouchableImage'
-import { scale, three } from './helpers/function'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
@@ -30,11 +30,12 @@ const BZHHomePage = ({ navigation }) => {
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { usr, balance }: UGUserModel = userStore
-  const { loading, banner, homeGames, notice, onlineNum } = useGetHomeInfo([
+  const { loading, banner, homeGames, notice, onlineNum, rankList } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'system_onlineCount',
+    'system_rankingList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -44,6 +45,7 @@ const BZHHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
+  const rankLists = rankList?.data?.list ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const navs =
@@ -156,7 +158,7 @@ const BZHHomePage = ({ navigation }) => {
                   borderBottomColor: '#d9d9d9',
                   borderBottomWidth: scale(1),
                 }}
-                rankLists={[]}
+                rankLists={rankLists}
               />
             </ScrollView>
           </>

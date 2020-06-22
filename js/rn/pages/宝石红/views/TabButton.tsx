@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, ImageStyle, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { scale } from '../helpers/function';
+import { scale } from '../../../helpers/function';
 
 interface TabButtonProps {
   logo?: string;

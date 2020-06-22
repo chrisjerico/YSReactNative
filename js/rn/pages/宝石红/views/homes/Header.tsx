@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { scale } from '../../helpers/function'
+import { scale } from '../../../../helpers/function'
 
 interface HeaderProps {
   name: string;
