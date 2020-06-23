@@ -26,7 +26,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   if (!isEncrypt) {
     return params;
   }
-  var temp = Object.assign({}, params);
+  let temp = Object.assign({}, params);
 
   try {
     temp['checkSign'] = 1;
@@ -49,16 +49,17 @@ httpClient.interceptors.response.use(
     if (err && err.response) {
       switch (err.response.status) {
         case 401:
-          OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
-            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
-              OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                updateUserInfo()
-                UGStore.dispatch({ type: ActionType.Clear_User })
-                Toast('帐号已被登出');
+          if (Platform.OS == 'ios') {
+            OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
+              OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
+                OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
+                  updateUserInfo()
+                  UGStore.dispatch({ type: ActionType.Clear_User })
+                  Toast('帐号已被登出');
+                })
               })
             })
-          })
-
+          }
 
           break;
         case 500:

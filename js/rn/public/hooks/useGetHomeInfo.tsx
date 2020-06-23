@@ -62,7 +62,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
 
   const _handleHost = (host?: String) => {
     console.log('useEffect host=' + host)
-    httpClient.defaults.baseURL = "http://test30f.fhptcdn.com"
+    httpClient.defaults.baseURL = "http://test60f.fhptcdn.com"
     if (coustomArray?.length > 0) {
       let requests = []
       for (const key in coustomArray) {
