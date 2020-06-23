@@ -9,7 +9,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, pop } from '../../public/navigation/RootNavigation'
+import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
@@ -165,7 +165,7 @@ const BZHSignInPage = () => {
               <Text>{'免费试玩'}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
-              navigate(PageName.BZHHomePage, {})
+              popToRoot()
             }}>
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
