@@ -30,7 +30,7 @@ const BZHMinePage = ({ navigation }) => {
   // hooks
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance }: UGUserModel = userStore
+  const { avatar, balance, usr }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
 
   const {
@@ -72,6 +72,7 @@ const BZHMinePage = ({ navigation }) => {
           containerStyle={{ paddingBottom: scale(30) }}
           avatar={avatar}
           money={balance}
+          name={usr}
           features={navs}
           renderFeature={(item, index) => {
             const { icon, title } = item

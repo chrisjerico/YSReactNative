@@ -1,71 +1,76 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import { Button, Icon, Input } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../helpers/function'
-import { pop } from '../../public/navigation/RootNavigation'
+import PushHelper from '../../public/define/PushHelper'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate, pop } from '../../public/navigation/RootNavigation'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import Header from '../../views/Header'
+import Form from './views/Form'
 
 const BZHRegisterPage = () => {
+  let account = useRef(null).current
+  let password = useRef(null).current
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
         color={'#e53333'}
         title={'注册'}
         onPressBack={pop}
-        onPressCustomerService={() => { }}
+        onPressCustomerService={() => {
+          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+        }}
       />
       <View style={styles.container}>
-        <View
-          style={{
-            backgroundColor: '#ffffff',
-            width: '95%',
-            aspectRatio: 485 / 655,
-            alignSelf: 'center',
-            borderRadius: scale(5),
-            marginTop: scale(15),
-            paddingHorizontal: scale(25),
-          }}
-        >
-          <View style={{ flex: 25 }} />
-          <View
-            style={{
-              flex: 440,
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Input
-              placeholder={'请输入会员帐号'}
-              containerStyle={{ padding: 0, height: 10 }}
+        <View style={styles.whiteBlock}>
+          <View style={styles.formContainer}>
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (account = value)}
+              label={'推荐人ID，如没有可不填写'}
+              labelStyle={styles.warningText}
+              placeholder={'推荐人ID'}
             />
-            <Input
-              placeholder={'请输入密码'}
-              secureTextEntry={true}
-              containerStyle={{ padding: 0, height: 10 }}
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (password = value)}
+              label={'为了您的资料安全，请使用真实资料!'}
+              labelStyle={styles.warningText}
+              placeholder={'帐号'}
             />
-            <Input
-              placeholder={'请输入密码'}
-              secureTextEntry={true}
-              containerStyle={{ padding: 0, height: 10 }}
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (password = value)}
+              label={'*请使用6-15位英文或数字的组合'}
+              labelStyle={styles.warningText}
+              placeholder={'密码'}
             />
-            <Input
-              placeholder={'请输入密码'}
-              secureTextEntry={true}
-              containerStyle={{ padding: 0, height: 10 }}
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (password = value)}
+              label={'*请使用至少6位字符'}
+              labelStyle={styles.warningText}
+              placeholder={'确认密码'}
             />
-            <Input
-              placeholder={'请输入密码'}
-              secureTextEntry={true}
-              containerStyle={{ padding: 0, height: 10 }}
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (password = value)}
+              label={'*必须与您的银行账户名称相同，以免未能到账！'}
+              labelStyle={styles.warningText}
+              placeholder={'真实姓名'}
             />
-            <Input
-              placeholder={'请输入密码'}
-              secureTextEntry={true}
-              containerStyle={{ padding: 0, height: 10 }}
+            <Form
+              iconName={'user-circle'}
+              onChangeText={(value: any) => (password = value)}
+              label={'*请输入4数字取款密码'}
+              labelStyle={styles.warningText}
+              placeholder={'取款密码'}
             />
           </View>
-          <View style={{ flex: 70 }} />
+          <View style={{ flex: 10 }}></View>
           <View style={{ flex: 50, justifyContent: 'space-between' }}>
             <Button
               title={'注册'}
@@ -87,10 +92,16 @@ const BZHRegisterPage = () => {
               width: '100%',
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigate(PageName.BZHSignInPage, {})
+              }}
+            >
               <Text>{'返回登录'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => {
+              navigate(PageName.BZHHomePage, {})
+            }}>
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
           </View>
@@ -108,6 +119,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#d9d9d9',
+  },
+  whiteBlock: {
+    backgroundColor: '#ffffff',
+    width: '95%',
+    aspectRatio: 485 / 655,
+    alignSelf: 'center',
+    borderRadius: scale(10),
+    marginTop: scale(15),
+    paddingHorizontal: scale(25),
+  },
+  formContainer: {
+    flex: 440,
+    justifyContent: 'space-around',
+  },
+  warningText: {
+    color: '#FF7575',
+    fontSize: scale(15),
   },
 })
 export default BZHRegisterPage

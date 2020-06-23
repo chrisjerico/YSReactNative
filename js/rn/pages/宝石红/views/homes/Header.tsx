@@ -26,7 +26,7 @@ const Header = ({
     <View style={styles.container}>
       {uid ? (
         <View style={styles.row}>
-          <View style={{ width: scale(100) }} />
+          <View style={{ flex: 1 }} />
           <FastImage
             source={{
               uri:
@@ -36,7 +36,7 @@ const Header = ({
             resizeMode={'contain'}
           />
           <TouchableOpacity
-            style={{ alignItems: 'flex-end', width: scale(100) }}
+            style={{ alignItems: 'flex-end', flex: 1 }}
             onPress={onPressUser}
           >
             <Text>{name}</Text>

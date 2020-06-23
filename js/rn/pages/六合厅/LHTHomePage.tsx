@@ -1,21 +1,19 @@
 import React, { useEffect } from 'react'
 import {
-  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
+import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import StringUtils from '../../public/tools/StringUtils'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -36,7 +34,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo
+  defaultNoticeLogo,
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -51,6 +49,7 @@ const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { tryPlay } = useTryPlay({ enablePop: false })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
@@ -128,45 +127,6 @@ const LHTHomePage = ({ navigation }) => {
     })) ?? []
 
   // functions
-  const tryPlay = async () => {
-    try {
-      const { data } = await APIRouter.user_guestLogin()
-      const user: any = data?.data
-      if (Platform.OS == 'ios') {
-        Promise.all([
-          OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationTryPlay']
-          ),
-          await OCHelper.call('UGUserModel.setCurrentUser:', [
-            UGUserModel.getYS(user),
-          ]),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-            ['', 'isRememberPsd']
-          ),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userName']
-          ),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userPsw']
-          ),
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationLoginComplete']
-          ),
-          await OCHelper.call(
-            'UGNavigationController.current.popToRootViewControllerAnimated:',
-            [true]
-          ),
-        ]).then(updateUserInfo)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   // render
   return (

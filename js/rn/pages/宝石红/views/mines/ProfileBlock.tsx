@@ -9,6 +9,7 @@ interface ProfileBlockProps {
   renderFeature: (item: any, index: number) => any;
   avatar: string;
   containerStyle?: ViewStyle;
+  name: string;
 }
 
 const ProfileBlock = ({
@@ -17,6 +18,7 @@ const ProfileBlock = ({
   features,
   renderFeature,
   containerStyle,
+  name,
 }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -33,7 +35,7 @@ const ProfileBlock = ({
               paddingBottom: scale(20),
             }}
           >
-            <Text style={styles.text}>{'tars1987'}</Text>
+            <Text style={styles.text}>{name}</Text>
             <Text style={[styles.text, { paddingTop: scale(5) }]}>
               {'余额 ' + money}
             </Text>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: scale(25),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   redBlock: {
     width: '100%',
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(25),
-    fontWeight: '600'
+    fontWeight: '600',
   },
 })
 
