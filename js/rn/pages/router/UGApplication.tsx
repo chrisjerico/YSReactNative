@@ -53,7 +53,8 @@ class TabBarController extends Component<{
 
     render() {
         return (
-            <Router.TabNavigator initialRouteName={PageName.ZLHomePage} >
+          <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}}
+                               tabBarOptions={this.tabBarOptions}>
                 <Router.TabScreen name={PageName.LXBView} component={LXBView} />
                 <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage}/>
                 <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage}/>
