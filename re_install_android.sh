@@ -2,4 +2,5 @@ rm -rf ./node_modules
 npm install
 react-native link
 npx jetify
-./run_android.sh
+#npx react-native start --reset-cache
+react-native start
