@@ -22,7 +22,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边';
   style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
-  once: boolean = true;
+  lastSelectedIndex: number = -1;
 
   constructor(props) {
     super(props);
@@ -36,6 +36,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       this.style1 = '外边框';
     }
     this.style2 = style2;
+    this.style2 = 'slide';
     this.list = list.map((item: UGPromoteModel) => {
       return Object.assign({}, item);
     });
@@ -47,7 +48,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   renderCell(pm: UGPromoteModel, idx: number) {
     const cardMargin = this.style1 == '行边框' ? 11 : 0;
     const marginHorizontal = this.style1 === '贴边' ? 0 : 10;
-    const marginVertical = this.style1 === '贴边' ? 0 : 5;
+    const marginVertical = this.style1 == '贴边' || this.style1 == '外边框' ? 0 : 5;
     let contentView = (
       <View style={{ marginHorizontal: marginHorizontal, marginVertical: marginVertical }}>
         <TouchableOpacity
@@ -60,28 +61,22 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             switch (this.style2) {
               // 内页
               case 'page': {
-                // OCHelper.call(({ vc }) => ({
-                //   vc: {
-                //     selectors: 'UGPromoteDetailController.new[setItem:]',
-                //     args1: [pm],
-                //   },
-                //   ret: {
-                //     selectors: 'UGNavigationController.current.pushViewController:animated:',
-                //     args1: [vc, true],
-                //   },
-                // }));
-                // break;
-                this.setState({
-                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
-                });
+                OCHelper.call(({ vc }) => ({
+                  vc: {
+                    selectors: 'UGPromoteDetailController.new[setItem:]',
+                    args1: [pm],
+                  },
+                  ret: {
+                    selectors: 'UGNavigationController.current.pushViewController:animated:',
+                    args1: [vc, true],
+                  },
+                }));
+                break;
               }
               // 弹框
               case 'popup': {
-                // OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
-                // break;
-                this.setState({
-                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
-                });
+                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                break;
               }
               // 折叠
               case 'slide': {
@@ -104,13 +99,14 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             }}
           />
         </TouchableOpacity>
-        <View style={{ height: this.state.selectedIndex === idx ? pm.webViewHeight ?? 200 : 0 }}>
+        {
+          this.state.selectedIndex === idx && <View style={{ height:pm.webViewHeight ?? 200}}>
           <WebView
             onNavigationStateChange={(title) => {
               if (!pm.webViewHeight && parseInt(title.title)) {
                 pm.webViewHeight = parseInt(title.title);
-                if (this.once) {
-                  this.once = false;
+                if (this.lastSelectedIndex != this.state.selectedIndex) {
+                  this.lastSelectedIndex = this.state.selectedIndex;
                   this.setState({});
                 }
               }
@@ -133,6 +129,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             }}
           />
         </View>
+        }
       </View>
     );
 
@@ -150,7 +147,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     }
     if (this.style1 == '外边框') {
       return (
-        <View style={{ margin: 7, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
+        <View style={{ margin: 7, paddingTop:11, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
           <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         </View>
       )
