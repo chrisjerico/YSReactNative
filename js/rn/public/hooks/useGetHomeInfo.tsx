@@ -84,7 +84,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                       setFloatAds(res[key].data)
                       break
                     case 'system_onlineCount':
-                      setOnlineNum(res[key].data.data.onlineUserCount)
+                      setOnlineNum(res[key]?.data?.data?.onlineUserCount)
                       break
                     case 'lhcdoc_lotteryNumber':
                       setLotteryNumber(res[key].data)

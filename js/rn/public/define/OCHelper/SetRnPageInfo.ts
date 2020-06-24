@@ -56,28 +56,28 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-    Skin1.skitType = '宝石红' // 測試開發
-    // 宝石红页面
-    if (Skin1.skitType.indexOf('宝石红') != -1) {
-      pages = pages.concat([
-        {
-          // 首页
-          tabbarItemPath: '/home',
-          rnName: PageName.BZHHomePage,
-          fd_prefersNavigationBarHidden: true,
-          允许游客访问: true,
-          允许未登录访问: true,
-        },
-        {
-          // 我的页
-          tabbarItemPath: '/user',
-          rnName: PageName.BZHMinePage,
-          fd_prefersNavigationBarHidden: true,
-          允许游客访问: true,
-          允许未登录访问: false,
-        },
-      ])
-    }
+  Skin1.skitType = '宝石红' // 測試開發
+  // 宝石红页面
+  if (Skin1.skitType.indexOf('宝石红') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.BZHHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.BZHMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
 
   // 六合厅页面
   if (Skin1.skitType.indexOf('六合厅') != -1) {

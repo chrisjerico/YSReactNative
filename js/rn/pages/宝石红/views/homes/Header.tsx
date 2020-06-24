@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../../helpers/function'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { scale } from '../../../../helpers/function'
 
 interface HeaderProps {
   name: string;
@@ -12,6 +12,7 @@ interface HeaderProps {
   onPressSignIn: () => any;
   onPressSignUp: () => any;
   onPressUser: () => any;
+  isTest: boolean;
 }
 
 const Header = ({
@@ -21,27 +22,40 @@ const Header = ({
   onPressSignIn,
   onPressSignUp,
   onPressUser,
+  isTest,
 }: HeaderProps) => {
   return (
     <View style={styles.container}>
       {uid ? (
         <View style={styles.row}>
-          <View style={{ flex: 1 }} />
-          <FastImage
-            source={{
-              uri:
-                'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
-            }}
-            style={styles.logo}
-            resizeMode={'contain'}
-          />
-          <TouchableOpacity
-            style={{ alignItems: 'flex-end', flex: 1 }}
-            onPress={onPressUser}
+          <View style={{ flex: 1 }}>
+            {isTest ? (
+              <Button
+                title={'注册'}
+                buttonStyle={styles.button}
+                titleStyle={styles.buttonTitle}
+                onPress={onPressSignUp}
+              />
+            ) : null}
+          </View>
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-            <Text>{name}</Text>
-            <Text>{'￥' + money}</Text>
-          </TouchableOpacity>
+            <FastImage
+              source={{
+                uri:
+                  'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
+              }}
+              style={styles.logo}
+              resizeMode={'contain'}
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={onPressUser}>
+              <Text>{name}</Text>
+              <Text>{'￥' + money}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
           <View style={styles.row}>
@@ -82,7 +96,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '80%',
+    height: '100%',
   },
   text: {
     fontSize: scale(20),

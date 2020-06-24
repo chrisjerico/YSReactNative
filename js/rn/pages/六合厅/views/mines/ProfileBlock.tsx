@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { Animated, Easing, StyleSheet, Text, View } from 'react-native'
+import { Animated, StyleSheet, Text, View } from 'react-native'
 import { Avatar, Icon } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import ReLoadComponent from '../../../../components/ReLoadComponent'
 import { scale } from '../../../../helpers/function'
 import PushHelper from '../../../../public/define/PushHelper'
 
@@ -46,12 +47,6 @@ const ProfileBlock = ({
   onPressTaskCenter,
   onPressReload,
 }: ProfileBlockProps) => {
-  const [spinValue, setSpinValue] = useState(new Animated.Value(0))
-  const reload = useRef(false)
-  const spinDeg = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  })
 
   return (
     <View style={styles.container}>
@@ -89,32 +84,7 @@ const ProfileBlock = ({
               <Text style={{ color: '#ff861b', marginRight: scale(10) }}>
                 {balance}
               </Text>
-              <Animated.View style={{ transform: [{ rotateZ: spinDeg }] }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (!reload.current) {
-                      reload.current = true
-                      onPressReload && onPressReload()
-                      Animated.timing(spinValue, {
-                        toValue: 1,
-                        duration: 3000,
-                        easing: Easing.linear,
-                        useNativeDriver: true,
-                      }).start(() => {
-                        setSpinValue(new Animated.Value(0))
-                        reload.current = false
-                      })
-                    }
-                  }}
-                >
-                  <Icon
-                    name={'reload1'}
-                    type={'antdesign'}
-                    size={scale(20)}
-                    color={'#ff861b'}
-                  />
-                </TouchableOpacity>
-              </Animated.View>
+              <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
             </View>
           </View>
         </View>

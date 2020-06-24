@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import { PageName } from '../../public/navigation/Navigation'
+import { push, navigate } from '../../public/navigation/RootNavigation'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -24,15 +26,13 @@ import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import { PageName } from '../../public/navigation/Navigation'
-import { push, navigate } from "../../public/navigation/RootNavigation"
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { uid, usr, balance }: UGUserModel = userStore
+  const { uid, usr, balance, isTest }: UGUserModel = userStore
   const {
     loading,
     banner,
@@ -40,12 +40,14 @@ const BZHHomePage = ({ navigation }) => {
     notice,
     onlineNum,
     rankList,
+    redBag,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'system_onlineCount',
     'system_rankingList',
+    'activity_redBagDetail',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -55,7 +57,9 @@ const BZHHomePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
+  console.log('----userStore-----', userStore)
   // data handle
+  const redBags = redBag?.data
   const rankLists = rankList?.data?.list ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -94,15 +98,14 @@ const BZHHomePage = ({ navigation }) => {
       ) : (
           <>
             <Header
+              isTest={isTest}
               uid={uid}
               name={usr}
               money={balance}
               onPressSignIn={() => push(PageName.BZHSignInPage)}
               onPressSignUp={() => push(PageName.BZHRegisterPage)}
               onPressUser={() => {
-                {
-                  PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
-                }
+                navigate(PageName.BZHHomePage, { index: 4 })
               }}
             />
             <ScrollView
@@ -149,6 +152,9 @@ const BZHHomePage = ({ navigation }) => {
                   const { title, games } = item
                   return (
                     <GameBlock
+                      onPressTotal={() =>
+                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                      }
                       title={title}
                       containerStyle={styles.subComponent}
                       games={games}
@@ -185,6 +191,19 @@ const BZHHomePage = ({ navigation }) => {
             </ScrollView>
           </>
         )}
+      {
+        // 紅包活動
+        uid ? (
+          <TouchableImage
+            pic={redBags?.redBagLogo}
+            onPress={() => {
+              // console.log("--------redBag-------", redBag)
+              PushHelper.pushRedBag(redBag)
+            }}
+            containerStyle={styles.redEnvelope}
+          />
+        ) : null
+      }
     </SafeAreaView>
   )
 }
@@ -204,6 +223,13 @@ const styles = StyleSheet.create({
   subComponent: {
     marginTop: scale(10),
     backgroundColor: '#ffffff',
+  },
+  redEnvelope: {
+    width: scale(200),
+    aspectRatio: 1,
+    position: 'absolute',
+    top: scale(500),
+    right: 0,
   },
 })
 

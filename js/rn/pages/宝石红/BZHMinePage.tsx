@@ -3,21 +3,20 @@ import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
-  StyleSheet
+  StyleSheet,
 } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
+import APIRouter from '../../public/network/APIRouter'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import {
-  IGlobalStateHelper,
-  updateUserInfo
-} from '../../redux/store/IGlobalStateHelper'
+import { ActionType } from '../../redux/store/ActionTypes'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import FeatureList from '../../views/FeatureList'
 import Header from './views/mines/Header'
@@ -28,37 +27,25 @@ const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { avatar, balance, usr }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
+  const { homeGames } = useGetHomeInfo(['game_homeGames'])
 
-  const {
-    //loading,
-    homeGames,
-  } = useGetHomeInfo(['game_homeGames'])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('-----成為焦點-----')
       updateUserInfo()
     })
     return unsubscribe
   }, [])
 
   const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('-----成為焦點-----')
-      IGlobalStateHelper.updateUserInfo()
-    })
-    return unsubscribe
-  }, [])
-
-  // functions
-  const gotoHome = () => {
-    navigation.navigate('LHTHomePage')
-  }
+    homeGames?.data?.navs
+      ?.sort((a, b) => parseInt(b.sort) - parseInt(a.sort))
+      .slice(0, 4) ?? []
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -69,18 +56,25 @@ const BZHMinePage = ({ navigation }) => {
         refreshControl={<RefreshControl refreshing={false} />}
       >
         <ProfileBlock
+          onPressReload={async () => {
+            const { data } = await APIRouter.user_balance_token()
+            dispatch({
+              type: ActionType.UpdateUserInfo,
+              props: { balance: data.data.balance },
+            })
+          }}
           containerStyle={{ paddingBottom: scale(30) }}
           avatar={avatar}
           money={balance}
           name={usr}
           features={navs}
           renderFeature={(item, index) => {
-            const { icon, title } = item
+            const { icon, name } = item
             return (
               <NavButton
                 key={index}
                 logo={icon}
-                title={title}
+                title={name}
                 onPress={() => PushHelper.pushHomeGame(item)}
               />
             )

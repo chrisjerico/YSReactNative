@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Avatar } from 'react-native-elements'
+import ReLoadComponent from '../../../../components/ReLoadComponent'
 import { scale } from '../../../../helpers/function'
 
 interface ProfileBlockProps {
@@ -10,6 +11,7 @@ interface ProfileBlockProps {
   avatar: string;
   containerStyle?: ViewStyle;
   name: string;
+  onPressReload: () => any;
 }
 
 const ProfileBlock = ({
@@ -19,6 +21,7 @@ const ProfileBlock = ({
   renderFeature,
   containerStyle,
   name,
+  onPressReload,
 }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -26,19 +29,14 @@ const ProfileBlock = ({
       <View style={styles.profileContainer}>
         <View style={styles.profileRowContainer}>
           <Avatar source={{ uri: avatar }} size={'large'} rounded />
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'flex-end',
-              height: '100%',
-              paddingLeft: scale(30),
-              paddingBottom: scale(20),
-            }}
-          >
+          <View style={styles.moneyContainer}>
             <Text style={styles.text}>{name}</Text>
-            <Text style={[styles.text, { paddingTop: scale(5) }]}>
-              {'余额 ' + money}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={[styles.text, { paddingTop: scale(10), paddingRight: scale(10) }]}>
+                {'余额 ' + money}
+              </Text>
+              <ReLoadComponent onPress={onPressReload} color={'#000000'} containerStyle={{ marginTop: 5 }} />
+            </View>
           </View>
         </View>
         <View style={styles.profileRowContainer}>
@@ -63,6 +61,8 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(15),
     top: scale(10),
     paddingHorizontal: scale(25),
+    width: '95%',
+    alignSelf: 'center',
   },
   profileRowContainer: {
     flex: 1,
@@ -81,6 +81,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(25),
     fontWeight: '600',
+  },
+  moneyContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    height: '100%',
+    paddingLeft: scale(30),
+    paddingBottom: scale(20),
   },
 })
 

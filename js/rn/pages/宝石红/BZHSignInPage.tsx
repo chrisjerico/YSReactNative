@@ -87,6 +87,7 @@ const BZHSignInPage = () => {
                 })
               }
               secureTextEntry={hidePassword}
+              showRightIcon
             />
           </View>
           <CheckBox

@@ -24,6 +24,10 @@ const BZHRegisterPage = () => {
   const [realName, setRealName] = useState(null)
   const [fundPassword, setFundPassword] = useState(null)
 
+  const [hidePassword, setHidePassword] = useState(true)
+  const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
+  const [hideFundPassword, setHideFundPassword] = useState(true)
+
   const valid =
     recommendGuy &&
     account &&
@@ -64,6 +68,14 @@ const BZHRegisterPage = () => {
               label={'*请使用6-15位英文或数字的组合'}
               labelStyle={styles.warningText}
               placeholder={'密码'}
+              secureTextEntry={hidePassword}
+              showRightIcon
+              rightIconProps={{
+                color: hidePassword ? '#d9d9d9' : '#84C1FF',
+                onPress: () => {
+                  setHidePassword(!hidePassword)
+                }
+              }}
             />
             <Form
               iconName={'user-circle'}
@@ -71,6 +83,14 @@ const BZHRegisterPage = () => {
               label={'*请使用至少6位字符'}
               labelStyle={styles.warningText}
               placeholder={'确认密码'}
+              secureTextEntry={hideConfirmPassword}
+              showRightIcon
+              rightIconProps={{
+                color: hideConfirmPassword ? '#d9d9d9' : '#84C1FF',
+                onPress: () => {
+                  setHideConfirmPassword(!hideConfirmPassword)
+                }
+              }}
             />
             <Form
               iconName={'user-circle'}
@@ -85,6 +105,14 @@ const BZHRegisterPage = () => {
               label={'*请输入4数字取款密码'}
               labelStyle={styles.warningText}
               placeholder={'取款密码'}
+              secureTextEntry={hideFundPassword}
+              showRightIcon
+              rightIconProps={{
+                color: hideFundPassword ? '#d9d9d9' : '#84C1FF',
+                onPress: () => {
+                  setHideFundPassword(!hideFundPassword)
+                }
+              }}
             />
           </View>
           <View style={{ flex: 10 }}></View>

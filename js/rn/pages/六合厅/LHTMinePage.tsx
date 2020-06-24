@@ -67,8 +67,8 @@ const LHTMinePage = ({ navigation }) => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
           onPressReload={async () => {
-            const { data, status } = await APIRouter.user_balance_token()
-            dispatch({ type: ActionType.UpdateUserInfo, props: { ...userStore, balance: data.data.balance } })
+            const { data } = await APIRouter.user_balance_token()
+            dispatch({ type: ActionType.UpdateUserInfo, props: { balance: data.data.balance } })
           }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
