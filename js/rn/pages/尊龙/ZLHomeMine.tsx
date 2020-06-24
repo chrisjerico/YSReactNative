@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { useSelector, useDispatch } from "react-redux"
@@ -96,13 +96,22 @@ const ZLHomeMine = ({ navigation }) => {
                     <Text style={{ fontSize: 12, color: '#bfb9b9', marginRight: 20 }}> 每周一进行星级更新</Text>
                 </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5 }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>{usr}  <Text style={{ fontSize: 12 }}>{curLevelTitle}</Text></Text>
-                    <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} />
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                    }}>
+                        <Image source={{ uri: "missionhall" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
+                    </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'white', fontSize: 14 }}>{userStore.fullName}:  <Text style={{ fontSize: 12 }}>{userStore.balance}</Text></Text>
-                    <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} />
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', }}>
+                    <Text style={{ color: 'white', fontSize: 14 }}>利息宝:  <Text style={{ fontSize: 12 }}>{userStore.balance}</Text></Text>
+                    {/* <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} /> */}
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+                    }}>
+                        <Image source={{ uri: "dailysign" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>{userStore.taskRewardTitle}:  <Text style={{ fontSize: 12 }}>{userStore.taskRewardTotal}</Text></Text>

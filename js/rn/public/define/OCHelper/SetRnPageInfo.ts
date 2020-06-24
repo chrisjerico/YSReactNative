@@ -138,7 +138,7 @@ export function setRnPageInfo() {
     ]);
   }
 
-  if (Skin1.skitType.indexOf('默认') != -1) {
+  if (Skin1.skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -156,14 +156,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      // {
-      //   // 注册
-      //   vcName: 'UGRegisterViewController',
-      //   rnName: PageName.ZLRegisterPage,
-      //   fd_prefersNavigationBarHidden: true,
-      //   允许游客访问: true,
-      //   允许未登录访问: true,
-      // },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.GDRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
       {
         // 我的页
         tabbarItemPath: '/user',

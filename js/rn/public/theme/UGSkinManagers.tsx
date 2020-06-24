@@ -15,7 +15,7 @@ import { OCHelper } from '../define/OCHelper/OCHelper';
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
 import { B_DEBUG } from '../tools/UgLog';
 import { ZLThemeColor } from './colors/ZLThemeColor';
-import {LCThemeColor} from "./colors/LCThemeColor";
+import { LCThemeColor } from "./colors/LCThemeColor";
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -54,6 +54,7 @@ export default class UGSkinManagers extends UGThemeColor {
       23: `乐橙`,
     };
     console.log('pi fu =', mobileTemplateCategory);
+    debugger
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
       // key = '综合体育';
@@ -79,7 +80,7 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1;
     if (Platform.OS != 'ios') return;
-    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1 && skin.skitType.indexOf('尊龙') == -1) return;
+    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1 && skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('金星黑') == -1) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);
     for (const k in skin) {

@@ -89,6 +89,9 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0] }, true]);
         break;
       }
+      case UGUserCenterType.每日签到: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
+      }
       case UGUserCenterType.取款: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1] }, true]);
         break;

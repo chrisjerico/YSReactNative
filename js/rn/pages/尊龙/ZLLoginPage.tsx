@@ -16,7 +16,6 @@ import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
-    const { usr, pwd } = route.params;
     const { control, errors, handleSubmit } = useForm()
     const [accountFocus, setAccountFocus] = useState(false)
     const [pwdFocus, setPwdFocus] = useState(false)
@@ -34,9 +33,9 @@ const ZLLoginPage = ({ route, navigation }) => {
     }
     useEffect(() => {
         init()
-        if (usr && pwd) {
-            control.setValue("account", usr)
-            control.setValue("pwd", pwd)
+        if (route?.params?.usr && route?.params?.pwd) {
+            control.setValue("account", route?.params?.usr)
+            control.setValue("pwd", route?.params?.pwd)
         }
     }, [])
     useEffect(() => {
