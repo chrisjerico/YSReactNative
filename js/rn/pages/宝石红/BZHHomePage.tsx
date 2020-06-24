@@ -4,24 +4,26 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import { scale, three } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel'
-import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
-import { IGameIconListItem } from '../../redux/model/home/IGameBean'
+import { PageName } from '../../public/navigation/Navigation'
+import { push, navigate } from '../../public/navigation/RootNavigation'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
-import { scale, three } from './helpers/function'
-import Banner from './views/Banner'
+import NoticeBlock from '../../views/NoticeBlock'
+import ProgressCircle from '../../views/ProgressCircle'
+import RankBlock from '../../views/RankBlock'
+import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
-import NoticeBlock from './views/homes/NoticeBlock'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
 
@@ -30,32 +32,44 @@ const BZHHomePage = ({ navigation }) => {
   console.disableYellowBox = true
   // hooks
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { usr, balance }: UGUserModel = userStore
+  const { uid, usr, balance, isTest }: UGUserModel = userStore
   const {
     loading,
     banner,
     homeGames,
     notice,
-    onlineNum
+    onlineNum,
+    rankList,
+    redBag,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'system_onlineCount',
+    'system_rankingList',
+    'activity_redBagDetail',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('------focus------')
       updateUserInfo()
     })
     return unsubscribe
   }, [])
 
+  console.log('----userStore-----', userStore)
   // data handle
+  const redBags = redBag?.data
+  const rankLists = rankList?.data?.list ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
   const games = homeGames?.data?.icons ?? []
-  const lotterys = games?.filter((ele) => ele?.name == '彩票')[0]?.list?.filter(ele => ele.levelType == '1') ?? []
+  const lotterys =
+    games
+      ?.filter((ele) => ele?.name == '彩票')[0]
+      ?.list?.filter((ele) => ele.levelType == '1') ?? []
   const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
   const videos = games?.filter((ele) => ele?.name == '视讯')[0]?.list ?? []
   const threeLotterys = three(lotterys)
@@ -65,47 +79,35 @@ const BZHHomePage = ({ navigation }) => {
   const totalGames = [
     {
       title: '彩票',
-      games: threeLotterys
+      games: threeLotterys,
     },
     {
       title: '棋牌',
-      games: threeChess
+      games: threeChess,
     },
     {
       title: '视讯',
-      games: threeVideos
-    }
+      games: threeVideos,
+    },
   ]
 
-  const gotoCategory = (
-    category: string | number,
-    position: string | number
-  ) => {
-    // console.log("-----category-----", category)
-    // console.log("-----position-----", position)
-    PushHelper.pushCategory(category, position)
-  }
-
-  const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    // console.log("---------game---------", game)
-    PushHelper.pushHomeGame(game)
-  }
-
-  const goToNotice = (message: string) => {
-    PushHelper.pushNoticePopUp(message)
-  }
-
-  const gotoWebView = (url: string) => {
-    PushHelper.openWebView(url)
-  }
-
   return (
-    <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       {loading ? (
-        <UGProgressCircle />
+        <ProgressCircle />
       ) : (
           <>
-            <Header name={usr} money={balance} />
+            <Header
+              isTest={isTest}
+              uid={uid}
+              name={usr}
+              money={balance}
+              onPressSignIn={() => push(PageName.BZHSignInPage)}
+              onPressSignUp={() => push(PageName.BZHRegisterPage)}
+              onPressUser={() => {
+                navigate(PageName.BZHHomePage, { index: 4 })
+              }}
+            />
             <ScrollView
               style={[styles.container]}
               scrollEnabled={true}
@@ -117,11 +119,11 @@ const BZHHomePage = ({ navigation }) => {
                 renderBanner={(item, index) => {
                   const { linkCategory, linkPosition, pic } = item
                   return (
-                    <Banner
+                    <TouchableImage
                       key={index}
                       pic={pic}
                       onPress={() => {
-                        gotoCategory(linkCategory, linkPosition)
+                        PushHelper.pushCategory(linkCategory, linkPosition)
                       }}
                     />
                   )
@@ -129,7 +131,7 @@ const BZHHomePage = ({ navigation }) => {
               />
               <NoticeBlock
                 notices={notices}
-                onPressNotice={({ value }) => goToNotice(value)}
+                onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
               />
               <NavBlock
                 navs={navs}
@@ -140,41 +142,73 @@ const BZHHomePage = ({ navigation }) => {
                       key={index}
                       logo={icon ? icon : logo}
                       title={name}
-                      onPress={() => gotoHomeGame(item)}
+                      onPress={() => PushHelper.pushHomeGame(item)}
                     />
                   )
                 }}
               />
               <View style={styles.contentContainer}>
-                {
-                  totalGames.map(item => {
-                    const { title, games } = item
-                    return (<GameBlock
+                {totalGames.map((item) => {
+                  const { title, games } = item
+                  return (
+                    <GameBlock
+                      onPressTotal={() =>
+                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                      }
                       title={title}
                       containerStyle={styles.subComponent}
                       games={games}
                       renderGame={(item, index) => {
                         const { title, logo, show } = item
-                        return <TabButton key={index} logo={logo} mainTitle={title} show={show} />
+                        return (
+                          <TabButton
+                            key={index}
+                            logo={logo}
+                            mainTitle={title}
+                            show={show}
+                          />
+                        )
                       }}
-                    />)
-                  })
-                }
+                    />
+                  )
+                })}
               </View>
+              <RankBlock
+                containerStyle={styles.subComponent}
+                rankContainerStyle={{
+                  width: '95%',
+                  borderWidth: scale(1),
+                  borderColor: '#d9d9d9',
+                  alignSelf: 'center',
+                }}
+                iconContainerStyle={{
+                  backgroundColor: '#ffffff',
+                  borderBottomColor: '#d9d9d9',
+                  borderBottomWidth: scale(1),
+                }}
+                rankLists={rankLists}
+              />
             </ScrollView>
           </>
         )}
+      {
+        // 紅包活動
+        uid ? (
+          <TouchableImage
+            pic={redBags?.redBagLogo}
+            onPress={() => {
+              // console.log("--------redBag-------", redBag)
+              PushHelper.pushRedBag(redBag)
+            }}
+            containerStyle={styles.redEnvelope}
+          />
+        ) : null
+      }
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  loadingSafeArea: {
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
   safeArea: {
     backgroundColor: '#e53333',
     flex: 1,
@@ -188,6 +222,14 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginTop: scale(10),
+    backgroundColor: '#ffffff',
+  },
+  redEnvelope: {
+    width: scale(200),
+    aspectRatio: 1,
+    position: 'absolute',
+    top: scale(500),
+    right: 0,
   },
 })
 

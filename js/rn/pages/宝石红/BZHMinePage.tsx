@@ -1,132 +1,122 @@
-import React, { useEffect } from 'react';
-import { RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import PushHelper from '../../public/define/PushHelper';
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo';
-import useMemberItems from '../../public/hooks/useMemberItems';
-import { HomeGamesModel } from '../../public/network/Model/HomeGamesModel';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import UGUserModel from '../../redux/model/全局/UGUserModel';
-import { IGlobalStateHelper, updateUserInfo } from '../../redux/store/IGlobalStateHelper';
-import { IGlobalState } from '../../redux/store/UGStore';
-import FeatureList from '../../views/FeatureList';
-import Header from '../宝石红/views/mines/Header';
-import { scale } from './helpers/function';
-import NavButton from './views/NavButton';
+import React, { useEffect } from 'react'
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from 'react-native'
+import { Button } from 'react-native-elements'
+import { useDispatch, useSelector } from 'react-redux'
+import { scale } from '../../helpers/function'
+import PushHelper from '../../public/define/PushHelper'
+import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import useLoginOut from '../../public/hooks/useLoginOut'
+import useMemberItems from '../../public/hooks/useMemberItems'
+import { PageName } from '../../public/navigation/Navigation'
+import APIRouter from '../../public/network/APIRouter'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { ActionType } from '../../redux/store/ActionTypes'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
+import { IGlobalState } from '../../redux/store/UGStore'
+import FeatureList from '../../views/FeatureList'
+import Header from './views/mines/Header'
+import ProfileBlock from './views/mines/ProfileBlock'
+import NavButton from './views/NavButton'
 
 const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const dispatch = useDispatch()
+  const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance }: UGUserModel = userStore
+  const { avatar, balance, usr }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
+  const { homeGames } = useGetHomeInfo(['game_homeGames'])
 
-  const {
-    //loading,
-    homeGames,
-  } = useGetHomeInfo([
-    'game_homeGames',
-  ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
+      console.log('-----成為焦點-----')
       updateUserInfo()
     })
     return unsubscribe
   }, [])
 
-
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('-----成為焦點-----')
-      IGlobalStateHelper.updateUserInfo()
-    })
-    return unsubscribe;
-  }, []);
-
-  // functions
-  const gotoHome = () => {
-    navigation.navigate('LHTHomePage')
-  }
-
-  const gotoUserCenter = (userCenterType: UGUserCenterType) => {
-    PushHelper.pushUserCenterType(userCenterType);
-  }
-
-  const gotoHomeGame = (game: HomeGamesModel | IGameIconListItem) => {
-    // console.log("---------game---------", game)
-    PushHelper.pushHomeGame(game)
-  }
+  const navs =
+    homeGames?.data?.navs
+      ?.sort((a, b) => parseInt(b.sort) - parseInt(a.sort))
+      .slice(0, 4) ?? []
 
   return (
-    <>
-      <SafeAreaView style={styles.safeArea} />
-      <Header
-        avatar={avatar}
-        money={balance}
-        features={navs}
-        renderFeature={(item, index) => {
-          const { icon, title } = item
-          return (
-            <NavButton
-              key={index}
-              logo={icon}
-              title={title}
-              onPress={() => gotoHomeGame(item)}
-            />)
-        }}
-      />
-      <ScrollView style={styles.container} scrollEnabled={true} refreshControl={<RefreshControl refreshing={false} />}>
+    <SafeAreaView style={styles.safeArea}>
+      <Header title={'会员中心'} />
+      <ScrollView
+        style={styles.container}
+        scrollEnabled={true}
+        refreshControl={<RefreshControl refreshing={false} />}
+      >
+        <ProfileBlock
+          onPressReload={async () => {
+            const { data } = await APIRouter.user_balance_token()
+            dispatch({
+              type: ActionType.UpdateUserInfo,
+              props: { balance: data.data.balance },
+            })
+          }}
+          containerStyle={{ paddingBottom: scale(30) }}
+          avatar={avatar}
+          money={balance}
+          name={usr}
+          features={navs}
+          renderFeature={(item, index) => {
+            const { icon, name } = item
+            return (
+              <NavButton
+                key={index}
+                logo={icon}
+                title={name}
+                onPress={() => PushHelper.pushHomeGame(item)}
+              />
+            )
+          }}
+        />
         {UGUserCenterItem?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList
               key={index}
+              containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
-              onPress={() => gotoUserCenter(code)}
+              onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
         })}
-        <View style={styles.signOutBlock}>
-          <TouchableOpacity style={styles.signOutContainer}>
-            <Text style={styles.signOutText}>{'退出登录'}</Text>
-          </TouchableOpacity>
-        </View>
+        <Button
+          title={'退出登录'}
+          buttonStyle={styles.logOutButton}
+          titleStyle={{ color: '#e53333' }}
+          onPress={loginOut}
+        />
       </ScrollView>
-    </>
-  );
-};
+    </SafeAreaView>
+  )
+}
 
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: '#e53333',
+    flex: 1,
   },
   container: {
-    backgroundColor: '#ffffff',
-  },
-  signOutBlock: {
     backgroundColor: '#d9d9d9',
-    width: '100%',
-    aspectRatio: 540 / 120,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
-  signOutContainer: {
-    width: '90%',
+  logOutButton: {
     backgroundColor: '#ffffff',
-    height: '80%',
-    borderRadius: scale(10),
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginHorizontal: scale(25),
+    marginVertical: scale(25),
+    height: scale(70),
   },
-  signOutText: {
-    color: '#e53333',
-    fontSize: 20
-  }
-});
+})
 
-export default BZHMinePage;
+export default BZHMinePage
