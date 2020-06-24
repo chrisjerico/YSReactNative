@@ -71,7 +71,7 @@ const BZHHomePage = ({ navigation }) => {
       ?.filter((ele) => ele?.name == '彩票')[0]
       ?.list?.filter((ele) => ele.levelType == '1') ?? []
   const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
-  const videos = games?.filter((ele) => ele?.name == '视讯')[0]?.list ?? []
+  const videos = games?.filter((ele) => ele?.name == '真人')[0]?.list ?? []
   const threeLotterys = three(lotterys)
   const threeChess = three(chess)
   const threeVideos = three(videos)
@@ -90,6 +90,8 @@ const BZHHomePage = ({ navigation }) => {
       games: threeVideos,
     },
   ]
+
+  console.log('----games----', games)
 
   return (
     <SafeAreaView style={styles.safeArea}>
