@@ -4,11 +4,10 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import FastImage from 'react-native-fast-image';
 import PushHelper from '../../public/define/PushHelper';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { Navigation, PageName } from '../../public/navigation/Navigation';
-import { Icon, Button } from 'react-native-elements';
+import { PageName } from '../../public/navigation/Navigation';
+import { Icon, } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import APIRouter from '../../public/network/APIRouter';
 import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
@@ -16,8 +15,9 @@ import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
-const ZLLoginPage = () => {
-    const { control, errors, triggerValidation, handleSubmit } = useForm()
+const ZLLoginPage = ({ route, navigation }) => {
+    const { usr, pwd } = route.params;
+    const { control, errors, handleSubmit } = useForm()
     const [accountFocus, setAccountFocus] = useState(false)
     const [pwdFocus, setPwdFocus] = useState(false)
     const [isRemember, setIsRemember] = useState(false)
@@ -34,6 +34,10 @@ const ZLLoginPage = () => {
     }
     useEffect(() => {
         init()
+        if (usr && pwd) {
+            control.setValue("account", usr)
+            control.setValue("pwd", pwd)
+        }
     }, [])
     useEffect(() => {
         if (errors?.account) {

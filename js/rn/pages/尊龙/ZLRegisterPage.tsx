@@ -2,14 +2,13 @@ import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Im
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
-import { Navigation, PageName } from "../../public/navigation/Navigation"
+import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { Icon } from "react-native-elements"
-import { push, navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
+import { navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
 import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
 import { useSelector } from "react-redux"
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
@@ -107,7 +106,7 @@ const ZLRegisterPage = () => {
             if (data?.data?.autoLogin == false) {
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
                 popToRoot();
-                navigate(PageName.ZLLoginPage, {})
+                navigate(PageName.ZLLoginPage, { usr: requestData.usr, pwd: requestData.pwd })
             }
         } catch (error) {
             EventRegister.emit('reload')

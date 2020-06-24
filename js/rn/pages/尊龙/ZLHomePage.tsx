@@ -217,7 +217,7 @@ const ZLHomePage = ({ navigation }) => {
                     <TouchableWithoutFeedback onPress={() => {
                         push(PageName.JDPromotionListPage)
                     }}>
-                        <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
+                        <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
                 </View>
                 <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
@@ -274,7 +274,7 @@ const ZLHomePage = ({ navigation }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
-            <RedBagItem redBag={redBag} />
+            <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
             <TurntableListItem />
         </View >
     )

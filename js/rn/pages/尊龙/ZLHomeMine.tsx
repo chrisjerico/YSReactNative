@@ -13,17 +13,15 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import APIRouter from "../../public/network/APIRouter"
 import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
-import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import useMemberItems from "../../public/hooks/useMemberItems"
 import useLoginOut from "../../public/hooks/useLoginOut"
-import { useFocusEffect } from "@react-navigation/native"
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { useDimensions } from "@react-native-community/hooks"
 import { PageName } from "../../public/navigation/Navigation"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance } = userStore
+    debugger
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
@@ -36,7 +34,8 @@ const ZLHomeMine = ({ navigation }) => {
             const { data, status } = await APIRouter.user_balance_token()
             updateUserInfo({ ...userStore, balance: data.data.balance })
         } catch (error) {
-
+            console.log(error)
+            debugger
         }
     }
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -114,7 +113,7 @@ const ZLHomeMine = ({ navigation }) => {
                     <View style={{ flexDirection: 'column' }}>
                         <Text style={{ textAlign: 'right', marginRight: 20, color: 'white' }}>距离下一级还差{(parseInt(userStore.nextLevelInt) - parseInt(userStore.curLevelInt)).toFixed(2)}分</Text>
                         <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            <View style={{ height: "100%", width: userStore?.curLevelInt && userStore?.nextLevelInt ? width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt)) : 0 }}></View>
+                            <View style={{ height: "100%", width: userStore?.curLevelInt && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt))) ? 0 : (width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt))) : 0 }}></View>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -128,7 +127,6 @@ const ZLHomeMine = ({ navigation }) => {
                         </View>
 
                     </View>
-                    {/* <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} /> */}
                 </View>
 
 
