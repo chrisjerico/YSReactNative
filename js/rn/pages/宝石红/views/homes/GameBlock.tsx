@@ -1,12 +1,19 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle, TouchableOpacity } from 'react-native'
-import { scale } from '../../helpers/function'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from 'react-native'
+import { scale } from '../../../../helpers/function'
 
 interface GameBlockProps {
   containerStyle?: ViewStyle;
   games: any[];
   renderGame: (item: any, index: number) => any;
-  title: string
+  title: string;
+  onPressTotal: () => any;
 }
 
 const GameBlock = ({
@@ -14,6 +21,7 @@ const GameBlock = ({
   games,
   renderGame,
   containerStyle,
+  onPressTotal,
 }: GameBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -36,7 +44,7 @@ const GameBlock = ({
           />
           <Text style={styles.title}>{title}</Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPressTotal}>
           <Text style={[styles.title, { color: '#EA0000' }]}>{'全部 >'}</Text>
         </TouchableOpacity>
       </View>

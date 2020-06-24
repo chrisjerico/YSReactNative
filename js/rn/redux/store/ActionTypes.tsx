@@ -29,6 +29,8 @@ export enum ActionType {
   ZHTYRegisterPage_SetProps, // 声明UGAction
   // 六合厅
   LHTHome_SetProps,
+  // 寶石紅
+  BZHSignInPage_SetProps,
   Clear_User,
 }
 
