@@ -47,6 +47,7 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
+
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -56,7 +57,7 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  Skin1.skitType = '宝石红' // 測試開發
+  Skin1.skitType = '六合厅' // 測試開發
   // 宝石红页面
   if (Skin1.skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
@@ -101,6 +102,26 @@ export function setRnPageInfo() {
     ])
   }
 
+  if (Skin1.skitType.indexOf('乐橙') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LCHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LCMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) {
     pages = pages.concat([

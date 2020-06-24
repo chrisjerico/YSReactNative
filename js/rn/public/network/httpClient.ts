@@ -14,7 +14,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
   isEncrypt?: boolean;
 }
 export const httpClient = axios.create({
-  baseURL: `${AppDefine?.host}`,
+  baseURL: AppDefine?.host,
   timeout: 1000,
   headers: { 'Content-Type': 'application/json', }
 });
@@ -68,7 +68,7 @@ httpClient.interceptors.response.use(
           console.warn('服務失效');
           break;
         default:
-          console.warn(`連接錯誤${err.response.status}`);
+          console.warn("連接錯誤" + err.response.status);
       }
     } else {
       console.warn('連接到服務器失敗');
@@ -82,7 +82,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
   const { isEncrypt = true } = config;
-  const encryptData = await encryptParams(params, isEncrypt);
+  let encryptData = await encryptParams(params, isEncrypt);
   if (isEncrypt) {
     if (Platform.OS == 'ios') {
       if (config.method == 'get' || config.method == 'GET') {
@@ -95,8 +95,23 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
         });
       } else if (config.method == 'post' || config.method == 'POST') {
         config.url += '&checkSign=1';
+
         if (!config.params) config.params = {};
         if (!config.data) config.data = {};
+        console.log(encryptData)
+
+        if (encryptData["slideCode[nc_sid]"]) {
+          config.data.slideCode = {}
+          config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
+          config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
+          config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
+          delete encryptData["slideCode[nc_sid]"]
+          delete encryptData["slideCode[nc_sig]"]
+          delete encryptData["slideCode[nc_token]"]
+          delete config.data["slideCode[nc_token]"]
+          delete config.data["slideCode[nc_sig]"]
+          delete config.data["slideCode[nc_sid]"]
+        }
         for (let paramsKey in encryptData) {
           // if (paramsKey.includes("slideCode")) {
           //   config.data[paramsKey] = config.data[paramsKey];

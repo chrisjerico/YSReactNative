@@ -10,12 +10,27 @@ export function navigate(name, params) {
 }
 
 export function push(...args) {
-    //@ts-ignore
-    navigationRef.current?.dispatch(StackActions.push(...args));
+    try {
+        //@ts-ignore
+        navigationRef?.current?.dispatch(StackActions.push(...args));
+    } catch (error) {
+
+    }
+
 }
 export function pop(...args) {
-    navigationRef.current?.dispatch(StackActions.pop());
+    try {
+        navigationRef?.current?.dispatch(StackActions.pop());
+    } catch (error) {
+
+    }
+
 }
 export function popToRoot() {
-    navigationRef.current?.dispatch(StackActions.popToTop());
+    try {
+        navigationRef?.current?.dispatch(StackActions.popToTop());
+    } catch (error) {
+
+    }
+
 }

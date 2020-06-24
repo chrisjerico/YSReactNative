@@ -1,14 +1,13 @@
 import UGUserModel from '../model/全局/UGUserModel';
-import { UGAction, ActionType } from './ActionTypes';
+import {ActionType, UGAction} from './ActionTypes';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
-import { UGStore } from './UGStore';
+import {UGStore} from './UGStore';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGSkinManagers from '../../public/theme/UGSkinManagers';
-import { Platform } from 'react-native';
-import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
+import {Platform} from 'react-native';
+import {setRnPageInfo} from '../../public/define/OCHelper/SetRnPageInfo';
 import APIRouter from '../../public/network/APIRouter';
-import { OCHelper } from '../../public/define/OCHelper/OCHelper';
-import { httpClient } from '../../public/network/httpClient';
+import {httpClient} from '../../public/network/httpClient';
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',

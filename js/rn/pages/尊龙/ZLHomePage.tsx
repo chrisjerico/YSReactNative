@@ -28,6 +28,7 @@ import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 import RedBagItem from "../../public/components/RedBagItem"
+import { useNavigationState } from "@react-navigation/native"
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -35,9 +36,10 @@ const ZLHomePage = ({ navigation }) => {
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, turntableList } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
+    const state = useNavigationState(state => state);
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -50,6 +52,7 @@ const ZLHomePage = ({ navigation }) => {
 
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
+        APIRouter.system_config()
         const timer = setInterval(() => {
             getRandomString()
         }, 500)
@@ -214,7 +217,7 @@ const ZLHomePage = ({ navigation }) => {
                     <TouchableWithoutFeedback onPress={() => {
                         push(PageName.JDPromotionListPage)
                     }}>
-                        <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
+                        <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
                 </View>
                 <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
@@ -271,7 +274,7 @@ const ZLHomePage = ({ navigation }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
-            <RedBagItem redBag={redBag} />
+            <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
             <TurntableListItem />
         </View >
     )

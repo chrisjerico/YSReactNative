@@ -10,6 +10,11 @@ export enum PageName {
   XBJMinePage = 'XBJMinePage',
   JDPromotionListPage = 'JDPromotionListPage',
   XBJHomePage = 'XBJHomePage',
+  LCHomePage = 'LCHomePage',
+  LCMinePage = 'LCMinePage',
+  LCTransferPage = 'LCTransferPage',
+  LCPromotionsPage = 'LCPromotionsPage',
+  LXBView = 'LXBView',
   UpdateVersionPage = 'UpdateVersionPage',
   ZHTYHomePage = 'ZHTYHomePage',
   ZHTYLoginPage = 'ZHTYLoginPage',
@@ -72,7 +77,10 @@ export class Navigation {
       case RouterType.Tab: {
         if (!transition || page == PageName.TransitionPage || this.pages[0] == PageName.TransitionPage) {
           this.pages[0] = page;
-          this.navigation.jumpTo(page, props);
+          setTimeout(() => {
+            this.navigation.jumpTo(page, props);
+          }, 100);
+
           console.log('跳转到', page);
         } else {
           this.pages[0] = PageName.TransitionPage;

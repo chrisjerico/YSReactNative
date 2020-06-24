@@ -8,16 +8,21 @@ import { navigationRef } from '../../public/navigation/RootNavigation';
 import { Router } from '../../public/navigation/Router';
 import { UGStore } from '../../redux/store/UGStore';
 import TransitionPage from '../base/TransitionPage';
-import LHTHomePage from '../六合厅/LHTHomePage';
-import LHTMinePage from '../六合厅/LHTMinePage';
-import BZHHomePage from '../宝石红/BZHHomePage';
-import BZHMinePage from '../宝石红/BZHMinePage';
+import PromotionListPage from '../common/PromotionListPage';
+import LXBView from "../乐橙/component/minePage/LXBView";
+import LCHomePage from "../乐橙/LCHomePage";
+import LCMinePage from "../乐橙/LCMinePage";
+import LHTHomePage from "../六合厅/LHTHomePage";
+import LHTMinePage from "../六合厅/LHTMinePage";
+import BZHHomePage from "../宝石红/BZHHomePage";
+import BZHMinePage from "../宝石红/BZHMinePage";
+import BZHRegisterPage from '../宝石红/BZHRegisterPage';
+import BZHSignInPage from '../宝石红/BZHSignInPage';
 import ZLHomeMine from '../尊龙/ZLHomeMine';
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
 import ZLRegisterPage from '../尊龙/ZLRegisterPage';
-import JDPromotionListPage from '../经典/JDPromotionListPage';
-import ZHTYHomePage from '../综合体育/ZHTYHomePage';
+import ZHTYHomePage from "../综合体育/ZHTYHomePage";
 import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
 import ZHTYMinePage from '../综合体育/ZHTYMinePage';
 import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
@@ -29,8 +34,7 @@ import XBJLoginPage from '../香槟金/XBJLoginPage';
 import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
-import BZHSignInPage from '../宝石红/BZHSignInPage';
-import BZHRegisterPage from '../宝石红/BZHRegisterPage';
+
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -49,10 +53,13 @@ class TabBarController extends Component<{
 
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
+        tabBarOptions={this.tabBarOptions}>
+        <Router.TabScreen name={PageName.LXBView} component={LXBView} />
+        <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage} />
+        <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
         <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
         <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
         <Router.TabScreen name={PageName.XBJMinePage} component={XBJMinePage} />
@@ -60,19 +67,21 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZHTYLoginPage} component={ZHTYLoginPage} />
         <Router.TabScreen name={PageName.ZHTYRegisterPage} component={ZHTYRegisterPage} />
         <Router.TabScreen name={PageName.ZHTYMinePage} component={ZHTYMinePage} />
+        <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
+        <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={PromotionListPage} />
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
-        <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
-        <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
         <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
       </Router.TabNavigator>
-    )
+    );
   }
 }
+
 const UGApplication = () => {
   return (
     <Provider store={UGStore.store}>
@@ -81,7 +90,7 @@ const UGApplication = () => {
           <Router.StackScreen name={'Tabbar'} component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={PromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
