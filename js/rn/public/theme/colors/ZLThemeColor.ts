@@ -16,12 +16,13 @@ export const ZLThemeColor: { [x: string]: UGThemeColor } = {
         cellBgColor: '#444',
         CLBgColor: '#444',
         menuHeadViewColor: ['black', 'black'],
-        textColor1: 'white',
-        textColor2: 'white',
+        textColor1: 'black',
+        textColor2: 'black',
         textColor3: 'white',
         textColor4: 'black',
         conversionCellColor: '#444',
         intoViewColor: '#444',
         moneyCellColor: '#444',
+
     }
 };

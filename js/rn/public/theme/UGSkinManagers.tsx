@@ -54,7 +54,6 @@ export default class UGSkinManagers extends UGThemeColor {
       19: `乐橙`,
     };
     console.log('pi fu =', mobileTemplateCategory);
-    debugger
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
       // key = '综合体育';

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -29,6 +29,7 @@ import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
+import { Scroll } from "../../public/network/Model/NoticeModel"
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -46,10 +47,20 @@ const ZLHomePage = ({ navigation }) => {
             string += res.content
             return { label: res.id, value: res.title }
         }) ?? []
+        if (notice?.data?.popup) {
+            openPopup(notice)
+        }
         setnoticeFormat(noticeData)
         setOriginalNoticeString(string)
     }, [notice])
-
+    const openPopup = (data: any) => {
+        const dataModel = data.data?.popup.map((item) => {
+            return Object.assign({ clsName: 'UGNoticeModel' }, item);
+        })
+        if (Platform.OS != 'ios') return;
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        // OCHelper.call("[[UGPlatformNoticeView alloc] initWithFrame:CGRectMake(20, 120, UGScreenW - 40, UGScerrnH - APP.StatusBarHeight - APP.BottomSafeHeight - 160)];")
+    }
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
         APIRouter.system_config()
@@ -92,7 +103,7 @@ const ZLHomePage = ({ navigation }) => {
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
                         width={width - 60}
                         height={34}
-                        speed={60}
+                        speed={40}
                         onTextClick={() => {
                             PushHelper.pushNoticePopUp(originalNoticeString)
                         }}
@@ -215,7 +226,7 @@ const ZLHomePage = ({ navigation }) => {
                         <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        push(PageName.JDPromotionListPage)
+                        push(PageName.PromotionListPage)
                     }}>
                         <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
@@ -268,7 +279,7 @@ const ZLHomePage = ({ navigation }) => {
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                     }} style={{ color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
                     <Text style={{ color: 'white', textAlign: 'center' }} onPress={() => {
-                        push(PageName.JDPromotionListPage)
+                        push(PageName.PromotionListPage)
                     }}>🎁优惠活动</Text>
                 </View>
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
@@ -375,6 +386,8 @@ const ZLHeader = () => {
     )
 }
 const UserStatusBar = () => {
+    const sysConf = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const { mobileMenu } = sysConf
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { uid = "", curLevelTitle, usr, curLevelInt, nextLevelInt } = userStore
     return (
@@ -405,7 +418,13 @@ const UserStatusBar = () => {
                         </>
                     </TouchableOpacity >
                 </View></> : <TouchableOpacity onPress={() => {
-                    navigate(PageName.ZLMinePage, { index: 4 })
+                    let index = -1
+                    mobileMenu.map((item, i) => {
+                        if (item?.path == '/user') {
+                            index = i
+                        }
+                    })
+                    navigate(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
