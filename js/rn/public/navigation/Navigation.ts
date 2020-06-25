@@ -32,7 +32,9 @@ export enum PageName {
   BZHRegisterPage = 'BZHRegisterPage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
-  GDLoginPage = "GDLoginPage"
+  GDLoginPage = "GDLoginPage",
+  WNZHomePage = 'WNZHomePage',
+  WNZMinePage = 'WNZMinePage'
 }
 
 export class Navigation {

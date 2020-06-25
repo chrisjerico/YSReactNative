@@ -14,6 +14,8 @@ import LCHomePage from "../乐橙/LCHomePage";
 import LCMinePage from "../乐橙/LCMinePage";
 import LHTHomePage from "../六合厅/LHTHomePage";
 import LHTMinePage from "../六合厅/LHTMinePage";
+import WNZHomePage from '../威尼斯/WNZHomePage';
+import WNZMinePage from '../威尼斯/WNZMinePage';
 import BZHHomePage from "../宝石红/BZHHomePage";
 import BZHMinePage from "../宝石红/BZHMinePage";
 import BZHRegisterPage from '../宝石红/BZHRegisterPage';
@@ -27,7 +29,6 @@ import ZHTYLoginPage from '../综合体育/ZHTYLoginPage';
 import ZHTYMinePage from '../综合体育/ZHTYMinePage';
 import ZHTYRegisterPage from '../综合体育/ZHTYRegisterPage';
 import GDBHomePage from '../金星黑/GDBHomePage';
-import GDBMinePage from '../金星黑/GDBMinePage';
 import GDLoginPage from '../金星黑/GDLoginPage';
 import XBJHomePage from '../香槟金/XBJHomePage';
 import XBJLoginPage from '../香槟金/XBJLoginPage';
@@ -76,7 +77,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
-        <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
+        <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
+        <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
       </Router.TabNavigator>
     );
   }

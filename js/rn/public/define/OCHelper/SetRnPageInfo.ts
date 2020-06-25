@@ -57,7 +57,29 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  Skin1.skitType = '宝石红' // 測試開發
+  Skin1.skitType = '威尼斯' // 測試開發
+  // 威尼斯页面
+  if (Skin1.skitType.indexOf('威尼斯') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.WNZHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.WNZMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
+
   // 宝石红页面
   if (Skin1.skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
