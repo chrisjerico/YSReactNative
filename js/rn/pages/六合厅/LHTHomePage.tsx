@@ -4,10 +4,10 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import { scale, three } from '../../helpers/function'
+import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -20,6 +20,7 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import GameButton from '../../views/GameButton'
 import NoticeBlock from '../../views/NoticeBlock'
 import ProgressCircle from '../../views/ProgressCircle'
 import RankBlock from '../../views/RankBlock'
@@ -34,7 +35,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo,
+  defaultNoticeLogo
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -42,8 +43,6 @@ import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import LotteryBall from './views/LotteryBall'
-import NavButton from './views/NavButton'
-import TabButton from './views/TabButton'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -91,14 +90,15 @@ const LHTHomePage = ({ navigation }) => {
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort) ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const headlines = notice?.data?.popup ?? []
-  const leftGames = three(categoryList?.data ?? [])
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.numSx?.split(',') ?? []
+  const lotteryDate = lotteryNumber?.issue
   const lotterys = numbers?.map((number, index) => ({
     number,
     color: numColors[index],
@@ -112,12 +112,11 @@ const LHTHomePage = ({ navigation }) => {
     },
     ...lotterys.slice(6),
   ]
-  const lotteryDate = lotteryNumber?.issue
-
+  const leftGames = categoryList?.data ?? []
   const rightGames =
     icons?.map((tab) => {
       const { list } = tab
-      const games = three(list?.filter((ele) => ele.levelType == '1'))
+      const games = list?.filter((ele) => ele.levelType == '1')
       return games
     }) ?? []
   const subTabs =
@@ -125,8 +124,6 @@ const LHTHomePage = ({ navigation }) => {
       key: index,
       title: StringUtils.getInstance().deleteHtml(tab.name),
     })) ?? []
-
-  // functions
 
   // render
   return (
@@ -200,11 +197,12 @@ const LHTHomePage = ({ navigation }) => {
                   renderNav={(item, index) => {
                     const { icon, name, logo } = item
                     return (
-                      <NavButton
+                      <GameButton
                         key={index}
+                        containerStyle={{ width: '25%', height: '50%' }}
+                        circleColor={'transparent'}
                         logo={icon ? icon : logo}
                         title={name}
-                        nav={item}
                         onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
@@ -241,13 +239,21 @@ const LHTHomePage = ({ navigation }) => {
                   renderLeftGame={(item, index) => {
                     const { name, icon, show, id, desc } = item
                     return (
-                      <TabButton
+                      <GameButton
                         key={index}
                         logo={icon}
-                        mainTitle={name}
+                        title={name}
                         subTitle={desc}
                         showSubTitle
-                        show={show}
+                        containerStyle={{
+                          width: '33.3%',
+                        }}
+                        titleStyle={{
+                          marginTop: scale(10),
+                        }}
+                        subTitleStyle={{
+                          marginTop: scale(10),
+                        }}
                         onPress={() => {
                           PushHelper.pushUserCenterType(parseInt(id))
                         }}
@@ -255,13 +261,18 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                   renderRightGame={(item, index) => {
-                    const { logo, icon, title, show } = item
+                    const { logo, icon, title } = item
                     return (
-                      <TabButton
+                      <GameButton
                         key={index}
                         logo={logo ? logo : icon}
-                        mainTitle={title}
-                        show={show}
+                        title={title}
+                        containerStyle={{
+                          width: '33.3%',
+                        }}
+                        titleStyle={{
+                          marginTop: scale(10),
+                        }}
                         onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )

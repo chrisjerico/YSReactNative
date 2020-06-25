@@ -4,19 +4,20 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import { scale, three } from '../../helpers/function'
+import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
-import { push, navigate } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import GameButton from '../../views/GameButton'
 import NoticeBlock from '../../views/NoticeBlock'
 import ProgressCircle from '../../views/ProgressCircle'
 import RankBlock from '../../views/RankBlock'
@@ -24,8 +25,6 @@ import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
-import NavButton from './views/NavButton'
-import TabButton from './views/TabButton'
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -72,26 +71,23 @@ const BZHHomePage = ({ navigation }) => {
       ?.list?.filter((ele) => ele.levelType == '1') ?? []
   const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
   const videos = games?.filter((ele) => ele?.name == '真人')[0]?.list ?? []
-  const threeLotterys = three(lotterys)
-  const threeChess = three(chess)
-  const threeVideos = three(videos)
 
   const totalGames = [
     {
       title: '彩票',
-      games: threeLotterys,
+      games: lotterys,
     },
     {
       title: '棋牌',
-      games: threeChess,
+      games: chess,
     },
     {
       title: '视讯',
-      games: threeVideos,
+      games: videos,
     },
   ]
 
-  console.log('----games----', games)
+  console.log('----videos----', videos)
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -140,8 +136,10 @@ const BZHHomePage = ({ navigation }) => {
                 renderNav={(item, index) => {
                   const { icon, name, logo } = item
                   return (
-                    <NavButton
+                    <GameButton
                       key={index}
+                      containerStyle={{ width: '25%' }}
+                      circleColor={'transparent'}
                       logo={icon ? icon : logo}
                       title={name}
                       onPress={() => PushHelper.pushHomeGame(item)}
@@ -161,13 +159,14 @@ const BZHHomePage = ({ navigation }) => {
                       containerStyle={styles.subComponent}
                       games={games}
                       renderGame={(item, index) => {
-                        const { title, logo, show } = item
+                        const { title, logo, name, icon } = item
                         return (
-                          <TabButton
+                          <GameButton
                             key={index}
-                            logo={logo}
-                            mainTitle={title}
-                            show={show}
+                            containerStyle={{ width: '33.3%' }}
+                            circleColor={'transparent'}
+                            logo={logo || icon}
+                            title={title || name}
                           />
                         )
                       }}

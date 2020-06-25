@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   title: {
     fontSize: 20,

@@ -41,14 +41,7 @@ const TabComponent = ({
   subTabs = [],
   containerStyle,
 }: TabComponentProps) => {
-  const initHeight = scale(
-    rightGames[0] ? (rightGames[0].length / 3) * 200 + 60 : 0
-  )
-  // set state
-  const [index, setIndex] = useState(0)
-  const [subIndex, setSubIndex] = useState(0)
-  const [height, setHeight] = useState(initHeight)
-  // filter props
+  // functions
   let subScenes = {}
   rightGames.forEach((games, index) => {
     subScenes[index] = () => {
@@ -65,6 +58,24 @@ const TabComponent = ({
       )
     }
   })
+  const getHeight = (index: number) => {
+    return scale(
+      rightGames[index]
+        ? (Math.floor(rightGames[index].length / 3) +
+          (rightGames[index].length % 3) ==
+          0
+          ? 0
+          : 1) *
+        200 +
+        60
+        : 0
+    )
+  }
+  // set hooks
+  const [index, setIndex] = useState(0)
+  const [subIndex, setSubIndex] = useState(0)
+  const [height, setHeight] = useState(getHeight(0))
+
   // render
   return (
     <View style={containerStyle}>
@@ -166,11 +177,8 @@ const TabComponent = ({
             }}
             renderScene={SceneMap(subScenes)}
             onIndexChange={(index) => {
-              const height = rightGames[index]
-                ? scale((rightGames[index].length / 3) * 200) + 60
-                : 0
               setSubIndex(index)
-              setHeight(height)
+              setHeight(getHeight(index))
             }}
           />
         )}
@@ -202,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#ffffff',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   subTabStyle: {
     backgroundColor: '#ffffff',
