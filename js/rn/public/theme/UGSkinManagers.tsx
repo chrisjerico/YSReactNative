@@ -51,7 +51,7 @@ export default class UGSkinManagers extends UGThemeColor {
       14: `六合厅${mobileTemplateStyle}`,
       16: `尊龙`,
       18: `金星黑`,
-      23: `乐橙`,
+      19: `乐橙`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     debugger
