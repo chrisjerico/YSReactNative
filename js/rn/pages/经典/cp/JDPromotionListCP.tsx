@@ -36,7 +36,6 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       this.style1 = '外边框';
     }
     this.style2 = style2;
-    this.style2 = 'slide';
     this.list = list.map((item: UGPromoteModel) => {
       return Object.assign({}, item);
     });

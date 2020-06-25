@@ -8,7 +8,6 @@ import { navigationRef } from '../../public/navigation/RootNavigation';
 import { Router } from '../../public/navigation/Router';
 import { UGStore } from '../../redux/store/UGStore';
 import TransitionPage from '../base/TransitionPage';
-import PromotionListPage from '../common/PromotionListPage';
 import LXBView from "../乐橙/component/minePage/LXBView";
 import LCHomePage from "../乐橙/LCHomePage";
 import LCMinePage from "../乐橙/LCMinePage";
@@ -35,6 +34,7 @@ import XBJMinePage from '../香槟金/XBJMinePage';
 import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
 import GDRegisterPage from '../金星黑/GDRegisterPage';
+import JDPromotionListPage from '../经典/JDPromotionListPage';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -70,7 +70,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZHTYMinePage} component={ZHTYMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={PromotionListPage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
@@ -91,7 +91,7 @@ const UGApplication = () => {
           <Router.StackScreen name={'Tabbar'} component={TabBarController} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={PromotionListPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
