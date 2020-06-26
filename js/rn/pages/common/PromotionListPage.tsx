@@ -86,7 +86,7 @@ const PromotionListPage = ({ navigation }) => {
     </View>
   )
 }
-const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
+export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
@@ -102,7 +102,7 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
           }
         })}>
           <View style={{}}>
-            <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5 }}>{item.title}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
             <FastImageAutoHeight source={{ uri: item.pic }} />
           </View>
 

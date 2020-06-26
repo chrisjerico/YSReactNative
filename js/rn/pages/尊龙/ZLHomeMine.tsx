@@ -151,7 +151,7 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 90 ? 90 : 70, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
+                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
                     </TouchableOpacity>
                 )

@@ -29,7 +29,7 @@ import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
-import { Scroll } from "../../public/network/Model/NoticeModel"
+import AutoHeightWebView from 'react-native-autoheight-webview'
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -41,6 +41,7 @@ const ZLHomePage = ({ navigation }) => {
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const state = useNavigationState(state => state);
+    const [selectId, setSelectedId] = useState(-1)
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -54,8 +55,9 @@ const ZLHomePage = ({ navigation }) => {
         setOriginalNoticeString(string)
     }, [notice])
     const openPopup = (data: any) => {
-        const dataModel = data.data?.popup.map((item) => {
-            return Object.assign({ clsName: 'UGNoticeModel' }, item);
+        const dataModel = data.data?.popup.map((item, index) => {
+            return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+
         })
         if (Platform.OS != 'ios') return;
         OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
@@ -231,16 +233,44 @@ const ZLHomePage = ({ navigation }) => {
                         <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
-                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
-                            <FastImageAutoHeight resizeMode={"contain"} style={{ width: width - 40, marginBottom: 10 }} source={{ uri: item.pic }} />
-                        </View>
-                    </TouchableWithoutFeedback>
+
+                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
+                    return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+                        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+                            if (selectId == index) {
+                                setSelectedId(-1)
+                            } else {
+                                setSelectedId(index)
+                            }
+                        })}>
+                            <View>
+                                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
+                                <FastImageAutoHeight source={{ uri: item.pic }} />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        {selectId == index ? <AutoHeightWebView
+                            style={{ width: width - 20, backgroundColor: 'white' }}
+                            // scalesPageToFit={true}
+                            viewportContent={'width=device-width, user-scalable=no'}
+                            source={{
+                                html: `<head>
+                        <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+                        <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+                        <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+                      </head>` +
+                                    `<script>
+                        window.onload = function () {
+                          window.location.hash = 1;
+                          document.title = document.body.scrollHeight;
+                        }
+                      </script>`+ item.content
+                            }}></AutoHeightWebView> : null
+                        }
+
+                    </View >
                 }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
                     <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
                 </View>
@@ -472,13 +502,18 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                     pageSize={width - 20}
                 >
                     {bannerData?.data?.list?.map((res, index) => {
-                        return <FastImage onLoad={(e) => {
-                            console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                            setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                        return (
+                            <TouchableWithoutFeedback onPress={() => {
+                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+                            }}>
+                                <FastImage onLoad={(e) => {
+                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                                    setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
 
-                        }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
+                                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
 
-                        </FastImage>
+                                </FastImage>
+                            </TouchableWithoutFeedback>)
                     })}
                 </Carousel>
                 <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
@@ -495,7 +530,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
 
 const AcctountDetail = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "", balance = 0 } = userStore
+    const { uid = "", balance = 0, isTest } = userStore
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
@@ -527,21 +562,57 @@ const AcctountDetail = () => {
                 <View style={{ width: "95%", height: 0.5, backgroundColor: "#8c9ba7" }}></View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 存款</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 额度转换</Text>
 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 取款</Text>
