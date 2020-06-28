@@ -90,9 +90,8 @@ const LHTHomePage = ({ navigation }) => {
   const redBags = redBag?.data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const headlines = notice?.data?.popup ?? []
+  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.numbers?.split(',') ?? []

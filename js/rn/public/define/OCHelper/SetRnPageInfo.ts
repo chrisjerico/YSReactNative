@@ -57,7 +57,7 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  Skin1.skitType = '宝石红' // 測試開發
+  Skin1.skitType = '威尼斯' // 測試開發
   // 威尼斯页面
   if (Skin1.skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat([
