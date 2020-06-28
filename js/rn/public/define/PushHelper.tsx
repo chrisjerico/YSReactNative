@@ -1,11 +1,11 @@
-import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
+import { UGAgentApplyInfo, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import {Alert, AlertButton, Platform} from 'react-native';
+import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { OCHelper } from './OCHelper/OCHelper';
 import { HomeGamesModel } from '../network/Model/HomeGamesModel';
-import { NSValue } from './OCHelper/OCBridge/OCCall';
+import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
@@ -44,8 +44,17 @@ export default class PushHelper {
   static pushWheel(turntableList: TurntableListModel) {
     if (Platform.OS != 'ios') return;
     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-    debugger
-    OCHelper.call('DZPMainView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(0, 0, AppDefine.width * 0.8, AppDefine.height * 0.8)], [turntableListModel]);
+    OCHelper.call(({ vc }) => ({
+      vc: {
+        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+        args2: [turntableListModel]
+      },
+      ret: {
+        selectors: 'SGBrowserView.showMoveView:yDistance:',
+        args1: [vc, 100],
+      },
+    }));
 
   }
   // 去彩票下注页
@@ -79,6 +88,9 @@ export default class PushHelper {
       case UGUserCenterType.存款: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0] }, true]);
         break;
+      }
+      case UGUserCenterType.每日签到: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
       }
       case UGUserCenterType.取款: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1] }, true]);

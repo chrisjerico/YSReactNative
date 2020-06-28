@@ -1,3 +1,5 @@
+import { Data } from "../../../public/network/Model/LoginModel";
+
 export class UGLoginModel {
   'API-SID': string; // sessid
   'API-TOKEN': string; // token
@@ -9,7 +11,7 @@ export class UGLoginModel {
 
 export default class UGUserModel extends UGLoginModel {
   static mine = new UGUserModel();
-  static getYS(user: UGLoginModel): UGUserModel {
+  static getYS(user: UGLoginModel | Data): UGUserModel {
     var temp = Object.assign(new UGUserModel(), user);
     temp['clsName'] = 'UGUserModel';
     temp.sessid = user['API-SID'];

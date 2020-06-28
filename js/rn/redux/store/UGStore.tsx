@@ -1,53 +1,52 @@
-import { applyMiddleware, combineReducers, createStore, Store, compose } from 'redux';
+import { AsyncStorage } from 'react-native';
+import { applyMiddleware, combineReducers, compose, createStore, Store } from 'redux';
 import thunk from 'redux-thunk';
+import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
+import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
+import { BZHSignInStore, BZHSignInReducer } from '../../pages/宝石红/BZHSignInProps';
 import { JDPromotionListProps, JDPromotionListReducer } from '../../pages/经典/JDPromotionListProps';
+import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
+import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';
+import { ZHTYMineProps, ZHTYMineReducer } from '../../pages/综合体育/ZHTYMineProps';
+import { ZHTYRegisterProps, ZHTYRegisterReducer } from '../../pages/综合体育/ZHTYRegisterProps';
 import { XBJHomeProps, XBJHomeReducer } from '../../pages/香槟金/XBJHomeProps';
 import { XBJLoginProps, XBJLoginReducer } from '../../pages/香槟金/XBJLoginProps';
 import { XBJMineProps, XBJMineReducer } from '../../pages/香槟金/XBJMineProps';
 import { XBJRegisterProps, XBJRegisterReducer } from '../../pages/香槟金/XBJRegisterProps';
+import Reactotron from '../../public/config/ReactotronConfig';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import { SysConfReducer, UserInfoReducer, AsyncStorageKey } from './IGlobalStateHelper';
-import { UGAction, ActionType } from './ActionTypes';
-import { AsyncStorage } from 'react-native';
-import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
-import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
-import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
-import { ZHTYRegisterProps, ZHTYRegisterReducer } from '../../pages/综合体育/ZHTYRegisterProps';
-import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';
-import { ZHTYMineProps, ZHTYMineReducer } from '../../pages/综合体育/ZHTYMineProps';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import Reactotron from '../../public/config/ReactotronConfig'
+import { ActionType, UGAction } from './ActionTypes';
+import { AsyncStorageKey, SysConfReducer, UserInfoReducer } from './IGlobalStateHelper';
 // 整个State的树结构
 export interface IGlobalState {
+  // 寶石紅
+  BZHSignInReducer: BZHSignInStore;
   // 综合体育
   ZHTYRegisterReducer: ZHTYRegisterProps;
   ZHTYLoginReducer: ZHTYLoginProps;
   ZHTYMineReducer: ZHTYMineProps;
   ZHTYHomeReducer: ZHTYHomeProps;
-
   // 经典
   JDPromotionListReducer: JDPromotionListProps; // 优惠活动
-
   // 香槟金
   XBJHomeReducer: XBJHomeProps; // 首页
   XBJMineReducer: XBJMineProps; // 我的页
   XBJLoginReducer: XBJLoginProps; // 登录
   XBJRegisterReducer: XBJRegisterProps; // 注册
-
   // 过渡页
   TransitionReducer: TransitionProps;
-
   // 纯数据
   UserInfoReducer: UGUserModel;
   SysConfReducer: UGSysConfModel;
-
   // iOS 独有
   UpdateVersionReducer: UpdateVersionProps;
 }
 
 // 整合项目所有reducer
 export const rootReducer = combineReducers({
+  // 寶石紅
+  BZHSignInReducer,
   // 综合体育
   ZHTYHomeReducer,
   ZHTYLoginReducer,

@@ -16,7 +16,10 @@ import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
-const GDLoginPage = () => {
+const GDLoginPage = ({
+  route, navigation
+}) => {
+
   const { control, errors, triggerValidation, handleSubmit } = useForm()
   const [accountFocus, setAccountFocus] = useState(false)
   const [pwdFocus, setPwdFocus] = useState(false)
@@ -34,6 +37,10 @@ const GDLoginPage = () => {
   }
   useEffect(() => {
     init()
+    if (route?.params?.usr && route?.params?.pwd) {
+      control.setValue("account", route?.params?.usr)
+      control.setValue("pwd", route?.params?.pwd)
+    }
   }, [])
   useEffect(() => {
     if (errors?.account) {
@@ -103,7 +110,7 @@ const GDLoginPage = () => {
       <ScrollView style={{ flex: 1, paddingHorizontal: 15 }}>
         <Text style={{ textAlign: 'left', color: 'white', fontSize: 30, marginTop: 10, marginBottom: 5, fontWeight: "bold" }}>欢迎你</Text>
         <Text style={{ textAlign: 'left', color: 'white', fontSize: 12, marginTop: 10, marginBottom: 20, fontWeight: "bold" }}>没有账号,立即<Text onPress={() => {
-          push(PageName.ZLRegisterPage)
+          push(PageName.GDRegisterPage)
         }} style={{ color: '#cfa461' }}> 注册 </Text>或<Text onPress={testPlay} style={{ color: '#cfa461' }}> 免费试玩 </Text></Text>
         <View style={{ backgroundColor: accountFocus ? "white" : '#34393c', height: 50, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center' }}>
           <FastImage style={{ width: 14, height: 15, marginHorizontal: 15 }} tintColor={accountFocus ? 'black' : '#cfa461'} source={{ uri: "http://test10.6yc.com/images/icon-user.png" }}></FastImage>

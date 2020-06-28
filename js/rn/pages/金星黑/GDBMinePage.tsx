@@ -51,7 +51,6 @@ const GDBMinePage = ({ navigation }) => {
   }, [notice])
 
   const [] = useAutoRenewUserInfo(navigation)
-  const [tbxIndex, setTbxIndex] = useState<number>(0)
   return (
     <FastImage source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/bg-black.png" }} style={{ width: width, height: height, }}>
       <ScrollView style={{ flex: 1, paddingHorizontal: 10, paddingTop: top }}>
@@ -61,41 +60,16 @@ const GDBMinePage = ({ navigation }) => {
             <Text style={{ color: "#a0a0a0", fontSize: 16, marginBottom: 10 }}>{userStore.curLevelTitle}</Text>
             <Text style={{ color: "#cfa461" }}>{userStore.curLevelGrade}</Text>
           </View>
+          <TouchableOpacity style={{ position: 'absolute', right: 10 }} onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+          }}>
+            <Image source={{ uri: "dailysign" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
+          </TouchableOpacity>
         </View>
         <AcctountDetail />
-        {homeGames?.data?.icons?.length > 0 ? <ScrollableTabView
-          onChangeTab={({ i }) => {
-            setTbxIndex(i)
-          }}
-          style={{ marginTop: 20, borderBottomWidth: 0, height: (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
-          initialPage={0}
-          tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49 / 2, marginLeft: (49 / 2) - 3.5 }}
-          renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0, }} inactiveTextColor={'white'} activeTextColor={"#cfa461"} />}
-        >
-          {homeGames?.data?.icons?.map((res) => {
-            return <TabContainer tabLabel={res.name} data={res.list} />
-          })}
-        </ScrollableTabView> : null}
         <View style={{ height: 50 }}></View>
       </ScrollView>
     </FastImage>
-  )
-}
-const TabContainer = ({ data }: { data: List[] }) => {
-  const { width } = useDimensions().screen
-  return (
-
-    <FlatList style={{ flex: 1 }} scrollEnabled={false} numColumns={2} renderItem={({ item }) => {
-      return (
-        <TouchableOpacity onPress={() => {
-
-          PushHelper.pushHomeGame(item)
-        }} style={{ width: (width - 20) / 2 }}>
-          <FastImage source={{ uri: item.logo }} style={{ width: (width - 20) / 2, aspectRatio: 1.44, marginBottom: 20 }} />
-        </TouchableOpacity>
-
-      )
-    }} data={data ?? []} />
   )
 }
 const AcctountDetail = () => {
@@ -151,67 +125,43 @@ const AcctountDetail = () => {
   }
   const { width } = useDimensions().screen
   const { UGUserCenterItem } = useMemberItems()
-  if (uid != "") {
-    return (
-      <View style={{ width: "100%", backgroundColor: "#242424", borderRadius: 8 }}>
-        <View style={{ backgroundColor: "#242424", flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', paddingLeft: 20, paddingVertical: 10 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 18, color: "#676767" }}>账户余额</Text>
-            <TouchableOpacity onPress={() => {
-              setHideAmount(hideAmount => !hideAmount)
-            }}>
-              <Icon name={hideAmount ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
-            </TouchableOpacity>
-          </View>
-
-          <Text style={{ fontSize: 40, color: "#cfa461" }}>{hideAmount ? getHideAmount() : userStore.balance}</Text>
-        </View>
-        <View style={{ height: 38, backgroundColor: "#2a2a2a", paddingLeft: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-          <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.存款)
+  return (
+    <View style={{ width: "100%", backgroundColor: "#242424", borderRadius: 8 }}>
+      <View style={{ backgroundColor: "#242424", flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', paddingLeft: 20, paddingVertical: 10 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 18, color: "#676767" }}>账户余额</Text>
+          <TouchableOpacity onPress={() => {
+            setHideAmount(hideAmount => !hideAmount)
           }}>
-            <FastImage style={{ width: 22, height: 22 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/chong%20Zhi.png" }} />
-            <Text style={{ color: '#cfa461', fontSize: 12, marginLeft: 3 }}>充值</Text>
+            <Icon name={hideAmount ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
           </TouchableOpacity>
-          <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.取款)
-          }}>
-            <FastImage style={{ width: 22, height: 22 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/tiSian.png" }} />
-            <Text style={{ color: '#a0a0a0', fontSize: 12, marginLeft: 3 }}>提现</Text>
-          </TouchableOpacity>
-
         </View>
-        <FlatList numColumns={3} renderItem={({ item }) => {
-          return <TouchableOpacity style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 20, marginTop: 30 }}>
-            <FastImage source={{ uri: item.logo }} style={{ width: 45, height: 45 }} />
-            <Text style={{ color: '#a0a0a0', marginTop: 5 }}>{item.name}</Text>
-          </TouchableOpacity>
-        }} data={UGUserCenterItem} style={{ flex: 1 }} />
+
+        <Text style={{ fontSize: 40, color: "#cfa461" }}>{hideAmount ? getHideAmount() : userStore.balance}</Text>
       </View>
-    )
-  } else {
-    return <View style={{ width: "100%", backgroundColor: "#2a2a2a", borderRadius: 8 }}>
-      <View style={{ height: 38, paddingLeft: 20, flexDirection: 'row', alignItems: 'center' }}>
-        <FastImage style={{ width: 25, height: 25, borderRadius: 12.6 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png" }} />
-        <Text style={{ color: '#a0a0a0', fontSize: 13.2, marginLeft: 3 }}>尊敬的来宾，您好，请登录</Text>
-      </View>
-      <View style={{ height: 66, backgroundColor: "#242424", flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-        <TouchableOpacity style={{ backgroundColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-          <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录</Text>
+      <View style={{ height: 38, backgroundColor: "#2a2a2a", paddingLeft: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+          PushHelper.pushUserCenterType(UGUserCenterType.存款)
+        }}>
+          <FastImage style={{ width: 22, height: 22 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/chong%20Zhi.png" }} />
+          <Text style={{ color: '#cfa461', fontSize: 12, marginLeft: 3 }}>充值</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ borderWidth: 1, borderColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-          <Text style={{ color: '#cfa461', fontSize: 16.5, marginLeft: 3 }}>注册</Text>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {
+          PushHelper.pushUserCenterType(UGUserCenterType.取款)
+        }}>
+          <FastImage style={{ width: 22, height: 22 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/tiSian.png" }} />
+          <Text style={{ color: '#a0a0a0', fontSize: 12, marginLeft: 3 }}>提现</Text>
         </TouchableOpacity>
+
       </View>
-      <View style={{ height: 38, paddingLeft: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-        <Text style={{ color: '#a0a0a0', fontSize: 12, marginLeft: 3 }}>忘记密码</Text>
-        <TouchableOpacity onPress={testPlay}>
-          <Text style={{ color: '#cfa461', fontSize: 12, marginLeft: 3 }}>免费试玩</Text>
+      <FlatList numColumns={3} renderItem={({ item }) => {
+        return <TouchableOpacity style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 20, marginTop: 30 }}>
+          <FastImage source={{ uri: item.logo }} style={{ width: 45, height: 45 }} />
+          <Text style={{ color: '#a0a0a0', marginTop: 5 }}>{item.name}</Text>
         </TouchableOpacity>
-      </View>
+      }} data={UGUserCenterItem} style={{ flex: 1 }} />
     </View>
-  }
-
+  )
 }
 const FastImageAutoHeight = (props: FastImageProperties) => {
   const [picHeight, setPicHeight] = useState(100)

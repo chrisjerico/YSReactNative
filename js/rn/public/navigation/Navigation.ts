@@ -28,9 +28,13 @@ export enum PageName {
   ZLRegisterPage = 'ZLRegisterPage',
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
+  BZHSignInPage = 'BZHSignInPage',
+  BZHRegisterPage = 'BZHRegisterPage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
+  GDRegisterPage = "GDRegisterPage",
   GDLoginPage = "GDLoginPage",
+  PromotionListPage = "PromotionListPage",
   LLHomePage = "LLHomePage",
   LLMinePage = "LLMinePage",
 }
@@ -77,7 +81,10 @@ export class Navigation {
       case RouterType.Tab: {
         if (!transition || page == PageName.TransitionPage || this.pages[0] == PageName.TransitionPage) {
           this.pages[0] = page;
-          this.navigation.jumpTo(page, props);
+          setTimeout(() => {
+            this.navigation.jumpTo(page, props);
+          }, 100);
+
           console.log('跳转到', page);
         } else {
           this.pages[0] = PageName.TransitionPage;

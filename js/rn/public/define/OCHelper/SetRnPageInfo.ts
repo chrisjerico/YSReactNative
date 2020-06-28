@@ -47,7 +47,6 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
-
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -56,6 +55,29 @@ export function setRnPageInfo() {
     允许游客访问: true,
     允许未登录访问: true,
   });
+
+  // Skin1.skitType = '測試開發' // 測試開發
+  // 宝石红页面
+  if (Skin1.skitType.indexOf('宝石红') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.BZHHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.BZHMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+    ])
+  }
 
   // 利来页面
   if (Skin1.skitType.indexOf('利来') != -1) {
@@ -80,7 +102,7 @@ export function setRnPageInfo() {
   }
 
   // 六合厅页面
-  if (Skin1.skitType.indexOf('六合厅') != -1) { // 經典
+  if (Skin1.skitType.indexOf('六合厅') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -123,6 +145,7 @@ export function setRnPageInfo() {
   }
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) {
+    pages = []
     pages = pages.concat([
       {
         // 首页
@@ -156,10 +179,17 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        vcName: 'UGPromotionsController',
+        rnName: PageName.PromotionListPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ]);
   }
 
-  if (Skin1.skitType.indexOf('默认') != -1) {
+  if (Skin1.skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -177,14 +207,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      // {
-      //   // 注册
-      //   vcName: 'UGRegisterViewController',
-      //   rnName: PageName.ZLRegisterPage,
-      //   fd_prefersNavigationBarHidden: true,
-      //   允许游客访问: true,
-      //   允许未登录访问: true,
-      // },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.GDRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
       {
         // 我的页
         tabbarItemPath: '/user',

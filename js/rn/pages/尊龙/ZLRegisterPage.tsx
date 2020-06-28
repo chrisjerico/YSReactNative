@@ -1,22 +1,20 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
-import { Navigation, PageName } from "../../public/navigation/Navigation"
+import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { Icon } from "react-native-elements"
-import { push, navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
+import { navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
 import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
 import { useSelector } from "react-redux"
-import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { ActionType } from "../../redux/store/ActionTypes"
-import { httpClient } from "../../public/network/httpClient"
-import { string } from "prop-types"
+import { EventRegister } from 'react-native-event-listeners'
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -55,6 +53,7 @@ const ZLRegisterPage = () => {
         agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
         smsVerify // 手机短信验证
     } = SystemStore
+
     const onSubmit = async (requestData) => {
         try {
             const password = requestData?.pwd?.md5()
@@ -69,14 +68,13 @@ const ZLRegisterPage = () => {
                 requestData.imgCode = ""
                 requestData["slideCode[nc_sid]"] = requestData.slideCode["nc_csessionid"]
                 requestData["slideCode[nc_token]"] = requestData.slideCode["nc_token"]
-                requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_value"]
+                requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_sig"]
                 delete requestData.slideCode
             }
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
-            console.log(data)
             reRenderCode()
             if (data?.data == null)
-                throw { message: data.msg }
+                throw { message: data?.msg }
             if (data?.data?.autoLogin) {
                 const user = await OCHelper.call('UGUserModel.currentUser');
 
@@ -92,9 +90,9 @@ const ZLRegisterPage = () => {
                     UGStore.dispatch({ type: ActionType.Clear_User })
                 }
                 await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [false, 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: UserInfo, } = await APIRouter.user_info()
@@ -108,12 +106,11 @@ const ZLRegisterPage = () => {
             if (data?.data?.autoLogin == false) {
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
                 popToRoot();
-                navigate(PageName.ZLLoginPage, {})
+                navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
-
+            EventRegister.emit('reload')
             reRenderCode()
-            console.log(error.message)
             if (error.message.includes("推荐人")) {
                 Alert.alert(error?.message, "")
                 OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
@@ -148,11 +145,20 @@ const ZLRegisterPage = () => {
             if (typeof e?.nativeEvent?.data == 'string') {
                 setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
             } else {
+                console.log("response" + JSON.stringify(e.nativeEvent.data))
                 onChange(e?.nativeEvent?.data)
             }
         }
+        const webViewRef = useRef<WebView>()
+        useEffect(() => {
+            const listener = EventRegister.addEventListener('reload', (data) => {
+                webViewRef?.current?.reload()
+            })
+            return (() => EventRegister.removeEventListener(this.listener))
+        }, [])
         return (
             <WebView
+                ref={webViewRef}
                 style={{ flex: 1, minHeight: webviewHeight, backgroundColor: 'black' }}
                 containerStyle={{ backgroundColor: 'black' }}
                 javaScriptEnabled
@@ -164,8 +170,7 @@ const ZLRegisterPage = () => {
             />
         );
     }
-    const getVcode = () => {
-        console.log(reg_vcode)
+    const getVcode = useMemo(() => {
         if (reg_vcode == 0) {
             return null
         } else if (reg_vcode == 3 || reg_vcode == 1) {
@@ -175,7 +180,7 @@ const ZLRegisterPage = () => {
                 return args[0]
             }} as={SlidingVerification} name={"slideCode"} />
         }
-    }
+    }, [reg_vcode, code])
     useEffect(() => {
         console.log(errors)
         Object.keys(errors).map((res) => {
@@ -252,13 +257,19 @@ const ZLRegisterPage = () => {
                                 message: "最少" + pass_length_min + "位英文或数字的组合"
                             },
                             validate: (value) => {
+                                console.log(pass_limit)
                                 if (pass_limit == 0) {
                                     return true
                                 } else if (pass_limit == 1) {
+
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])/
+                                    console.log(regex.test(value))
+                                    debugger
                                     return regex.test(value) || '密码须有数字及字母'
                                 } else if (pass_limit == 2) {
                                     const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/
+                                    console.log(regex.test(value))
+                                    debugger
                                     return regex.test(value) || '密码须有数字及字母及字符'
                                 }
 
@@ -326,7 +337,7 @@ const ZLRegisterPage = () => {
                 <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机号码"} placeholder={"请输入手机号码"} regConfig={reg_phone} control={control} name={FormName.phone} />
                 <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} message={"请输入手机短信验证码"} placeholder={"请输入手机短信验证码"} regConfig={smsVerify} control={control} name={FormName.smsCode} />
                 <ZLRegInput iconName={"mail"} iconType={'entypo'} message={"请输入邮箱地址"} placeholder={"请输入邮箱地址"} regConfig={reg_email} control={control} name={FormName.email} />
-                {getVcode()}
+                {getVcode}
 
                 {agentRegbutton == "1" ? <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {

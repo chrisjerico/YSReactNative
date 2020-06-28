@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import {
-  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -9,20 +8,22 @@ import {
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale, three } from '../../helpers/function'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
+import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import StringUtils from '../../public/tools/StringUtils'
-import UGProgressCircle from '../../public/widget/progress/UGProgressCircle'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
+import NoticeBlock from '../../views/NoticeBlock'
+import ProgressCircle from '../../views/ProgressCircle'
+import RankBlock from '../../views/RankBlock'
+import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -40,17 +41,15 @@ import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
-import NoticeBlock from './views/homes/NoticeBlock'
-import WinningBlock from './views/homes/WinningBlock'
 import LotteryBall from './views/LotteryBall'
 import NavButton from './views/NavButton'
 import TabButton from './views/TabButton'
-import TouchableImage from './views/TouchableImage'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { tryPlay } = useTryPlay({ enablePop: false })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr }: UGUserModel = userStore
@@ -128,51 +127,12 @@ const LHTHomePage = ({ navigation }) => {
     })) ?? []
 
   // functions
-  const tryPlay = async () => {
-    try {
-      const { data } = await APIRouter.user_guestLogin()
-      const user: any = data?.data
-      if (Platform.OS == 'ios') {
-        Promise.all([
-          OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationTryPlay']
-          ),
-          await OCHelper.call('UGUserModel.setCurrentUser:', [
-            UGUserModel.getYS(user),
-          ]),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-            ['', 'isRememberPsd']
-          ),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userName']
-          ),
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userPsw']
-          ),
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationLoginComplete']
-          ),
-          await OCHelper.call(
-            'UGNavigationController.current.popToRootViewControllerAnimated:',
-            [true]
-          ),
-        ]).then(updateUserInfo)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   // render
   return (
-    <SafeAreaView style={loading ? styles.loadingSafeArea : styles.safeArea}>
+    <SafeAreaView style={styles.safeArea}>
       {loading ? (
-        <UGProgressCircle />
+        <ProgressCircle />
       ) : (
           <>
             <Header
@@ -325,8 +285,9 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <WinningBlock
+                <RankBlock
                   containerStyle={styles.subComponent}
+                  iconContainerStyle={styles.rankBlockIconContainerStyle}
                   rankLists={rankLists}
                 />
                 <BottomToolBlock
@@ -387,12 +348,6 @@ const LHTHomePage = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  loadingSafeArea: {
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-  },
   safeArea: {
     backgroundColor: '#2894FF',
     flex: 1,
@@ -424,6 +379,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: scale(300),
     right: 0,
+  },
+  rankBlockIconContainerStyle: {
+    paddingLeft: 0,
+    paddingVertical: 0,
   },
 })
 

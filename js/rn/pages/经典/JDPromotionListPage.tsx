@@ -9,8 +9,20 @@ import {Skin1} from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, {TabBarProps} from 'react-native-scrollable-tab-view';
 import {Text} from 'react-native-elements';
 import {View} from 'react-native';
+import AppDefine from '../../public/define/AppDefine';
+import chroma from 'chroma-js';
+import { UGColor } from '../../public/theme/UGThemeColor';
 
 class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
+  style1: '背景透明' | '背景不透明' = '背景透明'; // 标题栏样式
+
+  constructor(props) {
+    super(props);
+    if ('c217'.indexOf(AppDefine.siteId) != -1) {
+      this.style1 = '背景不透明';
+    }
+  }
+
   didFocus(params: JDPromotionListProps): void { }
   
   requestData() {
@@ -49,12 +61,43 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
     });
   }
 
-  // 顶部标签栏
-  renderTabBar(props: TabBarProps & {hidden: boolean; titles: string[]}) {
+  // 顶部标题栏
+  renderTabBar(props: TabBarProps & {hidden: boolean; titles: string[], style?:'背景透明' | '背景不透明'}) {
     if (props.hidden) {
       return null;
     }
-    const {titles = []} = props;
+    const { titles = [] } = props;
+    if (props.style === '背景不透明') {
+      return (
+        <View style={{flexDirection: 'row', justifyContent: 'space-around', height: props.hidden ? 0 : 43, backgroundColor: chroma(Skin1.themeColor).brighten(0.4).hex() }}>
+          <View style={{position:'absolute', left:0, top:42, width:AppDefine.width, height:1, backgroundColor:'#ccc'}} />
+          {titles.map((title, idx) => {
+            return (
+              <View>
+                <Text
+                  onPress={() => {
+                    props.goToPage(idx);
+                  }}
+                  style={{
+                    marginTop: 8,
+                    marginHorizontal: 8,
+                    height: 27,
+                    paddingTop: 6,
+                    textAlign: 'center',
+                    fontSize: 15,
+                    color: idx == props.activeTab ? '#DD0000' : UGColor.TextColor1,
+                    borderRadius: 3,
+                  }}>
+                  {title}
+                </Text>
+                <View style={{marginTop:7, height:idx == props.activeTab ? 1.5 : 0, backgroundColor :'#DD0000'}} />
+              </View>
+            );
+          })}
+        </View>
+      );
+    }
+
     return (
       <View style={{marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45}}>
         {titles.map((title, idx) => {
@@ -65,8 +108,8 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
               }}
               style={{
                 marginTop: 11,
-                marginHorizontal: 5,
-                width: 42,
+                marginHorizontal: 2,
+                paddingHorizontal: 5,
                 height: 27,
                 paddingTop: 6,
                 backgroundColor: idx == props.activeTab ? Skin1.themeColor : 'transparent',
@@ -103,6 +146,7 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
                 return plm.title;
               })}
               hidden={!showTopBar}
+              style={this.style1}
             />
           );
         }}>

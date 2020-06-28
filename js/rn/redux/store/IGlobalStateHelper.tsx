@@ -70,7 +70,7 @@ export async function updateUserInfo() {
   if (httpClient.defaults.baseURL == "undefined" || !httpClient.defaults.baseURL)
     return
   try {
-    const { data, status } = await APIRouter.user_info()
+    const { data } = await APIRouter.user_info()
     if (data.data == null)
       throw { message: data.msg }
     if (data?.data) {
