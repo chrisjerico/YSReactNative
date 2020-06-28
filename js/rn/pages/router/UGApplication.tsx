@@ -34,6 +34,8 @@ import LHTHomePage from "../六合厅/LHTHomePage";
 import LHTMinePage from "../六合厅/LHTMinePage";
 import BZHHomePage from "../宝石红/BZHHomePage";
 import BZHMinePage from "../宝石红/BZHMinePage";
+import LLHomePage from "../利来/LLHomePage";
+import LLMinePage from "../利来/LLMinePage";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -55,6 +57,8 @@ class TabBarController extends Component<{
         return (
             <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{tabBarVisible: false}}
                                  tabBarOptions={this.tabBarOptions}>
+                <Router.TabScreen name={PageName.LLHomePage} component={LLHomePage} />
+                <Router.TabScreen name={PageName.LLMinePage} component={LLMinePage} />
                 <Router.TabScreen name={PageName.LXBView} component={LXBView} />
                 <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage}/>
                 <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage}/>

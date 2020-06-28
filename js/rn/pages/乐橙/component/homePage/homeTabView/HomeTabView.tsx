@@ -23,7 +23,6 @@ export const HomeTabView = () => {
     }, [homeGames])
 
     const getTab = (item: Icon) => {
-        item.name.indexOf("彩票") != -1 && console.log("test", item.list)
         return item.name.indexOf("推荐") != -1 || item.name.indexOf("热门") != -1 ?
             <RecommendTabView list={item.list} tabLabel="推荐"/> :
             item.name.indexOf("彩票") != -1 ?

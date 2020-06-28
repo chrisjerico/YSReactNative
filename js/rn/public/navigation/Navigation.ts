@@ -30,7 +30,9 @@ export enum PageName {
   BZHMinePage = 'BZHMinePage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
-  GDLoginPage = "GDLoginPage"
+  GDLoginPage = "GDLoginPage",
+  LLHomePage = "LLHomePage",
+  LLMinePage = "LLMinePage",
 }
 
 export class Navigation {
