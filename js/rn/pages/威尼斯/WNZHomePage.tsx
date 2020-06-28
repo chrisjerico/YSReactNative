@@ -4,25 +4,34 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  Text,
+  View,
+  Image
 } from 'react-native'
+import { useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { IGlobalState } from '../../redux/store/UGStore'
 import BannerBlock from '../../views/BannerBlock'
 import GameButton from '../../views/GameButton'
 import NoticeBlock from '../../views/NoticeBlock'
 import ProgressCircle from '../../views/ProgressCircle'
+import RankBlock from '../../views/RankBlock'
 import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import Header from './views/Header'
-import RankBlock from '../../views/RankBlock'
+import FastImage from 'react-native-fast-image'
 
 const WNZHomePage = () => {
-  const { loading, banner, notice, homeGames } = useGetHomeInfo([
+  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { avatar, balance, usr }: UGUserModel = userStore
+  const { loading, banner, notice, homeGames, categoryList } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
+    'lhcdoc_categoryList'
   ])
 
   const banners = banner?.data?.list ?? []
@@ -34,6 +43,7 @@ const WNZHomePage = () => {
     (item) => (games = games.concat(item?.list) ?? [])
   )
   games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
+  const leftGames = categoryList?.data ?? []
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -41,7 +51,7 @@ const WNZHomePage = () => {
         <ProgressCircle />
       ) : (
           <>
-            <Header />
+            <Header name={usr} />
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
@@ -129,7 +139,20 @@ const WNZHomePage = () => {
                   )
                 })}
               </View>
-              <TabComponent />
+              <TabComponent
+                leftGames={leftGames}
+                rightGames={[]}
+                renderGame={(item, index) => {
+                  const { name, icon, show, id, desc } = item
+                  return (
+                    <View key={index} style={{ width: '50%', flexDirection: 'row', aspectRatio: 255 / 85, paddingLeft: scale(25) }}>
+                      <FastImage source={{ uri: icon }} style={{ width: '25%', aspectRatio: 1 }} resizeMode={'contain'} />
+                      <View style={{ justifyContent: 'center', paddingLeft: scale(25) }}>
+                        <Text>{name}</Text>
+                      </View>
+                    </View>
+                  )
+                }} />
               <RankBlock rankLists={[]} rankContainerStyle={{ borderRadius: 0 }} />
             </ScrollView>
           </>
