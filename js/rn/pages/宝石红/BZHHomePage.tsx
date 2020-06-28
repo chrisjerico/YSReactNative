@@ -107,7 +107,7 @@ const BZHHomePage = ({ navigation }) => {
               }}
             />
             <ScrollView
-              style={[styles.container]}
+              style={styles.container}
               scrollEnabled={true}
               refreshControl={<RefreshControl refreshing={false} />}
             >

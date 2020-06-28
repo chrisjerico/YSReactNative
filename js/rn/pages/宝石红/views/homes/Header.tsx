@@ -1,8 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../../../helpers/function'
 
 interface HeaderProps {

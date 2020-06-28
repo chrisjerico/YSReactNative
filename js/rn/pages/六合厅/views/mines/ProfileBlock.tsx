@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
-import { Animated, StyleSheet, Text, View } from 'react-native'
+import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { Avatar, Icon } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import ReLoadComponent from '../../../../components/ReLoadComponent'
 import { scale } from '../../../../helpers/function'
 import PushHelper from '../../../../public/define/PushHelper'

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'

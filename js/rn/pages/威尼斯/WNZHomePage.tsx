@@ -3,7 +3,8 @@ import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
-  StyleSheet, View
+  StyleSheet,
+  View
 } from 'react-native'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
@@ -14,7 +15,7 @@ import NoticeBlock from '../../views/NoticeBlock'
 import ProgressCircle from '../../views/ProgressCircle'
 import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
-import Header from './views/homes/Header'
+import Header from './views/Header'
 import RankBlock from '../../views/RankBlock'
 
 const WNZHomePage = () => {
@@ -42,7 +43,7 @@ const WNZHomePage = () => {
           <>
             <Header />
             <ScrollView
-              style={[styles.container]}
+              style={styles.container}
               scrollEnabled={true}
               refreshControl={<RefreshControl refreshing={false} />}
             >
@@ -146,4 +147,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
+
 export default WNZHomePage
