@@ -42,12 +42,26 @@ const TabComponent = ({
   containerStyle,
 }: TabComponentProps) => {
   // functions
+  const getHeight = (index: number) => {
+    if (rightGames[index]) {
+      const fullRow = Math.floor(rightGames[index].length / 3)
+      const row = rightGames[index].length % 3
+      if (row == 0) {
+        return scale(200 * fullRow + 60)
+      } else {
+        return scale(200 * (fullRow + 1) + 60)
+      }
+    } else {
+      return 0
+    }
+  }
+
   let subScenes = {}
-  rightGames.forEach((games, index) => {
+  rightGames.forEach((item, index) => {
     subScenes[index] = () => {
       return (
         <Scene
-          data={games}
+          data={item}
           renderItem={renderRightGame}
           containerStyle={{
             paddingTop: scale(25),
@@ -58,19 +72,6 @@ const TabComponent = ({
       )
     }
   })
-  const getHeight = (index: number) => {
-    return scale(
-      rightGames[index]
-        ? (Math.floor(rightGames[index].length / 3) +
-          (rightGames[index].length % 3) ==
-          0
-          ? 0
-          : 1) *
-        200 +
-        60
-        : 0
-    )
-  }
   // set hooks
   const [index, setIndex] = useState(0)
   const [subIndex, setSubIndex] = useState(0)
@@ -177,8 +178,9 @@ const TabComponent = ({
             }}
             renderScene={SceneMap(subScenes)}
             onIndexChange={(index) => {
+              const height = getHeight(index)
               setSubIndex(index)
-              setHeight(getHeight(index))
+              setHeight(height)
             }}
           />
         )}

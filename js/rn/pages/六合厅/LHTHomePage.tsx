@@ -87,7 +87,7 @@ const LHTHomePage = ({ navigation }) => {
   // data handle
   // const turntables = turntableList?.data ?? []
   const rankLists = rankList?.data?.list ?? []
-  const redBags = redBag?.data
+  const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const headlines = notice?.data?.popup ?? []
@@ -124,6 +124,7 @@ const LHTHomePage = ({ navigation }) => {
       title: StringUtils.getInstance().deleteHtml(tab.name),
     })) ?? []
 
+  console.log("----redBagLogo-----", redBagLogo)
   // render
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -327,11 +328,10 @@ const LHTHomePage = ({ navigation }) => {
             </ScrollView>
             {
               // 紅包活動
-              uid ? (
+              uid && redBagLogo ? (
                 <TouchableImage
-                  pic={redBags?.redBagLogo}
+                  pic={redBagLogo}
                   onPress={() => {
-                    // console.log("--------redBag-------", redBag)
                     PushHelper.pushRedBag(redBag)
                   }}
                   containerStyle={styles.redEnvelope}
