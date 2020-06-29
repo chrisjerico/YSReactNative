@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import { PageName } from '../../public/navigation/Navigation'
