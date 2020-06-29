@@ -55,7 +55,7 @@ const PromotionListPage = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
       <LinearGradient style={{ height: 44, width, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} colors={Skin1.navBarBgColor}>
-        {state.index != 2 || currentNativeSelectedTab == 0 ?
+        {state.index != 15 || currentNativeSelectedTab == 0 ?
           <View style={{ position: 'absolute', left: 8 }}>
             <Button
               icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
@@ -66,7 +66,7 @@ const PromotionListPage = ({ navigation }) => {
               }}
             />
           </View> : null}
-        <Text style={{ textAlign: 'center', color: Skin1.textColor4, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
+        <Text style={{ textAlign: 'center', color: Skin1.textColor3, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
 
       </LinearGradient>
 
@@ -86,7 +86,7 @@ const PromotionListPage = ({ navigation }) => {
     </View>
   )
 }
-const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
+export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
@@ -102,7 +102,7 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
           }
         })}>
           <View style={{}}>
-            <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5 }}>{item.title}</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
             <FastImageAutoHeight source={{ uri: item.pic }} />
           </View>
 

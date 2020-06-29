@@ -4,6 +4,7 @@ import { PageName, Navigation } from '../../../navigation/Navigation';
 import { RnPageModel } from '../SetRnPageInfo';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
+import { OCHelper } from '../OCHelper';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -54,6 +55,7 @@ export class OCEvent extends OCCall {
 
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
       IGlobalStateHelper.updateSysConf(sysConf);
+
     });
     this.addEvent(OCEventType.UGNotificationWithSkinSuccess, () => {
       UGSkinManagers.updateOcSkin();

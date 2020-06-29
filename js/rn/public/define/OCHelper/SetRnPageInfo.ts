@@ -47,7 +47,6 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
-
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -146,7 +145,7 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) {
+  if (Skin1.skitType.indexOf('尊龙') != -1) { // 
     pages = pages.concat([
       {
         // 首页
@@ -180,10 +179,17 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        vcName: 'UGPromotionsController',
+        rnName: PageName.PromotionListPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ]);
   }
 
-  if (Skin1.skitType.indexOf('默认') != -1) {
+  if (Skin1.skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -201,14 +207,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      // {
-      //   // 注册
-      //   vcName: 'UGRegisterViewController',
-      //   rnName: PageName.ZLRegisterPage,
-      //   fd_prefersNavigationBarHidden: true,
-      //   允许游客访问: true,
-      //   允许未登录访问: true,
-      // },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.GDRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
       {
         // 我的页
         tabbarItemPath: '/user',

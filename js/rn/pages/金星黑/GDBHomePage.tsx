@@ -328,10 +328,14 @@ const AcctountDetail = () => {
         <Text style={{ color: '#a0a0a0', fontSize: 13.2, marginLeft: 3 }}>尊敬的来宾，您好，请登录</Text>
       </View>
       <View style={{ height: 66, backgroundColor: "#242424", flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-        <TouchableOpacity style={{ backgroundColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+        <TouchableOpacity onPress={() => {
+          navigate(PageName.GDLoginPage, {})
+        }} style={{ backgroundColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
           <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{ borderWidth: 1, borderColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+        <TouchableOpacity onPress={() => {
+          navigate(PageName.GDRegisterPage, {})
+        }} style={{ borderWidth: 1, borderColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
           <Text style={{ color: '#cfa461', fontSize: 16.5, marginLeft: 3 }}>注册</Text>
         </TouchableOpacity>
       </View>

@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList } from "react-native"
+import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { useSelector, useDispatch } from "react-redux"
@@ -21,7 +21,6 @@ const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance } = userStore
-    debugger
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
@@ -35,7 +34,6 @@ const ZLHomeMine = ({ navigation }) => {
             updateUserInfo({ ...userStore, balance: data.data.balance })
         } catch (error) {
             console.log(error)
-            debugger
         }
     }
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -48,15 +46,21 @@ const ZLHomeMine = ({ navigation }) => {
                 <Text style={{ fontSize: 22.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
                 <FastImage style={{ width: 164, height: 184 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
                 <LinearGradient style={{ height: 75, width: "100%", position: 'absolute', bottom: 0, flexDirection: 'row' }} colors={colorEnum.gradientColor}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+                    }}>
                         <Text style={{ color: 'white' }}>实名认证</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.安全中心)
+                    }}>
                         <Text style={{ color: 'white' }}>账户安全</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.银行卡管理)
+                    }}>
                         <Text style={{ color: 'white' }}>银行卡管理</Text>
-                    </View>
+                    </TouchableOpacity>
                 </LinearGradient>
             </View>
             <LinearGradient colors={colorEnum.gradientColor} style={{ height: 150, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, overflow: "hidden" }}>
@@ -96,13 +100,22 @@ const ZLHomeMine = ({ navigation }) => {
                     <Text style={{ fontSize: 12, color: '#bfb9b9', marginRight: 20 }}> 每周一进行星级更新</Text>
                 </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5 }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>{usr}  <Text style={{ fontSize: 12 }}>{curLevelTitle}</Text></Text>
-                    <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} />
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                    }}>
+                        <Image source={{ uri: "missionhall" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
+                    </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'white', fontSize: 14 }}>{userStore.fullName}:  <Text style={{ fontSize: 12 }}>{userStore.balance}</Text></Text>
-                    <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} />
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', }}>
+                    <Text style={{ color: 'white', fontSize: 14 }}>利息宝:  <Text style={{ fontSize: 12 }}>{userStore.balance}</Text></Text>
+                    {/* <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} /> */}
+                    <TouchableOpacity onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+                    }}>
+                        <Image source={{ uri: "dailysign" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>{userStore.taskRewardTitle}:  <Text style={{ fontSize: 12 }}>{userStore.taskRewardTotal}</Text></Text>
@@ -137,7 +150,7 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 90 ? 90 : 70, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
+                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
                     </TouchableOpacity>
                 )

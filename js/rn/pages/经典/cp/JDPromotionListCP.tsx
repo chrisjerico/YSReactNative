@@ -19,8 +19,8 @@ interface IState {
 }
 
 export default class JDPromotionListCP extends Component<IProps, IState> {
-  style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边';
-  style2: 'slide' | 'popup' | 'page' = 'page'; // slide折叠、popup弹窗、page内页
+  style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边'; // 行样式
+  style2: 'slide' | 'popup' | 'page' = 'page'; // 详情样式：slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
   lastSelectedIndex: number = -1;
 
@@ -36,7 +36,6 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       this.style1 = '外边框';
     }
     this.style2 = style2;
-    this.style2 = 'slide';
     this.list = list.map((item: UGPromoteModel) => {
       return Object.assign({}, item);
     });
