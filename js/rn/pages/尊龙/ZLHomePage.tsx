@@ -557,11 +557,13 @@ const AcctountDetail = () => {
 
     const requestBalance = async () => {
         try {
+            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             //@ts-ignore
             const { data, status } = await APIRouter.user_balance_token()
             updateUserInfo({ ...userStore, balance: data.data.balance })
+            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
-
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
         }
     }
     if (uid != "") {
