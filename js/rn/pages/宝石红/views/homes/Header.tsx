@@ -37,9 +37,7 @@ const Header = ({
               />
             ) : null}
           </View>
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
+          <View style={styles.imageContainer}>
             <FastImage
               source={{
                 uri:
@@ -49,35 +47,42 @@ const Header = ({
               resizeMode={'contain'}
             />
           </View>
-          <View style={{ flex: 1.5 }}>
-            <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={onPressUser}>
-              <Text numberOfLines={1}>{name}</Text>
-              <Text>{'￥' + money}</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={{ flex: 1.5, alignItems: 'flex-end' }}
+            onPress={onPressUser}
+          >
+            <Text numberOfLines={1}>{name}</Text>
+            <Text>{'￥' + money}</Text>
+          </TouchableOpacity>
         </View>
       ) : (
           <View style={styles.row}>
-            <Button
-              title={'登陆'}
-              buttonStyle={styles.button}
-              titleStyle={styles.buttonTitle}
-              onPress={onPressSignIn}
-            />
-            <FastImage
-              source={{
-                uri:
-                  'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
-              }}
-              style={styles.logo}
-              resizeMode={'contain'}
-            />
-            <Button
-              title={'注册'}
-              buttonStyle={styles.button}
-              titleStyle={styles.buttonTitle}
-              onPress={onPressSignUp}
-            />
+            <View style={{ flex: 1.5 }}>
+              <Button
+                title={'登陆'}
+                buttonStyle={styles.button}
+                titleStyle={styles.buttonTitle}
+                onPress={onPressSignIn}
+              />
+            </View>
+            <View style={styles.imageContainer}>
+              <FastImage
+                source={{
+                  uri:
+                    'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
+                }}
+                style={styles.logo}
+                resizeMode={'contain'}
+              />
+            </View>
+            <View style={{ flex: 1.5, alignItems: 'flex-end' }}>
+              <Button
+                title={'注册'}
+                buttonStyle={styles.button}
+                titleStyle={styles.buttonTitle}
+                onPress={onPressSignUp}
+              />
+            </View>
           </View>
         )}
     </View>
@@ -118,6 +123,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 })

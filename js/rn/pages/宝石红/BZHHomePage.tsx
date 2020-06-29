@@ -50,8 +50,8 @@ const BZHHomePage = ({ navigation }) => {
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('------focus------')
       updateUserInfo()
+      console.log('------focus------')
     })
     return unsubscribe
   }, [])
