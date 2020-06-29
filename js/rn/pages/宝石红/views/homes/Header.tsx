@@ -27,7 +27,7 @@ const Header = ({
     <View style={styles.container}>
       {uid ? (
         <View style={styles.row}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1.5 }}>
             {isTest ? (
               <Button
                 title={'注册'}
@@ -49,9 +49,9 @@ const Header = ({
               resizeMode={'contain'}
             />
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1.5 }}>
             <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={onPressUser}>
-              <Text>{name}</Text>
+              <Text numberOfLines={1}>{name}</Text>
               <Text>{'￥' + money}</Text>
             </TouchableOpacity>
           </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     fontSize: scale(15),
   },
   logo: {
-    width: scale(100),
+    width: '100%',
     height: '100%',
   },
   row: {
