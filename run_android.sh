@@ -1,1 +1,1 @@
-react-native run-android --variant txt60Debug
+react-native run-android --variant txtTest
