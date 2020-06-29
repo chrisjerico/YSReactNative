@@ -56,6 +56,7 @@ const ZLHomePage = ({ navigation }) => {
         setnoticeFormat(noticeData)
         setOriginalNoticeString(string)
     }, [notice])
+
     const openPopup = (data: any) => {
         const dataModel = data.data?.popup.map((item, index) => {
             return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
@@ -65,9 +66,17 @@ const ZLHomePage = ({ navigation }) => {
         OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
         // OCHelper.call("[[UGPlatformNoticeView alloc] initWithFrame:CGRectMake(20, 120, UGScreenW - 40, UGScerrnH - APP.StatusBarHeight - APP.BottomSafeHeight - 160)];")
     }
+    const init = async () => {
+        try {
+            // const { } = await APIRouter.system_config()
+            // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
+        } catch (error) {
+
+        }
+    }
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
-        APIRouter.system_config()
+        init()
         const timer = setInterval(() => {
             getRandomString()
         }, 500)
@@ -548,11 +557,13 @@ const AcctountDetail = () => {
 
     const requestBalance = async () => {
         try {
+            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             //@ts-ignore
             const { data, status } = await APIRouter.user_balance_token()
             updateUserInfo({ ...userStore, balance: data.data.balance })
+            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
-
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
         }
     }
     if (uid != "") {

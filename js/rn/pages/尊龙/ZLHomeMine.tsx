@@ -21,7 +21,6 @@ const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance } = userStore
-    debugger
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
