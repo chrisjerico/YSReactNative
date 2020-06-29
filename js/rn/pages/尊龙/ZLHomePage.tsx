@@ -49,10 +49,18 @@ const ZLHomePage = ({ navigation }) => {
         setnoticeFormat(noticeData)
         setOriginalNoticeString(string)
     }, [notice])
+    const init = async () => {
+        try {
+            // const { } = await APIRouter.system_config()
+            // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
+        } catch (error) {
 
+        }
+
+    }
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
-        APIRouter.system_config()
+        init()
         const timer = setInterval(() => {
             getRandomString()
         }, 500)
@@ -220,7 +228,7 @@ const ZLHomePage = ({ navigation }) => {
                         <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
+                <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index <= 5)} renderItem={({ item }) => {
                     return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
@@ -405,7 +413,7 @@ const UserStatusBar = () => {
                         </>
                     </TouchableOpacity >
                 </View></> : <TouchableOpacity onPress={() => {
-                    navigate(PageName.ZLMinePage, { index: 4 })
+                    navigate(PageName.ZLMinePage, {})
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}

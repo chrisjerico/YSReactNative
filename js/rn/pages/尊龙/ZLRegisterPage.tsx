@@ -96,7 +96,7 @@ const ZLRegisterPage = () => {
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: UserInfo, } = await APIRouter.user_info()
-
+                await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
                 UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: UserInfo?.data });
 
                 UGStore.save();
