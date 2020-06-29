@@ -41,20 +41,27 @@ const TabComponent = ({
   subTabs = [],
   containerStyle,
 }: TabComponentProps) => {
-  const initHeight = scale(
-    rightGames[0] ? (rightGames[0].length / 3) * 200 + 60 : 0
-  )
-  // set state
-  const [index, setIndex] = useState(0)
-  const [subIndex, setSubIndex] = useState(0)
-  const [height, setHeight] = useState(initHeight)
-  // filter props
+  // functions
+  const getHeight = (index: number) => {
+    if (rightGames[index]) {
+      const fullRow = Math.floor(rightGames[index].length / 3)
+      const row = rightGames[index].length % 3
+      if (row == 0) {
+        return scale(200 * fullRow + 60)
+      } else {
+        return scale(200 * (fullRow + 1) + 60)
+      }
+    } else {
+      return 0
+    }
+  }
+
   let subScenes = {}
-  rightGames.forEach((games, index) => {
+  rightGames.forEach((item, index) => {
     subScenes[index] = () => {
       return (
         <Scene
-          data={games}
+          data={item}
           renderItem={renderRightGame}
           containerStyle={{
             paddingTop: scale(25),
@@ -65,6 +72,11 @@ const TabComponent = ({
       )
     }
   })
+  // set hooks
+  const [index, setIndex] = useState(0)
+  const [subIndex, setSubIndex] = useState(0)
+  const [height, setHeight] = useState(getHeight(0))
+
   // render
   return (
     <View style={containerStyle}>
@@ -166,9 +178,7 @@ const TabComponent = ({
             }}
             renderScene={SceneMap(subScenes)}
             onIndexChange={(index) => {
-              const height = rightGames[index]
-                ? scale((rightGames[index].length / 3) * 200) + 60
-                : 0
+              const height = getHeight(index)
               setSubIndex(index)
               setHeight(height)
             }}
@@ -202,7 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#ffffff',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   subTabStyle: {
     backgroundColor: '#ffffff',

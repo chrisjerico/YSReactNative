@@ -3,7 +3,7 @@ import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
+  StyleSheet
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,9 +19,9 @@ import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import FeatureList from '../../views/FeatureList'
+import GameButton from '../../views/GameButton'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
-import NavButton from './views/NavButton'
 
 const BZHMinePage = ({ navigation }) => {
   // yellowBox
@@ -71,8 +71,10 @@ const BZHMinePage = ({ navigation }) => {
           renderFeature={(item, index) => {
             const { icon, name } = item
             return (
-              <NavButton
+              <GameButton
                 key={index}
+                containerStyle={{ width: '25%', height: '100%' }}
+                circleColor={'transparent'}
                 logo={icon}
                 title={name}
                 onPress={() => PushHelper.pushHomeGame(item)}
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
+    borderRadius: scale(7),
     height: scale(70),
   },
 })
