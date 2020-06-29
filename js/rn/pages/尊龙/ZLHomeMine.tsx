@@ -34,7 +34,6 @@ const ZLHomeMine = ({ navigation }) => {
             updateUserInfo({ ...userStore, balance: data.data.balance })
         } catch (error) {
             console.log(error)
-            debugger
         }
     }
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -47,15 +46,21 @@ const ZLHomeMine = ({ navigation }) => {
                 <Text style={{ fontSize: 22.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
                 <FastImage style={{ width: 164, height: 184 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
                 <LinearGradient style={{ height: 75, width: "100%", position: 'absolute', bottom: 0, flexDirection: 'row' }} colors={colorEnum.gradientColor}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+                    }}>
                         <Text style={{ color: 'white' }}>实名认证</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.安全中心)
+                    }}>
                         <Text style={{ color: 'white' }}>账户安全</Text>
-                    </View>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+                        PushHelper.pushUserCenterType(UGUserCenterType.银行卡管理)
+                    }}>
                         <Text style={{ color: 'white' }}>银行卡管理</Text>
-                    </View>
+                    </TouchableOpacity>
                 </LinearGradient>
             </View>
             <LinearGradient colors={colorEnum.gradientColor} style={{ height: 150, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, overflow: "hidden" }}>
@@ -145,7 +150,7 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 90 ? 90 : 70, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
+                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
                     </TouchableOpacity>
                 )

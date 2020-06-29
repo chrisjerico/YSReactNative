@@ -35,6 +35,7 @@ import XBJRegisterPage from '../香槟金/XBJRegisterPage';
 import UpdateVersionPage from './UpdateVersionPage';
 import GDRegisterPage from '../金星黑/GDRegisterPage';
 import JDPromotionListPage from '../经典/JDPromotionListPage';
+import PromotionListPage from '../common/PromotionListPage';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -51,7 +52,6 @@ class TabBarController extends Component<{
     const { navigation } = this.props
     navigation.setOptions({ headerStyle: { height: 0 } })
   }
-
   render() {
     return (
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
@@ -71,6 +71,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.PromotionListPage} component={PromotionListPage} />
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
@@ -92,6 +93,7 @@ const UGApplication = () => {
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+          <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={PromotionListPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
           <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />

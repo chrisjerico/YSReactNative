@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -29,6 +29,7 @@ import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
+import AutoHeightWebView from 'react-native-autoheight-webview'
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -40,15 +41,31 @@ const ZLHomePage = ({ navigation }) => {
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const state = useNavigationState(state => state);
+    const [selectId, setSelectedId] = useState(-1)
+    const [show, setShow] = useState(false)
+    const [content, setContent] = useState("")
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
             string += res.content
             return { label: res.id, value: res.title }
         }) ?? []
+        if (notice?.data?.popup) {
+            openPopup(notice)
+        }
         setnoticeFormat(noticeData)
         setOriginalNoticeString(string)
     }, [notice])
+
+    const openPopup = (data: any) => {
+        const dataModel = data.data?.popup.map((item, index) => {
+            return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+
+        })
+        if (Platform.OS != 'ios') return;
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        // OCHelper.call("[[UGPlatformNoticeView alloc] initWithFrame:CGRectMake(20, 120, UGScreenW - 40, UGScerrnH - APP.StatusBarHeight - APP.BottomSafeHeight - 160)];")
+    }
     const init = async () => {
         try {
             // const { } = await APIRouter.system_config()
@@ -56,7 +73,6 @@ const ZLHomePage = ({ navigation }) => {
         } catch (error) {
 
         }
-
     }
     const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
@@ -100,9 +116,11 @@ const ZLHomePage = ({ navigation }) => {
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
                         width={width - 60}
                         height={34}
-                        speed={60}
+                        speed={40}
                         onTextClick={() => {
-                            PushHelper.pushNoticePopUp(originalNoticeString)
+                            setShow(true)
+                            setContent(originalNoticeString)
+                            // PushHelper.pushNoticePopUp(originalNoticeString)
                         }}
 
                         textList={noticeFormat} />
@@ -223,21 +241,49 @@ const ZLHomePage = ({ navigation }) => {
                         <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        push(PageName.JDPromotionListPage)
+                        push(PageName.PromotionListPage)
                     }}>
                         <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
                 </View>
-                <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index <= 5)} renderItem={({ item }) => {
-                    return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
-                            <FastImageAutoHeight resizeMode={"contain"} style={{ width: width - 40, marginBottom: 10 }} source={{ uri: item.pic }} />
-                        </View>
-                    </TouchableWithoutFeedback>
+
+                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
+                    return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+                        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+                            if (selectId == index) {
+                                setSelectedId(-1)
+                            } else {
+                                setSelectedId(index)
+                            }
+                        })}>
+                            <View>
+                                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
+                                <FastImageAutoHeight source={{ uri: item.pic }} />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        {selectId == index ? <AutoHeightWebView
+                            style={{ width: width - 20, backgroundColor: 'white' }}
+                            // scalesPageToFit={true}
+                            viewportContent={'width=device-width, user-scalable=no'}
+                            source={{
+                                html: `<head>
+                        <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+                        <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+                        <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+                      </head>` +
+                                    `<script>
+                        window.onload = function () {
+                          window.location.hash = 1;
+                          document.title = document.body.scrollHeight;
+                        }
+                      </script>`+ item.content
+                            }}></AutoHeightWebView> : null
+                        }
+
+                    </View >
                 }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
                     <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
                 </View>
@@ -276,7 +322,7 @@ const ZLHomePage = ({ navigation }) => {
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                     }} style={{ color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
                     <Text style={{ color: 'white', textAlign: 'center' }} onPress={() => {
-                        push(PageName.JDPromotionListPage)
+                        push(PageName.PromotionListPage)
                     }}>🎁优惠活动</Text>
                 </View>
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
@@ -284,6 +330,11 @@ const ZLHomePage = ({ navigation }) => {
             </ScrollView>
             <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
             <TurntableListItem />
+            <MarqueePopupView onPress={() => {
+                setShow(false)
+            }} content={content} show={show} onDismiss={() => {
+                setShow(false)
+            }} />
         </View >
     )
 }
@@ -383,6 +434,8 @@ const ZLHeader = () => {
     )
 }
 const UserStatusBar = () => {
+    const sysConf = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const { mobileMenu } = sysConf
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { uid = "", curLevelTitle, usr, curLevelInt, nextLevelInt } = userStore
     return (
@@ -413,7 +466,13 @@ const UserStatusBar = () => {
                         </>
                     </TouchableOpacity >
                 </View></> : <TouchableOpacity onPress={() => {
-                    navigate(PageName.ZLMinePage, {})
+                    let index = -1
+                    mobileMenu.map((item, i) => {
+                        if (item?.path == '/user') {
+                            index = i
+                        }
+                    })
+                    navigate(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
@@ -461,13 +520,18 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                     pageSize={width - 20}
                 >
                     {bannerData?.data?.list?.map((res, index) => {
-                        return <FastImage onLoad={(e) => {
-                            console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                            setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                        return (
+                            <TouchableWithoutFeedback onPress={() => {
+                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+                            }}>
+                                <FastImage onLoad={(e) => {
+                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                                    setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
 
-                        }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
+                                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
 
-                        </FastImage>
+                                </FastImage>
+                            </TouchableWithoutFeedback>)
                     })}
                 </Carousel>
                 <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
@@ -484,7 +548,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
 
 const AcctountDetail = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "", balance = 0 } = userStore
+    const { uid = "", balance = 0, isTest } = userStore
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
@@ -516,27 +580,101 @@ const AcctountDetail = () => {
                 <View style={{ width: "95%", height: 0.5, backgroundColor: "#8c9ba7" }}></View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 存款</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 额度转换</Text>
 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                        if (isTest) {
+                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
+                                { text: "取消", onPress: () => { }, style: "cancel" },
+                                {
+                                    text: "马上登录", onPress: () => {
+                                        navigate(PageName.ZLLoginPage, {})
+                                    },
+                                }
+                            ])
+                        } else {
+                            PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                        }
+
                     }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
                         <Text style={{ color: 'white', fontSize: 15.5 }}> 取款</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
+        )
+    } else {
+        return null
+    }
+
+}
+const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
+    const { width, height } = useDimensions().screen
+    if (show) {
+        return (
+            <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
+                <View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
+                    <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</Text>
+                    </View>
+                    <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                        <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }}></AutoHeightWebView>
+                    </View>
+                    <View style={{ height: 70, paddingBottom: 10, paddingHorizontal: 5, justifyContent: 'space-between', width: "100%", flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={onDismiss} style={{
+                            justifyContent: 'center', alignItems: 'center',
+                            width: "47%", height: 50, backgroundColor: 'white',
+                            borderRadius: 5, borderColor: "gray", borderWidth: 0.5
+                        }}>
+                            <Text>取消</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={onPress} style={{
+                            justifyContent: 'center',
+                            alignItems: 'center', width: "47%", height: 50,
+                            backgroundColor: '#46A3FF', borderRadius: 5,
+                            borderColor: "gray", borderWidth: 0.5
+                        }}>
+                            <Text style={{ color: 'white' }}>确定</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+            </View>
         )
     } else {
         return null

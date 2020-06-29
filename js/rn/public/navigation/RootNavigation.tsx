@@ -6,7 +6,10 @@ export const navigationRef = React.createRef<NavigationContainerRef>();
 
 export function navigate(name, params) {
     navigationRef.current?.navigate(name, params);
-    OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [params?.index ?? 0]);
+    if (params?.index) {
+        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [params.index]);
+    }
+
 }
 
 export function push(...args) {

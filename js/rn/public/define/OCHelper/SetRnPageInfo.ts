@@ -47,7 +47,6 @@ export class RnPageModel {
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
-
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -157,6 +156,13 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        vcName: 'UGPromotionsController',
+        rnName: PageName.PromotionListPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ]);
   }
 
