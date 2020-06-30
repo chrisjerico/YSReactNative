@@ -328,7 +328,7 @@ const LHTHomePage = ({ navigation }) => {
             </ScrollView>
             {
               // 紅包活動
-              uid && redBagLogo ? (
+              (uid && redBagLogo) ? (
                 <TouchableImage
                   pic={redBagLogo}
                   onPress={() => {

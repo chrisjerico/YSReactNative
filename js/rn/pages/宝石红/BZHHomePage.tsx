@@ -7,6 +7,7 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import RedBagComponent from '../../components/RedBagComponent'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -40,6 +41,7 @@ const BZHHomePage = ({ navigation }) => {
     onlineNum,
     rankList,
     redBag,
+    turntableList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -47,6 +49,7 @@ const BZHHomePage = ({ navigation }) => {
     'system_onlineCount',
     'system_rankingList',
     'activity_redBagDetail',
+    'activity_turntableList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -56,10 +59,10 @@ const BZHHomePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
-  console.log('----userStore-----', userStore)
   // data handle
-  const redBags = redBag?.data
+  const roulette = turntableList?.data
   const rankLists = rankList?.data?.list ?? []
+  const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const navs =
@@ -86,8 +89,6 @@ const BZHHomePage = ({ navigation }) => {
       games: videos,
     },
   ]
-
-  console.log('----videos----', videos)
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -167,6 +168,9 @@ const BZHHomePage = ({ navigation }) => {
                             circleColor={'transparent'}
                             logo={logo || icon}
                             title={title || name}
+                            onPress={() => {
+                              PushHelper.pushHomeGame(item)
+                            }}
                           />
                         )
                       }}
@@ -194,16 +198,25 @@ const BZHHomePage = ({ navigation }) => {
         )}
       {
         // 紅包活動
-        uid ? (
+        <RedBagComponent
+          show={uid && redBagLogo}
+          logo={redBagLogo}
+          onPress={() => {
+            PushHelper.pushRedBag(redBag)
+          }}
+        />
+        /* {
+        // 輪盤活動
+        (uid && roulette) ? (
           <TouchableImage
-            pic={redBags?.redBagLogo}
+            pic={redBagLogo}
             onPress={() => {
-              // console.log("--------redBag-------", redBag)
-              PushHelper.pushRedBag(redBag)
+              PushHelper.pushWheel(turntableList)
             }}
             containerStyle={styles.redEnvelope}
           />
         ) : null
+      } */
       }
     </SafeAreaView>
   )
@@ -224,14 +237,7 @@ const styles = StyleSheet.create({
   subComponent: {
     marginTop: scale(10),
     backgroundColor: '#ffffff',
-  },
-  redEnvelope: {
-    width: scale(200),
-    aspectRatio: 1,
-    position: 'absolute',
-    top: scale(500),
-    right: 0,
-  },
+  }
 })
 
 export default BZHHomePage

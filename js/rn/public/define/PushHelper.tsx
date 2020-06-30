@@ -38,7 +38,8 @@ export default class PushHelper {
   }
   static pushRedBag(redBag: RedBagDetailActivityModel) {
     if (Platform.OS != 'ios') return;
-    const redbagModel = Object.assign({ clsName: 'UGRedEnvelopeModel' }, redBag?.data);
+    const data = redBag?.data
+    const redbagModel = Object.assign({}, { clsName: 'UGRedEnvelopeModel', rid: data?.id }, data); // ios 裡是抓rid
     OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
   }
   static pushWheel(turntableList: TurntableListModel) {

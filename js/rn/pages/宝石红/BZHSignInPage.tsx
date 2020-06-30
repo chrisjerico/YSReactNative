@@ -120,8 +120,7 @@ const BZHSignInPage = () => {
                     ])
                     const { data } = await APIRouter.user_login(
                       account,
-                      password.md5(),
-                      ''
+                      password.md5()
                     )
                     if (data.data == null) {
                       const error = data?.msg

@@ -82,7 +82,12 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1;
     if (Platform.OS != 'ios') return;
-    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1 && skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('金星黑') == -1) return;
+    if (skin.skitType.indexOf('香槟金') == -1
+      && skin.skitType.indexOf('综合体育') == -1
+      && skin.skitType.indexOf('尊龙') == -1
+      && skin.skitType.indexOf('金星黑') == -1
+      && skin.skitType.indexOf('宝石红') == -1
+    ) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);
     for (const k in skin) {
