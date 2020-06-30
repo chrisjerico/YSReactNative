@@ -13,6 +13,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -26,6 +27,7 @@ import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
+
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -224,7 +226,7 @@ const BZHHomePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {

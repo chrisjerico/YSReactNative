@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import ReLoadComponent from '../../../../components/ReLoadComponent'
 import { scale } from '../../../../helpers/function'
+import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 
 interface ProfileBlockProps {
   money: string | number;
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   redBlock: {
     width: '100%',
     height: '50%',
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     borderBottomLeftRadius: scale(20),
     borderBottomRightRadius: scale(20),
   },

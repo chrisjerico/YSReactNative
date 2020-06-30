@@ -5,9 +5,9 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
   六合厅: {
     skitType: '六合厅',
     skitString: '六合厅',
-    bgColor: ['#2894FF', '#2894FF'],
-    navBarBgColor: ['#2894FF', '#2894FF'],
-    tabBarBgColor: '#2894FF',
+    bgColor: ['#ffffff', '#ffffff'],
+    get navBarBgColor() { return [this.themeColor, this.themeColor] },
+    get tabBarBgColor() { return this.themeColor },
     tabNoSelectColor: '#525252',
     tabSelectedColor: '#010101',
     progressBgColor: ['#d80000', '#fb5959'],
@@ -23,6 +23,7 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#7BA2C2',
     intoViewColor: '#7BA2C2',
     moneyCellColor: '#9BB8CB',
+    themeColor: '#2894FF'
   },
   //六合资料
   六合资料0: {

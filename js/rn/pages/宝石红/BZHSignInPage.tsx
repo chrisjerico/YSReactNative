@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
@@ -10,6 +10,7 @@ import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -212,7 +213,7 @@ const CheckBox = ({ check, onPress }) => (
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {

@@ -14,6 +14,7 @@ import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -107,7 +108,7 @@ const BZHMinePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {

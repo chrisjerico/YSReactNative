@@ -1,12 +1,13 @@
 import { UGThemeColor } from '../UGThemeColor'
 
+
 export const BZHThemeColor: { [x: string]: UGThemeColor } = {
   宝石红: {
     skitType: '宝石红',
     skitString: '宝石红',
     bgColor: ['#ffffff', '#ffffff'],
-    navBarBgColor: ['#e53333', '#e53333'],
-    tabBarBgColor: '#e53333',
+    get navBarBgColor() { return [this.themeColor, this.themeColor] },
+    get tabBarBgColor() { return this.themeColor },
     tabNoSelectColor: '#FFFFFF',
     tabSelectedColor: '#F1B709',
     progressBgColor: ['#FEC434', '#FE8A23'],
@@ -22,5 +23,6 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     intoViewColor: '#444',
     moneyCellColor: '#444',
+    themeColor: '#e53333'
   },
 }
