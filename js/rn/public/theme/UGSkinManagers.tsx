@@ -87,6 +87,7 @@ export default class UGSkinManagers extends UGThemeColor {
       && skin.skitType.indexOf('尊龙') == -1
       && skin.skitType.indexOf('金星黑') == -1
       && skin.skitType.indexOf('宝石红') == -1
+      && skin.skitType.indexOf('六合厅') == -1
     ) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);

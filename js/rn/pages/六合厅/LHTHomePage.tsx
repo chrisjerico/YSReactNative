@@ -7,6 +7,7 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import RedBagComponent from '../../components/RedBagComponent'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -91,7 +92,8 @@ const LHTHomePage = ({ navigation }) => {
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const headlines = notice?.data?.popup ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.numbers?.split(',') ?? []
@@ -124,7 +126,7 @@ const LHTHomePage = ({ navigation }) => {
       title: StringUtils.getInstance().deleteHtml(tab.name),
     })) ?? []
 
-  console.log("----redBagLogo-----", redBagLogo)
+  console.log('----redBagLogo-----', redBagLogo)
   // render
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -326,31 +328,13 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            {
-              // 紅包活動
-              (uid && redBagLogo) ? (
-                <TouchableImage
-                  pic={redBagLogo}
-                  onPress={() => {
-                    PushHelper.pushRedBag(redBag)
-                  }}
-                  containerStyle={styles.redEnvelope}
-                />
-              ) : null
-            }
-            {/* {
-              // 輪盤活動
-              uid ? (
-                <TouchableImage
-                  pic={turntables[0]?.param?.chassis_img}
-                  onPress={() => {
-                    // console.log("--------redBag-------", redBag)
-                    PushHelper.pushWheel(turntableList)
-                  }}
-                  containerStyle={styles.turntables}
-                />
-              ) : null
-            } */}
+            <RedBagComponent
+              show={uid && redBagLogo}
+              logo={redBagLogo}
+              onPress={() => {
+                PushHelper.pushRedBag(redBag)
+              }}
+            />
           </>
         )}
     </SafeAreaView>
