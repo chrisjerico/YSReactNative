@@ -8,7 +8,7 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     bgColor: ['#ffffff', '#ffffff'],
     get navBarBgColor() { return [this.themeColor, this.themeColor] },
     get tabBarBgColor() { return this.themeColor },
-    tabNoSelectColor: '#525252',
+    tabNoSelectColor: '#ffffff',
     tabSelectedColor: '#010101',
     progressBgColor: ['#d80000', '#fb5959'],
     homeContentColor: '#FFFFFF',

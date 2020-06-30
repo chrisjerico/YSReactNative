@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { scale } from '../../../../helpers/function';
+import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
 
 interface HeaderProps {
   onPressBack: () => any;
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 540 / 60,
-    backgroundColor: '#2894FF',
+    backgroundColor: LHThemeColor.六合厅.themeColor,
     flexDirection: 'row',
     paddingHorizontal: scale(25),
     justifyContent: 'space-between',

@@ -8,7 +8,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     bgColor: ['#ffffff', '#ffffff'],
     get navBarBgColor() { return [this.themeColor, this.themeColor] },
     get tabBarBgColor() { return this.themeColor },
-    tabNoSelectColor: '#FFFFFF',
+    tabNoSelectColor: '#ffffff',
     tabSelectedColor: '#F1B709',
     progressBgColor: ['#FEC434', '#FE8A23'],
     homeContentColor: '#444',

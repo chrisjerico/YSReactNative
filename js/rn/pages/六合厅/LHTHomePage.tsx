@@ -15,6 +15,7 @@ import useLoginOut from '../../public/hooks/useLoginOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
+import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import StringUtils from '../../public/tools/StringUtils'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -343,7 +344,7 @@ const LHTHomePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#2894FF',
+    backgroundColor: LHThemeColor.六合厅.themeColor,
     flex: 1,
   },
   container: {

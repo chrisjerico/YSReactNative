@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { scale } from '../../../../helpers/function';
+import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
 
 interface HeaderProps {
   name: string;
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 540 / 60,
-    backgroundColor: '#2894FF',
+    backgroundColor: LHThemeColor.六合厅.themeColor,
     flexDirection: 'row',
     paddingHorizontal: scale(25),
   },
