@@ -36,8 +36,7 @@ export enum PageName {
   GDLoginPage = "GDLoginPage",
   WNZHomePage = 'WNZHomePage',
   WNZMinePage = 'WNZMinePage',
-  GDRegisterPage = "GDRegisterPage",
-  PromotionListPage = "PromotionListPage"
+  PromotionListPage = "PromotionListPage",
   LLHomePage = "LLHomePage",
   LLMinePage = "LLMinePage",
 }
