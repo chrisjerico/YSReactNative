@@ -16,6 +16,7 @@ import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
 import { B_DEBUG } from '../tools/UgLog';
 import { ZLThemeColor } from './colors/ZLThemeColor';
 import { LCThemeColor } from "./colors/LCThemeColor";
+import { BZHThemeColor } from "./colors/BZHThemeColor";
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -28,6 +29,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...GDBThemeColor,
     ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
+    ...BZHThemeColor, // 宝石红
   };
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -48,10 +50,11 @@ export default class UGSkinManagers extends UGThemeColor {
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
-      14: `六合厅${mobileTemplateStyle}`,
+      14: `六合厅`,
       16: `尊龙`,
       18: `金星黑`,
       19: `乐橙`,
+      21: `宝石红`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
