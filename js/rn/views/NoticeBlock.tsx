@@ -37,7 +37,7 @@ const NoticeBlock = ({
           style={styles.iconImage}
           source={{ uri: logo }}
         /> :
-          <Text style={logoTextStyle}>{logoText}</Text>
+          <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>
         }
       </View>
       <View style={styles.noticContainer}>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 540 / 42,
     backgroundColor: '#ffffff',
-    borderRadius: 15,
+    borderRadius: scale(15),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -73,10 +73,16 @@ const styles = StyleSheet.create({
   },
   noticContainer: {
     flex: 450,
+    height: '100%',
+    justifyContent: 'center'
   },
   textStyle: {
     color: '#999999',
+    fontSize: scale(20)
   },
+  logoTextStyle: {
+    fontSize: scale(20)
+  }
 })
 
 export default NoticeBlock

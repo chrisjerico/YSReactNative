@@ -131,6 +131,7 @@ const BZHHomePage = ({ navigation }) => {
                 }}
               />
               <NoticeBlock
+                containerStyle={{ borderRadius: 0 }}
                 notices={notices}
                 onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
               />
