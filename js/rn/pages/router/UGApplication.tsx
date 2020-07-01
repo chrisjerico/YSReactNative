@@ -37,6 +37,7 @@ import UpdateVersionPage from './UpdateVersionPage';
 import GDRegisterPage from '../金星黑/GDRegisterPage';
 import JDPromotionListPage from '../经典/JDPromotionListPage';
 import PromotionListPage from '../common/PromotionListPage';
+import GDBMinePage from '../金星黑/GDBMinePage';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -79,6 +80,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
+        <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
       </Router.TabNavigator>
