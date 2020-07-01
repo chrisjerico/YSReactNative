@@ -78,7 +78,7 @@ const GDBHomePage = ({ navigation }) => {
         }}
         style={{ marginTop: 20, borderBottomWidth: 0, height: (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
         initialPage={0}
-        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49 / 2, marginLeft: (49 / 2) - 3.5 }}
+        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49, marginLeft: (49 / 2) - 3.5 }}
         renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0, }} inactiveTextColor={'white'} activeTextColor={"#cfa461"} />}
       >
         {homeGames?.data?.icons?.map((res) => {
@@ -96,7 +96,7 @@ const GDBHomePage = ({ navigation }) => {
           <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
         </TouchableWithoutFeedback>
       </View>
-      <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
+      <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item }) => {
         return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
