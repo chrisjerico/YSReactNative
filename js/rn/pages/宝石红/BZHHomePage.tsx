@@ -7,7 +7,7 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import RedBagComponent from '../../components/RedBagComponent'
+import ActivityComponent from '../../components/ActivityComponent'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -201,7 +201,7 @@ const BZHHomePage = ({ navigation }) => {
         )}
       {
         // 紅包活動
-        <RedBagComponent
+        <ActivityComponent
           show={uid && redBagLogo}
           logo={redBagLogo}
           onPress={() => {

@@ -23,7 +23,7 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#7BA2C2',
     intoViewColor: '#7BA2C2',
     moneyCellColor: '#9BB8CB',
-    themeColor: '#2894FF'
+    themeColor: '#2894FF',
   },
   //六合资料
   六合资料0: {

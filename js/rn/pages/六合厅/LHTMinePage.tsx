@@ -28,7 +28,7 @@ const LHTMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, usr, curLevelGrade, balance }: UGUserModel = userStore
+  const { avatar, usr, curLevelGrade, balance, unreadMsg }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -42,6 +42,7 @@ const LHTMinePage = ({ navigation }) => {
     navigation.navigate('LHTHomePage')
   }
 
+  console.log("----------unreadMsg----------", unreadMsg)
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
@@ -92,6 +93,8 @@ const LHTMinePage = ({ navigation }) => {
               key={index}
               title={name}
               logo={logo}
+              unreadMsg={unreadMsg}
+              showUnreadMsg={code == 9}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )

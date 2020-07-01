@@ -19,6 +19,8 @@ interface TabComponentProps {
   rightGames: any[];
   renderLeftGame: (item: any, index: number) => any;
   renderRightGame: (item: any, index: number) => any;
+  unActiveTabColor: string;
+  activeTabColor: string
 }
 
 interface SceneProps {
@@ -40,6 +42,8 @@ const TabComponent = ({
   rightGames = [],
   subTabs = [],
   containerStyle,
+  unActiveTabColor,
+  activeTabColor
 }: TabComponentProps) => {
   // functions
   const getHeight = (index: number) => {
@@ -85,7 +89,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? '#ff6b1b' : '#7B7B7B',
+              backgroundColor: index == 0 ? activeTabColor : unActiveTabColor,
             },
           ]}
           onPress={() => setIndex(0)}
@@ -102,7 +106,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? '#7B7B7B' : '#ff6b1b',
+              backgroundColor: index == 0 ? unActiveTabColor : activeTabColor,
             },
           ]}
           onPress={() => setIndex(1)}

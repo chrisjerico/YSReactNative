@@ -21,10 +21,10 @@ interface HeaderProps {
 const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay, onPressLogo }: HeaderProps) => {
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
+      <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-start' }}>
         <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: leftLogo }} />
       </View>
-      <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+      <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: scale(15) }}>
         {showLogout ? (
           <>
             <Avatar size={'small'} rounded source={{ uri: avatar }} />
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     aspectRatio: 540 / 60,
     backgroundColor: LHThemeColor.六合厅.themeColor,
     flexDirection: 'row',
-    paddingHorizontal: scale(25),
+    // paddingright: scale(25),
   },
   image: {
     width: '100%',

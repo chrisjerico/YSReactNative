@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
+  ImageBackground,
+  Image,
+  TouchableWithoutFeedback
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import RedBagComponent from '../../components/RedBagComponent'
+import ActivityComponent from '../../components/ActivityComponent'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -45,15 +48,18 @@ import Header from './views/homes/Header'
 import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import LotteryBall from './views/LotteryBall'
+import FastImage from 'react-native-fast-image'
+import APIRouter from '../../public/network/APIRouter'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const [roulette, setRoulette] = useState(null)
   const { tryPlay } = useTryPlay({ enablePop: false })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { uid, avatar, usr }: UGUserModel = userStore
+  const { uid, avatar, usr, isTest }: UGUserModel = userStore
   const {
     loading,
     banner,
@@ -65,7 +71,6 @@ const LHTHomePage = ({ navigation }) => {
     couponListData,
     redBag,
     rankList,
-    // turntableList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -76,7 +81,6 @@ const LHTHomePage = ({ navigation }) => {
     'system_promotions',
     'activity_redBagDetail',
     'system_rankingList',
-    // 'activity_turntableList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -86,8 +90,15 @@ const LHTHomePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
+  useEffect(() => {
+    if (uid) {
+      APIRouter.activity_turntableList().then((value) => {
+        setRoulette(value?.data?.data)
+      })
+    }
+  }, [uid])
+
   // data handle
-  // const turntables = turntableList?.data ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
@@ -127,7 +138,6 @@ const LHTHomePage = ({ navigation }) => {
       title: StringUtils.getInstance().deleteHtml(tab.name),
     })) ?? []
 
-  console.log('----redBagLogo-----', redBagLogo)
   // render
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -137,7 +147,7 @@ const LHTHomePage = ({ navigation }) => {
           <>
             <Header
               avatar={avatar}
-              name={usr}
+              name={isTest ? '遊客' : usr}
               showLogout={uid ? true : false}
               leftLogo={defaultHomeHeaderLeftLogo}
               rightLogo={defaultHomeHeaderRightLogo}
@@ -235,6 +245,8 @@ const LHTHomePage = ({ navigation }) => {
                   }
                 />
                 <TabComponent
+                  activeTabColor={'#ff8610'}
+                  unActiveTabColor={'#bbbbbb'}
                   containerStyle={styles.subComponent}
                   subTabs={subTabs}
                   leftGames={leftGames}
@@ -329,11 +341,20 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            <RedBagComponent
-              show={uid && redBagLogo}
+            <ActivityComponent
+              show={uid && redBagLogo && !isTest}
               logo={redBagLogo}
               onPress={() => {
                 PushHelper.pushRedBag(redBag)
+              }}
+            />
+            <ActivityComponent
+              containerStyle={{ top: 100 }}
+              enableFastImage={false}
+              show={uid && roulette && !isTest}
+              logo={"dzp_btn"}
+              onPress={() => {
+                PushHelper.pushWheel(roulette)
               }}
             />
           </>

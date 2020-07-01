@@ -62,37 +62,37 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                   const element: APIListType = coustomArray[key]
                   switch (element) {
                     case 'game_homeGames':
-                      setHomeGames(res[key].data)
+                      setHomeGames(res[key]?.data)
                       break
                     case 'system_banners':
-                      setBanner(res[key].data)
+                      setBanner(res[key]?.data)
                       break
                     case 'notice_latest':
-                      setNotice(res[key].data)
+                      setNotice(res[key]?.data)
                       break
                     case 'system_promotions':
-                      setCouponListData(res[key].data)
+                      setCouponListData(res[key]?.data)
                       break
                     case 'system_rankingList':
-                      setRankList(res[key].data)
+                      setRankList(res[key]?.data)
                       break
                     case 'activity_redBagDetail':
-                      setRedBag(res[key].data)
+                      setRedBag(res[key]?.data)
                       break
                     case 'system_floatAds':
-                      setFloatAds(res[key].data)
+                      setFloatAds(res[key]?.data)
                       break
                     case 'system_onlineCount':
                       setOnlineNum(res[key]?.data?.data?.onlineUserCount)
                       break
                     case 'lhcdoc_lotteryNumber':
-                      setLotteryNumber(res[key].data)
+                      setLotteryNumber(res[key]?.data)
                       break
                     case 'lhcdoc_categoryList':
-                      setCategoryList(res[key].data)
+                      setCategoryList(res[key]?.data)
                       break
                     case 'activity_turntableList':
-                      setTurntableList(res[key].data)
+                      setTurntableList(res[key]?.data)
                     default:
                       break
                   }

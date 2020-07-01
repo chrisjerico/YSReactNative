@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { scale } from '../../../../helpers/function';
 import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface HeaderProps {
   onPressBack: () => any;
@@ -10,12 +11,15 @@ interface HeaderProps {
 const Header = ({ onPressBack, onPressCustomerService }: HeaderProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPressBack}>
-        <Text style={styles.text}>{'<'}</Text>
+      <TouchableOpacity style={{ flex: 1, alignItems: 'flex-start' }} onPress={onPressBack}>
+        <Icon name={'left'} color={'#ffffff'} size={scale(25)} />
+        {/* <Text style={styles.text}>{'<'}</Text> */}
       </TouchableOpacity>
-      <Text style={styles.text}>{'我的'}</Text>
-      <TouchableOpacity onPress={onPressCustomerService}>
-        <Text>{'客服'}</Text>
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Text style={styles.text}>{'我的'}</Text>
+      </View>
+      <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }} onPress={onPressCustomerService}>
+        <Text style={styles.text}>{'客服'}</Text>
       </TouchableOpacity>
     </View>
   );
