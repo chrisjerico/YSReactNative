@@ -111,8 +111,8 @@ const ZLHomePage = ({ navigation }) => {
             <ScrollView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
                 {/* <Marquee/> */}
                 <UserStatusBar />
-                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg }}>
-                    <Icon name="volume-up" type="materialIcon" color="white" size={24} />
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg, paddingLeft: 5 }}>
+                    <Icon name="ios-volume-high" type="ionicon" color="white" size={24} />
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
                         width={width - 60}
                         height={34}
@@ -128,11 +128,11 @@ const ZLHomePage = ({ navigation }) => {
 
                 <AcctountDetail />
                 <Banner onlineNum={onlineNum} bannerData={banner} />
-                <View style={{ flex: 1, height: 233 / 375 * width, flexDirection: 'row', }}>
+                <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "38")}>
                         <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agqjt.png" }} style={{
                             flex: 0.6,
-                            backgroundColor: 'white', marginRight: 5,
+                            backgroundColor: 'white', marginRight: 8,
                             borderRadius: 10, paddingLeft: 5, paddingTop: 10,
                             justifyContent: 'space-between'
                         }} >
@@ -143,7 +143,7 @@ const ZLHomePage = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'column', flex: 0.4, justifyContent: 'space-between', borderRadius: 10, }}>
                         <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "39")}>
-                            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 5, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
+                            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 8, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
                                 <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG国际厅</Text>
                             </FastImage>
                         </TouchableWithoutFeedback>
@@ -154,8 +154,8 @@ const ZLHomePage = ({ navigation }) => {
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', height: 136, marginTop: 7 }}>
-                    <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 5, padding: 5 }}>
+                <View style={{ flexDirection: 'row', height: 136, marginTop: 10 }}>
+                    <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 8, padding: 5 }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <View>
                                 <Text style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2, marginBottom: 5 }}>电子游戏</Text>
@@ -384,7 +384,19 @@ const TurntableListItem = () => {
                         }
                     ])
                 } else {
-                    PushHelper.pushWheel(turntableList)
+                    if (Platform.OS != 'ios') return;
+                    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+                    OCHelper.call(({ vc }) => ({
+                        vc: {
+                            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                            args2: [turntableListModel]
+                        },
+                        ret: {
+                            selectors: 'SGBrowserView.showMoveView:yDistance:',
+                            args1: [vc, 100],
+                        },
+                    }));
                 }
             }}>
                 <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
@@ -410,7 +422,7 @@ const ZLHeader = () => {
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
-            flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center'
+            flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
         }}>
             <FastImage resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
@@ -419,7 +431,7 @@ const ZLHeader = () => {
                         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
-                        <Text style={{ color: "#8c9ea7" }}>消息</Text>
+                        <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
                     </TouchableOpacity> : null
                 }
 
@@ -427,7 +439,7 @@ const ZLHeader = () => {
                     PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                 }} style={{ flexDirection: 'column', marginRight: 20 }}>
                     <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png" }} />
-                    <Text style={{ color: "#8c9ea7" }}>客服</Text>
+                    <Text style={{ color: "#8c9ea7", marginTop: 3 }}>客服</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -480,15 +492,15 @@ const UserStatusBar = () => {
                         <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
                     </FastImage>
                     <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between', height: 47 }}>
-                        <Text style={{ color: 'white', fontSize: 17 }}>{usr}</Text>
-                        <Text style={{ color: 'white', fontSize: 17 }}>距离下一级还差{(parseFloat(nextLevelInt) - parseFloat(curLevelInt)).toFixed(2)}分   </Text>
+                        <Text style={{ color: 'white', fontSize: 16 }}>{usr}</Text>
+                        <Text style={{ color: 'white', fontSize: 14, fontWeight: "400" }}>距离下一级还差{(parseFloat(nextLevelInt) - parseFloat(curLevelInt)).toFixed(2)}分   </Text>
                     </View>
                     <TouchableOpacity style={{
                         position: 'absolute',
                         bottom: 0,
-                        right: 20
+                        right: 10
                     }}>
-                        <Icon name="chevron-right" type="materialIcon" color="#8c9ba7" size={24} />
+                        <Icon name="chevron-right" type="materialIcon" color="#8c9ba7" size={27} />
                     </TouchableOpacity>
                 </TouchableOpacity>}
 
@@ -568,7 +580,7 @@ const AcctountDetail = () => {
     }
     if (uid != "") {
         return (
-            <LinearGradient colors={colorEnum.gradientColor}
+            <LinearGradient start={{ x: 0.5, y: 0.7 }} colors={colorEnum.gradientColor}
                 style={{ height: 110, marginBottom: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, marginTop: 10, }}>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: 'space-between', paddingHorizontal: 10, }}>
                     <Text style={{ fontSize: 15, color: 'white', }}>我的账户</Text>

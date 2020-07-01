@@ -1,5 +1,5 @@
 import React, { ReactElement, Children, useState, useEffect } from 'react'
-import { View, ScrollView, Alert, ImageBackground, Image } from 'react-native'
+import { View, ScrollView, Alert, ImageBackground, Image, Platform } from 'react-native'
 import RedBagItem from './RedBagItem'
 import useGetHomeInfo from '../hooks/useGetHomeInfo'
 import FastImage, { FastImageSource } from 'react-native-fast-image'
@@ -13,6 +13,9 @@ import { navigate } from '../navigation/RootNavigation'
 import { PageName } from '../navigation/Navigation'
 import PushHelper from '../define/PushHelper'
 import { ImageSource } from 'react-native-vector-icons/Icon'
+import { OCHelper } from '../define/OCHelper/OCHelper'
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
+import AppDefine from '../define/AppDefine'
 const HomeBase = ({ header, children, backgroundSource, loginPage }: { header?: ReactElement, children: any, backgroundSource: FastImageSource | ImageSource, loginPage: PageName }) => {
   const { redBag } = useGetHomeInfo(['activity_redBagDetail'])
   const { width, height } = useDimensions().screen
@@ -82,7 +85,19 @@ const TurntableListItem = () => {
             }
           ])
         } else {
-          PushHelper.pushWheel(turntableList)
+          if (Platform.OS != 'ios') return;
+          const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+          OCHelper.call(({ vc }) => ({
+            vc: {
+              selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+              args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+              args2: [turntableListModel]
+            },
+            ret: {
+              selectors: 'SGBrowserView.showMoveView:yDistance:',
+              args1: [vc, 100],
+            },
+          }));
         }
       }}>
         <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
