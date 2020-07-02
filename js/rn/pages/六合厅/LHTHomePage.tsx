@@ -17,7 +17,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import StringUtils from '../../public/tools/StringUtils'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -35,7 +34,6 @@ import {
   defaultBottomTools,
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
-
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
@@ -100,7 +98,8 @@ const LHTHomePage = ({ navigation }) => {
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   // const headlines = notice?.data?.popup ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
@@ -123,15 +122,10 @@ const LHTHomePage = ({ navigation }) => {
   const leftGames = categoryList?.data ?? []
   const rightGames =
     icons?.map((tab) => {
-      const { list } = tab
+      const { list, name } = tab
       const games = list?.filter((ele) => ele.levelType == '1')
-      return games
+      return { games, name }
     }) ?? []
-  const subTabs =
-    icons?.map((tab, index) => ({
-      key: index,
-      title: StringUtils.getInstance().deleteHtml(tab.name),
-    })) ?? []
 
   // render
   return (
@@ -217,7 +211,7 @@ const LHTHomePage = ({ navigation }) => {
                   }}
                   renderLottery={(item, index) => {
                     const { number, color, sx, showMore } = item
-                    console.log("-----showMore-----", showMore)
+                    console.log('-----showMore-----', showMore)
                     return (
                       <LotteryBall
                         key={index}
@@ -244,7 +238,6 @@ const LHTHomePage = ({ navigation }) => {
                   activeTabColor={'#ff8610'}
                   unActiveTabColor={'#bbbbbb'}
                   containerStyle={styles.subComponent}
-                  subTabs={subTabs}
                   leftGames={leftGames}
                   rightGames={rightGames}
                   renderLeftGame={(item, index) => {
@@ -337,7 +330,13 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            <DowloadApp onPressDowload={() => { PushHelper.openWebView('https://fhapp168h.com/ad/index.php?app_id=12?islogin=false') }} />
+            <DowloadApp
+              onPressDowload={() => {
+                PushHelper.openWebView(
+                  'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+                )
+              }}
+            />
             <ActivityComponent
               show={uid && redBagLogo && !isTest}
               logo={redBagLogo}
