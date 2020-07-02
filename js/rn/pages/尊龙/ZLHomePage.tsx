@@ -64,7 +64,6 @@ const ZLHomePage = ({ navigation }) => {
         })
         if (Platform.OS != 'ios') return;
         OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-        // OCHelper.call("[[UGPlatformNoticeView alloc] initWithFrame:CGRectMake(20, 120, UGScreenW - 40, UGScerrnH - APP.StatusBarHeight - APP.BottomSafeHeight - 160)];")
     }
     const init = async () => {
         try {
@@ -102,8 +101,6 @@ const ZLHomePage = ({ navigation }) => {
         } else {
             push(PageName.ZLLoginPage)
         }
-
-
     }
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
