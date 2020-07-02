@@ -32,6 +32,8 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import useRandomString from "../../../public/hooks/useRandomString"
 import Header from "./Header"
 import HomeBase from "../../../public/components/HomeBase"
+import Account from "./Account"
+import QuickStart from "./QuickStart"
 
 
 const KSHomePage = ({ navigation }) => {
@@ -40,7 +42,7 @@ const KSHomePage = ({ navigation }) => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid = "" } = userStore
   const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
+  const { notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   const state = useNavigationState(state => state);
@@ -114,10 +116,9 @@ const KSHomePage = ({ navigation }) => {
           textList={noticeFormat} />
       </View>
       <Header />
-      <UserStatusBar />
-
+      <Account />
+      <QuickStart />
       <AcctountDetail />
-      <Banner onlineNum={onlineNum} bannerData={banner} />
       <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
         <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "38")}>
           <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agqjt.png" }} style={{

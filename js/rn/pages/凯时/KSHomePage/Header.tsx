@@ -9,7 +9,7 @@ const Header = () => {
   const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { mobile_logo = "" } = sysStore
   return (
-    <View style={{ width: width - 20, marginHorizontal: 10, flexDirection: 'row', alignItems: 'center', backgroundColor: "#1d2128", paddingVertical: 5 }}>
+    <View style={{ width: width - 10, marginHorizontal: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: "#1d2128", paddingVertical: 5 }}>
       <FastImage resizeMode={'contain'} style={{ width: 44, height: 44 }} source={{ uri: mobile_logo }} />
       <View style={{ height: '80%', width: 1, backgroundColor: "#444" }}></View>
       <View style={{ marginLeft: 20, justifyContent: 'space-around' }}>
