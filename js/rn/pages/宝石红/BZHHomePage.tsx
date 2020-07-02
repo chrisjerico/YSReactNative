@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
@@ -27,12 +27,14 @@ import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
+import APIRouter from '../../public/network/APIRouter'
 
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, usr, balance, isTest }: UGUserModel = userStore
   const {
@@ -60,9 +62,15 @@ const BZHHomePage = ({ navigation }) => {
     })
     return unsubscribe
   }, [])
+  useEffect(() => {
+    if (uid) {
+      APIRouter.activity_turntableList().then((value) => {
+        setRoulette(value?.data?.data)
+      })
+    }
+  }, [uid])
 
   // data handle
-  const roulette = turntableList?.data
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
@@ -101,7 +109,7 @@ const BZHHomePage = ({ navigation }) => {
             <Header
               isTest={isTest}
               uid={uid}
-              name={usr}
+              name={isTest ? '遊客' : usr}
               money={balance}
               onPressSignIn={() => push(PageName.BZHSignInPage)}
               onPressSignUp={() => push(PageName.BZHRegisterPage)}
@@ -199,28 +207,22 @@ const BZHHomePage = ({ navigation }) => {
             </ScrollView>
           </>
         )}
-      {
-        // 紅包活動
-        <ActivityComponent
-          show={uid && redBagLogo}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        /* {
-        // 輪盤活動
-        (uid && roulette) ? (
-          <TouchableImage
-            pic={redBagLogo}
-            onPress={() => {
-              PushHelper.pushWheel(turntableList)
-            }}
-            containerStyle={styles.redEnvelope}
-          />
-        ) : null
-      } */
-      }
+      <ActivityComponent
+        show={uid && redBagLogo && !isTest}
+        logo={redBagLogo}
+        onPress={() => {
+          PushHelper.pushRedBag(redBag)
+        }}
+      />
+      <ActivityComponent
+        containerStyle={{ top: 100 }}
+        enableFastImage={false}
+        show={uid && roulette && !isTest}
+        logo={'dzp_btn'}
+        onPress={() => {
+          PushHelper.pushWheel(roulette)
+        }}
+      />
     </SafeAreaView>
   )
 }

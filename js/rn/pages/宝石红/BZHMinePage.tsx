@@ -31,7 +31,7 @@ const BZHMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance, usr }: UGUserModel = userStore
+  const { avatar, balance, usr, isTest, unreadMsg }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   const { homeGames } = useGetHomeInfo(['game_homeGames'])
 
@@ -67,7 +67,7 @@ const BZHMinePage = ({ navigation }) => {
           containerStyle={{ paddingBottom: scale(30) }}
           avatar={avatar}
           money={balance}
-          name={usr}
+          name={isTest ? '遊客' : usr}
           features={navs}
           renderFeature={(item, index) => {
             const { icon, name } = item
@@ -91,6 +91,8 @@ const BZHMinePage = ({ navigation }) => {
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
+              unreadMsg={unreadMsg}
+              showUnreadMsg={code == 9}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
