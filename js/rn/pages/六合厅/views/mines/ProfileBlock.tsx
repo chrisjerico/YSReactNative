@@ -55,7 +55,7 @@ const ProfileBlock = ({
             onPress={() => PushHelper.pushUserCenterType(12)}
             source={{ uri: avatar }}
           />
-          <View style={{ paddingLeft: scale(30) }}>
+          <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -68,6 +68,7 @@ const ProfileBlock = ({
                   fontWeight: '600',
                   fontSize: scale(20),
                   paddingRight: scale(5),
+                  marginBottom: scale(5)
                 }}
               >
                 {name}
@@ -77,8 +78,8 @@ const ProfileBlock = ({
             <View
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
             >
-              <Text>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b', marginRight: scale(10) }}>
+              <Text style={{ fontSize: scale(25) }}>{'余额 : '}</Text>
+              <Text style={{ color: '#ff861b', fontSize: scale(25) }}>
                 {balance}
               </Text>
               <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />

@@ -28,7 +28,7 @@ const LHTMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, usr, curLevelGrade, balance, unreadMsg }: UGUserModel = userStore
+  const { avatar, usr, curLevelGrade, balance, unreadMsg, isTest }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -42,7 +42,6 @@ const LHTMinePage = ({ navigation }) => {
     navigation.navigate('LHTHomePage')
   }
 
-  console.log("----------unreadMsg----------", unreadMsg)
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
@@ -58,7 +57,7 @@ const LHTMinePage = ({ navigation }) => {
       >
         <ProfileBlock
           profileButtons={defaultProfileButtons}
-          name={usr}
+          name={isTest ? '遊客' : usr}
           avatar={avatar}
           level={curLevelGrade}
           balance={balance}

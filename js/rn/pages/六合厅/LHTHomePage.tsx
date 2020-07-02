@@ -4,10 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
-  ImageBackground,
-  Image,
-  TouchableWithoutFeedback
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../components/ActivityComponent'
@@ -18,6 +15,7 @@ import useLoginOut from '../../public/hooks/useLoginOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import StringUtils from '../../public/tools/StringUtils'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -30,13 +28,14 @@ import NoticeBlock from '../../views/NoticeBlock'
 import ProgressCircle from '../../views/ProgressCircle'
 import RankBlock from '../../views/RankBlock'
 import TouchableImage from '../../views/TouchableImage'
+import DowloadApp from './components/DowloadApp'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
   defaultBottomTools,
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
-  defaultHeadLineLogo,
+
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
@@ -45,11 +44,8 @@ import {
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
-import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import LotteryBall from './views/LotteryBall'
-import FastImage from 'react-native-fast-image'
-import APIRouter from '../../public/network/APIRouter'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -103,15 +99,14 @@ const LHTHomePage = ({ navigation }) => {
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const headlines = notice?.data?.popup ?? []
-  const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+  // const headlines = notice?.data?.popup ?? []
+  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
-  const numbers = lotteryNumber?.numbers?.split(',') ?? []
-  const numColors = lotteryNumber?.numColor?.split(',') ?? []
-  const numSxs = lotteryNumber?.numSx?.split(',') ?? []
-  const lotteryDate = lotteryNumber?.issue
+  const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
+  const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
+  const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
+  const lotteryDate = lotteryNumber?.data?.issue
   const lotterys = numbers?.map((number, index) => ({
     number,
     color: numColors[index],
@@ -221,14 +216,15 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                   renderLottery={(item, index) => {
-                    const { number, color, sx } = item
+                    const { number, color, sx, showMore } = item
+                    console.log("-----showMore-----", showMore)
                     return (
                       <LotteryBall
                         key={index}
                         score={number}
                         color={color}
                         text={sx}
-                        showMore={index == 6}
+                        showMore={showMore}
                         onPress={() =>
                           PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
                         }
@@ -236,14 +232,14 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <HeadlineBlock
+                {/* <HeadlineBlock
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
                   onPressHeadline={({ value }) =>
                     PushHelper.pushNoticePopUp(value)
                   }
-                />
+                /> */}
                 <TabComponent
                   activeTabColor={'#ff8610'}
                   unActiveTabColor={'#bbbbbb'}
@@ -341,6 +337,7 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
+            <DowloadApp onPressDowload={() => { PushHelper.openWebView('https://fhapp168h.com/ad/index.php?app_id=12?islogin=false') }} />
             <ActivityComponent
               show={uid && redBagLogo && !isTest}
               logo={redBagLogo}
@@ -352,7 +349,7 @@ const LHTHomePage = ({ navigation }) => {
               containerStyle={{ top: 100 }}
               enableFastImage={false}
               show={uid && roulette && !isTest}
-              logo={"dzp_btn"}
+              logo={'dzp_btn'}
               onPress={() => {
                 PushHelper.pushWheel(roulette)
               }}
