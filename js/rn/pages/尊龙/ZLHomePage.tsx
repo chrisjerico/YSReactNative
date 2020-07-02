@@ -30,6 +30,15 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
+/**
+ * 
+ * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
+    vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
+        [NavController1 pushViewControllerWithNextIssueModel:nextModel];
+    };
+    UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:true completion:nil];
+ */
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()

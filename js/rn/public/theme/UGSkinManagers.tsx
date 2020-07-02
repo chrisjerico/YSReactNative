@@ -16,7 +16,7 @@ import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
 import { B_DEBUG } from '../tools/UgLog';
 import { ZLThemeColor } from './colors/ZLThemeColor';
 import { LCThemeColor } from "./colors/LCThemeColor";
-
+import { KSThemeColor } from "./colors/KSThemeColor";
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
@@ -28,6 +28,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...GDBThemeColor,
     ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
+    ...KSThemeColor // 凯时
   };
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -52,6 +53,7 @@ export default class UGSkinManagers extends UGThemeColor {
       16: `尊龙`,
       18: `金星黑`,
       19: `乐橙`,
+      22: `凯时`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
@@ -63,7 +65,7 @@ export default class UGSkinManagers extends UGThemeColor {
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
     theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
     theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
-
+    debugger
     let skin = new UGSkinManagers();
     Object.assign(skin, Skin1);
     Object.assign(skin, theme);

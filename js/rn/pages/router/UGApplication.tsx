@@ -38,7 +38,7 @@ import GDRegisterPage from '../金星黑/GDRegisterPage';
 import JDPromotionListPage from '../经典/JDPromotionListPage';
 import PromotionListPage from '../common/PromotionListPage';
 import GDBMinePage from '../金星黑/GDBMinePage';
-
+import KSHomePage from '../凯时/KSHomePage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -83,6 +83,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
+        <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
       </Router.TabNavigator>
     );
   }
