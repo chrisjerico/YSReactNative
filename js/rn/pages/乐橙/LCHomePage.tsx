@@ -36,6 +36,7 @@ import {TurntableListModel} from "../../public/network/Model/TurntableListModel"
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall";
 import AppDefine from "../../public/define/AppDefine";
 import PushHelper from "../../public/define/PushHelper";
+import Modal from 'react-native-modal';
 
 const LCHomePage = () => {
     const {banner, notice, rankList, redBag} = useGetHomeInfo()
@@ -100,8 +101,8 @@ const LCHomePage = () => {
                 </View>
                 <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
                 <WinningListView data={rankList ? rankList.data.list : []}/>
-                <RedBagItem redBag={redBag} />
-                <TurntableListItem />
+                <RedBagItem redBag={redBag}/>
+                <TurntableListItem/>
             </SafeAreaView>
         </ScrollView>
     )
@@ -161,8 +162,8 @@ const PromotionLists = ({dataSource, filter, promotionData}: { dataSource: Promo
 }
 
 const TurntableListItem = () => {
-    const { width, height } = useDimensions().screen
-    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const {width, height} = useDimensions().screen
+    const {isTest = false, uid = ""} = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const [turntableListVisiable, setTurntableListVisiable] = useState(false)
     const [turntableList, setTurntableList] = useState<TurntableListModel>()
     useEffect(() => {
@@ -172,7 +173,7 @@ const TurntableListItem = () => {
     }, [turntableList])
     const getTurntableList = async () => {
         try {
-            const { data, status } = await APIRouter.activity_turntableList()
+            const {data, status} = await APIRouter.activity_turntableList()
             setTurntableList(data.data)
         } catch (error) {
 
@@ -188,7 +189,10 @@ const TurntableListItem = () => {
             <TouchableWithoutFeedback onPress={() => {
                 if (uid == "") {
                     Alert.alert("温馨提示", "您还未登录", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "取消", onPress: () => {
+                            }, style: "cancel"
+                        },
                         {
                             text: "马上登录", onPress: () => {
                                 navigate(PageName.ZLLoginPage, {})
@@ -197,15 +201,18 @@ const TurntableListItem = () => {
                     ])
                 } else if (isTest) {
                     Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
+                        {
+                            text: "取消", onPress: () => {
+                            }, style: "cancel"
+                        },
                         {
                             text: "马上登录", onPress: () => PushHelper.pushLogin()
                         }
                     ])
                 } else {
                     if (Platform.OS != 'ios') return;
-                    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-                    OCHelper.call(({ vc }) => ({
+                    const turntableListModel = Object.assign({clsName: 'DZPModel'}, turntableList?.[0]);
+                    OCHelper.call(({vc}) => ({
                         vc: {
                             selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
                             args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
@@ -218,11 +225,13 @@ const TurntableListItem = () => {
                     }));
                 }
             }}>
-                <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
+                <ImageBackground style={{width: 95, height: 95, position: 'absolute', top: height / 2, right: 20}}
+                                 source={{uri: "dzp_btn"}}>
                     <TouchableWithoutFeedback onPress={() => {
                         setTurntableListVisiable(false)
                     }}>
-                        <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: "dialog_close" }} />
+                        <Image style={{width: 20, height: 20, right: 0, top: 0, position: 'absolute'}}
+                               source={{uri: "dialog_close"}}/>
                     </TouchableWithoutFeedback>
                 </ImageBackground>
             </TouchableWithoutFeedback>)
