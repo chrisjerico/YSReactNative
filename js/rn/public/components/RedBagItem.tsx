@@ -9,7 +9,7 @@ import { PageName } from "../navigation/Navigation"
 import PushHelper from "../define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
-const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage: PageName }) => {
+const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
   const { width } = useDimensions().screen
   const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const [redBagVisiable, setRedBagVisiable] = useState(false)
@@ -27,7 +27,7 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
             { text: "取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
-                navigate(loginPage, {})
+                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
               },
             }
           ])
@@ -36,7 +36,7 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
             { text: "取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
-                navigate(loginPage, {})
+                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
               },
             }
           ])
