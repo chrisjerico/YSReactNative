@@ -13,6 +13,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -27,8 +28,6 @@ import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
-import APIRouter from '../../public/network/APIRouter'
-
 
 const BZHHomePage = ({ navigation }) => {
   // yellowBox
@@ -45,7 +44,6 @@ const BZHHomePage = ({ navigation }) => {
     onlineNum,
     rankList,
     redBag,
-    turntableList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -74,29 +72,7 @@ const BZHHomePage = ({ navigation }) => {
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const navs = homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort).slice(0, 4) ?? []
-  const games = homeGames?.data?.icons ?? []
-  const lotterys =
-    games
-      ?.filter((ele) => ele?.name == '彩票')[0]
-      ?.list?.filter((ele) => ele.levelType == '1') ?? []
-  const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
-  const videos = games?.filter((ele) => ele?.name == '真人')[0]?.list ?? []
-
-  const totalGames = [
-    {
-      title: '彩票',
-      games: lotterys,
-    },
-    {
-      title: '棋牌',
-      games: chess,
-    },
-    {
-      title: '视讯',
-      games: videos,
-    },
-  ]
-
+  const games = homeGames?.data?.icons?.slice(0, 3) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
 
@@ -154,31 +130,39 @@ const BZHHomePage = ({ navigation }) => {
                       circleColor={'transparent'}
                       logo={icon ? icon : logo}
                       title={name}
+                      titleStyle={{ fontSize: scale(25) }}
                       onPress={() => PushHelper.pushHomeGame(item)}
                     />
                   )
                 }}
               />
               <View style={styles.contentContainer}>
-                {totalGames.map((item) => {
-                  const { title, games } = item
+                {games.map((item) => {
+                  const { name, list } = item
                   return (
                     <GameBlock
                       onPressTotal={() =>
                         PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                       }
-                      title={title}
+                      title={name}
                       containerStyle={styles.subComponent}
-                      games={games}
+                      games={list}
                       renderGame={(item, index) => {
-                        const { title, logo, name, icon } = item
+                        const { title, logo, icon, name, subtitle } = item
                         return (
                           <GameButton
                             key={index}
-                            containerStyle={{ width: '33.3%' }}
+                            containerStyle={[styles.gameContainer, {
+                              marginRight: index == 0 ? '5%' : 0,
+                              marginLeft: index == 2 ? '5%' : 0,
+                            }]}
                             circleColor={'transparent'}
-                            logo={logo || icon}
+                            logo={icon || logo}
                             title={title || name}
+                            subTitle={subtitle}
+                            showSubTitle
+                            titleStyle={{ fontSize: scale(27) }}
+                            subTitleStyle={{ fontSize: scale(23), paddingTop: scale(10) }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
                             }}
@@ -242,6 +226,11 @@ const styles = StyleSheet.create({
   subComponent: {
     marginTop: scale(10),
     backgroundColor: '#ffffff',
+  },
+  gameContainer: {
+    width: '30%',
+    height: null,
+    marginBottom: scale(10)
   }
 })
 

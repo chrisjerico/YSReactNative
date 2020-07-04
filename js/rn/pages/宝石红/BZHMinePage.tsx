@@ -43,6 +43,7 @@ const BZHMinePage = ({ navigation }) => {
   }, [])
 
   const features = UGUserCenterItem?.slice(0, 4) ?? []
+  const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
   console.log("---------UGUserCenterItem-------", UGUserCenterItem)
   return (
@@ -83,7 +84,7 @@ const BZHMinePage = ({ navigation }) => {
             )
           }}
         />
-        {UGUserCenterItem?.map((item, index) => {
+        {featureList?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList

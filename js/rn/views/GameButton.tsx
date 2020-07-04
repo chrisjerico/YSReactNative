@@ -6,7 +6,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../helpers/function'
@@ -22,7 +22,7 @@ interface GameButtonProps {
   show?: boolean;
   imageStyle?: ImageStyle;
   circleColor?: string;
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
   subTitleStyle?: TextStyle;
   titleContainerStyle?: ViewStyle;
@@ -74,7 +74,7 @@ const GameButton = (props: GameButtonProps) => {
           />
         )}
       <View style={[styles.titleContainer, titleContainerStyle]}>
-        <Text style={titleStyle} numberOfLines={1}>
+        <Text style={[styles.titleStyle, titleStyle]} numberOfLines={1}>
           {title}
         </Text>
         {showSubTitle && (
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     height: '75%',
     borderRadius: scale(85),
   },
+  titleStyle: {}
 })
 
 export default GameButton

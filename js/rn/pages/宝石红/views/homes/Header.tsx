@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    width: scale(100),
+    width: scale(80),
     backgroundColor: '#CE0000',
     borderColor: '#ffffff',
     borderWidth: scale(1),
+    paddingVertical: scale(5),
   },
   buttonTitle: {
-    fontSize: scale(15),
+    fontSize: scale(25),
   },
   logo: {
     width: '100%',

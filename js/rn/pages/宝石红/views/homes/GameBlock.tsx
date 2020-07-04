@@ -10,6 +10,7 @@ import { scale } from '../../../../helpers/function'
 
 interface GameBlockProps {
   containerStyle?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
   games: any[];
   renderGame: (item: any, index: number) => any;
   title: string;
@@ -21,6 +22,7 @@ const GameBlock = ({
   games,
   renderGame,
   containerStyle,
+  contentContainerStyle,
   onPressTotal,
 }: GameBlockProps) => {
   return (
@@ -48,7 +50,7 @@ const GameBlock = ({
           <Text style={[styles.title, { color: '#EA0000' }]}>{'全部 >'}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[styles.buttonContainer, containerStyle]}>
+      <View style={[styles.gamesContainer, contentContainerStyle]}>
         {games.map(renderGame)}
       </View>
     </View>
@@ -59,6 +61,8 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: scale(20),
     backgroundColor: '#ffffff',
+    paddingBottom: scale(20),
+    paddingTop: scale(10)
   },
   titleConatiner: {
     width: '100%',
@@ -69,14 +73,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  buttonContainer: {
+  gamesContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
   title: {
-    fontSize: 20,
+    fontSize: scale(25),
   },
 })
 

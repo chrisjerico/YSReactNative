@@ -143,5 +143,8 @@ class APIRouter {
   static user_centerList = async () => {
     return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
   };
+  static game_lotteryGames = () => {
+    return httpClient.get<HomeGamesModel>('c=game&a=lotteryGames')
+  }
 }
 export default APIRouter
