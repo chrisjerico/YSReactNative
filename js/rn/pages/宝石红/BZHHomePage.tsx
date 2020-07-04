@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
@@ -7,11 +7,14 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import ActivityComponent from '../../components/ActivityComponent'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -30,6 +33,7 @@ const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, usr, balance, isTest }: UGUserModel = userStore
   const {
@@ -47,6 +51,7 @@ const BZHHomePage = ({ navigation }) => {
     'system_onlineCount',
     'system_rankingList',
     'activity_redBagDetail',
+    'activity_turntableList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -55,39 +60,21 @@ const BZHHomePage = ({ navigation }) => {
     })
     return unsubscribe
   }, [])
+  useEffect(() => {
+    if (uid) {
+      APIRouter.activity_turntableList().then((value) => {
+        setRoulette(value?.data?.data)
+      })
+    }
+  }, [uid])
 
-  console.log('----userStore-----', userStore)
   // data handle
-  const redBags = redBag?.data
-  const rankLists = rankList?.data?.list ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
-  const games = homeGames?.data?.icons ?? []
-  const lotterys =
-    games
-      ?.filter((ele) => ele?.name == '彩票')[0]
-      ?.list?.filter((ele) => ele.levelType == '1') ?? []
-  const chess = games?.filter((ele) => ele?.name == '棋牌')[0]?.list ?? []
-  const videos = games?.filter((ele) => ele?.name == '真人')[0]?.list ?? []
-
-  const totalGames = [
-    {
-      title: '彩票',
-      games: lotterys,
-    },
-    {
-      title: '棋牌',
-      games: chess,
-    },
-    {
-      title: '视讯',
-      games: videos,
-    },
-  ]
-
-  console.log('----videos----', videos)
+  const navs = homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort).slice(0, 4) ?? []
+  const games = homeGames?.data?.icons?.slice(0, 3) ?? []
+  const rankLists = rankList?.data?.list ?? []
+  const redBagLogo = redBag?.data?.redBagLogo
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -98,7 +85,7 @@ const BZHHomePage = ({ navigation }) => {
             <Header
               isTest={isTest}
               uid={uid}
-              name={usr}
+              name={isTest ? '遊客' : usr}
               money={balance}
               onPressSignIn={() => push(PageName.BZHSignInPage)}
               onPressSignUp={() => push(PageName.BZHRegisterPage)}
@@ -128,6 +115,7 @@ const BZHHomePage = ({ navigation }) => {
                 }}
               />
               <NoticeBlock
+                containerStyle={{ borderRadius: 0 }}
                 notices={notices}
                 onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
               />
@@ -142,31 +130,42 @@ const BZHHomePage = ({ navigation }) => {
                       circleColor={'transparent'}
                       logo={icon ? icon : logo}
                       title={name}
+                      titleStyle={{ fontSize: scale(25) }}
                       onPress={() => PushHelper.pushHomeGame(item)}
                     />
                   )
                 }}
               />
               <View style={styles.contentContainer}>
-                {totalGames.map((item) => {
-                  const { title, games } = item
+                {games.map((item) => {
+                  const { name, list } = item
                   return (
                     <GameBlock
                       onPressTotal={() =>
-                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                        PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                       }
-                      title={title}
+                      title={name}
                       containerStyle={styles.subComponent}
-                      games={games}
+                      games={list}
                       renderGame={(item, index) => {
-                        const { title, logo, name, icon } = item
+                        const { title, logo, icon, name, subtitle } = item
                         return (
                           <GameButton
                             key={index}
-                            containerStyle={{ width: '33.3%' }}
+                            containerStyle={[styles.gameContainer, {
+                              marginRight: index == 0 ? '5%' : 0,
+                              marginLeft: index == 2 ? '5%' : 0,
+                            }]}
                             circleColor={'transparent'}
-                            logo={logo || icon}
+                            logo={icon || logo}
                             title={title || name}
+                            subTitle={subtitle}
+                            showSubTitle
+                            titleStyle={{ fontSize: scale(27) }}
+                            subTitleStyle={{ fontSize: scale(23), paddingTop: scale(10) }}
+                            onPress={() => {
+                              PushHelper.pushHomeGame(item)
+                            }}
                           />
                         )
                       }}
@@ -192,26 +191,29 @@ const BZHHomePage = ({ navigation }) => {
             </ScrollView>
           </>
         )}
-      {
-        // 紅包活動
-        uid ? (
-          <TouchableImage
-            pic={redBags?.redBagLogo}
-            onPress={() => {
-              // console.log("--------redBag-------", redBag)
-              PushHelper.pushRedBag(redBag)
-            }}
-            containerStyle={styles.redEnvelope}
-          />
-        ) : null
-      }
+      <ActivityComponent
+        show={uid && redBagLogo && !isTest}
+        logo={redBagLogo}
+        onPress={() => {
+          PushHelper.pushRedBag(redBag)
+        }}
+      />
+      <ActivityComponent
+        containerStyle={{ top: 100 }}
+        enableFastImage={false}
+        show={uid && roulette && !isTest}
+        logo={'dzp_btn'}
+        onPress={() => {
+          PushHelper.pushWheel(roulette)
+        }}
+      />
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {
@@ -225,13 +227,11 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
     backgroundColor: '#ffffff',
   },
-  redEnvelope: {
-    width: scale(200),
-    aspectRatio: 1,
-    position: 'absolute',
-    top: scale(500),
-    right: 0,
-  },
+  gameContainer: {
+    width: '30%',
+    height: null,
+    marginBottom: scale(10)
+  }
 })
 
 export default BZHHomePage

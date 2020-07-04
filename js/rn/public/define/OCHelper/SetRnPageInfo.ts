@@ -56,7 +56,6 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  // Skin1.skitType = '新年红' // 測試開發
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
   // 威尼斯页面
   if (Skin1.skitType.indexOf('威尼斯') != -1) {
@@ -80,8 +79,8 @@ export function setRnPageInfo() {
     ])
   }
 
-  // 宝石红页面
-  if (Skin1.skitType.indexOf('新年红') != -1) {
+  //宝石红页面
+  if (Skin1.skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -98,6 +97,14 @@ export function setRnPageInfo() {
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.BZHSignInPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
       },
     ])
   }

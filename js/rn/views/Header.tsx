@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { scale } from '../helpers/function';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 interface HeaderProps {
   onPressBack: () => any;
@@ -14,11 +15,11 @@ const Header = ({ onPressBack, onPressCustomerService, title, color }: HeaderPro
       backgroundColor: color
     }]}>
       <TouchableOpacity onPress={onPressBack}>
-        <Text style={styles.text}>{'<'}</Text>
+        <Icon name={'left'} color={'#ffffff'} size={scale(25)} />
       </TouchableOpacity>
       <Text style={styles.text}>{title}</Text>
       <TouchableOpacity onPress={onPressCustomerService}>
-        <Text>{'客服'}</Text>
+        <Text style={styles.text}>{'客服'}</Text>
       </TouchableOpacity>
     </View>
   );
