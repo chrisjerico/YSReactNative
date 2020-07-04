@@ -27,20 +27,20 @@ const ProfileBlock = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
-      <View style={styles.profileContainer}>
-        <View style={styles.profileRowContainer}>
+      <View style={styles.whiteBlock}>
+        <View style={styles.profileContainer}>
           <Avatar source={{ uri: avatar }} size={'large'} rounded />
           <View style={styles.moneyContainer}>
             <Text style={styles.text}>{name}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={[styles.text, { paddingTop: scale(10), paddingRight: scale(10) }]}>
-                {'余额 ' + money}
+                {'余额 ￥' + money}
               </Text>
               <ReLoadComponent onPress={onPressReload} color={'#000000'} containerStyle={{ marginTop: 5 }} />
             </View>
           </View>
         </View>
-        <View style={styles.profileRowContainer}>
+        <View style={styles.featureContainer}>
           {features.map(renderFeature)}
         </View>
       </View>
@@ -51,26 +51,33 @@ const ProfileBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 500 / 250,
+    aspectRatio: 500 / 270,
     backgroundColor: '#d9d9d9',
   },
-  profileContainer: {
+  whiteBlock: {
     height: '100%',
     backgroundColor: '#ffffff',
     borderRadius: scale(10),
     position: 'absolute',
     marginHorizontal: scale(15),
     top: scale(10),
-    paddingHorizontal: scale(25),
+    paddingTop: scale(15),
+    paddingBottom: scale(30),
     width: '95%',
     alignSelf: 'center',
   },
-  profileRowContainer: {
+  profileContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(50),
+  },
+  featureContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: scale(25),
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: scale(30),
   },
   redBlock: {
     width: '100%',
@@ -81,14 +88,13 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(25),
-    fontWeight: '600',
+    fontWeight: '400',
   },
   moneyContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
-    height: '100%',
     paddingLeft: scale(30),
-    paddingBottom: scale(20),
+    justifyContent: 'flex-end',
+    paddingBottom: scale(10)
   },
 })
 

@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native'
 import { scale } from '../helpers/function'
 import TouchableImage from '../views/TouchableImage'
-import Icon from 'react-native-vector-icons/EvilIcons'
-
+import { Icon } from 'react-native-elements'
 interface ActivityComponentProps {
   logo: string;
   onPress: () => any;
@@ -25,26 +24,22 @@ const ActivityComponent = ({
     return (
       <View style={[styles.container, containerStyle]}>
         <TouchableImage
+          containerStyle={{ marginRight: scale(50) }}
           enableFastImage={enableFastImage}
           pic={logo}
           onPress={onPress}
           resizeMode={'contain'}
         />
-        <Icon
-          name={'close-o'}
-          size={scale(40)}
-          style={{
-            alignSelf: 'flex-end',
-            marginRight: scale(20),
-            position: 'absolute',
-            top: scale(-10)
-          }}
-          onPress={() => {
-            setHide(true)
-          }}
-          color={'red'}
-
-        />
+        <TouchableOpacity style={styles.iconContainer} onPress={() => {
+          setHide(true)
+        }}>
+          <Icon
+            type={'evilicon'}
+            name={'close'}
+            size={scale(35)}
+            color={'#ffffff'}
+          />
+        </TouchableOpacity>
       </View>
     )
   } else {
@@ -54,11 +49,22 @@ const ActivityComponent = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: scale(200),
+    width: scale(150),
     aspectRatio: 1,
     position: 'absolute',
     top: scale(500),
     right: 0,
   },
+  iconContainer: {
+    backgroundColor: 'red',
+    width: scale(35),
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(35),
+    position: 'absolute',
+    top: scale(20),
+    right: scale(10)
+  }
 })
 export default ActivityComponent

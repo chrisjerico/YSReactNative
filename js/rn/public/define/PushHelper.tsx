@@ -244,6 +244,10 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChatViewController.new' }, true]);
         break;
       }
+      case UGUserCenterType.游戏大厅: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true]);
+        break;
+      }
     }
   }
 }

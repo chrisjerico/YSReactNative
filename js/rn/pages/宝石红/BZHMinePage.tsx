@@ -33,7 +33,6 @@ const BZHMinePage = ({ navigation }) => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { avatar, balance, usr, isTest, unreadMsg }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
-  const { homeGames } = useGetHomeInfo(['game_homeGames'])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -43,11 +42,9 @@ const BZHMinePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
-  const navs =
-    homeGames?.data?.navs
-      ?.sort((a, b) => parseInt(b.sort) - parseInt(a.sort))
-      .slice(0, 4) ?? []
+  const features = UGUserCenterItem?.slice(0, 4) ?? []
 
+  console.log("---------UGUserCenterItem-------", UGUserCenterItem)
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header title={'会员中心'} />
@@ -68,17 +65,20 @@ const BZHMinePage = ({ navigation }) => {
           avatar={avatar}
           money={balance}
           name={isTest ? '遊客' : usr}
-          features={navs}
+          features={features}
           renderFeature={(item, index) => {
-            const { icon, name } = item
+            const { logo, name, code } = item
             return (
               <GameButton
                 key={index}
-                containerStyle={{ width: '25%', height: '100%' }}
-                circleColor={'transparent'}
-                logo={icon}
+                containerStyle={{ flex: 1, height: '100%', justifyContent: 'flex-end' }}
+                imageStyle={{ width: scale(50), height: scale(50) }}
+                titleStyle={{ fontSize: scale(30) }}
+                titleContainerStyle={{ aspectRatio: null, marginTop: scale(10) }}
+                enableCircle={false}
+                logo={logo}
                 title={name}
-                onPress={() => PushHelper.pushHomeGame(item)}
+                onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
           }}

@@ -26,7 +26,7 @@ const NoticeBlock = ({
 }: NoticeBlockProps) => {
   const cleanContents = notices.map((notice, index) => ({
     label: index.toString(),
-    value: notice?.title,
+    value: notice?.title
   }))
 
   return (
@@ -57,7 +57,7 @@ const NoticeBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 42,
+    aspectRatio: 540 / 50,
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
     flexDirection: 'row',
@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: '#999999',
-    fontSize: scale(20)
+    fontSize: scale(25)
   },
   logoTextStyle: {
-    fontSize: scale(20)
+    fontSize: scale(25)
   }
 })
 

@@ -71,12 +71,9 @@ const BZHHomePage = ({ navigation }) => {
   }, [uid])
 
   // data handle
-  const rankLists = rankList?.data?.list ?? []
-  const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort).slice(0, 4) ?? []
+  const navs = homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort).slice(0, 4) ?? []
   const games = homeGames?.data?.icons ?? []
   const lotterys =
     games
@@ -99,6 +96,9 @@ const BZHHomePage = ({ navigation }) => {
       games: videos,
     },
   ]
+
+  const rankLists = rankList?.data?.list ?? []
+  const redBagLogo = redBag?.data?.redBagLogo
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -165,7 +165,7 @@ const BZHHomePage = ({ navigation }) => {
                   return (
                     <GameBlock
                       onPressTotal={() =>
-                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
+                        PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                       }
                       title={title}
                       containerStyle={styles.subComponent}

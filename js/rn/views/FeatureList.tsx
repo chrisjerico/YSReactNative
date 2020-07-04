@@ -37,14 +37,14 @@ const FeatureList = ({
           style={styles.image}
           source={{ uri: logo }}
         />
-        <Text style={[styles.text, { paddingLeft: scale(25) }]}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
       </View>
       {showUnreadMsg ? (
         <View
           style={{
-            width: scale(25),
+            width: scale(30),
             aspectRatio: 1,
-            borderRadius: scale(25),
+            borderRadius: scale(30),
             backgroundColor: 'red',
             justifyContent: 'center',
             alignItems: 'center'
@@ -74,12 +74,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: scale(25),
+    width: scale(35),
     aspectRatio: 1,
   },
   text: {
     fontSize: scale(25),
   },
+  title: {
+    fontSize: scale(30),
+    fontWeight: '400',
+    paddingLeft: scale(25)
+  }
 })
 
 export default FeatureList

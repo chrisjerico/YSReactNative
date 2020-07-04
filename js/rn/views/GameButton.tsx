@@ -1,7 +1,15 @@
-import React from 'react';
-import { ImageStyle, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { scale } from '../helpers/function';
+import React from 'react'
+import {
+  ImageStyle,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { scale } from '../helpers/function'
 
 interface GameButtonProps {
   logo?: string;
@@ -17,29 +25,67 @@ interface GameButtonProps {
   containerStyle?: ViewStyle;
   titleStyle?: TextStyle;
   subTitleStyle?: TextStyle;
-  resizeMode?: 'cover' | 'contain'
+  titleContainerStyle?: ViewStyle;
+  resizeMode?: 'cover' | 'contain';
+  enableCircle?: boolean;
 }
 
 const GameButton = (props: GameButtonProps) => {
-  const { circleColor, imageStyle, logo = 'logo', title = '?', subTitle = '?', showSubTitle = false, onPress = () => { }, containerStyle, titleStyle, subTitleStyle, resizeMode = 'cover' } = props;
+  const {
+    circleColor,
+    imageStyle,
+    logo = 'logo',
+    title = '?',
+    subTitle = '?',
+    showSubTitle = false,
+    onPress = () => { },
+    containerStyle,
+    titleStyle,
+    subTitleStyle,
+    titleContainerStyle,
+    resizeMode = 'cover',
+    enableCircle = true,
+  } = props
   return (
-    <TouchableOpacity style={[styles.conatiner, containerStyle]} onPress={onPress}>
-      <View
-        style={[
-          styles.circleContainer,
-          {
-            backgroundColor: circleColor ? circleColor : '#ACD6FF',
-          },
-        ]}>
-        <FastImage style={[styles.image, imageStyle]} source={{ uri: logo }} resizeMode={resizeMode} />
-      </View>
-      <View style={styles.titleContainer}>
-        <Text style={titleStyle}>{title.length > 0 ? title : '?'}</Text>
-        {showSubTitle && <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>{subTitle}</Text>}
+    <TouchableOpacity
+      style={[styles.conatiner, containerStyle]}
+      onPress={onPress}
+    >
+      {enableCircle ? (
+        <View
+          style={[
+            styles.circleContainer,
+            {
+              backgroundColor: circleColor ? circleColor : '#ACD6FF',
+            },
+          ]}
+        >
+          <FastImage
+            style={[styles.image, imageStyle]}
+            source={{ uri: logo }}
+            resizeMode={resizeMode}
+          />
+        </View>
+      ) : (
+          <FastImage
+            style={[styles.image, imageStyle]}
+            source={{ uri: logo }}
+            resizeMode={resizeMode}
+          />
+        )}
+      <View style={[styles.titleContainer, titleContainerStyle]}>
+        <Text style={titleStyle} numberOfLines={1}>
+          {title}
+        </Text>
+        {showSubTitle && (
+          <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
+            {subTitle}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   conatiner: {
@@ -69,6 +115,6 @@ const styles = StyleSheet.create({
     height: '75%',
     borderRadius: scale(85),
   },
-});
+})
 
-export default GameButton;
+export default GameButton
