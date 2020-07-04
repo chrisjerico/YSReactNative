@@ -26,9 +26,10 @@ import useAutoRenewUserInfo from "../../public/hooks/useAutoReNewUserInfo"
 import { RedBagDetailActivityModel } from "../../public/network/Model/RedBagDetailActivityModel"
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel"
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
-import { List } from "../../public/network/Model/HomeGamesModel"
+import { List, HomeGamesModel } from "../../public/network/Model/HomeGamesModel"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import HomeBase from "../../public/components/HomeBase"
+import HotRecycleList from "./RecycleList/HotRecycleList"
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
@@ -63,7 +64,7 @@ const GDBHomePage = ({ navigation }) => {
           textStyle={{ color: "white", fontSize: 12 }}
           width={width - 50}
           height={34}
-          speed={60}
+          speed={35}
           onTextClick={() => {
             PushHelper.pushNoticePopUp(originalNoticeString)
           }}
@@ -76,13 +77,14 @@ const GDBHomePage = ({ navigation }) => {
         onChangeTab={({ i }) => {
           setTbxIndex(i)
         }}
-        style={{ marginTop: 20, borderBottomWidth: 0, height: (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
+        style={{ borderBottomWidth: 0, height: homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏' ? 820 : (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
         initialPage={0}
-        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49 / 2, marginLeft: (49 / 2) - 3.5 }}
+        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49, marginLeft: (49 / 2) - 3.5 }}
+        tabBarTextStyle={{ fontSize: 13.2 }}
         renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0, }} inactiveTextColor={'white'} activeTextColor={"#cfa461"} />}
       >
         {homeGames?.data?.icons?.map((res) => {
-          return <TabContainer isHot={homeGames.data.icons[tbxIndex].name == "热门"} tabLabel={res.name} data={res.list} />
+          return <TabContainer homeGames={homeGames} isHot={homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏'} tabLabel={res.name} data={res.list} />
         })}
       </ScrollableTabView> : null}
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
@@ -96,7 +98,7 @@ const GDBHomePage = ({ navigation }) => {
           <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
         </TouchableWithoutFeedback>
       </View>
-      <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item }) => {
+      <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item }) => {
         return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
@@ -141,30 +143,19 @@ const GDBHomePage = ({ navigation }) => {
     </HomeBase>
   )
 }
-const TabContainer = ({ data, isHot }: { data: List[], isHot: boolean }) => {
+
+const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean, homeGames: HomeGamesModel }) => {
   const { width } = useDimensions().screen
   if (isHot) {
-    return <View style={{ backgroundColor: "#282828", width: width - 20, borderRadius: 8, paddingVertical: 20, paddingHorizontal: 10 }}>
-      <Text style={{ color: '#d3d3d3', fontSize: 25 }}> 热门游戏</Text>
-      <View style={{ flexDirection: 'row', marginVertical: 20 }}>
-        <Text style={{ color: "#676767", fontSize: 14 }}>北京赛车     </Text>
-        <Text style={{ color: "#676767", fontSize: 14 }}>开元棋牌     </Text>
-        <Text style={{ color: "#676767", fontSize: 14 }}>AG视讯</Text>
-      </View>
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ color: "#676767", fontSize: 14 }}>开心捕鱼     </Text>
-        <Text style={{ color: "#676767", fontSize: 14 }}>JDB电子     </Text>
-        <Text style={{ color: "#676767", fontSize: 14 }}>IBC沙巴</Text>
-      </View>
-      <FastImage style={{ width: 129, height: 106, position: 'absolute', right: 10, bottom: 20 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/01.png" }} />
-    </View>
+    return (
+      <HotRecycleList homeGames={homeGames} />
+    )
   } else {
     return (
 
       <FlatList style={{ flex: 1 }} scrollEnabled={false} numColumns={2} renderItem={({ item }) => {
         return (
           <TouchableOpacity onPress={() => {
-
             PushHelper.pushHomeGame(item)
           }} style={{ width: (width - 20) / 2 }}>
             <FastImage source={{ uri: item.logo }} style={{ width: (width - 20) / 2, aspectRatio: 1.44, marginBottom: 20 }} />
@@ -294,15 +285,15 @@ const AcctountDetail = () => {
         </View>
         <View style={{ backgroundColor: "#242424", flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-start', paddingLeft: 20, paddingVertical: 10 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 18, color: "#676767" }}>账户余额</Text>
+            <Text style={{ fontSize: 12.54, color: "#676767" }}>账户余额</Text>
             <TouchableOpacity onPress={() => {
               setHideAmount(hideAmount => !hideAmount)
             }}>
-              <Icon name={!hideAmount ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+              <Icon name={hideAmount ? 'md-eye-off' : 'md-eye'} type="ionicon" size={15} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
             </TouchableOpacity>
           </View>
 
-          <Text style={{ fontSize: 40, color: "#cfa461" }}>{hideAmount ? getHideAmount() : userStore.balance}</Text>
+          <Text style={{ fontSize: 27.5, color: "#cfa461" }}>{hideAmount ? getHideAmount() : userStore.balance}</Text>
         </View>
         <View style={{ height: 38, paddingLeft: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
           <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => {

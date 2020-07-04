@@ -42,22 +42,6 @@ export default class PushHelper {
     const redbagModel = Object.assign({}, { clsName: 'UGRedEnvelopeModel', rid: data?.id }, data); // ios 裡是抓rid
     OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
   }
-  static pushWheel(turntableList: TurntableListModel) {
-    if (Platform.OS != 'ios') return;
-    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-    OCHelper.call(({ vc }) => ({
-      vc: {
-        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-        args2: [turntableListModel]
-      },
-      ret: {
-        selectors: 'SGBrowserView.showMoveView:yDistance:',
-        args1: [vc, 100],
-      },
-    }));
-
-  }
   // 去彩票下注页
   static pushLottery() { }
 
