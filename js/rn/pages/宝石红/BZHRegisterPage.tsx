@@ -1,22 +1,34 @@
 import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { Button } from 'react-native-elements'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import { useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
+import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import {
+  navigate,
+  pop,
+  popToRoot
+} from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { UGStore } from '../../redux/store/UGStore'
+import { IGlobalState } from '../../redux/store/UGStore'
+import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
 
 const BZHRegisterPage = () => {
+  // hooks
+  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const { register } = useRegister()
+  // state
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
   const [password, setPassword] = useState(null)
@@ -27,6 +39,7 @@ const BZHRegisterPage = () => {
   const [hidePassword, setHidePassword] = useState(true)
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
   const [hideFundPassword, setHideFundPassword] = useState(true)
+  const [agent, setAgent] = useState(false)
 
   const valid =
     recommendGuy &&
@@ -35,6 +48,23 @@ const BZHRegisterPage = () => {
     confirmPassword &&
     realName &&
     fundPassword
+
+  const {
+    hide_reco, // 代理人 0不填，1选填，2必填
+    reg_name, // 真实姓名 0不填，1选填，2必填
+    reg_fundpwd, // 取款密码 0不填，1选填，2必填
+    reg_qq, // QQ 0不填，1选填，2必填
+    reg_wx, // 微信 0不填，1选填，2必填
+    reg_phone, // 手机 0不填，1选填，2必填
+    reg_email, // 邮箱 0不填，1选填，2必填
+    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+    pass_length_min, // 注册密码最小长度
+    pass_length_max, // 注册密码最大长度,
+    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
+    smsVerify, // 手机短信验证
+  } = SystemStore
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
@@ -74,7 +104,7 @@ const BZHRegisterPage = () => {
                 color: hidePassword ? '#d9d9d9' : '#84C1FF',
                 onPress: () => {
                   setHidePassword(!hidePassword)
-                }
+                },
               }}
             />
             <Form
@@ -89,7 +119,7 @@ const BZHRegisterPage = () => {
                 color: hideConfirmPassword ? '#d9d9d9' : '#84C1FF',
                 onPress: () => {
                   setHideConfirmPassword(!hideConfirmPassword)
-                }
+                },
               }}
             />
             <Form
@@ -111,11 +141,31 @@ const BZHRegisterPage = () => {
                 color: hideFundPassword ? '#d9d9d9' : '#84C1FF',
                 onPress: () => {
                   setHideFundPassword(!hideFundPassword)
-                }
+                },
               }}
             />
           </View>
-          <View style={{ flex: 10 }}></View>
+          {agentRegbutton == '1' ? (
+            <View
+              style={{
+                flex: 50,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <AgentRedButton
+                toggle={agent}
+                onPressLeftButton={() => {
+                  setAgent(false)
+                }}
+                onPressRightButton={() => {
+                  setAgent(true)
+                }}
+              />
+            </View>
+          ) : (
+              <View style={{ flex: 10 }} />
+            )}
           <View style={{ flex: 50, justifyContent: 'space-between' }}>
             <Button
               title={'注册'}
@@ -130,59 +180,17 @@ const BZHRegisterPage = () => {
                   : { backgroundColor: '#D0D0D0' }
               }
               titleStyle={{ color: valid ? '#EA0000' : '#ffffff' }}
-              onPress={async () => {
-                try {
-                  if (valid) {
-                    OCHelper.call('SVProgressHUD.showWithStatus:', [
-                      '正在注册...',
-                    ])
-                    const params: any = {
-                      inviter: recommendGuy,
-                      usr: account,
-                      pwd: password.md5(),
-                      fundPwd: confirmPassword.md5(),
-                      fullName: realName,
-                      regType: 'user',
-                    }
-                    const { data } = await APIRouter.user_reg(params)
-                    if (data?.data == null) {
-                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                        data?.msg ?? '注册失败',
-                      ])
-                    } else {
-                      if (data?.data?.autoLogin == false) {
-                        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? "注册成功"]);
-                        popToRoot();
-                      } else {
-                        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-                          '注册成功',
-                        ])
-                        const user = await OCHelper.call('UGUserModel.currentUser');
-                        if (user) {
-                          // 退出舊帳號
-                          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-                          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-                          await OCHelper.call('UGUserModel.setCurrentUser:');
-                          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                          UGStore.dispatch({ type: ActionType.Clear_User })
-                        }
-                        const { data: loginData }: any = await APIRouter.user_login(data.data?.usr, password)
-                        await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [false, 'isRememberPsd']);
-                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
-                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
-                        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                        await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-                        updateUserInfo()
-                        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
-                        popToRoot();
-                      }
-                    }
+              onPress={() => {
+                if (valid) {
+                  const params: any = {
+                    inviter: recommendGuy,
+                    usr: account,
+                    pwd: password.md5(),
+                    fundPwd: confirmPassword.md5(),
+                    fullName: realName,
+                    regType: agent ? 'agent' : 'user',
                   }
-                } catch (error) {
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                    error?.message ?? '注册失败',
-                  ])
+                  register(params)
                 }
               }}
             />

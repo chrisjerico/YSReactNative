@@ -1,6 +1,6 @@
+import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from '../../theme/UGSkinManagers';
-import { PageName } from '../../navigation/Navigation';
 import { OCHelper } from './OCHelper';
 
 export class RnPageModel {

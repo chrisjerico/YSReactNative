@@ -53,6 +53,7 @@ const BZHHomePage = ({ navigation }) => {
     'activity_redBagDetail',
     'activity_turntableList',
   ])
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       updateUserInfo()
@@ -79,6 +80,8 @@ const BZHHomePage = ({ navigation }) => {
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
 
+  // console.log("-------systemConfig-------", systemConfig?.data)
+  // rankingListSwitch
   return (
     <SafeAreaView style={styles.safeArea}>
       {loading ? (

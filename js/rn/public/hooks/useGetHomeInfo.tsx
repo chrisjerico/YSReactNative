@@ -7,13 +7,13 @@ import { BannerModel } from '../network/Model/BannerModel'
 import { CouponListModel } from '../network/Model/CouponListModel'
 import { FloatADModel } from '../network/Model/FloatADModel'
 import { HomeGamesModel } from '../network/Model/HomeGamesModel'
+import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
+import { LotteryGameModel } from '../network/Model/LotteryGameModel'
 import { LotteryNumberModel } from '../network/Model/LotteryNumberModel'
+import { NoticeModel } from '../network/Model/NoticeModel'
 import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
-import { NoticeModel } from '../network/Model/NoticeModel'
-import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
-import { LotteryGameModel } from '../network/Model/LotteryGameModel'
 
 type APIListType =
   | 'game_homeGames'
@@ -28,6 +28,7 @@ type APIListType =
   | 'lhcdoc_categoryList'
   | 'activity_turntableList'
   | 'game_lotteryGames'
+  | 'system_config'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
@@ -42,6 +43,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [categoryList, setCategoryList] = useState<LhcdocCategoryListModel>()
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
+  const [systemConfig, setSystemConfig] = useState<any>()
   useEffect(() => {
     init()
     console.log('render')
@@ -100,6 +102,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                     case 'game_lotteryGames':
                       setLotteryGames(res[key]?.data)
                       break
+                    case 'system_config':
+                      setSystemConfig(res[key]?.data)
+                      break
                     default:
                       break
                   }
@@ -155,7 +160,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     lotteryNumber,
     categoryList,
     turntableList,
-    lotteryGames
+    lotteryGames,
+    systemConfig
   }
 }
 export default useGetHomeInfo
