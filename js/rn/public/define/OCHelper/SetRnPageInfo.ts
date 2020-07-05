@@ -58,7 +58,6 @@ export function setRnPageInfo() {
 
   // Skin1.skitType = '新年红' // 測試開發
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
-  debugger
   if (Skin1.skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {

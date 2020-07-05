@@ -14,6 +14,7 @@ import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
 import { TurntableListModel } from './Model/TurntableListModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -139,9 +140,8 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber');
   };
-
-  static user_centerList = async () => {
-    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
-  };
+  static game_lotteryGames = () => {
+    return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames');
+  }
 }
 export default APIRouter

@@ -65,7 +65,6 @@ export default class UGSkinManagers extends UGThemeColor {
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
     theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
     theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
-    debugger
     let skin = new UGSkinManagers();
     Object.assign(skin, Skin1);
     Object.assign(skin, theme);

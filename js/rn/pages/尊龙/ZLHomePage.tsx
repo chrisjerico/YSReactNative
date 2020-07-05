@@ -54,6 +54,11 @@ const ZLHomePage = ({ navigation }) => {
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
     useEffect(() => {
+        setTimeout(() => {
+            navigate(PageName.LottoBetting, {})
+        }, 1000);
+    }, [])
+    useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
             string += res.content
