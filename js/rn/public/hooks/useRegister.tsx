@@ -45,15 +45,15 @@ const useRegister = () => {
             ])
             await OCHelper.call(
               'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-              [false, 'isRememberPsd']
+              [true, 'isRememberPsd']
             )
             await OCHelper.call(
               'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-              ['', 'userName']
+              [params?.usr, 'userName']
             )
             await OCHelper.call(
               'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-              ['', 'userPsw']
+              [params?.pwd, 'userPsw']
             )
             await OCHelper.call(
               'NSNotificationCenter.defaultCenter.postNotificationName:object:',

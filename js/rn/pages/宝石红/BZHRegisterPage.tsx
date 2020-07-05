@@ -10,6 +10,7 @@ import {
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import { useSelector } from 'react-redux'
+import SlidingVerification from '../../../rn/public/components/SlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
@@ -26,6 +27,30 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
+
+interface SlidingVerification {
+  nc_csessionid: string;
+  nc_token: string;
+  nc_sig: string;
+}
+
+const validPassword = (password: string, pass_limit: number) => {
+  if (password) {
+    if (pass_limit) {
+      if ([pass_limit == 1]) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
+      } else if ([pass_limit == 2]) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
+      } else {
+        return false
+      }
+    } else {
+      return true
+    }
+  } else {
+    return false
+  }
+}
 
 const BZHRegisterPage = () => {
   // hooks
@@ -44,6 +69,9 @@ const BZHRegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
+  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
+  const [email, setEmail] = useState(null)
+  const [sms, setSms] = useState(null)
 
   const [hidePassword, setHidePassword] = useState(true)
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
@@ -59,19 +87,16 @@ const BZHRegisterPage = () => {
     reg_phone, // 手机 0隱藏，1选填，2必填
     reg_email, // 邮箱 0隱藏，1选填，2必填
     reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    smsVerify, // 手机短信验证,
     agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
     pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
     pass_length_min, // 注册密码最小长度
     pass_length_max, // 注册密码最大长度,
+    smsVerify, // 手机短信验证,
   } = SystemStore
 
   useEffect(() => {
     if (reg_vcode == 1) {
-      APIRouter.secure_imgCaptcha().then((value) => {
-        console.log('---------抓取imgCaptcha-------')
-        setCorrectImageCode(value?.data)
-      })
+      getImgCaptcha()
     } else {
       setCorrectImageCode('')
     }
@@ -81,14 +106,26 @@ const BZHRegisterPage = () => {
   }, [reg_vcode])
 
   const valid =
-    recommendGuy &&
-    account &&
-    password &&
-    confirmPassword &&
-    realName &&
-    fundPassword
+    account?.length >= 6 &&
+    validPassword(password, pass_limit) &&
+    confirmPassword == password &&
+    (recommendGuy || !hide_reco || hide_reco == 1) &&
+    (realName || !reg_name || reg_name == 1) &&
+    (fundPassword?.length > 4 || !reg_fundpwd || reg_fundpwd == 1) &&
+    (qq || !reg_qq || reg_qq == 1) &&
+    (weChat || !reg_wx || reg_wx == 1) &&
+    (email || !reg_email || reg_email == 1) &&
+    (phoneNumber || !reg_phone || reg_phone == 1) &&
+    (slidingVerification || !reg_vcode || reg_vcode == 1 || reg_vcode == 3)
 
-  console.log('------reg_vcode-------', reg_vcode)
+  const getImgCaptcha = () => {
+    APIRouter.secure_imgCaptcha().then((value) => {
+      console.log('---------抓取imgCaptcha-------')
+      setCorrectImageCode(value?.data)
+    })
+  }
+
+  console.log('------smsVerify-------', smsVerify)
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -126,7 +163,7 @@ const BZHRegisterPage = () => {
           <Form
             iconName={'user-circle'}
             onChangeText={(value: any) => setPassword(value)}
-            label={'*请使用至少6位字符'}
+            label={'*请使用至少' + pass_length_min + '位字符'}
             placeholder={'密码'}
             secureTextEntry={hidePassword}
             showRightIcon
@@ -137,10 +174,12 @@ const BZHRegisterPage = () => {
               },
             }}
             show={2}
+            maxLength={pass_length_max}
           />
           <Form
             iconName={'user-circle'}
             onChangeText={(value: any) => setConfirmPassword(value)}
+            label={password == confirmPassword ? null : '密码不一致'}
             placeholder={'确认密码'}
             secureTextEntry={hideConfirmPassword}
             showRightIcon
@@ -151,7 +190,6 @@ const BZHRegisterPage = () => {
               },
             }}
             show={2}
-            enableLabel={false}
           />
           <Form
             iconName={'user-circle'}
@@ -199,7 +237,7 @@ const BZHRegisterPage = () => {
           <Form
             iconType={'Fontisto'}
             iconName={'email'}
-            onChangeText={(value: any) => setPhoneNumber(value)}
+            onChangeText={(value: any) => setEmail(value)}
             label={'*请输入合法的电子邮箱'}
             placeholder={'电子邮箱'}
             show={reg_email}
@@ -209,30 +247,37 @@ const BZHRegisterPage = () => {
             onChangeText={(value: any) => setImageCode(value)}
             label={'*請輸入验证码'}
             placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
-            show={reg_vcode}
+            show={reg_vcode == 1 || reg_vcode == 3}
             showRightIcon={true}
-            renderRightIcon={() => {
-              if (reg_vcode == 1 || reg_vcode == 3) {
-                return (
-                  <FastImage
-                    source={{ uri: correctImageCode }}
-                    resizeMode={'contain'}
-                    style={{ width: scale(150), height: '100%' }}
-                  />
-                )
-              } else {
-                return null
-              }
-            }}
+            renderRightIcon={() => (
+              <TouchableOpacity onPress={getImgCaptcha}>
+                <FastImage
+                  source={{ uri: correctImageCode }}
+                  resizeMode={'contain'}
+                  style={{ width: scale(150), height: '100%' }}
+                />
+              </TouchableOpacity>
+            )}
             onFocus={() => {
               if (correctImageCode == '') {
-                APIRouter.secure_imgCaptcha().then((value) => {
-                  console.log('---------抓取imgCaptcha-------')
-                  setCorrectImageCode(value?.data)
-                })
+                getImgCaptcha()
               }
             }}
+            maxLength={4}
           />
+          <Form
+            iconType={'Fontisto'}
+            iconName={'email'}
+            onChangeText={(value: any) => setSms(value)}
+            placeholder={'短信验证码'}
+            show={smsVerify}
+          />
+          {reg_vcode == 2 ? (
+            <SlidingVerification
+              onChange={setSlidingVerification}
+              containerStyle={{ marginBottom: scale(20) }}
+            />
+          ) : null}
           {agentRegbutton !== '1' ? (
             <AgentRedButton
               toggle={agent}
@@ -253,12 +298,24 @@ const BZHRegisterPage = () => {
             onPress={() => {
               if (valid) {
                 const params: any = {
-                  inviter: recommendGuy,
-                  usr: account,
-                  pwd: password.md5(),
-                  fundPwd: confirmPassword.md5(),
-                  fullName: realName,
-                  regType: agent ? 'agent' : 'user',
+                  inviter: recommendGuy, // 推荐人ID
+                  usr: account, // 账号
+                  pwd: password?.md5(), // 密码
+                  fundPwd: fundPassword?.md5(), // 取款密码
+                  fullName: realName, // 真实姓名
+                  qq: qq, // QQ号
+                  wx: weChat, // 微信号
+                  phone: phoneNumber, // 手机号
+                  // smsCode: 'string', // 短信验证码
+                  imgCode: imageCode, // 字母验证码,
+                  "slideCode[nc_sid]": slidingVerification?.nc_csessionid,
+                  "slideCode[nc_token]": slidingVerification?.nc_token,
+                  "slideCode[nc_sig]": slidingVerification?.nc_sig,
+                  email: email, // 邮箱
+                  regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
+                  // device: string,
+                  // accessToken: string,
+                  // slideCode: any
                 }
                 register(params)
               }
@@ -306,9 +363,6 @@ const styles = StyleSheet.create({
     paddingVertical: scale(25),
     flexWrap: 'wrap',
   },
-  formContainer: {
-    flex: 440,
-  },
   bottomButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -319,6 +373,6 @@ const styles = StyleSheet.create({
     backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
-  }
+  },
 })
 export default BZHRegisterPage

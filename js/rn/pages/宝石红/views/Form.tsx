@@ -18,6 +18,7 @@ interface Form {
   iconType?: string;
   renderRightIcon?: () => any
   onFocus?: () => any
+  maxLength?: number
 }
 
 const Form = ({
@@ -34,7 +35,8 @@ const Form = ({
   enableLabel = true,
   iconType = 'font-awesome',
   renderRightIcon,
-  onFocus
+  onFocus,
+  maxLength
 }: Form) => {
   if (show) {
     return (
@@ -46,6 +48,7 @@ const Form = ({
             height: '50%',
             width: '100%',
           }}
+          maxLength={maxLength}
           placeholder={placeholder}
           containerStyle={{
             paddingLeft: 0,
