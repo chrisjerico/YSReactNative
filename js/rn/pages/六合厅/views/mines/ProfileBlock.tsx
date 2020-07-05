@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Avatar, Icon } from 'react-native-elements'
-import ReLoadComponent from '../../../../components/ReLoadComponent'
-import { scale } from '../../../../helpers/function'
+import LinearGradient from 'react-native-linear-gradient'
+import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import PushHelper from '../../../../public/define/PushHelper'
-import LinearGradient from 'react-native-linear-gradient';
+import { scale } from '../../../../public/tools/Scale'
 
 interface ProfileBlockProps {
   profileButtons: any[];
@@ -24,11 +24,22 @@ const Tag = ({ title, colors, onPress }) => (
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       colors={colors} // ['#9393FF', 'rgb(91, 91, 220)']
-      style={{ width: scale(125), borderRadius: scale(50), height: scale(33), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ color: '#ffffff', marginRight: scale(5) }}>
-        {title}
-      </Text>
-      <Icon type={'AntDesign'} name={'link'} size={scale(20)} color={'#ffffff'} />
+      style={{
+        width: scale(125),
+        borderRadius: scale(50),
+        height: scale(33),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Text style={{ color: '#ffffff', marginRight: scale(5) }}>{title}</Text>
+      <Icon
+        type={'AntDesign'}
+        name={'link'}
+        size={scale(20)}
+        color={'#ffffff'}
+      />
     </LinearGradient>
   </TouchableOpacity>
 )
@@ -44,7 +55,6 @@ const ProfileBlock = ({
   onPressTaskCenter,
   onPressReload,
 }: ProfileBlockProps) => {
-
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
@@ -68,7 +78,7 @@ const ProfileBlock = ({
                   fontWeight: '600',
                   fontSize: scale(20),
                   paddingRight: scale(5),
-                  marginBottom: scale(5)
+                  marginBottom: scale(5),
                 }}
               >
                 {name}
@@ -92,7 +102,7 @@ const ProfileBlock = ({
               flex: 1.5,
               justifyContent: 'flex-end',
               alignItems: 'flex-end',
-              marginBottom: scale(5)
+              marginBottom: scale(5),
             }}
           >
             <Tag

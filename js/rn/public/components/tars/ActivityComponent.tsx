@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native'
-import { scale } from '../helpers/function'
-import TouchableImage from '../views/TouchableImage'
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { scale } from '../../tools/Scale'
+import TouchableImage from '../../views/tars/TouchableImage'
+
 interface ActivityComponentProps {
   logo: string;
   onPress: () => any;
@@ -30,9 +31,12 @@ const ActivityComponent = ({
           onPress={onPress}
           resizeMode={'contain'}
         />
-        <TouchableOpacity style={styles.iconContainer} onPress={() => {
-          setHide(true)
-        }}>
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => {
+            setHide(true)
+          }}
+        >
           <Icon
             type={'evilicon'}
             name={'close'}
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(35),
     position: 'absolute',
     top: scale(20),
-    right: scale(10)
-  }
+    right: scale(10),
+  },
 })
 export default ActivityComponent

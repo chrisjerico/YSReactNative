@@ -10,6 +10,22 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
 export default class PushHelper {
+  // 輪盤
+  static async pushWheel(turntableList: TurntableListModel) {
+    if (Platform.OS != 'ios') return;
+    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+    OCHelper.call(({ vc }) => ({
+      vc: {
+        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+        args2: [turntableListModel]
+      },
+      ret: {
+        selectors: 'SGBrowserView.showMoveView:yDistance:',
+        args1: [vc, 100],
+      },
+    }));
+  }
   // 登出
   static async pushLogout() {
     await OCHelper.call('UGUserModel.setCurrentUser:', []);

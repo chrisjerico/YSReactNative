@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native'
 import useMemberItems from '../../public/hooks/useMemberItems'
-import GameButton from '../../views/GameButton'
+import GameButton from '../../public/views/tars/GameButton'
 import Header from './views/Header'
 import ButtonGroup from './views/mines/ButtonGroup'
 import ToolBlock from './views/mines/ToolBlock'

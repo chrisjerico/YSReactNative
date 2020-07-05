@@ -7,20 +7,19 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
-import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../public/tools/Scale'
+import FeatureList from '../../public/views/tars/FeatureList'
+import GameButton from '../../public/views/tars/GameButton'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
-import FeatureList from '../../views/FeatureList'
-import GameButton from '../../views/GameButton'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
 
@@ -45,7 +44,6 @@ const BZHMinePage = ({ navigation }) => {
   const features = UGUserCenterItem?.slice(0, 4) ?? []
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
-  console.log("---------UGUserCenterItem-------", UGUserCenterItem)
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header title={'会员中心'} />

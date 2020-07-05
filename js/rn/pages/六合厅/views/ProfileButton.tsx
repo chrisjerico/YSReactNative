@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../helpers/function'
+import { scale } from '../../../public/tools/Scale'
 
 interface ProfileButtonProps {
   title: string;

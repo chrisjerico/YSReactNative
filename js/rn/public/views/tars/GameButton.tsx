@@ -6,10 +6,10 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../helpers/function'
+import { scale } from '../../tools/Scale'
 
 interface GameButtonProps {
   logo?: string;
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     height: '75%',
     borderRadius: scale(85),
   },
-  titleStyle: {}
+  titleStyle: {},
 })
 
 export default GameButton

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { scale } from '../../../../helpers/function';
-import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
+import { scale } from '../../../../public/tools/Scale';
 
 interface HeaderProps {
   onPressBack: () => any;

@@ -7,24 +7,24 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import ActivityComponent from '../../components/ActivityComponent'
-import { scale } from '../../helpers/function'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../public/tools/Scale'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import NoticeBlock from '../../public/views/tars/NoticeBlock'
+import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import RankBlock from '../../public/views/tars/RankBlock'
+import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
-import BannerBlock from '../../views/BannerBlock'
-import GameButton from '../../views/GameButton'
-import NoticeBlock from '../../views/NoticeBlock'
-import ProgressCircle from '../../views/ProgressCircle'
-import RankBlock from '../../views/RankBlock'
-import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
@@ -71,7 +71,10 @@ const BZHHomePage = ({ navigation }) => {
   // data handle
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort).slice(0, 4) ?? []
+  const navs =
+    homeGames?.data?.navs
+      ?.sort((a: any, b: any) => a.sort - b.sort)
+      .slice(0, 4) ?? []
   const games = homeGames?.data?.icons?.slice(0, 3) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -152,17 +155,23 @@ const BZHHomePage = ({ navigation }) => {
                         return (
                           <GameButton
                             key={index}
-                            containerStyle={[styles.gameContainer, {
-                              marginRight: index == 0 ? '5%' : 0,
-                              marginLeft: index == 2 ? '5%' : 0,
-                            }]}
+                            containerStyle={[
+                              styles.gameContainer,
+                              {
+                                marginRight: index == 0 ? '5%' : 0,
+                                marginLeft: index == 2 ? '5%' : 0,
+                              },
+                            ]}
                             circleColor={'transparent'}
                             logo={icon || logo}
                             title={title || name}
                             subTitle={subtitle}
                             showSubTitle
                             titleStyle={{ fontSize: scale(27) }}
-                            subTitleStyle={{ fontSize: scale(23), paddingTop: scale(10) }}
+                            subTitleStyle={{
+                              fontSize: scale(23),
+                              paddingTop: scale(10),
+                            }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
                             }}
@@ -230,8 +239,8 @@ const styles = StyleSheet.create({
   gameContainer: {
     width: '30%',
     height: null,
-    marginBottom: scale(10)
-  }
+    marginBottom: scale(10),
+  },
 })
 
 export default BZHHomePage

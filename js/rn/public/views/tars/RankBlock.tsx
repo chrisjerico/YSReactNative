@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { scale } from '../helpers/function'
 import { Icon } from 'react-native-elements'
+import { scale } from '../../tools/Scale'
 
 interface RankBlockProps {
   containerStyle?: ViewStyle;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: scale(15),
-    paddingVertical: scale(10)
+    paddingVertical: scale(10),
   },
   rankContainer: {
     width: '100%',

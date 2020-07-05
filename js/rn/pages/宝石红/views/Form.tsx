@@ -1,7 +1,7 @@
 import React from 'react'
-import { Icon, Input } from 'react-native-elements'
-import { scale } from '../../../helpers/function'
 import { TextStyle } from 'react-native'
+import { Icon, Input } from 'react-native-elements'
+import { scale } from '../../../public/tools/Scale'
 
 interface Form {
   onChangeText?: any;

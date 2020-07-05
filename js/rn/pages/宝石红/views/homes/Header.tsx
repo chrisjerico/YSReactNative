@@ -2,8 +2,8 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../../helpers/function'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../../../public/tools/Scale'
 
 interface HeaderProps {
   name: string;

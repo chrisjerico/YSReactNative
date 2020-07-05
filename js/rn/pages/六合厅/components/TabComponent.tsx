@@ -5,12 +5,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Icons from 'react-native-vector-icons/FontAwesome5'
-import { scale } from '../../../helpers/function'
 import AppDefine from '../../../public/define/AppDefine'
+import { scale } from '../../../public/tools/Scale'
 import StringUtils from '../../../public/tools/StringUtils'
 
 interface TabComponentProps {

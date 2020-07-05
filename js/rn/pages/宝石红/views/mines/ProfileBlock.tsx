@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Avatar } from 'react-native-elements'
-import ReLoadComponent from '../../../../components/ReLoadComponent'
-import { scale } from '../../../../helpers/function'
+import { scale } from '../../../../public/tools/Scale'
+import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 
 interface ProfileBlockProps {
@@ -33,10 +33,19 @@ const ProfileBlock = ({
           <View style={styles.moneyContainer}>
             <Text style={styles.text}>{name}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={[styles.text, { paddingTop: scale(10), paddingRight: scale(10) }]}>
+              <Text
+                style={[
+                  styles.text,
+                  { paddingTop: scale(10), paddingRight: scale(10) },
+                ]}
+              >
                 {'余额 ￥' + money}
               </Text>
-              <ReLoadComponent onPress={onPressReload} color={'#000000'} containerStyle={{ marginTop: 5 }} />
+              <ReLoadComponent
+                onPress={onPressReload}
+                color={'#000000'}
+                containerStyle={{ marginTop: 5 }}
+              />
             </View>
           </View>
         </View>
@@ -94,7 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: scale(30),
     justifyContent: 'flex-end',
-    paddingBottom: scale(10)
+    paddingBottom: scale(10),
   },
 })
 

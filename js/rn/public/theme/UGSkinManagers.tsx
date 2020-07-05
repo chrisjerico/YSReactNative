@@ -1,23 +1,23 @@
-import { UGThemeColor } from './UGThemeColor';
-import { XBJThemeColor } from './colors/XBJThemeColor';
+import chroma from 'chroma-js';
+import { Platform } from 'react-native';
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
+import AppDefine from '../define/AppDefine';
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import FUtils from '../tools/FUtils';
+import { B_DEBUG } from '../tools/UgLog';
+import { BZHThemeColor } from "./colors/BZHThemeColor";
+import { GDBThemeColor } from './colors/GDBThemeColor';
 import { JDThemeColor } from './colors/JDThemeColor';
 import { JYThemeColor } from './colors/JYThemeColor';
-import { LHThemeColor } from './colors/LHThemeColor';
-import { XNHThemeColor } from './colors/XNHThemeColor';
-import { OtherThemeColor } from './colors/OtherThemeColor';
-import { GDBThemeColor } from './colors/GDBThemeColor';
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
-import chroma from 'chroma-js';
-import FUtils from '../tools/FUtils';
-import { Platform } from 'react-native';
-import AppDefine from '../define/AppDefine';
-import { OCHelper } from '../define/OCHelper/OCHelper';
-import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
-import { B_DEBUG } from '../tools/UgLog';
-import { ZLThemeColor } from './colors/ZLThemeColor';
 import { LCThemeColor } from "./colors/LCThemeColor";
-import { BZHThemeColor } from "./colors/BZHThemeColor";
+import { LHThemeColor } from './colors/LHThemeColor';
+import { OtherThemeColor } from './colors/OtherThemeColor';
 import { WNZThemeColor } from "./colors/WNZThemeColor";
+import { XBJThemeColor } from './colors/XBJThemeColor';
+import { XNHThemeColor } from './colors/XNHThemeColor';
+import { ZLThemeColor } from './colors/ZLThemeColor';
+import { UGThemeColor } from './UGThemeColor';
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
