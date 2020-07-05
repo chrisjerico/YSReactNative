@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     width: scale(150),
     aspectRatio: 5,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
-    borderRadius: scale(5)
+    borderRadius: scale(5),
+    alignSelf: 'center'
   },
   textContainer: {
     flex: 1,
