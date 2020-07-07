@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react'
 import { LottoContextProvider, LottoContext } from "./LottoContext";
 import Headers from './Header';
 import { useDimensions } from "@react-native-community/hooks";
+import LottoContent from "./LottoContent";
 const LottoBetting = () => {
   const [tab, setTab] = useState(0)
   const { width } = useDimensions().screen
@@ -20,6 +21,7 @@ const LottoBetting = () => {
             <Text style={{ fontSize: 16, fontWeight: "bold", color: "gray" }}>聊天室</Text>
           </View>
         </View>
+        <LottoContent />
         <LottoContext.Consumer>
           {value => {
             return (

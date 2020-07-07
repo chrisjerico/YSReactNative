@@ -15,6 +15,8 @@ import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
 import { TurntableListModel } from './Model/TurntableListModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
+import { PlayOddDataModel } from './Model/PlayOddDataModel'
+import { AxiosResponse } from 'axios'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -142,6 +144,12 @@ class APIRouter {
   };
   static game_lotteryGames = () => {
     return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames');
+  }
+  static game_playOdds = (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+    return httpClient.get("c=game&a=playOdds&id=" + id, {
+      //@ts-ignore
+      isEncrypt: false
+    })
   }
 }
 export default APIRouter
