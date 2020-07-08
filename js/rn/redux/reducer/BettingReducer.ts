@@ -1,5 +1,5 @@
 import { produce, } from 'immer';
-import { getShengXiaoValue, ResultProps, ShengXiaoValue, ShengXiaoTitle, getShengXiaoString } from '../../pages/common/LottoBetting/PlayVIew/config';
+import { getShengXiaoValue, ResultProps, ShengXiaoValue, ShengXiaoTitle, getShengXiaoString } from '../../pages/common/LottoBetting/PlayVIew/lottoSetting';
 import { Play, PlayOddDataModel, PlayOdd } from '../../public/network/Model/PlayOddDataModel';
 interface bettingResultProps {
   [key: string]: any

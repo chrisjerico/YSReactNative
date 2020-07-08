@@ -35,3 +35,15 @@ export const getShengXiaoString = (num: number): ShengXiaoType => {
   const absNumber = num - 2 > 0 ? num - 2 : num + 10
   return ShengXiaoValue[((absNumber % 12))]
 }
+export const getHKballColor = (BallName: string) => {
+  const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
+  const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
+  const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
+  if (redSet.includes(BallName)) {
+    return 'rgba(197, 52, 60,1)'
+  } else if (blueSet.includes(BallName)) {
+    return 'rgba(86, 170, 236,1)'
+  } else {
+    return 'rgba(96, 174, 108,1)'
+  }
+}

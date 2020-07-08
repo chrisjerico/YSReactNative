@@ -15,6 +15,7 @@ const LottoSelector = () => {
 
   const init = async () => {
     try {
+
       const { data, status } = await APIRouter.game_lotteryGames()
       setLottoData(data)
       const timeStampList = []

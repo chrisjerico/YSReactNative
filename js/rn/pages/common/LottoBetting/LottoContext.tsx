@@ -35,6 +35,7 @@ export const LottoContextProvider = ({ lottoIdProps, children }: { lottoIdProps?
       return
     try {
       const { data, status } = await APIRouter.game_playOdds(lottoData.id)
+      console.log(JSON.stringify(data))
       setCurrentOddsData(data)
     } catch (error) {
 

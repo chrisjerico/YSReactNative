@@ -1,14 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { View, Image, Text, TouchableWithoutFeedback, FlatList, ScrollView, TouchableOpacity } from 'react-native'
-import { ShengXiaoTitle, } from '../config'
-import { DataProvider, } from "recyclerlistview";
+import { ShengXiaoTitle, } from '../lottoSetting'
 import { useDimensions } from '@react-native-community/hooks';
-import { PlayGroup, Play } from '../../../../../public/network/Model/PlayOddDataModel';
 import { useDispatch, useSelector } from 'react-redux';
 import { BettingReducerActions } from '../../../../../redux/reducer/BettingReducer';
 import { UGStore, IGlobalState } from '../../../../../redux/store/UGStore';
-import TMItem from './TMItem';
-import LMItem from './LMItem';
+import HKBallsView from '../LHT/HKBallsView';
+import HKNormalItemView from '../LHT/HKNormalItemView';
+import HKSBItemView from '../LHT/HKSBItemView';
 const TMPlayView = () => {
   const { selectedShengXiao, shengXiaoValue } = useSelector((state: IGlobalState) => state.BettingReducer)
   const dispatch = useDispatch()
@@ -19,12 +18,12 @@ const TMPlayView = () => {
         <TouchableOpacity activeOpacity={1} onPress={() => {
           setLabel("特码A")
         }} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>特码A</Text>
+          <Text style={{ color: label == "特码A" ? "blue" : "black", fontWeight: label == "特码A" ? "bold" : "normal" }}>特码A</Text>
         </TouchableOpacity>
         <TouchableOpacity activeOpacity={1} onPress={() => {
           setLabel("特码B")
         }} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>特码B</Text>
+          <Text style={{ color: label == "特码B" ? "blue" : "black", fontWeight: label == "特码B" ? "bold" : "normal" }}>特码B</Text>
         </TouchableOpacity>
       </View>
       <FlatList style={{ height: 40 }} keyExtractor={(item, index) => item + index} horizontal={true} data={ShengXiaoTitle} renderItem={({ item }) => {
@@ -52,54 +51,14 @@ const GameGroup = ({ label = "特码A" }: { label?: "特码A" | "特码B" }) => 
       {currentPlayOdd?.playGroups?.filter((res) => res?.alias?.includes(label))?.map((res, index) => {
         switch (index) {
           case 0:
-            return (
-              <View key={res.alias + index} style={{ flex: 1 }}>
-                <Text style={{ textAlign: 'center', marginBottom: 10 }}>{res.alias}</Text>
-                <View style={{ flex: 1, flexWrap: "wrap", flexDirection: 'row', }}>
-                  {
-                    res.plays.map((data, index) => {
-                      if (index < 45) {
-                        return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 3, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                          <TMItem data={data} />
-                        </View>
-                      } else {
-                        return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 2, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                          <TMItem data={data} />
-                        </View>
-                      }
-                    })
-                  }
-                </View>
-              </View>
+            return (<HKBallsView data={res} />
             )
             break;
           case 1:
-            return <View key={res.alias + index} style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'center', marginBottom: 10, marginTop: 10 }}>{res.alias}</Text>
-              <View style={{ flex: 1, flexWrap: "wrap", flexDirection: 'row', }}>
-                {
-                  res.plays.map((data, index) => {
-                    return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 2, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                      <LMItem data={data} />
-                    </View>
-                  })
-                }
-              </View>
-            </View>
+            return <HKNormalItemView data={res} />
           case 2:
             return (
-              <View key={res.alias + index} style={{ flex: 1 }}>
-                <Text style={{ textAlign: 'center', marginBottom: 10, marginTop: 10 }}>{res.alias}</Text>
-                <View style={{ flex: 1, flexWrap: "wrap", flexDirection: 'row', }}>
-                  {
-                    res.plays.map((data, index) => {
-                      return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 3, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                        <LMItem data={data} />
-                      </View>
-                    })
-                  }
-                </View>
-              </View>
+              <HKSBItemView data={res} />
             )
           default:
             break;

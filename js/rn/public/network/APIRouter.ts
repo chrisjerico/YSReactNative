@@ -1,6 +1,6 @@
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { httpClient } from './httpClient'
+import { httpClient, CachePolicyEnum } from './httpClient'
 import { BalanceModel } from './Model/BalanceModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
@@ -142,8 +142,14 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber');
   };
-  static game_lotteryGames = () => {
-    return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames');
+  static game_lotteryGames = (): Promise<AxiosResponse<LottoGamesModel>> => {
+    //@ts-ignore
+    return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
+      //@ts-ignore
+      isEncrypt: false,
+      cachePolicy: CachePolicyEnum.cacheByTime,
+      expiredTime: 3
+    });
   }
   static game_playOdds = (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
     return httpClient.get("c=game&a=playOdds&id=" + id, {
