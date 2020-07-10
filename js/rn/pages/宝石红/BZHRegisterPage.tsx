@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -17,7 +17,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import {
   navigate,
   pop,
-  popToRoot
+  popToRoot,
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
@@ -27,6 +27,7 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -100,9 +101,6 @@ const BZHRegisterPage = () => {
     } else {
       setCorrectImageCode('')
     }
-    // APIRouter.secure_smsCaptcha(phoneNumber).then(value => {
-    //   console.log("---------------captcha----------", value)
-    // })
   }, [reg_vcode])
 
   const valid =
@@ -112,11 +110,12 @@ const BZHRegisterPage = () => {
     (recommendGuy || !hide_reco || hide_reco == 1) &&
     (realName || !reg_name || reg_name == 1) &&
     (fundPassword?.length > 4 || !reg_fundpwd || reg_fundpwd == 1) &&
-    (qq || !reg_qq || reg_qq == 1) &&
+    (qq?.length > 5 || !reg_qq || reg_qq == 1) &&
     (weChat || !reg_wx || reg_wx == 1) &&
     (email || !reg_email || reg_email == 1) &&
     (phoneNumber || !reg_phone || reg_phone == 1) &&
-    (slidingVerification || !reg_vcode || reg_vcode == 1 || reg_vcode == 3)
+    (slidingVerification || !reg_vcode || reg_vcode == 1 || reg_vcode == 3) &&
+    (sms?.length == 6 || !smsVerify)
 
   const getImgCaptcha = () => {
     APIRouter.secure_imgCaptcha().then((value) => {
@@ -125,7 +124,18 @@ const BZHRegisterPage = () => {
     })
   }
 
-  console.log('------smsVerify-------', smsVerify)
+  const getSms = async () => {
+    try {
+      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
+      if (data?.code != 0) {
+        throw { message: data.msg }
+      } else {
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg])
+      }
+    } catch (error) {
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message])
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -145,7 +155,9 @@ const BZHRegisterPage = () => {
             </Text>
           </View>
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'users',
+            }}
             onChangeText={(value: any) => setRecommendGuy(value)}
             label={
               hide_reco == 1 ? '推荐人ID，如没有可不填写' : '請填寫推薦人ID'
@@ -154,14 +166,15 @@ const BZHRegisterPage = () => {
             show={hide_reco}
           />
           <Form
-            iconName={'user-circle'}
             onChangeText={(value: any) => setAccount(value)}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={2}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'lock',
+            }}
             onChangeText={(value: any) => setPassword(value)}
             label={'*请使用至少' + pass_length_min + '位字符'}
             placeholder={'密码'}
@@ -177,7 +190,9 @@ const BZHRegisterPage = () => {
             maxLength={pass_length_max}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'lock',
+            }}
             onChangeText={(value: any) => setConfirmPassword(value)}
             label={password == confirmPassword ? null : '密码不一致'}
             placeholder={'确认密码'}
@@ -192,14 +207,18 @@ const BZHRegisterPage = () => {
             show={2}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'user',
+            }}
             onChangeText={(value: any) => setRealName(value)}
             label={'*必须与您的银行账户名称相同，以免未能到账！'}
             placeholder={'真实姓名'}
             show={reg_name}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'lock',
+            }}
             onChangeText={(value: any) => setFundPassword(value)}
             label={'*请输入4数字取款密码'}
             placeholder={'取款密码'}
@@ -214,36 +233,47 @@ const BZHRegisterPage = () => {
             show={reg_fundpwd}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'QQ',
+              type: 'antdesign',
+            }}
             onChangeText={(value: any) => setQQ(value)}
             label={'*请输入合法的QQ号'}
             placeholder={'QQ号'}
             show={reg_qq}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'wechat',
+              type: 'font-awesome',
+            }}
             onChangeText={(value: any) => setWeChat(value)}
             label={'*请输入合法的微信号'}
             placeholder={'微信号'}
             show={reg_wx}
           />
           <Form
-            iconName={'user-circle'}
+            leftIcon={{
+              name: 'smartphone',
+            }}
             onChangeText={(value: any) => setPhoneNumber(value)}
             label={'*请输入合法的手机号'}
             placeholder={'手机号'}
             show={reg_phone}
           />
           <Form
-            iconType={'Fontisto'}
-            iconName={'email'}
+            leftIcon={{
+              name: 'email',
+            }}
             onChangeText={(value: any) => setEmail(value)}
             label={'*请输入合法的电子邮箱'}
             placeholder={'电子邮箱'}
             show={reg_email}
           />
           <Form
-            iconName={'lock'}
+            leftIcon={{
+              name: 'lock',
+            }}
             onChangeText={(value: any) => setImageCode(value)}
             label={'*請輸入验证码'}
             placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
@@ -266,11 +296,20 @@ const BZHRegisterPage = () => {
             maxLength={4}
           />
           <Form
-            iconType={'Fontisto'}
-            iconName={'email'}
+            leftIcon={{
+              name: 'lock',
+            }}
             onChangeText={(value: any) => setSms(value)}
             placeholder={'短信验证码'}
             show={smsVerify}
+            showRightIcon={true}
+            renderRightIcon={() => (
+              <Button
+                title={'获取验证码'}
+                onPress={getSms}
+                titleStyle={{ fontSize: scale(20), fontWeight: '600' }}
+              />
+            )}
           />
           {reg_vcode == 2 ? (
             <SlidingVerification
@@ -306,11 +345,11 @@ const BZHRegisterPage = () => {
                   qq: qq, // QQ号
                   wx: weChat, // 微信号
                   phone: phoneNumber, // 手机号
-                  // smsCode: 'string', // 短信验证码
+                  smsCode: sms, // 短信验证码
                   imgCode: imageCode, // 字母验证码,
-                  "slideCode[nc_sid]": slidingVerification?.nc_csessionid,
-                  "slideCode[nc_token]": slidingVerification?.nc_token,
-                  "slideCode[nc_sig]": slidingVerification?.nc_sig,
+                  'slideCode[nc_sid]': slidingVerification?.nc_csessionid,
+                  'slideCode[nc_token]': slidingVerification?.nc_token,
+                  'slideCode[nc_sig]': slidingVerification?.nc_sig,
                   email: email, // 邮箱
                   regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
                   // device: string,
@@ -355,12 +394,11 @@ const styles = StyleSheet.create({
   whiteBlock: {
     backgroundColor: '#ffffff',
     width: '95%',
-    // aspectRatio: 485 / 655,
     alignSelf: 'center',
     borderRadius: scale(10),
     marginTop: scale(15),
     paddingHorizontal: scale(25),
-    paddingVertical: scale(25),
+    paddingTop: scale(25),
     flexWrap: 'wrap',
   },
   bottomButtonContainer: {
@@ -368,6 +406,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    paddingVertical: scale(25),
   },
   button: {
     backgroundColor: BZHThemeColor.宝石红.themeColor,
@@ -375,4 +414,5 @@ const styles = StyleSheet.create({
     marginVertical: scale(20),
   },
 })
+
 export default BZHRegisterPage

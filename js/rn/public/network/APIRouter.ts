@@ -119,7 +119,7 @@ class APIRouter {
     })
   }
   static secure_smsCaptcha = async (phone) => {
-    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone },);
+    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone });
   }
 
   static system_config = async () => {
@@ -130,7 +130,7 @@ class APIRouter {
     params = {
       ...params, device: '3', accessToken: accessToken,
     }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params,);
+    return httpClient.post<RegisterModel>('c=user&a=reg', params);
   }
 
   static lhcdoc_categoryList = async () => {

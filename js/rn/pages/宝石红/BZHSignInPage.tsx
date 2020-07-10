@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView
+} from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
@@ -7,7 +14,11 @@ import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
+import {
+  navigate,
+  pop,
+  popToRoot,
+} from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -22,9 +33,7 @@ const BZHSignInPage = () => {
   const dispatch = useDispatch()
   const { loginSuccessHandle } = useLoginIn()
   const { tryPlay } = useTryPlay({ enablePop: true })
-  const signInStore = useSelector(
-    (state: IGlobalState) => state.BZHSignInReducer
-  )
+  const signInStore = useSelector((state: IGlobalState) => state.BZHSignInReducer)
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const [hidePassword, setHidePassword] = useState(true)
 
@@ -41,6 +50,10 @@ const BZHSignInPage = () => {
     }
   }, [])
 
+  const valid =
+    account &&
+    password
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header
@@ -51,45 +64,46 @@ const BZHSignInPage = () => {
           PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
         }}
       />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.whiteBlock}>
-          <View style={styles.formContainer}>
-            <Form
-              placeholder={'请输入会员帐号'}
-              iconName={'user-circle'}
-              value={account}
-              onChangeText={(value: any) => {
-                dispatch({
-                  type: ActionType.BZHSignInPage_SetProps,
-                  props: {
-                    account: value,
-                  },
-                })
-                // UGStore.save()
-              }}
-            />
-            <Form
-              rightIconProps={{
-                color: hidePassword ? '#d9d9d9' : '#84C1FF',
-                onPress: () => {
-                  setHidePassword(!hidePassword)
+          <Form
+            show={true}
+            placeholder={'请输入会员帐号'}
+            value={account}
+            onChangeText={(value: any) => {
+              dispatch({
+                type: ActionType.BZHSignInPage_SetProps,
+                props: {
+                  account: value,
                 },
-              }}
-              placeholder={'请输入密码'}
-              iconName={'lock'}
-              value={password}
-              onChangeText={(value: any) =>
-                dispatch({
-                  type: ActionType.BZHSignInPage_SetProps,
-                  props: {
-                    password: value,
-                  },
-                })
-              }
-              secureTextEntry={hidePassword}
-              showRightIcon
-            />
-          </View>
+              })
+              // UGStore.save()
+            }}
+          />
+          <Form
+            show={true}
+            rightIconProps={{
+              color: hidePassword ? '#d9d9d9' : '#84C1FF',
+              onPress: () => {
+                setHidePassword(!hidePassword)
+              },
+            }}
+            placeholder={'请输入密码'}
+            leftIcon={{
+              name: 'lock',
+            }}
+            value={password}
+            onChangeText={(value: any) =>
+              dispatch({
+                type: ActionType.BZHSignInPage_SetProps,
+                props: {
+                  password: value,
+                },
+              })
+            }
+            secureTextEntry={hidePassword}
+            showRightIcon
+          />
           <CheckBox
             check={isRemember}
             onPress={() =>
@@ -99,79 +113,71 @@ const BZHSignInPage = () => {
               })
             }
           />
-          <View
-            style={{
-              flex: 115,
-              justifyContent: 'space-between',
-              marginTop: scale(20),
-            }}
-          >
-            <Button
-              title={'立即登陆'}
-              buttonStyle={{
-                backgroundColor: account && password ? '#EA0000' : '#D0D0D0',
-                width: '100%',
-              }}
-              titleStyle={{ color: '#ffffff' }}
-              onPress={async () => {
-                try {
-                  if (account && password) {
-                    OCHelper.call('SVProgressHUD.showWithStatus:', [
-                      '正在登录...',
-                    ])
-                    const { data } = await APIRouter.user_login(
-                      account,
-                      password.md5()
-                    )
-                    if (data.data == null) {
-                      const error = data?.msg
-                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                        error ?? '登录失敗！',
-                      ])
-                    } else {
-                      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-                        '登录成功！',
-                      ])
-                      await loginSuccessHandle(data, {
-                        account,
-                        pwd: password,
-                        isRemember,
-                      })
-                    }
-                  }
-                } catch (error) {
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                    error ?? '登入失败',
+          <Button
+            title={'立即登陆'}
+            disabled={!valid}
+            buttonStyle={styles.button}
+            titleStyle={{ color: '#ffffff' }}
+            onPress={async () => {
+              try {
+                if (account && password) {
+                  OCHelper.call('SVProgressHUD.showWithStatus:', [
+                    '正在登录...',
                   ])
+                  const { data } = await APIRouter.user_login(
+                    account,
+                    password.md5()
+                  )
+                  if (data.data == null) {
+                    const error = data?.msg
+                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                      error ?? '登录失敗！',
+                    ])
+                  } else {
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+                      '登录成功！',
+                    ])
+                    await loginSuccessHandle(data, {
+                      account,
+                      pwd: password,
+                      isRemember,
+                    })
+                  }
                 }
-              }}
-            />
-            <Button
-              title={'快速注册'}
-              buttonStyle={{
-                backgroundColor: '#ffffff',
-                borderColor: '#F0F0F0',
-                borderWidth: scale(1),
-                width: '100%',
-              }}
-              titleStyle={{ color: '#EA0000' }}
-              onPress={() => {
-                navigate(PageName.BZHRegisterPage, {})
-              }}
-            />
-          </View>
-          <View style={styles.bottomContainer}>
+              } catch (error) {
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                  error ?? '登入失败',
+                ])
+              }
+            }}
+          />
+          <Button
+            title={'快速注册'}
+            buttonStyle={{
+              backgroundColor: '#ffffff',
+              borderColor: '#F0F0F0',
+              borderWidth: scale(1),
+              width: '100%'
+            }}
+            titleStyle={{ color: '#EA0000' }}
+            onPress={() => {
+              navigate(PageName.BZHRegisterPage, {})
+            }}
+          />
+          <View style={styles.bottomButtonContainer}>
             <TouchableOpacity onPress={tryPlay}>
               <Text>{'免费试玩'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              popToRoot()
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                popToRoot()
+              }}
+            >
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -179,6 +185,7 @@ const BZHSignInPage = () => {
 const CheckBox = ({ check, onPress }) => (
   <TouchableOpacity
     style={{
+      width: '100%',
       flexDirection: 'row',
       alignItems: 'flex-end',
     }}
@@ -223,22 +230,30 @@ const styles = StyleSheet.create({
   whiteBlock: {
     backgroundColor: '#ffffff',
     width: '95%',
-    aspectRatio: 485 / 375,
     alignSelf: 'center',
     borderRadius: scale(10),
     marginTop: scale(15),
     paddingHorizontal: scale(25),
+    paddingTop: scale(25),
+    flexWrap: 'wrap'
   },
-  formContainer: {
-    flex: 160,
-    justifyContent: 'center',
+  buttonContainer: {
+    width: '100%',
+    justifyContent: 'space-between',
+    marginTop: scale(20),
+    aspectRatio: 4,
   },
-  bottomContainer: {
+  bottomButtonContainer: {
     flexDirection: 'row',
-    flex: 75,
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
+    paddingVertical: scale(25)
+  },
+  button: {
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
+    width: '100%',
+    marginVertical: scale(20),
   },
 })
 

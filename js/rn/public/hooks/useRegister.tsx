@@ -13,7 +13,8 @@ const useRegister = () => {
       if (Platform.OS == 'ios') {
         OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...'])
         const { data } = await APIRouter.user_reg(params)
-        const usr = data.data?.usr
+        console.log('----------data-------', data)
+        const usr = data?.data?.usr
         const pwd = params?.pwd
         if (data?.data) {
           if (data?.data?.autoLogin) {
@@ -83,9 +84,9 @@ const useRegister = () => {
         // for android
       }
     } catch (error) {
-      // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-      //   error,
-      // ])
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+        error ?? '注册失败',
+      ])
       console.log(error)
     }
   }

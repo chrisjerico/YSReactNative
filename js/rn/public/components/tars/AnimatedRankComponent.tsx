@@ -1,23 +1,44 @@
-import React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
 
-interface RankBlockProps {
+interface AnimatedRankComponentProps {
   containerStyle?: ViewStyle;
   iconContainerStyle?: ViewStyle;
   rankContainerStyle?: ViewStyle;
   titleConatinerStyle?: ViewStyle;
-  rankLists: any[];
+  rankLists: List[];
 }
 
-const RankBlock = ({
+const AnimatedRankComponent = ({
   containerStyle,
   iconContainerStyle,
   rankContainerStyle,
   titleConatinerStyle,
   rankLists,
-}: RankBlockProps) => {
+}: AnimatedRankComponentProps) => {
+
+  const height = useRef(new Animated.Value(0)).current
+
+  const animated = () => Animated.timing(height,
+    {
+      toValue: 2 * scale(23 * ((rankLists?.length ?? 0) + 2)),
+      duration: 10000,
+      useNativeDriver: false
+    }
+  ).start(({ finished }) => {
+    if (finished) {
+      height?.setValue(0)
+      animated()
+    }
+  });
+
+  useEffect(() => {
+    animated()
+  }, [])
+
   return (
     <View style={containerStyle}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
@@ -30,16 +51,21 @@ const RankBlock = ({
           <Text style={styles.title}>{'游戏名称'}</Text>
           <Text style={styles.title}>{'投注金额'}</Text>
         </View>
-        {rankLists?.map((item) => {
-          const { coin, type, username } = item
-          return (
-            <View style={styles.contentContainer}>
-              <Text style={styles.content}>{username}</Text>
-              <Text style={styles.content}>{type}</Text>
-              <Text style={styles.content}>{coin}</Text>
-            </View>
-          )
-        })}
+        <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: scale(10), marginHorizontal: scale(30), overflow: 'hidden' }}>
+          <Animated.View style={{ height: height, width: '100%' }}>
+            {
+              rankLists?.map((item, index) => {
+                const { coin, type, username } = item
+                return (
+                  <View key={index} style={styles.contentContainer}>
+                    <Text style={styles.content}>{username}</Text>
+                    <Text style={styles.content}>{type}</Text>
+                    <Text style={styles.content}>{coin}</Text>
+                  </View>)
+              })
+            }
+          </Animated.View >
+        </View>
       </View>
     </View>
   )
@@ -65,8 +91,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   contentContainer: {
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     paddingTop: scale(5),
   },
   title: {
@@ -76,10 +103,11 @@ const styles = StyleSheet.create({
   },
   content: {
     color: '#EA0000',
+    fontSize: scale(18),
   },
   iconText: {
     paddingLeft: scale(5),
   },
 })
 
-export default RankBlock
+export default AnimatedRankComponent

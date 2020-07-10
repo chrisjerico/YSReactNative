@@ -13,6 +13,7 @@ interface HeaderProps {
   onPressSignUp: () => any;
   onPressUser: () => any;
   isTest: boolean;
+  logo: string;
 }
 
 const Header = ({
@@ -23,12 +24,13 @@ const Header = ({
   onPressSignUp,
   onPressUser,
   isTest,
+  logo,
 }: HeaderProps) => {
   return (
     <View style={styles.container}>
       {uid ? (
         <View style={styles.row}>
-          <View style={{ flex: 1.5 }}>
+          <View style={styles.left}>
             {isTest ? (
               <Button
                 title={'注册'}
@@ -41,24 +43,20 @@ const Header = ({
           <View style={styles.imageContainer}>
             <FastImage
               source={{
-                uri:
-                  'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
+                uri: logo,
               }}
               style={styles.logo}
               resizeMode={'contain'}
             />
           </View>
-          <TouchableOpacity
-            style={{ flex: 1.5, alignItems: 'flex-end' }}
-            onPress={onPressUser}
-          >
+          <TouchableOpacity style={styles.right} onPress={onPressUser}>
             <Text numberOfLines={1}>{name}</Text>
             <Text>{'￥' + money}</Text>
           </TouchableOpacity>
         </View>
       ) : (
           <View style={styles.row}>
-            <View style={{ flex: 1.5 }}>
+            <View style={styles.left}>
               <Button
                 title={'登陆'}
                 buttonStyle={styles.button}
@@ -69,14 +67,13 @@ const Header = ({
             <View style={styles.imageContainer}>
               <FastImage
                 source={{
-                  uri:
-                    'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
+                  uri: logo,
                 }}
                 style={styles.logo}
                 resizeMode={'contain'}
               />
             </View>
-            <View style={{ flex: 1.5, alignItems: 'flex-end' }}>
+            <View style={styles.right}>
               <Button
                 title={'注册'}
                 buttonStyle={styles.button}
@@ -128,10 +125,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  left: { flex: 1 },
+  right: { flex: 1, alignItems: 'flex-end' },
 })
 
 export default Header

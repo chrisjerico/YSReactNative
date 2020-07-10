@@ -7,6 +7,7 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { scale } from '../../public/tools/Scale'
@@ -14,7 +15,6 @@ import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
-import RankBlock from '../../public/views/tars/RankBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -165,7 +165,7 @@ const WNZHomePage = () => {
                   )
                 }}
               />
-              <RankBlock
+              <AnimatedRankComponent
                 rankLists={[]}
                 rankContainerStyle={{ borderRadius: 0 }}
               />

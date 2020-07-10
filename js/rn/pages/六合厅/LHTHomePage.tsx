@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -21,7 +22,6 @@ import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
-import RankBlock from '../../public/views/tars/RankBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -300,7 +300,7 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <RankBlock
+                <AnimatedRankComponent
                   containerStyle={styles.subComponent}
                   iconContainerStyle={styles.rankBlockIconContainerStyle}
                   rankLists={rankLists}

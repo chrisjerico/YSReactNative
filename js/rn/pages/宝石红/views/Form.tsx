@@ -7,7 +7,6 @@ interface Form {
   onChangeText?: any;
   value?: string;
   placeholder: string;
-  iconName: string;
   rightIconProps?: any;
   secureTextEntry?: boolean;
   showRightIcon?: boolean;
@@ -15,17 +14,25 @@ interface Form {
   show: any;
   containerStyle?: ViewStyle;
   enableLabel?: boolean;
-  iconType?: string;
-  renderRightIcon?: () => any
-  onFocus?: () => any
-  maxLength?: number
+  renderRightIcon?: () => any;
+  onFocus?: () => any;
+  maxLength?: number;
+  leftIcon?: LeftIcon;
+}
+
+interface LeftIcon {
+  type?: string;
+  name?: string;
+  reverse?: boolean;
+  containerStyle?: ViewStyle;
+  reverseColor?: string;
+  color?: string;
 }
 
 const Form = ({
   value,
   onChangeText,
   placeholder,
-  iconName,
   rightIconProps = {},
   secureTextEntry = false,
   showRightIcon = false,
@@ -33,16 +40,14 @@ const Form = ({
   show,
   containerStyle,
   enableLabel = true,
-  iconType = 'font-awesome',
   renderRightIcon,
   onFocus,
-  maxLength
+  maxLength,
+  leftIcon,
 }: Form) => {
   if (show) {
     return (
-      <View
-        style={[styles.container, containerStyle]}
-      >
+      <View style={[styles.container, containerStyle]}>
         <Input
           style={{
             height: '50%',
@@ -55,22 +60,25 @@ const Form = ({
             paddingRight: 0,
           }}
           leftIcon={{
-            type: iconType,
-            name: iconName,
+            name: 'user',
+            type: 'feather',
             color: '#d9d9d9',
             size: scale(30),
+            ...leftIcon,
           }}
           rightIcon={
-            showRightIcon ?
-              renderRightIcon ? renderRightIcon() :
-                (
+            showRightIcon ? (
+              renderRightIcon ? (
+                renderRightIcon()
+              ) : (
                   <Icon
                     {...rightIconProps}
                     type={'font-awesome'}
                     name={'eye-slash'}
                     size={scale(30)}
                   />
-                ) : null
+                )
+            ) : null
           }
           leftIconContainerStyle={{
             marginLeft: 0,
@@ -83,10 +91,13 @@ const Form = ({
           secureTextEntry={secureTextEntry}
           onFocus={onFocus}
         />
-        {
-          enableLabel ? <Text style={{ color: 'red', fontSize: scale(15), paddingTop: scale(5) }}>{label}</Text>
-            : null
-        }
+        {enableLabel ? (
+          <Text
+            style={{ color: 'red', fontSize: scale(15), paddingTop: scale(5) }}
+          >
+            {label}
+          </Text>
+        ) : null}
       </View>
     )
   } else {
@@ -98,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 5,
-  }
+  },
 })
 
 export default Form
