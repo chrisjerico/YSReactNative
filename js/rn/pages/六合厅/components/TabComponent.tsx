@@ -165,7 +165,7 @@ const TabComponent = ({
                 <ScrollView
                   ref={scroll}
                   horizontal={true}
-                  style={{ flexGrow: 0 }}
+                  style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
                   showsHorizontalScrollIndicator={false}
                   scrollEventThrottle={200}
                   decelerationRate={'fast'}
