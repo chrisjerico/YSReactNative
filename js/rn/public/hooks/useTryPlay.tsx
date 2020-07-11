@@ -3,13 +3,12 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import APIRouter from '../network/APIRouter'
-import { pop } from '../navigation/RootNavigation'
 
 interface UseTryPlayProps {
-  enablePop?: boolean
+  onSuccess?: () => any;
 }
 
-const useTryPlay = ({ enablePop = false }: UseTryPlayProps) => {
+const useTryPlay = ({ onSuccess }: UseTryPlayProps) => {
   const tryPlay = async () => {
     try {
       const { data } = await APIRouter.user_guestLogin()
@@ -25,11 +24,14 @@ const useTryPlay = ({ enablePop = false }: UseTryPlayProps) => {
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         await updateUserInfo()
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
-        enablePop ? pop() : null;
+        onSuccess && onSuccess()
       } else {
         // for android
       }
     } catch (error) {
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+        error ?? '試玩失败',
+      ])
       console.log(error)
     }
   }

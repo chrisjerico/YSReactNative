@@ -32,7 +32,7 @@ import Form from './views/Form'
 const BZHSignInPage = () => {
   const dispatch = useDispatch()
   const { loginSuccessHandle } = useLoginIn()
-  const { tryPlay } = useTryPlay({ enablePop: true })
+  const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
   const signInStore = useSelector((state: IGlobalState) => state.BZHSignInReducer)
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const [hidePassword, setHidePassword] = useState(true)

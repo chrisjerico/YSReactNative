@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
@@ -37,7 +37,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo,
+  defaultNoticeLogo
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -51,7 +51,7 @@ const LHTHomePage = ({ navigation }) => {
   // hooks
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
-  const { tryPlay } = useTryPlay({ enablePop: false })
+  const { tryPlay } = useTryPlay({})
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid, avatar, usr, isTest }: UGUserModel = userStore
