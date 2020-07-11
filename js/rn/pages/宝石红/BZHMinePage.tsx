@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react'
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet
-} from 'react-native'
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
@@ -30,7 +25,14 @@ const BZHMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance, usr, isTest, unreadMsg, curLevelGrade }: UGUserModel = userStore
+  const {
+    avatar,
+    balance,
+    usr,
+    isTest,
+    unreadMsg,
+    curLevelGrade,
+  }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
 
   useEffect(() => {
@@ -47,11 +49,7 @@ const BZHMinePage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header title={'会员中心'} />
-      <ScrollView
-        style={styles.container}
-        scrollEnabled={true}
-        refreshControl={<RefreshControl refreshing={false} />}
-      >
+      <ScrollView style={styles.container}>
         <ProfileBlock
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
@@ -70,10 +68,17 @@ const BZHMinePage = ({ navigation }) => {
             return (
               <GameButton
                 key={index}
-                containerStyle={{ flex: 1, height: '100%', justifyContent: 'flex-end' }}
+                containerStyle={{
+                  flex: 1,
+                  height: '100%',
+                  justifyContent: 'flex-end',
+                }}
                 imageStyle={{ width: scale(50), height: scale(50) }}
                 titleStyle={{ fontSize: scale(30) }}
-                titleContainerStyle={{ aspectRatio: null, marginTop: scale(10) }}
+                titleContainerStyle={{
+                  aspectRatio: null,
+                  marginTop: scale(10),
+                }}
                 enableCircle={false}
                 logo={logo}
                 title={name}

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
@@ -59,8 +59,6 @@ const LHTMinePage = ({ navigation }) => {
       />
       <ScrollView
         style={styles.container}
-        scrollEnabled={true}
-        refreshControl={<RefreshControl refreshing={false} />}
       >
         <ProfileBlock
           profileButtons={defaultProfileButtons}

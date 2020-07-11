@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
@@ -33,13 +34,12 @@ const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { uid, usr, balance, isTest }: UGUserModel = userStore
-  const {
-    mobile_logo
-  } = SystemStore
+  const { mobile_logo } = SystemStore
   const {
     loading,
     banner,
@@ -76,6 +76,7 @@ const BZHHomePage = ({ navigation }) => {
   // data handle
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
+  const announcements = notice?.data?.popup ?? []
   const navs =
     homeGames?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
@@ -84,7 +85,6 @@ const BZHHomePage = ({ navigation }) => {
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
 
-  console.log("--------mobile_logo-------", mobile_logo)
   return (
     <SafeAreaView style={styles.safeArea}>
       {loading ? (
@@ -106,7 +106,14 @@ const BZHHomePage = ({ navigation }) => {
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    announcementModal?.current?.reload()
+                  }}
+                />
+              }
             >
               <BannerBlock
                 onlineNum={onlineNum}
@@ -222,6 +229,11 @@ const BZHHomePage = ({ navigation }) => {
         onPress={() => {
           PushHelper.pushWheel(roulette)
         }}
+      />
+      <AnnouncementModal
+        ref={announcementModal}
+        announcements={announcements}
+        color={BZHThemeColor.宝石红.themeColor}
       />
     </SafeAreaView>
   )

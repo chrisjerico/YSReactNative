@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -27,7 +28,6 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
-import DowloadApp from './components/DowloadApp'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -37,7 +37,7 @@ import {
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo
+  defaultNoticeLogo,
 } from './helpers/config'
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
@@ -49,6 +49,7 @@ const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   const { tryPlay } = useTryPlay({ enablePop: false })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
@@ -97,7 +98,7 @@ const LHTHomePage = ({ navigation }) => {
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  // const headlines = notice?.data?.popup ?? []
+  const announcements = notice?.data?.popup ?? []
   const navs =
     homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
@@ -151,7 +152,14 @@ const LHTHomePage = ({ navigation }) => {
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    announcementModal?.current?.reload()
+                  }}
+                />
+              }
             >
               <BannerBlock
                 onlineNum={onlineNum}
@@ -330,13 +338,14 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            <DowloadApp
+
+            {/* <DowloadApp
               onPressDowload={() => {
                 PushHelper.openWebView(
                   'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
                 )
               }}
-            />
+            /> */}
             <ActivityComponent
               show={uid && redBagLogo && !isTest}
               logo={redBagLogo}
@@ -352,6 +361,11 @@ const LHTHomePage = ({ navigation }) => {
               onPress={() => {
                 PushHelper.pushWheel(roulette)
               }}
+            />
+            <AnnouncementModal
+              ref={announcementModal}
+              announcements={announcements}
+              color={LHThemeColor.六合厅.themeColor}
             />
           </>
         )}
