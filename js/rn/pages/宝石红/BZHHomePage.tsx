@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: '#f6f6f6',
+    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
   },
   contentContainer: {
     paddingHorizontal: scale(5),

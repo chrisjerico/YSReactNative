@@ -5,25 +5,26 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
   六合厅: {
     skitType: '六合厅',
     skitString: '六合厅',
-    bgColor: ['#ffffff', '#ffffff'],
+    bgColor: ['#f6f6f6', '#f6f6f6'],
     get navBarBgColor() { return [this.themeColor, this.themeColor] },
-    get tabBarBgColor() { return this.themeColor },
-    tabNoSelectColor: '#ffffff',
-    tabSelectedColor: '#010101',
-    progressBgColor: ['#d80000', '#fb5959'],
-    homeContentColor: '#FFFFFF',
-    homeContentSubColor: '#D3D3D3',
-    cellBgColor: '#FFFFFF',
-    CLBgColor: '#E6E6E6',
-    menuHeadViewColor: ['#ff566d', '#ffbac3'],
-    textColor1: '#111111',
-    textColor2: '#555555',
-    textColor3: '#C1C1C1',
-    textColor4: '#FFFFFF',
-    conversionCellColor: '#7BA2C2',
-    intoViewColor: '#7BA2C2',
-    moneyCellColor: '#9BB8CB',
+    tabBarBgColor: '#ffffff',
+    tabNoSelectColor: '#9D9D9D',
+    get tabSelectedColor() { return this.themeColor },
+    progressBgColor: ['#FEC434', '#FE8A23'],
+    get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
+    homeContentSubColor: '#f6f6f6', // 額度轉換Tab // #ffffff
+    // cellBgColor: '#444',
+    // CLBgColor: '#E6E6E6', // 推薦收益區塊
+    get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
+    // textColor1: '#000000',
+    // textColor2: '#000000',
+    // textColor3: '#000000',
+    // textColor4: '#ffffff',
+    // conversionCellColor: '#444',
+    // intoViewColor: '#444',
+    // moneyCellColor: '#444',
     themeColor: '#2894FF',
+    themeLightColor: '#ACD6FF'
   },
   //六合资料
   六合资料0: {

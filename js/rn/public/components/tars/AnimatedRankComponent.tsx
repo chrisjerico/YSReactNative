@@ -10,6 +10,7 @@ interface AnimatedRankComponentProps {
   rankContainerStyle?: ViewStyle;
   titleConatinerStyle?: ViewStyle;
   rankLists: List[];
+  duration?: number;
 }
 
 const AnimatedRankComponent = ({
@@ -18,22 +19,21 @@ const AnimatedRankComponent = ({
   rankContainerStyle,
   titleConatinerStyle,
   rankLists,
+  duration = 15000,
 }: AnimatedRankComponentProps) => {
-
   const height = useRef(new Animated.Value(0)).current
 
-  const animated = () => Animated.timing(height,
-    {
-      toValue: 2 * scale(23 * ((rankLists?.length ?? 0) + 2)),
-      duration: 10000,
-      useNativeDriver: false
-    }
-  ).start(({ finished }) => {
-    if (finished) {
-      height?.setValue(0)
-      animated()
-    }
-  });
+  const animated = () =>
+    Animated.timing(height, {
+      toValue: scale((25 * (rankLists?.length ?? 0)) + 250),
+      duration: duration,
+      useNativeDriver: false,
+    }).start(({ finished }) => {
+      if (finished) {
+        height?.setValue(0)
+        animated()
+      }
+    })
 
   useEffect(() => {
     animated()
@@ -47,24 +47,35 @@ const AnimatedRankComponent = ({
       </View>
       <View style={[styles.rankContainer, rankContainerStyle]}>
         <View style={[styles.titleConatiner, titleConatinerStyle]}>
-          <Text style={styles.title}>{'用户名称'}</Text>
-          <Text style={styles.title}>{'游戏名称'}</Text>
-          <Text style={styles.title}>{'投注金额'}</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{'用户名称'}</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{'游戏名称'}</Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{'投注金额'}</Text>
+          </View>
         </View>
-        <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: scale(10), marginHorizontal: scale(30), overflow: 'hidden' }}>
+        <View style={styles.animatedContainer}>
           <Animated.View style={{ height: height, width: '100%' }}>
-            {
-              rankLists?.map((item, index) => {
-                const { coin, type, username } = item
-                return (
-                  <View key={index} style={styles.contentContainer}>
+            {rankLists?.map((item, index) => {
+              const { coin, type, username } = item
+              return (
+                <View key={index} style={styles.contentContainer}>
+                  <View style={styles.textContainer}>
                     <Text style={styles.content}>{username}</Text>
+                  </View>
+                  <View style={styles.textContainer}>
                     <Text style={styles.content}>{type}</Text>
+                  </View>
+                  <View style={styles.textContainer}>
                     <Text style={styles.content}>{coin}</Text>
-                  </View>)
-              })
-            }
-          </Animated.View >
+                  </View>
+                </View>
+              )
+            })}
+          </Animated.View>
         </View>
       </View>
     </View>
@@ -80,7 +91,7 @@ const styles = StyleSheet.create({
   },
   rankContainer: {
     width: '100%',
-    aspectRatio: 540 / 240,
+    height: scale(250),
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
     paddingHorizontal: scale(15),
@@ -88,12 +99,12 @@ const styles = StyleSheet.create({
   },
   titleConatiner: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    paddingVertical: scale(10),
   },
   contentContainer: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     paddingTop: scale(5),
   },
   title: {
@@ -103,10 +114,20 @@ const styles = StyleSheet.create({
   },
   content: {
     color: '#EA0000',
-    fontSize: scale(18),
+    fontSize: scale(20),
   },
   iconText: {
     paddingLeft: scale(5),
+  },
+  animatedContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: scale(10),
+    overflow: 'hidden',
+  },
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 })
 

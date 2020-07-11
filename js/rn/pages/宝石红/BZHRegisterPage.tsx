@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
   },
   whiteBlock: {
     backgroundColor: '#ffffff',

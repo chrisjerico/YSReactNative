@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Avatar } from 'react-native-elements'
-import { scale } from '../../../../public/tools/Scale'
 import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../../../public/tools/Scale'
+import LinearBadge from '../../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
   money: string | number;
@@ -13,6 +14,7 @@ interface ProfileBlockProps {
   containerStyle?: ViewStyle;
   name: string;
   onPressReload: () => any;
+  level: string;
 }
 
 const ProfileBlock = ({
@@ -23,6 +25,7 @@ const ProfileBlock = ({
   containerStyle,
   name,
   onPressReload,
+  level
 }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -31,20 +34,25 @@ const ProfileBlock = ({
         <View style={styles.profileContainer}>
           <Avatar source={{ uri: avatar }} size={'large'} rounded />
           <View style={styles.moneyContainer}>
-            <Text style={styles.text}>{name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.text}>{name}</Text>
+              <LinearBadge
+                containerStyle={{ borderRadius: scale(5), width: null }}
+                textStyle={{ paddingHorizontal: scale(10) }}
+                title={level}
+                colors={['#0080FF', '#97CBFF']}
+                showIcon={false}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
               <Text
-                style={[
-                  styles.text,
-                  { paddingTop: scale(10), paddingRight: scale(10) },
-                ]}
+                style={styles.text}
               >
                 {'余额 ￥' + money}
               </Text>
               <ReLoadComponent
                 onPress={onPressReload}
                 color={'#000000'}
-                containerStyle={{ marginTop: 5 }}
               />
             </View>
           </View>
@@ -62,6 +70,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 500 / 270,
     backgroundColor: '#d9d9d9',
+    paddingBottom: scale(30)
   },
   whiteBlock: {
     height: '100%',
@@ -98,6 +107,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(25),
     fontWeight: '400',
+    paddingRight: scale(10)
   },
   moneyContainer: {
     flex: 1,

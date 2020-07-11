@@ -30,7 +30,7 @@ const BZHMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance, usr, isTest, unreadMsg }: UGUserModel = userStore
+  const { avatar, balance, usr, isTest, unreadMsg, curLevelGrade }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const BZHMinePage = ({ navigation }) => {
               props: { balance: data.data.balance },
             })
           }}
-          containerStyle={{ paddingBottom: scale(30) }}
+          level={curLevelGrade}
           avatar={avatar}
           money={balance}
           name={isTest ? '遊客' : usr}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: '#d9d9d9',
+    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
   },
   logOutButton: {
     backgroundColor: '#ffffff',
