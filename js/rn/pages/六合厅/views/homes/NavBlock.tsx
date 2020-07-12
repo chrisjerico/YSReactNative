@@ -99,15 +99,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topLeftContainer: {
-    flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
   topRightContainer: {
-    flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   smileImageContainer: {
     width: '15%',
@@ -119,10 +117,11 @@ const styles = StyleSheet.create({
   },
   button: {
     aspectRatio: 3.25 / 1.5625,
-    borderRadius: scale(20),
+    borderRadius: scale(25),
+    marginRight: scale(10)
   },
   title: {
-    fontSize: 13,
+    fontSize: scale(20),
   },
   titleContainer: {
     flex: 65,

@@ -1,25 +1,63 @@
-import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { scale } from '../helpers/function';
+import React from 'react'
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
+import { scale } from '../helpers/function'
 
 interface FeatureListProps {
   logo: string;
   title: string;
   onPress: () => any;
-  containerStyle?: ViewStyle
+  containerStyle?: ViewStyle;
+  showUnreadMsg?: boolean;
+  unreadMsg?: number;
 }
 
-const FeatureList = ({ logo = 'url', title = '我的钱包', onPress, containerStyle }: FeatureListProps) => {
+const FeatureList = ({
+  logo = 'url',
+  title = '我的钱包',
+  onPress,
+  containerStyle,
+  showUnreadMsg = false,
+  unreadMsg,
+}: FeatureListProps) => {
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, containerStyle]}
+      onPress={onPress}
+    >
       <View style={styles.imageContainer}>
-        <Image resizeMode={'contain'} style={styles.image} source={{ uri: logo }} />
-        <Text style={[styles.text, { paddingLeft: scale(25) }]}>{title}</Text>
+        <Image
+          resizeMode={'contain'}
+          style={styles.image}
+          source={{ uri: logo }}
+        />
+        <Text style={styles.title}>{title}</Text>
       </View>
-      <Text style={styles.text}>{'>'}</Text>
+      {showUnreadMsg ? (
+        <View
+          style={{
+            width: scale(30),
+            aspectRatio: 1,
+            borderRadius: scale(30),
+            backgroundColor: 'red',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>{unreadMsg}</Text>
+        </View>
+      ) : (
+          <Text style={styles.text}>{'>'}</Text>
+        )}
     </TouchableOpacity>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -36,12 +74,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   image: {
-    width: scale(25),
+    width: scale(35),
     aspectRatio: 1,
   },
   text: {
     fontSize: scale(25),
   },
-});
+  title: {
+    fontSize: scale(30),
+    fontWeight: '400',
+    paddingLeft: scale(25)
+  }
+})
 
-export default FeatureList;
+export default FeatureList

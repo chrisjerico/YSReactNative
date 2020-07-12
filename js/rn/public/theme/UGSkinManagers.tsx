@@ -17,6 +17,9 @@ import { B_DEBUG } from '../tools/UgLog';
 import { ZLThemeColor } from './colors/ZLThemeColor';
 import { LCThemeColor } from "./colors/LCThemeColor";
 import { KSThemeColor } from "./colors/KSThemeColor";
+import { BZHThemeColor } from "./colors/BZHThemeColor";
+import { WNZThemeColor } from "./colors/WNZThemeColor";
+
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
@@ -28,7 +31,9 @@ export default class UGSkinManagers extends UGThemeColor {
     ...GDBThemeColor,
     ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
-    ...KSThemeColor // 凯时
+    ...KSThemeColor, // 凯时
+    ...BZHThemeColor, // 宝石红
+    ...WNZThemeColor, // 威尼斯
   };
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -49,16 +54,18 @@ export default class UGSkinManagers extends UGThemeColor {
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
-      14: `六合厅${mobileTemplateStyle}`,
+      14: `六合厅`,
       16: `尊龙`,
       18: `金星黑`,
       19: `乐橙`,
       22: `凯时`,
+      21: `宝石红`,
+      23: `威尼斯`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
-      // key = '综合体育';
+      key = '宝石红';
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
@@ -80,7 +87,14 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1;
     if (Platform.OS != 'ios') return;
-    if (skin.skitType.indexOf('香槟金') == -1 && skin.skitType.indexOf('综合体育') == -1 && skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('金星黑') == -1) return;
+    if (skin.skitType.indexOf('香槟金') == -1
+      && skin.skitType.indexOf('综合体育') == -1
+      && skin.skitType.indexOf('尊龙') == -1
+      && skin.skitType.indexOf('金星黑') == -1
+      && skin.skitType.indexOf('宝石红') == -1
+      && skin.skitType.indexOf('六合厅') == -1
+      && skin.skitType.indexOf('威尼斯') == -1
+    ) return;
 
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin]);
     for (const k in skin) {

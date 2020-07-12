@@ -157,5 +157,8 @@ class APIRouter {
       isEncrypt: false
     })
   }
+  static user_centerList = async () => {
+    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+  };
 }
 export default APIRouter

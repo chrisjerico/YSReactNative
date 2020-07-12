@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 
 interface HeaderProps {
   title: string;
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 540 / 50,
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     alignItems: 'center',
   },
   title: {

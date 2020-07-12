@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { scale } from '../../helpers/function'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { ActionType } from '../../redux/store/ActionTypes'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
+import { UGStore } from '../../redux/store/UGStore'
 import Header from '../../views/Header'
 import Form from './views/Form'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import APIRouter from '../../public/network/APIRouter'
-import { ActionType } from '../../redux/store/ActionTypes'
-import { UGStore } from '../../redux/store/UGStore'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 
 const BZHRegisterPage = () => {
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -218,7 +219,7 @@ const BZHRegisterPage = () => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {

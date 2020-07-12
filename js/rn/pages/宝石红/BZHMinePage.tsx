@@ -14,6 +14,7 @@ import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -30,9 +31,8 @@ const BZHMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance, usr }: UGUserModel = userStore
+  const { avatar, balance, usr, isTest, unreadMsg }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
-  const { homeGames } = useGetHomeInfo(['game_homeGames'])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -42,11 +42,10 @@ const BZHMinePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
-  const navs =
-    homeGames?.data?.navs
-      ?.sort((a, b) => parseInt(b.sort) - parseInt(a.sort))
-      .slice(0, 4) ?? []
+  const features = UGUserCenterItem?.slice(0, 4) ?? []
+  const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
+  console.log("---------UGUserCenterItem-------", UGUserCenterItem)
   return (
     <SafeAreaView style={styles.safeArea}>
       <Header title={'会员中心'} />
@@ -66,23 +65,26 @@ const BZHMinePage = ({ navigation }) => {
           containerStyle={{ paddingBottom: scale(30) }}
           avatar={avatar}
           money={balance}
-          name={usr}
-          features={navs}
+          name={isTest ? '遊客' : usr}
+          features={features}
           renderFeature={(item, index) => {
-            const { icon, name } = item
+            const { logo, name, code } = item
             return (
               <GameButton
                 key={index}
-                containerStyle={{ width: '25%', height: '100%' }}
-                circleColor={'transparent'}
-                logo={icon}
+                containerStyle={{ flex: 1, height: '100%', justifyContent: 'flex-end' }}
+                imageStyle={{ width: scale(50), height: scale(50) }}
+                titleStyle={{ fontSize: scale(30) }}
+                titleContainerStyle={{ aspectRatio: null, marginTop: scale(10) }}
+                enableCircle={false}
+                logo={logo}
                 title={name}
-                onPress={() => PushHelper.pushHomeGame(item)}
+                onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
           }}
         />
-        {UGUserCenterItem?.map((item, index) => {
+        {featureList?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList
@@ -90,6 +92,8 @@ const BZHMinePage = ({ navigation }) => {
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
+              unreadMsg={unreadMsg}
+              showUnreadMsg={code == 9}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
@@ -107,7 +111,7 @@ const BZHMinePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#e53333',
+    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flex: 1,
   },
   container: {

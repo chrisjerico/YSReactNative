@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
@@ -23,6 +24,7 @@ import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import Header from './views/Header'
 import FastImage from 'react-native-fast-image'
+import RowGameButtom from './views/RowGameButtom'
 
 const WNZHomePage = () => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -141,18 +143,20 @@ const WNZHomePage = () => {
               </View>
               <TabComponent
                 leftGames={leftGames}
-                rightGames={[]}
-                renderGame={(item, index) => {
+                rightGames={leftGames}
+                renderLeftGame={(item, index) => {
                   const { name, icon, show, id, desc } = item
                   return (
-                    <View key={index} style={{ width: '50%', flexDirection: 'row', aspectRatio: 255 / 85, paddingLeft: scale(25) }}>
-                      <FastImage source={{ uri: icon }} style={{ width: '25%', aspectRatio: 1 }} resizeMode={'contain'} />
-                      <View style={{ justifyContent: 'center', paddingLeft: scale(25) }}>
-                        <Text>{name}</Text>
-                      </View>
-                    </View>
+                    <RowGameButtom key={index} logo={icon} name={name} desc={desc} logoBallText={'官'} />
                   )
-                }} />
+                }}
+                renderRightGame={(item, index) => {
+                  const { name, icon, show, id, desc } = item
+                  return (
+                    <RowGameButtom key={index} logo={icon} name={name} desc={desc} logoBallText={'信'} />
+                  )
+                }}
+              />
               <RankBlock rankLists={[]} rankContainerStyle={{ borderRadius: 0 }} />
             </ScrollView>
           </>
