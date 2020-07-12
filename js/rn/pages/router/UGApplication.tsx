@@ -104,6 +104,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={LottoBetting} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={ZLHomeMine} />
     </Router.StackNavigator>
   )
 }

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -46,18 +46,12 @@ const ZLHomePage = ({ navigation }) => {
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
-    const state = useNavigationState(state => state);
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         navigate(PageName.LottoBetting, {})
-    //     }, 1000);
-    // }, [])
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -119,7 +113,9 @@ const ZLHomePage = ({ navigation }) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <ZLHeader />
-            <ScrollView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
+            <ScrollView refreshControl={
+                <RefreshControl style={{ backgroundColor: 'black' }} tintColor={'white'} refreshing={loading} onRefresh={onRefresh} />
+            } style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
                 {/* <Marquee/> */}
                 <UserStatusBar />
                 <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg, paddingLeft: 5 }}>
@@ -427,7 +423,7 @@ const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "" } = userStore
+    const { uid = "", unreadMsg } = userStore
     const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const { mobile_logo = "" } = sysStore
     return (
@@ -443,6 +439,13 @@ const ZLHeader = () => {
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
                         <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
+                        <View style={{
+                            position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
+                            height: 15, width: 15,
+                            borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+                        </View>
                     </TouchableOpacity> : null
                 }
 
@@ -495,7 +498,7 @@ const UserStatusBar = () => {
                             index = i
                         }
                     })
-                    navigate(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
+                    push(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}

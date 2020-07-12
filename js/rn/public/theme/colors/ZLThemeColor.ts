@@ -5,7 +5,7 @@ export const ZLThemeColor: { [x: string]: UGThemeColor } = {
     尊龙: {
         skitType: '尊龙',
         skitString: '尊龙',
-        bgColor: ['black', 'black'],
+        bgColor: ['gray', 'gray'],
         navBarBgColor: ['#2C2E36', '#2C2E36'],
         tabBarBgColor: '#2C2E36',
         tabNoSelectColor: '#FFFFFF',
