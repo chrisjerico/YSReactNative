@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { List } from '../public/network/Model/BannerModel'
 import UGSwiper from '../public/widget/swp/UGSwiper'
 import { Badge } from 'react-native-elements'
+import { scale } from '../helpers/function'
 
 interface BannerBlockProps {
   onlineNum: number
@@ -20,7 +21,7 @@ const BannerBlock = ({
   onlineNum = 0,
   banners = [],
   renderBanner,
-  badgePosition = { top: -160, right: 10 }
+  badgePosition = { top: scale(-200), right: scale(10) }
 }: BannerBlockProps) => {
 
   const { top, right } = badgePosition

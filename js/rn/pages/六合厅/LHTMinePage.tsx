@@ -2,14 +2,17 @@ import React, { useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { scale } from '../../helpers/function'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
+import APIRouter from '../../public/network/APIRouter'
+import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import FeatureList from '../../views/FeatureList'
@@ -17,8 +20,6 @@ import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
 import Header from './views/mines/Header'
 import ProfileBlock from './views/mines/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-import APIRouter from '../../public/network/APIRouter'
-import { ActionType } from '../../redux/store/ActionTypes'
 
 const LHTMinePage = ({ navigation }) => {
   // yellowBox
@@ -27,7 +28,7 @@ const LHTMinePage = ({ navigation }) => {
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, usr, curLevelGrade, balance }: UGUserModel = userStore
+  const { avatar, usr, curLevelGrade, balance, unreadMsg, isTest }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -56,7 +57,7 @@ const LHTMinePage = ({ navigation }) => {
       >
         <ProfileBlock
           profileButtons={defaultProfileButtons}
-          name={usr}
+          name={isTest ? '遊客' : usr}
           avatar={avatar}
           level={curLevelGrade}
           balance={balance}
@@ -91,6 +92,8 @@ const LHTMinePage = ({ navigation }) => {
               key={index}
               title={name}
               logo={logo}
+              unreadMsg={unreadMsg}
+              showUnreadMsg={code == 9}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
@@ -107,7 +110,7 @@ const LHTMinePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#2894FF',
+    backgroundColor: LHThemeColor.六合厅.themeColor,
     flex: 1,
   },
   container: {

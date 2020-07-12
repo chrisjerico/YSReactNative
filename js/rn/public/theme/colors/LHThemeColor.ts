@@ -1,7 +1,30 @@
-import {UGThemeColor} from '../UGThemeColor';
+import { UGThemeColor } from '../UGThemeColor';
 
 // 六合
-export const LHThemeColor: {[x: string]: UGThemeColor} = {
+export const LHThemeColor: { [x: string]: UGThemeColor } = {
+  六合厅: {
+    skitType: '六合厅',
+    skitString: '六合厅',
+    bgColor: ['#ffffff', '#ffffff'],
+    get navBarBgColor() { return [this.themeColor, this.themeColor] },
+    get tabBarBgColor() { return this.themeColor },
+    tabNoSelectColor: '#ffffff',
+    tabSelectedColor: '#010101',
+    progressBgColor: ['#d80000', '#fb5959'],
+    homeContentColor: '#FFFFFF',
+    homeContentSubColor: '#D3D3D3',
+    cellBgColor: '#FFFFFF',
+    CLBgColor: '#E6E6E6',
+    menuHeadViewColor: ['#ff566d', '#ffbac3'],
+    textColor1: '#111111',
+    textColor2: '#555555',
+    textColor3: '#C1C1C1',
+    textColor4: '#FFFFFF',
+    conversionCellColor: '#7BA2C2',
+    intoViewColor: '#7BA2C2',
+    moneyCellColor: '#9BB8CB',
+    themeColor: '#2894FF',
+  },
   //六合资料
   六合资料0: {
     skitType: '六合资料0',

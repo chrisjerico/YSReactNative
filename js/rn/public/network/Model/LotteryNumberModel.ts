@@ -1,4 +1,9 @@
 export interface LotteryNumberModel {
+  code: number
+  data: Data
+}
+
+export interface Data {
   auto: boolean
   endtime: string
   gameId: number

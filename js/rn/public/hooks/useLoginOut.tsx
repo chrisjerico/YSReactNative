@@ -1,17 +1,11 @@
-import { useCallback } from 'react'
 import { Alert, Platform } from 'react-native'
-import APIRouter from '../network/APIRouter'
-import { Toast } from '../tools/ToastUtils'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import {
-  IGlobalStateHelper,
-  updateUserInfo,
-} from '../../redux/store/IGlobalStateHelper'
-import { useDispatch } from 'react-redux'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { UGStore } from '../../redux/store/UGStore'
-import { popToRoot, navigate } from '../navigation/RootNavigation'
+import { OCHelper } from '../define/OCHelper/OCHelper'
 import { PageName } from '../navigation/Navigation'
+import { navigate } from '../navigation/RootNavigation'
+import APIRouter from '../network/APIRouter'
+import { Toast } from '../tools/ToastUtils'
 
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {
@@ -27,7 +21,6 @@ const useLoginOut = (pageName: PageName) => {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: ActionType.Clear_User })
         UGStore.save()
-        Toast('退出成功')
       } else {
         // TODO 安卓
       }

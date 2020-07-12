@@ -16,7 +16,7 @@ const ProfileButton = ({
 }: ProfileButtonProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={{ paddingRight: scale(5), color: '#ffffff' }}>{title}</Text>
+      <Text style={{ paddingRight: scale(5), color: '#ffffff', fontWeight: '500' }}>{title}</Text>
       <FastImage
         style={styles.image}
         resizeMode={'contain'}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, ViewStyle, ImageResizeMode, ImageResizeModeStatic } from 'react-native';
+import { StyleSheet, TouchableOpacity, ViewStyle, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface TouchableImageProps {
@@ -7,12 +7,14 @@ interface TouchableImageProps {
   onPress: () => any;
   containerStyle?: ViewStyle;
   resizeMode?: 'cover' | 'contain'
+  enableFastImage?: boolean
 }
 
-const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover' }: TouchableImageProps) => {
+const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', enableFastImage = true }: TouchableImageProps) => {
+  const ImageComponent = enableFastImage ? FastImage : Image
   return (
     <TouchableOpacity style={containerStyle ? containerStyle : styles.container} onPress={onPress}>
-      <FastImage style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} />
+      <ImageComponent style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} />
     </TouchableOpacity>
   );
 };

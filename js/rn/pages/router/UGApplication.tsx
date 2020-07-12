@@ -61,7 +61,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LXBView} component={LXBView} />
         <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage} />
         <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
         <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
@@ -72,7 +71,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZHTYMinePage} component={ZHTYMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
         <Router.TabScreen name={PageName.PromotionListPage} component={PromotionListPage} />
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
@@ -83,6 +81,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
       </Router.TabNavigator>
     );
   }
