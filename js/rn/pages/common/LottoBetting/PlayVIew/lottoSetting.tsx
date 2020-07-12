@@ -47,3 +47,20 @@ export const getHKballColor = (BallName: string) => {
     return 'rgba(96, 174, 108,1)'
   }
 }
+export function factorial(m, n) {
+  var num = 1;
+  var count = 0;
+  for (var i = m; i > 0; i--) {
+    if (count == n) {
+      break;
+    }
+    num = num * i;
+    count++;
+  }
+  return num;
+}
+
+export function combination(m, n) {
+  return factorial(m, n) / factorial(n, n);
+}
+

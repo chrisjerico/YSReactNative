@@ -2,11 +2,11 @@ import { View, Text } from "react-native"
 import React from 'react'
 import { PlayGroup } from "../../../../../public/network/Model/PlayOddDataModel"
 import { useDimensions } from "@react-native-community/hooks"
-import TMItem from "./balls/TMItem"
 import { useLottoContext } from "../../LottoContext"
+import LMItem from "./balls/LMItem"
 
 const itemSize = 40
-const HKBallsView = ({ data }: { data: PlayGroup }) => {
+const HKWXItemView = ({ data }: { data: PlayGroup }) => {
   const { width } = useDimensions().screen
   const { currentOddsData } = useLottoContext()
   return (
@@ -15,13 +15,13 @@ const HKBallsView = ({ data }: { data: PlayGroup }) => {
       <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
         {
           data.plays.map((data, index) => {
-            if (index < 45) {
-              return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 3, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                <TMItem data={data} />
+            if (index == 4) {
+              return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5), borderWidth: 1, borderColor: '#444', height: itemSize }}>
+                <LMItem fix={1} data={data} />
               </View>
             } else {
               return <View key={data.from_id + data.isBan + data.code + data.name + data.alias} style={{ width: ((width / 4 * 3) - 5) / 2, borderWidth: 1, borderColor: '#444', height: itemSize }}>
-                <TMItem data={data} />
+                <LMItem fix={1} data={data} />
               </View>
             }
           })
@@ -30,4 +30,4 @@ const HKBallsView = ({ data }: { data: PlayGroup }) => {
     </View>
   )
 }
-export default HKBallsView
+export default HKWXItemView

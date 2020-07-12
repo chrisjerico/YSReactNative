@@ -8,12 +8,15 @@ export interface BettingReducerProps {
   bettingResult: bettingResultProps,
   shengXiaoValue: ResultProps,
   selectedShengXiao: SelectedShengXiao,
-  currentPlayOdd: PlayOdd
+  currentPlayOdd: PlayOdd,
+  betGroupResult: number[]
 }
 export enum BettingReducerActions {
   itemPress = "itemPress",
   shengXiaoPress = "shengXiaoPress",
-  setCurrentPlayOdd = "setCurrentPlayOdd"
+  setCurrentPlayOdd = "setCurrentPlayOdd",
+  itemGroupPress = "itemGroupPress",
+  cleanBetGroupResult = "cleanBetGroupResult"
 }
 interface SelectedShengXiao {
   [key: string]: number
@@ -30,12 +33,21 @@ interface setCurrentPlayOddAction {
   type: BettingReducerActions.setCurrentPlayOdd,
   value: PlayOdd
 }
-type Actions = itemPressAction | shengXiaoPressAction | setCurrentPlayOddAction
+interface itemGroupPressAction {
+  type: BettingReducerActions.itemGroupPress,
+  value: number
+}
+interface cleanBetGroupResultAction {
+  type: BettingReducerActions.cleanBetGroupResult,
+  value: null
+}
+type Actions = itemPressAction | shengXiaoPressAction | setCurrentPlayOddAction | itemGroupPressAction | cleanBetGroupResultAction
 const initialState: BettingReducerProps = {
   bettingResult: {},
   shengXiaoValue: getShengXiaoValue(),
   selectedShengXiao: {},
-  currentPlayOdd: undefined
+  currentPlayOdd: undefined,
+  betGroupResult: []
 }
 function BettingReducer(state = initialState, action: Actions) {
   if (typeof state === 'undefined') {
@@ -101,6 +113,14 @@ function BettingReducer(state = initialState, action: Actions) {
           draftState.selectedShengXiao[ShengXiaoTitle[index]] = 0
         }
       }
+    } else if (action.type == BettingReducerActions.itemGroupPress) {
+      if (state.betGroupResult.indexOf(action.value)) {
+        draftState.betGroupResult.splice(state.betGroupResult.indexOf(action.value), 0)
+      } else {
+        draftState.betGroupResult.push(action.value)
+      }
+    } else if (action.type == BettingReducerActions.cleanBetGroupResult) {
+      draftState.betGroupResult = []
     } else {
 
     }

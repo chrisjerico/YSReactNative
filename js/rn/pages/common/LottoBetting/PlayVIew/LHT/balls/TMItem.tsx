@@ -20,7 +20,7 @@ const TMItem = ({ data, }: { data: Play, }) => {
         <View style={{ width: 30, height: 30, borderRadius: 15, borderColor: borderColor, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: 5 }}>
           <Text>{data.name}</Text>
         </View>
-        <Text>{data.odds.split(".")[0]}</Text>
+        <Text>{data.odds.replace(".0000", "").replace(".00", "").replace("00", "")}</Text>
       </View>
     </TouchableWithoutFeedback>
   )

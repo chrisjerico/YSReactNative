@@ -53,11 +53,11 @@ const ZLHomePage = ({ navigation }) => {
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
-    useEffect(() => {
-        setTimeout(() => {
-            navigate(PageName.LottoBetting, {})
-        }, 1000);
-    }, [])
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         navigate(PageName.LottoBetting, {})
+    //     }, 1000);
+    // }, [])
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {

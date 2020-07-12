@@ -1,14 +1,14 @@
 import React from 'react';
 import NetworkRequest1 from '../../public/network/NetworkRequest1';
-import {UGPromoteModel} from '../../redux/model/other/UGPromoteModel';
+import { UGPromoteModel } from '../../redux/model/other/UGPromoteModel';
 import JDPromotionListCP from './cp/JDPromotionListCP';
 import UGBasePage from '../base/UGBasePage';
-import {JDPromotionListProps, JDPromotionListStateToProps} from './JDPromotionListProps';
-import {connect} from 'react-redux';
-import {Skin1} from '../../public/theme/UGSkinManagers';
-import ScrollableTabView, {TabBarProps} from 'react-native-scrollable-tab-view';
-import {Text} from 'react-native-elements';
-import {View} from 'react-native';
+import { JDPromotionListProps, JDPromotionListStateToProps } from './JDPromotionListProps';
+import { connect } from 'react-redux';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
+import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
+import { Text } from 'react-native-elements';
+import { View } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -24,11 +24,11 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
   }
 
   didFocus(params: JDPromotionListProps): void { }
-  
+
   requestData() {
     NetworkRequest1.systeam_promotions().then(data => {
       if (data.showCategory) {
-        const temp: {[x: number]: Array<UGPromoteModel>} = [];
+        const temp: { [x: number]: Array<UGPromoteModel> } = [];
         data.list.map(pm => {
           let list = temp[pm.category];
           if (!list) {
@@ -38,8 +38,8 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
           list.push(pm);
         });
 
-        const dataArray: Array<{category: string; title: string; list: Array<UGPromoteModel>}> = [];
-        dataArray.push({category: '0', title: '全部', list: data.list});
+        const dataArray: Array<{ category: string; title: string; list: Array<UGPromoteModel> }> = [];
+        dataArray.push({ category: '0', title: '全部', list: data.list });
         for (const k in temp) {
           const title = data.categories[k];
           if (!title) {
@@ -51,26 +51,26 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
           if (obj) {
             obj.list = obj.list.concat(temp[k]);
           } else {
-            dataArray.push({category: k, title: title, list: temp[k]});
+            dataArray.push({ category: k, title: title, list: temp[k] });
           }
         }
-        this.setProps({style: data.style, dataArray: dataArray, showTopBar: dataArray.length > 1});
+        this.setProps({ style: data.style, dataArray: dataArray, showTopBar: dataArray.length > 1 });
       } else {
-        this.setProps({style: data.style, dataArray: [{title: '热门', list: data.list}]});
+        this.setProps({ style: data.style, dataArray: [{ title: '热门', list: data.list }] });
       }
     });
   }
 
   // 顶部标题栏
-  renderTabBar(props: TabBarProps & {hidden: boolean; titles: string[], style?:'背景透明' | '背景不透明'}) {
+  renderTabBar(props: TabBarProps & { hidden: boolean; titles: string[], style?: '背景透明' | '背景不透明' }) {
     if (props.hidden) {
       return null;
     }
     const { titles = [] } = props;
     if (props.style === '背景不透明') {
       return (
-        <View style={{flexDirection: 'row', justifyContent: 'space-around', height: props.hidden ? 0 : 43, backgroundColor: chroma(Skin1.themeColor).brighten(0.4).hex() }}>
-          <View style={{position:'absolute', left:0, top:42, width:AppDefine.width, height:1, backgroundColor:'#ccc'}} />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: props.hidden ? 0 : 43, backgroundColor: 'chroma(Skin1.themeColor).brighten(0.4).hex()' }}>
+          <View style={{ position: 'absolute', left: 0, top: 42, width: AppDefine.width, height: 1, backgroundColor: '#ccc' }} />
           {titles.map((title, idx) => {
             return (
               <View>
@@ -90,7 +90,7 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
                   }}>
                   {title}
                 </Text>
-                <View style={{marginTop:7, height:idx == props.activeTab ? 1.5 : 0, backgroundColor :'#DD0000'}} />
+                <View style={{ marginTop: 7, height: idx == props.activeTab ? 1.5 : 0, backgroundColor: '#DD0000' }} />
               </View>
             );
           })}
@@ -99,7 +99,7 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
     }
 
     return (
-      <View style={{marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45}}>
+      <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }}>
         {titles.map((title, idx) => {
           return (
             <Text
@@ -128,7 +128,7 @@ class JDPromotionListPage extends UGBasePage<JDPromotionListProps> {
   }
 
   renderContent(): React.ReactNode {
-    const {dataArray = [], showTopBar = true} = this.props;
+    const { dataArray = [], showTopBar = true } = this.props;
     if (dataArray.length == 0) {
       return null;
     }

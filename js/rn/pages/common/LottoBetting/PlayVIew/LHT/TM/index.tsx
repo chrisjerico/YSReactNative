@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { View, Image, Text, TouchableWithoutFeedback, FlatList, ScrollView, TouchableOpacity } from 'react-native'
-import { ShengXiaoTitle, } from '../lottoSetting'
+
 import { useDimensions } from '@react-native-community/hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { BettingReducerActions } from '../../../../../redux/reducer/BettingReducer';
-import { UGStore, IGlobalState } from '../../../../../redux/store/UGStore';
-import HKBallsView from '../LHT/HKBallsView';
-import HKNormalItemView from '../LHT/HKNormalItemView';
-import HKSBItemView from '../LHT/HKSBItemView';
+import { IGlobalState } from '../../../../../../redux/store/UGStore';
+import { ShengXiaoTitle } from '../../lottoSetting';
+import { BettingReducerActions } from '../../../../../../redux/reducer/BettingReducer';
+import HKBallsView from '../HKBallsView';
+import HKSBItemView from '../HKSBItemView';
+import HKNormalItemView from '../HKNormalItemView';
+
 const TMPlayView = () => {
   const { selectedShengXiao, shengXiaoValue } = useSelector((state: IGlobalState) => state.BettingReducer)
   const dispatch = useDispatch()
@@ -51,14 +53,14 @@ const GameGroup = ({ label = "特码A" }: { label?: "特码A" | "特码B" }) => 
       {currentPlayOdd?.playGroups?.filter((res) => res?.alias?.includes(label))?.map((res, index) => {
         switch (index) {
           case 0:
-            return (<HKBallsView data={res} />
+            return (<HKBallsView key={res.id + index} data={res} />
             )
             break;
           case 1:
-            return <HKNormalItemView data={res} />
+            return <HKNormalItemView key={res.id + index} data={res} />
           case 2:
             return (
-              <HKSBItemView data={res} />
+              <HKSBItemView key={res.id + index} data={res} />
             )
           default:
             break;
