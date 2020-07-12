@@ -49,7 +49,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     const marginHorizontal = this.style1 === '贴边' ? 0 : 10;
     const marginVertical = this.style1 == '贴边' || this.style1 == '外边框' ? 0 : 5;
     let contentView = (
-      <View style={{ marginHorizontal: marginHorizontal, marginVertical: marginVertical }}>
+      <View style={{ marginHorizontal: marginHorizontal, marginVertical: AppDefine.siteId == 'c092' ? 10 : marginVertical, backgroundColor: AppDefine.siteId == 'c092' ? "#e0e0e0" : '#00000000', borderRadius: 8 }}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {

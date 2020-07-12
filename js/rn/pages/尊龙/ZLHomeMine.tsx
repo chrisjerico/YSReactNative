@@ -43,7 +43,7 @@ const ZLHomeMine = ({ navigation }) => {
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
-            <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10, }}>
+            <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
                 <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
                     <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
                 </FastImage>

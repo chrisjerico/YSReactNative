@@ -30,6 +30,7 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
+import HSNZ from 'react-native-hsnz-marquee'
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -123,6 +124,7 @@ const ZLHomePage = ({ navigation }) => {
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
                         width={width - 60}
                         height={34}
+
                         speed={40}
                         onTextClick={() => {
                             setShow(true)
