@@ -1,6 +1,6 @@
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { httpClient } from './httpClient'
+import { httpClient, CachePolicyEnum } from './httpClient'
 import { BalanceModel } from './Model/BalanceModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
@@ -14,6 +14,9 @@ import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
 import { TurntableListModel } from './Model/TurntableListModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
+import { PlayOddDataModel } from './Model/PlayOddDataModel'
+import { AxiosResponse } from 'axios'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 
@@ -139,9 +142,20 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber');
   };
-
-  static user_centerList = async () => {
-    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
-  };
+  static game_lotteryGames = (): Promise<AxiosResponse<LottoGamesModel>> => {
+    //@ts-ignore
+    return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
+      //@ts-ignore
+      isEncrypt: false,
+      cachePolicy: CachePolicyEnum.cacheByTime,
+      expiredTime: 3
+    });
+  }
+  static game_playOdds = (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+    return httpClient.get("c=game&a=playOdds&id=" + id, {
+      //@ts-ignore
+      isEncrypt: false
+    })
+  }
 }
 export default APIRouter

@@ -30,6 +30,15 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
+/**
+ * 
+ * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
+    vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
+        [NavController1 pushViewControllerWithNextIssueModel:nextModel];
+    };
+    UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:true completion:nil];
+ */
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -44,6 +53,11 @@ const ZLHomePage = ({ navigation }) => {
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         navigate(PageName.LottoBetting, {})
+    //     }, 1000);
+    // }, [])
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -244,7 +258,7 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
 
-                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
+                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
                     return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                         <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
                             if (selectId == index) {
