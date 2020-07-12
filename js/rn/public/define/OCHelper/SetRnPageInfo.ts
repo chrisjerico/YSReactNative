@@ -57,6 +57,27 @@ export function setRnPageInfo() {
   });
 
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
+  if (Skin1.skitType.indexOf('凯时') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.KSHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      // {
+      //   // 我的页
+      //   tabbarItemPath: '/user',
+      //   rnName: PageName.WNZMinePage,
+      //   fd_prefersNavigationBarHidden: true,
+      //   允许游客访问: true,
+      //   允许未登录访问: false,
+      // },
+    ])
+  }
+
   // 威尼斯页面
   if (Skin1.skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat([

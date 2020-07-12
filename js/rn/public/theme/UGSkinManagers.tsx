@@ -16,6 +16,7 @@ import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
 import { B_DEBUG } from '../tools/UgLog';
 import { ZLThemeColor } from './colors/ZLThemeColor';
 import { LCThemeColor } from "./colors/LCThemeColor";
+import { KSThemeColor } from "./colors/KSThemeColor";
 import { BZHThemeColor } from "./colors/BZHThemeColor";
 import { WNZThemeColor } from "./colors/WNZThemeColor";
 
@@ -30,6 +31,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...GDBThemeColor,
     ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
+    ...KSThemeColor, // 凯时
     ...BZHThemeColor, // 宝石红
     ...WNZThemeColor, // 威尼斯
   };
@@ -56,20 +58,17 @@ export default class UGSkinManagers extends UGThemeColor {
       16: `尊龙`,
       18: `金星黑`,
       19: `乐橙`,
+      22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
-    if (B_DEBUG) {
-      key = '宝石红';
-    }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
     theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
     theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
-
     let skin = new UGSkinManagers();
     Object.assign(skin, Skin1);
     Object.assign(skin, theme);

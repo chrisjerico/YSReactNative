@@ -99,35 +99,35 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
           />
         </TouchableOpacity>
         {
-          this.state.selectedIndex === idx && <View style={{ height:pm.webViewHeight ?? 200}}>
-          <WebView
-            onNavigationStateChange={(title) => {
-              if (!pm.webViewHeight && parseInt(title.title)) {
-                pm.webViewHeight = parseInt(title.title);
-                if (this.lastSelectedIndex != this.state.selectedIndex) {
-                  this.lastSelectedIndex = this.state.selectedIndex;
-                  this.setState({});
+          this.state.selectedIndex === idx && <View style={{ height: pm.webViewHeight ?? 200 }}>
+            <WebView
+              onNavigationStateChange={(title) => {
+                if (!pm.webViewHeight && parseInt(title.title)) {
+                  pm.webViewHeight = parseInt(title.title);
+                  if (this.lastSelectedIndex != this.state.selectedIndex) {
+                    this.lastSelectedIndex = this.state.selectedIndex;
+                    this.setState({});
+                  }
                 }
-              }
-            }}
-            style={{ flex: 1 }}
-            source={{
-              html:
-                `<head>
+              }}
+              style={{ flex: 1 }}
+              source={{
+                html:
+                  `<head>
                 <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
                 <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
                 <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
               </head>` +
-                `<script>
+                  `<script>
                 window.onload = function () {
                   window.location.hash = 1;
                   document.title = document.body.scrollHeight;
                 }
               </script>` +
-                pm.content,
-            }}
-          />
-        </View>
+                  pm.content,
+              }}
+            />
+          </View>
         }
       </View>
     );
@@ -146,7 +146,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     }
     if (this.style1 == '外边框') {
       return (
-        <View style={{ margin: 7, paddingTop:11, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
+        <View style={{ margin: 7, paddingTop: 11, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
           <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         </View>
       )

@@ -142,6 +142,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
       }
     })
   }
+  const onRefresh = () => {
+    init()
+  }
   return {
     onlineNum,
     redBag,
@@ -155,7 +158,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     lotteryNumber,
     categoryList,
     turntableList,
-    lotteryGames
+    lotteryGames,
+    onRefresh
   }
 }
 export default useGetHomeInfo
