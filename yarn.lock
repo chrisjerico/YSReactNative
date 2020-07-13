@@ -6277,6 +6277,11 @@ react-native-gesture-handler@^1.6.0:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-hsnz-marquee@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-hsnz-marquee/-/react-native-hsnz-marquee-1.0.4.tgz#9bafcff527c9a2fe19585e550bfb3023fbadc6fc"
+  integrity sha512-7vWvqJ+6mXkBTA/j6jeZ29X5fX/KSZXjNfqt7kbiJoyaiPTOQNeDi0tj7wTkSlq9NTx21Xqk93Tgxg0JFHGSEw==
+
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
