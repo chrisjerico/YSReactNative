@@ -27,7 +27,6 @@ export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}:
     }
 
     const scrolling = () => {
-        debugger
         let current = currentPosition
         if (currentPosition < 0) {
             current = 0;
