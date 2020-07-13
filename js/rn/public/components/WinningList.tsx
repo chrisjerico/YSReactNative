@@ -8,7 +8,7 @@ interface WinningListViewProps {
     contentContainerStyle?: StyleProp<ViewStyle>
 }
 
-export const WinningListView = memo(({data, style = {}, contentContainerStyle = {}}: WinningListViewProps) => {
+export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}: WinningListViewProps) => {
     let currentPosition = 0
     const itemHeight = 29.3
     let ticker = useRef()
