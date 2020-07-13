@@ -1,9 +1,10 @@
 import * as React from "react";
 import {memo, useEffect, useRef} from "react";
 import {FlatList, StyleProp, Text, View, ViewStyle} from "react-native";
+import {List} from "../network/Model/RankListModel";
 
 interface WinningListViewProps {
-    data: any[],
+    data: List[],
     style?: StyleProp<ViewStyle>,
     contentContainerStyle?: StyleProp<ViewStyle>
 }
