@@ -20,6 +20,7 @@ export const CardView = () => {
         UGUserCenterItem && setDepositItem(UGUserCenterItem.find((item) => item.name == '存款'))
         UGUserCenterItem && setWithdrawItem(UGUserCenterItem.find((item) => item.name == '取款'))
         UGUserCenterItem && setLXBItem(UGUserCenterItem.find((item) => item.name == '利息宝'))
+        console.log("UGUserCenterItemL:", UGUserCenterItem)
     }, [UGUserCenterItem])
 
     return (
@@ -52,29 +53,38 @@ export const CardView = () => {
                 <View style={{paddingHorizontal: 50, paddingTop: 10, flexDirection: "row"}}>
                     <Text style={{color: "#65727B", alignSelf: "center", marginRight: 10}}>余额 : </Text>
                     <TouchableOpacity onPress={() => setShowBalance(!showBalance)}>
-                        {showBalance ? <Text style={{
-                                fontSize: 18,
-                                paddingRight: 10,
-                                fontWeight: "bold",
-                                textAlign: "center",
-                                alignSelf: "center"
-                            }}>{`${balance} RMB`}</Text> :
-                            <Image source={{
+                        {showBalance ? <Image source={{
                                 width: 22,
                                 height: 22,
                                 uri: "http://test30.6yc.com/views/mobileTemplate/19/images/moneyicon.png"
+                            }}/> :
+                            <Image source={{
+                                width: 22,
+                                height: 22,
+                                uri: "https://test30.6yc.com/views/mobileTemplate/19/images/moneyhideicon.png"
                             }}/>}
                     </TouchableOpacity>
                 </View>
-                <View style={{paddingHorizontal: 50, paddingTop: 10, flexDirection: "row"}}>
-                    <Text style={{
+                <View style={{paddingHorizontal: 50, paddingTop: 10, flexDirection: "row", alignItems: "center"}}>
+                    {showBalance ? <Text style={{
                         fontSize: 18,
                         paddingRight: 10,
                         fontWeight: "bold",
                         textAlign: "center",
-                        alignSelf: "center"
-                    }}>{`${todayWinAmount} RMB`}</Text>
-                    <Icon name={"refresh"}/>
+                        alignSelf: "center",
+                        lineHeight: 36,
+                    }}>{`${balance} RMB`}</Text> : <Text style={{
+                        fontSize: 30,
+                        paddingRight: 10,
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        alignSelf: "center",
+                        lineHeight: 36,
+                        top: 5
+                    }}>
+                        * * * *
+                    </Text>}
+                    {showBalance && <Icon name={"refresh"}/>}
                 </View>
                 <View style={{flexDirection: "row", paddingHorizontal: 50, marginTop: 30, alignItems: "center"}}>
                     <CardButton

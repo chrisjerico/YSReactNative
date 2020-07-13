@@ -3,7 +3,11 @@ import {useEffect, useState} from "react";
 import {
     Alert,
     Dimensions,
-    FlatList, Image, ImageBackground, Platform,
+    FlatList,
+    Image,
+    ImageBackground,
+    Platform,
+    RefreshControl,
     SafeAreaView,
     ScrollView,
     Text,
@@ -11,21 +15,16 @@ import {
     View
 } from "react-native";
 import {BannerView} from "./component/homePage/BannerView";
-import {MarqueeView} from "./component/homePage/MarqueeView";
 import {HomeHeaderButtonBar} from "./component/homePage/HomeHeaderButtonBar";
-import {WinningListView} from "./component/homePage/WinningListView";
 import {HomeTabView} from "./component/homePage/homeTabView/HomeTabView";
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo";
 import {navigate, push} from "../../public/navigation/RootNavigation";
 import {PageName} from "../../public/navigation/Navigation";
 import Icon from "react-native-vector-icons/FontAwesome"
 import {useDimensions} from "@react-native-community/hooks";
-import {useSafeArea} from "react-native-safe-area-context";
-import {useNavigationState} from "@react-navigation/native";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import {PromotionsModel} from "../../public/network/Model/PromotionsModel";
 import APIRouter from "../../public/network/APIRouter";
-import ScrollableTabView from "react-native-scrollable-tab-view";
 import usePopUpView from "../../public/hooks/usePopUpView";
 import AutoHeightWebView from "react-native-autoheight-webview";
 import FastImage from "react-native-fast-image";
@@ -36,18 +35,12 @@ import {TurntableListModel} from "../../public/network/Model/TurntableListModel"
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall";
 import AppDefine from "../../public/define/AppDefine";
 import PushHelper from "../../public/define/PushHelper";
-import Modal from 'react-native-modal';
+import {WinningList} from "../../public/components/WinningList";
 
 const LCHomePage = () => {
-    const {banner, notice, rankList, redBag} = useGetHomeInfo()
-    const [marquee, setMarquee] = useState<string[]>([])
-    const state = useNavigationState(state => state);
+    const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
-    const [currentNativeSelectedTab, setCurrentNativeSelectedTab] = useState(-1)
-    useEffect(() => {
-        notice && getMarquee()
-    }, [notice])
 
     useEffect(() => {
         initPromotions()
@@ -69,20 +62,24 @@ const LCHomePage = () => {
         }
     }
 
-    const getMarquee = () => {
-        let arr = []
-        notice && notice.data && notice.data.scroll.map((item) => {
-            arr.push(item.content)
-        })
-        setMarquee(arr)
-    }
-
     return (
-        <ScrollView bounces={false} style={{flex: 1}}>
+        <ScrollView refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
+                                                    onRefresh={onRefresh}/>}
+                    style={{flex: 1}}>
             <HomeHeaderButtonBar/>
             <BannerView
                 list={banner && banner.data ? banner.data.list : []}/>
-            <MarqueeView textArr={marquee}/>
+            <View style={{
+                position: 'absolute',
+                top: 90,
+                right: 10,
+                backgroundColor: "rgba(0,0,0,0.3)",
+                borderRadius: 16,
+                padding: 5
+            }}>
+                <Text style={{color: 'white'}}>当前在线:{onlineNum}</Text>
+            </View>
+            {/*<MarqueeView notice={notice && notice.data ? notice.data.scroll : []}/>*/}
             <HomeTabView/>
             <SafeAreaView style={{marginHorizontal: 10}}>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -99,8 +96,9 @@ const LCHomePage = () => {
                                                dataSource={promotionData} filter={res}/>
                     })}
                 </View>
-                <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
-                <WinningListView data={rankList ? rankList.data.list : []}/>
+                {rankList && rankList.data.list.length > 0 &&
+                <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>}
+                <WinningList data={rankList ? rankList.data.list : []}/>
                 <RedBagItem redBag={redBag}/>
                 <TurntableListItem/>
             </SafeAreaView>

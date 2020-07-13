@@ -1,22 +1,19 @@
-import {Dimensions, Image, View, Text, ScrollView, TouchableHighlight} from "react-native";
+import {Dimensions, Image, Text, TouchableHighlight, View} from "react-native";
 import * as React from "react";
+import {memo, useState} from "react";
 import {MarqueeHorizontal} from 'react-native-marquee-ab';
-import {useState} from "react";
 import Modal from 'react-native-modal';
 import AutoHeightWebView from "react-native-autoheight-webview";
+import {Scroll} from "../../../../public/network/Model/NoticeModel";
 
 const width = Dimensions.get("screen").width
 
-interface MarqueeViewProps {
-    textArr: string[]
-}
-
-export const MarqueeView = ({textArr}: MarqueeViewProps) => {
+export const MarqueeView = memo(({notice}: { notice: Scroll[] }) => {
     const [popupVisible, setPopupVisible] = useState(false)
     const [popupContent, setPopupContent] = useState("")
     const getTextList = () => {
-        return textArr.map((value, index) => {
-            return {label: index.toString(), value}
+        return notice.map((value, index) => {
+            return {label: index.toString(), value: value.title}
         })
     }
 
@@ -56,7 +53,7 @@ export const MarqueeView = ({textArr}: MarqueeViewProps) => {
                 reverse={false}
                 textStyle={{fontSize: 16, color: '#FF0000'}}
                 onTextClick={(item) => {
-                    setPopupContent(item.content)
+                    setPopupContent(notice[item.index].content)
                     setPopupVisible(true)
                 }}
             />
@@ -113,4 +110,4 @@ export const MarqueeView = ({textArr}: MarqueeViewProps) => {
             </Modal>
         </View>
     )
-}
+})
