@@ -43,7 +43,7 @@ const GameButton = (props: GameButtonProps) => {
     titleStyle,
     subTitleStyle,
     titleContainerStyle,
-    resizeMode = 'cover',
+    resizeMode = 'contain',
     enableCircle = true,
   } = props
   return (
@@ -74,13 +74,17 @@ const GameButton = (props: GameButtonProps) => {
           />
         )}
       <View style={[styles.titleContainer, titleContainerStyle]}>
-        <Text style={[styles.titleStyle, titleStyle]} numberOfLines={1}>
-          {title}
-        </Text>
-        {showSubTitle && (
-          <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
-            {subTitle}
+        <View style={styles.textContainer}>
+          <Text style={titleStyle} numberOfLines={1}>
+            {title}
           </Text>
+        </View>
+        {showSubTitle && (
+          <View style={styles.textContainer}>
+            <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
+              {subTitle}
+            </Text>
+          </View>
         )}
       </View>
     </TouchableOpacity>
@@ -90,7 +94,6 @@ const GameButton = (props: GameButtonProps) => {
 const styles = StyleSheet.create({
   conatiner: {
     width: scale(150),
-    height: scale(200),
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -105,17 +108,20 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
-    aspectRatio: 150 / 60,
+    aspectRatio: 2,
   },
   subTitle: {
     color: '#999999',
   },
   image: {
     width: '75%',
-    height: '75%',
-    borderRadius: scale(85),
+    aspectRatio: 1,
   },
-  titleStyle: {},
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 })
 
 export default GameButton

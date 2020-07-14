@@ -80,17 +80,8 @@ const BZHMinePage = ({ navigation }) => {
             return (
               <GameButton
                 key={index}
-                containerStyle={{
-                  flex: 1,
-                  height: '100%',
-                  justifyContent: 'flex-end',
-                }}
-                imageStyle={{ width: scale(50), height: scale(50) }}
-                titleStyle={{ fontSize: scale(30) }}
-                titleContainerStyle={{
-                  aspectRatio: null,
-                  marginTop: scale(10),
-                }}
+                containerStyle={{ width: '20%' }}
+                titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
                 logo={logo}
                 title={name}

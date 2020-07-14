@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
@@ -84,7 +84,7 @@ const BZHHomePage = ({ navigation }) => {
   const games = homeGames?.data?.icons?.slice(0, 3) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
-
+  console.log('------games-------', games[0]?.list)
   return (
     <SafeAreaView style={styles.safeArea}>
       {loading ? (
@@ -143,13 +143,12 @@ const BZHHomePage = ({ navigation }) => {
                   return (
                     <GameButton
                       key={index}
-                      containerStyle={{ width: '25%' }}
-                      circleColor={'transparent'}
+                      containerStyle={{ width: '20%' }}
+                      enableCircle={false}
                       logo={icon ? icon : logo}
                       title={name}
                       titleStyle={{ fontSize: scale(25) }}
                       onPress={() => {
-                        console.log("--------item--------", item)
                         PushHelper.pushHomeGame(item)
                       }}
                     />
@@ -166,28 +165,31 @@ const BZHHomePage = ({ navigation }) => {
                       }
                       title={name}
                       containerStyle={styles.subComponent}
+                      contentContainerStyle={{ paddingTop: scale(20) }}
                       games={list}
                       renderGame={(item, index) => {
                         const { title, logo, icon, name, subtitle } = item
                         return (
                           <GameButton
                             key={index}
+                            resizeMode={'contain'}
                             containerStyle={[
                               styles.gameContainer,
                               {
-                                marginRight: index % 3 == 0 ? '5%' : 0,
-                                marginLeft: index % 3 == 2 ? '5%' : 0,
+                                marginLeft: index % 3 == 1 ? '5%' : 0,
+                                marginRight: index % 3 == 1 ? '5%' : 0,
                               },
                             ]}
-                            circleColor={'transparent'}
+                            enableCircle={false}
                             logo={icon || logo}
-                            title={title || name}
+                            title={name || title}
                             subTitle={subtitle}
                             showSubTitle
-                            titleStyle={{ fontSize: scale(27) }}
+                            titleStyle={{
+                              fontSize: scale(27)
+                            }}
                             subTitleStyle={{
                               fontSize: scale(23),
-                              paddingTop: scale(10),
                             }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
@@ -261,7 +263,7 @@ const styles = StyleSheet.create({
   gameContainer: {
     width: '30%',
     height: null,
-    marginBottom: scale(10),
+    marginBottom: scale(20),
   },
 })
 
