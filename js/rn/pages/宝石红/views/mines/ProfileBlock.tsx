@@ -15,6 +15,7 @@ interface ProfileBlockProps {
   name: string;
   onPressReload: () => any;
   level: string;
+  onPressAvatar: () => any;
 }
 
 const ProfileBlock = ({
@@ -25,14 +26,15 @@ const ProfileBlock = ({
   containerStyle,
   name,
   onPressReload,
-  level
+  level,
+  onPressAvatar
 }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
       <View style={styles.whiteBlock}>
         <View style={styles.profileContainer}>
-          <Avatar source={{ uri: avatar }} size={'large'} rounded />
+          <Avatar source={{ uri: avatar }} size={'large'} rounded onPress={onPressAvatar} />
           <View style={styles.moneyContainer}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.text}>{name}</Text>

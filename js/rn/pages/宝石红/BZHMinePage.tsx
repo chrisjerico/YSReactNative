@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,17 @@ import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
+import PickAvatarComponent from './views/mines/PickAvatarComponent'
 import ProfileBlock from './views/mines/ProfileBlock'
+
+const defaultAvatars = [
+  'http://test05.6yc.com/images/face/memberFace1.jpg',
+  'http://test05.6yc.com/images/face/memberFace2.jpg',
+  'http://test05.6yc.com/images/face/memberFace3.jpg',
+  'http://test05.6yc.com/images/face/memberFace4.jpg',
+  'http://test05.6yc.com/images/face/memberFace5.jpg',
+  'http://test05.6yc.com/images/face/memberFace6.jpg'
+]
 
 const BZHMinePage = ({ navigation }) => {
   // yellowBox
@@ -34,6 +44,7 @@ const BZHMinePage = ({ navigation }) => {
     curLevelGrade,
   }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -51,6 +62,7 @@ const BZHMinePage = ({ navigation }) => {
       <Header title={'会员中心'} />
       <ScrollView style={styles.container}>
         <ProfileBlock
+          onPressAvatar={() => setVisible(true)}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
             dispatch({
@@ -108,6 +120,7 @@ const BZHMinePage = ({ navigation }) => {
           onPress={loginOut}
         />
       </ScrollView>
+      <PickAvatarComponent visible={visible} avatars={defaultAvatars} onPressSave={() => { setVisible(false) }} onPressCancel={() => { setVisible(false) }} />
     </SafeAreaView>
   )
 }
