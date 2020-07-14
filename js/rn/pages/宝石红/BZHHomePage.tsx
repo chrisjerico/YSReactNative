@@ -31,7 +31,7 @@ import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 
 const BZHHomePage = ({ navigation }) => {
-  // yellowBox
+  // yellowBox edededededededededededededededededed
   console.disableYellowBox = true
   // hooks
   const announcementModal = useRef(null)
