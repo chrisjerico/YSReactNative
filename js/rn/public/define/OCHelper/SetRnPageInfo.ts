@@ -57,6 +57,34 @@ export function setRnPageInfo() {
   });
 
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
+  if (Skin1.skitType.indexOf('白曜') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.VietnamHome,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.VietnamLogin,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.VietnamRegister,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+    ])
+  }
   if (Skin1.skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {
