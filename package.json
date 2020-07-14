@@ -32,6 +32,7 @@
     "react-native": "0.61.5",
     "react-native-autoheight-webview": "^1.5.1",
     "react-native-banner-carousel": "^1.0.3",
+    "react-native-android-fragment": "^1.1.1",
     "react-native-code-push": "^6.1.0",
     "react-native-elements": "^1.2.7",
     "react-native-event-listeners": "^1.0.7",
