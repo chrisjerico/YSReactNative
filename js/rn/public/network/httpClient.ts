@@ -1,5 +1,5 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { Platform } from 'react-native';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Platform, AsyncStorage } from 'react-native';
 import { ActionType } from '../../redux/store/ActionTypes';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
@@ -7,11 +7,19 @@ import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
+import moment from 'moment';
 interface Dictionary {
   [x: string]: any;
 }
+export enum CachePolicyEnum {
+  noCache,
+  cacheOnly,
+  cacheByTime,
+}
 interface CustomAxiosConfig extends AxiosRequestConfig {
   isEncrypt?: boolean;
+  cachePolicy: CachePolicyEnum,
+  expiredTime: number
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
@@ -43,6 +51,22 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
 };
 httpClient.interceptors.response.use(
   response => {
+    //@ts-ignore
+    const { config }: { config: CustomAxiosConfig } = response
+
+    // if (config.method == 'GET' || 'get') {
+    //   if (config?.expiredTime < 1000000000000000) {
+    //     if (config.cachePolicy == CachePolicyEnum.cacheByTime) {
+    //       const expiredTime = (moment().unix() + config.expiredTime) * 1000
+    //       config.expiredTime = expiredTime
+    //       try {
+    //         AsyncStorage.setItem(config.baseURL + config.url, JSON.stringify(response))
+    //       } catch (error) {
+    //       }
+    //     }
+    //   }
+
+    // }
     return response;
   },
   err => {
@@ -80,9 +104,36 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   if (!config.url.includes('wjapp')) {
     config.url = 'wjapp/api.php?' + config.url;
   }
+
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
   const { isEncrypt = true } = config;
   let encryptData = await encryptParams(params, isEncrypt);
+  //cache 讀取
+
+  // if (config.cachePolicy == CachePolicyEnum.cacheByTime || config.cachePolicy == CachePolicyEnum.cacheOnly) {
+  //   try {
+
+  //     const cacheDataString = await AsyncStorage.getItem(config.baseURL + config.url)
+
+  //     const cacheData: AxiosResponse = await JSON.parse(cacheDataString)
+
+  //     if (cacheData != null) {
+  //       //@ts-ignore
+  //       if (config.cachePolicy == CachePolicyEnum.cacheOnly || (config.cachePolicy == CachePolicyEnum.cacheByTime && cacheData.config?.expiredTime > moment().unix() * 1000)) {
+  //         config.adapter = () => {
+  //           return Promise.resolve(cacheData);
+  //         };
+  //       } else {
+
+  //       }
+  //     }
+  //   } catch (error) {
+
+  //   }
+  // }
+
+
+  //開始請求
   if (isEncrypt) {
     if (Platform.OS == 'ios') {
       if (config.method == 'get' || config.method == 'GET') {

@@ -17,10 +17,11 @@ import useMemberItems from "../../public/hooks/useMemberItems"
 import useLoginOut from "../../public/hooks/useLoginOut"
 import { useDimensions } from "@react-native-community/hooks"
 import { PageName } from "../../public/navigation/Navigation"
+import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
-    const { uid = "", curLevelTitle, usr, balance } = userStore
+    const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
     const dispatch = useDispatch()
     const updateUserInfo = useCallback(
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
@@ -30,16 +31,19 @@ const ZLHomeMine = ({ navigation }) => {
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
+            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             const { data, status } = await APIRouter.user_balance_token()
             updateUserInfo({ ...userStore, balance: data.data.balance })
+            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
             console.log(error)
         }
     }
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
-            <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10, }}>
+            <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
                 <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
                     <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
                 </FastImage>
@@ -166,8 +170,17 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white' }} source={{ uri: item.logo }} />
+                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
+                            {item.code == 9 ? <View style={{
+                                position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
+                                height: 20, width: 20,
+                                borderRadius: 10, justifyContent: 'center', alignItems: 'center'
+                            }}>
+                                <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+                            </View> : null}
+                        </FastImage>
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
+
                     </TouchableOpacity>
                 )
             }} data={UGUserCenterItem} />
@@ -180,7 +193,8 @@ const ZLHomeMine = ({ navigation }) => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-
+    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const { uid = "", unreadMsg } = userStore
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e', justifyContent: 'space-between',
@@ -192,6 +206,13 @@ const ZLHeader = () => {
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>消息</Text>
+                <View style={{
+                    position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
+                    height: 15, width: 15,
+                    borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
+                }}>
+                    <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+                </View>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {
