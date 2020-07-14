@@ -84,7 +84,7 @@ const BZHHomePage = ({ navigation }) => {
   const games = homeGames?.data?.icons?.slice(0, 3) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
-  console.log('------games-------', games[0]?.list)
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {loading ? (
@@ -190,6 +190,9 @@ const BZHHomePage = ({ navigation }) => {
                             }}
                             subTitleStyle={{
                               fontSize: scale(23),
+                            }}
+                            titleContainerStyle={{
+                              marginTop: scale(5)
                             }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
