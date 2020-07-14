@@ -254,6 +254,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    marginBottom: scale(70)
   },
   contentContainer: {
     paddingHorizontal: scale(5),

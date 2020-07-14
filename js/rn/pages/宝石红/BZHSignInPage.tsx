@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
@@ -222,6 +222,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    marginBottom: scale(70),
   },
   whiteBlock: {
     backgroundColor: '#ffffff',

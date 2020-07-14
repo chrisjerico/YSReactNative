@@ -36,7 +36,7 @@ const BZHMinePage = ({ navigation }) => {
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const {
-    avatar,
+    // avatar,
     balance,
     usr,
     isTest,
@@ -45,6 +45,7 @@ const BZHMinePage = ({ navigation }) => {
   }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   const [visible, setVisible] = useState(false)
+  const [avatar, setAvatar] = useState('')
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -111,7 +112,10 @@ const BZHMinePage = ({ navigation }) => {
           onPress={loginOut}
         />
       </ScrollView>
-      <PickAvatarComponent visible={visible} avatars={defaultAvatars} onPressSave={() => { setVisible(false) }} onPressCancel={() => { setVisible(false) }} />
+      <PickAvatarComponent visible={visible} avatars={defaultAvatars} onPressSave={(avatar) => {
+        setAvatar(avatar)
+        setVisible(false)
+      }} onPressCancel={() => { setVisible(false) }} />
     </SafeAreaView>
   )
 }
@@ -122,7 +126,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
+    flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    marginBottom: scale(70)
   },
   logOutButton: {
     backgroundColor: '#ffffff',

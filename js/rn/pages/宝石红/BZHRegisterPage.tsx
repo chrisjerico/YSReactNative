@@ -15,9 +15,9 @@ import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
 import {
-  navigate,
   pop,
   popToRoot,
+  push
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
@@ -363,7 +363,7 @@ const BZHRegisterPage = () => {
           <View style={styles.bottomButtonContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigate(PageName.BZHSignInPage, {})
+                push(PageName.BZHSignInPage, {})
               }}
             >
               <Text>{'返回登录'}</Text>
@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    marginBottom: scale(70)
   },
   whiteBlock: {
     backgroundColor: '#ffffff',

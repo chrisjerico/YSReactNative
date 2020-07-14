@@ -16,7 +16,7 @@ import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 interface PickAvatarComponentProps {
   visible: boolean;
   avatars: string[];
-  onPressSave: () => any;
+  onPressSave: (avatar: string) => any;
   onPressCancel: () => any;
 }
 
@@ -86,7 +86,7 @@ const PickAvatarComponent = ({
                 width: scale(200),
               }}
               titleStyle={{ color: '#ffffff' }}
-              onPress={onPressSave}
+              onPress={() => onPressSave(avatars[index])}
             />
             <Button
               title={'取消'}

@@ -4,11 +4,12 @@ import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import APIRouter from '../network/APIRouter'
 
-interface UseTryPlayProps {
+interface UseTryPlay {
   onSuccess?: () => any;
 }
 
-const useTryPlay = ({ onSuccess }: UseTryPlayProps) => {
+const useTryPlay = (params: UseTryPlay) => {
+  const { onSuccess } = params
   const tryPlay = async () => {
     try {
       const { data } = await APIRouter.user_guestLogin()
