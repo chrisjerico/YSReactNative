@@ -398,8 +398,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(10),
     marginTop: scale(15),
     paddingHorizontal: scale(25),
-    paddingTop: scale(25),
-    flexWrap: 'wrap',
+    paddingTop: scale(25)
   },
   bottomButtonContainer: {
     flexDirection: 'row',

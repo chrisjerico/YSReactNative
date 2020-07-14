@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,7 +33,9 @@ const BZHSignInPage = () => {
   const dispatch = useDispatch()
   const { loginSuccessHandle } = useLoginIn()
   const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
-  const signInStore = useSelector((state: IGlobalState) => state.BZHSignInReducer)
+  const signInStore = useSelector(
+    (state: IGlobalState) => state.BZHSignInReducer
+  )
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const [hidePassword, setHidePassword] = useState(true)
 
@@ -50,9 +52,7 @@ const BZHSignInPage = () => {
     }
   }, [])
 
-  const valid =
-    account &&
-    password
+  const valid = account && password
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -157,7 +157,7 @@ const BZHSignInPage = () => {
               backgroundColor: '#ffffff',
               borderColor: '#F0F0F0',
               borderWidth: scale(1),
-              width: '100%'
+              width: '100%',
             }}
             titleStyle={{ color: '#EA0000' }}
             onPress={() => {
@@ -168,11 +168,7 @@ const BZHSignInPage = () => {
             <TouchableOpacity onPress={tryPlay}>
               <Text>{'免费试玩'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                popToRoot()
-              }}
-            >
+            <TouchableOpacity onPress={popToRoot}>
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
           </View>
@@ -235,7 +231,6 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
-    flexWrap: 'wrap'
   },
   buttonContainer: {
     width: '100%',
@@ -248,7 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingVertical: scale(25)
+    paddingVertical: scale(25),
   },
   button: {
     backgroundColor: BZHThemeColor.宝石红.themeColor,

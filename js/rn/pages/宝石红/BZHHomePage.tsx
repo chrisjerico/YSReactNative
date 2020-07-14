@@ -148,7 +148,10 @@ const BZHHomePage = ({ navigation }) => {
                       logo={icon ? icon : logo}
                       title={name}
                       titleStyle={{ fontSize: scale(25) }}
-                      onPress={() => PushHelper.pushHomeGame(item)}
+                      onPress={() => {
+                        console.log("--------item--------", item)
+                        PushHelper.pushHomeGame(item)
+                      }}
                     />
                   )
                 }}
