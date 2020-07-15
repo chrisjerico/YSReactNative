@@ -82,10 +82,7 @@ const VietnamHomePage = () => {
   }
   const MarqueeMemo = useMemo(() => {
     return (
-      <HSNZ
-        style={{ height: 250, width: width - 24, backgroundColor: 'white', }}
-        onEnd={onEnd}
-      >
+      <>
         {rankList?.data?.list.map((res) => {
           return <View style={{ flexDirection: 'row', }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -99,7 +96,7 @@ const VietnamHomePage = () => {
             </View>
           </View>
         })}
-      </HSNZ>)
+      </>)
   }, [])
   const [tbxIndex, setTbxIndex] = useState<number>(0)
   return (
@@ -181,7 +178,7 @@ const VietnamHomePage = () => {
           </ScrollableTabView> : null}
         </View>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingHorizontal: 12 }}>
+      {couponListData?.data?.list.length > 0 ? <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingHorizontal: 12 }}>
         <View style={{ flexDirection: 'row' }} >
           <Image style={{ width: 13, height: 13, tintColor: 'black', marginRight: 5 }} source={{ uri: "礼品-(1)" }} />
           <Text style={{ color: 'black', fontWeight: "bold" }}>优惠活动</Text>
@@ -191,7 +188,8 @@ const VietnamHomePage = () => {
         }}>
           <Text style={{ color: 'black', fontWeight: "bold", }}>{"查看更多>>"}</Text>
         </TouchableWithoutFeedback>
-      </View>
+      </View> : null}
+
       <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
         return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
           <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
@@ -229,7 +227,7 @@ const VietnamHomePage = () => {
         </View >
       }} />
       <View style={{ width: width - 24, marginLeft: 12 }}>
-        {systemStore.rankingListSwitch == 0 ? null : <View >
+        {systemStore.rankingListSwitch == 0 && rankList?.data?.list.length > 0 ? null : <View >
           <View style={{ flexDirection: 'row', marginTop: 20 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: 'black' }}>用户名称</Text>
@@ -242,8 +240,9 @@ const VietnamHomePage = () => {
             </View>
           </View>
         </View>}
-        {/* {MarqueeMemo} */}
+        {MarqueeMemo}
       </View>
+      <View style={{ height: 100 }}></View>
       <MarqueePopupView onPress={() => {
         setShow(false)
       }} content={content} show={show} onDismiss={() => {
