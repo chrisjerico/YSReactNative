@@ -21,6 +21,7 @@ interface TabComponentProps {
   renderRightGame: (item: any, index: number) => any;
   unActiveTabColor: string;
   activeTabColor: string;
+  rowHeight: number;
 }
 
 interface SceneProps {
@@ -43,6 +44,7 @@ const TabComponent = ({
   containerStyle,
   unActiveTabColor,
   activeTabColor,
+  rowHeight
 }: TabComponentProps) => {
   // functions
 
@@ -62,9 +64,9 @@ const TabComponent = ({
       const fullRow = Math.floor(games.length / 3)
       const row = games.length % 3
       if (row == 0) {
-        return scale(200 * fullRow + 60)
+        return rowHeight * fullRow + scale(60)
       } else {
-        return scale(200 * (fullRow + 1) + 60)
+        return rowHeight * (fullRow + 1) + scale(60)
       }
     } else {
       return 0

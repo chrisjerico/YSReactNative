@@ -9,7 +9,7 @@ import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import FeatureList from '../../public/views/tars/FeatureList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -57,9 +57,7 @@ const LHTMinePage = ({ navigation }) => {
           PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
         }}
       />
-      <ScrollView
-        style={styles.container}
-      >
+      <ScrollView style={styles.container}>
         <ProfileBlock
           profileButtons={defaultProfileButtons}
           name={isTest ? '遊客' : usr}
@@ -128,6 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff861b',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
+    marginBottom: scaleHeight(60),
     height: scale(70),
   },
 })

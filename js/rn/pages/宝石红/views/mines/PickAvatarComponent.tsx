@@ -1,40 +1,38 @@
-import React, { useState, useRef } from 'react'
-import {
-  Modal,
-  ScrollView,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Text
-} from 'react-native'
-import { Avatar, Button } from 'react-native-elements'
+import React, { useRef, useState } from 'react'
+import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/AntDesign'
-import { scale } from '../../../../public/tools/Scale'
-import FastImage from 'react-native-fast-image'
+import { Datum } from '../../../../public/network/Model/SystemAvatarListModel'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../../../public/tools/Scale'
+import Avatar from '../../../../public/views/tars/Avatar'
 
 interface PickAvatarComponentProps {
   visible: boolean;
-  avatars: string[];
-  onPressSave: (avatar: string) => any;
+  avatars: Datum[];
+  onPressSave: (avatar: IAvatar) => any;
   onPressCancel: () => any;
+}
+
+interface IAvatar {
+  url: string;
+  filename: string;
 }
 
 const PickAvatarComponent = ({
   visible,
   avatars,
   onPressSave,
-  onPressCancel
+  onPressCancel,
 }: PickAvatarComponentProps) => {
-
-  const [index, setIndex] = useState(0)
+  const [index, setInex] = useState(-1)
   const scrollView = useRef(null)
   return (
     <Modal transparent={true} visible={visible}>
       <View style={styles.container}>
         <View style={styles.bottomBlock}>
           <View style={styles.avatarContainer}>
-            <Avatar size={'xlarge'} rounded source={{ uri: avatars[index] }} />
+            <Avatar uri={avatars[index]?.url} size={200} />
             <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -43,32 +41,36 @@ const PickAvatarComponent = ({
               color={'#9D9D9D'}
               size={scale(30)}
               style={{ paddingHorizontal: scale(10) }}
-              onPress={() => scrollView.current.scrollTo({ x: 0, y: 0, animated: true })}
+              onPress={() =>
+                scrollView.current.scrollTo({ x: 0, y: 0, animated: true })
+              }
             />
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               ref={scrollView}
             >
-              {avatars?.map((item, index) => (
-                <TouchableOpacity key={index} onPress={() => setIndex(index)}>
-                  <FastImage
-                    source={{ uri: item }}
-                    style={{
-                      width: scale(100),
-                      aspectRatio: 1,
-                      marginHorizontal: scale(10),
-                    }}
+              {avatars?.map((item, index) => {
+                const { url, filename } = item
+                return (
+                  <Avatar
+                    key={index}
+                    uri={url}
+                    size={100}
+                    containerStyle={{ marginHorizontal: scale(10) }}
+                    onPress={() => setInex(index)}
                   />
-                </TouchableOpacity>
-              ))}
+                )
+              })}
             </ScrollView>
             <Icon
               name={'right'}
               color={'#9D9D9D'}
               size={scale(30)}
               style={{ paddingHorizontal: scale(10) }}
-              onPress={() => scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })}
+              onPress={() =>
+                scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })
+              }
             />
           </View>
           <View
@@ -86,7 +88,12 @@ const PickAvatarComponent = ({
                 width: scale(200),
               }}
               titleStyle={{ color: '#ffffff' }}
-              onPress={() => onPressSave(avatars[index])}
+              onPress={() =>
+                onPressSave({
+                  url: avatars[index]?.url,
+                  filename: avatars[index]?.filename,
+                })
+              }
             />
             <Button
               title={'取消'}

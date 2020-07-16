@@ -20,7 +20,7 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageStyle?: ImageStyle;
+  imageStyle?: any;
   circleColor?: string;
   containerStyle?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
@@ -35,8 +35,8 @@ const GameButton = (props: GameButtonProps) => {
     circleColor,
     imageStyle,
     logo = 'logo',
-    title = '?',
-    subTitle = '?',
+    title = '',
+    subTitle = '',
     showSubTitle = false,
     onPress = () => { },
     containerStyle,

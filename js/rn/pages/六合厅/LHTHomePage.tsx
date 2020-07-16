@@ -18,7 +18,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
@@ -210,7 +210,8 @@ const LHTHomePage = ({ navigation }) => {
                       <GameButton
                         key={index}
                         containerStyle={{ width: '25%', height: '50%' }}
-                        circleColor={'transparent'}
+                        imageStyle={{ width: '50%' }}
+                        enableCircle={false}
                         logo={icon ? icon : logo}
                         title={name}
                         onPress={() => PushHelper.pushHomeGame(item)}
@@ -243,6 +244,7 @@ const LHTHomePage = ({ navigation }) => {
                   }
                 /> */}
                 <TabComponent
+                  rowHeight={scale(200)}
                   activeTabColor={'#ff8610'}
                   unActiveTabColor={'#bbbbbb'}
                   containerStyle={styles.subComponent}
@@ -259,13 +261,15 @@ const LHTHomePage = ({ navigation }) => {
                         showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
-                        subTitleStyle={{
-                          marginTop: scale(10),
-                        }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => {
                           PushHelper.pushUserCenterType(parseInt(id))
                         }}
@@ -279,12 +283,18 @@ const LHTHomePage = ({ navigation }) => {
                         key={index}
                         logo={logo ? logo : icon}
                         title={title}
+                        showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
@@ -315,6 +325,7 @@ const LHTHomePage = ({ navigation }) => {
                 />
                 <BottomToolBlock
                   tools={defaultBottomTools}
+                  containerStyle={{ paddingBottom: scaleHeight(60) }}
                   renderBottomTool={(item, index) => {
                     const { logo, userCenterType } = item
                     return (
@@ -338,7 +349,6 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-
             {/* <DowloadApp
               onPressDowload={() => {
                 PushHelper.openWebView(

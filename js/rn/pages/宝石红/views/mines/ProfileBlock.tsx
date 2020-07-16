@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { Avatar } from 'react-native-elements'
 import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../../public/tools/Scale'
+import Avatar from '../../../../public/views/tars/Avatar'
 import LinearBadge from '../../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
@@ -34,7 +34,7 @@ const ProfileBlock = ({
       <View style={styles.redBlock}></View>
       <View style={styles.whiteBlock}>
         <View style={styles.profileContainer}>
-          <Avatar source={{ uri: avatar }} size={'large'} rounded onPress={onPressAvatar} />
+          <Avatar uri={avatar} onPress={onPressAvatar} />
           <View style={styles.moneyContainer}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.text}>{name}</Text>

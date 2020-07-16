@@ -17,6 +17,8 @@ import { TurntableListModel } from './Model/TurntableListModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
 import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { AxiosResponse } from 'axios'
+import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
+import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -158,8 +160,17 @@ class APIRouter {
       isEncrypt: false
     })
   }
-  static user_centerList = async () => {
-    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+
+  static system_avatarList = async () => {
+    return httpClient.get<SystemAvatarListModel>('c=system&a=avatarList');
+  };
+
+  static task_changeAvatar = async (filename: string) => {
+    const user = await OCHelper.call('UGUserModel.currentUser');
+    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", {
+      token: user?.token,
+      filename
+    })
   };
 }
 export default APIRouter

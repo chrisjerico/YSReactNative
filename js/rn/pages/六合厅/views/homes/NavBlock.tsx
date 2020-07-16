@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     flex: 270,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
   },
   lotterysCintainer: {
     flex: 90,

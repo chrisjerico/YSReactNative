@@ -8,7 +8,7 @@ import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -18,27 +18,17 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
 import PickAvatarComponent from './views/mines/PickAvatarComponent'
 import ProfileBlock from './views/mines/ProfileBlock'
-import { useDimensions } from '@react-native-community/hooks'
-
-const defaultAvatars = [
-  'http://test05.6yc.com/images/face/memberFace1.jpg',
-  'http://test05.6yc.com/images/face/memberFace2.jpg',
-  'http://test05.6yc.com/images/face/memberFace3.jpg',
-  'http://test05.6yc.com/images/face/memberFace4.jpg',
-  'http://test05.6yc.com/images/face/memberFace5.jpg',
-  'http://test05.6yc.com/images/face/memberFace6.jpg'
-]
+import { Toast } from '../../public/tools/ToastUtils'
 
 const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const { height } = useDimensions().screen
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const {
-    // avatar,
+    avatar,
     balance,
     usr,
     isTest,
@@ -47,9 +37,13 @@ const BZHMinePage = ({ navigation }) => {
   }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   const [visible, setVisible] = useState(false)
-  const [avatar, setAvatar] = useState('')
+  const [loclaAvatar, setLocalAvatar] = useState(avatar)
+  const [avatarList, setAvatarList] = useState([])
 
   useEffect(() => {
+    APIRouter.system_avatarList().then((value) => {
+      setAvatarList(value?.data?.data ?? [])
+    })
     const unsubscribe = navigation.addListener('focus', () => {
       console.log('-----成為焦點-----')
       updateUserInfo()
@@ -74,7 +68,7 @@ const BZHMinePage = ({ navigation }) => {
             })
           }}
           level={curLevelGrade}
-          avatar={avatar}
+          avatar={loclaAvatar}
           money={balance}
           name={isTest ? '遊客' : usr}
           features={features}
@@ -109,18 +103,29 @@ const BZHMinePage = ({ navigation }) => {
         })}
         <Button
           title={'退出登录'}
-          buttonStyle={[styles.logOutButton, {
-            marginTop: height * 0.025,
-            marginBottom: height * 0.025 + height * 0.1
-          }]}
+          buttonStyle={styles.logOutButton}
           titleStyle={styles.logOutTitle}
           onPress={loginOut}
         />
       </ScrollView>
-      <PickAvatarComponent visible={visible} avatars={defaultAvatars} onPressSave={(avatar) => {
-        setAvatar(avatar)
-        setVisible(false)
-      }} onPressCancel={() => { setVisible(false) }} />
+      <PickAvatarComponent
+        visible={visible}
+        avatars={avatarList}
+        onPressSave={({ url, filename }) => {
+          setLocalAvatar(url)
+          setVisible(false)
+          APIRouter.task_changeAvatar(filename).then((value) => {
+            if (value?.data?.code == 0) {
+              Toast('修改头像成功')
+            } else {
+              Toast('修改头像失败')
+            }
+          })
+        }}
+        onPressCancel={() => {
+          setVisible(false)
+        }}
+      />
     </SafeAreaView>
   )
 }
@@ -137,12 +142,14 @@ const styles = StyleSheet.create({
   logOutButton: {
     backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
+    marginVertical: scale(25),
+    marginBottom: scaleHeight(60),
     borderRadius: scale(7),
     height: scale(70),
   },
   logOutTitle: {
-    color: '#e53333'
-  }
+    color: '#e53333',
+  },
 })
 
 export default BZHMinePage

@@ -1,11 +1,10 @@
-import { useDimensions } from '@react-native-community/hooks'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
@@ -17,7 +16,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
@@ -35,7 +34,6 @@ const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const { height } = useDimensions().screen
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -188,13 +186,13 @@ const BZHHomePage = ({ navigation }) => {
                             subTitle={subtitle}
                             showSubTitle
                             titleStyle={{
-                              fontSize: scale(27)
+                              fontSize: scale(27),
                             }}
                             subTitleStyle={{
                               fontSize: scale(23),
                             }}
                             titleContainerStyle={{
-                              marginTop: scale(5)
+                              marginTop: scale(5),
                             }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
@@ -207,7 +205,7 @@ const BZHHomePage = ({ navigation }) => {
                 })}
               </View>
               <AnimatedRankComponent
-                containerStyle={[styles.subComponent, { paddingBottom: height * 0.1 }]}
+                containerStyle={[styles.subComponent, styles.bottomComponent]}
                 rankContainerStyle={{
                   width: '95%',
                   borderWidth: scale(1),
@@ -269,6 +267,9 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
+  },
+  bottomComponent: {
+    paddingBottom: scaleHeight(50),
   },
 })
 

@@ -4,6 +4,9 @@ import AppDefine from '../../public/define/AppDefine'
 export const scale = (layout: number): number =>
   layout * (AppDefine.width / 540)
 
+
+export const scaleHeight = (layout: number): number =>
+  layout * (AppDefine.height / 540)
 // export const three = (data: any[], fillEle = { show: false }) => {
 //   const remainder = data.length % 3
 //   const patch = remainder > 0 ? 3 - (data.length % 3) : 0
