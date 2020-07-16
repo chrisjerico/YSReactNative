@@ -12,13 +12,12 @@ import { HomeGamesModel } from "../../../public/network/Model/HomeGamesModel"
 import FastImage, { FastImageProperties } from "react-native-fast-image"
 import PushHelper from "../../../public/define/PushHelper"
 const GameList = ({ route, navigation }) => {
-  const { homeGames }: { homeGames: HomeGamesModel } = route?.params;
+  const { homeGames, index }: { homeGames: HomeGamesModel, index: number } = route?.params;
   const { width } = useDimensions().screen
-  console.log(route?.params)
   const openSideBar = () => {
     OCHelper.call("UGYYRightMenuView.alloc.initWithFrame:[show]", [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)])
   }
-  const [tbx, setTbx] = useState(0)
+  const [tbx, setTbx] = useState(index)
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Header />

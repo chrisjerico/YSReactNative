@@ -124,9 +124,9 @@ const VietnamHomePage = () => {
                     case 1:
                     case 2:
                     case 3:
-                      push(PageName.VietnamGameList, { homeGames: homeGames })
-                      break;
                     case 4:
+                      push(PageName.VietnamGameList, { homeGames: homeGames, index })
+                      break;
                     // push(PageName)
                     case 5:
                       push(PageName.PromotionListPage)
