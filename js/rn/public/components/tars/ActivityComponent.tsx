@@ -71,4 +71,5 @@ const styles = StyleSheet.create({
     right: scale(10),
   },
 })
+
 export default ActivityComponent

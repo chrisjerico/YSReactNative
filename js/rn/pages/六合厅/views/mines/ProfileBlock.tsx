@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Avatar } from 'react-native-elements'
 import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import PushHelper from '../../../../public/define/PushHelper'
 import { scale } from '../../../../public/tools/Scale'
 import LinearBadge from '../../../../public/views/tars/LinearBadge'
+import Avatar from '../../../../public/views/tars/Avatar'
 
 interface ProfileBlockProps {
   profileButtons: any[];
@@ -34,10 +34,8 @@ const ProfileBlock = ({
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
         <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
           <Avatar
-            size={'large'}
-            rounded
             onPress={() => PushHelper.pushUserCenterType(12)}
-            source={{ uri: avatar }}
+            uri={avatar}
           />
           <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
             <View style={styles.nameTextContainer}>
