@@ -1,12 +1,11 @@
 import React from 'react'
 import {
-  ImageStyle,
   StyleSheet,
   Text,
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 })
 
