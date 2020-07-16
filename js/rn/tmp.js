@@ -6,3 +6,4 @@ console.log(12945);
 console.log(16857);
 console.log(4806);
 console.log(24390);
+console.log(11729);

@@ -18,6 +18,7 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
 import PickAvatarComponent from './views/mines/PickAvatarComponent'
 import ProfileBlock from './views/mines/ProfileBlock'
+import { useDimensions } from '@react-native-community/hooks'
 
 const defaultAvatars = [
   'http://test05.6yc.com/images/face/memberFace1.jpg',
@@ -32,6 +33,7 @@ const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { height } = useDimensions().screen
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -107,8 +109,11 @@ const BZHMinePage = ({ navigation }) => {
         })}
         <Button
           title={'退出登录'}
-          buttonStyle={styles.logOutButton}
-          titleStyle={{ color: '#e53333' }}
+          buttonStyle={[styles.logOutButton, {
+            marginTop: height * 0.025,
+            marginBottom: height * 0.025 + height * 0.1
+          }]}
+          titleStyle={styles.logOutTitle}
           onPress={loginOut}
         />
       </ScrollView>
@@ -128,15 +133,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
-    marginBottom: scale(70)
   },
   logOutButton: {
     backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
-    marginVertical: scale(25),
     borderRadius: scale(7),
     height: scale(70),
   },
+  logOutTitle: {
+    color: '#e53333'
+  }
 })
 
 export default BZHMinePage

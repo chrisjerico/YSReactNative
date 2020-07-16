@@ -1,10 +1,11 @@
+import { useDimensions } from '@react-native-community/hooks'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
@@ -31,9 +32,10 @@ import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 
 const BZHHomePage = ({ navigation }) => {
-  // yellowBox edededededededededededededededededed
+  // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { height } = useDimensions().screen
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -205,7 +207,7 @@ const BZHHomePage = ({ navigation }) => {
                 })}
               </View>
               <AnimatedRankComponent
-                containerStyle={styles.subComponent}
+                containerStyle={[styles.subComponent, { paddingBottom: height * 0.1 }]}
                 rankContainerStyle={{
                   width: '95%',
                   borderWidth: scale(1),
@@ -254,7 +256,6 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
-    marginBottom: scale(70)
   },
   contentContainer: {
     paddingHorizontal: scale(5),

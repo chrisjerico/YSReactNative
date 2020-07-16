@@ -5,7 +5,7 @@ import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
 
 interface AnimatedRankComponentProps {
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   iconContainerStyle?: ViewStyle;
   rankContainerStyle?: ViewStyle;
   titleConatinerStyle?: ViewStyle;
