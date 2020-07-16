@@ -43,7 +43,8 @@ export enum PageName {
   VietnamHome = "VietnamHome",
   VietnamLogin = "VietnamLogin",
   VietnamRegister = "VietnamRegister",
-  VietnamMine = "VietnamMine"
+  VietnamMine = "VietnamMine",
+  VietnamGameList = "VietnamGameList"
 }
 
 export class Navigation {

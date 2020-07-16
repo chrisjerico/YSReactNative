@@ -32,7 +32,7 @@ const TabContainer = ({ data, filter, homeGames }: { data: List[], filter: strin
 
         </TouchableOpacity>
       )
-    }} data={homeGames?.data.icons?.filter((res) => res.id == filter)?.[0]?.list ?? []} />
+    }} data={homeGames?.data?.icons?.filter((res) => res.id == filter)?.[0]?.list ?? []} />
   )
 
 }

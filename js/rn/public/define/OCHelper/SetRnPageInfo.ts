@@ -57,7 +57,7 @@ export function setRnPageInfo() {
   });
 
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
-  if (Skin1.skitType.indexOf('白曜') != -1) {
+  if (Skin1.skitType.indexOf('尊龙') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -201,7 +201,7 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) { // 
+  if (Skin1.skitType.indexOf('尊龙1') != -1) { // 
     pages = pages.concat([
       {
         // 首页

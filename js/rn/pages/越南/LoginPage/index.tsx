@@ -11,11 +11,12 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import APIRouter from '../../../public/network/APIRouter';
 import { ActionType } from '../../../redux/store/ActionTypes';
 import { UGStore } from '../../../redux/store/UGStore';
-import { pop, push } from '../../../public/navigation/RootNavigation';
+import { pop, push, navigate } from '../../../public/navigation/RootNavigation';
 import useLoginIn from '../../../public/hooks/useLoginIn';
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 import PushHelper from '../../../public/define/PushHelper';
 import { PageName } from '../../../public/navigation/Navigation';
+import { useLanguageContext } from '../../../public/context/LanguageContextProvider';
 let errorTimes = 0
 const VietnamLogin = ({ route, navigation }) => {
   const { control, errors, handleSubmit } = useForm()
@@ -102,8 +103,9 @@ const VietnamLogin = ({ route, navigation }) => {
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
     }
   }
+  const { currcentLanguagePackage } = useLanguageContext()
   return (
-    <View style={{ backgroundColor: '#1a1a1e', flex: 1 }}>
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
       <Header />
       <ScrollView style={{ flex: 1, paddingHorizontal: 15 }}>
         <Text style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 10, marginBottom: 20, fontWeight: "bold" }}>账号登录</Text>
@@ -193,21 +195,35 @@ const VietnamLogin = ({ route, navigation }) => {
         <TouchableWithoutFeedback onPress={handleSubmit(onSubmit)}>
           <View style={{
             flex: 1,
-            height: 50, backgroundColor: "#b67866",
-            borderRadius: 8,
+            height: 50, backgroundColor: "#298dff",
+            borderRadius: 16,
             marginTop: 20, justifyContent: 'center', alignItems: 'center'
           }}>
-            <Text style={{ color: "white", fontSize: 20 }}>登录</Text>
+            <Text style={{ color: "white", fontSize: 20 }}>{currcentLanguagePackage?.["app.log.in"]}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => {
+          navigate(PageName.VietnamRegister, {})
+        }}>
+          <View style={{
+            flex: 1,
+            height: 50, borderColor: "#298dff",
+            borderWidth: 1,
+            borderRadius: 30,
+            marginTop: 20, justifyContent: 'center', alignItems: 'center'
+          }}>
+            <Text style={{ color: "#298dff", fontSize: 20 }}>{currcentLanguagePackage?.["app.registered"]}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={testPlay}>
           <View style={{
             flex: 1,
-            height: 50, backgroundColor: "#a09e9d",
-            borderRadius: 8,
+            height: 50, borderColor: "#298dff",
+            borderWidth: 1,
+            borderRadius: 30,
             marginTop: 20, justifyContent: 'center', alignItems: 'center'
           }}>
-            <Text style={{ color: "white", fontSize: 20 }}>免费试玩</Text>
+            <Text style={{ color: "#298dff", fontSize: 20 }}>{currcentLanguagePackage?.["app.demo1"]}</Text>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -217,19 +233,19 @@ const VietnamLogin = ({ route, navigation }) => {
 }
 const Header = () => {
   const { top } = useSafeArea()
+  const { currcentLanguagePackage } = useLanguageContext()
   return (
-    <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
-      <TouchableWithoutFeedback onPress={() => {
-        pop();
-        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-      }}>
-        <Icon name="close" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={() => {
-        push(PageName.ZLRegisterPage)
-      }}>
-        <Text style={{ color: "#68abf9", fontSize: 18, fontWeight: "bold" }}>注册</Text>
-      </TouchableWithoutFeedback>
+    <View>
+      <View style={{ height: top }}></View>
+      <View style={{ height: 68, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
+        <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
+          pop();
+          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        }}>
+          <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
+        </TouchableOpacity >
+        <Text>{currcentLanguagePackage?.["app.log.in"]}</Text>
+      </View>
     </View>
   )
 }

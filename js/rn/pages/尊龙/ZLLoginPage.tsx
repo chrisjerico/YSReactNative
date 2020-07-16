@@ -69,8 +69,6 @@ const ZLLoginPage = ({ route, navigation }) => {
             console.log(error)
         }
         pop();
-
-
     }
     const { loginSuccessHandle } = useLoginIn()
     const onSubmit = async ({ account, pwd }) => {
