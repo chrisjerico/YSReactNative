@@ -12,7 +12,7 @@ interface WinningListViewProps {
 export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}: WinningListViewProps) => {
     let currentPosition = 0
     const itemHeight = 29.3
-    let ticker = useRef()
+    let ticker = useRef<FlatList>()
     let activeInterval;
 
     useEffect(() => {
@@ -27,18 +27,17 @@ export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}:
     }
 
     const scrolling = () => {
-        debugger
         let current = currentPosition
         if (currentPosition < 0) {
             current = 0;
         }
-        if (data.length > 10) {
+        if (data.length > 1) {
             const position = current + 2;
-            ticker.scrollToOffset({offset: position, animated: false});
+            ticker.current.scrollToOffset({offset: position, animated: false});
             const maxOffset = data.length * itemHeight;
             if (current > maxOffset) {
                 const offset = current - maxOffset;
-                ticker.scrollToOffset({
+                ticker.current.scrollToOffset({
                     offset,
                     animated: false,
                 });
@@ -97,7 +96,7 @@ export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}:
                 offset: itemHeight * index,
                 index,
             })}
-            ref={(ref) => ticker = ref}
+            ref={ticker}
             showsHorizontalScrollIndicator={false}
             data={wrappedData}
             renderItem={({item, index}) =>
@@ -129,7 +128,7 @@ export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}:
             horizontal={false}
             style={[{
                 width: '100%',
-                height: 29.3 * data.length + 33.3 > 293 ? 293 + 33.3 : 293 * data.length + 33.3, //33.3 = headerComp 29.3 + margin 8
+                height: data.length == 1 ? 58.6 : 29.3 * data.length,
                 flexGrow: 0,
                 backgroundColor: "#ffffff",
                 marginVertical: 8,
