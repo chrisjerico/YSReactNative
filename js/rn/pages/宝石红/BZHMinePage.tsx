@@ -14,7 +14,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
 import PickAvatarComponent from './views/mines/PickAvatarComponent'
 import ProfileBlock from './views/mines/ProfileBlock'
@@ -37,7 +37,6 @@ const BZHMinePage = ({ navigation }) => {
   }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
   const [visible, setVisible] = useState(false)
-  const [loclaAvatar, setLocalAvatar] = useState(avatar)
   const [avatarList, setAvatarList] = useState([])
 
   useEffect(() => {
@@ -68,7 +67,7 @@ const BZHMinePage = ({ navigation }) => {
             })
           }}
           level={curLevelGrade}
-          avatar={loclaAvatar}
+          avatar={avatar}
           money={balance}
           name={isTest ? '遊客' : usr}
           features={features}
@@ -112,8 +111,8 @@ const BZHMinePage = ({ navigation }) => {
         visible={visible}
         avatars={avatarList}
         onPressSave={({ url, filename }) => {
-          setLocalAvatar(url)
           setVisible(false)
+          UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: { avatar: url } })
           APIRouter.task_changeAvatar(filename).then((value) => {
             if (value?.data?.code == 0) {
               Toast('修改头像成功')
