@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, ViewStyle, Image } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface TouchableImageProps {

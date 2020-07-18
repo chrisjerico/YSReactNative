@@ -17,8 +17,30 @@ import { TurntableListModel } from './Model/TurntableListModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
 import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { AxiosResponse } from 'axios'
+import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
+import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
+export interface UserReg {
+  inviter: string; // 推荐人ID
+  usr: string; // 账号
+  pwd: string; // 密码
+  fundPwd: string; // 取款密码
+  fullName: string; // 真实姓名
+  qq: string; // QQ号
+  wx: string; // 微信号
+  phone: string; // 手机号
+  smsCode: string; // 短信验证码
+  imgCode: string; // 字母验证码,
+  "slideCode[nc_sid]": string,
+  "slideCode[nc_token]": string,
+  "slideCode[nc_sig]": string,
+  email: string; // 邮箱
+  regType: 'user' | 'agent'; // 用户注册 或 代理注册,
+  device: string,
+  accessToken: string,
+  slideCode: any
+}
 
 class APIRouter {
   /**
@@ -102,37 +124,18 @@ class APIRouter {
     })
   }
   static secure_smsCaptcha = async (phone) => {
-    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone },);
+    return httpClient.post('c=secure&a=smsCaptcha', { phone: phone });
   }
 
   static system_config = async () => {
     return httpClient.get("c=system&a=config")
   }
-  static user_reg = async (params: {
-    inviter: string; // 推荐人ID
-    usr: string; // 账号
-    pwd: string; // 密码
-    fundPwd: string; // 取款密码
-    fullName: string; // 真实姓名
-    qq: string; // QQ号
-    wx: string; // 微信号
-    phone: string; // 手机号
-    smsCode: string; // 短信验证码
-    imgCode: string; // 字母验证码,
-    "slideCode[nc_sid]": string,
-    "slideCode[nc_token]": string,
-    "slideCode[nc_sig]": string,
-    email: string; // 邮箱
-    regType: 'user' | 'agent'; // 用户注册 或 代理注册,
-    device: string,
-    accessToken: string,
-    slideCode: any
-  }) => {
+  static user_reg = async (params: UserReg) => {
     var accessToken = await OCHelper.call('OpenUDID.value');
     params = {
       ...params, device: '3', accessToken: accessToken,
     }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params,);
+    return httpClient.post<RegisterModel>('c=user&a=reg', params);
   }
 
   static lhcdoc_categoryList = async () => {
@@ -157,8 +160,17 @@ class APIRouter {
       isEncrypt: false
     })
   }
-  static user_centerList = async () => {
-    return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
+
+  static system_avatarList = async () => {
+    return httpClient.get<SystemAvatarListModel>('c=system&a=avatarList');
+  };
+
+  static task_changeAvatar = async (filename: string) => {
+    const user = await OCHelper.call('UGUserModel.currentUser');
+    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", {
+      token: user?.token,
+      filename
+    })
   };
 }
 export default APIRouter

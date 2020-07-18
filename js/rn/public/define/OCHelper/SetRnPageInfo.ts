@@ -1,6 +1,6 @@
+import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from '../../theme/UGSkinManagers';
-import { PageName } from '../../navigation/Navigation';
 import { OCHelper } from './OCHelper';
 
 export class RnPageModel {
@@ -123,6 +123,14 @@ export function setRnPageInfo() {
         // 登录
         vcName: 'UGLoginViewController',
         rnName: PageName.BZHSignInPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.BZHRegisterPage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
