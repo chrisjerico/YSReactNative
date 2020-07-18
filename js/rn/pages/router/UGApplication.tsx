@@ -79,6 +79,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
+        <Router.TabScreen name={PageName.BZHSignInPage} component={BZHSignInPage} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
         <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />

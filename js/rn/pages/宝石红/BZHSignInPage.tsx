@@ -5,50 +5,106 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import {
-  navigate,
-  pop,
-  popToRoot,
-} from '../../public/navigation/RootNavigation'
+import { navigate, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { BZHSignInStore } from './BZHSignInProps'
 import Form from './views/Form'
 
-const BZHSignInPage = () => {
-  const dispatch = useDispatch()
-  const { loginSuccessHandle } = useLoginIn()
-  const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
+const BZHSignInPage = ({ navigation }) => {
+
+  // const dispatch = useDispatch()
   const signInStore = useSelector(
     (state: IGlobalState) => state.BZHSignInReducer
   )
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const [hidePassword, setHidePassword] = useState(true)
 
-  useEffect(() => {
+  const { type } = navigation?.dangerouslyGetState()
+
+  const jump = () => {
+    switch (type) {
+      case 'tab':
+        navigate(PageName.BZHHomePage, {})
+        break
+      case 'stack':
+        pop()
+        break
+      default:
+        console.log('------no navigation type------')
+    }
+  }
+
+  const jumpToHomePage = () => {
+    navigate(PageName.BZHHomePage, {})
+    console.log('----返回首頁----')
+  }
+
+  const cleanAccountPassword = (isRemember: boolean) => {
     if (!isRemember) {
-      console.log('----忘記帳密----')
-      dispatch({
+      UGStore.dispatch({
         type: ActionType.BZHSignInPage_SetProps,
         props: {
           account: null,
           password: null,
         },
       })
+      UGStore.save()
+      console.log('---------忘記帳密---------')
+    }
+  }
+
+  const { loginSuccessHandle } = useLoginIn({
+    onSuccess: () => {
+      jumpToHomePage()
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
+    },
+    onError: (error) => {
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+        error ?? '登录失敗！',
+      ])
+    },
+  })
+  const { tryPlay } = useTryPlay({
+    onSuccess: () => {
+      jumpToHomePage()
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
+    },
+    onError: (error) => {
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error ?? '試玩失败'])
+    },
+  })
+
+  useEffect(() => {
+    switch (type) {
+      case 'tab':
+        const unsubscribe = navigation.addListener('focus', async () => {
+          const isRemember = await OCHelper.call(
+            'NSUserDefaults.standardUserDefaults.boolForKey:',
+            ['isRememberPsd']
+          )
+          cleanAccountPassword(isRemember)
+        })
+        return unsubscribe
+      case 'stack':
+        cleanAccountPassword(isRemember)
+        break
+      default:
+        console.log('------no navigation type------')
     }
   }, [])
 
@@ -59,7 +115,7 @@ const BZHSignInPage = () => {
       <Header
         color={'#e53333'}
         title={'登陆'}
-        onPressBack={pop}
+        onPressBack={jump}
         onPressCustomerService={() => {
           PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
         }}
@@ -71,13 +127,13 @@ const BZHSignInPage = () => {
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={(value: any) => {
-              dispatch({
+              UGStore.dispatch({
                 type: ActionType.BZHSignInPage_SetProps,
                 props: {
                   account: value,
                 },
               })
-              // UGStore.save()
+              UGStore.save()
             }}
           />
           <Form
@@ -93,25 +149,31 @@ const BZHSignInPage = () => {
               name: 'lock',
             }}
             value={password}
-            onChangeText={(value: any) =>
-              dispatch({
+            onChangeText={(value: any) => {
+              UGStore.dispatch({
                 type: ActionType.BZHSignInPage_SetProps,
                 props: {
                   password: value,
                 },
               })
-            }
+              UGStore.save()
+            }}
             secureTextEntry={hidePassword}
             showRightIcon
           />
           <CheckBox
             check={isRemember}
-            onPress={() =>
-              dispatch({
+            onPress={() => {
+              OCHelper.call(
+                'NSUserDefaults.standardUserDefaults.setBool:forKey:',
+                [!isRemember, 'isRememberPsd']
+              )
+              UGStore.dispatch({
                 type: ActionType.BZHSignInPage_SetProps,
                 props: { isRemember: !isRemember },
               })
-            }
+              UGStore.save()
+            }}
           />
           <Button
             title={'立即登陆'}
@@ -120,29 +182,30 @@ const BZHSignInPage = () => {
             titleStyle={{ color: '#ffffff' }}
             onPress={async () => {
               try {
-                if (account && password) {
-                  OCHelper.call('SVProgressHUD.showWithStatus:', [
-                    '正在登录...',
-                  ])
-                  const { data } = await APIRouter.user_login(
-                    account,
-                    password.md5()
-                  )
-                  if (data.data == null) {
-                    const error = data?.msg
-                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                      error ?? '登录失敗！',
-                    ])
-                  } else {
-                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-                      '登录成功！',
-                    ])
-                    await loginSuccessHandle(data, {
+                OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...'])
+                const { data } = await APIRouter.user_login(
+                  account,
+                  password?.md5()
+                )
+                console.log('---------------data-----------', data)
+                if (data?.data) {
+                  await loginSuccessHandle(
+                    data,
+                    {
                       account,
                       pwd: password,
                       isRemember,
-                    })
-                  }
+                    },
+                    {
+                      enableCleanOldUser: false,
+                      enableNativeNotification: false
+                    }
+                  )
+                } else {
+                  const error = data?.msg
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                    error ?? '登录失敗！',
+                  ])
                 }
               } catch (error) {
                 OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
@@ -168,7 +231,7 @@ const BZHSignInPage = () => {
             <TouchableOpacity onPress={tryPlay}>
               <Text>{'免费试玩'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={popToRoot}>
+            <TouchableOpacity onPress={jumpToHomePage}>
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
           </View>

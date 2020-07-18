@@ -22,7 +22,9 @@ import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -30,16 +32,15 @@ import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
 
-const BZHHomePage = ({ navigation }) => {
+const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
   const announcementModal = useRef(null)
-  const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { uid, usr, balance, isTest }: UGUserModel = userStore
-  const { mobile_logo } = SystemStore
+  const { mobile_logo }: UGSysConfModel = SystemStore
   const {
     loading,
     banner,
@@ -48,6 +49,7 @@ const BZHHomePage = ({ navigation }) => {
     onlineNum,
     rankList,
     redBag,
+    onRefresh,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -57,14 +59,8 @@ const BZHHomePage = ({ navigation }) => {
     'activity_redBagDetail',
     'activity_turntableList',
   ])
+  const [roulette, setRoulette] = useState(null)
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      updateUserInfo()
-      console.log('------focus------')
-    })
-    return unsubscribe
-  }, [])
   useEffect(() => {
     if (uid) {
       APIRouter.activity_turntableList().then((value) => {
@@ -100,6 +96,7 @@ const BZHHomePage = ({ navigation }) => {
               onPressSignIn={() => push(PageName.BZHSignInPage)}
               onPressSignUp={() => push(PageName.BZHRegisterPage)}
               onPressUser={() => {
+                console.log("--------onPressUser---------")
                 navigate(PageName.BZHHomePage, { index: 4 })
               }}
             />
@@ -111,6 +108,8 @@ const BZHHomePage = ({ navigation }) => {
                   refreshing={false}
                   onRefresh={() => {
                     announcementModal?.current?.reload()
+                    // updateUserInfo()
+                    // onRefresh()
                   }}
                 />
               }
@@ -269,7 +268,7 @@ const styles = StyleSheet.create({
     marginBottom: scale(20),
   },
   bottomComponent: {
-    paddingBottom: scaleHeight(50),
+    paddingBottom: scaleHeight(70),
   },
 })
 

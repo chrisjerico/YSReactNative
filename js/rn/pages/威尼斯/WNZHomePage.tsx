@@ -4,7 +4,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -21,10 +21,13 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import Header from './views/Header'
 import RowGameButtom from './views/RowGameButtom'
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 
 const WNZHomePage = () => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { avatar, balance, usr }: UGUserModel = userStore
+  const { mobile_logo }: UGSysConfModel = SystemStore
   const { loading, banner, notice, homeGames, categoryList } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -49,7 +52,7 @@ const WNZHomePage = () => {
         <ProgressCircle />
       ) : (
           <>
-            <Header name={usr} />
+            <Header name={usr} logo={mobile_logo} />
             <ScrollView
               style={styles.container}
               scrollEnabled={true}

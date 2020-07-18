@@ -17,7 +17,8 @@ import { PageName } from '../../public/navigation/Navigation'
 import {
   pop,
   popToRoot,
-  push
+  push,
+  navigate
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
@@ -54,6 +55,12 @@ const validPassword = (password: string, pass_limit: number) => {
 }
 
 const BZHRegisterPage = () => {
+
+  const jumpToHomePage = () => {
+    navigate(PageName.BZHHomePage, {})
+    console.log('----返回首頁----')
+  }
+
   // hooks
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { register } = useRegister()
@@ -369,9 +376,7 @@ const BZHRegisterPage = () => {
               <Text>{'返回登录'}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-                popToRoot()
-              }}
+              onPress={jumpToHomePage}
             >
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>

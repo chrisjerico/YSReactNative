@@ -2,15 +2,16 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { Badge } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
 
 interface HeaderProps {
-  name: string
+  name: string;
+  logo: string;
 }
 
-const Header = ({ name }: HeaderProps) => {
+const Header = ({ name, logo }: HeaderProps) => {
   return (
     <View
       style={{
@@ -18,23 +19,54 @@ const Header = ({ name }: HeaderProps) => {
         aspectRatio: 501 / 40,
         backgroundColor: '#BF242A',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        paddingRight: scale(10)
       }}
     >
       <FastImage
         source={{
-          uri:
-            'https://cdn01.tianmeilai.com.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928',
+          uri: logo,
         }}
         style={{ width: '30%', height: '100%' }}
         resizeMode={'contain'}
       />
-      <View style={{ flexDirection: 'row', width: '50%', alignItems: 'center', justifyContent: 'flex-end' }}>
-        <Text style={{ fontSize: scale(25), marginRight: scale(10) }}>{name}</Text>
-        <Badge value={'0.0000'} badgeStyle={{ width: scale(90), marginRight: scale(10), borderColor: 'transparent' }} textStyle={{ fontSize: scale(20) }} status={'error'} />
-        <FontAwesome5 name={'comment-dots'} size={scale(25)} style={{ marginRight: scale(10) }} />
-        <MaterialCommunityIcons name={'settings-outline'} size={scale(25)} style={{ marginRight: scale(10) }} />
-        <Text style={{ fontSize: scale(25) }}>{'菜单'}</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          width: '50%',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Text style={{ fontSize: scale(20), marginRight: scale(10), color: '#ffffff' }}>
+          {name}
+        </Text>
+        {/* <Badge
+          value={'0.0000'}
+          badgeStyle={{
+            width: scale(90),
+            marginRight: scale(10),
+            borderColor: 'transparent',
+          }}
+          textStyle={{ fontSize: scale(20) }}
+          status={'error'}
+        /> */}
+        <View style={{ width: scale(80), aspectRatio: 3.5, backgroundColor: '#df2128', borderRadius: scale(20) }}>
+          <Text style={{ color: '#ffffff' }}>{'0.0000'}</Text>
+        </View>
+        <FontAwesome
+          name={'commenting'}
+          size={scale(25)}
+          style={{ marginRight: scale(10) }}
+          color={'#ffffff'}
+        />
+        <MaterialCommunityIcons
+          name={'settings-outline'}
+          size={scale(25)}
+          style={{ marginRight: scale(10) }}
+          color={'#ffffff'}
+        />
+        <Text style={{ fontSize: scale(20), color: '#ffffff' }} >{'菜单'}</Text>
       </View>
     </View>
   )

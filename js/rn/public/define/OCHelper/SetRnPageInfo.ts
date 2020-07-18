@@ -127,14 +127,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      {
-        // 注册
-        vcName: 'UGRegisterViewController',
-        rnName: PageName.BZHRegisterPage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
+      // {
+      //   // 注册
+      //   vcName: 'UGRegisterViewController',
+      //   rnName: PageName.BZHRegisterPage,
+      //   fd_prefersNavigationBarHidden: true,
+      //   允许游客访问: true,
+      //   允许未登录访问: true,
+      // },
     ])
   }
 

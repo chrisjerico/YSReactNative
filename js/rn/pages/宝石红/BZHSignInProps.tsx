@@ -12,11 +12,13 @@ export const BZHSignInReducer = (
   prevState: BZHSignInStore = {
     isRemember: false,
     account: null,
-    password: null
+    password: null,
   },
   act: UGAction<BZHSignInStore>
 ): BZHSignInStore => {
-  if (act.type === ActionType.BZHSignInPage_SetProps)
+  if (act.type === ActionType.BZHSignInPage_SetProps) {
     return { ...prevState, ...act.props }
-  return prevState
+  } else {
+    return prevState
+  }
 }
