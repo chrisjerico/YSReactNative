@@ -160,5 +160,15 @@ class APIRouter {
   static user_centerList = async () => {
     return OCHelper.call('UGSystemConfigModel.currentConfig.userCenter');
   };
+  static language_getLanguagePackage = async (lanCode: string) => {
+    return httpClient.get("c=language&a=getLanguagePackage&languageCode=" + lanCode,
+      {
+        //@ts-ignore
+        isEncrypt: false
+      })
+  }
+  static language_getConfigs = async () => {
+    return httpClient.get("c=language&a=getConfigs")
+  }
 }
 export default APIRouter

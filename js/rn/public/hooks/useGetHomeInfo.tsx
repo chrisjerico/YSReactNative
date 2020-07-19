@@ -14,6 +14,9 @@ import { NoticeModel } from '../network/Model/NoticeModel'
 import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { LotteryGameModel } from '../network/Model/LotteryGameModel'
+import { Platform } from 'react-native'
+import AppDefine from '../define/AppDefine'
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 
 type APIListType =
   | 'game_homeGames'
@@ -42,10 +45,31 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [categoryList, setCategoryList] = useState<LhcdocCategoryListModel>()
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
+  const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+  const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   useEffect(() => {
     init()
-    console.log('render')
   }, [])
+  useEffect(() => {
+    let string = ""
+    const noticeData = notice?.data?.scroll?.map((res) => {
+      string += res.content
+      return { label: res.id, value: res.title }
+    }) ?? []
+    if (notice?.data?.popup) {
+      // openPopup(notice)
+    }
+    setnoticeFormat(noticeData)
+    setOriginalNoticeString(string)
+  }, [notice])
+  const openPopup = (data: any) => {
+    const dataModel = data.data?.popup.map((item, index) => {
+      return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+
+    })
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+  }
   const init = () => {
     OCHelper.call('AppDefine.shared.Host').then((host: string) => {
       httpClient.defaults.baseURL = host
@@ -125,14 +149,14 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         ])
           .then(
             Axios.spread((...res) => {
-              setHomeGames(res[0].data)
-              setBanner(res[1].data)
-              setCouponListData(res[3].data)
-              setRankList(res[4].data)
-              setRedBag(res[6].data)
-              setFloatAds(res[7].data)
-              setNotice(res[2].data)
-              setOnlineNum(res[5].data.data.onlineUserCount)
+              setHomeGames(res?.[0]?.data)
+              setBanner(res?.[1]?.data)
+              setCouponListData(res?.[3]?.data)
+              setRankList(res?.[4]?.data)
+              setRedBag(res?.[6]?.data)
+              setFloatAds(res?.[7]?.data)
+              setNotice(res?.[2]?.data)
+              setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
               setLoading(false)
             })
           )
@@ -159,7 +183,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     categoryList,
     turntableList,
     lotteryGames,
-    onRefresh
+    onRefresh,
+    noticeFormat,
+    originalNoticeString
   }
 }
 export default useGetHomeInfo

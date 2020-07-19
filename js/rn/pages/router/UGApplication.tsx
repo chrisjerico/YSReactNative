@@ -41,6 +41,11 @@ import GDBMinePage from '../金星黑/GDBMinePage';
 import KSHomePage from '../凯时/KSHomePage'
 import LottoSelector from '../common/LottoSelector/LottoSelector';
 import LottoBetting from '../common/LottoBetting';
+import VietnamHomePage from '../越南/HomePage';
+import VietnamLogin from '../越南/LoginPage';
+import VietnamRegister from '../越南/RegisterPage';
+import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
+import GameList from '../越南/GameList';
 const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
@@ -62,6 +67,7 @@ class TabBarController extends Component<{
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={LXBView} />
+        <Router.TabScreen name={PageName.VietnamHome} component={VietnamHomePage} />
         <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage} />
         <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
@@ -105,16 +111,21 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={LottoBetting} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={ZLHomeMine} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={VietnamLogin} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={VietnamRegister} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={GameList} />
     </Router.StackNavigator>
   )
 }
 const UGApplication = () => {
   return (
-    <Provider store={UGStore.store}>
-      <NavigationContainer ref={navigationRef}>
-        {StackScreens()}
-      </NavigationContainer>
-    </Provider>
+    <LanguageContextProvider>
+      <Provider store={UGStore.store}>
+        <NavigationContainer ref={navigationRef}>
+          {StackScreens()}
+        </NavigationContainer>
+      </Provider>
+    </LanguageContextProvider>
   )
 }
 export default UGApplication
