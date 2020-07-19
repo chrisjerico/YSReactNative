@@ -2,12 +2,12 @@ import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { useSelector, useDispatch } from "react-redux"
-import { IGlobalState } from "../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
 import { colorEnum } from "./enum/colorEnum"
 import { Icon } from "react-native-elements"
 import PushHelper from "../../public/define/PushHelper"
-import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
+import UGSysConfModel, { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 import LinearGradient from "react-native-linear-gradient"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import APIRouter from "../../public/network/APIRouter"
@@ -18,6 +18,7 @@ import useLoginOut from "../../public/hooks/useLoginOut"
 import { useDimensions } from "@react-native-community/hooks"
 import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
+import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
@@ -40,6 +41,17 @@ const ZLHomeMine = ({ navigation }) => {
             console.log(error)
         }
     }
+    useEffect(() => {
+
+        navigation.addListener('focus', async () => {
+            const { data: userInfo } = await APIRouter.user_info()
+            UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+            UGStore.save();
+        });
+        return (() => {
+            navigation.removeListener('focus', null);
+        })
+    }, [])
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
