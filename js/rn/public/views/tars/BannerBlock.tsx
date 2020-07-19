@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { List } from '../public/network/Model/BannerModel'
-import UGSwiper from '../public/widget/swp/UGSwiper'
 import { Badge } from 'react-native-elements'
-import { scale } from '../helpers/function'
+import { List } from '../../network/Model/BannerModel'
+import { scale } from '../../tools/Scale'
+import UGSwiper from '../../widget/swp/UGSwiper'
 
 interface BannerBlockProps {
   onlineNum: number

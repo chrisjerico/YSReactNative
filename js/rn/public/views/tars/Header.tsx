@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { scale } from '../helpers/function';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { scale } from '../../tools/Scale';
 
 interface HeaderProps {
   onPressBack: () => any;

@@ -30,7 +30,6 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import HSNZ from 'react-native-hsnz-marquee'
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];

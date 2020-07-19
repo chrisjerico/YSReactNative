@@ -39,7 +39,6 @@ import JDPromotionListPage from '../经典/JDPromotionListPage';
 import PromotionListPage from '../common/PromotionListPage';
 import GDBMinePage from '../金星黑/GDBMinePage';
 import KSHomePage from '../凯时/KSHomePage'
-import LottoSelector from '../common/LottoSelector/LottoSelector';
 import LottoBetting from '../common/LottoBetting';
 import VietnamHomePage from '../越南/HomePage';
 import VietnamLogin from '../越南/LoginPage';
@@ -107,8 +106,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={PromotionListPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={LottoBetting} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={ZLHomeMine} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={VietnamLogin} />

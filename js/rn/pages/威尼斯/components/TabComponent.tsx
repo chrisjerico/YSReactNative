@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { scale } from '../../../helpers/function';
+import { scale } from '../../../public/tools/Scale';
 
 
 // const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>

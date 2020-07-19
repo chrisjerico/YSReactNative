@@ -1,6 +1,6 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import UGProgressCircle from '../public/widget/progress/UGProgressCircle'
+import { StyleSheet, View } from 'react-native'
+import UGProgressCircle from '../../widget/progress/UGProgressCircle'
 
 const ProgressCircle = () => (
   <View style={styles.container}>

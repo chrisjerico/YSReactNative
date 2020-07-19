@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { scale } from '../../../../helpers/function'
+import { scale } from '../../../../public/tools/Scale'
 
 interface ToolBlockProps {
   tools: any[];
