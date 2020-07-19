@@ -64,7 +64,7 @@ class TabBarController extends Component<{
   }
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.VietnamHome} screenOptions={{ tabBarVisible: false }}
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={LXBView} />
         <Router.TabScreen name={PageName.VietnamHome} component={VietnamHomePage} />

@@ -171,7 +171,7 @@ const ZLHomeMine = ({ navigation }) => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
                         <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
-                            {item.code == 9 ? <View style={{
+                            {item.code == 9 && unreadMsg > 0 ? <View style={{
                                 position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
                                 height: 20, width: 20,
                                 borderRadius: 10, justifyContent: 'center', alignItems: 'center'
@@ -206,13 +206,14 @@ const ZLHeader = () => {
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>消息</Text>
-                <View style={{
+                {unreadMsg > 0 ? <View style={{
                     position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
                     height: 15, width: 15,
                     borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                </View>
+                </View> : null}
+
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {

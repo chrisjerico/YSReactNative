@@ -441,13 +441,14 @@ const ZLHeader = () => {
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
                         <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
-                        <View style={{
+                        {unreadMsg > 0 ? <View style={{
                             position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
                             height: 15, width: 15,
                             borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                        </View>
+                        </View> : null}
+
                     </TouchableOpacity> : null
                 }
 

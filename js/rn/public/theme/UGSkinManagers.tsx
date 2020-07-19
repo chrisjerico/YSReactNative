@@ -45,7 +45,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf;
     let dict = {
-      0: `经典${mobileTemplateBackground}`,
+      29: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -56,7 +56,7 @@ export default class UGSkinManagers extends UGThemeColor {
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
       14: `六合厅`,
-      16: `尊龙`,
+      0: `尊龙`,
       18: `金星黑`,
       19: `乐橙`,
       22: `凯时`,
