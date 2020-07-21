@@ -5,7 +5,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -27,6 +27,7 @@ interface GameButtonProps {
   titleContainerStyle?: ViewStyle;
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
+  showFlag?: boolean;
 }
 
 const GameButton = (props: GameButtonProps) => {
@@ -44,6 +45,7 @@ const GameButton = (props: GameButtonProps) => {
     titleContainerStyle,
     resizeMode = 'contain',
     enableCircle = true,
+    showFlag,
   } = props
   return (
     <TouchableOpacity
@@ -86,7 +88,15 @@ const GameButton = (props: GameButtonProps) => {
           </View>
         )}
       </View>
-    </TouchableOpacity>
+      {showFlag && (
+        <View
+          style={{ position: 'absolute', backgroundColor: 'red', right: 0, borderRadius: scale(5) }}
+        >
+          <Text style={{ color: '#ffffff', padding: scale(5) }}>{'热门'}</Text>
+        </View>
+      )
+      }
+    </TouchableOpacity >
   )
 }
 

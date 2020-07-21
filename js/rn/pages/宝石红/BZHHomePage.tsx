@@ -166,11 +166,11 @@ const BZHHomePage = () => {
                   contentContainerStyle={{ paddingTop: scale(20) }}
                   games={list}
                   renderGame={(item, index) => {
-                    const { title, logo, icon, name, subtitle } = item
-                    console.log("--------item---------", item)
+                    const { title, logo, icon, name, subtitle, tipFlag } = item
                     return (
                       <GameButton
                         key={index}
+                        showFlag={parseInt(tipFlag) ? true : false}
                         resizeMode={'contain'}
                         containerStyle={[
                           styles.gameContainer,
