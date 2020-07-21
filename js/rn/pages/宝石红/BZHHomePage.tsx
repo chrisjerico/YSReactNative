@@ -167,6 +167,7 @@ const BZHHomePage = () => {
                   games={list}
                   renderGame={(item, index) => {
                     const { title, logo, icon, name, subtitle } = item
+                    console.log("--------item---------", item)
                     return (
                       <GameButton
                         key={index}
