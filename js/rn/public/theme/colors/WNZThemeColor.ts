@@ -23,6 +23,6 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     intoViewColor: '#444',
     moneyCellColor: '#444',
-    themeColor: '#e53333'
+    themeColor: '#BF242A'
   },
 }

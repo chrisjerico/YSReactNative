@@ -14,6 +14,7 @@ import { NoticeModel } from '../network/Model/NoticeModel'
 import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
+import { HomeADModel } from '../network/Model/HomeADModel'
 
 type APIListType =
   | 'game_homeGames'
@@ -29,6 +30,7 @@ type APIListType =
   | 'activity_turntableList'
   | 'game_lotteryGames'
   | 'system_config'
+  | 'system_homeAds'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
@@ -44,6 +46,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
   const [systemConfig, setSystemConfig] = useState<any>()
+  const [systemHomeAds, setSystemHomeAds] = useState<HomeADModel>()
+
   useEffect(() => {
     init()
     console.log('render')
@@ -105,6 +109,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                     case 'system_config':
                       setSystemConfig(res[key]?.data)
                       break
+                    case 'system_homeAds':
+                      setSystemHomeAds(res[key]?.data)
+                      break
                     default:
                       break
                   }
@@ -165,6 +172,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     turntableList,
     lotteryGames,
     systemConfig,
+    systemHomeAds,
     onRefresh
   }
 }

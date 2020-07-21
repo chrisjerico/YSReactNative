@@ -6,16 +6,21 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
+import { useSafeArea } from 'react-native-safe-area-context'
+import { useSelector } from 'react-redux'
 import useMemberItems from '../../public/hooks/useMemberItems'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import GameButton from '../../public/views/tars/GameButton'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { IGlobalState } from '../../redux/store/UGStore'
 import Header from './views/Header'
 import ButtonGroup from './views/mines/ButtonGroup'
 import ToolBlock from './views/mines/ToolBlock'
-import { IGlobalState } from '../../redux/store/UGStore'
-import { useSelector } from 'react-redux'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
 
 const WNZMinePage = () => {
+  const safeArea = useSafeArea()
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { avatar, balance, usr }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
@@ -24,7 +29,18 @@ const WNZMinePage = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header name={usr} logo={''} balance={balance} />
+      <Header
+        name={usr}
+        logo={''}
+        balance={balance}
+        marginTop={safeArea?.top}
+        backgroundColor={WNZThemeColor.威尼斯.themeColor}
+        onPressMenu={() => { }}
+        onPressComment={() => {
+          console.log('去六合彩')
+        }}
+        onPressUser={() => navigate(PageName.WNZMinePage, {})}
+      />
       <ScrollView
         style={styles.container}
         scrollEnabled={true}

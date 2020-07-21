@@ -1,24 +1,26 @@
+import { AxiosResponse } from 'axios'
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { httpClient, CachePolicyEnum } from './httpClient'
+import { CachePolicyEnum, httpClient } from './httpClient'
 import { BalanceModel } from './Model/BalanceModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
+import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
+import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { PromotionsModel } from './Model/PromotionsModel'
 import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
-import { TurntableListModel } from './Model/TurntableListModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
-import { AxiosResponse } from 'axios'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
+import { TurntableListModel } from './Model/TurntableListModel'
+
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -172,5 +174,9 @@ class APIRouter {
       filename
     })
   };
+
+  static system_homeAds = () => {
+    return httpClient.get<HomeADModel>("c=system&a=homeAds")
+  }
 }
 export default APIRouter
