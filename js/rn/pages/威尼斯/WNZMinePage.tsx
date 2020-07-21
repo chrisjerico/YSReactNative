@@ -24,9 +24,7 @@ const WNZMinePage = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Header
-        name={usr}
-      />
+      <Header name={usr} logo={''} balance={balance} />
       <ScrollView
         style={styles.container}
         scrollEnabled={true}
@@ -59,8 +57,8 @@ const WNZMinePage = () => {
                 key={index}
                 logo={logo}
                 title={name}
-                containerStyle={{ width: '25%', aspectRatio: 1 }}
-                circleColor={'transparent'}
+                containerStyle={{ width: '25%' }}
+                enableCircle={false}
               />
             )
           }}
@@ -75,8 +73,8 @@ const WNZMinePage = () => {
                 key={index}
                 logo={logo}
                 title={name}
-                containerStyle={{ width: '25%', aspectRatio: 1 }}
-                circleColor={'transparent'}
+                containerStyle={{ width: '25%' }}
+                enableCircle={false}
               />
             )
           }}
@@ -91,8 +89,8 @@ const WNZMinePage = () => {
                 key={index}
                 logo={logo}
                 title={name}
-                containerStyle={{ width: '25%', aspectRatio: 1 }}
-                circleColor={'transparent'}
+                containerStyle={{ width: '25%' }}
+                enableCircle={false}
               />
             )
           }}
@@ -107,8 +105,8 @@ const WNZMinePage = () => {
                 key={index}
                 logo={logo}
                 title={name}
-                containerStyle={{ width: '25%', aspectRatio: 1 }}
-                circleColor={'transparent'}
+                containerStyle={{ width: '25%' }}
+                enableCircle={false}
               />
             )
           }}

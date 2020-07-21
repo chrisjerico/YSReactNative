@@ -1,17 +1,18 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { Badge } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface HeaderProps {
   name: string;
   logo: string;
+  balance: string;
 }
 
-const Header = ({ name, logo }: HeaderProps) => {
+const Header = ({ name, logo, balance }: HeaderProps) => {
   return (
     <View
       style={{
@@ -51,8 +52,9 @@ const Header = ({ name, logo }: HeaderProps) => {
           textStyle={{ fontSize: scale(20) }}
           status={'error'}
         /> */}
-        <View style={{ width: scale(80), aspectRatio: 3.5, backgroundColor: '#df2128', borderRadius: scale(20) }}>
-          <Text style={{ color: '#ffffff' }}>{'0.0000'}</Text>
+        <View style={{ width: scale(100), aspectRatio: 3.5, backgroundColor: '#df2128', borderRadius: scale(20), flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginRight: scale(5) }}>
+          <Text style={{ color: '#ffffff' }}>{balance}</Text>
+          <AntDesign name={'pluscircle'} color={'#ffffff'} style={{ margin: 0, padding: 0, marginLeft: scale(5) }} />
         </View>
         <FontAwesome
           name={'commenting'}

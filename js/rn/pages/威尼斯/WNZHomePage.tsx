@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
@@ -28,11 +28,12 @@ const WNZHomePage = () => {
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { avatar, balance, usr }: UGUserModel = userStore
   const { mobile_logo }: UGSysConfModel = SystemStore
-  const { loading, banner, notice, homeGames, categoryList } = useGetHomeInfo([
+  const { loading, banner, notice, homeGames, categoryList, rankList } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'lhcdoc_categoryList',
+    'system_rankingList'
   ])
 
   const banners = banner?.data?.list ?? []
@@ -45,6 +46,7 @@ const WNZHomePage = () => {
   )
   games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
   const leftGames = categoryList?.data ?? []
+  const rankLists = rankList?.data?.list ?? []
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -52,7 +54,7 @@ const WNZHomePage = () => {
         <ProgressCircle />
       ) : (
           <>
-            <Header name={usr} logo={mobile_logo} />
+            <Header name={usr} logo={mobile_logo} balance={balance} />
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
@@ -120,9 +122,9 @@ const WNZHomePage = () => {
                       key={index}
                       style={{
                         width: '25%',
-                        height: scale(125),
                         alignItems: 'center',
                         justifyContent: 'center',
+                        marginVertical: scale(5)
                       }}
                     >
                       <GameButton
@@ -131,10 +133,14 @@ const WNZHomePage = () => {
                         containerStyle={{
                           width: '90%',
                           backgroundColor: '#ffffff',
-                          height: '90%',
+                          aspectRatio: 0.9,
                           borderRadius: scale(10),
+                          justifyContent: 'center'
                         }}
-                        circleColor={'transparent'}
+                        titleContainerStyle={{
+                          aspectRatio: 3
+                        }}
+                        enableCircle={false}
                       />
                     </View>
                   )
@@ -169,7 +175,8 @@ const WNZHomePage = () => {
                 }}
               />
               <AnimatedRankComponent
-                rankLists={[]}
+                rankLists={rankLists}
+                containerStyle={{ paddingBottom: scaleHeight(70) }}
                 rankContainerStyle={{ borderRadius: 0 }}
               />
             </ScrollView>
