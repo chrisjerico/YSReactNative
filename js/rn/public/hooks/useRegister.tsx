@@ -7,7 +7,13 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
 
-const useRegister = () => {
+interface UseRegister {
+  onSuccess?: () => any;
+  onError?: (error: any) => any;
+}
+
+const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
+  const { onSuccess, onError } = params
   const register = async (params: UserReg) => {
     try {
       if (Platform.OS == 'ios') {
@@ -66,13 +72,13 @@ const useRegister = () => {
             )
             updateUserInfo()
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功'])
-            popToRoot()
+            onSuccess && onSuccess()
           } else {
             // 註冊成功 不登陸
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
               data.msg ?? '注册成功',
             ])
-            popToRoot()
+            onSuccess && onSuccess()
           }
         } else {
           // 註冊失敗
@@ -87,6 +93,7 @@ const useRegister = () => {
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
         error ?? '注册失败',
       ])
+      onError && onError(error)
       console.log(error)
     }
   }

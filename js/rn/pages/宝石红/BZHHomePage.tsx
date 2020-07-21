@@ -95,8 +95,8 @@ const BZHHomePage = () => {
           onPressSignIn={() => push(PageName.BZHSignInPage)}
           onPressSignUp={() => push(PageName.BZHRegisterPage)}
           onPressUser={() => {
-            console.log("--------onPressUser---------")
-            navigate(PageName.BZHHomePage, { index: 4 })
+            navigate(PageName.BZHMinePage, {})
+            // navigate(PageName.BZHHomePage, { index: 4 })
           }}
         />
         <ScrollView

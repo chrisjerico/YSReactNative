@@ -18,7 +18,8 @@ import { PageName } from '../../public/navigation/Navigation'
 import {
   navigate,
   pop,
-  push
+  push,
+  popToRoot
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
@@ -57,13 +58,12 @@ const BZHRegisterPage = () => {
 
   const jumpToHomePage = () => {
     navigate(PageName.BZHHomePage, {})
-    console.log('----返回首頁----')
   }
 
   // hooks
   const safeArea = useSafeArea()
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-  const { register } = useRegister()
+  const { register } = useRegister({ onSuccess: jumpToHomePage })
 
   // state
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -144,7 +144,6 @@ const BZHRegisterPage = () => {
     }
   }
 
-  console.log("-------safeArea-------", safeArea)
   return (
     <>
       <Header

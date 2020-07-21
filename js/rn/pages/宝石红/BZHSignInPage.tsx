@@ -51,7 +51,6 @@ const BZHSignInPage = ({ navigation }) => {
 
   const jumpToHomePage = () => {
     navigate(PageName.BZHHomePage, {})
-    console.log('----返回首頁----')
   }
 
   const cleanAccountPassword = (isRemember: boolean) => {
