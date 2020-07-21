@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -9,6 +10,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { Toast } from '../../public/tools/ToastUtils'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -18,12 +20,12 @@ import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
 import PickAvatarComponent from './views/mines/PickAvatarComponent'
 import ProfileBlock from './views/mines/ProfileBlock'
-import { Toast } from '../../public/tools/ToastUtils'
 
 const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const safeArea = useSafeArea()
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -54,11 +56,15 @@ const BZHMinePage = ({ navigation }) => {
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header title={'会员中心'} />
+    <>
+      <Header
+        title={'会员中心'}
+        marginTop={safeArea?.top}
+        backgroundColor={BZHThemeColor.宝石红.themeColor}
+      />
       <ScrollView style={styles.container}>
         <ProfileBlock
-          onPressAvatar={() => setVisible(true)}
+          onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
             dispatch({
@@ -112,7 +118,10 @@ const BZHMinePage = ({ navigation }) => {
         avatars={avatarList}
         onPressSave={({ url, filename }) => {
           setVisible(false)
-          UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: { avatar: url } })
+          UGStore.dispatch({
+            type: ActionType.UpdateUserInfo,
+            props: { avatar: url },
+          })
           APIRouter.task_changeAvatar(filename).then((value) => {
             if (value?.data?.code == 0) {
               Toast('修改头像成功')
@@ -125,15 +134,11 @@ const BZHMinePage = ({ navigation }) => {
           setVisible(false)
         }}
       />
-    </SafeAreaView>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
-    flex: 1,
-  },
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],

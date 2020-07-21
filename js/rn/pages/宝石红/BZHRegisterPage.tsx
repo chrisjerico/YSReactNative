@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import SlidingVerification from '../../../rn/public/components/SlidingVerification'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
 import {
+  navigate,
   pop,
-  popToRoot,
-  push,
-  navigate
+  push
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -62,6 +61,7 @@ const BZHRegisterPage = () => {
   }
 
   // hooks
+  const safeArea = useSafeArea()
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { register } = useRegister()
 
@@ -144,10 +144,12 @@ const BZHRegisterPage = () => {
     }
   }
 
+  console.log("-------safeArea-------", safeArea)
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <>
       <Header
-        color={'#e53333'}
+        marginTop={safeArea?.top}
+        backgroundColor={BZHThemeColor.宝石红.themeColor}
         title={'注册'}
         onPressBack={pop}
         onPressCustomerService={() => {
@@ -383,19 +385,14 @@ const BZHRegisterPage = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
-    flex: 1,
-  },
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
-    marginBottom: scale(70)
   },
   whiteBlock: {
     backgroundColor: '#ffffff',
@@ -404,7 +401,8 @@ const styles = StyleSheet.create({
     borderRadius: scale(10),
     marginTop: scale(15),
     paddingHorizontal: scale(25),
-    paddingTop: scale(25)
+    paddingTop: scale(25),
+    marginBottom: scaleHeight(70)
   },
   bottomButtonContainer: {
     flexDirection: 'row',

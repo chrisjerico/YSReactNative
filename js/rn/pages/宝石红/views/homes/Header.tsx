@@ -1,8 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../../public/tools/Scale'
 
 interface HeaderProps {
@@ -14,6 +18,8 @@ interface HeaderProps {
   onPressUser: () => any;
   isTest: boolean;
   logo: string;
+  marginTop: number;
+  backgroundColor: string;
 }
 
 const Header = ({
@@ -25,44 +31,31 @@ const Header = ({
   onPressUser,
   isTest,
   logo,
+  marginTop,
+  backgroundColor,
 }: HeaderProps) => {
   return (
-    <View style={styles.container}>
-      {uid ? (
-        <View style={styles.row}>
-          <View style={styles.left}>
-            {isTest ? (
-              <Button
-                title={'注册'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignUp}
-              />
-            ) : null}
-          </View>
-          <View style={styles.imageContainer}>
-            <FastImage
-              source={{
-                uri: logo,
-              }}
-              style={styles.logo}
-              resizeMode={'contain'}
-            />
-          </View>
-          <TouchableOpacity style={styles.right} onPress={onPressUser}>
-            <Text numberOfLines={1}>{name}</Text>
-            <Text>{'￥' + money}</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
+    <View style={{ backgroundColor: backgroundColor }}>
+      <View
+        style={[
+          styles.container,
+          {
+            marginTop: marginTop,
+            backgroundColor: backgroundColor,
+          },
+        ]}
+      >
+        {uid ? (
           <View style={styles.row}>
             <View style={styles.left}>
-              <Button
-                title={'登陆'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignIn}
-              />
+              {isTest ? (
+                <Button
+                  title={'注册'}
+                  buttonStyle={styles.button}
+                  titleStyle={styles.buttonTitle}
+                  onPress={onPressSignUp}
+                />
+              ) : null}
             </View>
             <View style={styles.imageContainer}>
               <FastImage
@@ -73,16 +66,41 @@ const Header = ({
                 resizeMode={'contain'}
               />
             </View>
-            <View style={styles.right}>
-              <Button
-                title={'注册'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignUp}
-              />
-            </View>
+            <TouchableOpacity style={styles.right} onPress={onPressUser}>
+              <Text numberOfLines={1}>{name}</Text>
+              <Text>{'￥' + money}</Text>
+            </TouchableOpacity>
           </View>
-        )}
+        ) : (
+            <View style={styles.row}>
+              <View style={styles.left}>
+                <Button
+                  title={'登陆'}
+                  buttonStyle={styles.button}
+                  titleStyle={styles.buttonTitle}
+                  onPress={onPressSignIn}
+                />
+              </View>
+              <View style={styles.imageContainer}>
+                <FastImage
+                  source={{
+                    uri: logo,
+                  }}
+                  style={styles.logo}
+                  resizeMode={'contain'}
+                />
+              </View>
+              <View style={styles.right}>
+                <Button
+                  title={'注册'}
+                  buttonStyle={styles.button}
+                  titleStyle={styles.buttonTitle}
+                  onPress={onPressSignUp}
+                />
+              </View>
+            </View>
+          )}
+      </View>
     </View>
   )
 }
@@ -91,7 +109,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 540 / 60,
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
     flexDirection: 'row',
     paddingHorizontal: scale(25),
     justifyContent: 'flex-end',

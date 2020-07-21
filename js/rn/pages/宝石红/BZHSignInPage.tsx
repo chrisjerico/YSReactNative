@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -17,7 +17,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../public/tools/Scale'
+import { scale, scaleHeight } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
@@ -26,11 +26,11 @@ import { BZHSignInStore } from './BZHSignInProps'
 import Form from './views/Form'
 
 const BZHSignInPage = ({ navigation }) => {
-
   // const dispatch = useDispatch()
   const signInStore = useSelector(
     (state: IGlobalState) => state.BZHSignInReducer
   )
+  const safeArea = useSafeArea()
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const [hidePassword, setHidePassword] = useState(true)
 
@@ -111,9 +111,10 @@ const BZHSignInPage = ({ navigation }) => {
   const valid = account && password
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <>
       <Header
-        color={'#e53333'}
+        marginTop={safeArea?.top}
+        backgroundColor={BZHThemeColor.宝石红.themeColor}
         title={'登陆'}
         onPressBack={jump}
         onPressCustomerService={() => {
@@ -198,7 +199,7 @@ const BZHSignInPage = ({ navigation }) => {
                     },
                     {
                       enableCleanOldUser: false,
-                      enableNativeNotification: false
+                      enableNativeNotification: false,
                     }
                   )
                 } else {
@@ -237,7 +238,7 @@ const BZHSignInPage = ({ navigation }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
 
@@ -278,14 +279,9 @@ const CheckBox = ({ check, onPress }) => (
 )
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
-    flex: 1,
-  },
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
-    marginBottom: scale(70),
   },
   whiteBlock: {
     backgroundColor: '#ffffff',
@@ -295,6 +291,7 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
+    marginBottom: scaleHeight(70),
   },
   buttonContainer: {
     width: '100%',

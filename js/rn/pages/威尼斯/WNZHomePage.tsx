@@ -28,12 +28,13 @@ const WNZHomePage = () => {
   const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { avatar, balance, usr }: UGUserModel = userStore
   const { mobile_logo }: UGSysConfModel = SystemStore
-  const { loading, banner, notice, homeGames, categoryList, rankList } = useGetHomeInfo([
+  const { loading, banner, notice, homeGames, categoryList, rankList, lotteryGames } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
     'game_homeGames',
     'lhcdoc_categoryList',
-    'system_rankingList'
+    'system_rankingList',
+    'game_lotteryGames'
   ])
 
   const banners = banner?.data?.list ?? []
@@ -47,7 +48,7 @@ const WNZHomePage = () => {
   games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
   const leftGames = categoryList?.data ?? []
   const rankLists = rankList?.data?.list ?? []
-
+  console.log("-------lotteryGames----------", lotteryGames?.data[0])
   return (
     <SafeAreaView style={styles.safeArea}>
       {loading ? (
@@ -138,9 +139,13 @@ const WNZHomePage = () => {
                           justifyContent: 'center'
                         }}
                         titleContainerStyle={{
-                          aspectRatio: 3
+                          aspectRatio: 5,
+                          paddingTop: scale(5)
                         }}
                         enableCircle={false}
+                        onPress={() => {
+                          PushHelper.pushHomeGame(item)
+                        }}
                       />
                     </View>
                   )
