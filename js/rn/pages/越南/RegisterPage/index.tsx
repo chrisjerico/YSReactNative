@@ -85,7 +85,7 @@ const VietnamRegister = () => {
       if (data?.data?.autoLogin) {
         const user = await OCHelper.call('UGUserModel.currentUser');
 
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [currcentLanguagePackage?.["app.registration.success"]]);
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
         const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
         if (user) {
           const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
@@ -105,7 +105,7 @@ const VietnamRegister = () => {
         UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: UserInfo?.data });
 
         UGStore.save();
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [currcentLanguagePackage?.["app.login.successful"]]);
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
         popToRoot();
       }
       if (data?.data?.autoLogin == false) {
@@ -198,7 +198,7 @@ const VietnamRegister = () => {
       <ScrollView style={{ flex: 1, backgroundColor: 'white', paddingHorizontal: 10 }}>
         {/* <Text style={{ textAlign: 'center', color: '#3c3c3c', fontSize: 20, marginTop: 15, marginBottom: 20, fontWeight: "bold" }}>账户注册</Text> */}
         <Text style={{ textAlign: 'left', color: '#3c3c3c', fontSize: 14, marginTop: 15, marginBottom: 10, marginLeft: 15 }}>{currcentLanguagePackage?.["app.for.safety.your.funds"]}!</Text>
-        <ZLRegInput tip={currcentLanguagePackage?.["app.please.enter.referrerid"]} iconImage={"http://test24.6yc.com/images/icon-reco-24.png"} iconName={"user"} message={currcentLanguagePackage?.["app.please.enter.referrerid"]} placeholder={currcentLanguagePackage?.["app.please.enter.referrerid"]} regConfig={hide_reco} control={control} name={FormName.inviter} />
+        <ZLRegInput tip={"请输入推荐人ID"} iconImage={"http://test24.6yc.com/images/icon-reco-24.png"} iconName={"user"} message={currcentLanguagePackage?.["app.please.enter.referrerid"]} placeholder={currcentLanguagePackage?.["app.please.enter.referrerid"]} regConfig={hide_reco} control={control} name={FormName.inviter} />
         <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'white', borderRadius: 4, borderBottomColor: '#f2f2f2', borderBottomWidth: 1, marginBottom: 10, marginHorizontal: 10 }}>
           <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
             <FastImage style={{ width: 24, height: 24 }} source={{ uri: "http://test24.6yc.com/images/icon-user-24.png" }} />
@@ -214,7 +214,7 @@ const VietnamRegister = () => {
             rules={{
               required: {
                 value: true, message
-                  : currcentLanguagePackage?.["app.please.enter"]
+                  : "请输入"
               },
               maxLength: {
                 value: 15,
@@ -265,13 +265,9 @@ const VietnamRegister = () => {
                 } else if (pass_limit == 1) {
 
                   const regex = /^(?=.*\d)(?=.*[a-zA-Z])/
-                  console.log(regex.test(value))
-                  debugger
                   return regex.test(value) || '密码须有数字及字母'
                 } else if (pass_limit == 2) {
                   const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/
-                  console.log(regex.test(value))
-                  debugger
                   return regex.test(value) || '密码须有数字及字母及字符'
                 }
 
@@ -320,7 +316,7 @@ const VietnamRegister = () => {
             name={FormName.repwd}
             control={control}
             defaultValue=""
-            placeholder={currcentLanguagePackage?.["app.match.password"]}
+            placeholder={"匹配密码"}
           />
           <TouchableOpacity
             style={{}}
@@ -330,10 +326,10 @@ const VietnamRegister = () => {
             <Icon name={repwdSecureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"#444"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
           </TouchableOpacity>
         </View>
-        <ZLRegInput tip={"必须与您的银行帐户名称相同，否则不能出款!"} iconImage={"http://test24.6yc.com/images/icon-user-24.png"} iconName={"user"} message={currcentLanguagePackage?.["app.please.enter.account"]} placeholder={currcentLanguagePackage?.["app.please.enter.account"]} regConfig={reg_name} control={control} name={FormName.fullName} />
+        <ZLRegInput tip={"必须与您的银行帐户名称相同，否则不能出款!"} iconImage={"http://test24.6yc.com/images/icon-user-24.png"} iconName={"user"} message={"请输入账号"} placeholder={"请输入账号"} regConfig={reg_name} control={control} name={FormName.fullName} />
         {/* <ZLRegInput iconName={"user"} message={"请输入银行户口"} placeholder={"必须与提款银行户口相同否则无法提款"} regConfig={2} control={control} name={FormName.account} /> */}
-        <ZLRegInput tip={currcentLanguagePackage?.["app.set.withdrawal.password.first"]} iconName={"lock"} iconImage={"http://test24.6yc.com/images/icon-pwd-24.png"} isPassword={true} message={currcentLanguagePackage?.["app.set.withdrawal.password.first"]} placeholder={currcentLanguagePackage?.["app.set.withdrawal.password.first"]} regConfig={reg_fundpwd} control={control} name={FormName.fundPwd} />
-        <ZLRegInput tip={currcentLanguagePackage?.["app.fill.correct.qq.number"]} iconName={"qq"} iconImage={"http://test24.6yc.com/images/icon-qq-24.png"} message={currcentLanguagePackage?.["app.fill.correct.qq.number"]} placeholder={currcentLanguagePackage?.["app.fill.correct.qq.number"]} regConfig={reg_qq} control={control} name={FormName.qq} />
+        <ZLRegInput tip={"请先设置取款密码"} iconName={"lock"} iconImage={"http://test24.6yc.com/images/icon-pwd-24.png"} isPassword={true} message={"请先设置取款密码"} placeholder={"请先设置取款密码"} regConfig={reg_fundpwd} control={control} name={FormName.fundPwd} />
+        <ZLRegInput tip={"请填写正确的QQ号"} iconName={"qq"} iconImage={"http://test24.6yc.com/images/icon-qq-24.png"} message={"请填写正确的QQ号"} placeholder={"请填写正确的QQ号"} regConfig={reg_qq} control={control} name={FormName.qq} />
         <ZLRegInput tip={currcentLanguagePackage?.["app.please.enter"] + currcentLanguagePackage?.["app.wechat"]} iconName={"wechat"} iconImage={"http://test24.6yc.com/images/icon-wx-24.png"} message={currcentLanguagePackage?.["app.please.enter"] + currcentLanguagePackage?.["app.wechat"]} placeholder={currcentLanguagePackage?.["app.please.enter"] + currcentLanguagePackage?.["app.wechat"]} regConfig={reg_wx} control={control} name={FormName.wx} />
         <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} iconImage={"http://test24.6yc.com/images/icon-phone-24.png"} message={currcentLanguagePackage?.["app.please.enter"] + currcentLanguagePackage?.["app.wechat"]} placeholder={currcentLanguagePackage?.["app.please.enter"] + currcentLanguagePackage?.["app.phone.number"]} regConfig={reg_phone} control={control} name={FormName.phone} />
         <ZLRegInput iconType={"octicon"} iconName={"device-mobile"} iconImage={"http://test24.6yc.com/images/icon-pwd-24.png"} message={currcentLanguagePackage?.["app.sms.verification.code"]} placeholder={currcentLanguagePackage?.["app.sms.verification.code"]} regConfig={smsVerify} control={control} name={FormName.smsCode} />
@@ -387,7 +383,6 @@ const VietnamRegister = () => {
 
 const Header = () => {
   const { top } = useSafeArea()
-  const { currcentLanguagePackage } = useLanguageContext()
   return (
     <View>
       <View style={{ height: top }}></View>
@@ -398,11 +393,11 @@ const Header = () => {
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 20, fontWeight: "bold", }}>{currcentLanguagePackage?.["app.registered"]}</Text>
+        <Text style={{ fontSize: 20, fontWeight: "bold", }}>{"注册"}</Text>
         <TouchableOpacity style={{ position: 'absolute', right: 10 }} onPress={() => {
           navigate(PageName.VietnamHome, {})
         }}>
-          <Text style={{ color: "#4290ff", fontSize: 15, fontWeight: "bold" }}>{currcentLanguagePackage?.["app.back.to.top"]}</Text>
+          <Text style={{ color: "#4290ff", fontSize: 15, fontWeight: "bold" }}>{"返回首页"}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -468,7 +463,7 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
           placeholder={placeholder + (regConfig == 1 || regConfig == '1' ? "(" + currcentLanguagePackage?.["app.options"] + ")" : "")}
         />
         {name == FormName.smsCode ? <TouchableOpacity onPress={requestSms}>
-          <Text>{currcentLanguagePackage?.["app.get.verification.code"]}</Text>
+          <Text>{"获取验证码"}</Text>
         </TouchableOpacity> : null}
         {isPassword ? <TouchableOpacity
           style={{}}
@@ -519,7 +514,7 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
         setHide(false)
         onPress()
       }}>
-          <Text>{currcentLanguagePackage?.["app.get.verification.code"]}</Text>
+          <Text>{"获取验证码"}</Text>
         </TouchableWithoutFeedback>}
 
     </View>

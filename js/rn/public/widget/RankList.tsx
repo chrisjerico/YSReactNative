@@ -6,18 +6,15 @@ import { useLanguageContext } from "../context/LanguageContextProvider"
 import { useSelector } from "react-redux"
 import { IGlobalState } from "../../redux/store/UGStore"
 const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', textColor = "black", timing = 10000 }: { ranks: RankListModel, width: number, height?: number, backgroundColor?: string, textColor: string, timing: number }) => {
-  const [currentY] = useState(new Animated.Value(200))
+  const [currentY] = useState(new Animated.Value(height))
   const { rankingListSwitch } = useSelector((state: IGlobalState) => state.SysConfReducer)
   useEffect(() => {
     const value = Animated.loop(
       Animated.timing(currentY, {
-        toValue: -200,
+        toValue: -25 * ranks?.data?.list?.length ?? 0,
         duration: timing,
         useNativeDriver: true
-      }),
-      {
-        iterations: 1500
-      }
+      })
     )
     if (ranks?.data?.list?.length > 0) {
       value.start()

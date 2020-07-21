@@ -45,6 +45,7 @@ import VietnamLogin from '../越南/LoginPage';
 import VietnamRegister from '../越南/RegisterPage';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import GameList from '../越南/GameList';
+import MinePage from '../越南/MinePage';
 const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
@@ -92,6 +93,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.VietnamMine} component={MinePage} />
       </Router.TabNavigator>
     );
   }

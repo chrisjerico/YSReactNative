@@ -32,6 +32,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
     ...WNZThemeColor, // 威尼斯
+    ...PYThemeColor
   }
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -59,10 +60,11 @@ export default class UGSkinManagers extends UGThemeColor {
       22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
-      24: `白曜`,
+      26: `白曜`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
+    debugger
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();

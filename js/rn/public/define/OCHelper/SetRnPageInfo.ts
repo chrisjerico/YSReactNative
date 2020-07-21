@@ -83,6 +83,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.VietnamMine,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
     ])
   }
   if (Skin1.skitType.indexOf('凯时') != -1) {
@@ -214,7 +222,7 @@ export function setRnPageInfo() {
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.ZLHomePage,
+        rnName: PageName.VietnamHome,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
