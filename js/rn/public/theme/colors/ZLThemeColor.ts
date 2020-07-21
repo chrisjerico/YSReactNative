@@ -12,7 +12,7 @@ export const ZLThemeColor: { [x: string]: UGThemeColor } = {
         tabSelectedColor: '#F1B709',
         progressBgColor: ['#FEC434', '#FE8A23'],
         homeContentColor: '#444',
-        homeContentSubColor: 'black',
+        homeContentSubColor: '#404040',
         cellBgColor: '#444',
         CLBgColor: '#444',
         menuHeadViewColor: ['black', 'black'],
@@ -23,6 +23,7 @@ export const ZLThemeColor: { [x: string]: UGThemeColor } = {
         conversionCellColor: '#444',
         intoViewColor: '#444',
         moneyCellColor: '#444',
-
+        navBarTitleColor:'#fff',
+        isBlack: true,
     }
 };
