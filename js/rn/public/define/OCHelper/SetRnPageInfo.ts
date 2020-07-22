@@ -222,7 +222,7 @@ export function setRnPageInfo() {
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.VietnamHome,
+        rnName: PageName.ZLHomePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,

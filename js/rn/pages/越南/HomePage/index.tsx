@@ -181,6 +181,10 @@ const VietnamHomePage = () => {
                 borderBottomColor: "#f2f2f2",
                 width: "100%",
               }}
+              tabs={[<Text></Text>]}
+              // renderTab={(name) => {
+              //   return <Text>{name}</Text>
+              // }}
               activeTextColor={"#71abff"} />}
           >
             {navBarConfig?.map((res) => {

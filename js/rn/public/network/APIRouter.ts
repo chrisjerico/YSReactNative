@@ -19,6 +19,7 @@ import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { AxiosResponse } from 'axios'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
+import { YueBaoStatModel } from './Model/YueBaoStatModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -181,6 +182,9 @@ class APIRouter {
   }
   static language_getConfigs = async () => {
     return httpClient.get("c=language&a=getConfigs")
+  }
+  static yuebao_stat = async () => {
+    return httpClient.get<YueBaoStatModel>("c=yuebao&a=stat")
   }
 }
 export default APIRouter
