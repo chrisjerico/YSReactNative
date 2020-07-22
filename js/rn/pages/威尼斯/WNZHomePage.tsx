@@ -1,13 +1,5 @@
-import React, { useRef, useState } from 'react'
-import {
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
-import Modal from 'react-native-modal'
+import React, { useRef } from 'react'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
@@ -28,14 +20,19 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import HomeHeader from './components/HomeHeader'
+import MenuModalComponent from './components/MenuModalComponent'
 import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
 
 const WNZHomePage = () => {
   const announcementModal = useRef(null)
-  const [menuIsVisible, setMenuIsVisible] = useState(false)
-  const { balance, usr }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { mobile_logo }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const menuModal = useRef(null)
+  const { balance, usr }: UGUserModel = useSelector(
+    (state: IGlobalState) => state.UserInfoReducer
+  )
+  const { mobile_logo }: UGSysConfModel = useSelector(
+    (state: IGlobalState) => state.SysConfReducer
+  )
   const {
     loading,
     banner,
@@ -81,7 +78,7 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              setMenuIsVisible(true)
+              menuModal?.current?.show()
             }}
             onPressComment={() => {
               console.log('去六合彩')
@@ -228,24 +225,7 @@ const WNZHomePage = () => {
             rankContainerStyle={{ borderRadius: 0 }}
           />
         </ScrollView>
-        <Modal
-          isVisible={menuIsVisible}
-          animationIn={'slideInRight'}
-          animationOut={'slideOutRight'}
-          style={{ width: '100%' }}
-        >
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() => {
-                setMenuIsVisible(false)
-              }}
-            />
-            <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-              <Text>{'dsdd'}</Text>
-            </View>
-          </View>
-        </Modal>
+        <MenuModalComponent menus={[]} renderMenu={() => { }} ref={menuModal} />
         <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
