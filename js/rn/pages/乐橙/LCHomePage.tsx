@@ -12,7 +12,8 @@ import {
     ScrollView,
     Text,
     TouchableWithoutFeedback,
-    View
+    View,
+    TouchableOpacity
 } from "react-native";
 import { BannerView } from "./component/homePage/BannerView";
 import { HomeHeaderButtonBar } from "./component/homePage/HomeHeaderButtonBar";
@@ -20,7 +21,7 @@ import { HomeTabView } from "./component/homePage/homeTabView/HomeTabView";
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo";
 import { navigate, push } from "../../public/navigation/RootNavigation";
 import { PageName } from "../../public/navigation/Navigation";
-import Icon from "react-native-vector-icons/FontAwesome"
+import { Icon, Button } from 'react-native-elements';
 import { useDimensions } from "@react-native-community/hooks";
 import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
@@ -40,21 +41,30 @@ import { updateUserInfo } from "../../redux/store/IGlobalStateHelper";
 import { ActionType } from "../../redux/store/ActionTypes";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
 import RankListCP from "../../public/widget/RankList";
-
+import { MarqueeHorizontal } from 'react-native-marquee-ab';
 const LCHomePage = ({ navigation }) => {
     const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading } = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const { width } = useDimensions().screen
+    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
+    const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
+    const [show, setShow] = useState(false)
+    const [content, setContent] = useState("")
     useEffect(() => {
         initPromotions()
     }, [])
-
     useEffect(() => {
         let string = ""
+        const noticeData = notice?.data?.scroll?.map((res) => {
+            string += res.content
+            return { label: res.id, value: res.title }
+        }) ?? []
         if (notice?.data?.popup) {
             openPopup(notice)
         }
+        setnoticeFormat(noticeData)
+        setOriginalNoticeString(string)
     }, [notice])
 
     const openPopup = (data: any) => {
@@ -102,12 +112,28 @@ const LCHomePage = ({ navigation }) => {
 
     return (
         <View style={{ flex: 1 }}>
+            <HomeHeaderButtonBar />
             <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading}
                 onRefresh={onRefresh} />}
                 style={{ flex: 1 }}>
-                <HomeHeaderButtonBar />
+
                 <BannerView
                     list={banner && banner.data ? banner.data.list : []} />
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: "white", paddingLeft: 5 }}>
+                    <Icon name="ios-volume-high" type="ionicon" color="black" size={24} />
+                    <MarqueeHorizontal textStyle={{ color: "black", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: "white" }}
+                        width={width - 20}
+                        height={34}
+
+                        speed={40}
+                        onTextClick={() => {
+                            setShow(true)
+                            setContent(originalNoticeString)
+                            // PushHelper.pushNoticePopUp(originalNoticeString)
+                        }}
+
+                        textList={noticeFormat} />
+                </View>
                 <View style={{
                     position: 'absolute',
                     top: 90,
@@ -143,6 +169,11 @@ const LCHomePage = ({ navigation }) => {
 
             <RedBagItem redBag={redBag} />
             <TurntableListItem />
+            <MarqueePopupView onPress={() => {
+                setShow(false)
+            }} content={content} show={show} onDismiss={() => {
+                setShow(false)
+            }} />
         </View>
     )
 }
@@ -199,7 +230,44 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
             }} />
     )
 }
+const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
+    const { width, height } = useDimensions().screen
+    if (show) {
+        return (
+            <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
+                <View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
+                    <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</Text>
+                    </View>
+                    <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                        <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }}></AutoHeightWebView>
+                    </View>
+                    <View style={{ height: 70, paddingBottom: 10, paddingHorizontal: 5, justifyContent: 'space-between', width: "100%", flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={onDismiss} style={{
+                            justifyContent: 'center', alignItems: 'center',
+                            width: "47%", height: 50, backgroundColor: 'white',
+                            borderRadius: 5, borderColor: "gray", borderWidth: 0.5
+                        }}>
+                            <Text>取消</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={onPress} style={{
+                            justifyContent: 'center',
+                            alignItems: 'center', width: "47%", height: 50,
+                            backgroundColor: '#46A3FF', borderRadius: 5,
+                            borderColor: "gray", borderWidth: 0.5
+                        }}>
+                            <Text style={{ color: 'white' }}>确定</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
 
+            </View>
+        )
+    } else {
+        return null
+    }
+
+}
 const TurntableListItem = () => {
     const { width, height } = useDimensions().screen
     const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)

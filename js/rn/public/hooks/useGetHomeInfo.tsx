@@ -49,7 +49,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   useEffect(() => {
-    init()
+    setTimeout(() => {
+      init()
+    }, 1000);
   }, [])
   useEffect(() => {
     let string = ""
