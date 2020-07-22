@@ -8,7 +8,6 @@ import {
   View
 } from 'react-native'
 import Modal from 'react-native-modal'
-import { useSafeArea } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
@@ -22,23 +21,21 @@ import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
+import HomeHeader from './components/HomeHeader'
+import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
-import Header from './views/Header'
-import RowGameButtom from './views/RowGameButtom'
 
 const WNZHomePage = () => {
   const announcementModal = useRef(null)
   const [menuIsVisible, setMenuIsVisible] = useState(false)
-  const safeArea = useSafeArea()
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-  const { avatar, balance, usr }: UGUserModel = userStore
-  const { mobile_logo }: UGSysConfModel = SystemStore
+  const { balance, usr }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { mobile_logo }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   const {
     loading,
     banner,
@@ -78,20 +75,20 @@ const WNZHomePage = () => {
   } else {
     return (
       <>
-        <Header
-          marginTop={safeArea?.top}
-          backgroundColor={WNZThemeColor.威尼斯.themeColor}
-          name={usr}
-          logo={mobile_logo}
-          balance={balance}
-          onPressMenu={() => {
-            setMenuIsVisible(true)
-          }}
-          onPressComment={() => {
-            console.log('去六合彩')
-          }}
-          onPressUser={() => navigate(PageName.WNZMinePage, {})}
-        />
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+          <HomeHeader
+            name={usr}
+            logo={mobile_logo}
+            balance={balance}
+            onPressMenu={() => {
+              setMenuIsVisible(true)
+            }}
+            onPressComment={() => {
+              console.log('去六合彩')
+            }}
+            onPressUser={() => navigate(PageName.WNZMinePage, {})}
+          />
+        </SafeAreaHeader>
         <ScrollView
           style={styles.container}
           scrollEnabled={true}

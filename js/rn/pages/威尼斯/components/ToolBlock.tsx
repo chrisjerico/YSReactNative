@@ -1,14 +1,15 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { scale } from '../../../../public/tools/Scale'
+import { Text, View, StyleSheet, ViewStyle } from 'react-native'
+import { scale } from '../../../public/tools/Scale'
 
 interface ToolBlockProps {
   tools: any[];
   renderTool: (item: any, index: number) => any;
   title: string;
+  contentContainer?: ViewStyle | ViewStyle[];
 }
 
-const ToolBlock = ({ tools, renderTool, title }: ToolBlockProps) => {
+const ToolBlock = ({ tools, renderTool, title, contentContainer }: ToolBlockProps) => {
   return (
     <View
       style={{
@@ -40,18 +41,22 @@ const ToolBlock = ({ tools, renderTool, title }: ToolBlockProps) => {
         </Text>
       </View>
       <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          backgroundColor: '#ffffff',
-          borderBottomLeftRadius: scale(5),
-          borderBottomRightRadius: scale(5),
-        }}
+        style={[styles.contentContainer, contentContainer]}
       >
         {tools?.map(renderTool)}
       </View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    backgroundColor: '#ffffff',
+    borderBottomLeftRadius: scale(5),
+    borderBottomRightRadius: scale(5),
+  }
+})
 
 export default ToolBlock
