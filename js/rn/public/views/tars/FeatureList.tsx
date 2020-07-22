@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -19,8 +19,8 @@ interface FeatureListProps {
 }
 
 const FeatureList = ({
-  logo = 'url',
-  title = '我的钱包',
+  logo = '',
+  title,
   onPress,
   containerStyle,
   showUnreadMsg = false,
@@ -40,19 +40,8 @@ const FeatureList = ({
         <Text style={styles.title}>{title}</Text>
       </View>
       {showUnreadMsg ? (
-        <View
-          style={{
-            width: scale(30),
-            aspectRatio: 1,
-            borderRadius: scale(30),
-            backgroundColor: 'red',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
-            {unreadMsg}
-          </Text>
+        <View style={styles.unReadContainer}>
+          <Text style={styles.unReadText}>{unreadMsg}</Text>
         </View>
       ) : (
           <Text style={styles.text}>{'>'}</Text>
@@ -86,6 +75,18 @@ const styles = StyleSheet.create({
     fontSize: scale(30),
     fontWeight: '400',
     paddingLeft: scale(25),
+  },
+  unReadContainer: {
+    width: scale(30),
+    aspectRatio: 1,
+    borderRadius: scale(30),
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  unReadText: {
+    color: '#ffffff',
+    fontSize: scale(20),
   },
 })
 

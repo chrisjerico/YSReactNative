@@ -2,10 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Avatar, Badge } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
-import { LHThemeColor } from '../../../../public/theme/colors/LHThemeColor';
-import { scale } from '../../../../public/tools/Scale';
+import { scale } from '../../../public/tools/Scale';
 
-interface HeaderProps {
+interface HomeHeaderProps {
   name: string;
   avatar: string;
   leftLogo: string;
@@ -18,9 +17,9 @@ interface HeaderProps {
   onPressLogo: () => any
 }
 
-const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay, onPressLogo }: HeaderProps) => {
+const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay, onPressLogo }: HomeHeaderProps) => {
   return (
-    <View style={styles.container}>
+    <>
       <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-start' }}>
         <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: leftLogo }} />
       </View>
@@ -66,18 +65,11 @@ const Header = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLog
             </>
           )}
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    aspectRatio: 540 / 60,
-    backgroundColor: LHThemeColor.六合厅.themeColor,
-    flexDirection: 'row',
-    // paddingright: scale(25),
-  },
   image: {
     width: '100%',
     height: '100%',
@@ -88,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default HomeHeader;

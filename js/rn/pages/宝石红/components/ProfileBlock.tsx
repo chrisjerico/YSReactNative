@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
-import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../../../public/tools/Scale'
-import Avatar from '../../../../public/views/tars/Avatar'
-import LinearBadge from '../../../../public/views/tars/LinearBadge'
+import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
+import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../../public/tools/Scale'
+import Avatar from '../../../public/views/tars/Avatar'
+import LinearBadge from '../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
   money: string | number;

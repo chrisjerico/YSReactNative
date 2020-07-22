@@ -1,33 +1,37 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { scale } from '../../../../public/tools/Scale'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native'
+import { scale } from '../../tools/Scale'
 
 interface CouponBlock {
-  containerStyle?: ViewStyle
-  coupons: any[]
-  renderCoupon: (item: any, index: number) => any
-  onPress?: () => any
+  containerStyle?: ViewStyle | ViewStyle;
+  coupons: any[];
+  renderCoupon: (item: any, index: number) => any;
+  onPress?: () => any;
 }
 
 const CouponBlock = ({
   containerStyle,
   coupons = [],
   renderCoupon,
-  onPress
+  onPress,
 }: CouponBlock) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}><Text>{'優惠活動'}</Text>
+      <View style={styles.title}>
+        <Text>{'優惠活動'}</Text>
         <TouchableOpacity onPress={onPress}>
           <Text>{'查看更多>>'}</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.couponsContainer}>
-        {
-          coupons?.map(renderCoupon)
-        }
-      </View>
-    </View>)
+      <View style={styles.couponsContainer}>{coupons?.map(renderCoupon)}</View>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -41,7 +45,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(15),
     marginTop: scale(10),
     alignItems: 'center',
-  }
+  },
+  title: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
 })
 
 export default CouponBlock

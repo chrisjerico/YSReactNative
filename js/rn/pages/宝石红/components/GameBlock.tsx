@@ -4,9 +4,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
-import { scale } from '../../../../public/tools/Scale'
+import { scale } from '../../../public/tools/Scale'
 
 interface GameBlockProps {
   containerStyle?: ViewStyle;
@@ -27,23 +27,9 @@ const GameBlock = ({
 }: GameBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.titleConatiner}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: '100%',
-          }}
-        >
-          <View
-            style={{
-              width: scale(7),
-              height: '70%',
-              backgroundColor: '#EA0000',
-              marginRight: scale(10),
-              borderRadius: scale(10),
-            }}
-          />
+      <View style={styles.headerConatiner}>
+        <View style={styles.titleContainer}>
+          <View style={styles.titleBlank} />
           <Text style={styles.title}>{title}</Text>
         </View>
         <TouchableOpacity onPress={onPressTotal}>
@@ -51,7 +37,7 @@ const GameBlock = ({
         </TouchableOpacity>
       </View>
       <View style={[styles.gamesContainer, contentContainerStyle]}>
-        {games.map(renderGame)}
+        {games?.map(renderGame)}
       </View>
     </View>
   )
@@ -64,7 +50,7 @@ const styles = StyleSheet.create({
     paddingBottom: scale(20),
     paddingTop: scale(10),
   },
-  titleConatiner: {
+  headerConatiner: {
     width: '100%',
     height: scale(53),
     borderColor: '#dddddd',
@@ -81,6 +67,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: scale(25),
+  },
+  titleBlank: {
+    width: scale(7),
+    height: '70%',
+    backgroundColor: '#EA0000',
+    marginRight: scale(10),
+    borderRadius: scale(10),
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: '100%',
   },
 })
 

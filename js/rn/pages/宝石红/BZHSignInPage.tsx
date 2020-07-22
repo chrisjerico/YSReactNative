@@ -4,10 +4,10 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-import { useSafeArea } from 'react-native-safe-area-context'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useSelector } from 'react-redux'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -18,20 +18,20 @@ import { navigate, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import Header from '../../public/views/tars/Header'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { BZHSignInStore } from './BZHSignInProps'
-import Form from './views/Form'
+import Form from './components/Form'
 
 const BZHSignInPage = ({ navigation }) => {
-  // const dispatch = useDispatch()
-  const signInStore = useSelector(
+
+  // stores
+  const { isRemember, account, password }: BZHSignInStore = useSelector(
     (state: IGlobalState) => state.BZHSignInReducer
   )
-  const safeArea = useSafeArea()
-  const { isRemember, account, password }: BZHSignInStore = signInStore
+  // states
   const [hidePassword, setHidePassword] = useState(true)
 
   const { type } = navigation?.dangerouslyGetState()
@@ -63,7 +63,6 @@ const BZHSignInPage = ({ navigation }) => {
         },
       })
       UGStore.save()
-      console.log('---------忘記帳密---------')
     }
   }
 
@@ -111,15 +110,19 @@ const BZHSignInPage = ({ navigation }) => {
 
   return (
     <>
-      <Header
-        marginTop={safeArea?.top}
-        backgroundColor={BZHThemeColor.宝石红.themeColor}
-        title={'登陆'}
-        onPressBack={jump}
-        onPressCustomerService={() => {
-          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
-        }}
-      />
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+        <TouchableOpacity onPress={jump}>
+          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{'登陆'}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+          }}
+        >
+          <Text style={styles.headerTitle}>{'客服'}</Text>
+        </TouchableOpacity>
+      </SafeAreaHeader>
       <ScrollView style={styles.container}>
         <View style={styles.whiteBlock}>
           <Form
@@ -309,6 +312,10 @@ const styles = StyleSheet.create({
     backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
   },
 })
 

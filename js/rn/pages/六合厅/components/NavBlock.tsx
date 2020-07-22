@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
-import { scale } from '../../../../public/tools/Scale';
+import { scale } from '../../../public/tools/Scale';
 
 interface NavBlockProps {
   customerServiceLogo: string;

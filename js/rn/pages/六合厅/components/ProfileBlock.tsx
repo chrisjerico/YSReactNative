@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
-import PushHelper from '../../../../public/define/PushHelper'
-import { scale } from '../../../../public/tools/Scale'
-import LinearBadge from '../../../../public/views/tars/LinearBadge'
-import Avatar from '../../../../public/views/tars/Avatar'
+import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
+import PushHelper from '../../../public/define/PushHelper'
+import { scale } from '../../../public/tools/Scale'
+import Avatar from '../../../public/views/tars/Avatar'
+import LinearBadge from '../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
   profileButtons: any[];

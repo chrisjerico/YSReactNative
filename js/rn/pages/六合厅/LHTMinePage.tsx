@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -11,15 +12,15 @@ import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import FeatureList from '../../public/views/tars/FeatureList'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
+import ProfileBlock from './components/ProfileBlock'
+import ProfileButton from './components/ProfileButton'
 import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
-import Header from './views/mines/Header'
-import ProfileBlock from './views/mines/ProfileBlock'
-import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = ({ navigation }) => {
   // yellowBox
@@ -27,7 +28,7 @@ const LHTMinePage = ({ navigation }) => {
   // hooks
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  // stores
   const {
     avatar,
     usr,
@@ -35,7 +36,9 @@ const LHTMinePage = ({ navigation }) => {
     balance,
     unreadMsg,
     isTest,
-  }: UGUserModel = userStore
+  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+
+  // effects
   const { UGUserCenterItem } = useMemberItems()
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -50,13 +53,23 @@ const LHTMinePage = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header
-        onPressBack={gotoHome}
-        onPressCustomerService={() => {
-          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
-        }}
-      />
+    <>
+      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+        <TouchableOpacity style={styles.headerLeft} onPress={gotoHome}>
+          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+        </TouchableOpacity>
+        <View style={styles.headerMid}>
+          <Text style={styles.headerTitle}>{'我的'}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.headerRight}
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+          }}
+        >
+          <Text style={styles.headerTitle}>{'客服'}</Text>
+        </TouchableOpacity>
+      </SafeAreaHeader>
       <ScrollView style={styles.container}>
         <ProfileBlock
           profileButtons={defaultProfileButtons}
@@ -110,15 +123,11 @@ const LHTMinePage = ({ navigation }) => {
           onPress={loginOut}
         />
       </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: LHThemeColor.六合厅.themeColor,
-    flex: 1,
-  },
   container: {
     backgroundColor: '#ffffff',
   },
@@ -128,6 +137,25 @@ const styles = StyleSheet.create({
     marginVertical: scale(25),
     marginBottom: scaleHeight(60),
     height: scale(70),
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
+  },
+  headerLeft: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  headerRight: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  headerMid: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
 

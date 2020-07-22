@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
+import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
@@ -19,26 +14,27 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { IGlobalState } from '../../redux/store/UGStore'
-import GameBlock from './views/homes/GameBlock'
-import Header from './views/homes/Header'
-import NavBlock from './views/homes/NavBlock'
+import GameBlock from './components/GameBlock'
+import HomeHeader from './components/HomeHeader'
+import NavBlock from './components/NavBlock'
 
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
-  // hooks
-  const safeArea = useSafeArea()
+  // stores
+  const { uid, usr, balance, isTest }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { mobile_logo }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  // states
   const announcementModal = useRef(null)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-  const { uid, usr, balance, isTest }: UGUserModel = userStore
-  const { mobile_logo }: UGSysConfModel = SystemStore
+  const [roulette, setRoulette] = useState(null)
+  // effects
   const {
     loading,
     banner,
@@ -57,17 +53,24 @@ const BZHHomePage = () => {
     'activity_redBagDetail',
     'activity_turntableList',
   ])
-  const [roulette, setRoulette] = useState(null)
+
+  const getTurntableList = async () => {
+    try {
+      const value = await APIRouter.activity_turntableList()
+      const roulette = value?.data?.data
+      setRoulette(roulette)
+    } catch (err) {
+    } finally {
+    }
+  }
 
   useEffect(() => {
     if (uid) {
-      APIRouter.activity_turntableList().then((value) => {
-        setRoulette(value?.data?.data)
-      })
+      getTurntableList()
     }
   }, [uid])
 
-  // data handle
+  // data
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const announcements = notice?.data?.popup ?? []
@@ -84,27 +87,24 @@ const BZHHomePage = () => {
   } else {
     return (
       <>
-        <Header
-          marginTop={safeArea?.top}
-          backgroundColor={BZHThemeColor.宝石红.themeColor}
-          logo={mobile_logo}
-          isTest={isTest}
-          uid={uid}
-          name={isTest ? '遊客' : usr}
-          money={balance}
-          onPressSignIn={() => push(PageName.BZHSignInPage)}
-          onPressSignUp={() => push(PageName.BZHRegisterPage)}
-          onPressUser={() => {
-            navigate(PageName.BZHMinePage, {})
-            // navigate(PageName.BZHHomePage, { index: 4 })
-          }}
-        />
+        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+          <HomeHeader
+            logo={mobile_logo}
+            isTest={isTest}
+            uid={uid}
+            name={isTest ? '遊客' : usr}
+            money={balance}
+            onPressSignIn={() => push(PageName.BZHSignInPage)}
+            onPressSignUp={() => push(PageName.BZHRegisterPage)}
+            onPressUser={() => {
+              navigate(PageName.BZHMinePage, {})
+            }}
+          />
+        </SafeAreaHeader>
         <ScrollView
           style={styles.container}
-          scrollEnabled={true}
           refreshControl={
-            <RefreshControl
-              refreshing={false}
+            <RefreshControlComponent
               onRefresh={() => {
                 announcementModal?.current?.reload()
                 // updateUserInfo()
@@ -235,7 +235,7 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        <AnnouncementModal
+        <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
           color={BZHThemeColor.宝石红.themeColor}

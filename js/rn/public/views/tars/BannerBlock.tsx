@@ -2,39 +2,46 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
+import { Data } from '../../network/Model/HomeADModel'
 import { scale } from '../../tools/Scale'
 import UGSwiper from '../../widget/swp/UGSwiper'
 
 interface BannerBlockProps {
-  onlineNum: number
-  banners: List[]
-  renderBanner: (item: List, index: number) => any
-  badgePosition?: BadgePosition
+  onlineNum?: number;
+  banners: (List | Data)[];
+  renderBanner: (item: List & Data, index: number) => any;
+  badgePosition?: BadgePosition;
+  showOnlineNum?: boolean;
 }
 
 interface BadgePosition {
-  top: number,
-  right: number
+  top: number;
+  right: number;
 }
 
 const BannerBlock = ({
   onlineNum = 0,
   banners = [],
   renderBanner,
-  badgePosition = { top: scale(-200), right: scale(10) }
+  badgePosition = { top: scale(-200), right: scale(10) },
+  showOnlineNum = true
 }: BannerBlockProps) => {
-
   const { top, right } = badgePosition
   return (
     <View style={styles.container}>
-      <UGSwiper>{banners.map(renderBanner)}</UGSwiper>
-      <Badge
-        badgeStyle={[styles.badge, {
-          top,
-          right
-        }]}
-        value={'当前在线' + onlineNum}
-      />
+      <UGSwiper>{banners?.map(renderBanner)}</UGSwiper>
+      {showOnlineNum &&
+        <Badge
+          badgeStyle={[
+            styles.badge,
+            {
+              top,
+              right,
+            },
+          ]}
+          value={'当前在线' + onlineNum}
+        />
+      }
     </View>
   )
 }
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: '#333333',
     borderColor: '#333333',
-  }
+  },
 })
 
 export default BannerBlock

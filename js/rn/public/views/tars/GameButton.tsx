@@ -34,11 +34,11 @@ const GameButton = (props: GameButtonProps) => {
   const {
     circleColor,
     imageStyle,
-    logo = 'logo',
+    logo = '',
     title = '',
     subTitle = '',
     showSubTitle = false,
-    onPress = () => { },
+    onPress,
     containerStyle,
     titleStyle,
     subTitleStyle,
@@ -89,14 +89,11 @@ const GameButton = (props: GameButtonProps) => {
         )}
       </View>
       {showFlag && (
-        <View
-          style={{ position: 'absolute', backgroundColor: 'red', right: 0, borderRadius: scale(5) }}
-        >
-          <Text style={{ color: '#ffffff', padding: scale(5) }}>{'热门'}</Text>
+        <View style={styles.flagContainer}>
+          <Text style={styles.flagText}>{'热门'}</Text>
         </View>
-      )
-      }
-    </TouchableOpacity >
+      )}
+    </TouchableOpacity>
   )
 }
 
@@ -130,6 +127,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  flagContainer: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    right: 0,
+    borderRadius: scale(5),
+  },
+  flagText: {
+    color: '#ffffff',
+    padding: scale(5),
   },
 })
 

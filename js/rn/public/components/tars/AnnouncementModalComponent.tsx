@@ -2,11 +2,11 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Scroll } from '../../../public/network/Model/NoticeModel'
+import { Scroll } from '../../network/Model/NoticeModel'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
-interface AnnouncementModalProps {
+interface AnnouncementModalComponentProps {
   announcements: Scroll[];
   color: string;
 }
@@ -48,8 +48,8 @@ const Announcement = ({
   )
 }
 
-const AnnouncementModal = (
-  { announcements, color }: AnnouncementModalProps,
+const AnnouncementModalComponent = (
+  { announcements, color }: AnnouncementModalComponentProps,
   ref: any
 ) => {
   const [visible, setVisible] = useState(true)
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default forwardRef(AnnouncementModal)
+export default forwardRef(AnnouncementModalComponent)

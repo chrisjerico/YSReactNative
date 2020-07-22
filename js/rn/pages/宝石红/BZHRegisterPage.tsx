@@ -8,27 +8,22 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { useSafeArea } from 'react-native-safe-area-context'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useSelector } from 'react-redux'
 import SlidingVerification from '../../../rn/public/components/SlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
-import {
-  navigate,
-  pop,
-  push,
-  popToRoot
-} from '../../public/navigation/RootNavigation'
+import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import Header from '../../public/views/tars/Header'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState } from '../../redux/store/UGStore'
-import AgentRedButton from './views/AgentRedButton'
-import Form from './views/Form'
+import AgentRedButton from './components/AgentRedButton'
+import Form from './components/Form'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -56,16 +51,29 @@ const validPassword = (password: string, pass_limit: number) => {
 
 const BZHRegisterPage = () => {
 
+  // functions
   const jumpToHomePage = () => {
     navigate(PageName.BZHHomePage, {})
   }
-
   // hooks
-  const safeArea = useSafeArea()
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { register } = useRegister({ onSuccess: jumpToHomePage })
-
-  // state
+  // stores
+  const {
+    hide_reco, // 代理人 0隱藏，1选填，2必填
+    reg_name, // 真实姓名 0隱藏，1选填，2必填
+    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
+    reg_qq, // QQ 0隱藏，1选填，2必填
+    reg_wx, // 微信 0隱藏，1选填，2必填
+    reg_phone, // 手机 0隱藏，1选填，2必填
+    reg_email, // 邮箱 0隱藏，1选填，2必填
+    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
+    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+    pass_length_min, // 注册密码最小长度
+    pass_length_max, // 注册密码最大长度,
+    smsVerify, // 手机短信验证,
+  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  // states
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
   const [password, setPassword] = useState(null)
@@ -86,22 +94,7 @@ const BZHRegisterPage = () => {
   const [hideFundPassword, setHideFundPassword] = useState(true)
   const [agent, setAgent] = useState(false)
 
-  const {
-    hide_reco, // 代理人 0隱藏，1选填，2必填
-    reg_name, // 真实姓名 0隱藏，1选填，2必填
-    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
-    reg_qq, // QQ 0隱藏，1选填，2必填
-    reg_wx, // 微信 0隱藏，1选填，2必填
-    reg_phone, // 手机 0隱藏，1选填，2必填
-    reg_email, // 邮箱 0隱藏，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    smsVerify, // 手机短信验证,
-  } = SystemStore
-
+  // effects
   useEffect(() => {
     if (reg_vcode == 1) {
       getImgCaptcha()
@@ -146,15 +139,19 @@ const BZHRegisterPage = () => {
 
   return (
     <>
-      <Header
-        marginTop={safeArea?.top}
-        backgroundColor={BZHThemeColor.宝石红.themeColor}
-        title={'注册'}
-        onPressBack={pop}
-        onPressCustomerService={() => {
-          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
-        }}
-      />
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+        <TouchableOpacity onPress={pop}>
+          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>{'注册'}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+          }}
+        >
+          <Text style={styles.headerTitle}>{'客服'}</Text>
+        </TouchableOpacity>
+      </SafeAreaHeader>
       <ScrollView style={styles.container}>
         <View style={styles.whiteBlock}>
           <View style={{ width: '100%', marginBottom: scale(20) }}>
@@ -376,9 +373,7 @@ const BZHRegisterPage = () => {
             >
               <Text>{'返回登录'}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={jumpToHomePage}
-            >
+            <TouchableOpacity onPress={jumpToHomePage}>
               <Text>{'返回首页'}</Text>
             </TouchableOpacity>
           </View>
@@ -401,7 +396,7 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
-    marginBottom: scaleHeight(70)
+    marginBottom: scaleHeight(70),
   },
   bottomButtonContainer: {
     flexDirection: 'row',
@@ -414,6 +409,10 @@ const styles = StyleSheet.create({
     backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
   },
 })
 

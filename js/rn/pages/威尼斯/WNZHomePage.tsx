@@ -5,13 +5,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
+import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
@@ -153,15 +153,21 @@ const WNZHomePage = () => {
               )
             })}
           </View>
-          <TouchableImage
-            pic={ads[0]?.image}
-            onPress={() => {
-              PushHelper.pushCategory(
-                ads[0]?.linkCategory,
-                ads[0]?.linkPosition
+          <BannerBlock
+            showOnlineNum={false}
+            banners={ads}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, image } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={image}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }}
+                />
               )
             }}
-            containerStyle={{ width: '100%', aspectRatio: 4 }}
           />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games.map((item, index) => {
@@ -243,7 +249,7 @@ const WNZHomePage = () => {
             </View>
           </View>
         </Modal>
-        <AnnouncementModal
+        <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
           color={WNZThemeColor.威尼斯.themeColor}

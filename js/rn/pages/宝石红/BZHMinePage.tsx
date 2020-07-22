@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Text } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useSafeArea } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
@@ -13,22 +13,22 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import { Toast } from '../../public/tools/ToastUtils'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
-import Header from './views/mines/Header'
-import PickAvatarComponent from './views/mines/PickAvatarComponent'
-import ProfileBlock from './views/mines/ProfileBlock'
+import { IGlobalState } from '../../redux/store/UGStore'
+import PickAvatarComponent from './components/PickAvatarComponent'
+import ProfileBlock from './components/ProfileBlock'
 
-const BZHMinePage = ({ navigation }) => {
+const BZHMinePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const safeArea = useSafeArea()
   const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { UGUserCenterItem } = useMemberItems()
+  // stores
   const {
     avatar,
     balance,
@@ -36,33 +36,51 @@ const BZHMinePage = ({ navigation }) => {
     isTest,
     unreadMsg,
     curLevelGrade,
-  }: UGUserModel = userStore
-  const { UGUserCenterItem } = useMemberItems()
+  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  // states
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
+  const [avatarListLoading, setAvatarListLoading] = useState(true)
+  // effects
+  const getAvatarList = async () => {
+    try {
+      setAvatarListLoading(true)
+      const value = await APIRouter.system_avatarList()
+      const avatarList = value?.data?.data ?? []
+      setAvatarList(avatarList)
+    } catch (err) {
+    } finally {
+      setAvatarListLoading(false)
+    }
+  }
 
   useEffect(() => {
-    APIRouter.system_avatarList().then((value) => {
-      setAvatarList(value?.data?.data ?? [])
-    })
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('-----成為焦點-----')
-      updateUserInfo()
-    })
-    return unsubscribe
+    getAvatarList()
   }, [])
 
+  // data
   const features = UGUserCenterItem?.slice(0, 4) ?? []
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
   return (
     <>
-      <Header
-        title={'会员中心'}
-        marginTop={safeArea?.top}
-        backgroundColor={BZHThemeColor.宝石红.themeColor}
-      />
-      <ScrollView style={styles.container}>
+      <SafeAreaHeader
+        containerStyle={styles.headerContainer}
+        headerColor={BZHThemeColor.宝石红.themeColor}
+      >
+        <Text style={styles.headerTitle}>{'会员中心'}</Text>
+      </SafeAreaHeader>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControlComponent
+            onRefresh={async () => {
+              await updateUserInfo()
+              await getAvatarList()
+            }}
+          />
+        }
+      >
         <ProfileBlock
           onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
@@ -114,21 +132,26 @@ const BZHMinePage = ({ navigation }) => {
         />
       </ScrollView>
       <PickAvatarComponent
+        loading={avatarListLoading}
         visible={visible}
         avatars={avatarList}
-        onPressSave={({ url, filename }) => {
-          setVisible(false)
-          UGStore.dispatch({
-            type: ActionType.UpdateUserInfo,
-            props: { avatar: url },
-          })
-          APIRouter.task_changeAvatar(filename).then((value) => {
+        onPressSave={async ({ url, filename }) => {
+          try {
+            dispatch({
+              type: ActionType.UpdateUserInfo,
+              props: { avatar: url },
+            })
+            const value = await APIRouter.task_changeAvatar(filename)
             if (value?.data?.code == 0) {
               Toast('修改头像成功')
             } else {
               Toast('修改头像失败')
             }
-          })
+          } catch (err) {
+            Toast(err)
+          } finally {
+            setVisible(false)
+          }
         }}
         onPressCancel={() => {
           setVisible(false)
@@ -153,6 +176,15 @@ const styles = StyleSheet.create({
   },
   logOutTitle: {
     color: '#e53333',
+  },
+  headerContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
   },
 })
 
