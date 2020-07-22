@@ -15,6 +15,7 @@ const PromotionsBlock = () => {
     <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
       return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
         <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+          debugger
           if (selectId == index) {
             setSelectedId(-1)
           } else {

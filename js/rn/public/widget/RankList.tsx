@@ -11,15 +11,17 @@ const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', tex
   useEffect(() => {
     const value = Animated.loop(
       Animated.timing(currentY, {
-        toValue: -25 * ranks?.data?.list?.length ?? 0,
+        toValue: -25 * (ranks?.data?.list?.length + 5) ?? 0,
         duration: timing,
         useNativeDriver: true
       })
     )
     if (ranks?.data?.list?.length > 0) {
+      debugger
       value.start()
     }
     return (() => {
+      debugger
       value.stop()
     })
   }, [ranks])
@@ -30,7 +32,7 @@ const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', tex
       <View style={{ flexDirection: 'column' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }} >
           <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
-          <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
+          <Text style={{ color: textColor, fontWeight: "bold", fontSize: 16, marginLeft: -7 }}>投注排行榜</Text>
         </View>
         {ranks?.data?.list?.length > 0 ? <View style={{ flexDirection: 'row', width: width, alignSelf: 'center' }}>
 
