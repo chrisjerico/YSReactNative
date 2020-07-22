@@ -8,7 +8,9 @@ import { PageName } from "../navigation/Navigation"
 import PushHelper from "../define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
-const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage: PageName }) => {
+import { useDimensions } from '@react-native-community/hooks'
+const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
+  const { width } = useDimensions().screen
   const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const [redBagVisiable, setRedBagVisiable] = useState(false)
   useEffect(() => {
@@ -24,8 +26,8 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
           Alert.alert("温馨提示", "该贴注册会员才能阅读，请登录后查看。", [
             { text: "已取消", onPress: () => { }, style: "cancel" },
             {
-              text: "登录", onPress: () => {
-                navigate(loginPage, {})
+              text: "马上登录", onPress: () => {
+                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
               },
             }
           ])
@@ -33,8 +35,8 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
           Alert.alert("温馨提示", "请登录正式账号", [
             { text: "已取消", onPress: () => { }, style: "cancel" },
             {
-              text: "登录", onPress: () => {
-                navigate(loginPage, {})
+              text: "马上登录", onPress: () => {
+                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
               },
             }
           ])
