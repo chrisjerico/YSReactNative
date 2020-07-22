@@ -42,9 +42,13 @@ import { ActionType } from "../../redux/store/ActionTypes";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
 import RankListCP from "../../public/widget/RankList";
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
+import Carousel from "react-native-banner-carousel";
+import { BannerModel } from "../../public/network/Model/BannerModel";
+import { httpClient } from "../../public/network/httpClient";
 const LCHomePage = ({ navigation }) => {
     const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading } = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
+    const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const { width } = useDimensions().screen
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -116,14 +120,15 @@ const LCHomePage = ({ navigation }) => {
             <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading}
                 onRefresh={onRefresh} />}
                 style={{ flex: 1 }}>
-
-                <BannerView
-                    list={banner && banner.data ? banner.data.list : []} />
-                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: "white", paddingLeft: 5 }}>
-                    <Icon name="ios-volume-high" type="ionicon" color="black" size={24} />
+                <Banner onlineNum={onlineNum} bannerData={banner} />
+                {/* <BannerView
+                    list={banner && banner.data ? banner.data.list : []} /> */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: "white", marginHorizontal: 10, marginVertical: 10, borderRadius: 16, paddingLeft: 5 }}>
+                    <FastImage source={{ uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png" }} style={{ width: 12, height: 12 }} />
+                    {/* <Icon name="ios-volume-high" type="ionicon" color="black" size={24} /> */}
                     <MarqueeHorizontal textStyle={{ color: "black", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: "white" }}
-                        width={width - 20}
-                        height={34}
+                        width={width - 60}
+                        height={24}
 
                         speed={40}
                         onTextClick={() => {
@@ -134,16 +139,16 @@ const LCHomePage = ({ navigation }) => {
 
                         textList={noticeFormat} />
                 </View>
-                <View style={{
+                {/* <View style={{
                     position: 'absolute',
-                    top: 90,
+                    top: 30,
                     right: 10,
                     backgroundColor: "rgba(0,0,0,0.3)",
                     borderRadius: 16,
                     padding: 5
                 }}>
                     <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View>
+                </View> */}
                 {/*<MarqueeView notice={notice && notice.data ? notice.data.scroll : []}/>*/}
                 <HomeTabView />
 
@@ -164,6 +169,16 @@ const LCHomePage = ({ navigation }) => {
                     <Text style={{ fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10 }}>中奖排行榜</Text>} */}
                 {/* <WinningList data={rankList ? rankList.data.list : []} /> */}
 
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
+                    <Text onPress={() => {
+                        console.log(httpClient.defaults.baseURL + '/index2.php')
+                        PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+                    }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</Text>
+                    <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+                        push(PageName.PromotionListPage)
+                    }}>🎁优惠活动</Text>
+                </View>
+                <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
 
@@ -347,5 +362,54 @@ const TurntableListItem = () => {
     }
 
 }
+const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
+    const { width, } = useDimensions().window
+    const BannerRef = React.useRef<Carousel>()
+    const [height, setHeight] = useState(100)
+    useEffect(() => {
+        const timer = setInterval(() => {
+            //@ts-ignore
+            BannerRef?.current?.gotoNextPage()
+        }, 2000);
+        return (() => {
+            clearInterval(timer)
+        })
+    }, [bannerData])
+    if (bannerData?.data?.list?.length > 0) {
+        return (
+            <View style={{ marginBottom: 10, }}>
 
+                <Carousel
+                    autoplay
+                    index={0}
+                    ref={BannerRef}
+                    loop
+                    pageSize={width}
+                >
+                    {bannerData?.data?.list?.map((res, index) => {
+                        return (
+                            <TouchableWithoutFeedback onPress={() => {
+                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+                            }}>
+                                <FastImage onLoad={(e) => {
+                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width) / e.nativeEvent.width))
+                                    setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width))
+
+                                }} key={'banner' + index} style={{ width: width, height: height, }} source={{ uri: res.pic }} >
+
+                                </FastImage>
+                            </TouchableWithoutFeedback>)
+                    })}
+                </Carousel>
+                <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
+                    <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
+                </View>
+            </View>
+        )
+
+    } else {
+        return <View style={{ height: (Dimensions.get("screen").width) / 2, }}></View>
+    }
+
+}
 export default LCHomePage
