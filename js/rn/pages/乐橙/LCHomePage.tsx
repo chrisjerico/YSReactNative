@@ -49,23 +49,40 @@ const LCHomePage = ({ navigation }) => {
     useEffect(() => {
         initPromotions()
     }, [])
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', async () => {
-            setTimeout(async () => {
-                const user = await OCHelper.call('UGUserModel.currentUser');
-                console.log('currrent' + JSON.stringify(user))
-                if (!user) {
-                    UGStore.dispatch({ type: ActionType.Clear_User, });
-                    UGStore.save();
-                } else {
-                    UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: user });
-                    UGStore.save();
-                }
-            }, 100);
 
+    useEffect(() => {
+        let string = ""
+        if (notice?.data?.popup) {
+            openPopup(notice)
+        }
+    }, [notice])
+
+    const openPopup = (data: any) => {
+        const dataModel = data.data?.popup.map((item, index) => {
+            return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
 
         })
-        return unsubscribe
+        if (Platform.OS != 'ios') return;
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+    }
+    const reloadData = async () => {
+        const user = await OCHelper.call('UGUserModel.currentUser');
+        if (!user) {
+            UGStore.dispatch({ type: ActionType.Clear_User, });
+            UGStore.save();
+        } else {
+            UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: user });
+            UGStore.save();
+        }
+    }
+    useEffect(() => {
+        const timer = setInterval(() => {
+            reloadData()
+            updateUserInfo()
+        }, 2000)
+        return (() => {
+            clearInterval(timer)
+        })
     }, [])
     const initPromotions = async () => {
         try {
