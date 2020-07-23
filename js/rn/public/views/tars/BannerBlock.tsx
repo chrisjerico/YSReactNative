@@ -24,13 +24,23 @@ const BannerBlock = ({
   banners = [],
   renderBanner,
   badgePosition = { top: scale(-200), right: scale(10) },
-  showOnlineNum = true
+  showOnlineNum = true,
 }: BannerBlockProps) => {
   const { top, right } = badgePosition
   return (
     <View style={styles.container}>
-      <UGSwiper>{banners?.map(renderBanner)}</UGSwiper>
-      {showOnlineNum &&
+      <UGSwiper
+        style={{}}
+        showsPagination={true}
+        paginationStyle={{
+          bottom: 10,
+          left: null,
+          right: 10
+        }}
+      >
+        {banners?.map(renderBanner)}
+      </UGSwiper>
+      {showOnlineNum && (
         <Badge
           badgeStyle={[
             styles.badge,
@@ -41,7 +51,7 @@ const BannerBlock = ({
           ]}
           value={'当前在线' + onlineNum}
         />
-      }
+      )}
     </View>
   )
 }

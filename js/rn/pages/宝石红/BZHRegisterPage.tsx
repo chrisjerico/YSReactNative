@@ -72,6 +72,8 @@ const BZHRegisterPage = () => {
     pass_length_min, // 注册密码最小长度
     pass_length_max, // 注册密码最大长度,
     smsVerify, // 手机短信验证,
+    zxkfUrl,
+    zxkfUrl2
   }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -146,7 +148,7 @@ const BZHRegisterPage = () => {
         <Text style={styles.headerTitle}>{'注册'}</Text>
         <TouchableOpacity
           onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>

@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
+import PushHelper from '../../define/PushHelper'
+import { PageName } from '../../navigation/Navigation'
+import { push } from '../../navigation/RootNavigation'
+import { httpClient } from '../../network/httpClient'
 import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
 
@@ -11,6 +15,7 @@ interface AnimatedRankComponentProps {
   titleConatinerStyle?: ViewStyle;
   rankLists: List[];
   duration?: number;
+  webName: string;
 }
 
 const AnimatedRankComponent = ({
@@ -20,12 +25,13 @@ const AnimatedRankComponent = ({
   titleConatinerStyle,
   rankLists,
   duration = 15000,
+  webName,
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
 
   const animated = () =>
     Animated.timing(height, {
-      toValue: scale((25 * (rankLists?.length ?? 0)) + 250),
+      toValue: scale(25 * (rankLists?.length ?? 0) + 250),
       duration: duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
@@ -77,6 +83,41 @@ const AnimatedRankComponent = ({
             })}
           </Animated.View>
         </View>
+      </View>
+      <View style={{ marginTop: scale(30) }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <Text
+            onPress={() => {
+              PushHelper.openWebView(
+                httpClient.defaults.baseURL + '/index2.php'
+              )
+            }}
+            style={{
+              color: '#000000',
+            }}
+          >
+            {'💻电脑版'}
+          </Text>
+          <Text
+            style={{
+              color: '#000000',
+            }}
+            onPress={() => {
+              push(PageName.PromotionListPage)
+            }}
+          >
+            {'🎁优惠活动'}
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: '#000000',
+            textAlign: 'center',
+            paddingTop: scale(10),
+          }}
+        >
+          {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
+        </Text>
       </View>
     </View>
   )

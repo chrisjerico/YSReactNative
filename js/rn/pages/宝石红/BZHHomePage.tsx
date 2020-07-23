@@ -24,13 +24,14 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
 import HomeHeader from './components/HomeHeader'
 import NavBlock from './components/NavBlock'
+import CouponBlock from '../../public/views/tars/CouponBlock'
 
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // stores
   const { uid, usr, balance, isTest }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { mobile_logo }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const { mobile_logo, webName }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   // states
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
@@ -43,6 +44,7 @@ const BZHHomePage = () => {
     onlineNum,
     rankList,
     redBag,
+    couponListData,
     onRefresh,
   } = useGetHomeInfo([
     'system_banners',
@@ -52,6 +54,7 @@ const BZHHomePage = () => {
     'system_rankingList',
     'activity_redBagDetail',
     'activity_turntableList',
+    'system_promotions',
   ])
 
   const getTurntableList = async () => {
@@ -78,9 +81,10 @@ const BZHHomePage = () => {
     homeGames?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
       .slice(0, 4) ?? []
-  const games = homeGames?.data?.icons?.slice(0, 3) ?? []
+  const games = homeGames?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
+  const coupons = couponListData?.data?.list ?? []
 
   if (loading) {
     return <ProgressCircle />
@@ -136,16 +140,18 @@ const BZHHomePage = () => {
           />
           <NavBlock
             navs={navs}
+            containerStyle={{ alignItems: 'center' }}
             renderNav={(item, index) => {
               const { icon, name, logo } = item
               return (
                 <GameButton
                   key={index}
-                  containerStyle={{ width: '20%' }}
+                  containerStyle={{ width: '25%' }}
+                  imageStyle={{ width: '45%' }}
                   enableCircle={false}
                   logo={icon ? icon : logo}
                   title={name}
-                  titleStyle={{ fontSize: scale(25) }}
+                  titleStyle={{ fontSize: scale(20) }}
                   onPress={() => {
                     PushHelper.pushHomeGame(item)
                   }}
@@ -179,16 +185,17 @@ const BZHHomePage = () => {
                             marginRight: index % 3 == 1 ? '5%' : 0,
                           },
                         ]}
+                        imageStyle={{ width: '45%' }}
                         enableCircle={false}
                         logo={icon || logo}
                         title={name || title}
                         subTitle={subtitle}
                         showSubTitle
                         titleStyle={{
-                          fontSize: scale(27),
+                          fontSize: scale(20),
                         }}
                         subTitleStyle={{
-                          fontSize: scale(23),
+                          fontSize: scale(18),
                         }}
                         titleContainerStyle={{
                           marginTop: scale(5),
@@ -203,6 +210,24 @@ const BZHHomePage = () => {
               )
             })}
           </View>
+          <CouponBlock
+            containerStyle={styles.subComponent}
+            coupons={coupons}
+            renderCoupon={(item, index) => {
+              const { pic, linkCategory, linkPosition } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={pic}
+                  containerStyle={styles.couponBanner}
+                  resizeMode={'contain'}
+                  onPress={() =>
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }
+                />
+              )
+            }}
+          />
           <AnimatedRankComponent
             containerStyle={[styles.subComponent, styles.bottomComponent]}
             rankContainerStyle={{
@@ -217,6 +242,7 @@ const BZHHomePage = () => {
               borderBottomWidth: scale(1),
             }}
             rankLists={rankLists}
+            webName={webName}
           />
         </ScrollView>
         <ActivityComponent
@@ -264,6 +290,10 @@ const styles = StyleSheet.create({
   },
   bottomComponent: {
     paddingBottom: scaleHeight(70),
+  },
+  couponBanner: {
+    width: '100%',
+    aspectRatio: 2,
   },
 })
 

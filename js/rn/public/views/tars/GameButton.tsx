@@ -3,9 +3,9 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -48,52 +48,51 @@ const GameButton = (props: GameButtonProps) => {
     showFlag,
   } = props
   return (
-    <TouchableOpacity
-      style={[styles.conatiner, containerStyle]}
-      onPress={onPress}
-    >
-      {enableCircle ? (
-        <View
-          style={[
-            styles.circleContainer,
-            {
-              backgroundColor: circleColor ? circleColor : '#ACD6FF',
-            },
-          ]}
-        >
-          <FastImage
-            style={[styles.image, imageStyle]}
-            source={{ uri: logo }}
-            resizeMode={resizeMode}
-          />
-        </View>
-      ) : (
-          <FastImage
-            style={[styles.image, imageStyle]}
-            source={{ uri: logo }}
-            resizeMode={resizeMode}
-          />
-        )}
-      <View style={[styles.titleContainer, titleContainerStyle]}>
-        <View style={styles.textContainer}>
-          <Text style={titleStyle} numberOfLines={1}>
-            {title}
-          </Text>
-        </View>
-        {showSubTitle && (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.conatiner, containerStyle]}>
+        {enableCircle ? (
+          <View
+            style={[
+              styles.circleContainer,
+              {
+                backgroundColor: circleColor ? circleColor : '#ACD6FF',
+              },
+            ]}
+          >
+            <FastImage
+              style={[styles.image, imageStyle]}
+              source={{ uri: logo }}
+              resizeMode={resizeMode}
+            />
+          </View>
+        ) : (
+            <FastImage
+              style={[styles.image, imageStyle]}
+              source={{ uri: logo }}
+              resizeMode={resizeMode}
+            />
+          )}
+        <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
-            <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
-              {subTitle}
+            <Text style={titleStyle} numberOfLines={1}>
+              {title}
             </Text>
+          </View>
+          {showSubTitle && (
+            <View style={styles.textContainer}>
+              <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
+                {subTitle}
+              </Text>
+            </View>
+          )}
+        </View>
+        {showFlag && (
+          <View style={styles.flagContainer}>
+            <Text style={styles.flagText}>{'热门'}</Text>
           </View>
         )}
       </View>
-      {showFlag && (
-        <View style={styles.flagContainer}>
-          <Text style={styles.flagText}>{'热门'}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -3,7 +3,7 @@ import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
-import PushHelper from '../../public/define/PushHelper'
+import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
@@ -70,7 +70,9 @@ const WNZHomePage = () => {
   // 官 信
   const leftGames = categoryList?.data ?? []
 
-  console.log("--------systemConfig-------", systemConfig?.data?.mobileMenu)
+  let lotterys = []
+  lotteryGames?.data?.forEach(ele => lotterys?.concat(ele?.list))
+  console.log("--------lotterys-------", lotterys)
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -82,7 +84,7 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              PushHelper.pushRightMenu()
+              PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
             }}
             onPressComment={() => {
               console.log('去六合彩')

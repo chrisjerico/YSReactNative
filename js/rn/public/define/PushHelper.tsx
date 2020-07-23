@@ -9,12 +9,18 @@ import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
+
+export enum PushRightMenuFrom {
+  首頁 = 1,
+  彩種 = 2,
+}
+
 export default class PushHelper {
   // 右側選單
-  static pushRightMenu() {
+  static pushRightMenu(from: PushRightMenuFrom) {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show',
-      [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], ['2']);
+      [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
   }
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {

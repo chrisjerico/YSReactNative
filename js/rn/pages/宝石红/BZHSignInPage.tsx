@@ -117,7 +117,7 @@ const BZHSignInPage = ({ navigation }) => {
         <Text style={styles.headerTitle}>{'登陆'}</Text>
         <TouchableOpacity
           onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
