@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -11,6 +12,7 @@ import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -20,9 +22,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -38,9 +38,8 @@ import {
   defaultDowloadUrl,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo,
+  defaultNoticeLogo
 } from './helpers/config'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
 const LHTHomePage = ({ navigation }) => {
   // yellowBox
@@ -56,7 +55,7 @@ const LHTHomePage = ({ navigation }) => {
   })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   // stores
-  const { mobile_logo }: UGSysConfModel = useSelector(
+  const { mobile_logo, webName }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
   )
   const { uid, avatar, usr, isTest }: UGUserModel = useSelector(
@@ -323,6 +322,9 @@ const LHTHomePage = ({ navigation }) => {
               }}
             />
             <CouponBlock
+              onPressMore={() => {
+                push(PageName.PromotionListPage)
+              }}
               containerStyle={styles.subComponent}
               coupons={coupons}
               renderCoupon={(item, index) => {
@@ -341,9 +343,18 @@ const LHTHomePage = ({ navigation }) => {
               }}
             />
             <AnimatedRankComponent
+              onPressComputer={() => {
+                PushHelper.openWebView(
+                  httpClient.defaults.baseURL + '/index2.php'
+                )
+              }}
+              onPressPromotion={() => {
+                push(PageName.PromotionListPage)
+              }}
               containerStyle={styles.subComponent}
               iconContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}
+              webName={webName}
             />
             <BottomToolBlock
               tools={defaultBottomTools}

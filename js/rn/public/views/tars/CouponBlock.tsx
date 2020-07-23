@@ -12,20 +12,20 @@ interface CouponBlock {
   containerStyle?: ViewStyle | ViewStyle;
   coupons: any[];
   renderCoupon: (item: any, index: number) => any;
-  onPress?: () => any;
+  onPressMore: () => any;
 }
 
 const CouponBlock = ({
   containerStyle,
   coupons = [],
   renderCoupon,
-  onPress,
+  onPressMore,
 }: CouponBlock) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.title}>
+      <View style={styles.titleContainer}>
         <Text>{'優惠活動'}</Text>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPressMore}>
           <Text>{'查看更多>>'}</Text>
         </TouchableOpacity>
       </View>
@@ -46,9 +46,10 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
     alignItems: 'center',
   },
-  title: {
+  titleContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    padding: scale(20)
   },
 })
 

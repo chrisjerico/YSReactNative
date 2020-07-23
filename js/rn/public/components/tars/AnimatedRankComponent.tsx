@@ -1,13 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon } from 'react-native-elements'
-import PushHelper from '../../define/PushHelper'
-import { PageName } from '../../navigation/Navigation'
-import { push } from '../../navigation/RootNavigation'
-import { httpClient } from '../../network/httpClient'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface AnimatedRankComponentProps {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -17,6 +13,8 @@ interface AnimatedRankComponentProps {
   rankLists: List[];
   duration?: number;
   webName: string;
+  onPressPromotion: () => any;
+  onPressComputer: () => any;
 }
 
 const AnimatedRankComponent = ({
@@ -27,6 +25,8 @@ const AnimatedRankComponent = ({
   rankLists,
   duration = 15000,
   webName,
+  onPressPromotion,
+  onPressComputer
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
 
@@ -88,11 +88,7 @@ const AnimatedRankComponent = ({
       <View style={{ marginTop: scale(30) }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <TouchableOpacity
-            onPress={() => {
-              PushHelper.openWebView(
-                httpClient.defaults.baseURL + '/index2.php'
-              )
-            }}
+            onPress={onPressComputer}
           >
             <Text
               style={{
@@ -103,9 +99,7 @@ const AnimatedRankComponent = ({
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              push(PageName.PromotionListPage)
-            }}
+            onPress={onPressPromotion}
           >
             <Text
               style={{

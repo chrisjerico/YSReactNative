@@ -10,13 +10,15 @@ import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
@@ -24,14 +26,17 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
 import HomeHeader from './components/HomeHeader'
 import NavBlock from './components/NavBlock'
-import CouponBlock from '../../public/views/tars/CouponBlock'
 
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // stores
-  const { uid, usr, balance, isTest }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { mobile_logo, webName }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const { uid, usr, balance, isTest }: UGUserModel = useSelector(
+    (state: IGlobalState) => state.UserInfoReducer
+  )
+  const { mobile_logo, webName }: UGSysConfModel = useSelector(
+    (state: IGlobalState) => state.SysConfReducer
+  )
   // states
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
@@ -199,7 +204,7 @@ const BZHHomePage = () => {
                         }}
                         titleContainerStyle={{
                           marginTop: scale(5),
-                          aspectRatio: 2
+                          aspectRatio: 2,
                         }}
                         onPress={() => {
                           PushHelper.pushHomeGame(item)
@@ -212,6 +217,9 @@ const BZHHomePage = () => {
             })}
           </View>
           <CouponBlock
+            onPressMore={() => {
+              push(PageName.PromotionListPage)
+            }}
             containerStyle={styles.subComponent}
             coupons={coupons}
             renderCoupon={(item, index) => {
@@ -230,6 +238,14 @@ const BZHHomePage = () => {
             }}
           />
           <AnimatedRankComponent
+            onPressComputer={() => {
+              PushHelper.openWebView(
+                httpClient.defaults.baseURL + '/index2.php'
+              )
+            }}
+            onPressPromotion={() => {
+              push(PageName.PromotionListPage)
+            }}
             containerStyle={[styles.subComponent, styles.bottomComponent]}
             rankContainerStyle={{
               width: '95%',

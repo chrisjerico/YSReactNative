@@ -6,7 +6,8 @@ import AnnouncementModalComponent from '../../public/components/tars/Announcemen
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -30,7 +31,7 @@ const WNZHomePage = () => {
   const { balance, usr }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
-  const { mobile_logo }: UGSysConfModel = useSelector(
+  const { mobile_logo, webName }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
   )
   const {
@@ -226,9 +227,19 @@ const WNZHomePage = () => {
             }}
           />
           <AnimatedRankComponent
+            onPressComputer={() => {
+              PushHelper.openWebView(
+                httpClient.defaults.baseURL + '/index2.php'
+              )
+            }}
+            onPressPromotion={() => {
+              push(PageName.PromotionListPage)
+            }}
             rankLists={rankLists}
             containerStyle={{ paddingBottom: scaleHeight(70) }}
             rankContainerStyle={{ borderRadius: 0 }}
+            webName={webName}
+
           />
         </ScrollView>
         <MenuModalComponent menus={[]} renderMenu={() => { }} ref={menuModal} />
