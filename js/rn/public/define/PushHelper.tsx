@@ -10,6 +10,24 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
 export default class PushHelper {
+  // 右側選單
+  static pushRightMenu() {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call(({ vc }) => {
+      console.log("----------vc--------", vc)
+      return ({
+        vc: {
+          selectors: 'UGYYRightMenuView.alloc.initWithFrame:[setTitleType:]',
+          args1: [NSValue.CGRectMake(0, AppDefine.height / 2, AppDefine.width / 2, AppDefine.height)],
+          args2: ['2']
+        },
+        ret: {
+          selectors: 'SGBrowserView.showMoveView:yDistance:',
+          args1: [vc, 0],
+        },
+      })
+    })
+  }
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
     if (Platform.OS != 'ios') return;

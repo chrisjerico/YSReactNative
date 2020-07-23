@@ -42,6 +42,7 @@ const WNZHomePage = () => {
     rankList,
     lotteryGames,
     systemHomeAds,
+    systemConfig
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -50,7 +51,9 @@ const WNZHomePage = () => {
     'system_rankingList',
     'game_lotteryGames',
     'system_homeAds',
+    'system_config'
   ])
+
 
   const announcements = notice?.data?.popup ?? []
   const banners = banner?.data?.list ?? []
@@ -67,6 +70,7 @@ const WNZHomePage = () => {
   // 官 信
   const leftGames = categoryList?.data ?? []
 
+  console.log("--------systemConfig-------", systemConfig?.data?.mobileMenu)
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -78,7 +82,7 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              menuModal?.current?.show()
+              PushHelper.pushRightMenu()
             }}
             onPressComment={() => {
               console.log('去六合彩')

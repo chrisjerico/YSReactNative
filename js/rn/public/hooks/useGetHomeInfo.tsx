@@ -6,6 +6,7 @@ import { httpClient } from '../network/httpClient'
 import { BannerModel } from '../network/Model/BannerModel'
 import { CouponListModel } from '../network/Model/CouponListModel'
 import { FloatADModel } from '../network/Model/FloatADModel'
+import { HomeADModel } from '../network/Model/HomeADModel'
 import { HomeGamesModel } from '../network/Model/HomeGamesModel'
 import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
 import { LotteryGameModel } from '../network/Model/LotteryGameModel'
@@ -13,8 +14,8 @@ import { LotteryNumberModel } from '../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../network/Model/NoticeModel'
 import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
+import { SystemConfigModel } from '../network/Model/SystemConfigModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
-import { HomeADModel } from '../network/Model/HomeADModel'
 
 type APIListType =
   | 'game_homeGames'
@@ -45,7 +46,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [categoryList, setCategoryList] = useState<LhcdocCategoryListModel>()
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
-  const [systemConfig, setSystemConfig] = useState<any>()
+  const [systemConfig, setSystemConfig] = useState<SystemConfigModel>()
   const [systemHomeAds, setSystemHomeAds] = useState<HomeADModel>()
 
   useEffect(() => {

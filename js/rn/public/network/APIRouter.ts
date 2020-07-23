@@ -20,6 +20,7 @@ import { RegisterModel } from './Model/RegisterModel'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TurntableListModel } from './Model/TurntableListModel'
+import { SystemConfigModel } from './Model/SystemConfigModel'
 
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
@@ -130,8 +131,9 @@ class APIRouter {
   }
 
   static system_config = async () => {
-    return httpClient.get("c=system&a=config")
+    return httpClient.get<SystemConfigModel>("c=system&a=config")
   }
+
   static user_reg = async (params: UserReg) => {
     var accessToken = await OCHelper.call('OpenUDID.value');
     params = {
