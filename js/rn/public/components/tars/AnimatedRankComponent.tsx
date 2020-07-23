@@ -7,6 +7,7 @@ import { push } from '../../navigation/RootNavigation'
 import { httpClient } from '../../network/httpClient'
 import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface AnimatedRankComponentProps {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -86,28 +87,34 @@ const AnimatedRankComponent = ({
       </View>
       <View style={{ marginTop: scale(30) }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text
+          <TouchableOpacity
             onPress={() => {
               PushHelper.openWebView(
                 httpClient.defaults.baseURL + '/index2.php'
               )
             }}
-            style={{
-              color: '#000000',
-            }}
           >
-            {'💻电脑版'}
-          </Text>
-          <Text
-            style={{
-              color: '#000000',
-            }}
+            <Text
+              style={{
+                color: '#000000',
+              }}
+            >
+              {'💻电脑版'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={() => {
               push(PageName.PromotionListPage)
             }}
           >
-            {'🎁优惠活动'}
-          </Text>
+            <Text
+              style={{
+                color: '#000000',
+              }}
+            >
+              {'🎁优惠活动'}
+            </Text>
+          </TouchableOpacity>
         </View>
         <Text
           style={{

@@ -185,20 +185,21 @@ const BZHHomePage = () => {
                             marginRight: index % 3 == 1 ? '5%' : 0,
                           },
                         ]}
-                        imageStyle={{ width: '45%' }}
+                        imageStyle={{ width: '60%' }}
                         enableCircle={false}
                         logo={icon || logo}
                         title={name || title}
                         subTitle={subtitle}
                         showSubTitle
                         titleStyle={{
-                          fontSize: scale(20),
+                          fontSize: scale(25),
                         }}
                         subTitleStyle={{
-                          fontSize: scale(18),
+                          fontSize: scale(20),
                         }}
                         titleContainerStyle={{
                           marginTop: scale(5),
+                          aspectRatio: 2
                         }}
                         onPress={() => {
                           PushHelper.pushHomeGame(item)

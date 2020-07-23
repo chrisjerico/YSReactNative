@@ -1,11 +1,17 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import { Icon } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { Scroll } from '../../network/Model/NoticeModel'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
-import { Button } from 'react-native-elements'
 
 interface AnnouncementModalComponentProps {
   announcements: Scroll[];
@@ -68,14 +74,16 @@ const AnnouncementModalComponent = (
         <View style={styles.popContainer}>
           <View style={[styles.titleContainer, { backgroundColor: color }]}>
             <Text style={[styles.title]}>{'平台公告'}</Text>
-            <View style={{ position: 'absolute', right: scale(20) }}>
-              <Icon
-                type={'antdesign'}
-                name={'closecircleo'}
-                color={'#ffffff'}
-                onPress={() => setVisible(false)}
-              />
-            </View>
+            <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+              <View style={{ position: 'absolute', right: scale(20) }}>
+                <Icon
+                  type={'antdesign'}
+                  name={'closecircleo'}
+                  color={'#ffffff'}
+                // onPress={() => setVisible(false)}
+                />
+              </View>
+            </TouchableWithoutFeedback>
           </View>
           <View style={{ flex: 10 }}>
             <ScrollView>
@@ -127,16 +135,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   titleContainer: {
     flex: 1,
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-    // borderTopRightRadius: scale(10),
-    // borderTopLeftRadius: scale(10),
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
   title: {
     color: '#ffffff',
@@ -177,8 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderColor: '#5B5B5B',
     borderWidth: scale(1),
-    // borderRadius: scale(10),
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
 })
 
