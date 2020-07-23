@@ -72,8 +72,10 @@ const WNZHomePage = () => {
   const leftGames = categoryList?.data ?? []
 
   let lotterys = []
-  lotteryGames?.data?.forEach(ele => lotterys?.concat(ele?.list))
-  console.log("--------lotterys-------", lotterys)
+  lotteryGames?.data?.forEach(ele => lotterys = lotterys.concat(ele?.list))
+  const a = lotterys.filter(ele => ele?.customise == '2') // 信
+  const b = lotterys.filter(ele => ele?.customise == '0') // 官
+
   if (loading) {
     return <ProgressCircle />
   } else {
