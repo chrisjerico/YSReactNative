@@ -1,9 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { Avatar } from 'react-native-elements'
-import ReLoadComponent from '../../../../components/ReLoadComponent'
-import { scale } from '../../../../helpers/function'
+import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import { BZHThemeColor } from '../../../../public/theme/colors/BZHThemeColor'
+import { scale } from '../../../../public/tools/Scale'
+import Avatar from '../../../../public/views/tars/Avatar'
+import LinearBadge from '../../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
   money: string | number;
@@ -13,6 +14,8 @@ interface ProfileBlockProps {
   containerStyle?: ViewStyle;
   name: string;
   onPressReload: () => any;
+  level: string;
+  onPressAvatar: () => any;
 }
 
 const ProfileBlock = ({
@@ -23,20 +26,36 @@ const ProfileBlock = ({
   containerStyle,
   name,
   onPressReload,
+  level,
+  onPressAvatar
 }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
       <View style={styles.whiteBlock}>
         <View style={styles.profileContainer}>
-          <Avatar source={{ uri: avatar }} size={'large'} rounded />
+          <Avatar uri={avatar} onPress={onPressAvatar} />
           <View style={styles.moneyContainer}>
-            <Text style={styles.text}>{name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={[styles.text, { paddingTop: scale(10), paddingRight: scale(10) }]}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={styles.text}>{name}</Text>
+              <LinearBadge
+                containerStyle={{ borderRadius: scale(5), width: null }}
+                textStyle={{ paddingHorizontal: scale(10) }}
+                title={level}
+                colors={['#0080FF', '#97CBFF']}
+                showIcon={false}
+              />
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
+              <Text
+                style={styles.text}
+              >
                 {'余额 ￥' + money}
               </Text>
-              <ReLoadComponent onPress={onPressReload} color={'#000000'} containerStyle={{ marginTop: 5 }} />
+              <ReLoadComponent
+                onPress={onPressReload}
+                color={'#000000'}
+              />
             </View>
           </View>
         </View>
@@ -53,6 +72,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 500 / 270,
     backgroundColor: '#d9d9d9',
+    paddingBottom: scale(30)
   },
   whiteBlock: {
     height: '100%',
@@ -62,7 +82,6 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(15),
     top: scale(10),
     paddingTop: scale(15),
-    paddingBottom: scale(30),
     width: '95%',
     alignSelf: 'center',
   },
@@ -70,14 +89,14 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: scale(50),
+    paddingHorizontal: scale(35),
   },
   featureContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    paddingHorizontal: scale(30),
+    alignItems: 'center',
+    paddingHorizontal: scale(35),
   },
   redBlock: {
     width: '100%',
@@ -89,12 +108,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(25),
     fontWeight: '400',
+    paddingRight: scale(10)
   },
   moneyContainer: {
     flex: 1,
     paddingLeft: scale(30),
     justifyContent: 'flex-end',
-    paddingBottom: scale(10)
+    paddingBottom: scale(10),
   },
 })
 

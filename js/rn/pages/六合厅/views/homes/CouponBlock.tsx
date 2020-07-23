@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { scale } from '../../../../helpers/function'
+import { scale } from '../../../../public/tools/Scale'
 
 interface CouponBlock {
   containerStyle?: ViewStyle

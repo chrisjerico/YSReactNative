@@ -10,6 +10,22 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
 export default class PushHelper {
+  // 輪盤
+  static async pushWheel(turntableList: TurntableListModel) {
+    if (Platform.OS != 'ios') return;
+    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+    OCHelper.call(({ vc }) => ({
+      vc: {
+        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+        args2: [turntableListModel]
+      },
+      ret: {
+        selectors: 'SGBrowserView.showMoveView:yDistance:',
+        args1: [vc, 100],
+      },
+    }));
+  }
   // 登出
   static async pushLogout() {
     await OCHelper.call('UGUserModel.setCurrentUser:', []);
@@ -33,7 +49,7 @@ export default class PushHelper {
   static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
     game = Object.assign({ clsName: 'GameModel' }, game);
     if (Platform.OS != 'ios') return;
-    console.log(game)
+    console.log('--------game-------', game)
     OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
   }
   static pushRedBag(redBag: RedBagDetailActivityModel) {
@@ -43,7 +59,9 @@ export default class PushHelper {
     OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
   }
   // 去彩票下注页
-  static pushLottery() { }
+  static pushLottery() {
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+  }
 
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
@@ -139,7 +157,7 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.额度转换: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['LineConversionHeaderVC'] }, true]);
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGBalanceConversionController'] }, true]);
         break;
       }
       case UGUserCenterType.站内信: {

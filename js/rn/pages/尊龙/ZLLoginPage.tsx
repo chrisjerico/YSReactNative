@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Platform, TouchableWithoutFeedback, ScrollView, TextInput } from 'react-native';
+import { View, TouchableOpacity, Text, Platform, TouchableWithoutFeedback, ScrollView, TextInput, Alert, Modal } from 'react-native';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import FastImage from 'react-native-fast-image';
 import PushHelper from '../../public/define/PushHelper';
@@ -14,6 +14,8 @@ import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
+import { useDimensions } from '@react-native-community/hooks';
+import DialogInput from 'react-native-dialog-input';
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
     const { control, errors, handleSubmit } = useForm()
@@ -21,6 +23,7 @@ const ZLLoginPage = ({ route, navigation }) => {
     const [pwdFocus, setPwdFocus] = useState(false)
     const [isRemember, setIsRemember] = useState(false)
     const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const [GGmodalShow, setGGModalShow] = useState(false)
     const init = async () => {
         let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
         setIsRemember(isRemember)
@@ -69,11 +72,9 @@ const ZLLoginPage = ({ route, navigation }) => {
             console.log(error)
         }
         pop();
-
-
     }
     const { loginSuccessHandle } = useLoginIn()
-    const onSubmit = async ({ account, pwd }) => {
+    const onSubmit = async ({ account, pwd, googleCode = "", slideCode }) => {
         const simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
         if (simplePwds.indexOf(this.pwd) > -1) {
             await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
@@ -86,16 +87,24 @@ const ZLLoginPage = ({ route, navigation }) => {
 
         try {
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-            const { data, status } = await APIRouter.user_login(account, pwd.md5(), "")
+            const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
             if (data.data == null)
                 throw { message: data?.msg }
+            if (data.data?.ggCheck == true) {
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['请输入谷歌验证码']);
+                setGGModalShow(true)
+                return
+                // Alert.alert("")
+            }
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            setGGModalShow(false)
             await loginSuccessHandle(data, { account, pwd, isRemember })
         } catch (error) {
             errorTimes += 1
             if (errorTimes >= 3) {
                 control.setValue("account", "")
                 control.setValue("pwd", "")
+                setGGModalShow(false)
             }
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
         }
@@ -209,6 +218,15 @@ const ZLLoginPage = ({ route, navigation }) => {
                     </View>
                 </TouchableWithoutFeedback>
             </ScrollView>
+            <DialogInput isDialogVisible={GGmodalShow}
+                title={"请输入谷歌验证码"}
+                message={""}
+                cancelText={"取消"}
+                submitText={"確定"}
+                hintInput={"请输入谷歌验证码"}
+                submitInput={(inputText) => onSubmit({ account: control.getValues("account"), pwd: control.getValues("pwd"), googleCode: inputText })}
+                closeDialog={() => { setGGModalShow(false) }}>
+            </DialogInput>
         </View>
 
     )

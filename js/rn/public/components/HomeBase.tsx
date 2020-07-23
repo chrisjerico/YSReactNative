@@ -16,14 +16,14 @@ import { ImageSource } from 'react-native-vector-icons/Icon'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import AppDefine from '../define/AppDefine'
-const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true }:
-  { header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName, backgroundColor: string, needPadding: boolean }) => {
+const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true, paddingHorizontal, marginTop }:
+  { header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName, backgroundColor: string, needPadding: boolean, paddingHorizontal?: number, marginTop: number }) => {
   const { redBag } = useGetHomeInfo(['activity_redBagDetail'])
   const { width, height } = useDimensions().screen
   if (!backgroundSource) {
     return <View style={{ flex: 1, backgroundColor: backgroundColor }}>
       {header}
-      <ScrollView style={{ flex: 1, paddingHorizontal: needPadding ? 10 : 0, }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: needPadding ? paddingHorizontal ? paddingHorizontal : 10 : 0, marginTop: marginTop ? marginTop : 0 }}>
         {children}
       </ScrollView>
       <RedBagItem loginPage={loginPage} redBag={redBag} />

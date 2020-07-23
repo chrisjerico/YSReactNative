@@ -37,3 +37,13 @@ export function popToRoot() {
     }
 
 }
+
+
+export function replace(name: string, params?: any) {
+    try {
+        navigationRef?.current?.dispatch(StackActions.replace(name, params));
+    } catch (error) {
+
+    }
+
+}

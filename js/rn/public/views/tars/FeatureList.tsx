@@ -5,9 +5,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
-import { scale } from '../helpers/function'
+import { scale } from '../../tools/Scale'
 
 interface FeatureListProps {
   logo: string;
@@ -47,10 +47,12 @@ const FeatureList = ({
             borderRadius: scale(30),
             backgroundColor: 'red',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
-          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>{unreadMsg}</Text>
+          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
+            {unreadMsg}
+          </Text>
         </View>
       ) : (
           <Text style={styles.text}>{'>'}</Text>
@@ -83,8 +85,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: scale(30),
     fontWeight: '400',
-    paddingLeft: scale(25)
-  }
+    paddingLeft: scale(25),
+  },
 })
 
 export default FeatureList

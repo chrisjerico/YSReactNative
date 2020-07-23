@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { scale } from '../../../helpers/function'
+import { Text, View } from 'react-native'
+import { Badge } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Badge } from 'react-native-elements'
+import { scale } from '../../../public/tools/Scale'
 
 interface HeaderProps {
   name: string

@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import ActivityComponent from '../../components/ActivityComponent'
-import { scale } from '../../helpers/function'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { scale, scaleHeight } from '../../public/tools/Scale'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import NoticeBlock from '../../public/views/tars/NoticeBlock'
+import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
-import BannerBlock from '../../views/BannerBlock'
-import GameButton from '../../views/GameButton'
-import NoticeBlock from '../../views/NoticeBlock'
-import ProgressCircle from '../../views/ProgressCircle'
-import RankBlock from '../../views/RankBlock'
-import TouchableImage from '../../views/TouchableImage'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
@@ -33,9 +34,12 @@ const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { uid, usr, balance, isTest }: UGUserModel = userStore
+  const { mobile_logo } = SystemStore
   const {
     loading,
     banner,
@@ -53,6 +57,7 @@ const BZHHomePage = ({ navigation }) => {
     'activity_redBagDetail',
     'activity_turntableList',
   ])
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       updateUserInfo()
@@ -71,7 +76,11 @@ const BZHHomePage = ({ navigation }) => {
   // data handle
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const navs = homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort).slice(0, 4) ?? []
+  const announcements = notice?.data?.popup ?? []
+  const navs =
+    homeGames?.data?.navs
+      ?.sort((a: any, b: any) => a.sort - b.sort)
+      .slice(0, 4) ?? []
   const games = homeGames?.data?.icons?.slice(0, 3) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -83,6 +92,7 @@ const BZHHomePage = ({ navigation }) => {
       ) : (
           <>
             <Header
+              logo={mobile_logo}
               isTest={isTest}
               uid={uid}
               name={isTest ? '遊客' : usr}
@@ -96,7 +106,14 @@ const BZHHomePage = ({ navigation }) => {
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    announcementModal?.current?.reload()
+                  }}
+                />
+              }
             >
               <BannerBlock
                 onlineNum={onlineNum}
@@ -126,12 +143,14 @@ const BZHHomePage = ({ navigation }) => {
                   return (
                     <GameButton
                       key={index}
-                      containerStyle={{ width: '25%' }}
-                      circleColor={'transparent'}
+                      containerStyle={{ width: '20%' }}
+                      enableCircle={false}
                       logo={icon ? icon : logo}
                       title={name}
                       titleStyle={{ fontSize: scale(25) }}
-                      onPress={() => PushHelper.pushHomeGame(item)}
+                      onPress={() => {
+                        PushHelper.pushHomeGame(item)
+                      }}
                     />
                   )
                 }}
@@ -146,23 +165,35 @@ const BZHHomePage = ({ navigation }) => {
                       }
                       title={name}
                       containerStyle={styles.subComponent}
+                      contentContainerStyle={{ paddingTop: scale(20) }}
                       games={list}
                       renderGame={(item, index) => {
                         const { title, logo, icon, name, subtitle } = item
                         return (
                           <GameButton
                             key={index}
-                            containerStyle={[styles.gameContainer, {
-                              marginRight: index == 0 ? '5%' : 0,
-                              marginLeft: index == 2 ? '5%' : 0,
-                            }]}
-                            circleColor={'transparent'}
+                            resizeMode={'contain'}
+                            containerStyle={[
+                              styles.gameContainer,
+                              {
+                                marginLeft: index % 3 == 1 ? '5%' : 0,
+                                marginRight: index % 3 == 1 ? '5%' : 0,
+                              },
+                            ]}
+                            enableCircle={false}
                             logo={icon || logo}
-                            title={title || name}
+                            title={name || title}
                             subTitle={subtitle}
                             showSubTitle
-                            titleStyle={{ fontSize: scale(27) }}
-                            subTitleStyle={{ fontSize: scale(23), paddingTop: scale(10) }}
+                            titleStyle={{
+                              fontSize: scale(27),
+                            }}
+                            subTitleStyle={{
+                              fontSize: scale(23),
+                            }}
+                            titleContainerStyle={{
+                              marginTop: scale(5),
+                            }}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
                             }}
@@ -173,8 +204,8 @@ const BZHHomePage = ({ navigation }) => {
                   )
                 })}
               </View>
-              <RankBlock
-                containerStyle={styles.subComponent}
+              <AnimatedRankComponent
+                containerStyle={[styles.subComponent, styles.bottomComponent]}
                 rankContainerStyle={{
                   width: '95%',
                   borderWidth: scale(1),
@@ -207,6 +238,11 @@ const BZHHomePage = ({ navigation }) => {
           PushHelper.pushWheel(roulette)
         }}
       />
+      <AnnouncementModal
+        ref={announcementModal}
+        announcements={announcements}
+        color={BZHThemeColor.宝石红.themeColor}
+      />
     </SafeAreaView>
   )
 }
@@ -217,7 +253,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: '#f6f6f6',
+    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
   },
   contentContainer: {
     paddingHorizontal: scale(5),
@@ -230,8 +266,11 @@ const styles = StyleSheet.create({
   gameContainer: {
     width: '30%',
     height: null,
-    marginBottom: scale(10)
-  }
+    marginBottom: scale(20),
+  },
+  bottomComponent: {
+    paddingBottom: scaleHeight(50),
+  },
 })
 
 export default BZHHomePage

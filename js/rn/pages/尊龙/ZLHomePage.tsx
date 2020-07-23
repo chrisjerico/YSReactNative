@@ -30,7 +30,7 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import HSNZ from 'react-native-hsnz-marquee'
+import RankListCP from "../../public/widget/RankList";
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -292,38 +292,8 @@ const ZLHomePage = ({ navigation }) => {
                     </View >
                 }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
-                    <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
-                </View>
-                {systemStore.rankingListSwitch == 0 ? null : <View >
-                    <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>用户名称</Text>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>游戏名称</Text>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>投注金额</Text>
-                        </View>
-                    </View>
-                    <FlatList keyExtractor={(item, index) => {
-                        return item.username + index
-                    }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
-                        return <View style={{ flexDirection: 'row', }}>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.username}</Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.type}</Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.coin}</Text>
-                            </View>
-                        </View>
-                    }} />
-                </View>}
+
+                <RankListCP timing={10000} backgroundColor={'black'} textColor={'white'} width={width - 24} ranks={rankList} />
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text onPress={() => {
@@ -441,13 +411,14 @@ const ZLHeader = () => {
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
                         <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
-                        <View style={{
+                        {unreadMsg > 0 ? <View style={{
                             position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
                             height: 15, width: 15,
                             borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
                         }}>
                             <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                        </View>
+                        </View> : null}
+
                     </TouchableOpacity> : null
                 }
 

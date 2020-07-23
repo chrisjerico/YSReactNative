@@ -78,7 +78,7 @@ httpClient.interceptors.response.use(
               OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
                 updateUserInfo()
                 UGStore.dispatch({ type: ActionType.Clear_User })
-                Toast('帐号已被登出');
+                // Toast('帐号已被登出');
               })
             })
           })

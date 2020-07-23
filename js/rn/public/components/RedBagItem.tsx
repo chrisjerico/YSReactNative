@@ -1,14 +1,14 @@
-import { useDimensions } from "@react-native-community/hooks"
 import { RedBagDetailActivityModel } from "../network/Model/RedBagDetailActivityModel"
 import { IGlobalState } from "../../redux/store/UGStore"
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
-import { Alert, Image, View, TouchableWithoutFeedback } from "react-native"
+import { Alert, Image, TouchableWithoutFeedback } from "react-native"
 import { navigate } from "../navigation/RootNavigation"
 import { PageName } from "../navigation/Navigation"
 import PushHelper from "../define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
+import { useDimensions } from '@react-native-community/hooks'
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
   const { width } = useDimensions().screen
   const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -23,8 +23,8 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
 
       <TouchableWithoutFeedback onPress={() => {
         if (uid == "") {
-          Alert.alert("温馨提示", "您还未登录", [
-            { text: "取消", onPress: () => { }, style: "cancel" },
+          Alert.alert("温馨提示", "该贴注册会员才能阅读，请登录后查看。", [
+            { text: "已取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
                 loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
@@ -32,8 +32,8 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
             }
           ])
         } else if (isTest) {
-          Alert.alert("温馨提示", "请先登录您的正式帐号", [
-            { text: "取消", onPress: () => { }, style: "cancel" },
+          Alert.alert("温馨提示", "请登录正式账号", [
+            { text: "已取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
                 loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
