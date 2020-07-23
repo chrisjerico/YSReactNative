@@ -218,6 +218,7 @@ export function setRnPageInfo() {
   }
   // 尊龙模板页面
   if (Skin1.skitType.indexOf('尊龙') != -1) { //
+    pages = []
     pages = pages.concat([
       {
         // 首页
@@ -262,6 +263,7 @@ export function setRnPageInfo() {
   }
 
   if (Skin1.skitType.indexOf('金星黑') != -1) {
+    pages = []
     pages = pages.concat([
       {
         // 首页
@@ -295,6 +297,13 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        vcName: 'UGPromotionsController',
+        rnName: PageName.PromotionListPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ]);
   }
 

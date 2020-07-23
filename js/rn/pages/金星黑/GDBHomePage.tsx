@@ -30,31 +30,50 @@ import { List, HomeGamesModel } from "../../public/network/Model/HomeGamesModel"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import HomeBase from "../../public/components/HomeBase"
 import HotRecycleList from "./RecycleList/HotRecycleList"
+import RankListCP from "../../public/widget/RankList"
+import AutoHeightWebView from "react-native-autoheight-webview"
+import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { uid = "" } = userStore
   const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-
+  const [show, setShow] = useState(false)
   const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   const { top } = useSafeArea()
+  const [selectId, setSelectedId] = useState(-1)
+  const openPopup = (data: any) => {
+    const dataModel = data.data?.popup.map((item, index) => {
+      return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+
+    })
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+  }
   useEffect(() => {
     let string = ""
     const noticeData = notice?.data?.scroll?.map((res) => {
       string += res.content
       return { label: res.id, value: res.title }
     }) ?? []
+    if (notice?.data?.popup) {
+      openPopup(notice)
+    }
     setnoticeFormat(noticeData)
     setOriginalNoticeString(string)
   }, [notice])
-
+  const [content, setContent] = useState("")
   const [] = useAutoRenewUserInfo(navigation)
   const [tbxIndex, setTbxIndex] = useState<number>(0)
   return (
-    <HomeBase loginPage={PageName.GDLoginPage} header={<View style={{ height: top }}></View>}
+    <HomeBase globalEvents={<MarqueePopupView onPress={() => {
+      setShow(false)
+    }} content={content} show={show} onDismiss={() => {
+      setShow(false)
+    }} />} loginPage={PageName.GDLoginPage} header={<View style={{ height: top }}></View>}
       backgroundSource={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/bg-black.png" }}>
       <Banner onlineNum={onlineNum} bannerData={banner} />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
@@ -66,7 +85,8 @@ const GDBHomePage = ({ navigation }) => {
           height={34}
           speed={35}
           onTextClick={() => {
-            PushHelper.pushNoticePopUp(originalNoticeString)
+            setShow(true)
+            setContent(originalNoticeString)
           }}
 
           textList={noticeFormat} />
@@ -93,53 +113,54 @@ const GDBHomePage = ({ navigation }) => {
           <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.JDPromotionListPage)
+          push(PageName.PromotionListPage)
         }}>
           <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
         </TouchableWithoutFeedback>
       </View>
-      <FlatList style={{ marginTop: 20 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item }) => {
-        return <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup')}>
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white', alignSelf: 'flex-start', marginLeft: 10, marginBottom: 5 }}>{item.title}</Text>
-            <FastImageAutoHeight resizeMode={"contain"} style={{ width: width - 40, marginBottom: 10 }} source={{ uri: item.pic }} />
-          </View>
-        </TouchableWithoutFeedback>
-      }} />
+      <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
+        return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+          <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+            if (selectId == index) {
+              setSelectedId(-1)
+            } else {
+              setSelectedId(index)
+            }
+          })}>
+            <View>
+              <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
+              <FastImageAutoHeight source={{ uri: item.pic }} />
+            </View>
+          </TouchableWithoutFeedback>
+          {selectId == index ? <AutoHeightWebView
+            style={{ width: width - 20, backgroundColor: 'white' }}
+            // scalesPageToFit={true}
+            viewportContent={'width=device-width, user-scalable=no'}
+            source={{
+              html: `<head>
+                        <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+                        <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+                        <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+                      </head>` +
+                `<script>
+                        window.onload = function () {
+                          window.location.hash = 1;
+                          document.title = document.body.scrollHeight;
+                        }
+                      </script>`+ item.content
+            }}></AutoHeightWebView> : null
+          }
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-        <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
-        <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
-      </View>
-      {systemStore.rankingListSwitch == 0 ? null : <View >
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>用户名称</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>游戏名称</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>投注金额</Text>
-          </View>
-        </View>
-        <FlatList keyExtractor={(item, index) => {
-          return item.username + index
-        }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
-          return <View style={{ flexDirection: 'row', }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.username}</Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.type}</Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.coin}</Text>
-            </View>
-          </View>
-        }} />
-      </View>}
-      <View style={{ height: 50 }}></View>
+        </View >
+      }} />
+      <RankListCP timing={10000} backgroundColor={'white'} titleTextStyle={{
+        color: 'white', fontWeight: "bold",
+        fontSize: 14,
+        marginLeft: -20
+      }} textColor={'black'} width={width - 24} ranks={rankList} />
+
+      <View style={{ height: 100 }}></View>
+
     </HomeBase>
   )
 }
@@ -192,13 +213,18 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
           pageSize={width - 20}
         >
           {bannerData?.data?.list?.map((res, index) => {
-            return <FastImage onLoad={(e) => {
-              console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-              setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+            return (
+              <TouchableWithoutFeedback onPress={() => {
+                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+              }}>
+                <FastImage onLoad={(e) => {
+                  console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
+                  setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
 
-            }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
+                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
 
-            </FastImage>
+                </FastImage>
+              </TouchableWithoutFeedback>)
           })}
         </Carousel>
         <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
@@ -212,6 +238,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
   }
 
 }
+
 
 const AcctountDetail = () => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -278,7 +305,7 @@ const AcctountDetail = () => {
             </View>
           </View>
           <TouchableOpacity onPress={() => {
-            push(PageName.JDPromotionListPage)
+            push(PageName.PromotionListPage)
           }}>
             <FastImage style={{ width: 86, height: 24 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/yhdh.png" }} />
           </TouchableOpacity>
@@ -349,10 +376,42 @@ const FastImageAutoHeight = (props: FastImageProperties) => {
     }} />
   )
 }
-const styles = StyleSheet.create({
-  buttonContainer: {
-    flex: 1,
-    marginRight: 5,
+const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
+  const { width, height } = useDimensions().screen
+  if (show) {
+    return (
+      <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
+        <View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
+          <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</Text>
+          </View>
+          <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }}></AutoHeightWebView>
+          </View>
+          <View style={{ height: 70, paddingBottom: 10, paddingHorizontal: 5, justifyContent: 'space-between', width: "100%", flexDirection: 'row' }}>
+            <TouchableOpacity onPress={onDismiss} style={{
+              justifyContent: 'center', alignItems: 'center',
+              width: "47%", height: 50, backgroundColor: 'white',
+              borderRadius: 5, borderColor: "gray", borderWidth: 0.5
+            }}>
+              <Text>取消</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onPress} style={{
+              justifyContent: 'center',
+              alignItems: 'center', width: "47%", height: 50,
+              backgroundColor: '#46A3FF', borderRadius: 5,
+              borderColor: "gray", borderWidth: 0.5
+            }}>
+              <Text style={{ color: 'white' }}>确定</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+      </View>
+    )
+  } else {
+    return null
   }
-})
+
+}
 export default GDBHomePage
