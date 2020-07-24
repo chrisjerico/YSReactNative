@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
-import { scale } from '../../../../helpers/function';
+import { scale } from '../../../../public/tools/Scale';
 
 interface NavBlockProps {
   customerServiceLogo: string;
@@ -99,15 +99,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topLeftContainer: {
-    flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
   topRightContainer: {
-    flex: 25,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
   },
   smileImageContainer: {
     width: '15%',
@@ -119,10 +117,11 @@ const styles = StyleSheet.create({
   },
   button: {
     aspectRatio: 3.25 / 1.5625,
-    borderRadius: scale(20),
+    borderRadius: scale(25),
+    marginRight: scale(10)
   },
   title: {
-    fontSize: 13,
+    fontSize: scale(20),
   },
   titleContainer: {
     flex: 65,
@@ -156,7 +155,6 @@ const styles = StyleSheet.create({
     flex: 270,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
   },
   lotterysCintainer: {
     flex: 90,

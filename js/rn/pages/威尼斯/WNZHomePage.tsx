@@ -4,25 +4,23 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
-  Image
+  View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import { scale } from '../../helpers/function'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import { scale } from '../../public/tools/Scale'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import NoticeBlock from '../../public/views/tars/NoticeBlock'
+import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { IGlobalState } from '../../redux/store/UGStore'
-import BannerBlock from '../../views/BannerBlock'
-import GameButton from '../../views/GameButton'
-import NoticeBlock from '../../views/NoticeBlock'
-import ProgressCircle from '../../views/ProgressCircle'
-import RankBlock from '../../views/RankBlock'
-import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import Header from './views/Header'
-import FastImage from 'react-native-fast-image'
+import RowGameButtom from './views/RowGameButtom'
 
 const WNZHomePage = () => {
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -31,7 +29,7 @@ const WNZHomePage = () => {
     'system_banners',
     'notice_latest',
     'game_homeGames',
-    'lhcdoc_categoryList'
+    'lhcdoc_categoryList',
   ])
 
   const banners = banner?.data?.list ?? []
@@ -141,19 +139,36 @@ const WNZHomePage = () => {
               </View>
               <TabComponent
                 leftGames={leftGames}
-                rightGames={[]}
-                renderGame={(item, index) => {
+                rightGames={leftGames}
+                renderLeftGame={(item, index) => {
                   const { name, icon, show, id, desc } = item
                   return (
-                    <View key={index} style={{ width: '50%', flexDirection: 'row', aspectRatio: 255 / 85, paddingLeft: scale(25) }}>
-                      <FastImage source={{ uri: icon }} style={{ width: '25%', aspectRatio: 1 }} resizeMode={'contain'} />
-                      <View style={{ justifyContent: 'center', paddingLeft: scale(25) }}>
-                        <Text>{name}</Text>
-                      </View>
-                    </View>
+                    <RowGameButtom
+                      key={index}
+                      logo={icon}
+                      name={name}
+                      desc={desc}
+                      logoBallText={'官'}
+                    />
                   )
-                }} />
-              <RankBlock rankLists={[]} rankContainerStyle={{ borderRadius: 0 }} />
+                }}
+                renderRightGame={(item, index) => {
+                  const { name, icon, show, id, desc } = item
+                  return (
+                    <RowGameButtom
+                      key={index}
+                      logo={icon}
+                      name={name}
+                      desc={desc}
+                      logoBallText={'信'}
+                    />
+                  )
+                }}
+              />
+              <AnimatedRankComponent
+                rankLists={[]}
+                rankContainerStyle={{ borderRadius: 0 }}
+              />
             </ScrollView>
           </>
         )}

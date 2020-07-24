@@ -1,24 +1,27 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Icons from 'react-native-vector-icons/FontAwesome5'
-import { scale } from '../../../helpers/function'
 import AppDefine from '../../../public/define/AppDefine'
+import { scale } from '../../../public/tools/Scale'
+import StringUtils from '../../../public/tools/StringUtils'
 
 interface TabComponentProps {
   containerStyle?: ViewStyle;
-  subTabs: any[];
   leftGames: any[];
   rightGames: any[];
   renderLeftGame: (item: any, index: number) => any;
   renderRightGame: (item: any, index: number) => any;
+  unActiveTabColor: string;
+  activeTabColor: string;
+  rowHeight: number;
 }
 
 interface SceneProps {
@@ -38,18 +41,32 @@ const TabComponent = ({
   renderRightGame,
   leftGames = [],
   rightGames = [],
-  subTabs = [],
   containerStyle,
+  unActiveTabColor,
+  activeTabColor,
+  rowHeight
 }: TabComponentProps) => {
   // functions
+
+  const getSubTabWidth = () => {
+    const length = rightGames?.length ?? 1
+    const width = AppDefine.width / length
+    const minWidth = scale(100)
+    if (width < minWidth) {
+      return minWidth
+    } else {
+      return width
+    }
+  }
   const getHeight = (index: number) => {
-    if (rightGames[index]) {
-      const fullRow = Math.floor(rightGames[index].length / 3)
-      const row = rightGames[index].length % 3
+    const games = rightGames[index]?.games
+    if (games) {
+      const fullRow = Math.floor(games.length / 3)
+      const row = games.length % 3
       if (row == 0) {
-        return scale(200 * fullRow + 60)
+        return rowHeight * fullRow + scale(60)
       } else {
-        return scale(200 * (fullRow + 1) + 60)
+        return rowHeight * (fullRow + 1) + scale(60)
       }
     } else {
       return 0
@@ -61,7 +78,7 @@ const TabComponent = ({
     subScenes[index] = () => {
       return (
         <Scene
-          data={item}
+          data={item?.games ?? []}
           renderItem={renderRightGame}
           containerStyle={{
             paddingTop: scale(25),
@@ -72,11 +89,21 @@ const TabComponent = ({
       )
     }
   })
+
+  const subTabs =
+    rightGames?.map((item, index) => {
+      return {
+        key: index.toString(),
+        title: StringUtils.getInstance().deleteHtml(item?.name ?? ''),
+      }
+    }) ?? []
   // set hooks
   const [index, setIndex] = useState(0)
   const [subIndex, setSubIndex] = useState(0)
   const [height, setHeight] = useState(getHeight(0))
 
+  // ref
+  const scroll = useRef(null)
   // render
   return (
     <View style={containerStyle}>
@@ -85,7 +112,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? '#ff6b1b' : '#7B7B7B',
+              backgroundColor: index == 0 ? activeTabColor : unActiveTabColor,
             },
           ]}
           onPress={() => setIndex(0)}
@@ -102,7 +129,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? '#7B7B7B' : '#ff6b1b',
+              backgroundColor: index == 0 ? unActiveTabColor : activeTabColor,
             },
           ]}
           onPress={() => setIndex(1)}
@@ -138,21 +165,32 @@ const TabComponent = ({
             renderTabBar={(props: any) => {
               return (
                 <ScrollView
+                  ref={scroll}
                   horizontal={true}
-                  style={{ flexGrow: 0 }}
+                  style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
                   showsHorizontalScrollIndicator={false}
                   scrollEventThrottle={200}
                   decelerationRate={'fast'}
                 >
                   <TabBar
                     {...props}
+                    contentContainerStyle={{ backgroundColor: '#ffffff' }}
                     tabStyle={styles.subTabStyle}
                     renderLabel={({ route, focused }) => {
                       return (
-                        <>
+                        <View
+                          style={{
+                            width: getSubTabWidth(),
+                            alignItems: 'center',
+                          }}
+                        >
                           <Text
                             style={[
-                              { fontWeight: '600', alignSelf: 'auto' },
+                              {
+                                alignSelf: 'auto',
+                                fontSize: scale(25),
+                                marginBottom: scale(5),
+                              },
                               focused ? styles.focusedText : styles.text,
                             ]}
                           >
@@ -161,7 +199,7 @@ const TabComponent = ({
                           {focused ? (
                             <View
                               style={{
-                                height: scale(5),
+                                height: scale(2),
                                 width: '100%',
                                 backgroundColor: '#46A3FF',
                                 borderRadius: scale(100),
@@ -169,7 +207,7 @@ const TabComponent = ({
                               }}
                             ></View>
                           ) : null}
-                        </>
+                        </View>
                       )
                     }}
                   />
@@ -181,6 +219,11 @@ const TabComponent = ({
               const height = getHeight(index)
               setSubIndex(index)
               setHeight(height)
+              scroll.current.scrollTo({
+                x: index * scale(100),
+                y: 0,
+                animated: true,
+              })
             }}
           />
         )}

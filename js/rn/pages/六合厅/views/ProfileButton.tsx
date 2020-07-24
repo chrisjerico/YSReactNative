@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../helpers/function'
+import { scale } from '../../../public/tools/Scale'
 
 interface ProfileButtonProps {
   title: string;
@@ -16,7 +16,7 @@ const ProfileButton = ({
 }: ProfileButtonProps) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={{ paddingRight: scale(5), color: '#ffffff' }}>{title}</Text>
+      <Text style={{ paddingRight: scale(5), color: '#ffffff', fontWeight: '500' }}>{title}</Text>
       <FastImage
         style={styles.image}
         resizeMode={'contain'}

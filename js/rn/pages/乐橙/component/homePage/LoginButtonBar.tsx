@@ -37,7 +37,7 @@ export const LoginButtonBar = () => {
     }
 
     return (
-        <View style={{flexDirection: "row", alignItems: "center"}}>
+        <View style={{flexDirection: "row", alignItems: "center", height: 40}}>
             <TouchableWithoutFeedback onPress={() => {
                 PushHelper.pushLogin()
             }}>

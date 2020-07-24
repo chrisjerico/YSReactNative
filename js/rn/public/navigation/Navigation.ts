@@ -39,6 +39,15 @@ export enum PageName {
   PromotionListPage = "PromotionListPage",
   LLHomePage = "LLHomePage",
   LLMinePage = "LLMinePage",
+  GDRegisterPage = "GDRegisterPage",
+  KSHomePage = "KSHomePage",
+  LottoSelector = "LottoSelector",
+  LottoBetting = "LottoBetting",
+  VietnamHome = "VietnamHome",
+  VietnamLogin = "VietnamLogin",
+  VietnamRegister = "VietnamRegister",
+  VietnamMine = "VietnamMine",
+  VietnamGameList = "VietnamGameList"
 }
 
 export class Navigation {

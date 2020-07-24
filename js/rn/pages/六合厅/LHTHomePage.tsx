@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
@@ -7,31 +7,33 @@ import {
   View
 } from 'react-native'
 import { useSelector } from 'react-redux'
-import { scale } from '../../helpers/function'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import StringUtils from '../../public/tools/StringUtils'
+import APIRouter from '../../public/network/APIRouter'
+import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { scale, scaleHeight } from '../../public/tools/Scale'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import NoticeBlock from '../../public/views/tars/NoticeBlock'
+import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
-import BannerBlock from '../../views/BannerBlock'
-import GameButton from '../../views/GameButton'
-import NoticeBlock from '../../views/NoticeBlock'
-import ProgressCircle from '../../views/ProgressCircle'
-import RankBlock from '../../views/RankBlock'
-import TouchableImage from '../../views/TouchableImage'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
   defaultBottomTools,
   defaultCustomerServiceLogo,
   defaultDowloadUrl,
-  defaultHeadLineLogo,
   defaultHomeHeaderLeftLogo,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
@@ -40,7 +42,6 @@ import {
 import BottomToolBlock from './views/homes/BottomToolBlock'
 import CouponBlock from './views/homes/CouponBlock'
 import Header from './views/homes/Header'
-import HeadlineBlock from './views/homes/HeadlineBlock'
 import NavBlock from './views/homes/NavBlock'
 import LotteryBall from './views/LotteryBall'
 
@@ -48,10 +49,12 @@ const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const { tryPlay } = useTryPlay({ enablePop: false })
+  const announcementModal = useRef(null)
+  const [roulette, setRoulette] = useState(null)
+  const { tryPlay } = useTryPlay({})
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { uid, avatar, usr }: UGUserModel = userStore
+  const { uid, avatar, usr, isTest }: UGUserModel = userStore
   const {
     loading,
     banner,
@@ -63,7 +66,6 @@ const LHTHomePage = ({ navigation }) => {
     couponListData,
     redBag,
     rankList,
-    // turntableList,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -74,7 +76,6 @@ const LHTHomePage = ({ navigation }) => {
     'system_promotions',
     'activity_redBagDetail',
     'system_rankingList',
-    // 'activity_turntableList',
   ])
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -84,20 +85,28 @@ const LHTHomePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
+  useEffect(() => {
+    if (uid) {
+      APIRouter.activity_turntableList().then((value) => {
+        setRoulette(value?.data?.data)
+      })
+    }
+  }, [uid])
+
   // data handle
-  // const turntables = turntableList?.data ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const headlines = notice?.data?.popup ?? []
-  const navs = homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+  const announcements = notice?.data?.popup ?? []
+  const navs =
+    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
-  const numbers = lotteryNumber?.numbers?.split(',') ?? []
-  const numColors = lotteryNumber?.numColor?.split(',') ?? []
-  const numSxs = lotteryNumber?.numSx?.split(',') ?? []
-  const lotteryDate = lotteryNumber?.issue
+  const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
+  const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
+  const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
+  const lotteryDate = lotteryNumber?.data?.issue
   const lotterys = numbers?.map((number, index) => ({
     number,
     color: numColors[index],
@@ -114,17 +123,11 @@ const LHTHomePage = ({ navigation }) => {
   const leftGames = categoryList?.data ?? []
   const rightGames =
     icons?.map((tab) => {
-      const { list } = tab
+      const { list, name } = tab
       const games = list?.filter((ele) => ele.levelType == '1')
-      return games
+      return { games, name }
     }) ?? []
-  const subTabs =
-    icons?.map((tab, index) => ({
-      key: index,
-      title: StringUtils.getInstance().deleteHtml(tab.name),
-    })) ?? []
 
-  console.log("----redBagLogo-----", redBagLogo)
   // render
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -134,7 +137,7 @@ const LHTHomePage = ({ navigation }) => {
           <>
             <Header
               avatar={avatar}
-              name={usr}
+              name={isTest ? '遊客' : usr}
               showLogout={uid ? true : false}
               leftLogo={defaultHomeHeaderLeftLogo}
               rightLogo={defaultHomeHeaderRightLogo}
@@ -149,7 +152,14 @@ const LHTHomePage = ({ navigation }) => {
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    announcementModal?.current?.reload()
+                  }}
+                />
+              }
             >
               <BannerBlock
                 onlineNum={onlineNum}
@@ -200,7 +210,8 @@ const LHTHomePage = ({ navigation }) => {
                       <GameButton
                         key={index}
                         containerStyle={{ width: '25%', height: '50%' }}
-                        circleColor={'transparent'}
+                        imageStyle={{ width: '50%' }}
+                        enableCircle={false}
                         logo={icon ? icon : logo}
                         title={name}
                         onPress={() => PushHelper.pushHomeGame(item)}
@@ -208,14 +219,15 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                   renderLottery={(item, index) => {
-                    const { number, color, sx } = item
+                    const { number, color, sx, showMore } = item
+                    console.log('-----showMore-----', showMore)
                     return (
                       <LotteryBall
                         key={index}
                         score={number}
                         color={color}
                         text={sx}
-                        showMore={index == 6}
+                        showMore={showMore}
                         onPress={() =>
                           PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
                         }
@@ -223,17 +235,19 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <HeadlineBlock
+                {/* <HeadlineBlock
                   containerStyle={styles.subComponent}
                   headlines={headlines}
                   headLineLogo={defaultHeadLineLogo}
                   onPressHeadline={({ value }) =>
                     PushHelper.pushNoticePopUp(value)
                   }
-                />
+                /> */}
                 <TabComponent
+                  rowHeight={scale(200)}
+                  activeTabColor={'#ff8610'}
+                  unActiveTabColor={'#bbbbbb'}
                   containerStyle={styles.subComponent}
-                  subTabs={subTabs}
                   leftGames={leftGames}
                   rightGames={rightGames}
                   renderLeftGame={(item, index) => {
@@ -247,13 +261,15 @@ const LHTHomePage = ({ navigation }) => {
                         showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
-                        subTitleStyle={{
-                          marginTop: scale(10),
-                        }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => {
                           PushHelper.pushUserCenterType(parseInt(id))
                         }}
@@ -267,12 +283,18 @@ const LHTHomePage = ({ navigation }) => {
                         key={index}
                         logo={logo ? logo : icon}
                         title={title}
+                        showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
@@ -296,13 +318,14 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <RankBlock
+                <AnimatedRankComponent
                   containerStyle={styles.subComponent}
                   iconContainerStyle={styles.rankBlockIconContainerStyle}
                   rankLists={rankLists}
                 />
                 <BottomToolBlock
                   tools={defaultBottomTools}
+                  containerStyle={{ paddingBottom: scaleHeight(60) }}
                   renderBottomTool={(item, index) => {
                     const { logo, userCenterType } = item
                     return (
@@ -326,31 +349,34 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            {
-              // 紅包活動
-              uid && redBagLogo ? (
-                <TouchableImage
-                  pic={redBagLogo}
-                  onPress={() => {
-                    PushHelper.pushRedBag(redBag)
-                  }}
-                  containerStyle={styles.redEnvelope}
-                />
-              ) : null
-            }
-            {/* {
-              // 輪盤活動
-              uid ? (
-                <TouchableImage
-                  pic={turntables[0]?.param?.chassis_img}
-                  onPress={() => {
-                    // console.log("--------redBag-------", redBag)
-                    PushHelper.pushWheel(turntableList)
-                  }}
-                  containerStyle={styles.turntables}
-                />
-              ) : null
-            } */}
+            {/* <DowloadApp
+              onPressDowload={() => {
+                PushHelper.openWebView(
+                  'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+                )
+              }}
+            /> */}
+            <ActivityComponent
+              show={uid && redBagLogo && !isTest}
+              logo={redBagLogo}
+              onPress={() => {
+                PushHelper.pushRedBag(redBag)
+              }}
+            />
+            <ActivityComponent
+              containerStyle={{ top: 100 }}
+              enableFastImage={false}
+              show={uid && roulette && !isTest}
+              logo={'dzp_btn'}
+              onPress={() => {
+                PushHelper.pushWheel(roulette)
+              }}
+            />
+            <AnnouncementModal
+              ref={announcementModal}
+              announcements={announcements}
+              color={LHThemeColor.六合厅.themeColor}
+            />
           </>
         )}
     </SafeAreaView>
@@ -359,7 +385,7 @@ const LHTHomePage = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: '#2894FF',
+    backgroundColor: LHThemeColor.六合厅.themeColor,
     flex: 1,
   },
   container: {

@@ -52,7 +52,7 @@ const PromotionListPage = ({ navigation }) => {
 
   }
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
       <LinearGradient style={{ height: 44, width, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} colors={Skin1.navBarBgColor}>
         {state.index != 15 || currentNativeSelectedTab == 0 ?

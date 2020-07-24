@@ -7,10 +7,15 @@ import {GameListView} from "./lotteyTab/GameListView";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {Icon} from "../../../../../public/network/Model/HomeGamesModel";
 import {View} from "react-native";
+import {useSelector} from "react-redux";
+import {IGlobalState} from "../../../../../redux/store/UGStore";
+import PushHelper from "../../../../../public/define/PushHelper";
 
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
+    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const {uid = ""} = userStore
 
     useEffect(() => {
         if (homeGames && homeGames.data && homeGames.data.icons) {
@@ -22,12 +27,29 @@ export const HomeTabView = () => {
         }
     }, [homeGames])
 
+    const thirdPartGamePress = (id: string, gameID?: string) => {
+        if (uid != "") {
+            const result = homeGames.data.icons.filter((res) => res.id == id)
+            if (gameID && result.length > 0) {
+                const gameData = result[0].list.filter((res) => res.id == gameID)
+                //@ts-ignore
+                PushHelper.pushHomeGame(gameData[0])
+            } else if (!gameID && result.length > 0) {
+
+            } else {
+
+            }
+        } else {
+            PushHelper.pushLogin()
+        }
+    }
+
     const getTab = (item: Icon) => {
         return item.name.indexOf("推荐") != -1 || item.name.indexOf("热门") != -1 ?
-            <RecommendTabView list={item.list} tabLabel="推荐"/> :
+            <RecommendTabView thirdPartGamePress={thirdPartGamePress} list={item.list} tabLabel="推荐"/> :
             item.name.indexOf("彩票") != -1 ?
-                <LotteryTabView list={item.list} tabLabel="彩票"/> :
-                <GameListView list={item.list} tabLabel={item.name} />
+                <LotteryTabView thirdPartGamePress={thirdPartGamePress} list={item.list} tabLabel="彩票"/> :
+                <GameListView list={item.list} thirdPartGamePress={thirdPartGamePress} tabLabel={item.name} />
     }
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
-import { scale } from '../../../helpers/function';
+import { scale } from '../../../public/tools/Scale';
 
 
 // const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>
@@ -15,10 +15,11 @@ import { scale } from '../../../helpers/function';
 interface TabComponentProps {
   leftGames: any[];
   rightGames: any[];
-  renderGame: (item: any, index: number) => any
+  renderLeftGame: (item: any, index: number) => any;
+  renderRightGame: (item: any, index: number) => any;
 }
 
-const TabComponent = ({ leftGames, rightGames, renderGame }: TabComponentProps) => {
+const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame }: TabComponentProps) => {
   const [routes]: any = React.useState([
     { key: 0, title: '官方玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png' },
     { key: 1, title: '信用玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' },
@@ -34,8 +35,8 @@ const TabComponent = ({ leftGames, rightGames, renderGame }: TabComponentProps) 
     <TabView
       navigationState={{ index, routes }}
       renderScene={SceneMap({
-        0: () => <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff' }}>{leftGames?.map(renderGame)}</View>,
-        1: () => <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff' }}>{rightGames?.map(renderGame)}</View>,
+        0: () => <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff' }}>{leftGames?.map(renderLeftGame)}</View>,
+        1: () => <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff' }}>{rightGames?.map(renderRightGame)}</View>,
       })}
       onIndexChange={setIndex}
       initialLayout={{}}

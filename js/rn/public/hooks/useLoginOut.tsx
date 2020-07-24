@@ -1,33 +1,24 @@
-import { useCallback } from 'react'
 import { Alert, Platform } from 'react-native'
-import APIRouter from '../network/APIRouter'
-import { Toast } from '../tools/ToastUtils'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import {
-  IGlobalStateHelper,
-  updateUserInfo,
-} from '../../redux/store/IGlobalStateHelper'
-import { useDispatch } from 'react-redux'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { UGStore } from '../../redux/store/UGStore'
-import { popToRoot, navigate } from '../navigation/RootNavigation'
+import { OCHelper } from '../define/OCHelper/OCHelper'
 import { PageName } from '../navigation/Navigation'
+import { navigate } from '../navigation/RootNavigation'
+import APIRouter from '../network/APIRouter'
+import { Toast } from '../tools/ToastUtils'
 
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {
     try {
-      const { data, status } = await APIRouter.user_logout()
+      await APIRouter.user_logout()
       if (Platform.OS == 'ios') {
-        navigate(pageName, {})
-        await OCHelper.call('UGUserModel.setCurrentUser:')
-        await OCHelper.call(
-          'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-          ['UGNotificationUserLogout']
-        )
+        await OCHelper.call('UGUserModel.setCurrentUser:', [])
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: ActionType.Clear_User })
         UGStore.save()
-        Toast('退出成功')
+        console.log("---------------登出成功---------------")
+        navigate(pageName, {})
       } else {
         // TODO 安卓
       }

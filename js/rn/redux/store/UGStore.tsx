@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, compose, createStore, Store } from 'r
 import thunk from 'redux-thunk';
 import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
 import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
-import { BZHSignInStore, BZHSignInReducer } from '../../pages/宝石红/BZHSignInProps';
+import { BZHSignInReducer, BZHSignInStore } from '../../pages/宝石红/BZHSignInProps';
 import { JDPromotionListProps, JDPromotionListReducer } from '../../pages/经典/JDPromotionListProps';
 import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
 import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';
@@ -18,6 +18,7 @@ import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import { ActionType, UGAction } from './ActionTypes';
 import { AsyncStorageKey, SysConfReducer, UserInfoReducer } from './IGlobalStateHelper';
+import BettingReducer, { BettingReducerProps } from '../reducer/BettingReducer';
 // 整个State的树结构
 export interface IGlobalState {
   // 寶石紅
@@ -41,6 +42,7 @@ export interface IGlobalState {
   SysConfReducer: UGSysConfModel;
   // iOS 独有
   UpdateVersionReducer: UpdateVersionProps;
+  BettingReducer: BettingReducerProps
 }
 
 // 整合项目所有reducer
@@ -69,6 +71,8 @@ export const rootReducer = combineReducers({
 
   // iOS独有
   UpdateVersionReducer,
+  //下注資料
+  BettingReducer,
 });
 
 export class UGStore {

@@ -1,6 +1,6 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { PageName } from '../../public/navigation/Navigation';
@@ -40,6 +40,16 @@ import PromotionListPage from '../common/PromotionListPage';
 import LLHomePage from "../利来/LLHomePage";
 import LLMinePage from "../利来/LLMinePage";
 
+import GDBMinePage from '../金星黑/GDBMinePage';
+import KSHomePage from '../凯时/KSHomePage'
+import LottoBetting from '../common/LottoBetting';
+import VietnamHomePage from '../越南/HomePage';
+import VietnamLogin from '../越南/LoginPage';
+import VietnamRegister from '../越南/RegisterPage';
+import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
+import GameList from '../越南/GameList';
+import MinePage from '../越南/MinePage';
+const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -62,9 +72,9 @@ class TabBarController extends Component<{
           <Router.TabScreen name={PageName.LLHomePage} component={LLHomePage} />
           <Router.TabScreen name={PageName.LLMinePage} component={LLMinePage} />
         <Router.TabScreen name={PageName.LXBView} component={LXBView} />
+        <Router.TabScreen name={PageName.VietnamHome} component={VietnamHomePage} />
         <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage} />
         <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.TransitionPage} component={TransitionPage} />
         <Router.TabScreen name={PageName.XBJLoginPage} component={XBJLoginPage} />
         <Router.TabScreen name={PageName.XBJRegisterPage} component={XBJRegisterPage} />
@@ -75,7 +85,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZHTYMinePage} component={ZHTYMinePage} />
         <Router.TabScreen name={PageName.ZLHomePage} component={ZLHomePage} />
         <Router.TabScreen name={PageName.ZLMinePage} component={ZLHomeMine} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
         <Router.TabScreen name={PageName.PromotionListPage} component={PromotionListPage} />
         <Router.TabScreen name={PageName.ZHTYHomePage} component={ZHTYHomePage} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
@@ -83,30 +92,46 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
         <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
+        <Router.TabScreen name={PageName.GDBMinePage} component={GDBMinePage} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
+        <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.VietnamMine} component={MinePage} />
       </Router.TabNavigator>
     );
   }
 }
-
+const StackScreens = () => {
+  return (
+    <Router.StackNavigator headerMode={'screen'}>
+      <Router.StackScreen name={'Tabbar'} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={PromotionListPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={LottoBetting} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={ZLHomeMine} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={VietnamLogin} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={VietnamRegister} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={GameList} />
+    </Router.StackNavigator>
+  )
+}
 const UGApplication = () => {
   return (
-    <Provider store={UGStore.store}>
-      <NavigationContainer ref={navigationRef}>
-        <Router.StackNavigator headerMode={'screen'}>
-          <Router.StackScreen name={'Tabbar'} component={TabBarController} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={PromotionListPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
-          <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
-        </Router.StackNavigator>
-      </NavigationContainer>
-    </Provider>
+    <LanguageContextProvider>
+      <Provider store={UGStore.store}>
+        <NavigationContainer ref={navigationRef}>
+          {StackScreens()}
+        </NavigationContainer>
+      </Provider>
+    </LanguageContextProvider>
   )
 }
 export default UGApplication

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -30,6 +30,16 @@ import { TurntableListModel } from "../../public/network/Model/TurntableListMode
 import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
+import RankListCP from "../../public/widget/RankList";
+/**
+ * 
+ * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
+    vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
+        [NavController1 pushViewControllerWithNextIssueModel:nextModel];
+    };
+    UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
+    [self presentViewController:nav animated:true completion:nil];
+ */
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -37,10 +47,9 @@ const ZLHomePage = ({ navigation }) => {
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
-    const state = useNavigationState(state => state);
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
@@ -64,7 +73,6 @@ const ZLHomePage = ({ navigation }) => {
         })
         if (Platform.OS != 'ios') return;
         OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-        // OCHelper.call("[[UGPlatformNoticeView alloc] initWithFrame:CGRectMake(20, 120, UGScreenW - 40, UGScerrnH - APP.StatusBarHeight - APP.BottomSafeHeight - 160)];")
     }
     const init = async () => {
         try {
@@ -102,20 +110,21 @@ const ZLHomePage = ({ navigation }) => {
         } else {
             push(PageName.ZLLoginPage)
         }
-
-
     }
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <ZLHeader />
-            <ScrollView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
+            <ScrollView refreshControl={
+                <RefreshControl style={{ backgroundColor: 'black' }} tintColor={'white'} refreshing={loading} onRefresh={onRefresh} />
+            } style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
                 {/* <Marquee/> */}
                 <UserStatusBar />
-                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg }}>
-                    <Icon name="volume-up" type="materialIcon" color="white" size={24} />
+                <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg, paddingLeft: 5 }}>
+                    <Icon name="ios-volume-high" type="ionicon" color="white" size={24} />
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
                         width={width - 60}
                         height={34}
+
                         speed={40}
                         onTextClick={() => {
                             setShow(true)
@@ -128,11 +137,11 @@ const ZLHomePage = ({ navigation }) => {
 
                 <AcctountDetail />
                 <Banner onlineNum={onlineNum} bannerData={banner} />
-                <View style={{ flex: 1, height: 233 / 375 * width, flexDirection: 'row', }}>
+                <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "38")}>
                         <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agqjt.png" }} style={{
                             flex: 0.6,
-                            backgroundColor: 'white', marginRight: 5,
+                            backgroundColor: 'white', marginRight: 8,
                             borderRadius: 10, paddingLeft: 5, paddingTop: 10,
                             justifyContent: 'space-between'
                         }} >
@@ -143,7 +152,7 @@ const ZLHomePage = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'column', flex: 0.4, justifyContent: 'space-between', borderRadius: 10, }}>
                         <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "39")}>
-                            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 5, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
+                            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 8, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
                                 <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG国际厅</Text>
                             </FastImage>
                         </TouchableWithoutFeedback>
@@ -154,8 +163,8 @@ const ZLHomePage = ({ navigation }) => {
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', height: 136, marginTop: 7 }}>
-                    <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 5, padding: 5 }}>
+                <View style={{ flexDirection: 'row', height: 136, marginTop: 10 }}>
+                    <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 8, padding: 5 }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                             <View>
                                 <Text style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2, marginBottom: 5 }}>电子游戏</Text>
@@ -247,7 +256,7 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
 
-                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
+                <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
                     return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                         <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
                             if (selectId == index) {
@@ -283,38 +292,8 @@ const ZLHomePage = ({ navigation }) => {
                     </View >
                 }} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
-                    <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
-                </View>
-                {systemStore.rankingListSwitch == 0 ? null : <View >
-                    <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>用户名称</Text>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>游戏名称</Text>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: 'white' }}>投注金额</Text>
-                        </View>
-                    </View>
-                    <FlatList keyExtractor={(item, index) => {
-                        return item.username + index
-                    }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
-                        return <View style={{ flexDirection: 'row', }}>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.username}</Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.type}</Text>
-                            </View>
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ color: 'white' }}>{item.coin}</Text>
-                            </View>
-                        </View>
-                    }} />
-                </View>}
+
+                <RankListCP timing={10000} backgroundColor={'black'} textColor={'white'} width={width - 24} ranks={rankList} />
 
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text onPress={() => {
@@ -384,7 +363,19 @@ const TurntableListItem = () => {
                         }
                     ])
                 } else {
-                    PushHelper.pushWheel(turntableList)
+                    if (Platform.OS != 'ios') return;
+                    const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
+                    OCHelper.call(({ vc }) => ({
+                        vc: {
+                            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                            args2: [turntableListModel]
+                        },
+                        ret: {
+                            selectors: 'SGBrowserView.showMoveView:yDistance:',
+                            args1: [vc, 100],
+                        },
+                    }));
                 }
             }}>
                 <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
@@ -404,13 +395,13 @@ const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "" } = userStore
+    const { uid = "", unreadMsg } = userStore
     const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const { mobile_logo = "" } = sysStore
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
-            flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center'
+            flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
         }}>
             <FastImage resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
@@ -419,7 +410,15 @@ const ZLHeader = () => {
                         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
                     }} style={{ flexDirection: 'column', marginRight: 20 }}>
                         <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
-                        <Text style={{ color: "#8c9ea7" }}>消息</Text>
+                        <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
+                        {unreadMsg > 0 ? <View style={{
+                            position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
+                            height: 15, width: 15,
+                            borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+                        </View> : null}
+
                     </TouchableOpacity> : null
                 }
 
@@ -427,7 +426,7 @@ const ZLHeader = () => {
                     PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
                 }} style={{ flexDirection: 'column', marginRight: 20 }}>
                     <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png" }} />
-                    <Text style={{ color: "#8c9ea7" }}>客服</Text>
+                    <Text style={{ color: "#8c9ea7", marginTop: 3 }}>客服</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -472,7 +471,7 @@ const UserStatusBar = () => {
                             index = i
                         }
                     })
-                    navigate(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
+                    push(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
                 }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
                     <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
@@ -480,15 +479,15 @@ const UserStatusBar = () => {
                         <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
                     </FastImage>
                     <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between', height: 47 }}>
-                        <Text style={{ color: 'white', fontSize: 17 }}>{usr}</Text>
-                        <Text style={{ color: 'white', fontSize: 17 }}>距离下一级还差{(parseFloat(nextLevelInt) - parseFloat(curLevelInt)).toFixed(2)}分   </Text>
+                        <Text style={{ color: 'white', fontSize: 16 }}>{usr}</Text>
+                        <Text style={{ color: 'white', fontSize: 14, fontWeight: "400" }}>距离下一级还差{(parseFloat(nextLevelInt) - parseFloat(curLevelInt)).toFixed(2)}分   </Text>
                     </View>
                     <TouchableOpacity style={{
                         position: 'absolute',
                         bottom: 0,
-                        right: 20
+                        right: 10
                     }}>
-                        <Icon name="chevron-right" type="materialIcon" color="#8c9ba7" size={24} />
+                        <Icon name="chevron-right" type="materialIcon" color="#8c9ba7" size={27} />
                     </TouchableOpacity>
                 </TouchableOpacity>}
 
@@ -568,7 +567,7 @@ const AcctountDetail = () => {
     }
     if (uid != "") {
         return (
-            <LinearGradient colors={colorEnum.gradientColor}
+            <LinearGradient start={{ x: 0.5, y: 0.7 }} colors={colorEnum.gradientColor}
                 style={{ height: 110, marginBottom: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, marginTop: 10, }}>
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: 'space-between', paddingHorizontal: 10, }}>
                     <Text style={{ fontSize: 15, color: 'white', }}>我的账户</Text>

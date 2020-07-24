@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { scale } from '../../../helpers/function'
+import { Text, View } from 'react-native'
+import { Badge } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { Badge } from 'react-native-elements'
+import { scale } from '../../../public/tools/Scale'
 
 interface HeaderProps {
   name: string
@@ -31,7 +31,7 @@ const Header = ({ name }: HeaderProps) => {
       />
       <View style={{ flexDirection: 'row', width: '50%', alignItems: 'center', justifyContent: 'flex-end' }}>
         <Text style={{ fontSize: scale(25), marginRight: scale(10) }}>{name}</Text>
-        <Badge value={'0.0000'} badgeStyle={{ width: scale(60), marginRight: scale(10), borderColor: 'transparent' }} status={'error'} />
+        <Badge value={'0.0000'} badgeStyle={{ width: scale(90), marginRight: scale(10), borderColor: 'transparent' }} textStyle={{ fontSize: scale(20) }} status={'error'} />
         <FontAwesome5 name={'comment-dots'} size={scale(25)} style={{ marginRight: scale(10) }} />
         <MaterialCommunityIcons name={'settings-outline'} size={scale(25)} style={{ marginRight: scale(10) }} />
         <Text style={{ fontSize: scale(25) }}>{'菜单'}</Text>

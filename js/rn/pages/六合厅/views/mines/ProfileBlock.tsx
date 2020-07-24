@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
-import { Animated, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { Avatar, Icon } from 'react-native-elements'
-import ReLoadComponent from '../../../../components/ReLoadComponent'
-import { scale } from '../../../../helpers/function'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import ReLoadComponent from '../../../../public/components/tars/ReLoadComponent'
 import PushHelper from '../../../../public/define/PushHelper'
+import { scale } from '../../../../public/tools/Scale'
+import LinearBadge from '../../../../public/views/tars/LinearBadge'
+import Avatar from '../../../../public/views/tars/Avatar'
 
 interface ProfileBlockProps {
   profileButtons: any[];
@@ -17,24 +18,6 @@ interface ProfileBlockProps {
   onPressReload: () => any;
 }
 
-const Tag = ({ title, color, onPress }) => (
-  <TouchableOpacity
-    style={{
-      width: scale(126),
-      aspectRatio: 126 / 28,
-      borderRadius: 20,
-      backgroundColor: color,
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
-      alignItems: 'center',
-    }}
-    onPress={onPress}
-  >
-    <Text style={{ color: '#ffffff' }}>{title}</Text>
-    <Icon type={'AntDesign'} name={'link'} size={scale(20)} color={'#ffffff'} />
-  </TouchableOpacity>
-)
-
 const ProfileBlock = ({
   avatar,
   name = '',
@@ -46,41 +29,23 @@ const ProfileBlock = ({
   onPressTaskCenter,
   onPressReload,
 }: ProfileBlockProps) => {
-
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
         <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
           <Avatar
-            size={'large'}
-            rounded
             onPress={() => PushHelper.pushUserCenterType(12)}
-            source={{ uri: avatar }}
+            uri={avatar}
           />
-          <View style={{ paddingLeft: scale(30) }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                flex: 1.5,
-                alignItems: 'flex-end',
-              }}
-            >
-              <Text
-                style={{
-                  fontWeight: '500',
-                  fontSize: scale(20),
-                  paddingRight: scale(5),
-                }}
-              >
-                {name}
-              </Text>
-              {/* <Badge status={'error'} value={level} textStyle={{ fontSize: scale(20) }} /> */}
+          <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
+            <View style={styles.nameTextContainer}>
+              <Text style={styles.nameText}>{name}</Text>
             </View>
             <View
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
             >
-              <Text>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b', marginRight: scale(10) }}>
+              <Text style={{ fontSize: scale(25) }}>{'余额 : '}</Text>
+              <Text style={{ color: '#ff861b', fontSize: scale(25) }}>
                 {balance}
               </Text>
               <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
@@ -88,29 +53,17 @@ const ProfileBlock = ({
           </View>
         </View>
         <View style={{ flex: 1, paddingRight: scale(10) }}>
-          <View
-            style={{
-              flex: 1.5,
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-            }}
-          >
-            <Tag
+          <View style={styles.taskBadge}>
+            <LinearBadge
               title={'任务中心'}
-              color={'rgb(91, 91, 220)'}
+              colors={['#9393FF', 'rgb(91, 91, 220)']}
               onPress={onPressTaskCenter}
             />
           </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'flex-end',
-            }}
-          >
-            <Tag
+          <View style={styles.signBadge}>
+            <LinearBadge
               title={'每日签到'}
-              color={'#FFD306'}
+              colors={['#FFD306', '#C6A300']}
               onPress={onPressDaySign}
             />
           </View>
@@ -143,6 +96,28 @@ const styles = StyleSheet.create({
   },
   shareIdText: {
     color: '#00A600',
+  },
+  taskBadge: {
+    flex: 1.5,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginBottom: scale(5),
+  },
+  signBadge: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  nameText: {
+    fontWeight: '600',
+    fontSize: scale(20),
+    paddingRight: scale(5),
+    marginBottom: scale(5),
+  },
+  nameTextContainer: {
+    flexDirection: 'row',
+    flex: 1.5,
+    alignItems: 'flex-end',
   },
 })
 
