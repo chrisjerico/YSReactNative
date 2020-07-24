@@ -9,18 +9,18 @@ import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
+import { httpClient } from '../network/httpClient';
 
 export enum PushRightMenuFrom {
-  首頁 = 1,
-  彩種 = 2,
+  首頁 = '1',
+  彩種 = '2',
 }
 
 export default class PushHelper {
   // 右側選單
   static pushRightMenu(from: PushRightMenuFrom) {
     if (Platform.OS != 'ios') return;
-    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show',
-      [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
+    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
   }
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
@@ -104,14 +104,22 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0] }, true]);
         break;
       }
-      case UGUserCenterType.每日签到: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
-      }
-        break
       case UGUserCenterType.取款: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1] }, true]);
         break;
       }
+      case UGUserCenterType.存款纪录: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [2] }, true]);
+        break;
+      }
+      case UGUserCenterType.取款纪录: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [3] }, true]);
+        break;
+      }
+      case UGUserCenterType.每日签到: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
+      }
+        break
       case UGUserCenterType.银行卡管理: {
         async function func1() {
           let hasBankCard: boolean = await OCHelper.call('UGUserModel.currentUser.hasBankCard');
@@ -248,6 +256,12 @@ export default class PushHelper {
       }
       case UGUserCenterType.资金明细: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [4] }, true]);
+        break;
+      }
+      case UGUserCenterType.开奖网: {
+        this.openWebView(
+          httpClient.defaults.baseURL + '/index2.php'
+        )
         break;
       }
       case UGUserCenterType.六合彩: {

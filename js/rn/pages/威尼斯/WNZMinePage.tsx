@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet
-} from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -13,7 +10,9 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import ButtonGroup from './components/ButtonGroup'
@@ -22,37 +21,52 @@ import ProfileBlock from './components/ProfileBlock'
 import ToolBlock from './components/ToolBlock'
 
 const WNZMinePage = () => {
-  const { balance, usr, taskRewardTitle, taskReward, taskRewardTotal }: UGUserModel = useSelector(
-    (state: IGlobalState) => state.UserInfoReducer
-  )
+  const {
+    balance,
+    usr,
+    taskRewardTitle,
+    taskReward,
+    taskRewardTotal,
+  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { mobile_logo }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
   )
   const { UGUserCenterItem } = useMemberItems()
-  const headTools = UGUserCenterItem.filter((ele) =>
-    [UGUserCenterType.存款, UGUserCenterType.取款].includes(ele.code)
-  )
-  const usuallyTools = UGUserCenterItem.filter((ele) =>
+  const tools = UGUserCenterItem?.sort((a, b) => a?.code - b?.code) ?? []
+  const headTools = tools?.slice(0, 2) ?? []
+  const resetTools = tools?.slice(2, tools?.length ?? 2) ?? []
+
+  const usuallyTools = resetTools?.filter((ele) =>
     [
       UGUserCenterType.额度转换,
       UGUserCenterType.全民竞猜,
       UGUserCenterType.利息宝,
       UGUserCenterType.建议反馈,
       UGUserCenterType.开奖走势,
-      UGUserCenterType.资金明细,
+      UGUserCenterType.在线客服,
+      UGUserCenterType.QQ客服,
     ].includes(ele.code)
   )
 
-  const userTools = UGUserCenterItem.filter((ele) =>
-    [UGUserCenterType.个人信息].includes(ele.code)
+  const userTools = resetTools?.filter((ele) =>
+    [
+      UGUserCenterType.个人信息,
+      UGUserCenterType.安全中心,
+      UGUserCenterType.站内信,
+      UGUserCenterType.聊天室,
+      UGUserCenterType.银行卡管理,
+      UGUserCenterType.存款纪录,
+      UGUserCenterType.取款纪录,
+      UGUserCenterType.资金明细
+    ].includes(ele.code)
   )
 
-  const recordTools = UGUserCenterItem.filter((ele) =>
-    [UGUserCenterType.六合彩, UGUserCenterType.其他注单记录].includes(ele.code)
+  const recordTools = resetTools?.filter((ele) =>
+    [UGUserCenterType.开奖网, UGUserCenterType.其他注单记录, UGUserCenterType.活动彩金, UGUserCenterType.彩票注单记录, UGUserCenterType.长龙助手].includes(ele.code)
   )
 
-  const activityTools = UGUserCenterItem.filter((ele) =>
-    [UGUserCenterType.任务中心].includes(ele.code)
+  const activityTools = resetTools?.filter((ele) =>
+    [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele.code)
   )
 
   return (

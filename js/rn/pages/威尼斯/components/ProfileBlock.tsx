@@ -10,9 +10,9 @@ interface ProfileBlockProps {
 
 const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal }: ProfileBlockProps) => {
 
-  const taskReward_f = parseFloat(taskReward)
-  const taskRewardTotal_f = parseFloat(taskRewardTotal)
-  const rate = taskRewardTotal_f == 0 ? 0 : (taskReward_f / taskRewardTotal_f)
+  const taskReward_f = parseFloat(taskReward) || 0
+  const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
+  const rate = taskRewardTotal_f ? (taskReward_f / taskRewardTotal_f) : 0
 
   return (
     <View style={styles.imageBackgroundContainer}>

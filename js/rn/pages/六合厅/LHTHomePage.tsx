@@ -12,7 +12,6 @@ import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
-import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -344,9 +343,8 @@ const LHTHomePage = ({ navigation }) => {
             />
             <AnimatedRankComponent
               onPressComputer={() => {
-                PushHelper.openWebView(
-                  httpClient.defaults.baseURL + '/index2.php'
-                )
+                PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+
               }}
               onPressPromotion={() => {
                 push(PageName.PromotionListPage)

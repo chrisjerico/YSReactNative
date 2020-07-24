@@ -10,7 +10,6 @@ import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
-import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -239,9 +238,7 @@ const BZHHomePage = () => {
           />
           <AnimatedRankComponent
             onPressComputer={() => {
-              PushHelper.openWebView(
-                httpClient.defaults.baseURL + '/index2.php'
-              )
+              PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
             onPressPromotion={() => {
               push(PageName.PromotionListPage)
