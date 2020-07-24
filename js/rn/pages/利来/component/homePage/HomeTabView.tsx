@@ -10,7 +10,7 @@ import {GameListView} from "./lotteyTab/GameListView";
 import {RecommendTabView} from "./recommendTab/RecommendTabView";
 
 export const HomeTabView = () => {
-    const {homeGames, notice, banner} = useGetHomeInfo()
+    const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
     const [height, setHeight] = useState(672)
     const [games, setGames] = useState<Icon[]>([])
     const [marquee, setMarquee] = useState<string[]>([])
@@ -46,7 +46,7 @@ export const HomeTabView = () => {
 
     const getTab = (item: Icon) => {
         return item.name.indexOf("推荐") != -1 || item.name.indexOf("热门") != -1 ?
-            <RecommendTabView banner={banner} list={item.list} marquee={marquee} tabLabel="精选"/> :
+            <RecommendTabView banner={banner} list={item.list} marquee={marquee} onlineNum={onlineNum} tabLabel="精选"/> :
             item.name.indexOf("彩票") != -1 ?
                 <LotteryTabView list={item.list} tabLabel="彩票"/> :
                 <GameListView list={item.list} tabLabel={item.name}/>

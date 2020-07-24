@@ -18,6 +18,8 @@ import Icon from "react-native-vector-icons/FontAwesome"
 import PushHelper from "../../public/define/PushHelper";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
+import useLoginOut from "../../public/hooks/useLoginOut";
+import {PageName} from "../../public/navigation/Navigation";
 
 const LLMinePage = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -28,6 +30,7 @@ const LLMinePage = () => {
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
     const [missionItem, setMissionItem] = useState<any>()
+    const { loginOut } = useLoginOut(PageName.LCHomePage)
 
     useEffect(() => {
         userStore && uid == "" && PushHelper.pushLogin()
@@ -192,6 +195,9 @@ const LLMinePage = () => {
                             </TouchableOpacity>
                         </View>
                     )}/>
+                <TouchableOpacity onPress={loginOut} style={{ height: 55, backgroundColor: '#34343b', marginHorizontal: 16, justifyContent: 'center', alignItems: 'center', borderRadius: 8, marginTop: 10, marginBottom: 10 }}>
+                    <Text style={{ color: 'white', fontSize: 21 }}>退出登录</Text>
+                </TouchableOpacity>
             </SafeAreaView>
         </ScrollView>
     )
