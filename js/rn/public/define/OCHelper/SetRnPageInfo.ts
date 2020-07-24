@@ -173,12 +173,56 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) { // 
+  // if (Skin1.skitType.indexOf('尊龙') != -1) { // 
+  //   pages = pages.concat([
+  //     {
+  //       // 首页
+  //       tabbarItemPath: '/home',
+  //       rnName: PageName.ZLHomePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 登录
+  //       vcName: 'UGLoginViewController',
+  //       rnName: PageName.ZLLoginPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 注册
+  //       vcName: 'UGRegisterViewController',
+  //       rnName: PageName.ZLRegisterPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       rnName: PageName.ZLMinePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: false,
+  //     },
+  //     {
+  //       vcName: 'UGPromotionsController',
+  //       rnName: PageName.PromotionListPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     }
+  //   ]);
+  // }
+
+  if (Skin1.skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.ZLHomePage,
+        rnName: PageName.GDBHomePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
@@ -186,7 +230,7 @@ export function setRnPageInfo() {
       {
         // 登录
         vcName: 'UGLoginViewController',
-        rnName: PageName.ZLLoginPage,
+        rnName: PageName.GDLoginPage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
@@ -194,7 +238,7 @@ export function setRnPageInfo() {
       {
         // 注册
         vcName: 'UGRegisterViewController',
-        rnName: PageName.ZLRegisterPage,
+        rnName: PageName.GDRegisterPage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
@@ -202,56 +246,12 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
-        rnName: PageName.ZLMinePage,
+        rnName: PageName.GDBMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
       },
-      {
-        vcName: 'UGPromotionsController',
-        rnName: PageName.PromotionListPage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }
     ]);
-  }
-
-  if (Skin1.skitType.indexOf('金星黑') != -1) {
-    // pages = pages.concat([
-    //   {
-    //     // 首页
-    //     tabbarItemPath: '/home',
-    //     rnName: PageName.GDBHomePage,
-    //     fd_prefersNavigationBarHidden: true,
-    //     允许游客访问: true,
-    //     允许未登录访问: true,
-    //   },
-    //   {
-    //     // 登录
-    //     vcName: 'UGLoginViewController',
-    //     rnName: PageName.GDLoginPage,
-    //     fd_prefersNavigationBarHidden: true,
-    //     允许游客访问: true,
-    //     允许未登录访问: true,
-    //   },
-    //   {
-    //     // 注册
-    //     vcName: 'UGRegisterViewController',
-    //     rnName: PageName.GDRegisterPage,
-    //     fd_prefersNavigationBarHidden: true,
-    //     允许游客访问: true,
-    //     允许未登录访问: true,
-    //   },
-    //   {
-    //     // 我的页
-    //     tabbarItemPath: '/user',
-    //     rnName: PageName.GDBMinePage,
-    //     fd_prefersNavigationBarHidden: true,
-    //     允许游客访问: true,
-    //     允许未登录访问: false,
-    //   },
-    // ]);
   }
 
   // 综合体育页面
