@@ -1,8 +1,10 @@
 import {TrendData} from "../interface/trendData";
+import {Dimensions} from "react-native";
 
 export const getTrendData_cqssc_qxc_pcdd = (data) => {
     const numberArray = []
     let positionArr = []
+    const {width: screenWidth} = Dimensions.get("screen")
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
         const lottoryData = element.data.split(",");
@@ -55,7 +57,7 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                     }
                 } else {
                     if (Number(lottoryData[0]) == j - 1) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[0]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -77,7 +79,7 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                     }
                 } else {
                     if (Number(lottoryData[0]) == j - 1) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[0]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -99,7 +101,7 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                     }
                 } else {
                     if (Number(lottoryData[0]) == j - 1) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[0]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]

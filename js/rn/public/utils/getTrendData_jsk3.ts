@@ -1,4 +1,7 @@
+import {Dimensions} from "react-native";
+
 export const getTrendData_jsk3 = (data) => {
+    const {width: screenWidth} = Dimensions.get("screen")
     const default_number = 0
     let numberArray = []
     let positionArr = []
@@ -53,7 +56,7 @@ export const getTrendData_jsk3 = (data) => {
                     }
                 } else {
                     if(Number(lottoryData[default_number]) == j){
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j-1]
@@ -76,7 +79,7 @@ export const getTrendData_jsk3 = (data) => {
                     }
                 } else {
                     if(Number(lottoryData[default_number]) == j){
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j-1]
@@ -98,7 +101,7 @@ export const getTrendData_jsk3 = (data) => {
                     }
                 } else {
                     if(Number(lottoryData[default_number]) == j){
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j-1]

@@ -1,7 +1,10 @@
+import {Dimensions} from "react-native";
+
 export function getTrendData_gd11x5(data) {
     let numberArray = []
     const default_number = 0
     let positionArr = []
+    const {width: screenWidth} = Dimensions.get("screen")
     for (let i = 0; i < data.length; i++) {
         let element = data[i];
         let lottoryData = element.data.split(",");
@@ -53,7 +56,7 @@ export function getTrendData_gd11x5(data) {
                     }
                 } else {
                     if (Number(lottoryData[default_number]) == j) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -76,7 +79,7 @@ export function getTrendData_gd11x5(data) {
                     }
                 } else {
                     if (Number(lottoryData[default_number]) == j) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -98,7 +101,7 @@ export function getTrendData_gd11x5(data) {
                     }
                 } else {
                     if (Number(lottoryData[default_number]) == j) {
-                        positionArr[positionArr.length] = {x: j * 40 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
                         newTr[i][j] = lottoryData[default_number]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
