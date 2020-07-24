@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -24,7 +24,7 @@ import MenuModalComponent from './components/MenuModalComponent'
 import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
 
-const WNZHomePage = () => {
+const WNZHomePage = ({ navigation }) => {
   const announcementModal = useRef(null)
   const menuModal = useRef(null)
   const { balance, usr }: UGUserModel = useSelector(
@@ -55,6 +55,14 @@ const WNZHomePage = () => {
   ])
 
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('------focus------')
+      updateUserInfo()
+    })
+    return unsubscribe
+  }, [])
+
   const announcements = notice?.data?.popup ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -75,7 +83,6 @@ const WNZHomePage = () => {
   const customiseGames = lotterys.filter(ele => ele?.customise == '2') // 信
   const officialGames = lotterys.filter(ele => ele?.customise == '0') // 官
 
-  console.log("------officialGames--------", officialGames)
   if (loading) {
     return <ProgressCircle />
   } else {

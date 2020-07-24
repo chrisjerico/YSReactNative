@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import PushHelper from '../../public/define/PushHelper'
+import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
@@ -76,7 +76,9 @@ const WNZMinePage = () => {
           name={usr}
           logo={mobile_logo}
           balance={balance}
-          onPressMenu={() => { }}
+          onPressMenu={() => {
+            PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
+          }}
           onPressComment={() => {
             console.log('去六合彩')
           }}
