@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import {IGlobalState} from "../../redux/store/UGStore";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import PushHelper from "../../public/define/PushHelper";
+import {Navigation, PageName} from "../../public/navigation/Navigation";
 
 const LCMinePage = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -16,7 +17,6 @@ const LCMinePage = () => {
     useEffect(() => {
         userStore && uid == "" && PushHelper.pushLogin()
     })
-
 
     return (
         <BaseScreen style={{backgroundColor: "#ffffff", flex: 1}} screenName={"我的"}>
@@ -38,7 +38,8 @@ const LCMinePage = () => {
                             borderBottomColor: '#E0E0E0'
                         }}>
                             <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={() => {
-                                PushHelper.pushUserCenterType(item.code)
+                                //PushHelper.pushUserCenterType(item.code)
+                                Navigation.push(PageName.TrendView)
                             }}>
                                 <Image style={{height: 29, width: 29, marginRight: 10}}
                                        source={{uri: item.logo}}/>

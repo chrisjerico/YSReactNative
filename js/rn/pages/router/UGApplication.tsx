@@ -41,6 +41,7 @@ import GDBMinePage from '../金星黑/GDBMinePage';
 import KSHomePage from '../凯时/KSHomePage'
 import LottoSelector from '../common/LottoSelector/LottoSelector';
 import LottoBetting from '../common/LottoBetting';
+import {TrendView} from "../../public/components/TrendView";
 const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
@@ -87,6 +88,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.TrendView} component={TrendView} />
       </Router.TabNavigator>
     );
   }

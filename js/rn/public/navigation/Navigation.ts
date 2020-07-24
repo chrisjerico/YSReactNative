@@ -39,7 +39,8 @@ export enum PageName {
   PromotionListPage = "PromotionListPage",
   KSHomePage = "KSHomePage",
   LottoSelector = "LottoSelector",
-  LottoBetting = "LottoBetting"
+  LottoBetting = "LottoBetting",
+  TrendView = "TrendView"
 }
 
 export class Navigation {
