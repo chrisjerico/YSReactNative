@@ -57,6 +57,7 @@ export function setRnPageInfo() {
   });
 
   console.log("------------------Skin1.skitType------------------", Skin1.skitType)
+  alert(Skin1.skitType)
   if (Skin1.skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {
