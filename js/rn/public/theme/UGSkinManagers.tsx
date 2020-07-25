@@ -67,6 +67,7 @@ export default class UGSkinManagers extends UGThemeColor {
     if (B_DEBUG) {
       // key = '威尼斯';
     }
+    alert(key)
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor =
       theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
