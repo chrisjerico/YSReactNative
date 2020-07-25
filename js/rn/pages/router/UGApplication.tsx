@@ -60,6 +60,8 @@ class TabBarController extends Component<{
     return (
       <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
+        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
         <Router.TabScreen name={PageName.LXBView} component={LXBView} />
         <Router.TabScreen name={PageName.LCMinePage} component={LCMinePage} />
         <Router.TabScreen name={PageName.LCHomePage} component={LCHomePage} />
@@ -85,8 +87,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} />
         <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
       </Router.TabNavigator>
     );
   }
