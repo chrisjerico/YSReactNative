@@ -322,7 +322,7 @@ const AcctountDetail = () => {
         <TouchableOpacity onPress={() => {
           navigate(PageName.GDLoginPage, {})
         }} style={{ backgroundColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-          <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录</Text>
+          <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录A</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
           navigate(PageName.GDRegisterPage, {})
