@@ -98,7 +98,7 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
        * minimumBackgroundDuration (Number):该属性用于指定app处于后台多少秒才进行重启已完成更新。默认为0。该属性只在installMode为InstallMode.ON_NEXT_RESUME情况下有效
        *
        * */
-        installMode: CodePush.InstallMode.IMMEDIATE,
+        installMode: CodePush.InstallMode.ON_NEXT_RESTART,
       },
       status => {
         switch (status) {
