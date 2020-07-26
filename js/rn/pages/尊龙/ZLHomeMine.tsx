@@ -72,7 +72,7 @@ const ZLHomeMine = ({ navigation }) => {
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
             <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
                 <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
+                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
                 </FastImage>
                 <Text style={{ fontSize: 16.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
                 <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
@@ -178,11 +178,16 @@ const ZLHomeMine = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>成长值:</Text>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"} </Text>
+                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
                         <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
-                                <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text>
-                            </View>
+                            {
+                                parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ?
+                                    <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: width * 0.7 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: width * 0.7 }}>100%</Text> */}
+                                    </View> : <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text> */}
+                                    </View>
+                            }
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, marginTop: 4 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>

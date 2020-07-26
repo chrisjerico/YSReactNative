@@ -291,6 +291,7 @@ export function setRnPageInfo() {
       },
       {
         // 我的页
+        vcName: 'UGMineSkinViewController',
         tabbarItemPath: '/user',
         rnName: PageName.GDBMinePage,
         fd_prefersNavigationBarHidden: true,
