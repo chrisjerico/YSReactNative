@@ -18,11 +18,9 @@ const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', tex
       })
     )
     if (ranks?.data?.list?.length > 0) {
-      debugger
       value.start()
     }
     return (() => {
-      debugger
       value.stop()
     })
   }, [ranks])
@@ -30,12 +28,12 @@ const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', tex
     return null
   return (
     <>
-      <View style={{ flexDirection: 'column' }}>
+      <View style={{ flexDirection: 'column', backgroundColor, borderRadius: 8 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 10 }} >
           <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
           <Text style={{ color: textColor, fontWeight: "bold", fontSize: 16, marginLeft: -7, ...titleTextStyle }}>{rankingListSwitch == 1 ? "中奖排行榜" : "投注排行榜"} </Text>
         </View>
-        <View style={{ backgroundColor: backgroundColor, alignSelf: 'center', borderRadius: 8 }}>
+        <View style={{ alignSelf: 'center' }}>
           {ranks?.data?.list?.length > 0 ? <View style={{ flexDirection: 'row', width: width, alignSelf: 'center', }}>
 
             <Text style={{

@@ -153,8 +153,6 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
           .then(
             Axios.spread((...res) => {
               setHomeGames(res?.[0]?.data)
-              console.log(JSON.stringify((res?.[0]?.data)))
-              debugger
               setBanner(res?.[1]?.data)
               setCouponListData(res?.[3]?.data)
               setRankList(res?.[4]?.data)

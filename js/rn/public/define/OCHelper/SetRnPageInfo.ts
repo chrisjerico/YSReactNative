@@ -103,14 +103,31 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      // {
-      //   // 我的页
-      //   tabbarItemPath: '/user',
-      //   rnName: PageName.WNZMinePage,
-      //   fd_prefersNavigationBarHidden: true,
-      //   允许游客访问: true,
-      //   允许未登录访问: false,
-      // },
+
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.KSLogin,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.KSRegister,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.KSMine,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
     ])
   }
 
