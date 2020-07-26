@@ -65,6 +65,7 @@ const GDBHomePage = ({ navigation }) => {
     setnoticeFormat(noticeData)
     setOriginalNoticeString(string)
   }, [notice])
+
   const [content, setContent] = useState("")
   const [] = useAutoRenewUserInfo(navigation)
   const [tbxIndex, setTbxIndex] = useState<number>(0)
@@ -97,10 +98,10 @@ const GDBHomePage = ({ navigation }) => {
         onChangeTab={({ i }) => {
           setTbxIndex(i)
         }}
-        style={{ borderBottomWidth: 0, height: homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏' ? 820 : (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
+        style={{ borderBottomWidth: 0, height: homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏' ? 900 : (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
         initialPage={0}
-        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49, marginLeft: (49 / 2) - 3.5 }}
-        tabBarTextStyle={{ fontSize: 13.2 }}
+        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, }}
+        tabBarTextStyle={{ fontSize: 13.2, textAlign: 'center' }}
         renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0, }} inactiveTextColor={'white'} activeTextColor={"#cfa461"} />}
       >
         {homeGames?.data?.icons?.map((res) => {
@@ -167,9 +168,134 @@ const GDBHomePage = ({ navigation }) => {
 
 const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean, homeGames: HomeGamesModel }) => {
   const { width } = useDimensions().screen
+  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { uid = "" } = userStore
+  const thirdPartGamePress = (subIndex, index: number) => {
+    if (uid == '') {
+      navigate(PageName.GDLoginPage, {})
+    } else {
+      PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[subIndex].subType[index])
+    }
+
+  }
   if (isHot) {
     return (
-      <HotRecycleList homeGames={homeGames} />
+      <View style={{ flex: 1 }}>
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[0].subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 0, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, marginRight: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[1]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 1, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[2]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 2, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+
+        </View>
+
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[3]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 3, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[4]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 4, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, marginRight: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[5]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 5, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[6]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 6, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+
+        </View>
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[7]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 7, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+      </View>
     )
   } else {
     return (

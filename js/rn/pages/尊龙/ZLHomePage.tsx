@@ -76,7 +76,7 @@ const ZLHomePage = ({ navigation }) => {
     }
     const init = async () => {
         try {
-            // const { } = await APIRouter.system_config()
+            // const {data } = await APIRouter.system_config()
             // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
         } catch (error) {
 
