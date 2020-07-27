@@ -400,7 +400,7 @@ const ZLHeader = () => {
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
             flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
         }}>
-            <FastImageAutoWidth resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
+            <FastImageAutoWidth style={{ width: 210, height: 50 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
                 {
                     uid != "" ? <TouchableOpacity onPress={() => {
@@ -640,13 +640,11 @@ const FastImageAutoHeight = (props: FastImageProperties) => {
     )
 }
 const FastImageAutoWidth = (props: FastImageProperties) => {
-    const [picWidth, setPicWidth] = useState(100)
+    const [picWidth, setPicWidth] = useState(210)
     return (
         <FastImage {...props} style={[props.style, { width: picWidth }]} onLoad={(e) => {
-            console.log(e.nativeEvent)
-            setPicWidth(props.style?.width / e.nativeEvent.width * e.nativeEvent.height)
-            debugger
-            // setpicWidth(((AppDefine.height - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.height) * e.nativeEvent.width)
+            console.log(props.style?.height / e.nativeEvent.height * e.nativeEvent.width, e.nativeEvent.width)
+            setPicWidth(props.style?.height / e.nativeEvent.height * e.nativeEvent.width)
         }} />
     )
 }
