@@ -31,6 +31,7 @@ import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
+import Banner from "./CP/Banner"
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -127,7 +128,7 @@ const ZLHomePage = ({ navigation }) => {
                 </View>
 
                 <AcctountDetail />
-                <Banner onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
+                <Banner style={{ marginBottom: 10 }} size={{ width: width - 20, height: 0 }} onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
                 <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
                         <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[0]?.icon }} style={{
@@ -476,61 +477,7 @@ const UserStatusBar = () => {
         </LinearGradient>
     )
 }
-const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, }: { bannerData: BannerModel, onlineNum: number, onlineSwitch: number, }) => {
-    const { width, } = useDimensions().window
-    const BannerRef = useRef<Carousel>()
-    const [height, setHeight] = useState(100)
-    useEffect(() => {
-        let timer = null
-        if (parseFloat(bannerData?.data?.interval) > 0) {
-            timer = setInterval(() => {
-                //@ts-ignore
-                BannerRef?.current?.gotoNextPage()
-            }, parseFloat(bannerData?.data?.interval) * 1000);
-        }
 
-        return (() => {
-            clearInterval(timer)
-        })
-    }, [bannerData,])
-    if (bannerData?.data?.list?.length > 0) {
-        return (
-            <View style={{ marginBottom: 10, }}>
-
-                <Carousel
-                    autoplay
-                    index={0}
-                    ref={BannerRef}
-                    loop
-                    pageSize={width - 20}
-                >
-                    {bannerData?.data?.list?.map((res, index) => {
-                        return (
-                            <TouchableWithoutFeedback onPress={() => {
-                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-                            }}>
-                                <FastImage onLoad={(e) => {
-                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                                    setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-
-                                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
-
-                                </FastImage>
-                            </TouchableWithoutFeedback>)
-                    })}
-                </Carousel>
-                {onlineSwitch == 1 ? <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-                    <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View> : null}
-
-            </View>
-        )
-
-    } else {
-        return <View style={{ height: (Dimensions.get("screen").width - 20) / 2, }}></View>
-    }
-
-}
 
 const AcctountDetail = () => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)

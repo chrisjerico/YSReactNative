@@ -9,8 +9,9 @@ import PushHelper from "../../../public/define/PushHelper"
 import { BannerModel } from "../../../public/network/Model/BannerModel"
 import useGetHomeInfo from "../../../public/hooks/useGetHomeInfo"
 import { UGUserCenterType } from "../../../redux/model/全局/UGSysConfModel"
+import Banner from "../../尊龙/CP/Banner"
 const QuickStart = () => {
-  const { banner, onlineNum, loading, } = useGetHomeInfo()
+  const { banner, onlineNum, onlineSwitch, } = useGetHomeInfo()
   const { width, height } = useDimensions().screen
   return (
     <View >
@@ -60,63 +61,12 @@ const QuickStart = () => {
           </TouchableOpacity>
         </View>
         <View style={{ flex: 2, paddingLeft: 5 }}>
-          <Banner bannerData={banner} onlineNum={onlineNum} />
+
+
+          <Banner onlineSwitch={onlineSwitch} size={{ width: (width - 25) / 3 * 2, height: 128 }} bannerData={banner} onlineNum={onlineNum} />
         </View>
       </View>
     </View>
   )
-}
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
-  const { width, } = useDimensions().window
-  const BannerRef = useRef<Carousel>()
-  const [height, setHeight] = useState(100)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      //@ts-ignore
-      BannerRef?.current?.gotoNextPage()
-    }, 2000);
-    return (() => {
-      clearInterval(timer)
-    })
-  }, [bannerData])
-  if (bannerData?.data?.list?.length > 0) {
-    return (
-      <View>
-
-        <Carousel
-          autoplay
-          index={0}
-          ref={BannerRef}
-          loop
-          activePageIndicatorStyle={{ backgroundColor: "#fb2464" }}
-          pageSize={(width - 25) / 3 * 2}
-        >
-          {bannerData?.data?.list?.map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-              }}>
-                <FastImage
-                  // onLoad={(e) => {
-                  //   console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                  //   setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-
-                  // }}
-                  key={'banner' + index} style={{ width: (width - 25) / 3 * 2, height: 128, borderRadius: 8 }} source={{ uri: res.pic }} >
-
-                </FastImage>
-              </TouchableWithoutFeedback>)
-          })}
-        </Carousel>
-        <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-        </View>
-      </View>
-    )
-
-  } else {
-    return <View style={{ height: (width - 20) / 2, }}></View>
-  }
-
 }
 export default QuickStart
