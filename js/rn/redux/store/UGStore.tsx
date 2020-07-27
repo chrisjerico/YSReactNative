@@ -1,33 +1,14 @@
 import { AsyncStorage } from 'react-native';
-import { applyMiddleware, compose, createStore, Store, Action, Unsubscribe } from 'redux';
-import thunk from 'redux-thunk';
-import { XBJHomeProps } from '../../pages/香槟金/XBJHomePage';
-import { XBJMineProps } from '../../pages/香槟金/XBJMinePage';
-import { XBJLoginProps } from '../../pages/香槟金/XBJLoginPage';
-import { XBJRegisterProps } from '../../pages/香槟金/XBJRegisterPage';
-import { TransitionProps } from 'react-native-reanimated';
-import { UpdateVersionProps } from '../../pages/router/UpdateVersionPage';
-import Reactotron from '../../public/config/ReactotronConfig';
+import { Action, Unsubscribe } from 'redux';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import { AsyncStorageKey } from './IGlobalStateHelper';
 import { PageName } from '../../public/navigation/Navigation';
-import { BZHSignInStore } from '../../pages/宝石红/BZHSignInPage';
-import { JDPromotionListProps } from '../../pages/经典/JDPromotionListPage';
 import BettingReducer, { BettingReducerProps, BettingReducerActions } from '../reducer/BettingReducer';
+import { UGBasePageProps } from '../../pages/base/UGPage';
 
 // 整个State的树结构
 export interface IGlobalState {
-  // 页面Props
-  BZHSignInProps?: BZHSignInStore;
-  XBJHomeProps?: XBJHomeProps;
-  XBJMineProps?: XBJMineProps;
-  XBJLoginProps?: XBJLoginProps;
-  XBJRegisterProps?: XBJRegisterProps;
-  JDPromotionListProps?: JDPromotionListProps; // 优惠活动
-  TransitionProps?: TransitionProps;// 过渡页
-  UpdateVersionProps?: UpdateVersionProps; // 版本更新
-
   // 纯数据
   userInfo?: UGUserModel;
   sysConf?: UGSysConfModel;
@@ -41,14 +22,14 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   if (act.type == 'reset') {
     act.sysConf && (state.sysConf = act.sysConf);
     act.userInfo && (state.userInfo = act.userInfo);
-    act.page && (state[act.page + 'Props'] = act.props);
+    act.page && (state[act.page] = act.props);
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
-    act.page && (state[act.page + 'Props'] = { ...state[act.page + 'Props'], ...act.props });
+    act.page && (state[act.page] = { ...state[act.page], ...act.props });
   } else {
 
-    // 其他类型Reducer
+    // 自定义Reducer写在这里。。。
     state.BettingReducer = BettingReducer(state.BettingReducer, act);
   }
   return state;
@@ -86,6 +67,11 @@ export class UGStore {
     return () => {
       UGStore.callbacks.remove(cb);
     };
+  }
+
+  // 获取当前页面Props
+  static getPageProps<P extends UGBasePageProps>(page: PageName) : P {
+    return this.globalProps[page];
   }
 
   // 从本地获取所有数据，并刷新UI

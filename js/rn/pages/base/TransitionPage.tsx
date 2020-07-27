@@ -6,7 +6,7 @@ import { Text, Button } from 'react-native-elements';
 import {  PageName } from '../../public/navigation/Navigation';
 import { UGBasePageProps } from './UGPage';
 import { UGStore } from '../../redux/store/UGStore';
-import { navigate, push } from '../../public/navigation/RootNavigation';
+import { push, jumpTo } from '../../public/navigation/RootNavigation';
 
 // 声明Props
 export interface TransitionProps extends UGBasePageProps<TransitionProps> {
@@ -30,9 +30,9 @@ export const TransitionPage = (props: TransitionProps) => {
   // 即将显示
   setDidFocus((p: TransitionProps) => {
     if (!p) return;
-    const { jumpTo, pushTo, props } = p;
-    if (jumpTo) {
-      navigate(jumpTo, props);
+    const { jumpTo:j, pushTo, props } = p;
+    if (j) {
+      jumpTo(j, props);
     } else if (pushTo) {
       push(pushTo, props);
     }

@@ -5,7 +5,7 @@ import { RnPageModel } from '../SetRnPageInfo';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { OCHelper } from '../OCHelper';
-import { navigate, getCurrentPage, pop } from '../../../navigation/RootNavigation';
+import { getCurrentPage, pop, jumpTo } from '../../../navigation/RootNavigation';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -38,7 +38,7 @@ export class OCEvent extends OCCall {
       console.log('跳转到rn页面：', params.vcName);
 
       if (params.vcName) {
-        navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
+        jumpTo(params.vcName) || jumpTo(RnPageModel.getPageName(params.vcName));
       }
     });
 

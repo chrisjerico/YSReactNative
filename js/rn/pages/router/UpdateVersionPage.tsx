@@ -12,7 +12,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { navigate, getCurrentPage } from '../../public/navigation/RootNavigation';
+import { navigate, getCurrentPage, jumpTo } from '../../public/navigation/RootNavigation';
 
 
 
@@ -56,7 +56,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               CodePush.restartApp(true);
             } else {
               console.log('请手动重启APP');
-              navigate(PageName.TransitionPage);
+              jumpTo(PageName.TransitionPage);
             }
           } else {
             console.log('jsp下载失败');

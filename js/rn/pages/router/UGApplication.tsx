@@ -42,6 +42,7 @@ import VietnamRegister from '../越南/RegisterPage';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import GameList from '../越南/GameList';
 import UGPage from '../base/UGPage';
+import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -114,6 +115,7 @@ const UGApplication = () => {
     <LanguageContextProvider>
       <NavigationContainer ref={navigationRef}>
         {StackScreens()}
+        <UGLoadingCP />
       </NavigationContainer>
     </LanguageContextProvider>
   )

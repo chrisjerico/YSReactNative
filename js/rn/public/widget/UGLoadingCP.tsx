@@ -18,24 +18,59 @@ export enum UGLoadingType {
   Reload,// 加载失败，点击重试
 }
 
-export interface UGLoadingProps {
+export class UGLoadingProps {
   type: UGLoadingType;
   text?: string;
   backgroundColor?: string[];// 支持渐变色
   reloadClick?: () => void
   setHideLoading?: (hideLoading: () => void) => void
+
+  static shared: UGLoadingProps;
+}
+
+let hideLoadingFunc = undefined;
+
+// 在当前页面显示Loading
+export function showLoading(props: UGLoadingProps) {
+  UGLoadingProps.shared = { ...props, setHideLoading: (func) => { hideLoadingFunc = func; } }
+  refreshLoadingFunc();
+}
+
+// 隐藏当前页面Loading
+export function hideLoading() {
+  hideLoadingFunc && hideLoadingFunc();
+}
+
+
+
+// ——————————————————————————————————————————————————————————————————————————————————————————
+let refreshLoadingFunc: Function;
+export class UGLoadingCP extends Component {
+  constructor(p) {
+    super(p);
+    refreshLoadingFunc = (() => {
+      this.setState({});
+    }).bind(this);
+  }
+  render() {
+    if (UGLoadingProps.shared) {
+      return <UGLoadingCP1 {...UGLoadingProps.shared} />
+    }
+    return null;
+  }
 }
 
 
 let lastProps: UGLoadingProps;
 
-export const UGLoadingCP = (props: UGLoadingProps) => {
+export const UGLoadingCP1 = (props: UGLoadingProps) => {
   const { type, text, backgroundColor = ['transparent', 'transparent'], reloadClick, setHideLoading } = props;
   const [zIndex, setZIndex] = useState(0);
   const fadeInOpacity = new Animated.Value(0);
   const hideLoading = () => {
     Animated.timing(fadeInOpacity, { toValue: 0, duration: 250, easing: Easing.linear }).start();// 淡出
     setTimeout(() => { lastProps === props && setZIndex(-999); }, 250) // 开启点击穿透
+    UGLoadingProps.shared = undefined;
   };
 
   // 显示新样式（重新初始化）
@@ -67,7 +102,7 @@ export const UGLoadingCP = (props: UGLoadingProps) => {
           {type == UGLoadingType.Loading && <FastImage style={[styles.icon, { width: 50, height: 50 }]} source={Res.加载中} />}
           {type == UGLoadingType.Success && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载成功} />}
           {type == UGLoadingType.Error && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载失败} />}
-          <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }} >{text}</Text>
+          {text && <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }} >{text}</Text>}
           {type == UGLoadingType.Reload && (
             <Button
               buttonStyle={{ margin: 10, marginTop: 18, marginBottom: 0, paddingHorizontal: 18, backgroundColor: Skin1.themeColor, borderRadius: 8 }}
