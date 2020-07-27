@@ -7,13 +7,13 @@ import { BannerModel } from '../network/Model/BannerModel'
 import { CouponListModel } from '../network/Model/CouponListModel'
 import { FloatADModel } from '../network/Model/FloatADModel'
 import { HomeGamesModel } from '../network/Model/HomeGamesModel'
+import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
+import { LotteryGameModel } from '../network/Model/LotteryGameModel'
 import { LotteryNumberModel } from '../network/Model/LotteryNumberModel'
+import { NoticeModel } from '../network/Model/NoticeModel'
 import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
-import { NoticeModel } from '../network/Model/NoticeModel'
-import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
-import { LotteryGameModel } from '../network/Model/LotteryGameModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
@@ -31,8 +31,10 @@ type APIListType =
   | 'lhcdoc_categoryList'
   | 'activity_turntableList'
   | 'game_lotteryGames'
+  | 'system_config'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
+  const [onlineSwitch, setOnlineSwitch] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAds, setFloatAds] = useState<FloatADModel>()
   const [homeGames, setHomeGames] = useState<HomeGamesModel>()
@@ -48,7 +50,9 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   useEffect(() => {
-    init()
+    setTimeout(() => {
+      init()
+    }, 1000);
   }, [])
   useEffect(() => {
     let string = ""
@@ -111,6 +115,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                       break
                     case 'system_onlineCount':
                       setOnlineNum(res[key]?.data?.data?.onlineUserCount)
+                      setOnlineSwitch(res[key]?.data?.data?.onlineSwitch)
                       break
                     case 'lhcdoc_lotteryNumber':
                       setLotteryNumber(res[key]?.data)
@@ -157,6 +162,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
               setFloatAds(res?.[7]?.data)
               setNotice(res?.[2]?.data)
               setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
+              setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
               setLoading(false)
             })
           )
@@ -185,7 +191,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     lotteryGames,
     onRefresh,
     noticeFormat,
-    originalNoticeString
+    originalNoticeString,
+    onlineSwitch
   }
 }
 export default useGetHomeInfo

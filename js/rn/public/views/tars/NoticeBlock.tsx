@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
-import { scale } from '../helpers/function'
-import { INoticeScroll } from '../redux/model/home/INoticeBean'
+import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
+import { scale } from '../../tools/Scale'
 
 interface NoticeBlockProps {
   logo?: string;

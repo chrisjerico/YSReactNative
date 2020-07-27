@@ -39,13 +39,16 @@ import JDPromotionListPage from '../经典/JDPromotionListPage';
 import PromotionListPage from '../common/PromotionListPage';
 import GDBMinePage from '../金星黑/GDBMinePage';
 import KSHomePage from '../凯时/KSHomePage'
-import LottoSelector from '../common/LottoSelector/LottoSelector';
 import LottoBetting from '../common/LottoBetting';
 import VietnamHomePage from '../越南/HomePage';
 import VietnamLogin from '../越南/LoginPage';
 import VietnamRegister from '../越南/RegisterPage';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import GameList from '../越南/GameList';
+import MinePage from '../越南/MinePage';
+import KSLogin from '../凯时/KSLoginPage';
+import KSRegister from '../凯时/KSRegisterPage';
+import KSMine from '../凯时/KSMinePage';
 const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
@@ -93,6 +96,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
+        <Router.TabScreen name={PageName.VietnamMine} component={MinePage} />
+        <Router.TabScreen name={PageName.KSMine} component={KSMine} />
       </Router.TabNavigator>
     );
   }
@@ -107,13 +112,16 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={PromotionListPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={GDLoginPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={GDRegisterPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={BZHRegisterPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={LottoBetting} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={ZLHomeMine} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={VietnamLogin} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={VietnamRegister} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={GameList} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSLogin} component={KSLogin} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSRegister} component={KSRegister} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSMine} component={KSMine} />
     </Router.StackNavigator>
   )
 }

@@ -21,11 +21,12 @@ const TabContainer = ({ data, filter, homeGames }: { data: List[], filter: strin
             <FastImage source={{ uri: item?.logo }} style={{ width: 65, aspectRatio: 1, }} />
             <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: "#f2f2f2", paddingBottom: 20, marginLeft: 6, alignItems: 'flex-end', justifyContent: 'space-between', width: width - 130 }}>
               <View style={{ flexDirection: 'column', }}>
-                <Text style={{ color: "#3b3b3b", fontSize: 18, marginVertical: 10 }}>{item.name}</Text>
-                {seriesId[item.seriesId] ? <Text style={{ color: "#8a8d96", fontSize: 12 }}>{seriesId[item.seriesId]} | <Text style={{ color: "#fb9608", fontWeight: "bold" }}>{people}人在玩</Text> </Text> : null}
+                <Text style={{ color: "#3b3b3b", fontSize: 18, marginVertical: 10, width: '50%' }}>{item.name}</Text>
+                {seriesId[item.seriesId] ? <Text style={{ color: "#8a8d96", fontSize: 12 }}>{seriesId[item.seriesId]} |  </Text> : null}
+                <Text style={{ color: "#fb9608", fontWeight: "bold" }}>{people}人在玩</Text>
               </View>
               <View style={{ width: 86, height: 28, borderRadius: 16, backgroundColor: "#71abff", justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white' }}>進入遊戲</Text>
+                <Text style={{ color: 'white' }}>进入游戏</Text>
               </View>
             </View>
           </View>

@@ -1,6 +1,6 @@
-import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
-import { scale } from '../../../../helpers/function';
+import React from 'react'
+import { StyleSheet, View, ViewStyle } from 'react-native'
+import { scale } from '../../../../public/tools/Scale'
 
 interface NavBlockProps {
   navs: any[];
@@ -8,15 +8,13 @@ interface NavBlockProps {
   renderNav: (item: any, index: number) => any;
 }
 
-const NavBlock = ({
-  renderNav,
-  navs = [],
-  containerStyle,
-}: NavBlockProps) => {
+const NavBlock = ({ renderNav, navs = [], containerStyle }: NavBlockProps) => {
   return (
-    <View style={[styles.container, containerStyle]}>{navs.map(renderNav)}</View>
-  );
-};
+    <View style={[styles.container, containerStyle]}>
+      {navs.map(renderNav)}
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -29,6 +27,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-});
+})
 
-export default NavBlock;
+export default NavBlock

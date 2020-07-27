@@ -3,7 +3,7 @@ import { applyMiddleware, combineReducers, compose, createStore, Store } from 'r
 import thunk from 'redux-thunk';
 import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
 import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
-import { BZHSignInStore, BZHSignInReducer } from '../../pages/宝石红/BZHSignInProps';
+import { BZHSignInReducer, BZHSignInStore } from '../../pages/宝石红/BZHSignInProps';
 import { JDPromotionListProps, JDPromotionListReducer } from '../../pages/经典/JDPromotionListProps';
 import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
 import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';

@@ -26,6 +26,10 @@ import { push } from "../../../public/navigation/RootNavigation";
 import { useLanguageContext } from "../../../public/context/LanguageContextProvider";
 import RankListCP from "../../../public/widget/RankList";
 import useSpriteImage from "../../../public/hooks/useSpriteImage";
+import { httpClient } from "../../../public/network/httpClient";
+import { useSelector } from "react-redux";
+import { IGlobalState } from "../../../redux/store/UGStore";
+import PromotionsBlock from "../../../public/components/PromotionsBlock";
 
 const VietnamHomePage = () => {
   const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh, noticeFormat, originalNoticeString } = useGetHomeInfo()
@@ -37,7 +41,7 @@ const VietnamHomePage = () => {
   const { width, height } = useDimensions().screen
   const [selectId, setSelectedId] = useState(-1)
   const { onPopViewPress } = usePopUpView()
-  const { currcentLanguagePackage } = useLanguageContext()
+  const { webName } = useSelector((state: IGlobalState) => state.SysConfReducer)
   const { imageArray } = useSpriteImage({
     source: "http://test24.6yc.com/views/mobileTemplate/24/images/icon_game_type.png",
     size: {
@@ -138,7 +142,7 @@ const VietnamHomePage = () => {
                 }}>
                   <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 10 }}>
                     <FastImage source={{ uri: item.image }} style={{ width: 50, height: 50, marginBottom: 5 }} />
-                    <Text numberOfLines={2} style={{ color: "#8a8d96", fontSize: 12, width: 50, textAlign: 'center' }}>{currcentLanguagePackage?.[item?.title]}</Text>
+                    <Text numberOfLines={2} style={{ color: "#8a8d96", fontSize: 12, width: 50, textAlign: 'center' }}>{item?.title}</Text>
                   </View>
                 </TouchableWithoutFeedback>
               )
@@ -177,6 +181,10 @@ const VietnamHomePage = () => {
                 borderBottomColor: "#f2f2f2",
                 width: "100%",
               }}
+              tabs={[<Text></Text>]}
+              // renderTab={(name) => {
+              //   return <Text>{name}</Text>
+              // }}
               activeTextColor={"#71abff"} />}
           >
             {navBarConfig?.map((res) => {
@@ -189,51 +197,16 @@ const VietnamHomePage = () => {
       {couponListData?.data?.list.length > 0 ? <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingHorizontal: 12 }}>
         <View style={{ flexDirection: 'row' }} >
           <Image style={{ width: 13, height: 13, tintColor: 'black', marginRight: 5 }} source={{ uri: "礼品-(1)" }} />
-          <Text style={{ color: 'black', fontWeight: "bold" }}>{currcentLanguagePackage?.["app.promotions"]}</Text>
+          <Text style={{ color: 'black', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
           push(PageName.PromotionListPage)
         }}>
-          <Text style={{ color: 'black', fontWeight: "bold", }}>{currcentLanguagePackage?.["app.see.details"]}>></Text>
+          <Text style={{ color: 'black', fontWeight: "bold", }}>{"查看详情"}<Text> >></Text></Text>
         </TouchableWithoutFeedback>
       </View> : null}
 
-      <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
-        return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-          <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
-            if (selectId == index) {
-              setSelectedId(-1)
-            } else {
-              setSelectedId(index)
-            }
-          })}>
-            <View>
-              <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'black' }}>{item.title}</Text>
-              <FastImageAutoHeight source={{ uri: item.pic }} />
-            </View>
-          </TouchableWithoutFeedback>
-
-          {selectId == index ? <AutoHeightWebView
-            style={{ width: width - 20, backgroundColor: 'white' }}
-            // scalesPageToFit={true}
-            viewportContent={'width=device-width, user-scalable=no'}
-            source={{
-              html: `<head>
-                        <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-                        <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
-                        <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
-                      </head>` +
-                `<script>
-                        window.onload = function () {
-                          window.location.hash = 1;
-                          document.title = document.body.scrollHeight;
-                        }
-                      </script>`+ item.content
-            }}></AutoHeightWebView> : null
-          }
-
-        </View >
-      }} />
+      <PromotionsBlock />
       <RankListCP width={width - 24} ranks={rankList} />
       <View style={{ height: 100 }}></View>
       <MarqueePopupView onPress={() => {
@@ -241,14 +214,18 @@ const VietnamHomePage = () => {
       }} content={content} show={show} onDismiss={() => {
         setShow(false)
       }} />
+      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+        <Text onPress={() => {
+          console.log(httpClient.defaults.baseURL + '/index2.php')
+          PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+        }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
+        <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
+          push(PageName.PromotionListPage)
+        }}>🎁<Text>优惠活动</Text></Text>
+      </View>
+      <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
+      <View style={{ height: 100 }}></View>
     </HomeBase>
-    // <View style={{ flex: 1, backgroundColor: 'white' }}>
-
-    //   <ScrollView style={{ marginTop: 46, flex: 1 }}>
-
-    //   </ScrollView>
-
-    // </View >
   )
 }
 const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
@@ -265,7 +242,6 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
     })
   }, [bannerData])
   const bannerWidth = width - 24
-  const { currcentLanguagePackage } = useLanguageContext()
   if (bannerData?.data?.list?.length > 0) {
     return (
       <View style={{ marginBottom: 5, height: height }}>
@@ -291,7 +267,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
           })}
         </Carousel>
         <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>{currcentLanguagePackage?.["app.online.num"]}:{onlineNum}</Text>
+          <Text style={{ color: 'white' }}>{"当前在线"}:{onlineNum}</Text>
         </View>
       </View>
     )
@@ -303,13 +279,12 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
 }
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen
-  const { currcentLanguagePackage } = useLanguageContext()
   if (show) {
     return (
       <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
         <View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
           <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{currcentLanguagePackage?.["app.announcement1"]}</Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{"公告详情"}</Text>
           </View>
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <AutoHeightWebView style={{ width: width * 0.9 - 20 }} source={{ html: content }}></AutoHeightWebView>
@@ -320,7 +295,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
               width: "47%", height: 50, backgroundColor: 'white',
               borderRadius: 5, borderColor: "gray", borderWidth: 0.5
             }}>
-              <Text>{currcentLanguagePackage?.["app.cancel"]}</Text>
+              <Text>{"取消"}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onPress} style={{
               justifyContent: 'center',
@@ -328,7 +303,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
               backgroundColor: '#46A3FF', borderRadius: 5,
               borderColor: "gray", borderWidth: 0.5
             }}>
-              <Text style={{ color: 'white' }}>{currcentLanguagePackage?.["app.confirm"]}</Text>
+              <Text style={{ color: 'white' }}>{"确认"}</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
-import { scale } from '../../../../helpers/function';
+import { scale } from '../../../../public/tools/Scale';
 
 interface NavBlockProps {
   customerServiceLogo: string;
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     flex: 270,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
   },
   lotterysCintainer: {
     flex: 90,

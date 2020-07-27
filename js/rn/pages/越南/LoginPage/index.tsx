@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text, Platform, TouchableWithoutFeedback, Scrol
 import FastImage from 'react-native-fast-image';
 
 
-import { Icon, } from 'react-native-elements';
+import { Icon, Image, } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
@@ -103,69 +103,76 @@ const VietnamLogin = ({ route, navigation }) => {
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
     }
   }
-  const { currcentLanguagePackage } = useLanguageContext()
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
       <Header />
       <ScrollView style={{ flex: 1, paddingHorizontal: 15 }}>
-        <Text style={{ textAlign: 'center', color: 'white', fontSize: 20, marginTop: 10, marginBottom: 20, fontWeight: "bold" }}>账号登录</Text>
-        <View style={{ backgroundColor: accountFocus ? "white" : '#34393c', height: 50, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center' }}>
-          <FastImage style={{ width: 14, height: 15, marginHorizontal: 15 }} tintColor={accountFocus ? 'black' : 'white'} source={{ uri: "http://test10.6yc.com/images/icon-user.png" }}></FastImage>
-          <View style={{ height: '40%', width: 1, backgroundColor: accountFocus ? '#8e8e93' : "white", marginRight: 5 }}></View>
-          <Controller
-            onBlur={() => {
-              setAccountFocus(false)
-            }}
-            onChange={args => {
-              return args[0].nativeEvent.text
-            }}
-            style={{ flex: 1, color: !accountFocus ? 'white' : 'black' }}
+        <View >
+          <View style={{ flexDirection: 'column', marginTop: 30 }}>
+            <View style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
+              <FastImage resizeMode={'contain'} source={{ uri: "http://test24.6yc.com/images/icon-user-24.png" }} style={{ width: 25, height: 25, }} />
+              <Text style={{ color: "#000000", fontSize: 19, fontWeight: "bold" }}>用户名</Text>
+            </View>
+            <View style={{ backgroundColor: '#e8f0fe', height: 50, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+              <Controller
+                onBlur={() => {
+                  setAccountFocus(false)
+                }}
+                onChange={args => {
+                  return args[0].nativeEvent.text
+                }}
+                style={{ flex: 1, color: 'black' }}
 
-            as={<TextInput
-              placeholderTextColor={accountFocus ? '#8e8e93' : "white"}
-              onFocus={() => {
-                setAccountFocus(true)
-              }} />}
-            rules={{
-              required: {
-                value: true, message
-                  : "请输入用户名"
-              }
-            }}
-            name="account"
-            control={control}
-            defaultValue=""
-            placeholder={'帐号'}
-          />
+                as={<TextInput
+                  placeholderTextColor={'#8e8e93'}
+                  onFocus={() => {
+                    setAccountFocus(true)
+                  }} />}
+                rules={{
+                  required: {
+                    value: true, message
+                      : "请输入用户名"
+                  }
+                }}
+                name="account"
+                control={control}
+                defaultValue=""
+                placeholder={'帐号'}
+              />
+            </View>
+          </View>
         </View>
-        <View style={{ backgroundColor: pwdFocus ? "white" : '#34393c', height: 50, marginTop: 20, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center' }}>
-          <FastImage style={{ width: 14, height: 15, marginHorizontal: 15 }} tintColor={pwdFocus ? 'black' : 'white'} source={{ uri: "http://test10.6yc.com/images/icon-pwd.png" }}></FastImage>
-          <View style={{ height: '40%', width: 1, backgroundColor: pwdFocus ? '#8e8e93' : "white", marginRight: 5 }}></View>
-          <Controller
-            onBlur={() => {
-              setPwdFocus(false)
+        <View style={{ flexDirection: 'column', marginTop: 20, }}>
+          <View style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
+            <FastImage resizeMode={'contain'} source={{ uri: "http://test24.6yc.com/images/icon-pwd-24.png" }} style={{ width: 25, height: 25, }} />
+            <Text style={{ color: "#000000", fontSize: 19, fontWeight: "bold" }}>密码</Text>
+          </View>
+          <View style={{ backgroundColor: '#e8f0fe', height: 50, borderRadius: 4, borderColor: '#34393c', borderWidth: 0, flexDirection: 'row', alignItems: 'center', paddingLeft: 20 }}>
+            <Controller
+              onBlur={() => {
+                setPwdFocus(false)
 
-            }}
-            onChange={args => {
-              return args[0].nativeEvent.text
-            }}
-            style={{ flex: 1, color: !pwdFocus ? 'white' : 'black' }}
-            as={<TextInput secureTextEntry={secureTextEntry} placeholderTextColor={pwdFocus ? '#8e8e93' : "white"} onFocus={() => {
-
-              setPwdFocus(true)
-            }} />} name="pwd" rules={{
-              required: {
-                value: true, message
-                  : "请输入密码"
-              }
-            }} control={control} defaultValue="" placeholder={'密码'} />
-          <TouchableOpacity
-            style={{ marginRight: 20 }}
-            onPress={() => {
-              setSecureTextEntry(secureTextEntry => !secureTextEntry)
-            }}>
-            <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={pwdFocus ? "#8e8e93" : "rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
-          </TouchableOpacity>
+              }}
+              onChange={args => {
+                return args[0].nativeEvent.text
+              }}
+              style={{ flex: 1, color: 'black' }}
+              as={<TextInput secureTextEntry={secureTextEntry} placeholderTextColor={'#8e8e93'} onFocus={() => {
+                setPwdFocus(true)
+              }} />} name="pwd" rules={{
+                required: {
+                  value: true, message
+                    : "请输入密码"
+                }
+              }} control={control} defaultValue="" placeholder={'密码'} />
+            <TouchableOpacity
+              style={{ marginRight: 20 }}
+              onPress={() => {
+                setSecureTextEntry(secureTextEntry => !secureTextEntry)
+              }}>
+              <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={pwdFocus ? "#8e8e93" : "rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -179,13 +186,13 @@ const VietnamLogin = ({ route, navigation }) => {
             }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{
-                borderWidth: 1, borderColor: 'white',
+                borderWidth: 1, borderColor: '#298dff',
                 width: 18, height: 18,
                 borderRadius: 5
               }}>
                 {isRemember ? (
                   <Icon name='check'
-                    type='foundation' color="white" size={13} />
+                    type='foundation' color="#298dff" size={13} />
                 ) : null}
               </View>
               <Text style={{ color: '#8e8e93', fontSize: 14, marginLeft: 3 }}>记住密码</Text>
@@ -199,7 +206,7 @@ const VietnamLogin = ({ route, navigation }) => {
             borderRadius: 16,
             marginTop: 20, justifyContent: 'center', alignItems: 'center'
           }}>
-            <Text style={{ color: "white", fontSize: 20 }}>{currcentLanguagePackage?.["app.log.in"]}</Text>
+            <Text style={{ color: "white", fontSize: 20 }}>{"登录"}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => {
@@ -212,7 +219,7 @@ const VietnamLogin = ({ route, navigation }) => {
             borderRadius: 30,
             marginTop: 20, justifyContent: 'center', alignItems: 'center'
           }}>
-            <Text style={{ color: "#298dff", fontSize: 20 }}>{currcentLanguagePackage?.["app.registered"]}</Text>
+            <Text style={{ color: "#298dff", fontSize: 20 }}>{"注册"}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={testPlay}>
@@ -223,7 +230,7 @@ const VietnamLogin = ({ route, navigation }) => {
             borderRadius: 30,
             marginTop: 20, justifyContent: 'center', alignItems: 'center'
           }}>
-            <Text style={{ color: "#298dff", fontSize: 20 }}>{currcentLanguagePackage?.["app.demo1"]}</Text>
+            <Text style={{ color: "#298dff", fontSize: 20 }}>{"试玩"}</Text>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
@@ -233,18 +240,17 @@ const VietnamLogin = ({ route, navigation }) => {
 }
 const Header = () => {
   const { top } = useSafeArea()
-  const { currcentLanguagePackage } = useLanguageContext()
   return (
     <View>
       <View style={{ height: top }}></View>
-      <View style={{ height: 68, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
+      <View style={{ height: 45, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
         <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
           pop();
           OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity >
-        <Text>{currcentLanguagePackage?.["app.log.in"]}</Text>
+        <Text style={{ color: "#000000", fontSize: 18, fontWeight: "bold" }}>{"登录"}</Text>
       </View>
     </View>
   )

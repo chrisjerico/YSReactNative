@@ -1,14 +1,21 @@
-import { OCHelper } from "../define/OCHelper/OCHelper";
-import { LoginModel } from "../network/Model/LoginModel";
-import { IGlobalStateHelper, updateUserInfo } from "../../redux/store/IGlobalStateHelper";
-import { pop, popToRoot } from "../navigation/RootNavigation";
 import UGUserModel from "../../redux/model/全局/UGUserModel";
+import { updateUserInfo } from "../../redux/store/IGlobalStateHelper";
+import { OCHelper } from "../define/OCHelper/OCHelper";
+import { popToRoot } from "../navigation/RootNavigation";
 import APIRouter from "../network/APIRouter";
+import { LoginModel } from "../network/Model/LoginModel";
 
 /**
  * data:API response
  */
-const useLoginIn = () => {
+
+interface UseLoginIn {
+    onSuccess?: () => any;
+    onError?: (error: any) => any;
+}
+
+const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
+    const { onSuccess, onError } = params
     const loginSuccessHandle = async (data: LoginModel, accountData: {
         isRemember: boolean,
         account: string,
@@ -35,9 +42,10 @@ const useLoginIn = () => {
             const response = await APIRouter.user_info()
             await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...response.data.data, ...UGUserModel.getYS(data?.data) }]);
             updateUserInfo()
-            popToRoot();
+            onSuccess && onSuccess();
         } catch (error) {
             console.log(error)
+            onError && onError(error)
             debugger
         }
 

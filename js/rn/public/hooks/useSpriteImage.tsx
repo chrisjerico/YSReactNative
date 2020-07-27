@@ -9,6 +9,14 @@ interface IOffset {
   width: number,
   height: number
 }
+/**
+ * 
+ * @param {source} source spriteImage 連結    
+ * @param {rowNum} rowNum 有幾行圖片
+ * @param {rowNum} rowNum 一行有幾張
+ * @param {size} size {width ,height} 要裁切圖片的大小
+ * @param {offset} offset {width ,height} 圖片的距離
+ */
 const useSpriteImage = ({ source, rowNum = 0, columnNum = 0, size, offset }: { source: ImageSource, rowNum: number, columnNum: number, size: ISize, offset: IOffset }) => {
   const [imageArray, setImageArray] = useState<string[]>([])
   useEffect(() => {

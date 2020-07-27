@@ -1,6 +1,6 @@
 import React from 'react'
-import { Image, Text, View, TouchableOpacity } from 'react-native'
-import { scale } from '../../../../helpers/function'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { scale } from '../../../../public/tools/Scale'
 
 interface ButtonGroupProps {
   leftLogo: string;

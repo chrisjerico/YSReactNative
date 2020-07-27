@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
@@ -19,6 +19,9 @@ import { useDimensions } from "@react-native-community/hooks"
 import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
+import Axios from "axios"
+import { httpClient } from "../../public/network/httpClient"
+import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const { width, } = useDimensions().window
@@ -28,6 +31,7 @@ const ZLHomeMine = ({ navigation }) => {
         (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
         [dispatch]
     )
+    const [infoModel, setInfoModel] = useState<YueBaoStatModel>()
     const { loginOut } = useLoginOut(PageName.ZLHomePage)
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
@@ -41,6 +45,17 @@ const ZLHomeMine = ({ navigation }) => {
             console.log(error)
         }
     }
+    const init = async () => {
+        try {
+            const { data, status } = await APIRouter.yuebao_stat()
+            setInfoModel(data)
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        init()
+    }, [userStore?.uid])
     useEffect(() => {
 
         navigation.addListener('focus', async () => {
@@ -57,7 +72,7 @@ const ZLHomeMine = ({ navigation }) => {
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
             <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
                 <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
+                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
                 </FastImage>
                 <Text style={{ fontSize: 16.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
                 <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
@@ -126,49 +141,63 @@ const ZLHomeMine = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
-            <LinearGradient colors={colorEnum.gradientColor} style={{ paddingVertical: 20, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, paddingHorizontal: 10, paddingTop: 20 }}>
+            <LinearGradient colors={colorEnum.gradientColor} style={{ paddingVertical: 20, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, paddingHorizontal: 10, paddingTop: 15 }}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <Text style={{ fontSize: 15, color: 'white', }}>我的晋级之路</Text>
                     <Text style={{ fontSize: 12, color: '#bfb9b9', marginRight: 10 }}> 每周一进行星级更新</Text>
                 </View>
                 <View style={{ height: 1, width: "95%", backgroundColor: "#444", alignSelf: 'center', marginVertical: 10 }}></View>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Text style={{ color: 'white', fontSize: 14 }}>{usr}  <Text style={{ fontSize: 12 }}>{curLevelTitle}</Text></Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ color: 'white', fontSize: 14 }}>{usr}</Text>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: "#55c6ff", borderRadius: 4, marginLeft: 10, padding: 3 }}>
+                            <Text style={{ fontSize: 12, color: 'white' }}>{userStore.curLevelGrade}</Text>
+                        </View>
+
+                    </View>
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
                     }}>
                         <Image source={{ uri: "missionhall" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 14, marginBottom: 5 }}>利息宝:  <Text style={{ fontSize: 12 }}>{userStore.balance}</Text></Text>
-                    {/* <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} /> */}
+
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
+                    <Text style={{ fontSize: 14, color: 'white' }}>{"积 分："}<Text style={{ fontSize: 14 }}>{userStore.taskReward}</Text></Text>
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
                     }}>
                         <Image source={{ uri: "dailysign" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'white', fontSize: 14 }}>{userStore.taskRewardTitle}:  <Text style={{ fontSize: 12 }}>{userStore.taskRewardTotal}</Text></Text>
-                    <FastImage source={{ uri: "http://test10.6yc.com/images/centerRwdt.svg" }} style={{ width: 124, height: 36 }} />
+                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5 }}>
+                    <Text style={{ color: 'white', fontSize: 14, marginBottom: 5 }}>利息宝:  <Text style={{ fontSize: 12 }}>{infoModel?.data?.balance}</Text></Text>
+
                 </View>
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>成长值:</Text>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>距离下一级还差{(parseInt(userStore.nextLevelInt) - parseInt(userStore.curLevelInt)).toFixed(2)}分</Text>
+                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
                         <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            <View style={{ height: "100%", width: userStore?.curLevelInt && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt))) ? 0 : (width * 0.7 * (parseInt(userStore?.curLevelInt) / parseInt(userStore?.nextLevelInt))) : 0 }}></View>
+                            {
+                                parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ?
+                                    <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: width * 0.7 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: width * 0.7 }}>100%</Text> */}
+                                    </View> : <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text> */}
+                                    </View>
+                            }
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, marginTop: 4 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                 <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
-                                <Text style={{ color: 'white' }}>{userStore.curLevelTitle}</Text>
+                                <Text style={{ color: 'white' }}>{userStore.curLevelGrade}</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                            {parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) == 0 ? <></> : <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                 <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
-                                <Text style={{ color: 'white' }}>{userStore.nextLevelTitle}</Text>
-                            </View>
+                                <Text style={{ color: 'white' }}>{userStore.nextLevelGrade}</Text>
+                            </View>}
                         </View>
 
                     </View>

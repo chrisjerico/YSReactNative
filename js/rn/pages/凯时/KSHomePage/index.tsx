@@ -34,6 +34,7 @@ import Header from "./Header"
 import HomeBase from "../../../public/components/HomeBase"
 import Account from "./Account"
 import QuickStart from "./QuickStart"
+import RankListCP from "../../../public/widget/RankList"
 
 
 const KSHomePage = ({ navigation }) => {
@@ -81,22 +82,13 @@ const KSHomePage = ({ navigation }) => {
   }
   const [] = useAutoRenewUserInfo(navigation)
   const value = useRandomString("200000000", 2000000000, 2999999999)
-  const thirdPartGamePress = (id: string, gameID?: string) => {
-    if (uid != "") {
-      console.log(homeGames.data.icons)
-      const result = homeGames.data.icons.filter((res) => res.id == id)
-      if (gameID && result.length > 0) {
-        const gameData = result[0].list.filter((res) => res.id == gameID)
-        //@ts-ignore
-        PushHelper.pushHomeGame(gameData[0])
-      } else if (!gameID && result.length > 0) {
-
-      } else {
-
-      }
+  const thirdPartGamePress = (index: number) => {
+    if (uid == '') {
+      navigate(PageName.ZLLoginPage, {})
     } else {
-      push(PageName.ZLLoginPage)
+      PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[index])
     }
+
   }
   return (
     <HomeBase needPadding={false} backgroundColor={'black'} loginPage={PageName.ZLLoginPage}>
@@ -118,35 +110,35 @@ const KSHomePage = ({ navigation }) => {
       <Header />
       <Account />
       <QuickStart />
-      <AcctountDetail />
-      <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
-        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "38")}>
-          <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agqjt.png" }} style={{
+      {/* <AcctountDetail /> */}
+      <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', paddingHorizontal: 10 }}>
+        <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
+          <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[0]?.logo }} style={{
             flex: 0.6,
-            backgroundColor: 'white', marginRight: 8,
+            marginRight: 8,
             borderRadius: 10, paddingLeft: 5, paddingTop: 10,
-            justifyContent: 'space-between'
+            justifyContent: 'space-between', backgroundColor: "#3a3a41"
           }} >
-            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG旗舰厅</Text>
-            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>百家乐 轮盘 骰宝 {'\n'}高额投注 豪客专享</Text>
+            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.name}</Text>
+            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.subtitle}</Text>
           </FastImage>
         </TouchableWithoutFeedback>
 
         <View style={{ flexDirection: 'column', flex: 0.4, justifyContent: 'space-between', borderRadius: 10, }}>
-          <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "2", "39")}>
-            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aggjt.png" }} style={{ flex: 6, marginBottom: 8, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
-              <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG国际厅</Text>
+          <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 1)}>
+            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[1]?.logo }} style={{ flex: 6, marginBottom: 8, borderRadius: 10, paddingLeft: 5, paddingTop: 10, backgroundColor: "#3a3a41" }}>
+              <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.name}</Text>
             </FastImage>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, "5", "68")}>
-            <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/aszrqp.png" }} style={{ flex: 4, borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
-              <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>开元棋牌</Text>
+          <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 2)}>
+            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[2]?.logo }} style={{ flex: 4, borderRadius: 10, paddingLeft: 5, paddingTop: 10, backgroundColor: "#3a3a41" }}>
+              <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.name}</Text>
             </FastImage>
           </TouchableWithoutFeedback>
         </View>
       </View>
-      <View style={{ flexDirection: 'row', height: 136, marginTop: 10 }}>
-        <View style={{ flex: 0.65, backgroundColor: colorEnum.gameitemBgColor, borderRadius: 10, marginRight: 8, padding: 5 }}>
+      <View style={{ flexDirection: 'row', height: 136, marginTop: 10, paddingHorizontal: 10 }}>
+        <View style={{ flex: 0.65, borderRadius: 10, marginRight: 8, padding: 5, backgroundColor: "#3a3a41" }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <View>
               <Text style={{ textAlign: 'center', fontSize: 12, color: "#d19881", letterSpacing: 2, marginBottom: 5 }}>电子游戏</Text>
@@ -166,148 +158,106 @@ const KSHomePage = ({ navigation }) => {
           </View>
           <View style={{ height: 0.5, width: "100%", backgroundColor: "#97989d" }}></View>
           <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => {
-              PushHelper.pushCategory(1, 0)
-            }} style={{ alignItems: 'center' }}>
-              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/cshj.png" }} />
-              <Text style={{ fontSize: 12, color: "#97989d" }}>财神黄金</Text>
+            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 3)} style={{ alignItems: 'center' }}>
+              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.logo }} />
+              <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              PushHelper.pushCategory(1, 0)
-            }} style={{ alignItems: 'center' }}>
-              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/fffl.png" }} />
-              <Text style={{ fontSize: 12, color: "#97989d" }}>发发发龙</Text>
+            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 4)} style={{ alignItems: 'center' }}>
+              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.logo }} />
+              <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              PushHelper.pushCategory(1, 0)
-            }} style={{ alignItems: 'center' }}>
-              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/sgbp.png" }} />
-              <Text style={{ fontSize: 12, color: "#97989d" }}>水果爆破</Text>
+            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 5)} style={{ alignItems: 'center' }}>
+              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.logo }} />
+              <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              PushHelper.pushCategory(1, 0)
-            }} style={{ alignItems: 'center' }}>
-              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/gdyx.png" }} />
-              <Text style={{ fontSize: 12, color: "#97989d" }}>更多</Text>
+            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 6)} style={{ alignItems: 'center' }}>
+              <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.logo }} />
+              <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, "3", "51")}>
-          <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/agbyw.png" }}
-            style={{ flex: 0.35, backgroundColor: 'red', borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
-            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>AG捕鱼王</Text>
-            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>花式捕鱼 爽快捞金</Text>
+        <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
+          <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[7]?.logo }}
+            style={{ flex: 0.35, backgroundColor: "#3a3a41", borderRadius: 10, paddingLeft: 5, paddingTop: 10, justifyContent: 'space-between' }}>
+            <Text style={{ color: colorEnum.titleColor, fontSize: 16.5 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.name}</Text>
+            <Text style={{ margin: 5, color: "rgba(167,171,179,.99)", fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.subtitle}</Text>
           </FastImage>
         </TouchableWithoutFeedback>
       </View>
-      <View style={{ flexDirection: 'row', height: 67, marginTop: 7 }}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => {
-          PushHelper.pushCategory(1, 0)
-        }}>
-          <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lottery.png" }}
+      <View style={{ flexDirection: 'row', height: 67, marginTop: 7, paddingHorizontal: 10 }}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 8)}>
+          <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.logo }}
             style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, }}>
-            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>彩票</Text>
-            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>六合彩{'\n'}刮刮乐</Text>
+            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
+            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
           </FastImage>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => {
-          PushHelper.pushCategory(6, 1)
-        }}>
-          <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/sport.png" }}
+        <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 9)}>
+          <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.logo }}
             style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
-            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>体育</Text>
+            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.logo}</Text>
           </FastImage>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, "2", "43")}>
-          <FastImage source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/bbinzr.png" }}
-            style={{ flex: 1, backgroundColor: 'red', borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
-            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>BBIN真人</Text>
-
+        <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 10)}>
+          <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.logo }}
+            style={{ flex: 1, backgroundColor: "#3a3a41", borderRadius: 10, paddingLeft: 5, paddingTop: 10, }}>
+            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
           </FastImage>
         </TouchableOpacity>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
-        <View style={{ flexDirection: 'row' }} >
-          <Image style={{ width: 13, height: 13, tintColor: 'white', marginRight: 5 }} source={{ uri: "礼品-(1)" }} />
-          <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
-        </View>
-        <TouchableWithoutFeedback onPress={() => {
-          push(PageName.PromotionListPage)
-        }}>
-          <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
-        </TouchableWithoutFeedback>
-      </View>
-
-      <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
-        return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-          <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
-            if (selectId == index) {
-              setSelectedId(-1)
-            } else {
-              setSelectedId(index)
-            }
-          })}>
-            <View>
-              <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white' }}>{item.title}</Text>
-              <FastImageAutoHeight source={{ uri: item.pic }} />
-            </View>
+      <View style={{ backgroundColor: "#3a3a41", marginHorizontal: 10, marginTop: 10, borderRadius: 8 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingHorizontal: 10 }}>
+          <View style={{ flexDirection: 'row' }} >
+            <Image style={{ width: 13, height: 13, tintColor: 'white', marginRight: 5 }} source={{ uri: "礼品-(1)" }} />
+            <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
+          </View>
+          <TouchableWithoutFeedback onPress={() => {
+            push(PageName.PromotionListPage)
+          }}>
+            <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
           </TouchableWithoutFeedback>
-          {selectId == index ? <AutoHeightWebView
-            style={{ width: width - 20, backgroundColor: 'white' }}
-            // scalesPageToFit={true}
-            viewportContent={'width=device-width, user-scalable=no'}
-            source={{
-              html: `<head>
+        </View>
+
+        <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 3)} renderItem={({ item, index }) => {
+          return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+            <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+              if (selectId == index) {
+                setSelectedId(-1)
+              } else {
+                setSelectedId(index)
+              }
+            })}>
+              <View>
+                <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 5, color: 'white', textAlign: 'center' }}>{item.title}</Text>
+                <FastImageAutoHeight source={{ uri: item.pic }} />
+              </View>
+            </TouchableWithoutFeedback>
+            {selectId == index ? <AutoHeightWebView
+              style={{ width: width - 20, backgroundColor: 'white' }}
+              // scalesPageToFit={true}
+              viewportContent={'width=device-width, user-scalable=no'}
+              source={{
+                html: `<head>
                         <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
                         <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
                         <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
                       </head>` +
-                `<script>
+                  `<script>
                         window.onload = function () {
                           window.location.hash = 1;
                           document.title = document.body.scrollHeight;
                         }
                       </script>`+ item.content
-            }}></AutoHeightWebView> : null
-          }
+              }}></AutoHeightWebView> : null
+            }
 
-        </View >
-      }} />
-
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-        <Image style={{ width: 15, height: 15, tintColor: 'white', marginRight: 5 }} source={{ uri: "outline_analytics_black_18dp" }} />
-        <Text style={{ color: 'white', fontWeight: "bold" }}>投注排行榜</Text>
-      </View>
-      {systemStore.rankingListSwitch == 0 ? null : <View >
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>用户名称</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>游戏名称</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={{ color: 'white' }}>投注金额</Text>
-          </View>
-        </View>
-        <FlatList keyExtractor={(item, index) => {
-          return item.username + index
-        }} style={{ marginTop: 20, height: 200 }} data={rankList?.data?.list ?? []} renderItem={({ item }) => {
-          return <View style={{ flexDirection: 'row', }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.username}</Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.type}</Text>
-            </View>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: 'white' }}>{item.coin}</Text>
-            </View>
-          </View>
+          </View >
         }} />
-      </View>}
-
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      </View>
+      <View style={{ marginHorizontal: 10, marginTop: 10 }}>
+        <RankListCP timing={10000} backgroundColor={"#3a3a41"} textColor={'white'} width={width - 24} ranks={rankList} />
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', paddingHorizontal: 10, marginTop: 10 }}>
         <Text onPress={() => {
           console.log(httpClient.defaults.baseURL + '/index2.php')
           PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
@@ -319,8 +269,8 @@ const KSHomePage = ({ navigation }) => {
       <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
       <View style={{ height: 100 }}></View>
 
-      <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
-      <TurntableListItem />
+      {/* <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
+      <TurntableListItem /> */}
       <MarqueePopupView onPress={() => {
         setShow(false)
       }} content={content} show={show} onDismiss={() => {
@@ -699,6 +649,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     marginRight: 5,
+    backgroundColor: "#3a3a41",
+    borderRadius: 8
   }
 })
 export default KSHomePage

@@ -1,6 +1,6 @@
+import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from '../../theme/UGSkinManagers';
-import { PageName } from '../../navigation/Navigation';
 import { OCHelper } from './OCHelper';
 
 export class RnPageModel {
@@ -83,6 +83,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.VietnamMine,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
     ])
   }
   if (Skin1.skitType.indexOf('凯时') != -1) {
@@ -95,14 +103,31 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
-      // {
-      //   // 我的页
-      //   tabbarItemPath: '/user',
-      //   rnName: PageName.WNZMinePage,
-      //   fd_prefersNavigationBarHidden: true,
-      //   允许游客访问: true,
-      //   允许未登录访问: false,
-      // },
+
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.KSLogin,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.KSRegister,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.KSMine,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
     ])
   }
 
@@ -155,6 +180,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.BZHRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
     ])
   }
 
@@ -201,7 +234,8 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) { // 
+  if (Skin1.skitType.indexOf('尊龙') != -1) { //
+    pages = []
     pages = pages.concat([
       {
         // 首页
@@ -246,6 +280,7 @@ export function setRnPageInfo() {
   }
 
   if (Skin1.skitType.indexOf('金星黑') != -1) {
+    pages = []
     pages = pages.concat([
       {
         // 首页
@@ -273,12 +308,20 @@ export function setRnPageInfo() {
       },
       {
         // 我的页
+        vcName: 'UGMineSkinViewController',
         tabbarItemPath: '/user',
         rnName: PageName.GDBMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        vcName: 'UGPromotionsController',
+        rnName: PageName.PromotionListPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ]);
   }
 

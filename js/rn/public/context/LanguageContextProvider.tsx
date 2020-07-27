@@ -7,7 +7,6 @@ export const LanguageContextProvider = ({ children }) => {
   const [languagePackage, setLanguagePackage] = useState()
   const init = async () => {
     const languageObject = await OCHelper.call("LanguageHelper.shared.kvs")
-    console.log(JSON.stringify(languageObject))
     setLanguagePackage(languageObject)
   }
   useEffect(() => {
