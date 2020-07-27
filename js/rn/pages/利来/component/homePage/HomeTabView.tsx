@@ -62,16 +62,20 @@ export const HomeTabView = () => {
 
 
     return (
-        <ScrollableTabView
-            onChangeTab={({i}) => calculateHeight(i)}
-            tabBarUnderlineStyle={{height: 2, backgroundColor: "red"}}
-            tabBarTextStyle={{color: "#666666", fontWeight: "bold"}}
-            style={[{flex: 1, height}]}
-            renderTabBar={() => <ScrollableTabBar style={{backgroundColor: "#ffffff"}}/>}>
-            {games.length > 0 ? games.map((item) => {
-                return getTab(item)
-            }) : <View/>
+        <>
+            {games?.length > 0 &&
+            <ScrollableTabView
+                onChangeTab={({i}) => calculateHeight(i)}
+                tabBarUnderlineStyle={{height: 2, backgroundColor: "red"}}
+                tabBarTextStyle={{color: "#666666", fontWeight: "bold"}}
+                style={[{flex: 1, height}]}
+                renderTabBar={() => <ScrollableTabBar style={{backgroundColor: "#ffffff"}}/>}>
+                {games.length > 0 ? games.map((item) => {
+                    return getTab(item)
+                }) : <View/>
+                }
+            </ScrollableTabView>
             }
-        </ScrollableTabView>
+        </>
     )
 }

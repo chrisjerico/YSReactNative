@@ -35,6 +35,7 @@ import MarqueePopupView from "../common/MarqueePopupView";
 import {useDimensions} from "@react-native-community/hooks";
 import {TurntableListModel} from "../../public/network/Model/TurntableListModel";
 import {WinningList} from "../../public/components/WinningList";
+import RankListCP from "../../public/widget/RankList";
 
 const LLHomePage = () => {
     const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
@@ -132,7 +133,7 @@ const LLHomePage = () => {
                         <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
                         <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
                     </View>
-                    <WinningList data={rankList ? rankList.data.list : []}/>
+                    <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'} width={Dimensions.get("screen").width - 24} ranks={rankList} />
                 </SafeAreaView>
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
                     <Text onPress={() => {
