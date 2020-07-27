@@ -1,6 +1,6 @@
 import { View, Text, ScrollView, FlatList, TouchableWithoutFeedback } from "react-native"
 import React, { useEffect, useState } from 'react'
-import { IGlobalState } from "../../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../../redux/store/UGStore"
 import HKBallsView from "../HKBallsView"
 import HKNormalWithSBView from "../HKNormalWithSBView"
 const ZTContainer = () => {

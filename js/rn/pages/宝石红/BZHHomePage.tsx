@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModal from '../../public/components/tars/AnnouncementModal'

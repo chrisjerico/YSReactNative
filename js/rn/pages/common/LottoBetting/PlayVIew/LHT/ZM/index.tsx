@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native"
 import React from 'react'
-import { IGlobalState } from "../../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../../redux/store/UGStore"
 import HKBallsView from "../HKBallsView"
 import HKNormalItemView from "../HKNormalItemView"
 

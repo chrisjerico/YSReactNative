@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'

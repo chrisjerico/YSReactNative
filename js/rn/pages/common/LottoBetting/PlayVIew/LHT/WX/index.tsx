@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native"
 import React from 'react'
-import { IGlobalState } from "../../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../../redux/store/UGStore"
 import HKWXItemView from "../HKWXItemView"
 
 const WXSContainer = () => {

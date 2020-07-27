@@ -7,7 +7,6 @@ import { Router, RouterType } from './Router';
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
-
 export function navigate<P>(page: PageName, props?: P & { index?: number }): boolean {
     if (props?.index) {
         OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [props.index]);
@@ -24,22 +23,23 @@ export function jumpTo<P extends object>(page: PageName, props?: P) {
 }
 
 export function pop() {
-    try {
-        navigationRef?.current?.dispatch(StackActions.pop());
-    } catch (error) { }
+    const canPop = navigationRef?.current?.getRootState().routes.length > 1;
+    canPop && navigationRef?.current?.dispatch(StackActions.pop());
 }
 
 export function popToRoot() {
-    try {
-        navigationRef?.current?.dispatch(StackActions.popToTop());
-    } catch (error) { }
+    const canPop = navigationRef?.current?.getRootState().routes.length > 1;
+    canPop && navigationRef?.current?.dispatch(StackActions.popToTop());
 }
 
 // 获取当前页面
 export function getCurrentPage(): PageName {
-    const { name } = navigationRef.current?.getCurrentRoute();
-    // @ts-ignore
-    return name;
+    if (navigationRef?.current?.getCurrentRoute) {
+        const { name } = navigationRef?.current?.getCurrentRoute();
+        // @ts-ignore
+        return name;
+    }
+    return undefined;
 }
 
 export function replace(name: string, params?: any) {

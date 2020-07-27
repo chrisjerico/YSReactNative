@@ -1,7 +1,6 @@
 import { useDimensions } from "@react-native-community/hooks"
 import { RedBagDetailActivityModel } from "../network/Model/RedBagDetailActivityModel"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
-import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { Alert, Image, View, TouchableWithoutFeedback } from "react-native"
 import { navigate } from "../navigation/RootNavigation"
