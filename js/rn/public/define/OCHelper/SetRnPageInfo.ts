@@ -56,9 +56,10 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  Skin1.skitType = '香槟金2' // 測試開發
-  console.log("------------------Skin1.skitType------------------", Skin1.skitType)
-  if (Skin1.skitType.indexOf('白曜') != -1) {
+  let skitType = Skin1.skitType; 
+  // skitType = '尊龙'; // 測試開發
+  console.log("------------------skitType------------------", skitType)
+  if (skitType.indexOf('白曜') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -86,7 +87,7 @@ export function setRnPageInfo() {
       },
     ])
   }
-  if (Skin1.skitType.indexOf('凯时') != -1) {
+  if (skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -108,7 +109,7 @@ export function setRnPageInfo() {
   }
 
   // 威尼斯页面
-  if (Skin1.skitType.indexOf('威尼斯') != -1) {
+  if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -130,7 +131,7 @@ export function setRnPageInfo() {
   }
 
   //宝石红页面
-  if (Skin1.skitType.indexOf('宝石红') != -1) {
+  if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -168,7 +169,7 @@ export function setRnPageInfo() {
   }
 
   // 六合厅页面
-  if (Skin1.skitType.indexOf('六合厅') != -1) {
+  if (skitType.indexOf('六合厅') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -189,7 +190,7 @@ export function setRnPageInfo() {
     ])
   }
 
-  if (Skin1.skitType.indexOf('乐橙') != -1) {
+  if (skitType.indexOf('乐橙') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -210,7 +211,7 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) { // 
+  if (skitType.indexOf('尊龙') != -1) { // 
     pages = pages.concat([
       {
         // 首页
@@ -254,7 +255,7 @@ export function setRnPageInfo() {
     ]);
   }
 
-  if (Skin1.skitType.indexOf('金星黑') != -1) {
+  if (skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -292,7 +293,7 @@ export function setRnPageInfo() {
   }
 
   // 香槟金页面
-  if (Skin1.skitType.indexOf('香槟金') != -1) {
+  if (skitType.indexOf('香槟金') != -1) {
     pages = pages.concat([
       // {
       //   // 首页

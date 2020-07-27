@@ -8,6 +8,7 @@ import {StackNavigationConfig, StackNavigationOptions} from '@react-navigation/s
 import {DrawerNavigationConfig} from '@react-navigation/drawer/lib/typescript/src/types';
 import {Children, ReactElement} from 'react';
 import React from 'react';
+import { navigationRef } from './RootNavigation';
 
 export enum RouterType {
   None,
@@ -33,7 +34,8 @@ export class Router {
       if (types.indexOf(priorityType) != -1) {
         return priorityType;
       }
-      return types[0];
+      const isStack = navigationRef?.current?.getRootState().routes.length > 1;
+      return isStack ? RouterType.Stack : RouterType.Tab;
     }
     return RouterType.None;
   }

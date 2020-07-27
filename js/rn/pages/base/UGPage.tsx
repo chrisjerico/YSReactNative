@@ -67,13 +67,18 @@ export default (Page: Function) => {
       // 监听
       let didFocus: (p: UGBasePageProps) => void;
       {
+        let lastParams;
         navigation.removeListener('focus', null)
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
           console.log('成为焦点', name, params)
-          this.setProps(params);
+          if (lastParams !== params) {
+            // 跳转时参数设置到props
+            lastParams = params;
+            this.setProps(params);
+          }
+          // 回调
           didFocus && didFocus(params);
-          route.params = undefined;
         })
         // 监听dispatch
         this.unsubscribe = UGStore.subscribe(route.name, (() => {
