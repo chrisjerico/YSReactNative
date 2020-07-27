@@ -29,15 +29,19 @@ export class Router {
 
   static getPageRouterType(pageName: PageName, priorityType: RouterType = RouterType.None): RouterType {
     const types = this.getPageRouterTypes(pageName);
-
-    if (types.length) {
-      if (types.indexOf(priorityType) != -1) {
-        return priorityType;
+    switch (types.length) {
+      case 0:
+        return RouterType.None;
+      case 1:
+        return types[0];
+      default: {
+        if (types.indexOf(priorityType) != -1) {
+          return priorityType;
+        }
+        const isStack = navigationRef?.current?.getRootState().routes.length > 1;
+        return isStack ? RouterType.Stack : RouterType.Tab;
       }
-      const isStack = navigationRef?.current?.getRootState().routes.length > 1;
-      return isStack ? RouterType.Stack : RouterType.Tab;
     }
-    return RouterType.None;
   }
 
   static getPageRouterTypes(pageName: PageName): Array<RouterType> {
