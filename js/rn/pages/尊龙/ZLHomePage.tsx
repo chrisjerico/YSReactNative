@@ -178,22 +178,30 @@ const ZLHomePage = ({ navigation }) => {
                         </View>
                         <View style={{ height: 0.5, width: "100%", backgroundColor: "#97989d" }}></View>
                         <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 3)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 4)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 5)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 6)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
-                            </TouchableOpacity>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 3)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 4)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 5)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 6)} >
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     </View>
                     <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
@@ -205,27 +213,33 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{ flexDirection: 'row', height: 67, marginTop: 7 }}>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 8)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon }}
-                            style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67, }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 9)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon }}
-                            style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 10)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon }}
-                            style={{ flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67, }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 8)}>
+                        <View style={styles.buttonContainer} >
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon }}
+                                style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67, }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 9)}>
+                        <View style={styles.buttonContainer}>
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon }}
+                                style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 10)}>
+                        <View style={styles.buttonContainer}>
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon }}
+                                style={{ flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67, }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row' }} >
