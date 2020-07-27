@@ -14,7 +14,6 @@ import { EventRegister } from 'react-native-event-listeners'
 import { IGlobalState, UGStore } from "../../../redux/store/UGStore"
 import APIRouter from "../../../public/network/APIRouter"
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper"
-import { ActionType } from "../../../redux/store/ActionTypes"
 import UGUserModel from "../../../redux/model/全局/UGUserModel"
 import { popToRoot, navigate, pop, push } from "../../../public/navigation/RootNavigation"
 import { PageName } from "../../../public/navigation/Navigation"
