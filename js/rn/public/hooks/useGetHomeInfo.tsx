@@ -34,6 +34,7 @@ type APIListType =
   | 'system_config'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
+  const [onlineSwitch, setOnlineSwitch] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAds, setFloatAds] = useState<FloatADModel>()
   const [homeGames, setHomeGames] = useState<HomeGamesModel>()
@@ -114,6 +115,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                       break
                     case 'system_onlineCount':
                       setOnlineNum(res[key]?.data?.data?.onlineUserCount)
+                      setOnlineSwitch(res[key]?.data?.data?.onlineSwitch)
                       break
                     case 'lhcdoc_lotteryNumber':
                       setLotteryNumber(res[key]?.data)
@@ -160,6 +162,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
               setFloatAds(res?.[7]?.data)
               setNotice(res?.[2]?.data)
               setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
+              setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
               setLoading(false)
             })
           )
@@ -188,7 +191,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     lotteryGames,
     onRefresh,
     noticeFormat,
-    originalNoticeString
+    originalNoticeString,
+    onlineSwitch
   }
 }
 export default useGetHomeInfo

@@ -47,7 +47,7 @@ const ZLHomePage = ({ navigation }) => {
     const { uid = "" } = userStore
     const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh } = useGetHomeInfo()
+    const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh, onlineSwitch } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [selectId, setSelectedId] = useState(-1)
@@ -127,7 +127,7 @@ const ZLHomePage = ({ navigation }) => {
                 </View>
 
                 <AcctountDetail />
-                <Banner onlineNum={onlineNum} bannerData={banner} />
+                <Banner onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
                 <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
                         <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[0]?.icon }} style={{
@@ -476,19 +476,23 @@ const UserStatusBar = () => {
         </LinearGradient>
     )
 }
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
+const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, }: { bannerData: BannerModel, onlineNum: number, onlineSwitch: number, }) => {
     const { width, } = useDimensions().window
     const BannerRef = useRef<Carousel>()
     const [height, setHeight] = useState(100)
     useEffect(() => {
-        const timer = setInterval(() => {
-            //@ts-ignore
-            BannerRef?.current?.gotoNextPage()
-        }, 2000);
+        let timer = null
+        if (parseFloat(bannerData?.data?.interval) > 0) {
+            timer = setInterval(() => {
+                //@ts-ignore
+                BannerRef?.current?.gotoNextPage()
+            }, parseFloat(bannerData?.data?.interval) * 1000);
+        }
+
         return (() => {
             clearInterval(timer)
         })
-    }, [bannerData])
+    }, [bannerData,])
     if (bannerData?.data?.list?.length > 0) {
         return (
             <View style={{ marginBottom: 10, }}>
@@ -515,9 +519,10 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                             </TouchableWithoutFeedback>)
                     })}
                 </Carousel>
-                <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
+                {onlineSwitch == 1 ? <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
                     <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View>
+                </View> : null}
+
             </View>
         )
 
