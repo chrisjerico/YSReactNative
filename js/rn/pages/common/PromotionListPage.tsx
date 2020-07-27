@@ -66,7 +66,7 @@ const PromotionListPage = ({ navigation }) => {
               }}
             />
           </View> : null}
-        <Text style={{ textAlign: 'center', color: Skin1.isBlack ? 'white' : Skin1.textColor3, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
+        <Text style={{ textAlign: 'center', color: Skin1.isBlack ? 'white' : Skin1.textColor3, fontSize: 18, fontWeight: "bold" }}>优惠活动</Text>
 
       </LinearGradient>
 
