@@ -1,46 +1,36 @@
 import CodePush from 'react-native-code-push';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
-import UGBasePage from '../base/UGBasePage';
-import { UpdateVersionStateToProps, UpdateVersionProps } from './UpdateVersionProps';
 import { connect } from 'react-redux';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { OCEventType } from '../../public/define/OCHelper/OCBridge/OCEvent';
-import { Navigation, PageName } from '../../public/navigation/Navigation';
+import {  PageName } from '../../public/navigation/Navigation';
+import { UGStore } from '../../redux/store/UGStore';
+import { UGBasePageProps } from '../base/UGPage';
+import { UGColor } from '../../public/theme/UGThemeColor';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
+import { navigate, getCurrentPage } from '../../public/navigation/RootNavigation';
 
-class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
-  rnInstalled: boolean = false;
-  type: 'rn' | 'jspatch' = 'rn';
 
-  constructor(props) {
-    super(props);
-    // 必须在注册监听之后执行
-    if (Platform.OS == 'ios') {
-      OCHelper.launchFinish();
-      OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
-        if (pics && pics.length) {
-          this.setProps({ backgroundImage: pics[0] });
-        }
-      });
-    } else {
-      // TODO 安卓
-    }
-  }
 
-  requestData(): void { }
+interface UpdateVersionVars {
+  rnInstalled: boolean;
+  type: 'rn' | 'jspatch';
+}
 
-  didFocus() { }
+// 声明Props
+export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps, UpdateVersionVars> {
+  progress?: number;
+}
 
-  updateJspatch() {
-    if (!this.props.tabbarOpetions.unmountOnBlur) {
-      Navigation.jump(PageName.UpdateVersionPage);
-    }
+export const UpdateVersionPage = (props: UpdateVersionProps) => {
+  const { setProps, vars: v = { rnInstalled: false, type: 'rn' }, progress = 0 } = props;
+  
+  function updateJspatch() {
     if (Platform.OS != 'ios') return;
-
-    this.setProps({ progress: 0 });
 
     CodePush.getUpdateMetadata(2)
       .then(localPackage => {
@@ -48,10 +38,10 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
         // 开始更新jspatch
         OCHelper.call('JSPatchHelper.updateVersion:progress:completion:', [localPackage.description]);
         OCHelper.addEvent(OCEventType.JspatchDownloadProgress, (progress: number) => {
-          this.setProps({ progress: progress });
+          setProps({ progress: progress });
         });
         OCHelper.addEvent(OCEventType.JspatchUpdateComplete, (ret: boolean) => {
-          this.setProps({ progress: 1 });
+          setProps({ progress: 1 });
 
           // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
           OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
@@ -60,12 +50,13 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
           });
 
           if (ret) {
-            console.log('更新成功', Navigation.pages);
-            if (this.rnInstalled && Navigation.pages[0] == PageName.UpdateVersionPage) {
+            console.log('更新成功');
+            if (v.rnInstalled && getCurrentPage() == PageName.UpdateVersionPage) {
               console.log('正在重启RN');
               CodePush.restartApp(true);
             } else {
               console.log('请手动重启APP');
+              navigate(PageName.TransitionPage);
             }
           } else {
             console.log('jsp下载失败');
@@ -80,7 +71,10 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
       });
   }
 
-  componentDidMount() {
+
+  useEffect(() => {
+    console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
+
     CodePush.sync(
       {
         deploymentKey: OCHelper.CodePushKey,
@@ -113,11 +107,11 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
             break;
           case CodePush.SyncStatus.UPDATE_IGNORED:
             console.log('rn忽略此热更新');
-            this.updateJspatch();
+            updateJspatch();
             break;
           case CodePush.SyncStatus.UP_TO_DATE:
             console.log('rn已是最新版本');
-            this.updateJspatch();
+            updateJspatch();
             break;
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
             console.log('rn正在下载热更新');
@@ -130,42 +124,51 @@ class UpdateVersionPage extends UGBasePage<UpdateVersionProps> {
             break;
           case CodePush.SyncStatus.UPDATE_INSTALLED:
             console.log('rn热更新安装成功，jspatch安装后生效');
-            this.rnInstalled = true;
-            this.updateJspatch();
+            v.rnInstalled = true;
+            updateJspatch();
             break;
         }
       },
       progress => {
         var p = progress.receivedBytes / progress.totalBytes;
-        this.setProps({ progress: p });
+        setProps({ progress: p });
         console.log('rn热更新包下载进度：' + p);
       },
     );
 
-  }
+    setProps({
+      navbarOpstions: { hidden: true },
+      tabbarOpetions: { unmountOnBlur: false },
+      backgroundColor: Skin1.bgColor,
+    })
 
-  renderContent(): React.ReactNode {
-    let { progress } = this.props;
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={{ flex: 1 }} />
-        <LinearGradient colors={['transparent', '#00000066']}>
-          <View style={{ height: 120 }} />
-          <Text style={{ marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500' }}>{this.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
-          <Progress.Bar
-            progress={progress}
-            borderWidth={0.5}
-            borderRadius={4}
-            unfilledColor="#aaa"
-            color="white"
-            height={4}
-            width={AppDefine.width - 40}
-            style={{ marginLeft: 20, marginTop: 10, marginBottom: 60 }}
-          />
-        </LinearGradient>
-      </View>
-    );
-  }
+    if (Platform.OS == 'ios') {
+      OCHelper.launchFinish();
+      OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
+        if (pics && pics.length) {
+          setProps({ backgroundImage: pics[0] });
+        }
+      });
+    }
+  }, [])
+
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} />
+      <LinearGradient colors={['transparent', '#00000066']}>
+        <View style={{ height: 240 }} />
+        <Text style={{ marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500' }}>{v.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
+        <Progress.Bar
+          progress={progress}
+          borderWidth={0.5}
+          borderRadius={4}
+          unfilledColor="#aaa"
+          color="white"
+          height={4}
+          width={AppDefine.width - 40}
+          style={{ marginLeft: 20, marginTop: 10, marginBottom: 120 }}
+        />
+      </LinearGradient>
+    </View>
+  );
 }
-
-export default connect(UpdateVersionStateToProps)(UpdateVersionPage);

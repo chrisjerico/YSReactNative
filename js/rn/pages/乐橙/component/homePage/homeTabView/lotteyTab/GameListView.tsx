@@ -6,13 +6,12 @@ import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 import PushHelper from "../../../../../../public/define/PushHelper";
 import {push} from "../../../../../../public/navigation/RootNavigation";
 import {PageName} from "../../../../../../public/navigation/Navigation";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../../../../../redux/store/UGStore";
 import useGetHomeInfo from "../../../../../../public/hooks/useGetHomeInfo";
 
 export const GameListView = ({list}: {list: List[]}) => {
     const {homeGames} = useGetHomeInfo()
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "" } = userStore
 
     const thirdPartGamePress = (id: string, gameID?: string) => {

@@ -2,7 +2,7 @@ import React, {Component, useState} from 'react';
 import {Text} from 'react-native';
 import {Input, InputProps, Icon, Button} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import FUtils, { mergeProps } from '../tools/FUtils';
+import FUtils, { deepMergeProps } from '../tools/FUtils';
 
 interface IPorps extends InputProps {
   // 父类变量
@@ -47,7 +47,7 @@ export default class UGTextField extends Component<IPorps, IState> {
       clearButtonMode: 'while-editing',
     };
     if (props.styleType == '下划线样式') {
-      defaultProps = mergeProps(defaultProps, {containerStyle:{backgroundColor:'transparent', height:50}});
+      defaultProps = deepMergeProps(defaultProps, {containerStyle:{backgroundColor:'transparent', height:50}});
     }
 
     const other = ((): IPorps => {
@@ -141,7 +141,7 @@ export default class UGTextField extends Component<IPorps, IState> {
           return {};
       }
     })();
-    this.newProps = mergeProps(defaultProps, other);
+    this.newProps = deepMergeProps(defaultProps, other);
   }
 
   SysButton(props: {didClick: (startCountdown: () => void) => void}) {
@@ -235,9 +235,9 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   // 刷新UI
   render() {
-    var props = mergeProps(this.newProps, this.props);
+    var props = deepMergeProps(this.newProps, this.props);
     if (this.props.hidden) {
-      mergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
+      deepMergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
     }
     return (
       <Input

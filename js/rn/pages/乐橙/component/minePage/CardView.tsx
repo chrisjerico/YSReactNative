@@ -5,11 +5,10 @@ import PushHelper from "../../../../public/define/PushHelper";
 import {UGUserCenterType} from "../../../../redux/model/全局/UGSysConfModel";
 import useMemberItems from "../../../../public/hooks/useMemberItems";
 import {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
 
 export const CardView = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const {balance, fullName, todayWinAmount, curLevelGrade} = userStore
     const [showBalance, setShowBalance] = useState(false)
     const [depositItem, setDepositItem] = useState<any>()

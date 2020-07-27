@@ -8,15 +8,13 @@ import PushHelper from "../../public/define/PushHelper"
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 import { PageName } from '../../public/navigation/Navigation';
-import { useSelector, useDispatch } from "react-redux"
-import { IGlobalState } from "../../redux/store/UGStore";
+import { IGlobalState, UGStore } from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
 import { BannerModel } from "../../public/network/Model/BannerModel"
 import { Icon, Button } from 'react-native-elements';
 import { httpClient } from "../../public/network/httpClient"
 import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
 import AppDefine from "../../public/define/AppDefine"
@@ -43,9 +41,9 @@ import RankListCP from "../../public/widget/RankList";
 const ZLHomePage = ({ navigation }) => {
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "" } = userStore
-    const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const systemStore = UGStore.globalProps.sysConf;
     const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
     const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh } = useGetHomeInfo()
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -320,7 +318,7 @@ const ZLHomePage = ({ navigation }) => {
 
 const TurntableListItem = () => {
     const { width, height } = useDimensions().screen
-    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const { isTest = false, uid = "" } = UGStore.globalProps.userInfo;
     const [turntableListVisiable, setTurntableListVisiable] = useState(false)
     const [turntableList, setTurntableList] = useState<TurntableListModel>()
     useEffect(() => {
@@ -394,9 +392,9 @@ const TurntableListItem = () => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "", unreadMsg } = userStore
-    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const sysStore = UGStore.globalProps.sysConf;
     const { mobile_logo = "" } = sysStore
     return (
         <View style={{
@@ -433,9 +431,9 @@ const ZLHeader = () => {
     )
 }
 const UserStatusBar = () => {
-    const sysConf = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const sysConf = UGStore.globalProps.sysConf
     const { mobileMenu } = sysConf
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const { uid = "", curLevelTitle, usr, curLevelInt, nextLevelInt } = userStore
     return (
         <LinearGradient colors={colorEnum.gradientColor} style={{ height: 62, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -546,20 +544,15 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
 }
 
 const AcctountDetail = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const { uid = "", balance = 0, isTest } = userStore
-    const dispatch = useDispatch()
-    const updateUserInfo = useCallback(
-        (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-        [dispatch]
-    )
 
     const requestBalance = async () => {
         try {
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             //@ts-ignore
             const { data, status } = await APIRouter.user_balance_token()
-            updateUserInfo({ ...userStore, balance: data.data.balance })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);

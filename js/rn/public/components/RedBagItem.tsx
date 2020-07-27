@@ -1,6 +1,6 @@
 import { useDimensions } from "@react-native-community/hooks"
 import { RedBagDetailActivityModel } from "../network/Model/RedBagDetailActivityModel"
-import { IGlobalState } from "../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import { useSelector } from "react-redux"
 import { useState, useEffect } from "react"
 import { Alert, Image, View, TouchableWithoutFeedback } from "react-native"
@@ -12,7 +12,7 @@ import React from 'react'
 import { useLanguageContext } from "../context/LanguageContextProvider"
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage: PageName }) => {
   const { width } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [redBagVisiable, setRedBagVisiable] = useState(false)
   const { currcentLanguagePackage } = useLanguageContext()
   useEffect(() => {

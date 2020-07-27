@@ -25,7 +25,7 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/homes/GameBlock'
 import Header from './views/homes/Header'
 import NavBlock from './views/homes/NavBlock'
@@ -36,8 +36,8 @@ const BZHHomePage = ({ navigation }) => {
   // hooks
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const userStore = UGStore.globalProps.userInfo;
+  const SystemStore = UGStore.globalProps.sysConf;
   const { uid, usr, balance, isTest }: UGUserModel = userStore
   const { mobile_logo } = SystemStore
   const {

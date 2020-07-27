@@ -7,8 +7,7 @@ import Hot2x1Cell from "../cell/Hot2x1Cell";
 import { hotData } from "../dataConfig.ts/hotData";
 import { push } from "../../../public/navigation/RootNavigation";
 import { PageName } from "../../../public/navigation/Navigation";
-import { useSelector } from "react-redux";
-import { IGlobalState } from "../../../redux/store/UGStore";
+import { IGlobalState, UGStore } from "../../../redux/store/UGStore";
 import { HomeGamesModel } from "../../../public/network/Model/HomeGamesModel";
 export enum ViewTypes {
   "2x1",
@@ -21,7 +20,7 @@ const dataProvider = new DataProvider((r1, r2) => {
 
 const HotRecycleList = ({ homeGames }: { homeGames: HomeGamesModel }) => {
   const { width, height } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo;
   const thirdPartGamePress = (id: string, gameID?: string) => {
     if (uid != "") {
       console.log(homeGames.data.icons)

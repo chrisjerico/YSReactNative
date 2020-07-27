@@ -8,12 +8,10 @@ import { Icon } from "react-native-elements"
 import { navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
 import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
-import { useSelector } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
-import { ActionType } from "../../redux/store/ActionTypes"
 import { EventRegister } from 'react-native-event-listeners'
 enum FormName {
     inviter = "inviter",
@@ -36,7 +34,7 @@ const ZLRegisterPage = () => {
     const [regType, setRegType] = useState<'user' | 'agent'>("user")
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [repwdSecureTextEntry, setRepwdSecureTextEntry] = useState(true)
-    const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const SystemStore = UGStore.globalProps.sysConf
     const [code, setCode] = useState("")
     const {
         hide_reco, // 代理人 0不填，1选填，2必填
@@ -87,7 +85,7 @@ const ZLRegisterPage = () => {
                     await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
                     await OCHelper.call('UGUserModel.setCurrentUser:');
                     await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                    UGStore.dispatch({ type: ActionType.Clear_User })
+                    UGStore.dispatch({ type: 'reset', userInfo: {} })
                 }
                 await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
                 await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
@@ -97,7 +95,7 @@ const ZLRegisterPage = () => {
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: UserInfo, } = await APIRouter.user_info()
                 await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: UserInfo?.data });
+                UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
 
                 UGStore.save();
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
