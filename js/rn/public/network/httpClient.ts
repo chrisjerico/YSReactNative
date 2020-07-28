@@ -80,7 +80,7 @@ httpClient.interceptors.response.use(
                 // Toast('帐号已被登出');
               })
             })
-          }
+          })
 
           break;
         case 500:
