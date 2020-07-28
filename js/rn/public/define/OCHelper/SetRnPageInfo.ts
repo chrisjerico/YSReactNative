@@ -2,6 +2,8 @@ import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from '../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
+import {Platform} from "react-native";
+import {ANHelper, NativeCommand} from "../ANHelper/ANHelper";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -329,5 +331,11 @@ export function setRnPageInfo() {
   // }
 
   RnPageModel.pages = pages;
-  OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
+  // if (Platform.OS == 'ios') {
+    OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
+
+  // } else if (Platform.OS == 'android') {
+  //
+  //
+  // }
 }
