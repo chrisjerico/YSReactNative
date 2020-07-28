@@ -33,7 +33,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   if (!isEncrypt) {
     return params;
   }
-  var temp = Object.assign({}, params);
+  let temp = Object.assign({}, params);
 
   try {
     temp['checkSign'] = 1;
@@ -80,8 +80,7 @@ httpClient.interceptors.response.use(
                 // Toast('帐号已被登出');
               })
             })
-          })
-
+          }
 
           break;
         case 500:
