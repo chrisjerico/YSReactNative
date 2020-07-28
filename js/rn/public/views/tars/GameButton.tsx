@@ -33,7 +33,7 @@ const GameButton = (props: GameButtonProps) => {
   const {
     circleColor,
     imageStyle,
-    logo = 'logo',
+    logo = 'https://i.ibb.co/W2tbj1Q/entry-login-toggle-btn.png',//FastImage.source 不能为空
     title = '',
     subTitle = '',
     showSubTitle = false,
