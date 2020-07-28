@@ -56,11 +56,9 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  let skitType = Skin1.skitType;
+  const skitType = Skin1.skitType;
   console.log("------------------skitType------------------", skitType)
-  alert("幹------是有沒有進codePush拉,youde ")
 
-  skitType = '尊龙';
   if (skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {

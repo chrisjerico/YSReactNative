@@ -64,7 +64,9 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    key = '尊龙';
+    if (B_DEBUG) {
+      //key = '宝石红';
+    }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor =
       theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
