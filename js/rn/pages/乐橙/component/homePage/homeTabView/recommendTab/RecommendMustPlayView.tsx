@@ -2,12 +2,6 @@ import {Text, View} from "react-native";
 import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
-import PushHelper from "../../../../../../public/define/PushHelper";
-import {push} from "../../../../../../public/navigation/RootNavigation";
-import {PageName} from "../../../../../../public/navigation/Navigation";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../../redux/store/UGStore";
-import useGetHomeInfo from "../../../../../../public/hooks/useGetHomeInfo";
 
 export const RecommendMustPlayView = ({list, thirdPartGamePress}: { list: List[], thirdPartGamePress: (id: string, gameID?: string) => void }) => {
     return (

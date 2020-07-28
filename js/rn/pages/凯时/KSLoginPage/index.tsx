@@ -63,7 +63,7 @@ const KSLogin = ({ route, navigation }) => {
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
       }

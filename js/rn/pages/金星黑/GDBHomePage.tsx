@@ -165,7 +165,7 @@ const GDBHomePage = ({ navigation }) => {
 
 const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean, homeGames: HomeGamesModel }) => {
   const { width } = useDimensions().screen
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo;
   const { uid = "" } = userStore
   const thirdPartGamePress = (subIndex, index: number) => {
     if (uid == '') {

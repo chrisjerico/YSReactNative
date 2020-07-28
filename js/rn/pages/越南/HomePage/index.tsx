@@ -27,8 +27,7 @@ import { useLanguageContext } from "../../../public/context/LanguageContextProvi
 import RankListCP from "../../../public/widget/RankList";
 import useSpriteImage from "../../../public/hooks/useSpriteImage";
 import { httpClient } from "../../../public/network/httpClient";
-import { useSelector } from "react-redux";
-import { IGlobalState } from "../../../redux/store/UGStore";
+import { IGlobalState, UGStore } from "../../../redux/store/UGStore";
 import PromotionsBlock from "../../../public/components/PromotionsBlock";
 
 const VietnamHomePage = () => {
@@ -41,7 +40,7 @@ const VietnamHomePage = () => {
   const { width, height } = useDimensions().screen
   const [selectId, setSelectedId] = useState(-1)
   const { onPopViewPress } = usePopUpView()
-  const { webName } = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const { webName } = UGStore.globalProps.sysConf;
   const { imageArray } = useSpriteImage({
     source: "http://test24.6yc.com/views/mobileTemplate/24/images/icon_game_type.png",
     size: {

@@ -1,7 +1,6 @@
 import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
-import { useSelector, useDispatch } from "react-redux"
 import FastImage from "react-native-fast-image"
 import { Icon } from "react-native-elements"
 import LinearGradient from "react-native-linear-gradient"
@@ -20,14 +19,9 @@ import { UGUserCenterType } from "../../../redux/model/全局/UGSysConfModel"
 import PushHelper from "../../../public/define/PushHelper"
 import { pop } from "../../../public/navigation/RootNavigation"
 const KSMine = ({ navigation }) => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo;
   const { width, } = useDimensions().window
   const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
-  const dispatch = useDispatch()
-  const updateUserInfo = useCallback(
-    (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-    [dispatch]
-  )
   const [infoModel, setInfoModel] = useState<YueBaoStatModel>()
   const { loginOut } = useLoginOut(PageName.KSHomePage)
   const { UGUserCenterItem } = useMemberItems()
@@ -35,7 +29,7 @@ const KSMine = ({ navigation }) => {
     try {
       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
       const { data, status } = await APIRouter.user_balance_token()
-      updateUserInfo({ ...userStore, balance: data.data.balance })
+      UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
       OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
     } catch (error) {
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
@@ -57,7 +51,7 @@ const KSMine = ({ navigation }) => {
 
     navigation.addListener('focus', async () => {
       const { data: userInfo } = await APIRouter.user_info()
-      UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+      UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
       UGStore.save();
     });
     return (() => {

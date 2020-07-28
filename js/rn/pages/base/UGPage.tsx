@@ -10,6 +10,8 @@ import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNav
 import LinearGradient from 'react-native-linear-gradient'
 import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import { navigationRef } from '../../public/navigation/RootNavigation'
 
 
 // Props
@@ -70,6 +72,11 @@ export default (Page: Function) => {
             this.setProps(params);
           }
           didFocus && didFocus(params);
+        })
+        navigation.addListener('transitionEnd', (e) => {
+          if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+          }
         })
         // 监听dispatch
         this.unsubscribe = UGStore.subscribe(route.name, (() => {

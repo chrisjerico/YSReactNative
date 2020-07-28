@@ -2,9 +2,7 @@ import { View, Animated, Text, Image, TextStyle } from "react-native"
 import { RankListModel } from "../network/Model/RankListModel"
 import { useEffect, useState } from "react"
 import React from 'react'
-import { useLanguageContext } from "../context/LanguageContextProvider"
-import { useSelector } from "react-redux"
-import { IGlobalState, UGStore } from "../../redux/store/UGStore"
+import { UGStore } from "../../redux/store/UGStore"
 const RankListCP = ({ ranks, width, height = 200, backgroundColor = 'white', textColor = "black", timing = 10000, titleTextStyle }:
   { ranks: RankListModel, width: number, height?: number, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle }) => {
   const [currentY] = useState(new Animated.Value(height))

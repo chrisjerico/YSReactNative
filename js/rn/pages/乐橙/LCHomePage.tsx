@@ -30,7 +30,6 @@ import usePopUpView from "../../public/hooks/usePopUpView";
 import AutoHeightWebView from "react-native-autoheight-webview";
 import FastImage from "react-native-fast-image";
 import RedBagItem from "../../public/components/RedBagItem";
-import { useSelector } from "react-redux";
 import { IGlobalState, UGStore } from "../../redux/store/UGStore";
 import { TurntableListModel } from "../../public/network/Model/TurntableListModel";
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
@@ -48,7 +47,7 @@ import { httpClient } from "../../public/network/httpClient";
 const LCHomePage = ({ navigation }) => {
     const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading } = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
-    const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const systemStore = UGStore.globalProps.sysConf;
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const { width } = useDimensions().screen
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -82,10 +81,10 @@ const LCHomePage = ({ navigation }) => {
     const reloadData = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');
         if (!user) {
-            UGStore.dispatch({ type: ActionType.Clear_User, });
+            UGStore.dispatch({ type: 'reset', userInfo:{}});
             UGStore.save();
         } else {
-            UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: user });
+            UGStore.dispatch({ type: 'merge', userInfo:user });
             UGStore.save();
         }
     }
@@ -285,7 +284,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
 }
 const TurntableListItem = () => {
     const { width, height } = useDimensions().screen
-    const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const { isTest = false, uid = "" } = UGStore.globalProps.userInfo;
     const [turntableListVisiable, setTurntableListVisiable] = useState(false)
     const [turntableList, setTurntableList] = useState<TurntableListModel>()
     useEffect(() => {
