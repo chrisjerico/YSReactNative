@@ -8,7 +8,6 @@ import PushHelper from "../../public/define/PushHelper"
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 import { PageName } from '../../public/navigation/Navigation';
-import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
 import { BannerModel, } from "../../public/network/Model/BannerModel"
@@ -16,7 +15,6 @@ import { Icon, Button } from 'react-native-elements';
 import { httpClient } from "../../public/network/httpClient"
 import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
 import AppDefine from "../../public/define/AppDefine"
@@ -36,9 +34,8 @@ import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "" } = userStore
-  const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const [show, setShow] = useState(false)
   const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -367,19 +364,14 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
 
 
 const AcctountDetail = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "", balance = 0 } = userStore
-  const dispatch = useDispatch()
-  const updateUserInfo = useCallback(
-    (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-    [dispatch]
-  )
   const [hideAmount, setHideAmount] = useState(false)
   const requestBalance = async () => {
     try {
       //@ts-ignore
       const { data, status } = await APIRouter.user_balance_token()
-      updateUserInfo({ ...userStore, balance: data.data.balance })
+      UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
     } catch (error) {
 
     }
@@ -400,7 +392,7 @@ const AcctountDetail = () => {
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
 
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
 
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);

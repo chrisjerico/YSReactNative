@@ -4,7 +4,7 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import FastImage from 'react-native-fast-image';
 import PushHelper from '../../public/define/PushHelper';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { PageName } from '../../public/navigation/Navigation';
+import { PageName,  } from '../../public/navigation/Navigation';
 import { Icon, } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
@@ -13,9 +13,8 @@ import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
-import { ActionType } from '../../redux/store/ActionTypes';
-import { useDimensions } from '@react-native-community/hooks';
 import DialogInput from 'react-native-dialog-input';
+
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
     const { control, errors, handleSubmit } = useForm()
@@ -64,7 +63,7 @@ const ZLLoginPage = ({ route, navigation }) => {
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
                 UGStore.save();
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
             }

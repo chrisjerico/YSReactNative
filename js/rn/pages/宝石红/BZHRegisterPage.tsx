@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { useSelector } from 'react-redux'
 import SlidingVerification from '../../../rn/public/components/SlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
@@ -24,7 +23,7 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
@@ -55,7 +54,7 @@ const validPassword = (password: string, pass_limit: number) => {
 
 const BZHRegisterPage = () => {
   // hooks
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const SystemStore = UGStore.globalProps.sysConf;
   const { register } = useRegister()
 
   // state

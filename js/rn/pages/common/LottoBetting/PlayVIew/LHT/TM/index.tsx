@@ -2,8 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { View, Image, Text, TouchableWithoutFeedback, FlatList, ScrollView, TouchableOpacity } from 'react-native'
 
 import { useDimensions } from '@react-native-community/hooks';
-import { useDispatch, useSelector } from 'react-redux';
-import { IGlobalState } from '../../../../../../redux/store/UGStore';
+import { IGlobalState, UGStore } from '../../../../../../redux/store/UGStore';
 import { ShengXiaoTitle } from '../../lottoSetting';
 import { BettingReducerActions } from '../../../../../../redux/reducer/BettingReducer';
 import HKBallsView from '../HKBallsView';
@@ -11,8 +10,7 @@ import HKSBItemView from '../HKSBItemView';
 import HKNormalItemView from '../HKNormalItemView';
 
 const TMPlayView = () => {
-  const { selectedShengXiao, shengXiaoValue } = useSelector((state: IGlobalState) => state.BettingReducer)
-  const dispatch = useDispatch()
+  const { selectedShengXiao, shengXiaoValue } = UGStore.globalProps.BettingReducer;
   const [label, setLabel] = useState<"特码A" | "特码B">("特码A")
   return <View style={{ flex: 1 }}>
     <View style={{ height: 40 }}>
@@ -31,7 +29,7 @@ const TMPlayView = () => {
       <FlatList style={{ height: 40 }} keyExtractor={(item, index) => item + index} horizontal={true} data={ShengXiaoTitle} renderItem={({ item }) => {
         return (
           <TouchableWithoutFeedback onPress={() => {
-            dispatch({ type: BettingReducerActions.shengXiaoPress, value: item })
+            UGStore.dispatch({ type: BettingReducerActions.shengXiaoPress, value: item })
           }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingRight: 20, height: 40 }}>
               <Image style={{ width: 20, height: 20 }} source={{ uri: selectedShengXiao?.[item] == shengXiaoValue[item].length ? "RadioButton-Selected" : "RadioButton-Unselected" }} />
@@ -46,7 +44,7 @@ const TMPlayView = () => {
 }
 const itemSize = 40
 const GameGroup = ({ label = "特码A" }: { label?: "特码A" | "特码B" }) => {
-  const { currentPlayOdd } = useSelector((state: IGlobalState) => state.BettingReducer)
+  const { currentPlayOdd } = UGStore.globalProps.BettingReducer;
   const { width } = useDimensions().screen
   return (
     <ScrollView style={{ flex: 1, }}>

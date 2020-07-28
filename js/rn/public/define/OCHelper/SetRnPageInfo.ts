@@ -1,6 +1,6 @@
+import { Skin1 } from './../../theme/UGSkinManagers';
 import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
-import { Skin1 } from '../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
 
 export class RnPageModel {
@@ -19,8 +19,9 @@ export class RnPageModel {
   }
 
   // 替换oc页面
-  vcName?: string; // oc页面类名
-  rnName: PageName; // rn页面类名
+  vcName?: string; // 要被替换的oc页面类名
+  vcName2?: string; // 要替换的oc页面类型
+  rnName?: PageName; // rn页面类名
   fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
   fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
   允许游客访问?: boolean;
@@ -56,8 +57,10 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  console.log("------------------Skin1.skitType------------------", Skin1.skitType)
-  if (Skin1.skitType.indexOf('白曜') != -1) {
+  let skitType = Skin1.skitType; 
+  skitType = '尊龙'; // 測試開發
+  console.log("------------------skitType------------------", skitType)
+  if (skitType.indexOf('白曜') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -93,7 +96,7 @@ export function setRnPageInfo() {
       },
     ])
   }
-  if (Skin1.skitType.indexOf('凯时') != -1) {
+  if (skitType.indexOf('凯时') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -132,7 +135,7 @@ export function setRnPageInfo() {
   }
 
   // 威尼斯页面
-  if (Skin1.skitType.indexOf('威尼斯') != -1) {
+  if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -154,7 +157,7 @@ export function setRnPageInfo() {
   }
 
   //宝石红页面
-  if (Skin1.skitType.indexOf('宝石红') != -1) {
+  if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -192,7 +195,7 @@ export function setRnPageInfo() {
   }
 
   // 六合厅页面
-  if (Skin1.skitType.indexOf('六合厅') != -1) {
+  if (skitType.indexOf('六合厅') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -213,7 +216,7 @@ export function setRnPageInfo() {
     ])
   }
 
-  if (Skin1.skitType.indexOf('乐橙') != -1) {
+  if (skitType.indexOf('乐橙') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -234,8 +237,7 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (Skin1.skitType.indexOf('尊龙') != -1) { //
-    pages = []
+  if (skitType.indexOf('尊龙') != -1) { //
     pages = pages.concat([
       {
         // 首页
@@ -275,12 +277,18 @@ export function setRnPageInfo() {
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
+      },
+      {
+        vcName: 'UGBalanceConversionController',
+        vcName2 : 'LineConversionHeaderVC',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: false,
+        允许未登录访问: false,
       }
     ]);
   }
 
-  if (Skin1.skitType.indexOf('金星黑') != -1) {
-    pages = []
+  if (skitType.indexOf('金星黑') != -1) {
     pages = pages.concat([
       {
         // 首页
@@ -324,44 +332,6 @@ export function setRnPageInfo() {
       }
     ]);
   }
-
-  // 综合体育页面
-  // if (Skin1.skitType.indexOf('综合体育') != -1) {
-  //   pages = pages.concat([
-  //     // {
-  //     //   // 首页
-  //     //   tabbarItemPath: '/home',
-  //     //   rnName: PageName.ZHTYHomePage,
-  //     //   fd_prefersNavigationBarHidden: true,
-  //     //   允许游客访问: true,
-  //     //   允许未登录访问: true,
-  //     // },
-  //     {
-  //       // 登录
-  //       vcName: 'UGLoginViewController',
-  //       rnName: PageName.ZHTYLoginPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 注册
-  //       vcName: 'UGRegisterViewController',
-  //       rnName: PageName.ZHTYRegisterPage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: true,
-  //     },
-  //     {
-  //       // 我的页
-  //       tabbarItemPath: '/user',
-  //       rnName: PageName.ZHTYMinePage,
-  //       fd_prefersNavigationBarHidden: true,
-  //       允许游客访问: true,
-  //       允许未登录访问: false,
-  //     },
-  //   ]);
-  // }
 
   RnPageModel.pages = pages;
   OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);

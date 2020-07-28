@@ -4,8 +4,7 @@ import RedBagItem from './RedBagItem'
 import useGetHomeInfo from '../hooks/useGetHomeInfo'
 import FastImage, { FastImageSource } from 'react-native-fast-image'
 import { useDimensions } from '@react-native-community/hooks'
-import { useSelector } from 'react-redux'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
 import APIRouter from '../network/APIRouter'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -56,7 +55,7 @@ const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundCol
 }
 const TurntableListItem = () => {
   const { width, height } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [turntableListVisiable, setTurntableListVisiable] = useState(false)
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   useEffect(() => {

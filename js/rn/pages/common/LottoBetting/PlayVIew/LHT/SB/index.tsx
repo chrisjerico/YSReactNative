@@ -1,12 +1,11 @@
 import { View, ScrollView } from "react-native"
 import React from 'react'
-import { useSelector } from "react-redux"
 
 import { useDimensions } from "@react-native-community/hooks"
 import HKSBItemView from "../HKSBItemView"
-import { IGlobalState } from "../../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../../redux/store/UGStore"
 const SBContainer = () => {
-  const { currentPlayOdd, } = useSelector((state: IGlobalState) => state.BettingReducer)
+  const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   const { width } = useDimensions().screen
   return (
     <ScrollView style={{ flex: 1 }}>

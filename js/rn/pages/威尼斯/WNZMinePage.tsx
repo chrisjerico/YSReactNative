@@ -11,12 +11,11 @@ import GameButton from '../../public/views/tars/GameButton'
 import Header from './views/Header'
 import ButtonGroup from './views/mines/ButtonGroup'
 import ToolBlock from './views/mines/ToolBlock'
-import { IGlobalState } from '../../redux/store/UGStore'
-import { useSelector } from 'react-redux'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 
 const WNZMinePage = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { avatar, balance, usr }: UGUserModel = userStore
   const { UGUserCenterItem } = useMemberItems()
 

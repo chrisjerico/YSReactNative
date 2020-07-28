@@ -3,14 +3,12 @@ import { View, Text, Platform, TouchableWithoutFeedback } from 'react-native'
 import { useDimensions } from '@react-native-community/hooks'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage from 'react-native-fast-image'
-import { useSelector } from 'react-redux'
 import { IGlobalState, UGStore } from '../../../redux/store/UGStore'
 import { getLanguageCode } from '../../../public/tools/getLanguageString'
 import { push } from '../../../public/navigation/RootNavigation'
 import { PageName } from '../../../public/navigation/Navigation'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import APIRouter from '../../../public/network/APIRouter'
-import { ActionType } from '../../../redux/store/ActionTypes'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { useLanguageContext } from '../../../public/context/LanguageContextProvider'
 import PushHelper from '../../../public/define/PushHelper'
@@ -21,8 +19,8 @@ import AppDefine from '../../../public/define/AppDefine'
 const Header = () => {
   const { width } = useDimensions().screen
   const { top } = useSafeArea()
-  const { mobile_logo } = useSelector((state: IGlobalState) => state.SysConfReducer)
-  const { uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { mobile_logo } = UGStore.globalProps.sysConf;
+  const { uid = "" } = UGStore.globalProps.userInfo;
   const testPlay = async () => {
     try {
       const { data, status } = await APIRouter.user_guestLogin()
@@ -36,7 +34,7 @@ const Header = () => {
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
       }

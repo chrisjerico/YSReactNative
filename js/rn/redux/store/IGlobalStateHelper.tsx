@@ -1,5 +1,4 @@
 import UGUserModel from '../model/全局/UGUserModel'
-import { ActionType, UGAction } from './ActionTypes'
 import UGSysConfModel from '../model/全局/UGSysConfModel'
 import { UGStore } from './UGStore'
 import NetworkRequest1 from '../../public/network/NetworkRequest1'
@@ -15,16 +14,16 @@ export const AsyncStorageKey = {
 
 export class IGlobalStateHelper {
   static updateUserInfo() {
-    NetworkRequest1.user_info().then((user) => {
-      UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: user })
-      UGStore.save()
-    })
+    NetworkRequest1.user_info().then(user => {
+      UGStore.dispatch({ type: 'merge', userInfo: user })
+      UGStore.save();
+    });
   }
   // 获取系统配置信息
   static updateSysConf(sysConf: UGSysConfModel) {
     function refreshUI(sysConf: UGSysConfModel) {
       // 设置当前配置
-      UGStore.dispatch({ type: ActionType.UpdateSysConf, props: sysConf })
+      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
 
       if (Platform.OS == 'ios') {
         // 设置皮肤
@@ -48,33 +47,6 @@ export class IGlobalStateHelper {
   }
 }
 
-// 更新用户信息
-export function UserInfoReducer(
-  prevState: UGUserModel | any = {},
-  act: UGAction<UGUserModel>
-): UGUserModel {
-  if (act.type === ActionType.UpdateAll)
-    return { ...prevState, ...act.state.UserInfoReducer }
-  if (act.type === ActionType.UpdateUserInfo)
-    return { ...prevState, ...act.props }
-  //@ts-ignore
-  if (act.type === ActionType.Clear_User) return {}
-  return prevState
-}
-
-// 更新系统配置信息
-export function SysConfReducer(
-  prevState: UGSysConfModel | any = {},
-  act: UGAction<UGSysConfModel>
-): UGSysConfModel {
-  if (act.type === ActionType.UpdateAll)
-    return { ...prevState, ...act.state.SysConfReducer }
-  if (act.type === ActionType.UpdateSysConf)
-    return { ...prevState, ...act.props }
-
-  return prevState
-}
-
 export async function updateUserInfo() {
   console.log('-------------updateUserInfo-------------')
   if (
@@ -85,8 +57,8 @@ export async function updateUserInfo() {
   try {
     const { data } = await APIRouter.user_info()
     if (data.data) {
-      UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: data?.data })
-      UGStore.save()
+      UGStore.dispatch({ type: 'merge', userInfo: data?.data });
+      UGStore.save();
     } else {
       throw { message: data.msg }
     }
@@ -95,7 +67,7 @@ export async function updateUserInfo() {
     // await OCHelper.call('UGUserModel.setCurrentUser:', []);
     // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
     // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-    // UGStore.dispatch({ type: ActionType.Clear_User });
+    // UGStore.dispatch({ type: 'reset', userInfo: {} });
     // UGStore.save();
   }
 }

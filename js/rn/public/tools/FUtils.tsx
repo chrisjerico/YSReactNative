@@ -17,8 +17,8 @@ export default class FUtils {
   }
 }
 
-// 合并Props
-export function mergeProps<P>(...propsArray: P[]): P {
+// 深度合并Props
+export function deepMergeProps<P>(...propsArray: P[]): P {
   const retProps: any = {};
   // 合并
   propsArray.forEach(props => {
@@ -29,14 +29,14 @@ export function mergeProps<P>(...propsArray: P[]): P {
 
       if (typeof k == 'string' && k.toLowerCase().indexOf('style') != -1 && (currentValue instanceof Array || newValue instanceof Array)) {
         if (currentValue instanceof Array && newValue instanceof Array) {
-          currentValue = mergeProps(...currentValue, ...newValue);
+          currentValue = deepMergeProps(...currentValue, ...newValue);
         } else if (currentValue instanceof Array) {
-          currentValue = mergeProps(...currentValue, newValue);
+          currentValue = deepMergeProps(...currentValue, newValue);
         } else if (newValue instanceof Array) {
-          currentValue = mergeProps(currentValue, ...newValue);
+          currentValue = deepMergeProps(currentValue, ...newValue);
         }
       } else if (typeof currentValue == 'object' && typeof newValue == 'object' && !(currentValue instanceof Array) && !(newValue instanceof Array)) {
-        currentValue = mergeProps(currentValue, newValue);
+        currentValue = deepMergeProps(currentValue, newValue);
       } else {
         currentValue = newValue;
       }

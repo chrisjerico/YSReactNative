@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform, AsyncStorage } from 'react-native';
-import { ActionType } from '../../redux/store/ActionTypes';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
@@ -77,7 +76,7 @@ httpClient.interceptors.response.use(
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
               OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
                 updateUserInfo()
-                UGStore.dispatch({ type: ActionType.Clear_User })
+                UGStore.dispatch({ type: 'reset', userInfo: {} })
                 // Toast('帐号已被登出');
               })
             })

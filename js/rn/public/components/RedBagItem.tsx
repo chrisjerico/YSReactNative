@@ -1,6 +1,5 @@
 import { RedBagDetailActivityModel } from "../network/Model/RedBagDetailActivityModel"
-import { IGlobalState } from "../../redux/store/UGStore"
-import { useSelector } from "react-redux"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import { useState, useEffect } from "react"
 import { Alert, Image, TouchableWithoutFeedback } from "react-native"
 import { navigate } from "../navigation/RootNavigation"
@@ -11,7 +10,7 @@ import React from 'react'
 import { useDimensions } from '@react-native-community/hooks'
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
   const { width } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [redBagVisiable, setRedBagVisiable] = useState(false)
   useEffect(() => {
     if (redBag) {
