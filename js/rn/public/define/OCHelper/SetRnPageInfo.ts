@@ -58,7 +58,7 @@ export function setRnPageInfo() {
   });
 
   let skitType = Skin1.skitType; 
-  skitType = '尊龙'; // 測試開發
+  // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   if (skitType.indexOf('白曜') != -1) {
     pages = pages.concat([
