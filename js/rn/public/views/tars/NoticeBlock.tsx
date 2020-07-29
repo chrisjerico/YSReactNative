@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
@@ -30,27 +30,28 @@ const NoticeBlock = ({
   }))
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]}>
-      <View style={[styles.iconContainer, iconContainerStyle]}>
-        {logo ? <FastImage
-          resizeMode={'stretch'}
-          style={styles.iconImage}
-          source={{ uri: logo }}
-        /> :
-          <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>
-        }
+    <TouchableWithoutFeedback onPress={onPressNotice}>
+      <View style={[styles.container, containerStyle]}>
+        <View style={[styles.iconContainer, iconContainerStyle]}>
+          {logo ? <FastImage
+            resizeMode={'stretch'}
+            style={styles.iconImage}
+            source={{ uri: logo }}
+          /> :
+            <Text style={[styles.logoTextStyle, logoTextStyle]}>{logoText}</Text>
+          }
+        </View>
+        <View style={styles.noticContainer}>
+          <MarqueeHorizontal
+            width={scale(430)}
+            height={'70%'}
+            textStyle={styles.textStyle}
+            textList={cleanContents}
+            speed={60}
+          />
+        </View>
       </View>
-      <View style={styles.noticContainer}>
-        <MarqueeHorizontal
-          width={scale(430)}
-          height={'70%'}
-          textStyle={styles.textStyle}
-          textList={cleanContents}
-          speed={60}
-          onTextClick={onPressNotice}
-        />
-      </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -19,7 +20,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
@@ -49,7 +52,6 @@ const BZHHomePage = () => {
     rankList,
     redBag,
     couponListData,
-    onRefresh,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -90,6 +92,10 @@ const BZHHomePage = () => {
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
 
+  // .map((coupon) => {
+  //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
+  // })
+
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -110,6 +116,7 @@ const BZHHomePage = () => {
           />
         </SafeAreaHeader>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           style={styles.container}
           refreshControl={
             <RefreshControlComponent
@@ -214,28 +221,30 @@ const BZHHomePage = () => {
                 />
               )
             })}
+            <CouponBlock
+              onPressMore={() => {
+                push(PageName.PromotionListPage)
+              }}
+              containerStyle={styles.subComponent}
+              coupons={coupons}
+              renderCoupon={(item, index) => {
+                const { pic, linkCategory, linkPosition, title, content } = item
+                return (
+                  <AutoHeightCouponComponent
+                    key={index}
+                    enableOnPressPop={linkCategory == 0}
+                    title={title}
+                    pic={pic}
+                    content={content}
+                    onPress={() => {
+                      console.log(item)
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }}
+                  />
+                )
+              }}
+            />
           </View>
-          <CouponBlock
-            onPressMore={() => {
-              push(PageName.PromotionListPage)
-            }}
-            containerStyle={styles.subComponent}
-            coupons={coupons}
-            renderCoupon={(item, index) => {
-              const { pic, linkCategory, linkPosition } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={pic}
-                  containerStyle={styles.couponBanner}
-                  resizeMode={'contain'}
-                  onPress={() =>
-                    PushHelper.pushCategory(linkCategory, linkPosition)
-                  }
-                />
-              )
-            }}
-          />
           <AnimatedRankComponent
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
@@ -287,7 +296,7 @@ const BZHHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   contentContainer: {
     paddingHorizontal: scale(5),

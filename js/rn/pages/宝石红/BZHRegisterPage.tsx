@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -20,7 +20,9 @@ import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
@@ -50,7 +52,6 @@ const validPassword = (password: string, pass_limit: number) => {
 }
 
 const BZHRegisterPage = () => {
-
   // functions
   const jumpToHomePage = () => {
     navigate(PageName.BZHHomePage, {})
@@ -73,7 +74,7 @@ const BZHRegisterPage = () => {
     pass_length_max, // 注册密码最大长度,
     smsVerify, // 手机短信验证,
     zxkfUrl,
-    zxkfUrl2
+    zxkfUrl2,
   }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -87,7 +88,8 @@ const BZHRegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
+  const [slidingVerification, setSlidingVerification] =
+    useState < SlidingVerification > null
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
 
@@ -154,7 +156,7 @@ const BZHRegisterPage = () => {
           <Text style={styles.headerTitle}>{'客服'}</Text>
         </TouchableOpacity>
       </SafeAreaHeader>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
           <View style={{ width: '100%', marginBottom: scale(20) }}>
             <Text style={{ color: 'red' }}>
@@ -388,7 +390,7 @@ const BZHRegisterPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   whiteBlock: {
     backgroundColor: '#ffffff',

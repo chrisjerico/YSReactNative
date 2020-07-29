@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -26,7 +26,6 @@ import { BZHSignInStore } from './BZHSignInProps'
 import Form from './components/Form'
 
 const BZHSignInPage = ({ navigation }) => {
-
   // stores
   const { isRemember, account, password }: BZHSignInStore = useSelector(
     (state: IGlobalState) => state.BZHSignInReducer
@@ -123,7 +122,7 @@ const BZHSignInPage = ({ navigation }) => {
           <Text style={styles.headerTitle}>{'客服'}</Text>
         </TouchableOpacity>
       </SafeAreaHeader>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
           <Form
             show={true}
@@ -283,7 +282,7 @@ const CheckBox = ({ check, onPress }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   whiteBlock: {
     backgroundColor: '#ffffff',

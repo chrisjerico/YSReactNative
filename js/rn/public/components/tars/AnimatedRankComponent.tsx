@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import {
+  Animated,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+  TouchableWithoutFeedback,
+} from 'react-native'
 import { Icon } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { List } from '../../network/Model/RankListModel'
 import { scale } from '../../tools/Scale'
 
@@ -26,7 +32,7 @@ const AnimatedRankComponent = ({
   duration = 15000,
   webName,
   onPressPromotion,
-  onPressComputer
+  onPressComputer,
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
 
@@ -87,9 +93,7 @@ const AnimatedRankComponent = ({
       </View>
       <View style={{ marginTop: scale(30) }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <TouchableOpacity
-            onPress={onPressComputer}
-          >
+          <TouchableWithoutFeedback onPress={onPressComputer}>
             <Text
               style={{
                 color: '#000000',
@@ -97,10 +101,8 @@ const AnimatedRankComponent = ({
             >
               {'💻电脑版'}
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onPressPromotion}
-          >
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={onPressPromotion}>
             <Text
               style={{
                 color: '#000000',
@@ -108,7 +110,7 @@ const AnimatedRankComponent = ({
             >
               {'🎁优惠活动'}
             </Text>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </View>
         <Text
           style={{

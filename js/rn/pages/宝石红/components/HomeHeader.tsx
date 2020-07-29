@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
@@ -48,10 +48,12 @@ const HomeHeader = ({
               resizeMode={'contain'}
             />
           </View>
-          <TouchableOpacity style={styles.right} onPress={onPressUser}>
-            <Text numberOfLines={1}>{name}</Text>
-            <Text>{'￥' + money}</Text>
-          </TouchableOpacity>
+          <TouchableWithoutFeedback onPress={onPressUser}>
+            <View style={styles.right}>
+              <Text numberOfLines={1}>{name}</Text>
+              <Text>{'￥' + money}</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       ) : (
           <View style={styles.row}>

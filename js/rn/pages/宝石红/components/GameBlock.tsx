@@ -2,7 +2,7 @@ import React from 'react'
 import {
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from 'react-native'
@@ -32,9 +32,9 @@ const GameBlock = ({
           <View style={styles.titleBlank} />
           <Text style={styles.title}>{title}</Text>
         </View>
-        <TouchableOpacity onPress={onPressTotal}>
+        <TouchableWithoutFeedback onPress={onPressTotal}>
           <Text style={[styles.title, { color: '#EA0000' }]}>{'全部 >'}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
       <View style={[styles.gamesContainer, contentContainerStyle]}>
         {games?.map(renderGame)}

@@ -71,6 +71,7 @@ const BZHMinePage = () => {
         <Text style={styles.headerTitle}>{'会员中心'}</Text>
       </SafeAreaHeader>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.container}
         refreshControl={
           <RefreshControlComponent
@@ -118,13 +119,14 @@ const BZHMinePage = () => {
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
-              unreadMsg={unreadMsg}
+              unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
         })}
         <Button
+          activeOpacity={1}
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
           titleStyle={styles.logOutTitle}
@@ -164,7 +166,7 @@ const BZHMinePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   logOutButton: {
     backgroundColor: '#ffffff',

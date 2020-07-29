@@ -3,9 +3,9 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   ViewStyle,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -27,26 +27,25 @@ const FeatureList = ({
   unreadMsg,
 }: FeatureListProps) => {
   return (
-    <TouchableOpacity
-      style={[styles.container, containerStyle]}
-      onPress={onPress}
-    >
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode={'contain'}
-          style={styles.image}
-          source={{ uri: logo }}
-        />
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      {showUnreadMsg ? (
-        <View style={styles.unReadContainer}>
-          <Text style={styles.unReadText}>{unreadMsg}</Text>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.container, containerStyle]}>
+        <View style={styles.imageContainer}>
+          <Image
+            resizeMode={'contain'}
+            style={styles.image}
+            source={{ uri: logo }}
+          />
+          <Text style={styles.title}>{title}</Text>
         </View>
-      ) : (
-          <Text style={styles.text}>{'>'}</Text>
-        )}
-    </TouchableOpacity>
+        {showUnreadMsg ? (
+          <View style={styles.unReadContainer}>
+            <Text style={styles.unReadText}>{unreadMsg}</Text>
+          </View>
+        ) : (
+            <Text style={styles.text}>{'>'}</Text>
+          )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
