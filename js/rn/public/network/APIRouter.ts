@@ -93,6 +93,10 @@ class APIRouter {
       token: user?.token
     })
   }
+  static  getTrendData = async (gameMark: string) => {
+    const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+    return httpClient.get<any>(`gameMark=${gameMark}&offset=200&x-session-token=${sessid}`)
+  }
   static secure_imgCaptcha = async () => {
     const accessToken = await OCHelper.call('OpenUDID.value');
     return httpClient.get("c=secure&a=imgCaptcha", {

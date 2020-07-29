@@ -1,22 +1,33 @@
 import {TrendData} from "../interface/trendData";
 import {Dimensions} from "react-native";
 
-export const getTrendData_cqssc_qxc_pcdd = (data) => {
+export const getTrendData_cqssc_qxc_pcdd = (from_name, data, defaultNumber = 0) => {
     const numberArray = []
     let positionArr = []
+    let header =[]
     const {width: screenWidth} = Dimensions.get("screen")
+
+    if(from_name == "pcdd"){
+        header = ['百','十', '个']
+    } else if(from_name == "cqssc") {
+        header = ['万', '千', '百','十', '个']
+    } else if(from_name == "qxc"){   //七星彩
+        header = ['一', '二', '三','四', '五', '六', '七']
+    }
+
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
         const lottoryData = element.data.split(",");
         numberArray[i] = [];
         for (let j = 0; j < 10; j++) {
-            if (Number(lottoryData[0]) == j) {
+            if (Number(lottoryData[defaultNumber]) == j) {
                 numberArray[i][j] = "seat";   //开奖号码占位
             } else {
                 numberArray[i][j] = 0;  //遗漏
             }
         }
     }
+
     let reverseData = numberArray.reverse();  //倒序
     let tabData = [];
     for (let i = 0; i < reverseData.length; i++) {
@@ -56,9 +67,9 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[0]) == j - 1) {
+                    if (Number(lottoryData[defaultNumber]) == j - 1) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[0]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
                     }
@@ -78,9 +89,9 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[0]) == j - 1) {
+                    if (Number(lottoryData[defaultNumber]) == j - 1) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[0]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
                     }
@@ -100,9 +111,9 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[0]) == j - 1) {
+                    if (Number(lottoryData[defaultNumber]) == j - 1) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[0]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
                     }
@@ -116,7 +127,7 @@ export const getTrendData_cqssc_qxc_pcdd = (data) => {
     let totalTimes = getTotalTimes(newTr)
     let averageOmission = getAverageOmission(totalTimes)
 
-    return {data: newTr.reverse(), totalTimes, averageOmission, maximumOmission, maximumConnection, positionArr}
+    return {data: newTr.reverse(), totalTimes, averageOmission, maximumOmission, maximumConnection, positionArr, header}
 }
 
 //最大連出

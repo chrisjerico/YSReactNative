@@ -1,16 +1,16 @@
 import {Dimensions} from "react-native";
 
-export const getTrendData_pk10_pk10nn_xyft = (thisData) => {
-    const default_number = 0
+export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
     let numberArray = []
     let positionArr = []
+    const header = ["冠", "亞", "三", "四", "五", "六", "七", "八", "九", "十"]
     const {width: screenWidth} = Dimensions.get("screen")
     for (let i = 0; i < thisData.length; i++) {
         let element = thisData[i];
         let lottoryData = element.data.split(",");
         numberArray[i] = [];
         for (let j = 0; j < lottoryData.length; j++) {
-            if (Number(lottoryData[default_number]) == (j + 1)) {
+            if (Number(lottoryData[defaultNumber]) == (j + 1)) {
                 numberArray[i][j] = "seat";   //开奖号码占位
             } else {
                 numberArray[i][j] = 0;  //遗漏
@@ -55,9 +55,9 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[default_number]) == j) {
+                    if (Number(lottoryData[defaultNumber]) == j) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[default_number]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
 
@@ -79,9 +79,9 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[default_number]) == j) {
+                    if (Number(lottoryData[defaultNumber]) == j) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[default_number]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
 
@@ -102,9 +102,9 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData) => {
                         newTr[i][j] = element.number
                     }
                 } else {
-                    if (Number(lottoryData[default_number]) == j) {
+                    if (Number(lottoryData[defaultNumber]) == j) {
                         positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
-                        newTr[i][j] = lottoryData[default_number]
+                        newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
                     }
@@ -118,7 +118,7 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData) => {
     let totalTimes = getTotalTimes(newTr)
     let averageOmission = getAverageOmission(totalTimes)
 
-    return {data: newTr.reverse(), totalTimes, averageOmission, maximumOmission, maximumConnection, positionArr}
+    return {data: newTr.reverse(), totalTimes, averageOmission, maximumOmission, maximumConnection, positionArr, header}
 }
 
 //最大連出

@@ -5,4 +5,5 @@ export interface TrendData {
     totalTimes: string[],
     data: any[],
     positionArr: {x: number, y: number}[]
+    header: string[]
 }
