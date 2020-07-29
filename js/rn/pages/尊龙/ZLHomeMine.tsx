@@ -24,6 +24,7 @@ const ZLHomeMine = ({ navigation }) => {
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
+    const [infoModel, setInfoModel] = useState<YueBaoStatModel>()
     const { loginOut } = useLoginOut(PageName.ZLHomePage)
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {

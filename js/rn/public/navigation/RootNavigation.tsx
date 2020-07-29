@@ -77,6 +77,7 @@ function goFirstTransitionPage(page: PageName, props: object, action?: RouterTyp
         } else {
             console.log('跳转到过渡页');
             if (action == RouterType.Stack) {
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
                 navigationRef?.current?.dispatch(StackActions.push(page, props));
             } else {
                 popToRoot();
