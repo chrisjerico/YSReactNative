@@ -16,7 +16,7 @@ const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal }: ProfileB
 
   return (
     <View style={styles.imageBackgroundContainer}>
-      <View style={styles.image}>
+      <ImageBackground style={styles.image} source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/23/images/userBg.png' }}>
         <View style={styles.taskRewardTitleContainer}>
           <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
             {taskRewardTitle}
@@ -45,7 +45,7 @@ const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal }: ProfileB
             </Text>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     </View>
   )
 }
