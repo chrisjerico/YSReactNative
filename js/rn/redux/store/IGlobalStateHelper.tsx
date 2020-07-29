@@ -76,26 +76,26 @@ export function SysConfReducer(
 }
 
 export async function updateUserInfo() {
-  console.log('-------------updateUserInfo-------------')
-  if (
-    httpClient.defaults.baseURL == 'undefined' ||
-    !httpClient.defaults.baseURL
-  )
-    return
+  // if (
+  //   httpClient.defaults.baseURL == 'undefined' ||
+  //   !httpClient.defaults.baseURL
+  // )
+  //   return
   try {
     const { data } = await APIRouter.user_info()
-    if (data.data) {
+    if (data?.data) {
       UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: data?.data })
       UGStore.save()
+      console.log('-------------updateUserInfo success-------------')
     } else {
-      throw { message: data.msg }
+      throw { message: data?.msg }
     }
   } catch (error) {
-    console.log(error)
+    UGStore.dispatch({ type: ActionType.Clear_User })
+    UGStore.save()
+    console.log("-------------updateUserInfo error-------------", error)
     // await OCHelper.call('UGUserModel.setCurrentUser:', []);
     // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
     // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-    // UGStore.dispatch({ type: ActionType.Clear_User });
-    // UGStore.save();
   }
 }

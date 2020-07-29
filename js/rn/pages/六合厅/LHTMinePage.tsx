@@ -4,6 +4,7 @@ import { Button } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
@@ -70,7 +71,16 @@ const LHTMinePage = ({ navigation }) => {
           <Text style={styles.headerTitle}>{'客服'}</Text>
         </TouchableOpacity>
       </SafeAreaHeader>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControlComponent
+            onRefresh={() => {
+              updateUserInfo()
+            }}
+          />
+        }
+      >
         <ProfileBlock
           profileButtons={defaultProfileButtons}
           name={isTest ? '遊客' : usr}

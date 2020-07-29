@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -173,9 +174,9 @@ const LHTHomePage = ({ navigation }) => {
           style={styles.container}
           scrollEnabled={true}
           refreshControl={
-            <RefreshControl
-              refreshing={false}
+            <RefreshControlComponent
               onRefresh={() => {
+                updateUserInfo()
                 announcementModal?.current?.reload()
               }}
             />
@@ -240,7 +241,6 @@ const LHTHomePage = ({ navigation }) => {
               }}
               renderLottery={(item, index) => {
                 const { number, color, sx, showMore } = item
-                console.log('-----showMore-----', showMore)
                 return (
                   <LotteryBall
                     key={index}
@@ -344,7 +344,6 @@ const LHTHomePage = ({ navigation }) => {
             <AnimatedRankComponent
               onPressComputer={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
-
               }}
               onPressPromotion={() => {
                 push(PageName.PromotionListPage)

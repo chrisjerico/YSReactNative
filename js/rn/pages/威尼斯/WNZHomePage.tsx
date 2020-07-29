@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react'
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
@@ -27,7 +28,7 @@ import TabComponent from './components/TabComponent'
 const WNZHomePage = ({ navigation }) => {
   const announcementModal = useRef(null)
   const menuModal = useRef(null)
-  const { balance, usr }: UGUserModel = useSelector(
+  const { balance, usr, uid, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
   const { mobile_logo, webName }: UGSysConfModel = useSelector(
@@ -38,11 +39,9 @@ const WNZHomePage = ({ navigation }) => {
     banner,
     notice,
     homeGames,
-    categoryList,
     rankList,
     lotteryGames,
     systemHomeAds,
-    systemConfig
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -51,12 +50,11 @@ const WNZHomePage = ({ navigation }) => {
     'system_rankingList',
     'game_lotteryGames',
     'system_homeAds',
-    'system_config'
+    'system_config',
   ])
 
-
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
       console.log('------focus------')
       updateUserInfo()
     })
@@ -76,12 +74,10 @@ const WNZHomePage = ({ navigation }) => {
   games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
   const rankLists = rankList?.data?.list ?? []
   // 官 信
-  const leftGames = categoryList?.data ?? []
-
   let lotterys = []
-  lotteryGames?.data?.forEach(ele => lotterys = lotterys.concat(ele?.list))
-  const customiseGames = lotterys.filter(ele => ele?.customise == '2') // 信
-  const officialGames = lotterys.filter(ele => ele?.customise == '0') // 官
+  lotteryGames?.data?.forEach((ele) => (lotterys = lotterys.concat(ele?.list)))
+  const customiseGames = lotterys.filter((ele) => ele?.customise == '2') // 信
+  const officialGames = lotterys.filter((ele) => ele?.customise == '0') // 官
 
   if (loading) {
     return <ProgressCircle />
@@ -90,7 +86,8 @@ const WNZHomePage = ({ navigation }) => {
       <>
         <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
-            name={usr}
+            showBalance={uid ? true : false}
+            name={isTest ? '遊客' : usr}
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
@@ -106,11 +103,10 @@ const WNZHomePage = ({ navigation }) => {
           style={styles.container}
           scrollEnabled={true}
           refreshControl={
-            <RefreshControl
-              refreshing={false}
+            <RefreshControlComponent
               onRefresh={() => {
-                announcementModal?.current?.reload()
                 updateUserInfo()
+                announcementModal?.current?.reload()
                 // onRefresh()
               }}
             />
@@ -247,7 +243,6 @@ const WNZHomePage = ({ navigation }) => {
             containerStyle={{ paddingBottom: scaleHeight(70) }}
             rankContainerStyle={{ borderRadius: 0 }}
             webName={webName}
-
           />
         </ScrollView>
         <MenuModalComponent menus={[]} renderMenu={() => { }} ref={menuModal} />

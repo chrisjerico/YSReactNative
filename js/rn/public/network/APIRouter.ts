@@ -76,7 +76,7 @@ class APIRouter {
       return httpClient.get("c=user&a=info&token=" + user.token)
     } else {
       return Promise.reject({
-
+        "error": "no token"
       })
     }
 

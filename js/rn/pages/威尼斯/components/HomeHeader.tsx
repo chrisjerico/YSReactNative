@@ -13,6 +13,7 @@ interface HomeHeaderProps {
   onPressMenu: () => any;
   onPressComment: () => any;
   onPressUser: () => any;
+  showBalance: boolean;
 }
 
 const HomeHeader = ({
@@ -22,6 +23,7 @@ const HomeHeader = ({
   onPressMenu,
   onPressComment,
   onPressUser,
+  showBalance
 }: HomeHeaderProps) => {
   return (
     <>
@@ -53,24 +55,29 @@ const HomeHeader = ({
           >
             {name}
           </Text>
-          <View
-            style={{
-              backgroundColor: '#df2128',
-              borderRadius: scale(20),
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: scale(5),
-              paddingHorizontal: scale(5),
-            }}
-          >
-            <Text style={{ color: '#ffffff' }}>{balance}</Text>
-            <AntDesign
-              name={'pluscircle'}
-              color={'#ffffff'}
-              style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
-            />
-          </View>
+          {
+            showBalance &&
+            <View
+              style={{
+                backgroundColor: '#df2128',
+                borderRadius: scale(20),
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: scale(5),
+                paddingHorizontal: scale(5),
+              }}
+            >
+
+              <Text style={{ color: '#ffffff' }}>{balance}</Text>
+
+              <AntDesign
+                name={'pluscircle'}
+                color={'#ffffff'}
+                style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
+              />
+            </View>
+          }
         </TouchableOpacity>
         <FontAwesome
           name={'commenting'}

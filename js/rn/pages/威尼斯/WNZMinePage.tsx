@@ -10,10 +10,9 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import ButtonGroup from './components/ButtonGroup'
 import HomeHeader from './components/HomeHeader'
@@ -22,11 +21,13 @@ import ToolBlock from './components/ToolBlock'
 
 const WNZMinePage = () => {
   const {
+    uid,
     balance,
     usr,
     taskRewardTitle,
     taskReward,
     taskRewardTotal,
+    isTest,
   }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const { mobile_logo }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
@@ -57,23 +58,34 @@ const WNZMinePage = () => {
       UGUserCenterType.银行卡管理,
       UGUserCenterType.存款纪录,
       UGUserCenterType.取款纪录,
-      UGUserCenterType.资金明细
+      UGUserCenterType.资金明细,
     ].includes(ele.code)
   )
 
   const recordTools = resetTools?.filter((ele) =>
-    [UGUserCenterType.开奖网, UGUserCenterType.其他注单记录, UGUserCenterType.活动彩金, UGUserCenterType.彩票注单记录, UGUserCenterType.长龙助手].includes(ele.code)
+    [
+      UGUserCenterType.开奖网,
+      UGUserCenterType.其他注单记录,
+      UGUserCenterType.活动彩金,
+      UGUserCenterType.彩票注单记录,
+      UGUserCenterType.长龙助手,
+    ].includes(ele.code)
   )
 
   const activityTools = resetTools?.filter((ele) =>
-    [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele.code)
+    [
+      UGUserCenterType.任务中心,
+      UGUserCenterType.游戏大厅,
+      UGUserCenterType.推荐收益,
+    ].includes(ele.code)
   )
 
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <HomeHeader
-          name={usr}
+          showBalance={uid ? true : false}
+          name={isTest ? '遊客' : usr}
           logo={mobile_logo}
           balance={balance}
           onPressMenu={() => {
@@ -87,7 +99,13 @@ const WNZMinePage = () => {
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
+        refreshControl={
+          <RefreshControlComponent
+            onRefresh={() => {
+              updateUserInfo()
+            }}
+          />
+        }
       >
         <ProfileBlock
           taskReward={taskReward}
