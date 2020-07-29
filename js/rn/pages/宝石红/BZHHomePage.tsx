@@ -28,6 +28,7 @@ import { IGlobalState } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
 import HomeHeader from './components/HomeHeader'
 import NavBlock from './components/NavBlock'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 
 const BZHHomePage = () => {
   // yellowBox
@@ -52,6 +53,7 @@ const BZHHomePage = () => {
     rankList,
     redBag,
     couponListData,
+    systemConfig
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -61,6 +63,7 @@ const BZHHomePage = () => {
     'activity_redBagDetail',
     'activity_turntableList',
     'system_promotions',
+    'system_config'
   ])
 
   const getTurntableList = async () => {
@@ -91,11 +94,10 @@ const BZHHomePage = () => {
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
-
+  const userTabIndex = systemConfig?.data.mobileMenu.findIndex(ele => ele?.path == '\/user')
   // .map((coupon) => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
-
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -111,7 +113,7 @@ const BZHHomePage = () => {
             onPressSignIn={() => push(PageName.BZHSignInPage)}
             onPressSignUp={() => push(PageName.BZHRegisterPage)}
             onPressUser={() => {
-              navigate(PageName.BZHMinePage, {})
+              navigate(PageName.BZHHomePage, { index: userTabIndex })
             }}
           />
         </SafeAreaHeader>
@@ -121,8 +123,8 @@ const BZHHomePage = () => {
           refreshControl={
             <RefreshControlComponent
               onRefresh={() => {
+                updateUserInfo()
                 announcementModal?.current?.reload()
-                // updateUserInfo()
                 // onRefresh()
               }}
             />

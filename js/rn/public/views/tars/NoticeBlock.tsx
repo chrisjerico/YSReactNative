@@ -48,6 +48,7 @@ const NoticeBlock = ({
             textStyle={styles.textStyle}
             textList={cleanContents}
             speed={60}
+            onTextClick={onPressNotice}
           />
         </View>
       </View>
