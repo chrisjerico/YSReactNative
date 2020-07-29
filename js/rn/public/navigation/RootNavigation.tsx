@@ -7,10 +7,7 @@ import { Router, RouterType } from './Router';
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
-export function navigate<P>(page: PageName, props?: P & { index?: number }): boolean {
-    if (props?.index) {
-        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [props.index]);
-    }
+export function navigate<P>(page: PageName, props?: P): boolean {
     return goFirstTransitionPage(page, props);
 }
 
@@ -53,7 +50,7 @@ export function replace(name: string, params?: any) {
     }
 }
 // 复杂页面第一次初始化会卡顿，先去过渡页再切换（优化用户体验）
-function goFirstTransitionPage(page: PageName, props: object, action?: RouterType): boolean {
+function goFirstTransitionPage(page: PageName, props: any, action?: RouterType): boolean {
     action = Router.getPageRouterType(page, action);
 
     if (action === RouterType.None) {

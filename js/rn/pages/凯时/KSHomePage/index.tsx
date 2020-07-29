@@ -386,7 +386,6 @@ const ZLHeader = () => {
 }
 const UserStatusBar = () => {
   const sysConf = UGStore.globalProps.sysConf;
-  const { mobileMenu } = sysConf
   const userStore = UGStore.globalProps.userInfo;
   const { uid = "", curLevelTitle, usr, curLevelInt, nextLevelInt } = userStore
   return (
@@ -417,13 +416,7 @@ const UserStatusBar = () => {
             </>
           </TouchableOpacity >
         </View></> : <TouchableOpacity onPress={() => {
-          let index = -1
-          mobileMenu.map((item, i) => {
-            if (item?.path == '/user') {
-              index = i
-            }
-          })
-          navigate(PageName.ZLMinePage, { index: index != -1 ? index : undefined })
+          PushHelper.pushUserCenterType(UGUserCenterType.我的页);
         }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
 
           <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}

@@ -10,7 +10,15 @@ export interface UGAgentApplyInfo {
 }
 
 // 底部Tab按钮
-export class UGTabbarItem { }
+export class UGTabbarItem {
+  path: string;//界面
+  icon: string;//图标
+  name: string;//标题
+  sort: number;//排序
+  status: boolean;//1=显示建设中页面；0=正常显示
+  isHot: boolean;
+  icon_hot: string;//热门图片路径
+ }
 
 export enum UGUserCenterType {
   存款 = 1,
@@ -33,13 +41,14 @@ export enum UGUserCenterType {
   开奖走势 = 18,
   QQ客服 = 19,
 
-  // 自定义
+  // 自定义（从100+开始写，前面的都是后台定制的）
   资金明细 = 999,
-  六合彩 = 20,
-  聊天室 = 21,
-  每日签到 = 22,
-  登出 = 23,
-  游戏大厅 = 24
+  六合彩 = 100,
+  聊天室 = 101,
+  每日签到 = 102,
+  登出 = 103,
+  游戏大厅 = 104,
+  我的页 = 105
 }
 
 // 我的页功能按钮
