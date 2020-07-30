@@ -18,7 +18,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
     textColor1: '#000000',
     textColor2: '#000000',
-    textColor3: '#000000',
+    textColor3: '#9D9D9D',
     // textColor4: '#ffffff',
     // conversionCellColor: '#444',
     // intoViewColor: '#444',

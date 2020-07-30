@@ -88,8 +88,7 @@ const BZHRegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] =
-    useState < SlidingVerification > null
+  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
 
