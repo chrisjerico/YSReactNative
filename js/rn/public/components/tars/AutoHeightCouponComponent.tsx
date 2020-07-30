@@ -73,10 +73,11 @@ const AutoHeightCouponComponent = ({
               <Text style={{ fontSize: scale(20) }}>{title}</Text>
             </View>
             <View style={{ flex: 8 }}>
-              <ScrollView showsVerticalScrollIndicator={false}>
+              <ScrollView showsVerticalScrollIndicator={true}>
                 <AutoHeightWebView
                   style={{ width: '100%' }}
-                  // scalesPageToFit={true}
+                  scalesPageToFit={true}
+                  // onSizeUpdated={size => setHeight(size?.height)}
                   viewportContent={'width=device-width, user-scalable=no'}
                   source={{
                     html:
