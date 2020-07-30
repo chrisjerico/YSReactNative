@@ -5,12 +5,12 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
   六合厅: {
     skitType: '六合厅',
     skitString: '六合厅',
-    bgColor: ['#f6f6f6', '#f6f6f6'],
+    bgColor: ['#66B3FF', '#66B3FF'],
     get navBarBgColor() { return [this.themeColor, this.themeColor] },
     tabBarBgColor: '#ffffff',
     tabNoSelectColor: '#9D9D9D',
     get tabSelectedColor() { return this.themeColor },
-    progressBgColor: ['#FEC434', '#FE8A23'],
+    progressBgColor: ['#ffffff', '#ffffff'],
     get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
     homeContentSubColor: '#f6f6f6', // 額度轉換Tab // #ffffff
     // cellBgColor: '#444',

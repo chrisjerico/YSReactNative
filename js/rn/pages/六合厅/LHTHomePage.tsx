@@ -167,7 +167,7 @@ const LHTHomePage = ({ navigation }) => {
             onPressSignUp={PushHelper.pushRegister}
             onPressTryPlay={tryPlay}
             onPressLogo={() => {
-              push(PageName.JDPromotionListPage)
+              push(PageName.PromotionListPage)
             }}
           />
         </SafeAreaHeader>
