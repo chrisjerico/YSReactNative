@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(15),
     marginTop: scale(10),
     alignItems: 'center',
+    paddingBottom: scale(20)
   },
   titleContainer: {
     justifyContent: 'space-between',

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
+import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -327,16 +328,17 @@ const LHTHomePage = ({ navigation }) => {
               containerStyle={styles.subComponent}
               coupons={coupons}
               renderCoupon={(item, index) => {
-                const { pic, linkCategory, linkPosition } = item
+                const { pic, linkCategory, linkPosition, title, content } = item
                 return (
-                  <TouchableImage
+                  <AutoHeightCouponComponent
                     key={index}
+                    enableOnPressPop={linkCategory == 0}
+                    title={title}
                     pic={pic}
-                    containerStyle={styles.couponBanner}
-                    resizeMode={'contain'}
-                    onPress={() =>
+                    content={content}
+                    onPress={() => {
                       PushHelper.pushCategory(linkCategory, linkPosition)
-                    }
+                    }}
                   />
                 )
               }}
@@ -364,6 +366,7 @@ const LHTHomePage = ({ navigation }) => {
                     containerStyle={{
                       width: '32%',
                       aspectRatio: 165 / 85,
+                      flex: null
                     }}
                     pic={logo}
                     onPress={() => {

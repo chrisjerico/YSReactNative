@@ -239,7 +239,6 @@ const BZHHomePage = () => {
                     pic={pic}
                     content={content}
                     onPress={() => {
-                      console.log(item)
                       PushHelper.pushCategory(linkCategory, linkPosition)
                     }}
                   />
