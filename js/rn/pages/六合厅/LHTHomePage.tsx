@@ -23,7 +23,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -39,7 +41,7 @@ import {
   defaultDowloadUrl,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo
+  defaultNoticeLogo,
 } from './helpers/config'
 
 const LHTHomePage = ({ navigation }) => {
@@ -68,6 +70,7 @@ const LHTHomePage = ({ navigation }) => {
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
+    systemConfig,
     loading,
     banner,
     homeGames,
@@ -88,6 +91,7 @@ const LHTHomePage = ({ navigation }) => {
     'system_promotions',
     'activity_redBagDetail',
     'system_rankingList',
+    'system_config'
   ])
 
   const getTurntableList = async () => {
@@ -115,6 +119,8 @@ const LHTHomePage = ({ navigation }) => {
   }, [])
 
   // data handle
+  const announce_first = parseInt(systemConfig?.data?.announce_first)
+  const bannersInterval = parseInt(banner?.data?.interval)
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
@@ -184,6 +190,7 @@ const LHTHomePage = ({ navigation }) => {
           }
         >
           <BannerBlock
+            autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
             renderBanner={(item, index) => {
@@ -204,7 +211,9 @@ const LHTHomePage = ({ navigation }) => {
               containerStyle={styles.subComponent}
               notices={notices}
               logo={defaultNoticeLogo}
-              onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
+              onPressNotice={({ content }) => {
+                PushHelper.pushNoticePopUp(content)
+              }}
             />
             <NavBlock
               containerStyle={styles.subComponent}
@@ -366,7 +375,7 @@ const LHTHomePage = ({ navigation }) => {
                     containerStyle={{
                       width: '32%',
                       aspectRatio: 165 / 85,
-                      flex: null
+                      flex: null,
                     }}
                     pic={logo}
                     onPress={() => {
@@ -409,6 +418,7 @@ const LHTHomePage = ({ navigation }) => {
           ref={announcementModal}
           announcements={announcements}
           color={LHThemeColor.六合厅.themeColor}
+          announceFirst={announce_first}
         />
       </>
     )

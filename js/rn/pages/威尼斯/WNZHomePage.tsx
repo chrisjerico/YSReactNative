@@ -16,7 +16,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -35,6 +37,7 @@ const WNZHomePage = ({ navigation }) => {
     (state: IGlobalState) => state.SysConfReducer
   )
   const {
+    systemConfig,
     loading,
     banner,
     notice,
@@ -61,6 +64,9 @@ const WNZHomePage = ({ navigation }) => {
     return unsubscribe
   }, [])
 
+  const announce_first = parseInt(systemConfig?.data?.announce_first)
+  const bannersInterval = parseInt(banner?.data?.interval)
+  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const announcements = notice?.data?.popup ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -113,6 +119,7 @@ const WNZHomePage = ({ navigation }) => {
           }
         >
           <BannerBlock
+            autoplayTimeout={bannersInterval}
             onlineNum={0}
             banners={banners}
             renderBanner={(item, index) => {
@@ -159,22 +166,25 @@ const WNZHomePage = ({ navigation }) => {
               )
             })}
           </View>
-          <BannerBlock
-            showOnlineNum={false}
-            banners={ads}
-            renderBanner={(item, index) => {
-              const { linkCategory, linkPosition, image } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={image}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
-                  }}
-                />
-              )
-            }}
-          />
+          {ads?.length > 0 && (
+            <BannerBlock
+              autoplayTimeout={adSliderTimer}
+              showOnlineNum={false}
+              banners={ads}
+              renderBanner={(item, index) => {
+                const { linkCategory, linkPosition, image } = item
+                return (
+                  <TouchableImage
+                    key={index}
+                    pic={image}
+                    onPress={() => {
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }}
+                  />
+                )
+              }}
+            />
+          )}
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games.map((item, index) => {
               const { logo, name } = item
@@ -250,6 +260,7 @@ const WNZHomePage = ({ navigation }) => {
           ref={announcementModal}
           announcements={announcements}
           color={WNZThemeColor.威尼斯.themeColor}
+          announceFirst={announce_first}
         />
       </>
     )

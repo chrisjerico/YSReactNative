@@ -12,6 +12,7 @@ interface BannerBlockProps {
   renderBanner: (item: List & Data, index: number) => any;
   badgePosition?: BadgePosition;
   showOnlineNum?: boolean;
+  autoplayTimeout: number;
 }
 
 interface BadgePosition {
@@ -25,12 +26,13 @@ const BannerBlock = ({
   renderBanner,
   badgePosition = { top: scale(-200), right: scale(10) },
   showOnlineNum = true,
+  autoplayTimeout
 }: BannerBlockProps) => {
   const { top, right } = badgePosition
   return (
     <View style={styles.container}>
       <UGSwiper
-        style={{}}
+        autoplayTimeout={autoplayTimeout}
         showsPagination={true}
         paginationStyle={{
           bottom: 10,

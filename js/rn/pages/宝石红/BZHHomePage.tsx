@@ -53,7 +53,8 @@ const BZHHomePage = () => {
     rankList,
     redBag,
     couponListData,
-    systemConfig
+    systemConfig,
+    systemHomeAds
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -63,7 +64,8 @@ const BZHHomePage = () => {
     'activity_redBagDetail',
     'activity_turntableList',
     'system_promotions',
-    'system_config'
+    'system_config',
+    'system_homeAds',
   ])
 
   const getTurntableList = async () => {
@@ -83,6 +85,8 @@ const BZHHomePage = () => {
   }, [uid])
 
   // data
+  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
+  const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const announcements = notice?.data?.popup ?? []
@@ -95,9 +99,12 @@ const BZHHomePage = () => {
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
   const userTabIndex = systemConfig?.data.mobileMenu.findIndex(ele => ele?.path == '\/user')
+  const announce_first = parseInt(systemConfig?.data?.announce_first)
+  const ads = systemHomeAds?.data ?? []
   // .map((coupon) => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
+
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -131,6 +138,7 @@ const BZHHomePage = () => {
           }
         >
           <BannerBlock
+            autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
             renderBanner={(item, index) => {
@@ -149,13 +157,15 @@ const BZHHomePage = () => {
           <NoticeBlock
             containerStyle={{ borderRadius: 0 }}
             notices={notices}
-            onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
+            onPressNotice={({ content }) => {
+              PushHelper.pushNoticePopUp(content)
+            }}
           />
           <NavBlock
             navs={navs}
             containerStyle={{ alignItems: 'center' }}
             renderNav={(item, index) => {
-              const { icon, name, logo } = item
+              const { icon, name, logo, gameId } = item
               return (
                 <GameButton
                   key={index}
@@ -166,12 +176,38 @@ const BZHHomePage = () => {
                   title={name}
                   titleStyle={{ fontSize: scale(20) }}
                   onPress={() => {
-                    PushHelper.pushHomeGame(item)
+                    if (gameId == 9) {
+                      push(PageName.PromotionListPage)
+                    } else {
+                      PushHelper.pushHomeGame(item)
+
+                    }
                   }}
                 />
               )
             }}
           />
+          {
+            ads?.length > 0 &&
+            <BannerBlock
+              autoplayTimeout={adSliderTimer}
+              showOnlineNum={false}
+              banners={ads}
+              renderBanner={(item, index) => {
+                const { linkCategory, linkPosition, image } = item
+                return (
+                  <TouchableImage
+                    key={index}
+                    pic={image}
+                    onPress={() => {
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }}
+                  />
+                )
+              }}
+            />
+          }
+
           <View style={styles.contentContainer}>
             {games.map((item) => {
               const { name, list } = item
@@ -289,6 +325,7 @@ const BZHHomePage = () => {
           ref={announcementModal}
           announcements={announcements}
           color={BZHThemeColor.宝石红.themeColor}
+          announceFirst={announce_first}
         />
       </>
     )

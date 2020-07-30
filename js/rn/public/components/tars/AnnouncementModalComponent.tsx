@@ -16,6 +16,7 @@ import StringUtils from '../../tools/StringUtils'
 interface AnnouncementModalComponentProps {
   announcements: Scroll[];
   color: string;
+  announceFirst: boolean | number;
 }
 
 interface AnnouncementProps {
@@ -56,11 +57,12 @@ const Announcement = ({
 }
 
 const AnnouncementModalComponent = (
-  { announcements, color }: AnnouncementModalComponentProps,
+  { announcements, color, announceFirst
+  }: AnnouncementModalComponentProps,
   ref: any
 ) => {
   const [visible, setVisible] = useState(true)
-  const [id, setId] = useState(-1)
+  const [id, setId] = useState(announceFirst ? 0 : -1)
 
   useImperativeHandle(ref, () => ({
     reload: () => {
