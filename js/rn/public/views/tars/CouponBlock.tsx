@@ -13,25 +13,31 @@ interface CouponBlock {
   coupons: any[];
   renderCoupon: (item: any, index: number) => any;
   onPressMore: () => any;
+  visible: boolean;
 }
 
 const CouponBlock = ({
+  visible,
   containerStyle,
   coupons = [],
   renderCoupon,
   onPressMore,
 }: CouponBlock) => {
-  return (
-    <View style={[styles.container, containerStyle]}>
-      <View style={styles.titleContainer}>
-        <Text>{'优惠活动'}</Text>
-        <TouchableWithoutFeedback onPress={onPressMore}>
-          <Text>{'查看更多>>'}</Text>
-        </TouchableWithoutFeedback>
+  if (visible) {
+    return (
+      <View style={[styles.container, containerStyle]}>
+        <View style={styles.titleContainer}>
+          <Text>{'优惠活动'}</Text>
+          <TouchableWithoutFeedback onPress={onPressMore}>
+            <Text>{'查看更多>>'}</Text>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.couponsContainer}>{coupons?.map(renderCoupon)}</View>
       </View>
-      <View style={styles.couponsContainer}>{coupons?.map(renderCoupon)}</View>
-    </View>
-  )
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({

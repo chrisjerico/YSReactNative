@@ -37,7 +37,7 @@ const BZHHomePage = () => {
   const { uid, usr, balance, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
-  const { mobile_logo, webName }: UGSysConfModel = useSelector(
+  const { mobile_logo, webName, m_promote_pos }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
   )
   // states
@@ -260,6 +260,7 @@ const BZHHomePage = () => {
               )
             })}
             <CouponBlock
+              visible={m_promote_pos}
               onPressMore={() => {
                 push(PageName.PromotionListPage)
               }}

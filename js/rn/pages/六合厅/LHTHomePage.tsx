@@ -58,7 +58,7 @@ const LHTHomePage = ({ navigation }) => {
   })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   // stores
-  const { mobile_logo, webName }: UGSysConfModel = useSelector(
+  const { mobile_logo, webName, m_promote_pos }: UGSysConfModel = useSelector(
     (state: IGlobalState) => state.SysConfReducer
   )
   const { uid, avatar, usr, isTest }: UGUserModel = useSelector(
@@ -331,6 +331,7 @@ const LHTHomePage = ({ navigation }) => {
               }}
             />
             <CouponBlock
+              visible={m_promote_pos}
               onPressMore={() => {
                 push(PageName.PromotionListPage)
               }}
