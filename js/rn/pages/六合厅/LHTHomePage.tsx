@@ -58,12 +58,15 @@ const LHTHomePage = ({ navigation }) => {
   })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   // stores
-  const { mobile_logo, webName, m_promote_pos }: UGSysConfModel = useSelector(
-    (state: IGlobalState) => state.SysConfReducer
-  )
   const { uid, avatar, usr, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
+  const {
+    mobile_logo,
+    webName,
+    m_promote_pos,
+    rankingListSwitch,
+  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
 
   // states
   const announcementModal = useRef(null)
@@ -91,7 +94,7 @@ const LHTHomePage = ({ navigation }) => {
     'system_promotions',
     'activity_redBagDetail',
     'system_rankingList',
-    'system_config'
+    'system_config',
   ])
 
   const getTurntableList = async () => {
@@ -354,6 +357,7 @@ const LHTHomePage = ({ navigation }) => {
               }}
             />
             <AnimatedRankComponent
+              visible={rankingListSwitch ? true : false}
               onPressComputer={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
               }}

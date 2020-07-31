@@ -37,9 +37,12 @@ const BZHHomePage = () => {
   const { uid, usr, balance, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
-  const { mobile_logo, webName, m_promote_pos }: UGSysConfModel = useSelector(
-    (state: IGlobalState) => state.SysConfReducer
-  )
+  const {
+    mobile_logo,
+    webName,
+    m_promote_pos,
+    rankingListSwitch,
+  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   // states
   const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
@@ -54,7 +57,7 @@ const BZHHomePage = () => {
     redBag,
     couponListData,
     systemConfig,
-    systemHomeAds
+    systemHomeAds,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -98,12 +101,16 @@ const BZHHomePage = () => {
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
-  const userTabIndex = systemConfig?.data.mobileMenu.findIndex(ele => ele?.path == '\/user')
+  const userTabIndex = systemConfig?.data.mobileMenu.findIndex(
+    (ele) => ele?.path == '/user'
+  )
   const announce_first = parseInt(systemConfig?.data?.announce_first)
   const ads = systemHomeAds?.data ?? []
   // .map((coupon) => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
+
+  console.log('-------rankingListSwitch--------', rankingListSwitch)
 
   if (loading) {
     return <ProgressCircle />
@@ -180,41 +187,38 @@ const BZHHomePage = () => {
                       push(PageName.PromotionListPage)
                     } else {
                       PushHelper.pushHomeGame(item)
-
                     }
                   }}
                 />
               )
             }}
           />
-          {
-            ads?.length > 0 &&
-            <BannerBlock
-              autoplayTimeout={adSliderTimer}
-              showOnlineNum={false}
-              banners={ads}
-              renderBanner={(item, index) => {
-                const { linkCategory, linkPosition, image } = item
-                return (
-                  <TouchableImage
-                    key={index}
-                    pic={image}
-                    onPress={() => {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }}
-                  />
-                )
-              }}
-            />
-          }
-
+          <BannerBlock
+            visible={ads?.length > 0}
+            autoplayTimeout={adSliderTimer}
+            showOnlineNum={false}
+            banners={ads}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, image } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={image}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }}
+                />
+              )
+            }}
+          />
           <View style={styles.contentContainer}>
             {games.map((item) => {
               const { name, list } = item
               return (
                 <GameBlock
-                  onPressTotal={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                  onPressTotal={
+                    () => PushHelper.pushSecond()
+                    // PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                   }
                   title={name}
                   containerStyle={styles.subComponent}
@@ -284,13 +288,14 @@ const BZHHomePage = () => {
             />
           </View>
           <AnimatedRankComponent
+            visible={rankingListSwitch ? true : false}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
             onPressPromotion={() => {
               push(PageName.PromotionListPage)
             }}
-            containerStyle={[styles.subComponent, styles.bottomComponent]}
+            containerStyle={styles.subComponent}
             rankContainerStyle={{
               width: '95%',
               borderWidth: scale(1),
@@ -305,6 +310,7 @@ const BZHHomePage = () => {
             rankLists={rankLists}
             webName={webName}
           />
+          <View style={styles.bottomComponent} />
         </ScrollView>
         <ActivityComponent
           show={uid && redBagLogo && !isTest}

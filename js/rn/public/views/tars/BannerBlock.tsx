@@ -13,6 +13,7 @@ interface BannerBlockProps {
   badgePosition?: BadgePosition;
   showOnlineNum?: boolean;
   autoplayTimeout: number;
+  visible?: boolean;
 }
 
 interface BadgePosition {
@@ -26,36 +27,41 @@ const BannerBlock = ({
   renderBanner,
   badgePosition = { top: scale(-200), right: scale(10) },
   showOnlineNum = true,
-  autoplayTimeout
+  autoplayTimeout,
+  visible = true,
 }: BannerBlockProps) => {
   const { top, right } = badgePosition
-  return (
-    <View style={styles.container}>
-      <UGSwiper
-        autoplayTimeout={autoplayTimeout}
-        showsPagination={true}
-        paginationStyle={{
-          bottom: 10,
-          left: null,
-          right: 10
-        }}
-      >
-        {banners?.map(renderBanner)}
-      </UGSwiper>
-      {showOnlineNum && (
-        <Badge
-          badgeStyle={[
-            styles.badge,
-            {
-              top,
-              right,
-            },
-          ]}
-          value={'当前在线' + onlineNum}
-        />
-      )}
-    </View>
-  )
+  if (visible) {
+    return (
+      <View style={styles.container}>
+        <UGSwiper
+          autoplayTimeout={autoplayTimeout}
+          showsPagination={true}
+          paginationStyle={{
+            bottom: 10,
+            left: null,
+            right: 10,
+          }}
+        >
+          {banners?.map(renderBanner)}
+        </UGSwiper>
+        {showOnlineNum && (
+          <Badge
+            badgeStyle={[
+              styles.badge,
+              {
+                top,
+                right,
+              },
+            ]}
+            value={'当前在线' + onlineNum}
+          />
+        )}
+      </View>
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({

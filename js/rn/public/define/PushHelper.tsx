@@ -17,6 +17,11 @@ export enum PushRightMenuFrom {
 }
 
 export default class PushHelper {
+  // 
+  static pushSecond() {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotterySecondHomeViewController.new', args1: [{ clsName: 'real_video1' }] }, true]);
+  }
   // 右側選單
   static pushRightMenu(from: PushRightMenuFrom) {
     if (Platform.OS != 'ios') return;

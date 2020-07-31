@@ -33,9 +33,11 @@ const WNZHomePage = ({ navigation }) => {
   const { balance, usr, uid, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )
-  const { mobile_logo, webName }: UGSysConfModel = useSelector(
-    (state: IGlobalState) => state.SysConfReducer
-  )
+  const {
+    mobile_logo,
+    webName,
+    rankingListSwitch,
+  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   const {
     systemConfig,
     loading,
@@ -166,25 +168,24 @@ const WNZHomePage = ({ navigation }) => {
               )
             })}
           </View>
-          {ads?.length > 0 && (
-            <BannerBlock
-              autoplayTimeout={adSliderTimer}
-              showOnlineNum={false}
-              banners={ads}
-              renderBanner={(item, index) => {
-                const { linkCategory, linkPosition, image } = item
-                return (
-                  <TouchableImage
-                    key={index}
-                    pic={image}
-                    onPress={() => {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }}
-                  />
-                )
-              }}
-            />
-          )}
+          <BannerBlock
+            visible={ads?.length > 0}
+            autoplayTimeout={adSliderTimer}
+            showOnlineNum={false}
+            banners={ads}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, image } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={image}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }}
+                />
+              )
+            }}
+          />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games.map((item, index) => {
               const { logo, name } = item
@@ -243,6 +244,7 @@ const WNZHomePage = ({ navigation }) => {
             }}
           />
           <AnimatedRankComponent
+            visible={rankingListSwitch ? true : false}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
@@ -250,12 +252,11 @@ const WNZHomePage = ({ navigation }) => {
               push(PageName.PromotionListPage)
             }}
             rankLists={rankLists}
-            containerStyle={{ paddingBottom: scaleHeight(70) }}
             rankContainerStyle={{ borderRadius: 0 }}
             webName={webName}
           />
+          <View style={styles.bottomComponent} />
         </ScrollView>
-        <MenuModalComponent menus={[]} renderMenu={() => { }} ref={menuModal} />
         <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
@@ -276,6 +277,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: scale(5),
+  },
+  bottomComponent: {
+    paddingBottom: scaleHeight(70),
   },
 })
 

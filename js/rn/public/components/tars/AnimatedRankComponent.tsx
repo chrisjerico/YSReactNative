@@ -21,6 +21,7 @@ interface AnimatedRankComponentProps {
   webName: string;
   onPressPromotion: () => any;
   onPressComputer: () => any;
+  visible: boolean;
 }
 
 const AnimatedRankComponent = ({
@@ -33,6 +34,7 @@ const AnimatedRankComponent = ({
   webName,
   onPressPromotion,
   onPressComputer,
+  visible,
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
 
@@ -52,78 +54,82 @@ const AnimatedRankComponent = ({
     animated()
   }, [])
 
-  return (
-    <View style={containerStyle}>
-      <View style={[styles.iconContainer, iconContainerStyle]}>
-        <Icon name={'bar-chart'} type={'font-awesome'} size={scale(20)} />
-        <Text style={styles.iconText}>{'投注排行榜'}</Text>
-      </View>
-      <View style={[styles.rankContainer, rankContainerStyle]}>
-        <View style={[styles.titleConatiner, titleConatinerStyle]}>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{'用户名称'}</Text>
+  if (visible) {
+    return (
+      <View style={containerStyle}>
+        <View style={[styles.iconContainer, iconContainerStyle]}>
+          <Icon name={'bar-chart'} type={'font-awesome'} size={scale(20)} />
+          <Text style={styles.iconText}>{'投注排行榜'}</Text>
+        </View>
+        <View style={[styles.rankContainer, rankContainerStyle]}>
+          <View style={[styles.titleConatiner, titleConatinerStyle]}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{'用户名称'}</Text>
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{'游戏名称'}</Text>
+            </View>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{'投注金额'}</Text>
+            </View>
           </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{'游戏名称'}</Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>{'投注金额'}</Text>
+          <View style={styles.animatedContainer}>
+            <Animated.View style={{ height: height, width: '100%' }}>
+              {rankLists?.map((item, index) => {
+                const { coin, type, username } = item
+                return (
+                  <View key={index} style={styles.contentContainer}>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.content}>{username}</Text>
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.content}>{type}</Text>
+                    </View>
+                    <View style={styles.textContainer}>
+                      <Text style={styles.content}>{coin}</Text>
+                    </View>
+                  </View>
+                )
+              })}
+            </Animated.View>
           </View>
         </View>
-        <View style={styles.animatedContainer}>
-          <Animated.View style={{ height: height, width: '100%' }}>
-            {rankLists?.map((item, index) => {
-              const { coin, type, username } = item
-              return (
-                <View key={index} style={styles.contentContainer}>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.content}>{username}</Text>
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.content}>{type}</Text>
-                  </View>
-                  <View style={styles.textContainer}>
-                    <Text style={styles.content}>{coin}</Text>
-                  </View>
-                </View>
-              )
-            })}
-          </Animated.View>
+        <View style={{ marginTop: scale(30) }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+            <TouchableWithoutFeedback onPress={onPressComputer}>
+              <Text
+                style={{
+                  color: '#000000',
+                }}
+              >
+                {'💻电脑版'}
+              </Text>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={onPressPromotion}>
+              <Text
+                style={{
+                  color: '#000000',
+                }}
+              >
+                {'🎁优惠活动'}
+              </Text>
+            </TouchableWithoutFeedback>
+          </View>
+          <Text
+            style={{
+              color: '#000000',
+              textAlign: 'center',
+              paddingTop: scale(10),
+            }}
+          >
+            {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
+          </Text>
         </View>
       </View>
-      <View style={{ marginTop: scale(30) }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <TouchableWithoutFeedback onPress={onPressComputer}>
-            <Text
-              style={{
-                color: '#000000',
-              }}
-            >
-              {'💻电脑版'}
-            </Text>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={onPressPromotion}>
-            <Text
-              style={{
-                color: '#000000',
-              }}
-            >
-              {'🎁优惠活动'}
-            </Text>
-          </TouchableWithoutFeedback>
-        </View>
-        <Text
-          style={{
-            color: '#000000',
-            textAlign: 'center',
-            paddingTop: scale(10),
-          }}
-        >
-          {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
-        </Text>
-      </View>
-    </View>
-  )
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({
