@@ -110,7 +110,7 @@ const BZHHomePage = () => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
 
-  console.log('-------rankingListSwitch--------', rankingListSwitch)
+  console.log('-------games--------', games)
 
   if (loading) {
     return <ProgressCircle />
@@ -217,8 +217,8 @@ const BZHHomePage = () => {
               return (
                 <GameBlock
                   onPressTotal={
-                    () => PushHelper.pushSecond()
-                    // PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                    // () => PushHelper.pushSecond()
+                    () => PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                   }
                   title={name}
                   containerStyle={styles.subComponent}
