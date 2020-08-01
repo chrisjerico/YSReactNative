@@ -110,7 +110,6 @@ const BZHHomePage = () => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
 
-  console.log('-------games--------', games)
 
   if (loading) {
     return <ProgressCircle />
@@ -183,6 +182,7 @@ const BZHHomePage = () => {
                   title={name}
                   titleStyle={{ fontSize: scale(20) }}
                   onPress={() => {
+                    console.log("--------item", item)
                     if (gameId == 9) {
                       push(PageName.PromotionListPage)
                     } else {
@@ -194,6 +194,7 @@ const BZHHomePage = () => {
             }}
           />
           <BannerBlock
+            containerStyle={{ aspectRatio: 540 / 135 }}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
@@ -204,6 +205,7 @@ const BZHHomePage = () => {
                 <TouchableImage
                   key={index}
                   pic={image}
+                  resizeMode={'stretch'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
@@ -345,7 +347,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: scale(5),
-    paddingTop: scale(10),
   },
   subComponent: {
     marginTop: scale(10),

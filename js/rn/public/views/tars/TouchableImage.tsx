@@ -6,7 +6,7 @@ interface TouchableImageProps {
   pic: string;
   onPress: () => any;
   containerStyle?: ViewStyle | ViewStyle[];
-  resizeMode?: 'cover' | 'contain';
+  resizeMode?: 'cover' | 'contain' | 'stretch';
   enableFastImage?: boolean;
   onLoad?: (event: any) => any
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ViewStyle } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
 import { Data } from '../../network/Model/HomeADModel'
@@ -14,6 +14,7 @@ interface BannerBlockProps {
   showOnlineNum?: boolean;
   autoplayTimeout: number;
   visible?: boolean;
+  containerStyle?: ViewStyle | ViewStyle[];
 }
 
 interface BadgePosition {
@@ -29,11 +30,12 @@ const BannerBlock = ({
   showOnlineNum = true,
   autoplayTimeout,
   visible = true,
+  containerStyle
 }: BannerBlockProps) => {
   const { top, right } = badgePosition
   if (visible) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,containerStyle]}>
         <UGSwiper
           autoplayTimeout={autoplayTimeout}
           showsPagination={true}
