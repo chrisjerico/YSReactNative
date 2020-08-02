@@ -9,6 +9,7 @@ export enum NativeCommand {
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
   APP_THEME_COLOR = 'UGSkinManagers.currentSkin.navBarBgColor.hexString', //设置主题色
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
+  CURRENT_PAGE = 'CURRENT_PAGE', //当前的界面
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
   APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
@@ -24,7 +25,28 @@ export class ANHelper extends ANEvent {
   // 移除安卓事件
   static removeEvents = ANEvent.removeEvents;
 
-  // 调用安卓函数
+  /**
+   * CallBack调用安卓函数
+   *
+   * @param type 当前类型
+   * @param back 返回值
+   * @param data 参数
+   */
+  static callSync(type: NativeCommand, data?: {[x: string]: any}): string {
+    return this.core.executeSync(
+      JSON.stringify({
+        type: type,
+        ...data,
+      })
+    );
+  }
+
+  /**
+   * Promise 调用安卓函数
+   *
+   * @param type 当前类型
+   * @param data 参数
+   */
   static call(type: NativeCommand, data?: {[x: string]: any}): Promise<any> {
     return this.core.executeCmd(
       JSON.stringify({

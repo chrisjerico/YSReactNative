@@ -43,6 +43,8 @@ import { LanguageContextProvider } from '../../public/context/LanguageContextPro
 import GameList from '../越南/GameList';
 import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
+import {Platform} from "react-native";
+import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -54,14 +56,25 @@ class TabBarController extends Component<{
   }
   tabBarOptions: BottomTabBarOptions = {}
 
+  initName = PageName.UpdateVersionPage;//默认启动页
+
   constructor(props: any) {
     super(props)
     const { navigation } = this.props
     navigation.setOptions({ headerStyle: { height: 0 } })
+
+    //Android 需要特殊处理
+    switch (Platform.OS) {
+      case "android":
+        this.initName = PageName[ANHelper.callSync(NativeCommand.CURRENT_PAGE)];
+        break;
+    }
+
   }
+
   render() {
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
+      <Router.TabNavigator initialRouteName={this.initName} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
         <Router.TabScreen name={PageName.VietnamHome} component={UGPage(VietnamHomePage)} />
