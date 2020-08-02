@@ -41,7 +41,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
     if (Platform.OS == 'ios') {
       return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
     } else {
-      return ANHelper.call(NativeCommand.ENCRYPTION_PARAMS, { params: params });
+      return ANHelper.callAsync(NativeCommand.ENCRYPTION_PARAMS, { params: params });
     }
   } catch (error) {
     console.warn(error);

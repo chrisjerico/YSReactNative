@@ -78,7 +78,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         initHost(host)
       })
     } else if (Platform.OS == 'android') {
-      ANHelper.call(NativeCommand.APP_HOST).then((host: string) => {
+      ANHelper.callAsync(NativeCommand.APP_HOST).then((host: string) => {
         initHost(host)
       })
     }

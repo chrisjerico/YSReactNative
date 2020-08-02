@@ -47,7 +47,7 @@ export class ANHelper extends ANEvent {
    * @param type 当前类型
    * @param data 参数
    */
-  static call(type: NativeCommand, data?: {[x: string]: any}): Promise<any> {
+  static callAsync(type: NativeCommand, data?: {[x: string]: any}): Promise<any> {
     return this.core.executeCmd(
       JSON.stringify({
         type: type,
@@ -60,13 +60,13 @@ export class ANHelper extends ANEvent {
     super.setup();
 
     // 设置接口域名
-    this.call(NativeCommand.APP_HOST).then((host: string) => {
+    this.callAsync(NativeCommand.APP_HOST).then((host: string) => {
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
     });
 
     // 设置站点编号
-    this.call(NativeCommand.APP_SITE).then((siteId: string) => {
+    this.callAsync(NativeCommand.APP_SITE).then((siteId: string) => {
       AppDefine.siteId = siteId;
     });
   }
