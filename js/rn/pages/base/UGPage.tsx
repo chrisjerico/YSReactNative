@@ -22,7 +22,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   setProps?(props?: P): void;// 设置Props并刷新
   vars?: V;// 获取成员变量
   setDidFocus?(func: (p: UGBasePageProps) => void): void;// 成为焦点时回调
-  
+
   // —————————— 配置UI ——————————
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
@@ -83,7 +83,9 @@ export default (Page: Function) => {
         setDidFocus: ((func) => {
           didFocus = func;
         }),
-        backgroundColor: [UGColor.BackgroundColor1],
+
+        //Android渐变色数量必须 >= 2
+        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
       this.newProps = deepMergeProps(defaultProps, this.props)
@@ -111,7 +113,7 @@ export default (Page: Function) => {
             <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
         </LinearGradient>
-      )
+      );
     }
   }
 }
