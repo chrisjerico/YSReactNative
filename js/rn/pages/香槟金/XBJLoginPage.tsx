@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import {View, Text, Platform, PlatformIOSStatic, PlatformAndroidStatic} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -58,14 +58,25 @@ function SlidingVerification(props: { hidden: boolean }) {
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
   let { setProps, vars: v, showLoading } = props;
-  
+
   useEffect(() => {
     async function getLocalPwd() {
-      let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
-      if (isRemember) {
-        v.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName'])
-        v.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw'])
+      let isRemember = false;
+
+      switch (Platform.OS) {
+        case 'ios':
+          isRemember = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
+          if (isRemember) {
+            v.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName'])
+            v.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw'])
+          }
+          break;
+        case 'android':
+          //TODO Android
+
+          break;
       }
+
       if (props.rememberPassword == isRemember) {
         setProps();
       } else {
