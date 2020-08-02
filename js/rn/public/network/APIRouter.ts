@@ -97,11 +97,13 @@ class APIRouter {
   static system_rankingList = () => {
     return httpClient.get<RankListModel>("c=system&a=rankingList")
   }
-  static user_login = (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
+  static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
     if (slideCode) {
       slideCode = SlideCodeModel.get(slideCode);
     }
-    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode });
+    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
+      noToken: true
+    });
   }
   static user_balance_token = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
@@ -136,7 +138,9 @@ class APIRouter {
     params = {
       ...params, device: '3', accessToken: accessToken,
     }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params);
+    return httpClient.post<RegisterModel>('c=user&a=reg', params, {
+      noToken: true
+    });
   }
 
   static lhcdoc_categoryList = async () => {

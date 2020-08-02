@@ -32,6 +32,7 @@ import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
+import { List } from "../../public/network/Model/PromotionsModel"
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -42,6 +43,7 @@ import Banner from "./CP/Banner"
     [self presentViewController:nav animated:true completion:nil];
  */
 const ZLHomePage = ({ navigation }) => {
+
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
@@ -54,6 +56,14 @@ const ZLHomePage = ({ navigation }) => {
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
+    const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+        if (data.linkCategory == 0 && data.linkPosition == 0) {
+            onPopViewPress(data, type, onPress ? onPress : () => { })
+        } else {
+            PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+        }
+
+    }
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -255,7 +265,7 @@ const ZLHomePage = ({ navigation }) => {
 
                 <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
                     return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+                        <TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
                             if (selectId == index) {
                                 setSelectedId(-1)
                             } else {
@@ -304,7 +314,7 @@ const ZLHomePage = ({ navigation }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
-            <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
+            <RedBagItem loginPage={PageName.ZLLoginPage} redBag={redBag} />
             <TurntableListItem />
             <MarqueePopupView onPress={() => {
                 setShow(false)
@@ -375,7 +385,7 @@ const TurntableListItem = () => {
                     }));
                 }
             }}>
-                <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
+                <ImageBackground style={{ width: 70, height: 70, position: 'absolute', top: height * 0.4 + 95, right: 20 }} source={{ uri: "dzp_btn" }} >
                     <TouchableWithoutFeedback onPress={() => {
                         setTurntableListVisiable(false)
                     }}>

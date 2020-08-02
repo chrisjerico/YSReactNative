@@ -10,7 +10,7 @@ import FastImage from "react-native-fast-image"
 import React from 'react'
 import { useDimensions } from '@react-native-community/hooks'
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
-  const { width } = useDimensions().screen
+  const { width, height } = useDimensions().screen
   const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
   const [redBagVisiable, setRedBagVisiable] = useState(false)
   useEffect(() => {
@@ -44,7 +44,7 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
           PushHelper.pushRedBag(redBag)
         }
       }}>
-        <FastImage style={{ width: 95, height: 95, position: 'absolute', top: 80, right: 20, zIndex: 100 }} source={{ uri: redBag?.data?.redBagLogo }} >
+        <FastImage style={{ width: 70, height: 70, position: 'absolute', top: height * 0.4, right: 30, zIndex: 100 }} source={{ uri: redBag?.data?.redBagLogo }} >
           <TouchableWithoutFeedback onPress={() => {
             setRedBagVisiable(false)
           }}>

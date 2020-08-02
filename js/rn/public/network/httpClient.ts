@@ -19,7 +19,8 @@ export enum CachePolicyEnum {
 interface CustomAxiosConfig extends AxiosRequestConfig {
   isEncrypt?: boolean;
   cachePolicy: CachePolicyEnum,
-  expiredTime: number
+  expiredTime: number,
+  noToken?: boolean
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
@@ -108,31 +109,6 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
   const { isEncrypt = true } = config;
   let encryptData = await encryptParams(params, isEncrypt);
-  //cache 讀取
-
-  // if (config.cachePolicy == CachePolicyEnum.cacheByTime || config.cachePolicy == CachePolicyEnum.cacheOnly) {
-  //   try {
-
-  //     const cacheDataString = await AsyncStorage.getItem(config.baseURL + config.url)
-
-  //     const cacheData: AxiosResponse = await JSON.parse(cacheDataString)
-
-  //     if (cacheData != null) {
-  //       //@ts-ignore
-  //       if (config.cachePolicy == CachePolicyEnum.cacheOnly || (config.cachePolicy == CachePolicyEnum.cacheByTime && cacheData.config?.expiredTime > moment().unix() * 1000)) {
-  //         config.adapter = () => {
-  //           return Promise.resolve(cacheData);
-  //         };
-  //       } else {
-
-  //       }
-  //     }
-  //   } catch (error) {
-
-  //   }
-  // }
-
-
   //開始請求
   if (isEncrypt) {
     if (Platform.OS == 'ios') {
@@ -149,8 +125,6 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
         if (!config.params) config.params = {};
         if (!config.data) config.data = {};
-        console.log(encryptData)
-
         if (encryptData["slideCode[nc_sid]"]) {
           config.data.slideCode = {}
           config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
@@ -163,10 +137,15 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
           delete config.data["slideCode[nc_sig]"]
           delete config.data["slideCode[nc_sid]"]
         }
+        if (config.noToken == true) {
+          delete encryptData?.token
+        }
+        debugger
         for (let paramsKey in encryptData) {
           // if (paramsKey.includes("slideCode")) {
           //   config.data[paramsKey] = config.data[paramsKey];
           // } else {
+
           config.data[paramsKey] = `${encryptData[paramsKey]}`;
           // }
 

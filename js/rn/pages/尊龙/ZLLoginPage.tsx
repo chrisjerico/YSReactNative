@@ -12,10 +12,13 @@ import APIRouter from '../../public/network/APIRouter';
 import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
-import { UGStore } from '../../redux/store/UGStore';
+import { UGStore, IGlobalState } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 import { useDimensions } from '@react-native-community/hooks';
 import DialogInput from 'react-native-dialog-input';
+import { useSelector } from 'react-redux';
+import { httpClient } from '../../public/network/httpClient';
+import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall';
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
     const { control, errors, handleSubmit } = useForm()
@@ -24,6 +27,8 @@ const ZLLoginPage = ({ route, navigation }) => {
     const [isRemember, setIsRemember] = useState(false)
     const [secureTextEntry, setSecureTextEntry] = useState(true)
     const [GGmodalShow, setGGModalShow] = useState(false)
+    const { isTest } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userData = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const init = async () => {
         let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
         setIsRemember(isRemember)
@@ -84,10 +89,9 @@ const ZLLoginPage = ({ route, navigation }) => {
             ]);
             return
         }
-
         try {
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-            const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
+            const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode,)
             if (data.data == null)
                 throw { message: data?.msg }
             if (data.data?.ggCheck == true) {
