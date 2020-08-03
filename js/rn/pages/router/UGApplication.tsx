@@ -45,6 +45,8 @@ import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import {Platform} from "react-native";
 import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {anyNull} from "../../public/tools/Ext";
+import {ugLog} from "../../public/tools/UgLog";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -66,7 +68,10 @@ class TabBarController extends Component<{
     //Android 需要特殊处理
     switch (Platform.OS) {
       case "android":
-        this.initName = PageName[ANHelper.callSync(NativeCommand.CURRENT_PAGE)];
+        let currentScene = PageName[ANHelper.callSync(NativeCommand.CURRENT_PAGE)];
+        if (currentScene != null) {
+          this.initName = currentScene
+        }
         break;
     }
 
