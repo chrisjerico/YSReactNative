@@ -44,7 +44,7 @@ const BZHHomePage = () => {
     rankingListSwitch,
   }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
   // states
-  const announcementModal = useRef(null)
+  // const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
@@ -81,18 +81,14 @@ const BZHHomePage = () => {
     }
   }
 
-  useEffect(() => {
-    if (uid) {
-      getTurntableList()
-    }
-  }, [uid])
-
   // data
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const announcements = notice?.data?.popup ?? []
+  const announcements = notice?.data?.popup?.map((item: any) => {
+    return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+  }) ?? []
   const navs =
     homeGames?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
@@ -104,12 +100,23 @@ const BZHHomePage = () => {
   const userTabIndex = systemConfig?.data.mobileMenu.findIndex(
     (ele) => ele?.path == '/user'
   )
-  const announce_first = parseInt(systemConfig?.data?.announce_first)
+  // const announce_first = parseInt(systemConfig?.data?.announce_first)
   const ads = systemHomeAds?.data ?? []
   // .map((coupon) => {
   //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
   // })
 
+  useEffect(() => {
+    if (uid) {
+      getTurntableList()
+    }
+  }, [uid])
+
+  useEffect(() => {
+    if (notice?.data?.popup) {
+      PushHelper.pushAnnouncement(announcements)
+    }
+  }, [notice])
 
   if (loading) {
     return <ProgressCircle />
@@ -137,8 +144,7 @@ const BZHHomePage = () => {
             <RefreshControlComponent
               onRefresh={() => {
                 updateUserInfo()
-                announcementModal?.current?.reload()
-                // onRefresh()
+                PushHelper.pushAnnouncement(announcements)
               }}
             />
           }
@@ -290,7 +296,7 @@ const BZHHomePage = () => {
             />
           </View>
           <AnimatedRankComponent
-            visible={rankingListSwitch ? true : false}
+            type={rankingListSwitch}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
@@ -330,12 +336,12 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        <AnnouncementModalComponent
+        {/* <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
           color={BZHThemeColor.宝石红.themeColor}
           announceFirst={announce_first}
-        />
+        /> */}
       </>
     )
   }

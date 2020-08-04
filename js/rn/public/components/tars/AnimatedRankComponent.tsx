@@ -21,7 +21,7 @@ interface AnimatedRankComponentProps {
   webName: string;
   onPressPromotion: () => any;
   onPressComputer: () => any;
-  visible: boolean;
+  type: number;
 }
 
 const AnimatedRankComponent = ({
@@ -34,13 +34,13 @@ const AnimatedRankComponent = ({
   webName,
   onPressPromotion,
   onPressComputer,
-  visible,
+  type
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
 
   const animated = () =>
     Animated.timing(height, {
-      toValue: scale(25 * (rankLists?.length ?? 0) + 250),
+      toValue: scale(40 * (rankLists?.length ?? 0) + 250),
       duration: duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
@@ -54,12 +54,12 @@ const AnimatedRankComponent = ({
     animated()
   }, [])
 
-  if (visible) {
+  if (type != 0) {
     return (
       <View style={containerStyle}>
         <View style={[styles.iconContainer, iconContainerStyle]}>
           <Icon name={'bar-chart'} type={'font-awesome'} size={scale(20)} />
-          <Text style={styles.iconText}>{'投注排行榜'}</Text>
+          <Text style={styles.iconText}>{type == 1 ? '中奖排行榜' : '投注排行榜'}</Text>
         </View>
         <View style={[styles.rankContainer, rankContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingTop: scale(5),
+    paddingVertical: scale(10),
   },
   title: {
     paddingTop: scale(5),

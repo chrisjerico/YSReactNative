@@ -244,7 +244,7 @@ const WNZHomePage = ({ navigation }) => {
             }}
           />
           <AnimatedRankComponent
-            visible={rankingListSwitch ? true : false}
+            type={rankingListSwitch}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
