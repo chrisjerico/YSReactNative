@@ -4,11 +4,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useSelector } from 'react-redux'
+import SlidingVerification from '../../public/components/SlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
@@ -19,18 +20,27 @@ import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { ActionType } from '../../redux/store/ActionTypes'
 import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { BZHSignInStore } from './BZHSignInProps'
 import Form from './components/Form'
+
+interface SlidingVerification {
+  nc_csessionid: string;
+  nc_token: string;
+  nc_sig: string;
+}
 
 const BZHSignInPage = ({ navigation }) => {
   // stores
   const { isRemember, account, password }: BZHSignInStore = useSelector(
     (state: IGlobalState) => state.BZHSignInReducer
   )
+  const { loginVCode }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+
   // states
+  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
   const [hidePassword, setHidePassword] = useState(true)
 
   const { type } = navigation?.dangerouslyGetState()
@@ -105,7 +115,7 @@ const BZHSignInPage = ({ navigation }) => {
     }
   }, [])
 
-  const valid = account && password
+  const valid = account && password && (slidingVerification || !loginVCode)
 
   return (
     <>
@@ -177,6 +187,12 @@ const BZHSignInPage = ({ navigation }) => {
               UGStore.save()
             }}
           />
+          {loginVCode ? (
+            <SlidingVerification
+              onChange={setSlidingVerification}
+              containerStyle={{ marginBottom: scale(20) }}
+            />
+          ) : null}
           <Button
             title={'立即登陆'}
             disabled={!valid}
@@ -187,9 +203,8 @@ const BZHSignInPage = ({ navigation }) => {
                 OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...'])
                 const { data } = await APIRouter.user_login(
                   account,
-                  password?.md5()
+                  password?.md5(),
                 )
-                console.log('---------------data-----------', data)
                 if (data?.data) {
                   await loginSuccessHandle(
                     data,

@@ -186,9 +186,9 @@ const BZHHomePage = () => {
                   enableCircle={false}
                   logo={icon ? icon : logo}
                   title={name}
-                  titleStyle={{ fontSize: scale(20) }}
+                  titleStyle={{ fontSize: scale(25) }}
+                  titleContainerStyle={{ aspectRatio: 3 }}
                   onPress={() => {
-                    console.log("--------item", item)
                     if (gameId == 9) {
                       push(PageName.PromotionListPage)
                     } else {

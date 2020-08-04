@@ -10,7 +10,7 @@ import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { useSelector } from 'react-redux'
-import SlidingVerification from '../../../rn/public/components/SlidingVerification'
+import SlidingVerification from '../../public/components/SlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
@@ -283,7 +283,7 @@ const BZHRegisterPage = () => {
               name: 'lock',
             }}
             onChangeText={(value: any) => setImageCode(value)}
-            label={'*請輸入验证码'}
+            label={'*请输入验证码'}
             placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
             show={reg_vcode == 1 || reg_vcode == 3}
             showRightIcon={true}
@@ -325,7 +325,7 @@ const BZHRegisterPage = () => {
               containerStyle={{ marginBottom: scale(20) }}
             />
           ) : null}
-          {agentRegbutton !== '1' ? (
+          {parseInt(agentRegbutton) ? (
             <AgentRedButton
               toggle={agent}
               onPressLeftButton={() => {

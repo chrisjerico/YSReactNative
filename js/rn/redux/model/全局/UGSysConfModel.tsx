@@ -153,4 +153,7 @@ export default class UGSysConfModel {
 
   mobileMenu: Array<UGTabbarItem>; // 底部Tab按钮
   userCenter: Array<UGUserCenterItem>; // 我的页功能按钮
+
+  // 登陸頁
+  loginVCode: boolean;
 }

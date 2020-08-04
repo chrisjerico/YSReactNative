@@ -99,3 +99,17 @@ export async function updateUserInfo() {
     // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
   }
 }
+
+export async function updateSysConf() {
+  try {
+    const { data } = await APIRouter.system_config()
+    if (data?.data) {
+      UGStore.dispatch({ type: ActionType.UpdateSysConf, props: data?.data })
+      UGStore.save()
+    } else {
+      throw { message: data?.msg }
+    }
+  } catch (error) {
+
+  }
+}
