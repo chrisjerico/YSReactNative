@@ -36,11 +36,14 @@ import {useDimensions} from "@react-native-community/hooks";
 import {TurntableListModel} from "../../public/network/Model/TurntableListModel";
 import {WinningList} from "../../public/components/WinningList";
 import RankListCP from "../../public/widget/RankList";
+import PromotionsBlock from "../../public/components/PromotionsBlock";
 
 const LLHomePage = () => {
     const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const {uid = ""} = userStore
+    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const {mobile_logo = "", rankingListSwitch} = sysStore
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [show, setShow] = useState(false)
@@ -59,7 +62,6 @@ const LLHomePage = () => {
             clearInterval(timer)
         })
     }, [])
-
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -114,8 +116,19 @@ const LLHomePage = () => {
             <ScrollView refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
                                                         onRefresh={onRefresh}/>}
                         style={{flex: 1}}>
-                <HomeHeaderButtonBar logoIcon={''}/>
+                <HomeHeaderButtonBar logoIcon={mobile_logo}/>
                 <HomeTabView/>
+                <View style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}>
+                    <Icon size={16} name={"gift"}/>
+                    <Text style={{fontSize: 16, color: "#333333", padding: 10}} onPress={() => {
+                        push(PageName.PromotionListPage)
+                    }}>优惠活动</Text>
+                    <View style={{flex: 1}}/>
+                    <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                </View>
+                <View style={{backgroundColor: "#ffffff"}}>
+                <PromotionsBlock horizontal={true} titleVisible={false}/>
+                </View>
                 <ImageButton
                     imgStyle={{
                         height: 131,
@@ -128,13 +141,14 @@ const LLHomePage = () => {
                             PushHelper.pushLogin() :
                             PushHelper.pushUserCenterType(5)
                     }} uri={'http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png'}/>
-                <SafeAreaView style={{marginHorizontal: 10}}>
+                {rankingListSwitch === 1 && <SafeAreaView style={{marginHorizontal: 10}}>
                     <View style={{flexDirection: 'row', alignItems: "center"}}>
                         <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
                         <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
                     </View>
-                    <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'} width={Dimensions.get("screen").width - 24} ranks={rankList} />
-                </SafeAreaView>
+                    <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                                width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                </SafeAreaView>}
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
                     <Text onPress={() => {
                         console.log(httpClient.defaults.baseURL + '/index2.php')

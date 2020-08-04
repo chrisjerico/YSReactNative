@@ -13,45 +13,50 @@ import Carousel from "react-native-banner-carousel";
 import {useEffect, useState} from "react";
 import FastImage from "react-native-fast-image";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
+import {push} from "../../../../../public/navigation/RootNavigation";
+import {PageName} from "../../../../../public/navigation/Navigation";
 
 const screenWidth = Dimensions.get("screen").width
 export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number }) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const {uid = ""} = userStore
+    const {homeGames} = useGetHomeInfo()
     const thirdPartGamePress = (id: string, gameID?: string) => {
         if (uid != "") {
-            if (gameID) {
-                const gameData = list.filter((res) => res.id == gameID)
+            const result = homeGames.data.icons.filter((res) => res.id == id)
+            console.log(result)
+            if (gameID && result.length > 0) {
+                const gameData = result[0].list.filter((res) => res.id == gameID)
                 //@ts-ignore
                 PushHelper.pushHomeGame(gameData[0])
-            } else if (!gameID) {
+            } else if (!gameID && result.length > 0) {
 
             } else {
 
             }
         } else {
-            PushHelper.pushLogin();
+            push(PageName.ZLLoginPage)
         }
     }
     return (
-        <View style={{paddingTop: 10}}>
+        <View style={{paddingTop: 10, flex: 1}}>
             {banner ? <Banner onlineNum={onlineNum} bannerData={banner} /> :
                 <View style={{height: 150, marginHorizontal: 8, width: Dimensions.get("screen").width - 16}}/>
             }
             <MarqueeView textArr={marquee}/>
-            <View style={{marginHorizontal: 12}}>
+            <View style={{marginHorizontal: 12, flex: 1}}>
                 <Text style={{color: "#3C3C3C", fontSize: 18, fontWeight: "bold", paddingVertical: 8}}>真人娱乐</Text>
-                <ImageButton imgStyle={{height: 140}}
+                <ImageButton imgStyle={{height: 140, resizeMode: "stretch"}}
                              uri={list[0].icon}
                              onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
-                <ImageButton imgStyle={{height: 140, marginTop: 8}}
+                <ImageButton imgStyle={{height: 140, marginTop: 8, resizeMode: "stretch"}}
                              uri={list[1].icon}
                              onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}/>
-                <View style={{flexDirection: "row", marginTop: 8}}>
-                    <ImageButton imgStyle={{height: 80, width: screenWidth * (2 / 3) - 16}}
+                <View style={{flexDirection: "row", marginTop: 8, flex: 1}}>
+                    <ImageButton imgStyle={{flex: 2/3, width: "auto", resizeMode: "stretch"}}
                                  uri={list[2].icon}
                                  onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
-                    <ImageButton imgStyle={{height: 80, width: screenWidth * (1 / 3) - 12, marginLeft: 4}}
+                    <ImageButton imgStyle={{flex: 1/3, width: "auto", marginLeft: 4, resizeMode: "stretch"}}
                                  uri={list[3].icon}
                                  onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
                 </View>
@@ -77,7 +82,6 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
     if (bannerData?.data?.list?.length > 0) {
         return (
             <View style={{ marginBottom: 10, }}>
-
                 <Carousel
                     autoplay
                     index={0}
@@ -95,7 +99,6 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                                     setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width))
 
                                 }} key={'banner' + index} style={{ width: width, height: height, }} source={{ uri: res.pic }} >
-
                                 </FastImage>
                             </TouchableWithoutFeedback>)
                     })}
@@ -107,7 +110,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
         )
 
     } else {
-        return <View style={{ height: (Dimensions.get("screen").width) / 2, }}></View>
+        return <View style={{height: (Dimensions.get("screen").width) / 2,}}/>
     }
 
 }

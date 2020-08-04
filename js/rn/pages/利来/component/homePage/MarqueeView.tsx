@@ -1,4 +1,4 @@
-import {Dimensions, Image, View} from "react-native";
+import {Dimensions, View} from "react-native";
 import * as React from "react";
 import {MarqueeHorizontal} from 'react-native-marquee-ab';
 import Icon from "react-native-vector-icons/Foundation";
@@ -28,7 +28,7 @@ export const MarqueeView = ({textArr}: MarqueeViewProps) => {
                 reverse={false}
                 textStyle={{fontSize: 16, color: '#FF0000'}}
                 onTextClick={(item) => {
-                    alert('' + JSON.stringify(item));
+                    alert(item.value);
                 }}
             />
         </View>

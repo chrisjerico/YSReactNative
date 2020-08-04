@@ -22,8 +22,8 @@ export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps)
                     alignSelf: "center",
                 }}>
                     <Text style={{
-                        paddingTop: 20,
-                        paddingBottom: 20,
+                        paddingTop: 15,
+                        paddingBottom: 15,
                         textAlign: "center",
                         fontSize: 17,
                         width: "100%",

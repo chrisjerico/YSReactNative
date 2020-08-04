@@ -8,6 +8,7 @@ import useGetHomeInfo from "../../../../public/hooks/useGetHomeInfo";
 import {LotteryTabView} from "./lotteyTab/LotteryTabView";
 import {GameListView} from "./lotteyTab/GameListView";
 import {RecommendTabView} from "./recommendTab/RecommendTabView";
+import {removeHTMLTag} from "../../../../public/tools/removeHTMLTag";
 
 export const HomeTabView = () => {
     const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
@@ -22,7 +23,7 @@ export const HomeTabView = () => {
     const getMarquee = () => {
         let arr = []
         notice && notice.data && notice.data.scroll.map((item, index) => {
-            arr.push({label: index, value: item.content})
+            arr.push({label: index, value: removeHTMLTag(item.content)})
         })
         setMarquee(arr)
     }

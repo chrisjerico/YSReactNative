@@ -49,6 +49,8 @@ import VietnamRegister from '../越南/RegisterPage';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import GameList from '../越南/GameList';
 import MinePage from '../越南/MinePage';
+import {LLLoginPage} from "../利来/LLLoginPage";
+import {LLRegisterPage} from "../利来/LLRegisterPage";
 const RootStack = createStackNavigator();
 // TabbarController
 class TabBarController extends Component<{
@@ -107,6 +109,8 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={LLLoginPage}/>
+      <Router.StackScreen options={{headerShown: false}} name={PageName.LLRegisterPage} component={LLRegisterPage}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
