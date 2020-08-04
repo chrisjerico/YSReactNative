@@ -19,11 +19,11 @@ export function jumpTo<P extends object>(page: PageName, props?: P): boolean {
     return goFirstTransitionPage(page, props, RouterType.Tab);
 }
 
-export function pop() {
+export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
     count < 3 && OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
-    
+    return count > 1;
 }
 
 export function popToRoot() {

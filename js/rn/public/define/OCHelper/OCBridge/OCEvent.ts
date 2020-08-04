@@ -46,7 +46,7 @@ export class OCEvent extends OCCall {
     this.emitter.addListener('RemoveVC', (params: { vcName: PageName }) => {
       console.log('退出页面', params.vcName);
       if (params.vcName == getCurrentPage()) {
-        pop();
+        !pop() && jumpTo(PageName.TransitionPage);
       }
     });
 
