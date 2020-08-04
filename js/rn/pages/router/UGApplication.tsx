@@ -104,6 +104,7 @@ const StackScreens = () => {
 
     let initialName = ExtUGApplication.stackUI();
     ugLog('stack initialName=', initialName)
+
     return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
