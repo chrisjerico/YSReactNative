@@ -58,7 +58,7 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  let skitType = Skin1.skitType; 
+  let skitType = Skin1.skitType;
   // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   if (skitType.indexOf('白曜') != -1) {
@@ -213,7 +213,7 @@ export function setRnPageInfo() {
     ])
   }
   // 尊龙模板页面
-  if (skitType.indexOf('尊龙') != -1) { // 
+  if (skitType.indexOf('尊龙') != -1) { //
     pages = pages.concat([
       {
         // 首页

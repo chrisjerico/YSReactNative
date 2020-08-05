@@ -1,14 +1,16 @@
-import { UGAgentApplyInfo, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import { Alert, AlertButton, Platform } from 'react-native';
+import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { OCHelper } from './OCHelper/OCHelper';
-import { HomeGamesModel } from '../network/Model/HomeGamesModel';
-import { NSValue, } from './OCHelper/OCBridge/OCCall';
-import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
-import { TurntableListModel } from '../network/Model/TurntableListModel';
-import { Toast } from '../tools/ToastUtils';
+import {IGameIconListItem} from '../../redux/model/home/IGameBean';
+import {OCHelper} from './OCHelper/OCHelper';
+import {HomeGamesModel} from '../network/Model/HomeGamesModel';
+import {NSValue,} from './OCHelper/OCBridge/OCCall';
+import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
+import {TurntableListModel} from '../network/Model/TurntableListModel';
+import {Toast} from '../tools/ToastUtils';
+import {ANHelper, NativeCommand} from "./ANHelper/ANHelper";
+
 export default class PushHelper {
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
@@ -65,8 +67,18 @@ export default class PushHelper {
 
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
+        break;
+      case 'android':
+        ANHelper.callAsync(NativeCommand.OPEN_NAVI_PAGE,
+          {
+            seriesId: linkCategory,
+            subId: linkPosition,
+          })
+        break;
+    }
   }
   static pushNoticePopUp(notice: string) {
     if (Platform.OS != 'ios') return;

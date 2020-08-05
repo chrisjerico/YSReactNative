@@ -5,6 +5,7 @@ import {httpClient} from "../../network/httpClient";
 
 export enum NativeCommand {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
+  OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   UNIVERSAL = 'UNIVERSAL', //万能函数
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
   FINISH_ACTIVITY = 'FINISH_ACTIVITY',        //关闭activity
