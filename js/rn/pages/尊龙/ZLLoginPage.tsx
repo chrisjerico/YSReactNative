@@ -110,13 +110,6 @@ const ZLLoginPage = ({ route, navigation }) => {
         }
     }
 
-    //检查一下Native主页下面的tab是否隐藏了
-    switch (Platform.OS) {
-        case "android":
-            ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
-            break;
-    }
-    
     return (
         <View style={{ backgroundColor: '#1a1a1e', flex: 1 }}>
             <Header />
@@ -246,9 +239,6 @@ const Header = () => {
             <TouchableWithoutFeedback onPress={() => {
                 pop();
                 switch (Platform.OS) {
-                    case "android":
-                        ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
-                        break;
                     case "ios":
                         OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
                         break;

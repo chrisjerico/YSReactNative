@@ -188,13 +188,6 @@ const ZLRegisterPage = () => {
         })
     }, [errors])
 
-    //检查一下Native主页下面的tab是否隐藏了
-    switch (Platform.OS) {
-        case "android":
-            ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
-            break;
-    }
-
     return (
         <View style={{ flex: 1 }}>
             <Header />

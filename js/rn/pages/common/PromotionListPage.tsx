@@ -56,18 +56,6 @@ const PromotionListPage = ({ navigation }) => {
 
   ugLog("currentNativeSelectedTab=", currentNativeSelectedTab, state.index);
 
-  /**
-   * 单独的一个界面
-   */
-  if (state.index != 0) {
-    //检查一下Native主页下面的tab是否隐藏了
-    switch (Platform.OS) {
-      case "android":
-        ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
-        break;
-    }
-  }
-
   return (
     <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
@@ -80,9 +68,6 @@ const PromotionListPage = ({ navigation }) => {
               onPress={() => {
                 popToRoot()
                 switch (Platform.OS) {
-                  case "android":
-                    ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
-                    break;
                   case "ios":
                     OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
                     break;

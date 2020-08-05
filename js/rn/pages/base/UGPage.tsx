@@ -10,6 +10,10 @@ import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNav
 import LinearGradient from 'react-native-linear-gradient'
 import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import {ugLog} from "../../public/tools/UgLog";
+import StringUtils from "../../public/tools/StringUtils";
+import {Platform} from "react-native";
+import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
 
 
 // Props
@@ -63,7 +67,18 @@ export default (Page: Function) => {
         navigation.removeListener('focus', null)
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
-          console.log('成为焦点', name, params)
+          ugLog('成为焦点', name, params)
+
+          //是否是主页
+          if (StringUtils.getInstance().endString(name, "HomePage")) {
+            //检查一下Native主页下面的tab是否隐藏了
+            switch (Platform.OS) {
+              case "android":
+                ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
+                break;
+            }
+          }
+
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;

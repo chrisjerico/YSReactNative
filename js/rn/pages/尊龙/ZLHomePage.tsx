@@ -1,4 +1,19 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl } from "react-native"
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Image,
+    FlatList,
+    StyleSheet,
+    Dimensions,
+    Alert,
+    ImageBackground,
+    Platform,
+    RefreshControl,
+    AppState
+} from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -29,6 +44,7 @@ import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
+import {ugLog} from "../../public/tools/UgLog";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];

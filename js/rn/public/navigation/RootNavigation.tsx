@@ -69,6 +69,13 @@ function goFirstTransitionPage(page: PageName, props: object, action?: RouterTyp
         return false;
     }
 
+    //检查一下Native主页下面的tab是否隐藏了
+    switch (Platform.OS) {
+        case "android":
+            ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
+            break;
+    }
+
     try {
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
