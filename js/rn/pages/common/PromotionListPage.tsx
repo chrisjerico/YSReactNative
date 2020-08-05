@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, FlatList } from "react-native"
+import {View, Text, TouchableWithoutFeedback, FlatList, Platform} from "react-native"
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import LinearGradient from "react-native-linear-gradient";
@@ -17,6 +17,8 @@ import usePopUpView from "../../public/hooks/usePopUpView";
 import AppDefine from "../../public/define/AppDefine";
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
+import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ugLog} from "../../public/tools/UgLog";
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -47,10 +49,25 @@ const PromotionListPage = ({ navigation }) => {
       categoriesArray.sort()
       setCategories(categoriesArray)
     } catch (error) {
-
+      ugLog("error=", error)
     }
 
   }
+
+  ugLog("currentNativeSelectedTab=", currentNativeSelectedTab, state.index);
+
+  /**
+   * 单独的一个界面
+   */
+  if (state.index != 0) {
+    //检查一下Native主页下面的tab是否隐藏了
+    switch (Platform.OS) {
+      case "android":
+        ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
+        break;
+    }
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
@@ -62,7 +79,14 @@ const PromotionListPage = ({ navigation }) => {
               buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
               onPress={() => {
                 popToRoot()
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                  case "android":
+                    ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
+                    break;
+                  case "ios":
+                    OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    break;
+                }
               }}
             />
           </View> : null}
@@ -84,7 +108,7 @@ const PromotionListPage = ({ navigation }) => {
 
       </LinearGradient>
     </View>
-  )
+  );
 }
 export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)

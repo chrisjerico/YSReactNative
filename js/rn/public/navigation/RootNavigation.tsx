@@ -4,12 +4,19 @@ import { StackActions, NavigationContainerRef, TabActions } from '@react-navigat
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { PageName } from './Navigation';
 import { Router, RouterType } from './Router';
+import {Platform} from "react-native";
+import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
+import {ugLog} from "../tools/UgLog";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
 export function navigate<P>(page: PageName, props?: P & { index?: number }): boolean {
     if (props?.index) {
-        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [props.index]);
+        switch (Platform.OS) {
+            case "ios":
+                OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [props.index]);
+                break;
+        }
     }
     return goFirstTransitionPage(page, props);
 }
@@ -80,6 +87,9 @@ function goFirstTransitionPage(page: PageName, props: object, action?: RouterTyp
                 navigationRef?.current?.dispatch(TabActions.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props }));
             }
         }
-    } catch (e) { }
+    } catch (e) {
+        ugLog("error=", e)
+    }
+
     return true;
 }

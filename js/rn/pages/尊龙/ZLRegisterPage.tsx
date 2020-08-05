@@ -383,9 +383,6 @@ const Header = () => {
             <TouchableWithoutFeedback onPress={() => {
                 pop();
                 switch (Platform.OS) {
-                    case "android":
-                        ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
-                        break;
                     case "ios":
                         OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
                         break;

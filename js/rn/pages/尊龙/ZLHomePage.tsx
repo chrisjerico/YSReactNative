@@ -30,7 +30,7 @@ import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 /**
- * 
+ *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
     vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
         [NavController1 pushViewControllerWithNextIssueModel:nextModel];
@@ -109,6 +109,7 @@ const ZLHomePage = ({ navigation }) => {
             push(PageName.ZLLoginPage)
         }
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <ZLHeader />
