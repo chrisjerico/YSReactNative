@@ -14,6 +14,7 @@ import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import DialogInput from 'react-native-dialog-input';
+import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
 
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
@@ -108,6 +109,14 @@ const ZLLoginPage = ({ route, navigation }) => {
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
         }
     }
+
+    //检查一下Native主页下面的tab是否隐藏了
+    switch (Platform.OS) {
+        case "android":
+            ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
+            break;
+    }
+    
     return (
         <View style={{ backgroundColor: '#1a1a1e', flex: 1 }}>
             <Header />
@@ -236,7 +245,14 @@ const Header = () => {
         <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
             <TouchableWithoutFeedback onPress={() => {
                 pop();
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                    case "android":
+                        ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
+                        break;
+                    case "ios":
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        break;
+                }
             }}>
                 <Icon name="close" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
             </TouchableWithoutFeedback>
