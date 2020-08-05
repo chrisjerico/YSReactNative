@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform, AsyncStorage } from 'react-native';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
+import { ANHelper, CMD } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
@@ -41,7 +41,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
     if (Platform.OS == 'ios') {
       return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
     } else {
-      return ANHelper.callAsync(NativeCommand.ENCRYPTION_PARAMS, { params: params });
+      return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
     }
   } catch (error) {
     console.warn(error);

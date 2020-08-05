@@ -9,7 +9,7 @@ import {NSValue,} from './OCHelper/OCBridge/OCCall';
 import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
 import {TurntableListModel} from '../network/Model/TurntableListModel';
 import {Toast} from '../tools/ToastUtils';
-import {ANHelper, NativeCommand} from "./ANHelper/ANHelper";
+import {ANHelper, CMD} from "./ANHelper/ANHelper";
 
 export default class PushHelper {
   // 輪盤
@@ -72,7 +72,7 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
         break;
       case 'android':
-        ANHelper.callAsync(NativeCommand.OPEN_NAVI_PAGE,
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
           {
             seriesId: linkCategory,
             subId: linkPosition,

@@ -14,7 +14,7 @@ import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import DialogInput from 'react-native-dialog-input';
-import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {

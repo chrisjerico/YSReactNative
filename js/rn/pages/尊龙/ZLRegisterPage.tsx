@@ -13,7 +13,7 @@ import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { EventRegister } from 'react-native-event-listeners'
-import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 enum FormName {
     inviter = "inviter",
     usr = "usr",

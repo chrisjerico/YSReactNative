@@ -17,7 +17,7 @@ import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
 
 type APIListType =
   | 'game_homeGames'
@@ -78,7 +78,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         initHost(host)
       })
     } else if (Platform.OS == 'android') {
-      ANHelper.callAsync(NativeCommand.APP_HOST).then((host: string) => {
+      ANHelper.callAsync(CMD.APP_HOST).then((host: string) => {
         initHost(host)
       })
     }

@@ -17,7 +17,7 @@ import usePopUpView from "../../public/hooks/usePopUpView";
 import AppDefine from "../../public/define/AppDefine";
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
-import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 import {ugLog} from "../../public/tools/UgLog";
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window

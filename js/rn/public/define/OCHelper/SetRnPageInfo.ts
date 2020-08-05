@@ -3,7 +3,7 @@ import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from '../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
 import {Platform} from "react-native";
-import {ANHelper, NativeCommand} from "../ANHelper/ANHelper";
+import {ANHelper, CMD} from "../ANHelper/ANHelper";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];

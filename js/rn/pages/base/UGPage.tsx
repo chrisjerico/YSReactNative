@@ -13,7 +13,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import {ugLog} from "../../public/tools/UgLog";
 import StringUtils from "../../public/tools/StringUtils";
 import {Platform} from "react-native";
-import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 
 
 // Props
@@ -74,7 +74,7 @@ export default (Page: Function) => {
             //检查一下Native主页下面的tab是否隐藏了
             switch (Platform.OS) {
               case "android":
-                ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 0});
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
                 break;
             }
           }

@@ -3,7 +3,7 @@ import AppDefine from '../AppDefine';
 import {ANEvent} from './ANEvent';
 import {httpClient} from "../../network/httpClient";
 
-export enum NativeCommand {
+export enum CMD {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   UNIVERSAL = 'UNIVERSAL', //万能函数
@@ -35,7 +35,7 @@ export class ANHelper extends ANEvent {
    * @param back 返回值
    * @param data 参数
    */
-  static callSync(type: NativeCommand, data?: {[x: string]: any}): string {
+  static callSync(type: CMD, data?: {[x: string]: any}): string {
     return this.core.executeSync(
       JSON.stringify({
         type: type,
@@ -50,7 +50,7 @@ export class ANHelper extends ANEvent {
    * @param type 当前类型
    * @param data 参数
    */
-  static callAsync(type: NativeCommand, data?: {[x: string]: any}): Promise<any> {
+  static callAsync(type: CMD, data?: {[x: string]: any}): Promise<any> {
     return this.core.executeCmd(
       JSON.stringify({
         type: type,
@@ -63,13 +63,13 @@ export class ANHelper extends ANEvent {
     super.setup();
 
     // 设置接口域名
-    this.callAsync(NativeCommand.APP_HOST).then((host: string) => {
+    this.callAsync(CMD.APP_HOST).then((host: string) => {
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
     });
 
     // 设置站点编号
-    this.callAsync(NativeCommand.APP_SITE).then((siteId: string) => {
+    this.callAsync(CMD.APP_SITE).then((siteId: string) => {
       AppDefine.siteId = siteId;
     });
   }

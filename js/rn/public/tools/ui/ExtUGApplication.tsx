@@ -1,6 +1,6 @@
 import {Platform} from "react-native";
 import {PageName} from "../../navigation/Navigation";
-import {ANHelper, NativeCommand} from "../../define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../define/ANHelper/ANHelper";
 import {Router} from "../../navigation/Router";
 
 /**
@@ -65,7 +65,7 @@ export default class ExtUGApplication {
     //Android 需要特殊处理
     switch (Platform.OS) {
       case "android":
-        let currentScene = PageName[ANHelper.callSync(NativeCommand.CURRENT_PAGE)];
+        let currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         if (currentScene != null) {
           initName = currentScene
         }

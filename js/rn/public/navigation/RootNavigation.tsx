@@ -5,7 +5,7 @@ import { OCHelper } from '../define/OCHelper/OCHelper';
 import { PageName } from './Navigation';
 import { Router, RouterType } from './Router';
 import {Platform} from "react-native";
-import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
 import {ugLog} from "../tools/UgLog";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
@@ -72,7 +72,7 @@ function goFirstTransitionPage(page: PageName, props: object, action?: RouterTyp
     //检查一下Native主页下面的tab是否隐藏了
     switch (Platform.OS) {
         case "android":
-            ANHelper.callAsync(NativeCommand.VISIBLE_MAIN_TAB, {visibility: 8});
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
             break;
     }
 

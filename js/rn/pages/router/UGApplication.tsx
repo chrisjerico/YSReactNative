@@ -44,7 +44,7 @@ import GameList from '../越南/GameList';
 import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import {Platform} from "react-native";
-import {ANHelper, NativeCommand} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 import {anyNull} from "../../public/tools/Ext";
 import {ugLog} from "../../public/tools/UgLog";
 import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
