@@ -14,7 +14,7 @@ import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
 import DialogInput from 'react-native-dialog-input';
-import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
 
@@ -88,14 +88,23 @@ const ZLLoginPage = ({ route, navigation }) => {
                     await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                     break;
                 case "android":
+                    const userData = data?.data;
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                        {
+                            key: NA_DATA.USER_INFO,
+                            userData,
+                            userName: "",
+                            userPsw: "",
+                            isRememberPsd: false,
+                        });
                     break;
             }
 
-            const { data: userInfo } = await APIRouter.user_info()
-            UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
-            UGStore.save();
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
-            pop();
+            // const { data: userInfo } = await APIRouter.user_info()
+            // UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+            // UGStore.save();
+            // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            // pop();
         } catch (error) {
             console.log(error)
         }
@@ -201,8 +210,8 @@ const ZLLoginPage = ({ route, navigation }) => {
                             }} />}
                         rules={{
                             required: {
-                                value: true, message
-                                    : "请输入用户名"
+                                value: true,
+                                message : "请输入用户名"
                             }
                         }}
                         name="account"

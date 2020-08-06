@@ -2,11 +2,12 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform, AsyncStorage } from 'react-native';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import { ANHelper, CMD } from '../define/ANHelper/ANHelper';
+import {ANHelper, CMD, NA_DATA} from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
 import moment from 'moment';
+import {ugLog} from "../tools/UgLog";
 interface Dictionary {
   [x: string]: any;
 }
@@ -53,6 +54,8 @@ httpClient.interceptors.response.use(
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
 
+    ugLog("http ful filled res = ", JSON.stringify(response))
+
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {
     //     if (config.cachePolicy == CachePolicyEnum.cacheByTime) {
@@ -70,18 +73,34 @@ httpClient.interceptors.response.use(
   },
   err => {
     if (err && err.response) {
+      ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
-        case 401:
-          OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
-            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
-              OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                updateUserInfo()
-                UGStore.dispatch({ type: 'reset', userInfo: {} })
-                // Toast('帐号已被登出');
+        case 401://帐号已被登出
+          switch (Platform.OS) {
+            case "ios":
+              OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
+                OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
+                  OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
+                    updateUserInfo()
+                    UGStore.dispatch({ type: 'reset', userInfo: {} })
+                    // Toast('帐号已被登出');
+                  })
+                })
               })
-            })
-          })
+              break;
+            case "android":
+              ANHelper.callAsync(CMD.SAVE_DATA,
+                  {
+                    key: NA_DATA.USER_INFO,
+                  }).then(((any?: any) => {
+                    updateUserInfo()
+                    UGStore.dispatch({type: 'reset', userInfo: {}})
+                    // Toast('帐号已被登出');
 
+              }))
+              break;
+
+          }
           break;
         case 500:
           console.warn('伺服器出錯');

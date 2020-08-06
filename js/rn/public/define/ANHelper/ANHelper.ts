@@ -3,6 +3,12 @@ import AppDefine from '../AppDefine';
 import {ANEvent} from './ANEvent';
 import {httpClient} from "../../network/httpClient";
 
+/**
+ * @Description: 交互命令
+ *
+ * @author Arc
+ * @date 2020/8/6
+*/
 export enum CMD {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
@@ -19,6 +25,18 @@ export enum CMD {
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token
   ASK_FOR_TOKEN_AND_RSA = 'ASK_FOR_TOKEN_AND_RSA', //得到 token和rsa
+  SAVE_DATA =                   'SAVE_DATA',      //存储数据
+  LOAD_DATA =                   'LOAD_DATA'      //加载数据
+}
+
+/**
+ * @Description: RN在 native 存储的数据
+ *
+ * @author Arc
+ * @date 2020/8/6
+*/
+export enum NA_DATA {
+  USER_INFO = 'USER_INFO', //用户信息
 }
 
 export class ANHelper extends ANEvent {
@@ -35,7 +53,7 @@ export class ANHelper extends ANEvent {
    * @param back 返回值
    * @param data 参数
    */
-  static callSync(type: CMD, data?: {[x: string]: any}): string {
+  static callSync(type: CMD, data?: {[x: string]: any}): any|null {
     return this.core.executeSync(
       JSON.stringify({
         type: type,
@@ -50,7 +68,7 @@ export class ANHelper extends ANEvent {
    * @param type 当前类型
    * @param data 参数
    */
-  static callAsync(type: CMD, data?: {[x: string]: any}): Promise<any> {
+  static callAsync(type: CMD, data?: {[x: string]: any}): Promise<any|null> {
     return this.core.executeCmd(
       JSON.stringify({
         type: type,
@@ -63,13 +81,13 @@ export class ANHelper extends ANEvent {
     super.setup();
 
     // 设置接口域名
-    this.callAsync(CMD.APP_HOST).then((host: string) => {
+    this.callAsync(CMD.APP_HOST).then((host?: string) => {
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
     });
 
     // 设置站点编号
-    this.callAsync(CMD.APP_SITE).then((siteId: string) => {
+    this.callAsync(CMD.APP_SITE).then((siteId?: string) => {
       AppDefine.siteId = siteId;
     });
   }
