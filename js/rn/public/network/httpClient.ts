@@ -54,7 +54,7 @@ httpClient.interceptors.response.use(
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
 
-    ugLog("http ful filled res = ", JSON.stringify(response))
+    // ugLog("http ful filled res = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
     //   if (config?.expiredTime < 1000000000000000) {

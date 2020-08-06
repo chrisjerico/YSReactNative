@@ -9,7 +9,7 @@ import {NSValue,} from './OCHelper/OCBridge/OCCall';
 import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
 import {TurntableListModel} from '../network/Model/TurntableListModel';
 import {Toast} from '../tools/ToastUtils';
-import {ANHelper, CMD} from "./ANHelper/ANHelper";
+import {ANHelper, CMD, NA_DATA} from "./ANHelper/ANHelper";
 
 export default class PushHelper {
   // 輪盤
@@ -30,29 +30,81 @@ export default class PushHelper {
   }
   // 登出
   static async pushLogout() {
-    await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    switch (Platform.OS) {
+      case "ios":
+        await OCHelper.call('UGUserModel.setCurrentUser:', []);
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+        break;
+      case "android":
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.USER_INFO,
+          });
+        break;
+    }
     Toast('退出成功');
   }
   // 登入
   static pushLogin() {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController'] }, true]);
-    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
+          selectors: 'AppDefine.viewControllerWithStoryboardID:',
+          args1: ['UGLoginViewController']
+        }, true]);
+        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.OPEN_PAGE,
+          {
+            toActivity: true,
+            packageName: 'com.phoenix.lotterys.my.activity',
+            className: 'LoginActivity'
+          });
+        break;
+    }
   }
   // 註冊
   static pushRegister() {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController'] }, true]);
-    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
+          selectors: 'AppDefine.viewControllerWithStoryboardID:',
+          args1: ['UGRegisterViewController']
+        }, true]);
+        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.OPEN_PAGE,
+          {
+            toActivity: true,
+            packageName: 'com.phoenix.lotterys.my.activity',
+            className: 'RegeditActivity'
+          });
+        break;
+    }
+
+
+
   }
   // 首页游戏列表跳转
   static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
     game = Object.assign({ clsName: 'GameModel' }, game);
-    if (Platform.OS != 'ios') return;
     console.log('--------game-------', game)
-    OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
+        break;
+      case "android":
+        //TODO
+        // ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+        //   {
+        //     seriesId: linkCategory,
+        //     subId: linkPosition,
+        //   })
+        break;
+    }
   }
   static pushRedBag(redBag: RedBagDetailActivityModel) {
     if (Platform.OS != 'ios') return;
