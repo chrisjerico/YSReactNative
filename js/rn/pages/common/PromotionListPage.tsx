@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, FlatList } from "react-native"
+import { View, Text, TouchableWithoutFeedback, FlatList, Linking } from "react-native"
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import LinearGradient from "react-native-linear-gradient";
@@ -10,13 +10,14 @@ import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import { useNavigationState } from "@react-navigation/native";
 import ScrollableTabView, { TabBarProps, ScrollableTabBar } from "react-native-scrollable-tab-view";
 import APIRouter from "../../public/network/APIRouter";
-import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
+import { PromotionsModel, List } from "../../public/network/Model/PromotionsModel";
 import WebView from "react-native-webview";
 import FastImage, { FastImageProperties } from "react-native-fast-image";
 import usePopUpView from "../../public/hooks/usePopUpView";
 import AppDefine from "../../public/define/AppDefine";
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
+import PushHelper from "../../public/define/PushHelper";
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -90,11 +91,21 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  console.log(dataSource.data.list.filter((res) => res.category == filter))
+  const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+    if (data?.linkUrl != "") {
+      Linking.openURL(data?.linkUrl)
+    }
+    else if (data.linkCategory == 0 && data.linkPosition == 0) {
+      onPopViewPress(data, type, onPress ? onPress : () => { })
+    } else {
+      PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+    }
+
+  }
   return (
     <FlatList keyExtractor={(item, index) => item.id + index} data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list} renderItem={({ item, index }) => {
       return <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
+        <TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
           if (selectId == index) {
             setSelectedId(-1)
           } else {
