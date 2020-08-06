@@ -88,23 +88,28 @@ const ZLLoginPage = ({ route, navigation }) => {
                     await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                     break;
                 case "android":
-                    const userData = data?.data;
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                         {
                             key: NA_DATA.USER_INFO,
-                            userData,
-                            userName: "",
-                            userPsw: "",
-                            isRememberPsd: false,
+                            data: data?.data
                         });
                     break;
             }
 
-            // const { data: userInfo } = await APIRouter.user_info()
-            // UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
-            // UGStore.save();
-            // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
-            // pop();
+            const { data: userInfo } = await APIRouter.user_info()
+            UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+            UGStore.save();
+
+            switch (Platform.OS) {
+                case "ios":
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+                    break;
+                case "android":
+                    Toast('登录成功！')
+                    break;
+            }
+
+            pop();
         } catch (error) {
             console.log(error)
         }
