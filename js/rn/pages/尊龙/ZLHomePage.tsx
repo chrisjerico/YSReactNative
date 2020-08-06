@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl, Linking } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -57,7 +57,10 @@ const ZLHomePage = ({ navigation }) => {
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
     const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
-        if (data.linkCategory == 0 && data.linkPosition == 0) {
+        if (data?.linkUrl != "") {
+            Linking.openURL(data?.linkUrl)
+        }
+        else if (data.linkCategory == 0 && data.linkPosition == 0) {
             onPopViewPress(data, type, onPress ? onPress : () => { })
         } else {
             PushHelper.pushCategory(data.linkCategory, data.linkPosition)
