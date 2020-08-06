@@ -2,6 +2,7 @@ import {Platform} from "react-native";
 import {PageName} from "../../navigation/Navigation";
 import {ANHelper, CMD} from "../../define/ANHelper/ANHelper";
 import {Router} from "../../navigation/Router";
+import {B_DEBUG, ugLog} from "../UgLog";
 
 /**
  * Arc
@@ -65,7 +66,9 @@ export default class ExtUGApplication {
     //Android 需要特殊处理
     switch (Platform.OS) {
       case "android":
-        let currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
+        let currentScene = B_DEBUG
+            ? PageName.ZLHomePage //调试无法使用同步方法，所以暂时使用主页
+            : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         if (currentScene != null) {
           initName = currentScene
         }
