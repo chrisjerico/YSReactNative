@@ -274,7 +274,8 @@ export default class PushHelper {
       }
       case UGUserCenterType.开奖网: {
         this.openWebView(
-          httpClient.defaults.baseURL + '/index2.php'
+          //httpClient.defaults.baseURL + '/index2.php'
+          httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
         )
         break;
       }
