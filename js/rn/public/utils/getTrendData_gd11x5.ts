@@ -8,7 +8,7 @@ export function getTrendData_gd11x5(data, defaultNumber = 0) {
 
     for (let i = 0; i < data.length; i++) {
         let element = data[i];
-        let lottoryData = element.data.split(",");
+        let lottoryData = element.num.split(",");
         numberArray[i] = [];
         for (let j = 0; j < 12; j++) {
             if (Number(lottoryData[defaultNumber]) == (j + 1)) {
@@ -47,13 +47,13 @@ export function getTrendData_gd11x5(data, defaultNumber = 0) {
         for (let i = data.length - 101; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
             newTr[i] = [];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 12; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {
@@ -70,13 +70,13 @@ export function getTrendData_gd11x5(data, defaultNumber = 0) {
         for (let i = data.length - dValue - 1; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
             newTr[i] = [];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 12; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {
@@ -92,13 +92,13 @@ export function getTrendData_gd11x5(data, defaultNumber = 0) {
         for (let i = data.length - 1; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
             newTr[i] = [];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 12; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {

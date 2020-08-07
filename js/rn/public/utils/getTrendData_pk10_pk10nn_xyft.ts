@@ -7,7 +7,7 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
     const {width: screenWidth} = Dimensions.get("screen")
     for (let i = 0; i < thisData.length; i++) {
         let element = thisData[i];
-        let lottoryData = element.data.split(",");
+        let lottoryData = element.num.split(",");
         numberArray[i] = [];
         for (let j = 0; j < lottoryData.length; j++) {
             if (Number(lottoryData[defaultNumber]) == (j + 1)) {
@@ -44,15 +44,15 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
     //加载单元格
     if (thisData.length > 100 && thisData.length == 200) {
         for (let i = thisData.length - 101; i >= 0; i--) {   //取最新100条数据
-            let element = thisData[i];
+            let element = thisData[i]
             newTr[i] = []
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {
@@ -70,13 +70,13 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
         for (let i = thisData.length - dValue - 1; i >= 0; i--) {   //取最新100条数据
             let element = thisData[i];
             newTr[i] = []
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {
@@ -93,13 +93,13 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
         for (let i = thisData.length - 1; i >= 0; i--) {   //取最新100条数据
             let element = thisData[i];
             newTr[i] = []
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j) {
@@ -112,7 +112,7 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
             }
         }
     }
-
+    console.log("newTr", newTr)
     let maximumOmission = getMaximumOmission(newTr)
     let maximumConnection = getMaximumConnection(newTr)
     let totalTimes = getTotalTimes(newTr)

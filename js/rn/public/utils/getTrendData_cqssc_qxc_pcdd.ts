@@ -17,7 +17,7 @@ export const getTrendData_cqssc_qxc_pcdd = (from_name, data, defaultNumber = 0) 
 
     for (let i = 0; i < data.length; i++) {
         const element = data[i];
-        const lottoryData = element.data.split(",");
+        const lottoryData = element.num.split(",");
         numberArray[i] = [];
         for (let j = 0; j < 10; j++) {
             if (Number(lottoryData[defaultNumber]) == j) {
@@ -57,14 +57,14 @@ export const getTrendData_cqssc_qxc_pcdd = (from_name, data, defaultNumber = 0) 
     if (data.length > 100 && data.length == 200) {
         for (let i = data.length - 101; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             newTr[i] = []
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j - 1) {
@@ -80,13 +80,13 @@ export const getTrendData_cqssc_qxc_pcdd = (from_name, data, defaultNumber = 0) 
         let dValue = 200 - data.length;
         for (let i = data.length - dValue - 1; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j - 1) {
@@ -101,14 +101,14 @@ export const getTrendData_cqssc_qxc_pcdd = (from_name, data, defaultNumber = 0) 
     } else {
         for (let i = data.length - 1; i >= 0; i--) {   //取最新100条数据
             let element = data[i];
-            let lottoryData = element.data.split(",");
+            let lottoryData = element.num.split(",");
             newTr[i] = []
             for (let j = 0; j < 11; j++) {
                 if (j == 0) {
                     if (element.displayNumber) {
                         newTr[i][j] = element.displayNumber
                     } else {
-                        newTr[i][j] = element.number
+                        newTr[i][j] = element.issue
                     }
                 } else {
                     if (Number(lottoryData[defaultNumber]) == j - 1) {
