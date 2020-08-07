@@ -97,7 +97,7 @@ const ZLLoginPage = ({ route, navigation }) => {
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                         {
                             key: NA_DATA.USER_INFO,
-                            data: data?.data
+                            ...data?.data
                         });
                     break;
             }

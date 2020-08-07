@@ -71,16 +71,6 @@ export default (Page: Function) => {
           const { name, params } = this.props.route
           ugLog('成为焦点', name, params)
 
-          //是否是主页
-          if (StringUtils.getInstance().endString(name, "HomePage")) {
-            //检查一下Native主页下面的tab是否隐藏了
-            switch (Platform.OS) {
-              case "android":
-                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
-                break;
-            }
-          }
-
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;
@@ -90,7 +80,15 @@ export default (Page: Function) => {
         })
         navigation.addListener('transitionEnd', (e) => {
           if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            //检查一下Native主页下面的tab是显示还是隐藏
+            switch (Platform.OS) {
+              case "ios":
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+                break;
+              case "android":
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+                break;
+            }
           }
         })
         // 监听dispatch

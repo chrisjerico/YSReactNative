@@ -53,7 +53,7 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                         {
                             key: NA_DATA.USER_INFO,
                             ...accountData,
-                            data: data?.data
+                            ...data?.data
                         });
 
                     const userInfo = await APIRouter.user_info();
@@ -62,10 +62,8 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                         {
                             key: NA_DATA.USER_INFO,
                             ...accountData,
-                            data: {
-                                ...data?.data,
-                                ...userInfo.data.data
-                            }
+                            ...data?.data,
+                            ...userInfo.data.data
                         })
                     break;
 

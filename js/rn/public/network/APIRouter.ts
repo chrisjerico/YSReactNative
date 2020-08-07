@@ -72,21 +72,20 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    let token = null;
+    let tokenParams = "";
     switch (Platform.OS) {
       case "ios":
         let user = await OCHelper.call('UGUserModel.currentUser');
-        token = user?.token;
+        tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        let textData = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.USER_INFO});
-        token = JSON.parse(textData)?.data['API-TOKEN'];
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+            { blGet: true, });
         break;
-
     }
 
-    if (token) {
-      return httpClient.get("c=user&a=info&token=" + token)
+    if (tokenParams) {
+      return httpClient.get("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({
         msg: 'no token'

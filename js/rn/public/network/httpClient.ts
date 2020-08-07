@@ -40,10 +40,12 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   try {
     temp['checkSign'] = 1;
 
-    if (Platform.OS == 'ios') {
-      return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
-    } else {
-      return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
+    //ugLog("encryptParams=", JSON.stringify(temp))
+    switch (Platform.OS) {
+      case "ios":
+        return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
+      case "android":
+        return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
     }
   } catch (error) {
     console.warn(error);
@@ -54,6 +56,8 @@ httpClient.interceptors.response.use(
   response => {
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
+
+    //ugLog('http success res = ', JSON.stringify(response))
 
     // ugLog("http ful filled res = ", JSON.stringify(response))
 
@@ -76,7 +80,7 @@ httpClient.interceptors.response.use(
     if (err && err.response) {
       ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
-        case 401://帐号已被登出
+        case 401://请登录后再访问, 帐号已被登出
           switch (Platform.OS) {
             case "ios":
               OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
@@ -90,15 +94,15 @@ httpClient.interceptors.response.use(
               })
               break;
             case "android":
-              ANHelper.callAsync(CMD.SAVE_DATA,
-                  {
-                    key: NA_DATA.USER_INFO,
-                  }).then(((any?: any) => {
-                    updateUserInfo()
-                    UGStore.dispatch({type: 'reset', userInfo: {}})
-                    // Toast('帐号已被登出');
-
-              }))
+              // ANHelper.callAsync(CMD.SAVE_DATA,
+              //     {
+              //       key: NA_DATA.USER_INFO,
+              //     }).then(((any?: any) => {
+              //       updateUserInfo()
+              //       UGStore.dispatch({type: 'reset', userInfo: {}})
+              //       // Toast('帐号已被登出');
+              //
+              // }))
               break;
 
           }
@@ -127,6 +131,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   const { isEncrypt = true } = config;
   let encryptData = await encryptParams(params, isEncrypt);
   //開始請求
+  //ugLog('http url=', config.baseURL, config.url)
   if (isEncrypt) {
     if (Platform.OS == 'ios') {
       if (config.method == 'get' || config.method == 'GET') {

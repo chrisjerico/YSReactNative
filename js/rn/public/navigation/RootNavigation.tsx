@@ -24,7 +24,17 @@ export function jumpTo<P extends object>(page: PageName, props?: P): boolean {
 
 export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
-    count < 3 && OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+    if (count < 3) {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+            case "ios":
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+                break;
+            case "android":
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+                break;
+        }
+    }
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
     return count > 1;
 }
@@ -32,7 +42,15 @@ export function pop(): boolean {
 export function popToRoot() {
     const canPop = navigationRef?.current?.getRootState().routes.length > 1;
     canPop && navigationRef?.current?.dispatch(StackActions.popToTop());
-    OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+    //检查一下Native主页下面的tab是显示还是隐藏
+    switch (Platform.OS) {
+        case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            break;
+        case "android":
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+            break;
+    }
 }
 
 // 获取当前页面
@@ -65,13 +83,6 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
         return false;
     }
 
-    //检查一下Native主页下面的tab是否隐藏了
-    switch (Platform.OS) {
-        case "android":
-            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
-            break;
-    }
-
     try {
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
@@ -83,8 +94,18 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
             }
         } else {
             console.log('跳转到过渡页');
+
+            //检查一下Native主页下面的tab是显示还是隐藏
             if (action == RouterType.Stack) {
-                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+                switch (Platform.OS) {
+                  case "ios":
+                      OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+                    break;
+                  case "android":
+                      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+                    break;
+                }
+
                 navigationRef?.current?.dispatch(StackActions.push(page, props));
             } else {
                 popToRoot();
