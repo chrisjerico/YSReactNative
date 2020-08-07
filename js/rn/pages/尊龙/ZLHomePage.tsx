@@ -1,4 +1,20 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl, Linking } from "react-native"
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Image,
+    FlatList,
+    StyleSheet,
+    Dimensions,
+    Alert,
+    ImageBackground,
+    Platform,
+    RefreshControl,
+    AppState,
+    Linking
+} from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -31,8 +47,9 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
 import { List } from "../../public/network/Model/PromotionsModel"
+import {ugLog} from "../../public/tools/UgLog";
 /**
- * 
+ *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
     vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
         [NavController1 pushViewControllerWithNextIssueModel:nextModel];
@@ -114,6 +131,7 @@ const ZLHomePage = ({ navigation }) => {
         }
 
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <ZLHeader />

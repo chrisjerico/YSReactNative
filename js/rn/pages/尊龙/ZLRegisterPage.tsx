@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
+import {View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert, Platform} from "react-native"
 import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -13,6 +13,7 @@ import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { EventRegister } from 'react-native-event-listeners'
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -197,6 +198,7 @@ const ZLRegisterPage = () => {
             return
         })
     }, [errors])
+
     return (
         <View style={{ flex: 1 }}>
             <Header />
@@ -384,7 +386,11 @@ const Header = () => {
         <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
             <TouchableWithoutFeedback onPress={() => {
                 pop();
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                    case "ios":
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        break;
+                }
             }}>
                 <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
             </TouchableWithoutFeedback>

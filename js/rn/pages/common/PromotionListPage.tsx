@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, FlatList, Linking } from "react-native"
+import { View, Text, TouchableWithoutFeedback, FlatList, Linking, Platform } from "react-native"
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import LinearGradient from "react-native-linear-gradient";
@@ -18,6 +18,9 @@ import AppDefine from "../../public/define/AppDefine";
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
 import PushHelper from "../../public/define/PushHelper";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ugLog} from "../../public/tools/UgLog";
+
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -48,10 +51,13 @@ const PromotionListPage = ({ navigation }) => {
       categoriesArray.sort()
       setCategories(categoriesArray)
     } catch (error) {
-
+      ugLog("error=", error)
     }
 
   }
+
+  ugLog("currentNativeSelectedTab=", currentNativeSelectedTab, state.index);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
@@ -63,7 +69,11 @@ const PromotionListPage = ({ navigation }) => {
               buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
               onPress={() => {
                 popToRoot()
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                  case "ios":
+                    OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    break;
+                }
               }}
             />
           </View> : null}
@@ -85,7 +95,7 @@ const PromotionListPage = ({ navigation }) => {
 
       </LinearGradient>
     </View>
-  )
+  );
 }
 export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)

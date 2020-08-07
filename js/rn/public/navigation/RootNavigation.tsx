@@ -4,6 +4,9 @@ import { StackActions, NavigationContainerRef, TabActions } from '@react-navigat
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { PageName } from './Navigation';
 import { Router, RouterType } from './Router';
+import {Platform} from "react-native";
+import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
+import {ugLog} from "../tools/UgLog";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
@@ -62,6 +65,13 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
         return false;
     }
 
+    //检查一下Native主页下面的tab是否隐藏了
+    switch (Platform.OS) {
+        case "android":
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+            break;
+    }
+
     try {
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
@@ -81,6 +91,9 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
                 navigationRef?.current?.dispatch(TabActions.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props }));
             }
         }
-    } catch (e) { }
+    } catch (e) {
+        ugLog("error=", e)
+    }
+
     return true;
 }
