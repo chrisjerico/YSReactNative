@@ -258,7 +258,7 @@ const ZLHomePage = ({ navigation }) => {
                         <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
                     </View>
                     <TouchableWithoutFeedback onPress={() => {
-                        push(PageName.PromotionListPage)
+                        push(PageName.JDPromotionListPage)
                     }}>
                         <Text style={{ color: 'white', fontWeight: "bold" }}>{"查看更多>>"}</Text>
                     </TouchableWithoutFeedback>
@@ -309,7 +309,7 @@ const ZLHomePage = ({ navigation }) => {
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                     }} style={{ color: 'white', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
                     <Text style={{ color: 'white', textAlign: 'center' }} onPress={() => {
-                        push(PageName.PromotionListPage)
+                        push(PageName.JDPromotionListPage)
                     }}>🎁优惠活动</Text>
                 </View>
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>

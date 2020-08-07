@@ -133,7 +133,7 @@ const VietnamHomePage = () => {
                       break;
                     // push(PageName)
                     case 5:
-                      push(PageName.PromotionListPage)
+                      push(PageName.JDPromotionListPage)
                       break
                     // PushHelper.pushCategory("70")
                     default:
@@ -200,7 +200,7 @@ const VietnamHomePage = () => {
           <Text style={{ color: 'black', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>
           <Text style={{ color: 'black', fontWeight: "bold", }}>{"查看详情"}<Text> >></Text></Text>
         </TouchableWithoutFeedback>
@@ -220,7 +220,7 @@ const VietnamHomePage = () => {
           PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
         }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
         <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>🎁<Text>优惠活动</Text></Text>
       </View>
       <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>

@@ -112,7 +112,7 @@ const GDBHomePage = ({ navigation }) => {
           <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>
           <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
         </TouchableWithoutFeedback>
@@ -374,7 +374,7 @@ const AcctountDetail = () => {
             </View>
           </View>
           <TouchableOpacity onPress={() => {
-            push(PageName.PromotionListPage)
+            push(PageName.JDPromotionListPage)
           }}>
             <FastImage style={{ width: 86, height: 24 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/yhdh.png" }} />
           </TouchableOpacity>

@@ -32,7 +32,9 @@ export class IGlobalStateHelper {
         // 配置替换rn的页面
         setRnPageInfo()
         // 初始配置完毕，可以进入主页
-        OCHelper.launchFinish();
+        setTimeout(() => {
+          OCHelper.launchFinish();
+        }, 1000);
       } else {
         // TODO 安卓
       }

@@ -154,7 +154,7 @@ const LCHomePage = ({ navigation }) => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Icon size={16} name={"gift"} />
                     <Text style={{ fontSize: 16, color: "#333333", padding: 10 }} onPress={() => {
-                        push(PageName.PromotionListPage)
+                        push(PageName.JDPromotionListPage)
                     }}>优惠活动</Text>
                     <View style={{ flex: 1 }} />
                     <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></Text>
@@ -174,7 +174,7 @@ const LCHomePage = ({ navigation }) => {
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                     }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</Text>
                     <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
-                        push(PageName.PromotionListPage)
+                        push(PageName.JDPromotionListPage)
                     }}>🎁优惠活动</Text>
                 </View>
                 <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
