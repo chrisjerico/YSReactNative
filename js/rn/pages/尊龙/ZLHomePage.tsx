@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl } from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl, Linking } from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -29,6 +29,8 @@ import RedBagItem from "../../public/components/RedBagItem"
 import { useNavigationState } from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
+import Banner from "./CP/Banner"
+import { List } from "../../public/network/Model/PromotionsModel"
 /**
  * 
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -39,6 +41,7 @@ import RankListCP from "../../public/widget/RankList";
     [self presentViewController:nav animated:true completion:nil];
  */
 const ZLHomePage = ({ navigation }) => {
+
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
     const userStore = UGStore.globalProps.userInfo;
@@ -51,6 +54,17 @@ const ZLHomePage = ({ navigation }) => {
     const [selectId, setSelectedId] = useState(-1)
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
+    const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+        if (data?.linkUrl != "") {
+            Linking.openURL(data?.linkUrl)
+        }
+        else if (data.linkCategory == 0 && data.linkPosition == 0) {
+            onPopViewPress(data, type, onPress ? onPress : () => { })
+        } else {
+            PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+        }
+
+    }
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -125,7 +139,7 @@ const ZLHomePage = ({ navigation }) => {
                 </View>
 
                 <AcctountDetail />
-                <Banner onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
+                <Banner style={{ marginBottom: 10 }} size={{ width: width - 20, height: 0 }} onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
                 <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
                         <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[0]?.icon }} style={{
@@ -175,22 +189,30 @@ const ZLHomePage = ({ navigation }) => {
                         </View>
                         <View style={{ height: 0.5, width: "100%", backgroundColor: "#97989d" }}></View>
                         <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 3)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 4)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 5)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={thirdPartGamePress.bind(null, 6)} style={{ alignItems: 'center' }}>
-                                <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.icon }} />
-                                <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
-                            </TouchableOpacity>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 3)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[3]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 4)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[4]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 5)}>
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[5]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 6)} >
+                                <View style={{ alignItems: 'center' }}>
+                                    <FastImage style={{ width: 42, height: 42, borderRadius: 8, marginBottom: 10 }} source={{ uri: homeGames?.data?.icons?.[0]?.list?.[6]?.icon }} />
+                                    <Text style={{ fontSize: 12, color: "#97989d" }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
                         </View>
                     </View>
                     <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
@@ -202,27 +224,33 @@ const ZLHomePage = ({ navigation }) => {
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{ flexDirection: 'row', height: 67, marginTop: 7 }}>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 8)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon }}
-                            style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67, }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 9)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon }}
-                            style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 10)}>
-                        <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon }}
-                            style={{ flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67, }}>
-                            <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
-                            <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</Text>
-                        </FastImage>
-                    </TouchableOpacity>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 8)}>
+                        <View style={styles.buttonContainer} >
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon }}
+                                style={{ borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67, }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[8]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 9)}>
+                        <View style={styles.buttonContainer}>
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon }}
+                                style={{ borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10 }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[9]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 10)}>
+                        <View style={styles.buttonContainer}>
+                            <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon }}
+                                style={{ flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67, }}>
+                                <Text style={{ color: colorEnum.titleColor, fontSize: 12 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.name}</Text>
+                                <Text style={{ color: "rgba(167,171,179,.99)", fontSize: 12, marginTop: 10 }}>{homeGames?.data?.icons?.[0]?.list?.[10]?.subtitle}</Text>
+                            </FastImage>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 }}>
                     <View style={{ flexDirection: 'row' }} >
@@ -238,7 +266,7 @@ const ZLHomePage = ({ navigation }) => {
 
                 <FlatList style={{ marginTop: 10 }} data={couponListData?.data?.list?.filter((res, index) => index < 5)} renderItem={({ item, index }) => {
                     return <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
-                        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
+                        <TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
                             if (selectId == index) {
                                 setSelectedId(-1)
                             } else {
@@ -287,7 +315,7 @@ const ZLHomePage = ({ navigation }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
-            <RedBagItem loginPage={PageName.ZLHomePage} redBag={redBag} />
+            <RedBagItem loginPage={PageName.ZLLoginPage} redBag={redBag} />
             <TurntableListItem />
             <MarqueePopupView onPress={() => {
                 setShow(false)
@@ -358,7 +386,7 @@ const TurntableListItem = () => {
                     }));
                 }
             }}>
-                <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >
+                <ImageBackground style={{ width: 70, height: 70, position: 'absolute', top: height * 0.4 + 95, right: 20 }} source={{ uri: "dzp_btn" }} >
                     <TouchableWithoutFeedback onPress={() => {
                         setTurntableListVisiable(false)
                     }}>
@@ -383,7 +411,7 @@ const ZLHeader = () => {
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
             flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
         }}>
-            <FastImage resizeMode={'contain'} style={{ width: 210, height: 58 }} source={{ uri: mobile_logo }} />
+            <FastImageAutoWidth style={{ width: 210, height: 50 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
                 {
                     uid != "" ? <TouchableOpacity onPress={() => {
@@ -466,61 +494,7 @@ const UserStatusBar = () => {
         </LinearGradient>
     )
 }
-const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, }: { bannerData: BannerModel, onlineNum: number, onlineSwitch: number, }) => {
-    const { width, } = useDimensions().window
-    const BannerRef = useRef<Carousel>()
-    const [height, setHeight] = useState(100)
-    useEffect(() => {
-        let timer = null
-        if (parseFloat(bannerData?.data?.interval) > 0) {
-            timer = setInterval(() => {
-                //@ts-ignore
-                BannerRef?.current?.gotoNextPage()
-            }, parseFloat(bannerData?.data?.interval) * 1000);
-        }
 
-        return (() => {
-            clearInterval(timer)
-        })
-    }, [bannerData,])
-    if (bannerData?.data?.list?.length > 0) {
-        return (
-            <View style={{ marginBottom: 10, }}>
-
-                <Carousel
-                    autoplay
-                    index={0}
-                    ref={BannerRef}
-                    loop
-                    pageSize={width - 20}
-                >
-                    {bannerData?.data?.list?.map((res, index) => {
-                        return (
-                            <TouchableWithoutFeedback onPress={() => {
-                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-                            }}>
-                                <FastImage onLoad={(e) => {
-                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                                    setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-
-                                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
-
-                                </FastImage>
-                            </TouchableWithoutFeedback>)
-                    })}
-                </Carousel>
-                {onlineSwitch == 1 ? <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-                    <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View> : null}
-
-            </View>
-        )
-
-    } else {
-        return <View style={{ height: (Dimensions.get("screen").width - 20) / 2, }}></View>
-    }
-
-}
 
 const AcctountDetail = () => {
     const userStore = UGStore.globalProps.userInfo
@@ -660,6 +634,15 @@ const FastImageAutoHeight = (props: FastImageProperties) => {
     return (
         <FastImage {...props} style={[props.style, { height: picHeight }]} onLoad={(e) => {
             setPicHeight(((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
+        }} />
+    )
+}
+const FastImageAutoWidth = (props: FastImageProperties) => {
+    const [picWidth, setPicWidth] = useState(210)
+    return (
+        <FastImage {...props} style={[props.style, { width: picWidth }]} onLoad={(e) => {
+            console.log(props.style?.height / e.nativeEvent.height * e.nativeEvent.width, e.nativeEvent.width)
+            setPicWidth(props.style?.height / e.nativeEvent.height * e.nativeEvent.width)
         }} />
     )
 }

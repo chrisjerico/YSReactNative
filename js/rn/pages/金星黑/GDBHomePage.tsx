@@ -31,13 +31,14 @@ import HotRecycleList from "./RecycleList/HotRecycleList"
 import RankListCP from "../../public/widget/RankList"
 import AutoHeightWebView from "react-native-autoheight-webview"
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
+import Banner from "../尊龙/CP/Banner"
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
   const userStore = UGStore.globalProps.userInfo
   const { uid = "" } = userStore
   const [show, setShow] = useState(false)
-  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
+  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onlineSwitch } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   const { top } = useSafeArea()
@@ -73,7 +74,7 @@ const GDBHomePage = ({ navigation }) => {
       setShow(false)
     }} />} loginPage={PageName.GDLoginPage} header={<View style={{ height: top }}></View>}
       backgroundSource={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/bg-black.png" }}>
-      <Banner onlineNum={onlineNum} bannerData={banner} />
+      <Banner size={{ width: width - 20, height: 0 }} onlineSwitch={onlineSwitch} onlineNum={onlineNum} bannerData={banner} />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
         <Text style={{ color: '#999999', fontSize: 12 }}>公告:</Text>
         <MarqueeHorizontal
@@ -308,56 +309,6 @@ const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean
         )
       }} data={data ?? []} />
     )
-  }
-
-}
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
-  const { width, } = useDimensions().window
-  const BannerRef = useRef<Carousel>()
-  const [height, setHeight] = useState(100)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      //@ts-ignore
-      BannerRef?.current?.gotoNextPage()
-    }, 2000);
-    return (() => {
-      clearInterval(timer)
-    })
-  }, [bannerData])
-  if (bannerData?.data?.list?.length > 0) {
-    return (
-      <View style={{ marginBottom: 10, }}>
-
-        <Carousel
-          autoplay
-          index={0}
-          ref={BannerRef}
-          loop
-          pageSize={width - 20}
-        >
-          {bannerData?.data?.list?.map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-              }}>
-                <FastImage onLoad={(e) => {
-                  console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                  setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-
-                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
-
-                </FastImage>
-              </TouchableWithoutFeedback>)
-          })}
-        </Carousel>
-        <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-        </View>
-      </View>
-    )
-
-  } else {
-    return <View style={{ height: (Dimensions.get("screen").width - 20) / 2, }}></View>
   }
 
 }

@@ -23,5 +23,7 @@ export const GDBThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     intoViewColor: '#444',
     moneyCellColor: '#444',
+    navBarTitleColor: '#fff',
+    isBlack: true,
   }
 };
