@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
@@ -20,21 +19,19 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import HomeHeader from './components/HomeHeader'
 import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
 
 const WNZHomePage = ({ navigation }) => {
   const announcementModal = useRef(null)
-  const { balance, usr, uid, isTest }: UGUserModel = useSelector(
-    (state: IGlobalState) => state.UserInfoReducer
-  )
+  const { balance, usr, uid, isTest }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
     rankingListSwitch,
-  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  }: UGSysConfModel = UGStore.globalProps.sysConf
   const {
     systemConfig,
     loading,

@@ -1,6 +1,5 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import { useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMemberItems from '../../public/hooks/useMemberItems'
@@ -13,7 +12,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import ButtonGroup from './components/ButtonGroup'
 import HomeHeader from './components/HomeHeader'
 import ProfileBlock from './components/ProfileBlock'
@@ -28,10 +27,8 @@ const WNZMinePage = () => {
     taskReward,
     taskRewardTotal,
     isTest,
-  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { mobile_logo }: UGSysConfModel = useSelector(
-    (state: IGlobalState) => state.SysConfReducer
-  )
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   const { UGUserCenterItem } = useMemberItems()
   const tools = UGUserCenterItem?.sort((a, b) => a?.code - b?.code) ?? []
   const headTools = tools?.slice(0, 2) ?? []

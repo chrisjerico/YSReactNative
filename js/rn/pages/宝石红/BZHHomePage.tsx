@@ -11,6 +11,7 @@ import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
@@ -19,9 +20,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
@@ -119,7 +118,9 @@ const BZHHomePage = () => {
 
   useEffect(() => {
     if (notice?.data?.popup) {
-      PushHelper.pushAnnouncement(announcements)
+      if (!B_DEBUG) {
+        PushHelper.pushAnnouncement(announcements)
+      }
     }
   }, [notice])
 
@@ -138,7 +139,7 @@ const BZHHomePage = () => {
             onPressSignIn={() => push(PageName.BZHSignInPage)}
             onPressSignUp={() => push(PageName.BZHRegisterPage)}
             onPressUser={() => {
-              navigate(PageName.BZHHomePage, { index: userTabIndex })
+              navigate(PageName.BZHMinePage, { index: userTabIndex })
             }}
           />
         </SafeAreaHeader>
@@ -195,7 +196,7 @@ const BZHHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 3 }}
                   onPress={() => {
                     if (gameId == 9) {
-                      push(PageName.PromotionListPage)
+                      push(PageName.JDPromotionListPage)
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -278,7 +279,7 @@ const BZHHomePage = () => {
             <CouponBlock
               visible={m_promote_pos}
               onPressMore={() => {
-                push(PageName.PromotionListPage)
+                push(PageName.JDPromotionListPage)
               }}
               containerStyle={styles.subComponent}
               coupons={coupons}
@@ -322,7 +323,7 @@ const BZHHomePage = () => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
             onPressPromotion={() => {
-              push(PageName.PromotionListPage)
+              push(PageName.JDPromotionListPage)
             }}
           />
           <View style={styles.bottomComponent} />

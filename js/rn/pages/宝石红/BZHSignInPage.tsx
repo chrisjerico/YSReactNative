@@ -39,8 +39,7 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
 
 
 const BZHSignInPage = (props: BZHSignInStore) => {
-  const { isRemember, account, password }: BZHSignInStore = UGStore.getPageProps(PageName.BZHSignInPage)
-  const { navigation, setProps } = props
+  const { isRemember, account, password, navigation, setProps }: BZHSignInStore = props
   const [hidePassword, setHidePassword] = useState(true)
 
   const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
@@ -50,6 +49,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
 
   const { type } = navigation?.dangerouslyGetState()
 
+  console.log("--------type-------", type)
   const jump = () => {
     switch (type) {
       case 'tab':

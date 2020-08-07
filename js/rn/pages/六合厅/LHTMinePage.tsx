@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -17,7 +16,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import ProfileBlock from './components/ProfileBlock'
 import ProfileButton from './components/ProfileButton'
 import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
@@ -35,7 +34,7 @@ const LHTMinePage = ({ navigation }) => {
     balance,
     unreadMsg,
     isTest,
-  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  }: UGUserModel = UGStore.globalProps.userInfo
 
   // effects
   const { UGUserCenterItem } = useMemberItems()
