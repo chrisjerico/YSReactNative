@@ -34,6 +34,7 @@
     "react-native-auto-scrolling": "^2.0.0",
     "react-native-autoheight-webview": "^1.5.1",
     "react-native-banner-carousel": "^1.0.3",
+    "react-native-android-fragment": "^1.1.1",
     "react-native-code-push": "^6.1.0",
     "react-native-dialog-input": "^1.0.8",
     "react-native-elements": "^1.2.7",

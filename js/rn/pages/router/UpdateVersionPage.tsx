@@ -1,24 +1,20 @@
 import CodePush from 'react-native-code-push';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Platform } from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
-import { connect } from 'react-redux';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { OCEventType } from '../../public/define/OCHelper/OCBridge/OCEvent';
-import {  PageName } from '../../public/navigation/Navigation';
-import { UGStore } from '../../redux/store/UGStore';
+import { PageName } from '../../public/navigation/Navigation';
 import { UGBasePageProps } from '../base/UGPage';
-import { UGColor } from '../../public/theme/UGThemeColor';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { navigate, getCurrentPage, jumpTo } from '../../public/navigation/RootNavigation';
-
-
+import { getCurrentPage, jumpTo } from '../../public/navigation/RootNavigation';
 
 interface UpdateVersionVars {
   rnInstalled: boolean;
   type: 'rn' | 'jspatch';
+  isNewest: boolean;
 }
 
 // 声明Props
@@ -27,8 +23,8 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps, 
 }
 
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, vars: v = { rnInstalled: false, type: 'rn' }, progress = 0 } = props;
-  
+  const { setProps, vars: v = { rnInstalled: false, type: 'rn', isNewest: false }, progress = 0 } = props;
+
   function updateJspatch() {
     if (Platform.OS != 'ios') return;
 
@@ -85,7 +81,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
          codePush.InstallMode.ON_NEXT_RESTART：表示安装完成后会在下次重启后进行更新
          codePush.InstallMode.ON_NEXT_RESUME：表示安装完成后会在应用进入后台后重启更新
        *
-       *
        * 强制更新模式(单独的抽出来设置 强制安装)
        * mandatoryInstallMode (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE
        *
@@ -107,10 +102,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break;
           case CodePush.SyncStatus.UPDATE_IGNORED:
             console.log('rn忽略此热更新');
+            v.isNewest = true;
             updateJspatch();
             break;
           case CodePush.SyncStatus.UP_TO_DATE:
             console.log('rn已是最新版本');
+            v.isNewest = true;
             updateJspatch();
             break;
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
@@ -124,6 +121,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break;
           case CodePush.SyncStatus.UPDATE_INSTALLED:
             console.log('rn热更新安装成功，jspatch安装后生效');
+            v.isNewest = true;
             v.rnInstalled = true;
             updateJspatch();
             break;
@@ -143,7 +141,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     })
 
     if (Platform.OS == 'ios') {
-      OCHelper.launchFinish();
       OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
         if (pics && pics.length) {
           setProps({ backgroundImage: pics[0] });
@@ -156,8 +153,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }} />
       <LinearGradient colors={['transparent', '#00000066']}>
-        <View style={{ height: 240 }} />
-        <Text style={{ marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500' }}>{v.rnInstalled ? '重启APP完成更新' : '正在努力更新中...'}</Text>
+        <View style={{ height: 120 }} />
+        <Text style={{ marginTop: 10, marginLeft: 22, color: '#fff', fontWeight: '500' }}>{this.isNewest ? '更新完毕请重新启动APP。' : '正在努力更新中...'}</Text>
         <Progress.Bar
           progress={progress}
           borderWidth={0.5}
@@ -166,7 +163,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           color="white"
           height={4}
           width={AppDefine.width - 40}
-          style={{ marginLeft: 20, marginTop: 10, marginBottom: 120 }}
+          style={{ marginLeft: 20, marginTop: 10, marginBottom: 60 }}
         />
       </LinearGradient>
     </View>

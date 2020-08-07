@@ -7,6 +7,7 @@ import { Platform } from 'react-native'
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
 import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
@@ -30,6 +31,8 @@ export class IGlobalStateHelper {
         UGSkinManagers.updateSkin(sysConf)
         // 配置替换rn的页面
         setRnPageInfo()
+        // 初始配置完毕，可以进入主页
+        OCHelper.launchFinish();
       } else {
         // TODO 安卓
       }
