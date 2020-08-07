@@ -40,7 +40,7 @@ const AnimatedRankComponent = ({
 
   const animated = () =>
     Animated.timing(height, {
-      toValue: scale(40 * (rankLists?.length ?? 0) + 250),
+      toValue: scale(45 * (rankLists?.length ?? 0) + 250),
       duration: duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
@@ -64,13 +64,13 @@ const AnimatedRankComponent = ({
         <View style={[styles.rankContainer, rankContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'用户名称'}</Text>
+              <Text style={styles.title}>{'玩家'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'游戏名称'}</Text>
+              <Text style={styles.title}>{'游戏'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'投注金额'}</Text>
+              <Text style={styles.title}>{type == 1 ? '中奖金额' : '投注金额'}</Text>
             </View>
           </View>
           <View style={styles.animatedContainer}>
@@ -164,9 +164,10 @@ const styles = StyleSheet.create({
   },
   content: {
     color: '#EA0000',
-    fontSize: scale(20),
+    fontSize: scale(25),
   },
   iconText: {
+    fontSize: scale(25),
     paddingLeft: scale(5),
   },
   animatedContainer: {

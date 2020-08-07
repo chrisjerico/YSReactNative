@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import AppDefine from '../define/AppDefine';
@@ -10,6 +10,8 @@ interface SlidingVerificationProps {
 }
 
 const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationProps) => {
+
+  //const host = 'http://test60f.fhptcdn.com'
   const webViewScript = `setTimeout(function() { 
       document.getElementById('app').style.background = 'transparent'
       window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight); 
@@ -43,8 +45,5 @@ const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationPr
     />
   );
 }
-
-const styles = StyleSheet.create({
-})
 
 export default SlidingVerification

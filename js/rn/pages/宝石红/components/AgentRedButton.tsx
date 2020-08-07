@@ -28,7 +28,7 @@ const AgentRedButton = ({
         onPress={onPressRightButton}
       >
         <Text style={[styles.text, toggle ? styles.enableText : {}]}>
-          {'註冊代理'}
+          {'注册代理'}
         </Text>
       </TouchableOpacity>
     </View>

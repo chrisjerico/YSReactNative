@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
   ViewStyle,
+  Image
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -27,7 +28,10 @@ const CouponBlock = ({
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.titleContainer}>
-          <Text>{'优惠活动'}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: "礼品-(1)" }} />
+            <Text>{'优惠活动'}</Text>
+          </View>
           <TouchableWithoutFeedback onPress={onPressMore}>
             <Text>{'查看更多>>'}</Text>
           </TouchableWithoutFeedback>
@@ -56,6 +60,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
+    alignItems: 'center',
     padding: scale(20),
   },
 })

@@ -128,7 +128,7 @@ const BZHHomePage = () => {
             logo={mobile_logo}
             isTest={isTest}
             uid={uid}
-            name={isTest ? '遊客' : usr}
+            name={usr}
             money={balance}
             onPressSignIn={() => push(PageName.BZHSignInPage)}
             onPressSignUp={() => push(PageName.BZHRegisterPage)}

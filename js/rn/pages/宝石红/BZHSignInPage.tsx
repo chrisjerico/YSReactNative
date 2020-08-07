@@ -194,13 +194,14 @@ const BZHSignInPage = ({ navigation }) => {
             />
           ) : null}
           <Button
-            title={'立即登陆'}
+            title={'登陆'}
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
             onPress={async () => {
               try {
                 OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...'])
+                await APIRouter.user_logout()
                 const { data } = await APIRouter.user_login(
                   account,
                   password?.md5(),

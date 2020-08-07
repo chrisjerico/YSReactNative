@@ -61,7 +61,7 @@ const BZHMinePage = () => {
   // data
   const features = UGUserCenterItem?.slice(0, 4) ?? []
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
-
+  console.log("-----avatar------", avatar)
   return (
     <>
       <SafeAreaHeader
@@ -92,9 +92,9 @@ const BZHMinePage = () => {
             })
           }}
           level={curLevelGrade}
-          avatar={avatar}
+          avatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}
           money={balance}
-          name={isTest ? '遊客' : usr}
+          name={usr}
           features={features}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
