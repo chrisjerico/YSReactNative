@@ -17,15 +17,14 @@ import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
@@ -41,7 +40,7 @@ import {
   defaultDowloadUrl,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo,
+  defaultNoticeLogo
 } from './helpers/config'
 
 const LHTHomePage = ({ navigation }) => {
@@ -358,16 +357,18 @@ const LHTHomePage = ({ navigation }) => {
             />
             <AnimatedRankComponent
               type={rankingListSwitch}
+              containerStyle={styles.subComponent}
+              iconContainerStyle={styles.rankBlockIconContainerStyle}
+              rankLists={rankLists}
+            />
+            <BottomLogo
+              webName={webName}
               onPressComputer={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
               }}
               onPressPromotion={() => {
                 push(PageName.PromotionListPage)
               }}
-              containerStyle={styles.subComponent}
-              iconContainerStyle={styles.rankBlockIconContainerStyle}
-              rankLists={rankLists}
-              webName={webName}
             />
             <BottomToolBlock
               tools={defaultBottomTools}

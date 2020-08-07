@@ -4,8 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ViewStyle,
-  TouchableWithoutFeedback,
+  ViewStyle
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { List } from '../../network/Model/RankListModel'
@@ -18,9 +17,6 @@ interface AnimatedRankComponentProps {
   titleConatinerStyle?: ViewStyle;
   rankLists: List[];
   duration?: number;
-  webName: string;
-  onPressPromotion: () => any;
-  onPressComputer: () => any;
   type: number;
 }
 
@@ -31,9 +27,6 @@ const AnimatedRankComponent = ({
   titleConatinerStyle,
   rankLists,
   duration = 15000,
-  webName,
-  onPressPromotion,
-  onPressComputer,
   type
 }: AnimatedRankComponentProps) => {
   const height = useRef(new Animated.Value(0)).current
@@ -93,37 +86,6 @@ const AnimatedRankComponent = ({
               })}
             </Animated.View>
           </View>
-        </View>
-        <View style={{ marginTop: scale(30) }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-            <TouchableWithoutFeedback onPress={onPressComputer}>
-              <Text
-                style={{
-                  color: '#000000',
-                }}
-              >
-                {'💻电脑版'}
-              </Text>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={onPressPromotion}>
-              <Text
-                style={{
-                  color: '#000000',
-                }}
-              >
-                {'🎁优惠活动'}
-              </Text>
-            </TouchableWithoutFeedback>
-          </View>
-          <Text
-            style={{
-              color: '#000000',
-              textAlign: 'center',
-              paddingTop: scale(10),
-            }}
-          >
-            {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
-          </Text>
         </View>
       </View>
     )

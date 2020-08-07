@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -14,21 +13,20 @@ import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
 import HomeHeader from './components/HomeHeader'
 import NavBlock from './components/NavBlock'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 
 const BZHHomePage = () => {
   // yellowBox
@@ -86,9 +84,13 @@ const BZHHomePage = () => {
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const announcements = notice?.data?.popup?.map((item: any) => {
-    return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
-  }) ?? []
+  const announcements =
+    notice?.data?.popup?.map((item: any) => {
+      return Object.assign(
+        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
+        item
+      )
+    }) ?? []
   const navs =
     homeGames?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
@@ -225,8 +227,8 @@ const BZHHomePage = () => {
               return (
                 <GameBlock
                   onPressTotal={
-                    // () => PushHelper.pushSecond()
-                    () => PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                    () =>
+                      PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                   }
                   title={name}
                   containerStyle={styles.subComponent}
@@ -297,18 +299,13 @@ const BZHHomePage = () => {
           </View>
           <AnimatedRankComponent
             type={rankingListSwitch}
-            onPressComputer={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
-            }}
-            onPressPromotion={() => {
-              push(PageName.PromotionListPage)
-            }}
             containerStyle={styles.subComponent}
             rankContainerStyle={{
               width: '95%',
               borderWidth: scale(1),
               borderColor: '#d9d9d9',
               alignSelf: 'center',
+              marginBottom: scale(20)
             }}
             iconContainerStyle={{
               backgroundColor: '#ffffff',
@@ -316,7 +313,15 @@ const BZHHomePage = () => {
               borderBottomWidth: scale(1),
             }}
             rankLists={rankLists}
+          />
+          <BottomLogo
             webName={webName}
+            onPressComputer={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+            }}
+            onPressPromotion={() => {
+              push(PageName.PromotionListPage)
+            }}
           />
           <View style={styles.bottomComponent} />
         </ScrollView>

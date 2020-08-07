@@ -11,19 +11,17 @@ import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomLogo from '../../public/views/tars/BottomLogo'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import HomeHeader from './components/HomeHeader'
-import MenuModalComponent from './components/MenuModalComponent'
 import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
 
@@ -245,15 +243,17 @@ const WNZHomePage = ({ navigation }) => {
           />
           <AnimatedRankComponent
             type={rankingListSwitch}
+            rankLists={rankLists}
+            rankContainerStyle={{ borderRadius: 0 }}
+          />
+          <BottomLogo
+            webName={webName}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
             onPressPromotion={() => {
               push(PageName.PromotionListPage)
             }}
-            rankLists={rankLists}
-            rankContainerStyle={{ borderRadius: 0 }}
-            webName={webName}
           />
           <View style={styles.bottomComponent} />
         </ScrollView>

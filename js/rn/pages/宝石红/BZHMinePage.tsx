@@ -61,7 +61,7 @@ const BZHMinePage = () => {
   // data
   const features = UGUserCenterItem?.slice(0, 4) ?? []
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
-  console.log("-----avatar------", avatar)
+
   return (
     <>
       <SafeAreaHeader
@@ -121,7 +121,11 @@ const BZHMinePage = () => {
               logo={logo}
               unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
-              onPress={() => PushHelper.pushUserCenterType(code)}
+              onPress={() => {
+                console.log("----------item-----------", item)
+
+                PushHelper.pushUserCenterType(code)
+              }}
             />
           )
         })}
