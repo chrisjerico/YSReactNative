@@ -27,7 +27,6 @@ import TabComponent from './components/TabComponent'
 
 const WNZHomePage = ({ navigation }) => {
   const announcementModal = useRef(null)
-  const menuModal = useRef(null)
   const { balance, usr, uid, isTest }: UGUserModel = useSelector(
     (state: IGlobalState) => state.UserInfoReducer
   )

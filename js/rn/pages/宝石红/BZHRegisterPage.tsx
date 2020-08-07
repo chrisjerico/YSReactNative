@@ -4,12 +4,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { useSelector } from 'react-redux'
 import SlidingVerification from '../../public/components/SlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -20,10 +19,8 @@ import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
-import { IGlobalState } from '../../redux/store/UGStore'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
 
@@ -75,7 +72,7 @@ const BZHRegisterPage = () => {
     smsVerify, // 手机短信验证,
     zxkfUrl,
     zxkfUrl2,
-  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)

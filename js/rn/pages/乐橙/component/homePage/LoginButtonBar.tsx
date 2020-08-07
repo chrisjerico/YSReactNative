@@ -2,14 +2,12 @@ import * as React from "react";
 import {TouchableWithoutFeedback, View, Text, Platform} from "react-native";
 import PushHelper from "../../../../public/define/PushHelper";
 import UGUserModel from "../../../../redux/model/全局/UGUserModel";
-import {ActionType} from "../../../../redux/store/ActionTypes";
 import APIRouter from "../../../../public/network/APIRouter";
 import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
 import {OCHelper} from "../../../../public/define/OCHelper/OCHelper";
-import {useSelector} from "react-redux";
 
 export const LoginButtonBar = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "", curLevelTitle, usr, balance, isTest } = userStore
     const testPlay = async () => {
         try {
@@ -26,7 +24,7 @@ export const LoginButtonBar = () => {
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
                 UGStore.save();
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
             }
@@ -37,7 +35,7 @@ export const LoginButtonBar = () => {
     }
 
     return (
-        <View style={{flexDirection: "row", alignItems: "center"}}>
+        <View style={{flexDirection: "row", alignItems: "center", height: 40}}>
             <TouchableWithoutFeedback onPress={() => {
                 PushHelper.pushLogin()
             }}>

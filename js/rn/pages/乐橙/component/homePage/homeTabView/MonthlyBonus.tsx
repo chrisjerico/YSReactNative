@@ -8,7 +8,7 @@ export const MonthlyBonus = () => {
     useEffect(() => {
         AsyncStorage.getItem('LCMonthlyBonus').then((value) => {
             const currentDate = new Date()
-            if (currentDate.getDate() != 1 || value) {
+            if (currentDate.getDate() != 1 && !isNaN(parseInt(value))) {
                 const randomNumber = Math.floor(Math.random() * 10000) + Math.random() * 10000 + 2
                 const newValue = (parseInt(value) + randomNumber).toFixed(0).toString();
                 AsyncStorage.setItem('LCMonthlyBonus', newValue);
@@ -32,9 +32,11 @@ export const MonthlyBonus = () => {
                     value={bonus}
                     displayType={'text'}
                     prefix={'￥ '}
-                    renderText={value => (
-                        <Text style={{color: '#6666FF', fontSize: 20}}>{value}</Text>
-                    )}
+                    renderText={(value) => {
+                        return(
+                            <Text style={{color: '#6666FF', fontSize: 20}}>{value}</Text>
+                        )
+                    }}
                 />
             </View>
         </View>

@@ -1,10 +1,11 @@
 import { IGlobalStateHelper, updateUserInfo } from './../../../../redux/store/IGlobalStateHelper';
 import { OCCall } from './OCCall';
-import { PageName, Navigation } from '../../../navigation/Navigation';
+import { PageName,  } from '../../../navigation/Navigation';
 import { RnPageModel } from '../SetRnPageInfo';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { OCHelper } from '../OCHelper';
+import { getCurrentPage, pop, jumpTo } from '../../../navigation/RootNavigation';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -37,19 +38,15 @@ export class OCEvent extends OCCall {
       console.log('跳转到rn页面：', params.vcName);
 
       if (params.vcName) {
-        Navigation.jump(params.vcName) || Navigation.jump(RnPageModel.getPageName(params.vcName));
+        jumpTo(params.vcName) || jumpTo(RnPageModel.getPageName(params.vcName));
       }
     });
 
     // 移除页面
     this.emitter.addListener('RemoveVC', (params: { vcName: PageName }) => {
       console.log('退出页面', params.vcName);
-      if (params.vcName == Navigation.pages[Navigation.pages.length - 1]) {
-        if (Navigation.pages.length > 1) {
-          Navigation.pop();
-        } else {
-          Navigation.jump(PageName.TransitionPage);
-        }
+      if (params.vcName == getCurrentPage()) {
+        !pop() && jumpTo(PageName.TransitionPage);
       }
     });
 

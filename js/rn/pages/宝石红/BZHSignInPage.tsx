@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { useSelector } from 'react-redux'
 import SlidingVerification from '../../public/components/SlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -21,9 +20,8 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { ActionType } from '../../redux/store/ActionTypes'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
-import { BZHSignInStore } from './BZHSignInProps'
+import { UGStore } from '../../redux/store/UGStore'
+import { UGBasePageProps } from '../base/UGPage'
 import Form from './components/Form'
 
 interface SlidingVerification {
@@ -32,16 +30,23 @@ interface SlidingVerification {
   nc_sig: string;
 }
 
-const BZHSignInPage = ({ navigation }) => {
-  // stores
-  const { isRemember, account, password }: BZHSignInStore = useSelector(
-    (state: IGlobalState) => state.BZHSignInReducer
-  )
-  const { loginVCode }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+// store
+export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
+  isRemember?: boolean;
+  account?: string;
+  password?: string | any;
+}
+
+
+const BZHSignInPage = (props: BZHSignInStore) => {
+  const { isRemember, account, password }: BZHSignInStore = UGStore.getPageProps(PageName.BZHSignInPage)
+  const { navigation, setProps } = props
+  const [hidePassword, setHidePassword] = useState(true)
+
+  const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
   const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
-  const [hidePassword, setHidePassword] = useState(true)
 
   const { type } = navigation?.dangerouslyGetState()
 
@@ -64,14 +69,8 @@ const BZHSignInPage = ({ navigation }) => {
 
   const cleanAccountPassword = (isRemember: boolean) => {
     if (!isRemember) {
-      UGStore.dispatch({
-        type: ActionType.BZHSignInPage_SetProps,
-        props: {
-          account: null,
-          password: null,
-        },
-      })
-      UGStore.save()
+      console.log('----忘記帳密----')
+      setProps({ account: null, password: null })
     }
   }
 
@@ -139,13 +138,7 @@ const BZHSignInPage = ({ navigation }) => {
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={(value: any) => {
-              UGStore.dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: {
-                  account: value,
-                },
-              })
-              UGStore.save()
+              setProps({ account: value });
             }}
           />
           <Form
@@ -161,31 +154,17 @@ const BZHSignInPage = ({ navigation }) => {
               name: 'lock',
             }}
             value={password}
-            onChangeText={(value: any) => {
-              UGStore.dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: {
-                  password: value,
-                },
-              })
-              UGStore.save()
-            }}
+            onChangeText={(value: any) =>
+              setProps({ password: value })
+            }
             secureTextEntry={hidePassword}
             showRightIcon
           />
           <CheckBox
             check={isRemember}
-            onPress={() => {
-              OCHelper.call(
-                'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-                [!isRemember, 'isRememberPsd']
-              )
-              UGStore.dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: { isRemember: !isRemember },
-              })
-              UGStore.save()
-            }}
+            onPress={() =>
+              setProps({ isRemember: !isRemember })
+            }
           />
           {loginVCode ? (
             <SlidingVerification

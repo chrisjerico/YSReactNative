@@ -21,12 +21,15 @@ export class UGThemeColor {
   conversionCellColor? = '#7BA2C2'; // 内容Cell
   intoViewColor? = '#7BA2C2'; // 转入View
   moneyCellColor? = '#9BB8CB'; // 金额Cell
+  navBarTitleColor?= '#000';
 
   // 根据主题色自动生成色值
   themeColor?: string; // 主题色
   themeDarkColor?: string; // 主题色加深
   themeLightColor?: string; // 主题色加浅
   bgTextColor?: string; // bgColor上的文本颜色
+
+  isBlack?= false;
 }
 
 /**

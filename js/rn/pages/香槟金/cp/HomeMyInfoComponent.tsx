@@ -9,7 +9,8 @@ import {UGUserCenterType} from '../../../redux/model/全局/UGSysConfModel';
 import IUserBean from '../../../redux/model/user/IUserBean';
 import {UGColor} from '../../../public/theme/UGThemeColor';
 import {Skin1} from '../../../public/theme/UGSkinManagers';
-import {Navigation, PageName} from '../../../public/navigation/Navigation';
+import { PageName} from '../../../public/navigation/Navigation';
+import { navigate } from '../../../public/navigation/RootNavigation';
 
 interface IProps {
   reducerData: IUserBean;
@@ -80,7 +81,7 @@ export default class HomeMyInfoComponent extends Component<IProps> {
    * @private
    */
   _gotoMyInfo = () => {
-    Navigation.jump(PageName.XBJMinePage);
+    navigate(PageName.XBJMinePage);
   };
 
   /**

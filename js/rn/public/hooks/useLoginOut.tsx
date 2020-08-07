@@ -1,5 +1,4 @@
 import { Alert, Platform } from 'react-native'
-import { ActionType } from '../../redux/store/ActionTypes'
 import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { PageName } from '../navigation/Navigation'
@@ -15,7 +14,7 @@ const useLoginOut = (pageName: PageName) => {
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
-        UGStore.dispatch({ type: ActionType.Clear_User })
+        UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
         console.log("---------------登出成功---------------")
         navigate(pageName, {})

@@ -10,7 +10,15 @@ export interface UGAgentApplyInfo {
 }
 
 // 底部Tab按钮
-export class UGTabbarItem { }
+export class UGTabbarItem {
+  path: string;//界面
+  icon: string;//图标
+  name: string;//标题
+  sort: number;//排序
+  status: boolean;//1=显示建设中页面；0=正常显示
+  isHot: boolean;
+  icon_hot: string;//热门图片路径
+}
 
 export enum UGUserCenterType {
   存款 = 1,
@@ -33,15 +41,17 @@ export enum UGUserCenterType {
   开奖走势 = 18,
   QQ客服 = 19,
   开奖网 = 20,
-  // 自定义
+  // 自定义（从100+开始写，前面的都是后台定制的）
   资金明细 = 999,
-  聊天室 = 21,
-  每日签到 = 22,
-  登出 = 23,
-  游戏大厅 = 24,
-  存款纪录 = 25,
-  取款纪录 = 26,
-  六合彩 = 27
+  六合彩 = 100,
+  聊天室 = 101,
+  每日签到 = 102,
+  登出 = 103,
+  游戏大厅 = 104,
+  我的页 = 105,
+  存款纪录 = 106,
+  取款纪录 = 107,
+
 }
 
 // 我的页功能按钮
@@ -89,67 +99,67 @@ export class LHPriceModel { }
 export default class UGSysConfModel {
   static current: UGSysConfModel = new UGSysConfModel();
 
-  zxkfUrl2: string; // 在线客服2
-  zxkfUrl: string; // 在线客服
-  minWithdrawMoney: string; // 最低提款金额
-  maxWithdrawMoney: string; // 最高提款金额
-  closeregreason: string; // 关闭注册功能提示内容
-  missionName: string; // 哇咔豆
-  missionBili: string;
-  isIntToMoney: string; // 积分开关0=关闭；1=开启；
-  missionSwitch: string; // 1=关闭；0=开启；任务中心
-  myreco_img: string; // 1=关闭；0=开启；
-  checkinSwitch: string; // 0=关闭；1=开启签到开关
-  mkCheckinSwitch: string; // 0=开启；1=关闭 补签开关：
-  agent_m_apply: string; // 允许会员中心申请代理
-  mobile_logo: string; // 首页navBar 图片
-  agentRegbutton: string; // 是否开启代理注册，0=关闭；1=开启
-  oftenLoginArea: string; // 1=关闭；0=开启； 常用登录地
-  mobileTemplateBackground: string; // 配色方案
-  mobileTemplateCategory: string; // 模板号      9 简约
-  mobileTemplateLhcStyle: string; // 六合配色方案
-  mobileTemplateStyle: string; // 新年红 简约 香槟金 配色方案
-  webName: string; // 首页底部文字   网址名称*/;
-  serviceQQ1: string; // QQ客服q1
-  serviceQQ2: string; // QQ客服q2
-  appPopupWechatNum: string; // 微信客服号
-  appPopupWechatImg: string; // 微信客服二维码
-  appPopupQqNum: string; // QQ客服号
-  appPopupQqImg: string; // 微信客服二维码
-  domainBindAgentId: string; // 如果这个属性大于0，则在注册邀请人输入框填入改ID，且无法更改
-  homeTypeSelect: string; // 是否开启前台分类
-  chatRoomName: string; // 聊天室名称
-  chatMinFollowAmount: string; // 聊天室跟注最小金额*/
-  easyRememberDomain: string; // 黑色模板易记的网址*/
-  chatLink: string; // 聊天的链接*/
+  zxkfUrl2?: string; // 在线客服2
+  zxkfUrl?: string; // 在线客服
+  minWithdrawMoney?: string; // 最低提款金额
+  maxWithdrawMoney?: string; // 最高提款金额
+  closeregreason?: string; // 关闭注册功能提示内容
+  missionName?: string; // 哇咔豆
+  missionBili?: string;
+  isIntToMoney?: string; // 积分开关0=关闭；1=开启；
+  missionSwitch?: string; // 1=关闭；0=开启；任务中心
+  myreco_img?: string; // 1=关闭；0=开启；
+  checkinSwitch?: string; // 0=关闭；1=开启签到开关
+  mkCheckinSwitch?: string; // 0=开启；1=关闭 补签开关：
+  agent_m_apply?: string; // 允许会员中心申请代理
+  mobile_logo?: string; // 首页navBar 图片
+  agentRegbutton?: string; // 是否开启代理注册，0=关闭；1=开启
+  oftenLoginArea?: string; // 1=关闭；0=开启； 常用登录地
+  mobileTemplateBackground?: string; // 配色方案
+  mobileTemplateCategory?: string; // 模板号      9 简约
+  mobileTemplateLhcStyle?: string; // 六合配色方案
+  mobileTemplateStyle?: string; // 新年红 简约 香槟金 配色方案
+  webName?: string; // 首页底部文字   网址名称*/;
+  serviceQQ1?: string; // QQ客服q1
+  serviceQQ2?: string; // QQ客服q2
+  appPopupWechatNum?: string; // 微信客服号
+  appPopupWechatImg?: string; // 微信客服二维码
+  appPopupQqNum?: string; // QQ客服号
+  appPopupQqImg?: string; // 微信客服二维码
+  domainBindAgentId?: string; // 如果这个属性大于0，则在注册邀请人输入框填入改ID，且无法更改
+  homeTypeSelect?: string; // 是否开启前台分类
+  chatRoomName?: string; // 聊天室名称
+  chatMinFollowAmount?: string; // 聊天室跟注最小金额*/
+  easyRememberDomain?: string; // 黑色模板易记的网址*/
+  chatLink?: string; // 聊天的链接*/
 
   // 注册页
-  hide_reco: number; // 代理人 0不填，1选填，2必填
-  reg_name: number; // 真实姓名 0不填，1选填，2必填
-  reg_fundpwd: number; // 取款密码 0不填，1选填，2必填
-  reg_qq: number; // QQ 0不填，1选填，2必填
-  reg_wx: number; // 微信 0不填，1选填，2必填
-  reg_phone: number; // 手机 0不填，1选填，2必填
-  reg_email: number; // 邮箱 0不填，1选填，2必填
-  reg_vcode: number; // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-  pass_limit: number; // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-  pass_length_min: number; // 注册密码最小长度
-  pass_length_max: number; // 注册密码最大长度
-  smsVerify: boolean; // 手机短信验证
+  hide_reco?: number; // 代理人 0不填，1选填，2必填
+  reg_name?: number; // 真实姓名 0不填，1选填，2必填
+  reg_fundpwd?: number; // 取款密码 0不填，1选填，2必填
+  reg_qq?: number; // QQ 0不填，1选填，2必填
+  reg_wx?: number; // 微信 0不填，1选填，2必填
+  reg_phone?: number; // 手机 0不填，1选填，2必填
+  reg_email?: number; // 邮箱 0不填，1选填，2必填
+  reg_vcode?: number; // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+  pass_limit?: number; // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+  pass_length_min?: number; // 注册密码最小长度
+  pass_length_max?: number; // 注册密码最大长度
+  smsVerify?: boolean; // 手机短信验证
 
-  rankingListSwitch: number; // 是否显示中奖/投注排行榜
-  googleVerifier: boolean; // 是否开启google 验证
-  recharge: boolean; // 上级充值开关
-  allowreg: boolean; // 是否开启注册功能。
-  allowMemberCancelBet: boolean; // 是否允许会员撤单，1允许 0不允许
-  m_promote_pos: boolean; // 优惠活动显示在首页还是内页，1首页，0内页
-  yuebaoSwitch: boolean; // 未登录时是否允许访问利息宝
-  chatFollowSwitch: boolean; // 是否允许聊天室跟注
-  switchAgentRecharge: boolean; // 给下级会员充值开关
+  rankingListSwitch?: number; // 是否显示中奖/投注排行榜
+  googleVerifier?: boolean; // 是否开启google 验证
+  recharge?: boolean; // 上级充值开关
+  allowreg?: boolean; // 是否开启注册功能。
+  allowMemberCancelBet?: boolean; // 是否允许会员撤单，1允许 0不允许
+  m_promote_pos?: boolean; // 优惠活动显示在首页还是内页，1首页，0内页
+  yuebaoSwitch?: boolean; // 未登录时是否允许访问利息宝
+  chatFollowSwitch?: boolean; // 是否允许聊天室跟注
+  switchAgentRecharge?: boolean; // 给下级会员充值开关
 
-  lhcdocMiCard: boolean; // 六合彩开奖咪牌(默认状态)开关
-  lhcdocLotteryStr: string; // 六合彩预备开奖文字
-  lhcPriceList: Array<LHPriceModel>; // 六合发帖价格范围
+  lhcdocMiCard?: boolean; // 六合彩开奖咪牌(默认状态)开关
+  lhcdocLotteryStr?: string; // 六合彩预备开奖文字
+  lhcPriceList?: Array<LHPriceModel>; // 六合发帖价格范围
 
   mobileMenu: Array<UGTabbarItem>; // 底部Tab按钮
   userCenter: Array<UGUserCenterItem>; // 我的页功能按钮

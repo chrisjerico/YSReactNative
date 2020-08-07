@@ -1,6 +1,5 @@
 import { Platform } from 'react-native'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
@@ -41,7 +40,7 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
                 'NSNotificationCenter.defaultCenter.postNotificationName:object:',
                 ['UGNotificationUserLogout']
               )
-              UGStore.dispatch({ type: ActionType.Clear_User })
+              UGStore.dispatch({ type: 'reset', userInfo: {} });
             }
             const { data: loginData }: any = await APIRouter.user_login(
               usr,

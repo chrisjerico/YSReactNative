@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -15,9 +14,8 @@ import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './components/ProfileBlock'
 
@@ -25,7 +23,6 @@ const BZHMinePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const { UGUserCenterItem } = useMemberItems()
   // stores
@@ -36,7 +33,7 @@ const BZHMinePage = () => {
     isTest,
     unreadMsg,
     curLevelGrade,
-  }: UGUserModel = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  }: UGUserModel = UGStore.globalProps.userInfo
   // states
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
@@ -86,10 +83,7 @@ const BZHMinePage = () => {
           onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
-            dispatch({
-              type: ActionType.UpdateUserInfo,
-              props: { balance: data.data.balance },
-            })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
           }}
           level={curLevelGrade}
           avatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}
@@ -122,8 +116,6 @@ const BZHMinePage = () => {
               unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
               onPress={() => {
-                console.log("----------item-----------", item)
-
                 PushHelper.pushUserCenterType(code)
               }}
             />
@@ -143,10 +135,7 @@ const BZHMinePage = () => {
         avatars={avatarList}
         onPressSave={async ({ url, filename }) => {
           try {
-            dispatch({
-              type: ActionType.UpdateUserInfo,
-              props: { avatar: url },
-            })
+            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } });
             const value = await APIRouter.task_changeAvatar(filename)
             if (value?.data?.code == 0) {
               Toast('修改头像成功')

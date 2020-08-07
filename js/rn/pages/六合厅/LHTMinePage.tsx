@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -16,7 +16,6 @@ import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState } from '../../redux/store/UGStore'
 import ProfileBlock from './components/ProfileBlock'
@@ -27,7 +26,6 @@ const LHTMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   // stores
   const {
@@ -95,10 +93,7 @@ const LHTMinePage = ({ navigation }) => {
           }}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
-            dispatch({
-              type: ActionType.UpdateUserInfo,
-              props: { balance: data.data.balance },
-            })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
           }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item

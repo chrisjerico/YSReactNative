@@ -1,4 +1,4 @@
-import { UGAgentApplyInfo, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
 import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
@@ -16,6 +16,8 @@ export enum PushRightMenuFrom {
   彩種 = '2',
 }
 
+import { popToRoot, push } from '../navigation/RootNavigation';
+import { PageName } from '../navigation/Navigation';
 export default class PushHelper {
   //
 
@@ -289,6 +291,22 @@ export default class PushHelper {
       }
       case UGUserCenterType.游戏大厅: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true]);
+        break;
+      }
+      case UGUserCenterType.我的页: {
+        OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
+          let isOcPush = false;
+          mms.forEach((item, idx) => {
+            if (item.path == '/user') {
+              isOcPush = true;
+              popToRoot();
+              OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [idx]);
+            }
+          })
+          if (!isOcPush) {
+            push(PageName.ZLMinePage);
+          }
+        })
         break;
       }
     }

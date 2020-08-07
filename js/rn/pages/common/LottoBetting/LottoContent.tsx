@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react'
 import { View, FlatList, Text, TouchableWithoutFeedback } from 'react-native'
 import { useLottoContext, LottoContext, useBettingResult } from './LottoContext'
-import { useDispatch, useSelector } from 'react-redux'
 import { BettingReducerActions } from '../../../redux/reducer/BettingReducer'
-import { IGlobalState } from '../../../redux/store/UGStore'
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
-import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall'
+import { UGStore } from '../../../redux/store/UGStore'
 import { PlayOdd } from '../../../public/network/Model/PlayOddDataModel'
 import YXContainer from './PlayVIew/LHT/YX'
 import SBContainer from './PlayVIew/LHT/SB'
@@ -21,8 +18,7 @@ import ZMContainer16 from './PlayVIew/LHT/ZM16'
 const LottoContent = () => {
   const value = useLottoContext()
   const borderColor = "red"
-  const dispatch = useDispatch()
-  const { currentPlayOdd } = useSelector((state: IGlobalState) => state.BettingReducer)
+  const { currentPlayOdd } = UGStore.globalProps.BettingReducer;
   useEffect(() => {
     // OCHelper.call('CMCommon.hideTabBar', []);
   }, [])
@@ -59,7 +55,9 @@ const LottoContent = () => {
     }
   }
   const onPress = (item: PlayOdd) => {
-    dispatch({ type: BettingReducerActions.setCurrentPlayOdd, value: item })
+    UGStore.dispatch({
+      type: BettingReducerActions.setCurrentPlayOdd, value: item
+    });
   }
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>

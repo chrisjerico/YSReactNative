@@ -1,25 +1,25 @@
-import chroma from 'chroma-js'
-import { Platform } from 'react-native'
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
-import AppDefine from '../define/AppDefine'
-import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import FUtils from '../tools/FUtils'
-import { B_DEBUG } from '../tools/UgLog'
-import { KSThemeColor } from './colors/KSThemeColor'
-import { BZHThemeColor } from './colors/BZHThemeColor'
-import { GDBThemeColor } from './colors/GDBThemeColor'
-import { JDThemeColor } from './colors/JDThemeColor'
-import { JYThemeColor } from './colors/JYThemeColor'
-import { LCThemeColor } from './colors/LCThemeColor'
-import { LHThemeColor } from './colors/LHThemeColor'
-import { OtherThemeColor } from './colors/OtherThemeColor'
-import { WNZThemeColor } from './colors/WNZThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
-import { XNHThemeColor } from './colors/XNHThemeColor'
-import { ZLThemeColor } from './colors/ZLThemeColor'
-import { UGThemeColor } from './UGThemeColor'
-
+import { UGThemeColor } from './UGThemeColor';
+import { XBJThemeColor } from './colors/XBJThemeColor';
+import { JDThemeColor } from './colors/JDThemeColor';
+import { JYThemeColor } from './colors/JYThemeColor';
+import { LHThemeColor } from './colors/LHThemeColor';
+import { XNHThemeColor } from './colors/XNHThemeColor';
+import { OtherThemeColor } from './colors/OtherThemeColor';
+import { GDBThemeColor } from './colors/GDBThemeColor';
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
+import chroma from 'chroma-js';
+import FUtils from '../tools/FUtils';
+import { Platform } from 'react-native';
+import AppDefine from '../define/AppDefine';
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
+import { B_DEBUG } from '../tools/UgLog';
+import { ZLThemeColor } from './colors/ZLThemeColor';
+import { LCThemeColor } from "./colors/LCThemeColor";
+import { KSThemeColor } from "./colors/KSThemeColor";
+import { WNZThemeColor } from "./colors/WNZThemeColor";
+import { PYThemeColor } from './colors/PYThemeColor'
+import { BZHThemeColor } from './colors/BZHThemeColor';
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
@@ -32,8 +32,9 @@ export default class UGSkinManagers extends UGThemeColor {
     ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
-    ...BZHThemeColor, // 宝石红
     ...WNZThemeColor, // 威尼斯
+    ...PYThemeColor,
+    ...BZHThemeColor // 宝石红
   }
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -44,7 +45,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf
     let dict = {
-      0: `经典${mobileTemplateBackground}`,
+      1: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -61,29 +62,22 @@ export default class UGSkinManagers extends UGThemeColor {
       22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
-    }
-    console.log('pi fu =', mobileTemplateCategory)
-    let key = dict[mobileTemplateCategory]
-    if (B_DEBUG) {
-      key = '宝石红';
-    }
-    let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
-    theme.themeColor =
-      theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
-    theme.themeDarkColor =
-      theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
-    theme.themeLightColor =
-      theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
-    theme.bgTextColor =
-      chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
-    let skin = new UGSkinManagers()
-    Object.assign(skin, Skin1)
-    Object.assign(skin, theme)
+      26: `白曜`,
+    };
+    console.log('pi fu =', mobileTemplateCategory);
+    let key = dict[mobileTemplateCategory];
+    let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
+    theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
+    theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
+    theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
+    theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
+    let skin = new UGSkinManagers();
+    Object.assign(skin, Skin1);
+    Object.assign(skin, theme);
     if (!FUtils.isExactlyEqual(skin, Skin1)) {
       Skin1 = skin
       console.log('当前为皮肤：' + skin.skitString, skin)
     }
-
     this.updateOcSkin()
   }
 

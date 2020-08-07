@@ -1,13 +1,11 @@
 import { View, FlatList, Text, TouchableWithoutFeedback } from "react-native"
 import React from 'react'
 import { PlayGroup, Play } from "../../../../../public/network/Model/PlayOddDataModel"
-import { useSelector, useDispatch } from "react-redux"
-import { IGlobalState } from "../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../redux/store/UGStore"
 import { getHKballColor } from "../lottoSetting"
 import { BettingReducerActions } from "../../../../../redux/reducer/BettingReducer"
 const HKWSItemView = ({ data }: { data: PlayGroup }) => {
-  const { shengXiaoValue, bettingResult } = useSelector((state: IGlobalState) => state.BettingReducer)
-  const dispatch = useDispatch()
+  const { shengXiaoValue, bettingResult } = UGStore.globalProps.BettingReducer;
   return (
     <View style={{ flex: 1 }}>
       <FlatList
@@ -18,7 +16,7 @@ const HKWSItemView = ({ data }: { data: PlayGroup }) => {
           return (
             <TouchableWithoutFeedback onPress={() => {
               if (data.enable != "0")
-                dispatch({ type: BettingReducerActions.itemPress, value: item })
+                UGStore.dispatch({ type: BettingReducerActions.itemPress, value: item });
             }}>
               <View style={{ width: "100%", height: 40, flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: "gray", backgroundColor: bettingResult[item.id] ? 'rgba(151,203,255,0.5)' : "#00000000" }}>
                 <View style={{ flexDirection: 'row' }}>

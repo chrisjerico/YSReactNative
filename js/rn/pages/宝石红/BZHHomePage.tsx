@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -20,10 +19,12 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './components/GameBlock'
 import HomeHeader from './components/HomeHeader'
 import NavBlock from './components/NavBlock'
@@ -32,17 +33,19 @@ const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // stores
-  const { uid, usr, balance, isTest }: UGUserModel = useSelector(
-    (state: IGlobalState) => state.UserInfoReducer
-  )
+  const {
+    uid,
+    usr,
+    balance,
+    isTest,
+  }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
     m_promote_pos,
     rankingListSwitch,
-  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
-  // const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
@@ -226,9 +229,8 @@ const BZHHomePage = () => {
               const { name, list } = item
               return (
                 <GameBlock
-                  onPressTotal={
-                    () =>
-                      PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                  onPressTotal={() =>
+                    PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                   }
                   title={name}
                   containerStyle={styles.subComponent}
@@ -305,7 +307,7 @@ const BZHHomePage = () => {
               borderWidth: scale(1),
               borderColor: '#d9d9d9',
               alignSelf: 'center',
-              marginBottom: scale(20)
+              marginBottom: scale(20),
             }}
             iconContainerStyle={{
               backgroundColor: '#ffffff',

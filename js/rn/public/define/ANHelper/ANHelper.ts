@@ -1,6 +1,7 @@
 import {UGBridge} from './UGBridge';
 import AppDefine from '../AppDefine';
 import {ANEvent} from './ANEvent';
+import {httpClient} from "../../network/httpClient";
 
 export enum NativeCommand {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
@@ -39,10 +40,11 @@ export class ANHelper extends ANEvent {
     // 设置接口域名
     this.call(NativeCommand.APP_HOST).then((host: string) => {
       AppDefine.host = host;
+      httpClient.defaults.baseURL = host
     });
 
     // 设置站点编号
-    AppDefine.call(NativeCommand.APP_SITE).then((siteId: string) => {
+    this.call(NativeCommand.APP_SITE).then((siteId: string) => {
       AppDefine.siteId = siteId;
     });
   }

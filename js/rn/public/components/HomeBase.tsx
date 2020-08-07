@@ -1,11 +1,10 @@
-import React, { ReactElement, Children, useState, useEffect } from 'react'
-import { View, ScrollView, Alert, ImageBackground, Image, Platform } from 'react-native'
+import React, { ReactElement, Children, useState, useEffect, ReactFragment } from 'react'
+import { View, ScrollView, Alert, ImageBackground, Image, Platform, RefreshControl } from 'react-native'
 import RedBagItem from './RedBagItem'
 import useGetHomeInfo from '../hooks/useGetHomeInfo'
 import FastImage, { FastImageSource } from 'react-native-fast-image'
 import { useDimensions } from '@react-native-community/hooks'
-import { useSelector } from 'react-redux'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
 import APIRouter from '../network/APIRouter'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -16,15 +15,23 @@ import { ImageSource } from 'react-native-vector-icons/Icon'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import AppDefine from '../define/AppDefine'
-const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true }:
-  { header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName, backgroundColor: string, needPadding: boolean }) => {
+const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true, paddingHorizontal, marginTop, globalEvents }:
+  {
+    header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName,
+    backgroundColor?: string, needPadding?: boolean, paddingHorizontal?: number, marginTop?: number, globalEvents?: ReactFragment
+  }) => {
   const { redBag } = useGetHomeInfo(['activity_redBagDetail'])
+  const { loading, onRefresh } = useGetHomeInfo()
   const { width, height } = useDimensions().screen
   if (!backgroundSource) {
     return <View style={{ flex: 1, backgroundColor: backgroundColor }}>
       {header}
-      <ScrollView style={{ flex: 1, paddingHorizontal: needPadding ? 10 : 0, }}>
-        {children}
+      <ScrollView refreshControl={
+        <RefreshControl style={{ backgroundColor: '#00000000' }} tintColor={'white'} refreshing={loading} onRefresh={onRefresh} />
+      } style={{ flex: 1, paddingHorizontal: needPadding ? paddingHorizontal ? paddingHorizontal : 10 : 0, marginTop: marginTop ? marginTop : 0 }}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          {children}
+        </View>
       </ScrollView>
       <RedBagItem loginPage={loginPage} redBag={redBag} />
       <TurntableListItem />
@@ -32,18 +39,23 @@ const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundCol
   } else {
     return <FastImage source={backgroundSource} style={{ width: width, height: height }}>
       {header}
-      <ScrollView style={{ flex: 1, paddingHorizontal: 10, }}>
-        {children}
+      <ScrollView refreshControl={
+        <RefreshControl style={{ backgroundColor: '#00000000' }} tintColor={'white'} refreshing={loading} onRefresh={onRefresh} />
+      } style={{ flex: 1, paddingHorizontal: 10, }}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          {children}
+        </View>
       </ScrollView>
       <RedBagItem loginPage={loginPage} redBag={redBag} />
       <TurntableListItem />
+      {globalEvents}
     </FastImage>
   }
 
 }
 const TurntableListItem = () => {
   const { width, height } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [turntableListVisiable, setTurntableListVisiable] = useState(false)
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   useEffect(() => {

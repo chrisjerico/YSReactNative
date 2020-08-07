@@ -1,7 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useNavigationState } from "@react-navigation/native";
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, TouchableWithoutFeedback, View } from "react-native";
+import { FlatList, Text, TouchableWithoutFeedback, View, Linking } from "react-native";
 import AutoHeightWebView from 'react-native-autoheight-webview';
 import { Button } from 'react-native-elements';
 import FastImage, { FastImageProperties } from "react-native-fast-image";
@@ -10,11 +10,13 @@ import { useSafeArea } from "react-native-safe-area-context";
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view";
 import AppDefine from "../../public/define/AppDefine";
 import { OCHelper } from "../../public/define/OCHelper/OCHelper";
+import PushHelper from "../../public/define/PushHelper";
 import usePopUpView from "../../public/hooks/usePopUpView";
 import { popToRoot } from "../../public/navigation/RootNavigation";
 import APIRouter from "../../public/network/APIRouter";
 import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
 import { Skin1 } from '../../public/theme/UGSkinManagers';
+
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -64,7 +66,7 @@ const PromotionListPage = ({ navigation }) => {
               }}
             />
           </View> : null}
-        <Text style={{ textAlign: 'center', color: Skin1.textColor4, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
+        <Text style={{ textAlign: 'center', color: Skin1.isBlack ? 'white' : Skin1.textColor3, fontSize: 18, fontWeight: "bold" }}>优惠活动</Text>
 
       </LinearGradient>
 
@@ -88,10 +90,21 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
+  const onPromotionItemPress = (data: any, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+    if (data?.linkUrl != "") {
+      Linking.openURL(data?.linkUrl)
+    }
+    else if (data.linkCategory == 0 && data.linkPosition == 0) {
+      onPopViewPress(data, type, onPress ? onPress : () => { })
+    } else {
+      PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+    }
+
+  }
   return (
     <FlatList keyExtractor={(item, index) => item.id + index} data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list} renderItem={({ item, index }) => {
       return <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
+        <TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
           if (selectId == index) {
             setSelectedId(-1)
           } else {
