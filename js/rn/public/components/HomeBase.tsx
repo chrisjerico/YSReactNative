@@ -4,8 +4,7 @@ import RedBagItem from './RedBagItem'
 import useGetHomeInfo from '../hooks/useGetHomeInfo'
 import FastImage, { FastImageSource } from 'react-native-fast-image'
 import { useDimensions } from '@react-native-community/hooks'
-import { useSelector } from 'react-redux'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
 import APIRouter from '../network/APIRouter'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -16,14 +15,14 @@ import { ImageSource } from 'react-native-vector-icons/Icon'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import AppDefine from '../define/AppDefine'
-const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true }:
-  { header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName, backgroundColor: string, needPadding: boolean }) => {
+const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundColor, needPadding = true, paddingHorizontal, marginTop }:
+  { header?: ReactElement, children: any, backgroundSource?: FastImageSource | ImageSource, loginPage: PageName, backgroundColor: string, needPadding: boolean, paddingHorizontal?: number, marginTop: number }) => {
   const { redBag } = useGetHomeInfo(['activity_redBagDetail'])
   const { width, height } = useDimensions().screen
   if (!backgroundSource) {
     return <View style={{ flex: 1, backgroundColor: backgroundColor }}>
       {header}
-      <ScrollView style={{ flex: 1, paddingHorizontal: needPadding ? 10 : 0, }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: needPadding ? paddingHorizontal ? paddingHorizontal : 10 : 0, marginTop: marginTop ? marginTop : 0 }}>
         {children}
       </ScrollView>
       <RedBagItem loginPage={loginPage} redBag={redBag} />
@@ -43,7 +42,7 @@ const HomeBase = ({ header, children, backgroundSource, loginPage, backgroundCol
 }
 const TurntableListItem = () => {
   const { width, height } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [turntableListVisiable, setTurntableListVisiable] = useState(false)
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   useEffect(() => {

@@ -6,7 +6,7 @@ import {
   View,
   ViewStyle
 } from 'react-native'
-import { scale } from '../../../../helpers/function'
+import { scale } from '../../../../public/tools/Scale'
 
 interface GameBlockProps {
   containerStyle?: ViewStyle;
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(20),
     backgroundColor: '#ffffff',
     paddingBottom: scale(20),
-    paddingTop: scale(10)
+    paddingTop: scale(10),
   },
   titleConatiner: {
     width: '100%',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     fontSize: scale(25),

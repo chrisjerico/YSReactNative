@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   RefreshControl,
   SafeAreaView,
@@ -6,9 +6,9 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import { useSelector } from 'react-redux'
-import ActivityComponent from '../../components/ActivityComponent'
-import { scale } from '../../helpers/function'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useLoginOut from '../../public/hooks/useLoginOut'
@@ -17,17 +17,16 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { scale, scaleHeight } from '../../public/tools/Scale'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import NoticeBlock from '../../public/views/tars/NoticeBlock'
+import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
-import BannerBlock from '../../views/BannerBlock'
-import GameButton from '../../views/GameButton'
-import NoticeBlock from '../../views/NoticeBlock'
-import ProgressCircle from '../../views/ProgressCircle'
-import RankBlock from '../../views/RankBlock'
-import TouchableImage from '../../views/TouchableImage'
-import DowloadApp from './components/DowloadApp'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -49,10 +48,11 @@ const LHTHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
-  const { tryPlay } = useTryPlay({ enablePop: false })
+  const { tryPlay } = useTryPlay({})
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo;
   const { uid, avatar, usr, isTest }: UGUserModel = userStore
   const {
     loading,
@@ -97,7 +97,7 @@ const LHTHomePage = ({ navigation }) => {
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  // const headlines = notice?.data?.popup ?? []
+  const announcements = notice?.data?.popup ?? []
   const navs =
     homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
@@ -151,7 +151,14 @@ const LHTHomePage = ({ navigation }) => {
             <ScrollView
               style={styles.container}
               scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => {
+                    announcementModal?.current?.reload()
+                  }}
+                />
+              }
             >
               <BannerBlock
                 onlineNum={onlineNum}
@@ -202,7 +209,8 @@ const LHTHomePage = ({ navigation }) => {
                       <GameButton
                         key={index}
                         containerStyle={{ width: '25%', height: '50%' }}
-                        circleColor={'transparent'}
+                        imageStyle={{ width: '50%' }}
+                        enableCircle={false}
                         logo={icon ? icon : logo}
                         title={name}
                         onPress={() => PushHelper.pushHomeGame(item)}
@@ -235,6 +243,7 @@ const LHTHomePage = ({ navigation }) => {
                   }
                 /> */}
                 <TabComponent
+                  rowHeight={scale(200)}
                   activeTabColor={'#ff8610'}
                   unActiveTabColor={'#bbbbbb'}
                   containerStyle={styles.subComponent}
@@ -251,13 +260,15 @@ const LHTHomePage = ({ navigation }) => {
                         showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
-                        subTitleStyle={{
-                          marginTop: scale(10),
-                        }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => {
                           PushHelper.pushUserCenterType(parseInt(id))
                         }}
@@ -271,12 +282,18 @@ const LHTHomePage = ({ navigation }) => {
                         key={index}
                         logo={logo ? logo : icon}
                         title={title}
+                        showSubTitle
                         containerStyle={{
                           width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
                         }}
-                        titleStyle={{
-                          marginTop: scale(10),
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
                         }}
+                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
+                        subTitleStyle={{ fontSize: scale(17) }}
                         onPress={() => PushHelper.pushHomeGame(item)}
                       />
                     )
@@ -300,13 +317,14 @@ const LHTHomePage = ({ navigation }) => {
                     )
                   }}
                 />
-                <RankBlock
+                <AnimatedRankComponent
                   containerStyle={styles.subComponent}
                   iconContainerStyle={styles.rankBlockIconContainerStyle}
                   rankLists={rankLists}
                 />
                 <BottomToolBlock
                   tools={defaultBottomTools}
+                  containerStyle={{ paddingBottom: scaleHeight(60) }}
                   renderBottomTool={(item, index) => {
                     const { logo, userCenterType } = item
                     return (
@@ -330,13 +348,13 @@ const LHTHomePage = ({ navigation }) => {
                 />
               </View>
             </ScrollView>
-            <DowloadApp
+            {/* <DowloadApp
               onPressDowload={() => {
                 PushHelper.openWebView(
                   'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
                 )
               }}
-            />
+            /> */}
             <ActivityComponent
               show={uid && redBagLogo && !isTest}
               logo={redBagLogo}
@@ -352,6 +370,11 @@ const LHTHomePage = ({ navigation }) => {
               onPress={() => {
                 PushHelper.pushWheel(roulette)
               }}
+            />
+            <AnnouncementModal
+              ref={announcementModal}
+              announcements={announcements}
+              color={LHThemeColor.六合厅.themeColor}
             />
           </>
         )}

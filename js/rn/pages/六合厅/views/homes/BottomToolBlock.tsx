@@ -20,15 +20,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  toolContainer: {
-    width: '32%',
-    aspectRatio: 165 / 85,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
+  }
 });
 
 export default BottomToolBlock;

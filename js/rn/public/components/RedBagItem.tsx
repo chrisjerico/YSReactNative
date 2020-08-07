@@ -1,7 +1,6 @@
 import { useDimensions } from "@react-native-community/hooks"
 import { RedBagDetailActivityModel } from "../network/Model/RedBagDetailActivityModel"
-import { IGlobalState } from "../../redux/store/UGStore"
-import { useSelector } from "react-redux"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import { useState, useEffect } from "react"
 import { Alert, Image, View, TouchableWithoutFeedback } from "react-native"
 import { navigate } from "../navigation/RootNavigation"
@@ -9,10 +8,12 @@ import { PageName } from "../navigation/Navigation"
 import PushHelper from "../define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
+import { useLanguageContext } from "../context/LanguageContextProvider"
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage: PageName }) => {
   const { width } = useDimensions().screen
-  const { isTest = false, uid = "" } = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { isTest = false, uid = "" } = UGStore.globalProps.userInfo
   const [redBagVisiable, setRedBagVisiable] = useState(false)
+  const { currcentLanguagePackage } = useLanguageContext()
   useEffect(() => {
     if (redBag) {
       setRedBagVisiable(true)
@@ -23,19 +24,19 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
 
       <TouchableWithoutFeedback onPress={() => {
         if (uid == "") {
-          Alert.alert("温馨提示", "您还未登录", [
-            { text: "取消", onPress: () => { }, style: "cancel" },
+          Alert.alert(currcentLanguagePackage?.["app.tips"], currcentLanguagePackage?.["app.only.read.registered"], [
+            { text: currcentLanguagePackage?.["app.cancel"], onPress: () => { }, style: "cancel" },
             {
-              text: "马上登录", onPress: () => {
+              text: currcentLanguagePackage?.["app.log.in"], onPress: () => {
                 navigate(loginPage, {})
               },
             }
           ])
         } else if (isTest) {
-          Alert.alert("温馨提示", "请先登录您的正式帐号", [
-            { text: "取消", onPress: () => { }, style: "cancel" },
+          Alert.alert(currcentLanguagePackage?.["app.tips"], currcentLanguagePackage?.["app.login.official.account"], [
+            { text: currcentLanguagePackage?.["app.cancel"], onPress: () => { }, style: "cancel" },
             {
-              text: "马上登录", onPress: () => {
+              text: currcentLanguagePackage?.["app.log.in"], onPress: () => {
                 navigate(loginPage, {})
               },
             }

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { scale } from '../../../helpers/function'
+import { scale } from '../../../public/tools/Scale'
 
 interface DowloadApp {
   onPressDowload: () => any

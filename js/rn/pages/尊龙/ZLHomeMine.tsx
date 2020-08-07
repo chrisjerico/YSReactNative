@@ -1,45 +1,50 @@
 import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
-import { useSelector, useDispatch } from "react-redux"
-import { IGlobalState } from "../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
 import { colorEnum } from "./enum/colorEnum"
 import { Icon } from "react-native-elements"
 import PushHelper from "../../public/define/PushHelper"
-import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
+import UGSysConfModel, { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 import LinearGradient from "react-native-linear-gradient"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import APIRouter from "../../public/network/APIRouter"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import useMemberItems from "../../public/hooks/useMemberItems"
 import useLoginOut from "../../public/hooks/useLoginOut"
 import { useDimensions } from "@react-native-community/hooks"
 import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
+import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 const ZLHomeMine = ({ navigation }) => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
-    const dispatch = useDispatch()
-    const updateUserInfo = useCallback(
-        (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-        [dispatch]
-    )
     const { loginOut } = useLoginOut(PageName.ZLHomePage)
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             const { data, status } = await APIRouter.user_balance_token()
-            updateUserInfo({ ...userStore, balance: data.data.balance })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
             console.log(error)
         }
     }
+    useEffect(() => {
+
+        navigation.addListener('focus', async () => {
+            const { data: userInfo } = await APIRouter.user_info()
+            UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+            UGStore.save();
+        });
+        return (() => {
+            navigation.removeListener('focus', null);
+        })
+    }, [])
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
         <ZLHeader />
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
@@ -171,7 +176,7 @@ const ZLHomeMine = ({ navigation }) => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
                         <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
-                            {item.code == 9 ? <View style={{
+                            {item.code == 9 && unreadMsg > 0 ? <View style={{
                                 position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
                                 height: 20, width: 20,
                                 borderRadius: 10, justifyContent: 'center', alignItems: 'center'
@@ -193,7 +198,7 @@ const ZLHomeMine = ({ navigation }) => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "", unreadMsg } = userStore
     return (
         <View style={{
@@ -206,13 +211,14 @@ const ZLHeader = () => {
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>消息</Text>
-                <View style={{
+                {unreadMsg > 0 ? <View style={{
                     position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
                     height: 15, width: 15,
                     borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
                 }}>
                     <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                </View>
+                </View> : null}
+
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => {

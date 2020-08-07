@@ -4,7 +4,7 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import FastImage from 'react-native-fast-image';
 import PushHelper from '../../public/define/PushHelper';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { Navigation, PageName } from '../../public/navigation/Navigation';
+import {  PageName } from '../../public/navigation/Navigation';
 import { Icon, Button } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
@@ -14,7 +14,6 @@ import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGStore } from '../../redux/store/UGStore';
-import { ActionType } from '../../redux/store/ActionTypes';
 let errorTimes = 0
 const GDLoginPage = ({
   route, navigation
@@ -65,7 +64,7 @@ const GDLoginPage = ({
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
       }

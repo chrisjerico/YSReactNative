@@ -4,14 +4,13 @@ import {FlatList, Image, ScrollView, Text, TouchableOpacity, View} from "react-n
 import {BaseScreen} from "./component/BaseScreen";
 import {CardView} from "./component/minePage/CardView";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../redux/store/UGStore";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import PushHelper from "../../public/define/PushHelper";
 import {Navigation, PageName} from "../../public/navigation/Navigation";
 
 const LCMinePage = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const {uid = ""} = userStore
     const {UGUserCenterItem} = useMemberItems()
     useEffect(() => {

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../helpers/function'
+import { scale } from '../../../public/tools/Scale'
 
 interface RowGameButtomProps {
   logo: string;

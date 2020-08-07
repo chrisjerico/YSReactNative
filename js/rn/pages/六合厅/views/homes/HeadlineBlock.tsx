@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Icon } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { MarqueeVertical } from 'react-native-marquee-ab';
+import { scale } from '../../../../public/tools/Scale';
 import StringUtils from '../../../../public/tools/StringUtils';
 import { INoticePop } from '../../../../redux/model/home/INoticeBean';
-import { scale } from '../../../../helpers/function';
-import FastImage from 'react-native-fast-image';
-import { Icon } from 'react-native-elements'
 
 interface HeadlineBlockProps {
   containerStyle?: ViewStyle;

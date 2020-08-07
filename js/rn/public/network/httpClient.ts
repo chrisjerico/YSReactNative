@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform, AsyncStorage } from 'react-native';
-import { ActionType } from '../../redux/store/ActionTypes';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
@@ -34,7 +33,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   if (!isEncrypt) {
     return params;
   }
-  var temp = Object.assign({}, params);
+  let temp = Object.assign({}, params);
 
   try {
     temp['checkSign'] = 1;
@@ -77,12 +76,11 @@ httpClient.interceptors.response.use(
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
               OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
                 updateUserInfo()
-                UGStore.dispatch({ type: ActionType.Clear_User })
-                Toast('帐号已被登出');
+                UGStore.dispatch({ type: 'reset', userInfo: {} })
+                // Toast('帐号已被登出');
               })
             })
           })
-
 
           break;
         case 500:
