@@ -146,7 +146,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                   }
                 }
                 setLoading(false)
-              })
+              }
+            })
           )
           .catch(error => {
             setLoading(false)
