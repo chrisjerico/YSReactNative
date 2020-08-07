@@ -5,7 +5,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
   宝石红: {
     skitType: '宝石红',
     skitString: '宝石红',
-    // bgColor: ['#FF9797', '#FF9797'],
+    //bgColor: ['#ffffff', '#ffffff'],
     get bgColor() { return [this.homeContentSubColor, this.homeContentSubColor] },
     get navBarBgColor() { return [this.themeColor, this.themeColor] },
     tabBarBgColor: '#ffffff',
@@ -13,7 +13,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     get tabSelectedColor() { return this.themeColor },
     progressBgColor: ['#ffffff', '#ffffff'],
     get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
-    homeContentSubColor: '#D0D0D0', // 額度轉換Tab // #ffffff
+    homeContentSubColor: '#D0D0D0', // 額度轉換Tab // #D0D0D0
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
     get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
