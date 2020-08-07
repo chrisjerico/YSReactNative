@@ -8,8 +8,9 @@ import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
 import { Toast } from '../../public/tools/ToastUtils'
+import BottomBlank from '../../public/views/tars/BottomBlank'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -23,6 +24,7 @@ const BZHMinePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const { UGUserCenterItem } = useMemberItems()
   // stores
@@ -128,6 +130,7 @@ const BZHMinePage = () => {
           titleStyle={styles.logOutTitle}
           onPress={loginOut}
         />
+        <BottomBlank />
       </ScrollView>
       <PickAvatarComponent
         loading={avatarListLoading}
@@ -165,7 +168,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
-    marginBottom: scaleHeight(70),
     borderRadius: scale(7),
     height: scale(70),
   },

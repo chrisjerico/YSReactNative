@@ -1,21 +1,23 @@
 import React from 'react'
 import {
+  StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
+  ViewStyle
 } from 'react-native'
 import { scale } from "../../tools/Scale"
-
 
 interface BottomLogo {
   webName: string;
   onPressPromotion: () => any;
   onPressComputer: () => any;
+  containerStyle?: ViewStyle | ViewStyle[]
 }
 
-const BottomLogo = ({ webName, onPressComputer, onPressPromotion }: BottomLogo) => {
+const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle }: BottomLogo) => {
   return (
-    <View style={{ marginTop: scale(30) }}>
+    <View style={[styles.containerStyle, containerStyle]}>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
         <TouchableWithoutFeedback onPress={onPressComputer}>
           <Text
@@ -48,5 +50,11 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion }: BottomLogo) 
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  containerStyle: {
+    marginTop: scale(30)
+  }
+})
 
 export default BottomLogo

@@ -47,9 +47,8 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   // states
   const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
 
-  const { type } = navigation?.dangerouslyGetState()
+  const { type }: any = navigation?.dangerouslyGetState()
 
-  console.log("--------type-------", type)
   const jump = () => {
     switch (type) {
       case 'tab':

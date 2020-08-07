@@ -7,12 +7,13 @@ import RefreshControlComponent from '../../public/components/tars/RefreshControl
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, push } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomBlank from '../../public/views/tars/BottomBlank'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
@@ -20,7 +21,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
@@ -101,14 +104,7 @@ const BZHHomePage = () => {
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
-  const userTabIndex = systemConfig?.data.mobileMenu.findIndex(
-    (ele) => ele?.path == '/user'
-  )
-  // const announce_first = parseInt(systemConfig?.data?.announce_first)
   const ads = systemHomeAds?.data ?? []
-  // .map((coupon) => {
-  //   return Object.assign({}, coupon, { style: couponListData?.data?.style })
-  // })
 
   useEffect(() => {
     if (uid) {
@@ -139,7 +135,7 @@ const BZHHomePage = () => {
             onPressSignIn={() => push(PageName.BZHSignInPage)}
             onPressSignUp={() => push(PageName.BZHRegisterPage)}
             onPressUser={() => {
-              navigate(PageName.BZHMinePage, { index: userTabIndex })
+              PushHelper.pushUserCenterType(UGUserCenterType.我的页)
             }}
           />
         </SafeAreaHeader>
@@ -319,6 +315,7 @@ const BZHHomePage = () => {
           />
           <BottomLogo
             webName={webName}
+            containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
@@ -326,7 +323,7 @@ const BZHHomePage = () => {
               push(PageName.JDPromotionListPage)
             }}
           />
-          <View style={styles.bottomComponent} />
+          <BottomBlank />
         </ScrollView>
         <ActivityComponent
           show={uid && redBagLogo && !isTest}
@@ -344,12 +341,6 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {/* <AnnouncementModalComponent
-          ref={announcementModal}
-          announcements={announcements}
-          color={BZHThemeColor.宝石红.themeColor}
-          announceFirst={announce_first}
-        /> */}
       </>
     )
   }
@@ -370,9 +361,6 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
-  },
-  bottomComponent: {
-    paddingBottom: scaleHeight(70),
   },
   couponBanner: {
     width: '100%',
