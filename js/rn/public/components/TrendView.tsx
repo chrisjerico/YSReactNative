@@ -19,6 +19,7 @@ import Svg, {Line} from "react-native-svg";
 import APIRouter from "../network/APIRouter";
 import {ChooseGameModal} from "./ChooseGameModal";
 import AppDefine from "../define/AppDefine";
+import PushHelper from "../define/PushHelper";
 
 export const TrendView = () => {
     const [trendData, setTrendData] = useState<TrendData>()
@@ -347,7 +348,7 @@ export const TrendView = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             marginLeft: 4
-                        }}>
+                        }} onPress={() => PushHelper.pushCategory(1, currentGame.id)}>
                             <Text style={{color: "white", paddingHorizontal: 8, paddingVertical: 6}}>去下注</Text>
                         </TouchableOpacity>
                     </View>

@@ -88,7 +88,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UpdateVersionPage} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={JDPromotionListPage} />
-        <Router.TabScreen name={PageName.TrendView} component={TrendView} />
       </Router.TabNavigator>
     );
   }
@@ -97,6 +96,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={TrendView} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={ZLLoginPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={ZLRegisterPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={JDPromotionListPage} />

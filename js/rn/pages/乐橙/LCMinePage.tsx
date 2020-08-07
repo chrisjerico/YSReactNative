@@ -38,8 +38,7 @@ const LCMinePage = () => {
                             borderBottomColor: '#E0E0E0'
                         }}>
                             <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={() => {
-                                //PushHelper.pushUserCenterType(item.code)
-                                Navigation.push(PageName.TrendView)
+                                PushHelper.pushUserCenterType(item.code)
                             }}>
                                 <Image style={{height: 29, width: 29, marginRight: 10}}
                                        source={{uri: item.logo}}/>
