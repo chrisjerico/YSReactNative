@@ -155,6 +155,7 @@ export default class UGSkinManagers extends UGThemeColor {
             key,
           ])
         }
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
       }
     }
 
