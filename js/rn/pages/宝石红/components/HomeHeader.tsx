@@ -59,7 +59,7 @@ const HomeHeader = ({
           <View style={styles.row}>
             <View style={styles.left}>
               <Button
-                title={'登陆'}
+                title={'登录'}
                 buttonStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignIn}

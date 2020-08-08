@@ -120,7 +120,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
         <TouchableOpacity onPress={jump}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{'登陆'}</Text>
+        <Text style={styles.headerTitle}>{'登录'}</Text>
         <TouchableOpacity
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
@@ -171,7 +171,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             />
           ) : null}
           <Button
-            title={'登陆'}
+            title={'立即登录'}
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
