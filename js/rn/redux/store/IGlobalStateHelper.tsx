@@ -51,18 +51,13 @@ export class IGlobalStateHelper {
 }
 
 export async function updateUserInfo() {
-  // if (
-  //   httpClient.defaults.baseURL == 'undefined' ||
-  //   !httpClient.defaults.baseURL
-  // )
-  //   return
   try {
     const { data } = await APIRouter.user_info()
-    if (data.data) {
+    if (data?.data) {
       UGStore.dispatch({ type: 'merge', userInfo: data?.data });
       UGStore.save();
     } else {
-      throw { message: data?.msg }
+      throw { message: data?.msg ?? '更新使用者失败' }
     }
   } catch (error) {
     UGStore.dispatch({ type: 'reset' })

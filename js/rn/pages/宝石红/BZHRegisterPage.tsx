@@ -70,8 +70,6 @@ const BZHRegisterPage = () => {
     pass_length_min, // 注册密码最小长度
     pass_length_max, // 注册密码最大长度,
     smsVerify, // 手机短信验证,
-    zxkfUrl,
-    zxkfUrl2,
   }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -338,12 +336,11 @@ const BZHRegisterPage = () => {
           <Button
             title={'注册'}
             disabled={!valid}
-            disabledStyle={{}}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
             onPress={() => {
               if (valid) {
-                const params: any = {
+                const params = {
                   inviter: recommendGuy, // 推荐人ID
                   usr: account, // 账号
                   pwd: password?.md5(), // 密码
@@ -359,13 +356,11 @@ const BZHRegisterPage = () => {
                   'slideCode[nc_sig]': slidingVerification?.nc_sig,
                   email: email, // 邮箱
                   regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
-                  // device: string,
-                  // accessToken: string,
-                  // slideCode: any
-                }
+                } as any
                 register(params)
               }
-            }}
+            }
+            }
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableOpacity

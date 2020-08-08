@@ -138,7 +138,7 @@ class APIRouter {
   }
 
   static user_reg = async (params: UserReg) => {
-    var accessToken = await OCHelper.call('OpenUDID.value');
+    const accessToken = await OCHelper.call('OpenUDID.value');
     params = {
       ...params, device: '3', accessToken: accessToken,
     }

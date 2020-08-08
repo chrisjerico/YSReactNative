@@ -4,18 +4,27 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
-import { scale } from "../../tools/Scale"
+import { scale } from '../../tools/Scale'
 
 interface BottomLogo {
   webName: string;
   onPressPromotion: () => any;
   onPressComputer: () => any;
-  containerStyle?: ViewStyle | ViewStyle[]
+  containerStyle?: ViewStyle | ViewStyle[];
+  version?: string;
+  debug?: boolean;
 }
 
-const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle }: BottomLogo) => {
+const BottomLogo = ({
+  webName,
+  onPressComputer,
+  onPressPromotion,
+  containerStyle,
+  version,
+  debug = true,
+}: BottomLogo) => {
   return (
     <View style={[styles.containerStyle, containerStyle]}>
       <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -47,14 +56,19 @@ const BottomLogo = ({ webName, onPressComputer, onPressPromotion, containerStyle
       >
         {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
       </Text>
+      {debug ? (
+        <Text style={{ color: '#000000', textAlign: 'center' }}>
+          {'VERSION : ' + version}
+        </Text>
+      ) : null}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   containerStyle: {
-    marginTop: scale(30)
-  }
+    marginTop: scale(30),
+  },
 })
 
 export default BottomLogo
