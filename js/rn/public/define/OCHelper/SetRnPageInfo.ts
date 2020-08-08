@@ -91,6 +91,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.VietnamMine,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -128,6 +129,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.KSMine,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -150,6 +152,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.WNZMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -172,6 +175,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.BZHMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -210,6 +214,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.LHTMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -231,6 +236,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.LCMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -268,6 +274,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.ZLMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -318,8 +325,8 @@ export function setRnPageInfo() {
       },
       {
         // 我的页
-        vcName: 'UGMineSkinViewController',
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.GDBMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,

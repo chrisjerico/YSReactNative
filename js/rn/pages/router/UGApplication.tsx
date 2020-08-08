@@ -48,6 +48,7 @@ import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
+import { Platform } from 'react-native';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -65,8 +66,9 @@ class TabBarController extends Component<{
     navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
+    const initialRouteName = Platform.OS == 'ios' ? PageName.TransitionPage : PageName.UpdateVersionPage;
     return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
+      <Router.TabNavigator initialRouteName={initialRouteName} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
         <Router.TabScreen name={PageName.VietnamHome} component={UGPage(VietnamHomePage)} />

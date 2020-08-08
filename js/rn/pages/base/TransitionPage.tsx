@@ -21,7 +21,7 @@ export const TransitionPage = (props: TransitionProps) => {
   
   useEffect(() => {
     setProps({
-      backgroundColor: Skin1.bgColor,
+      backgroundColor: ['#ddd', '#ddd'],
       navbarOpstions: { backgroundColor: 'transparent', hideUnderline: true, back: true },
       tabbarOpetions: { unmountOnBlur: false },
     })
@@ -42,7 +42,7 @@ export const TransitionPage = (props: TransitionProps) => {
   // 渲染内容
   return (
     <View>
-      <Text style={{ textAlign: 'center', fontSize: 18, color: Skin1.textColor1 }}>正在加载中...</Text>
+      <Text style={{ marginTop:100, textAlign: 'center', fontSize: 15, color: Skin1.textColor1 }}>正在加载中...</Text>
     </View>
   );
 }

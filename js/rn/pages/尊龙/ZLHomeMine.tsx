@@ -20,6 +20,7 @@ import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import Axios from "axios"
 import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
+import { navigationRef, pop } from "../../public/navigation/RootNavigation"
 const ZLHomeMine = ({ navigation }) => {
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
@@ -227,14 +228,26 @@ const ZLHomeMine = ({ navigation }) => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-    const userStore = UGStore.globalProps.userInfo;
-    const { uid = "", unreadMsg } = userStore
+    const { uid = "", unreadMsg } = UGStore.globalProps.userInfo;
+    const [showBackBtn, setShowBackBtn] = useState(false);
+
+    OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+        show != showBackBtn && setShowBackBtn(show);
+    })
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e', justifyContent: 'space-between',
+            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
             paddingHorizontal: 20
         }}>
+            {showBackBtn && (<TouchableOpacity onPress={() => {
+                !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            }} style={{paddingRight:5}}>
+                <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
+            </TouchableOpacity>)}
+            {showBackBtn && <View style={{ flex: 1 }} />}
+
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.站内信)
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -249,10 +262,10 @@ const ZLHeader = () => {
                 </View> : null}
 
             </TouchableOpacity>
-
+            {!showBackBtn && <View style={{ flex: 1 }} />}
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft:30 }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>客服</Text>
             </TouchableOpacity>
