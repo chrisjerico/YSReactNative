@@ -20,6 +20,7 @@ import { KSThemeColor } from "./colors/KSThemeColor";
 import { WNZThemeColor } from "./colors/WNZThemeColor";
 import { PYThemeColor } from './colors/PYThemeColor'
 import { BZHThemeColor } from './colors/BZHThemeColor';
+
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
