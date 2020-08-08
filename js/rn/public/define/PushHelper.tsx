@@ -127,12 +127,13 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
+            
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
             } else {
               let agent_m_apply = await OCHelper.call('UGSystemConfigModel.currentConfig.agent_m_apply');
-              if (parseInt(agent_m_apply) === 1) {
+              if (parseInt(agent_m_apply) !== 1) {
                 OCHelper.call('HUDHelper.showMsg:', ['在线注册代理已关闭']);
               } else {
                 // 去申请代理

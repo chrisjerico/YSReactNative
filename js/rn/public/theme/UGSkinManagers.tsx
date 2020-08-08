@@ -152,6 +152,7 @@ export default class UGSkinManagers extends UGThemeColor {
           ])
         }
       }
+      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
     }
 
     // 刷新标签栏、导航条

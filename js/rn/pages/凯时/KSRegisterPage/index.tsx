@@ -87,7 +87,6 @@ const KSRegister = () => {
           const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
           await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
           await OCHelper.call('UGUserModel.setCurrentUser:');
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
           UGStore.dispatch({ type: 'reset', userInfo:{}})
         }
         await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
