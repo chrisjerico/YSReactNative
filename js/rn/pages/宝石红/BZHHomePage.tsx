@@ -320,7 +320,7 @@ const BZHHomePage = () => {
             rankLists={rankLists}
           />
           <BottomLogo
-            version={'20200808-準備上架測試'}
+            version={'20200808-修復註冊'}
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {

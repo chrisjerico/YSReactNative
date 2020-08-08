@@ -60,8 +60,6 @@ export async function updateUserInfo() {
       throw { message: data?.msg ?? '更新使用者失败' }
     }
   } catch (error) {
-    UGStore.dispatch({ type: 'reset' })
-    UGStore.save()
     console.log("-------------updateUserInfo error-------------", error)
     // await OCHelper.call('UGUserModel.setCurrentUser:', []);
     // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
