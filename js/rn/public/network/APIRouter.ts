@@ -74,7 +74,7 @@ class APIRouter {
   static user_info = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
     if (user?.token) {
-      return httpClient.get("c=user&a=info&token=" + user.token)
+      return httpClient.get("c=user&a=info&token=" + user?.token)
     } else {
       return Promise.reject({
         "error": "no token"
@@ -102,7 +102,7 @@ class APIRouter {
   }
   static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
     if (slideCode) {
-      slideCode = SlideCodeModel.get(slideCode);
+      slideCode = SlideCodeModel?.get(slideCode);
     }
     return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
       noToken: true
@@ -110,7 +110,7 @@ class APIRouter {
   }
   static user_balance_token = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user.token)
+    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user?.token)
   }
   static system_onlineCount = async () => {
     return httpClient.get<OnlineModel>("c=system&a=onlineCount")
@@ -139,12 +139,11 @@ class APIRouter {
 
   static user_reg = async (params: UserReg) => {
     const accessToken = await OCHelper.call('OpenUDID.value');
-    params = {
+    return httpClient.post<RegisterModel>('c=user&a=reg', {
       ...params, device: '3', accessToken: accessToken,
-    }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params, {
+    }, {
       noToken: true
-    });
+    } as any);
   }
 
   static lhcdoc_categoryList = async () => {
@@ -159,7 +158,7 @@ class APIRouter {
     return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
       //@ts-ignore
       isEncrypt: false,
-      cachePolicy: CachePolicyEnum.cacheByTime,
+      cachePolicy: CachePolicyEnum?.cacheByTime,
       expiredTime: 3
     });
   }

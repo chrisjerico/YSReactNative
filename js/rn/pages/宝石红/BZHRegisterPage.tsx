@@ -359,8 +359,7 @@ const BZHRegisterPage = () => {
                 } as any
                 register(params)
               }
-            }
-            }
+            }}
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableOpacity
