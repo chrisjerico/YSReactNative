@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -21,11 +21,12 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   showTopBar?: boolean; // 是否显示顶部栏
+  containerStyle?: ViewStyle | ViewStyle[]
 }
 
 // 优惠活动页
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
-  const { setProps, vars: v = { style1: '背景透明' } } = props;
+  const { setProps, vars: v = { style1: '背景透明' }, containerStyle } = props;
   useEffect(() => {
     setProps({
       navbarOpstions: { hidden: false, title: '优惠活动', back: true },
@@ -86,6 +87,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   });
   return (
     <ScrollableTabView
+      style={containerStyle}
       renderTabBar={(props: TabBarProps) => {
         return (
           <TopBar

@@ -84,6 +84,14 @@ const BZHHomePage = () => {
     }
   }
 
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: BZHThemeColor.宝石红.tabBarBgColor
+      }
+    })
+  }
+
   // data
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const bannersInterval = parseInt(banner?.data?.interval)
@@ -192,7 +200,7 @@ const BZHHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 3 }}
                   onPress={() => {
                     if (gameId == 9) {
-                      push(PageName.JDPromotionListPage)
+                      goToJDPromotionListPage()
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -274,9 +282,7 @@ const BZHHomePage = () => {
             })}
             <CouponBlock
               visible={m_promote_pos}
-              onPressMore={() => {
-                push(PageName.JDPromotionListPage)
-              }}
+              onPressMore={goToJDPromotionListPage}
               containerStyle={styles.subComponent}
               coupons={coupons}
               renderCoupon={(item, index) => {
@@ -319,9 +325,7 @@ const BZHHomePage = () => {
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
-            onPressPromotion={() => {
-              push(PageName.JDPromotionListPage)
-            }}
+            onPressPromotion={goToJDPromotionListPage}
           />
           <BottomBlank />
         </ScrollView>
