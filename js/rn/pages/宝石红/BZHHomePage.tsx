@@ -234,8 +234,13 @@ const BZHHomePage = () => {
               const { name, list } = item
               return (
                 <GameBlock
-                  onPressTotal={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                  onPressTotal={() => {
+                    if (uid) {
+                      PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                    } else {
+                      push(PageName.BZHSignInPage)
+                    }
+                  }
                   }
                   title={name}
                   containerStyle={styles.subComponent}
@@ -320,7 +325,7 @@ const BZHHomePage = () => {
             rankLists={rankLists}
           />
           <BottomLogo
-            version={'20200808-修復註冊'}
+            version={'20200808-修復全部轉跳'}
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {
