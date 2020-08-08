@@ -109,7 +109,7 @@ const BZHRegisterPage = () => {
     confirmPassword == password &&
     (recommendGuy || !hide_reco || hide_reco == 1) &&
     (realName || !reg_name || reg_name == 1) &&
-    (fundPassword?.length > 4 || !reg_fundpwd || reg_fundpwd == 1) &&
+    (fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1) &&
     (qq?.length > 5 || !reg_qq || reg_qq == 1) &&
     (weChat || !reg_wx || reg_wx == 1) &&
     (email || !reg_email || reg_email == 1) &&
@@ -236,6 +236,7 @@ const BZHRegisterPage = () => {
               },
             }}
             show={reg_fundpwd}
+            maxLength={4}
           />
           <Form
             leftIcon={{
@@ -268,7 +269,8 @@ const BZHRegisterPage = () => {
           />
           <Form
             leftIcon={{
-              name: 'email',
+              type: 'material-community',
+              name: 'email-outline',
             }}
             onChangeText={(value: any) => setEmail(value)}
             label={'*请输入合法的电子邮箱'}
