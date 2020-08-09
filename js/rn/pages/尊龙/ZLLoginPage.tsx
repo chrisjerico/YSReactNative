@@ -48,6 +48,13 @@ const ZLLoginPage = ({ route, navigation }) => {
                 }
                 break;
             case "android":
+                let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+                let loginInfo = JSON.parse(result);
+                setIsRemember(loginInfo?.isRemember)
+                if (loginInfo?.isRemember) {
+                    control.setValue("account", loginInfo?.account)
+                    control.setValue("pwd", loginInfo?.pwd)
+                }
                 break;
 
         }
@@ -96,13 +103,27 @@ const ZLLoginPage = ({ route, navigation }) => {
                 case "android":
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                         {
-                            key: NA_DATA.USER_INFO,
+                            key: NA_DATA.LOGIN_INFO,
                             ...data?.data
                         });
                     break;
             }
 
             const { data: userInfo } = await APIRouter.user_info()
+
+            switch (Platform.OS) {
+                case "ios":
+                    //TODO
+                    break;
+                case "android":
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                          key: NA_DATA.USER_INFO,
+                          ...userInfo?.data
+                      })
+                    break;
+            }
+
             UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
             UGStore.save();
 

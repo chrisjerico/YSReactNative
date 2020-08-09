@@ -51,7 +51,7 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                 case "android":
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                         {
-                            key: NA_DATA.USER_INFO,
+                            key: NA_DATA.LOGIN_INFO,
                             ...accountData,
                             ...data?.data
                         });
@@ -61,9 +61,7 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                         {
                             key: NA_DATA.USER_INFO,
-                            ...accountData,
-                            ...data?.data,
-                            ...userInfo.data.data
+                            ...userInfo?.data?.data
                         })
                     break;
 
