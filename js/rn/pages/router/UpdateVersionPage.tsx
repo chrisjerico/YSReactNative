@@ -70,6 +70,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
+    if (Platform.OS == 'ios') return; // iOS在原生代码已经做了更新，这里无需更新
 
     CodePush.sync(
       {
