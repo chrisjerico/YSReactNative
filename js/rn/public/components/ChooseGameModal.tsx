@@ -4,11 +4,11 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import APIRouter from "../network/APIRouter";
 import {getGameList} from "../utils/getGameList";
+import AppDefine from "../define/AppDefine";
 
 export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
     let [games, setGames] = useState([])
     const [chosen, setChosen] = useState()
-
     useEffect(() => {
         APIRouter.game_lotteryGames().then(({data: res}) => {
             let arr = []
@@ -38,19 +38,23 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
                 <FlatList
                     style={{height: 340, backgroundColor: "white", paddingVertical: 2, paddingHorizontal: 2}}
                     numColumns={3}
-                    keyExtractor={(item, index) => `${index}`} data={games}
-                    renderItem={({item, index}) => (
-                        <TouchableOpacity style={{
-                            justifyContent: "center",
-                            backgroundColor: item === chosen ? "#387EF5" : "white",
-                            flex: 1 / 3,
-                            borderWidth: 1,
-                            borderColor: item === chosen ? "#387EF5" : "#ddd",
-                            borderRadius: 8,
-                            height: 40,
-                            marginHorizontal: 4,
-                            marginVertical: 4,
-                        }} onPress={() => setChosen(item)}>
+                    keyExtractor={(item, index) => `games-${index}`} data={games}
+                    renderItem={({item, itemIndex}) => (
+                        <TouchableOpacity
+                            key={`games-items-${itemIndex}`}
+                            style={{
+                                justifyContent: "center",
+                                backgroundColor: item === chosen ? "#387EF5" : "white",
+                                borderWidth: 1,
+                                borderColor: item === chosen ? "#387EF5" : "#ddd",
+                                borderRadius: 8,
+                                height: 40,
+                                width: 120,
+                                flex: 1,
+                                maxWidth: 120,
+                                marginHorizontal: 4,
+                                marginVertical: 4,
+                            }} onPress={() => setChosen(item)}>
                             <Text style={{
                                 textAlign: "center",
                                 fontSize: 13,

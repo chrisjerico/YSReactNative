@@ -11,7 +11,6 @@ import {
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {chunkArray} from "../tools/ChunkArr";
-import {Navigation} from "../navigation/Navigation";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {getTrendData} from "../utils/getTrendData";
 import {TrendData} from "../interface/trendData";
@@ -20,6 +19,7 @@ import APIRouter from "../network/APIRouter";
 import {ChooseGameModal} from "./ChooseGameModal";
 import AppDefine from "../define/AppDefine";
 import PushHelper from "../define/PushHelper";
+import {pop} from "../navigation/RootNavigation";
 
 export const TrendView = () => {
     const [trendData, setTrendData] = useState<TrendData>()
@@ -87,7 +87,7 @@ export const TrendView = () => {
                         alignSelf: "center"
                     }}>开奖走势</Text>
                     <TouchableOpacity style={{width: 30, position: "absolute", left: 20}}
-                                      onPress={() => Navigation.pop()}>
+                                      onPress={() => pop()}>
                         <Icon size={33} name={'angle-left'}/>
                     </TouchableOpacity>
                 </View>

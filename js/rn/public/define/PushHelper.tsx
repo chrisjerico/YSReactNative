@@ -1,14 +1,17 @@
-import { UGAgentApplyInfo, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import {UGAgentApplyInfo, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import { Alert, AlertButton, Platform } from 'react-native';
+import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { OCHelper } from './OCHelper/OCHelper';
-import { HomeGamesModel } from '../network/Model/HomeGamesModel';
-import { NSValue, } from './OCHelper/OCBridge/OCCall';
-import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
-import { TurntableListModel } from '../network/Model/TurntableListModel';
-import { Toast } from '../tools/ToastUtils';
+import {IGameIconListItem} from '../../redux/model/home/IGameBean';
+import {OCHelper} from './OCHelper/OCHelper';
+import {HomeGamesModel} from '../network/Model/HomeGamesModel';
+import {NSValue,} from './OCHelper/OCBridge/OCCall';
+import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
+import {TurntableListModel} from '../network/Model/TurntableListModel';
+import {Toast} from '../tools/ToastUtils';
+import {navigate, push} from "../navigation/RootNavigation";
+import {PageName} from "../navigation/Navigation";
+
 export default class PushHelper {
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
@@ -210,7 +213,7 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.开奖走势: {
-        OCHelper.call('HUDHelper.showMsg:', ['敬请期待']);
+        navigate(PageName.TrendView)
         break;
       }
       case UGUserCenterType.QQ客服: {

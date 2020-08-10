@@ -62,7 +62,7 @@ export default class UGSkinManagers extends UGThemeColor {
       24: `白曜`,
     };
     console.log('pi fu =', mobileTemplateCategory);
-    let key = `乐橙`;
+    let key = dict[mobileTemplateStyle];
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();

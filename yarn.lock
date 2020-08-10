@@ -6275,6 +6275,11 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-android-fragment@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-android-fragment/-/react-native-android-fragment-1.1.1.tgz#41fea381982b71eb0ae53032b334aad2fa13249a"
+  integrity sha512-sFIZnPoQuEtnhSkEXfdw4YkuhJQZLBRHVzscUwy3exIgpwtPky6gM55Lp1nwC3DZCTuUjRKf3n9rpk8c/mQBKA==
+
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
