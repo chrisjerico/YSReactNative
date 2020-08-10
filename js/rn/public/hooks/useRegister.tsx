@@ -4,6 +4,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 
 interface Options {
   onSuccess?: () => any;
@@ -41,35 +42,19 @@ const loginUser = async ({ usr,
       usr,
       pwd
     )
-    await OCHelper.call('UGUserModel.setCurrentUser:', [
-      UGUserModel.getYS(loginData?.data),
-    ])
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-      [true, 'isRememberPsd']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [params?.usr, 'userName']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [params?.pwd, 'userPsw']
-    )
-    await OCHelper.call(
-      'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-      ['UGNotificationLoginComplete']
-    )
-    await OCHelper.call(
-      'UGNavigationController.current.popToRootViewControllerAnimated:',
-      [true]
-    )
+    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [params?.usr, 'userName']);
+    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [params?.pwd, 'userPsw']);
+    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+    await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
     const { data: UserInfo, } = await APIRouter.user_info()
     await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(loginData?.data) }]);
     UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
     UGStore.save();
-  } catch (err) {
-    throw err
+  } catch (error) {
+    console.log("---------error---------", error)
+    throw '自动登录失败'
   }
 }
 
@@ -87,18 +72,19 @@ const useRegister = (options: Options = { onSuccess: popToRoot }) => {
             //註冊成功 自動登陸
             const { pwd } = params
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['注册成功'])
+            onSuccess && onSuccess()
             await cleanOldUser()
             await loginUser({
               usr,
               pwd,
               params
             })
-            onSuccess && onSuccess()
           } else {
             //註冊成功 不登陸
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
               regData?.msg?.toString() ?? '注册成功',
             ])
+            onSuccess && onSuccess()
           }
         } else {
           // 註冊失敗
@@ -109,7 +95,6 @@ const useRegister = (options: Options = { onSuccess: popToRoot }) => {
         }
       }
     } catch (error) {
-      console.log(error?.toString())
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
         error?.toString() ?? '注册失败',
       ])

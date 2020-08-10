@@ -70,8 +70,7 @@ httpClient.interceptors.response.use(
     return response;
   },
   err => {
-    if (err) {
-      console.log("------err------", err)
+    if (err && err?.response) {
       switch (err?.response?.status) {
         case 401:
           OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
@@ -93,8 +92,10 @@ httpClient.interceptors.response.use(
         default:
           console.warn("連接錯誤", err);
       }
-      return err?.response
+    } else {
+      console.warn('連接到服務器失敗');
     }
+    return err?.response
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
