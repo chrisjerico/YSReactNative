@@ -83,13 +83,13 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
               regData.msg ?? '注册成功',
             ])
-            onSuccess && onSuccess()
           }
         } else {
           // 註冊失敗
           OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
             regData?.msg ?? '注册失败',
           ])
+          onError && onError('注册失败')
         }
       }
     } catch (error) {
@@ -97,7 +97,6 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
         error ?? '注册失败',
       ])
       onError && onError(error)
-      console.log(error)
     }
   }
 

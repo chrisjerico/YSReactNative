@@ -51,7 +51,7 @@ const HomeHeader = ({
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
               <Text numberOfLines={1}>{name}</Text>
-              <Text>{'￥' + money}</Text>
+              <Text numberOfLines={1}>{'￥' + money}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

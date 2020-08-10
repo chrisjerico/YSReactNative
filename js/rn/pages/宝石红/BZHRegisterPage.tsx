@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -23,6 +23,8 @@ import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSys
 import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -54,7 +56,12 @@ const BZHRegisterPage = () => {
     navigate(PageName.BZHHomePage, {})
   }
   // hooks
-  const { register } = useRegister({ onSuccess: jumpToHomePage })
+  const { register } = useRegister({
+    onSuccess: jumpToHomePage, onError: () => {
+      reloadSliding?.current?.reload()
+      setSlidingVerification(null)
+    }
+  })
   // stores
   const {
     hide_reco, // 代理人 0隱藏，1选填，2必填
@@ -91,6 +98,7 @@ const BZHRegisterPage = () => {
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
   const [hideFundPassword, setHideFundPassword] = useState(true)
   const [agent, setAgent] = useState(false)
+  const reloadSliding = useRef(null)
 
   // effects
   useEffect(() => {
@@ -150,7 +158,17 @@ const BZHRegisterPage = () => {
           <Text style={styles.headerTitle}>{'客服'}</Text>
         </TouchableOpacity>
       </SafeAreaHeader>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+      // refreshControl={
+      //   <RefreshControlComponent
+      //     onRefresh={() => {
+      //       reloadSliding?.current?.reload()
+      //     }}
+      //   />
+      // }
+      >
         <View style={styles.whiteBlock}>
           <View style={{ width: '100%', marginBottom: scale(20) }}>
             <Text style={{ color: 'red' }}>
@@ -317,7 +335,8 @@ const BZHRegisterPage = () => {
             )}
           />
           {reg_vcode == 2 ? (
-            <SlidingVerification
+            <ReloadSlidingVerification
+              ref={reloadSliding}
               onChange={setSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />

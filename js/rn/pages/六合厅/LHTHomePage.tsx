@@ -27,7 +27,7 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import BottomToolBlock from './components/BottomToolBlock'
 import HomeHeader from './components/HomeHeader'
 import LotteryBall from './components/LotteryBall'
@@ -57,15 +57,13 @@ const LHTHomePage = ({ navigation }) => {
   })
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
   // stores
-  const { uid, avatar, usr, isTest }: UGUserModel = useSelector(
-    (state: IGlobalState) => state.UserInfoReducer
-  )
+  const { uid, avatar, usr, isTest }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
     m_promote_pos,
     rankingListSwitch,
-  }: UGSysConfModel = useSelector((state: IGlobalState) => state.SysConfReducer)
+  }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
   const announcementModal = useRef(null)

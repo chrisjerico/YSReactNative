@@ -70,8 +70,8 @@ httpClient.interceptors.response.use(
     return response;
   },
   err => {
-    if (err && err.response) {
-      switch (err.response.status) {
+    if (err && err?.response) {
+      switch (err?.response?.status) {
         case 401:
           OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
@@ -91,12 +91,12 @@ httpClient.interceptors.response.use(
           console.warn('服務失效');
           break;
         default:
-          console.warn("連接錯誤" + err.response.status);
+          console.warn("連接錯誤" + err?.response?.status);
       }
     } else {
-      console.warn('連接到服務器失敗');
+      console.warn('連接到服務器失敗', err?.response?.status);
     }
-    return Promise.resolve(err.response);
+    return err?.response //Promise.resolve(err?.response);
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
