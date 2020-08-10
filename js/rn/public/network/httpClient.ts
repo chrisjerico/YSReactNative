@@ -94,9 +94,9 @@ httpClient.interceptors.response.use(
           console.warn("連接錯誤" + err?.response?.status);
       }
     } else {
-      console.warn('連接到服務器失敗', err?.response?.status);
+      console.warn('連接到服務器失敗', err?.response);
     }
-    return err?.response //Promise.resolve(err?.response);
+    return Promise.reject(err?.response) //Promise.resolve(err?.response);
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
