@@ -6,6 +6,7 @@ import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { OCHelper } from '../OCHelper';
 import { getCurrentPage, pop, jumpTo } from '../../../navigation/RootNavigation';
+import { UGStore } from '../../../../redux/store/UGStore';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -51,8 +52,7 @@ export class OCEvent extends OCCall {
     });
 
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
-      IGlobalStateHelper.updateSysConf(sysConf);
-
+      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
     });
     this.addEvent(OCEventType.UGNotificationWithSkinSuccess, () => {
       UGSkinManagers.updateOcSkin();

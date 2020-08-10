@@ -66,9 +66,8 @@ class TabBarController extends Component<{
     navigation.setOptions({ headerStyle: { height: 0 } })
   }
   render() {
-    const initialRouteName = Platform.OS == 'ios' ? PageName.TransitionPage : PageName.UpdateVersionPage;
     return (
-      <Router.TabNavigator initialRouteName={initialRouteName} screenOptions={{ tabBarVisible: false }}
+      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
         <Router.TabScreen name={PageName.VietnamHome} component={UGPage(VietnamHomePage)} />
