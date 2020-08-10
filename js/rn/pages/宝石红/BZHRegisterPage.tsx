@@ -27,9 +27,9 @@ import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidin
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 
 interface SlidingVerification {
-  nc_csessionid: string;
-  nc_token: string;
-  nc_sig: string;
+  nc_csessionid?: string;
+  nc_token?: string;
+  nc_sig?: string;
 }
 
 const validPassword = (password: string, pass_limit: number) => {
@@ -59,7 +59,11 @@ const BZHRegisterPage = () => {
   const { register } = useRegister({
     onSuccess: jumpToHomePage, onError: () => {
       reloadSliding?.current?.reload()
-      setSlidingVerification(null)
+      setSlidingVerification({
+        nc_csessionid: null,
+        nc_token: null,
+        nc_sig: null,
+      })
     }
   })
   // stores
@@ -90,7 +94,11 @@ const BZHRegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
+  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
+    nc_csessionid: null,
+    nc_token: null,
+    nc_sig: null,
+  })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
 
@@ -109,6 +117,12 @@ const BZHRegisterPage = () => {
     }
   }, [reg_vcode])
 
+  const {
+    nc_csessionid,
+    nc_token,
+    nc_sig
+  } = slidingVerification
+
   const valid =
     account?.length >= 6 &&
     validPassword(password, pass_limit) &&
@@ -120,7 +134,7 @@ const BZHRegisterPage = () => {
     (weChat || !reg_wx || reg_wx == 1) &&
     (email || !reg_email || reg_email == 1) &&
     (phoneNumber || !reg_phone || reg_phone == 1) &&
-    (slidingVerification || !reg_vcode || reg_vcode == 1 || reg_vcode == 3) &&
+    ((nc_csessionid && nc_token && nc_sig) || !reg_vcode || reg_vcode == 1 || reg_vcode == 3) &&
     (sms?.length == 6 || !smsVerify)
 
   const getImgCaptcha = () => {
@@ -134,12 +148,12 @@ const BZHRegisterPage = () => {
     try {
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       if (data?.code != 0) {
-        throw { message: data.msg }
+        throw { message: data?.msg }
       } else {
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg])
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg?.toString() ?? ''])
       }
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message])
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message?.toString() ?? ''])
     }
   }
 

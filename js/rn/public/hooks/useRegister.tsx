@@ -5,33 +5,76 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
 
-interface UseRegister {
+interface Options {
   onSuccess?: () => any;
   onError?: (error: any) => any;
 }
 
 const cleanOldUser = async () => {
-  const user = await OCHelper.call('UGUserModel.currentUser')
-  if (user) {
-    // 退出舊帳號
-    const sessid = await OCHelper.call(
-      'UGUserModel.currentUser.sessid'
-    )
-    await OCHelper.call(
-      'CMNetwork.userLogoutWithParams:completion:',
-      [{ token: sessid }]
-    )
-    await OCHelper.call('UGUserModel.setCurrentUser:')
-    await OCHelper.call(
-      'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-      ['UGNotificationUserLogout']
-    )
-    UGStore.dispatch({ type: 'reset', userInfo: {} });
+  try {
+    const user = await OCHelper.call('UGUserModel.currentUser')
+    if (user) {
+      // 退出舊帳號
+      const sessid = await OCHelper.call(
+        'UGUserModel.currentUser.sessid'
+      )
+      await OCHelper.call(
+        'CMNetwork.userLogoutWithParams:completion:',
+        [{ token: sessid }]
+      )
+      await OCHelper.call('UGUserModel.setCurrentUser:')
+      await OCHelper.call(
+        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+        ['UGNotificationUserLogout']
+      )
+      UGStore.dispatch({ type: 'reset', userInfo: {} });
+    }
+  } catch (err) {
+    throw err
   }
 }
 
-const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
-  const { onSuccess, onError } = params
+const loginUser = async ({ usr,
+  pwd, params }) => {
+  try {
+    const { data: loginData }: any = await APIRouter.user_login(
+      usr,
+      pwd
+    )
+    await OCHelper.call('UGUserModel.setCurrentUser:', [
+      UGUserModel.getYS(loginData?.data),
+    ])
+    await OCHelper.call(
+      'NSUserDefaults.standardUserDefaults.setBool:forKey:',
+      [true, 'isRememberPsd']
+    )
+    await OCHelper.call(
+      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+      [params?.usr, 'userName']
+    )
+    await OCHelper.call(
+      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+      [params?.pwd, 'userPsw']
+    )
+    await OCHelper.call(
+      'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+      ['UGNotificationLoginComplete']
+    )
+    await OCHelper.call(
+      'UGNavigationController.current.popToRootViewControllerAnimated:',
+      [true]
+    )
+    const { data: UserInfo, } = await APIRouter.user_info()
+    await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(loginData?.data) }]);
+    UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
+    UGStore.save();
+  } catch (err) {
+    throw err
+  }
+}
+
+const useRegister = (options: Options = { onSuccess: popToRoot }) => {
+  const { onSuccess, onError } = options
   const register = async (params: UserReg) => {
     try {
       if (Platform.OS == 'ios') {
@@ -44,44 +87,17 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
             //註冊成功 自動登陸
             const { pwd } = params
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['注册成功'])
-            const { data: loginData }: any = await APIRouter.user_login(
-              usr,
-              pwd
-            )
             await cleanOldUser()
-            await OCHelper.call('UGUserModel.setCurrentUser:', [
-              UGUserModel.getYS(loginData?.data),
-            ])
-            await OCHelper.call(
-              'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-              [true, 'isRememberPsd']
-            )
-            await OCHelper.call(
-              'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-              [params?.usr, 'userName']
-            )
-            await OCHelper.call(
-              'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-              [params?.pwd, 'userPsw']
-            )
-            await OCHelper.call(
-              'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-              ['UGNotificationLoginComplete']
-            )
-            await OCHelper.call(
-              'UGNavigationController.current.popToRootViewControllerAnimated:',
-              [true]
-            )
-            const { data: UserInfo, } = await APIRouter.user_info()
-            await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
-            UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
-            UGStore.save();
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功'])
+            await loginUser({
+              usr,
+              pwd,
+              params
+            })
             onSuccess && onSuccess()
           } else {
             //註冊成功 不登陸
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-              regData.msg ?? '注册成功',
+              regData?.msg?.toString() ?? '注册成功',
             ])
           }
         } else {
@@ -93,8 +109,9 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
         }
       }
     } catch (error) {
+      console.log(error?.toString())
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-        error ?? '注册失败',
+        error?.toString() ?? '注册失败',
       ])
       onError && onError(error)
     }

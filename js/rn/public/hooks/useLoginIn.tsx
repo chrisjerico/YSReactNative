@@ -1,5 +1,5 @@
 import UGUserModel from "../../redux/model/全局/UGUserModel";
-import { updateUserInfo } from "../../redux/store/IGlobalStateHelper";
+import { UGStore } from "../../redux/store/UGStore";
 import { OCHelper } from "../define/OCHelper/OCHelper";
 import { popToRoot } from "../navigation/RootNavigation";
 import APIRouter from "../network/APIRouter";
@@ -45,9 +45,10 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
             await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [isRemember ? pwd : '', 'userPsw']);
             enableNativeNotification && await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
             await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-            const response = await APIRouter.user_info()
-            await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...response.data.data, ...UGUserModel.getYS(data?.data) }]);
-            updateUserInfo()
+            const { data: UserInfo, } = await APIRouter.user_info()
+            await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(data?.data) }]);
+            UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
+            UGStore.save();
             onSuccess && onSuccess();
         } catch (error) {
             console.log(error)

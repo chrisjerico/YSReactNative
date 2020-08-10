@@ -70,7 +70,8 @@ httpClient.interceptors.response.use(
     return response;
   },
   err => {
-    if (err && err?.response) {
+    if (err) {
+      console.log("------err------", err)
       switch (err?.response?.status) {
         case 401:
           OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
@@ -82,21 +83,18 @@ httpClient.interceptors.response.use(
               })
             })
           })
-
           break;
         case 500:
-          console.warn('伺服器出錯');
+          console.warn('500 : 伺服器出錯');
           break;
         case 503:
-          console.warn('服務失效');
+          console.warn('503 : 服務失效');
           break;
         default:
-          console.warn("連接錯誤" + err?.response?.status);
+          console.warn("連接錯誤", err);
       }
-    } else {
-      console.warn('連接到服務器失敗', err?.response);
+      return err?.response
     }
-    return Promise.reject(err?.response) //Promise.resolve(err?.response);
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {

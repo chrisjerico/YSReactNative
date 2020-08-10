@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
@@ -27,7 +26,7 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import BottomToolBlock from './components/BottomToolBlock'
 import HomeHeader from './components/HomeHeader'
 import LotteryBall from './components/LotteryBall'
@@ -43,7 +42,7 @@ import {
   defaultNoticeLogo
 } from './helpers/config'
 
-const LHTHomePage = ({ navigation }) => {
+const LHTHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
@@ -110,13 +109,13 @@ const LHTHomePage = ({ navigation }) => {
     }
   }, [uid])
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('------focus------')
-      updateUserInfo()
-    })
-    return unsubscribe
-  }, [])
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     console.log('------focus------')
+  //     updateUserInfo()
+  //   })
+  //   return unsubscribe
+  // }, [])
 
   // data handle
   const announce_first = parseInt(systemConfig?.data?.announce_first)
@@ -155,6 +154,7 @@ const LHTHomePage = ({ navigation }) => {
       return { games, name }
     }) ?? []
 
+  console.log("-----uid-----", uid)
   // render
   if (loading) {
     return <ProgressCircle />

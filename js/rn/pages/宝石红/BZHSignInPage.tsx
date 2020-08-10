@@ -79,7 +79,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     },
     onError: (error) => {
       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-        error ?? '登录失敗！',
+        error?.toString() ?? '登录失敗！',
       ])
     },
   })
@@ -89,7 +89,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
       OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
     },
     onError: (error) => {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error ?? '試玩失败'])
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.toString() ?? '試玩失败'])
     },
   })
 
@@ -199,12 +199,12 @@ const BZHSignInPage = (props: BZHSignInStore) => {
                 } else {
                   const error = data?.msg
                   OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                    error ?? '登录失敗！',
+                    error?.toString() ?? '登录失敗！',
                   ])
                 }
               } catch (error) {
                 OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                  error ?? '登入失败',
+                  error?.toString() ?? '登入失败',
                 ])
               }
             }}

@@ -72,15 +72,16 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    if (user?.token) {
-      return httpClient.get("c=user&a=info&token=" + user?.token)
-    } else {
-      return Promise.reject({
-        "error": "no token"
-      })
+    try {
+      const user = await OCHelper.call('UGUserModel.currentUser');
+      if (user?.token) {
+        return httpClient.get("c=user&a=info&token=" + user?.token)
+      } else {
+        throw "no token"
+      }
+    } catch (err) {
+      throw err
     }
-
   }
   static user_guestLogin = () => {
     return httpClient.post<LoginModel>("c=user&a=guestLogin", {
@@ -143,7 +144,7 @@ class APIRouter {
       ...params, device: '3', accessToken: accessToken,
     }, {
       noToken: true
-    } as any);
+    } as any)
   }
 
   static lhcdoc_categoryList = async () => {
