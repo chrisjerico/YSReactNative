@@ -1,6 +1,5 @@
 import { Platform } from 'react-native'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
@@ -37,7 +36,6 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
     try {
       if (Platform.OS == 'ios') {
         OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...'])
-        await cleanOldUser()
         const { data: regData }: any = await APIRouter.user_reg(params)
         const user_reg_data = regData?.data
         if (user_reg_data) {
@@ -50,6 +48,7 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
               usr,
               pwd
             )
+            await cleanOldUser()
             await OCHelper.call('UGUserModel.setCurrentUser:', [
               UGUserModel.getYS(loginData?.data),
             ])
@@ -73,7 +72,10 @@ const useRegister = (params: UseRegister = { onSuccess: popToRoot }) => {
               'UGNavigationController.current.popToRootViewControllerAnimated:',
               [true]
             )
-            updateUserInfo()
+            const { data: UserInfo, } = await APIRouter.user_info()
+            await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+            UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
+            UGStore.save();
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功'])
             onSuccess && onSuccess()
           } else {
