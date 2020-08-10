@@ -45,8 +45,8 @@ export const HomeTabView = () => {
     }, [homeGames])
 
 
-    const getTab = (item: Icon) => {
-        return item.name.indexOf("推荐") != -1 || item.name.indexOf("热门") != -1 ?
+    const getTab = (item: Icon, index: number) => {
+        return index == 0 ?
             <RecommendTabView banner={banner} list={item.list} marquee={marquee} onlineNum={onlineNum} tabLabel="精选"/> :
             item.name.indexOf("彩票") != -1 ?
                 <LotteryTabView list={item.list} tabLabel="彩票"/> :
@@ -71,8 +71,8 @@ export const HomeTabView = () => {
                 tabBarTextStyle={{color: "#666666", fontWeight: "bold"}}
                 style={[{flex: 1, height}]}
                 renderTabBar={() => <ScrollableTabBar style={{backgroundColor: "#ffffff"}}/>}>
-                {games.length > 0 ? games.map((item) => {
-                    return getTab(item)
+                {games.length > 0 ? games.map((item, index) => {
+                    return getTab(item, index)
                 }) : <View/>
                 }
             </ScrollableTabView>
