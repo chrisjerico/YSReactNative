@@ -20,11 +20,11 @@ import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './components/ProfileBlock'
 
-const BZHMinePage = () => {
+const BZHMinePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-
+  const { setProps } = props
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
   const { UGUserCenterItem } = useMemberItems()
   // stores
@@ -47,7 +47,7 @@ const BZHMinePage = () => {
       const value = await APIRouter.system_avatarList()
       const avatarList = value?.data?.data ?? []
       setAvatarList(avatarList)
-    } catch (err) {
+    } catch (error) {
     } finally {
       setAvatarListLoading(false)
     }
@@ -84,8 +84,13 @@ const BZHMinePage = () => {
         <ProfileBlock
           onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
-            const { data } = await APIRouter.user_balance_token()
-            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
+            try {
+              const { data } = await APIRouter.user_balance_token()
+              UGStore.dispatch({ type: 'merge', userInfo: { balance: data?.data?.balance } });
+              setProps()
+            } catch (error) {
+              console.log('user_balance_token error', error);
+            }
           }}
           level={curLevelGrade}
           avatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}

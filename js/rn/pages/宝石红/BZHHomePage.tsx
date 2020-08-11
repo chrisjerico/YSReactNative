@@ -61,6 +61,7 @@ const BZHHomePage = () => {
     couponListData,
     systemConfig,
     systemHomeAds,
+    onRefresh
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -128,6 +129,7 @@ const BZHHomePage = () => {
     }
   }, [notice])
 
+  console.log("-----BZHHome----重新選染")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -152,8 +154,9 @@ const BZHHomePage = () => {
           style={styles.container}
           refreshControl={
             <RefreshControlComponent
-              onRefresh={() => {
-                updateUserInfo()
+              onRefresh={async () => {
+                await updateUserInfo()
+                onRefresh()
                 PushHelper.pushAnnouncement(announcements)
               }}
             />
