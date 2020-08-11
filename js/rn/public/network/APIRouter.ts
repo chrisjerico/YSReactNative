@@ -74,13 +74,14 @@ class APIRouter {
   static user_info = async () => {
     try {
       const user = await OCHelper.call('UGUserModel.currentUser');
-      if (user?.token) {
-        return httpClient.get("c=user&a=info&token=" + user?.token)
+      const token = user?.token
+      if (token) {
+        return httpClient.get("c=user&a=info&token=" + token)
       } else {
         throw "no token"
       }
-    } catch (err) {
-      throw err
+    } catch (error) {
+      throw '更新使用者失败'
     }
   }
   static user_guestLogin = () => {
@@ -102,12 +103,16 @@ class APIRouter {
     return httpClient.get<RankListModel>("c=system&a=rankingList")
   }
   static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
-    if (slideCode) {
-      slideCode = SlideCodeModel?.get(slideCode);
+    try {
+      if (slideCode) {
+        slideCode = SlideCodeModel?.get(slideCode);
+      }
+      return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
+        noToken: true
+      } as any);
+    } catch (error) {
+      throw '登陆失败'
     }
-    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
-      noToken: true
-    } as any);
   }
   static user_balance_token = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
@@ -139,12 +144,16 @@ class APIRouter {
   }
 
   static user_reg = async (params: UserReg) => {
-    const accessToken = await OCHelper.call('OpenUDID.value');
-    return httpClient.post<RegisterModel>('c=user&a=reg', {
-      ...params, device: '3', accessToken: accessToken,
-    }, {
-      noToken: true
-    } as any)
+    try {
+      const accessToken = await OCHelper.call('OpenUDID.value');
+      return httpClient.post<RegisterModel>('c=user&a=reg', {
+        ...params, device: '3', accessToken: accessToken,
+      }, {
+        noToken: true
+      } as any)
+    } catch (error) {
+      throw '注册失败'
+    }
   }
 
   static lhcdoc_categoryList = async () => {

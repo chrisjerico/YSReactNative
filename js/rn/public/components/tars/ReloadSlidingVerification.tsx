@@ -30,7 +30,6 @@ const ReloadSlidingVerification = (
 
   useImperativeHandle(ref, () => ({
     reload: () => {
-      console.log("-------ReloadSlidingVerification reload-------")
       webViewRef?.current?.reload()
     },
   }))

@@ -93,7 +93,7 @@ httpClient.interceptors.response.use(
           console.warn("連接錯誤", err);
       }
     } else {
-      console.warn('連接到服務器失敗');
+      console.warn('連接到服務器失敗', err?.response?.toString());
     }
     return err?.response
   },

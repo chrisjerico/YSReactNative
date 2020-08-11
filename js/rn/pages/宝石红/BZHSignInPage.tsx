@@ -44,7 +44,11 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>(null)
+  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
+    nc_csessionid: null,
+    nc_token: null,
+    nc_sig: null,
+  })
 
   const { type }: any = navigation?.dangerouslyGetState()
 
@@ -112,7 +116,13 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     }
   }, [])
 
-  const valid = account && password && (slidingVerification || !loginVCode)
+  const {
+    nc_csessionid,
+    nc_token,
+    nc_sig
+  } = slidingVerification
+
+  const valid = account && password && ((nc_csessionid && nc_token && nc_sig) || !loginVCode)
 
   return (
     <>

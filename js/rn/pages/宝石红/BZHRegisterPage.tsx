@@ -24,7 +24,6 @@ import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -58,12 +57,12 @@ const BZHRegisterPage = () => {
   // hooks
   const { register } = useRegister({
     onSuccess: jumpToHomePage, onError: () => {
-      reloadSliding?.current?.reload()
       setSlidingVerification({
         nc_csessionid: null,
         nc_token: null,
         nc_sig: null,
       })
+      reloadSliding?.current?.reload()
     }
   })
   // stores
@@ -123,19 +122,32 @@ const BZHRegisterPage = () => {
     nc_sig
   } = slidingVerification
 
+  const account_valid = account?.length >= 6
+  const password_valid = validPassword(password, pass_limit)
+  const confirmPassword_valid = confirmPassword == password
+  const recommendGuy_valid = recommendGuy || !hide_reco || hide_reco == 1
+  const realName_valid = realName || !reg_name || reg_name == 1
+  const fundPassword_valid = fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1
+  const qq_valid = qq?.length >= 5 || !reg_qq || reg_qq == 1
+  const weChat_valid = weChat || !reg_wx || reg_wx == 1
+  const email_valid = email || !reg_email || reg_email == 1
+  const phoneNumber_valid = phoneNumber || !reg_phone || reg_phone == 1
+  const reg_vcode_valid = (nc_csessionid && nc_token && nc_sig) || !reg_vcode || reg_vcode == 1 || reg_vcode == 3
+  const sms_valid = sms?.length == 6 || !smsVerify
+
   const valid =
-    account?.length >= 6 &&
-    validPassword(password, pass_limit) &&
-    confirmPassword == password &&
-    (recommendGuy || !hide_reco || hide_reco == 1) &&
-    (realName || !reg_name || reg_name == 1) &&
-    (fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1) &&
-    (qq?.length >= 5 || !reg_qq || reg_qq == 1) &&
-    (weChat || !reg_wx || reg_wx == 1) &&
-    (email || !reg_email || reg_email == 1) &&
-    (phoneNumber || !reg_phone || reg_phone == 1) &&
-    ((nc_csessionid && nc_token && nc_sig) || !reg_vcode || reg_vcode == 1 || reg_vcode == 3) &&
-    (sms?.length == 6 || !smsVerify)
+    account_valid &&
+    password_valid &&
+    confirmPassword_valid &&
+    recommendGuy_valid &&
+    realName_valid &&
+    fundPassword_valid &&
+    qq_valid &&
+    weChat_valid &&
+    email_valid &&
+    phoneNumber_valid &&
+    reg_vcode_valid &&
+    sms_valid
 
   const getImgCaptcha = () => {
     APIRouter.secure_imgCaptcha().then((value) => {
@@ -143,7 +155,6 @@ const BZHRegisterPage = () => {
       setCorrectImageCode(value?.data)
     })
   }
-
   const getSms = async () => {
     try {
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
@@ -175,13 +186,6 @@ const BZHRegisterPage = () => {
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
-      // refreshControl={
-      //   <RefreshControlComponent
-      //     onRefresh={() => {
-      //       reloadSliding?.current?.reload()
-      //     }}
-      //   />
-      // }
       >
         <View style={styles.whiteBlock}>
           <View style={{ width: '100%', marginBottom: scale(20) }}>

@@ -48,7 +48,7 @@ const loginUser = async ({ usr,
     await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [params?.pwd, 'userPsw']);
     await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
     await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-    const { data: UserInfo, } = await APIRouter.user_info()
+    const { data: UserInfo } = await APIRouter.user_info()
     await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(loginData?.data) }]);
     UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
     UGStore.save();
@@ -64,10 +64,11 @@ const useRegister = (options: Options = { onSuccess: popToRoot }) => {
     try {
       if (Platform.OS == 'ios') {
         OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...'])
-        const { data: regData }: any = await APIRouter.user_reg(params)
-        const user_reg_data = regData?.data
-        if (user_reg_data) {
-          const { autoLogin, usr } = user_reg_data
+        const { data } = await APIRouter.user_reg(params)
+        const userReg_data = data?.data
+        const msg = data?.msg
+        if (userReg_data) {
+          const { autoLogin, usr } = userReg_data
           if (autoLogin) {
             //註冊成功 自動登陸
             const { pwd } = params
@@ -81,23 +82,17 @@ const useRegister = (options: Options = { onSuccess: popToRoot }) => {
             })
           } else {
             //註冊成功 不登陸
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-              regData?.msg?.toString() ?? '注册成功',
-            ])
+            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [msg?.toString() ?? '注册成功'])
             onSuccess && onSuccess()
           }
         } else {
           // 註冊失敗
-          OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-            regData?.msg ?? '注册失败',
-          ])
+          OCHelper.call('SVProgressHUD.showErrorWithStatus:', [msg?.toString() ?? '注册失败'])
           onError && onError('注册失败')
         }
       }
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-        error?.toString() ?? '注册失败',
-      ])
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.toString() ?? '注册失败'])
       onError && onError(error)
     }
   }
