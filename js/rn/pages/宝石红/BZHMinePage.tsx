@@ -74,10 +74,7 @@ const BZHMinePage = (props) => {
         style={styles.container}
         refreshControl={
           <RefreshControlComponent
-            onRefresh={async () => {
-              await updateUserInfo()
-              await getAvatarList()
-            }}
+            onRefresh={getAvatarList}
           />
         }
       >
@@ -140,6 +137,7 @@ const BZHMinePage = (props) => {
       <PickAvatarComponent
         loading={avatarListLoading}
         visible={visible}
+        initAvatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}
         avatars={avatarList}
         onPressSave={async ({ url, filename }) => {
           try {

@@ -155,7 +155,6 @@ const BZHHomePage = () => {
           refreshControl={
             <RefreshControlComponent
               onRefresh={async () => {
-                await updateUserInfo()
                 onRefresh()
                 PushHelper.pushAnnouncement(announcements)
               }}

@@ -14,6 +14,7 @@ interface PickAvatarComponentProps {
   onPressSave: (avatar: IAvatar) => any;
   onPressCancel: () => any;
   loading: boolean;
+  initAvatar: string;
 }
 
 interface IAvatar {
@@ -27,15 +28,17 @@ const PickAvatarComponent = ({
   onPressSave,
   onPressCancel,
   loading,
+  initAvatar,
 }: PickAvatarComponentProps) => {
-  const [index, setInex] = useState(-1)
+  const [avatar, setAvatar] = useState(initAvatar)
+  const [fileName, setfileName] = useState('')
   const scrollView = useRef(null)
   return (
     <Modal transparent={true} visible={visible}>
       <View style={styles.container}>
         <View style={styles.pickerBlock}>
           <View style={styles.avatarContainer}>
-            <Avatar uri={avatars[index]?.url} size={200} />
+            <Avatar uri={avatar} size={200} />
             <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
           </View>
           {loading ? (
@@ -66,7 +69,10 @@ const PickAvatarComponent = ({
                         uri={url}
                         size={100}
                         containerStyle={{ marginHorizontal: scale(10) }}
-                        onPress={() => setInex(index)}
+                        onPress={() => {
+                          setAvatar(url)
+                          setfileName(filename)
+                        }}
                       />
                     )
                   })}
@@ -82,9 +88,7 @@ const PickAvatarComponent = ({
                 />
               </View>
             )}
-          <View
-            style={styles.buttonContainer}
-          >
+          <View style={styles.buttonContainer}>
             <Button
               title={'保存头像'}
               buttonStyle={{
@@ -94,8 +98,8 @@ const PickAvatarComponent = ({
               titleStyle={{ color: '#ffffff' }}
               onPress={() =>
                 onPressSave({
-                  url: avatars[index]?.url,
-                  filename: avatars[index]?.filename,
+                  url: avatar,
+                  filename: fileName,
                 })
               }
             />
@@ -133,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-  }
+  },
 })
 
 export default PickAvatarComponent
