@@ -152,7 +152,7 @@ class APIRouter {
         noToken: true
       } as any)
     } catch (error) {
-      throw '注册失败'
+      throw error
     }
   }
 

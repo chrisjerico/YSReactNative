@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -10,7 +10,7 @@ import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import SlidingVerification from '../../public/components/SlidingVerification'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useRegister from '../../public/hooks/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
@@ -18,12 +18,12 @@ import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { ToastError, ToastSuccess } from '../../public/tools/ToastUtils'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
-import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -56,11 +56,12 @@ const BZHRegisterPage = () => {
   }
   // hooks
   const { register } = useRegister({
-    onSuccess: jumpToHomePage, onError: () => {
+    onSuccess: jumpToHomePage,
+    onError: () => {
       setSlidingVerification({
-        nc_csessionid: null,
-        nc_token: null,
-        nc_sig: null,
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
       })
       reloadSliding?.current?.reload()
     }
@@ -94,9 +95,9 @@ const BZHRegisterPage = () => {
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
   const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
-    nc_csessionid: null,
-    nc_token: null,
-    nc_sig: null,
+    nc_csessionid: undefined,
+    nc_token: undefined,
+    nc_sig: undefined,
   })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
@@ -151,20 +152,20 @@ const BZHRegisterPage = () => {
 
   const getImgCaptcha = () => {
     APIRouter.secure_imgCaptcha().then((value) => {
-      console.log('---------抓取imgCaptcha-------')
       setCorrectImageCode(value?.data)
     })
   }
   const getSms = async () => {
     try {
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
-      if (data?.code != 0) {
-        throw { message: data?.msg }
+      const { code, msg } = data ?? {}
+      if (code != 0) {
+        throw { message: msg }
       } else {
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg?.toString() ?? ''])
+        ToastSuccess(msg)
       }
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message?.toString() ?? ''])
+      ToastError(error?.message)
     }
   }
 
@@ -386,11 +387,11 @@ const BZHRegisterPage = () => {
                   qq: qq, // QQ号
                   wx: weChat, // 微信号
                   phone: phoneNumber, // 手机号
-                  smsCode: sms, // 短信验证码
-                  imgCode: imageCode, // 字母验证码,
-                  'slideCode[nc_sid]': slidingVerification?.nc_csessionid,
-                  'slideCode[nc_token]': slidingVerification?.nc_token,
-                  'slideCode[nc_sig]': slidingVerification?.nc_sig,
+                  smsCode: sms ?? '', // 短信验证码
+                  imgCode: imageCode ?? '', // 字母验证码,
+                  "slideCode[nc_sid]": slidingVerification?.nc_csessionid,
+                  "slideCode[nc_token]": slidingVerification?.nc_token,
+                  "slideCode[nc_sig]": slidingVerification?.nc_sig,
                   email: email, // 邮箱
                   regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
                 } as any

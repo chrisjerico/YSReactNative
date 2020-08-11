@@ -1,12 +1,11 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Platform, AsyncStorage } from 'react-native';
+import axios, { AxiosRequestConfig } from 'axios';
+import { Platform } from 'react-native';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
-import moment from 'moment';
 interface Dictionary {
   [x: string]: any;
 }
@@ -84,18 +83,24 @@ httpClient.interceptors.response.use(
           })
           break;
         case 500:
-          console.warn('500 : 伺服器出錯');
+          console.warn('500', err);
           break;
         case 503:
-          console.warn('503 : 服務失效');
+          console.warn('503', err);
           break;
         default:
           console.warn("連接錯誤", err);
       }
     } else {
-      console.warn('連接到服務器失敗', err?.response?.toString());
+      console.warn('連接到服務器失敗', err);
     }
-    return err?.response
+    if (err?.toString() == 'Error: timeout of 1000ms exceeded') {
+      console.warn(err)
+      Toast('网速过慢')
+      return Promise.reject('网速过慢')
+    } else {
+      return Promise.reject(err)
+    }
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {

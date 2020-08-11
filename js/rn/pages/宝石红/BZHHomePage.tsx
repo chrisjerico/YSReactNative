@@ -129,7 +129,6 @@ const BZHHomePage = () => {
     }
   }, [notice])
 
-  console.log("-----BZHHome----重新選染")
   if (loading) {
     return <ProgressCircle />
   } else {

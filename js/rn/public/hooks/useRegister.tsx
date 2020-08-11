@@ -4,7 +4,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
+import { ToastError, ToastStatus, ToastSuccess } from '../tools/ToastUtils'
 
 interface Options {
   onSuccess?: () => any;
@@ -30,30 +30,25 @@ const cleanOldUser = async () => {
       )
       UGStore.dispatch({ type: 'reset', userInfo: {} });
     }
-  } catch (err) {
-    throw err
+  } catch (error) {
+    throw error
   }
 }
 
-const loginUser = async ({ usr,
-  pwd, params }) => {
+const login = async ({ usr, pwd }) => {
   try {
-    const { data: loginData }: any = await APIRouter.user_login(
-      usr,
-      pwd
-    )
-    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+    const { data }: any = await APIRouter.user_login(usr, pwd)
+    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data?.data)]);
     await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [params?.usr, 'userName']);
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [params?.pwd, 'userPsw']);
+    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [usr, 'userName']);
+    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [pwd, 'userPsw']);
     await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
     await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
     const { data: UserInfo } = await APIRouter.user_info()
-    await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(loginData?.data) }]);
+    await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo?.data, ...UGUserModel.getYS(data?.data) }]);
     UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
     UGStore.save();
   } catch (error) {
-    console.log("---------error---------", error)
     throw '自动登录失败'
   }
 }
@@ -62,37 +57,30 @@ const useRegister = (options: Options = { onSuccess: popToRoot }) => {
   const { onSuccess, onError } = options
   const register = async (params: UserReg) => {
     try {
+      ToastStatus('正在注册...')
+      const { usr, pwd } = params
       if (Platform.OS == 'ios') {
-        OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...'])
         const { data } = await APIRouter.user_reg(params)
         const userReg_data = data?.data
         const msg = data?.msg
         if (userReg_data) {
-          const { autoLogin, usr } = userReg_data
+          // 註冊成功
+          ToastSuccess('注册成功')
+          const { autoLogin } = userReg_data
           if (autoLogin) {
-            //註冊成功 自動登陸
-            const { pwd } = params
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['注册成功'])
-            onSuccess && onSuccess()
+            //登陸
             await cleanOldUser()
-            await loginUser({
-              usr,
-              pwd,
-              params
-            })
-          } else {
-            //註冊成功 不登陸
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [msg?.toString() ?? '注册成功'])
-            onSuccess && onSuccess()
+            await login({ usr, pwd })
           }
+          onSuccess && onSuccess()
         } else {
           // 註冊失敗
-          OCHelper.call('SVProgressHUD.showErrorWithStatus:', [msg?.toString() ?? '注册失败'])
+          ToastError(msg)
           onError && onError('注册失败')
         }
       }
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.toString() ?? '注册失败'])
+      ToastError(error)
       onError && onError(error)
     }
   }

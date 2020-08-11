@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import SlidingVerification from '../../public/components/SlidingVerification'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
@@ -18,8 +19,15 @@ import { navigate, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import {
+  ToastError,
+  ToastStatus,
+  ToastSuccess,
+} from '../../public/tools/ToastUtils'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
 import Form from './components/Form'
@@ -38,17 +46,25 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
 }
 
 const BZHSignInPage = (props: BZHSignInStore) => {
-  const { isRemember, account, password, navigation, setProps }: BZHSignInStore = props
+  const {
+    isRemember,
+    account,
+    password,
+    navigation,
+    setProps,
+  }: BZHSignInStore = props
   const [hidePassword, setHidePassword] = useState(true)
+  const reloadSliding = useRef(null)
 
   const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
-    nc_csessionid: null,
-    nc_token: null,
-    nc_sig: null,
-  })
+  const [slidingVerification, setSlidingVerification] =
+    useState<SlidingVerification>({
+      nc_csessionid: undefined,
+      nc_token: undefined,
+      nc_sig: undefined,
+    })
 
   const { type }: any = navigation?.dangerouslyGetState()
 
@@ -79,21 +95,25 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   const { loginSuccessHandle } = useLoginIn({
     onSuccess: () => {
       jumpToHomePage()
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
+      ToastSuccess('登录成功！')
     },
     onError: (error) => {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-        error?.toString() ?? '登录失敗！',
-      ])
+      ToastError(error)
+      setSlidingVerification({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+      reloadSliding?.current?.reload()
     },
   })
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
       jumpToHomePage()
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
+      ToastSuccess('登录成功！')
     },
     onError: (error) => {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.toString() ?? '試玩失败'])
+      ToastError(error)
     },
   })
 
@@ -116,13 +136,10 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     }
   }, [])
 
-  const {
-    nc_csessionid,
-    nc_token,
-    nc_sig
-  } = slidingVerification
+  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
 
-  const valid = account && password && ((nc_csessionid && nc_token && nc_sig) || !loginVCode)
+  const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
+  const valid = account && password && loginVCode_valid
 
   return (
     <>
@@ -146,7 +163,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={(value: any) => {
-              setProps({ account: value });
+              setProps({ account: value })
             }}
           />
           <Form
@@ -162,20 +179,17 @@ const BZHSignInPage = (props: BZHSignInStore) => {
               name: 'lock',
             }}
             value={password}
-            onChangeText={(value: any) =>
-              setProps({ password: value })
-            }
+            onChangeText={(value: any) => setProps({ password: value })}
             secureTextEntry={hidePassword}
             showRightIcon
           />
           <CheckBox
             check={isRemember}
-            onPress={() =>
-              setProps({ isRemember: !isRemember })
-            }
+            onPress={() => setProps({ isRemember: !isRemember })}
           />
           {loginVCode ? (
-            <SlidingVerification
+            <ReloadSlidingVerification
+              ref={reloadSliding}
               onChange={setSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />
@@ -187,12 +201,13 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             titleStyle={{ color: '#ffffff' }}
             onPress={async () => {
               try {
-                OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...'])
+                ToastStatus('正在登录...')
                 await APIRouter.user_logout()
                 const { data } = await APIRouter.user_login(
                   account,
-                  password?.md5(),
+                  password?.md5()
                 )
+                console.log("----------user_login_data------", data)
                 if (data?.data) {
                   await loginSuccessHandle(
                     data,
@@ -208,14 +223,16 @@ const BZHSignInPage = (props: BZHSignInStore) => {
                   )
                 } else {
                   const error = data?.msg
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                    error?.toString() ?? '登录失敗！',
-                  ])
+                  ToastError(error)
+                  setSlidingVerification({
+                    nc_csessionid: undefined,
+                    nc_token: undefined,
+                    nc_sig: undefined,
+                  })
+                  reloadSliding?.current?.reload()
                 }
               } catch (error) {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                  error?.toString() ?? '登入失败',
-                ])
+                ToastError(error)
               }
             }}
           />

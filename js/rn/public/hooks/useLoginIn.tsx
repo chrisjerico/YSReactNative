@@ -51,9 +51,7 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
             UGStore.save();
             onSuccess && onSuccess();
         } catch (error) {
-            console.log(error)
             onError && onError(error)
-            debugger
         }
 
     }
