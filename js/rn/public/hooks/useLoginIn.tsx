@@ -64,12 +64,6 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                             ...userInfo?.data?.data
                         })
                     break;
-
-            const user = await OCHelper.call('UGUserModel.currentUser');
-            if (user) {
-                const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-                await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-                await OCHelper.call('UGUserModel.setCurrentUser:');
             }
             updateUserInfo()
             onSuccess && onSuccess();
