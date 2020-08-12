@@ -22,6 +22,7 @@ import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall';
 import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
@@ -89,6 +90,8 @@ const ZLLoginPage = ({ route, navigation }) => {
             const { data, status } = await APIRouter.user_guestLogin()
             ugLog("data=", data, status)
 
+            showLoading({ type: UGLoadingType.Loading });
+
             switch (Platform.OS) {
                 case "ios":
                     await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
@@ -140,6 +143,8 @@ const ZLLoginPage = ({ route, navigation }) => {
         } catch (error) {
             console.log(error)
         }
+
+        hideLoading()
     }
     const { loginSuccessHandle } = useLoginIn()
     const onSubmit = async ({ account, pwd, googleCode = "", slideCode }) => {
@@ -170,6 +175,9 @@ const ZLLoginPage = ({ route, navigation }) => {
                     break;
 
             }
+
+            showLoading({ type: UGLoadingType.Loading });
+
             const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
             if (data.data == null)
                 throw { message: data?.msg }
@@ -215,6 +223,8 @@ const ZLLoginPage = ({ route, navigation }) => {
 
             }
         }
+
+        hideLoading()
     }
 
     return (

@@ -48,6 +48,8 @@ import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
 import { List } from "../../public/network/Model/PromotionsModel"
 import {ugLog} from "../../public/tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -532,36 +534,44 @@ const AcctountDetail = () => {
 
     const requestBalance = async () => {
         try {
-            switch (Platform.OS) {
-              case 'ios':
-                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
-                break;
-              case 'android':
-                    //TODO
-                break;
-            }
+            showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+            //     break;
+            //   case 'android':
+            //         //TODO
+            //     break;
+            // }
+
             //@ts-ignore
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
-            switch (Platform.OS) {
-              case 'ios':
-                  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
-                break;
-              case 'android':
-                //TODO
-                break;
-            }
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+            //     break;
+            //   case 'android':
+            //     //TODO
+            //     break;
+            // }
+            Toast('刷新成功！')
+
         } catch (error) {
             ugLog(error)
-            switch (Platform.OS) {
-              case 'ios':
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
-                break;
-              case 'android':
-                //TODO
-                break;
-            }
+            Toast('刷新失败请稍后再试！')
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            //     break;
+            //   case 'android':
+            //     //TODO
+            //     break;
+            // }
         }
+
+        hideLoading();
     }
     if (uid != "") {
         return (

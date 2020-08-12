@@ -16,6 +16,7 @@ import { EventRegister } from 'react-native-event-listeners'
 import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -62,14 +63,18 @@ const ZLRegisterPage = () => {
             const password = requestData?.pwd?.md5()
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
-            switch (Platform.OS) {
-              case 'ios':
-                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
-                break;
-              case 'android':
-                    //TODO
-                break;
-            }
+
+            showLoading({ type: UGLoadingType.Loading, text: '正在注册...' });
+
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+            //     break;
+            //   case 'android':
+            //         //TODO
+            //     break;
+            // }
+
             console.log(requestData)
 
             if (requestData.slideCode) {
@@ -83,8 +88,11 @@ const ZLRegisterPage = () => {
             }
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
-            if (data?.data == null)
-                throw { message: data?.msg }
+
+            if (data?.data == null) {
+              throw { message: data?.msg }
+            }
+
             if (data?.data?.autoLogin) {
                 let user;
 
@@ -202,6 +210,8 @@ const ZLRegisterPage = () => {
             }
 
         }
+
+      hideLoading();
     }
     useEffect(() => {
         if (allowreg == false) {
@@ -596,8 +606,8 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
                 as={TextInput}
                 rules={{
                     required: {
-                        value: true, message
-                            : "请输入验证码"
+                        value: true,
+                        message: "请输入验证码"
                     }
                 }}
                 name={FormName.imgCode}
