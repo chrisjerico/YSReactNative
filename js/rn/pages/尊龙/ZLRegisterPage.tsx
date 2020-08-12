@@ -13,7 +13,9 @@ import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { EventRegister } from 'react-native-event-listeners'
-import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -60,7 +62,14 @@ const ZLRegisterPage = () => {
             const password = requestData?.pwd?.md5()
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+                break;
+              case 'android':
+                    //TODO
+                break;
+            }
             console.log(requestData)
 
             if (requestData.slideCode) {
@@ -77,35 +86,94 @@ const ZLRegisterPage = () => {
             if (data?.data == null)
                 throw { message: data?.msg }
             if (data?.data?.autoLogin) {
-                const user = await OCHelper.call('UGUserModel.currentUser');
+                let user;
 
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    user = await OCHelper.call('UGUserModel.currentUser');
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                    break;
+                  case 'android':
+                    user = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.USER_INFO});
+                    Toast('注册成功')
+                    break;
+                }
+
                 const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
                 if (user) {
                     console.log('退出旧账号');
                     console.log(user);
-                    const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-                    await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-                    await OCHelper.call('UGUserModel.setCurrentUser:');
-                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                    switch (Platform.OS) {
+                      case 'ios':
+                        const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                        await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+                        await OCHelper.call('UGUserModel.setCurrentUser:');
+                        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                        break;
+                      case 'android':
+                        await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
+                        await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
+                        break;
+                    }
+
                     UGStore.dispatch({ type: 'reset', userInfo: {} })
                 }
-                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+
+                switch (Platform.OS) {
+                  case 'ios':
+                    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                    await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                    break;
+                  case 'android':
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                        key: NA_DATA.LOGIN_INFO,
+                        ...loginData?.data
+                      });
+                    break;
+                }
+
                 const { data: UserInfo, } = await APIRouter.user_info()
-                await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+
+                switch (Platform.OS) {
+                  case 'ios':
+                    await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+                    break;
+                  case 'android':
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                        key: NA_DATA.USER_INFO,
+                        ...UserInfo?.data
+                      })
+                    break;
+                }
+
                 UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
 
                 UGStore.save();
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+                    break;
+                  case 'android':
+                    Toast('登录成功');
+                    break;
+                }
                 popToRoot();
             }
             if (data?.data?.autoLogin == false) {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                    break;
+                  case 'android':
+                    Toast(data.msg);
+                    break;
+                }
                 popToRoot();
                 navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
@@ -114,9 +182,24 @@ const ZLRegisterPage = () => {
             reRenderCode()
             if (error.message.includes("推荐人")) {
                 Alert.alert(error?.message, "")
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+                  break;
+                case 'android':
+
+                  break;
+              }
             } else {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+                  break;
+                case 'android':
+                  Toast(error?.message ?? '注册失败');
+                  break;
+              }
             }
 
         }
@@ -194,7 +277,14 @@ const ZLRegisterPage = () => {
     useEffect(() => {
         console.log(errors)
         Object.keys(errors).map((res) => {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [errors?.[res]?.message]);
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [errors?.[res]?.message]);
+                break;
+              case 'android':
+                Toast(errors?.[res]?.message);
+                break;
+            }
             return
         })
     }, [errors])
@@ -419,11 +509,26 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
             if (data?.code != 0) {
                 throw { message: data.msg }
             } else {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg]);
+                    break;
+                  case 'android':
+                    Toast(data?.msg);
+                    break;
+                }
             }
 
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message]);
+            ugLog(error)
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message]);
+                break;
+              case 'android':
+                Toast(error.message);
+                break;
+            }
         }
 
     }

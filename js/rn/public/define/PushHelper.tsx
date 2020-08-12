@@ -52,9 +52,7 @@ export default class PushHelper {
           });
 
         await ANHelper.callAsync(CMD.SAVE_DATA,
-          {
-            key: NA_DATA.USER_INFO,
-          });
+          { key: NA_DATA.USER_INFO, });
         break;
     }
     Toast('退出成功');

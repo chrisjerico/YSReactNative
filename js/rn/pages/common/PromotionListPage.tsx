@@ -28,10 +28,19 @@ const PromotionListPage = ({ navigation }) => {
   const [categories, setCategories] = useState<string[]>()
   useEffect(() => {
     init()
-    const unsubscribe = navigation.addListener('focus', async () => {
-      const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
-      setCurrentNativeSelectedTab(index)
-    });
+
+    let unsubscribe;
+    switch (Platform.OS) {
+      case "ios":
+        unsubscribe = navigation.addListener('focus', async () => {
+          const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
+          setCurrentNativeSelectedTab(index)
+        });
+        break;
+      case "android":
+        //TODO
+        break;
+    }
 
     return unsubscribe;
   }, [])
@@ -72,6 +81,9 @@ const PromotionListPage = ({ navigation }) => {
                 switch (Platform.OS) {
                   case "ios":
                     OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    break;
+                  case "android":
+                    //TODO
                     break;
                 }
               }}
