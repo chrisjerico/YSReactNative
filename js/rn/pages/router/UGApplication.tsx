@@ -48,15 +48,11 @@ import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
-<<<<<<< HEAD
-import { Platform } from 'react-native';
-=======
 import {Platform} from "react-native";
 import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 import {anyNull} from "../../public/tools/Ext";
 import {ugLog} from "../../public/tools/UgLog";
 import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
->>>>>>> android/arc/rn_dev_13
 
 // TabbarController
 class TabBarController extends Component<{
