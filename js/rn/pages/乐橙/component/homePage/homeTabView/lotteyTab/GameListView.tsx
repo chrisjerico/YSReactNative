@@ -10,12 +10,13 @@ import {useSelector} from "react-redux";
 import {IGlobalState} from "../../../../../../redux/store/UGStore";
 import useGetHomeInfo from "../../../../../../public/hooks/useGetHomeInfo";
 
-export const GameListView = ({list, thirdPartGamePress}: {list: List[], thirdPartGamePress: (id: string, gameID?: string) => void }) => {
-        return (
+export const GameListView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
+    return (
         <FlatList scrollEnabled={false} style={{flex: 1}} keyExtractor={(item, index) => `boardGame-${index}`}
                   numColumns={2} data={fillArray(list, 2)} renderItem={({item, index}) => {
             return (
-                <ImageButton imgStyle={{height: 105, margin: 10, flex: 0.5}} uri={item.icon} onPress={() => thirdPartGamePress( item.id, item.gameId)}/>
+                <ImageButton imgStyle={{height: 105, margin: 10, flex: 0.5}} uri={item.icon}
+                             onPress={() => onPress(item)}/>
             )
         }}/>
     )

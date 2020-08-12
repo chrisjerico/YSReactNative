@@ -5,7 +5,7 @@ export const LCThemeColor: { [x: string]: UGThemeColor } = {
     乐橙: {
         skitType: '乐橙',
         skitString: '乐橙',
-        bgColor: ['white', 'white'],
+        bgColor: ['#ffffff', '#ffffff'],
         navBarBgColor: ['#ffffff', '#ffffff'],
         tabBarBgColor: '#ffffff',
         tabNoSelectColor: '#FFFFFF',

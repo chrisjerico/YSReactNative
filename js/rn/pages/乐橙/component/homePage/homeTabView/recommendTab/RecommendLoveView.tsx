@@ -2,8 +2,9 @@ import {FlatList, Image, Text, TouchableWithoutFeedback, View} from "react-nativ
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PushHelper from "../../../../../../public/define/PushHelper";
 
-export const RecommendLoveView = ({list, thirdPartGamePress}: { list: List[], thirdPartGamePress: (id: string, gameID?: string) => void }) => {
+export const RecommendLoveView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (
         <>
             <View style={{flexDirection: "row", alignItems: "center", marginTop: 10}}>
@@ -15,9 +16,10 @@ export const RecommendLoveView = ({list, thirdPartGamePress}: { list: List[], th
                 bounces={false}
                 style={{marginTop: 10}}
                 keyExtractor={(item, index) => `love-${index}`}
-                numColumns={2} data={list}
+                numColumns={2}
+                data={list}
                 renderItem={({item}) => (
-                    <TouchableWithoutFeedback style={{flex: 1}} onPress={() => thirdPartGamePress(item.id, item.gameId)}>
+                    <TouchableWithoutFeedback style={{flex: 1}} onPress={() => onPress(item)}>
                         {item.icon == "" ?
                         <Icon style={{flex: 1, height: 100, width: 100, margin: 5}} name={'image-inverted'} /> :
                             <Image style={{flex: 1, height: 100, width: 100, margin: 5, resizeMode: 'stretch'}}

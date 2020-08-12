@@ -2,8 +2,9 @@ import * as React from "react";
 import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import {HotLotteryView} from "./HotLotteryView";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
+import PushHelper from "../../../../../../public/define/PushHelper";
 
-export const LotteryTabView = ({list, thirdPartGamePress}: { list: List[],thirdPartGamePress: (id: string, gameID?: string) => void }) => {
+export const LotteryTabView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (
         <View>
             <View>
@@ -11,7 +12,7 @@ export const LotteryTabView = ({list, thirdPartGamePress}: { list: List[],thirdP
                        source={{uri: 'http://test30.6yc.com/views/mobileTemplate/19/images/cpbg.png'}}/>
                 <View style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}>
                     <TouchableWithoutFeedback style={{flex: 1}}
-                                              onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}>
+                                              onPress={() => onPress(list[0])}>
                         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                             <Image style={{
                                 flex: 1,
@@ -34,8 +35,8 @@ export const LotteryTabView = ({list, thirdPartGamePress}: { list: List[],thirdP
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback style={{flex: 1}}
-                                              onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}>
+                    {list.length > 1 ? <TouchableWithoutFeedback style={{flex: 1}}
+                                               onPress={() => onPress(list[1])}>
                         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                             <Image style={{
                                 flex: 1,
@@ -57,11 +58,10 @@ export const LotteryTabView = ({list, thirdPartGamePress}: { list: List[],thirdP
                                     }}>{list[1].subtitle}</Text>
                             </View>
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> : <View style={{flex: 1}}/>}
                 </View>
             </View>
-            <HotLotteryView list={list.slice(3, list.length - 1)}
-                            thirdPartGamePress={(id, gameId?: string) => thirdPartGamePress(id, gameId)}/>
+            <HotLotteryView onPress={onPress} list={list.slice(3, list.length - 1)} />
         </View>
     )
 }
