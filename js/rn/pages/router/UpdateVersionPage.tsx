@@ -115,12 +115,17 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       tabbarOpetions: { unmountOnBlur: false },
     })
 
-    if (Platform.OS == 'ios') {
-      OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
-        if (pics && pics.length) {
-          setProps({ backgroundImage: pics[0] });
-        }
-      });
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
+          if (pics && pics.length) {
+            setProps({ backgroundImage: pics[0] });
+          }
+        });
+        break;
+      case "android":
+        //TODO
+        break;
     }
   }, [])
 

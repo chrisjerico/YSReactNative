@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, TouchableOpacity, Text, Platform} from 'react-native';
+import {View, TouchableOpacity, Text, Platform, PlatformAndroidStatic, PlatformIOSStatic} from 'react-native';
 import UGBasePage from '../base/UGBasePage';
 import {ZHTYLoginProps, ZHTYLoginStateToProps} from './ZHTYLoginProps';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
@@ -28,16 +28,27 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   constructor(props) {
     super(props);
     async function getLocalPwd(this: ZHTYLoginPage) {
-      let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
-      if (isRemember) {
-        this.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
-        this.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
-      }
-      if (this.props.rememberPassword == isRemember) {
+        let isRemember = false;
+
+        switch (Platform.OS) {
+            case 'ios':
+                isRemember = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
+                if (isRemember) {
+                    this.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
+                    this.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
+                }
+                break;
+            case 'android':
+                //TODO Android
+
+                break;
+        }
+
+        if (this.props.rememberPassword == isRemember) {
         this.setState({});
-      } else {
+        } else {
         this.setProps({rememberPassword: isRemember});
-      }
+        }
     }
     getLocalPwd.bind(this)();
   }

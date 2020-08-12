@@ -44,6 +44,7 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import Carousel from "react-native-banner-carousel";
 import { BannerModel } from "../../public/network/Model/BannerModel";
 import { httpClient } from "../../public/network/httpClient";
+import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
 const LCHomePage = ({ navigation }) => {
     const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading } = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
@@ -75,11 +76,27 @@ const LCHomePage = ({ navigation }) => {
             return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
 
         })
-        if (Platform.OS != 'ios') return;
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        switch (Platform.OS) {
+          case "ios":
+              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+            break;
+          case "android":
+            //TODO
+            break;
+        }
     }
     const reloadData = async () => {
-        const user = await OCHelper.call('UGUserModel.currentUser');
+        let user;
+
+        switch (Platform.OS) {
+          case "ios":
+              user = await OCHelper.call('UGUserModel.currentUser');
+            break;
+          case "android":
+              user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+            break;
+        }
+
         if (!user) {
             UGStore.dispatch({ type: 'reset', userInfo:{}});
             UGStore.save();
@@ -331,19 +348,26 @@ const TurntableListItem = () => {
                         }
                     ])
                 } else {
-                    if (Platform.OS != 'ios') return;
                     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-                    OCHelper.call(({ vc }) => ({
-                        vc: {
-                            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-                            args2: [turntableListModel]
-                        },
-                        ret: {
-                            selectors: 'SGBrowserView.showMoveView:yDistance:',
-                            args1: [vc, 100],
-                        },
-                    }));
+                    switch (Platform.OS) {
+                      case "ios":
+                          OCHelper.call(({ vc }) => ({
+                              vc: {
+                                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                                  args2: [turntableListModel]
+                              },
+                              ret: {
+                                  selectors: 'SGBrowserView.showMoveView:yDistance:',
+                                  args1: [vc, 100],
+                              },
+                          }))
+                        break;
+                      case "android":
+                          //TODO
+                        break;
+                    }
+;
                 }
             }}>
                 <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }}

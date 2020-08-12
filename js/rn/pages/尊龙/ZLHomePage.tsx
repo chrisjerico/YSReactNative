@@ -1,4 +1,20 @@
-import { View, Text, ScrollView, TouchableOpacity, TouchableWithoutFeedback, Image, FlatList, StyleSheet, Dimensions, Alert, ImageBackground, Platform, RefreshControl, Linking } from "react-native"
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Image,
+    FlatList,
+    StyleSheet,
+    Dimensions,
+    Alert,
+    ImageBackground,
+    Platform,
+    RefreshControl,
+    AppState,
+    Linking
+} from "react-native"
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { useSafeArea } from 'react-native-safe-area-context'
 import FastImage, { FastImageProperties } from "react-native-fast-image"
@@ -31,8 +47,9 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
 import { List } from "../../public/network/Model/PromotionsModel"
+import {ugLog} from "../../public/tools/UgLog";
 /**
- * 
+ *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
     vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
         [NavController1 pushViewControllerWithNextIssueModel:nextModel];
@@ -83,8 +100,14 @@ const ZLHomePage = ({ navigation }) => {
             return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
 
         })
-        if (Platform.OS != 'ios') return;
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        switch (Platform.OS) {
+          case 'ios':
+              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
+            break;
+          case 'android':
+
+            break;
+        }
     }
     const init = async () => {
         try {
@@ -114,6 +137,7 @@ const ZLHomePage = ({ navigation }) => {
         }
 
     }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'black' }}>
             <ZLHeader />
@@ -371,19 +395,25 @@ const TurntableListItem = () => {
                         }
                     ])
                 } else {
-                    if (Platform.OS != 'ios') return;
                     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-                    OCHelper.call(({ vc }) => ({
-                        vc: {
-                            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-                            args2: [turntableListModel]
-                        },
-                        ret: {
-                            selectors: 'SGBrowserView.showMoveView:yDistance:',
-                            args1: [vc, 100],
-                        },
-                    }));
+                    switch (Platform.OS) {
+                      case 'ios':
+                          OCHelper.call(({ vc }) => ({
+                              vc: {
+                                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                                  args2: [turntableListModel]
+                              },
+                              ret: {
+                                  selectors: 'SGBrowserView.showMoveView:yDistance:',
+                                  args1: [vc, 100],
+                              },
+                          }));
+                        break;
+                      case 'android':
+                            //TODO
+                        break;
+                    }
                 }
             }}>
                 <ImageBackground style={{ width: 70, height: 70, position: 'absolute', top: height * 0.4 + 95, right: 20 }} source={{ uri: "dzp_btn" }} >
@@ -502,13 +532,35 @@ const AcctountDetail = () => {
 
     const requestBalance = async () => {
         try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+                break;
+              case 'android':
+                    //TODO
+                break;
+            }
             //@ts-ignore
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+                break;
+              case 'android':
+                //TODO
+                break;
+            }
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            ugLog(error)
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+                break;
+              case 'android':
+                //TODO
+                break;
+            }
         }
     }
     if (uid != "") {

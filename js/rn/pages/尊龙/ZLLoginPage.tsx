@@ -19,8 +19,13 @@ import DialogInput from 'react-native-dialog-input';
 import { useSelector } from 'react-redux';
 import { httpClient } from '../../public/network/httpClient';
 import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall';
+import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
+
 let errorTimes = 0
 const ZLLoginPage = ({ route, navigation }) => {
+
     const { control, errors, handleSubmit } = useForm()
     const [accountFocus, setAccountFocus] = useState(false)
     const [pwdFocus, setPwdFocus] = useState(false)
@@ -29,14 +34,29 @@ const ZLLoginPage = ({ route, navigation }) => {
     const [GGmodalShow, setGGModalShow] = useState(false)
     const { isTest } = UGStore.globalProps.userInfo;
     const userData = UGStore.globalProps.userInfo;
+
     const init = async () => {
-        let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
-        setIsRemember(isRemember)
-        if (isRemember) {
-            const account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
-            control.setValue("account", account)
-            const pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
-            control.setValue("pwd", pwd)
+        switch (Platform.OS) {
+            case "ios":
+                let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
+                setIsRemember(isRemember)
+                if (isRemember) {
+                    const account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
+                    control.setValue("account", account)
+                    const pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
+                    control.setValue("pwd", pwd)
+                }
+                break;
+            case "android":
+                let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+                let loginInfo = JSON.parse(result);
+                setIsRemember(loginInfo?.isRemember)
+                if (loginInfo?.isRemember) {
+                    control.setValue("account", loginInfo?.account)
+                    control.setValue("pwd", loginInfo?.pwd)
+                }
+                break;
+
         }
     }
     useEffect(() => {
@@ -47,60 +67,135 @@ const ZLLoginPage = ({ route, navigation }) => {
         }
     }, [])
     useEffect(() => {
-        if (errors?.account) {
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [errors?.account?.message]);
-            return
-        }
-        if (errors?.pwd) {
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [errors?.pwd?.message]);
-            return
+        switch (Platform.OS) {
+            case "ios":
+                if (errors?.account) {
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [errors?.account?.message]);
+                    return
+                }
+                if (errors?.pwd) {
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [errors?.pwd?.message]);
+                    return
+                }
+                break;
+            case "android":
+                Toast(errors?.account?.message ?? errors?.pwd?.message);
+                break;
+
         }
     }, [errors])
     const testPlay = async () => {
         try {
             const { data, status } = await APIRouter.user_guestLogin()
-            if (Platform.OS == 'ios') {
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-                //@ts-ignore
-                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-                const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
-                UGStore.save();
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            ugLog("data=", data, status)
+
+            switch (Platform.OS) {
+                case "ios":
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+                    //@ts-ignore
+                    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                    await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                    break;
+                case "android":
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                        {
+                            key: NA_DATA.LOGIN_INFO,
+                            ...data?.data
+                        });
+                    break;
             }
+
+            const { data: userInfo } = await APIRouter.user_info()
+
+            switch (Platform.OS) {
+                case "ios":
+                    //TODO
+                    break;
+                case "android":
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                          key: NA_DATA.USER_INFO,
+                          ...userInfo?.data
+                      })
+                    break;
+            }
+
+            UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+            UGStore.save();
+
+            switch (Platform.OS) {
+                case "ios":
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+                    break;
+                case "android":
+                    Toast('登录成功！')
+                    break;
+            }
+
+            pop();
         } catch (error) {
             console.log(error)
         }
-        pop();
     }
     const { loginSuccessHandle } = useLoginIn()
     const onSubmit = async ({ account, pwd, googleCode = "", slideCode }) => {
         const simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
-        if (simplePwds.indexOf(this.pwd) > -1) {
-            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
-                true,
-            ]);
+        if (simplePwds.indexOf(pwd) > -1) {
+            switch (Platform.OS) {
+                case "ios":
+                    await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+                    await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+                        { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
+                        true,
+                    ]);
+                    break;
+                case "android":
+                    Toast('你的密码过于简单，可能存在风险，请把密码修改成复杂密码')
+                    break;
+
+            }
             return
         }
         try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-            const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode,)
+            switch (Platform.OS) {
+                case "ios":
+                    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+                    break;
+                case "android":
+                    Toast('正在登录...')
+                    break;
+
+            }
+            const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
             if (data.data == null)
                 throw { message: data?.msg }
             if (data.data?.ggCheck == true) {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['请输入谷歌验证码']);
+                switch (Platform.OS) {
+                    case "ios":
+                        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['请输入谷歌验证码']);
+                        break;
+                    case "android":
+                        Toast('请输入谷歌验证码')
+                        break;
+
+                }
                 setGGModalShow(true)
                 return
                 // Alert.alert("")
             }
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            switch (Platform.OS) {
+                case "ios":
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+                    break;
+                case "android":
+                    Toast('登录成功！')
+                    break;
+
+            }
             setGGModalShow(false)
             await loginSuccessHandle(data, { account, pwd, isRemember })
         } catch (error) {
@@ -110,9 +205,18 @@ const ZLLoginPage = ({ route, navigation }) => {
                 control.setValue("pwd", "")
                 setGGModalShow(false)
             }
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
+            switch (Platform.OS) {
+                case "ios":
+                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
+                    break;
+                case "android":
+                    Toast(error?.message ?? '登入失败')
+                    break;
+
+            }
         }
     }
+
     return (
         <View style={{ backgroundColor: '#1a1a1e', flex: 1 }}>
             <Header />
@@ -137,8 +241,8 @@ const ZLLoginPage = ({ route, navigation }) => {
                             }} />}
                         rules={{
                             required: {
-                                value: true, message
-                                    : "请输入用户名"
+                                value: true,
+                                message : "请输入用户名"
                             }
                         }}
                         name="account"
@@ -241,7 +345,11 @@ const Header = () => {
         <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
             <TouchableWithoutFeedback onPress={() => {
                 pop();
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                    case "ios":
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        break;
+                }
             }}>
                 <Icon name="close" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
             </TouchableWithoutFeedback>

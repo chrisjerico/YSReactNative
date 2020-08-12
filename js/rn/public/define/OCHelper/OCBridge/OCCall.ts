@@ -1,4 +1,5 @@
 import {UGBridge} from '../../ANHelper/UGBridge';
+import {ugLog} from "../../../tools/UgLog";
 
 // 变量
 class OCFuncVariable {
@@ -53,6 +54,7 @@ export class OCCall extends UGBridge {
       obj[k] = temp[k];
       array.push(obj);
     }
+    //ugLog('iOS call=', JSON.stringify(array))
     return this.core.performSelectors(array);
   }
 }

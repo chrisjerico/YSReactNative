@@ -20,6 +20,9 @@ import { AxiosResponse } from 'axios'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import {Platform} from "react-native";
+import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {ugLog} from "../tools/UgLog";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -69,12 +72,23 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    if (user?.token) {
-      return httpClient.get("c=user&a=info&token=" + user.token)
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+            { blGet: true, });
+        break;
+    }
+
+    if (tokenParams) {
+      return httpClient.get("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({
-
+        msg: 'no token'
       })
     }
 

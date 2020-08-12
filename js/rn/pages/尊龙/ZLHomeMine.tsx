@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
+import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform} from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
@@ -30,12 +30,34 @@ const ZLHomeMine = ({ navigation }) => {
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+                break;
+              case 'android':
+                  //TODO
+                break;
+            }
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+
+            switch (Platform.OS) {
+                case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+                    break;
+                case 'android':
+                    //TODO
+                    break;
+            }
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+                break;
+              case 'android':
+                //TODO
+                break;
+            }
             console.log(error)
         }
     }
