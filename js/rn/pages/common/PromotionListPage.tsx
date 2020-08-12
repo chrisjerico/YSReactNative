@@ -39,6 +39,7 @@ const PromotionListPage = ({ navigation }) => {
         break;
       case "android":
         //TODO
+        setCurrentNativeSelectedTab(0)
         break;
     }
 

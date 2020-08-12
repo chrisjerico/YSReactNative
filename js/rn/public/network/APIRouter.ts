@@ -133,7 +133,15 @@ class APIRouter {
     })
   }
   static secure_imgCaptcha = async () => {
-    const accessToken = await OCHelper.call('OpenUDID.value');
+    let accessToken = "";
+    switch (Platform.OS) {
+      case 'ios':
+        accessToken = await OCHelper.call('OpenUDID.value');
+        break;
+      case 'android':
+        accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
+        break;
+    }
     return httpClient.get("c=secure&a=imgCaptcha", {
       params: {
         accessToken: accessToken
@@ -148,7 +156,16 @@ class APIRouter {
     return httpClient.get("c=system&a=config")
   }
   static user_reg = async (params: UserReg) => {
-    var accessToken = await OCHelper.call('OpenUDID.value');
+    let accessToken = "";
+    switch (Platform.OS) {
+      case 'ios':
+        accessToken = await OCHelper.call('OpenUDID.value');
+        break;
+      case 'android':
+        accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
+        break;
+    }
+
     params = {
       ...params, device: '3', accessToken: accessToken,
     }

@@ -87,10 +87,10 @@ const ZLLoginPage = ({ route, navigation }) => {
     }, [errors])
     const testPlay = async () => {
         try {
+            showLoading({ type: UGLoadingType.Loading });
+
             const { data, status } = await APIRouter.user_guestLogin()
             ugLog("data=", data, status)
-
-            showLoading({ type: UGLoadingType.Loading });
 
             switch (Platform.OS) {
                 case "ios":
@@ -130,14 +130,15 @@ const ZLLoginPage = ({ route, navigation }) => {
             UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
             UGStore.save();
 
-            switch (Platform.OS) {
-                case "ios":
-                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
-                    break;
-                case "android":
-                    Toast('登录成功！')
-                    break;
-            }
+            Toast('登录成功！')
+            // switch (Platform.OS) {
+            //     case "ios":
+            //         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            //         break;
+            //     case "android":
+            //         Toast('登录成功！')
+            //         break;
+            // }
 
             pop();
         } catch (error) {
@@ -166,17 +167,16 @@ const ZLLoginPage = ({ route, navigation }) => {
             return
         }
         try {
-            switch (Platform.OS) {
-                case "ios":
-                    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-                    break;
-                case "android":
-                    Toast('正在登录...')
-                    break;
-
-            }
-
-            showLoading({ type: UGLoadingType.Loading });
+            // switch (Platform.OS) {
+            //     case "ios":
+            //         OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+            //         break;
+            //     case "android":
+            //         Toast('正在登录...')
+            //         break;
+            //
+            // }
+            showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
 
             const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
             if (data.data == null)

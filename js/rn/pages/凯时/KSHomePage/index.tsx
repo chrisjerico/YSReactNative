@@ -329,7 +329,6 @@ const TurntableListItem = () => {
             }
           ])
         } else {
-          if (Platform.OS != 'ios') return;
           const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
           switch (Platform.OS) {
             case "ios":

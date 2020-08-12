@@ -17,6 +17,9 @@ import {Navigation, PageName} from '../../public/navigation/Navigation';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import {Icon, Button} from 'react-native-elements';
 import {Res} from '../../Res/icon/Resources';
+import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../public/tools/ToastUtils";
+import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 
 class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   account: string = null; // 账号
@@ -39,8 +42,13 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
                 }
                 break;
             case 'android':
-                //TODO Android
-
+              let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+              let loginInfo = JSON.parse(result);
+              isRemember = loginInfo?.isRemember;
+              if (loginInfo?.isRemember) {
+                this.account = loginInfo?.account;
+                this.pwd = loginInfo?.pwd;
+              }
                 break;
         }
 
@@ -70,14 +78,25 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
       err = '请完成滑动验证';
     }
     if (err) {
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      switch (Platform.OS) {
+        case "ios":
+          OCHelper.call('HUDHelper.showMsg:', [err]);
+          break;
+        case "android":
+          Toast('你的密码过于简单，可能存在风险，请把密码修改成复杂密码')
+          break;
+      }
       return;
     }
-    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+
+    showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
+    // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+
     NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
       .then(data => {
         console.log('登录成功');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        Toast('登录成功！')
 
         async function didLogin(this: ZHTYLoginPage) {
           // 退出旧账号（试玩账号）

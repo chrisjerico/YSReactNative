@@ -185,6 +185,7 @@ const ZLRegisterPage = () => {
                 navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
+          ugLog(error)
             EventRegister.emit('reload')
             reRenderCode()
             if (error.message.includes("推荐人")) {

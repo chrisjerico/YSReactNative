@@ -98,19 +98,25 @@ const TurntableListItem = () => {
             }
           ])
         } else {
-          if (Platform.OS != 'ios') return;
           const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-          OCHelper.call(({ vc }) => ({
-            vc: {
-              selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-              args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-              args2: [turntableListModel]
-            },
-            ret: {
-              selectors: 'SGBrowserView.showMoveView:yDistance:',
-              args1: [vc, 100],
-            },
-          }));
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call(({ vc }) => ({
+                vc: {
+                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                  args2: [turntableListModel]
+                },
+                ret: {
+                  selectors: 'SGBrowserView.showMoveView:yDistance:',
+                  args1: [vc, 100],
+                },
+              }));
+              break;
+            case 'android':
+              //TODO
+              break;
+          }
         }
       }}>
         <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >

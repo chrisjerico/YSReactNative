@@ -1,5 +1,6 @@
 import {UGBridge} from '../../ANHelper/UGBridge';
 import {ugLog} from "../../../tools/UgLog";
+import {Platform} from "react-native";
 
 // 变量
 class OCFuncVariable {
@@ -54,7 +55,14 @@ export class OCCall extends UGBridge {
       obj[k] = temp[k];
       array.push(obj);
     }
-    //ugLog('iOS call=', JSON.stringify(array))
+    switch (Platform.OS) {
+      case 'ios':
+
+        break;
+      case 'android':
+        ugLog('iOS call=', JSON.stringify(array))
+        break;
+    }
     return this.core.performSelectors(array);
   }
 }

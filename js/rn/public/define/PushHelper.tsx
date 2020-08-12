@@ -16,19 +16,25 @@ import {ANHelper, CMD, NA_DATA} from "./ANHelper/ANHelper";
 export default class PushHelper {
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
-    if (Platform.OS != 'ios') return;
     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-    OCHelper.call(({ vc }) => ({
-      vc: {
-        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-        args2: [turntableListModel]
-      },
-      ret: {
-        selectors: 'SGBrowserView.showMoveView:yDistance:',
-        args1: [vc, 100],
-      },
-    }));
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+            args2: [turntableListModel]
+          },
+          ret: {
+            selectors: 'SGBrowserView.showMoveView:yDistance:',
+            args1: [vc, 100],
+          },
+        }));
+        break;
+      case 'android':
+
+        break;
+    }
   }
   // 登出
   static async pushLogout() {
@@ -201,7 +207,7 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
-            
+
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
