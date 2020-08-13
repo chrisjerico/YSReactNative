@@ -23,11 +23,13 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
       <View style={{ flex: 2, justifyContent: 'center', alignItems: 'flex-start' }}>
         <FastImage resizeMode={'contain'} style={styles.image} source={{ uri: leftLogo }} />
       </View>
-      <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', paddingRight: scale(15) }}>
+      <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
         {showLogout ? (
           <>
             <Avatar size={'small'} rounded source={{ uri: avatar }} />
-            <Text style={{ color: '#ffffff', fontSize: scale(23), paddingHorizontal: scale(5) }}>{name}</Text>
+            <View style={{ width: scale(100), justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ color: '#ffffff', fontSize: scale(23), paddingHorizontal: scale(5) }} numberOfLines={1}>{name}</Text>
+            </View>
             <Badge
               value={'退出'}
               onPress={onPressSignOut}

@@ -22,7 +22,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     textColor4: '#ffffff',
     conversionCellColor: '#444',
     // intoViewColor: '#444',
-    // moneyCellColor: '#444',
+    //moneyCellColor: '#444',
     themeColor: '#e53333',
     themeLightColor: '#FFECEC',
     isBlack: false

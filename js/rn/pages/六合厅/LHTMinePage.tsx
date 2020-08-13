@@ -5,12 +5,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useLoginOut from '../../public/hooks/useLoginOut'
+import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
+import BottomBlank from '../../public/views/tars/BottomBlank'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -25,8 +27,11 @@ const LHTMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const { loginOut } = useLoginOut(PageName.LHTHomePage)
-  // stores
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      navigate(PageName.LHTHomePage, {})
+    },
+  })  // stores
   const {
     avatar,
     usr,
@@ -124,8 +129,9 @@ const LHTMinePage = ({ navigation }) => {
         <Button
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
-          onPress={loginOut}
+          onPress={logOut}
         />
+        <BottomBlank />
       </ScrollView>
     </>
   )
@@ -139,7 +145,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff861b',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
-    marginBottom: scaleHeight(60),
     height: scale(70),
   },
   headerTitle: {

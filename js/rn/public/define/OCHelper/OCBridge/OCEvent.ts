@@ -1,17 +1,18 @@
-import { IGlobalStateHelper, updateUserInfo } from './../../../../redux/store/IGlobalStateHelper';
-import { OCCall } from './OCCall';
-import { PageName,  } from '../../../navigation/Navigation';
-import { RnPageModel } from '../SetRnPageInfo';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
+import { PageName } from '../../../navigation/Navigation';
+import { getCurrentPage, jumpTo, pop } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
-import { OCHelper } from '../OCHelper';
-import { getCurrentPage, pop, jumpTo } from '../../../navigation/RootNavigation';
+import { updateUserInfo } from '../../../tools/tars';
+import { RnPageModel } from '../SetRnPageInfo';
+import { IGlobalStateHelper } from './../../../../redux/store/IGlobalStateHelper';
+import { OCCall } from './OCCall';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
   UGNotificationWithSkinSuccess = 'UGNotificationWithSkinSuccess',
   JspatchDownloadProgress = 'jsp下载进度',
   JspatchUpdateComplete = 'jsp更新结果',
+  UGNotificationLoginComplete = 'UGNotificationLoginComplete'
 }
 
 export class OCEvent extends OCCall {
@@ -22,7 +23,7 @@ export class OCEvent extends OCCall {
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
-      console.log('rn收到oc通知：', params);
+      console.log('OCEvent rn收到oc通知：', params);
 
       this.events
         .filter(v => {
@@ -50,6 +51,7 @@ export class OCEvent extends OCCall {
       }
     });
 
+
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
       IGlobalStateHelper.updateSysConf(sysConf);
 
@@ -59,11 +61,15 @@ export class OCEvent extends OCCall {
     });
   }
 
-  protected static addEvent(type: OCEventType, event: Function) {
+  // public static addLoginCompleteListener(onEvent: (params: any) => {}) {
+  //   this.addEvent(OCEventType.UGNotificationLoginComplete, onEvent)
+  // }
+
+  public static addEvent(type: OCEventType, event: Function) {
     this.events.push({ type: type, event: event });
   }
 
-  protected static removeEvents(type: OCEventType) {
+  public static removeEvents(type: OCEventType) {
     this.events = this.events.filter(v => {
       return v.type != type;
     });

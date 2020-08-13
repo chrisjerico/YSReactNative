@@ -1,21 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import {
+  OCEvent,
+  OCEventType
+} from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
+import useLogOut from '../../public/hooks/tars/useLogOut'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import useLoginOut from '../../public/hooks/useLoginOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
+import {
+  ToastError,
+  ToastSuccess,
+  updateUserInfo
+} from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomBlank from '../../public/views/tars/BottomBlank'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
@@ -25,7 +33,6 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import BottomToolBlock from './components/BottomToolBlock'
 import HomeHeader from './components/HomeHeader'
@@ -42,19 +49,24 @@ import {
   defaultNoticeLogo
 } from './helpers/config'
 
-const LHTHomePage = () => {
+const LHTHomePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { setProps } = props
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
+      ToastSuccess('登录成功！')
     },
     onError: (error) => {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error ?? '試玩失败'])
+      ToastError(error ?? '試玩失败')
     },
   })
-  const { loginOut } = useLoginOut(PageName.LHTHomePage)
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      setProps()
+    },
+  })
   // stores
   const { uid, avatar, usr, isTest }: UGUserModel = UGStore.globalProps.userInfo
   const {
@@ -65,11 +77,10 @@ const LHTHomePage = () => {
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
-  const announcementModal = useRef(null)
+  // const announcementModal = useRef(null)
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
-    systemConfig,
     loading,
     banner,
     homeGames,
@@ -80,6 +91,7 @@ const LHTHomePage = () => {
     couponListData,
     redBag,
     rankList,
+    onRefresh,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -98,9 +110,7 @@ const LHTHomePage = () => {
       const value = await APIRouter.activity_turntableList()
       const roulette = value?.data?.data
       setRoulette(roulette)
-    } catch (err) {
-    } finally {
-    }
+    } catch (err) { }
   }
 
   useEffect(() => {
@@ -109,22 +119,34 @@ const LHTHomePage = () => {
     }
   }, [uid])
 
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     console.log('------focus------')
-  //     updateUserInfo()
-  //   })
-  //   return unsubscribe
-  // }, [])
+  useEffect(() => {
+    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+      try {
+        await updateUserInfo()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    return () => {
+      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+    }
+  })
 
   // data handle
-  const announce_first = parseInt(systemConfig?.data?.announce_first)
+  // const announce_first = parseInt(systemConfig?.data?.announce_first)
   const bannersInterval = parseInt(banner?.data?.interval)
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const announcements = notice?.data?.popup ?? []
+  const announcements =
+    notice?.data?.popup?.map((item: any) => {
+      return Object.assign(
+        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
+        item
+      )
+    }) ?? []
   const navs =
     homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
   const icons = homeGames?.data?.icons ?? []
@@ -154,21 +176,20 @@ const LHTHomePage = () => {
       return { games, name }
     }) ?? []
 
-  console.log("-----uid-----", uid)
   // render
   if (loading) {
     return <ProgressCircle />
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
           <HomeHeader
             avatar={avatar}
-            name={isTest ? '遊客' : usr}
+            name={usr}
             showLogout={uid ? true : false}
             leftLogo={mobile_logo}
             rightLogo={defaultHomeHeaderRightLogo}
-            onPressSignOut={loginOut}
+            onPressSignOut={logOut}
             onPressSignIn={PushHelper.pushLogin}
             onPressSignUp={PushHelper.pushRegister}
             onPressTryPlay={tryPlay}
@@ -183,8 +204,8 @@ const LHTHomePage = () => {
           refreshControl={
             <RefreshControlComponent
               onRefresh={() => {
-                updateUserInfo()
-                announcementModal?.current?.reload()
+                onRefresh()
+                PushHelper.pushAnnouncement(announcements)
               }}
             />
           }
@@ -360,6 +381,7 @@ const LHTHomePage = () => {
               rankLists={rankLists}
             />
             <BottomLogo
+              containerStyle={{ marginBottom: scale(30) }}
               webName={webName}
               onPressComputer={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
@@ -367,10 +389,10 @@ const LHTHomePage = () => {
               onPressPromotion={() => {
                 push(PageName.PromotionListPage)
               }}
+              debug={false}
             />
             <BottomToolBlock
               tools={defaultBottomTools}
-              containerStyle={{ paddingBottom: scaleHeight(60) }}
               renderBottomTool={(item, index) => {
                 const { logo, userCenterType } = item
                 return (
@@ -393,6 +415,7 @@ const LHTHomePage = () => {
                 )
               }}
             />
+            <BottomBlank />
           </View>
         </ScrollView>
         {/* <DowloadApp
@@ -418,12 +441,12 @@ const LHTHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        <AnnouncementModalComponent
+        {/* <AnnouncementModalComponent
           ref={announcementModal}
           announcements={announcements}
           color={LHThemeColor.六合厅.themeColor}
           announceFirst={announce_first}
-        />
+        /> */}
       </>
     )
   }
