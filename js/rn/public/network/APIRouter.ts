@@ -9,6 +9,7 @@ import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
+import { LogoutModel } from './Model/LogoutModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
@@ -21,29 +22,29 @@ import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TurntableListModel } from './Model/TurntableListModel'
+import { UserInfoModel } from './Model/UserInfoModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
-
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
-  inviter: string; // 推荐人ID
-  usr: string; // 账号
-  pwd: string; // 密码
-  fundPwd: string; // 取款密码
-  fullName: string; // 真实姓名
-  qq: string; // QQ号
-  wx: string; // 微信号
-  phone: string; // 手机号
-  smsCode: string; // 短信验证码
-  imgCode: string; // 字母验证码,
-  "slideCode[nc_sid]": string,
-  "slideCode[nc_token]": string,
-  "slideCode[nc_sig]": string,
-  email: string; // 邮箱
+  inviter?: string; // 推荐人ID
+  usr?: string; // 账号
+  pwd?: string; // 密码
+  fundPwd?: string; // 取款密码
+  fullName?: string; // 真实姓名
+  qq?: string; // QQ号
+  wx?: string; // 微信号
+  phone?: string; // 手机号
+  smsCode?: string; // 短信验证码
+  imgCode?: string; // 字母验证码,
+  "slideCode[nc_sid]"?: string;
+  "slideCode[nc_token]"?: string;
+  "slideCode[nc_sig]"?: string;
+  email?: string; // 邮箱
   regType: 'user' | 'agent'; // 用户注册 或 代理注册,
-  device: string,
-  accessToken: string,
-  slideCode: any
+  device?: string;
+  accessToken?: string;
+  slideCode?: any;
 }
 
 class APIRouter {
@@ -76,7 +77,7 @@ class APIRouter {
       const user = await OCHelper.call('UGUserModel.currentUser');
       const token = user?.token
       if (token) {
-        return httpClient.get("c=user&a=info&token=" + token)
+        return httpClient.get<UserInfoModel>("c=user&a=info&token=" + token)
       } else {
         throw "no token"
       }
@@ -123,7 +124,7 @@ class APIRouter {
   }
   static user_logout = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<any>("c=user&a=logout", {
+    return httpClient.post<LogoutModel>("c=user&a=logout", {
       token: user?.token
     })
   }

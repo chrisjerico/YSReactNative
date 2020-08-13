@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -12,22 +12,14 @@ import SlidingVerification from '../../public/components/SlidingVerification'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
-import useLoginIn from '../../public/hooks/useLoginIn'
-import useTryPlay from '../../public/hooks/useTryPlay'
+import useLogIn from '../../public/hooks/tars/useLogIn'
+import useTryPlay from '../../public/hooks/tars/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import {
-  ToastError,
-  ToastStatus,
-  ToastSuccess,
-} from '../../public/tools/ToastUtils'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
 import Form from './components/Form'
@@ -92,13 +84,11 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     }
   }
 
-  const { loginSuccessHandle } = useLoginIn({
+  const { logIn } = useLogIn({
     onSuccess: () => {
       jumpToHomePage()
-      ToastSuccess('登录成功！')
     },
-    onError: (error) => {
-      ToastError(error)
+    onError: () => {
       setSlidingVerification({
         nc_csessionid: undefined,
         nc_token: undefined,
@@ -107,13 +97,12 @@ const BZHSignInPage = (props: BZHSignInStore) => {
       reloadSliding?.current?.reload()
     },
   })
+
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
       jumpToHomePage()
-      ToastSuccess('登录成功！')
     },
-    onError: (error) => {
-      ToastError(error)
+    onError: () => {
     },
   })
 
@@ -199,41 +188,12 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
-            onPress={async () => {
-              try {
-                ToastStatus('正在登录...')
-                await APIRouter.user_logout()
-                const { data } = await APIRouter.user_login(
-                  account,
-                  password?.md5()
-                )
-                console.log("----------user_login_data------", data)
-                if (data?.data) {
-                  await loginSuccessHandle(
-                    data,
-                    {
-                      account,
-                      pwd: password,
-                      isRemember,
-                    },
-                    {
-                      enableCleanOldUser: false,
-                      enableNativeNotification: false,
-                    }
-                  )
-                } else {
-                  const error = data?.msg
-                  ToastError(error)
-                  setSlidingVerification({
-                    nc_csessionid: undefined,
-                    nc_token: undefined,
-                    nc_sig: undefined,
-                  })
-                  reloadSliding?.current?.reload()
-                }
-              } catch (error) {
-                ToastError(error)
-              }
+            onPress={() => {
+              logIn({
+                account,
+                password: password?.md5(),
+                isRemember,
+              })
             }}
           />
           <Button

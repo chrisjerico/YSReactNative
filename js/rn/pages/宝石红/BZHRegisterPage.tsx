@@ -12,18 +12,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import SlidingVerification from '../../public/components/SlidingVerification'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
-import useRegister from '../../public/hooks/useRegister'
+import useRegister from '../../public/hooks/tars/useRegister'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { ToastError, ToastSuccess } from '../../public/tools/ToastUtils'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
+import { ToastSuccess, ToastError } from '../../public/tools/tars'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -64,7 +64,7 @@ const BZHRegisterPage = () => {
         nc_sig: undefined,
       })
       reloadSliding?.current?.reload()
-    }
+    },
   })
   // stores
   const {
@@ -94,11 +94,13 @@ const BZHRegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
-    nc_csessionid: undefined,
-    nc_token: undefined,
-    nc_sig: undefined,
-  })
+  const [slidingVerification, setSlidingVerification] =
+    useState<SlidingVerification>
+      ({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
 
@@ -117,23 +119,24 @@ const BZHRegisterPage = () => {
     }
   }, [reg_vcode])
 
-  const {
-    nc_csessionid,
-    nc_token,
-    nc_sig
-  } = slidingVerification
+  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
 
   const account_valid = account?.length >= 6
   const password_valid = validPassword(password, pass_limit)
   const confirmPassword_valid = confirmPassword == password
   const recommendGuy_valid = recommendGuy || !hide_reco || hide_reco == 1
   const realName_valid = realName || !reg_name || reg_name == 1
-  const fundPassword_valid = fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1
+  const fundPassword_valid =
+    fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1
   const qq_valid = qq?.length >= 5 || !reg_qq || reg_qq == 1
   const weChat_valid = weChat || !reg_wx || reg_wx == 1
   const email_valid = email || !reg_email || reg_email == 1
   const phoneNumber_valid = phoneNumber || !reg_phone || reg_phone == 1
-  const reg_vcode_valid = (nc_csessionid && nc_token && nc_sig) || !reg_vcode || reg_vcode == 1 || reg_vcode == 3
+  const reg_vcode_valid =
+    (nc_csessionid && nc_token && nc_sig) ||
+    !reg_vcode ||
+    reg_vcode == 1 ||
+    reg_vcode == 3
   const sms_valid = sms?.length == 6 || !smsVerify
 
   const valid =
@@ -184,10 +187,7 @@ const BZHRegisterPage = () => {
           <Text style={styles.headerTitle}>{'客服'}</Text>
         </TouchableOpacity>
       </SafeAreaHeader>
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
           <View style={{ width: '100%', marginBottom: scale(20) }}>
             <Text style={{ color: 'red' }}>
@@ -389,13 +389,13 @@ const BZHRegisterPage = () => {
                   phone: phoneNumber, // 手机号
                   smsCode: sms ?? '', // 短信验证码
                   imgCode: imageCode ?? '', // 字母验证码,
-                  "slideCode[nc_sid]": slidingVerification?.nc_csessionid,
-                  "slideCode[nc_token]": slidingVerification?.nc_token,
-                  "slideCode[nc_sig]": slidingVerification?.nc_sig,
+                  'slideCode[nc_sid]': slidingVerification?.nc_csessionid,
+                  'slideCode[nc_token]': slidingVerification?.nc_token,
+                  'slideCode[nc_sig]': slidingVerification?.nc_sig,
                   email: email, // 邮箱
                   regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
-                } as any
-                register(params)
+                }
+                register(params as any)
               }
             }}
           />

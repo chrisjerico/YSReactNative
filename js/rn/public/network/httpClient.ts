@@ -5,7 +5,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
-import { Toast } from '../tools/ToastUtils';
+
 interface Dictionary {
   [x: string]: any;
 }
@@ -89,17 +89,16 @@ httpClient.interceptors.response.use(
           console.warn('503', err);
           break;
         default:
-          console.warn("連接錯誤", err);
+          console.warn('連接錯誤', err);
       }
     } else {
       console.warn('連接到服務器失敗', err);
     }
-    if (err?.toString() == 'Error: timeout of 1000ms exceeded') {
-      console.warn(err)
-      Toast('网速过慢')
-      return Promise.reject('网速过慢')
+    if (err?.toString()?.indexOf('timeout') != -1) {
+      console.warn('timeout')
+      return Promise.reject(err?.response ?? err)
     } else {
-      return Promise.reject(err)
+      return Promise.reject(err?.response ?? err)
     }
   },
 );

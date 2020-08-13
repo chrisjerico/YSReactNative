@@ -3,9 +3,10 @@ import { ScrollView, StyleSheet, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useLoginOut from '../../public/hooks/useLoginOut'
+import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -24,7 +25,11 @@ const BZHMinePage = (props) => {
   console.disableYellowBox = true
   // hooks
   const { setProps } = props
-  const { loginOut } = useLoginOut(PageName.BZHHomePage)
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      navigate(PageName.BZHHomePage, {})
+    },
+  })
   const { UGUserCenterItem } = useMemberItems()
   // stores
   const {
@@ -71,25 +76,28 @@ const BZHMinePage = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}
-        refreshControl={
-          <RefreshControlComponent
-            onRefresh={getAvatarList}
-          />
-        }
+        refreshControl={<RefreshControlComponent onRefresh={getAvatarList} />}
       >
         <ProfileBlock
           onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
             try {
               const { data } = await APIRouter.user_balance_token()
-              UGStore.dispatch({ type: 'merge', userInfo: { balance: data?.data?.balance } });
+              UGStore.dispatch({
+                type: 'merge',
+                userInfo: { balance: data?.data?.balance },
+              })
               setProps()
             } catch (error) {
-              console.log('user_balance_token error', error);
+              console.log('user_balance_token error', error)
             }
           }}
           level={curLevelGrade}
-          avatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}
+          avatar={
+            isTest
+              ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+              : avatar
+          }
           money={balance}
           name={usr}
           features={features}
@@ -129,18 +137,22 @@ const BZHMinePage = (props) => {
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
           titleStyle={styles.logOutTitle}
-          onPress={loginOut}
+          onPress={logOut}
         />
         <BottomBlank />
       </ScrollView>
       <PickAvatarComponent
         loading={avatarListLoading}
         visible={visible}
-        initAvatar={isTest ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png' : avatar}
+        initAvatar={
+          isTest
+            ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+            : avatar
+        }
         avatars={avatarList}
         onPressSave={async ({ url, filename }) => {
           try {
-            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } });
+            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
             const value = await APIRouter.task_changeAvatar(filename)
             if (value?.data?.code == 0) {
               Toast('修改头像成功')
