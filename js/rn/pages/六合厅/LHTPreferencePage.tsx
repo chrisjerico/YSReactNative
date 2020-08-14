@@ -1,0 +1,128 @@
+import React, { useState } from 'react'
+import { Text, TouchableWithoutFeedback, View, StyleSheet } from 'react-native'
+import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { scale } from '../../public/tools/Scale'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import { Button } from 'react-native-elements'
+import { pop } from '../../public/navigation/RootNavigation'
+
+interface PreferenceButtonProps {
+  title: string;
+  selected?: boolean;
+  onPress?: () => any;
+}
+
+const defaultPreferences = [
+  {
+    title: '重庆时刻彩',
+    selected: false
+  },
+  {
+    title: '七星彩',
+    selected: false
+
+  },
+  {
+    title: 'PK10牛牛',
+    selected: false
+  },
+  {
+    title: '福彩3D',
+    selected: false
+  },
+  {
+    title: '大乐透',
+    selected: false
+  },
+  {
+    title: '幸运飞艇',
+    selected: false
+  },
+  {
+    title: '北京赛车(PK10)',
+    selected: false
+  },
+  {
+    title: 'pc蛋蛋',
+    selected: false
+  },
+  {
+    title: '幸运飞艇',
+    selected: false
+  },
+  {
+    title: '长龙资讯',
+    selected: false
+  },
+  {
+    title: '开奖网',
+    selected: false
+  },
+  {
+    title: '红包',
+    selected: false
+  }
+]
+
+const PreferenceButton = ({ title, selected = false, onPress }: PreferenceButtonProps) => {
+  return (
+    <View style={{ width: '30%', marginBottom: scale(40) }}>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View style={{ width: '100%', aspectRatio: 2, backgroundColor: selected ? '#c21632' : '#D0D0D0', borderRadius: scale(10), justifyContent: 'center', alignItems: 'center', }}>
+          <Text style={{ fontSize: scale(25), color: selected ? '#ffffff' : '#7B7B7B' }}>{title}</Text>
+        </View>
+      </TouchableWithoutFeedback>
+      {selected && <AntDesign name={'checkcircle'} style={{ position: 'absolute', right: scale(-5), top: scale(-25) }} size={scale(25)} color={'#c21632'} />}
+    </View>
+  )
+}
+const LHTPreference = () => {
+
+  const [preferences, setPreferences] = useState(defaultPreferences)
+
+  return (
+    <View style={{ flex: 1 }}>
+      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
+        <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} onPress={pop} />
+        <Text style={styles.headerTitle}>{'偏好设置'}</Text>
+        <View />
+      </SafeAreaHeader>
+      <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
+        <Text style={{ fontSize: scale(40), color: '#6C6C6C', textAlign: 'center', paddingVertical: scale(30) }}>{'选择您感兴趣的彩种'}</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+          {
+            preferences?.map((item, index) => {
+              const { title, selected } = item
+              return (
+                <PreferenceButton key={index} title={title} selected={selected} onPress={() => {
+                  const newPreferences = preferences?.map((ele, _index) => {
+                    if (index == _index) {
+                      return Object.assign({}, item, { selected: !ele?.selected })
+                    } else {
+                      return ele
+                    }
+                  })
+                  setPreferences(newPreferences)
+                }} />
+              )
+            })
+          }
+        </View>
+        <Button title={'确定'} buttonStyle={{ backgroundColor: '#ff8610', marginHorizontal: scale(15) }} onPress={() => {
+          pop()
+        }} />
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
+  },
+})
+
+
+export default LHTPreference

@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Icons from 'react-native-vector-icons/FontAwesome5'
@@ -44,7 +44,7 @@ const TabComponent = ({
   containerStyle,
   unActiveTabColor,
   activeTabColor,
-  rowHeight
+  rowHeight,
 }: TabComponentProps) => {
   // functions
 
@@ -104,6 +104,9 @@ const TabComponent = ({
 
   // ref
   const scroll = useRef(null)
+  useEffect(() => {
+    setHeight(getHeight(subIndex))
+  }, [rightGames])
   // render
   return (
     <View style={containerStyle}>
@@ -112,7 +115,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? activeTabColor : unActiveTabColor,
+              backgroundColor: index ? unActiveTabColor : activeTabColor,
             },
           ]}
           onPress={() => setIndex(0)}
@@ -129,7 +132,7 @@ const TabComponent = ({
           style={[
             styles.mainTab,
             {
-              backgroundColor: index == 0 ? unActiveTabColor : activeTabColor,
+              backgroundColor: index ? activeTabColor : unActiveTabColor,
             },
           ]}
           onPress={() => setIndex(1)}
@@ -143,87 +146,87 @@ const TabComponent = ({
           <Text style={styles.tabText}>{'购彩大厅'}</Text>
         </TouchableOpacity>
       </View>
-      {index == 0 ? (
-        <Scene
-          data={leftGames}
-          renderItem={renderLeftGame}
-          containerStyle={{
-            paddingTop: scale(25),
-            borderBottomRightRadius: 10,
-            borderBottomLeftRadius: 10,
+      {index ? (
+        <TabView
+          initialLayout={{ width: AppDefine.width }}
+          style={{
+            height,
+            borderBottomRightRadius: scale(10),
+            borderBottomLeftRadius: scale(10),
+          }}
+          navigationState={{ index: subIndex, routes: subTabs }}
+          renderTabBar={(props: any) => {
+            return (
+              <ScrollView
+                ref={scroll}
+                horizontal={true}
+                style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={200}
+                decelerationRate={'fast'}
+              >
+                <TabBar
+                  {...props}
+                  contentContainerStyle={{ backgroundColor: '#ffffff' }}
+                  tabStyle={styles.subTabStyle}
+                  renderLabel={({ route, focused }) => {
+                    return (
+                      <View
+                        style={{
+                          width: getSubTabWidth(),
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Text
+                          style={[
+                            {
+                              alignSelf: 'auto',
+                              fontSize: scale(25),
+                              marginBottom: scale(5),
+                            },
+                            focused ? styles.focusedText : styles.text,
+                          ]}
+                        >
+                          {route.title}
+                        </Text>
+                        {focused ? (
+                          <View
+                            style={{
+                              height: scale(2),
+                              width: '100%',
+                              backgroundColor: '#46A3FF',
+                              borderRadius: scale(100),
+                              marginTop: scale(5),
+                            }}
+                          ></View>
+                        ) : null}
+                      </View>
+                    )
+                  }}
+                />
+              </ScrollView>
+            )
+          }}
+          renderScene={SceneMap(subScenes)}
+          onIndexChange={(index) => {
+            const height = getHeight(index)
+            setSubIndex(index)
+            setHeight(height)
+            scroll.current.scrollTo({
+              x: index * scale(100),
+              y: 0,
+              animated: true,
+            })
           }}
         />
       ) : (
-          <TabView
-            initialLayout={{ width: AppDefine.width, height: 0 }}
-            style={{
-              height,
-              borderBottomRightRadius: scale(10),
-              borderBottomLeftRadius: scale(10),
-            }}
-            navigationState={{ index: subIndex, routes: subTabs }}
-            renderTabBar={(props: any) => {
-              return (
-                <ScrollView
-                  ref={scroll}
-                  horizontal={true}
-                  style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
-                  showsHorizontalScrollIndicator={false}
-                  scrollEventThrottle={200}
-                  decelerationRate={'fast'}
-                >
-                  <TabBar
-                    {...props}
-                    contentContainerStyle={{ backgroundColor: '#ffffff' }}
-                    tabStyle={styles.subTabStyle}
-                    renderLabel={({ route, focused }) => {
-                      return (
-                        <View
-                          style={{
-                            width: getSubTabWidth(),
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Text
-                            style={[
-                              {
-                                alignSelf: 'auto',
-                                fontSize: scale(25),
-                                marginBottom: scale(5),
-                              },
-                              focused ? styles.focusedText : styles.text,
-                            ]}
-                          >
-                            {route.title}
-                          </Text>
-                          {focused ? (
-                            <View
-                              style={{
-                                height: scale(2),
-                                width: '100%',
-                                backgroundColor: '#46A3FF',
-                                borderRadius: scale(100),
-                                marginTop: scale(5),
-                              }}
-                            ></View>
-                          ) : null}
-                        </View>
-                      )
-                    }}
-                  />
-                </ScrollView>
-              )
-            }}
-            renderScene={SceneMap(subScenes)}
-            onIndexChange={(index) => {
-              const height = getHeight(index)
-              setSubIndex(index)
-              setHeight(height)
-              scroll.current.scrollTo({
-                x: index * scale(100),
-                y: 0,
-                animated: true,
-              })
+          <Scene
+            data={leftGames}
+            renderItem={renderLeftGame}
+            containerStyle={{
+              paddingTop: scale(25),
+              borderBottomRightRadius: 10,
+              borderBottomLeftRadius: 10,
             }}
           />
         )}

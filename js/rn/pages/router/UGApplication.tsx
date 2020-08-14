@@ -45,6 +45,7 @@ import { XBJLoginPage } from '../香槟金/XBJLoginPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
+import LHTPreferencePage from '../六合厅/LHTPreferencePage';
 const RootStack = createStackNavigator();
 
 // TabbarController
@@ -115,6 +116,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSLogin} component={UGPage(KSLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSRegister} component={UGPage(KSRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSMine} component={UGPage(KSMine)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={UGPage(LHTPreferencePage)} />
     </Router.StackNavigator >
   )
 }

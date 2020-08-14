@@ -13,7 +13,7 @@ import useLogOut from '../../public/hooks/tars/useLogOut'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
+import { push, navigate } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -86,7 +86,7 @@ const LHTHomePage = (props) => {
     homeGames,
     notice,
     lotteryNumber,
-    categoryList,
+    // categoryList,
     onlineNum,
     couponListData,
     redBag,
@@ -149,7 +149,6 @@ const LHTHomePage = (props) => {
     }) ?? []
   const navs =
     homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
-  const icons = homeGames?.data?.icons ?? []
   const coupons = couponListData?.data?.list ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
@@ -168,9 +167,9 @@ const LHTHomePage = (props) => {
     },
     ...lotterys.slice(6),
   ]
-  const leftGames = categoryList?.data ?? []
+  // const leftGames = categoryList?.data ?? []
   const rightGames =
-    icons?.map((tab) => {
+    homeGames?.data?.icons?.map((tab) => {
       const { list, name } = tab
       const games = list?.filter((ele) => ele.levelType == '1')
       return { games, name }
@@ -299,10 +298,10 @@ const LHTHomePage = (props) => {
               activeTabColor={'#ff8610'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
-              leftGames={leftGames}
+              leftGames={[{ name: '更多彩种', desc: '好挣好玩', icon: 'http://test05.6yc.com/views/mobileTemplate/14/images/gdcz.png' }]}
               rightGames={rightGames}
               renderLeftGame={(item, index) => {
-                const { name, icon, show, id, desc } = item
+                const { name, icon, id, desc } = item
                 return (
                   <GameButton
                     key={index}
@@ -319,10 +318,11 @@ const LHTHomePage = (props) => {
                       marginTop: scale(5),
                       aspectRatio: 3,
                     }}
-                    titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
-                    subTitleStyle={{ fontSize: scale(17) }}
+                    titleStyle={{ fontSize: scale(23) }}
+                    subTitleStyle={{ fontSize: scale(23) }}
                     onPress={() => {
-                      PushHelper.pushUserCenterType(parseInt(id))
+                      navigate(PageName.LHTPreferencePage, {})
+                      //PushHelper.pushUserCenterType(parseInt(id))
                     }}
                   />
                 )
@@ -334,7 +334,7 @@ const LHTHomePage = (props) => {
                     key={index}
                     logo={logo ? logo : icon}
                     title={title}
-                    showSubTitle
+                    showSubTitle={false}
                     containerStyle={{
                       width: '33.3%',
                       height: scale(180),
@@ -344,8 +344,8 @@ const LHTHomePage = (props) => {
                       marginTop: scale(5),
                       aspectRatio: 3,
                     }}
-                    titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
-                    subTitleStyle={{ fontSize: scale(17) }}
+                    titleStyle={{ fontSize: scale(23) }}
+                    subTitleStyle={{ fontSize: scale(23) }}
                     onPress={() => PushHelper.pushHomeGame(item)}
                   />
                 )

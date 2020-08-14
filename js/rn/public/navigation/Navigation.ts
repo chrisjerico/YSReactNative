@@ -47,7 +47,8 @@ export enum PageName {
   VietnamLogin = "VietnamLogin",
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
-  VietnamGameList = "VietnamGameList"
+  VietnamGameList = "VietnamGameList",
+  LHTPreferencePage = "LHTPreferencePage"
 }
 
 // export class  {
