@@ -323,7 +323,7 @@ const BZHHomePage = () => {
             rankLists={rankLists}
           />
           <BottomLogo
-            version={'20200808-修復全部轉跳'}
+            version={'20200814-修復觸控效果'}
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {
