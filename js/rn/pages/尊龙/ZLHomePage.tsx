@@ -40,7 +40,7 @@ import { List } from "../../public/network/Model/PromotionsModel"
     UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:true completion:nil];
  */
-const ZLHomePage = ({ navigation }) => {
+const ZLHomePage = ({ navigation, setProps }) => {
 
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -94,9 +94,18 @@ const ZLHomePage = ({ navigation }) => {
 
         }
     }
-    const [] = useAutoRenewUserInfo(navigation)
     useEffect(() => {
+        setProps({
+            didFocus: async () => {
+                const { data: userInfo } = await APIRouter.user_info()
+                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+                setProps();
+                UGStore.save();
+            }
+        })
+
         init()
+        
         const timer = setInterval(() => {
             getRandomString()
         }, 500)

@@ -71,7 +71,7 @@ export class UGStore {
 
   // 获取当前页面Props
   static getPageProps<P extends UGBasePageProps>(page: PageName) : P {
-    return this.globalProps[page];
+    return this.globalProps[page] ?? {};
   }
 
   // 从本地获取所有数据，并刷新UI

@@ -1,3 +1,5 @@
+import { navigationRef } from './../../../navigation/RootNavigation';
+import { UGStore } from './../../../../redux/store/UGStore';
 import { IGlobalStateHelper, updateUserInfo } from './../../../../redux/store/IGlobalStateHelper';
 import { OCCall } from './OCCall';
 import { PageName,  } from '../../../navigation/Navigation';
@@ -6,13 +8,13 @@ import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { OCHelper } from '../OCHelper';
 import { getCurrentPage, pop, jumpTo } from '../../../navigation/RootNavigation';
-import { UGStore } from '../../../../redux/store/UGStore';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
   UGNotificationWithSkinSuccess = 'UGNotificationWithSkinSuccess',
   JspatchDownloadProgress = 'jsp下载进度',
   JspatchUpdateComplete = 'jsp更新结果',
+  viewWillAppear = 'viewWillAppear',
 }
 
 export class OCEvent extends OCCall {
@@ -24,6 +26,11 @@ export class OCEvent extends OCCall {
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
       console.log('rn收到oc通知：', params);
+
+      if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
+        const { didFocus } = UGStore.getPageProps(getCurrentPage());
+        didFocus && didFocus();
+      }
 
       this.events
         .filter(v => {

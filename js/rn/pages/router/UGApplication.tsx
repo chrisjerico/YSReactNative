@@ -19,7 +19,7 @@ import BZHHomePage from "../宝石红/BZHHomePage";
 import BZHMinePage from "../宝石红/BZHMinePage";
 import BZHRegisterPage from '../宝石红/BZHRegisterPage';
 import BZHSignInPage from '../宝石红/BZHSignInPage';
-import ZLHomeMine from '../尊龙/ZLHomeMine';
+import ZLMinePage from '../尊龙/ZLMinePage';
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
 import ZLRegisterPage from '../尊龙/ZLRegisterPage';
@@ -79,7 +79,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.XBJMinePage} component={UGPage(XBJMinePage)} />
         <Router.TabScreen name={PageName.XBJHomePage} component={UGPage(XBJHomePage)} />
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
-        <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLHomeMine)} />
+        <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
@@ -111,7 +111,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={UGPage(BZHRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={UGPage(BZHSignInPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLHomeMine)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={UGPage(VietnamRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={UGPage(GameList)} />
