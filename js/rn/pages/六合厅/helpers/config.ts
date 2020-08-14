@@ -60,3 +60,114 @@ export const defaultMainTabs = [
   { key: '0', title: '热门资讯' },
   { key: '1', title: '购彩大厅' },
 ]
+
+export const defaultPreferences = [
+  {
+    gameId: 1,
+    title: '重庆时时彩',
+    selected: false,
+    logo: 'cqssc',
+    gameType: "cqssc",
+    // url: '/mobile/#/lottery/index/1',
+    des: '全天59期'
+  },
+  {
+    gameId: 2,
+    title: '七星彩',
+    selected: false,
+    logo: 'qxc',
+    gameType: "qxc",
+    // url: '/mobile/#/lottery/index/2',
+    des: '全天59期'
+  },
+  {
+    gameId: 3,
+    title: 'PK10牛牛',
+    selected: false,
+    logo: 'pk10nn',
+    gameType: "pk10nn",
+    // url: '/mobile/#/lottery/index/3',
+    des: '全天59期'
+  },
+  {
+    gameId: 6,
+    title: '福彩3D',
+    selected: true,
+    logo: 'fc3d',
+    gameType: "fc3d",
+    // url: '/mobile/#/lottery/index/6',
+    des: '全天59期'
+  },
+  {
+    gameId: 12,
+    title: '大乐透',
+    selected: true,
+    logo: 'dlt',
+    gameType: "dlt",
+    // url: '/mobile/#/lottery/index/12',
+    des: '全天59期'
+  },
+  {
+    gameId: 55,
+    title: '幸运飞艇',
+    selected: false,
+    logo: 'xyft',
+    gameType: "xyft",
+    // url: '/mobile/#/lottery/index/55',
+    des: '全天180期'
+  },
+  {
+    gameId: 50,
+    title: '北京赛车(PK10)',
+    selected: true,
+    logo: 'bjpk10',
+    gameType: "pk10",
+    // url: '/mobile/#/lottery/index/50',
+    des: '全天44期'
+  },
+  {
+    gameId: 60,
+    title: 'pc蛋蛋',
+    selected: true,
+    logo: 'pcdd',
+    gameType: "pcdd",
+    // url: '/mobile/#/lottery/index/60',
+    des: '全天179期'
+  },
+  {
+    gameId: 70,
+    title: '香港六合彩',
+    selected: true,
+    logo: 'lhc',
+    gameType: "lhc",
+    // url: '/mobile/#/lottery/index/70',
+    des: '一周开三期'
+  },
+  {
+    gameId: '',
+    title: '长龙资讯',
+    selected: true,
+    logo: 'clzx',
+    gameType: "clzx",
+    // url: '/mobile/#/lottery/changLongBet',
+    des: '长龙助手'
+  },
+  {
+    gameId: '',
+    title: '开奖网',
+    selected: true,
+    logo: 'lmzs',
+    gameType: "lmzs",
+    // url: '/Open_prize/index.php',
+    des: '开奖网'
+  },
+  {
+    gameId: '',
+    title: '红包',
+    selected: true,
+    logo: 'hongbao',
+    gameType: "hongbao",
+    // url: '/mobile/#/lottery/index/70?id=1&mine=1',
+    des: '抢红包'
+  },
+];

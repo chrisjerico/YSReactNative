@@ -46,10 +46,14 @@ import {
   defaultDowloadUrl,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
-  defaultNoticeLogo
+  defaultNoticeLogo,
+  defaultPreferences
 } from './helpers/config'
+import AppDefine from '../../public/define/AppDefine'
 
-const LHTHomePage = (props) => {
+
+const moreLottery = [{ gameId: null, gameType: 'more', title: '更多彩种', des: '好挣好玩', logo: 'gdcz', selected: true }]
+const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
@@ -78,6 +82,7 @@ const LHTHomePage = (props) => {
 
   // states
   // const announcementModal = useRef(null)
+  const [leftGames, setLeftGames] = useState(defaultPreferences)
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
@@ -167,7 +172,6 @@ const LHTHomePage = (props) => {
     },
     ...lotterys.slice(6),
   ]
-  // const leftGames = categoryList?.data ?? []
   const rightGames =
     homeGames?.data?.icons?.map((tab) => {
       const { list, name } = tab
@@ -298,34 +302,50 @@ const LHTHomePage = (props) => {
               activeTabColor={'#ff8610'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
-              leftGames={[{ name: '更多彩种', desc: '好挣好玩', icon: 'http://test05.6yc.com/views/mobileTemplate/14/images/gdcz.png' }]}
+              leftGames={leftGames?.concat(moreLottery)}
               rightGames={rightGames}
               renderLeftGame={(item, index) => {
-                const { name, icon, id, desc } = item
-                return (
-                  <GameButton
-                    key={index}
-                    logo={icon}
-                    title={name}
-                    subTitle={desc}
-                    showSubTitle
-                    containerStyle={{
-                      width: '33.3%',
-                      height: scale(180),
-                      marginBottom: scale(20),
-                    }}
-                    titleContainerStyle={{
-                      marginTop: scale(5),
-                      aspectRatio: 3,
-                    }}
-                    titleStyle={{ fontSize: scale(23) }}
-                    subTitleStyle={{ fontSize: scale(23) }}
-                    onPress={() => {
-                      navigate(PageName.LHTPreferencePage, {})
-                      //PushHelper.pushUserCenterType(parseInt(id))
-                    }}
-                  />
-                )
+                const { title, logo, des, gameType, selected } = item
+                const logoUrl = AppDefine.host + '/views/mobileTemplate/14/images/' + logo + '.png'
+                console.log("---------logoUrl------", logoUrl)
+                if (selected) {
+                  return (
+                    <GameButton
+                      key={index}
+                      logo={logoUrl}
+                      title={title}
+                      subTitle={des}
+                      showSubTitle
+                      containerStyle={{
+                        width: '33.3%',
+                        height: scale(180),
+                        marginBottom: scale(20),
+                      }}
+                      titleContainerStyle={{
+                        marginTop: scale(5),
+                        aspectRatio: 3,
+                      }}
+                      titleStyle={{ fontSize: scale(23) }}
+                      subTitleStyle={{ fontSize: scale(23) }}
+                      onPress={() => {
+                        if (gameType == 'more') {
+                          navigate(PageName.LHTPreferencePage, {
+                            initPreferences: leftGames,
+                            onPressConfirm: (preferences: any) => {
+                              // const selectedPreferences = preferences.filter((item: any) => item?.selected)?.concat(moreLottery)
+                              setLeftGames(preferences)
+                            }
+                          })
+                        } else {
+                          //PushHelper.pushUserCenterType(parseInt(id))
+                        }
+                      }}
+                    />
+
+                  )
+                } else {
+                  return null
+                }
               }}
               renderRightGame={(item, index) => {
                 const { logo, icon, title } = item
