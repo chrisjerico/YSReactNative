@@ -3,7 +3,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
@@ -52,11 +52,12 @@ const BZHSignInPage = (props: BZHSignInStore) => {
 
   // states
   const [slidingVerification, setSlidingVerification] =
-    useState<SlidingVerification>({
-      nc_csessionid: undefined,
-      nc_token: undefined,
-      nc_sig: undefined,
-    })
+    useState<SlidingVerification>
+      ({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
 
   const { type }: any = navigation?.dangerouslyGetState()
 
@@ -102,8 +103,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     onSuccess: () => {
       jumpToHomePage()
     },
-    onError: () => {
-    },
+    onError: () => { },
   })
 
   useEffect(() => {
@@ -133,17 +133,17 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <TouchableOpacity onPress={jump}>
+        <TouchableWithoutFeedback onPress={jump}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
         <Text style={styles.headerTitle}>{'登录'}</Text>
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
@@ -195,6 +195,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
                 isRemember,
               })
             }}
+            activeOpacity={1}
           />
           <Button
             title={'快速注册'}
@@ -208,14 +209,15 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             onPress={() => {
               navigate(PageName.BZHRegisterPage, {})
             }}
+            activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
-            <TouchableOpacity onPress={tryPlay}>
+            <TouchableWithoutFeedback onPress={tryPlay}>
               <Text>{'免费试玩'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={jumpToHomePage}>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={jumpToHomePage}>
               <Text>{'返回首页'}</Text>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </ScrollView>
@@ -224,39 +226,40 @@ const BZHSignInPage = (props: BZHSignInStore) => {
 }
 
 const CheckBox = ({ check, onPress }) => (
-  <TouchableOpacity
-    style={{
-      width: '100%',
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-    }}
-    onPress={onPress}
-  >
-    {check ? (
-      <Icon
-        type={'feather'}
-        name={'check'}
-        color={'#ffffff'}
-        containerStyle={{
-          width: scale(25),
-          backgroundColor: 'blue',
-          aspectRatio: 1,
-          justifyContent: 'center',
-        }}
-        size={scale(20)}
-      />
-    ) : (
-        <View
-          style={{
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View
+      style={{
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+      }}
+    >
+      {check ? (
+        <Icon
+          type={'feather'}
+          name={'check'}
+          color={'#ffffff'}
+          containerStyle={{
             width: scale(25),
+            backgroundColor: 'blue',
             aspectRatio: 1,
-            borderColor: 'blue',
-            borderWidth: scale(1),
+            justifyContent: 'center',
           }}
-        ></View>
-      )}
-    <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
-  </TouchableOpacity>
+          size={scale(20)}
+        />
+      ) : (
+          <View
+            style={{
+              width: scale(25),
+              aspectRatio: 1,
+              borderColor: 'blue',
+              borderWidth: scale(1),
+            }}
+          ></View>
+        )}
+      <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
+    </View>
+  </TouchableWithoutFeedback>
 )
 
 const styles = StyleSheet.create({

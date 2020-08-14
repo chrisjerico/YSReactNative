@@ -1,5 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface AgentRedButton {
@@ -15,22 +20,32 @@ const AgentRedButton = ({
 }: AgentRedButton) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.textContainer, styles.leftButton, toggle ? {} : styles.enableTextContainer]}
-        onPress={onPressLeftButton}
-      >
-        <Text style={[styles.text, toggle ? {} : styles.enableText]}>
-          {'普通用戶'}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.textContainer, styles.rightButton, toggle ? styles.enableTextContainer : {}]}
-        onPress={onPressRightButton}
-      >
-        <Text style={[styles.text, toggle ? styles.enableText : {}]}>
-          {'注册代理'}
-        </Text>
-      </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={onPressLeftButton}>
+        <View
+          style={[
+            styles.textContainer,
+            styles.leftButton,
+            toggle ? {} : styles.enableTextContainer,
+          ]}
+        >
+          <Text style={[styles.text, toggle ? {} : styles.enableText]}>
+            {'普通用戶'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={onPressRightButton}>
+        <View
+          style={[
+            styles.textContainer,
+            styles.rightButton,
+            toggle ? styles.enableTextContainer : {},
+          ]}
+        >
+          <Text style={[styles.text, toggle ? styles.enableText : {}]}>
+            {'注册代理'}
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   )
 }
@@ -42,7 +57,7 @@ const styles = StyleSheet.create({
     aspectRatio: 5,
     backgroundColor: 'rgba(0, 0, 0, 0.45)',
     borderRadius: scale(5),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   textContainer: {
     flex: 1,
@@ -60,12 +75,12 @@ const styles = StyleSheet.create({
   },
   leftButton: {
     borderTopLeftRadius: scale(5),
-    borderBottomLeftRadius: scale(5)
+    borderBottomLeftRadius: scale(5),
   },
   rightButton: {
     borderTopRightRadius: scale(5),
-    borderBottomRightRadius: scale(5)
-  }
+    borderBottomRightRadius: scale(5),
+  },
 })
 
 export default AgentRedButton

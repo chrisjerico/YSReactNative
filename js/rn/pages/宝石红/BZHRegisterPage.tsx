@@ -3,7 +3,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View
 } from 'react-native'
 import { Button } from 'react-native-elements'
@@ -18,12 +18,12 @@ import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { ToastError, ToastSuccess } from '../../public/tools/tars'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './components/AgentRedButton'
 import Form from './components/Form'
-import { ToastSuccess, ToastError } from '../../public/tools/tars'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -175,17 +175,17 @@ const BZHRegisterPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <TouchableOpacity onPress={pop}>
+        <TouchableWithoutFeedback onPress={pop}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
         <Text style={styles.headerTitle}>{'注册'}</Text>
-        <TouchableOpacity
+        <TouchableWithoutFeedback
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
@@ -322,13 +322,13 @@ const BZHRegisterPage = () => {
             show={reg_vcode == 1 || reg_vcode == 3}
             showRightIcon={true}
             renderRightIcon={() => (
-              <TouchableOpacity onPress={getImgCaptcha}>
+              <TouchableWithoutFeedback onPress={getImgCaptcha}>
                 <FastImage
                   source={{ uri: correctImageCode }}
                   resizeMode={'contain'}
                   style={{ width: scale(150), height: '100%' }}
                 />
-              </TouchableOpacity>
+              </TouchableWithoutFeedback>
             )}
             onFocus={() => {
               if (correctImageCode == '') {
@@ -350,6 +350,7 @@ const BZHRegisterPage = () => {
                 title={'获取验证码'}
                 onPress={getSms}
                 titleStyle={{ fontSize: scale(20), fontWeight: '600' }}
+                activeOpacity={1}
               />
             )}
           />
@@ -398,18 +399,19 @@ const BZHRegisterPage = () => {
                 register(params as any)
               }
             }}
+            activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
-            <TouchableOpacity
+            <TouchableWithoutFeedback
               onPress={() => {
                 push(PageName.BZHSignInPage, {})
               }}
             >
               <Text>{'返回登录'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={jumpToHomePage}>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={jumpToHomePage}>
               <Text>{'返回首页'}</Text>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </ScrollView>

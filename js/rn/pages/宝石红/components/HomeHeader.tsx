@@ -63,6 +63,7 @@ const HomeHeader = ({
                 buttonStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignIn}
+                activeOpacity={1}
               />
             </View>
             <View style={styles.imageContainer}>
@@ -80,6 +81,7 @@ const HomeHeader = ({
                 buttonStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
+                activeOpacity={1}
               />
             </View>
           </View>
