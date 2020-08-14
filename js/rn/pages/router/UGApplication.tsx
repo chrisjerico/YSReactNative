@@ -36,8 +36,6 @@ import PromotionListPage from '../common/PromotionListPage';
 import GDBMinePage from '../金星黑/GDBMinePage';
 import KSHomePage from '../凯时/KSHomePage'
 import LottoBetting from '../common/LottoBetting';
-import {TrendView} from "../../public/components/TrendView";
-const RootStack = createStackNavigator();
 import VietnamHomePage from '../越南/HomePage';
 import VietnamLogin from '../越南/LoginPage';
 import VietnamRegister from '../越南/RegisterPage';
@@ -45,6 +43,8 @@ import { LanguageContextProvider } from '../../public/context/LanguageContextPro
 import GameList from '../越南/GameList';
 import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
+const RootStack = createStackNavigator();
+import {TrendView} from "../../public/components/TrendView";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -96,7 +96,6 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={TrendView} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
@@ -110,6 +109,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={UGPage(VietnamRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={UGPage(GameList)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={TrendView} />
     </Router.StackNavigator>
   )
 }

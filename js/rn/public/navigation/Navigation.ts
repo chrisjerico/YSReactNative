@@ -39,13 +39,13 @@ export enum PageName {
   PromotionListPage = "PromotionListPage",
   KSHomePage = "KSHomePage",
   LottoSelector = "LottoSelector",
-  TrendView = "TrendView",
   LottoBetting = "LottoBetting",
   VietnamHome = "VietnamHome",
   VietnamLogin = "VietnamLogin",
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
-  VietnamGameList = "VietnamGameList"
+  VietnamGameList = "VietnamGameList",
+  TrendView = "TrendView",
 }
 
 // export class  {
