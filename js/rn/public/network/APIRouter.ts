@@ -1,3 +1,4 @@
+import { UGStore } from './../../redux/store/UGStore';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { httpClient, CachePolicyEnum } from './httpClient'
@@ -89,6 +90,9 @@ class APIRouter {
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
   }
   static activity_turntableList = () => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      return {};
+    }
     return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
   }
   static system_floatAds = () => {
