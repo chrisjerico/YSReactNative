@@ -96,6 +96,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
@@ -109,7 +110,6 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={UGPage(VietnamRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={UGPage(GameList)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={TrendView} />
     </Router.StackNavigator>
   )
 }
