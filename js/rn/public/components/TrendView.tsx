@@ -33,7 +33,6 @@ export const TrendView = () => {
 
     useEffect(() => {
         getData()
-        console.log("initData")
     }, [])
 
     useEffect(() => {
