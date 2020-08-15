@@ -6,7 +6,7 @@ import { scale } from '../../../public/tools/Scale'
 
 interface HomeHeaderProps {
   name: string;
-  money: string;
+  balance: string;
   uid: string;
   onPressSignIn: () => any;
   onPressSignUp: () => any;
@@ -18,7 +18,7 @@ interface HomeHeaderProps {
 const HomeHeader = ({
   uid,
   name = '',
-  money = '',
+  balance = '',
   onPressSignIn,
   onPressSignUp,
   onPressUser,
@@ -51,7 +51,7 @@ const HomeHeader = ({
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
               <Text numberOfLines={1}>{name}</Text>
-              <Text numberOfLines={1}>{'￥' + money}</Text>
+              <Text numberOfLines={1}>{'￥' + balance}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

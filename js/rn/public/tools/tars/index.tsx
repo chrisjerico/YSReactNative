@@ -1,6 +1,7 @@
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
+import AppDefine from '../../define/AppDefine'
 
 interface SaveNativeUser {
   currentUser: any[];
@@ -99,4 +100,9 @@ export const ToastStatus = (msg: any) => {
   console.log("--------ToastStatus--------", msg)
   const m = msg?.toString()
   OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
+}
+
+export const getHtml5Image = (id: number, path: string) => {
+  return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.png'
+  // return 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
 }

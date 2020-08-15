@@ -54,7 +54,7 @@ const BottomLogo = ({
           paddingTop: scale(10),
         }}
       >
-        {'COPYRIGHT © '}+ {webName} +{'RESERVED'}
+        {'COPYRIGHT © ' + webName + 'RESERVED'}
       </Text>
       {debug ? (
         <Text style={{ color: '#000000', textAlign: 'center' }}>

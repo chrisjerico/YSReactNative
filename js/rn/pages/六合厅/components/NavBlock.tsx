@@ -18,6 +18,7 @@ interface NavBlockProps {
   onPressSmileLogo: () => any;
   renderNav: (item: any, index: number) => any;
   renderLottery: (item: Lottery, index: number) => any;
+  balance: string;
 }
 
 interface Lottery {
@@ -41,6 +42,7 @@ const NavBlock = ({
   lotteryLogo = '',
   customerServiceLogo = '',
   containerStyle,
+  balance
 }: NavBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -48,7 +50,7 @@ const NavBlock = ({
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
           <Icon type={'material'} name={'attach-money'} size={scale(25)} color={'#ff8610'} />
-          <Text style={{ color: '#ff8610' }}>{'0.00'}</Text>
+          <Text style={{ color: '#ff8610' }}>{balance}</Text>
         </View>
         <View style={styles.topRightContainer}>
           <Button title={'充值'} buttonStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />
@@ -86,17 +88,16 @@ const NavBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 580,
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
     paddingHorizontal: scale(15),
   },
   topContainer: {
     flexDirection: 'row',
-    flex: 55,
     justifyContent: 'space-between',
     borderBottomColor: '#d9d9d9',
     borderBottomWidth: 1,
+    paddingVertical: scale(10)
   },
   topLeftContainer: {
     flexDirection: 'row',
@@ -124,10 +125,10 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
   },
   titleContainer: {
-    flex: 65,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: scale(10)
   },
   titleLeftContainer: {
     flex: 1,
@@ -148,8 +149,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   adImage: {
-    height: '95%',
     width: '95%',
+    aspectRatio: 5
   },
   navsContainer: {
     flex: 270,

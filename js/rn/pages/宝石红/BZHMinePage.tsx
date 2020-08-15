@@ -19,6 +19,7 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './components/ProfileBlock'
+import { getHtml5Image } from '../../public/tools/tars'
 
 const BZHMinePage = (props) => {
   // yellowBox
@@ -95,7 +96,7 @@ const BZHMinePage = (props) => {
           level={curLevelGrade}
           avatar={
             isTest
-              ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+              ? getHtml5Image(18, 'money-2')
               : avatar
           }
           money={balance}

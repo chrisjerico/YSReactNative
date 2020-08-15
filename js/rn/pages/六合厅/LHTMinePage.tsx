@@ -130,6 +130,7 @@ const LHTMinePage = ({ navigation }) => {
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
           onPress={logOut}
+          activeOpacity={1}
         />
         <BottomBlank />
       </ScrollView>

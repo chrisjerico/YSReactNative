@@ -137,7 +137,7 @@ const BZHHomePage = () => {
             isTest={isTest}
             uid={uid}
             name={usr}
-            money={balance}
+            balance={balance}
             onPressSignIn={() => push(PageName.BZHSignInPage)}
             onPressSignUp={() => push(PageName.BZHRegisterPage)}
             onPressUser={() => {
@@ -152,7 +152,6 @@ const BZHHomePage = () => {
             <RefreshControlComponent
               onRefresh={async () => {
                 onRefresh()
-                PushHelper.pushAnnouncement(announcements)
               }}
             />
           }
@@ -323,6 +322,7 @@ const BZHHomePage = () => {
             rankLists={rankLists}
           />
           <BottomLogo
+            debug={false}
             version={'20200814-修復觸控效果'}
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}

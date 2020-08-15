@@ -73,13 +73,13 @@ const AnimatedRankComponent = ({
                 return (
                   <View key={index} style={styles.contentContainer}>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content}>{username}</Text>
+                      <Text style={styles.content} numberOfLines={1}>{username}</Text>
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content}>{type}</Text>
+                      <Text style={styles.content} numberOfLines={1}>{type}</Text>
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content}>{coin}</Text>
+                      <Text style={styles.content} numberOfLines={1}>{coin}</Text>
                     </View>
                   </View>
                 )

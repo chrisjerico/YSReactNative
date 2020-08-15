@@ -4,6 +4,7 @@ import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import AppDefine from '../../public/define/AppDefine'
 import {
   OCEvent,
   OCEventType
@@ -13,15 +14,17 @@ import useLogOut from '../../public/hooks/tars/useLogOut'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { push, navigate } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
   ToastError,
   ToastSuccess,
-  updateUserInfo
+  updateUserInfo,
+  getHtml5Image
 } from '../../public/tools/tars'
+import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomBlank from '../../public/views/tars/BottomBlank'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -43,13 +46,11 @@ import {
   defaultAdvertisement,
   defaultBottomTools,
   defaultCustomerServiceLogo,
-  defaultDowloadUrl,
   defaultHomeHeaderRightLogo,
   defaultLotteryLogo,
   defaultNoticeLogo,
   defaultPreferences
 } from './helpers/config'
-import AppDefine from '../../public/define/AppDefine'
 
 
 const moreLottery = [{ gameId: null, gameType: 'more', title: '更多彩种', des: '好挣好玩', logo: 'gdcz', selected: true }]
@@ -72,7 +73,7 @@ const LHTHomePage = (props: any) => {
     },
   })
   // stores
-  const { uid, avatar, usr, isTest }: UGUserModel = UGStore.globalProps.userInfo
+  const { uid, avatar, usr, isTest, balance }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
@@ -81,7 +82,6 @@ const LHTHomePage = (props: any) => {
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
-  // const announcementModal = useRef(null)
   const [leftGames, setLeftGames] = useState(defaultPreferences)
   const [roulette, setRoulette] = useState(null)
   // effects
@@ -96,6 +96,7 @@ const LHTHomePage = (props: any) => {
     couponListData,
     redBag,
     rankList,
+    systemConfig,
     onRefresh,
   } = useGetHomeInfo([
     'system_banners',
@@ -138,8 +139,16 @@ const LHTHomePage = (props: any) => {
     }
   })
 
+  useEffect(() => {
+    if (notice?.data?.popup) {
+      if (!B_DEBUG) {
+        PushHelper.pushAnnouncement(announcements)
+      }
+    }
+  }, [notice])
+
   // data handle
-  // const announce_first = parseInt(systemConfig?.data?.announce_first)
+  const appDownloadUrl = systemConfig?.data?.appDownloadUrl
   const bannersInterval = parseInt(banner?.data?.interval)
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -187,7 +196,11 @@ const LHTHomePage = (props: any) => {
       <>
         <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
           <HomeHeader
-            avatar={avatar}
+            avatar={
+              isTest
+                ? getHtml5Image(18, 'money-2')
+                : avatar
+            }
             name={usr}
             showLogout={uid ? true : false}
             leftLogo={mobile_logo}
@@ -208,7 +221,6 @@ const LHTHomePage = (props: any) => {
             <RefreshControlComponent
               onRefresh={() => {
                 onRefresh()
-                PushHelper.pushAnnouncement(announcements)
               }}
             />
           }
@@ -223,6 +235,7 @@ const LHTHomePage = (props: any) => {
                 <TouchableImage
                   key={index}
                   pic={pic}
+                  resizeMode={'stretch'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
@@ -246,6 +259,7 @@ const LHTHomePage = (props: any) => {
               date={lotteryDate}
               advertisement={defaultAdvertisement}
               lotteryLogo={defaultLotteryLogo}
+              balance={balance}
               customerServiceLogo={defaultCustomerServiceLogo}
               onPressSavePoint={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.存款)
@@ -306,8 +320,7 @@ const LHTHomePage = (props: any) => {
               rightGames={rightGames}
               renderLeftGame={(item, index) => {
                 const { title, logo, des, gameType, selected } = item
-                const logoUrl = AppDefine.host + '/views/mobileTemplate/14/images/' + logo + '.png'
-                console.log("---------logoUrl------", logoUrl)
+                const logoUrl = getHtml5Image(14, logo)
                 if (selected) {
                   return (
                     <GameButton
@@ -428,7 +441,7 @@ const LHTHomePage = (props: any) => {
                       if (userCenterType) {
                         PushHelper.pushUserCenterType(userCenterType)
                       } else {
-                        PushHelper.openWebView(defaultDowloadUrl)
+                        PushHelper.openWebView(appDownloadUrl)
                       }
                     }}
                   />

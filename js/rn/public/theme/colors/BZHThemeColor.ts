@@ -9,7 +9,7 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     tabNoSelectColor: '#9D9D9D',
     homeContentSubColor: '#D0D0D0', // 額度轉換Tab
     get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
-    get navBarBgColor() { return [this.themeColor, this.themeColor] },
+    get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
     get tabSelectedColor() { return this.themeColor },
     get progressBgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
     get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
@@ -25,6 +25,8 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     //moneyCellColor: '#444',
     themeColor: '#e53333',
     themeLightColor: '#FFECEC',
-    isBlack: false
+    isBlack: false,
+    is23: false,
+    get yubaoBgColor() { return this.homeContentSubColor }
   },
 }

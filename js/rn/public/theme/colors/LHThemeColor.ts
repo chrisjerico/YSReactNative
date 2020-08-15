@@ -5,26 +5,29 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
   六合厅: {
     skitType: '六合厅',
     skitString: '六合厅',
-    bgColor: ['#66B3FF', '#66B3FF'],
-    get navBarBgColor() { return [this.themeColor, this.themeColor] },
     tabBarBgColor: '#ffffff',
     tabNoSelectColor: '#9D9D9D',
+    homeContentSubColor: '#D0D0D0', // 額度轉換Tab
+    get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
+    get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
     get tabSelectedColor() { return this.themeColor },
-    progressBgColor: ['#ffffff', '#ffffff'],
+    get progressBgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
     get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
-    homeContentSubColor: '#f6f6f6', // 額度轉換Tab // #ffffff
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
     get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
-    // textColor1: '#000000',
-    // textColor2: '#000000',
-    // textColor3: '#000000',
-    // textColor4: '#ffffff',
-    // conversionCellColor: '#444',
+    textColor1: '#111111',
+    textColor2: '#555555',
+    textColor3: '#C1C1C1',
+    textColor4: '#ffffff',
+    conversionCellColor: '#444',
     // intoViewColor: '#444',
-    // moneyCellColor: '#444',
+    //moneyCellColor: '#444',
     themeColor: '#2894FF',
-    themeLightColor: '#ACD6FF'
+    themeLightColor: '#ACD6FF',
+    isBlack: false,
+    is23: false,
+    get yubaoBgColor() { return this.homeContentSubColor }
   },
   //六合资料
   六合资料0: {

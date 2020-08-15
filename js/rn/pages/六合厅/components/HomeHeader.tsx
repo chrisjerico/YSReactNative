@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Avatar, Badge } from 'react-native-elements';
+import { Badge } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { scale } from '../../../public/tools/Scale';
+import Avatar from '../../../public/views/tars/Avatar';
 
 interface HomeHeaderProps {
   name: string;
@@ -26,7 +27,7 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
       <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
         {showLogout ? (
           <>
-            <Avatar size={'small'} rounded source={{ uri: avatar }} />
+            <Avatar uri={avatar} size={50} />
             <View style={{ width: scale(100), justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: '#ffffff', fontSize: scale(23), paddingHorizontal: scale(5) }} numberOfLines={1}>{name}</Text>
             </View>
@@ -55,13 +56,13 @@ const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', sho
               <Text style={styles.text}>{' | '}</Text>
               <TouchableOpacity onPress={onPressSignUp}>
                 <Text style={styles.text} >
-                  {'註冊'}
+                  {'注册'}
                 </Text>
               </TouchableOpacity>
               <Text style={styles.text}>{' | '}</Text>
               <TouchableOpacity onPress={onPressTryPlay}>
                 <Text style={styles.text} >
-                  {'試玩'}
+                  {'试玩'}
                 </Text>
               </TouchableOpacity>
             </>
