@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
+import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform} from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
@@ -21,10 +21,16 @@ import Axios from "axios"
 import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
 import { navigationRef, pop } from "../../public/navigation/RootNavigation"
+<<<<<<< HEAD:js/rn/pages/尊龙/ZLMinePage.tsx
 import { UGBasePageProps } from "../base/UGPage"
 
 const ZLMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;
+=======
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
+const ZLHomeMine = ({ navigation }) => {
+>>>>>>> android/arc/rn_dev_15:js/rn/pages/尊龙/ZLHomeMine.tsx
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
@@ -33,14 +39,44 @@ const ZLMinePage = (props: UGBasePageProps) => {
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+
+            showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+            //     break;
+            //   case 'android':
+            //       //TODO
+            //     break;
+            // }
+
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+
+            // switch (Platform.OS) {
+            //     case 'ios':
+            //         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+            //         break;
+            //     case 'android':
+            //         //TODO
+            //         break;
+            // }
+            Toast('刷新成功！')
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            Toast('刷新失败请稍后再试！')
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            //     break;
+            //   case 'android':
+            //     //TODO
+            //     break;
+            // }
             console.log(error)
         }
+
+        hideLoading()
     }
     const init = async () => {
         try {
@@ -238,6 +274,7 @@ const ZLHeader = () => {
         const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
         show != showBackBtn && setShowBackBtn(show);
     })
+
     return (
         <View style={{
             width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',

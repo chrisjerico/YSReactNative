@@ -27,6 +27,8 @@ import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -129,10 +131,13 @@ const BZHRegisterPage = () => {
       if (data?.code != 0) {
         throw { message: data.msg }
       } else {
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg])
+        // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg])
+        Toast(data?.msg)
       }
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message])
+      ugLog(error)
+      // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message])
+      Toast(error.message)
     }
   }
 

@@ -1,58 +1,128 @@
 import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
-import { Alert, AlertButton, Platform } from 'react-native';
+import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { OCHelper } from './OCHelper/OCHelper';
-import { HomeGamesModel } from '../network/Model/HomeGamesModel';
-import { NSValue, } from './OCHelper/OCBridge/OCCall';
-import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
-import { TurntableListModel } from '../network/Model/TurntableListModel';
-import { Toast } from '../tools/ToastUtils';
+import {IGameIconListItem} from '../../redux/model/home/IGameBean';
+import {OCHelper} from './OCHelper/OCHelper';
+import {HomeGamesModel} from '../network/Model/HomeGamesModel';
+import {NSValue,} from './OCHelper/OCBridge/OCCall';
+import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
+import {TurntableListModel} from '../network/Model/TurntableListModel';
+import {Toast} from '../tools/ToastUtils';
 import { popToRoot, push } from '../navigation/RootNavigation';
 import { PageName } from '../navigation/Navigation';
+import {ANHelper, CMD, NA_DATA} from "./ANHelper/ANHelper";
+
 export default class PushHelper {
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
-    if (Platform.OS != 'ios') return;
     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-    OCHelper.call(({ vc }) => ({
-      vc: {
-        selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-        args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-        args2: [turntableListModel]
-      },
-      ret: {
-        selectors: 'SGBrowserView.showMoveView:yDistance:',
-        args1: [vc, 100],
-      },
-    }));
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+            args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+            args2: [turntableListModel]
+          },
+          ret: {
+            selectors: 'SGBrowserView.showMoveView:yDistance:',
+            args1: [vc, 100],
+          },
+        }));
+        break;
+      case 'android':
+
+        break;
+    }
   }
   // 登出
   static async pushLogout() {
-    await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    switch (Platform.OS) {
+      case "ios":
+        await OCHelper.call('UGUserModel.setCurrentUser:', []);
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+        break;
+      case "android":
+        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+        let loginInfo = JSON.parse(result);
+
+        //保留 account, pwd, isRemember，下载登录的时候使用
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.LOGIN_INFO,
+            account: loginInfo?.account,
+            pwd: loginInfo?.pwd,
+            isRemember: loginInfo?.isRemember,
+          });
+
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          { key: NA_DATA.USER_INFO, });
+        break;
+    }
     Toast('退出成功');
   }
   // 登入
   static pushLogin() {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGLoginViewController'] }, true]);
-    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
+          selectors: 'AppDefine.viewControllerWithStoryboardID:',
+          args1: ['UGLoginViewController']
+        }, true]);
+        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.OPEN_PAGE,
+          {
+            toActivity: true,
+            packageName: 'com.phoenix.lotterys.my.activity',
+            className: 'LoginActivity'
+          });
+        break;
+    }
   }
   // 註冊
   static pushRegister() {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGRegisterViewController'] }, true]);
-    // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
+          selectors: 'AppDefine.viewControllerWithStoryboardID:',
+          args1: ['UGRegisterViewController']
+        }, true]);
+        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.OPEN_PAGE,
+          {
+            toActivity: true,
+            packageName: 'com.phoenix.lotterys.my.activity',
+            className: 'RegeditActivity'
+          });
+        break;
+    }
+
+
+
   }
   // 首页游戏列表跳转
   static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
     game = Object.assign({ clsName: 'GameModel' }, game);
-    if (Platform.OS != 'ios') return;
     console.log('--------game-------', game)
-    OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('UGNavigationController.current.pushViewControllerWithGameModel:', [game]);
+        break;
+      case "android":
+        //TODO
+        // ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+        //   {
+        //     seriesId: linkCategory,
+        //     subId: linkPosition,
+        //   })
+        break;
+    }
   }
   static pushRedBag(redBag: RedBagDetailActivityModel) {
     if (Platform.OS != 'ios') return;
@@ -67,8 +137,18 @@ export default class PushHelper {
 
   // 跳转到彩票下注页，或内部功能页
   static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+          {
+            seriesId: linkCategory,
+            subId: linkPosition,
+          })
+        break;
+    }
   }
   static pushNoticePopUp(notice: string) {
     if (Platform.OS != 'ios') return;
@@ -127,7 +207,7 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
-            
+
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
