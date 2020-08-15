@@ -208,15 +208,18 @@ const ZLMinePage = (props: UGBasePageProps) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
-                            {item.code == 9 && unreadMsg > 0 ? <View style={{
-                                position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
+                        <Image
+                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
+                            source={{ uri: item.logo }} />
+                        {item.code == 9 && unreadMsg > 0 && (
+                            <View style={{
+                                position: 'absolute', right: 30, top: 3, backgroundColor: 'red',
                                 height: 20, width: 20,
                                 borderRadius: 10, justifyContent: 'center', alignItems: 'center'
                             }}>
                                 <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                            </View> : null}
-                        </FastImage>
+                            </View>
+                        )}
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
 
                     </TouchableOpacity>

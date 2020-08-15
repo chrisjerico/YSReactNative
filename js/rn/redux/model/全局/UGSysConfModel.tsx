@@ -56,6 +56,7 @@ export class UGUserCenterItem {
   code: UGUserCenterType;
   logo?: string;
   name?: string;
+  isDefaultLogo?: boolean;
 
   // 默认图标
   static defaultLogos: { [x: number]: string } = {
@@ -85,6 +86,7 @@ export class UGUserCenterItem {
     // 设置默认图标
     if (this.logo?.indexOf('http') == -1) {
       this.logo = UGUserCenterItem.defaultLogos[props.code];
+      this.isDefaultLogo = true;
     }
   }
 }
