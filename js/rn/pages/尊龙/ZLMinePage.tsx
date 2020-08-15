@@ -21,16 +21,12 @@ import Axios from "axios"
 import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
 import { navigationRef, pop } from "../../public/navigation/RootNavigation"
-<<<<<<< HEAD:js/rn/pages/尊龙/ZLMinePage.tsx
 import { UGBasePageProps } from "../base/UGPage"
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 
 const ZLMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;
-=======
-import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
-import {Toast} from "../../public/tools/ToastUtils";
-const ZLHomeMine = ({ navigation }) => {
->>>>>>> android/arc/rn_dev_15:js/rn/pages/尊龙/ZLHomeMine.tsx
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore

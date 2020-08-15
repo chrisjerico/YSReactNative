@@ -99,7 +99,8 @@ export default (Page: Function) => {
 
       // 设置props
       const defaultProps: UGBasePageProps = {
-        backgroundColor: [UGColor.BackgroundColor1],
+        //Android渐变色数量必须 >= 2
+        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
       this.newProps = deepMergeProps(defaultProps, this.props)

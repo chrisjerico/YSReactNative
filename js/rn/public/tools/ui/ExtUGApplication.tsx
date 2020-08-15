@@ -68,7 +68,7 @@ export default class ExtUGApplication {
     switch (Platform.OS) {
       case "android":
         let currentScene = B_DEBUG
-            ? PageName.UpdateVersionPage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
+            ? PageName.ZLHomePage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
             : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         if (currentScene != null) {
           initName = currentScene
