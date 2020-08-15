@@ -102,7 +102,8 @@ export const ToastStatus = (msg: any) => {
   OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
 }
 
-export const getHtml5Image = (id: number, path: string) => {
-  return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.png'
+
+export const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' = 'png') => {
+  return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
   // return 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
 }

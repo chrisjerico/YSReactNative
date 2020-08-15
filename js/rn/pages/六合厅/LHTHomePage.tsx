@@ -4,7 +4,6 @@ import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import AppDefine from '../../public/define/AppDefine'
 import {
   OCEvent,
   OCEventType
@@ -19,10 +18,10 @@ import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
+  getHtml5Image,
   ToastError,
   ToastSuccess,
-  updateUserInfo,
-  getHtml5Image
+  updateUserInfo
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -42,18 +41,8 @@ import HomeHeader from './components/HomeHeader'
 import LotteryBall from './components/LotteryBall'
 import NavBlock from './components/NavBlock'
 import TabComponent from './components/TabComponent'
-import {
-  defaultAdvertisement,
-  defaultBottomTools,
-  defaultCustomerServiceLogo,
-  defaultHomeHeaderRightLogo,
-  defaultLotteryLogo,
-  defaultNoticeLogo,
-  defaultPreferences
-} from './helpers/config'
+import config from './config.json'
 
-
-const moreLottery = [{ gameId: null, gameType: 'more', title: '更多彩种', des: '好挣好玩', logo: 'gdcz', selected: true }]
 const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
@@ -73,7 +62,13 @@ const LHTHomePage = (props: any) => {
     },
   })
   // stores
-  const { uid, avatar, usr, isTest, balance }: UGUserModel = UGStore.globalProps.userInfo
+  const {
+    uid,
+    avatar,
+    usr,
+    isTest,
+    balance,
+  }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
@@ -82,7 +77,7 @@ const LHTHomePage = (props: any) => {
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
-  const [leftGames, setLeftGames] = useState(defaultPreferences)
+  const [leftGames, setLeftGames] = useState(config?.preferences)
   const [roulette, setRoulette] = useState(null)
   // effects
   const {
@@ -194,17 +189,16 @@ const LHTHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
+        <SafeAreaHeader
+          headerColor={LHThemeColor.六合厅.themeColor}
+          containerStyle={{ paddingHorizontal: scale(10) }}
+        >
           <HomeHeader
-            avatar={
-              isTest
-                ? getHtml5Image(18, 'money-2')
-                : avatar
-            }
+            avatar={isTest ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}
             showLogout={uid ? true : false}
             leftLogo={mobile_logo}
-            rightLogo={defaultHomeHeaderRightLogo}
+            rightLogo={getHtml5Image(14, 'top_yhhd')}
             onPressSignOut={logOut}
             onPressSignIn={PushHelper.pushLogin}
             onPressSignUp={PushHelper.pushRegister}
@@ -247,7 +241,7 @@ const LHTHomePage = (props: any) => {
             <NoticeBlock
               containerStyle={styles.subComponent}
               notices={notices}
-              logo={defaultNoticeLogo}
+              logo={getHtml5Image(14, 'notice')}
               onPressNotice={({ content }) => {
                 PushHelper.pushNoticePopUp(content)
               }}
@@ -257,10 +251,10 @@ const LHTHomePage = (props: any) => {
               navs={navs}
               lotterys={plusLotterys}
               date={lotteryDate}
-              advertisement={defaultAdvertisement}
-              lotteryLogo={defaultLotteryLogo}
+              advertisement={getHtml5Image(14, 'banner', 'gif')}
+              lotteryLogo={getHtml5Image(14, 'tjzx')}
               balance={balance}
-              customerServiceLogo={defaultCustomerServiceLogo}
+              customerServiceLogo={getHtml5Image(14, 'zxkf')}
               onPressSavePoint={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.存款)
               }
@@ -316,7 +310,7 @@ const LHTHomePage = (props: any) => {
               activeTabColor={'#ff8610'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
-              leftGames={leftGames?.concat(moreLottery)}
+              leftGames={leftGames?.concat(config?.moreLottery)}
               rightGames={rightGames}
               renderLeftGame={(item, index) => {
                 const { title, logo, des, gameType, selected } = item
@@ -347,14 +341,13 @@ const LHTHomePage = (props: any) => {
                             onPressConfirm: (preferences: any) => {
                               // const selectedPreferences = preferences.filter((item: any) => item?.selected)?.concat(moreLottery)
                               setLeftGames(preferences)
-                            }
+                            },
                           })
                         } else {
                           //PushHelper.pushUserCenterType(parseInt(id))
                         }
                       }}
                     />
-
                   )
                 } else {
                   return null
@@ -425,7 +418,7 @@ const LHTHomePage = (props: any) => {
               debug={false}
             />
             <BottomToolBlock
-              tools={defaultBottomTools}
+              tools={config?.bottomTools}
               renderBottomTool={(item, index) => {
                 const { logo, userCenterType } = item
                 return (

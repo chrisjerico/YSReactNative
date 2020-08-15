@@ -21,7 +21,7 @@ import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import ProfileBlock from './components/ProfileBlock'
 import ProfileButton from './components/ProfileButton'
-import { defaultDaySignUrl, defaultProfileButtons } from './helpers/config'
+import config from './config.json'
 
 const LHTMinePage = ({ navigation }) => {
   // yellowBox
@@ -31,7 +31,7 @@ const LHTMinePage = ({ navigation }) => {
     onSuccess: () => {
       navigate(PageName.LHTHomePage, {})
     },
-  })  // stores
+  }) // stores
   const {
     avatar,
     usr,
@@ -67,7 +67,7 @@ const LHTMinePage = ({ navigation }) => {
         <TouchableOpacity
           style={styles.headerRight}
           onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
@@ -84,20 +84,25 @@ const LHTMinePage = ({ navigation }) => {
         }
       >
         <ProfileBlock
-          profileButtons={defaultProfileButtons}
+          profileButtons={config?.profileButtons}
           name={isTest ? '遊客' : usr}
           avatar={avatar}
-          level={curLevelGrade}
+          // level={curLevelGrade}
           balance={balance}
           onPressDaySign={() => {
-            PushHelper.openWebView(defaultDaySignUrl)
+            PushHelper.openWebView(
+              'http://test10.6yc.com/html/qiandao/index.html'
+            )
           }}
           onPressTaskCenter={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
-            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
+            UGStore.dispatch({
+              type: 'merge',
+              userInfo: { balance: data.data.balance },
+            })
           }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item

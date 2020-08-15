@@ -10,7 +10,6 @@ interface ProfileBlockProps {
   profileButtons: any[];
   avatar: string;
   name: string;
-  level?: string;
   balance: string;
   renderProfileButton: (item: any, index: number) => any;
   onPressDaySign: () => any;
@@ -21,7 +20,6 @@ interface ProfileBlockProps {
 const ProfileBlock = ({
   avatar,
   name = '',
-  level = '',
   balance = '',
   profileButtons = [],
   renderProfileButton,
@@ -45,7 +43,7 @@ const ProfileBlock = ({
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
             >
               <Text style={{ fontSize: scale(25) }}>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b', fontSize: scale(25) }}>
+              <Text style={{ color: '#ff861b', fontSize: scale(25) }} numberOfLines={1}>
                 {balance}
               </Text>
               <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
