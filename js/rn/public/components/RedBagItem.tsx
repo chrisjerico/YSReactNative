@@ -22,8 +22,8 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
 
       <TouchableWithoutFeedback onPress={() => {
         if (uid == "") {
-          Alert.alert("温馨提示", "该贴注册会员才能阅读，请登录后查看。", [
-            { text: "已取消", onPress: () => { }, style: "cancel" },
+          Alert.alert("温馨提示", "您还未登录", [
+            { text: "取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
                 loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
@@ -32,7 +32,7 @@ const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, 
           ])
         } else if (isTest) {
           Alert.alert("温馨提示", "请登录正式账号", [
-            { text: "已取消", onPress: () => { }, style: "cancel" },
+            { text: "取消", onPress: () => { }, style: "cancel" },
             {
               text: "马上登录", onPress: () => {
                 loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
