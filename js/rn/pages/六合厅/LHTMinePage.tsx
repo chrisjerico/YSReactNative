@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -80,13 +80,7 @@ const LHTMinePage = ({ navigation }) => {
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={
-          <RefreshControlComponent
-            onRefresh={() => {
-              updateUserInfo()
-            }}
-          />
-        }
+        refreshControl={<RefreshControlComponent />}
       >
         <ProfileBlock
           profileButtons={config?.profileButtons}

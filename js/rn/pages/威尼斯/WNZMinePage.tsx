@@ -13,10 +13,10 @@ import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSys
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
-import ButtonGroup from './components/ButtonGroup'
-import HomeHeader from './components/HomeHeader'
-import ProfileBlock from './components/ProfileBlock'
-import ToolBlock from './components/ToolBlock'
+import ButtonGroup from './views/ButtonGroup'
+import HomeHeader from './views/HomeHeader'
+import ProfileBlock from './views/ProfileBlock'
+import ToolBlock from './views/ToolBlock'
 
 const WNZMinePage = () => {
   const {

@@ -117,12 +117,6 @@ const LHTHomePage = (props: any) => {
   }
 
   useEffect(() => {
-    if (uid) {
-      getTurntableList()
-    }
-  }, [uid])
-
-  useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
       try {
         await updateUserInfo()
@@ -135,6 +129,12 @@ const LHTHomePage = (props: any) => {
       OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
     }
   })
+
+  useEffect(() => {
+    if (uid) {
+      getTurntableList()
+    }
+  }, [uid])
 
   useEffect(() => {
     if (notice?.data?.popup) {
@@ -417,7 +417,8 @@ const LHTHomePage = (props: any) => {
               onPressPromotion={() => {
                 push(PageName.PromotionListPage)
               }}
-              debug={false}
+              debug={true}
+              version={'20200815'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}

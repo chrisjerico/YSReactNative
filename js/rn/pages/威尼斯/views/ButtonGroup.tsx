@@ -1,5 +1,11 @@
 import React from 'react'
-import { Image, Text, TouchableOpacity, View, StyleSheet } from 'react-native'
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface ButtonGroupProps {
@@ -17,30 +23,34 @@ const ButtonGroup = ({
   leftTitle,
   rightTitle,
   onPressLeftButton,
-  onPressRightButton
+  onPressRightButton,
 }: ButtonGroupProps) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.leftButtonContainer} onPress={onPressLeftButton}>
-        <View style={styles.leftButton}>
+      <TouchableWithoutFeedback onPress={onPressLeftButton}>
+        <View style={styles.leftButtonContainer}>
+          <View style={styles.leftButton}>
+            <Image
+              source={{ uri: leftLogo }}
+              style={{ width: scale(34), aspectRatio: 34 / 27 }}
+            />
+            <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>
+              {leftTitle}
+            </Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={onPressRightButton}>
+        <View style={styles.rightButtonContainer}>
           <Image
-            source={{ uri: leftLogo }}
+            source={{ uri: rightLogo }}
             style={{ width: scale(34), aspectRatio: 34 / 27 }}
           />
           <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>
-            {leftTitle}
+            {rightTitle}
           </Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.rightButtonContainer} onPress={onPressRightButton}>
-        <Image
-          source={{ uri: rightLogo }}
-          style={{ width: scale(34), aspectRatio: 34 / 27 }}
-        />
-        <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>
-          {rightTitle}
-        </Text>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     </View>
   )
 }

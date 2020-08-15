@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 
@@ -7,12 +7,17 @@ interface RowGameButtomProps {
   logo: string;
   name: string;
   desc: string;
-  logoBallText: string
+  logoBallText: string;
 }
 
-const RowGameButtom = ({ logo, name, desc, logoBallText }: RowGameButtomProps) => {
+const RowGameButtom = ({
+  logo,
+  name,
+  desc,
+  logoBallText,
+}: RowGameButtomProps) => {
   return (
-    <TouchableOpacity
+    <View
       style={{
         width: '50%',
         height: scale(100),
@@ -22,7 +27,9 @@ const RowGameButtom = ({ logo, name, desc, logoBallText }: RowGameButtomProps) =
     >
       <View style={{ flex: 1, alignItems: 'flex-end' }}>
         <View style={styles.logoBall}>
-          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>{logoBallText}</Text>
+          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
+            {logoBallText}
+          </Text>
         </View>
       </View>
       <View
@@ -41,7 +48,11 @@ const RowGameButtom = ({ logo, name, desc, logoBallText }: RowGameButtomProps) =
           resizeMode={'contain'}
         />
         <View
-          style={{ justifyContent: 'space-around', marginLeft: scale(25), width: scale(150) }}
+          style={{
+            justifyContent: 'space-around',
+            marginLeft: scale(25),
+            width: scale(150),
+          }}
         >
           <Text numberOfLines={1}>{name}</Text>
           <Text
@@ -57,11 +68,20 @@ const RowGameButtom = ({ logo, name, desc, logoBallText }: RowGameButtomProps) =
         </View>
       </View>
       <View style={{ flex: 1 }} />
-    </TouchableOpacity>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  logoBall: { width: '10%', aspectRatio: 1, borderRadius: 100, backgroundColor: '#f6a518', justifyContent: 'center', alignItems: 'center', marginRight: scale(5), marginTop: scale(5) }
+  logoBall: {
+    width: '10%',
+    aspectRatio: 1,
+    borderRadius: 100,
+    backgroundColor: '#f6a518',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: scale(5),
+    marginTop: scale(5),
+  },
 })
 export default RowGameButtom

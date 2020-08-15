@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { scale } from '../../../public/tools/Scale';
+import { getHtml5Image } from '../../../public/tools/tars';
 
 
 // const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>
@@ -22,8 +23,8 @@ interface TabComponentProps {
 
 const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, elementHeight }: TabComponentProps) => {
   const [routes]: any = React.useState([
-    { key: 0, title: '官方玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png' },
-    { key: 1, title: '信用玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' },
+    { key: 0, title: '官方玩法', logo: getHtml5Image(23, 'home/gfwf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png'
+    { key: 1, title: '信用玩法', logo: getHtml5Image(23, 'home/xywf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' 
   ])
 
   // const routes = [

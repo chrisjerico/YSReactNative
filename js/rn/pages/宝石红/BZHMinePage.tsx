@@ -10,6 +10,7 @@ import { navigate } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { getHtml5Image } from '../../public/tools/tars'
 import { Toast } from '../../public/tools/ToastUtils'
 import BottomBlank from '../../public/views/tars/BottomBlank'
 import FeatureList from '../../public/views/tars/FeatureList'
@@ -18,8 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
-import ProfileBlock from './components/ProfileBlock'
-import { getHtml5Image } from '../../public/tools/tars'
+import ProfileBlock from './views/ProfileBlock'
 
 const BZHMinePage = (props) => {
   // yellowBox

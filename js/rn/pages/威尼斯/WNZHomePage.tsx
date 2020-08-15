@@ -1,14 +1,19 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModalComponent from '../../public/components/tars/AnnouncementModalComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import {
+  OCEvent,
+  OCEventType
+} from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { updateUserInfo } from '../../public/tools/tars'
+import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import GameButton from '../../public/views/tars/GameButton'
@@ -18,15 +23,19 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
-import HomeHeader from './components/HomeHeader'
-import RowGameButtom from './components/RowGameButtom'
 import TabComponent from './components/TabComponent'
+import HomeHeader from './views/HomeHeader'
+import RowGameButtom from './views/RowGameButtom'
 
-const WNZHomePage = ({ navigation }) => {
-  const announcementModal = useRef(null)
-  const { balance, usr, uid, isTest }: UGUserModel = UGStore.globalProps.userInfo
+const WNZHomePage = (props: any) => {
+  const { setProps } = props
+  const {
+    balance,
+    usr,
+    uid,
+    isTest,
+  }: UGUserModel = UGStore.globalProps.userInfo
   const {
     mobile_logo,
     webName,
@@ -41,6 +50,7 @@ const WNZHomePage = ({ navigation }) => {
     rankList,
     lotteryGames,
     systemHomeAds,
+    onRefresh,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -52,18 +62,8 @@ const WNZHomePage = ({ navigation }) => {
     'system_config',
   ])
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
-      console.log('------focus------')
-      updateUserInfo()
-    })
-    return unsubscribe
-  }, [])
-
-  const announce_first = parseInt(systemConfig?.data?.announce_first)
   const bannersInterval = parseInt(banner?.data?.interval)
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
-  const announcements = notice?.data?.popup ?? []
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const ads = systemHomeAds?.data ?? []
@@ -80,6 +80,60 @@ const WNZHomePage = ({ navigation }) => {
   lotteryGames?.data?.forEach((ele) => (lotterys = lotterys.concat(ele?.list)))
   const customiseGames = lotterys.filter((ele) => ele?.customise == '2') // 信
   const officialGames = lotterys.filter((ele) => ele?.customise == '0') // 官
+  const announcements =
+    notice?.data?.popup?.map((item: any) => {
+      return Object.assign(
+        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
+        item
+      )
+    }) ?? []
+
+  // const addEvents = (events: OCEventType[] = []) => {
+  //   events?.forEach(event => {
+  //     OCEvent.addEvent(event, async () => {
+  //       try {
+  //         await updateUserInfo()
+  //         setProps()
+  //       } catch (error) {
+  //         console.log(error)
+  //       }
+  //     })
+  //   })
+  // }
+
+  useEffect(() => {
+    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+      try {
+        await updateUserInfo()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
+      try {
+        console.log("----------登出了----------", uid)
+        UGStore.dispatch({ type: 'reset', userInfo: {} })
+        UGStore.save()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    // addEvents([OCEventType.UGNotificationLoginComplete, OCEventType.UGNotificationUserLogout])
+    return () => {
+      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+      OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
+    }
+  })
+
+  useEffect(() => {
+    if (notice?.data?.popup) {
+      if (!B_DEBUG) {
+        PushHelper.pushAnnouncement(announcements)
+      }
+    }
+  }, [notice])
 
   if (loading) {
     return <ProgressCircle />
@@ -89,7 +143,7 @@ const WNZHomePage = ({ navigation }) => {
         <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
             showBalance={uid ? true : false}
-            name={isTest ? '遊客' : usr}
+            name={usr}
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
@@ -102,14 +156,12 @@ const WNZHomePage = ({ navigation }) => {
           />
         </SafeAreaHeader>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           style={styles.container}
-          scrollEnabled={true}
           refreshControl={
             <RefreshControlComponent
-              onRefresh={() => {
-                updateUserInfo()
-                announcementModal?.current?.reload()
-                // onRefresh()
+              onRefresh={async () => {
+                onRefresh()
               }}
             />
           }
@@ -250,15 +302,11 @@ const WNZHomePage = ({ navigation }) => {
             onPressPromotion={() => {
               push(PageName.PromotionListPage)
             }}
+            debug={true}
+            version={'20200815'}
           />
           <View style={styles.bottomComponent} />
         </ScrollView>
-        <AnnouncementModalComponent
-          ref={announcementModal}
-          announcements={announcements}
-          color={WNZThemeColor.威尼斯.themeColor}
-          announceFirst={announce_first}
-        />
       </>
     )
   }

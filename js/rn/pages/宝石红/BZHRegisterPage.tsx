@@ -22,8 +22,8 @@ import { ToastError, ToastSuccess } from '../../public/tools/tars'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
-import AgentRedButton from './components/AgentRedButton'
-import Form from './components/Form'
+import AgentRedButton from './views/AgentRedButton'
+import Form from './views/Form'
 
 interface SlidingVerification {
   nc_csessionid?: string;

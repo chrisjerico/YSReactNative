@@ -22,7 +22,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
-import Form from './components/Form'
+import Form from './views/Form'
 
 interface SlidingVerification {
   nc_csessionid: string;

@@ -21,12 +21,14 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import GameBlock from './components/GameBlock'
-import HomeHeader from './components/HomeHeader'
-import NavBlock from './components/NavBlock'
+import GameBlock from './views/GameBlock'
+import HomeHeader from './views/HomeHeader'
+import NavBlock from './views/NavBlock'
 
 const BZHHomePage = () => {
   // yellowBox
@@ -58,7 +60,7 @@ const BZHHomePage = () => {
     couponListData,
     systemConfig,
     systemHomeAds,
-    onRefresh
+    onRefresh,
   } = useGetHomeInfo([
     'system_banners',
     'notice_latest',
@@ -71,24 +73,6 @@ const BZHHomePage = () => {
     'system_config',
     'system_homeAds',
   ])
-
-  const getTurntableList = async () => {
-    try {
-      const value = await APIRouter.activity_turntableList()
-      const roulette = value?.data?.data
-      setRoulette(roulette)
-    } catch (err) {
-    } finally {
-    }
-  }
-
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: BZHThemeColor.宝石红.tabBarBgColor
-      }
-    })
-  }
 
   // data
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
@@ -111,6 +95,24 @@ const BZHHomePage = () => {
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponListData?.data?.list ?? []
   const ads = systemHomeAds?.data ?? []
+
+  const getTurntableList = async () => {
+    try {
+      const value = await APIRouter.activity_turntableList()
+      const roulette = value?.data?.data
+      setRoulette(roulette)
+    } catch (err) {
+    } finally {
+    }
+  }
+
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: BZHThemeColor.宝石红.tabBarBgColor,
+      },
+    })
+  }
 
   useEffect(() => {
     if (uid) {
@@ -237,8 +239,7 @@ const BZHHomePage = () => {
                     } else {
                       push(PageName.BZHSignInPage)
                     }
-                  }
-                  }
+                  }}
                   title={name}
                   containerStyle={styles.subComponent}
                   contentContainerStyle={{ paddingTop: scale(20) }}
@@ -322,14 +323,14 @@ const BZHHomePage = () => {
             rankLists={rankLists}
           />
           <BottomLogo
-            debug={false}
-            version={'20200814-修復觸控效果'}
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
             }}
             onPressPromotion={goToJDPromotionListPage}
+            debug={true}
+            version={'20200815'}
           />
           <BottomBlank />
         </ScrollView>

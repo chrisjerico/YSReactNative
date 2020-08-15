@@ -12,7 +12,8 @@ export enum OCEventType {
   UGNotificationWithSkinSuccess = 'UGNotificationWithSkinSuccess',
   JspatchDownloadProgress = 'jsp下载进度',
   JspatchUpdateComplete = 'jsp更新结果',
-  UGNotificationLoginComplete = 'UGNotificationLoginComplete'
+  UGNotificationLoginComplete = 'UGNotificationLoginComplete',
+  UGNotificationUserLogout = 'UGNotificationUserLogout'
 }
 
 export class OCEvent extends OCCall {

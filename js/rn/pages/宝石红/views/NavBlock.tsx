@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View, ViewStyle } from 'react-native'
-import { scale } from '../../../public/tools/Scale'
 
 interface NavBlockProps {
   navs: any[];

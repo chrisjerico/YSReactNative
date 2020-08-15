@@ -90,6 +90,7 @@ const PickAvatarComponent = ({
             )}
           <View style={styles.buttonContainer}>
             <Button
+              activeOpacity={1}
               title={'保存头像'}
               buttonStyle={{
                 backgroundColor: BZHThemeColor.宝石红.themeColor,
@@ -104,6 +105,7 @@ const PickAvatarComponent = ({
               }
             />
             <Button
+              activeOpacity={1}
               title={'取消'}
               buttonStyle={{ backgroundColor: '#D0D0D0', width: scale(200) }}
               titleStyle={{ color: '#ffffff' }}
