@@ -24,7 +24,6 @@ interface Preference {
   gameId: boolean;
   logo: string;
   gameType: string;
-  // url: '/mobile/#/lottery/index/1',
   des: string;
 }
 
@@ -37,14 +36,12 @@ const PreferenceButton = ({
     <View style={{ width: '30%', marginBottom: scale(40) }}>
       <TouchableWithoutFeedback onPress={onPress}>
         <View
-          style={{
-            width: '100%',
-            aspectRatio: 2,
-            backgroundColor: selected ? '#c21632' : '#D0D0D0',
-            borderRadius: scale(10),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+          style={[
+            styles.buttonContainer,
+            {
+              backgroundColor: selected ? '#c21632' : '#D0D0D0',
+            },
+          ]}
         >
           <Text
             style={{
@@ -71,7 +68,6 @@ const LHTPreference = ({
   onPressConfirm,
   initPreferences,
 }: LHTPreferenceProps) => {
-  console.log('--------initPreferences---------', initPreferences)
   const [preferences, setPreferences] = useState(initPreferences)
 
   useEffect(() => {
@@ -94,16 +90,7 @@ const LHTPreference = ({
         <View />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
-        <Text
-          style={{
-            fontSize: scale(40),
-            color: '#6C6C6C',
-            textAlign: 'center',
-            paddingVertical: scale(30),
-          }}
-        >
-          {'选择您感兴趣的彩种'}
-        </Text>
+        <Text style={styles.title}>{'选择您感兴趣的彩种'}</Text>
         <View
           style={{
             flexDirection: 'row',
@@ -154,6 +141,19 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
     fontSize: scale(25),
+  },
+  title: {
+    fontSize: scale(40),
+    color: '#6C6C6C',
+    textAlign: 'center',
+    paddingVertical: scale(30),
+  },
+  buttonContainer: {
+    width: '100%',
+    aspectRatio: 2,
+    borderRadius: scale(10),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

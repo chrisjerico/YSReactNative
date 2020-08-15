@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle
+} from 'react-native'
 import { Icon } from 'react-native-elements'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
@@ -31,19 +36,20 @@ const ActivityComponent = ({
           onPress={onPress}
           resizeMode={'contain'}
         />
-        <TouchableOpacity
-          style={styles.iconContainer}
+        <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)
           }}
         >
-          <Icon
-            type={'evilicon'}
-            name={'close'}
-            size={scale(35)}
-            color={'#ffffff'}
-          />
-        </TouchableOpacity>
+          <View style={styles.iconContainer}>
+            <Icon
+              type={'evilicon'}
+              name={'close'}
+              size={scale(35)}
+              color={'#ffffff'}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     )
   } else {

@@ -6,7 +6,7 @@ import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCo
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import {
   OCEvent,
-  OCEventType
+  OCEventType,
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useLogOut from '../../public/hooks/tars/useLogOut'
@@ -21,7 +21,7 @@ import {
   getHtml5Image,
   ToastError,
   ToastSuccess,
-  updateUserInfo
+  updateUserInfo,
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -33,15 +33,17 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import BottomToolBlock from './components/BottomToolBlock'
-import HomeHeader from './components/HomeHeader'
-import LotteryBall from './components/LotteryBall'
-import NavBlock from './components/NavBlock'
 import TabComponent from './components/TabComponent'
 import config from './config.json'
+import BottomToolBlock from './views/BottomToolBlock'
+import HomeHeader from './views/HomeHeader'
+import LotteryBall from './views/LotteryBall'
+import NavBlock from './views/NavBlock'
 
 const LHTHomePage = (props: any) => {
   // yellowBox

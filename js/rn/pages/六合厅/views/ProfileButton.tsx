@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 
@@ -15,16 +15,18 @@ const ProfileButton = ({
   onPress,
 }: ProfileButtonProps) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={{ paddingRight: scale(5), color: '#ffffff', fontWeight: '500' }}>{title}</Text>
-      <FastImage
-        style={styles.image}
-        resizeMode={'contain'}
-        source={{
-          uri: logo,
-        }}
-      />
-    </TouchableOpacity>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
+        <FastImage
+          style={styles.image}
+          resizeMode={'contain'}
+          source={{
+            uri: logo,
+          }}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -42,6 +44,11 @@ const styles = StyleSheet.create({
     width: '15%',
     aspectRatio: 1,
     paddingLeft: scale(5),
+  },
+  title: {
+    paddingRight: scale(5),
+    color: '#ffffff',
+    fontWeight: '500',
   },
 })
 

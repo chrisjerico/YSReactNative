@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import Icons from 'react-native-vector-icons/FontAwesome5'
@@ -111,40 +111,42 @@ const TabComponent = ({
   return (
     <View style={containerStyle}>
       <View style={styles.mainTabContainer}>
-        <TouchableOpacity
-          style={[
-            styles.mainTab,
-            {
-              backgroundColor: index ? unActiveTabColor : activeTabColor,
-            },
-          ]}
-          onPress={() => setIndex(0)}
-        >
-          <Icons
-            name={'fire'}
-            color={'#ffffff'}
-            style={{ paddingRight: scale(5) }}
-            size={scale(20)}
-          />
-          <Text style={styles.tabText}>{'热门资讯'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.mainTab,
-            {
-              backgroundColor: index ? activeTabColor : unActiveTabColor,
-            },
-          ]}
-          onPress={() => setIndex(1)}
-        >
-          <Icons
-            name={'award'}
-            color={'#ffffff'}
-            style={{ paddingRight: scale(5) }}
-            size={scale(20)}
-          />
-          <Text style={styles.tabText}>{'购彩大厅'}</Text>
-        </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => setIndex(0)}>
+          <View
+            style={[
+              styles.mainTab,
+              {
+                backgroundColor: index ? unActiveTabColor : activeTabColor,
+              },
+            ]}
+          >
+            <Icons
+              name={'fire'}
+              color={'#ffffff'}
+              style={{ paddingRight: scale(5) }}
+              size={scale(20)}
+            />
+            <Text style={styles.tabText}>{'热门资讯'}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => setIndex(1)}>
+          <View
+            style={[
+              styles.mainTab,
+              {
+                backgroundColor: index ? activeTabColor : unActiveTabColor,
+              },
+            ]}
+          >
+            <Icons
+              name={'award'}
+              color={'#ffffff'}
+              style={{ paddingRight: scale(5) }}
+              size={scale(20)}
+            />
+            <Text style={styles.tabText}>{'购彩大厅'}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       {index ? (
         <TabView
@@ -167,6 +169,7 @@ const TabComponent = ({
               >
                 <TabBar
                   {...props}
+                  pressOpacity={1}
                   contentContainerStyle={{ backgroundColor: '#ffffff' }}
                   tabStyle={styles.subTabStyle}
                   renderLabel={({ route, focused }) => {

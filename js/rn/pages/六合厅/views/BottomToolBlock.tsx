@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
 interface BottomToolBlockProps {
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   tools: HomeBottomTool[];
   renderBottomTool: (item: HomeBottomTool, index: number) => any;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import { Icon } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { MarqueeVertical } from 'react-native-marquee-ab';
@@ -27,9 +27,11 @@ const HeadlineBlock = ({ onPressHeadline, headlines, headLineLogo = '', containe
         <View style={{ flex: 300 }}>
           <MarqueeVertical width={scale(390)} height={scale(100)} textList={cleanContents} numberOfLines={1} onTextClick={onPressHeadline} speed={60} onPressText={onPressHeadline} />
         </View>
-        <TouchableOpacity style={styles.closeButton} onPress={() => setDisplay(false)}>
-          <Icon type={'antdesign'} name={'close'} color={'#ffffff'} size={scale(12)} />
-        </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => setDisplay(false)}>
+          <View style={styles.closeButton} >
+            <Icon type={'antdesign'} name={'close'} color={'#ffffff'} size={scale(12)} />
+          </View>
+        </TouchableWithoutFeedback>
       </View> : null
   );
 };

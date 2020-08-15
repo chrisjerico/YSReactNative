@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import { Button } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -19,9 +24,9 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
-import ProfileBlock from './components/ProfileBlock'
-import ProfileButton from './components/ProfileButton'
 import config from './config.json'
+import ProfileBlock from './views/ProfileBlock'
+import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = ({ navigation }) => {
   // yellowBox
@@ -35,7 +40,6 @@ const LHTMinePage = ({ navigation }) => {
   const {
     avatar,
     usr,
-    curLevelGrade,
     balance,
     unreadMsg,
     isTest,
@@ -58,20 +62,21 @@ const LHTMinePage = ({ navigation }) => {
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <TouchableOpacity style={styles.headerLeft} onPress={gotoHome}>
+        <TouchableWithoutFeedback style={styles.headerLeft} onPress={gotoHome}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
         <View style={styles.headerMid}>
           <Text style={styles.headerTitle}>{'我的'}</Text>
         </View>
-        <TouchableOpacity
+
+        <TouchableWithoutFeedback
           style={styles.headerRight}
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
