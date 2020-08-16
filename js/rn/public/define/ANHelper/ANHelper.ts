@@ -84,6 +84,7 @@ export enum MenuType {
   CZGZ = '33', //彩种规则
   HBJL = '36', //红包记录
   SLJL = '37', //扫雷记录
+  AQZX = '100', //安全中心
 }
 
 export class ANHelper extends ANEvent {

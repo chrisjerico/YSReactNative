@@ -374,13 +374,11 @@ export default class PushHelper {
             break;
           }
           case UGUserCenterType.银行卡管理: {
-            async function func1() {
-              let hasBankCard: boolean = await OCHelper.call('UGUserModel.currentUser.hasBankCard');
-              let hasFundPwd: boolean = await OCHelper.call('UGUserModel.currentUser.hasFundPwd');
-              var vcName = hasBankCard ? 'UGBankCardInfoController' : hasFundPwd ? 'UGBindCardViewController' : 'UGSetupPayPwdController';
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: [vcName] }, true]);
-            }
-            func1();
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.CQK,
+              })
             break;
           }
           case UGUserCenterType.利息宝: {
@@ -432,11 +430,11 @@ export default class PushHelper {
             break;
           }
           case UGUserCenterType.安全中心: {
-            // ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
-            //   {
-            //     seriesId: '7',
-            //     subId: MenuType.RWZX,
-            //   })
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.AQZX,
+              })
             break;
           }
           case UGUserCenterType.任务中心: {
@@ -448,97 +446,103 @@ export default class PushHelper {
             break;
           }
           case UGUserCenterType.个人信息: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGUserInfoViewController'] }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.HYZX,
+              })
             break;
           }
           case UGUserCenterType.建议反馈: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'AppDefine.viewControllerWithStoryboardID:', args1: ['UGFeedBackController'] }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.TSZX,
+              })
             break;
           }
           case UGUserCenterType.在线客服: {
-            async function func1() {
-              let urlStr: string = await OCHelper.call('UGSystemConfigModel.currentConfig.zxkfUrl.stringByTrim');
-              if (!urlStr.length) return;
-              let hasHost = await OCHelper.call('NSURL.URLWithString:.host.length', [urlStr]);
-              let hasScheme = await OCHelper.call('NSURL.URLWithString:.scheme.length', [urlStr]);
-              // 补全URL
-              if (!hasHost) {
-                urlStr = AppDefine.host + urlStr;
-              } else if (!hasScheme) {
-                urlStr = 'http://' + urlStr;
-              }
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'SLWebViewController.new[setUrlStr:]', args1: [urlStr] }, true]);
-            }
-            func1();
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.KF,
+              })
             break;
           }
           case UGUserCenterType.活动彩金: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGMosaicGoldViewController.new' }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.SQCJ,
+              })
             break;
           }
           case UGUserCenterType.长龙助手: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChangLongController.new' }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.CLZS,
+              })
             break;
           }
           case UGUserCenterType.全民竞猜: {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待']);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.QMJC,
+              })
             break;
           }
           case UGUserCenterType.开奖走势: {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待']);
+            Toast('敬请期待')
             break;
           }
           case UGUserCenterType.QQ客服: {
-            OCHelper.call('UGSystemConfigModel.currentConfig.qqs').then((qqs: Array<string> = []) => {
-              if (!qqs.length) {
-                OCHelper.call('HUDHelper.showMsg:', ['敬请期待']);
-              } else {
-                var btns: Array<AlertButton> = qqs.map(
-                  (qq: string, idx: number): AlertButton => {
-                    return {
-                      text: `QQ客服${idx + 1}：${parseInt(qq)}`,
-                      onPress: () => {
-                        OCHelper.call('CMCommon.goQQ:', [qq]);
-                      },
-                    };
-                  },
-                );
-                btns.push({ text: '取消', style: 'cancel' });
-                Alert.alert('请选择QQ客服', null, btns);
-              }
-            });
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.QQ,
+              })
             break;
           }
           case UGUserCenterType.资金明细: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [4] }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.ZHGL,
+              })
             break;
           }
           case UGUserCenterType.六合彩: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.GCDT,
+              })
             break;
           }
           case UGUserCenterType.聊天室: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChatViewController.new' }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.LTS,
+              })
             break;
           }
           case UGUserCenterType.游戏大厅: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true]);
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.GCDT,
+              })
             break;
           }
           case UGUserCenterType.我的页: {
-            OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
-              let isOcPush = false;
-              mms.forEach((item, idx) => {
-                if (item.path == '/user') {
-                  isOcPush = true;
-                  popToRoot();
-                  OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [idx]);
-                }
+            ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+              {
+                seriesId: '7',
+                subId: MenuType.HYZX,
               })
-              if (!isOcPush) {
-                push(PageName.ZLMinePage);
-              }
-            })
             break;
           }
         }
