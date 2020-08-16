@@ -266,14 +266,23 @@ const ZLHeader = () => {
     const { uid = "", unreadMsg } = UGStore.globalProps.userInfo;
     const [showBackBtn, setShowBackBtn] = useState(false);
 
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
-        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
-        show != showBackBtn && setShowBackBtn(show);
-    })
+    let topDistance = 0;
+    switch (Platform.OS) {
+      case 'ios':
+        topDistance = insets.top;
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+          const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+          show != showBackBtn && setShowBackBtn(show);
+        })
+        break;
+      case 'android':
+
+        break;
+    }
 
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',
+            width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
             paddingHorizontal: 20
         }}>

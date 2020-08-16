@@ -130,7 +130,7 @@ const ZLHomePage = ({ navigation, setProps }) => {
         })
 
         init()
-        
+
         const timer = setInterval(() => {
             getRandomString()
         }, 500)
@@ -447,9 +447,20 @@ const ZLHeader = () => {
     const { uid = "", unreadMsg } = userStore
     const sysStore = UGStore.globalProps.sysConf;
     const { mobile_logo = "" } = sysStore
+
+    let topDistance = 0;
+    switch (Platform.OS) {
+      case 'ios':
+        topDistance = insets.top;
+        break;
+      case 'android':
+        //原生处理了 安全区域，RN 不需要处理
+        break;
+    }
+
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
+            width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: colorEnum.mainColor, justifyContent: 'space-between',
             flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
         }}>
             <FastImageAutoWidth style={{ width: 210, height: 50 }} source={{ uri: mobile_logo }} />
