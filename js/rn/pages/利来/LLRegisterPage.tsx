@@ -22,6 +22,8 @@ export const LLRegisterPage = () => {
     const [regType, setRegType] = useState<'user' | 'agent'>("user")
     const regex = RegExp("^[A-Za-z0-9]{6,15}$")
     const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const {mobile_logo = "", rankingListSwitch} = sysStore
     const {
         hide_reco, // 代理人 0不填，1选填，2必填
         reg_name, // 真实姓名 0不填，1选填，2必填
@@ -112,7 +114,7 @@ export const LLRegisterPage = () => {
                 <Image style={{width: AppDefine.width, height: 140, resizeMode: "stretch", position: "absolute"}}
                        source={{uri: "https://test10.6yc.com/views/mobileTemplate/20/images/login-blue-bg.png"}}/>
                 <Image style={{width: 290, height: 80, top: 20}}
-                       source={{uri: "https://cdn01.zdwoodfactory.cn/upload/t010/customise/images/m_logo.jpg?v=1578471928"}}/>
+                       source={{uri: mobile_logo}}/>
             </View>
             <View style={{flex: 1, alignItems: "center", marginHorizontal: 36}}>
                 <View style={{

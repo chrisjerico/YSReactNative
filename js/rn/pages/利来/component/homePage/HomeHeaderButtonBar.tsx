@@ -6,33 +6,8 @@ import {UGUserCenterType} from "../../../../redux/model/全局/UGSysConfModel";
 import {OCHelper} from "../../../../public/define/OCHelper/OCHelper";
 
 export const HomeHeaderButtonBar = ({logoIcon}: { logoIcon: string }) => {
-    const [serviceQQ, setServiceQQ] = useState("")
-
-    useEffect(() => {
-        getService()
-    }, [])
-
-    const getService = async () => {
-        let data = await OCHelper.call("UGSystemConfigModel.currentConfig.serviceQQ1")
-        setServiceQQ(data)
-    }
-
     const onPress = () => {
-        if (serviceQQ == "") {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待']);
-        } else {
-            Alert.alert('请选择QQ客服', null, [
-                {
-                    text: `QQ客服: ${serviceQQ}`,
-                    onPress: () => {
-                        OCHelper.call('CMCommon.goQQ:', [`serviceQQ`]);
-                    },
-                },
-                {
-                    text: '取消', style: 'cancel'
-                }
-            ]);
-        }
+        PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
     }
 
     return (

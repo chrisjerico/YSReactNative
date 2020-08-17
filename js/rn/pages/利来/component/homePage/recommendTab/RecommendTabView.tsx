@@ -35,9 +35,14 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
 
             }
         } else {
-            push(PageName.ZLLoginPage)
+            push(PageName.LLLoginPage)
         }
     }
+
+    useEffect(() => {
+        console.log("list",  list[2]?.subType[0].icon)
+    }, [])
+
     return (
         <View style={{paddingTop: 10, flex: 1}}>
             {banner ? <Banner onlineNum={onlineNum} bannerData={banner} /> :
@@ -53,12 +58,12 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
                              uri={list[1].icon}
                              onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}/>
                 <View style={{flexDirection: "row", marginTop: 8, flex: 1}}>
-                    <ImageButton imgStyle={{flex: 2/3, width: "auto", resizeMode: "stretch"}}
-                                 uri={list[2].icon}
-                                 onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
-                    <ImageButton imgStyle={{flex: 1/3, width: "auto", marginLeft: 4, resizeMode: "stretch"}}
-                                 uri={list[3].icon}
-                                 onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
+                    <ImageButton imgStyle={{flex: 2/3, height: 100, width: "auto", resizeMode: "stretch"}}
+                                 uri={list[2]?.gameId ? list[2]?.icon : list[2]?.subType[0].icon}
+                                 onPress={() => thirdPartGamePress(list[2].id, list[2].gameId)}/>
+                    <ImageButton imgStyle={{flex: 1/3, height: 100, width: "auto", marginLeft: 4, resizeMode: "stretch"}}
+                                 uri={list[3]?.gameId ? list[3]?.icon : list[3]?.subType[0].icon}
+                                 onPress={() => thirdPartGamePress(list[3].id, list[3].gameId)}/>
                 </View>
             </View>
         </View>

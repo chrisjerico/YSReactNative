@@ -12,7 +12,7 @@ import {removeHTMLTag} from "../../../../public/tools/removeHTMLTag";
 
 export const HomeTabView = () => {
     const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
-    const [height, setHeight] = useState(672)
+    const [height, setHeight] = useState(775)
     const [games, setGames] = useState<Icon[]>([])
     const [marquee, setMarquee] = useState<string[]>([])
     const [gamesIndex, setGamesIndex] = useState<string[]>([])
@@ -54,8 +54,8 @@ export const HomeTabView = () => {
     }
 
     const calculateHeight = (i: number) => {
-        gamesIndex[i].indexOf("推荐") != -1 || gamesIndex[i].indexOf("热门") != -1 ?
-            setHeight(672) :
+        i == 0 ?
+            setHeight(825) :
             gamesIndex[i].indexOf("彩票") != -1 ?
                 setHeight(Math.ceil(games[i].list.length / 4) * 95 + 50) :
                 setHeight(Math.ceil(games[i].list.length / 2) * 125 + 50)

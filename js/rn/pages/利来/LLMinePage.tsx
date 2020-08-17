@@ -30,11 +30,7 @@ const LLMinePage = () => {
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
     const [missionItem, setMissionItem] = useState<any>()
-    const { loginOut } = useLoginOut(PageName.LCHomePage)
-
-    // useEffect(() => {
-    //     userStore && uid == "" && PushHelper.pushLogin()
-    // }, [userStore])
+    const { loginOut } = useLoginOut(PageName.LLHomePage)
 
     useEffect(() => {
         if (UGUserCenterItem) {

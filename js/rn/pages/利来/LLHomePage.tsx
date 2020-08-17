@@ -1,25 +1,27 @@
 import {
     Alert,
-    Dimensions, Image, ImageBackground,
+    Dimensions,
+    Image,
+    ImageBackground,
     Platform,
     RefreshControl,
     SafeAreaView,
     ScrollView,
     Text,
+    TouchableOpacity,
     TouchableWithoutFeedback,
     View
 } from "react-native";
 import * as React from "react";
+import {useEffect, useState} from "react";
 import {HomeHeaderButtonBar} from "./component/homePage/HomeHeaderButtonBar";
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo";
 import {HomeTabView} from "./component/homePage/HomeTabView";
 import {ImageButton} from "./component/ImageButton";
-import {WinningListView} from "./component/homePage/WinningListView";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PushHelper from "../../public/define/PushHelper";
 import {useSelector} from "react-redux";
 import {IGlobalState, UGStore} from "../../redux/store/UGStore";
-import {useEffect, useState} from "react";
 import APIRouter from "../../public/network/APIRouter";
 import {PromotionsModel} from "../../public/network/Model/PromotionsModel";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
@@ -34,9 +36,9 @@ import RedBagItem from "../../public/components/RedBagItem";
 import MarqueePopupView from "../common/MarqueePopupView";
 import {useDimensions} from "@react-native-community/hooks";
 import {TurntableListModel} from "../../public/network/Model/TurntableListModel";
-import {WinningList} from "../../public/components/WinningList";
 import RankListCP from "../../public/widget/RankList";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
+import LinearGradient from "react-native-linear-gradient";
 
 const LLHomePage = () => {
     const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
@@ -118,16 +120,16 @@ const LLHomePage = () => {
                         style={{flex: 1}}>
                 <HomeHeaderButtonBar logoIcon={mobile_logo}/>
                 <HomeTabView/>
-                <View style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}>
+                <TouchableOpacity style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}} onPress={() => {
+                    push(PageName.PromotionListPage)
+                }}>
                     <Icon size={16} name={"gift"}/>
-                    <Text style={{fontSize: 16, color: "#333333", padding: 10}} onPress={() => {
-                        push(PageName.PromotionListPage)
-                    }}>优惠活动</Text>
+                    <Text style={{fontSize: 16, color: "#333333", padding: 10}} >优惠活动</Text>
                     <View style={{flex: 1}}/>
                     <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
-                </View>
+                </TouchableOpacity>
                 <View style={{backgroundColor: "#ffffff"}}>
-                <PromotionsBlock horizontal={true} titleVisible={false}/>
+                    <PromotionsBlock horizontal={true} titleVisible={false}/>
                 </View>
                 <ImageButton
                     imgStyle={{
@@ -161,6 +163,27 @@ const LLHomePage = () => {
                 <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{height: 100}}/>
             </ScrollView>
+            {uid === "" && <View style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                position: "absolute",
+                width: AppDefine.width,
+                bottom: 40
+            }}>
+                <LinearGradient colors={["#df4133", "#fe695b"]} style={{borderRadius: 40}}>
+                    <View style={{flexDirection: "row", justifyContent: "center", padding: 8}}>
+                        <TouchableOpacity style={{height: 40, justifyContent: "center", paddingHorizontal: 30}}
+                                          onPress={() => navigate(PageName.LLLoginPage, {})}>
+                            <Text style={{fontSize: 20, color: "#ffffff"}}>登录</Text>
+                        </TouchableOpacity>
+                        <View style={{width: 1, backgroundColor: "#ffffff", height: 40}}/>
+                        <TouchableOpacity style={{height: 40, justifyContent: "center", paddingHorizontal: 30}}
+                                          onPress={() => push(PageName.LLRegisterPage)}>
+                            <Text style={{fontSize: 20, color: "#ffffff"}}>注册</Text>
+                        </TouchableOpacity>
+                    </View>
+                </LinearGradient>
+            </View>}
             <RedBagItem redBag={redBag}/>
             <TurntableListItem/>
             <MarqueePopupView onPress={() => {
