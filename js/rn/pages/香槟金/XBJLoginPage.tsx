@@ -19,7 +19,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
 import { number } from 'prop-types';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { UGLoadingType, showLoading } from '../../public/widget/UGLoadingCP';
 import { XBJRegisterProps } from './XBJRegisterPage';
 import { navigate } from '../../public/navigation/RootNavigation';
 
@@ -57,7 +57,7 @@ function SlidingVerification(props: { hidden: boolean }) {
 }
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
-  let { setProps, vars: v, showLoading } = props;
+  let { setProps, vars: v } = props;
   
   useEffect(() => {
     async function getLocalPwd() {
@@ -107,7 +107,6 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
             await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
             await OCHelper.call('UGUserModel.setCurrentUser:');
-            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
           }
 
           // 保存数据
@@ -197,7 +196,6 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             buttonStyle={{ marginTop: 15, marginBottom: -5, backgroundColor: 'transparent' }}
             titleStyle={{ fontSize: 12 }}
             onPress={() => {
-              showLoading({ type: UGLoadingType.Loading, text:'请求失败' }); return;
               OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
               OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
             }}

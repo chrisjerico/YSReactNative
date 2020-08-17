@@ -1,20 +1,22 @@
 import Swiper from "react-native-swiper";
-import {Dimensions, Image, View} from "react-native";
+import { Dimensions, Image, View, TouchableWithoutFeedback } from "react-native";
 import * as React from "react";
+import PushHelper from "../../../../public/define/PushHelper";
 
 const width = Dimensions.get("screen").width;
 
 interface BannerViewProps {
     list: any[],
 }
-export const BannerView = ({list}: BannerViewProps) => {
+export const BannerView = ({ list }: BannerViewProps) => {
     return (
-        <View style={{height: 200}}>
+        <View style={{ height: 200 }}>
             <Swiper
-                style={{height: 200}}
+                style={{ height: 200 }}
                 autoplay={true}
                 loop={true}
                 dot={
+
                     <View
                         style={{
                             backgroundColor: 'rgba(0,0,0,.2)',
@@ -49,8 +51,12 @@ export const BannerView = ({list}: BannerViewProps) => {
                 }}
             >
                 {list.map((item) =>
-                    <Image style={{width, height: 200}}
-                           source={{uri: item.pic}}/>)}
+                    <TouchableWithoutFeedback onPress={() => {
+                        PushHelper.pushCategory(item.linkCategory, item.linkPosition)
+                    }}>
+                        <Image style={{ width, height: 200 }}
+                            source={{ uri: item.pic }} />
+                    </TouchableWithoutFeedback>)}
             </Swiper>
         </View>
     )

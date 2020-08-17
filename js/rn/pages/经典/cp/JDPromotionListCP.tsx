@@ -57,34 +57,38 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
               pm.clsName = 'UGPromoteModel';
             }
             debugger
-            switch (this.style2) {
-              // 内页
-              case 'page': {
-                OCHelper.call(({ vc }) => ({
-                  vc: {
-                    selectors: 'UGPromoteDetailController.new[setItem:]',
-                    args1: [pm],
-                  },
-                  ret: {
-                    selectors: 'UGNavigationController.current.pushViewController:animated:',
-                    args1: [vc, true],
-                  },
-                }));
-                break;
+            OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [pm.linkCategory, pm.linkPosition]).then((ret) => {
+              if (ret) return;
+              
+              switch (this.style2) {
+                // 内页
+                case 'page': {
+                  OCHelper.call(({ vc }) => ({
+                    vc: {
+                      selectors: 'UGPromoteDetailController.new[setItem:]',
+                      args1: [pm],
+                    },
+                    ret: {
+                      selectors: 'UGNavigationController.current.pushViewController:animated:',
+                      args1: [vc, true],
+                    },
+                  }));
+                  break;
+                }
+                // 弹框
+                case 'popup': {
+                  OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                  break;
+                }
+                // 折叠
+                case 'slide': {
+                  this.setState({
+                    selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
+                  });
+                  break;
+                }
               }
-              // 弹框
-              case 'popup': {
-                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
-                break;
-              }
-              // 折叠
-              case 'slide': {
-                this.setState({
-                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
-                });
-                break;
-              }
-            }
+            })
           }}>
           {pm.title?.length > 0 && <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize: 16, fontWeight: '500' }}>{pm.title}</Text>}
           <FastImage

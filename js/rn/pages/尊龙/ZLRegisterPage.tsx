@@ -49,7 +49,9 @@ const ZLRegisterPage = () => {
         pass_length_min, // 注册密码最小长度
         pass_length_max, // 注册密码最大长度,
         agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
-        smsVerify // 手机短信验证
+        smsVerify, // 手机短信验证,
+        allowreg,
+        closeregreason
     } = SystemStore
 
     const onSubmit = async (requestData) => {
@@ -84,7 +86,6 @@ const ZLRegisterPage = () => {
                     const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
                     await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
                     await OCHelper.call('UGUserModel.setCurrentUser:');
-                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
                     UGStore.dispatch({ type: 'reset', userInfo: {} })
                 }
                 await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
@@ -118,7 +119,16 @@ const ZLRegisterPage = () => {
 
         }
     }
-
+    useEffect(() => {
+        if (allowreg == false) {
+            Alert.alert(closeregreason, "", [{
+                text: "确定",
+                onPress: () => {
+                    popToRoot()
+                }
+            }])
+        }
+    }, [allowreg])
     useEffect(() => {
         if (reg_vcode == 1) {
             reRenderCode()

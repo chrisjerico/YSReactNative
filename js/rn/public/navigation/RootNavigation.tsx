@@ -7,10 +7,7 @@ import { Router, RouterType } from './Router';
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
-export function navigate<P>(page: PageName, props?: P & { index?: number }): boolean {
-    if (props?.index) {
-        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [props.index]);
-    }
+export function navigate<P>(page: PageName, props?: P): boolean {
     return goFirstTransitionPage(page, props);
 }
 
@@ -22,14 +19,17 @@ export function jumpTo<P extends object>(page: PageName, props?: P): boolean {
     return goFirstTransitionPage(page, props, RouterType.Tab);
 }
 
-export function pop() {
-    const canPop = navigationRef?.current?.getRootState().routes.length > 1;
-    canPop && navigationRef?.current?.dispatch(StackActions.pop());
+export function pop(): boolean {
+    const count = navigationRef?.current?.getRootState().routes.length;
+    count < 3 && OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+    count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
+    return count > 1;
 }
 
 export function popToRoot() {
     const canPop = navigationRef?.current?.getRootState().routes.length > 1;
     canPop && navigationRef?.current?.dispatch(StackActions.popToTop());
+    OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
 }
 
 // 获取当前页面
@@ -50,7 +50,7 @@ export function replace(name: string, params?: any) {
     }
 }
 // 复杂页面第一次初始化会卡顿，先去过渡页再切换（优化用户体验）
-function goFirstTransitionPage(page: PageName, props: object, action?: RouterType): boolean {
+function goFirstTransitionPage(page: PageName, props: any, action?: RouterType): boolean {
     action = Router.getPageRouterType(page, action);
 
     if (action === RouterType.None) {
@@ -74,6 +74,7 @@ function goFirstTransitionPage(page: PageName, props: object, action?: RouterTyp
         } else {
             console.log('跳转到过渡页');
             if (action == RouterType.Stack) {
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
                 navigationRef?.current?.dispatch(StackActions.push(page, props));
             } else {
                 popToRoot();

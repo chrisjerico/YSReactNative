@@ -27,6 +27,7 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import { List } from "../../public/network/Model/HomeGamesModel"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import useMemberItems from "../../public/hooks/useMemberItems"
+import useLoginOut from "../../public/hooks/useLoginOut"
 const GDBMinePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
@@ -116,6 +117,7 @@ const AcctountDetail = () => {
     }
     return str
   }
+  const { loginOut } = useLoginOut(PageName.GDBHomePage)
   const { width } = useDimensions().screen
   const { UGUserCenterItem } = useMemberItems()
   const [centerItem, setCenterItem] = useState<UGUserCenterItem[]>([])
@@ -164,11 +166,19 @@ const AcctountDetail = () => {
 
       </View>
       <FlatList numColumns={3} renderItem={({ item }) => {
-        return <TouchableOpacity style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginTop: 20 }}>
+        return <TouchableOpacity onPress={() => {
+          if (item.code == UGUserCenterType.登出) {
+            loginOut()
+          } else {
+            PushHelper.pushUserCenterType(item.code)
+          }
+
+        }} style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginTop: 20 }}>
           <Image source={{ uri: item.logo }} style={{ width: 30, height: 30, tintColor: "gray" }} />
           <Text style={{ color: '#a0a0a0', marginTop: 10, fontWeight: "bold", fontSize: 13 }}>{item.name}</Text>
         </TouchableOpacity>
       }} data={centerItem} style={{ flex: 1, backgroundColor: "#242424", borderRadius: 12, marginTop: 10 }} />
+      <View style={{ height: 100 }}></View>
     </View>
   )
 }

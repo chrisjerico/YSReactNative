@@ -5,6 +5,7 @@ import { OCCall } from './OCBridge/OCCall';
 import { OCEvent } from './OCBridge/OCEvent';
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel';
 import { httpClient } from '../../network/httpClient';
+import { UGStore } from '../../../redux/store/UGStore';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;
@@ -32,7 +33,6 @@ export class OCHelper extends OCEvent {
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
       updateUserInfo()
-
     });
     // 设置站点编号
     await OCHelper.call('AppDefine.shared.SiteId').then((siteId: string) => {
@@ -40,9 +40,8 @@ export class OCHelper extends OCEvent {
     });
     // 获取系统配置信息
     await OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-      IGlobalStateHelper.updateSysConf(sysConf);
+      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
     });
-
     // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
     OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
       OCHelper.call('AppDefine.shared.setVersion:', [ver]);

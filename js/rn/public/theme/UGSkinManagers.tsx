@@ -32,6 +32,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
     ...WNZThemeColor, // 威尼斯
+    ...PYThemeColor
   }
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -42,7 +43,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf
     let dict = {
-      0: `经典${mobileTemplateBackground}`,
+      1: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -59,7 +60,7 @@ export default class UGSkinManagers extends UGThemeColor {
       22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
-      24: `白曜`,
+      26: `白曜`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
@@ -151,6 +152,7 @@ export default class UGSkinManagers extends UGThemeColor {
           ])
         }
       }
+      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
     }
 
     // 刷新标签栏、导航条

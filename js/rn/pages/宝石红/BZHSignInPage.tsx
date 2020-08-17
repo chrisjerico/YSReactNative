@@ -38,7 +38,7 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
 const BZHSignInPage = (props: BZHSignInStore) => {
   const { loginSuccessHandle } = useLoginIn()
   const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
-  const signInStore = UGStore.globalProps.BZHSignInProps;
+  const signInStore = UGStore.getPageProps(PageName.BZHSignInPage);
   const { isRemember, account, password }: BZHSignInStore = signInStore
   const { setProps }: BZHSignInStore = props
   const [hidePassword, setHidePassword] = useState(true)

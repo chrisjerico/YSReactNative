@@ -1,11 +1,10 @@
 import { UGThemeColor } from '../UGThemeColor';
 
 export const KSThemeColor: { [x: string]: UGThemeColor } = {
-
   凯时: {
     skitType: '凯时',
     skitString: '凯时',
-    bgColor: ['black', 'black'],
+    bgColor: ['gray', 'gray'],
     navBarBgColor: ['#2C2E36', '#2C2E36'],
     tabBarBgColor: '#2C2E36',
     tabNoSelectColor: '#FFFFFF',
@@ -26,3 +25,5 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
 
   }
 };
+
+
