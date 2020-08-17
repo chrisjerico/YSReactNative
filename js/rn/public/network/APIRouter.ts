@@ -124,17 +124,39 @@ class APIRouter {
     });
   }
   static user_balance_token = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user.token)
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          { blGet: true, });
+        break;
+    }
+
+    return httpClient.get<BalanceModel>("c=user&a=balance&" + tokenParams)
   }
   static system_onlineCount = async () => {
     return httpClient.get<OnlineModel>("c=system&a=onlineCount")
   }
   static user_logout = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<any>("c=user&a=logout", {
-      token: user?.token
-    })
+    let tokenParams = {};
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = {
+          token: user?.token
+        }
+        break;
+      case "android":
+        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = JSON.parse(mapStr)
+        break;
+    }
+
+    return httpClient.post<any>("c=user&a=logout", tokenParams)
   }
   static secure_imgCaptcha = async () => {
     let accessToken = "";
@@ -206,11 +228,24 @@ class APIRouter {
   };
 
   static task_changeAvatar = async (filename: string) => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", {
-      token: user?.token,
-      filename
-    })
+    let tokenParams = {};
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = {
+          token: user?.token,
+          filename
+        }
+        break;
+      case "android":
+        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = {
+          ...JSON.parse(mapStr),
+          filename
+        }
+        break;
+    }
+    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", tokenParams)
   };
   static language_getLanguagePackage = async (lanCode: string) => {
     return httpClient.get("c=language&a=getLanguagePackage&languageCode=" + lanCode,
