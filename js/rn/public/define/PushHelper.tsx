@@ -377,7 +377,7 @@ export default class PushHelper {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
-                subId: MenuType.CQK,
+                subId: MenuType.YHK,
               })
             break;
           }

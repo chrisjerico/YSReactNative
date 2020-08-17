@@ -3,6 +3,8 @@ import AppDefine from "../define/AppDefine";
 import { List } from "../network/Model/CouponListModel";
 import { OCHelper } from "../define/OCHelper/OCHelper";
 import { NSValue } from "../define/OCHelper/OCBridge/OCCall";
+import {Platform} from "react-native";
+import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
 
 const usePopUpView = () => {
     const [style1, setStyle1] = useState("")
@@ -27,29 +29,41 @@ const usePopUpView = () => {
         if (!data?.clsName) {
             data.clsName = 'UGPromoteModel';
         }
-        switch (type) {
-            case 'page':
-                OCHelper.call(({ vc }) => ({
-                    vc: {
-                        selectors: 'UGPromoteDetailController.new[setItem:]',
-                        args1: [data],
-                    },
-                    ret: {
-                        selectors: 'UGNavigationController.current.pushViewController:animated:',
-                        args1: [vc, true],
-                    },
-                }));
 
-                break;
-            case 'popup':
-                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
-                break
-            case 'slide':
-                if (onPress) {
-                    onPress()
+        switch (Platform.OS) {
+            case 'ios':
+                switch (type) {
+                    case 'page':
+                        OCHelper.call(({ vc }) => ({
+                            vc: {
+                                selectors: 'UGPromoteDetailController.new[setItem:]',
+                                args1: [data],
+                            },
+                            ret: {
+                                selectors: 'UGNavigationController.current.pushViewController:animated:',
+                                args1: [vc, true],
+                            },
+                        }));
+
+                        break;
+                    case 'popup':
+                        OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+                        break
+                    case 'slide':
+                        if (onPress) {
+                            onPress()
+                        }
+                        break
+                    default:
+                        break;
                 }
-                break
-            default:
+                break;
+            case 'android':
+                ANHelper.callAsync(CMD.OPEN_COUPON,
+                  {
+                      ...data,
+                      style: type,
+                  })
                 break;
         }
 

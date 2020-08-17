@@ -10,6 +10,7 @@ import {httpClient} from "../../network/httpClient";
  * @date 2020/8/6
 */
 export enum CMD {
+  OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   UNIVERSAL = 'UNIVERSAL', //万能函数
@@ -85,6 +86,7 @@ export enum MenuType {
   HBJL = '36', //红包记录
   SLJL = '37', //扫雷记录
   AQZX = '100', //安全中心
+  YHK = '101', //银行卡管理
 }
 
 export class ANHelper extends ANEvent {
