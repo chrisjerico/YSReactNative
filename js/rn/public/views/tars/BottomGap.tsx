@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { useSafeArea } from "react-native-safe-area-context"
 import { scaleHeight } from "../../tools/Scale"
 
-const BottomBlank = () => {
+const BottomGap = () => {
 
   const safeArea = useSafeArea()
 
@@ -12,4 +12,4 @@ const BottomBlank = () => {
   )
 }
 
-export default BottomBlank
+export default BottomGap

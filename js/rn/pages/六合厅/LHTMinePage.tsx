@@ -17,7 +17,7 @@ import { navigate } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import BottomBlank from '../../public/views/tars/BottomBlank'
+import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -136,7 +136,7 @@ const LHTMinePage = ({ navigation }) => {
           onPress={logOut}
           activeOpacity={1}
         />
-        <BottomBlank />
+        <BottomGap />
       </ScrollView>
     </>
   )

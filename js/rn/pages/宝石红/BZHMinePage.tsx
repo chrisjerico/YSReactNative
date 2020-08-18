@@ -12,7 +12,7 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
 import { Toast } from '../../public/tools/ToastUtils'
-import BottomBlank from '../../public/views/tars/BottomBlank'
+import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -140,7 +140,7 @@ const BZHMinePage = (props) => {
           titleStyle={styles.logOutTitle}
           onPress={logOut}
         />
-        <BottomBlank />
+        <BottomGap />
       </ScrollView>
       <PickAvatarComponent
         loading={avatarListLoading}

@@ -14,7 +14,7 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomBlank from '../../public/views/tars/BottomBlank'
+import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
@@ -312,7 +312,7 @@ const BZHHomePage = () => {
             debug={true}
             version={'20200818'}
           />
-          <BottomBlank />
+          <BottomGap />
         </ScrollView>
         <ActivityComponent
           show={uid && redBagLogo && !isTest}
@@ -330,16 +330,17 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any) => {
-          const { image, position } = item
+        {floatAd?.map((item: any, index) => {
+          const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent
+              key={index}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}
               logo={image}
               onPress={() => {
-                // PushHelper.pushWheel(roulette)
+                PushHelper.pushCategory(linkCategory, linkPosition)
               }}
             />
           )

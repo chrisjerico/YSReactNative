@@ -6,7 +6,7 @@ import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCo
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import {
   OCEvent,
-  OCEventType,
+  OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useActivity from '../../public/hooks/tars/useActivity'
@@ -19,15 +19,15 @@ import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
+  getActivityPosition,
   getHtml5Image,
   ToastError,
   ToastSuccess,
-  updateUserInfo,
-  getActivityPosition,
+  updateUserInfo
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomBlank from '../../public/views/tars/BottomBlank'
+import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
@@ -35,9 +35,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
@@ -134,7 +132,9 @@ const LHTHomePage = (props: any) => {
       )
     }) ?? []
   const navs =
-    homeGame?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+    homeGame?.data?.navs
+      ?.sort((a: any, b: any) => a.sort - b.sort)
+      .slice(0, 8) ?? []
   const coupons = couponList?.data?.list ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
@@ -251,7 +251,7 @@ const LHTHomePage = (props: any) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
               }
               renderNav={(item, index) => {
-                const { icon, name, logo } = item
+                const { icon, name, logo, gameId } = item
                 return (
                   <GameButton
                     key={index}
@@ -260,7 +260,13 @@ const LHTHomePage = (props: any) => {
                     enableCircle={false}
                     logo={icon ? icon : logo}
                     title={name}
-                    onPress={() => PushHelper.pushHomeGame(item)}
+                    onPress={() => {
+                      if (gameId == 9) {
+                        goToJDPromotionListPage()
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
+                    }}
                   />
                 )
               }}
@@ -333,21 +339,14 @@ const LHTHomePage = (props: any) => {
                                 gameCode: '-1',
                                 gameId: gameId,
                                 gameType: gameType,
-                                // hotIcon:
-                                //   'https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/28463cb7ab027d440dd3d91ab602c7ea.gif',
-                                // icon:
-                                //   'https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/66a245511ce065b985ba3f8aac8b54cd.jpg',
                                 isClose: '0',
                                 isInstant: '0',
                                 isSeal: '0',
                                 levelType: '1',
-                                // logo:
-                                //   'https://cdn01.v-denche.cn/open_prize/images/icon/70.png?v=1597734663',
                                 name: title,
                                 openWay: '0',
                                 realName: title,
                                 seriesId: '1',
-                                // sort: '-50',
                                 subId: gameId,
                                 subtitle: des,
                                 tipFlag: '4',
@@ -415,6 +414,10 @@ const LHTHomePage = (props: any) => {
               containerStyle={styles.subComponent}
               iconContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}
+              initialAnimatedHeight={scale(0)}
+              finalAnimatedHeight={
+                scale(195) + scale((rankLists?.length ?? 0) * 50)
+              }
             />
             <BottomLogo
               containerStyle={{ marginBottom: scale(30) }}
@@ -452,7 +455,7 @@ const LHTHomePage = (props: any) => {
                 )
               }}
             />
-            <BottomBlank />
+            <BottomGap />
           </View>
         </ScrollView>
         <ActivityComponent
@@ -471,16 +474,17 @@ const LHTHomePage = (props: any) => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any) => {
-          const { image, position } = item
+        {floatAd?.map((item: any, index) => {
+          const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent
+              key={index}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}
               logo={image}
               onPress={() => {
-                // PushHelper.pushWheel(roulette)
+                PushHelper.pushCategory(linkCategory, linkPosition)
               }}
             />
           )

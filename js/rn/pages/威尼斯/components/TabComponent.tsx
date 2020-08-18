@@ -50,6 +50,7 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, 
         return (
           <TabBar
             {...props}
+            pressOpacity={1}
             contentContainerStyle={{ backgroundColor: '#ffffff' }}
             tabStyle={styles.tabStyle}
             renderLabel={({ route, focused }) => {

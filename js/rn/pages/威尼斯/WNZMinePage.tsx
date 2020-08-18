@@ -17,6 +17,7 @@ import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import { getHtml5Image } from '../../public/tools/tars'
 
 const WNZMinePage = () => {
   const {
@@ -26,7 +27,6 @@ const WNZMinePage = () => {
     taskRewardTitle,
     taskReward,
     taskRewardTotal,
-    isTest,
   }: UGUserModel = UGStore.globalProps.userInfo
   const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   const { UGUserCenterItem } = useMemberItems()
@@ -82,32 +82,28 @@ const WNZMinePage = () => {
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <HomeHeader
           showBalance={uid ? true : false}
-          name={isTest ? '遊客' : usr}
+          name={usr}
           logo={mobile_logo}
           balance={balance}
           onPressMenu={() => {
             PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
           }}
           onPressComment={() => {
-            console.log('去六合彩')
+            PushHelper.pushHomeGame({ "category": "44", "gameCode": "-1", "gameId": "70", "gameType": "lhc", "hotIcon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/28463cb7ab027d440dd3d91ab602c7ea.gif", "icon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/66a245511ce065b985ba3f8aac8b54cd.jpg", "id": "302", "isClose": "0", "isInstant": "0", "isSeal": "0", "levelType": "1", "logo": "https://cdn01.v-denche.cn/open_prize/images/icon/70.png?v=1597739611", "name": "香港六合彩", "openWay": "0", "realName": "", "seriesId": "1", "sort": "-50", "subId": "70", "subtitle": "一天一期", "tipFlag": "4", "title": "香港六合彩", "url": "" })
           }}
-          onPressUser={() => navigate(PageName.WNZMinePage, {})}
+          onPressUser={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+          }}
         />
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={
-          <RefreshControlComponent
-            onRefresh={() => {
-              updateUserInfo()
-            }}
-          />
-        }
       >
         <ProfileBlock
           taskReward={taskReward}
           taskRewardTotal={taskRewardTotal}
           taskRewardTitle={taskRewardTitle}
+          backgroundImage={getHtml5Image(23, 'userBg')}
         />
         <ButtonGroup
           leftLogo={headTools[0]?.logo}

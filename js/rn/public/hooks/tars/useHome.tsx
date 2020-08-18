@@ -8,6 +8,7 @@ import { BannerModel } from '../../network/Model/BannerModel'
 import { CouponListModel } from '../../network/Model/CouponListModel'
 import { HomeADModel } from '../../network/Model/HomeADModel'
 import { HomeGamesModel } from '../../network/Model/HomeGamesModel'
+import { LotteryGameModel } from '../../network/Model/LotteryGameModel'
 import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
@@ -25,6 +26,7 @@ const useHome = () => {
   const [systemConfig, setSystemConfig] = useState<SystemConfigModel>()
   const [homeAd, setHomeAd] = useState<HomeADModel>()
   const [lotteryNumber, setLotteryNumber] = useState<LotteryNumberModel>()
+  const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
 
   const init = () => {
     if (Platform.OS == 'ios') {
@@ -52,7 +54,8 @@ const useHome = () => {
       APIRouter.system_promotions(),
       APIRouter.system_config(),
       APIRouter.system_homeAds(),
-      APIRouter.lhcdoc_lotteryNumber()
+      APIRouter.lhcdoc_lotteryNumber(),
+      APIRouter.game_lotteryGames()
     ]).then((response) => {
       setRankList(response[0]?.data)
       setBanner(response[1]?.data)
@@ -63,6 +66,7 @@ const useHome = () => {
       setSystemConfig(response[6]?.data)
       setHomeAd(response[7]?.data)
       setLotteryNumber(response[8]?.data)
+      setLotteryGames(response[9]?.data)
     }).catch(error => {
       console.log("--------useHome error--------", error)
     }).finally(() => {
@@ -90,6 +94,7 @@ const useHome = () => {
     systemConfig,
     homeAd,
     lotteryNumber,
+    lotteryGames,
     refreshHomeInfo
   }
 

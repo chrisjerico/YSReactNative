@@ -6,9 +6,10 @@ interface ProfileBlockProps {
   taskReward: string;
   taskRewardTitle: string;
   taskRewardTotal: string;
+  backgroundImage: string;
 }
 
-const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal }: ProfileBlockProps) => {
+const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal, backgroundImage }: ProfileBlockProps) => {
 
   const taskReward_f = parseFloat(taskReward) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
@@ -16,7 +17,7 @@ const ProfileBlock = ({ taskReward, taskRewardTitle, taskRewardTotal }: ProfileB
 
   return (
     <View style={styles.imageBackgroundContainer}>
-      <ImageBackground style={styles.image} source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/23/images/userBg.png' }}>
+      <ImageBackground style={styles.image} source={{ uri: backgroundImage }}>
         <View style={styles.taskRewardTitleContainer}>
           <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
             {taskRewardTitle}
