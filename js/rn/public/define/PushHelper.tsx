@@ -9,7 +9,7 @@ import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
-import { popToRoot, push } from '../navigation/RootNavigation';
+import {navigate, popToRoot, push} from '../navigation/RootNavigation';
 import { PageName } from '../navigation/Navigation';
 export default class PushHelper {
   // 輪盤
@@ -127,7 +127,7 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
-            
+
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
@@ -213,7 +213,7 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.开奖走势: {
-        navigate(PageName.TrendView)
+        navigate(PageName.TrendView, {})
         break;
       }
       case UGUserCenterType.QQ客服: {
