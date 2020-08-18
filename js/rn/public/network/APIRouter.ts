@@ -51,25 +51,25 @@ class APIRouter {
   /**
    * 首頁遊戲資料
    */
-  static game_homeGames = () => {
+  static game_homeGames = async () => {
     return httpClient.get<HomeGamesModel>('c=game&a=homeGames')
   }
   /**
   * 輪播圖
   */
-  static system_banners = () => {
+  static system_banners = async () => {
     return httpClient.get<BannerModel>('c=system&a=banners')
   }
   /**
   * 跑馬燈
   */
-  static notice_latest = () => {
+  static notice_latest = async () => {
     return httpClient.get<NoticeModel>("c=notice&a=latest")
   }
   /**
   * 優惠活動
   */
-  static system_promotions = () => {
+  static system_promotions = async () => {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
@@ -85,22 +85,22 @@ class APIRouter {
       throw '更新使用者失败'
     }
   }
-  static user_guestLogin = () => {
+  static user_guestLogin = async () => {
     return httpClient.post<LoginModel>("c=user&a=guestLogin", {
       usr: '46da83e1773338540e1e1c973f6c8a68',
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     })
   }
-  static activity_redBagDetail = () => {
+  static activity_redBagDetail = async () => {
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
   }
-  static activity_turntableList = () => {
+  static activity_turntableList = async () => {
     return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
   }
-  static system_floatAds = () => {
+  static system_floatAds = async () => {
     return httpClient.get<FloatADModel>("c=system&a=floatAds")
   }
-  static system_rankingList = () => {
+  static system_rankingList = async () => {
     return httpClient.get<RankListModel>("c=system&a=rankingList")
   }
   static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
@@ -164,7 +164,7 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber');
   };
-  static game_lotteryGames = (): Promise<AxiosResponse<LottoGamesModel>> => {
+  static game_lotteryGames = async (): Promise<AxiosResponse<LottoGamesModel>> => {
     //@ts-ignore
     return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
       //@ts-ignore
@@ -173,7 +173,7 @@ class APIRouter {
       expiredTime: 3
     });
   }
-  static game_playOdds = (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
     return httpClient.get("c=game&a=playOdds&id=" + id, {
       //@ts-ignore
       isEncrypt: false
@@ -192,7 +192,7 @@ class APIRouter {
     })
   };
 
-  static system_homeAds = () => {
+  static system_homeAds = async () => {
     return httpClient.get<HomeADModel>("c=system&a=homeAds")
   }
   static language_getLanguagePackage = async (lanCode: string) => {

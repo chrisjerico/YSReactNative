@@ -9,12 +9,13 @@ import {
   OCEventType,
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
+import useActivity from '../../public/hooks/tars/useActivity'
+import useHome from '../../public/hooks/tars/useHome'
 import useLogOut from '../../public/hooks/tars/useLogOut'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
@@ -22,6 +23,7 @@ import {
   ToastError,
   ToastSuccess,
   updateUserInfo,
+  getActivityPosition,
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -48,7 +50,7 @@ import NavBlock from './views/NavBlock'
 const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
-  // hooks
+  // functions
   const { setProps } = props
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
@@ -63,7 +65,17 @@ const LHTHomePage = (props: any) => {
       setProps()
     },
   })
-  // stores
+
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: '#ffffff',
+      },
+    })
+  }
+  // states
+  const [leftGames, setLeftGames] = useState(config?.preferences)
+  // hooks
   const {
     uid,
     avatar,
@@ -78,43 +90,20 @@ const LHTHomePage = (props: any) => {
     rankingListSwitch,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
-  // states
-  const [leftGames, setLeftGames] = useState(config?.preferences)
-  const [roulette, setRoulette] = useState(null)
-  // effects
   const {
     loading,
-    banner,
-    homeGames,
-    notice,
-    lotteryNumber,
-    // categoryList,
-    onlineNum,
-    couponListData,
-    redBag,
     rankList,
+    banner,
+    homeGame,
+    notice,
+    onlineNum,
+    couponList,
     systemConfig,
-    onRefresh,
-  } = useGetHomeInfo([
-    'system_banners',
-    'notice_latest',
-    'game_homeGames',
-    'lhcdoc_lotteryNumber',
-    'lhcdoc_categoryList',
-    'system_onlineCount',
-    'system_promotions',
-    'activity_redBagDetail',
-    'system_rankingList',
-    'system_config',
-  ])
+    lotteryNumber,
+    refreshHomeInfo,
+  } = useHome()
 
-  const getTurntableList = async () => {
-    try {
-      const value = await APIRouter.activity_turntableList()
-      const roulette = value?.data?.data
-      setRoulette(roulette)
-    } catch (err) { }
-  }
+  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
@@ -129,20 +118,6 @@ const LHTHomePage = (props: any) => {
       OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
     }
   })
-
-  useEffect(() => {
-    if (uid) {
-      getTurntableList()
-    }
-  }, [uid])
-
-  useEffect(() => {
-    if (notice?.data?.popup) {
-      if (!B_DEBUG) {
-        PushHelper.pushAnnouncement(announcements)
-      }
-    }
-  }, [notice])
 
   // data handle
   const appDownloadUrl = systemConfig?.data?.appDownloadUrl
@@ -159,8 +134,8 @@ const LHTHomePage = (props: any) => {
       )
     }) ?? []
   const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
-  const coupons = couponListData?.data?.list ?? []
+    homeGame?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
+  const coupons = couponList?.data?.list ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
@@ -179,12 +154,19 @@ const LHTHomePage = (props: any) => {
     ...lotterys.slice(6),
   ]
   const rightGames =
-    homeGames?.data?.icons?.map((tab) => {
+    homeGame?.data?.icons?.map((tab) => {
       const { list, name } = tab
       const games = list?.filter((ele) => ele.levelType == '1')
       return { games, name }
     }) ?? []
 
+  useEffect(() => {
+    if (notice?.data?.popup) {
+      if (!B_DEBUG) {
+        PushHelper.pushAnnouncement(announcements)
+      }
+    }
+  }, [notice])
   // render
   if (loading) {
     return <ProgressCircle />
@@ -205,9 +187,7 @@ const LHTHomePage = (props: any) => {
             onPressSignIn={PushHelper.pushLogin}
             onPressSignUp={PushHelper.pushRegister}
             onPressTryPlay={tryPlay}
-            onPressLogo={() => {
-              push(PageName.PromotionListPage)
-            }}
+            onPressLogo={goToJDPromotionListPage}
           />
         </SafeAreaHeader>
         <ScrollView
@@ -216,7 +196,8 @@ const LHTHomePage = (props: any) => {
           refreshControl={
             <RefreshControlComponent
               onRefresh={() => {
-                onRefresh()
+                refreshHomeInfo()
+                refreshActivity()
               }}
             />
           }
@@ -299,14 +280,6 @@ const LHTHomePage = (props: any) => {
                 )
               }}
             />
-            {/* <HeadlineBlock
-        containerStyle={styles.subComponent}
-        headlines={headlines}
-        headLineLogo={defaultHeadLineLogo}
-        onPressHeadline={({ value }) =>
-          PushHelper.pushNoticePopUp(value)
-        }
-      /> */}
             <TabComponent
               rowHeight={scale(200)}
               activeTabColor={'#ff8610'}
@@ -315,7 +288,7 @@ const LHTHomePage = (props: any) => {
               leftGames={leftGames?.concat(config?.moreLottery)}
               rightGames={rightGames}
               renderLeftGame={(item, index) => {
-                const { title, logo, des, gameType, selected } = item
+                const { title, logo, des, gameType, selected, gameId } = item
                 const logoUrl = getHtml5Image(14, logo)
                 if (selected) {
                   return (
@@ -341,12 +314,49 @@ const LHTHomePage = (props: any) => {
                           navigate(PageName.LHTPreferencePage, {
                             initPreferences: leftGames,
                             onPressConfirm: (preferences: any) => {
-                              // const selectedPreferences = preferences.filter((item: any) => item?.selected)?.concat(moreLottery)
                               setLeftGames(preferences)
                             },
                           })
+                        } else if (gameType == 'clzx') {
+                          PushHelper.pushUserCenterType(
+                            UGUserCenterType.长龙助手
+                          )
+                        } else if (gameType == 'lmzs') {
+                          PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
                         } else {
-                          //PushHelper.pushUserCenterType(parseInt(id))
+                          PushHelper.pushHomeGame(
+                            Object.assign(
+                              {},
+                              {
+                                category: '44',
+                                clsName: 'GameModel',
+                                gameCode: '-1',
+                                gameId: gameId,
+                                gameType: gameType,
+                                // hotIcon:
+                                //   'https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/28463cb7ab027d440dd3d91ab602c7ea.gif',
+                                // icon:
+                                //   'https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/66a245511ce065b985ba3f8aac8b54cd.jpg',
+                                isClose: '0',
+                                isInstant: '0',
+                                isSeal: '0',
+                                levelType: '1',
+                                // logo:
+                                //   'https://cdn01.v-denche.cn/open_prize/images/icon/70.png?v=1597734663',
+                                name: title,
+                                openWay: '0',
+                                realName: title,
+                                seriesId: '1',
+                                // sort: '-50',
+                                subId: gameId,
+                                subtitle: des,
+                                tipFlag: '4',
+                                title: title,
+                                url: '',
+                              },
+                              item
+                            )
+                          )
                         }
                       }}
                     />
@@ -381,9 +391,7 @@ const LHTHomePage = (props: any) => {
             />
             <CouponBlock
               visible={m_promote_pos}
-              onPressMore={() => {
-                push(PageName.PromotionListPage)
-              }}
+              onPressMore={goToJDPromotionListPage}
               containerStyle={styles.subComponent}
               coupons={coupons}
               renderCoupon={(item, index) => {
@@ -412,13 +420,13 @@ const LHTHomePage = (props: any) => {
               containerStyle={{ marginBottom: scale(30) }}
               webName={webName}
               onPressComputer={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+                PushHelper.openWebView(
+                  httpClient.defaults.baseURL + '/index2.php'
+                )
               }}
-              onPressPromotion={() => {
-                push(PageName.PromotionListPage)
-              }}
+              onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'20200815'}
+              version={'20200818'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}
@@ -447,13 +455,6 @@ const LHTHomePage = (props: any) => {
             <BottomBlank />
           </View>
         </ScrollView>
-        {/* <DowloadApp
-    onPressDowload={() => {
-      PushHelper.openWebView(
-        'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
-      )
-    }}
-  /> */}
         <ActivityComponent
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
@@ -470,12 +471,20 @@ const LHTHomePage = (props: any) => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {/* <AnnouncementModalComponent
-          ref={announcementModal}
-          announcements={announcements}
-          color={LHThemeColor.六合厅.themeColor}
-          announceFirst={announce_first}
-        /> */}
+        {floatAd?.map((item: any) => {
+          const { image, position } = item
+          return (
+            <ActivityComponent
+              containerStyle={getActivityPosition(position)}
+              enableFastImage={true}
+              show={uid && !isTest}
+              logo={image}
+              onPress={() => {
+                // PushHelper.pushWheel(roulette)
+              }}
+            />
+          )
+        })}
       </>
     )
   }
@@ -517,3 +526,24 @@ const styles = StyleSheet.create({
 })
 
 export default LHTHomePage
+
+{
+  /* <DowloadApp
+    onPressDowload={() => {
+      PushHelper.openWebView(
+        'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+      )
+    }}
+  /> */
+}
+
+{
+  /* <HeadlineBlock
+        containerStyle={styles.subComponent}
+        headlines={headlines}
+        headLineLogo={defaultHeadLineLogo}
+        onPressHeadline={({ value }) =>
+          PushHelper.pushNoticePopUp(value)
+        }
+      /> */
+}

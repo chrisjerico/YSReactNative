@@ -92,10 +92,9 @@ httpClient.interceptors.response.use(
           console.warn('連接錯誤', err);
       }
     } else {
-      console.warn('連接到服務器失敗', err);
+      // console.warn('連接到服務器失敗', err);
     }
     if (err?.toString()?.indexOf('timeout') != -1) {
-      console.warn('timeout')
       return Promise.reject(err?.response ?? err)
     } else {
       return Promise.reject(err?.response ?? err)

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
+import useActivity from '../../public/hooks/tars/useActivity'
+import useHome from '../../public/hooks/tars/useHome'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { B_DEBUG } from '../../public/tools/UgLog'
@@ -21,18 +22,25 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
+import { getActivityPosition } from '../../public/tools/tars'
 
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
+  // functions
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: "#ffffff",
+      },
+    })
+  }
   // stores
   const {
     uid,
@@ -40,39 +48,28 @@ const BZHHomePage = () => {
     balance,
     isTest,
   }: UGUserModel = UGStore.globalProps.userInfo
+
   const {
     mobile_logo,
     webName,
     m_promote_pos,
     rankingListSwitch,
   }: UGSysConfModel = UGStore.globalProps.sysConf
-  // states
-  const [roulette, setRoulette] = useState(null)
-  // effects
+
   const {
     loading,
+    rankList,
     banner,
-    homeGames,
+    homeGame,
     notice,
     onlineNum,
-    rankList,
-    redBag,
-    couponListData,
+    couponList,
     systemConfig,
-    systemHomeAds,
-    onRefresh,
-  } = useGetHomeInfo([
-    'system_banners',
-    'notice_latest',
-    'game_homeGames',
-    'system_onlineCount',
-    'system_rankingList',
-    'activity_redBagDetail',
-    'activity_turntableList',
-    'system_promotions',
-    'system_config',
-    'system_homeAds',
-  ])
+    homeAd,
+    refreshHomeInfo,
+  } = useHome()
+
+  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   // data
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
@@ -87,38 +84,14 @@ const BZHHomePage = () => {
       )
     }) ?? []
   const navs =
-    homeGames?.data?.navs
+    homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
       .slice(0, 4) ?? []
-  const games = homeGames?.data?.icons ?? []
+  const games = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
-  const coupons = couponListData?.data?.list ?? []
-  const ads = systemHomeAds?.data ?? []
-
-  const getTurntableList = async () => {
-    try {
-      const value = await APIRouter.activity_turntableList()
-      const roulette = value?.data?.data
-      setRoulette(roulette)
-    } catch (err) {
-    } finally {
-    }
-  }
-
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: BZHThemeColor.宝石红.tabBarBgColor,
-      },
-    })
-  }
-
-  useEffect(() => {
-    if (uid) {
-      getTurntableList()
-    }
-  }, [uid])
+  const coupons = couponList?.data?.list ?? []
+  const ads = homeAd?.data ?? []
 
   useEffect(() => {
     if (notice?.data?.popup) {
@@ -152,8 +125,9 @@ const BZHHomePage = () => {
           style={styles.container}
           refreshControl={
             <RefreshControlComponent
-              onRefresh={async () => {
-                onRefresh()
+              onRefresh={() => {
+                refreshHomeInfo()
+                refreshActivity()
               }}
             />
           }
@@ -321,16 +295,22 @@ const BZHHomePage = () => {
               borderBottomWidth: scale(1),
             }}
             rankLists={rankLists}
+            initialAnimatedHeight={scale(0)}
+            finalAnimatedHeight={
+              scale(195) + scale((rankLists?.length ?? 0) * 50)
+            }
           />
           <BottomLogo
             webName={webName}
             containerStyle={{ marginBottom: scale(5) }}
             onPressComputer={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+              PushHelper.openWebView(
+                httpClient.defaults.baseURL + '/index2.php'
+              )
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'20200815'}
+            version={'20200818'}
           />
           <BottomBlank />
         </ScrollView>
@@ -342,7 +322,7 @@ const BZHHomePage = () => {
           }}
         />
         <ActivityComponent
-          containerStyle={{ top: 100 }}
+          containerStyle={{ top: 200 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
           logo={'dzp_btn'}
@@ -350,10 +330,25 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
+        {floatAd?.map((item: any) => {
+          const { image, position } = item
+          return (
+            <ActivityComponent
+              containerStyle={getActivityPosition(position)}
+              enableFastImage={true}
+              show={uid && !isTest}
+              logo={image}
+              onPress={() => {
+                // PushHelper.pushWheel(roulette)
+              }}
+            />
+          )
+        })}
       </>
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

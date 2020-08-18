@@ -13,10 +13,13 @@ const RefreshControlComponent = ({
     <RefreshControl
       refreshing={refreshing}
       onRefresh={async () => {
-        setRefreshing(true)
         try {
-          onRefresh && await onRefresh()
-        } catch (err) {
+          if (!refreshing) {
+            setRefreshing(true)
+            onRefresh && (await onRefresh())
+          }
+        } catch (error) {
+          console.log('-----error-----', error)
         } finally {
           setRefreshing(false)
         }

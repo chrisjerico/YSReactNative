@@ -18,6 +18,8 @@ interface AnimatedRankComponentProps {
   rankLists: List[];
   duration?: number;
   type: number;
+  initialAnimatedHeight?: number;
+  finalAnimatedHeight?: number;
 }
 
 const AnimatedRankComponent = ({
@@ -26,26 +28,32 @@ const AnimatedRankComponent = ({
   rankContainerStyle,
   titleConatinerStyle,
   rankLists,
-  duration = 15000,
-  type
+  duration = 1000,
+  type,
+  initialAnimatedHeight = 10,
+  finalAnimatedHeight = 200,
 }: AnimatedRankComponentProps) => {
-  const height = useRef(new Animated.Value(0)).current
+  const height = useRef(new Animated.Value(initialAnimatedHeight)).current
 
-  const animated = () =>
+  const animated = () => {
     Animated.timing(height, {
-      toValue: scale(45 * (rankLists?.length ?? 0) + 250),
-      duration: duration,
+      toValue: finalAnimatedHeight,
+      duration: 10000 + (rankLists?.length ?? 0) * duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
-        height?.setValue(0)
+        height?.setValue(initialAnimatedHeight)
         animated()
       }
     })
+  }
 
   useEffect(() => {
+    height?.stopAnimation()
+    height?.setValue(initialAnimatedHeight)
     animated()
-  }, [])
+    console.log("-------AnimatedRankComponent useEffect------")
+  }, [rankLists?.length])
 
   if (type != 0) {
     return (
@@ -103,15 +111,16 @@ const styles = StyleSheet.create({
   },
   rankContainer: {
     width: '100%',
-    height: scale(250),
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
     paddingHorizontal: scale(15),
     marginTop: scale(10),
+    height: scale(250),
   },
   titleConatiner: {
     flexDirection: 'row',
     paddingVertical: scale(10),
+    height: scale(50)
   },
   contentContainer: {
     width: '100%',

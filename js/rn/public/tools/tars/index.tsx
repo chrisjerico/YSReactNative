@@ -107,3 +107,17 @@ export const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'g
   return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
   // return 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
 }
+
+export const getActivityPosition = (position: number) => {
+  if (position == 1) {
+    return { left: 10, top: 100 }
+  } else if (position == 2) {
+    return { left: 10, bottom: 100 }
+  } else if (position == 3) {
+    return { right: 10, top: 100 }
+  } else if (position == 4) {
+    return { right: 10, bottom: 100 }
+  } else {
+    return {}
+  }
+}

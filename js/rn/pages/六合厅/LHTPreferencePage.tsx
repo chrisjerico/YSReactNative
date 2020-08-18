@@ -6,6 +6,7 @@ import { pop } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { ToastError } from '../../public/tools/tars'
 
 interface PreferenceButtonProps {
   title: string;
@@ -115,7 +116,14 @@ const LHTPreference = ({
                       return ele
                     }
                   })
-                  setPreferences(newPreferences)
+                  const selectedPreferences = newPreferences.filter(ele => ele?.selected)
+                  if (selectedPreferences?.length > 11) {
+                    ToastError('最多设置11个常用资讯')
+                  } else if (selectedPreferences?.length < 2) {
+                    ToastError('最少设置2个常用资讯')
+                  } else {
+                    setPreferences(newPreferences)
+                  }
                 }}
               />
             )
