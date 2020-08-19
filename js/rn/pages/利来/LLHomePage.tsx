@@ -168,7 +168,7 @@ const LLHomePage = () => {
                 justifyContent: "center",
                 position: "absolute",
                 width: AppDefine.width,
-                bottom: 40
+                bottom: 120
             }}>
                 <LinearGradient colors={["#df4133", "#fe695b"]} style={{borderRadius: 40}}>
                     <View style={{flexDirection: "row", justifyContent: "center", padding: 8}}>
