@@ -40,12 +40,20 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   try {
     temp['checkSign'] = 1;
 
-    //ugLog("encryptParams=", JSON.stringify(temp))
+    switch (Platform.OS) {
+      case 'ios':
+
+        break;
+      case 'android':
+        ugLog("encryptParams=", JSON.stringify(temp))
+        break;
+    }
+
     switch (Platform.OS) {
       case "ios":
         return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
       case "android":
-        return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
+        return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: temp });
     }
   } catch (error) {
     console.warn(error);
@@ -57,8 +65,14 @@ httpClient.interceptors.response.use(
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
 
-    //ugLog('http success res = ', JSON.stringify(response))
+    switch (Platform.OS) {
+      case 'ios':
 
+        break;
+      case 'android':
+        ugLog('http success res = ', JSON.stringify(response.request))
+        break;
+    }
     // ugLog("http ful filled res = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {

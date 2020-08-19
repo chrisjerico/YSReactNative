@@ -76,14 +76,17 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
   }
   const init = () => {
-    if (Platform.OS == 'ios') {
-      OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-        initHost(host)
-      })
-    } else if (Platform.OS == 'android') {
-      ANHelper.callAsync(CMD.APP_HOST).then((host: string) => {
-        initHost(host)
-      })
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+          initHost(host)
+        })
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.APP_HOST).then((host: string) => {
+          initHost(host)
+        })
+        break;
     }
   }
 

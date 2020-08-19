@@ -100,8 +100,20 @@ class APIRouter {
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     })
   }
-  static activity_redBagDetail = () => {
-    return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
+  static activity_redBagDetail = async () => {
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          { blGet: true, });
+        break;
+    }
+
+    return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail&" + tokenParams)
   }
   static activity_turntableList = () => {
     if (UGStore.globalProps.userInfo?.isTest) {
