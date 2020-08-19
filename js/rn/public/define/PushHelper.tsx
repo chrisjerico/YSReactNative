@@ -120,10 +120,19 @@ export default class PushHelper {
     }
   }
   static pushRedBag(redBag: RedBagDetailActivityModel) {
-    if (Platform.OS != 'ios') return;
     const data = redBag?.data
     const redbagModel = Object.assign({}, { clsName: 'UGRedEnvelopeModel', rid: data?.id }, data); // ios 裡是抓rid
-    OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
+
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_RED_BAD, data)
+        break;
+    }
+
+
   }
   // 去彩票下注页
   static pushLottery() {

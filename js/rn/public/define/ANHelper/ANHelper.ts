@@ -10,9 +10,10 @@ import {httpClient} from "../../network/httpClient";
  * @date 2020/8/6
 */
 export enum CMD {
-  OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
+  OPEN_RED_BAD = 'OPEN_RED_BAD', //打开红包
+  OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   UNIVERSAL = 'UNIVERSAL', //万能函数
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
   FINISH_ACTIVITY = 'FINISH_ACTIVITY',        //关闭activity
