@@ -48,7 +48,11 @@ import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
-import { Platform } from 'react-native';
+import {Platform} from "react-native";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {anyNull} from "../../public/tools/Ext";
+import {ugLog} from "../../public/tools/UgLog";
+import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -65,10 +69,14 @@ class TabBarController extends Component<{
     const { navigation } = this.props
     navigation.setOptions({ headerStyle: { height: 0 } })
   }
+
   render() {
-    return (
-      <Router.TabNavigator initialRouteName={PageName.UpdateVersionPage} screenOptions={{ tabBarVisible: false }}
-        tabBarOptions={this.tabBarOptions}>
+      let initialName = ExtUGApplication.tabUI();
+      ugLog('tab initialName=', initialName)
+
+      return (
+      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }}
+                           tabBarOptions={this.tabBarOptions}>
         <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
         <Router.TabScreen name={PageName.VietnamHome} component={UGPage(VietnamHomePage)} />
         <Router.TabScreen name={PageName.LCMinePage} component={UGPage(LCMinePage)} />
@@ -98,9 +106,14 @@ class TabBarController extends Component<{
     );
   }
 }
+
 const StackScreens = () => {
-  return (
-    <Router.StackNavigator headerMode={'screen'}>
+
+    let initialName = ExtUGApplication.stackUI();
+    ugLog('stack initialName=', initialName)
+
+    return (
+    <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={'Tabbar'} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
@@ -121,6 +134,7 @@ const StackScreens = () => {
     </Router.StackNavigator >
   )
 }
+
 const UGApplication = () => {
   return (
     <LanguageContextProvider>

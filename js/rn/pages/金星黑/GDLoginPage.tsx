@@ -224,7 +224,14 @@ const Header = () => {
     <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
       <TouchableWithoutFeedback onPress={() => {
         pop();
-        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            break;
+          case 'android':
+
+            break;
+        }
       }}>
         <Icon name="keyboard-arrow-left" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
       </TouchableWithoutFeedback>

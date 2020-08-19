@@ -3,7 +3,7 @@ import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { OCHelper } from './OCHelper';
 import {Platform} from "react-native";
-import {ANHelper, NativeCommand} from "../ANHelper/ANHelper";
+import {ANHelper, CMD} from "../ANHelper/ANHelper";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -59,7 +59,7 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  let skitType = Skin1.skitType; 
+  let skitType = Skin1.skitType;
   // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   // if (skitType.indexOf('白曜') != -1) {
