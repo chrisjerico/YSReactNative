@@ -33,10 +33,6 @@ export const TrendView = () => {
 
     useEffect(() => {
         getData()
-    }, [])
-
-    useEffect(() => {
-        getData()
     }, [defaultNumber, currentGame])
 
     useEffect(() => {
