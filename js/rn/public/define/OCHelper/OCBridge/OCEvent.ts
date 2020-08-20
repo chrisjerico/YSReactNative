@@ -1,11 +1,10 @@
+import { UGStore } from './../../../../redux/store/UGStore';
+import { OCCall } from './OCCall';
+import { PageName, } from '../../../navigation/Navigation';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
-import { PageName } from '../../../navigation/Navigation';
 import { getCurrentPage, jumpTo, pop } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
-import { updateUserInfo } from '../../../tools/tars';
 import { RnPageModel } from '../SetRnPageInfo';
-import { IGlobalStateHelper } from './../../../../redux/store/IGlobalStateHelper';
-import { OCCall } from './OCCall';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -13,7 +12,8 @@ export enum OCEventType {
   JspatchDownloadProgress = 'jsp下载进度',
   JspatchUpdateComplete = 'jsp更新结果',
   UGNotificationLoginComplete = 'UGNotificationLoginComplete',
-  UGNotificationUserLogout = 'UGNotificationUserLogout'
+  UGNotificationUserLogout = 'UGNotificationUserLogout',
+  viewWillAppear = 'viewWillAppear',
 }
 
 export class OCEvent extends OCCall {
@@ -25,6 +25,11 @@ export class OCEvent extends OCCall {
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
       console.log('OCEvent rn收到oc通知：', params);
+
+      if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
+        const { didFocus } = UGStore.getPageProps(getCurrentPage());
+        didFocus && didFocus();
+      }
 
       this.events
         .filter(v => {
@@ -54,8 +59,7 @@ export class OCEvent extends OCCall {
 
 
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
-      IGlobalStateHelper.updateSysConf(sysConf);
-
+      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
     });
     this.addEvent(OCEventType.UGNotificationWithSkinSuccess, () => {
       UGSkinManagers.updateOcSkin();

@@ -20,7 +20,11 @@ import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import Axios from "axios"
 import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
-const ZLHomeMine = ({ navigation }) => {
+import { navigationRef, pop } from "../../public/navigation/RootNavigation"
+import { UGBasePageProps } from "../base/UGPage"
+
+const ZLMinePage = (props: UGBasePageProps) => {
+    const { setProps } = props;
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
@@ -49,15 +53,15 @@ const ZLHomeMine = ({ navigation }) => {
     useEffect(() => {
         init()
     }, [userStore?.uid])
-    useEffect(() => {
 
-        navigation.addListener('focus', async () => {
-            const { data: userInfo } = await APIRouter.user_info()
-            UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
-            UGStore.save();
-        });
-        return (() => {
-            navigation.removeListener('focus', null);
+    useEffect(() => {
+        setProps({
+            didFocus: async () => {
+                const { data: userInfo } = await APIRouter.user_info()
+                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+                setProps();
+                UGStore.save();
+            }
         })
     }, [])
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -204,15 +208,18 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
-                            {item.code == 9 && unreadMsg > 0 ? <View style={{
-                                position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
+                        <Image
+                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
+                            source={{ uri: item.logo }} />
+                        {item.code == 9 && unreadMsg > 0 && (
+                            <View style={{
+                                position: 'absolute', right: 30, top: 3, backgroundColor: 'red',
                                 height: 20, width: 20,
                                 borderRadius: 10, justifyContent: 'center', alignItems: 'center'
                             }}>
                                 <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                            </View> : null}
-                        </FastImage>
+                            </View>
+                        )}
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
 
                     </TouchableOpacity>
@@ -227,14 +234,26 @@ const ZLHomeMine = ({ navigation }) => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-    const userStore = UGStore.globalProps.userInfo;
-    const { uid = "", unreadMsg } = userStore
+    const { uid = "", unreadMsg } = UGStore.globalProps.userInfo;
+    const [showBackBtn, setShowBackBtn] = useState(false);
+
+    OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+        show != showBackBtn && setShowBackBtn(show);
+    })
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e', justifyContent: 'space-between',
+            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
             paddingHorizontal: 20
         }}>
+            {showBackBtn && (<TouchableOpacity onPress={() => {
+                !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            }} style={{ paddingRight: 5 }}>
+                <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
+            </TouchableOpacity>)}
+            {showBackBtn && <View style={{ flex: 1 }} />}
+
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.站内信)
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -249,14 +268,14 @@ const ZLHeader = () => {
                 </View> : null}
 
             </TouchableOpacity>
-
+            {!showBackBtn && <View style={{ flex: 1 }} />}
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30 }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>客服</Text>
             </TouchableOpacity>
         </View>
     )
 }
-export default ZLHomeMine
+export default ZLMinePage

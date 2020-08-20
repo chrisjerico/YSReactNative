@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios'
+import { UGStore } from './../../redux/store/UGStore';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { CachePolicyEnum, httpClient } from './httpClient'
@@ -94,7 +94,10 @@ class APIRouter {
   static activity_redBagDetail = async () => {
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
   }
-  static activity_turntableList = async () => {
+  static activity_turntableList = () => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      return {};
+    }
     return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
   }
   static system_floatAds = async () => {

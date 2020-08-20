@@ -1,5 +1,5 @@
 import React from 'react'
-import {  PageName } from '../../public/navigation/Navigation'
+import { PageName } from '../../public/navigation/Navigation'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
@@ -21,11 +21,11 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   route?: { name: PageName, params: any };
 
   // 提供自定义api给页面使用
-  setProps?(props?: P): void;// 设置Props并刷新
+  setProps?(props?: P, willRender?: boolean): void;// 设置Props并刷新
   vars?: V;// 获取成员变量
-  setDidFocus?(func: (p: UGBasePageProps) => void): void;// 成为焦点时回调
-  
+
   // —————————— 配置UI ——————————
+  didFocus?: (p: UGBasePageProps) => void;// 成为焦点时回调
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps;
@@ -58,7 +58,6 @@ export default (Page: Function) => {
         navigation.jumpTo && navigation.setOptions(tabbarOpetions)
       }
 
-      let didFocus: (p: UGBasePageProps) => void;
       {
         // 监听焦点
         let lastParams;
@@ -71,7 +70,7 @@ export default (Page: Function) => {
             lastParams = params;
             this.setProps(params);
           }
-          didFocus && didFocus(params);
+          this.newProps.didFocus && this.newProps.didFocus(params);
         })
         navigation.addListener('transitionEnd', (e) => {
           if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
@@ -87,10 +86,7 @@ export default (Page: Function) => {
 
       // 设置props
       const defaultProps: UGBasePageProps = {
-        setDidFocus: ((func) => {
-          didFocus = func;
-        }),
-        backgroundColor: [UGColor.BackgroundColor1],
+        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
       this.newProps = deepMergeProps(defaultProps, this.props)
@@ -109,7 +105,7 @@ export default (Page: Function) => {
 
     render() {
       console.log('渲染', this.props.route.name);
-      let { backgroundColor = [], backgroundImage = '', navbarOpstions = {} } = this.newProps;
+      let { backgroundColor = [UGColor.BackgroundColor1, UGColor.BackgroundColor1], backgroundImage = '', navbarOpstions = {} } = this.newProps;
 
       return (
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>

@@ -18,36 +18,6 @@ export class IGlobalStateHelper {
       UGStore.save();
     });
   }
-  // 获取系统配置信息
-  static updateSysConf(sysConf: UGSysConfModel) {
-    function refreshUI(sysConf: UGSysConfModel) {
-      // 设置当前配置
-      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
-
-      if (Platform.OS == 'ios') {
-        // 设置皮肤
-        UGSkinManagers.updateSkin(sysConf)
-        // 配置替换rn的页面
-        setRnPageInfo()
-        // 初始配置完毕，可以进入主页
-        setTimeout(() => {
-          OCHelper.launchFinish();
-        }, 1000);
-      } else {
-        // TODO 安卓
-      }
-
-      UGStore.save()
-    }
-
-    if (sysConf) {
-      refreshUI(sysConf)
-    } else {
-      NetworkRequest1.system_config().then((sysConf) => {
-        sysConf && refreshUI(sysConf)
-      })
-    }
-  }
 }
 
 export async function updateUserInfo() {

@@ -60,81 +60,83 @@ export function setRnPageInfo() {
   let skitType = Skin1.skitType;
 
   console.log("------------------skitType------------------", skitType)
-  if (skitType.indexOf('白曜') != -1) {
-    pages = pages.concat([
-      {
-        // 首页
-        tabbarItemPath: '/home',
-        rnName: PageName.VietnamHome,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 登录
-        vcName: 'UGLoginViewController',
-        rnName: PageName.VietnamLogin,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 注册
-        vcName: 'UGRegisterViewController',
-        rnName: PageName.VietnamRegister,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 我的页
-        tabbarItemPath: '/user',
-        rnName: PageName.VietnamMine,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: false,
-      },
-    ])
-  }
-  if (skitType.indexOf('凯时') != -1) {
-    pages = pages.concat([
-      {
-        // 首页
-        tabbarItemPath: '/home',
-        rnName: PageName.KSHomePage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
+  // if (skitType.indexOf('白曜') != -1) {
+  //   pages = pages.concat([
+  //     {
+  //       // 首页
+  //       tabbarItemPath: '/home',
+  //       rnName: PageName.VietnamHome,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 登录
+  //       vcName: 'UGLoginViewController',
+  //       rnName: PageName.VietnamLogin,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 注册
+  //       vcName: 'UGRegisterViewController',
+  //       rnName: PageName.VietnamRegister,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       vcName: 'UGMineSkinViewController',
+  //       rnName: PageName.VietnamMine,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: false,
+  //     },
+  //   ])
+  // }
+  // if (skitType.indexOf('凯时') != -1) {
+  //   pages = pages.concat([
+  //     {
+  //       // 首页
+  //       tabbarItemPath: '/home',
+  //       rnName: PageName.KSHomePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
 
-      {
-        // 登录
-        vcName: 'UGLoginViewController',
-        rnName: PageName.KSLogin,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 注册
-        vcName: 'UGRegisterViewController',
-        rnName: PageName.KSRegister,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 我的页
-        tabbarItemPath: '/user',
-        rnName: PageName.KSMine,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: false,
-      },
-    ])
-  }
+  //     {
+  //       // 登录
+  //       vcName: 'UGLoginViewController',
+  //       rnName: PageName.KSLogin,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 注册
+  //       vcName: 'UGRegisterViewController',
+  //       rnName: PageName.KSRegister,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       vcName: 'UGMineSkinViewController',
+  //       rnName: PageName.KSMine,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: false,
+  //     },
+  //   ])
+  // }
 
-  // 威尼斯页面
+  // // 威尼斯页面
   if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat([
       {
@@ -148,6 +150,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.WNZMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -186,7 +189,7 @@ export function setRnPageInfo() {
     ])
   }
 
-  // 六合厅页面
+  // // 六合厅页面
   if (skitType.indexOf('六合厅') != -1) {
     pages = pages.concat([
       {
@@ -200,6 +203,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.LHTMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -221,6 +225,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.LCMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -258,6 +263,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.ZLMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
@@ -280,50 +286,50 @@ export function setRnPageInfo() {
     ]);
   }
 
-  if (skitType.indexOf('金星黑') != -1) {
-    pages = pages.concat([
-      {
-        // 首页
-        tabbarItemPath: '/home',
-        rnName: PageName.GDBHomePage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 登录
-        vcName: 'UGLoginViewController',
-        rnName: PageName.GDLoginPage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 注册
-        vcName: 'UGRegisterViewController',
-        rnName: PageName.GDRegisterPage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 我的页
-        vcName: 'UGMineSkinViewController',
-        tabbarItemPath: '/user',
-        rnName: PageName.GDBMinePage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: false,
-      },
-      {
-        vcName: 'UGPromotionsController',
-        rnName: PageName.JDPromotionListPage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }
-    ]);
-  }
+  // if (skitType.indexOf('金星黑') != -1) {
+  //   pages = pages.concat([
+  //     {
+  //       // 首页
+  //       tabbarItemPath: '/home',
+  //       rnName: PageName.GDBHomePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 登录
+  //       vcName: 'UGLoginViewController',
+  //       rnName: PageName.GDLoginPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 注册
+  //       vcName: 'UGRegisterViewController',
+  //       rnName: PageName.GDRegisterPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     },
+  //     {
+  //       // 我的页
+  //       tabbarItemPath: '/user',
+  //       vcName: 'UGMineSkinViewController',
+  //       rnName: PageName.GDBMinePage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: false,
+  //     },
+  //     {
+  //       vcName: 'UGPromotionsController',
+  //       rnName: PageName.JDPromotionListPage,
+  //       fd_prefersNavigationBarHidden: true,
+  //       允许游客访问: true,
+  //       允许未登录访问: true,
+  //     }
+  //   ]);
+  // }
 
   RnPageModel.pages = pages;
   // if (Platform.OS == 'ios') {

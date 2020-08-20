@@ -31,6 +31,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
     setProps({
       navbarOpstions: { hidden: false, title: '优惠活动', back: true },
       tabbarOpetions: { unmountOnBlur: false },
+      backgroundColor: Skin1.bgColor,
       dataArray: [],
       style: 'page',
       showTopBar: false,

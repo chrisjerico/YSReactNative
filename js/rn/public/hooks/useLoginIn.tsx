@@ -34,8 +34,6 @@ const useLoginIn = (params: UseLoginIn = { onSuccess: popToRoot }) => {
                 const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
                 await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
                 await OCHelper.call('UGUserModel.setCurrentUser:');
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                console.log("------CleanOldUser------")
             }
             // 保存数据
             //@ts-ignore

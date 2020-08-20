@@ -63,12 +63,13 @@ export default class UGSkinManagers extends UGThemeColor {
       22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
+      25: '天空蓝',
       26: `白曜`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
     if (B_DEBUG) {
-      // key = '宝石红'
+      key = '宝石红'
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
@@ -158,6 +159,7 @@ export default class UGSkinManagers extends UGThemeColor {
         }
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
       }
+      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
     }
 
     // 刷新标签栏、导航条
