@@ -25,7 +25,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   vars?: V;// 获取成员变量
 
   // —————————— 配置UI ——————————
-  didFocus: (p: UGBasePageProps) => void;// 成为焦点时回调
+  didFocus?: (p: UGBasePageProps) => void;// 成为焦点时回调
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps;
