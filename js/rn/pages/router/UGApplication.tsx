@@ -14,8 +14,8 @@ import PromotionListPage from '../common/PromotionListPage';
 import LXBView from "../乐橙/component/minePage/LXBView";
 import LCHomePage from "../乐橙/LCHomePage";
 import LCMinePage from "../乐橙/LCMinePage";
-import LHTHomePage from "../六合厅/LHTHomePage";
-import LHTMinePage from "../六合厅/LHTMinePage";
+// import LHTHomePage from "../六合厅/LHTHomePage";
+// import LHTMinePage from "../六合厅/LHTMinePage";
 import KSHomePage from '../凯时/KSHomePage';
 import KSLogin from '../凯时/KSLoginPage';
 import KSMine from '../凯时/KSMinePage';
@@ -45,7 +45,7 @@ import { XBJLoginPage } from '../香槟金/XBJLoginPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
-import LHTPreferencePage from '../六合厅/LHTPreferencePage';
+// import LHTPreferencePage from '../六合厅/LHTPreferencePage';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -78,8 +78,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
-        <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
+        {/* <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
+        <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} /> */}
         <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
         <Router.TabScreen name={PageName.GDBHomePage} component={UGPage(GDBHomePage)} />
@@ -115,7 +115,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSLogin} component={UGPage(KSLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSRegister} component={UGPage(KSRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSMine} component={UGPage(KSMine)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={UGPage(LHTPreferencePage)} />
+      {/* <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={UGPage(LHTPreferencePage)} /> */}
     </Router.StackNavigator >
   )
 }

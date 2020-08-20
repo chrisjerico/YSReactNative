@@ -192,25 +192,25 @@ export function setRnPageInfo() {
 
   // // 六合厅页面
   if (skitType.indexOf('六合厅') != -1) {
-    pages = pages.concat([
-      {
-        // 首页
-        tabbarItemPath: '/home',
-        rnName: PageName.LHTHomePage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      },
-      {
-        // 我的页
-        tabbarItemPath: '/user',
-        vcName: 'UGMineSkinViewController',
-        rnName: PageName.LHTMinePage,
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: false,
-      },
-    ])
+    // pages = pages.concat([
+    //   {
+    //     // 首页
+    //     tabbarItemPath: '/home',
+    //     rnName: PageName.LHTHomePage,
+    //     fd_prefersNavigationBarHidden: true,
+    //     允许游客访问: true,
+    //     允许未登录访问: true,
+    //   },
+    //   {
+    //     // 我的页
+    //     tabbarItemPath: '/user',
+    //     vcName: 'UGMineSkinViewController',
+    //     rnName: PageName.LHTMinePage,
+    //     fd_prefersNavigationBarHidden: true,
+    //     允许游客访问: true,
+    //     允许未登录访问: false,
+    //   },
+    // ])
   }
 
   if (skitType.indexOf('乐橙') != -1) {
