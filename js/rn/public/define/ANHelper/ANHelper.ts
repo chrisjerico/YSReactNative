@@ -15,6 +15,7 @@ export enum CMD {
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   OPEN_RED_BAD = 'OPEN_RED_BAD', //打开红包
   OPEN_NOTICE = 'OPEN_NOTICE', //打开通知界面
+  OPEN_POP_NOTICE = 'OPEN_POP_NOTICE', //打开弹窗口通知界面
   OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   LOG_OUT = 'LOG_OUT', //退出登录
   UNIVERSAL = 'UNIVERSAL', //万能函数

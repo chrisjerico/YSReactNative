@@ -108,7 +108,7 @@ const ZLHomePage = ({ navigation, setProps }) => {
               OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
             break;
           case 'android':
-              ANHelper.callAsync(CMD.OPEN_RED_BAD, data.data)
+              ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
             break;
         }
     }
@@ -678,7 +678,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
     if (show) {
         return (
             <View style={{ width, height, position: 'absolute', justifyContent: 'center', alignItems: 'center', zIndex: 1000, marginBottom: 10 }}>
-                <View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
+                <View style={{ width: '90%', height: '55%', backgroundColor: 'white', borderRadius: 15 }}>
                     <View style={{ width: '100%', height: 50, justifyContent: 'center', alignItems: 'center', borderBottomColor: "gray", borderBottomWidth: 0.5 }}>
                         <Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</Text>
                     </View>
