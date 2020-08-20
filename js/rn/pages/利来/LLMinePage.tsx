@@ -13,15 +13,19 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import {useSelector} from "react-redux";
-import {IGlobalState} from "../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../redux/store/UGStore";
 import Icon from "react-native-vector-icons/FontAwesome"
 import PushHelper from "../../public/define/PushHelper";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import {PageName} from "../../public/navigation/Navigation";
+import APIRouter from "../../public/network/APIRouter";
+import {ActionType} from "../../redux/store/ActionTypes";
+import {updateUserInfo, UserInfoReducer} from "../../redux/store/IGlobalStateHelper";
+import UGUserModel from "../../redux/model/全局/UGUserModel";
 
-const LLMinePage = () => {
+const LLMinePage = ({navigation}) => {
     const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
     const {uid = "", usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance} = userStore
     const {UGUserCenterItem} = useMemberItems()
@@ -30,7 +34,28 @@ const LLMinePage = () => {
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
     const [missionItem, setMissionItem] = useState<any>()
-    const { loginOut } = useLoginOut(PageName.LLHomePage)
+    const {loginOut} = useLoginOut(PageName.LLHomePage)
+
+    const getLevelWidth = () => {
+        setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt))
+    }
+
+    const refresh = async () => {
+        const {data: userInfo} = await APIRouter.user_info()
+        UGStore.dispatch({type: ActionType.UpdateUserInfo, props: userInfo?.data});
+        UGStore.save();
+    }
+
+    useEffect(() => {
+        navigation.addListener('focus', async () => {
+            const {data: userInfo} = await APIRouter.user_info()
+            UGStore.dispatch({type: ActionType.UpdateUserInfo, props: userInfo?.data});
+            UGStore.save();
+        });
+        return (() => {
+            navigation.removeListener('focus', null);
+        })
+    }, [])
 
     useEffect(() => {
         if (UGUserCenterItem) {
@@ -44,18 +69,6 @@ const LLMinePage = () => {
     useEffect(() => {
         curLevelInt && nextLevelInt && parseInt(curLevelInt) > 0 && parseInt(nextLevelInt) > 0 && getLevelWidth()
     }, [curLevelInt, nextLevelInt])
-
-    const getLevelWidth = () => {
-        debugger
-        setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt))
-    }
-
-    const refresh = async () => {
-        const user = await OCHelper.call('UGUserModel.currentUser');
-        if (user) {
-            await OCHelper.call('UGUserModel.setCurrentUser:');
-        }
-    }
 
     return (
         <ScrollView bounces={false} style={{}}>
@@ -191,8 +204,17 @@ const LLMinePage = () => {
                             </TouchableOpacity>
                         </View>
                     )}/>
-                <TouchableOpacity onPress={loginOut} style={{ height: 55, backgroundColor: '#34343b', marginHorizontal: 16, justifyContent: 'center', alignItems: 'center', borderRadius: 8, marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ color: 'white', fontSize: 21 }}>退出登录</Text>
+                <TouchableOpacity onPress={loginOut} style={{
+                    height: 55,
+                    backgroundColor: '#34343b',
+                    marginHorizontal: 16,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 8,
+                    marginTop: 10,
+                    marginBottom: 10
+                }}>
+                    <Text style={{color: 'white', fontSize: 21}}>退出登录</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         </ScrollView>

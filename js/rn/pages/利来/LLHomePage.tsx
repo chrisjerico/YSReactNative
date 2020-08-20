@@ -120,14 +120,16 @@ const LLHomePage = () => {
                         style={{flex: 1}}>
                 <HomeHeaderButtonBar logoIcon={mobile_logo}/>
                 <HomeTabView/>
-                <TouchableOpacity style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}} onPress={() => {
-                    push(PageName.PromotionListPage)
-                }}>
+                {sysStore.m_promote_pos && <TouchableOpacity
+                    style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}
+                    onPress={() => {
+                        push(PageName.PromotionListPage)
+                    }}>
                     <Icon size={16} name={"gift"}/>
-                    <Text style={{fontSize: 16, color: "#333333", padding: 10}} >优惠活动</Text>
+                    <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
                     <View style={{flex: 1}}/>
                     <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 <View style={{backgroundColor: "#ffffff"}}>
                     <PromotionsBlock horizontal={true} titleVisible={false}/>
                 </View>
@@ -184,7 +186,7 @@ const LLHomePage = () => {
                     </View>
                 </LinearGradient>
             </View>}
-            <RedBagItem redBag={redBag}/>
+            <RedBagItem redBag={redBag} style={{top: 200}}/>
             <TurntableListItem/>
             <MarqueePopupView onPress={() => {
                 setShow(false)

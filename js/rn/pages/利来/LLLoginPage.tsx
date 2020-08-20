@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {Image, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {Image, Platform, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import {BaseScreen} from "../乐橙/component/BaseScreen";
 import {CheckBox} from "./component/CheckBox";
 import useLoginIn from "../../public/hooks/useLoginIn";
@@ -9,18 +9,20 @@ import APIRouter from "../../public/network/APIRouter";
 import PushHelper from "../../public/define/PushHelper";
 import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel";
 import useTryPlay from "../../public/hooks/useTryPlay";
-import {navigate, push} from "../../public/navigation/RootNavigation";
+import {navigate, pop, push} from "../../public/navigation/RootNavigation";
 import {PageName} from "../../public/navigation/Navigation";
 import DialogInput from 'react-native-dialog-input';
 // @ts-ignore
 import md5 from 'blueimp-md5';
 import {httpClient} from "../../public/network/httpClient";
+import UGUserModel from "../../redux/model/全局/UGUserModel";
+import {UGStore} from "../../redux/store/UGStore";
+import {ActionType} from "../../redux/store/ActionTypes";
 
 let errorTimes = 0
 export const LLLoginPage = ({ route, navigation }) => {
     const [acc, setAcc] = useState("")
     const [pwd, setPwd] = useState("")
-    const {tryPlay} = useTryPlay({onSuccess: () => navigate(PageName.LLMinePage, "")})
     const {loginSuccessHandle} = useLoginIn()
     const [isRemember, setIsRemember] = useState(false)
     const [GGmodalShow, setGGModalShow] = useState(false)
@@ -44,6 +46,29 @@ export const LLLoginPage = ({ route, navigation }) => {
         }
     }, [])
 
+    const testPlay = async () => {
+        try {
+            const { data, status } = await APIRouter.user_guestLogin()
+            if (Platform.OS == 'ios') {
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+                //@ts-ignore
+                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
+                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                const { data: userInfo } = await APIRouter.user_info()
+                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+                UGStore.save();
+                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        pop();
+    }
+
     const login = async ({account, pwd, googleCode = "", slideCode}: {account: string, pwd: string, googleCode?: string, slideCode?: any}) => {
         const simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123']
         if (simplePwds.indexOf(pwd) > -1) {
@@ -55,7 +80,6 @@ export const LLLoginPage = ({ route, navigation }) => {
             return
         }
         try {
-            debugger
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
             const {data, status} = await APIRouter.user_login(account, md5(pwd), googleCode, slideCode)
             if (data.data == null)
@@ -139,7 +163,7 @@ export const LLLoginPage = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             <Text style={{fontSize: 16, paddingVertical: 24, color: "#3c3c3c"}}>其他</Text>
-            <View style={{flexDirection: "row", flex: 1, marginHorizontal: 12}}>
+            <View style={{flexDirection: "row", marginHorizontal: 12}}>
                 <TouchableOpacity style={{alignItems: "center"}} onPress={() => {
                     push(PageName.LLRegisterPage)
                 }}>
@@ -148,7 +172,7 @@ export const LLLoginPage = ({ route, navigation }) => {
                     <Text style={{marginTop: 8}}>马上注册</Text>
                 </TouchableOpacity>
                 <View style={{flex: 1}}/>
-                <TouchableOpacity style={{alignItems: "center"}} onPress={() => tryPlay()}>
+                <TouchableOpacity style={{alignItems: "center"}} onPress={() => testPlay()}>
                     <Image style={{height: 64, width: 64}}
                            source={{uri: "https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png"}}/>
                     <Text style={{marginTop: 8}}>免费试玩</Text>

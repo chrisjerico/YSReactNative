@@ -52,10 +52,10 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
             <View style={{marginHorizontal: 12, flex: 1}}>
                 <Text style={{color: "#3C3C3C", fontSize: 18, fontWeight: "bold", paddingVertical: 8}}>真人娱乐</Text>
                 <ImageButton imgStyle={{height: 140, resizeMode: "stretch"}}
-                             uri={list[0].icon}
+                             uri={list[0]?.icon}
                              onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
                 <ImageButton imgStyle={{height: 140, marginTop: 8, resizeMode: "stretch"}}
-                             uri={list[1].icon}
+                             uri={list[1]?.icon}
                              onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}/>
                 <View style={{flexDirection: "row", marginTop: 8, flex: 1}}>
                     <ImageButton imgStyle={{flex: 2/3, height: 100, width: "auto", resizeMode: "stretch"}}
