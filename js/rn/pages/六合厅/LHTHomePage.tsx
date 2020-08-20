@@ -39,7 +39,7 @@ import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSys
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
-import config from './config.json'
+import config from './config'
 import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
@@ -195,9 +195,11 @@ const LHTHomePage = (props: any) => {
           scrollEnabled={true}
           refreshControl={
             <RefreshControlComponent
-              onRefresh={() => {
-                refreshHomeInfo()
-                refreshActivity()
+              onRefresh={async () => {
+                try {
+                  await Promise.all([refreshHomeInfo(), refreshActivity()])
+                } catch (error) {
+                }
               }}
             />
           }
@@ -429,7 +431,7 @@ const LHTHomePage = (props: any) => {
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'20200818'}
+              version={'20200820'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}

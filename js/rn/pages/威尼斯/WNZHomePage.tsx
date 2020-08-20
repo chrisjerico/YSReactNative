@@ -163,9 +163,11 @@ const WNZHomePage = (props: any) => {
           style={styles.container}
           refreshControl={
             <RefreshControlComponent
-              onRefresh={() => {
-                refreshHomeInfo()
-                refreshActivity()
+              onRefresh={async () => {
+                try {
+                  await Promise.all([refreshHomeInfo(), refreshActivity()])
+                } catch (error) {
+                }
               }}
             />
           }
@@ -383,7 +385,7 @@ const WNZHomePage = (props: any) => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'20200818'}
+            version={'20200820'}
           />
           <BottomGap />
         </ScrollView>

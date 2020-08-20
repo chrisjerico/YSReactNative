@@ -14,6 +14,31 @@ import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { SystemConfigModel } from '../../network/Model/SystemConfigModel'
 
+const routers = [
+  'system_rankingList',
+  'system_banners',
+  'game_homeGames',
+  'notice_latest',
+  'system_onlineCount',
+  'system_promotions',
+  'system_config',
+  'system_homeAds',
+  'lhcdoc_lotteryNumber',
+  'game_lotteryGames'
+]
+
+// [
+//   APIRouter.system_rankingList(),
+//   APIRouter.system_banners(),
+//   APIRouter.game_homeGames(),
+//   APIRouter.notice_latest(),
+//   APIRouter.system_onlineCount(),
+//   APIRouter.system_promotions(),
+//   APIRouter.system_config(),
+//   APIRouter.system_homeAds(),
+//   APIRouter.lhcdoc_lotteryNumber(),
+//   APIRouter.game_lotteryGames()
+// ]
 const useHome = () => {
 
   const [loading, setLoading] = useState(true)
@@ -44,43 +69,42 @@ const useHome = () => {
     }
   }
 
-  const callApis = () => {
-    Promise.all([
-      APIRouter.system_rankingList(),
-      APIRouter.system_banners(),
-      APIRouter.game_homeGames(),
-      APIRouter.notice_latest(),
-      APIRouter.system_onlineCount(),
-      APIRouter.system_promotions(),
-      APIRouter.system_config(),
-      APIRouter.system_homeAds(),
-      APIRouter.lhcdoc_lotteryNumber(),
-      APIRouter.game_lotteryGames()
-    ]).then((response) => {
-      setRankList(response[0]?.data)
-      setBanner(response[1]?.data)
-      setHomeGame(response[2]?.data)
-      setNotice(response[3]?.data)
-      setOnlineCount(response[4]?.data?.data?.onlineUserCount)
-      setCouponList(response[5]?.data)
-      setSystemConfig(response[6]?.data)
-      setHomeAd(response[7]?.data)
-      setLotteryNumber(response[8]?.data)
-      setLotteryGames(response[9]?.data)
-    }).catch(error => {
+  const apis = routers.map(async (router) => {
+    try {
+      return await APIRouter[router]()
+    } catch (error) {
+      // 
+    }
+
+  })
+
+  const callApis = async () => {
+    try {
+      const response = await Promise.all(apis)
+      response[0] && setRankList(response[0]?.data)
+      response[1] && setBanner(response[1]?.data)
+      response[2] && setHomeGame(response[2]?.data)
+      response[3] && setNotice(response[3]?.data)
+      response[4] && setOnlineCount(response[4]?.data?.data?.onlineUserCount)
+      response[5] && setCouponList(response[5]?.data)
+      response[6] && setSystemConfig(response[6]?.data)
+      response[7] && setHomeAd(response[7]?.data)
+      response[8] && setLotteryNumber(response[8]?.data)
+      response[9] && setLotteryGames(response[9]?.data)
+    } catch (error) {
       console.log("--------useHome error--------", error)
-    }).finally(() => {
+    } finally {
       setLoading(false)
-    })
+    }
   }
 
-  const refreshHomeInfo = init
+  const refreshHomeInfo = callApis
 
   useEffect(() => {
-    // callApis()
-    setTimeout(() => {
-      init()
-    }, 1000);
+    callApis()
+    // setTimeout(() => {
+    //   init()
+    // }, 1000);
   }, [])
 
   return {

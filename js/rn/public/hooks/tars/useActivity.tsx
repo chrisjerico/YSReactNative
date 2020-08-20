@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import APIRouter from '../../network/APIRouter'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
+import { httpClient } from '../../network/httpClient'
+import { TurntableListModel } from '../../network/Model/TurntableListModel'
+
+const routers = [
+  'activity_turntableList',
+  'activity_redBagDetail',
+  'system_floatAds'
+]
 
 const useActivity = (uid: string) => {
 
@@ -8,19 +16,25 @@ const useActivity = (uid: string) => {
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAd, setFloatAd] = useState<any[]>()
 
-  const callApis = () => {
-    Promise.all([
-      APIRouter.activity_turntableList(),
-      APIRouter.activity_redBagDetail(),
-      APIRouter.system_floatAds()
-    ]).then(response => {
-      setRoulette(response[0]?.data?.data)
-      setRedBag(response[1]?.data)
-      setFloatAd(response[2]?.data?.data)
-    }).catch(error => {
-      console.log("--------useHome error--------", error)
-    }).finally(() => {
-    })
+
+  const apis = routers.map(async (router) => {
+    try {
+      return await APIRouter[router]()
+    } catch (error) {
+      // 
+    }
+
+  })
+
+  const callApis = async () => {
+    try {
+      const response = await Promise.all(apis)
+      response[0] && setRoulette(response[0]?.data?.data)
+      response[1] && setRedBag(response[1]?.data)
+      response[2] && setFloatAd(response[2]?.data?.data)
+    } catch (error) {
+      console.log("--------useActivity error--------", error)
+    }
   }
 
   const refreshActivity = callApis

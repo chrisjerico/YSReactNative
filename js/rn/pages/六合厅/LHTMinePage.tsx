@@ -24,7 +24,7 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
-import config from './config.json'
+import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
 
