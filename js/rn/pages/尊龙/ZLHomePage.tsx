@@ -50,6 +50,7 @@ import { List } from "../../public/network/Model/PromotionsModel"
 import {ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
+import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -107,7 +108,7 @@ const ZLHomePage = ({ navigation, setProps }) => {
               OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
             break;
           case 'android':
-
+              ANHelper.callAsync(CMD.OPEN_RED_BAD, data.data)
             break;
         }
     }
