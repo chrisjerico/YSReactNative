@@ -6,10 +6,13 @@ import { navigate } from '../navigation/RootNavigation'
 import APIRouter from '../network/APIRouter'
 import { Toast } from '../tools/ToastUtils'
 import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {hideLoading, showLoading, UGLoadingType} from "../widget/UGLoadingCP";
 
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {
     try {
+      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' });
+
       await APIRouter.user_logout()
       switch (Platform.OS) {
         case 'ios':
@@ -17,20 +20,25 @@ const useLoginOut = (pageName: PageName) => {
           await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
           await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
           break;
-        case 'android':
-          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
-          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
-          break;
       }
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
       console.log("---------------登出成功---------------")
       navigate(pageName, {})
 
+      //安卓放这 navigate 以后执行
+      switch (Platform.OS) {
+        case 'android':
+          await ANHelper.callAsync(CMD.LOG_OUT);
+          break;
+      }
+
     } catch (error) {
       console.log(error)
       Toast('退出失败，请稍后再试')
     }
+
+    hideLoading()
   }
   const loginOut = () => {
     Alert.alert('温馨提示', '确定退出账号', [
