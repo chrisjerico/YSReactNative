@@ -159,16 +159,23 @@ export default class PushHelper {
     OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
   }
   static openWebView(url: string) {
-    OCHelper.call(({ vc }) => ({
-      vc: {
-        selectors: 'TGWebViewController.new[setUrl:]',
-        args1: [url],
-      },
-      ret: {
-        selectors: 'UGNavigationController.current.pushViewController:animated:',
-        args1: [vc, true],
-      },
-    }));
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'TGWebViewController.new[setUrl:]',
+            args1: [url],
+          },
+          ret: {
+            selectors: 'UGNavigationController.current.pushViewController:animated:',
+            args1: [vc, true],
+          },
+        }));
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_WEB, { url: url })
+        break;
+    }
   }
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
