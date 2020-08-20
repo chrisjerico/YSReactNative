@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import LinearGradient from "react-native-linear-gradient"
 import AppDefine from "../define/AppDefine"
-import { View, Text, StyleSheet } from "react-native"
+import {View, Text, StyleSheet, Platform} from "react-native"
 import FastImage from "react-native-fast-image"
 import { Skin1 } from "../theme/UGSkinManagers"
 import { Button, Icon } from "react-native-elements"
@@ -38,7 +38,15 @@ export function showLoading(props: UGLoadingProps) {
 
 // 隐藏当前页面Loading
 export function hideLoading() {
-  hideLoadingFunc && hideLoadingFunc();
+  switch (Platform.OS) {
+    case 'ios':
+      hideLoadingFunc && hideLoadingFunc();
+      break;
+    case 'android':
+      UGLoadingProps.shared = null
+      refreshLoadingFunc();
+      break;
+  }
 }
 
 

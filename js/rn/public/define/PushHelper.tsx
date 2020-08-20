@@ -119,6 +119,11 @@ export default class PushHelper {
         break;
     }
   }
+
+  /**
+   * 打开红包
+   * @param redBag
+   */
   static pushRedBag(redBag: RedBagDetailActivityModel) {
     const data = redBag?.data
     const redbagModel = Object.assign({}, { clsName: 'UGRedEnvelopeModel', rid: data?.id }, data); // ios 裡是抓rid
