@@ -86,7 +86,7 @@ export default (Page: Function) => {
 
       // 设置props
       const defaultProps: UGBasePageProps = {
-        backgroundColor: [UGColor.BackgroundColor1],
+        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
       this.newProps = deepMergeProps(defaultProps, this.props)
@@ -105,7 +105,7 @@ export default (Page: Function) => {
 
     render() {
       console.log('渲染', this.props.route.name);
-      let { backgroundColor = [], backgroundImage = '', navbarOpstions = {} } = this.newProps;
+      let { backgroundColor = [UGColor.BackgroundColor1, UGColor.BackgroundColor1], backgroundImage = '', navbarOpstions = {} } = this.newProps;
 
       return (
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
