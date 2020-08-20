@@ -24,7 +24,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 1000,
+  timeout: 15000,
   headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {
