@@ -29,11 +29,13 @@ import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
 import { getActivityPosition } from '../../public/tools/tars'
+import APIRouter from '../../public/network/APIRouter'
 
-const BZHHomePage = () => {
+const BZHHomePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // functions
+  const { setProps } = props
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {

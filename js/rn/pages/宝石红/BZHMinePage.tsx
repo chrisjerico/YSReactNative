@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Button } from 'react-native-elements'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { navigate, navigationRef, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -25,7 +27,7 @@ const BZHMinePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const { setProps } = props
+  const { setProps, navigation } = props
   const { logOut } = useLogOut({
     onSuccess: () => {
       navigate(PageName.BZHHomePage, {})
@@ -45,6 +47,7 @@ const BZHMinePage = (props) => {
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
   const [avatarListLoading, setAvatarListLoading] = useState(true)
+  const [showBackBtn, setShowBackBtn] = useState(false)
   // effects
   const getAvatarList = async () => {
     try {
@@ -60,6 +63,18 @@ const BZHMinePage = (props) => {
 
   useEffect(() => {
     getAvatarList()
+    setProps({
+      didFocus: async () => {
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then(
+          (ocCount) => {
+            const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1
+            console.log(show)
+            setShowBackBtn(show)
+          }
+        )
+        // setProps();
+      }
+    })
   }, [])
 
   // data
@@ -69,10 +84,20 @@ const BZHMinePage = (props) => {
   return (
     <>
       <SafeAreaHeader
-        containerStyle={styles.headerContainer}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
+        {showBackBtn ? (
+          <TouchableWithoutFeedback onPress={() => {
+            !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          }} >
+            <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+          </TouchableWithoutFeedback>
+        ) : (
+            <View />
+          )}
+
         <Text style={styles.headerTitle}>{'会员中心'}</Text>
+        <View />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -188,11 +213,6 @@ const styles = StyleSheet.create({
   },
   logOutTitle: {
     color: '#e53333',
-  },
-  headerContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   headerTitle: {
     color: '#ffffff',

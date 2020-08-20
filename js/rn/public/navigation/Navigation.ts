@@ -1,7 +1,3 @@
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Router, RouterType } from './Router';
-import { UGBasePageProps } from '../../pages/base/UGPage';
 
 export enum PageName {
   TransitionPage = 'TransitionPage',

@@ -8,15 +8,18 @@ interface TouchableImageProps {
   containerStyle?: ViewStyle | ViewStyle[];
   resizeMode?: 'cover' | 'contain' | 'stretch';
   enableFastImage?: boolean;
-  onLoad?: (event: any) => any
+  onLoad?: (event: any) => any;
+  onLoadStart?: () => any;
+  onLoadEnd?: () => any;
+  onError?: () => any;
 }
 
-const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', enableFastImage = true, onLoad }: TouchableImageProps) => {
+const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', enableFastImage = true, onLoad, onLoadStart, onLoadEnd, onError }: TouchableImageProps) => {
   const ImageComponent = enableFastImage ? FastImage : Image
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
-        <ImageComponent style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} onLoad={onLoad} />
+        <ImageComponent style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} onLoad={onLoad} onLoadStart={onLoadStart} onLoadEnd={onLoadEnd} onError={onError} />
       </View>
     </TouchableWithoutFeedback>
   );
