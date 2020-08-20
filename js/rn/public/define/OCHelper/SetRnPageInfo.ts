@@ -173,6 +173,7 @@ export function setRnPageInfo() {
       {
         // 我的页
         tabbarItemPath: '/user',
+        vcName: 'UGMineSkinViewController',
         rnName: PageName.BZHMinePage,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
