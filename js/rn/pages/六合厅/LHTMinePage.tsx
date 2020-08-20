@@ -1,19 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import {
+  navigate,
+  navigationRef,
+  pop,
+} from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -22,16 +27,16 @@ import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
 
-const LHTMinePage = ({ navigation }) => {
+const LHTMinePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
+  const { setProps } = props
   const { logOut } = useLogOut({
     onSuccess: () => {
       navigate(PageName.LHTHomePage, {})
@@ -47,35 +52,56 @@ const LHTMinePage = ({ navigation }) => {
 
   // effects
   const { UGUserCenterItem } = useMemberItems()
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      updateUserInfo()
-    })
-    return unsubscribe
-  }, [])
 
-  // functions
-  const gotoHome = () => {
-    navigation.navigate('LHTHomePage')
-  }
+  const [showBackBtn, setShowBackBtn] = useState(false)
+
+  useEffect(() => {
+    setProps({
+      didFocus: async () => {
+        OCHelper.call(
+          'UGNavigationController.current.viewControllers.count'
+        ).then((ocCount) => {
+          const show =
+            ocCount > 1 ||
+            navigationRef?.current?.getRootState().routes.length > 1
+          setShowBackBtn(show)
+        })
+      },
+    })
+  }, [])
 
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <TouchableWithoutFeedback style={styles.headerLeft} onPress={gotoHome}>
-          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableWithoutFeedback>
-        <View style={styles.headerMid}>
+        {showBackBtn ? (
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <AntDesign
+              name={'left'}
+              color={'#ffffff'}
+              size={scale(25)}
+              onPress={() => {
+                !pop() &&
+                  OCHelper.call(
+                    'UGNavigationController.current.popViewControllerAnimated:',
+                    [true]
+                  )
+              }}
+            />
+          </View>
+        ) : (
+            <View style={{ flex: 1 }} />
+          )}
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={styles.headerTitle}>{'我的'}</Text>
         </View>
-
         <TouchableWithoutFeedback
-          style={styles.headerRight}
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
-          <Text style={styles.headerTitle}>{'客服'}</Text>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+            <Text style={styles.headerTitle}>{'客服'}</Text>
+          </View>
         </TouchableWithoutFeedback>
       </SafeAreaHeader>
       <ScrollView
@@ -155,21 +181,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
     fontSize: scale(25),
-  },
-  headerLeft: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  headerRight: {
-    flex: 1,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  headerMid: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
 

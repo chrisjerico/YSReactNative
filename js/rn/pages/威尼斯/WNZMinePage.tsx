@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { navigate, navigationRef } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
@@ -18,8 +18,11 @@ import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 import { getHtml5Image } from '../../public/tools/tars'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
-const WNZMinePage = () => {
+const WNZMinePage = (props) => {
+
+  const { setProps } = props
   const {
     uid,
     balance,
@@ -77,10 +80,28 @@ const WNZMinePage = () => {
     ].includes(ele.code)
   )
 
+  const [showBackBtn, setShowBackBtn] = useState(false)
+
+  useEffect(() => {
+    setProps({
+      didFocus: async () => {
+        OCHelper.call(
+          'UGNavigationController.current.viewControllers.count'
+        ).then((ocCount) => {
+          const show =
+            ocCount > 1 ||
+            navigationRef?.current?.getRootState().routes.length > 1
+          setShowBackBtn(show)
+        })
+      },
+    })
+  }, [])
+
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <HomeHeader
+          showBackBtn={showBackBtn}
           showBalance={uid ? true : false}
           name={usr}
           logo={mobile_logo}

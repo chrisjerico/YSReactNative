@@ -44,11 +44,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(25),
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  text: {
-    color: '#ffffff',
-    fontSize: scale(25),
-  },
+  }
 })
 
 export default SafeAreaHeader

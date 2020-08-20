@@ -385,7 +385,7 @@ const WNZHomePage = (props: any) => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'20200820'}
+            version={'修復任務中心'}
           />
           <BottomGap />
         </ScrollView>

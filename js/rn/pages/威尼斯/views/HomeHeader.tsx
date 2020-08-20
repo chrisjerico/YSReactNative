@@ -5,6 +5,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import { pop } from '../../../public/navigation/RootNavigation'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 
 interface HomeHeaderProps {
   name: string;
@@ -14,6 +16,7 @@ interface HomeHeaderProps {
   onPressComment: () => any;
   onPressUser: () => any;
   showBalance: boolean;
+  showBackBtn: boolean;
 }
 
 const HomeHeader = ({
@@ -24,16 +27,32 @@ const HomeHeader = ({
   onPressComment,
   onPressUser,
   showBalance,
+  showBackBtn,
 }: HomeHeaderProps) => {
   return (
     <>
-      <FastImage
-        source={{
-          uri: logo,
-        }}
-        style={{ width: '30%', height: '100%' }}
-        resizeMode={'contain'}
-      />
+      {showBackBtn ? (
+        <AntDesign
+          name={'left'}
+          color={'#ffffff'}
+          size={scale(25)}
+          onPress={() => {
+            !pop() &&
+              OCHelper.call(
+                'UGNavigationController.current.popViewControllerAnimated:',
+                [true]
+              )
+          }}
+        />
+      ) : (
+          <FastImage
+            source={{
+              uri: logo,
+            }}
+            style={{ width: '30%', height: '100%' }}
+            resizeMode={'contain'}
+          />
+        )}
       <View style={styles.rightContainer}>
         <TouchableWithoutFeedback onPress={onPressUser}>
           <View style={{ flexDirection: 'row' }}>

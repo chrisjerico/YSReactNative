@@ -72,7 +72,6 @@ const BZHMinePage = (props) => {
             setShowBackBtn(show)
           }
         )
-        // setProps();
       }
     })
   }, [])
@@ -87,17 +86,27 @@ const BZHMinePage = (props) => {
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
         {showBackBtn ? (
-          <TouchableWithoutFeedback onPress={() => {
-            !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-          }} >
-            <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-          </TouchableWithoutFeedback>
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <AntDesign
+              name={'left'}
+              color={'#ffffff'}
+              size={scale(25)}
+              onPress={() => {
+                !pop() &&
+                  OCHelper.call(
+                    'UGNavigationController.current.popViewControllerAnimated:',
+                    [true]
+                  )
+              }}
+            />
+          </View>
         ) : (
-            <View />
+            <View style={{ flex: 1 }} />
           )}
-
-        <Text style={styles.headerTitle}>{'会员中心'}</Text>
-        <View />
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={styles.headerTitle}>{'会员中心'}</Text>
+        </View>
+        <View style={{ flex: 1 }} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}

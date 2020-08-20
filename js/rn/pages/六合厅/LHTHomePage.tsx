@@ -168,6 +168,8 @@ const LHTHomePage = (props: any) => {
     }
   }, [notice])
   // render
+
+  console.log("---------重複選染LHT-------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -431,7 +433,7 @@ const LHTHomePage = (props: any) => {
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'20200820'}
+              version={'修復任務中心'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}
