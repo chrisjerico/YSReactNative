@@ -141,6 +141,7 @@ const BZHMinePage = (props) => {
             return (
               <GameButton
                 key={index}
+                showSecondLevelIcon={false}
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}

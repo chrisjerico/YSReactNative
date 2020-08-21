@@ -166,6 +166,7 @@ const BZHHomePage = () => {
               const { icon, name, logo, gameId } = item
               return (
                 <GameButton
+                  showSecondLevelIcon={false}
                   key={index}
                   containerStyle={{ width: '25%' }}
                   imageContainerStyle={{ width: '45%' }}

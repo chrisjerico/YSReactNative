@@ -259,6 +259,7 @@ const LHTHomePage = (props: any) => {
                 return (
                   <GameButton
                     key={index}
+                    showSecondLevelIcon={false}
                     containerStyle={{ width: '25%', height: '50%' }}
                     imageContainerStyle={{ width: '50%' }}
                     enableCircle={false}
