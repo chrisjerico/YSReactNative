@@ -1,11 +1,13 @@
-import {View, FlatList, TouchableWithoutFeedback, Text} from "react-native"
-import React, {useState} from 'react'
+import {View, FlatList, TouchableWithoutFeedback, Text, TouchableOpacity, Linking, Image} from "react-native"
+import React, {useEffect, useState} from 'react'
 import useGetHomeInfo from "../hooks/useGetHomeInfo"
 import usePopUpView from "../hooks/usePopUpView"
 import FastImage, {FastImageProperties} from "react-native-fast-image"
 import AppDefine from "../define/AppDefine"
 import AutoHeightWebView from "react-native-autoheight-webview"
 import {useDimensions} from "@react-native-community/hooks"
+import {httpClient} from "../network/httpClient";
+import {Res} from "../../Res/icon/Resources";
 
 const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal?: boolean, titleVisible?: boolean }) => {
     const {couponListData,} = useGetHomeInfo(['system_promotions'])
@@ -18,7 +20,6 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
             return <View style={{paddingHorizontal: 10, marginBottom: 10}}>
                 <TouchableWithoutFeedback
                     onPress={onPopViewPress.bind(null, item, couponListData?.data?.style ?? 'popup', () => {
-                        debugger
                         if (selectId == index) {
                             setSelectedId(-1)
                         } else {
@@ -32,11 +33,13 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
                             marginBottom: 5,
                             color: 'black'
                         }}>{item.title}</Text>}
-                        <FastImageAutoHeight resizeMode={"stretch"} style={horizontal && {width: 200, height: 150}} source={{uri: item.pic}}/>
+                        <FastImageAutoHeight resizeMode={"stretch"} style={horizontal && {width: 200, height: 150}}
+                                             source={{uri: item.pic}}/>
                     </View>
                 </TouchableWithoutFeedback>
 
-                {selectId == index ? <AutoHeightWebView
+                {selectId == index ? <View>
+                    <AutoHeightWebView
                     style={{width: width - 20, backgroundColor: 'white'}}
                     // scalesPageToFit={true}
                     viewportContent={'width=device-width, user-scalable=no'}
@@ -52,7 +55,14 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
                         document.title = document.body.scrollHeight;
                       }
                     </script>` + item.content
-                    }}/> : null
+                    }}/>
+                    {item.linkUrl && item.linkUrl !== "" && <TouchableOpacity onPress={() => {
+                        Linking.openURL(item.linkUrl)
+                    }}>
+                        <FastImage style={{height: 100, width: 150}} source={{uri: httpClient.defaults.baseURL + `/images/more.gif`}}/>
+                    </TouchableOpacity>
+                    }
+                </View>: null
                 }
 
             </View>
@@ -64,7 +74,7 @@ const FastImageAutoHeight = (props: FastImageProperties) => {
     const {cardMargin, marginHorizontal} = usePopUpView()
     return (
         <FastImage {...props} style={[{height: picHeight}, props.style]} onLoad={(e) => {
-            setPicHeight( ((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
+            setPicHeight(((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
         }}/>
     )
 }

@@ -42,8 +42,8 @@ export const LotteryTabView = ({list}: { list: List[] }) => {
                         }}>
                             <Image style={{
                                 flex: 1,
-                                height: 50,
-                                width: 50,
+                                height: 63,
+                                width: 63,
                                 resizeMode: "stretch",
                             }} source={{uri: item.icon}}/>
                             <Text style={{
