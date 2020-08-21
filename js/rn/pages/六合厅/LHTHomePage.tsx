@@ -370,12 +370,15 @@ const LHTHomePage = (props: any) => {
               }}
               renderRightGame={(item, index) => {
                 const { logo, icon, title, hotIcon, tipFlag } = item
+                const showFlag = parseInt(tipFlag)
+
                 return (
                   <GameButton
                     key={index}
-                    showFlag={parseInt(tipFlag) ? true : false}
+                    showRightTopFlag={showFlag > 0 && showFlag < 4}
+                    showCenterFlag={showFlag == 4}
+                    flagIcon={hotIcon}
                     logo={logo ? logo : icon}
-                    hotIcon={hotIcon}
                     title={title}
                     showSubTitle={false}
                     containerStyle={{

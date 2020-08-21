@@ -19,7 +19,7 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageContainerStyle?: ViewStyle[] | ViewStyle
+  imageContainerStyle?: ViewStyle[] | ViewStyle;
   circleColor?: string;
   containerStyle?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
@@ -27,8 +27,40 @@ interface GameButtonProps {
   titleContainerStyle?: ViewStyle;
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
-  showFlag?: boolean;
-  hotIcon?: string;
+  showRightTopFlag?: boolean;
+  showCenterFlag?: boolean;
+  flagIcon?: string;
+}
+
+interface DefaultFlag {
+  center: boolean;
+}
+
+const DefaultFlag = ({ center }: DefaultFlag) => {
+  if (center) {
+    return (
+      <View style={styles.centerFlagContainer}>
+        <View style={styles.flag}>
+          <Text style={styles.flagText}>{'热门'}</Text>
+        </View>
+      </View>
+    )
+  } else {
+    return (
+      <View
+        style={[
+          styles.flag,
+          {
+            position: 'absolute',
+            right: 0,
+            top: scale(5),
+          },
+        ]}
+      >
+        <Text style={styles.flagText}>{'热门'}</Text>
+      </View>
+    )
+  }
 }
 
 const GameButton = (props: GameButtonProps) => {
@@ -46,8 +78,9 @@ const GameButton = (props: GameButtonProps) => {
     titleContainerStyle,
     resizeMode = 'contain',
     enableCircle = true,
-    showFlag,
-    hotIcon = '',
+    showRightTopFlag,
+    showCenterFlag,
+    flagIcon,
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -67,10 +100,15 @@ const GameButton = (props: GameButtonProps) => {
                 source={{ uri: logo }}
                 resizeMode={resizeMode}
               />
-              <FastImage
-                source={{ uri: hotIcon }}
-                style={[styles.image, { position: 'absolute' }]}
-              />
+              {showCenterFlag &&
+                (flagIcon ? (
+                  <FastImage
+                    source={{ uri: flagIcon }}
+                    style={[styles.image, { position: 'absolute' }]}
+                  />
+                ) : (
+                    <DefaultFlag center={true} />
+                  ))}
             </View>
           </View>
         ) : (
@@ -80,10 +118,15 @@ const GameButton = (props: GameButtonProps) => {
                 source={{ uri: logo }}
                 resizeMode={resizeMode}
               />
-              <FastImage
-                source={{ uri: hotIcon }}
-                style={[styles.image, { position: 'absolute' }]}
-              />
+              {showCenterFlag &&
+                (flagIcon ? (
+                  <FastImage
+                    source={{ uri: flagIcon }}
+                    style={[styles.image, { position: 'absolute' }]}
+                  />
+                ) : (
+                    <DefaultFlag center={true} />
+                  ))}
             </View>
           )}
         <View style={[styles.titleContainer, titleContainerStyle]}>
@@ -100,11 +143,16 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
-        {showFlag && (
-          <View style={styles.flagContainer}>
-            <Text style={styles.flagText}>{'热门'}</Text>
-          </View>
-        )}
+        {showRightTopFlag &&
+          (flagIcon ? (
+            <FastImage
+              source={{ uri: flagIcon }}
+              style={styles.rightTopFlag}
+              resizeMode={'contain'}
+            />
+          ) : (
+              <DefaultFlag center={false} />
+            ))}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -141,12 +189,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  flagContainer: {
-    position: 'absolute',
+  flag: {
+    width: scale(50),
     backgroundColor: 'red',
-    right: 0,
-    top: scale(5),
     borderRadius: scale(5),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   flagText: {
     color: '#ffffff',
@@ -155,6 +203,20 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  rightTopFlag: {
+    position: 'absolute',
+    width: '30%',
+    aspectRatio: 1,
+    right: 0,
+    top: 0,
+  },
+  centerFlagContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
   },
 })
 

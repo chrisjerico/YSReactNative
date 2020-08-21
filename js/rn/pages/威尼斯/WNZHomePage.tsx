@@ -251,12 +251,14 @@ const WNZHomePage = (props: any) => {
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games?.map((item, index) => {
               const { logo, name, hotIcon, tipFlag } = item
+              const showFlag = parseInt(tipFlag)
               return (
                 <View key={index} style={styles.gameContainer}>
                   <GameButton
                     logo={logo}
-                    hotIcon={hotIcon}
-                    showFlag={parseInt(tipFlag) ? true : false}
+                    showRightTopFlag={showFlag > 0 && showFlag < 4}
+                    showCenterFlag={showFlag == 4}
+                    flagIcon={hotIcon}
                     title={name}
                     containerStyle={{
                       width: '90%',

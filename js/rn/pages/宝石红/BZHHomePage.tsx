@@ -12,6 +12,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { getActivityPosition } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -28,8 +29,6 @@ import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
-import { getActivityPosition } from '../../public/tools/tars'
-import APIRouter from '../../public/network/APIRouter'
 
 const BZHHomePage = (props) => {
   // yellowBox
@@ -223,11 +222,14 @@ const BZHHomePage = (props) => {
                   contentContainerStyle={{ paddingTop: scale(20) }}
                   games={list}
                   renderGame={(item, index) => {
-                    const { title, logo, icon, name, subtitle, tipFlag, hotIcon } = item
+                    const { title, logo, icon, name, subtitle, tipFlag, hotIcon, subType } = item
+                    const showFlag = parseInt(tipFlag)
                     return (
                       <GameButton
                         key={index}
-                        showFlag={parseInt(tipFlag) ? true : false}
+                        showRightTopFlag={showFlag > 0 && showFlag < 4}
+                        showCenterFlag={showFlag == 4}
+                        flagIcon={hotIcon}
                         resizeMode={'contain'}
                         containerStyle={[
                           styles.gameContainer,
@@ -239,7 +241,6 @@ const BZHHomePage = (props) => {
                         imageContainerStyle={{ width: '60%' }}
                         enableCircle={false}
                         logo={icon || logo}
-                        hotIcon={hotIcon}
                         title={name || title}
                         subTitle={subtitle}
                         showSubTitle
@@ -254,7 +255,11 @@ const BZHHomePage = (props) => {
                           aspectRatio: 2,
                         }}
                         onPress={() => {
-                          PushHelper.pushHomeGame(item)
+                          if (subType) {
+
+                          } else {
+                            PushHelper.pushHomeGame(item)
+                          }
                         }}
                       />
                     )
