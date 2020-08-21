@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface GameButtonProps {
   logo?: string;
@@ -30,6 +31,7 @@ interface GameButtonProps {
   showRightTopFlag?: boolean;
   showCenterFlag?: boolean;
   flagIcon?: string;
+  showSecondLevelIcon?: boolean;
 }
 
 interface DefaultFlag {
@@ -81,6 +83,7 @@ const GameButton = (props: GameButtonProps) => {
     showRightTopFlag,
     showCenterFlag,
     flagIcon,
+    showSecondLevelIcon,
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -109,6 +112,13 @@ const GameButton = (props: GameButtonProps) => {
                 ) : (
                     <DefaultFlag center={true} />
                   ))}
+              {showSecondLevelIcon && (
+                <AntDesign
+                  name={'appstore1'}
+                  style={{ position: 'absolute', right: -scale(30), top: '50%' }}
+                  size={scale(25)}
+                />
+              )}
             </View>
           </View>
         ) : (
@@ -127,6 +137,13 @@ const GameButton = (props: GameButtonProps) => {
                 ) : (
                     <DefaultFlag center={true} />
                   ))}
+              {showSecondLevelIcon && (
+                <AntDesign
+                  name={'appstore1'}
+                  style={{ position: 'absolute', right: -scale(30), top: '40%' }}
+                  size={scale(25)}
+                />
+              )}
             </View>
           )}
         <View style={[styles.titleContainer, titleContainerStyle]}>

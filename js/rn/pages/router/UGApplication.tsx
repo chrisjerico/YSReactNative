@@ -1,6 +1,6 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { Component } from 'react';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import { PageName } from '../../public/navigation/Navigation';
@@ -16,6 +16,7 @@ import LCHomePage from "../乐橙/LCHomePage";
 import LCMinePage from "../乐橙/LCMinePage";
 import LHTHomePage from "../六合厅/LHTHomePage";
 import LHTMinePage from "../六合厅/LHTMinePage";
+import LHTPreferencePage from '../六合厅/LHTPreferencePage';
 import KSHomePage from '../凯时/KSHomePage';
 import KSLogin from '../凯时/KSLoginPage';
 import KSMine from '../凯时/KSMinePage';
@@ -26,9 +27,9 @@ import BZHHomePage from "../宝石红/BZHHomePage";
 import BZHMinePage from "../宝石红/BZHMinePage";
 import BZHRegisterPage from '../宝石红/BZHRegisterPage';
 import BZHSignInPage from '../宝石红/BZHSignInPage';
-import ZLMinePage from '../尊龙/ZLMinePage';
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
+import ZLMinePage from '../尊龙/ZLMinePage';
 import ZLRegisterPage from '../尊龙/ZLRegisterPage';
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import GameList from '../越南/GameList';
@@ -45,7 +46,6 @@ import { XBJLoginPage } from '../香槟金/XBJLoginPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
-import LHTPreferencePage from '../六合厅/LHTPreferencePage';
 
 // TabbarController
 class TabBarController extends Component<{

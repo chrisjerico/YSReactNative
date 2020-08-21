@@ -1,10 +1,5 @@
-import { Platform } from 'react-native'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
 import APIRouter from '../../public/network/APIRouter'
 import NetworkRequest1 from '../../public/network/NetworkRequest1'
-import UGSkinManagers from '../../public/theme/UGSkinManagers'
-import UGSysConfModel from '../model/全局/UGSysConfModel'
 import { UGStore } from './UGStore'
 
 export const AsyncStorageKey = {
@@ -49,8 +44,4 @@ export async function updateSysConf() {
   } catch (error) {
 
   }
-}
-
-export function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }

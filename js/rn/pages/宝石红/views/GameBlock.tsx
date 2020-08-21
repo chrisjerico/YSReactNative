@@ -7,6 +7,13 @@ import {
   ViewStyle,
 } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
+import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
+
+export interface GameSubType {
+  gemaCutRow?: number;
+  subType?: any[];
+  indexHistory?: number;
+}
 
 interface GameBlockProps {
   containerStyle?: ViewStyle;
@@ -15,16 +22,27 @@ interface GameBlockProps {
   renderGame: (item: any, index: number) => any;
   title: string;
   onPressTotal: () => any;
+  renderSubType?: (item: IGameIconListItem, index: number) => any;
+  subTypeContainerStyle?: ViewStyle | ViewStyle[];
+  gameSubType?: GameSubType;
 }
 
 const GameBlock = ({
   title = '',
-  games,
+  games = [],
   renderGame,
   containerStyle,
   contentContainerStyle,
   onPressTotal,
+  renderSubType,
+  subTypeContainerStyle,
+  gameSubType = {},
 }: GameBlockProps) => {
+  const { gemaCutRow, subType } = gameSubType
+  const cutElement = gemaCutRow ? gemaCutRow * 3 : -1
+  const mainGames = games?.slice(0, cutElement) ?? []
+  const subGames = games?.slice(cutElement, -1) ?? []
+
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.headerConatiner}>
@@ -36,8 +54,18 @@ const GameBlock = ({
           <Text style={[styles.title, { color: '#EA0000' }]}>{'全部 >'}</Text>
         </TouchableWithoutFeedback>
       </View>
-      <View style={[styles.gamesContainer, contentContainerStyle]}>
-        {games?.map(renderGame)}
+      <View style={[contentContainerStyle]}>
+        <View style={styles.gamesContainer}>{mainGames?.map(renderGame)}</View>
+        {
+          <View style={[styles.gamesContainer, subTypeContainerStyle]}>
+            {subType?.map(renderSubType)}
+          </View>
+        }
+        <View style={styles.gamesContainer}>
+          {subGames?.map((ele, index) => {
+            return renderGame(ele, index + (mainGames?.length ?? 0))
+          })}
+        </View>
       </View>
     </View>
   )

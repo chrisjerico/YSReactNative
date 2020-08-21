@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -17,6 +17,7 @@ import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
+import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
@@ -26,19 +27,19 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import GameBlock from './views/GameBlock'
+import GameBlock, { GameSubType } from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
 
-const BZHHomePage = (props) => {
+const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
+  const [gameSubTypes, setGameSubTypes] = useState<GameSubType[]>([])
   // functions
-  const { setProps } = props
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {
-        backgroundColor: "#ffffff",
+        backgroundColor: '#ffffff',
       },
     })
   }
@@ -88,7 +89,7 @@ const BZHHomePage = (props) => {
     homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
       .slice(0, 4) ?? []
-  const games = homeGame?.data?.icons ?? []
+  const gameBlocks = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list ?? []
@@ -129,8 +130,7 @@ const BZHHomePage = (props) => {
               onRefresh={async () => {
                 try {
                   await Promise.all([refreshHomeInfo(), refreshActivity()])
-                } catch (error) {
-                }
+                } catch (error) { }
               }}
             />
           }
@@ -206,7 +206,7 @@ const BZHHomePage = (props) => {
             }}
           />
           <View style={styles.contentContainer}>
-            {games.map((item) => {
+            {gameBlocks?.map((item, blockIndex) => {
               const { name, list } = item
               return (
                 <GameBlock
@@ -220,22 +220,59 @@ const BZHHomePage = (props) => {
                   title={name}
                   containerStyle={styles.subComponent}
                   contentContainerStyle={{ paddingTop: scale(20) }}
+                  subTypeContainerStyle={{
+                    marginBottom: scale(20),
+                    paddingHorizontal: scale(20),
+                  }}
                   games={list}
-                  renderGame={(item, index) => {
-                    const { title, logo, icon, name, subtitle, tipFlag, hotIcon, subType } = item
+                  gameSubType={gameSubTypes[blockIndex]}
+                  renderSubType={(item, index) => {
+                    const { title } = item
+                    return (
+                      <Button
+                        key={index}
+                        containerStyle={{
+                          width: '27%',
+                          marginLeft: index % 3 == 1 ? '9.5%' : 0,
+                          marginRight: index % 3 == 1 ? '9.5%' : 0,
+                          marginBottom: scale(20),
+                          backgroundColor: BZHThemeColor.宝石红.themeLightColor,
+                          paddingVertical: scale(20),
+                          borderRadius: scale(5),
+                        }}
+                        textStyle={{ color: '#000000', fontSize: scale(15) }}
+                        text={title}
+                        onPress={() => {
+                          PushHelper.pushHomeGame(item)
+                        }}
+                      />
+                    )
+                  }}
+                  renderGame={(item, gameIndex) => {
+                    const {
+                      title,
+                      logo,
+                      icon,
+                      name,
+                      subtitle,
+                      tipFlag,
+                      hotIcon,
+                      subType,
+                    } = item
                     const showFlag = parseInt(tipFlag)
                     return (
                       <GameButton
-                        key={index}
+                        key={gameIndex}
                         showRightTopFlag={showFlag > 0 && showFlag < 4}
                         showCenterFlag={showFlag == 4}
+                        showSecondLevelIcon={subType}
                         flagIcon={hotIcon}
                         resizeMode={'contain'}
                         containerStyle={[
                           styles.gameContainer,
                           {
-                            marginLeft: index % 3 == 1 ? '5%' : 0,
-                            marginRight: index % 3 == 1 ? '5%' : 0,
+                            marginLeft: gameIndex % 3 == 1 ? '5%' : 0,
+                            marginRight: gameIndex % 3 == 1 ? '5%' : 0,
                           },
                         ]}
                         imageContainerStyle={{ width: '60%' }}
@@ -256,7 +293,20 @@ const BZHHomePage = (props) => {
                         }}
                         onPress={() => {
                           if (subType) {
-
+                            const gemaCutRow = Math.ceil((gameIndex + 1) / 3)
+                            const updateGameSubTypes =
+                              gameBlocks?.map((_, index) => {
+                                if (index == blockIndex) {
+                                  return {
+                                    gemaCutRow,
+                                    subType: gameIndex == gameSubTypes[index]?.indexHistory ? [] : subType,
+                                    indexHistory: gameIndex == gameSubTypes[index]?.indexHistory ? undefined : gameIndex
+                                  }
+                                } else {
+                                  return gameSubTypes[index] ?? {}
+                                }
+                              }) ?? []
+                            setGameSubTypes(updateGameSubTypes)
                           } else {
                             PushHelper.pushHomeGame(item)
                           }
@@ -359,7 +409,6 @@ const BZHHomePage = (props) => {
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
