@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMemberItems from '../../public/hooks/useMemberItems'
-import { PageName } from '../../public/navigation/Navigation'
-import { navigate, navigationRef } from '../../public/navigation/RootNavigation'
+import { navigationRef } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { getHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
-import { getHtml5Image } from '../../public/tools/tars'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 
 const WNZMinePage = (props) => {
 
@@ -173,7 +170,7 @@ const WNZMinePage = (props) => {
                     logo={logo}
                     title={name}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
-                    imageStyle={{ width: '30%' }}
+                    imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}
                     enableCircle={false}
                     onPress={() => PushHelper.pushUserCenterType(code)}

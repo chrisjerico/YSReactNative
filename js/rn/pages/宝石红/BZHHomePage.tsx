@@ -169,7 +169,7 @@ const BZHHomePage = (props) => {
                 <GameButton
                   key={index}
                   containerStyle={{ width: '25%' }}
-                  imageStyle={{ width: '45%' }}
+                  imageContainerStyle={{ width: '45%' }}
                   enableCircle={false}
                   logo={icon ? icon : logo}
                   title={name}
@@ -223,7 +223,7 @@ const BZHHomePage = (props) => {
                   contentContainerStyle={{ paddingTop: scale(20) }}
                   games={list}
                   renderGame={(item, index) => {
-                    const { title, logo, icon, name, subtitle, tipFlag } = item
+                    const { title, logo, icon, name, subtitle, tipFlag, hotIcon } = item
                     return (
                       <GameButton
                         key={index}
@@ -236,9 +236,10 @@ const BZHHomePage = (props) => {
                             marginRight: index % 3 == 1 ? '5%' : 0,
                           },
                         ]}
-                        imageStyle={{ width: '60%' }}
+                        imageContainerStyle={{ width: '60%' }}
                         enableCircle={false}
                         logo={icon || logo}
+                        hotIcon={hotIcon}
                         title={name || title}
                         subTitle={subtitle}
                         showSubTitle

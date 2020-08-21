@@ -260,7 +260,7 @@ const LHTHomePage = (props: any) => {
                   <GameButton
                     key={index}
                     containerStyle={{ width: '25%', height: '50%' }}
-                    imageStyle={{ width: '50%' }}
+                    imageContainerStyle={{ width: '50%' }}
                     enableCircle={false}
                     logo={icon ? icon : logo}
                     title={name}
@@ -369,11 +369,13 @@ const LHTHomePage = (props: any) => {
                 }
               }}
               renderRightGame={(item, index) => {
-                const { logo, icon, title } = item
+                const { logo, icon, title, hotIcon, tipFlag } = item
                 return (
                   <GameButton
                     key={index}
+                    showFlag={parseInt(tipFlag) ? true : false}
                     logo={logo ? logo : icon}
+                    hotIcon={hotIcon}
                     title={title}
                     showSubTitle={false}
                     containerStyle={{

@@ -5,7 +5,7 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -19,7 +19,7 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageStyle?: any;
+  imageContainerStyle?: ViewStyle[] | ViewStyle
   circleColor?: string;
   containerStyle?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
@@ -28,12 +28,13 @@ interface GameButtonProps {
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
   showFlag?: boolean;
+  hotIcon?: string;
 }
 
 const GameButton = (props: GameButtonProps) => {
   const {
     circleColor,
-    imageStyle,
+    imageContainerStyle,
     logo = '',
     title = '',
     subTitle = '',
@@ -46,6 +47,7 @@ const GameButton = (props: GameButtonProps) => {
     resizeMode = 'contain',
     enableCircle = true,
     showFlag,
+    hotIcon = '',
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -59,18 +61,30 @@ const GameButton = (props: GameButtonProps) => {
               },
             ]}
           >
-            <FastImage
-              style={[styles.image, imageStyle]}
-              source={{ uri: logo }}
-              resizeMode={resizeMode}
-            />
+            <View style={[styles.imageContainer, imageContainerStyle]}>
+              <FastImage
+                style={styles.image}
+                source={{ uri: logo }}
+                resizeMode={resizeMode}
+              />
+              <FastImage
+                source={{ uri: hotIcon }}
+                style={[styles.image, { position: 'absolute' }]}
+              />
+            </View>
           </View>
         ) : (
-            <FastImage
-              style={[styles.image, imageStyle]}
-              source={{ uri: logo }}
-              resizeMode={resizeMode}
-            />
+            <View style={[styles.imageContainer, imageContainerStyle]}>
+              <FastImage
+                style={styles.image}
+                source={{ uri: logo }}
+                resizeMode={resizeMode}
+              />
+              <FastImage
+                source={{ uri: hotIcon }}
+                style={[styles.image, { position: 'absolute' }]}
+              />
+            </View>
           )}
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
@@ -118,7 +132,7 @@ const styles = StyleSheet.create({
   subTitle: {
     color: '#999999',
   },
-  image: {
+  imageContainer: {
     width: '75%',
     aspectRatio: 1,
   },
@@ -131,11 +145,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'red',
     right: 0,
+    top: scale(5),
     borderRadius: scale(5),
   },
   flagText: {
     color: '#ffffff',
     padding: scale(5),
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 })
 

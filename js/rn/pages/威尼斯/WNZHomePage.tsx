@@ -143,6 +143,7 @@ const WNZHomePage = (props: any) => {
       <>
         <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
+            showBackBtn={false}
             showBalance={uid ? true : false}
             name={usr}
             logo={mobile_logo}
@@ -249,11 +250,13 @@ const WNZHomePage = (props: any) => {
           />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games?.map((item, index) => {
-              const { logo, name } = item
+              const { logo, name, hotIcon, tipFlag } = item
               return (
                 <View key={index} style={styles.gameContainer}>
                   <GameButton
                     logo={logo}
+                    hotIcon={hotIcon}
+                    showFlag={parseInt(tipFlag) ? true : false}
                     title={name}
                     containerStyle={{
                       width: '90%',
