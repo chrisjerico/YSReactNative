@@ -435,7 +435,7 @@ const LHTHomePage = (props: any) => {
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'修復任務中心'}
+              version={'fix hot icon'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}
