@@ -26,6 +26,8 @@ const useLoginOut = (pageName: PageName) => {
       console.log("---------------登出成功---------------")
       navigate(pageName, {})
 
+      hideLoading()
+
       //安卓放这 navigate 以后执行
       switch (Platform.OS) {
         case 'android':
@@ -34,11 +36,11 @@ const useLoginOut = (pageName: PageName) => {
       }
 
     } catch (error) {
+      hideLoading()
       console.log(error)
       Toast('退出失败，请稍后再试')
     }
 
-    hideLoading()
   }
   const loginOut = () => {
     Alert.alert('温馨提示', '确定退出账号', [
