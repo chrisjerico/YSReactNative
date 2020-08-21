@@ -212,6 +212,7 @@ const WNZHomePage = (props: any) => {
                   key={index}
                   logo={icon}
                   title={name}
+                  showSecondLevelIcon={false}
                   containerStyle={{
                     width: '20%',
                     backgroundColor: '#ffffff',
@@ -250,14 +251,16 @@ const WNZHomePage = (props: any) => {
           />
           <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
             {games?.map((item, index) => {
-              const { logo, name, hotIcon, tipFlag } = item
-              const showFlag = parseInt(tipFlag)
+              const { logo, name, hotIcon, tipFlag, subType, icon } = item
+              const flagType = parseInt(tipFlag)
+              console.log("---------item-----", item)
               return (
                 <View key={index} style={styles.gameContainer}>
                   <GameButton
-                    logo={logo}
-                    showRightTopFlag={showFlag > 0 && showFlag < 4}
-                    showCenterFlag={showFlag == 4}
+                    logo={icon || logo}
+                    showSecondLevelIcon={subType}
+                    showRightTopFlag={flagType > 0 && flagType < 4}
+                    showCenterFlag={flagType == 4}
                     flagIcon={hotIcon}
                     title={name}
                     containerStyle={{
@@ -271,6 +274,7 @@ const WNZHomePage = (props: any) => {
                       aspectRatio: 5,
                       paddingTop: scale(5),
                     }}
+                    secondLevelIconContainerStyle={{ right: -scale(10) }}
                     enableCircle={false}
                     onPress={() => {
                       PushHelper.pushHomeGame(item)

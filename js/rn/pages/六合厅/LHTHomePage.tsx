@@ -303,6 +303,7 @@ const LHTHomePage = (props: any) => {
                 if (selected) {
                   return (
                     <GameButton
+                      showSecondLevelIcon={false}
                       key={index}
                       logo={logoUrl}
                       title={title}
@@ -369,16 +370,16 @@ const LHTHomePage = (props: any) => {
                 }
               }}
               renderRightGame={(item, index) => {
-                const { logo, icon, title, hotIcon, tipFlag } = item
+                const { logo, icon, title, hotIcon, tipFlag, subType } = item
                 const showFlag = parseInt(tipFlag)
-
                 return (
                   <GameButton
                     key={index}
                     showRightTopFlag={showFlag > 0 && showFlag < 4}
                     showCenterFlag={showFlag == 4}
+                    showSecondLevelIcon={subType}
                     flagIcon={hotIcon}
-                    logo={logo ? logo : icon}
+                    logo={icon || logo}
                     title={title}
                     showSubTitle={false}
                     containerStyle={{

@@ -31,7 +31,8 @@ interface GameButtonProps {
   showRightTopFlag?: boolean;
   showCenterFlag?: boolean;
   flagIcon?: string;
-  showSecondLevelIcon?: boolean;
+  showSecondLevelIcon: boolean;
+  secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
 }
 
 interface DefaultFlag {
@@ -84,6 +85,7 @@ const GameButton = (props: GameButtonProps) => {
     showCenterFlag,
     flagIcon,
     showSecondLevelIcon,
+    secondLevelIconContainerStyle
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -115,7 +117,7 @@ const GameButton = (props: GameButtonProps) => {
               {showSecondLevelIcon && (
                 <AntDesign
                   name={'appstore1'}
-                  style={{ position: 'absolute', right: -scale(30), top: '50%' }}
+                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
                   size={scale(25)}
                 />
               )}
@@ -140,7 +142,7 @@ const GameButton = (props: GameButtonProps) => {
               {showSecondLevelIcon && (
                 <AntDesign
                   name={'appstore1'}
-                  style={{ position: 'absolute', right: -scale(30), top: '40%' }}
+                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
                   size={scale(25)}
                 />
               )}
@@ -235,6 +237,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
   },
+  secondLevelIcon: {
+    position: 'absolute',
+    right: -scale(30),
+    top: '50%'
+  }
 })
 
 export default GameButton
