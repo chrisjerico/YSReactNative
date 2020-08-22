@@ -362,17 +362,23 @@ const WNZHomePage = (props: any) => {
             onPressMore={goToJDPromotionListPage}
             containerStyle={styles.subComponent}
             coupons={coupons}
-            renderCoupon={(item: any, index: number) => {
-              const { pic, linkCategory, linkPosition, title, content } = item
+            renderCoupon={({ item, index }) => {
+              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
               return (
                 <AutoHeightCouponComponent
                   key={index}
-                  enableOnPressPop={linkCategory == 0}
                   title={title}
                   pic={pic}
                   content={content}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  onPress={(setShowPop) => {
+                    if (linkUrl) {
+                      PushHelper.openWebView(linkUrl)
+                    } else if (!linkCategory && !linkPosition) {
+                      setShowPop(true)
+                    }
+                    else {
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }
                   }}
                 />
               )
@@ -394,7 +400,7 @@ const WNZHomePage = (props: any) => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'fix hot icon'}
+            version={'0822'}
           />
           <BottomGap />
         </ScrollView>

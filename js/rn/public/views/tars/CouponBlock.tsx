@@ -8,13 +8,16 @@ import {
   Image
 } from 'react-native'
 import { scale } from '../../tools/Scale'
+import { FlatList } from 'react-native-gesture-handler'
 
 interface CouponBlock {
   containerStyle?: ViewStyle | ViewStyle[];
   coupons: any[];
-  renderCoupon: (item: any, index: number) => any;
+  renderCoupon: ({ item: any, index: number }) => any;
   onPressMore: () => any;
   visible: boolean;
+  listContainerStyle?: ViewStyle | ViewStyle[];
+  titleContainerStyle?: ViewStyle | ViewStyle[];
 }
 
 const CouponBlock = ({
@@ -23,20 +26,27 @@ const CouponBlock = ({
   coupons = [],
   renderCoupon,
   onPressMore,
+  listContainerStyle,
+  titleContainerStyle
 }: CouponBlock) => {
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
-        <View style={styles.titleContainer}>
+        <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image style={{ width: scale(25), height: scale(25), tintColor: '#000000', marginRight: scale(5), marginBottom: scale(5) }} source={{ uri: "礼品-(1)" }} />
-            <Text>{'优惠活动'}</Text>
+            <Text style={{ fontSize: scale(25) }}>{'优惠活动'}</Text>
           </View>
           <TouchableWithoutFeedback onPress={onPressMore}>
-            <Text>{'查看更多>>'}</Text>
+            <Text style={{ fontSize: scale(25) }}>{'查看更多>>'}</Text>
           </TouchableWithoutFeedback>
         </View>
-        <View style={styles.couponsContainer}>{coupons?.map(renderCoupon)}</View>
+        <FlatList
+          style={[styles.listContainer, listContainerStyle]}
+          showsVerticalScrollIndicator={false}
+          data={coupons}
+          renderItem={renderCoupon}
+        />
       </View>
     )
   } else {
@@ -48,13 +58,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  couponsContainer: {
+  listContainer: {
     width: '100%',
     backgroundColor: '#ffffff',
-    borderRadius: scale(15),
     paddingHorizontal: scale(15),
-    marginTop: scale(10),
-    alignItems: 'center',
     paddingBottom: scale(20)
   },
   titleContainer: {

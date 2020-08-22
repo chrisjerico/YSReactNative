@@ -96,7 +96,7 @@ const config = {
       "selected": true,
       "logo": "hongbao",
       "gameType": "hongbao",
-      "des": "抢红包"
+      "des": "抢红包",
     }
   ],
   "bottomTools": [

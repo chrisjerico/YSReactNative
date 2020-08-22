@@ -12,9 +12,9 @@ import { scale } from '../../tools/Scale'
 
 interface AnimatedRankComponentProps {
   containerStyle?: ViewStyle | ViewStyle[];
-  iconContainerStyle?: ViewStyle;
-  rankContainerStyle?: ViewStyle;
-  titleConatinerStyle?: ViewStyle;
+  iconTitleContainerStyle?: ViewStyle | ViewStyle[];
+  rankContainerStyle?: ViewStyle | ViewStyle[];
+  titleConatinerStyle?: ViewStyle | ViewStyle[];
   rankLists: List[];
   duration?: number;
   type: number;
@@ -24,7 +24,7 @@ interface AnimatedRankComponentProps {
 
 const AnimatedRankComponent = ({
   containerStyle,
-  iconContainerStyle,
+  iconTitleContainerStyle,
   rankContainerStyle,
   titleConatinerStyle,
   rankLists,
@@ -58,7 +58,7 @@ const AnimatedRankComponent = ({
   if (type != 0) {
     return (
       <View style={containerStyle}>
-        <View style={[styles.iconContainer, iconContainerStyle]}>
+        <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
           <Icon name={'bar-chart'} type={'font-awesome'} size={scale(20)} />
           <Text style={styles.iconText}>{type == 1 ? '中奖排行榜' : '投注排行榜'}</Text>
         </View>
@@ -103,7 +103,7 @@ const AnimatedRankComponent = ({
 }
 
 const styles = StyleSheet.create({
-  iconContainer: {
+  iconTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: scale(15),

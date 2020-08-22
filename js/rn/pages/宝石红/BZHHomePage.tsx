@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -103,6 +103,7 @@ const BZHHomePage = () => {
     }
   }, [notice])
 
+  console.log('------BZH重複選染-----')
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -160,8 +161,7 @@ const BZHHomePage = () => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
-          {
-            navs?.length > 0 &&
+          {navs?.length > 0 && (
             <NavBlock
               navs={navs}
               containerStyle={{ alignItems: 'center' }}
@@ -189,7 +189,7 @@ const BZHHomePage = () => {
                 )
               }}
             />
-          }
+          )}
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 135 }}
             visible={ads?.length > 0}
@@ -210,8 +210,10 @@ const BZHHomePage = () => {
               )
             }}
           />
-          <View style={styles.contentContainer}>
-            {gameBlocks?.map((item, blockIndex) => {
+          <FlatList
+            style={{ paddingHorizontal: scale(5) }}
+            data={gameBlocks}
+            renderItem={({ item, index: blockIndex }) => {
               const { name, list } = item
               return (
                 <GameBlock
@@ -304,8 +306,16 @@ const BZHHomePage = () => {
                                 if (index == blockIndex) {
                                   return {
                                     gemaCutRow,
-                                    subType: gameIndex == gameSubTypes[index]?.indexHistory ? [] : subType,
-                                    indexHistory: gameIndex == gameSubTypes[index]?.indexHistory ? undefined : gameIndex
+                                    subType:
+                                      gameIndex ==
+                                        gameSubTypes[index]?.indexHistory
+                                        ? []
+                                        : subType,
+                                    indexHistory:
+                                      gameIndex ==
+                                        gameSubTypes[index]?.indexHistory
+                                        ? undefined
+                                        : gameIndex,
                                   }
                                 } else {
                                   return gameSubTypes[index] ?? {}
@@ -321,43 +331,58 @@ const BZHHomePage = () => {
                   }}
                 />
               )
-            })}
-            <CouponBlock
-              visible={m_promote_pos}
-              onPressMore={goToJDPromotionListPage}
-              containerStyle={styles.subComponent}
-              coupons={coupons}
-              renderCoupon={(item, index) => {
-                const { pic, linkCategory, linkPosition, title, content } = item
-                return (
-                  <AutoHeightCouponComponent
-                    key={index}
-                    enableOnPressPop={linkCategory == 0}
-                    title={title}
-                    pic={pic}
-                    content={content}
-                    onPress={() => {
+            }}
+          />
+          <CouponBlock
+            visible={m_promote_pos}
+            onPressMore={goToJDPromotionListPage}
+            containerStyle={{
+              paddingHorizontal: scale(5), marginTop: scale(10),
+            }}
+            titleContainerStyle={{ backgroundColor: '#ffffff' }}
+            coupons={coupons}
+            renderCoupon={({ item, index }) => {
+              const {
+                pic,
+                linkCategory,
+                linkPosition,
+                title,
+                content,
+                linkUrl,
+              } = item
+              return (
+                <AutoHeightCouponComponent
+                  key={index}
+                  title={title}
+                  pic={pic}
+                  content={content}
+                  onPress={(setShowPop) => {
+                    if (linkUrl) {
+                      PushHelper.openWebView(linkUrl)
+                    } else if (!linkCategory && !linkPosition) {
+                      setShowPop(true)
+                    } else {
                       PushHelper.pushCategory(linkCategory, linkPosition)
-                    }}
-                  />
-                )
-              }}
-            />
-          </View>
+                    }
+                  }}
+                />
+              )
+            }}
+          />
           <AnimatedRankComponent
             type={rankingListSwitch}
             containerStyle={styles.subComponent}
+            iconTitleContainerStyle={{
+              backgroundColor: '#ffffff',
+              borderBottomColor: '#d9d9d9',
+              borderBottomWidth: scale(1),
+            }}
             rankContainerStyle={{
               width: '95%',
               borderWidth: scale(1),
               borderColor: '#d9d9d9',
               alignSelf: 'center',
               marginBottom: scale(20),
-            }}
-            iconContainerStyle={{
-              backgroundColor: '#ffffff',
-              borderBottomColor: '#d9d9d9',
-              borderBottomWidth: scale(1),
             }}
             rankLists={rankLists}
             initialAnimatedHeight={scale(0)}
@@ -375,7 +400,7 @@ const BZHHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'fix hot icon'}
+            version={'0822'}
           />
           <BottomGap />
         </ScrollView>
@@ -420,7 +445,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
-  contentContainer: {
+  paddingContainer: {
     paddingHorizontal: scale(5),
   },
   subComponent: {

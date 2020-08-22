@@ -9,9 +9,8 @@ import TouchableImage from '../../views/tars/TouchableImage'
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string;
   pic: string;
-  onPress: () => any;
+  onPress: (setShowPop: (showPop: boolean) => any) => any;
   content: string;
-  enableOnPressPop?: boolean;
 }
 
 const AutoHeightCouponComponent = ({
@@ -19,7 +18,6 @@ const AutoHeightCouponComponent = ({
   pic,
   onPress,
   content,
-  enableOnPressPop = false,
 }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
@@ -35,11 +33,7 @@ const AutoHeightCouponComponent = ({
           containerStyle={{ width: '100%', aspectRatio }}
           resizeMode={'cover'}
           onPress={() => {
-            if (enableOnPressPop) {
-              setShowPop(true)
-            } else {
-              onPress && onPress()
-            }
+            onPress && onPress(setShowPop)
           }}
           onLoad={(e) => {
             const width = e?.nativeEvent?.width ?? 0
@@ -50,7 +44,7 @@ const AutoHeightCouponComponent = ({
             setShow(false)
           }}
         />
-        <Modal visible={enableOnPressPop && showPop} transparent={true}>
+        <Modal visible={showPop} transparent={true}>
           <View
             style={{
               flex: 1,

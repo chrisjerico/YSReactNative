@@ -402,18 +402,25 @@ const LHTHomePage = (props: any) => {
               visible={m_promote_pos}
               onPressMore={goToJDPromotionListPage}
               containerStyle={styles.subComponent}
+              listContainerStyle={{ borderRadius: scale(15) }}
               coupons={coupons}
-              renderCoupon={(item, index) => {
-                const { pic, linkCategory, linkPosition, title, content } = item
+              renderCoupon={({ item, index }) => {
+                const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
                 return (
                   <AutoHeightCouponComponent
                     key={index}
-                    enableOnPressPop={linkCategory == 0}
                     title={title}
                     pic={pic}
                     content={content}
-                    onPress={() => {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    onPress={(setShowPop) => {
+                      if (linkUrl) {
+                        PushHelper.openWebView(linkUrl)
+                      } else if (!linkCategory && !linkPosition) {
+                        setShowPop(true)
+                      }
+                      else {
+                        PushHelper.pushCategory(linkCategory, linkPosition)
+                      }
                     }}
                   />
                 )
@@ -421,8 +428,8 @@ const LHTHomePage = (props: any) => {
             />
             <AnimatedRankComponent
               type={rankingListSwitch}
-              containerStyle={styles.subComponent}
-              iconContainerStyle={styles.rankBlockIconContainerStyle}
+              containerStyle={{ marginVertical: scale(10) }}
+              iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}
               initialAnimatedHeight={scale(0)}
               finalAnimatedHeight={
@@ -439,7 +446,7 @@ const LHTHomePage = (props: any) => {
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'fix hot icon'}
+              version={'0822'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}
@@ -537,6 +544,7 @@ const styles = StyleSheet.create({
   rankBlockIconContainerStyle: {
     paddingLeft: 0,
     paddingVertical: 0,
+    marginBottom: scale(10)
   },
 })
 
