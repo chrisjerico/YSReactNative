@@ -31,7 +31,7 @@ interface GameButtonProps {
   showRightTopFlag?: boolean;
   showCenterFlag?: boolean;
   flagIcon?: string;
-  showSecondLevelIcon: boolean;
+  showSecondLevelIcon?: boolean;
   secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
 }
 

@@ -25,6 +25,7 @@ interface NavBlockProps {
   renderNav: (item: any, index: number) => any;
   renderLottery: (item: Lottery, index: number) => any;
   balance: string;
+  renderAd?: () => any;
 }
 
 interface Lottery {
@@ -49,6 +50,7 @@ const NavBlock = ({
   customerServiceLogo = '',
   containerStyle,
   balance,
+  renderAd
 }: NavBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -107,15 +109,17 @@ const NavBlock = ({
       <View style={styles.lotterysCintainer}>
         {lotterys.map(renderLottery)}
       </View>
-      <TouchableWithoutFeedback onPress={onPressAd}>
-        <View style={{ flex: 90, alignItems: 'center' }}>
-          <FastImage
-            resizeMode={'contain'}
-            style={styles.adImage}
-            source={{ uri: advertisement }}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+      {
+        renderAd ? renderAd() : <TouchableWithoutFeedback onPress={onPressAd}>
+          <View style={{ flex: 90, alignItems: 'center' }}>
+            <FastImage
+              resizeMode={'contain'}
+              style={styles.adImage}
+              source={{ uri: advertisement }}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      }
       <View style={styles.navsContainer}>{navs?.map(renderNav)}</View>
     </View>
   )

@@ -183,7 +183,7 @@ const BZHMinePage = (props) => {
         visible={visible}
         initAvatar={
           isTest
-            ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
             : avatar
         }
         avatars={avatarList}

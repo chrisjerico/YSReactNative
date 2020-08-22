@@ -35,7 +35,7 @@ import { getHtml5Image } from '../../public/tools/tars'
 import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
 import { Toast } from '../../public/tools/ToastUtils'
 
-const LHTMinePage = (props) => {
+const LHTMinePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
@@ -188,7 +188,7 @@ const LHTMinePage = (props) => {
         visible={visible}
         initAvatar={
           isTest
-            ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
             : avatar
         }
         avatars={avatarList}

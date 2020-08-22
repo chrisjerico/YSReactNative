@@ -35,7 +35,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
@@ -200,6 +200,7 @@ const LHTHomePage = (props: any) => {
                 try {
                   await Promise.all([refreshHomeInfo(), refreshActivity()])
                 } catch (error) {
+                  console.log(error)
                 }
               }}
             />
@@ -248,7 +249,7 @@ const LHTHomePage = (props: any) => {
                 PushHelper.pushUserCenterType(UGUserCenterType.取款)
               }
               onPressAd={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
+                PushHelper.pushLottery(LotteryType.新加坡六合彩)
               }
               onPressSmileLogo={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
@@ -335,32 +336,7 @@ const LHTHomePage = (props: any) => {
                         } else if (gameType == 'lmzs') {
                           PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
                         } else {
-                          PushHelper.pushHomeGame(
-                            Object.assign(
-                              {},
-                              {
-                                category: '44',
-                                clsName: 'GameModel',
-                                gameCode: '-1',
-                                gameId: gameId,
-                                gameType: gameType,
-                                isClose: '0',
-                                isInstant: '0',
-                                isSeal: '0',
-                                levelType: '1',
-                                name: title,
-                                openWay: '0',
-                                realName: title,
-                                seriesId: '1',
-                                subId: gameId,
-                                subtitle: des,
-                                tipFlag: '4',
-                                title: title,
-                                url: '',
-                              },
-                              item
-                            )
-                          )
+                          PushHelper.pushLottery(gameId)
                         }
                       }}
                     />
@@ -405,7 +381,14 @@ const LHTHomePage = (props: any) => {
               listContainerStyle={{ borderRadius: scale(15) }}
               coupons={coupons}
               renderCoupon={({ item, index }) => {
-                const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+                const {
+                  pic,
+                  linkCategory,
+                  linkPosition,
+                  title,
+                  content,
+                  linkUrl,
+                } = item
                 return (
                   <AutoHeightCouponComponent
                     key={index}
@@ -417,8 +400,7 @@ const LHTHomePage = (props: any) => {
                         PushHelper.openWebView(linkUrl)
                       } else if (!linkCategory && !linkPosition) {
                         setShowPop(true)
-                      }
-                      else {
+                      } else {
                         PushHelper.pushCategory(linkCategory, linkPosition)
                       }
                     }}
@@ -544,29 +526,57 @@ const styles = StyleSheet.create({
   rankBlockIconContainerStyle: {
     paddingLeft: 0,
     paddingVertical: 0,
-    marginBottom: scale(10)
+    marginBottom: scale(10),
   },
 })
 
 export default LHTHomePage
 
-{
-  /* <DowloadApp
-    onPressDowload={() => {
-      PushHelper.openWebView(
-        'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
-      )
-    }}
-  /> */
-}
+// {
+//   /* <DowloadApp
+//     onPressDowload={() => {
+//       PushHelper.openWebView(
+//         'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+//       )
+//     }}
+//   /> */
+// }
 
-{
-  /* <HeadlineBlock
-        containerStyle={styles.subComponent}
-        headlines={headlines}
-        headLineLogo={defaultHeadLineLogo}
-        onPressHeadline={({ value }) =>
-          PushHelper.pushNoticePopUp(value)
-        }
-      /> */
-}
+// {
+//   /* <HeadlineBlock
+//         containerStyle={styles.subComponent}
+//         headlines={headlines}
+//         headLineLogo={defaultHeadLineLogo}
+//         onPressHeadline={({ value }) =>
+//           PushHelper.pushNoticePopUp(value)
+//         }
+//       /> */
+// }
+
+
+                         // PushHelper.pushHomeGame(
+                          //   Object.assign(
+                          //     {},
+                          //     {
+                          //       category: '7',
+                          //       clsName: 'GameModel',
+                          //       gameCode: '-1',
+                          //       gameId: gameId,
+                          //       gameType: gameType,
+                          //       isClose: '0',
+                          //       isInstant: '0',
+                          //       isSeal: '0',
+                          //       levelType: '1',
+                          //       name: title,
+                          //       openWay: '0',
+                          //       realName: title,
+                          //       seriesId: '1',
+                          //       subId: gameId,
+                          //       subtitle: des,
+                          //       tipFlag: '4',
+                          //       title: title,
+                          //       url: '',
+                          //     },
+                          //     item
+                          //   )
+                          // )

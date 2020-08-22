@@ -152,7 +152,7 @@ const WNZHomePage = (props: any) => {
               PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
             }}
             onPressComment={() => {
-              PushHelper.pushHomeGame({ "category": "44", "gameCode": "-1", "gameId": "70", "gameType": "lhc", "hotIcon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/28463cb7ab027d440dd3d91ab602c7ea.gif", "icon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/66a245511ce065b985ba3f8aac8b54cd.jpg", "id": "302", "isClose": "0", "isInstant": "0", "isSeal": "0", "levelType": "1", "logo": "https://cdn01.v-denche.cn/open_prize/images/icon/70.png?v=1597739611", "name": "香港六合彩", "openWay": "0", "realName": "", "seriesId": "1", "sort": "-50", "subId": "70", "subtitle": "一天一期", "tipFlag": "4", "title": "香港六合彩", "url": "" })
+              PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
             }}
             onPressUser={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.我的页)
@@ -213,7 +213,6 @@ const WNZHomePage = (props: any) => {
                   key={index}
                   logo={icon}
                   title={name}
-                  showSecondLevelIcon={false}
                   containerStyle={{
                     width: '20%',
                     backgroundColor: '#ffffff',
@@ -301,32 +300,33 @@ const WNZHomePage = (props: any) => {
                   desc={openCycle}
                   logoBallText={'官'}
                   onPress={() => {
-                    PushHelper.pushHomeGame(Object.assign({}, {
-                      category: '44',
-                      clsName: 'GameModel',
-                      gameCode: '-1',
-                      gameId: id,
-                      gameType: gameType,
-                      isClose: '0',
-                      isInstant: '0',
-                      isSeal: '0',
-                      levelType: '1',
-                      name: title,
-                      openWay: '0',
-                      realName: title,
-                      seriesId: '1',
-                      subId: id,
-                      subtitle: openCycle,
-                      tipFlag: '4',
-                      title: title,
-                      url: '',
-                    }, item))
+                    PushHelper.pushLottery(id)
+                    //   PushHelper.pushHomeGame(Object.assign({}, {
+                    //     category: '44',
+                    //     clsName: 'GameModel',
+                    //     gameCode: '-1',
+                    //     gameId: id,
+                    //     gameType: gameType,
+                    //     isClose: '0',
+                    //     isInstant: '0',
+                    //     isSeal: '0',
+                    //     levelType: '1',
+                    //     name: title,
+                    //     openWay: '0',
+                    //     realName: title,
+                    //     seriesId: '1',
+                    //     subId: id,
+                    //     subtitle: openCycle,
+                    //     tipFlag: '4',
+                    //     title: title,
+                    //     url: '',
+                    //   }, item))
                   }}
                 />
               )
             }}
             renderRightGame={(item, index) => {
-              const { title, pic, openCycle, id, gameType } = item
+              const { title, pic, openCycle, id } = item
               return (
                 <RowGameButtom
                   key={index}
@@ -335,26 +335,27 @@ const WNZHomePage = (props: any) => {
                   desc={openCycle}
                   logoBallText={'信'}
                   onPress={() => {
-                    PushHelper.pushHomeGame(Object.assign({}, {
-                      category: '44',
-                      clsName: 'GameModel',
-                      gameCode: '-1',
-                      gameId: id,
-                      gameType: gameType,
-                      isClose: '0',
-                      isInstant: '0',
-                      isSeal: '0',
-                      levelType: '1',
-                      name: title,
-                      openWay: '0',
-                      realName: title,
-                      seriesId: '1',
-                      subId: id,
-                      subtitle: openCycle,
-                      tipFlag: '4',
-                      title: title,
-                      url: '',
-                    }, item))
+                    PushHelper.pushLottery(id)
+                    // PushHelper.pushHomeGame(Object.assign({}, {
+                    //   category: '44',
+                    //   clsName: 'GameModel',
+                    //   gameCode: '-1',
+                    //   gameId: id,
+                    //   gameType: gameType,
+                    //   isClose: '0',
+                    //   isInstant: '0',
+                    //   isSeal: '0',
+                    //   levelType: '1',
+                    //   name: title,
+                    //   openWay: '0',
+                    //   realName: title,
+                    //   seriesId: '1',
+                    //   subId: id,
+                    //   subtitle: openCycle,
+                    //   tipFlag: '4',
+                    //   title: title,
+                    //   url: '',
+                    // }, item))
                   }}
                 />
               )

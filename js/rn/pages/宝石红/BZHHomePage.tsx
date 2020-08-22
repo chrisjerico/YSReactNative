@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native'
+import { FlatList, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -211,7 +211,7 @@ const BZHHomePage = () => {
             }}
           />
           <FlatList
-            style={{ paddingHorizontal: scale(5) }}
+            style={{ paddingHorizontal: '1%' }}
             data={gameBlocks}
             renderItem={({ item, index: blockIndex }) => {
               const { name, list } = item
@@ -337,7 +337,7 @@ const BZHHomePage = () => {
             visible={m_promote_pos}
             onPressMore={goToJDPromotionListPage}
             containerStyle={{
-              paddingHorizontal: scale(5), marginTop: scale(10),
+              paddingHorizontal: '1%', marginTop: scale(10),
             }}
             titleContainerStyle={{ backgroundColor: '#ffffff' }}
             coupons={coupons}
@@ -444,9 +444,6 @@ const BZHHomePage = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-  },
-  paddingContainer: {
-    paddingHorizontal: scale(5),
   },
   subComponent: {
     marginTop: scale(10),

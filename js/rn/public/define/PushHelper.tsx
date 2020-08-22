@@ -1,4 +1,4 @@
-import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem } from '../../redux/model/全局/UGSysConfModel';
+import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem, LotteryType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
 import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
@@ -87,8 +87,41 @@ export default class PushHelper {
     OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
   }
   // 去彩票大廳
-  static pushLottery() {
+  static pushLotteryHome() {
     OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+  }
+
+  // 去彩票
+
+  static pushLottery(code: LotteryType) {
+    if (Platform.OS != 'ios') return;
+    this.pushHomeGame({
+      seriesId: 1,
+      subId: code
+    } as any)
+    // switch (code) {
+    //   case LotteryType.香港六合彩: {
+    //     this.pushHomeGame({
+    //       seriesId: 1,
+    //       subId: LotteryType.香港六合彩
+    //     } as any)
+    //     break;
+    //   }
+    //   case LotteryType.新加坡六合彩: {
+    //     this.pushHomeGame({
+    //       seriesId: 1,
+    //       subId: LotteryType.新加坡六合彩
+    //     } as any)
+    //     break;
+    //   }
+    //   case LotteryType.福彩3D: {
+    //     this.pushHomeGame({
+    //       seriesId: 1,
+    //       subId: LotteryType.福彩3D
+    //     } as any)
+    //     break;
+    //   }
+    // }
   }
 
   // 跳转到彩票下注页，或内部功能页

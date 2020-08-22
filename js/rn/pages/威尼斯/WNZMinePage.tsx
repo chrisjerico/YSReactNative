@@ -37,12 +37,12 @@ const WNZMinePage = (props) => {
   const usuallyTools = resetTools?.filter((ele) =>
     [
       UGUserCenterType.额度转换,
+      UGUserCenterType.存款纪录,
+      UGUserCenterType.取款纪录,
       UGUserCenterType.全民竞猜,
       UGUserCenterType.利息宝,
-      UGUserCenterType.建议反馈,
       UGUserCenterType.开奖走势,
-      UGUserCenterType.在线客服,
-      UGUserCenterType.QQ客服,
+      UGUserCenterType.建议反馈
     ].includes(ele.code)
   )
 
@@ -50,12 +50,10 @@ const WNZMinePage = (props) => {
     [
       UGUserCenterType.个人信息,
       UGUserCenterType.安全中心,
+      UGUserCenterType.银行卡管理,
+      UGUserCenterType.资金明细,
       UGUserCenterType.站内信,
       UGUserCenterType.聊天室,
-      UGUserCenterType.银行卡管理,
-      UGUserCenterType.存款纪录,
-      UGUserCenterType.取款纪录,
-      UGUserCenterType.资金明细,
     ].includes(ele.code)
   )
 
