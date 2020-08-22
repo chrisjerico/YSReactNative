@@ -183,6 +183,7 @@ const LHTMinePage = (props) => {
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        themeColor={LHThemeColor.六合厅.themeColor}
         loading={avatarListLoading}
         visible={visible}
         initAvatar={
