@@ -178,6 +178,7 @@ const BZHMinePage = (props) => {
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        themeColor={BZHThemeColor.宝石红.themeColor}
         loading={avatarListLoading}
         visible={visible}
         initAvatar={

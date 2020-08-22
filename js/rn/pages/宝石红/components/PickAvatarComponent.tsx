@@ -15,6 +15,7 @@ interface PickAvatarComponentProps {
   onPressCancel: () => any;
   loading: boolean;
   initAvatar: string;
+  themeColor: string;
 }
 
 interface IAvatar {
@@ -29,6 +30,7 @@ const PickAvatarComponent = ({
   onPressCancel,
   loading,
   initAvatar,
+  themeColor
 }: PickAvatarComponentProps) => {
   const [avatar, setAvatar] = useState(initAvatar)
   const [fileName, setfileName] = useState('')
@@ -93,7 +95,7 @@ const PickAvatarComponent = ({
               activeOpacity={1}
               title={'保存头像'}
               buttonStyle={{
-                backgroundColor: BZHThemeColor.宝石红.themeColor,
+                backgroundColor: themeColor,
                 width: scale(200),
               }}
               titleStyle={{ color: '#ffffff' }}

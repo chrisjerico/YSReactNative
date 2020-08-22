@@ -215,7 +215,7 @@ const LHTHomePage = (props: any) => {
                 <TouchableImage
                   key={index}
                   pic={pic}
-                  resizeMode={'stretch'}
+                  resizeMode={'cover'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}

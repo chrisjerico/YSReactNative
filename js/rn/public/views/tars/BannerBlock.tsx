@@ -26,7 +26,7 @@ const BannerBlock = ({
   onlineNum = 0,
   banners = [],
   renderBanner,
-  badgePosition = { top: scale(-200), right: scale(10) },
+  badgePosition = { top: scale(-300), right: scale(10) },
   showOnlineNum = true,
   autoplayTimeout,
   visible = true,
@@ -35,7 +35,7 @@ const BannerBlock = ({
   const { top, right } = badgePosition
   if (visible) {
     return (
-      <View style={[styles.container,containerStyle]}>
+      <View style={[styles.container, containerStyle]}>
         <UGSwiper
           autoplayTimeout={autoplayTimeout}
           showsPagination={true}
@@ -49,6 +49,7 @@ const BannerBlock = ({
         </UGSwiper>
         {showOnlineNum && (
           <Badge
+            textStyle={{ fontSize: scale(18) }}
             badgeStyle={[
               styles.badge,
               {
@@ -56,7 +57,7 @@ const BannerBlock = ({
                 right,
               },
             ]}
-            value={'当前在线' + onlineNum}
+            value={'当前在线:' + onlineNum}
           />
         )}
       </View>
@@ -69,7 +70,8 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 217,
+    //aspectRatio: 540 / 217,
+    aspectRatio: 540 / 310,
   },
   bannerContainer: {
     flex: 1,
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
   },
   badge: {
     position: 'absolute',
-    backgroundColor: '#333333',
-    borderColor: '#333333',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderColor: 'rgba(0,0,0,0)',
   },
 })
 
