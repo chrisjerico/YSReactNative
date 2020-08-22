@@ -144,7 +144,7 @@ const BZHHomePage = () => {
               const { linkCategory, linkPosition, pic } = item
               return (
                 <TouchableImage
-                  resizeMode={'stretch'}
+                  resizeMode={'cover'}
                   key={index}
                   pic={pic}
                   onPress={() => {
@@ -400,7 +400,7 @@ const BZHHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'0822'}
+            version={'修正Banner比例'}
           />
           <BottomGap />
         </ScrollView>

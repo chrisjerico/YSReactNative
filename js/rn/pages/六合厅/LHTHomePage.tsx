@@ -446,7 +446,7 @@ const LHTHomePage = (props: any) => {
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={true}
-              version={'0822'}
+              version={'修正Banner比例'}
             />
             <BottomToolBlock
               tools={config?.bottomTools}

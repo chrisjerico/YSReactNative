@@ -183,6 +183,7 @@ const WNZHomePage = (props: any) => {
                 <TouchableImage
                   key={index}
                   pic={pic}
+                  resizeMode={'cover'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
@@ -400,7 +401,7 @@ const WNZHomePage = (props: any) => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'0822'}
+            version={'修正Banner比例'}
           />
           <BottomGap />
         </ScrollView>
