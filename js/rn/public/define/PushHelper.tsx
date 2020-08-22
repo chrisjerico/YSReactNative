@@ -99,29 +99,6 @@ export default class PushHelper {
       seriesId: 1,
       subId: code
     } as any)
-    // switch (code) {
-    //   case LotteryType.香港六合彩: {
-    //     this.pushHomeGame({
-    //       seriesId: 1,
-    //       subId: LotteryType.香港六合彩
-    //     } as any)
-    //     break;
-    //   }
-    //   case LotteryType.新加坡六合彩: {
-    //     this.pushHomeGame({
-    //       seriesId: 1,
-    //       subId: LotteryType.新加坡六合彩
-    //     } as any)
-    //     break;
-    //   }
-    //   case LotteryType.福彩3D: {
-    //     this.pushHomeGame({
-    //       seriesId: 1,
-    //       subId: LotteryType.福彩3D
-    //     } as any)
-    //     break;
-    //   }
-    // }
   }
 
   // 跳转到彩票下注页，或内部功能页

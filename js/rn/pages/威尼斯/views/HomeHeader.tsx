@@ -30,7 +30,14 @@ const HomeHeader = ({
   showBackBtn,
 }: HomeHeaderProps) => {
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        height: '100%',
+      }}
+    >
       {showBackBtn ? (
         <AntDesign
           name={'left'}
@@ -55,24 +62,28 @@ const HomeHeader = ({
         )}
       <View style={styles.rightContainer}>
         <TouchableWithoutFeedback onPress={onPressUser}>
-          <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.nameText}>{name}</Text>
-            {showBalance && (
-              <View style={styles.balanceContainer}>
-                <Text style={{ color: '#ffffff' }}>{balance}</Text>
-                <AntDesign
-                  name={'pluscircle'}
-                  color={'#ffffff'}
-                  style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
-                />
-              </View>
-            )}
-          </View>
+          <Text style={styles.nameText} numberOfLines={1}>
+            {name}
+          </Text>
         </TouchableWithoutFeedback>
+        {showBalance && (
+          <TouchableWithoutFeedback onPress={onPressUser}>
+            <View style={styles.balanceContainer}>
+              <Text style={{ color: '#ffffff', fontSize: scale(13) }}>
+                {balance}
+              </Text>
+              <AntDesign
+                name={'pluscircle'}
+                color={'#ffffff'}
+                style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
+              />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
         <FontAwesome
           name={'commenting'}
-          size={scale(25)}
-          style={{ marginRight: scale(10) }}
+          size={scale(20)}
+          style={{ marginRight: scale(5) }}
           color={'#ffffff'}
           onPress={onPressComment}
         />
@@ -81,7 +92,7 @@ const HomeHeader = ({
             <MaterialCommunityIcons
               name={'settings-outline'}
               size={scale(25)}
-              style={{ marginRight: scale(10) }}
+              style={{ marginRight: scale(5) }}
               color={'#ffffff'}
             />
             <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
@@ -90,16 +101,16 @@ const HomeHeader = ({
           </View>
         </TouchableWithoutFeedback>
       </View>
-    </>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   rightContainer: {
     flexDirection: 'row',
-    width: '50%',
+    width: '60%',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   balanceContainer: {
     backgroundColor: '#df2128',
@@ -107,13 +118,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: scale(5),
     paddingHorizontal: scale(5),
+    paddingVertical: scale(5),
+    marginRight: scale(10)
   },
   nameText: {
-    fontSize: scale(20),
+    fontSize: scale(17),
     marginRight: scale(5),
     color: '#ffffff',
+    width: '30%',
   },
 })
 

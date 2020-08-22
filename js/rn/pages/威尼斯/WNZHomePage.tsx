@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -21,6 +21,7 @@ import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
+import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
@@ -31,6 +32,7 @@ import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSys
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
+import GameBlock, { GameSubType } from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
 
@@ -72,6 +74,7 @@ const WNZHomePage = (props: any) => {
   } = useHome()
 
   const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
+  const [gameSubType, setGameSubType] = useState<GameSubType>({})
 
   const coupons = couponList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -251,11 +254,37 @@ const WNZHomePage = (props: any) => {
               )
             }}
           />
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-            {games?.map((item, index) => {
+          <GameBlock
+            games={games}
+            gameSubType={gameSubType}
+            subTypeContainerStyle={{
+              paddingHorizontal: scale(10),
+            }}
+            renderSubType={(item, index) => {
+              const { title } = item
+              return (
+                <Button
+                  key={index}
+                  containerStyle={{
+                    width: '20%',
+                    marginLeft: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
+                    marginRight: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
+                    marginBottom: scale(20),
+                    backgroundColor: WNZThemeColor.威尼斯.themeColor,
+                    paddingVertical: scale(20),
+                    borderRadius: scale(5),
+                  }}
+                  textStyle={{ color: '#ffffff', fontSize: scale(15) }}
+                  text={title}
+                  onPress={() => {
+                    PushHelper.pushHomeGame(item)
+                  }}
+                />
+              )
+            }}
+            renderGame={(item, index) => {
               const { logo, name, hotIcon, tipFlag, subType, icon } = item
               const flagType = parseInt(tipFlag)
-              console.log("---------item-----", item)
               return (
                 <View key={index} style={styles.gameContainer}>
                   <GameButton
@@ -276,16 +305,30 @@ const WNZHomePage = (props: any) => {
                       aspectRatio: 5,
                       paddingTop: scale(5),
                     }}
-                    secondLevelIconContainerStyle={{ right: -scale(10) }}
+                    secondLevelIconContainerStyle={{ right: -scale(10), top: null, bottom: -scale(25) }}
                     enableCircle={false}
                     onPress={() => {
-                      PushHelper.pushHomeGame(item)
+                      if (subType) {
+                        const gemaCutRow = Math.ceil((index + 1) / 4)
+                        if (index == gameSubType?.indexHistory) {
+                          setGameSubType({})
+                        } else {
+                          setGameSubType({
+                            gemaCutRow,
+                            indexHistory: index,
+                            subType
+                          })
+                        }
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }}
                   />
                 </View>
               )
-            })}
-          </View>
+
+            }}
+          />
           <TabComponent
             elementHeight={scale(100)}
             leftGames={officialGames}
@@ -301,26 +344,6 @@ const WNZHomePage = (props: any) => {
                   logoBallText={'官'}
                   onPress={() => {
                     PushHelper.pushLottery(id)
-                    //   PushHelper.pushHomeGame(Object.assign({}, {
-                    //     category: '44',
-                    //     clsName: 'GameModel',
-                    //     gameCode: '-1',
-                    //     gameId: id,
-                    //     gameType: gameType,
-                    //     isClose: '0',
-                    //     isInstant: '0',
-                    //     isSeal: '0',
-                    //     levelType: '1',
-                    //     name: title,
-                    //     openWay: '0',
-                    //     realName: title,
-                    //     seriesId: '1',
-                    //     subId: id,
-                    //     subtitle: openCycle,
-                    //     tipFlag: '4',
-                    //     title: title,
-                    //     url: '',
-                    //   }, item))
                   }}
                 />
               )
@@ -336,26 +359,6 @@ const WNZHomePage = (props: any) => {
                   logoBallText={'信'}
                   onPress={() => {
                     PushHelper.pushLottery(id)
-                    // PushHelper.pushHomeGame(Object.assign({}, {
-                    //   category: '44',
-                    //   clsName: 'GameModel',
-                    //   gameCode: '-1',
-                    //   gameId: id,
-                    //   gameType: gameType,
-                    //   isClose: '0',
-                    //   isInstant: '0',
-                    //   isSeal: '0',
-                    //   levelType: '1',
-                    //   name: title,
-                    //   openWay: '0',
-                    //   realName: title,
-                    //   seriesId: '1',
-                    //   subId: id,
-                    //   subtitle: openCycle,
-                    //   tipFlag: '4',
-                    //   title: title,
-                    //   url: '',
-                    // }, item))
                   }}
                 />
               )

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 540 / 60,
     flexDirection: 'row',
-    paddingHorizontal: scale(25),
+    paddingHorizontal: scale(10), //25
     justifyContent: 'space-between',
     alignItems: 'center',
   }

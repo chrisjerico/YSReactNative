@@ -17,36 +17,37 @@ import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
-const WNZMinePage = (props) => {
+const WNZMinePage = (props: any) => {
 
   const { setProps } = props
+  const [showBackBtn, setShowBackBtn] = useState(false)
   const {
     uid,
     balance,
     usr,
-    taskRewardTitle,
     taskReward,
     taskRewardTotal,
+    nextLevelTitle
   }: UGUserModel = UGStore.globalProps.userInfo
   const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   const { UGUserCenterItem } = useMemberItems()
   const tools = UGUserCenterItem?.sort((a, b) => a?.code - b?.code) ?? []
-  const headTools = tools?.slice(0, 2) ?? []
-  const resetTools = tools?.slice(2, tools?.length ?? 2) ?? []
+  const headrTools = tools?.slice(0, 2) ?? []
+  const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
-  const usuallyTools = resetTools?.filter((ele) =>
+  const usuallyTools = otherTools?.filter((ele) =>
     [
       UGUserCenterType.额度转换,
-      UGUserCenterType.存款纪录,
-      UGUserCenterType.取款纪录,
       UGUserCenterType.全民竞猜,
       UGUserCenterType.利息宝,
       UGUserCenterType.开奖走势,
-      UGUserCenterType.建议反馈
+      UGUserCenterType.建议反馈,
+      UGUserCenterType.存款,
+      UGUserCenterType.取款
     ].includes(ele.code)
   )
 
-  const userTools = resetTools?.filter((ele) =>
+  const userTools = otherTools?.filter((ele) =>
     [
       UGUserCenterType.个人信息,
       UGUserCenterType.安全中心,
@@ -54,10 +55,12 @@ const WNZMinePage = (props) => {
       UGUserCenterType.资金明细,
       UGUserCenterType.站内信,
       UGUserCenterType.聊天室,
+      UGUserCenterType.在线客服,
+      UGUserCenterType.QQ客服
     ].includes(ele.code)
   )
 
-  const recordTools = resetTools?.filter((ele) =>
+  const recordTools = otherTools?.filter((ele) =>
     [
       UGUserCenterType.开奖网,
       UGUserCenterType.其他注单记录,
@@ -67,15 +70,13 @@ const WNZMinePage = (props) => {
     ].includes(ele.code)
   )
 
-  const activityTools = resetTools?.filter((ele) =>
+  const activityTools = otherTools?.filter((ele) =>
     [
       UGUserCenterType.任务中心,
       UGUserCenterType.游戏大厅,
       UGUserCenterType.推荐收益,
     ].includes(ele.code)
   )
-
-  const [showBackBtn, setShowBackBtn] = useState(false)
 
   useEffect(() => {
     setProps({
@@ -118,19 +119,19 @@ const WNZMinePage = (props) => {
         <ProfileBlock
           taskReward={taskReward}
           taskRewardTotal={taskRewardTotal}
-          taskRewardTitle={taskRewardTitle}
+          taskRewardTitle={nextLevelTitle}
           backgroundImage={getHtml5Image(23, 'userBg')}
         />
         <ButtonGroup
-          leftLogo={headTools[0]?.logo}
-          rightLogo={headTools[1]?.logo}
-          leftTitle={headTools[0]?.name}
-          rightTitle={headTools[1]?.name}
+          leftLogo={headrTools[0]?.logo}
+          rightLogo={headrTools[1]?.logo}
+          leftTitle={headrTools[0]?.name}
+          rightTitle={headrTools[1]?.name}
           onPressLeftButton={() =>
-            PushHelper.pushUserCenterType(headTools[0]?.code)
+            PushHelper.pushUserCenterType(headrTools[0]?.code)
           }
           onPressRightButton={() =>
-            PushHelper.pushUserCenterType(headTools[1]?.code)
+            PushHelper.pushUserCenterType(headrTools[1]?.code)
           }
         />
         {[
