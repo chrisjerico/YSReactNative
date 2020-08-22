@@ -10,11 +10,11 @@ interface BannerBlockProps {
   onlineNum?: number;
   banners: (List | Data)[];
   renderBanner: (item: List & Data, index: number) => any;
-  badgePosition?: BadgePosition;
   showOnlineNum?: boolean;
   autoplayTimeout: number;
   visible?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
+  isMidAd?: boolean;
 }
 
 interface BadgePosition {
@@ -26,16 +26,15 @@ const BannerBlock = ({
   onlineNum = 0,
   banners = [],
   renderBanner,
-  badgePosition = { top: scale(-300), right: scale(10) },
   showOnlineNum = true,
   autoplayTimeout,
   visible = true,
-  containerStyle
+  containerStyle,
+  isMidAd
 }: BannerBlockProps) => {
-  const { top, right } = badgePosition
   if (visible) {
     return (
-      <View style={[styles.container, containerStyle]}>
+      <View style={[isMidAd ? styles.midAdContainer : styles.container, containerStyle]}>
         <UGSwiper
           autoplayTimeout={autoplayTimeout}
           showsPagination={true}
@@ -53,8 +52,8 @@ const BannerBlock = ({
             badgeStyle={[
               styles.badge,
               {
-                top,
-                right,
+                top: scale(-300),
+                right: scale(10),
               },
             ]}
             value={'当前在线:' + onlineNum}
@@ -70,8 +69,11 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    //aspectRatio: 540 / 217,
     aspectRatio: 540 / 310,
+  },
+  midAdContainer: {
+    width: '100%',
+    aspectRatio: 540 / 217,
   },
   bannerContainer: {
     flex: 1,

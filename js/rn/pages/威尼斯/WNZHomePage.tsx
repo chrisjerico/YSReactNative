@@ -183,7 +183,7 @@ const WNZHomePage = (props: any) => {
                 <TouchableImage
                   key={index}
                   pic={pic}
-                  resizeMode={'cover'}
+                  resizeMode={'stretch'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
@@ -233,6 +233,7 @@ const WNZHomePage = (props: any) => {
             })}
           </View>
           <BannerBlock
+            isMidAd={true}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
@@ -243,6 +244,7 @@ const WNZHomePage = (props: any) => {
                 <TouchableImage
                   key={index}
                   pic={image}
+                  resizeMode={'stretch'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}

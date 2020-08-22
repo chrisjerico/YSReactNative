@@ -144,9 +144,9 @@ const BZHHomePage = () => {
               const { linkCategory, linkPosition, pic } = item
               return (
                 <TouchableImage
-                  resizeMode={'cover'}
                   key={index}
                   pic={pic}
+                  resizeMode={'stretch'}
                   onPress={() => {
                     PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
