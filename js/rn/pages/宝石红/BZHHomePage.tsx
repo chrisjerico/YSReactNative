@@ -143,6 +143,7 @@ const BZHHomePage = () => {
               const { linkCategory, linkPosition, pic } = item
               return (
                 <TouchableImage
+                  resizeMode={'stretch'}
                   key={index}
                   pic={pic}
                   onPress={() => {
@@ -159,33 +160,36 @@ const BZHHomePage = () => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
-          <NavBlock
-            navs={navs}
-            containerStyle={{ alignItems: 'center' }}
-            renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
-              return (
-                <GameButton
-                  showSecondLevelIcon={false}
-                  key={index}
-                  containerStyle={{ width: '25%' }}
-                  imageContainerStyle={{ width: '45%' }}
-                  enableCircle={false}
-                  logo={icon ? icon : logo}
-                  title={name}
-                  titleStyle={{ fontSize: scale(25) }}
-                  titleContainerStyle={{ aspectRatio: 3 }}
-                  onPress={() => {
-                    if (gameId == 9) {
-                      goToJDPromotionListPage()
-                    } else {
-                      PushHelper.pushHomeGame(item)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
+          {
+            navs?.length > 0 &&
+            <NavBlock
+              navs={navs}
+              containerStyle={{ alignItems: 'center' }}
+              renderNav={(item, index) => {
+                const { icon, name, logo, gameId } = item
+                return (
+                  <GameButton
+                    showSecondLevelIcon={false}
+                    key={index}
+                    containerStyle={{ width: '25%' }}
+                    imageContainerStyle={{ width: '45%' }}
+                    enableCircle={false}
+                    logo={icon ? icon : logo}
+                    title={name}
+                    titleStyle={{ fontSize: scale(25) }}
+                    titleContainerStyle={{ aspectRatio: 3 }}
+                    onPress={() => {
+                      if (gameId == 9) {
+                        goToJDPromotionListPage()
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
+                    }}
+                  />
+                )
+              }}
+            />
+          }
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 135 }}
             visible={ads?.length > 0}
@@ -376,6 +380,7 @@ const BZHHomePage = () => {
           <BottomGap />
         </ScrollView>
         <ActivityComponent
+          containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
           onPress={() => {
@@ -383,7 +388,7 @@ const BZHHomePage = () => {
           }}
         />
         <ActivityComponent
-          containerStyle={{ top: 200 }}
+          containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
           logo={'dzp_btn'}

@@ -15,6 +15,7 @@ interface ProfileBlockProps {
   onPressDaySign: () => any;
   onPressTaskCenter: () => any;
   onPressReload: () => any;
+  onPressAvatar: () => any;
 }
 
 const ProfileBlock = ({
@@ -26,18 +27,19 @@ const ProfileBlock = ({
   onPressDaySign,
   onPressTaskCenter,
   onPressReload,
+  onPressAvatar
 }: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
         <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
           <Avatar
-            onPress={() => PushHelper.pushUserCenterType(12)}
+            onPress={onPressAvatar}
             uri={avatar}
           />
           <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
             <View style={styles.nameTextContainer}>
-              <Text style={styles.nameText}>{name}</Text>
+              <Text style={styles.nameText} numberOfLines={1}>{name}</Text>
             </View>
             <View
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}

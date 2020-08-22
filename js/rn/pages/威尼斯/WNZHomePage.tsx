@@ -399,6 +399,7 @@ const WNZHomePage = (props: any) => {
           <BottomGap />
         </ScrollView>
         <ActivityComponent
+          containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
           onPress={() => {
@@ -406,7 +407,7 @@ const WNZHomePage = (props: any) => {
           }}
         />
         <ActivityComponent
-          containerStyle={{ top: 200 }}
+          containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
           logo={'dzp_btn'}

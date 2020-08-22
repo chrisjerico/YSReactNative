@@ -3,11 +3,11 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
-import { Icon } from 'react-native-elements'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface ActivityComponentProps {
   logo: string;
@@ -30,7 +30,7 @@ const ActivityComponent = ({
     return (
       <View style={[styles.container, containerStyle]}>
         <TouchableImage
-          containerStyle={{ marginRight: scale(50) }}
+          containerStyle={{ padding: scale(20) }}
           enableFastImage={enableFastImage}
           pic={logo}
           onPress={onPress}
@@ -42,11 +42,10 @@ const ActivityComponent = ({
           }}
         >
           <View style={styles.iconContainer}>
-            <Icon
-              type={'evilicon'}
-              name={'close'}
+            <AntDesign
+              name={'closecircleo'}
               size={scale(35)}
-              color={'#ffffff'}
+              color={'red'}
             />
           </View>
         </TouchableWithoutFeedback>
@@ -62,11 +61,8 @@ const styles = StyleSheet.create({
     width: scale(150),
     aspectRatio: 1,
     position: 'absolute',
-    top: scale(500),
-    right: 0,
   },
   iconContainer: {
-    backgroundColor: 'red',
     width: scale(35),
     aspectRatio: 1,
     justifyContent: 'center',
@@ -74,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(35),
     position: 'absolute',
     top: scale(20),
-    right: scale(10),
+    right: scale(20),
   },
 })
 

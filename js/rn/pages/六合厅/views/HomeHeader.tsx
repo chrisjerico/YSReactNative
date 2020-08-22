@@ -76,7 +76,7 @@ const HomeHeader = ({
               </TouchableWithoutFeedback>
               <Text style={styles.text}>{' | '}</Text>
               <TouchableWithoutFeedback onPress={onPressSignIn}>
-                <Text style={styles.text}>{'登入'}</Text>
+                <Text style={styles.text}>{'登录'}</Text>
               </TouchableWithoutFeedback>
               <Text style={styles.text}>{' | '}</Text>
               <TouchableWithoutFeedback onPress={onPressSignUp}>

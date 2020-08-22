@@ -169,7 +169,6 @@ const LHTHomePage = (props: any) => {
   }, [notice])
   // render
 
-  console.log("---------重複選染LHT-------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -470,6 +469,7 @@ const LHTHomePage = (props: any) => {
           </View>
         </ScrollView>
         <ActivityComponent
+          containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
           onPress={() => {
@@ -477,7 +477,7 @@ const LHTHomePage = (props: any) => {
           }}
         />
         <ActivityComponent
-          containerStyle={{ top: 100 }}
+          containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
           logo={'dzp_btn'}

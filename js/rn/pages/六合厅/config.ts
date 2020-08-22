@@ -59,7 +59,7 @@ const config = {
       "des": "全天44期"
     },
     {
-      "gameId": "60",
+      "gameId": "66",
       "title": "pc蛋蛋",
       "selected": true,
       "logo": "pcdd",
@@ -136,7 +136,7 @@ const config = {
     {
       "title": "资金明细",
       "logo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAkFBMVEVMaXH///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+X6JXfAAAAL3RSTlMAqtfdtOK77zNmDgb+di76S/U9pQqfFESU8jjJA68bjFzpKmvCYVWZfHIl0kiDt2iWfhMAAAGuSURBVHjazZTZbqswEEAnTgwUs4SdEgIJ2UPb+f+/62AHcAvct0r3SIxt6djjRQP0HEyegc49YB5MsX1EDhoNIp5hioeEDSNbGvO/FuN/i6IESbhGolbizey5KJFRDGqpSg9zJUbYc1Iil4MLECi5Vd3UcjWKIYX2Ja5GcQfkfJbrQczFGZ1L5cjBZhTxCoUHLg4EjQifkOBE9OswzB0cOT6Kjw1OxGX+Xvw6vU1x2UTcwSypr4uqO4swf4vO3Zoh3P8v17OMGT2uB3cf6OJxsxpgL+0UAwj67O0o8hQ0Enm1FYTRkZZIChjFFehcOy9O96hwInsQ3wv9Pc6Ut0pbVMhZUlSqOeB0pQC0XmJFiDer6y2d2owzWTMfiAVwym4tiBFEXZJKcFY25jtiviC6QOcNtZ8BG0S+fnGUlSwoPLIsKwWFO2LwEk1PuxwH8SAo7AzDiFMKLW0D+j1prLvU/GfqduZlLB9x373OzXVdYVOgfg39NRo9Z/IwsAtV5Halyr4BnOcOkWy3B9nksCQGT3uHA4YA4Atmm9qJgxI/Jw8KtmCyJ3g5C3xWN0B8A0vxrdroB81PAAAAAElFTkSuQmCC",
-      "userCenterType": UGUserCenterType.银行卡管理
+      "userCenterType": UGUserCenterType.资金明细
     }
   ]
 }

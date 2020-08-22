@@ -31,6 +31,9 @@ import { UGStore } from '../../redux/store/UGStore'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
+import { getHtml5Image } from '../../public/tools/tars'
+import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
+import { Toast } from '../../public/tools/ToastUtils'
 
 const LHTMinePage = (props) => {
   // yellowBox
@@ -54,8 +57,24 @@ const LHTMinePage = (props) => {
   const { UGUserCenterItem } = useMemberItems()
 
   const [showBackBtn, setShowBackBtn] = useState(false)
+  const [avatarListLoading, setAvatarListLoading] = useState(true)
+  const [visible, setVisible] = useState(false)
+  const [avatarList, setAvatarList] = useState([])
+
+  const getAvatarList = async () => {
+    try {
+      setAvatarListLoading(true)
+      const value = await APIRouter.system_avatarList()
+      const avatarList = value?.data?.data ?? []
+      setAvatarList(avatarList)
+    } catch (error) {
+    } finally {
+      setAvatarListLoading(false)
+    }
+  }
 
   useEffect(() => {
+    getAvatarList()
     setProps({
       didFocus: async () => {
         OCHelper.call(
@@ -109,15 +128,14 @@ const LHTMinePage = (props) => {
         refreshControl={<RefreshControlComponent />}
       >
         <ProfileBlock
+          onPressAvatar={() => !isTest && setVisible(true)}
           profileButtons={config?.profileButtons}
-          name={isTest ? '遊客' : usr}
-          avatar={avatar}
+          name={usr}
+          avatar={isTest ? getHtml5Image(18, 'money-2') : avatar}
           // level={curLevelGrade}
           balance={balance}
           onPressDaySign={() => {
-            PushHelper.openWebView(
-              'http://test10.6yc.com/html/qiandao/index.html'
-            )
+            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
           }}
           onPressTaskCenter={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
@@ -164,6 +182,34 @@ const LHTMinePage = (props) => {
         />
         <BottomGap />
       </ScrollView>
+      <PickAvatarComponent
+        loading={avatarListLoading}
+        visible={visible}
+        initAvatar={
+          isTest
+            ? 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+            : avatar
+        }
+        avatars={avatarList}
+        onPressSave={async ({ url, filename }) => {
+          try {
+            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
+            const value = await APIRouter.task_changeAvatar(filename)
+            if (value?.data?.code == 0) {
+              Toast('修改头像成功')
+            } else {
+              Toast('修改头像失败')
+            }
+          } catch (err) {
+            Toast(err)
+          } finally {
+            setVisible(false)
+          }
+        }}
+        onPressCancel={() => {
+          setVisible(false)
+        }}
+      />
     </>
   )
 }

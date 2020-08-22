@@ -2,6 +2,7 @@ import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import AppDefine from '../../define/AppDefine'
+import { scale } from '../Scale'
 
 interface SaveNativeUser {
   currentUser: any[];
@@ -110,13 +111,13 @@ export const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'g
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
-    return { left: 10, top: 100 }
+    return { left: 0, top: scale(100) }
   } else if (position == 2) {
-    return { left: 10, bottom: 100 }
+    return { left: 0, bottom: scale(100) }
   } else if (position == 3) {
-    return { right: 10, top: 100 }
+    return { right: 0, top: scale(100) }
   } else if (position == 4) {
-    return { right: 10, bottom: 100 }
+    return { right: 0, bottom: scale(100) }
   } else {
     return {}
   }
