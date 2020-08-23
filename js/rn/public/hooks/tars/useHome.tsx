@@ -98,7 +98,7 @@ const useHome = () => {
     }
   }
 
-  const refreshHomeInfo = callApis
+  const refreshHome = callApis
 
   useEffect(() => {
     callApis()
@@ -119,7 +119,7 @@ const useHome = () => {
     homeAd,
     lotteryNumber,
     lotteryGames,
-    refreshHomeInfo
+    refreshHome
   }
 
 }

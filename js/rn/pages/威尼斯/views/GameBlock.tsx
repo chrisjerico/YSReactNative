@@ -26,7 +26,6 @@ const GameBlock = ({ games, renderGame, gameSubType, renderSubType, subTypeConta
   const mainGames = games?.slice(0, cutElement) ?? []
   const subGames = games?.slice(cutElement, -1) ?? []
 
-  console.log("____gemaCutRow-------", gemaCutRow)
   return (
     <View>
       <View style={styles.gamesContainer}>{mainGames?.map(renderGame)}</View>

@@ -52,7 +52,6 @@ const AnimatedRankComponent = ({
     height?.stopAnimation()
     height?.setValue(initialAnimatedHeight)
     animated()
-    console.log("-------AnimatedRankComponent useEffect------")
   }, [rankLists?.length])
 
   if (type != 0) {

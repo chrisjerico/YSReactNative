@@ -48,6 +48,8 @@ import NavBlock from './views/NavBlock'
 const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
+  // states
+  const [leftGames, setLeftGames] = useState(config?.preferences)
   // functions
   const { setProps } = props
   const { tryPlay } = useTryPlay({
@@ -71,9 +73,7 @@ const LHTHomePage = (props: any) => {
       },
     })
   }
-  // states
-  const [leftGames, setLeftGames] = useState(config?.preferences)
-  // hooks
+  // stores
   const {
     uid,
     avatar,
@@ -88,6 +88,7 @@ const LHTHomePage = (props: any) => {
     rankingListSwitch,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
+  // effect
   const {
     loading,
     rankList,
@@ -98,10 +99,16 @@ const LHTHomePage = (props: any) => {
     couponList,
     systemConfig,
     lotteryNumber,
-    refreshHomeInfo,
+    refreshHome,
   } = useHome()
 
   const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
+
+  useEffect(() => {
+    if (notice?.data?.popup && !B_DEBUG) {
+      PushHelper.pushAnnouncement(announcements)
+    }
+  }, [notice])
 
   useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
@@ -115,8 +122,7 @@ const LHTHomePage = (props: any) => {
     return () => {
       OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
     }
-  })
-
+  }, [])
   // data handle
   const appDownloadUrl = systemConfig?.data?.appDownloadUrl
   const bannersInterval = parseInt(banner?.data?.interval)
@@ -160,15 +166,6 @@ const LHTHomePage = (props: any) => {
       return { games, name }
     }) ?? []
 
-  useEffect(() => {
-    if (notice?.data?.popup) {
-      if (!B_DEBUG) {
-        PushHelper.pushAnnouncement(announcements)
-      }
-    }
-  }, [notice])
-  // render
-
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -198,7 +195,8 @@ const LHTHomePage = (props: any) => {
             <RefreshControlComponent
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHomeInfo(), refreshActivity()])
+                  await Promise.all([refreshHome(), refreshActivity()])
+                  PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                   console.log(error)
                 }

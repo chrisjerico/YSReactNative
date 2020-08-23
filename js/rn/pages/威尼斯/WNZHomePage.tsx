@@ -37,8 +37,12 @@ import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
 
 const WNZHomePage = (props: any) => {
-  const { setProps } = props
+  // yellowBox
+  console.disableYellowBox = true
+  // states
+  const [gameSubType, setGameSubType] = useState<GameSubType>({})
   // functions
+  const { setProps } = props
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {
@@ -46,7 +50,7 @@ const WNZHomePage = (props: any) => {
       },
     })
   }
-
+  // stores
   const {
     balance,
     usr,
@@ -59,6 +63,8 @@ const WNZHomePage = (props: any) => {
     rankingListSwitch,
     m_promote_pos
   }: UGSysConfModel = UGStore.globalProps.sysConf
+
+  // effect
   const {
     loading,
     rankList,
@@ -70,12 +76,41 @@ const WNZHomePage = (props: any) => {
     systemConfig,
     homeAd,
     lotteryGames,
-    refreshHomeInfo,
+    refreshHome,
   } = useHome()
 
   const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
-  const [gameSubType, setGameSubType] = useState<GameSubType>({})
 
+  useEffect(() => {
+    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+      try {
+        await updateUserInfo()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
+      try {
+        UGStore.dispatch({ type: 'reset', userInfo: {} })
+        UGStore.save()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    return () => {
+      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+      OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (notice?.data?.popup && !B_DEBUG) {
+      PushHelper.pushAnnouncement(announcements)
+    }
+  }, [notice])
+  // data handle
   const coupons = couponList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const bannersInterval = parseInt(banner?.data?.interval)
@@ -105,39 +140,6 @@ const WNZHomePage = (props: any) => {
         item
       )
     }) ?? []
-
-  useEffect(() => {
-    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
-      try {
-        await updateUserInfo()
-        setProps()
-      } catch (error) {
-        console.log(error)
-      }
-    })
-    OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
-      try {
-        console.log("----------登出了----------", uid)
-        UGStore.dispatch({ type: 'reset', userInfo: {} })
-        UGStore.save()
-        setProps()
-      } catch (error) {
-        console.log(error)
-      }
-    })
-    return () => {
-      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
-      OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
-    }
-  })
-
-  useEffect(() => {
-    if (notice?.data?.popup) {
-      if (!B_DEBUG) {
-        PushHelper.pushAnnouncement(announcements)
-      }
-    }
-  }, [notice])
 
   if (loading) {
     return <ProgressCircle />
@@ -169,7 +171,8 @@ const WNZHomePage = (props: any) => {
             <RefreshControlComponent
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHomeInfo(), refreshActivity()])
+                  await Promise.all([refreshHome(), refreshActivity()])
+                  PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                 }
               }}

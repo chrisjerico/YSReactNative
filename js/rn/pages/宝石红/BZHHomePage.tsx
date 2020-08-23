@@ -34,6 +34,7 @@ import NavBlock from './views/NavBlock'
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
+  // states
   const [gameSubTypes, setGameSubTypes] = useState<GameSubType[]>([])
   // functions
   const goToJDPromotionListPage = () => {
@@ -58,6 +59,7 @@ const BZHHomePage = () => {
     rankingListSwitch,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
+  // effect
   const {
     loading,
     rankList,
@@ -68,12 +70,17 @@ const BZHHomePage = () => {
     couponList,
     systemConfig,
     homeAd,
-    refreshHomeInfo,
+    refreshHome,
   } = useHome()
 
   const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
-  // data
+  useEffect(() => {
+    if (notice?.data?.popup && !B_DEBUG) {
+      PushHelper.pushAnnouncement(announcements)
+    }
+  }, [notice])
+  // data handle
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
@@ -95,15 +102,7 @@ const BZHHomePage = () => {
   const coupons = couponList?.data?.list ?? []
   const ads = homeAd?.data ?? []
 
-  useEffect(() => {
-    if (notice?.data?.popup) {
-      if (!B_DEBUG) {
-        PushHelper.pushAnnouncement(announcements)
-      }
-    }
-  }, [notice])
-
-  console.log('------BZH重複選染-----')
+  console.log("--------寶石紅渲染--------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -130,7 +129,8 @@ const BZHHomePage = () => {
             <RefreshControlComponent
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHomeInfo(), refreshActivity()])
+                  await Promise.all([refreshHome(), refreshActivity()])
+                  PushHelper.pushAnnouncement(announcements)
                 } catch (error) { }
               }}
             />

@@ -91,7 +91,7 @@ const HomeHeader = ({
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <MaterialCommunityIcons
               name={'settings-outline'}
-              size={scale(25)}
+              size={scale(20)}
               style={{ marginRight: scale(5) }}
               color={'#ffffff'}
             />
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     marginRight: scale(5),
     color: '#ffffff',
     width: '30%',
+    textAlign: 'right'
   },
 })
 
