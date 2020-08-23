@@ -18,6 +18,7 @@ export const updateUserInfo = async () => {
     const user_info_data = user_info_response?.data?.data
     const user_info_msg = user_info_response?.data?.msg
     if (user_info_data) {
+      console.log("---------user_info_data---------", user_info_data)
       UGStore.dispatch({ type: 'merge', userInfo: user_info_data })
       UGStore.save()
       return user_info_response

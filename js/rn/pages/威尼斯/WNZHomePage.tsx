@@ -174,7 +174,9 @@ const WNZHomePage = (props: any) => {
             <RefreshControlComponent
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity()])
+                  await Promise.all([refreshHome(), refreshActivity(), updateUserInfo().catch(error => {
+                    console.log(error)
+                  })])
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                 }
