@@ -15,8 +15,8 @@ interface HomeHeaderProps {
   onPressMenu: () => any;
   onPressComment: () => any;
   onPressUser: () => any;
-  showBalance: boolean;
   showBackBtn: boolean;
+  uid: string;
 }
 
 const HomeHeader = ({
@@ -26,18 +26,11 @@ const HomeHeader = ({
   onPressMenu,
   onPressComment,
   onPressUser,
-  showBalance,
   showBackBtn,
+  uid,
 }: HomeHeaderProps) => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        height: '100%',
-      }}
-    >
+    <View style={styles.container}>
       {showBackBtn ? (
         <AntDesign
           name={'left'}
@@ -52,65 +45,86 @@ const HomeHeader = ({
           }}
         />
       ) : (
-          <FastImage
+          uid ? <FastImage
             source={{
               uri: logo,
             }}
             style={{ width: '30%', height: '100%' }}
             resizeMode={'contain'}
-          />
+          /> : <View style={{ flex: 1 }} />
         )}
-      <View style={styles.rightContainer}>
-        <TouchableWithoutFeedback onPress={onPressUser}>
-          <Text style={styles.nameText} numberOfLines={1}>
-            {name}
-          </Text>
-        </TouchableWithoutFeedback>
-        {showBalance && (
-          <TouchableWithoutFeedback onPress={onPressUser}>
-            <View style={styles.balanceContainer}>
-              <Text style={{ color: '#ffffff', fontSize: scale(13) }}>
-                {balance}
-              </Text>
-              <AntDesign
-                name={'pluscircle'}
+      {(!uid && !showBackBtn) && (
+        <FastImage
+          source={{
+            uri: logo,
+          }}
+          style={{ width: '30%', height: '100%' }}
+          resizeMode={'contain'}
+        />
+      )}
+      {
+        !showBackBtn &&
+        <View style={styles.rightContainer}>
+          {uid && (
+            <>
+              <TouchableWithoutFeedback onPress={onPressUser}>
+                <Text style={styles.nameText} numberOfLines={1}>
+                  {name}
+                </Text>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={onPressUser}>
+                <View style={styles.balanceContainer}>
+                  <Text style={{ color: '#ffffff', fontSize: scale(13) }}>
+                    {balance}
+                  </Text>
+                  <AntDesign
+                    name={'pluscircle'}
+                    color={'#ffffff'}
+                    style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
+            </>
+          )}
+          <FontAwesome
+            name={'commenting'}
+            size={scale(20)}
+            style={{ marginRight: scale(5) }}
+            color={'#ffffff'}
+            onPress={onPressComment}
+          />
+          <TouchableWithoutFeedback onPress={onPressMenu}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <MaterialCommunityIcons
+                name={'settings-outline'}
+                size={scale(20)}
+                style={{ marginRight: scale(5) }}
                 color={'#ffffff'}
-                style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
               />
+              <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
+                {'菜单'}
+              </Text>
             </View>
           </TouchableWithoutFeedback>
-        )}
-        <FontAwesome
-          name={'commenting'}
-          size={scale(20)}
-          style={{ marginRight: scale(5) }}
-          color={'#ffffff'}
-          onPress={onPressComment}
-        />
-        <TouchableWithoutFeedback onPress={onPressMenu}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <MaterialCommunityIcons
-              name={'settings-outline'}
-              size={scale(20)}
-              style={{ marginRight: scale(5) }}
-              color={'#ffffff'}
-            />
-            <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
-              {'菜单'}
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
+        </View>
+      }
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: '100%',
+  },
   rightContainer: {
     flexDirection: 'row',
-    width: '60%',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    flex: 1,
   },
   balanceContainer: {
     backgroundColor: '#df2128',
@@ -120,14 +134,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: scale(5),
     paddingVertical: scale(5),
-    marginRight: scale(10)
+    marginRight: scale(10),
   },
   nameText: {
     fontSize: scale(17),
     marginRight: scale(5),
     color: '#ffffff',
     width: '30%',
-    textAlign: 'right'
+    textAlign: 'right',
   },
 })
 

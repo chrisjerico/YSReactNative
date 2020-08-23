@@ -16,7 +16,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { getActivityPosition, updateUserInfo } from '../../public/tools/tars'
+import { getActivityPosition, updateUserInfo, ToastError } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -35,6 +35,7 @@ import TabComponent from './components/TabComponent'
 import GameBlock, { GameSubType } from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
+import { Toast } from '../../public/tools/ToastUtils'
 
 const WNZHomePage = (props: any) => {
   // yellowBox
@@ -87,6 +88,7 @@ const WNZHomePage = (props: any) => {
         await updateUserInfo()
         setProps()
       } catch (error) {
+        ToastError('登录失败')
         console.log(error)
       }
     })
@@ -96,6 +98,7 @@ const WNZHomePage = (props: any) => {
         UGStore.save()
         setProps()
       } catch (error) {
+        ToastError('登出失败')
         console.log(error)
       }
     })
@@ -111,7 +114,7 @@ const WNZHomePage = (props: any) => {
     }
   }, [notice])
   // data handle
-  const coupons = couponList?.data?.list ?? []
+  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const bannersInterval = parseInt(banner?.data?.interval)
   const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
@@ -121,12 +124,12 @@ const WNZHomePage = (props: any) => {
   const navs =
     homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
-      .slice(0, 5) ?? []
+      ?.slice(0, 5) ?? []
   let games = []
   homeGame?.data?.icons?.forEach(
     (item) => (games = games.concat(item?.list) ?? [])
   )
-  games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
+  games = games?.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
   const rankLists = rankList?.data?.list ?? []
   // 官 信
   let lotterys = []
@@ -146,10 +149,10 @@ const WNZHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} >
           <HomeHeader
+            uid={uid}
             showBackBtn={false}
-            showBalance={uid ? true : false}
             name={usr}
             logo={mobile_logo}
             balance={balance}
@@ -258,6 +261,7 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <GameBlock
+            numColumns={4}
             games={games}
             gameSubType={gameSubType}
             subTypeContainerStyle={{
@@ -308,17 +312,17 @@ const WNZHomePage = (props: any) => {
                       aspectRatio: 5,
                       paddingTop: scale(5),
                     }}
-                    secondLevelIconContainerStyle={{ right: -scale(10), top: null, bottom: -scale(25) }}
+                    secondLevelIconContainerStyle={{ right: -scale(10), top: null, bottom: 0 }}
                     enableCircle={false}
                     onPress={() => {
                       if (subType) {
-                        const gemaCutRow = Math.ceil((index + 1) / 4)
-                        if (index == gameSubType?.indexHistory) {
+                        const cutRow = Math.ceil((index + 1) / 4)
+                        if (index == gameSubType?.gameIndexHistory) {
                           setGameSubType({})
                         } else {
                           setGameSubType({
-                            gemaCutRow,
-                            indexHistory: index,
+                            cutRow,
+                            gameIndexHistory: index,
                             subType
                           })
                         }
