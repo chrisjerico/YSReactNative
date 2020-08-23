@@ -1,4 +1,4 @@
-import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem } from '../../redux/model/全局/UGSysConfModel';
+import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem, LotteryType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
 import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
@@ -9,9 +9,35 @@ import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
+import { httpClient } from '../network/httpClient';
+
+export enum PushRightMenuFrom {
+  首頁 = '1',
+  彩種 = '2',
+}
+
 import { popToRoot, push } from '../navigation/RootNavigation';
 import { PageName } from '../navigation/Navigation';
 export default class PushHelper {
+  //
+
+  static pushAnnouncement(data: any) {
+    // const dataModel = data?.map((item: any) => {
+    //   return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+    // })
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+  }
+  // 
+  static pushSecond() {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotterySecondHomeViewController.new[setDataArray:]', args1: [{}] }, true]);
+  }
+  // 右側選單
+  static pushRightMenu(from: PushRightMenuFrom) {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
+  }
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
     if (Platform.OS != 'ios') return;
@@ -60,13 +86,23 @@ export default class PushHelper {
     const redbagModel = Object.assign({}, { clsName: 'UGRedEnvelopeModel', rid: data?.id }, data); // ios 裡是抓rid
     OCHelper.call('UGredActivityView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [redbagModel]);
   }
-  // 去彩票下注页
-  static pushLottery() {
+  // 去彩票大廳
+  static pushLotteryHome() {
     OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
   }
 
+  // 去彩票
+
+  static pushLottery(code: LotteryType) {
+    if (Platform.OS != 'ios') return;
+    this.pushHomeGame({
+      seriesId: 1,
+      subId: code
+    } as any)
+  }
+
   // 跳转到彩票下注页，或内部功能页
-  static pushCategory(linkCategory: number | string, linkPosition: number | string, title?: string) {
+  static pushCategory(linkCategory: number | string, linkPosition: number | string) {
     if (Platform.OS != 'ios') return;
     OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [Number(linkCategory), Number(linkPosition)]);
   }
@@ -94,14 +130,22 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [0] }, true]);
         break;
       }
-      case UGUserCenterType.每日签到: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
-      }
-        break
       case UGUserCenterType.取款: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [1] }, true]);
         break;
       }
+      case UGUserCenterType.存款纪录: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [2] }, true]);
+        break;
+      }
+      case UGUserCenterType.取款纪录: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [3] }, true]);
+        break;
+      }
+      case UGUserCenterType.每日签到: {
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true]);
+      }
+        break
       case UGUserCenterType.银行卡管理: {
         async function func1() {
           let hasBankCard: boolean = await OCHelper.call('UGUserModel.currentUser.hasBankCard');
@@ -127,7 +171,7 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
-            
+
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
@@ -241,12 +285,20 @@ export default class PushHelper {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: [4] }, true]);
         break;
       }
+      case UGUserCenterType.开奖网: {
+        this.openWebView(
+          //httpClient.defaults.baseURL + '/index2.php'
+          httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
+        )
+        break;
+      }
       case UGUserCenterType.六合彩: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true]);
         break;
       }
       case UGUserCenterType.聊天室: {
-        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChatViewController.new' }, true]);
+        this.pushCategory(9, null)
+        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChatViewController.new' }, true]);
         break;
       }
       case UGUserCenterType.游戏大厅: {

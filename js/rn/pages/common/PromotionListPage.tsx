@@ -1,23 +1,22 @@
-import { View, Text, TouchableWithoutFeedback, FlatList, Linking } from "react-native"
-import { Header, HeaderProps, Button } from 'react-native-elements';
-import { Skin1 } from '../../public/theme/UGSkinManagers';
-import LinearGradient from "react-native-linear-gradient";
-import { useDimensions } from '@react-native-community/hooks'
-import React, { useEffect, useState, useRef } from 'react'
-import { useSafeArea } from "react-native-safe-area-context";
-import { pop, popToRoot } from "../../public/navigation/RootNavigation";
-import { OCHelper } from "../../public/define/OCHelper/OCHelper";
+import { useDimensions } from '@react-native-community/hooks';
 import { useNavigationState } from "@react-navigation/native";
-import ScrollableTabView, { TabBarProps, ScrollableTabBar } from "react-native-scrollable-tab-view";
-import APIRouter from "../../public/network/APIRouter";
-import { PromotionsModel, List } from "../../public/network/Model/PromotionsModel";
-import WebView from "react-native-webview";
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableWithoutFeedback, View, Linking } from "react-native";
+import AutoHeightWebView from 'react-native-autoheight-webview';
+import { Button } from 'react-native-elements';
 import FastImage, { FastImageProperties } from "react-native-fast-image";
-import usePopUpView from "../../public/hooks/usePopUpView";
+import LinearGradient from "react-native-linear-gradient";
+import { useSafeArea } from "react-native-safe-area-context";
+import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view";
 import AppDefine from "../../public/define/AppDefine";
-import AutoHeightWebView from 'react-native-autoheight-webview'
-import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
+import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import PushHelper from "../../public/define/PushHelper";
+import usePopUpView from "../../public/hooks/usePopUpView";
+import { popToRoot } from "../../public/navigation/RootNavigation";
+import APIRouter from "../../public/network/APIRouter";
+import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
+import { Skin1 } from '../../public/theme/UGSkinManagers';
+
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -38,10 +37,10 @@ const PromotionListPage = ({ navigation }) => {
   const init = async () => {
 
     try {
-      const { data, status } = await APIRouter.system_promotions()
+      const { data } = await APIRouter.system_promotions()
       setPromotionData(data)
       let categoriesArray = []
-      data.data.list.map((res) => {
+      data?.data?.list.map((res) => {
         categoriesArray.push(res.category)
       })
       categoriesArray = [...new Set(categoriesArray)];
@@ -91,7 +90,7 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+  const onPromotionItemPress = (data: any, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
     if (data?.linkUrl != "") {
       Linking.openURL(data?.linkUrl)
     }
@@ -154,7 +153,6 @@ const RenderTabBar = (props: TabBarProps & { hidden: boolean; titles: string[] }
   if (props.hidden) {
     return null;
   }
-  console.log(props)
   const { tabs } = props;
   return (
     <View style={{ marginLeft: 5, flexDirection: 'row', height: 45 }}>

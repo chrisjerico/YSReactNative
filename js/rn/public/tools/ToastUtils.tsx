@@ -1,5 +1,5 @@
-import {Platform, ToastAndroid} from 'react-native';
-import {OCHelper} from '../define/OCHelper/OCHelper';
+import { Platform, ToastAndroid } from 'react-native';
+import { OCHelper } from '../define/OCHelper/OCHelper';
 
 /**
  * Toast 提示

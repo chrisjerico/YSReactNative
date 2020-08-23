@@ -1,92 +1,97 @@
 import { UGStore } from './../../redux/store/UGStore';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
-import { httpClient, CachePolicyEnum } from './httpClient'
+import { CachePolicyEnum, httpClient } from './httpClient'
 import { BalanceModel } from './Model/BalanceModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
+import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
+import { LogoutModel } from './Model/LogoutModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
+import { PlayOddDataModel } from './Model/PlayOddDataModel'
 import { PromotionsModel } from './Model/PromotionsModel'
 import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
-import { TurntableListModel } from './Model/TurntableListModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
-import { AxiosResponse } from 'axios'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
+import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
+import { TurntableListModel } from './Model/TurntableListModel'
+import { UserInfoModel } from './Model/UserInfoModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
-  inviter: string; // 推荐人ID
-  usr: string; // 账号
-  pwd: string; // 密码
-  fundPwd: string; // 取款密码
-  fullName: string; // 真实姓名
-  qq: string; // QQ号
-  wx: string; // 微信号
-  phone: string; // 手机号
-  smsCode: string; // 短信验证码
-  imgCode: string; // 字母验证码,
-  "slideCode[nc_sid]": string,
-  "slideCode[nc_token]": string,
-  "slideCode[nc_sig]": string,
-  email: string; // 邮箱
+  inviter?: string; // 推荐人ID
+  usr?: string; // 账号
+  pwd?: string; // 密码
+  fundPwd?: string; // 取款密码
+  fullName?: string; // 真实姓名
+  qq?: string; // QQ号
+  wx?: string; // 微信号
+  phone?: string; // 手机号
+  smsCode?: string; // 短信验证码
+  imgCode?: string; // 字母验证码,
+  "slideCode[nc_sid]"?: string;
+  "slideCode[nc_token]"?: string;
+  "slideCode[nc_sig]"?: string;
+  email?: string; // 邮箱
   regType: 'user' | 'agent'; // 用户注册 或 代理注册,
-  device: string,
-  accessToken: string,
-  slideCode: any
+  device?: string;
+  accessToken?: string;
+  slideCode?: any;
 }
 
 class APIRouter {
   /**
    * 首頁遊戲資料
    */
-  static game_homeGames = () => {
+  static game_homeGames = async () => {
     return httpClient.get<HomeGamesModel>('c=game&a=homeGames')
   }
   /**
   * 輪播圖
   */
-  static system_banners = () => {
+  static system_banners = async () => {
     return httpClient.get<BannerModel>('c=system&a=banners')
   }
   /**
   * 跑馬燈
   */
-  static notice_latest = () => {
+  static notice_latest = async () => {
     return httpClient.get<NoticeModel>("c=notice&a=latest")
   }
   /**
   * 優惠活動
   */
-  static system_promotions = () => {
+  static system_promotions = async () => {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    if (user?.token) {
-      return httpClient.get("c=user&a=info&token=" + user.token)
-    } else {
-      return Promise.reject({
-
-      })
+    try {
+      const user = await OCHelper.call('UGUserModel.currentUser');
+      const token = user?.token
+      if (token) {
+        return httpClient.get<UserInfoModel>("c=user&a=info&token=" + token)
+      } else {
+        throw "no token"
+      }
+    } catch (error) {
+      throw '更新使用者失败'
     }
-
   }
-  static user_guestLogin = () => {
+  static user_guestLogin = async () => {
     return httpClient.post<LoginModel>("c=user&a=guestLogin", {
       usr: '46da83e1773338540e1e1c973f6c8a68',
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     })
   }
-  static activity_redBagDetail = () => {
+  static activity_redBagDetail = async () => {
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
   }
   static activity_turntableList = () => {
@@ -95,30 +100,34 @@ class APIRouter {
     }
     return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
   }
-  static system_floatAds = () => {
+  static system_floatAds = async () => {
     return httpClient.get<FloatADModel>("c=system&a=floatAds")
   }
-  static system_rankingList = () => {
+  static system_rankingList = async () => {
     return httpClient.get<RankListModel>("c=system&a=rankingList")
   }
   static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
-    if (slideCode) {
-      slideCode = SlideCodeModel.get(slideCode);
+    try {
+      if (slideCode) {
+        slideCode = SlideCodeModel?.get(slideCode);
+      }
+      return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
+        noToken: true
+      } as any);
+    } catch (error) {
+      throw '登陆失败'
     }
-    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
-      noToken: true
-    });
   }
   static user_balance_token = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user.token)
+    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user?.token)
   }
   static system_onlineCount = async () => {
     return httpClient.get<OnlineModel>("c=system&a=onlineCount")
   }
   static user_logout = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<any>("c=user&a=logout", {
+    return httpClient.post<LogoutModel>("c=user&a=logout", {
       token: user?.token
     })
   }
@@ -135,16 +144,20 @@ class APIRouter {
   }
 
   static system_config = async () => {
-    return httpClient.get("c=system&a=config")
+    return httpClient.get<SystemConfigModel>("c=system&a=config")
   }
+
   static user_reg = async (params: UserReg) => {
-    var accessToken = await OCHelper.call('OpenUDID.value');
-    params = {
-      ...params, device: '3', accessToken: accessToken,
+    try {
+      const accessToken = await OCHelper.call('OpenUDID.value');
+      return httpClient.post<RegisterModel>('c=user&a=reg', {
+        ...params, device: '3', accessToken: accessToken,
+      }, {
+        noToken: true
+      } as any)
+    } catch (error) {
+      throw error
     }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params, {
-      noToken: true
-    });
   }
 
   static lhcdoc_categoryList = async () => {
@@ -154,16 +167,16 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber');
   };
-  static game_lotteryGames = (): Promise<AxiosResponse<LottoGamesModel>> => {
+  static game_lotteryGames = async (): Promise<AxiosResponse<LottoGamesModel>> => {
     //@ts-ignore
     return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
       //@ts-ignore
       isEncrypt: false,
-      cachePolicy: CachePolicyEnum.cacheByTime,
+      cachePolicy: CachePolicyEnum?.cacheByTime,
       expiredTime: 3
     });
   }
-  static game_playOdds = (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
+  static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
     return httpClient.get("c=game&a=playOdds&id=" + id, {
       //@ts-ignore
       isEncrypt: false
@@ -181,6 +194,10 @@ class APIRouter {
       filename
     })
   };
+
+  static system_homeAds = async () => {
+    return httpClient.get<HomeADModel>("c=system&a=homeAds")
+  }
   static language_getLanguagePackage = async (lanCode: string) => {
     return httpClient.get("c=language&a=getLanguagePackage&languageCode=" + lanCode,
       {

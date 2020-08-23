@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
@@ -26,11 +26,12 @@ const NoticeBlock = ({
 }: NoticeBlockProps) => {
   const cleanContents = notices.map((notice, index) => ({
     label: index.toString(),
-    value: notice?.title
+    value: notice?.title,
+    content: notice?.content
   }))
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle]}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
         {logo ? <FastImage
           resizeMode={'stretch'}
@@ -50,7 +51,7 @@ const NoticeBlock = ({
           onTextClick={onPressNotice}
         />
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 

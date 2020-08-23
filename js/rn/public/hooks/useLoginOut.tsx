@@ -16,13 +16,12 @@ const useLoginOut = (pageName: PageName) => {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
-        console.log("---------------登出成功---------------")
         navigate(pageName, {})
+        console.log("---------------登出成功---------------")
       } else {
         // TODO 安卓
       }
     } catch (error) {
-      console.log(error)
       Toast('退出失败，请稍后再试')
     }
   }

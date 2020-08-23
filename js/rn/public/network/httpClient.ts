@@ -1,12 +1,11 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Platform, AsyncStorage } from 'react-native';
+import axios, { AxiosRequestConfig } from 'axios';
+import { Platform } from 'react-native';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
-import { Toast } from '../tools/ToastUtils';
-import moment from 'moment';
+
 interface Dictionary {
   [x: string]: any;
 }
@@ -70,8 +69,8 @@ httpClient.interceptors.response.use(
     return response;
   },
   err => {
-    if (err && err.response) {
-      switch (err.response.status) {
+    if (err && err?.response) {
+      switch (err?.response?.status) {
         case 401:
           OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
@@ -82,21 +81,24 @@ httpClient.interceptors.response.use(
               })
             })
           })
-
           break;
         case 500:
-          console.warn('伺服器出錯');
+          console.warn('500', err);
           break;
         case 503:
-          console.warn('服務失效');
+          console.warn('503', err);
           break;
         default:
-          console.warn("連接錯誤" + err.response.status);
+          console.warn('連接錯誤', err);
       }
     } else {
-      console.warn('連接到服務器失敗');
+      // console.warn('連接到服務器失敗', err);
     }
-    return Promise.resolve(err.response);
+    if (err?.toString()?.indexOf('timeout') != -1) {
+      return Promise.reject(err?.response ?? err)
+    } else {
+      return Promise.reject(err?.response ?? err)
+    }
   },
 );
 httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
