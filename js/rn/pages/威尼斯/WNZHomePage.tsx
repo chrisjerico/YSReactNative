@@ -406,7 +406,7 @@ const WNZHomePage = (props: any) => {
               PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={true}
+            debug={false}
             version={'修正Banner比例'}
           />
           <BottomGap />

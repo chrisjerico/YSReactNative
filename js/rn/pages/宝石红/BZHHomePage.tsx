@@ -399,7 +399,7 @@ const BZHHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={true}
+            debug={false}
             version={'修正Banner比例'}
           />
           <BottomGap />
