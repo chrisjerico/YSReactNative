@@ -17,7 +17,8 @@ import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 type APIListType =
   | 'game_homeGames'
@@ -76,14 +77,17 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
   }
   const init = () => {
-    if (Platform.OS == 'ios') {
-      OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-        initHost(host)
-      })
-    } else if (Platform.OS == 'android') {
-      ANHelper.call(NativeCommand.APP_HOST).then((host: string) => {
-        initHost(host)
-      })
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+          initHost(host)
+        })
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.APP_HOST).then((host: string) => {
+          initHost(host)
+        })
+        break;
     }
   }
 

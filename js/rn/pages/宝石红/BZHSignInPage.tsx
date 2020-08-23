@@ -26,6 +26,8 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import Form from './views/Form'
 import { UGBasePageProps } from '../base/UGPage'
+import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 
 // store
 export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
@@ -105,22 +107,25 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             onPress={async () => {
               try {
                 if (account && password) {
-                  OCHelper.call('SVProgressHUD.showWithStatus:', [
-                    '正在登录...',
-                  ])
+                  // OCHelper.call('SVProgressHUD.showWithStatus:', [
+                  //   '正在登录...',
+                  // ])
+                  showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
                   const { data } = await APIRouter.user_login(
                     account,
                     password.md5()
                   )
                   if (data.data == null) {
                     const error = data?.msg
-                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                      error ?? '登录失敗！',
-                    ])
+                    // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                    //   error ?? '登录失敗！',
+                    // ])
+                    Toast('登录失敗！');
                   } else {
-                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-                      '登录成功！',
-                    ])
+                    // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+                    //   '登录成功！',
+                    // ])
+                    Toast('登录成功！');
                     await loginSuccessHandle(data, {
                       account,
                       pwd: password,
@@ -129,9 +134,10 @@ const BZHSignInPage = (props: BZHSignInStore) => {
                   }
                 }
               } catch (error) {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                  error ?? '登入失败',
-                ])
+                Toast('登入失败！');
+                // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                //   error ?? '登入失败',
+                // ])
               }
             }}
           />

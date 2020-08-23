@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
+import {View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert, Platform} from "react-native"
 import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -13,6 +13,12 @@ import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { EventRegister } from 'react-native-event-listeners'
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -59,7 +65,18 @@ const ZLRegisterPage = () => {
             const password = requestData?.pwd?.md5()
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+
+            showLoading({ type: UGLoadingType.Loading, text: '正在注册...' });
+
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+            //     break;
+            //   case 'android':
+            //         //TODO
+            //     break;
+            // }
+
             console.log(requestData)
 
             if (requestData.slideCode) {
@@ -73,51 +90,131 @@ const ZLRegisterPage = () => {
             }
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
-            if (data?.data == null)
-                throw { message: data?.msg }
-            if (data?.data?.autoLogin) {
-                const user = await OCHelper.call('UGUserModel.currentUser');
 
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+            if (data?.data == null) {
+              throw { message: data?.msg }
+            }
+
+            if (data?.data?.autoLogin) {
+                let user;
+
+                switch (Platform.OS) {
+                  case 'ios':
+                    user = await OCHelper.call('UGUserModel.currentUser');
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                    break;
+                  case 'android':
+                    user = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.USER_INFO});
+                    Toast('注册成功')
+                    break;
+                }
+
                 const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
                 if (user) {
                     console.log('退出旧账号');
                     console.log(user);
-                    const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-                    await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-                    await OCHelper.call('UGUserModel.setCurrentUser:');
+                    switch (Platform.OS) {
+                      case 'ios':
+                          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+                          await OCHelper.call('UGUserModel.setCurrentUser:');
+                        break;
+                      case 'android':
+                        await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
+                        await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
+                        break;
+                    }
+
                     UGStore.dispatch({ type: 'reset', userInfo: {} })
                 }
-                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+
+                switch (Platform.OS) {
+                  case 'ios':
+                    await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.usr], 'userName']);
+                    await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [requestData[FormName.pwd], 'userPsw']);
+                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                    await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                    break;
+                  case 'android':
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                        key: NA_DATA.LOGIN_INFO,
+                        ...loginData?.data
+                      });
+                    break;
+                }
+
                 const { data: UserInfo, } = await APIRouter.user_info()
-                await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+
+                switch (Platform.OS) {
+                  case 'ios':
+                    await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+                    break;
+                  case 'android':
+                    await ANHelper.callAsync(CMD.SAVE_DATA,
+                      {
+                        key: NA_DATA.USER_INFO,
+                        ...UserInfo?.data
+                      })
+                    break;
+                }
+
                 UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
 
                 UGStore.save();
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+                    break;
+                  case 'android':
+                    Toast('登录成功');
+                    break;
+                }
                 popToRoot();
             }
             if (data?.data?.autoLogin == false) {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                    break;
+                  case 'android':
+                    Toast(data.msg);
+                    break;
+                }
                 popToRoot();
                 navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
+          ugLog(error)
             EventRegister.emit('reload')
             reRenderCode()
             if (error.message.includes("推荐人")) {
                 Alert.alert(error?.message, "")
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+                  break;
+                case 'android':
+
+                  break;
+              }
             } else {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+                  break;
+                case 'android':
+                  Toast(error?.message ?? '注册失败');
+                  break;
+              }
             }
 
         }
+
+      hideLoading();
     }
     useEffect(() => {
         if (allowreg == false) {
@@ -192,10 +289,18 @@ const ZLRegisterPage = () => {
     useEffect(() => {
         console.log(errors)
         Object.keys(errors).map((res) => {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [errors?.[res]?.message]);
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [errors?.[res]?.message]);
+                break;
+              case 'android':
+                Toast(errors?.[res]?.message);
+                break;
+            }
             return
         })
     }, [errors])
+
     return (
         <View style={{ flex: 1 }}>
             <Header />
@@ -383,7 +488,11 @@ const Header = () => {
         <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
             <TouchableWithoutFeedback onPress={() => {
                 pop();
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                    case "ios":
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        break;
+                }
             }}>
                 <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
             </TouchableWithoutFeedback>
@@ -412,11 +521,26 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
             if (data?.code != 0) {
                 throw { message: data.msg }
             } else {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg]);
+                switch (Platform.OS) {
+                  case 'ios':
+                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data?.msg]);
+                    break;
+                  case 'android':
+                    Toast(data?.msg);
+                    break;
+                }
             }
 
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message]);
+            ugLog(error)
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error.message]);
+                break;
+              case 'android':
+                Toast(error.message);
+                break;
+            }
         }
 
     }
@@ -485,8 +609,8 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
                 as={TextInput}
                 rules={{
                     required: {
-                        value: true, message
-                            : "请输入验证码"
+                        value: true,
+                        message: "请输入验证码"
                     }
                 }}
                 name={FormName.imgCode}

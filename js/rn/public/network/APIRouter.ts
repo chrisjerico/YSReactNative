@@ -21,6 +21,11 @@ import { AxiosResponse } from 'axios'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import {Platform} from "react-native";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {ugLog} from "../tools/UgLog";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -70,12 +75,23 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    if (user?.token) {
-      return httpClient.get("c=user&a=info&token=" + user.token)
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+            { blGet: true, });
+        break;
+    }
+
+    if (tokenParams) {
+      return httpClient.get("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({
-
+        msg: 'no token'
       })
     }
 
@@ -86,8 +102,20 @@ class APIRouter {
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     })
   }
-  static activity_redBagDetail = () => {
-    return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
+  static activity_redBagDetail = async () => {
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          { blGet: true, });
+        break;
+    }
+
+    return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail&" + tokenParams)
   }
   static activity_turntableList = () => {
     if (UGStore.globalProps.userInfo?.isTest) {
@@ -110,20 +138,50 @@ class APIRouter {
     });
   }
   static user_balance_token = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.get<BalanceModel>("c=user&a=balance&token=" + user.token)
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          { blGet: true, });
+        break;
+    }
+
+    return httpClient.get<BalanceModel>("c=user&a=balance&" + tokenParams)
   }
   static system_onlineCount = async () => {
     return httpClient.get<OnlineModel>("c=system&a=onlineCount")
   }
   static user_logout = async () => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<any>("c=user&a=logout", {
-      token: user?.token
-    })
+    let tokenParams = {};
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = {
+          token: user?.token
+        }
+        break;
+      case "android":
+        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = JSON.parse(mapStr)
+        break;
+    }
+
+    return httpClient.post<any>("c=user&a=logout", tokenParams)
   }
   static secure_imgCaptcha = async () => {
-    const accessToken = await OCHelper.call('OpenUDID.value');
+    let accessToken = "";
+    switch (Platform.OS) {
+      case 'ios':
+        accessToken = await OCHelper.call('OpenUDID.value');
+        break;
+      case 'android':
+        accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
+        break;
+    }
     return httpClient.get("c=secure&a=imgCaptcha", {
       params: {
         accessToken: accessToken
@@ -138,7 +196,16 @@ class APIRouter {
     return httpClient.get("c=system&a=config")
   }
   static user_reg = async (params: UserReg) => {
-    var accessToken = await OCHelper.call('OpenUDID.value');
+    let accessToken = "";
+    switch (Platform.OS) {
+      case 'ios':
+        accessToken = await OCHelper.call('OpenUDID.value');
+        break;
+      case 'android':
+        accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
+        break;
+    }
+
     params = {
       ...params, device: '3', accessToken: accessToken,
     }
@@ -175,11 +242,24 @@ class APIRouter {
   };
 
   static task_changeAvatar = async (filename: string) => {
-    const user = await OCHelper.call('UGUserModel.currentUser');
-    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", {
-      token: user?.token,
-      filename
-    })
+    let tokenParams = {};
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = {
+          token: user?.token,
+          filename
+        }
+        break;
+      case "android":
+        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = {
+          ...JSON.parse(mapStr),
+          filename
+        }
+        break;
+    }
+    return httpClient.post<TaskChangeAvatarModel>("c=task&a=changeAvatar", tokenParams)
   };
   static language_getLanguagePackage = async (lanCode: string) => {
     return httpClient.get("c=language&a=getLanguagePackage&languageCode=" + lanCode,
