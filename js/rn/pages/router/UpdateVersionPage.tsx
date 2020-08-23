@@ -14,6 +14,7 @@ import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
+import {navigate} from "../../public/navigation/RootNavigation";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -135,7 +136,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           OCHelper.launchFinish();
           break;
         case 'android':
-          ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
+          // ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
           break;
       }
     }, 20000);

@@ -5,6 +5,7 @@ import {Router} from "../../navigation/Router";
 import {B_DEBUG, ugLog} from "../UgLog";
 import LHTHomePage from "../../../pages/六合厅/LHTHomePage";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {anyEmpty, anyNull} from "../Ext";
 
 /**
  * Arc
@@ -68,10 +69,13 @@ export default class ExtUGApplication {
     //Android 需要特殊处理
     switch (Platform.OS) {
       case "android":
-        let currentScene = B_DEBUG
-            ? PageName.ZLHomePage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
-            : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
-        if (currentScene != null) {
+        // let currentScene = B_DEBUG
+        //     ? PageName.UpdateVersionPage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
+        //     : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
+        let currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
+        if (anyEmpty(currentScene)) {
+          initName = PageName.UpdateVersionPage
+        } else {
           initName = currentScene
         }
         break;

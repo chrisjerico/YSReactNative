@@ -47,7 +47,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
 
         break;
       case 'android':
-        ugLog("encryptParams=", JSON.stringify(temp))
+        // ugLog("encryptParams=", JSON.stringify(temp))
         break;
     }
 
@@ -72,7 +72,7 @@ httpClient.interceptors.response.use(
 
         break;
       case 'android':
-        ugLog('http success res = ', JSON.stringify(response.request))
+        // ugLog('http success res = ', JSON.stringify(response.request))
         break;
     }
     // ugLog("http ful filled res = ", JSON.stringify(response))
