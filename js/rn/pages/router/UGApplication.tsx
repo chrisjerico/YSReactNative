@@ -49,10 +49,11 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {anyNull} from "../../public/tools/Ext";
 import {ugLog} from "../../public/tools/UgLog";
 import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 // TabbarController
 class TabBarController extends Component<{

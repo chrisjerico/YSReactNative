@@ -17,7 +17,8 @@ import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 type APIListType =
   | 'game_homeGames'

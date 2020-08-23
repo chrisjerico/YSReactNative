@@ -7,7 +7,8 @@ import UGUserModel, {UGLoginModel} from '../../redux/model/全局/UGUserModel';
 import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
 import {OCHelper} from '../define/OCHelper/OCHelper';
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 export default class NetworkRequest1 {
   // 拿我的頁列表

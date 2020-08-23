@@ -11,7 +11,9 @@ import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import { UGStore } from '../../redux/store/UGStore';
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
-import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {

@@ -22,8 +22,10 @@ import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
 import {Platform} from "react-native";
-import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
 import {ugLog} from "../tools/UgLog";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {

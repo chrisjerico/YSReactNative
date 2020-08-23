@@ -4,7 +4,8 @@ import { List } from "../network/Model/CouponListModel";
 import { OCHelper } from "../define/OCHelper/OCHelper";
 import { NSValue } from "../define/OCHelper/OCBridge/OCCall";
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 const usePopUpView = () => {
     const [style1, setStyle1] = useState("")

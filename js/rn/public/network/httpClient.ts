@@ -2,12 +2,14 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Platform, AsyncStorage } from 'react-native';
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import {ANHelper, CMD, NA_DATA} from '../define/ANHelper/ANHelper';
+import {ANHelper} from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
 import moment from 'moment';
 import {ugLog} from "../tools/UgLog";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 interface Dictionary {
   [x: string]: any;
 }

@@ -6,8 +6,10 @@ import APIRouter from "../network/APIRouter";
 import { LoginModel } from "../network/Model/LoginModel";
 import {Platform} from "react-native";
 import {Toast} from "../tools/ToastUtils";
-import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
 import {ugError, ugLog} from "../tools/UgLog";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 /**
  * data:API response

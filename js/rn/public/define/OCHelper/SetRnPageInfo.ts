@@ -3,7 +3,8 @@ import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { OCHelper } from './OCHelper';
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../ANHelper/ANHelper";
+import {ANHelper} from "../ANHelper/ANHelper";
+import {CMD} from "../ANHelper/hp/CmdDefine";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];

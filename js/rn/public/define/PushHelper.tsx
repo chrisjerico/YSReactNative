@@ -11,7 +11,10 @@ import {TurntableListModel} from '../network/Model/TurntableListModel';
 import {Toast} from '../tools/ToastUtils';
 import { popToRoot, push } from '../navigation/RootNavigation';
 import { PageName } from '../navigation/Navigation';
-import {ANHelper, CMD, MenuType, NA_DATA} from "./ANHelper/ANHelper";
+import {ANHelper} from "./ANHelper/ANHelper";
+import {MenuType} from "./ANHelper/hp/GotoDefine";
+import {NA_DATA} from "./ANHelper/hp/DataDefine";
+import {CMD} from "./ANHelper/hp/CmdDefine";
 
 export default class PushHelper {
   // 輪盤

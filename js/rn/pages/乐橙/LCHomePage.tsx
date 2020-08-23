@@ -44,7 +44,9 @@ import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import Carousel from "react-native-banner-carousel";
 import { BannerModel } from "../../public/network/Model/BannerModel";
 import { httpClient } from "../../public/network/httpClient";
-import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 const LCHomePage = ({ navigation }) => {
     const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading } = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()

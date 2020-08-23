@@ -13,10 +13,12 @@ import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { EventRegister } from 'react-native-event-listeners'
-import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 enum FormName {
     inviter = "inviter",
     usr = "usr",

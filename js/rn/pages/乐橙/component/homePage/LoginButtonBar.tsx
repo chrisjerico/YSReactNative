@@ -6,8 +6,10 @@ import APIRouter from "../../../../public/network/APIRouter";
 import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
 import {OCHelper} from "../../../../public/define/OCHelper/OCHelper";
 import {hideLoading, showLoading, UGLoadingType} from "../../../../public/widget/UGLoadingCP";
-import {ANHelper, CMD, NA_DATA} from "../../../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../../../public/tools/ToastUtils";
+import {NA_DATA} from "../../../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../../../public/define/ANHelper/hp/CmdDefine";
 
 export const LoginButtonBar = () => {
     const userStore = UGStore.globalProps.userInfo;

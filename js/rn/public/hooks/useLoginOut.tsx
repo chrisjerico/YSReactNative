@@ -5,8 +5,10 @@ import { PageName } from '../navigation/Navigation'
 import { navigate } from '../navigation/RootNavigation'
 import APIRouter from '../network/APIRouter'
 import { Toast } from '../tools/ToastUtils'
-import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
 import {hideLoading, showLoading, UGLoadingType} from "../widget/UGLoadingCP";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {

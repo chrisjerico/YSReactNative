@@ -50,7 +50,8 @@ import { List } from "../../public/network/Model/PromotionsModel"
 import {ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
-import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];

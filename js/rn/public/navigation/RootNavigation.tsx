@@ -5,8 +5,9 @@ import { OCHelper } from '../define/OCHelper/OCHelper';
 import { PageName } from './Navigation';
 import { Router, RouterType } from './Router';
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
 import {ugLog} from "../tools/UgLog";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 

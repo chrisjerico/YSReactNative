@@ -17,9 +17,11 @@ import {Navigation, PageName} from '../../public/navigation/Navigation';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import {Icon, Button} from 'react-native-elements';
 import {Res} from '../../Res/icon/Resources';
-import {ANHelper, CMD, NA_DATA} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../public/tools/ToastUtils";
 import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   account: string = null; // 账号

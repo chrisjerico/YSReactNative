@@ -1,9 +1,10 @@
 import {Platform} from "react-native";
 import {PageName} from "../../navigation/Navigation";
-import {ANHelper, CMD} from "../../define/ANHelper/ANHelper";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {Router} from "../../navigation/Router";
 import {B_DEBUG, ugLog} from "../UgLog";
 import LHTHomePage from "../../../pages/六合厅/LHTHomePage";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 
 /**
  * Arc

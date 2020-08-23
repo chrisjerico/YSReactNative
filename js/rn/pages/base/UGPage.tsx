@@ -15,7 +15,8 @@ import { navigationRef } from '../../public/navigation/RootNavigation'
 import {ugLog} from "../../public/tools/UgLog";
 import StringUtils from "../../public/tools/StringUtils";
 import {Platform} from "react-native";
-import {ANHelper, CMD} from "../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 
 // Props

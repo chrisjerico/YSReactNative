@@ -9,7 +9,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import AppDefine from '../../../public/define/AppDefine';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
-import {ANHelper, CMD} from "../../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 
 interface IProps {
   list: Array<UGPromoteModel>;

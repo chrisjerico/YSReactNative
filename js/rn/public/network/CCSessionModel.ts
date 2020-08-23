@@ -1,7 +1,8 @@
-import {ANHelper, CMD} from './../define/ANHelper/ANHelper';
+import {ANHelper} from './../define/ANHelper/ANHelper';
 import {Platform} from 'react-native';
 import AppDefine from '../define/AppDefine';
 import {OCHelper} from '../define/OCHelper/OCHelper';
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 interface Dictionary {
   [x: string]: any;

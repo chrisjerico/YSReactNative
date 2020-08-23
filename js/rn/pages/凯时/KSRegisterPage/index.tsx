@@ -17,9 +17,11 @@ import { popToRoot, navigate, pop } from "../../../public/navigation/RootNavigat
 import { PageName } from "../../../public/navigation/Navigation"
 import AppDefine from "../../../public/define/AppDefine"
 import {showLoading, UGLoadingType} from "../../../public/widget/UGLoadingCP";
-import {ANHelper, CMD, NA_DATA} from "../../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../../public/tools/ToastUtils";
 import {ugLog} from "../../../public/tools/UgLog";
+import {NA_DATA} from "../../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 enum FormName {
   inviter = "inviter",
   usr = "usr",

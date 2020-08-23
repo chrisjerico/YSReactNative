@@ -4,7 +4,9 @@ import UGUserModel from "../../redux/model/全局/UGUserModel"
 import UGSysConfModel from "../../redux/model/全局/UGSysConfModel"
 import { OCHelper } from "../define/OCHelper/OCHelper"
 import {Platform} from "react-native";
-import {ANHelper, CMD, NA_DATA} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 const GlobalContext = createContext({
   userInfo: undefined,
   sysConf: undefined,

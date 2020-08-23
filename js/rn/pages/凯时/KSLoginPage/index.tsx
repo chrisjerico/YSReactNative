@@ -15,10 +15,12 @@ import useLoginIn from '../../../public/hooks/useLoginIn';
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
 import PushHelper from '../../../public/define/PushHelper';
 import { PageName } from '../../../public/navigation/Navigation';
-import {ANHelper, CMD, NA_DATA} from "../../../public/define/ANHelper/ANHelper";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../../public/tools/ToastUtils";
 import UGUserModel from "../../../redux/model/全局/UGUserModel";
 import {hideLoading, showLoading, UGLoadingType} from "../../../public/widget/UGLoadingCP";
+import {NA_DATA} from "../../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 let errorTimes = 0
 const KSLogin = ({ route, navigation }) => {
   const { control, errors, handleSubmit } = useForm()
