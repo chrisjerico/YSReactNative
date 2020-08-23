@@ -10,9 +10,9 @@ import { scale } from '../../../public/tools/Scale'
 import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
 
 export interface GameSubType {
-  gemaCutRow?: number;
+  cutRow?: number;
   subType?: any[];
-  indexHistory?: number;
+  gameIndexHistory?: number;
 }
 
 interface GameBlockProps {
@@ -25,6 +25,7 @@ interface GameBlockProps {
   renderSubType?: (item: IGameIconListItem, index: number) => any;
   subTypeContainerStyle?: ViewStyle | ViewStyle[];
   gameSubType?: GameSubType;
+  numColumns: number;
 }
 
 const GameBlock = ({
@@ -37,11 +38,12 @@ const GameBlock = ({
   renderSubType,
   subTypeContainerStyle,
   gameSubType = {},
+  numColumns
 }: GameBlockProps) => {
-  const { gemaCutRow, subType } = gameSubType
-  const cutElement = gemaCutRow ? gemaCutRow * 3 : -1
-  const mainGames = games?.slice(0, cutElement) ?? []
-  const subGames = games?.slice(cutElement, -1) ?? []
+  const { cutRow, subType } = gameSubType
+  const sliceCount = cutRow ? (cutRow * numColumns) : -1
+  const mainGames = sliceCount == -1 ? games : games?.slice(0, sliceCount) ?? []
+  const subGames = sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -57,7 +59,7 @@ const GameBlock = ({
       <View style={[contentContainerStyle]}>
         <View style={styles.gamesContainer}>{mainGames?.map(renderGame)}</View>
         {
-          <View style={[styles.gamesContainer, subTypeContainerStyle]}>
+          subType?.length > 0 && <View style={[styles.gamesContainer, subTypeContainerStyle]}>
             {subType?.map(renderSubType)}
           </View>
         }

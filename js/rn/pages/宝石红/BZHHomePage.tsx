@@ -24,7 +24,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import GameBlock, { GameSubType } from './views/GameBlock'
@@ -95,14 +97,14 @@ const BZHHomePage = () => {
   const navs =
     homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
-      .slice(0, 4) ?? []
+      ?.slice(0, 4) ?? []
   const gameBlocks = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
-  const coupons = couponList?.data?.list ?? []
+  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const ads = homeAd?.data ?? []
 
-  console.log("--------寶石紅渲染--------")
+  console.log('--------寶石紅渲染--------')
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -213,7 +215,7 @@ const BZHHomePage = () => {
           <FlatList
             style={{ paddingHorizontal: '1%' }}
             data={gameBlocks}
-            renderItem={({ item, index: blockIndex }) => {
+            renderItem={({ item, index: gameBlockIndex }) => {
               const { name, list } = item
               return (
                 <GameBlock
@@ -232,7 +234,8 @@ const BZHHomePage = () => {
                     paddingHorizontal: scale(20),
                   }}
                   games={list}
-                  gameSubType={gameSubTypes[blockIndex]}
+                  gameSubType={gameSubTypes[gameBlockIndex]}
+                  numColumns={3}
                   renderSubType={(item, index) => {
                     const { title } = item
                     return (
@@ -300,25 +303,21 @@ const BZHHomePage = () => {
                         }}
                         onPress={() => {
                           if (subType) {
-                            const gemaCutRow = Math.ceil((gameIndex + 1) / 3)
+                            const cutRow = Math.ceil((gameIndex + 1) / 3)
                             const updateGameSubTypes =
-                              gameBlocks?.map((_, index) => {
-                                if (index == blockIndex) {
-                                  return {
-                                    gemaCutRow,
-                                    subType:
-                                      gameIndex ==
-                                        gameSubTypes[index]?.indexHistory
-                                        ? []
-                                        : subType,
-                                    indexHistory:
-                                      gameIndex ==
-                                        gameSubTypes[index]?.indexHistory
-                                        ? undefined
-                                        : gameIndex,
+                              gameBlocks?.map((_, blockIndex) => {
+                                if (gameBlockIndex == blockIndex) {
+                                  if (gameIndex == gameSubTypes[blockIndex]?.gameIndexHistory) {
+                                    return {}
+                                  } else {
+                                    return {
+                                      cutRow,
+                                      subType,
+                                      gameIndexHistory: gameIndex,
+                                    }
                                   }
                                 } else {
-                                  return gameSubTypes[index] ?? {}
+                                  return gameSubTypes[blockIndex] ?? {}
                                 }
                               }) ?? []
                             setGameSubTypes(updateGameSubTypes)
@@ -337,7 +336,8 @@ const BZHHomePage = () => {
             visible={m_promote_pos}
             onPressMore={goToJDPromotionListPage}
             containerStyle={{
-              paddingHorizontal: '1%', marginTop: scale(10),
+              paddingHorizontal: '1%',
+              marginTop: scale(10),
             }}
             titleContainerStyle={{ backgroundColor: '#ffffff' }}
             coupons={coupons}

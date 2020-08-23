@@ -141,7 +141,7 @@ const LHTHomePage = (props: any) => {
     homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
       .slice(0, 8) ?? []
-  const coupons = couponList?.data?.list ?? []
+  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []

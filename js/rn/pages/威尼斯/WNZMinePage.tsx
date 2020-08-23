@@ -9,7 +9,7 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType, LotteryType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import ButtonGroup from './views/ButtonGroup'
@@ -27,8 +27,10 @@ const WNZMinePage = (props: any) => {
     usr,
     taskReward,
     taskRewardTotal,
-    nextLevelTitle
+    nextLevelTitle,
+    nextLevelInt
   }: UGUserModel = UGStore.globalProps.userInfo
+
   const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   const { UGUserCenterItem } = useMemberItems()
   const tools = UGUserCenterItem?.sort((a, b) => a?.code - b?.code) ?? []
@@ -97,8 +99,8 @@ const WNZMinePage = (props: any) => {
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <HomeHeader
+          uid={uid}
           showBackBtn={showBackBtn}
-          showBalance={uid ? true : false}
           name={usr}
           logo={mobile_logo}
           balance={balance}
@@ -106,7 +108,7 @@ const WNZMinePage = (props: any) => {
             PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
           }}
           onPressComment={() => {
-            PushHelper.pushHomeGame({ "category": "44", "gameCode": "-1", "gameId": "70", "gameType": "lhc", "hotIcon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/28463cb7ab027d440dd3d91ab602c7ea.gif", "icon": "https://cdn01.v-denche.cn/upload/t061/customise/picture/system/mobileIcon/66a245511ce065b985ba3f8aac8b54cd.jpg", "id": "302", "isClose": "0", "isInstant": "0", "isSeal": "0", "levelType": "1", "logo": "https://cdn01.v-denche.cn/open_prize/images/icon/70.png?v=1597739611", "name": "香港六合彩", "openWay": "0", "realName": "", "seriesId": "1", "sort": "-50", "subId": "70", "subtitle": "一天一期", "tipFlag": "4", "title": "香港六合彩", "url": "" })
+            PushHelper.pushLottery(LotteryType.香港六合彩)
           }}
           onPressUser={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.我的页)
@@ -117,10 +119,14 @@ const WNZMinePage = (props: any) => {
         style={styles.container}
       >
         <ProfileBlock
-          taskReward={taskReward}
+          nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}
           taskRewardTitle={nextLevelTitle}
           backgroundImage={getHtml5Image(23, 'userBg')}
+          signImage={getHtml5Image(23, 'qiaodao')}
+          onPressSign={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+          }}
         />
         <ButtonGroup
           leftLogo={headrTools[0]?.logo}
