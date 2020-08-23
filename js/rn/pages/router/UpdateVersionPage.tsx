@@ -13,7 +13,7 @@ import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
-import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -135,12 +135,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           OCHelper.launchFinish();
           break;
         case 'android':
-          ANHelper.callAsync(CMD.OPEN_PAGE,
-            {
-              toActivity: true,
-              packageName: 'com.phoenix.lotterys.main',
-              className: 'LaunchActivity'
-            });
+          ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
           break;
       }
     }, 20000);
@@ -180,12 +175,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         OCHelper.launchFinish();
         break;
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_PAGE,
-          {
-            toActivity: true,
-            packageName: 'com.phoenix.lotterys.main',
-            className: 'LaunchActivity'
-          });
+        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
         break;
     }
     UGStore.save()

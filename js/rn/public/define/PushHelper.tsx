@@ -14,7 +14,7 @@ import { PageName } from '../navigation/Navigation';
 import {ANHelper} from "./ANHelper/ANHelper";
 import {MenuType} from "./ANHelper/hp/GotoDefine";
 import {NA_DATA} from "./ANHelper/hp/DataDefine";
-import {CMD} from "./ANHelper/hp/CmdDefine";
+import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
 
 export default class PushHelper {
   // 輪盤
@@ -77,12 +77,7 @@ export default class PushHelper {
         // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
         break;
       case "android":
-        ANHelper.callAsync(CMD.OPEN_PAGE,
-          {
-            toActivity: true,
-            packageName: 'com.phoenix.lotterys.my.activity',
-            className: 'LoginActivity'
-          });
+        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LoginActivity);
         break;
     }
   }
@@ -97,12 +92,7 @@ export default class PushHelper {
         // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
         break;
       case "android":
-        ANHelper.callAsync(CMD.OPEN_PAGE,
-          {
-            toActivity: true,
-            packageName: 'com.phoenix.lotterys.my.activity',
-            className: 'RegeditActivity'
-          });
+        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.RegeditActivity);
         break;
     }
 

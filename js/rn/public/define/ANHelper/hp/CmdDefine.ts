@@ -30,3 +30,24 @@ export enum CMD {
   SAVE_DATA = 'SAVE_DATA',      //存储数据
   LOAD_DATA = 'LOAD_DATA'      //加载数据
 }
+
+/**
+ * 打开界面参数
+ */
+export const OPEN_PAGE_PMS = {
+  LaunchActivity: {//启动页
+    toActivity: true,
+    packageName: 'com.phoenix.lotterys.main',
+    className: 'LaunchActivity'
+  },
+  LoginActivity: {//登录界面
+    toActivity: true,
+    packageName: 'com.phoenix.lotterys.my.activity',
+    className: 'LoginActivity'
+  },
+  RegeditActivity: {//注册界面
+    toActivity: true,
+    packageName: 'com.phoenix.lotterys.my.activity',
+    className: 'RegeditActivity'
+  }
+}
