@@ -27,8 +27,9 @@ const WNZMinePage = (props: any) => {
     usr,
     taskReward,
     taskRewardTotal,
+    curLevelTitle,
     nextLevelTitle,
-    nextLevelInt
+    nextLevelInt,
   }: UGUserModel = UGStore.globalProps.userInfo
 
   const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
@@ -121,7 +122,8 @@ const WNZMinePage = (props: any) => {
         <ProfileBlock
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}
-          taskRewardTitle={nextLevelTitle}
+          curLevelTitle={curLevelTitle}
+          nextLevelTitle={nextLevelTitle}
           backgroundImage={getHtml5Image(23, 'userBg')}
           signImage={getHtml5Image(23, 'qiaodao')}
           onPressSign={() => {

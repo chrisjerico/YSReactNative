@@ -10,7 +10,8 @@ import { scale } from '../../../public/tools/Scale'
 
 interface ProfileBlockProps {
   nextLevelInt: string;
-  taskRewardTitle: string;
+  curLevelTitle: string;
+  nextLevelTitle: string;
   taskRewardTotal: string;
   backgroundImage: string;
   signImage: string;
@@ -19,7 +20,8 @@ interface ProfileBlockProps {
 
 const ProfileBlock = ({
   nextLevelInt,
-  taskRewardTitle,
+  curLevelTitle,
+  nextLevelTitle,
   taskRewardTotal,
   backgroundImage,
   signImage,
@@ -29,15 +31,18 @@ const ProfileBlock = ({
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
   const rate = nextLevelInt_f ? taskRewardTotal_f / nextLevelInt_f : 0
 
+  console.log("----------curLevelTitle----------", curLevelTitle)
+  console.log("----------nextLevelTitle----------", nextLevelTitle)
+
   return (
     <View style={styles.imageBackgroundContainer}>
       <ImageBackground style={styles.image} source={{ uri: backgroundImage }}>
         <View style={{ flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 8 }}>
             <View style={styles.taskRewardTitleContainer}>
-              <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
-                {taskRewardTitle}
-              </Text>
+              {/* <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
+                {nextLevelTitle}
+              </Text> */}
             </View>
             <View style={{ flex: 2, paddingHorizontal: scale(20) }}>
               <View style={styles.experienceContainer}>
@@ -61,7 +66,7 @@ const ProfileBlock = ({
                 }}
               >
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
-                  {rate >= 1 ? '恭喜您已经是最高等级!' : ''}
+                  {curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : ''}
                 </Text>
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
                   {taskRewardTotal_f + '/' + nextLevelInt_f}
