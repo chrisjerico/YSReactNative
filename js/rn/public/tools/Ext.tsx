@@ -16,7 +16,8 @@ export const checkTrue = (value?: any) => value != null && value === true;
  * @param value
  */
 export const arrayEmpty = (value?: Array<any>) => value == null || value.length <= 0;
-// export const textEmpty = (value?: string) => value == null || value.length <= 0;
+export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value.length;
 export const anyNull = (value?: any) => value == null;
 export const anyEmpty = (value?: any) => value == null || value == "";
+export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length;
 

@@ -1,6 +1,6 @@
 import CodePush from 'react-native-code-push';
-import React, { useEffect } from 'react';
-import { View, Text, Platform } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Platform, TouchableHighlight} from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
@@ -17,15 +17,19 @@ import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
 import {navigate} from "../../public/navigation/RootNavigation";
 import {UGColor} from "../../public/theme/UGThemeColor";
 import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
+import {ugLog} from "../../public/tools/UgLog";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
   progress?: number;
   text?: string;
+  bCodePush?: boolean;//codepush是否OK
+  bBanner?: boolean;//banner是否播放完
 }
 
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, text = '正在努力更新中...' } = props;
+  const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props;
+
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
@@ -111,15 +115,15 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           setProps({ progress: 1, text: '正在进入主页...' });
           switch (Platform.OS) {
             case 'ios':
-                OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-                  initConfig(sysConf)
-                });
+              OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+                initConfig(sysConf)
+              });
               break;
             case 'android':
-                ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.CONFIG })
-                  .then((config) => {
-                    initConfig(JSON.parse(config))
-                  });
+              ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG})
+                .then((config) => {
+                  initConfig(JSON.parse(config))
+                });
               break;
           }
         }
@@ -132,13 +136,15 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     );
 
     // 超时时间20秒
-    setTimeout(() => {
+    const timer = setTimeout(() => {
+      clearTimeout(timer)
+
       switch (Platform.OS) {
         case 'ios':
           OCHelper.launchFinish();
           break;
         case 'android':
-          // ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
+          ANHelper.callAsync(CMD.LAUNCH_GO);
           break;
       }
     }, 20000);
@@ -160,16 +166,41 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS })
           .then((picStr) => {
             if (!anyEmpty(picStr)) {
-              let pics = JSON.parse(picStr);
+              let pics: [] = JSON.parse(picStr);
               if (!arrayEmpty(pics)) {
-                setProps({ backgroundImage: pics[0] });
+
+                setProps({ backgroundImage: pics.shift()});
+                //暂时不轮播，直接清空
+                pics = [];
+
+                //定时器显示图片
+                let tempInterval = setInterval(() => {
+                  if (arrayEmpty(pics)) {
+                    clearInterval(tempInterval)
+                    setProps({ bBanner: true});
+                  } else {
+                    setProps({ backgroundImage: pics.shift()});
+                  }
+                }, 4000)
               }
             }
           });
-        setProps({ backgroundColor: [UGColor.transparent, UGColor.transparent] });
-        break;
+    }
+
+    return () => {
+      clearTimeout(timer)
     }
   }, [])
+
+  useEffect(() => {
+    switch (Platform.OS) {
+      case "ios":
+        break;
+      case "android":
+        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO);
+        break;
+    }
+  }, [bCodePush, bBanner])
 
   const initConfig = (sysConf: UGSysConfModel) => {
     UGStore.dispatch({ type: 'merge', sysConf: sysConf });
@@ -187,15 +218,14 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         OCHelper.launchFinish();
         break;
       case 'android':
-        ANHelper.callAsync(CMD.LAUNCH_GO);
+        setProps({ bCodePush: true});
         break;
     }
     UGStore.save()
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }} />
+    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
       <View style={{ marginHorizontal: 15, paddingHorizontal: 15, backgroundColor: '#0000003f', height: 70, marginBottom: 300, borderRadius: 20 }} >
         <Text style={{ marginTop: 24, color: '#fff', fontWeight: '500' }}>{text}</Text>
         <Progress.Bar

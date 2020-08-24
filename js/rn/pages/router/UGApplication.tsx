@@ -115,7 +115,7 @@ const StackScreens = () => {
 
     return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
-      <Router.StackScreen name={'Tabbar'} component={TabBarController} />
+      <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
