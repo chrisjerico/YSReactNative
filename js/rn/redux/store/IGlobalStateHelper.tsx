@@ -23,14 +23,13 @@ export async function updateUserInfo() {
     if (data) {
       UGStore.dispatch({ type: 'merge', userInfo: data });
       UGStore.save();
+      return data
     } else {
       throw { message: msg ?? '更新使用者失败' }
     }
   } catch (error) {
     console.log("-------------updateUserInfo error-------------", error)
-    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+    throw error
   }
 }
 
@@ -42,10 +41,12 @@ export async function updateSysConf() {
     if (data) {
       UGStore.dispatch({ type: 'merge', props: data })
       UGStore.save()
+      return data
     } else {
       throw { message: msg }
     }
   } catch (error) {
     console.log("-------------updateSysConf error-------------", error)
+    throw error
   }
 }

@@ -1,12 +1,10 @@
-import { IGlobalStateHelper, updateUserInfo } from './../../../redux/store/IGlobalStateHelper';
+import { UGStore } from '../../../redux/store/UGStore';
+import APIRouter from '../../network/APIRouter';
+import { httpClient } from '../../network/httpClient';
 import { UGBridge } from '../ANHelper/UGBridge';
 import AppDefine from '../AppDefine';
 import { OCCall } from './OCBridge/OCCall';
 import { OCEvent } from './OCBridge/OCEvent';
-import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel';
-import { httpClient } from '../../network/httpClient';
-import { UGStore } from '../../../redux/store/UGStore';
-import APIRouter from '../../network/APIRouter';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;

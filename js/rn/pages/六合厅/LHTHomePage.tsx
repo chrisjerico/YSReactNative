@@ -22,8 +22,7 @@ import {
   getActivityPosition,
   getHtml5Image,
   ToastError,
-  ToastSuccess,
-  updateUserInfo
+  ToastSuccess
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -37,6 +36,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import config from './config'

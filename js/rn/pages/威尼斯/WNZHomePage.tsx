@@ -16,7 +16,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { getActivityPosition, updateUserInfo, ToastError } from '../../public/tools/tars'
+import { getActivityPosition, ToastError } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -30,12 +30,12 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import GameBlock, { GameSubType } from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
-import { Toast } from '../../public/tools/ToastUtils'
 
 const WNZHomePage = (props: any) => {
   // yellowBox
@@ -174,9 +174,7 @@ const WNZHomePage = (props: any) => {
             <RefreshControlComponent
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity(), updateUserInfo().catch(error => {
-                    console.log(error)
-                  })])
+                  await Promise.all([refreshHome(), refreshActivity()])
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                 }

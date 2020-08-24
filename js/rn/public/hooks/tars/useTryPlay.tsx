@@ -1,12 +1,12 @@
 import { Platform } from 'react-native'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
+import { updateUserInfo } from '../../../redux/store/IGlobalStateHelper'
 import APIRouter from '../../network/APIRouter'
 import {
   saveNativeUser,
   ToastError,
   ToastStatus,
   ToastSuccess,
-  updateUserInfo
 } from '../../tools/tars'
 
 interface Options {
