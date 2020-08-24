@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from "react-native"
+import {View, FlatList, Text, Platform} from "react-native"
 import React, { useState } from 'react'
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper"
 import { NSValue } from "../../../public/define/OCHelper/OCBridge/OCCall"
@@ -51,7 +51,14 @@ const Header = () => {
       <View style={{ width, height: 45, flexDirection: 'row' }}>
         <TouchableOpacity style={{ marginLeft: 15 }} onPress={() => {
           pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case 'android':
+
+              break;
+          }
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity >

@@ -6,6 +6,9 @@ import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import UGUserModel, {UGLoginModel} from '../../redux/model/全局/UGUserModel';
 import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
 import {OCHelper} from '../define/OCHelper/OCHelper';
+import {Platform} from "react-native";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 export default class NetworkRequest1 {
   // 拿我的頁列表
@@ -119,7 +122,15 @@ export default class NetworkRequest1 {
     email: string; // 邮箱
     regType: 'user' | 'agent'; // 用户注册 或 代理注册
   }): Promise<void> {
-    var accessToken = await OCHelper.call('OpenUDID.value');
+    let accessToken = "";
+    switch (Platform.OS) {
+      case 'ios':
+        accessToken = await OCHelper.call('OpenUDID.value');
+        break;
+      case 'android':
+        accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
+        break;
+    }
     params = Object.assign({device: '3', accessToken: accessToken}, params);
     return await CCSessionModel.req('c=user&a=reg', params, true);
   }

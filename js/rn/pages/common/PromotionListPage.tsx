@@ -1,9 +1,11 @@
-import { useDimensions } from '@react-native-community/hooks';
+import { View, Text, TouchableWithoutFeedback, FlatList, Linking, Platform } from "react-native"
+import { Header, HeaderProps, Button } from 'react-native-elements';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
+import { useDimensions } from '@react-native-community/hooks'
+import React, { useEffect, useState, useRef } from 'react'
+import { pop, popToRoot } from "../../public/navigation/RootNavigation";
 import { useNavigationState } from "@react-navigation/native";
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, TouchableWithoutFeedback, View, Linking } from "react-native";
 import AutoHeightWebView from 'react-native-autoheight-webview';
-import { Button } from 'react-native-elements';
 import FastImage, { FastImageProperties } from "react-native-fast-image";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeArea } from "react-native-safe-area-context";
@@ -12,10 +14,11 @@ import AppDefine from "../../public/define/AppDefine";
 import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import PushHelper from "../../public/define/PushHelper";
 import usePopUpView from "../../public/hooks/usePopUpView";
-import { popToRoot } from "../../public/navigation/RootNavigation";
 import APIRouter from "../../public/network/APIRouter";
 import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
-import { Skin1 } from '../../public/theme/UGSkinManagers';
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {ugLog} from "../../public/tools/UgLog";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
@@ -24,10 +27,20 @@ const PromotionListPage = ({ navigation }) => {
   const [categories, setCategories] = useState<string[]>()
   useEffect(() => {
     init()
-    const unsubscribe = navigation.addListener('focus', async () => {
-      const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
-      setCurrentNativeSelectedTab(index)
-    });
+
+    let unsubscribe;
+    switch (Platform.OS) {
+      case "ios":
+        unsubscribe = navigation.addListener('focus', async () => {
+          const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
+          setCurrentNativeSelectedTab(index)
+        });
+        break;
+      case "android":
+        //TODO
+        setCurrentNativeSelectedTab(0)
+        break;
+    }
 
     return unsubscribe;
   }, [])
@@ -47,10 +60,13 @@ const PromotionListPage = ({ navigation }) => {
       categoriesArray.sort()
       setCategories(categoriesArray)
     } catch (error) {
-
+      ugLog("error=", error)
     }
 
   }
+
+  ugLog("currentNativeSelectedTab=", currentNativeSelectedTab, state.index);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
@@ -62,7 +78,14 @@ const PromotionListPage = ({ navigation }) => {
               buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
               onPress={() => {
                 popToRoot()
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                  case "ios":
+                    OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    break;
+                  case "android":
+                    //TODO
+                    break;
+                }
               }}
             />
           </View> : null}
@@ -84,7 +107,7 @@ const PromotionListPage = ({ navigation }) => {
 
       </LinearGradient>
     </View>
-  )
+  );
 }
 export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)

@@ -1,6 +1,6 @@
 import CodePush from 'react-native-code-push';
-import React, { useEffect } from 'react';
-import { View, Text, Platform } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Platform, TouchableHighlight} from 'react-native';
 import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import AppDefine from '../../public/define/AppDefine';
@@ -11,37 +11,72 @@ import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import { UGStore } from '../../redux/store/UGStore';
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
+import {navigate} from "../../public/navigation/RootNavigation";
+import {UGColor} from "../../public/theme/UGThemeColor";
+import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
+import {ugLog} from "../../public/tools/UgLog";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
   progress?: number;
   text?: string;
+  bCodePush?: boolean;//codepush是否OK
+  bBanner?: boolean;//banner是否播放完
 }
 
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, text = '正在努力更新中...' } = props;
+  const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props;
+
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
 
+    let options = {};
+    switch (Platform.OS) {
+      case 'ios':
+        options = {
+          deploymentKey: OCHelper.CodePushKey,
+          /*
+         * installMode (codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART 即下一次启动的时候安装。
+         * 在更新配置中通过指定installMode来决定安装完成的重启时机，亦即更新生效时机
+           codePush.InstallMode.IMMEDIATE：表示安装完成立即重启更新(强制更新安装模式)
+           codePush.InstallMode.ON_NEXT_RESTART：表示安装完成后会在下次重启后进行更新
+           codePush.InstallMode.ON_NEXT_RESUME：表示安装完成后会在应用进入后台后重启更新
+         *
+         * 强制更新模式(单独的抽出来设置 强制安装)
+         * mandatoryInstallMode (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE
+         *
+         * minimumBackgroundDuration (Number):该属性用于指定app处于后台多少秒才进行重启已完成更新。默认为0。该属性只在installMode为InstallMode.ON_NEXT_RESUME情况下有效
+         *
+         * */
+          installMode: CodePush.InstallMode.IMMEDIATE,
+        }
+        break;
+      case 'android':
+        options = {
+          /*
+         * installMode (codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART 即下一次启动的时候安装。
+         * 在更新配置中通过指定installMode来决定安装完成的重启时机，亦即更新生效时机
+           codePush.InstallMode.IMMEDIATE：表示安装完成立即重启更新(强制更新安装模式)
+           codePush.InstallMode.ON_NEXT_RESTART：表示安装完成后会在下次重启后进行更新
+           codePush.InstallMode.ON_NEXT_RESUME：表示安装完成后会在应用进入后台后重启更新
+         *
+         * 强制更新模式(单独的抽出来设置 强制安装)
+         * mandatoryInstallMode (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE
+         *
+         * minimumBackgroundDuration (Number):该属性用于指定app处于后台多少秒才进行重启已完成更新。默认为0。该属性只在installMode为InstallMode.ON_NEXT_RESUME情况下有效
+         *
+         * */
+          installMode: CodePush.InstallMode.IMMEDIATE,
+        }
+        break;
+    }
+
     CodePush.sync(
-      {
-        deploymentKey: OCHelper.CodePushKey,
-        /*
-       * installMode (codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART 即下一次启动的时候安装。
-       * 在更新配置中通过指定installMode来决定安装完成的重启时机，亦即更新生效时机
-         codePush.InstallMode.IMMEDIATE：表示安装完成立即重启更新(强制更新安装模式)
-         codePush.InstallMode.ON_NEXT_RESTART：表示安装完成后会在下次重启后进行更新
-         codePush.InstallMode.ON_NEXT_RESUME：表示安装完成后会在应用进入后台后重启更新
-       *
-       * 强制更新模式(单独的抽出来设置 强制安装)
-       * mandatoryInstallMode (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE
-       *
-       * minimumBackgroundDuration (Number):该属性用于指定app处于后台多少秒才进行重启已完成更新。默认为0。该属性只在installMode为InstallMode.ON_NEXT_RESUME情况下有效
-       *
-       * */
-        installMode: CodePush.InstallMode.IMMEDIATE,
-      },
+        options,
       status => {
         let isNewest = false;
         switch (status) {
@@ -78,36 +113,40 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
         if (isNewest) {
           setProps({ progress: 1, text: '正在进入主页...' });
-          OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-            UGStore.dispatch({ type: 'merge', sysConf: sysConf });
-            sysConf = UGStore.globalProps.sysConf;
-
-            if (Platform.OS == 'ios') {
-              console.log('初始化RN模板', '替换原生页面');
-              // 设置皮肤
-              UGSkinManagers.updateSkin(sysConf)
-              // 配置替换rn的页面
-              setRnPageInfo()
-              // 通知iOS进入首页
-              OCHelper.call('ReactNativeVC.showLastRnPage');
-              OCHelper.launchFinish();
-            } else {
-              // TODO 安卓
-            }
-            UGStore.save()
-          });
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+                initConfig(sysConf)
+              });
+              break;
+            case 'android':
+              ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG})
+                .then((config) => {
+                  initConfig(JSON.parse(config))
+                });
+              break;
+          }
         }
       },
       progress => {
-        var p = progress.receivedBytes / progress.totalBytes;
+        let p = progress.receivedBytes / progress.totalBytes;
         setProps({ progress: p });
         console.log('rn热更新包下载进度：' + p);
       },
     );
 
     // 超时时间20秒
-    setTimeout(() => {
-      OCHelper.launchFinish();
+    const timer = setTimeout(() => {
+      clearTimeout(timer)
+
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.launchFinish();
+          break;
+        case 'android':
+          ANHelper.callAsync(CMD.LAUNCH_GO);
+          break;
+      }
     }, 20000);
 
     setProps({
@@ -115,18 +154,78 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       tabbarOpetions: { unmountOnBlur: false },
     })
 
-    if (Platform.OS == 'ios') {
-      OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
-        if (pics && pics.length) {
-          setProps({ backgroundImage: pics[0] });
-        }
-      });
+    switch (Platform.OS) {
+      case "ios":
+        OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
+          if (pics && pics.length) {
+            setProps({ backgroundImage: pics[0] });
+          }
+        });
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS })
+          .then((picStr) => {
+            if (!anyEmpty(picStr)) {
+              let pics: [] = JSON.parse(picStr);
+              if (!arrayEmpty(pics)) {
+
+                setProps({ backgroundImage: pics.shift()});
+                //暂时不轮播，直接清空
+                pics = [];
+
+                //定时器显示图片
+                let tempInterval = setInterval(() => {
+                  if (arrayEmpty(pics)) {
+                    clearInterval(tempInterval)
+                    setProps({ bBanner: true});
+                  } else {
+                    setProps({ backgroundImage: pics.shift()});
+                  }
+                }, 4000)
+              }
+            }
+          });
+    }
+
+    return () => {
+      clearTimeout(timer)
     }
   }, [])
 
+  useEffect(() => {
+    switch (Platform.OS) {
+      case "ios":
+        break;
+      case "android":
+        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO);
+        break;
+    }
+  }, [bCodePush, bBanner])
+
+  const initConfig = (sysConf: UGSysConfModel) => {
+    UGStore.dispatch({ type: 'merge', sysConf: sysConf });
+    sysConf = UGStore.globalProps.sysConf;
+
+    switch (Platform.OS) {
+      case 'ios':
+        console.log('初始化RN模板', '替换原生页面');
+        // 设置皮肤
+        UGSkinManagers.updateSkin(sysConf)
+        // 配置替换rn的页面
+        setRnPageInfo()
+        // 通知iOS进入首页
+        OCHelper.call('ReactNativeVC.showLastRnPage');
+        OCHelper.launchFinish();
+        break;
+      case 'android':
+        setProps({ bCodePush: true});
+        break;
+    }
+    UGStore.save()
+  }
+
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }} />
+    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
       <View style={{ marginHorizontal: 15, paddingHorizontal: 15, backgroundColor: '#0000003f', height: 70, marginBottom: 300, borderRadius: 20 }} >
         <Text style={{ marginTop: 24, color: '#fff', fontWeight: '500' }}>{text}</Text>
         <Progress.Bar

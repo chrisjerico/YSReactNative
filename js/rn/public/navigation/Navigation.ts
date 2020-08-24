@@ -4,7 +4,7 @@ export enum PageName {
   XBJLoginPage = 'XBJLoginPage',
   XBJRegisterPage = 'XBJRegisterPage',
   XBJMinePage = 'XBJMinePage',
-  JDPromotionListPage = 'JDPromotionListPage',
+  JDPromotionListPage = 'JDPromotionListPage', //优惠券列表
   XBJHomePage = 'XBJHomePage',
   LCHomePage = 'LCHomePage',
   LCMinePage = 'LCMinePage',
@@ -18,10 +18,10 @@ export enum PageName {
   ZHTYMinePage = 'ZHTYMinePage',
   LHTHomePage = 'LHTHomePage',
   LHTMinePage = 'LHTMinePage',
-  ZLHomePage = 'ZLHomePage',
-  ZLLoginPage = 'ZLLoginPage',
-  ZLMinePage = 'ZLMinePage',
-  ZLRegisterPage = 'ZLRegisterPage',
+  ZLHomePage = 'ZLHomePage', //尊龙主页
+  ZLLoginPage = 'ZLLoginPage',//尊龙登录
+  ZLMinePage = 'ZLMinePage',//尊龙我的
+  ZLRegisterPage = 'ZLRegisterPage',//尊龙注册
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
   BZHSignInPage = 'BZHSignInPage',

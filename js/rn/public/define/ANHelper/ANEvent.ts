@@ -10,14 +10,13 @@ export class ANEvent extends UGBridge {
 
   protected static setup() {
     super.setup();
-
-    // 监听原生发过来的事件通知
-    this.emitter.addListener('UGEventEmitter', params => {
-      // Toast('params='+ params);
-      console.log(`params=${params}`);
-      let pms = JSON.parse(params);
-      push(pms.sceneKey, { fromNative: true, type: ActionConst.REPLACE, ...pms?.props, });
-    });
+    // // 监听原生发过来的事件通知
+    // this.emitter.addListener('UGEventEmitter', params => {
+    //   // Toast('params='+ params);
+    //   console.log(`params=${params}`);
+    //   // let pms = JSON.parse(params);
+    //   // Navigation.push(pms.sceneKey, { fromNative: true, type: ActionConst.REPLACE, ...pms?.props, });
+    // });
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: {_EventName: ANEventType; params: any}) => {
@@ -33,7 +32,7 @@ export class ANEvent extends UGBridge {
 
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: {vcName: PageName}) => {
-      console.log('跳转到rn页面：', params.vcName);
+      console.log('跳转到rn页面：', JSON.stringify(params));
       if (params.vcName) {
         navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
       }

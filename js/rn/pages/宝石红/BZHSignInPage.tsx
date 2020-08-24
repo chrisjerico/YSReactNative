@@ -29,6 +29,8 @@ interface SlidingVerification {
   nc_token: string;
   nc_sig: string;
 }
+import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 
 // store
 export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
