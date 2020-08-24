@@ -22,7 +22,7 @@ export class UGTabbarItem {
 
 export enum LotteryType {
   香港六合彩 = 70,
-  新加坡六合彩 = 13,//86,
+  新加坡六合彩 = 13,
   福彩3D = 6,
   重庆时时彩 = 1,
   七星彩 = 2,
@@ -183,4 +183,5 @@ export default class UGSysConfModel {
 
   // 登陸頁
   loginVCode: boolean;
+  login_to: "0" | "1";
 }

@@ -31,9 +31,6 @@ const ProfileBlock = ({
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
   const rate = nextLevelInt_f ? taskRewardTotal_f / nextLevelInt_f : 0
 
-  console.log("----------curLevelTitle----------", curLevelTitle)
-  console.log("----------nextLevelTitle----------", nextLevelTitle)
-
   return (
     <View style={styles.imageBackgroundContainer}>
       <ImageBackground style={styles.image} source={{ uri: backgroundImage }}>

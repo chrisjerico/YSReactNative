@@ -21,9 +21,8 @@ const useActivity = (uid: string) => {
     try {
       return await APIRouter[router]()
     } catch (error) {
-      // 
+      // console.log(error)
     }
-
   })
 
   const callApis = async () => {

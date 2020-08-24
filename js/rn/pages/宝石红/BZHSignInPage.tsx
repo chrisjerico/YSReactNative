@@ -35,6 +35,7 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
   isRemember?: boolean;
   account?: string;
   password?: string | any;
+  login_to?: boolean;
 }
 
 const BZHSignInPage = (props: BZHSignInStore) => {
@@ -48,7 +49,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   const [hidePassword, setHidePassword] = useState(true)
   const reloadSliding = useRef(null)
 
-  const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
+  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // states
   const [slidingVerification, setSlidingVerification] =
@@ -87,7 +88,11 @@ const BZHSignInPage = (props: BZHSignInStore) => {
 
   const { logIn } = useLogIn({
     onSuccess: () => {
-      jumpToHomePage()
+      if (parseInt(login_to)) {
+        jumpToHomePage()
+      } else {
+        PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+      }
     },
     onError: () => {
       setSlidingVerification({

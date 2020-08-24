@@ -6,6 +6,7 @@ import { OCEvent } from './OCBridge/OCEvent';
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel';
 import { httpClient } from '../../network/httpClient';
 import { UGStore } from '../../../redux/store/UGStore';
+import APIRouter from '../../network/APIRouter';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;
@@ -26,25 +27,50 @@ export class OCHelper extends OCEvent {
 
   // 配置
   static async setup() {
-    super.setup();
-
-    // 设置接口域名
-    await OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+    try {
+      super.setup();
+      // 设置接口域名
+      // 获取系统配置信息
+      const ios_response = await Promise.all([
+        OCHelper.call('AppDefine.shared.Host').catch((error) => {
+          console.log(error)
+        }),
+        OCHelper.call('AppDefine.shared.SiteId').catch((error) => {
+          console.log(error)
+        }),
+        OCHelper.call('UGSystemConfigModel.currentConfig').catch((error) => {
+          console.log(error)
+        }),
+      ])
+      const host = ios_response[0]
+      const siteId = ios_response[1]
+      const sysConf_ios = ios_response[2] ?? {}
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
-      updateUserInfo()
-    });
-    // 设置站点编号
-    await OCHelper.call('AppDefine.shared.SiteId').then((siteId: string) => {
       AppDefine.siteId = siteId;
-    });
-    // 获取系统配置信息
-    await OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
-      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
-    });
-    // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
-    OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
-      OCHelper.call('AppDefine.shared.setVersion:', [ver]);
-    });
+      // net
+      const net_response = await Promise.all([APIRouter.user_info().catch(
+        (error) => {
+          console.log(error)
+        }
+      ), APIRouter.system_config().catch(
+        (error) => {
+          console.log(error)
+        }
+      )])
+      //@ts-ignore
+      const userInfo = net_response[0]?.data?.data ?? {}
+      //@ts-ignore
+      const sysConf_net = net_response[1]?.data?.data ?? {}
+      const sysConf = Object.assign({}, sysConf_ios, sysConf_net)
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf });
+      UGStore.save();
+      // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
+      OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
+        OCHelper.call('AppDefine.shared.setVersion:', [ver]);
+      });
+    } catch (error) {
+      console.log("-----error-----", error)
+    }
   }
 }

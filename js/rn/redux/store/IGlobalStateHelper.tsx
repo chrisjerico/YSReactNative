@@ -17,12 +17,14 @@ export class IGlobalStateHelper {
 
 export async function updateUserInfo() {
   try {
-    const { data } = await APIRouter.user_info()
-    if (data?.data) {
-      UGStore.dispatch({ type: 'merge', userInfo: data?.data });
+    const response = await APIRouter.user_info()
+    const data = response?.data?.data
+    const msg = response?.data?.msg
+    if (data) {
+      UGStore.dispatch({ type: 'merge', userInfo: data });
       UGStore.save();
     } else {
-      throw { message: data?.msg ?? '更新使用者失败' }
+      throw { message: msg ?? '更新使用者失败' }
     }
   } catch (error) {
     console.log("-------------updateUserInfo error-------------", error)
@@ -34,14 +36,16 @@ export async function updateUserInfo() {
 
 export async function updateSysConf() {
   try {
-    const { data } = await APIRouter.system_config()
-    if (data?.data) {
-      UGStore.dispatch({ type: 'merge', props: data?.data })
+    const response = await APIRouter.system_config()
+    const data = response?.data?.data
+    const msg = response?.data?.msg
+    if (data) {
+      UGStore.dispatch({ type: 'merge', props: data })
       UGStore.save()
     } else {
-      throw { message: data?.msg }
+      throw { message: msg }
     }
   } catch (error) {
-
+    console.log("-------------updateSysConf error-------------", error)
   }
 }
