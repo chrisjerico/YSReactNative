@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
-import useMemberItems from '../../public/hooks/useMemberItems'
 import { navigationRef } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType, LotteryType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import ButtonGroup from './views/ButtonGroup'
@@ -18,23 +17,43 @@ import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
 const WNZMinePage = (props: any) => {
-
-  const { setProps } = props
+  // states
   const [showBackBtn, setShowBackBtn] = useState(false)
+  // functions
+  const { setProps } = props
+  // stores
   const {
     uid,
     balance,
     usr,
-    taskReward,
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
     nextLevelInt,
   }: UGUserModel = UGStore.globalProps.userInfo
 
-  const { mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
-  const { UGUserCenterItem } = useMemberItems()
-  const tools = UGUserCenterItem?.sort((a, b) => a?.code - b?.code) ?? []
+  const {
+    mobile_logo,
+    userCenter,
+  }: UGSysConfModel = UGStore.globalProps.sysConf
+
+  // effect
+  useEffect(() => {
+    setProps({
+      didFocus: async () => {
+        OCHelper.call(
+          'UGNavigationController.current.viewControllers.count'
+        ).then((ocCount) => {
+          const show =
+            ocCount > 1 ||
+            navigationRef?.current?.getRootState().routes.length > 1
+          setShowBackBtn(show)
+        })
+      },
+    })
+  }, [])
+  // data handle
+  const tools = userCenter?.sort((a, b) => a?.code - b?.code) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
@@ -46,7 +65,7 @@ const WNZMinePage = (props: any) => {
       UGUserCenterType.开奖走势,
       UGUserCenterType.建议反馈,
       UGUserCenterType.存款,
-      UGUserCenterType.取款
+      UGUserCenterType.取款,
     ].includes(ele.code)
   )
 
@@ -59,7 +78,7 @@ const WNZMinePage = (props: any) => {
       UGUserCenterType.站内信,
       UGUserCenterType.聊天室,
       UGUserCenterType.在线客服,
-      UGUserCenterType.QQ客服
+      UGUserCenterType.QQ客服,
     ].includes(ele.code)
   )
 
@@ -81,21 +100,6 @@ const WNZMinePage = (props: any) => {
     ].includes(ele.code)
   )
 
-  useEffect(() => {
-    setProps({
-      didFocus: async () => {
-        OCHelper.call(
-          'UGNavigationController.current.viewControllers.count'
-        ).then((ocCount) => {
-          const show =
-            ocCount > 1 ||
-            navigationRef?.current?.getRootState().routes.length > 1
-          setShowBackBtn(show)
-        })
-      },
-    })
-  }, [])
-
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -116,9 +120,7 @@ const WNZMinePage = (props: any) => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView
-        style={styles.container}
-      >
+      <ScrollView style={styles.container}>
         <ProfileBlock
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}

@@ -24,6 +24,7 @@ import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TurntableListModel } from './Model/TurntableListModel'
 import { UserInfoModel } from './Model/UserInfoModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { AxiosResponse } from 'axios';
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {

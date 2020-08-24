@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import {
   OCEvent,
   OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
-import useActivity from '../../public/hooks/tars/useActivity'
 import useHome from '../../public/hooks/tars/useHome'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
@@ -47,7 +45,7 @@ const WNZHomePage = (props: any) => {
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {
-        backgroundColor: "#ffffff",
+        backgroundColor: '#ffffff',
       },
     })
   }
@@ -62,25 +60,27 @@ const WNZHomePage = (props: any) => {
     mobile_logo,
     webName,
     rankingListSwitch,
-    m_promote_pos
+    m_promote_pos,
+    adSliderTimer,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // effect
   const {
     loading,
+    refresh,
     rankList,
     banner,
     homeGame,
     notice,
     onlineNum,
     couponList,
-    systemConfig,
     homeAd,
     lotteryGames,
     refreshHome,
+    roulette,
+    redBag,
+    floatAd,
   } = useHome()
-
-  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
@@ -117,7 +117,6 @@ const WNZHomePage = (props: any) => {
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const bannersInterval = parseInt(banner?.data?.interval)
-  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const ads = homeAd?.data ?? []
@@ -149,7 +148,7 @@ const WNZHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} >
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
             uid={uid}
             showBackBtn={false}
@@ -171,12 +170,14 @@ const WNZHomePage = (props: any) => {
           showsVerticalScrollIndicator={false}
           style={styles.container}
           refreshControl={
-            <RefreshControlComponent
+            <RefreshControl
+              refreshing={refresh}
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity()])
+                  await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
+                  console.log(error)
                 }
               }}
             />
@@ -312,7 +313,11 @@ const WNZHomePage = (props: any) => {
                       aspectRatio: 5,
                       paddingTop: scale(5),
                     }}
-                    secondLevelIconContainerStyle={{ right: -scale(10), top: null, bottom: 0 }}
+                    secondLevelIconContainerStyle={{
+                      right: -scale(10),
+                      top: null,
+                      bottom: 0,
+                    }}
                     enableCircle={false}
                     onPress={() => {
                       if (subType) {
@@ -323,7 +328,7 @@ const WNZHomePage = (props: any) => {
                           setGameSubType({
                             cutRow,
                             gameIndexHistory: index,
-                            subType
+                            subType,
                           })
                         }
                       } else {
@@ -333,7 +338,6 @@ const WNZHomePage = (props: any) => {
                   />
                 </View>
               )
-
             }}
           />
           <TabComponent
@@ -377,7 +381,14 @@ const WNZHomePage = (props: any) => {
             containerStyle={styles.subComponent}
             coupons={coupons}
             renderCoupon={({ item, index }) => {
-              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+              const {
+                pic,
+                linkCategory,
+                linkPosition,
+                title,
+                content,
+                linkUrl,
+              } = item
               return (
                 <AutoHeightCouponComponent
                   key={index}
@@ -389,8 +400,7 @@ const WNZHomePage = (props: any) => {
                       PushHelper.openWebView(linkUrl)
                     } else if (!linkCategory && !linkPosition) {
                       setShowPop(true)
-                    }
-                    else {
+                    } else {
                       PushHelper.pushCategory(linkCategory, linkPosition)
                     }
                   }}
@@ -410,7 +420,9 @@ const WNZHomePage = (props: any) => {
           <BottomLogo
             webName={webName}
             onPressComputer={() => {
-              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+              PushHelper.openWebView(
+                httpClient.defaults.baseURL + '/index2.php'
+              )
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={false}

@@ -185,6 +185,7 @@ const ZLRegisterPage = () => {
             return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} control={control} code={code} />
         } else {
             return <Controller control={control} onChange={args => {
+                console.log("-------args------", args)
                 return args[0]
             }} as={SlidingVerification} name={"slideCode"} />
         }

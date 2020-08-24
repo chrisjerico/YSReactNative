@@ -25,7 +25,9 @@ import { scale } from '../../public/tools/Scale'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import config from './config'
@@ -38,29 +40,18 @@ import { Toast } from '../../public/tools/ToastUtils'
 const LHTMinePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
-  // hooks
+  // states
+  const [showBackBtn, setShowBackBtn] = useState(false)
+  const [avatarListLoading, setAvatarListLoading] = useState(true)
+  const [visible, setVisible] = useState(false)
+  const [avatarList, setAvatarList] = useState([])
+  // functions
   const { setProps } = props
   const { logOut } = useLogOut({
     onSuccess: () => {
       navigate(PageName.LHTHomePage, {})
     },
-  }) // stores
-  const {
-    avatar,
-    usr,
-    balance,
-    unreadMsg,
-    isTest,
-  }: UGUserModel = UGStore.globalProps.userInfo
-
-  // effects
-  const { UGUserCenterItem } = useMemberItems()
-
-  const [showBackBtn, setShowBackBtn] = useState(false)
-  const [avatarListLoading, setAvatarListLoading] = useState(true)
-  const [visible, setVisible] = useState(false)
-  const [avatarList, setAvatarList] = useState([])
-
+  })
   const getAvatarList = async () => {
     try {
       setAvatarListLoading(true)
@@ -72,7 +63,17 @@ const LHTMinePage = (props: any) => {
       setAvatarListLoading(false)
     }
   }
+  // stores
+  const {
+    avatar,
+    usr,
+    balance,
+    unreadMsg,
+    isTest,
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
 
+  // effects
   useEffect(() => {
     getAvatarList()
     setProps({
@@ -131,7 +132,7 @@ const LHTMinePage = (props: any) => {
           onPressAvatar={() => !isTest && setVisible(true)}
           profileButtons={config?.profileButtons}
           name={usr}
-          avatar={isTest ? getHtml5Image(18, 'money-2') : avatar}
+          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           // level={curLevelGrade}
           balance={balance}
           onPressDaySign={() => {
@@ -161,7 +162,7 @@ const LHTMinePage = (props: any) => {
             )
           }}
         />
-        {UGUserCenterItem?.map((item, index) => {
+        {userCenter?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList
@@ -186,11 +187,7 @@ const LHTMinePage = (props: any) => {
         color={LHThemeColor.六合厅.themeColor}
         loading={avatarListLoading}
         visible={visible}
-        initAvatar={
-          isTest
-            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
-            : avatar
-        }
+        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         avatars={avatarList}
         onPressSave={async ({ url, filename }) => {
           try {

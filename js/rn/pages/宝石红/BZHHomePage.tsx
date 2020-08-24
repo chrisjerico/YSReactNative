@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, ScrollView, StyleSheet } from 'react-native'
+import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useActivity from '../../public/hooks/tars/useActivity'
 import useHome from '../../public/hooks/tars/useHome'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
@@ -24,12 +22,10 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import GameBlock, { GameSubType } from './views/GameBlock'
+import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
 
@@ -37,7 +33,7 @@ const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // states
-  const [gameSubTypes, setGameSubTypes] = useState<GameSubType[]>([])
+  const [gameSubTypes, setGameSubTypes] = useState([])
   // functions
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
@@ -59,23 +55,25 @@ const BZHHomePage = () => {
     webName,
     m_promote_pos,
     rankingListSwitch,
+    adSliderTimer,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // effect
   const {
     loading,
+    refresh,
     rankList,
     banner,
     homeGame,
     notice,
     onlineNum,
     couponList,
-    systemConfig,
     homeAd,
+    roulette,
+    redBag,
+    floatAd,
     refreshHome,
   } = useHome()
-
-  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -83,7 +81,6 @@ const BZHHomePage = () => {
     }
   }, [notice])
   // data handle
-  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -104,7 +101,7 @@ const BZHHomePage = () => {
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const ads = homeAd?.data ?? []
 
-  console.log('--------寶石紅渲染--------')
+  console.log('--------寶石紅渲染--------', refresh)
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -128,12 +125,15 @@ const BZHHomePage = () => {
           showsVerticalScrollIndicator={false}
           style={styles.container}
           refreshControl={
-            <RefreshControlComponent
+            <RefreshControl
+              refreshing={refresh}
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity()])
+                  await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
-                } catch (error) { }
+                } catch (error) {
+                  console.log(error)
+                }
               }}
             />
           }
@@ -307,7 +307,10 @@ const BZHHomePage = () => {
                             const updateGameSubTypes =
                               gameBlocks?.map((_, blockIndex) => {
                                 if (gameBlockIndex == blockIndex) {
-                                  if (gameIndex == gameSubTypes[blockIndex]?.gameIndexHistory) {
+                                  if (
+                                    gameIndex ==
+                                    gameSubTypes[blockIndex]?.gameIndexHistory
+                                  ) {
                                     return {}
                                   } else {
                                     return {

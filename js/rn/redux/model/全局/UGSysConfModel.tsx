@@ -184,4 +184,7 @@ export default class UGSysConfModel {
   // 登陸頁
   loginVCode: boolean;
   login_to: "0" | "1";
+  adSliderTimer: number;
+  appDownloadUrl: string;
 }
+

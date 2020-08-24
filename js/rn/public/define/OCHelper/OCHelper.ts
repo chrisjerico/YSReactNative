@@ -60,7 +60,8 @@ export class OCHelper extends OCEvent {
       const userInfo = net_response[0]?.data?.data ?? {}
       //@ts-ignore
       const sysConf_net = net_response[1]?.data?.data ?? {}
-      const sysConf = Object.assign({}, sysConf_ios, sysConf_net)
+      const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
+      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl })
       UGStore.dispatch({ type: 'merge', userInfo, sysConf });
       UGStore.save();
       // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）

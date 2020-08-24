@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import {
   OCEvent,
   OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
-import useActivity from '../../public/hooks/tars/useActivity'
 import useHome from '../../public/hooks/tars/useHome'
 import useLogOut from '../../public/hooks/tars/useLogOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
@@ -34,7 +32,10 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  LotteryType,
+  UGUserCenterType
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
@@ -52,6 +53,13 @@ const LHTHomePage = (props: any) => {
   const [leftGames, setLeftGames] = useState(config?.preferences)
   // functions
   const { setProps } = props
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: '#ffffff',
+      },
+    })
+  }
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
       ToastSuccess('登录成功！')
@@ -65,14 +73,6 @@ const LHTHomePage = (props: any) => {
       setProps()
     },
   })
-
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
   // stores
   const {
     uid,
@@ -86,23 +86,24 @@ const LHTHomePage = (props: any) => {
     webName,
     m_promote_pos,
     rankingListSwitch,
+    appDownloadUrl,
   }: UGSysConfModel = UGStore.globalProps.sysConf
-
   // effect
   const {
     loading,
+    refresh,
     rankList,
     banner,
     homeGame,
     notice,
     onlineNum,
     couponList,
-    systemConfig,
     lotteryNumber,
+    roulette,
+    redBag,
+    floatAd,
     refreshHome,
   } = useHome()
-
-  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -124,7 +125,6 @@ const LHTHomePage = (props: any) => {
     }
   }, [])
   // data handle
-  const appDownloadUrl = systemConfig?.data?.appDownloadUrl
   const bannersInterval = parseInt(banner?.data?.interval)
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -176,7 +176,7 @@ const LHTHomePage = (props: any) => {
           containerStyle={{ paddingHorizontal: scale(10) }}
         >
           <HomeHeader
-            avatar={isTest ? getHtml5Image(18, 'money-2') : avatar}
+            avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}
             showLogout={uid ? true : false}
             leftLogo={mobile_logo}
@@ -192,10 +192,11 @@ const LHTHomePage = (props: any) => {
           style={styles.container}
           scrollEnabled={true}
           refreshControl={
-            <RefreshControlComponent
+            <RefreshControl
+              refreshing={refresh}
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity()])
+                  await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                   console.log(error)
@@ -246,9 +247,7 @@ const LHTHomePage = (props: any) => {
               onPressGetPoint={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.取款)
               }
-              onPressAd={() =>
-                PushHelper.pushLottery(LotteryType.新加坡六合彩)
-              }
+              onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
               onPressSmileLogo={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
               }
@@ -551,30 +550,29 @@ export default LHTHomePage
 //       /> */
 // }
 
-
-                         // PushHelper.pushHomeGame(
-                          //   Object.assign(
-                          //     {},
-                          //     {
-                          //       category: '7',
-                          //       clsName: 'GameModel',
-                          //       gameCode: '-1',
-                          //       gameId: gameId,
-                          //       gameType: gameType,
-                          //       isClose: '0',
-                          //       isInstant: '0',
-                          //       isSeal: '0',
-                          //       levelType: '1',
-                          //       name: title,
-                          //       openWay: '0',
-                          //       realName: title,
-                          //       seriesId: '1',
-                          //       subId: gameId,
-                          //       subtitle: des,
-                          //       tipFlag: '4',
-                          //       title: title,
-                          //       url: '',
-                          //     },
-                          //     item
-                          //   )
-                          // )
+// PushHelper.pushHomeGame(
+//   Object.assign(
+//     {},
+//     {
+//       category: '7',
+//       clsName: 'GameModel',
+//       gameCode: '-1',
+//       gameId: gameId,
+//       gameType: gameType,
+//       isClose: '0',
+//       isInstant: '0',
+//       isSeal: '0',
+//       levelType: '1',
+//       name: title,
+//       openWay: '0',
+//       realName: title,
+//       seriesId: '1',
+//       subId: gameId,
+//       subtitle: des,
+//       tipFlag: '4',
+//       title: title,
+//       url: '',
+//     },
+//     item
+//   )
+// )

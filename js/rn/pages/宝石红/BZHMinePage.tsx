@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
@@ -8,7 +14,11 @@ import PushHelper from '../../public/define/PushHelper'
 import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, navigationRef, pop } from '../../public/navigation/RootNavigation'
+import {
+  navigate,
+  navigationRef,
+  pop,
+} from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -22,33 +32,23 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './views/ProfileBlock'
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 
 const BZHMinePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
-  // hooks
-  const { setProps, navigation } = props
-  const { logOut } = useLogOut({
-    onSuccess: () => {
-      navigate(PageName.BZHHomePage, {})
-    },
-  })
-  const { UGUserCenterItem } = useMemberItems()
-  // stores
-  const {
-    avatar,
-    balance,
-    usr,
-    isTest,
-    unreadMsg,
-    curLevelGrade,
-  }: UGUserModel = UGStore.globalProps.userInfo
   // states
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
   const [avatarListLoading, setAvatarListLoading] = useState(true)
   const [showBackBtn, setShowBackBtn] = useState(false)
-  // effects
+  // functions
+  const { setProps } = props
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      navigate(PageName.BZHHomePage, {})
+    },
+  })
   const getAvatarList = async () => {
     try {
       setAvatarListLoading(true)
@@ -60,31 +60,43 @@ const BZHMinePage = (props) => {
       setAvatarListLoading(false)
     }
   }
+  // stores
+  const {
+    avatar,
+    balance,
+    usr,
+    isTest,
+    unreadMsg,
+    curLevelGrade,
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
+  // effects
 
+  console.log("----------avatar-------", avatar)
   useEffect(() => {
     getAvatarList()
     setProps({
       didFocus: async () => {
-        OCHelper.call('UGNavigationController.current.viewControllers.count').then(
-          (ocCount) => {
-            const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1
-            console.log(show)
-            setShowBackBtn(show)
-          }
-        )
-      }
+        OCHelper.call(
+          'UGNavigationController.current.viewControllers.count'
+        ).then((ocCount) => {
+          const show =
+            ocCount > 1 ||
+            navigationRef?.current?.getRootState().routes.length > 1
+          console.log(show)
+          setShowBackBtn(show)
+        })
+      },
     })
   }, [])
 
-  // data
-  const features = UGUserCenterItem?.slice(0, 4) ?? []
-  const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
+  // data handle
+  const features = userCenter?.slice(0, 4) ?? []
+  const featureList = userCenter?.slice(4, userCenter?.length) ?? []
 
   return (
     <>
-      <SafeAreaHeader
-        headerColor={BZHThemeColor.宝石红.themeColor}
-      >
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
         {showBackBtn ? (
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
             <AntDesign
@@ -128,11 +140,7 @@ const BZHMinePage = (props) => {
             }
           }}
           level={curLevelGrade}
-          avatar={
-            isTest
-              ? getHtml5Image(18, 'money-2')
-              : avatar
-          }
+          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           money={balance}
           name={usr}
           features={features}
@@ -181,11 +189,7 @@ const BZHMinePage = (props) => {
         color={BZHThemeColor.宝石红.themeColor}
         loading={avatarListLoading}
         visible={visible}
-        initAvatar={
-          isTest
-            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
-            : avatar
-        }
+        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         avatars={avatarList}
         onPressSave={async ({ url, filename }) => {
           try {

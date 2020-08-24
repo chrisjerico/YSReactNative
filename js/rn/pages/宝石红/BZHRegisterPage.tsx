@@ -18,7 +18,7 @@ import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { ToastError, ToastSuccess } from '../../public/tools/tars'
+import { ToastError, ToastSuccess, validPassword } from '../../public/tools/tars'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
@@ -31,57 +31,7 @@ interface SlidingVerification {
   nc_sig?: string;
 }
 
-const validPassword = (password: string, pass_limit: number) => {
-  if (password) {
-    if (pass_limit) {
-      if ([pass_limit == 1]) {
-        return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == 2]) {
-        return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
-      } else {
-        return false
-      }
-    } else {
-      return true
-    }
-  } else {
-    return false
-  }
-}
-
 const BZHRegisterPage = () => {
-  // functions
-  const jumpToHomePage = () => {
-    navigate(PageName.BZHHomePage, {})
-  }
-  // hooks
-  const { register } = useRegister({
-    onSuccess: jumpToHomePage,
-    onError: () => {
-      setSlidingVerification({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
-      reloadSliding?.current?.reload()
-    },
-  })
-  // stores
-  const {
-    hide_reco, // 代理人 0隱藏，1选填，2必填
-    reg_name, // 真实姓名 0隱藏，1选填，2必填
-    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
-    reg_qq, // QQ 0隱藏，1选填，2必填
-    reg_wx, // 微信 0隱藏，1选填，2必填
-    reg_phone, // 手机 0隱藏，1选填，2必填
-    reg_email, // 邮箱 0隱藏，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    smsVerify, // 手机短信验证,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
@@ -109,6 +59,55 @@ const BZHRegisterPage = () => {
   const [hideFundPassword, setHideFundPassword] = useState(true)
   const [agent, setAgent] = useState(false)
   const reloadSliding = useRef(null)
+  // functions
+  const jumpToHomePage = () => {
+    navigate(PageName.BZHHomePage, {})
+  }
+  const { register } = useRegister({
+    onSuccess: jumpToHomePage,
+    onError: () => {
+      setSlidingVerification({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+      reloadSliding?.current?.reload()
+    },
+  })
+  const getImgCaptcha = () => {
+    APIRouter.secure_imgCaptcha().then((value) => {
+      setCorrectImageCode(value?.data)
+    })
+  }
+  const getSms = async () => {
+    try {
+      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
+      const { code, msg } = data ?? {}
+      if (code != 0) {
+        throw { message: msg }
+      } else {
+        ToastSuccess(msg)
+      }
+    } catch (error) {
+      ToastError(error?.message)
+    }
+  }
+  // stores
+  const {
+    hide_reco, // 代理人 0隱藏，1选填，2必填
+    reg_name, // 真实姓名 0隱藏，1选填，2必填
+    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
+    reg_qq, // QQ 0隱藏，1选填，2必填
+    reg_wx, // 微信 0隱藏，1选填，2必填
+    reg_phone, // 手机 0隱藏，1选填，2必填
+    reg_email, // 邮箱 0隱藏，1选填，2必填
+    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
+    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+    pass_length_min, // 注册密码最小长度
+    pass_length_max, // 注册密码最大长度,
+    smsVerify, // 手机短信验证,
+  }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // effects
   useEffect(() => {
@@ -119,8 +118,8 @@ const BZHRegisterPage = () => {
     }
   }, [reg_vcode])
 
+  // data handle
   const { nc_csessionid, nc_token, nc_sig } = slidingVerification
-
   const account_valid = account?.length >= 6
   const password_valid = validPassword(password, pass_limit)
   const confirmPassword_valid = confirmPassword == password
@@ -153,24 +152,6 @@ const BZHRegisterPage = () => {
     reg_vcode_valid &&
     sms_valid
 
-  const getImgCaptcha = () => {
-    APIRouter.secure_imgCaptcha().then((value) => {
-      setCorrectImageCode(value?.data)
-    })
-  }
-  const getSms = async () => {
-    try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
-      const { code, msg } = data ?? {}
-      if (code != 0) {
-        throw { message: msg }
-      } else {
-        ToastSuccess(msg)
-      }
-    } catch (error) {
-      ToastError(error?.message)
-    }
-  }
 
   return (
     <>

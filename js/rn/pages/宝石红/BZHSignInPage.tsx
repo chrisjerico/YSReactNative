@@ -39,6 +39,9 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
 }
 
 const BZHSignInPage = (props: BZHSignInStore) => {
+  // yellowBox
+  console.disableYellowBox = true
+  // functions
   const {
     isRemember,
     account,
@@ -46,20 +49,6 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     navigation,
     setProps,
   }: BZHSignInStore = props
-  const [hidePassword, setHidePassword] = useState(true)
-  const reloadSliding = useRef(null)
-
-  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
-
-  // states
-  const [slidingVerification, setSlidingVerification] =
-    useState<SlidingVerification>
-      ({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
-
   const { type }: any = navigation?.dangerouslyGetState()
 
   const jump = () => {
@@ -110,7 +99,19 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     },
     onError: () => { },
   })
-
+  // states
+  const [slidingVerification, setSlidingVerification] =
+    useState<SlidingVerification>
+      ({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+  const [hidePassword, setHidePassword] = useState(true)
+  const reloadSliding = useRef(null)
+  // stores
+  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
+  // effects
   useEffect(() => {
     switch (type) {
       case 'tab':
@@ -130,6 +131,7 @@ const BZHSignInPage = (props: BZHSignInStore) => {
     }
   }, [])
 
+  // data handle
   const { nc_csessionid, nc_token, nc_sig } = slidingVerification
 
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode

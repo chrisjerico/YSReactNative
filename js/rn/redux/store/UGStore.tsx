@@ -6,8 +6,8 @@ import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
-
 // 整个State的树结构
+
 export interface IGlobalState {
   // 纯数据
   userInfo?: UGUserModel;
