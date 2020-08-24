@@ -104,6 +104,9 @@ export enum UGColor {
   shadowColor1 = '#00000088',
   shadowColor2 = '#00000088',
 
+  // 透明背景色
+  transparent = '#00000000',
+
   // 禁用
   disableColor1 = '#EFF3F8',
   disableColor2 = '#FCFAF2',

@@ -15,6 +15,8 @@ import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
 import {navigate} from "../../public/navigation/RootNavigation";
+import {UGColor} from "../../public/theme/UGThemeColor";
+import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -155,7 +157,16 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         });
         break;
       case "android":
-        //TODO
+        ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS })
+          .then((picStr) => {
+            if (!anyEmpty(picStr)) {
+              let pics = JSON.parse(picStr);
+              if (!arrayEmpty(pics)) {
+                setProps({ backgroundImage: pics[0] });
+              }
+            }
+          });
+        setProps({ backgroundColor: [UGColor.transparent, UGColor.transparent] });
         break;
     }
   }, [])
@@ -176,7 +187,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         OCHelper.launchFinish();
         break;
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LaunchActivity);
+        ANHelper.callAsync(CMD.LAUNCH_GO);
         break;
     }
     UGStore.save()
