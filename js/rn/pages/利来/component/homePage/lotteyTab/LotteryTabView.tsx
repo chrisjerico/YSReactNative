@@ -4,11 +4,6 @@ import {List} from "../../../../../public/network/Model/HomeGamesModel";
 import {fillArray} from "../../../utils/fillArray";
 import AppDefine from "../../../../../public/define/AppDefine";
 import PushHelper from "../../../../../public/define/PushHelper";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../redux/store/UGStore";
-import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
-import {push} from "../../../../../public/navigation/RootNavigation";
-import {PageName} from "../../../../../public/navigation/Navigation";
 
 export const LotteryTabView = ({list}: { list: List[] }) => {
     return (

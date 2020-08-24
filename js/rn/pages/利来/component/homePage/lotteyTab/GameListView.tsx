@@ -1,18 +1,17 @@
 import {FlatList} from "react-native";
 import * as React from "react";
-import {useSelector} from "react-redux";
 import {ImageButton} from "../../../../乐橙/component/ImageButton";
 import {fillArray} from "../../../utils/fillArray";
 import {List} from "../../../../../public/network/Model/HomeGamesModel";
 import PushHelper from "../../../../../public/define/PushHelper";
 import {push} from "../../../../../public/navigation/RootNavigation";
 import {PageName} from "../../../../../public/navigation/Navigation";
-import {IGlobalState} from "../../../../../redux/store/UGStore";
+import {UGStore} from "../../../../../redux/store/UGStore";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 
 export const GameListView = ({list}: {list: List[]}) => {
     const {homeGames} = useGetHomeInfo()
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const { uid = "" } = userStore
 
     const thirdPartGamePress = (id: string, gameID?: string) => {

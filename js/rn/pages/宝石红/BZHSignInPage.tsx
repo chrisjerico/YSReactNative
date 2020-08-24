@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginIn from '../../public/hooks/useLoginIn'
@@ -24,31 +23,30 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Header from '../../public/views/tars/Header'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { ActionType } from '../../redux/store/ActionTypes'
-import { IGlobalState } from '../../redux/store/UGStore'
-import { BZHSignInStore } from './BZHSignInProps'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import Form from './views/Form'
+import { UGBasePageProps } from '../base/UGPage'
 
-const BZHSignInPage = () => {
-  const dispatch = useDispatch()
+// store
+export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
+  isRemember?: boolean;
+  account?: string;
+  password?: string | any;
+}
+
+
+const BZHSignInPage = (props: BZHSignInStore) => {
   const { loginSuccessHandle } = useLoginIn()
   const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
-  const signInStore = useSelector(
-    (state: IGlobalState) => state.BZHSignInReducer
-  )
+  const signInStore = UGStore.getPageProps(PageName.BZHSignInPage);
   const { isRemember, account, password }: BZHSignInStore = signInStore
+  const { setProps }: BZHSignInStore = props
   const [hidePassword, setHidePassword] = useState(true)
 
   useEffect(() => {
     if (!isRemember) {
       console.log('----忘記帳密----')
-      dispatch({
-        type: ActionType.BZHSignInPage_SetProps,
-        props: {
-          account: null,
-          password: null,
-        },
-      })
+      setProps({ account: null, password: null })
     }
   }, [])
 
@@ -71,13 +69,7 @@ const BZHSignInPage = () => {
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={(value: any) => {
-              dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: {
-                  account: value,
-                },
-              })
-              // UGStore.save()
+              setProps({ account: value });
             }}
           />
           <Form
@@ -94,12 +86,7 @@ const BZHSignInPage = () => {
             }}
             value={password}
             onChangeText={(value: any) =>
-              dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: {
-                  password: value,
-                },
-              })
+              setProps({ password: value })
             }
             secureTextEntry={hidePassword}
             showRightIcon
@@ -107,10 +94,7 @@ const BZHSignInPage = () => {
           <CheckBox
             check={isRemember}
             onPress={() =>
-              dispatch({
-                type: ActionType.BZHSignInPage_SetProps,
-                props: { isRemember: !isRemember },
-              })
+              setProps({ isRemember: !isRemember })
             }
           />
           <Button

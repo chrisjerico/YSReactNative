@@ -1,3 +1,4 @@
+import { UGStore } from './../../redux/store/UGStore';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { httpClient, CachePolicyEnum } from './httpClient'
@@ -89,6 +90,9 @@ class APIRouter {
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
   }
   static activity_turntableList = () => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      return {};
+    }
     return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
   }
   static system_floatAds = () => {
@@ -97,11 +101,13 @@ class APIRouter {
   static system_rankingList = () => {
     return httpClient.get<RankListModel>("c=system&a=rankingList")
   }
-  static user_login = (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
+  static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
     if (slideCode) {
       slideCode = SlideCodeModel.get(slideCode);
     }
-    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode });
+    return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
+      noToken: true
+    });
   }
   static user_balance_token = async () => {
     const user = await OCHelper.call('UGUserModel.currentUser');
@@ -136,7 +142,9 @@ class APIRouter {
     params = {
       ...params, device: '3', accessToken: accessToken,
     }
-    return httpClient.post<RegisterModel>('c=user&a=reg', params);
+    return httpClient.post<RegisterModel>('c=user&a=reg', params, {
+      noToken: true
+    });
   }
 
   static lhcdoc_categoryList = async () => {

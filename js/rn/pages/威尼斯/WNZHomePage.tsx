@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import { useSelector } from 'react-redux'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
@@ -17,13 +16,13 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import Header from './views/Header'
 import RowGameButtom from './views/RowGameButtom'
 
 const WNZHomePage = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { avatar, balance, usr }: UGUserModel = userStore
   const { loading, banner, notice, homeGames, categoryList } = useGetHomeInfo([
     'system_banners',

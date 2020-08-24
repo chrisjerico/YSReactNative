@@ -4,17 +4,16 @@ import { FlatList, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View
 import { BaseScreen } from "./component/BaseScreen";
 import { CardView } from "./component/minePage/CardView";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from "react-redux";
-import { IGlobalState } from "../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../redux/store/UGStore";
 import useMemberItems from "../../public/hooks/useMemberItems";
 import PushHelper from "../../public/define/PushHelper";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import { PageName } from "../../public/navigation/Navigation";
 
 const LCMinePage = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "" } = userStore
-    const { UGUserCenterItem } = useMemberItems()
+    const userStore = UGStore.globalProps.userInfo;
+    const {uid = ""} = userStore
+    const {UGUserCenterItem} = useMemberItems()
     useEffect(() => {
         userStore && uid == "" && PushHelper.pushLogin()
     })

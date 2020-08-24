@@ -1,4 +1,4 @@
-import {View, Text, TouchableWithoutFeedback, FlatList} from "react-native"
+import {View, Text, TouchableWithoutFeedback, FlatList, Linking} from "react-native"
 import {Header, HeaderProps, Button} from 'react-native-elements';
 import {Skin1} from '../../public/theme/UGSkinManagers';
 import LinearGradient from "react-native-linear-gradient";
@@ -10,13 +10,14 @@ import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import {useNavigationState} from "@react-navigation/native";
 import ScrollableTabView, {TabBarProps, ScrollableTabBar} from "react-native-scrollable-tab-view";
 import APIRouter from "../../public/network/APIRouter";
-import {PromotionsModel} from "../../public/network/Model/PromotionsModel";
+import {PromotionsModel, List} from "../../public/network/Model/PromotionsModel";
 import WebView from "react-native-webview";
 import FastImage, {FastImageProperties} from "react-native-fast-image";
 import usePopUpView from "../../public/hooks/usePopUpView";
 import AppDefine from "../../public/define/AppDefine";
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall";
+import PushHelper from "../../public/define/PushHelper";
 
 const PromotionListPage = ({navigation}) => {
     const {width, height} = useDimensions().window
@@ -50,16 +51,17 @@ const PromotionListPage = ({navigation}) => {
         } catch (error) {
         }
     }
+
     return (
         <View style={{flex: 1, backgroundColor: 'balck'}}>
-            <LinearGradient style={{height: top, width: width}} colors={Skin1.navBarBgColor}/>
+            <LinearGradient style={{height: top, width: width}} colors={Skin1.navBarBgColor}></LinearGradient>
             <LinearGradient
                 style={{height: 44, width, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}
                 colors={Skin1.navBarBgColor}>
                 {state.index != 15 || currentNativeSelectedTab == 0 ?
                     <View style={{position: 'absolute', left: 8}}>
                         <Button
-                            icon={{name: 'ios-arrow-back', type: 'ionicon', color: Skin1.textColor3}}
+                            icon={{name: 'ios-arrow-back', type: 'ionicon', color: 'white'}}
                             buttonStyle={[{backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start'},]}
                             onPress={() => {
                                 popToRoot()
@@ -67,9 +69,15 @@ const PromotionListPage = ({navigation}) => {
                             }}
                         />
                     </View> : null}
-                <Text
-                    style={{textAlign: 'center', color: Skin1.textColor3, fontSize: 16, fontWeight: "bold"}}>优惠活动</Text>
+                <Text style={{
+                    textAlign: 'center',
+                    color: Skin1.isBlack ? 'white' : Skin1.textColor3,
+                    fontSize: 18,
+                    fontWeight: "bold"
+                }}>优惠活动</Text>
+
             </LinearGradient>
+
             <LinearGradient style={{flex: 1, paddingBottom: 50}} colors={Skin1.bgColor}>
                 {categories?.length > 0 ? <ScrollableTabView
                     renderTabBar={(props: TabBarProps) => {
@@ -82,22 +90,35 @@ const PromotionListPage = ({navigation}) => {
                                                dataSource={promotionData} filter={res}/>
                     })}
                 </ScrollableTabView> : null}
+
+
             </LinearGradient>
         </View>
     )
 }
+
 export const PromotionLists = ({dataSource, filter, promotionData}: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
     const [selectId, setSelectedId] = useState(-1)
     const {width} = useDimensions().window
     const {onPopViewPress} = usePopUpView()
-    console.log(dataSource.data.list.filter((res) => res.category == filter))
+    const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+        if (data?.linkUrl != "") {
+            Linking.openURL(data?.linkUrl)
+        } else if (data.linkCategory == 0 && data.linkPosition == 0) {
+            onPopViewPress(data, type, onPress ? onPress : () => {
+            })
+        } else {
+            PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+        }
+
+    }
     return (
         <FlatList keyExtractor={(item, index) => item.id + index}
                   data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list}
                   renderItem={({item, index}) => {
                       return <View style={{paddingHorizontal: 10, marginBottom: 20}}>
                           <TouchableWithoutFeedback
-                              onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
+                              onPress={onPromotionItemPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
                                   if (selectId == index) {
                                       setSelectedId(-1)
                                   } else {
@@ -109,7 +130,7 @@ export const PromotionLists = ({dataSource, filter, promotionData}: { dataSource
                                       fontWeight: "bold",
                                       fontSize: 16,
                                       marginBottom: 5,
-                                      color: Skin1.textColor1
+                                      color: 'white'
                                   }}>{item.title}</Text>
                                   <FastImageAutoHeight source={{uri: item.pic}}/>
                               </View>

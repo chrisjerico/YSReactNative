@@ -1,4 +1,4 @@
-import { UGAgentApplyInfo, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
 import { Alert, AlertButton, Platform } from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
@@ -9,6 +9,8 @@ import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
 import { Toast } from '../tools/ToastUtils';
+import { popToRoot, push } from '../navigation/RootNavigation';
+import { PageName } from '../navigation/Navigation';
 export default class PushHelper {
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
@@ -125,12 +127,13 @@ export default class PushHelper {
             OCHelper.call('SVProgressHUD.showWithStatus:');
 
             var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo();
+            
             if (info.reviewStatus === 2) {
               // 去推荐收益页
               OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true]);
             } else {
               let agent_m_apply = await OCHelper.call('UGSystemConfigModel.currentConfig.agent_m_apply');
-              if (parseInt(agent_m_apply) === 1) {
+              if (parseInt(agent_m_apply) !== 1) {
                 OCHelper.call('HUDHelper.showMsg:', ['在线注册代理已关闭']);
               } else {
                 // 去申请代理
@@ -248,6 +251,22 @@ export default class PushHelper {
       }
       case UGUserCenterType.游戏大厅: {
         OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true]);
+        break;
+      }
+      case UGUserCenterType.我的页: {
+        OCHelper.call('UGTabbarController.shared.mms').then((mms: UGTabbarItem[]) => {
+          let isOcPush = false;
+          mms.forEach((item, idx) => {
+            if (item.path == '/user') {
+              isOcPush = true;
+              popToRoot();
+              OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [idx]);
+            }
+          })
+          if (!isOcPush) {
+            push(PageName.ZLMinePage);
+          }
+        })
         break;
       }
     }

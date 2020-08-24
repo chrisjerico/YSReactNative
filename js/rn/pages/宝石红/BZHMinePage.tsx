@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
 import PushHelper from '../../public/define/PushHelper'
 import useLoginOut from '../../public/hooks/useLoginOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
@@ -12,7 +11,6 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import Header from './views/mines/Header'
@@ -24,9 +22,8 @@ const BZHMinePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const dispatch = useDispatch()
   const { loginOut } = useLoginOut(PageName.BZHHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo;
   const {
     avatar,
     balance,
@@ -61,10 +58,7 @@ const BZHMinePage = ({ navigation }) => {
           onPressAvatar={() => setVisible(true)}
           onPressReload={async () => {
             const { data } = await APIRouter.user_balance_token()
-            dispatch({
-              type: ActionType.UpdateUserInfo,
-              props: { balance: data.data.balance },
-            })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
           }}
           level={curLevelGrade}
           avatar={avatar}
@@ -112,7 +106,7 @@ const BZHMinePage = ({ navigation }) => {
         avatars={avatarList}
         onPressSave={({ url, filename }) => {
           setVisible(false)
-          UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: { avatar: url } })
+          UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } });
           APIRouter.task_changeAvatar(filename).then((value) => {
             if (value?.data?.code == 0) {
               Toast('修改头像成功')

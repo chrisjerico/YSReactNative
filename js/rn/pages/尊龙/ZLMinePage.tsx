@@ -1,7 +1,6 @@
 import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
-import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
 import { colorEnum } from "./enum/colorEnum"
@@ -11,7 +10,6 @@ import UGSysConfModel, { UGUserCenterType } from "../../redux/model/全局/UGSys
 import LinearGradient from "react-native-linear-gradient"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import APIRouter from "../../public/network/APIRouter"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import useMemberItems from "../../public/hooks/useMemberItems"
 import useLoginOut from "../../public/hooks/useLoginOut"
@@ -22,15 +20,14 @@ import { IGlobalStateHelper } from "../../redux/store/IGlobalStateHelper"
 import Axios from "axios"
 import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
-const ZLHomeMine = ({ navigation }) => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+import { navigationRef, pop } from "../../public/navigation/RootNavigation"
+import { UGBasePageProps } from "../base/UGPage"
+
+const ZLMinePage = (props: UGBasePageProps) => {
+    const { setProps } = props;
+    const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
     const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
-    const dispatch = useDispatch()
-    const updateUserInfo = useCallback(
-        (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-        [dispatch]
-    )
     const [infoModel, setInfoModel] = useState<YueBaoStatModel>()
     const { loginOut } = useLoginOut(PageName.ZLHomePage)
     const { UGUserCenterItem } = useMemberItems()
@@ -38,7 +35,7 @@ const ZLHomeMine = ({ navigation }) => {
         try {
             OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
             const { data, status } = await APIRouter.user_balance_token()
-            updateUserInfo({ ...userStore, balance: data.data.balance })
+            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
         } catch (error) {
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
@@ -56,15 +53,15 @@ const ZLHomeMine = ({ navigation }) => {
     useEffect(() => {
         init()
     }, [userStore?.uid])
-    useEffect(() => {
 
-        navigation.addListener('focus', async () => {
-            const { data: userInfo } = await APIRouter.user_info()
-            UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
-            UGStore.save();
-        });
-        return (() => {
-            navigation.removeListener('focus', null);
+    useEffect(() => {
+        setProps({
+            didFocus: async () => {
+                const { data: userInfo } = await APIRouter.user_info()
+                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
+                setProps();
+                UGStore.save();
+            }
         })
     }, [])
     return <View style={{ flex: 1, backgroundColor: 'black' }}>
@@ -72,7 +69,7 @@ const ZLHomeMine = ({ navigation }) => {
         <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
             <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
                 <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{curLevelTitle}</Text>
+                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
                 </FastImage>
                 <Text style={{ fontSize: 16.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
                 <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
@@ -178,11 +175,16 @@ const ZLHomeMine = ({ navigation }) => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'white', fontSize: 14 }}>成长值:</Text>
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"} </Text>
+                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
                         <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
-                                <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text>
-                            </View>
+                            {
+                                parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ?
+                                    <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: width * 0.7 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: width * 0.7 }}>100%</Text> */}
+                                    </View> : <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
+                                        {/* <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text> */}
+                                    </View>
+                            }
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, marginTop: 4 }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -206,15 +208,18 @@ const ZLHomeMine = ({ navigation }) => {
                     <TouchableOpacity onPress={() => {
                         PushHelper.pushUserCenterType(item.code)
                     }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <FastImage resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: 'white', overflow: "visible" }} source={{ uri: item.logo }} >
-                            {item.code == 9 && unreadMsg > 0 ? <View style={{
-                                position: 'absolute', right: -5, top: 3, backgroundColor: 'red',
+                        <Image
+                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
+                            source={{ uri: item.logo }} />
+                        {item.code == 9 && unreadMsg > 0 && (
+                            <View style={{
+                                position: 'absolute', right: 30, top: 3, backgroundColor: 'red',
                                 height: 20, width: 20,
                                 borderRadius: 10, justifyContent: 'center', alignItems: 'center'
                             }}>
                                 <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                            </View> : null}
-                        </FastImage>
+                            </View>
+                        )}
                         <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
 
                     </TouchableOpacity>
@@ -229,14 +234,26 @@ const ZLHomeMine = ({ navigation }) => {
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const { uid = "", unreadMsg } = userStore
+    const { uid = "", unreadMsg } = UGStore.globalProps.userInfo;
+    const [showBackBtn, setShowBackBtn] = useState(false);
+
+    OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+        show != showBackBtn && setShowBackBtn(show);
+    })
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e', justifyContent: 'space-between',
+            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
             paddingHorizontal: 20
         }}>
+            {showBackBtn && (<TouchableOpacity onPress={() => {
+                !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            }} style={{ paddingRight: 5 }}>
+                <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
+            </TouchableOpacity>)}
+            {showBackBtn && <View style={{ flex: 1 }} />}
+
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.站内信)
             }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
@@ -251,14 +268,14 @@ const ZLHeader = () => {
                 </View> : null}
 
             </TouchableOpacity>
-
+            {!showBackBtn && <View style={{ flex: 1 }} />}
             <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30 }}>
                 <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
                 <Text style={{ color: "white", fontSize: 14 }}>客服</Text>
             </TouchableOpacity>
         </View>
     )
 }
-export default ZLHomeMine
+export default ZLMinePage

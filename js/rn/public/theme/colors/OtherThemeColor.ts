@@ -1,7 +1,7 @@
-import {UGThemeColor} from '../UGThemeColor';
+import { UGThemeColor } from '../UGThemeColor';
 
 // 其他
-export const OtherThemeColor: {[x: string]: UGThemeColor} = {
+export const OtherThemeColor: { [x: string]: UGThemeColor } = {
   //乐橙
   石榴红: {
     skitType: '石榴红',
@@ -47,6 +47,8 @@ export const OtherThemeColor: {[x: string]: UGThemeColor} = {
     conversionCellColor: '#7BA2C2',
     intoViewColor: '#7BA2C2',
     moneyCellColor: '#9BB8CB',
+    navBarTitleColor: 'white',
+    isBlack: true,
   },
   //金沙模板
   金沙主题: {
@@ -106,5 +108,29 @@ export const OtherThemeColor: {[x: string]: UGThemeColor} = {
     tabNoSelectColor: '#999999',
     tabSelectedColor: '#6B54F5',
     homeContentColor: '#fff',
+  },
+  //天空蓝
+  天空蓝: {
+    skitType: '天空蓝',
+    skitString: '天空蓝',
+    bgColor: ['#FFFFFF', '#FFFFFF'],
+    navBarBgColor: ['#3278EE', '#819EFF'],
+    tabBarBgColor: '#F4F4F4',
+    tabNoSelectColor: '#525252',
+    tabSelectedColor: '#010101',
+
+    progressBgColor: ['#FEC434', '#FE8A23'],
+    homeContentColor: '#FFFFFF',
+    homeContentSubColor: '#D3D3D3',
+    cellBgColor: '#FFFFFF',
+    CLBgColor: '#E6E6E6',
+    menuHeadViewColor: ['#fa7dc5', '#f5c3e0'],
+    textColor1: '#111111',
+    textColor2: '#555555',
+    textColor3: '#C1C1C1',
+    textColor4: '#FFFFFF',
+    conversionCellColor: '#7BA2C2',
+    intoViewColor: '#7BA2C2',
+    moneyCellColor: '#9BB8CB',
   },
 };

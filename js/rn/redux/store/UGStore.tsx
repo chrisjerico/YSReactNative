@@ -1,98 +1,90 @@
-import { AsyncStorage } from 'react-native';
-import { applyMiddleware, combineReducers, compose, createStore, Store } from 'redux';
-import thunk from 'redux-thunk';
-import { TransitionProps, TransitionReducer } from '../../pages/base/TransitionProps';
-import { UpdateVersionProps, UpdateVersionReducer } from '../../pages/router/UpdateVersionProps';
-import { BZHSignInReducer, BZHSignInStore } from '../../pages/宝石红/BZHSignInProps';
-import { JDPromotionListProps, JDPromotionListReducer } from '../../pages/经典/JDPromotionListProps';
-import { ZHTYHomeProps, ZHTYHomeReducer } from '../../pages/综合体育/ZHTYHomeProps';
-import { ZHTYLoginProps, ZHTYLoginReducer } from '../../pages/综合体育/ZHTYLoginProps';
-import { ZHTYMineProps, ZHTYMineReducer } from '../../pages/综合体育/ZHTYMineProps';
-import { ZHTYRegisterProps, ZHTYRegisterReducer } from '../../pages/综合体育/ZHTYRegisterProps';
-import { XBJHomeProps, XBJHomeReducer } from '../../pages/香槟金/XBJHomeProps';
-import { XBJLoginProps, XBJLoginReducer } from '../../pages/香槟金/XBJLoginProps';
-import { XBJMineProps, XBJMineReducer } from '../../pages/香槟金/XBJMineProps';
-import { XBJRegisterProps, XBJRegisterReducer } from '../../pages/香槟金/XBJRegisterProps';
-import Reactotron from '../../public/config/ReactotronConfig';
+import {AsyncStorage} from 'react-native';
+import {Action, Unsubscribe} from 'redux';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import { ActionType, UGAction } from './ActionTypes';
-import { AsyncStorageKey, SysConfReducer, UserInfoReducer } from './IGlobalStateHelper';
-import BettingReducer, { BettingReducerProps } from '../reducer/BettingReducer';
+import {AsyncStorageKey} from './IGlobalStateHelper';
+import {PageName} from '../../public/navigation/Navigation';
+import BettingReducer, {BettingReducerProps, BettingReducerActions} from '../reducer/BettingReducer';
+import {UGBasePageProps} from '../../pages/base/UGPage';
+
 // 整个State的树结构
 export interface IGlobalState {
-  // 寶石紅
-  BZHSignInReducer: BZHSignInStore;
-  // 综合体育
-  ZHTYRegisterReducer: ZHTYRegisterProps;
-  ZHTYLoginReducer: ZHTYLoginProps;
-  ZHTYMineReducer: ZHTYMineProps;
-  ZHTYHomeReducer: ZHTYHomeProps;
-  // 经典
-  JDPromotionListReducer: JDPromotionListProps; // 优惠活动
-  // 香槟金
-  XBJHomeReducer: XBJHomeProps; // 首页
-  XBJMineReducer: XBJMineProps; // 我的页
-  XBJLoginReducer: XBJLoginProps; // 登录
-  XBJRegisterReducer: XBJRegisterProps; // 注册
-  // 过渡页
-  TransitionReducer: TransitionProps;
-  // 纯数据
-  UserInfoReducer: UGUserModel;
-  SysConfReducer: UGSysConfModel;
-  // iOS 独有
-  UpdateVersionReducer: UpdateVersionProps;
-  BettingReducer: BettingReducerProps
+    // 纯数据
+    userInfo?: UGUserModel;
+    sysConf?: UGSysConfModel;
+    BettingReducer?: BettingReducerProps;
 }
 
-// 整合项目所有reducer
-export const rootReducer = combineReducers({
-  // 寶石紅
-  BZHSignInReducer,
-  // 综合体育
-  ZHTYHomeReducer,
-  ZHTYLoginReducer,
-  ZHTYRegisterReducer,
-  ZHTYMineReducer,
+// 更新Props到全局数据
+function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
+    const state: IGlobalState = Object.assign({}, prevState);
 
-  // 经典
-  JDPromotionListReducer, // 优惠活动页
-  TransitionReducer, // 占位页面
+    if (act.type == 'reset') {
+        act.sysConf && (state.sysConf = act.sysConf);
+        act.userInfo && (state.userInfo = act.userInfo);
+        act.page && (state[act.page] = act.props);
+    } else if (act.type == 'merge') {
+        state.sysConf = {...state.sysConf, ...act.sysConf};
+        state.userInfo = {...state.userInfo, ...act.userInfo};
+        if (act.page) state[act.page] = {...state[act.page], ...act.props};
+    } else {
 
-  // 香槟金
-  XBJHomeReducer, // 首页
-  XBJMineReducer, // 我的页
-  XBJLoginReducer, // 登录
-  XBJRegisterReducer, // 注册
+        // 自定义Reducer写在这里。。。
+        state.BettingReducer = BettingReducer(state.BettingReducer, act);
+    }
+    return state;
+}
 
-  // 纯数据
-  UserInfoReducer, // 用户信息
-  SysConfReducer, // 系统配置
-
-  // iOS独有
-  UpdateVersionReducer,
-  //下注資料
-  BettingReducer,
-});
+// 声明UGAction
+export interface UGAction<P = {}> extends Action {
+    type: 'reset' | 'merge' | BettingReducerActions; // reset替换整个对象，merge只改变指定变量
+    page?: PageName;  // 配合props使用
+    props?: P;      // 配合page使用
+    sysConf?: UGSysConfModel;// 修改系统配置
+    userInfo?: UGUserModel;// 修改用户信息
+    value?: any;// 其他
+}
 
 export class UGStore {
-  // Store
-  static store: Store<IGlobalState, UGAction> = createStore(rootReducer, compose(applyMiddleware(thunk), Reactotron.createEnhancer()));
+    // Store
+    static globalProps: IGlobalState = {userInfo: {}, sysConf: {}};
 
-  // 发送通知
-  static dispatch<P>(act: UGAction<P>) {
-    this.store.dispatch(act);
-  }
+    // 发送通知
+    private static callbacks: { page: PageName, callback: () => void }[] = [];
 
-  // 从本地获取所有数据，并刷新UI
-  static refreshFromLocalData() {
-    AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
-      UGStore.dispatch({ type: ActionType.UpdateAll, state: JSON.parse(value) });
-    });
-  }
+    static dispatch<P>(act: UGAction<P>) {
+        this.globalProps = RootReducer(this.globalProps, act);
+        if (act.page) {
+            for (const cb of this.callbacks) {
+                cb.page == act.page && cb.callback();
+            }
+        }
+    }
 
-  // 存储到本地
-  static save() {
-    AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.store.getState()));
-  }
+    // 添加监听
+    static subscribe(page: PageName, callback: () => void): Unsubscribe {
+        const cb = {page: page, callback: callback};
+        this.callbacks.push(cb);
+        return () => {
+            UGStore.callbacks.remove(cb);
+        };
+    }
+
+    // 获取当前页面Props
+    static getPageProps<P extends UGBasePageProps>(page: PageName): P {
+        return this.globalProps[page] ?? {};
+    }
+
+    // 从本地获取所有数据，并刷新UI
+    static refreshFromLocalData() {
+        AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
+            const gs: IGlobalState = JSON.parse(value)
+            UGStore.dispatch({type: 'reset', sysConf: gs.sysConf, userInfo: gs.userInfo});
+        });
+    }
+
+    // 存储到本地
+    static save() {
+        AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.globalProps));
+    }
 }

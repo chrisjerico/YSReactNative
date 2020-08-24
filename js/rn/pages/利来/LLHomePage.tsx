@@ -20,14 +20,12 @@ import {HomeTabView} from "./component/homePage/HomeTabView";
 import {ImageButton} from "./component/ImageButton";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PushHelper from "../../public/define/PushHelper";
-import {useSelector} from "react-redux";
-import {IGlobalState, UGStore} from "../../redux/store/UGStore";
+import {UGStore} from "../../redux/store/UGStore";
 import APIRouter from "../../public/network/APIRouter";
 import {PromotionsModel} from "../../public/network/Model/PromotionsModel";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall";
 import AppDefine from "../../public/define/AppDefine";
-import {ActionType} from "../../redux/store/ActionTypes";
 import {updateUserInfo} from "../../redux/store/IGlobalStateHelper";
 import {httpClient} from "../../public/network/httpClient";
 import {navigate, push} from "../../public/navigation/RootNavigation";
@@ -35,24 +33,24 @@ import {PageName} from "../../public/navigation/Navigation";
 import RedBagItem from "../../public/components/RedBagItem";
 import MarqueePopupView from "../common/MarqueePopupView";
 import {useDimensions} from "@react-native-community/hooks";
-import {TurntableListModel} from "../../public/network/Model/TurntableListModel";
 import RankListCP from "../../public/widget/RankList";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
 import LinearGradient from "react-native-linear-gradient";
+import UGUserModel from "../../redux/model/全局/UGUserModel";
 
-const LLHomePage = () => {
+const LLHomePage = ({setProps, navigation}) => {
     const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-    const {uid = ""} = userStore
-    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-    const {mobile_logo = "", rankingListSwitch} = sysStore
+    const userStore = UGStore.globalProps.userInfo;
+    const { uid = "", usr, balance, isTest }: UGUserModel = userStore
+    const sysStore = UGStore.globalProps.sysConf;
+    const { mobile_logo = "", rankingListSwitch } = sysStore
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const [categories, setCategories] = useState<string[]>()
-    const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const systemStore = UGStore.globalProps.sysConf
 
     useEffect(() => {
         initPromotions()
@@ -80,14 +78,13 @@ const LLHomePage = () => {
     const reloadData = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');
         if (!user) {
-            UGStore.dispatch({type: ActionType.Clear_User,});
+            UGStore.dispatch({ type: 'reset', userInfo:{}});
             UGStore.save();
         } else {
-            UGStore.dispatch({type: ActionType.UpdateUserInfo, props: user});
+            UGStore.dispatch({ type: 'merge', userInfo:user });
             UGStore.save();
         }
     }
-
     const openPopup = (data: any) => {
         const dataModel = data.data?.popup.map((item, index) => {
             return Object.assign({clsName: 'UGNoticeModel', hiddenBottomLine: 'No'}, item);
@@ -112,6 +109,14 @@ const LLHomePage = () => {
         } catch (error) {
         }
     }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setProps()
+        });
+
+        return unsubscribe;
+    }, [navigation]);
 
     return (
         <View style={{flex: 1}}>
@@ -215,9 +220,10 @@ export default LLHomePage
 
 const TurntableListItem = () => {
     const {width, height} = useDimensions().screen
-    const {isTest = false, uid = ""} = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
+    const {isTest = false, uid = ""} = userStore
     const [turntableListVisiable, setTurntableListVisiable] = useState(false)
-    const [turntableList, setTurntableList] = useState<TurntableListModel>()
+    const [turntableList, setTurntableList] = useState<any>()
     useEffect(() => {
         if (turntableList && turntableList != null) {
             setTurntableListVisiable(true)
@@ -225,8 +231,8 @@ const TurntableListItem = () => {
     }, [turntableList])
     const getTurntableList = async () => {
         try {
-            const {data, status} = await APIRouter.activity_turntableList()
-            setTurntableList(data.data)
+            const res = await APIRouter.activity_turntableList()
+            setTurntableList(res.data)
         } catch (error) {
 
         }

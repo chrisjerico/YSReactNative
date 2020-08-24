@@ -1,16 +1,14 @@
 import * as React from "react";
+import {useEffect, useState} from "react";
 import {Dimensions, Text, TouchableWithoutFeedback, View} from "react-native";
 import {List} from "../../../../../public/network/Model/HomeGamesModel";
 import {MarqueeView} from "../MarqueeView";
 import {ImageButton} from "../../ImageButton";
 import PushHelper from "../../../../../public/define/PushHelper";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../redux/store/UGStore";
+import {UGStore} from "../../../../../redux/store/UGStore";
 import {BannerModel} from "../../../../../public/network/Model/BannerModel";
-import {BannerView} from "./BannerView";
 import {useDimensions} from "@react-native-community/hooks";
 import Carousel from "react-native-banner-carousel";
-import {useEffect, useState} from "react";
 import FastImage from "react-native-fast-image";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {push} from "../../../../../public/navigation/RootNavigation";
@@ -18,7 +16,7 @@ import {PageName} from "../../../../../public/navigation/Navigation";
 
 const screenWidth = Dimensions.get("screen").width
 export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number }) => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const {uid = ""} = userStore
     const {homeGames} = useGetHomeInfo()
     const thirdPartGamePress = (id: string, gameID?: string) => {

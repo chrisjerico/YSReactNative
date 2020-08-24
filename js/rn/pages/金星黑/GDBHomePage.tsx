@@ -8,7 +8,6 @@ import PushHelper from "../../public/define/PushHelper"
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
 import { PageName } from '../../public/navigation/Navigation';
-import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
 import { BannerModel, } from "../../public/network/Model/BannerModel"
@@ -16,7 +15,6 @@ import { Icon, Button } from 'react-native-elements';
 import { httpClient } from "../../public/network/httpClient"
 import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
 import AppDefine from "../../public/define/AppDefine"
@@ -33,14 +31,14 @@ import HotRecycleList from "./RecycleList/HotRecycleList"
 import RankListCP from "../../public/widget/RankList"
 import AutoHeightWebView from "react-native-autoheight-webview"
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
+import Banner from "../尊龙/CP/Banner"
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "" } = userStore
-  const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
   const [show, setShow] = useState(false)
-  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
+  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onlineSwitch } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   const { top } = useSafeArea()
@@ -65,6 +63,7 @@ const GDBHomePage = ({ navigation }) => {
     setnoticeFormat(noticeData)
     setOriginalNoticeString(string)
   }, [notice])
+
   const [content, setContent] = useState("")
   const [] = useAutoRenewUserInfo(navigation)
   const [tbxIndex, setTbxIndex] = useState<number>(0)
@@ -75,7 +74,7 @@ const GDBHomePage = ({ navigation }) => {
       setShow(false)
     }} />} loginPage={PageName.GDLoginPage} header={<View style={{ height: top }}></View>}
       backgroundSource={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/bg-black.png" }}>
-      <Banner onlineNum={onlineNum} bannerData={banner} />
+      <Banner size={{ width: width - 20, height: 0 }} onlineSwitch={onlineSwitch} onlineNum={onlineNum} bannerData={banner} />
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
         <Text style={{ color: '#999999', fontSize: 12 }}>公告:</Text>
         <MarqueeHorizontal
@@ -97,10 +96,10 @@ const GDBHomePage = ({ navigation }) => {
         onChangeTab={({ i }) => {
           setTbxIndex(i)
         }}
-        style={{ borderBottomWidth: 0, height: homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏' ? 820 : (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
+        style={{ borderBottomWidth: 0, height: homeGames.data.icons[tbxIndex].name == "热门" || homeGames.data.icons[tbxIndex].name == '热门游戏' ? 900 : (Math.round(homeGames.data.icons[tbxIndex].list.length / 2)) * 143 + 20 }}
         initialPage={0}
-        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, width: 49, marginLeft: (49 / 2) - 3.5 }}
-        tabBarTextStyle={{ fontSize: 13.2 }}
+        tabBarUnderlineStyle={{ backgroundColor: "#cfa461", marginBottom: 10, height: 2, }}
+        tabBarTextStyle={{ fontSize: 13.2, textAlign: 'center' }}
         renderTabBar={() => <ScrollableTabBar style={{ borderWidth: 0, }} inactiveTextColor={'white'} activeTextColor={"#cfa461"} />}
       >
         {homeGames?.data?.icons?.map((res) => {
@@ -113,7 +112,7 @@ const GDBHomePage = ({ navigation }) => {
           <Text style={{ color: 'white', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>
           <Text style={{ color: 'white', fontWeight: "bold" }}>查看更多>></Text>
         </TouchableWithoutFeedback>
@@ -167,9 +166,134 @@ const GDBHomePage = ({ navigation }) => {
 
 const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean, homeGames: HomeGamesModel }) => {
   const { width } = useDimensions().screen
+  const userStore = UGStore.globalProps.userInfo;
+  const { uid = "" } = userStore
+  const thirdPartGamePress = (subIndex, index: number) => {
+    if (uid == '') {
+      navigate(PageName.GDLoginPage, {})
+    } else {
+      PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[subIndex].subType[index])
+    }
+
+  }
   if (isHot) {
     return (
-      <HotRecycleList homeGames={homeGames} />
+      <View style={{ flex: 1 }}>
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[0]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[0].subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 0, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, marginRight: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[1]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[1]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 1, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[2]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[2]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 2, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+
+        </View>
+
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[3]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[3]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 3, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[4]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[4]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 4, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, marginRight: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[5]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[5]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 5, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+          <View style={{ backgroundColor: "#282828", flex: 1, borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: 'column', paddingVertical: 20, }}>
+              <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[6]?.name}</Text>
+              <FlatList keyExtractor={item => item.title}
+                scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[6]?.subType ?? []}
+                renderItem={({ item, index }) => {
+                  return <Text onPress={thirdPartGamePress.bind(null, 6, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+                }} />
+            </View>
+            <FastImage resizeMode={'contain'} source={{ uri: homeGames?.data?.icons?.[1].logo }} style={{ width: 67, height: 104, }} />
+
+          </View>
+
+
+        </View>
+        <View style={{ backgroundColor: "#282828", borderRadius: 8, marginBottom: 10, paddingHorizontal: 10, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'column', paddingTop: 20, }}>
+            <Text style={{ color: "#D3D3D3", fontSize: 17, fontWeight: 'bold', marginBottom: 20 }}>{homeGames?.data?.icons?.[0]?.list?.[7]?.name}</Text>
+
+            <FlatList keyExtractor={item => item.title}
+              style={{ width: (width - 20) * 0.6 }}
+              columnWrapperStyle={{ justifyContent: 'space-between', }} scrollEnabled={false} data={homeGames?.data?.icons?.[0]?.list[7]?.subType ?? []}
+              numColumns={3} renderItem={({ item, index }) => {
+                return <Text onPress={thirdPartGamePress.bind(null, 7, index)} style={{ color: "#676767", marginBottom: 20, marginRight: 5 }}>{item.title}</Text>
+              }} />
+          </View>
+          <FastImage resizeMode={'contain'} style={{ width: 129, height: 106 }} source={{ uri: homeGames?.data?.icons?.[0]?.logo }} />
+        </View>
+      </View>
     )
   } else {
     return (
@@ -188,72 +312,17 @@ const TabContainer = ({ data, isHot, homeGames }: { data: List[], isHot: boolean
   }
 
 }
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
-  const { width, } = useDimensions().window
-  const BannerRef = useRef<Carousel>()
-  const [height, setHeight] = useState(100)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      //@ts-ignore
-      BannerRef?.current?.gotoNextPage()
-    }, 2000);
-    return (() => {
-      clearInterval(timer)
-    })
-  }, [bannerData])
-  if (bannerData?.data?.list?.length > 0) {
-    return (
-      <View style={{ marginBottom: 10, }}>
-
-        <Carousel
-          autoplay
-          index={0}
-          ref={BannerRef}
-          loop
-          pageSize={width - 20}
-        >
-          {bannerData?.data?.list?.map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-              }}>
-                <FastImage onLoad={(e) => {
-                  console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-                  setHeight(e.nativeEvent.height * ((width - 20) / e.nativeEvent.width))
-
-                }} key={'banner' + index} style={{ width: width - 20, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
-
-                </FastImage>
-              </TouchableWithoutFeedback>)
-          })}
-        </Carousel>
-        <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-        </View>
-      </View>
-    )
-
-  } else {
-    return <View style={{ height: (Dimensions.get("screen").width - 20) / 2, }}></View>
-  }
-
-}
 
 
 const AcctountDetail = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "", balance = 0 } = userStore
-  const dispatch = useDispatch()
-  const updateUserInfo = useCallback(
-    (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-    [dispatch]
-  )
   const [hideAmount, setHideAmount] = useState(false)
   const requestBalance = async () => {
     try {
       //@ts-ignore
       const { data, status } = await APIRouter.user_balance_token()
-      updateUserInfo({ ...userStore, balance: data.data.balance })
+      UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
     } catch (error) {
 
     }
@@ -274,7 +343,7 @@ const AcctountDetail = () => {
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
 
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
 
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
@@ -305,7 +374,7 @@ const AcctountDetail = () => {
             </View>
           </View>
           <TouchableOpacity onPress={() => {
-            push(PageName.PromotionListPage)
+            push(PageName.JDPromotionListPage)
           }}>
             <FastImage style={{ width: 86, height: 24 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/18/images/yhdh.png" }} />
           </TouchableOpacity>

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import { useSelector } from 'react-redux'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
@@ -27,7 +26,7 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { IGlobalState, UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import {
   defaultAdvertisement,
@@ -53,7 +52,7 @@ const LHTHomePage = ({ navigation }) => {
   const [roulette, setRoulette] = useState(null)
   const { tryPlay } = useTryPlay({})
   const { loginOut } = useLoginOut(PageName.LHTHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo;
   const { uid, avatar, usr, isTest }: UGUserModel = userStore
   const {
     loading,

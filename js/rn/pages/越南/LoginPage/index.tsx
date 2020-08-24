@@ -9,7 +9,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import APIRouter from '../../../public/network/APIRouter';
-import { ActionType } from '../../../redux/store/ActionTypes';
 import { UGStore } from '../../../redux/store/UGStore';
 import { pop, push, navigate } from '../../../public/navigation/RootNavigation';
 import useLoginIn from '../../../public/hooks/useLoginIn';
@@ -64,7 +63,7 @@ const VietnamLogin = ({ route, navigation }) => {
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo.data });
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
       }

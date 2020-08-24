@@ -12,21 +12,17 @@ import {
     View
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import {useSelector} from "react-redux";
-import {IGlobalState, UGStore} from "../../redux/store/UGStore";
+import {UGStore} from "../../redux/store/UGStore";
 import Icon from "react-native-vector-icons/FontAwesome"
 import PushHelper from "../../public/define/PushHelper";
 import useMemberItems from "../../public/hooks/useMemberItems";
-import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import {PageName} from "../../public/navigation/Navigation";
 import APIRouter from "../../public/network/APIRouter";
 import {ActionType} from "../../redux/store/ActionTypes";
-import {updateUserInfo, UserInfoReducer} from "../../redux/store/IGlobalStateHelper";
-import UGUserModel from "../../redux/model/全局/UGUserModel";
 
 const LLMinePage = ({navigation}) => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo
     const {uid = "", usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance} = userStore
     const {UGUserCenterItem} = useMemberItems()
     const [levelWidth, setLevelWidth] = useState(193)
@@ -42,14 +38,14 @@ const LLMinePage = ({navigation}) => {
 
     const refresh = async () => {
         const {data: userInfo} = await APIRouter.user_info()
-        UGStore.dispatch({type: ActionType.UpdateUserInfo, props: userInfo?.data});
+        UGStore.dispatch({type: 'merge', props: userInfo?.data});
         UGStore.save();
     }
 
     useEffect(() => {
         navigation.addListener('focus', async () => {
             const {data: userInfo} = await APIRouter.user_info()
-            UGStore.dispatch({type: ActionType.UpdateUserInfo, props: userInfo?.data});
+            UGStore.dispatch({type: 'merge', props: userInfo?.data});
             UGStore.save();
         });
         return (() => {

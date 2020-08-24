@@ -20,7 +20,7 @@ import {UGStore} from "../../redux/store/UGStore";
 import {ActionType} from "../../redux/store/ActionTypes";
 
 let errorTimes = 0
-export const LLLoginPage = ({ route, navigation }) => {
+export const LLLoginPage = ({ route, navigation, setProps }) => {
     const [acc, setAcc] = useState("")
     const [pwd, setPwd] = useState("")
     const {loginSuccessHandle} = useLoginIn()
@@ -59,8 +59,9 @@ export const LLLoginPage = ({ route, navigation }) => {
                 await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+                await UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
                 UGStore.save();
+                setProps()
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
             }
         } catch (error) {
@@ -93,6 +94,7 @@ export const LLLoginPage = ({ route, navigation }) => {
             OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
             setGGModalShow(false)
             await loginSuccessHandle(data, {account, pwd, isRemember})
+            setProps()
         } catch (error) {
             errorTimes += 1
             if (errorTimes >= 3) {

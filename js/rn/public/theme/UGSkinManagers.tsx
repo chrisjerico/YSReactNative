@@ -1,26 +1,25 @@
-import {UGThemeColor} from './UGThemeColor';
-import {XBJThemeColor} from './colors/XBJThemeColor';
-import {JDThemeColor} from './colors/JDThemeColor';
-import {JYThemeColor} from './colors/JYThemeColor';
-import {LHThemeColor} from './colors/LHThemeColor';
-import {XNHThemeColor} from './colors/XNHThemeColor';
-import {OtherThemeColor} from './colors/OtherThemeColor';
-import {GDBThemeColor} from './colors/GDBThemeColor';
+import { UGThemeColor } from './UGThemeColor';
+import { XBJThemeColor } from './colors/XBJThemeColor';
+import { JDThemeColor } from './colors/JDThemeColor';
+import { JYThemeColor } from './colors/JYThemeColor';
+import { LHThemeColor } from './colors/LHThemeColor';
+import { XNHThemeColor } from './colors/XNHThemeColor';
+import { OtherThemeColor } from './colors/OtherThemeColor';
+import { GDBThemeColor } from './colors/GDBThemeColor';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import chroma from 'chroma-js';
 import FUtils from '../tools/FUtils';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 import AppDefine from '../define/AppDefine';
-import {OCHelper} from '../define/OCHelper/OCHelper';
-import {NSValue} from '../define/OCHelper/OCBridge/OCCall';
-import {B_DEBUG} from '../tools/UgLog';
-import {ZLThemeColor} from './colors/ZLThemeColor';
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
+import { B_DEBUG } from '../tools/UgLog';
+import { ZLThemeColor } from './colors/ZLThemeColor';
+import { LCThemeColor } from "./colors/LCThemeColor";
+import { KSThemeColor } from "./colors/KSThemeColor";
+import { WNZThemeColor } from "./colors/WNZThemeColor";
+import { PYThemeColor } from './colors/PYThemeColor'
 import {LLThemeColor} from "./colors/LLThemeCololr";
-import {LCThemeColor} from "./colors/LCThemeColor";
-import {KSThemeColor} from "./colors/KSThemeColor";
-import {WNZThemeColor} from "./colors/WNZThemeColor";
-import {PYThemeColor} from './colors/PYThemeColor'
-
 export default class UGSkinManagers extends UGThemeColor {
     static allThemeColor: { [x: string]: UGThemeColor } = {
         ...JDThemeColor, // 经典
@@ -32,12 +31,11 @@ export default class UGSkinManagers extends UGThemeColor {
         ...GDBThemeColor,
         ...OtherThemeColor, // 其他
         ...LCThemeColor, //乐橙
-        ...LLThemeColor,
         ...KSThemeColor, // 凯时
         ...WNZThemeColor, // 威尼斯
-        ...PYThemeColor
+        ...PYThemeColor,
+        ...LLThemeColor,
     }
-
     // 更新皮肤
     static updateSkin(sysConf: UGSysConfModel) {
         const {
@@ -65,15 +63,17 @@ export default class UGSkinManagers extends UGThemeColor {
             22: `凯时`,
             21: `宝石红`,
             23: `威尼斯`,
+            25: '天空蓝',
             26: `白曜`,
         };
         console.log('pi fu =', mobileTemplateCategory);
         let key = dict[mobileTemplateCategory];
-        let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
+        key =`利来`;
+        let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
         theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
         theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
         theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
-        theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : '#ccc';
+        theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
         let skin = new UGSkinManagers();
         Object.assign(skin, Skin1);
         Object.assign(skin, theme);
@@ -97,7 +97,7 @@ export default class UGSkinManagers extends UGThemeColor {
             skin.skitType.indexOf('宝石红') == -1 &&
             skin.skitType.indexOf('六合厅') == -1 &&
             skin.skitType.indexOf('威尼斯') == -1 &&
-            skin.skitType.indexOf('利来') == -1
+            skin.skitString.indexOf(`利来`) == -1
         )
             return
 
@@ -158,6 +158,7 @@ export default class UGSkinManagers extends UGThemeColor {
                     ])
                 }
             }
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
         }
 
         // 刷新标签栏、导航条
@@ -167,7 +168,7 @@ export default class UGSkinManagers extends UGThemeColor {
             'UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:',
             [
                 '状态栏背景View',
-                {selectors: 'UGSkinManagers.currentSkin.navBarBgColor'},
+                { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' },
             ]
         )
     }

@@ -17,6 +17,7 @@ import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
+import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
 
 type APIListType =
   | 'game_homeGames'
@@ -34,6 +35,7 @@ type APIListType =
   | 'system_config'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
+  const [onlineSwitch, setOnlineSwitch] = useState(0)
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAds, setFloatAds] = useState<FloatADModel>()
   const [homeGames, setHomeGames] = useState<HomeGamesModel>()
@@ -74,17 +76,28 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
   }
   const init = () => {
-    OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-      httpClient.defaults.baseURL = host
-      if (coustomArray?.length > 0) {
-        let requests = []
-        for (const key in coustomArray) {
-          if (coustomArray.hasOwnProperty(key)) {
-            const element = coustomArray[key]
-            requests.push(APIRouter[element]())
-          }
+    if (Platform.OS == 'ios') {
+      OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+        initHost(host)
+      })
+    } else if (Platform.OS == 'android') {
+      ANHelper.call(NativeCommand.APP_HOST).then((host: string) => {
+        initHost(host)
+      })
+    }
+  }
+
+  const initHost = (host: string) => {
+    httpClient.defaults.baseURL = host
+    if (coustomArray?.length > 0) {
+      let requests = []
+      for (const key in coustomArray) {
+        if (coustomArray.hasOwnProperty(key)) {
+          const element = coustomArray[key]
+          requests.push(APIRouter[element]())
         }
-        Axios.all(requests)
+      }
+      Axios.all(requests)
           .then(
             Axios.spread((...res) => {
               for (const key in coustomArray) {
@@ -114,6 +127,7 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                       break
                     case 'system_onlineCount':
                       setOnlineNum(res[key]?.data?.data?.onlineUserCount)
+                      setOnlineSwitch(res[key]?.data?.data?.onlineSwitch)
                       break
                     case 'lhcdoc_lotteryNumber':
                       setLotteryNumber(res[key]?.data)
@@ -131,25 +145,25 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
                       break
                   }
                 }
+                setLoading(false)
               }
-              setLoading(false)
             })
           )
           .catch(error => {
             setLoading(false)
             console.log(error)
           })
-      } else {
-        Axios.all([
-          APIRouter.game_homeGames(),
-          APIRouter.system_banners(),
-          APIRouter.notice_latest(),
-          APIRouter.system_promotions(),
-          APIRouter.system_rankingList(),
-          APIRouter.system_onlineCount(),
-          APIRouter.activity_redBagDetail(),
-          APIRouter.system_floatAds(),
-        ])
+    } else {
+      Axios.all([
+        APIRouter.game_homeGames(),
+        APIRouter.system_banners(),
+        APIRouter.notice_latest(),
+        APIRouter.system_promotions(),
+        APIRouter.system_rankingList(),
+        APIRouter.system_onlineCount(),
+        APIRouter.activity_redBagDetail(),
+        APIRouter.system_floatAds(),
+      ])
           .then(
             Axios.spread((...res) => {
               setHomeGames(res?.[0]?.data)
@@ -160,15 +174,17 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
               setFloatAds(res?.[7]?.data)
               setNotice(res?.[2]?.data)
               setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
+              setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
               setLoading(false)
             })
           )
           .catch(err => {
             setLoading(false)
           })
-      }
-    })
+    }
+
   }
+
   const onRefresh = () => {
     init()
   }
@@ -188,7 +204,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     lotteryGames,
     onRefresh,
     noticeFormat,
-    originalNoticeString
+    originalNoticeString,
+    onlineSwitch
   }
 }
 export default useGetHomeInfo

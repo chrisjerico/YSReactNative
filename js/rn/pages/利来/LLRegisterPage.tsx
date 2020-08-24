@@ -7,13 +7,11 @@ import {navigate, popToRoot} from "../../public/navigation/RootNavigation";
 import {PageName} from "../../public/navigation/Navigation";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import APIRouter from "../../public/network/APIRouter";
-import {IGlobalState, UGStore} from "../../redux/store/UGStore";
-import {ActionType} from "../../redux/store/ActionTypes";
+import {UGStore} from "../../redux/store/UGStore";
 import UGUserModel from "../../redux/model/全局/UGUserModel";
 import {EventRegister} from "react-native-event-listeners";
 // @ts-ignore
 import md5 from 'blueimp-md5';
-import {useSelector} from "react-redux";
 
 export const LLRegisterPage = () => {
     const [acc, setAcc] = useState("")
@@ -21,8 +19,8 @@ export const LLRegisterPage = () => {
     const [confirmPwd, setConfirmPwd] = useState("")
     const [regType, setRegType] = useState<'user' | 'agent'>("user")
     const regex = RegExp("^[A-Za-z0-9]{6,15}$")
-    const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
-    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const SystemStore = UGStore.globalProps.sysConf
+    const sysStore = UGStore.globalProps.sysConf
     const {mobile_logo = "", rankingListSwitch} = sysStore
     const {
         hide_reco, // 代理人 0不填，1选填，2必填
@@ -55,7 +53,8 @@ export const LLRegisterPage = () => {
             //     delete requestData.slideCode
             // }
 
-            const {data, status} = await APIRouter.user_reg({
+            const {data, status} =
+                await APIRouter.user_reg({
                 usr: acc,
                 pwd: password,
                 regType: regType,
@@ -75,7 +74,7 @@ export const LLRegisterPage = () => {
                     await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
                     await OCHelper.call('UGUserModel.setCurrentUser:');
                     await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                    UGStore.dispatch({type: ActionType.Clear_User})
+                    UGStore.dispatch({type: 'reset'})
                 }
                 await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
                 await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
@@ -85,7 +84,7 @@ export const LLRegisterPage = () => {
                 await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
                 const {data: UserInfo,} = await APIRouter.user_info()
                 await OCHelper.call('UGUserModel.setCurrentUser:', [{...UserInfo.data, ...UGUserModel.getYS(loginData?.data)}]);
-                UGStore.dispatch({type: ActionType.UpdateUserInfo, props: UserInfo?.data});
+                UGStore.dispatch({type: 'merge', props: UserInfo?.data});
 
                 UGStore.save();
                 OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
