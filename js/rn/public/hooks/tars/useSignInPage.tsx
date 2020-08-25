@@ -5,7 +5,7 @@ import UGSysConfModel, {
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { navigate } from '../../navigation/RootNavigation'
+import { navigate, pop } from '../../navigation/RootNavigation'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
@@ -23,6 +23,7 @@ interface UseSignInPage {
   isRemember: boolean;
   account: string;
   password: string;
+  registerPage: PageName
 }
 
 const useSignInPage = ({
@@ -32,8 +33,9 @@ const useSignInPage = ({
   isRemember,
   account,
   password,
+  registerPage
 }: UseSignInPage) => {
-  const { type }: any = navigation?.dangerouslyGetState()
+  const { type }: any = navigation?.dangerouslyGetState() ?? {}
 
   // states
   const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
@@ -42,11 +44,28 @@ const useSignInPage = ({
     nc_sig: undefined,
   })
   const [hidePassword, setHidePassword] = useState(true)
-  const reloadSliding = useRef(null)
+  const slidingVerificationRrf = useRef(null)
 
   const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
 
-  const jumpToHomePage = () => {
+  const goBack = () => {
+    switch (type) {
+      case 'tab':
+        navigate(homepage, {})
+        break
+      case 'stack':
+        pop()
+        break
+      default:
+        console.log('------no navigation type------')
+    }
+  }
+
+  const goToRegisterPage = () => {
+    navigate(registerPage, {})
+  }
+
+  const goToHomePage = () => {
     navigate(homepage, {})
   }
 
@@ -60,7 +79,7 @@ const useSignInPage = ({
   const { logIn } = useLogIn({
     onSuccess: () => {
       if (parseInt(login_to)) {
-        jumpToHomePage()
+        goToHomePage()
       } else {
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
@@ -71,16 +90,25 @@ const useSignInPage = ({
         nc_token: undefined,
         nc_sig: undefined,
       })
-      reloadSliding?.current?.reload()
+      slidingVerificationRrf?.current?.reload()
     },
   })
 
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      jumpToHomePage()
+      goToHomePage()
     },
     onError: () => { },
   })
+
+  const signIn = () => {
+    logIn({
+      account,
+      //@ts-ignore
+      password: password?.md5(),
+      isRemember,
+    })
+  }
 
   // effects
   useEffect(() => {
@@ -113,13 +141,22 @@ const useSignInPage = ({
 
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
   const valid = account && password && loginVCode_valid
-
+  console.log("-----------valid-----------", valid)
+  console.log("-----------account-----------", account)
+  console.log("-----------password-----------", password)
+  console.log("-----------loginVCode_valid-----------", loginVCode_valid)
   return {
     hidePassword,
     setHidePassword,
     valid,
-    logIn,
-    tryPlay
+    signIn,
+    tryPlay,
+    goBack,
+    loginVCode,
+    goToHomePage,
+    goToRegisterPage,
+    slidingVerificationRrf,
+    setSlidingVerification
   }
 }
 
