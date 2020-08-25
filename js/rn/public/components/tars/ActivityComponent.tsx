@@ -14,7 +14,7 @@ interface ActivityComponentProps {
   onPress: () => any;
   show?: any;
   enableFastImage?: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
 }
 
 const ActivityComponent = ({
@@ -42,11 +42,7 @@ const ActivityComponent = ({
           }}
         >
           <View style={styles.iconContainer}>
-            <AntDesign
-              name={'closecircleo'}
-              size={scale(35)}
-              color={'red'}
-            />
+            <AntDesign name={'closecircleo'} size={scale(35)} color={'red'} />
           </View>
         </TouchableWithoutFeedback>
       </View>

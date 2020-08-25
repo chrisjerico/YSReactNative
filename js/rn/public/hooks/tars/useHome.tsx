@@ -58,8 +58,8 @@ const useHome = () => {
       !loading && setRefresh(true)
       const response = await Promise.all(apis)
       // globals state
-      const userInfo = response[0]?.data?.data
-      const sysConf = response[1]?.data?.data
+      const userInfo = response[0]?.data?.data ?? {}
+      const sysConf = response[1]?.data?.data ?? {}
       const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf
       //@ts-ignore
       UGStore.dispatch({ type: 'merge', userInfo, sysConf: { loginVCode, login_to, adSliderTimer, appDownloadUrl } })

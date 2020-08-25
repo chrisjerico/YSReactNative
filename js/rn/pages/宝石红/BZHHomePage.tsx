@@ -101,7 +101,7 @@ const BZHHomePage = () => {
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const ads = homeAd?.data ?? []
 
-  console.log('--------寶石紅渲染--------', refresh)
+  console.log('--------寶石紅渲染--------')
   if (loading) {
     return <ProgressCircle />
   } else {

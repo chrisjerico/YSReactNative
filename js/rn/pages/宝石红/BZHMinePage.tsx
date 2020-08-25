@@ -72,7 +72,6 @@ const BZHMinePage = (props) => {
   const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
   // effects
 
-  console.log("----------avatar-------", avatar)
   useEffect(() => {
     getAvatarList()
     setProps({

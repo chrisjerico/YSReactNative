@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native'
-import { Button, Icon } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import SlidingVerification from '../../public/components/SlidingVerification'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
@@ -22,6 +22,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
+import CheckBox from './views/CheckBox'
 import Form from './views/Form'
 
 interface SlidingVerification {
@@ -115,15 +116,20 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   useEffect(() => {
     switch (type) {
       case 'tab':
-        const unsubscribe = navigation.addListener('focus', async () => {
-          const isRemember = await OCHelper.call(
+        const unsubscribe = navigation.addListener('focus', () => {
+          OCHelper.call(
             'NSUserDefaults.standardUserDefaults.boolForKey:',
             ['isRememberPsd']
-          )
-          cleanAccountPassword(isRemember)
+          ).then((isRemember) => {
+            console.log("--------isRemember--------", isRemember)
+            cleanAccountPassword(isRemember)
+          }).catch((error) => {
+            console.log(error)
+          })
         })
         return unsubscribe
       case 'stack':
+        console.log("-------here------")
         cleanAccountPassword(isRemember)
         break
       default:
@@ -232,42 +238,6 @@ const BZHSignInPage = (props: BZHSignInStore) => {
   )
 }
 
-const CheckBox = ({ check, onPress }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <View
-      style={{
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-      }}
-    >
-      {check ? (
-        <Icon
-          type={'feather'}
-          name={'check'}
-          color={'#ffffff'}
-          containerStyle={{
-            width: scale(25),
-            backgroundColor: 'blue',
-            aspectRatio: 1,
-            justifyContent: 'center',
-          }}
-          size={scale(20)}
-        />
-      ) : (
-          <View
-            style={{
-              width: scale(25),
-              aspectRatio: 1,
-              borderColor: 'blue',
-              borderWidth: scale(1),
-            }}
-          ></View>
-        )}
-      <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
-    </View>
-  </TouchableWithoutFeedback>
-)
 
 const styles = StyleSheet.create({
   container: {
