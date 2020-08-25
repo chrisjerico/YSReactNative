@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
@@ -20,6 +15,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './views/ProfileBlock'
+import config from './config'
 
 const BZHMinePage = (props: any) => {
   const { setProps } = props
@@ -41,10 +37,11 @@ const BZHMinePage = (props: any) => {
     signOut,
     openAvatarList,
     closeAvatarList,
-    goBack
+    goBack,
   } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
 
   // data handle
+  console.log('----------userCenterItems--------', userCenterItems)
   const features = userCenterItems?.slice(0, 4) ?? []
   const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
@@ -71,11 +68,7 @@ const BZHMinePage = (props: any) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}
-        refreshControl={
-          <RefreshControlComponent
-            onRefresh={fetchAvatarList}
-          />
-        }
+        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
           onPressAvatar={openAvatarList}
@@ -94,7 +87,7 @@ const BZHMinePage = (props: any) => {
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
-                logo={logo}
+                logo={logo ?? config?.defaultProfileToolLogos[index]}
                 title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
@@ -108,7 +101,7 @@ const BZHMinePage = (props: any) => {
               key={index}
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
-              logo={logo}
+              logo={logo ?? config?.defaultFeatureLogos[code]}
               unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
               onPress={() => {

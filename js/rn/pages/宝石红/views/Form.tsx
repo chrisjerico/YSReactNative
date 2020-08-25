@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { KeyboardType, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
 
