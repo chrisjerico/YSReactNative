@@ -1,13 +1,6 @@
-import UGUserModel from '../model/全局/UGUserModel'
-import UGSysConfModel from '../model/全局/UGSysConfModel'
-import { UGStore } from './UGStore'
-import NetworkRequest1 from '../../public/network/NetworkRequest1'
-import UGSkinManagers from '../../public/theme/UGSkinManagers'
-import { Platform } from 'react-native'
-import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
 import APIRouter from '../../public/network/APIRouter'
-import { httpClient } from '../../public/network/httpClient'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import NetworkRequest1 from '../../public/network/NetworkRequest1'
+import { UGStore } from './UGStore'
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
@@ -23,26 +16,32 @@ export class IGlobalStateHelper {
 }
 
 export async function updateUserInfo() {
-  console.log('-------------updateUserInfo-------------')
-  if (
-    httpClient.defaults.baseURL == 'undefined' ||
-    !httpClient.defaults.baseURL
-  )
-    return
   try {
     const { data } = await APIRouter.user_info()
-    if (data.data) {
+    if (data?.data) {
       UGStore.dispatch({ type: 'merge', userInfo: data?.data });
       UGStore.save();
     } else {
-      throw { message: data.msg }
+      throw { message: data?.msg ?? '更新使用者失败' }
     }
   } catch (error) {
-    console.log(error)
+    console.log("-------------updateUserInfo error-------------", error)
     // await OCHelper.call('UGUserModel.setCurrentUser:', []);
     // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
     // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-    // UGStore.dispatch({ type: 'reset', userInfo: {} });
-    // UGStore.save();
+  }
+}
+
+export async function updateSysConf() {
+  try {
+    const { data } = await APIRouter.system_config()
+    if (data?.data) {
+      UGStore.dispatch({ type: 'merge', props: data?.data })
+      UGStore.save()
+    } else {
+      throw { message: data?.msg }
+    }
+  } catch (error) {
+
   }
 }

@@ -1,25 +1,27 @@
-import { UGThemeColor } from './UGThemeColor';
-import { XBJThemeColor } from './colors/XBJThemeColor';
-import { JDThemeColor } from './colors/JDThemeColor';
-import { JYThemeColor } from './colors/JYThemeColor';
-import { LHThemeColor } from './colors/LHThemeColor';
-import { XNHThemeColor } from './colors/XNHThemeColor';
-import { OtherThemeColor } from './colors/OtherThemeColor';
-import { GDBThemeColor } from './colors/GDBThemeColor';
+import {UGThemeColor} from './UGThemeColor';
+import {XBJThemeColor} from './colors/XBJThemeColor';
+import {JDThemeColor} from './colors/JDThemeColor';
+import {JYThemeColor} from './colors/JYThemeColor';
+import {LHThemeColor} from './colors/LHThemeColor';
+import {XNHThemeColor} from './colors/XNHThemeColor';
+import {OtherThemeColor} from './colors/OtherThemeColor';
+import {GDBThemeColor} from './colors/GDBThemeColor';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import chroma from 'chroma-js';
 import FUtils from '../tools/FUtils';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
 import AppDefine from '../define/AppDefine';
-import { OCHelper } from '../define/OCHelper/OCHelper';
-import { NSValue } from '../define/OCHelper/OCBridge/OCCall';
-import { B_DEBUG } from '../tools/UgLog';
-import { ZLThemeColor } from './colors/ZLThemeColor';
-import { LCThemeColor } from "./colors/LCThemeColor";
-import { KSThemeColor } from "./colors/KSThemeColor";
-import { WNZThemeColor } from "./colors/WNZThemeColor";
-import { PYThemeColor } from './colors/PYThemeColor'
+import {OCHelper} from '../define/OCHelper/OCHelper';
+import {NSValue} from '../define/OCHelper/OCBridge/OCCall';
+import {B_DEBUG} from '../tools/UgLog';
+import {ZLThemeColor} from './colors/ZLThemeColor';
+import {LCThemeColor} from "./colors/LCThemeColor";
+import {KSThemeColor} from "./colors/KSThemeColor";
+import {WNZThemeColor} from "./colors/WNZThemeColor";
+import {PYThemeColor} from './colors/PYThemeColor'
 import {LLThemeColor} from "./colors/LLThemeCololr";
+import {BZHThemeColor} from './colors/BZHThemeColor';
+
 export default class UGSkinManagers extends UGThemeColor {
     static allThemeColor: { [x: string]: UGThemeColor } = {
         ...JDThemeColor, // 经典
@@ -34,8 +36,10 @@ export default class UGSkinManagers extends UGThemeColor {
         ...KSThemeColor, // 凯时
         ...WNZThemeColor, // 威尼斯
         ...PYThemeColor,
+        ...BZHThemeColor, // 宝石红
         ...LLThemeColor,
     }
+
     // 更新皮肤
     static updateSkin(sysConf: UGSysConfModel) {
         const {
@@ -68,7 +72,8 @@ export default class UGSkinManagers extends UGThemeColor {
         };
         console.log('pi fu =', mobileTemplateCategory);
         let key = dict[mobileTemplateCategory];
-        let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
+        key = `利来`
+        let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
         theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
         theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
         theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex();
@@ -156,10 +161,10 @@ export default class UGSkinManagers extends UGThemeColor {
                         key,
                     ])
                 }
+                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
             }
             await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
         }
-
         // 刷新标签栏、导航条
         await OCHelper.call('UGTabbarController.shared.setTabbarStyle')
         // 刷新状态栏
@@ -167,7 +172,7 @@ export default class UGSkinManagers extends UGThemeColor {
             'UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:',
             [
                 '状态栏背景View',
-                { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' },
+                {selectors: 'UGSkinManagers.currentSkin.navBarBgColor'},
             ]
         )
     }

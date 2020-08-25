@@ -19,7 +19,6 @@ import useMemberItems from "../../public/hooks/useMemberItems";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import {PageName} from "../../public/navigation/Navigation";
 import APIRouter from "../../public/network/APIRouter";
-import {ActionType} from "../../redux/store/ActionTypes";
 
 const LLMinePage = ({navigation}) => {
     const userStore = UGStore.globalProps.userInfo
@@ -208,7 +207,7 @@ const LLMinePage = ({navigation}) => {
                     alignItems: 'center',
                     borderRadius: 8,
                     marginTop: 10,
-                    marginBottom: 10
+                    marginBottom: 100,
                 }}>
                     <Text style={{color: 'white', fontSize: 21}}>退出登录</Text>
                 </TouchableOpacity>

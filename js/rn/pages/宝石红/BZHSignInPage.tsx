@@ -1,31 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  TouchableWithoutFeedback,
+  View
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import SlidingVerification from '../../public/components/SlidingVerification'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
-import useLoginIn from '../../public/hooks/useLoginIn'
-import useTryPlay from '../../public/hooks/useTryPlay'
+import useLogIn from '../../public/hooks/tars/useLogIn'
+import useTryPlay from '../../public/hooks/tars/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import {
-  navigate,
-  pop,
-  popToRoot,
-} from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../public/tools/Scale'
-import Header from '../../public/views/tars/Header'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
-import Form from './views/Form'
+import { scale, scaleHeight } from '../../public/tools/Scale'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
+import Form from './views/Form'
+
+interface SlidingVerification {
+  nc_csessionid: string;
+  nc_token: string;
+  nc_sig: string;
+}
+import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 
 // store
 export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
@@ -34,42 +39,122 @@ export interface BZHSignInStore extends UGBasePageProps<BZHSignInStore> {
   password?: string | any;
 }
 
-
 const BZHSignInPage = (props: BZHSignInStore) => {
-  const { loginSuccessHandle } = useLoginIn()
-  const { tryPlay } = useTryPlay({ onSuccess: popToRoot })
-  const signInStore = UGStore.getPageProps(PageName.BZHSignInPage);
-  const { isRemember, account, password }: BZHSignInStore = signInStore
-  const { setProps }: BZHSignInStore = props
+  const {
+    isRemember,
+    account,
+    password,
+    navigation,
+    setProps,
+  }: BZHSignInStore = props
   const [hidePassword, setHidePassword] = useState(true)
+  const reloadSliding = useRef(null)
 
-  useEffect(() => {
+  const { loginVCode }: UGSysConfModel = UGStore.globalProps.sysConf
+
+  // states
+  const [slidingVerification, setSlidingVerification] =
+    useState<SlidingVerification>
+      ({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+
+  const { type }: any = navigation?.dangerouslyGetState()
+
+  const jump = () => {
+    switch (type) {
+      case 'tab':
+        navigate(PageName.BZHHomePage, {})
+        break
+      case 'stack':
+        pop()
+        break
+      default:
+        console.log('------no navigation type------')
+    }
+  }
+
+  const jumpToHomePage = () => {
+    navigate(PageName.BZHHomePage, {})
+  }
+
+  const cleanAccountPassword = (isRemember: boolean) => {
     if (!isRemember) {
       console.log('----忘記帳密----')
       setProps({ account: null, password: null })
     }
+  }
+
+  const { logIn } = useLogIn({
+    onSuccess: () => {
+      jumpToHomePage()
+    },
+    onError: () => {
+      setSlidingVerification({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+      reloadSliding?.current?.reload()
+    },
+  })
+
+  const { tryPlay } = useTryPlay({
+    onSuccess: () => {
+      jumpToHomePage()
+    },
+    onError: () => { },
+  })
+
+  useEffect(() => {
+    switch (type) {
+      case 'tab':
+        const unsubscribe = navigation.addListener('focus', async () => {
+          const isRemember = await OCHelper.call(
+            'NSUserDefaults.standardUserDefaults.boolForKey:',
+            ['isRememberPsd']
+          )
+          cleanAccountPassword(isRemember)
+        })
+        return unsubscribe
+      case 'stack':
+        cleanAccountPassword(isRemember)
+        break
+      default:
+        console.log('------no navigation type------')
+    }
   }, [])
 
-  const valid = account && password
+  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
+
+  const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
+  const valid = account && password && loginVCode_valid
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header
-        color={'#e53333'}
-        title={'登陆'}
-        onPressBack={pop}
-        onPressCustomerService={() => {
-          PushHelper.pushUserCenterType(UGUserCenterType.QQ客服)
-        }}
-      />
-      <ScrollView style={styles.container}>
+    <>
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+        <TouchableWithoutFeedback onPress={jump}>
+          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+        </TouchableWithoutFeedback>
+        <Text style={styles.headerTitle}>{'登录'}</Text>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }}
+        >
+          <Text style={styles.headerTitle}>{'客服'}</Text>
+        </TouchableWithoutFeedback>
+      </SafeAreaHeader>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
           <Form
             show={true}
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={(value: any) => {
-              setProps({ account: value });
+              setProps({ account: value })
             }}
           />
           <Form
@@ -85,55 +170,34 @@ const BZHSignInPage = (props: BZHSignInStore) => {
               name: 'lock',
             }}
             value={password}
-            onChangeText={(value: any) =>
-              setProps({ password: value })
-            }
+            onChangeText={(value: any) => setProps({ password: value })}
             secureTextEntry={hidePassword}
             showRightIcon
           />
           <CheckBox
             check={isRemember}
-            onPress={() =>
-              setProps({ isRemember: !isRemember })
-            }
+            onPress={() => setProps({ isRemember: !isRemember })}
           />
+          {loginVCode ? (
+            <ReloadSlidingVerification
+              ref={reloadSliding}
+              onChange={setSlidingVerification}
+              containerStyle={{ marginBottom: scale(20) }}
+            />
+          ) : null}
           <Button
-            title={'立即登陆'}
+            title={'立即登录'}
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
-            onPress={async () => {
-              try {
-                if (account && password) {
-                  OCHelper.call('SVProgressHUD.showWithStatus:', [
-                    '正在登录...',
-                  ])
-                  const { data } = await APIRouter.user_login(
-                    account,
-                    password.md5()
-                  )
-                  if (data.data == null) {
-                    const error = data?.msg
-                    OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                      error ?? '登录失敗！',
-                    ])
-                  } else {
-                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-                      '登录成功！',
-                    ])
-                    await loginSuccessHandle(data, {
-                      account,
-                      pwd: password,
-                      isRemember,
-                    })
-                  }
-                }
-              } catch (error) {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-                  error ?? '登入失败',
-                ])
-              }
+            onPress={() => {
+              logIn({
+                account,
+                password: password?.md5(),
+                isRemember,
+              })
             }}
+            activeOpacity={1}
           />
           <Button
             title={'快速注册'}
@@ -147,66 +211,63 @@ const BZHSignInPage = (props: BZHSignInStore) => {
             onPress={() => {
               navigate(PageName.BZHRegisterPage, {})
             }}
+            activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
-            <TouchableOpacity onPress={tryPlay}>
+            <TouchableWithoutFeedback onPress={tryPlay}>
               <Text>{'免费试玩'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={popToRoot}>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={jumpToHomePage}>
               <Text>{'返回首页'}</Text>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </>
   )
 }
 
 const CheckBox = ({ check, onPress }) => (
-  <TouchableOpacity
-    style={{
-      width: '100%',
-      flexDirection: 'row',
-      alignItems: 'flex-end',
-    }}
-    onPress={onPress}
-  >
-    {check ? (
-      <Icon
-        type={'feather'}
-        name={'check'}
-        color={'#ffffff'}
-        containerStyle={{
-          width: scale(25),
-          backgroundColor: 'blue',
-          aspectRatio: 1,
-          justifyContent: 'center',
-        }}
-        size={scale(20)}
-      />
-    ) : (
-        <View
-          style={{
+  <TouchableWithoutFeedback onPress={onPress}>
+    <View
+      style={{
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+      }}
+    >
+      {check ? (
+        <Icon
+          type={'feather'}
+          name={'check'}
+          color={'#ffffff'}
+          containerStyle={{
             width: scale(25),
+            backgroundColor: 'blue',
             aspectRatio: 1,
-            borderColor: 'blue',
-            borderWidth: scale(1),
+            justifyContent: 'center',
           }}
-        ></View>
-      )}
-    <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
-  </TouchableOpacity>
+          size={scale(20)}
+        />
+      ) : (
+          <View
+            style={{
+              width: scale(25),
+              aspectRatio: 1,
+              borderColor: 'blue',
+              borderWidth: scale(1),
+            }}
+          ></View>
+        )}
+      <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
+    </View>
+  </TouchableWithoutFeedback>
 )
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
-    flex: 1,
-  },
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
-    marginBottom: scale(70),
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   whiteBlock: {
     backgroundColor: '#ffffff',
@@ -216,6 +277,7 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
+    marginBottom: scaleHeight(70),
   },
   buttonContainer: {
     width: '100%',
@@ -234,6 +296,10 @@ const styles = StyleSheet.create({
     backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
   },
 })
 

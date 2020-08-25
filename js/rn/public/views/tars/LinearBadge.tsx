@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   ViewStyle,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
@@ -27,7 +27,7 @@ const LinearBadge = ({
   containerStyle,
   textStyle,
 }: LinearBadgeProps) => (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableWithoutFeedback onPress={onPress}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
@@ -45,7 +45,7 @@ const LinearBadge = ({
           />
         ) : null}
       </LinearGradient>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 
 const styles = StyleSheet.create({

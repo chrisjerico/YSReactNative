@@ -1,11 +1,11 @@
-import {AsyncStorage} from 'react-native';
-import {Action, Unsubscribe} from 'redux';
+import { AsyncStorage } from 'react-native';
+import { Action, Unsubscribe } from 'redux';
+import { UGBasePageProps } from '../../pages/base/UGPage';
+import { PageName } from '../../public/navigation/Navigation';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
-import {AsyncStorageKey} from './IGlobalStateHelper';
-import {PageName} from '../../public/navigation/Navigation';
-import BettingReducer, {BettingReducerProps, BettingReducerActions} from '../reducer/BettingReducer';
-import {UGBasePageProps} from '../../pages/base/UGPage';
+import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
+import { AsyncStorageKey } from './IGlobalStateHelper';
 
 // 整个State的树结构
 export interface IGlobalState {
@@ -46,8 +46,8 @@ export interface UGAction<P = {}> extends Action {
 }
 
 export class UGStore {
-    // Store
-    static globalProps: IGlobalState = {userInfo: {}, sysConf: {}};
+  // Store
+  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any };
 
     // 发送通知
     private static callbacks: { page: PageName, callback: () => void }[] = [];
@@ -70,10 +70,10 @@ export class UGStore {
         };
     }
 
-    // 获取当前页面Props
-    static getPageProps<P extends UGBasePageProps>(page: PageName): P {
-        return this.globalProps[page] ?? {};
-    }
+  // 获取当前页面Props
+  static getPageProps<P extends UGBasePageProps>(page: PageName): P {
+    return this.globalProps[page] ?? {};
+  }
 
     // 从本地获取所有数据，并刷新UI
     static refreshFromLocalData() {

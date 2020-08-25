@@ -3,7 +3,7 @@ import {
   Animated,
   Easing,
   StyleSheet,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   ViewStyle
 } from 'react-native'
 import { Icon } from 'react-native-elements'
@@ -36,7 +36,7 @@ const ReLoadComponent = ({
         { transform: [{ rotateZ: spinDeg }] },
       ]}
     >
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         onPress={() => {
           if (!reload.current) {
             console.log('----動畫----')
@@ -60,7 +60,7 @@ const ReLoadComponent = ({
           size={scale(size)}
           color={color}
         />
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     </Animated.View>
   )
 }

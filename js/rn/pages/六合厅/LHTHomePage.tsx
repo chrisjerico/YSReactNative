@@ -1,107 +1,147 @@
-import React, { useEffect, useRef, useState } from 'react'
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AnnouncementModal from '../../public/components/tars/AnnouncementModal'
+import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import {
+  OCEvent,
+  OCEventType
+} from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import useLoginOut from '../../public/hooks/useLoginOut'
+import useActivity from '../../public/hooks/tars/useActivity'
+import useHome from '../../public/hooks/tars/useHome'
+import useLogOut from '../../public/hooks/tars/useLogOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
+import {
+  getActivityPosition,
+  getHtml5Image,
+  ToastError,
+  ToastSuccess,
+  updateUserInfo
+} from '../../public/tools/tars'
+import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomGap from '../../public/views/tars/BottomGap'
+import BottomLogo from '../../public/views/tars/BottomLogo'
+import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
-import {
-  defaultAdvertisement,
-  defaultBottomTools,
-  defaultCustomerServiceLogo,
-  defaultDowloadUrl,
-  defaultHomeHeaderLeftLogo,
-  defaultHomeHeaderRightLogo,
-  defaultLotteryLogo,
-  defaultNoticeLogo
-} from './helpers/config'
-import BottomToolBlock from './views/homes/BottomToolBlock'
-import CouponBlock from './views/homes/CouponBlock'
-import Header from './views/homes/Header'
-import NavBlock from './views/homes/NavBlock'
+import config from './config'
+import BottomToolBlock from './views/BottomToolBlock'
+import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
+import NavBlock from './views/NavBlock'
 
-const LHTHomePage = ({ navigation }) => {
+const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
-  // hooks
-  const announcementModal = useRef(null)
-  const [roulette, setRoulette] = useState(null)
-  const { tryPlay } = useTryPlay({})
-  const { loginOut } = useLoginOut(PageName.LHTHomePage)
-  const userStore = UGStore.globalProps.userInfo;
-  const { uid, avatar, usr, isTest }: UGUserModel = userStore
+  // states
+  const [leftGames, setLeftGames] = useState(config?.preferences)
+  // functions
+  const { setProps } = props
+  const { tryPlay } = useTryPlay({
+    onSuccess: () => {
+      ToastSuccess('登录成功！')
+    },
+    onError: (error) => {
+      ToastError(error ?? '試玩失败')
+    },
+  })
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      setProps()
+    },
+  })
+
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: '#ffffff',
+      },
+    })
+  }
+  // stores
+  const {
+    uid,
+    avatar,
+    usr,
+    isTest,
+    balance,
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const {
+    mobile_logo,
+    webName,
+    m_promote_pos,
+    rankingListSwitch,
+  }: UGSysConfModel = UGStore.globalProps.sysConf
+
+  // effect
   const {
     loading,
-    banner,
-    homeGames,
-    notice,
-    lotteryNumber,
-    categoryList,
-    onlineNum,
-    couponListData,
-    redBag,
     rankList,
-  } = useGetHomeInfo([
-    'system_banners',
-    'notice_latest',
-    'game_homeGames',
-    'lhcdoc_lotteryNumber',
-    'lhcdoc_categoryList',
-    'system_onlineCount',
-    'system_promotions',
-    'activity_redBagDetail',
-    'system_rankingList',
-  ])
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('------focus------')
-      updateUserInfo()
-    })
-    return unsubscribe
-  }, [])
+    banner,
+    homeGame,
+    notice,
+    onlineNum,
+    couponList,
+    systemConfig,
+    lotteryNumber,
+    refreshHome,
+  } = useHome()
+
+  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
-    if (uid) {
-      APIRouter.activity_turntableList().then((value) => {
-        setRoulette(value?.data?.data)
-      })
+    if (notice?.data?.popup && !B_DEBUG) {
+      PushHelper.pushAnnouncement(announcements)
     }
-  }, [uid])
+  }, [notice])
 
+  useEffect(() => {
+    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+      try {
+        await updateUserInfo()
+        setProps()
+      } catch (error) {
+        console.log(error)
+      }
+    })
+    return () => {
+      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+    }
+  }, [])
   // data handle
+  const appDownloadUrl = systemConfig?.data?.appDownloadUrl
+  const bannersInterval = parseInt(banner?.data?.interval)
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
-  const announcements = notice?.data?.popup ?? []
+  const announcements =
+    notice?.data?.popup?.map((item: any) => {
+      return Object.assign(
+        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
+        item
+      )
+    }) ?? []
   const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 8) ?? []
-  const icons = homeGames?.data?.icons ?? []
-  const coupons = couponListData?.data?.list ?? []
+    homeGame?.data?.navs
+      ?.sort((a: any, b: any) => a.sort - b.sort)
+      .slice(0, 8) ?? []
+  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
@@ -119,274 +159,340 @@ const LHTHomePage = ({ navigation }) => {
     },
     ...lotterys.slice(6),
   ]
-  const leftGames = categoryList?.data ?? []
   const rightGames =
-    icons?.map((tab) => {
+    homeGame?.data?.icons?.map((tab) => {
       const { list, name } = tab
       const games = list?.filter((ele) => ele.levelType == '1')
       return { games, name }
     }) ?? []
 
-  // render
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      {loading ? (
-        <ProgressCircle />
-      ) : (
-          <>
-            <Header
-              avatar={avatar}
-              name={isTest ? '遊客' : usr}
-              showLogout={uid ? true : false}
-              leftLogo={defaultHomeHeaderLeftLogo}
-              rightLogo={defaultHomeHeaderRightLogo}
-              onPressSignOut={loginOut}
-              onPressSignIn={PushHelper.pushLogin}
-              onPressSignUp={PushHelper.pushRegister}
-              onPressTryPlay={tryPlay}
-              onPressLogo={() => {
-                push(PageName.JDPromotionListPage)
+  if (loading) {
+    return <ProgressCircle />
+  } else {
+    return (
+      <>
+        <SafeAreaHeader
+          headerColor={LHThemeColor.六合厅.themeColor}
+          containerStyle={{ paddingHorizontal: scale(10) }}
+        >
+          <HomeHeader
+            avatar={isTest ? getHtml5Image(18, 'money-2') : avatar}
+            name={usr}
+            showLogout={uid ? true : false}
+            leftLogo={mobile_logo}
+            rightLogo={getHtml5Image(14, 'top_yhhd')}
+            onPressSignOut={logOut}
+            onPressSignIn={PushHelper.pushLogin}
+            onPressSignUp={PushHelper.pushRegister}
+            onPressTryPlay={tryPlay}
+            onPressLogo={goToJDPromotionListPage}
+          />
+        </SafeAreaHeader>
+        <ScrollView
+          style={styles.container}
+          scrollEnabled={true}
+          refreshControl={
+            <RefreshControlComponent
+              onRefresh={async () => {
+                try {
+                  await Promise.all([refreshHome(), refreshActivity()])
+                  PushHelper.pushAnnouncement(announcements)
+                } catch (error) {
+                  console.log(error)
+                }
               }}
             />
-            <ScrollView
-              style={styles.container}
-              scrollEnabled={true}
-              refreshControl={
-                <RefreshControl
-                  refreshing={false}
-                  onRefresh={() => {
-                    announcementModal?.current?.reload()
+          }
+        >
+          <BannerBlock
+            autoplayTimeout={bannersInterval}
+            onlineNum={onlineNum}
+            banners={banners}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, pic } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={pic}
+                  resizeMode={'stretch'}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
                   }}
                 />
+              )
+            }}
+          />
+          <View style={styles.contentContainer}>
+            <NoticeBlock
+              containerStyle={styles.subComponent}
+              notices={notices}
+              logo={getHtml5Image(14, 'notice')}
+              onPressNotice={({ content }) => {
+                PushHelper.pushNoticePopUp(content)
+              }}
+            />
+            <NavBlock
+              containerStyle={styles.subComponent}
+              navs={navs}
+              lotterys={plusLotterys}
+              date={lotteryDate}
+              advertisement={getHtml5Image(14, 'banner', 'gif')}
+              lotteryLogo={getHtml5Image(14, 'tjzx')}
+              balance={balance}
+              customerServiceLogo={getHtml5Image(14, 'zxkf')}
+              onPressSavePoint={() =>
+                PushHelper.pushUserCenterType(UGUserCenterType.存款)
               }
-            >
-              <BannerBlock
-                onlineNum={onlineNum}
-                banners={banners}
-                renderBanner={(item, index) => {
-                  const { linkCategory, linkPosition, pic } = item
+              onPressGetPoint={() =>
+                PushHelper.pushUserCenterType(UGUserCenterType.取款)
+              }
+              onPressAd={() =>
+                PushHelper.pushLottery(LotteryType.新加坡六合彩)
+              }
+              onPressSmileLogo={() =>
+                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+              }
+              renderNav={(item, index) => {
+                const { icon, name, logo, gameId } = item
+                return (
+                  <GameButton
+                    key={index}
+                    showSecondLevelIcon={false}
+                    containerStyle={{ width: '25%', height: '50%' }}
+                    imageContainerStyle={{ width: '50%' }}
+                    enableCircle={false}
+                    logo={icon ? icon : logo}
+                    title={name}
+                    onPress={() => {
+                      if (gameId == 9) {
+                        goToJDPromotionListPage()
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
+                    }}
+                  />
+                )
+              }}
+              renderLottery={(item, index) => {
+                const { number, color, sx, showMore } = item
+                return (
+                  <LotteryBall
+                    key={index}
+                    score={number}
+                    color={color}
+                    text={sx}
+                    showMore={showMore}
+                    onPress={() =>
+                      PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
+                    }
+                  />
+                )
+              }}
+            />
+            <TabComponent
+              rowHeight={scale(200)}
+              activeTabColor={'#ff8610'}
+              unActiveTabColor={'#bbbbbb'}
+              containerStyle={styles.subComponent}
+              leftGames={leftGames?.concat(config?.moreLottery)}
+              rightGames={rightGames}
+              renderLeftGame={(item, index) => {
+                const { title, logo, des, gameType, selected, gameId } = item
+                const logoUrl = getHtml5Image(14, logo)
+                if (selected) {
                   return (
-                    <TouchableImage
+                    <GameButton
+                      showSecondLevelIcon={false}
                       key={index}
-                      pic={pic}
+                      logo={logoUrl}
+                      title={title}
+                      subTitle={des}
+                      showSubTitle
+                      containerStyle={{
+                        width: '33.3%',
+                        height: scale(180),
+                        marginBottom: scale(20),
+                      }}
+                      titleContainerStyle={{
+                        marginTop: scale(5),
+                        aspectRatio: 3,
+                      }}
+                      titleStyle={{ fontSize: scale(23) }}
+                      subTitleStyle={{ fontSize: scale(23) }}
                       onPress={() => {
-                        PushHelper.pushCategory(linkCategory, linkPosition)
+                        if (gameType == 'more') {
+                          navigate(PageName.LHTPreferencePage, {
+                            initPreferences: leftGames,
+                            onPressConfirm: (preferences: any) => {
+                              setLeftGames(preferences)
+                            },
+                          })
+                        } else if (gameType == 'clzx') {
+                          PushHelper.pushUserCenterType(
+                            UGUserCenterType.长龙助手
+                          )
+                        } else if (gameType == 'lmzs') {
+                          PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+                        } else {
+                          PushHelper.pushLottery(gameId)
+                        }
                       }}
                     />
                   )
-                }}
-              />
-              <View style={styles.contentContainer}>
-                <NoticeBlock
-                  containerStyle={styles.subComponent}
-                  notices={notices}
-                  logo={defaultNoticeLogo}
-                  onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
-                />
-                <NavBlock
-                  containerStyle={styles.subComponent}
-                  navs={navs}
-                  lotterys={plusLotterys}
-                  date={lotteryDate}
-                  advertisement={defaultAdvertisement}
-                  lotteryLogo={defaultLotteryLogo}
-                  customerServiceLogo={defaultCustomerServiceLogo}
-                  onPressSavePoint={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.存款)
-                  }
-                  onPressGetPoint={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.取款)
-                  }
-                  onPressAd={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
-                  }
-                  onPressSmileLogo={() =>
-                    PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-                  }
-                  renderNav={(item, index) => {
-                    const { icon, name, logo } = item
-                    return (
-                      <GameButton
-                        key={index}
-                        containerStyle={{ width: '25%', height: '50%' }}
-                        imageStyle={{ width: '50%' }}
-                        enableCircle={false}
-                        logo={icon ? icon : logo}
-                        title={name}
-                        onPress={() => PushHelper.pushHomeGame(item)}
-                      />
-                    )
-                  }}
-                  renderLottery={(item, index) => {
-                    const { number, color, sx, showMore } = item
-                    console.log('-----showMore-----', showMore)
-                    return (
-                      <LotteryBall
-                        key={index}
-                        score={number}
-                        color={color}
-                        text={sx}
-                        showMore={showMore}
-                        onPress={() =>
-                          PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
-                        }
-                      />
-                    )
-                  }}
-                />
-                {/* <HeadlineBlock
-                  containerStyle={styles.subComponent}
-                  headlines={headlines}
-                  headLineLogo={defaultHeadLineLogo}
-                  onPressHeadline={({ value }) =>
-                    PushHelper.pushNoticePopUp(value)
-                  }
-                /> */}
-                <TabComponent
-                  rowHeight={scale(200)}
-                  activeTabColor={'#ff8610'}
-                  unActiveTabColor={'#bbbbbb'}
-                  containerStyle={styles.subComponent}
-                  leftGames={leftGames}
-                  rightGames={rightGames}
-                  renderLeftGame={(item, index) => {
-                    const { name, icon, show, id, desc } = item
-                    return (
-                      <GameButton
-                        key={index}
-                        logo={icon}
-                        title={name}
-                        subTitle={desc}
-                        showSubTitle
-                        containerStyle={{
-                          width: '33.3%',
-                          height: scale(180),
-                          marginBottom: scale(20),
-                        }}
-                        titleContainerStyle={{
-                          marginTop: scale(5),
-                          aspectRatio: 3,
-                        }}
-                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
-                        subTitleStyle={{ fontSize: scale(17) }}
-                        onPress={() => {
-                          PushHelper.pushUserCenterType(parseInt(id))
-                        }}
-                      />
-                    )
-                  }}
-                  renderRightGame={(item, index) => {
-                    const { logo, icon, title } = item
-                    return (
-                      <GameButton
-                        key={index}
-                        logo={logo ? logo : icon}
-                        title={title}
-                        showSubTitle
-                        containerStyle={{
-                          width: '33.3%',
-                          height: scale(180),
-                          marginBottom: scale(20),
-                        }}
-                        titleContainerStyle={{
-                          marginTop: scale(5),
-                          aspectRatio: 3,
-                        }}
-                        titleStyle={{ fontSize: scale(23), fontWeight: '600' }}
-                        subTitleStyle={{ fontSize: scale(17) }}
-                        onPress={() => PushHelper.pushHomeGame(item)}
-                      />
-                    )
-                  }}
-                />
-                <CouponBlock
-                  containerStyle={styles.subComponent}
-                  coupons={coupons}
-                  renderCoupon={(item, index) => {
-                    const { pic, linkCategory, linkPosition } = item
-                    return (
-                      <TouchableImage
-                        key={index}
-                        pic={pic}
-                        containerStyle={styles.couponBanner}
-                        resizeMode={'contain'}
-                        onPress={() =>
-                          PushHelper.pushCategory(linkCategory, linkPosition)
-                        }
-                      />
-                    )
-                  }}
-                />
-                <AnimatedRankComponent
-                  containerStyle={styles.subComponent}
-                  iconContainerStyle={styles.rankBlockIconContainerStyle}
-                  rankLists={rankLists}
-                />
-                <BottomToolBlock
-                  tools={defaultBottomTools}
-                  containerStyle={{ paddingBottom: scaleHeight(60) }}
-                  renderBottomTool={(item, index) => {
-                    const { logo, userCenterType } = item
-                    return (
-                      <TouchableImage
-                        key={index}
-                        containerStyle={{
-                          width: '32%',
-                          aspectRatio: 165 / 85,
-                        }}
-                        pic={logo}
-                        onPress={() => {
-                          if (userCenterType) {
-                            PushHelper.pushUserCenterType(userCenterType)
-                          } else {
-                            PushHelper.openWebView(defaultDowloadUrl)
-                          }
-                        }}
-                      />
-                    )
-                  }}
-                />
-              </View>
-            </ScrollView>
-            {/* <DowloadApp
-              onPressDowload={() => {
-                PushHelper.openWebView(
-                  'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+                } else {
+                  return null
+                }
+              }}
+              renderRightGame={(item, index) => {
+                const { logo, icon, title, hotIcon, tipFlag, subType } = item
+                const showFlag = parseInt(tipFlag)
+                return (
+                  <GameButton
+                    key={index}
+                    showRightTopFlag={showFlag > 0 && showFlag < 4}
+                    showCenterFlag={showFlag == 4}
+                    showSecondLevelIcon={subType}
+                    flagIcon={hotIcon}
+                    logo={icon || logo}
+                    title={title}
+                    showSubTitle={false}
+                    containerStyle={{
+                      width: '33.3%',
+                      height: scale(180),
+                      marginBottom: scale(20),
+                    }}
+                    titleContainerStyle={{
+                      marginTop: scale(5),
+                      aspectRatio: 3,
+                    }}
+                    titleStyle={{ fontSize: scale(23) }}
+                    subTitleStyle={{ fontSize: scale(23) }}
+                    onPress={() => PushHelper.pushHomeGame(item)}
+                  />
                 )
               }}
-            /> */}
-            <ActivityComponent
-              show={uid && redBagLogo && !isTest}
-              logo={redBagLogo}
-              onPress={() => {
-                PushHelper.pushRedBag(redBag)
+            />
+            <CouponBlock
+              visible={m_promote_pos}
+              onPressMore={goToJDPromotionListPage}
+              containerStyle={styles.subComponent}
+              listContainerStyle={{ borderRadius: scale(15) }}
+              coupons={coupons}
+              renderCoupon={({ item, index }) => {
+                const {
+                  pic,
+                  linkCategory,
+                  linkPosition,
+                  title,
+                  content,
+                  linkUrl,
+                } = item
+                return (
+                  <AutoHeightCouponComponent
+                    key={index}
+                    title={title}
+                    pic={pic}
+                    content={content}
+                    onPress={(setShowPop) => {
+                      if (linkUrl) {
+                        PushHelper.openWebView(linkUrl)
+                      } else if (!linkCategory && !linkPosition) {
+                        setShowPop(true)
+                      } else {
+                        PushHelper.pushCategory(linkCategory, linkPosition)
+                      }
+                    }}
+                  />
+                )
               }}
             />
-            <ActivityComponent
-              containerStyle={{ top: 100 }}
-              enableFastImage={false}
-              show={uid && roulette && !isTest}
-              logo={'dzp_btn'}
-              onPress={() => {
-                PushHelper.pushWheel(roulette)
+            <AnimatedRankComponent
+              type={rankingListSwitch}
+              containerStyle={{ marginVertical: scale(10) }}
+              iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
+              rankLists={rankLists}
+              initialAnimatedHeight={scale(0)}
+              finalAnimatedHeight={
+                scale(195) + scale((rankLists?.length ?? 0) * 50)
+              }
+            />
+            <BottomLogo
+              containerStyle={{ marginBottom: scale(30) }}
+              webName={webName}
+              onPressComputer={() => {
+                PushHelper.openWebView(
+                  httpClient.defaults.baseURL + '/index2.php'
+                )
+              }}
+              onPressPromotion={goToJDPromotionListPage}
+              debug={false}
+              version={'修正Banner比例'}
+            />
+            <BottomToolBlock
+              tools={config?.bottomTools}
+              renderBottomTool={(item, index) => {
+                const { logo, userCenterType } = item
+                return (
+                  <TouchableImage
+                    key={index}
+                    containerStyle={{
+                      width: '32%',
+                      aspectRatio: 165 / 85,
+                      flex: null,
+                    }}
+                    pic={logo}
+                    onPress={() => {
+                      if (userCenterType) {
+                        PushHelper.pushUserCenterType(userCenterType)
+                      } else {
+                        PushHelper.openWebView(appDownloadUrl)
+                      }
+                    }}
+                  />
+                )
               }}
             />
-            <AnnouncementModal
-              ref={announcementModal}
-              announcements={announcements}
-              color={LHThemeColor.六合厅.themeColor}
+            <BottomGap />
+          </View>
+        </ScrollView>
+        <ActivityComponent
+          containerStyle={{ top: scale(250), right: 0 }}
+          show={uid && redBagLogo && !isTest}
+          logo={redBagLogo}
+          onPress={() => {
+            PushHelper.pushRedBag(redBag)
+          }}
+        />
+        <ActivityComponent
+          containerStyle={{ top: scale(400), right: 0 }}
+          enableFastImage={false}
+          show={uid && roulette && !isTest}
+          logo={'dzp_btn'}
+          onPress={() => {
+            PushHelper.pushWheel(roulette)
+          }}
+        />
+        {floatAd?.map((item: any, index) => {
+          const { image, position, linkCategory, linkPosition } = item
+          return (
+            <ActivityComponent
+              key={index}
+              containerStyle={getActivityPosition(position)}
+              enableFastImage={true}
+              show={uid && !isTest}
+              logo={image}
+              onPress={() => {
+                PushHelper.pushCategory(linkCategory, linkPosition)
+              }}
             />
-          </>
-        )}
-    </SafeAreaView>
-  )
+          )
+        })}
+      </>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: LHThemeColor.六合厅.themeColor,
-    flex: 1,
-  },
   container: {
     backgroundColor: '#D0D0D0',
   },
@@ -418,7 +524,57 @@ const styles = StyleSheet.create({
   rankBlockIconContainerStyle: {
     paddingLeft: 0,
     paddingVertical: 0,
+    marginBottom: scale(10),
   },
 })
 
 export default LHTHomePage
+
+// {
+//   /* <DowloadApp
+//     onPressDowload={() => {
+//       PushHelper.openWebView(
+//         'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
+//       )
+//     }}
+//   /> */
+// }
+
+// {
+//   /* <HeadlineBlock
+//         containerStyle={styles.subComponent}
+//         headlines={headlines}
+//         headLineLogo={defaultHeadLineLogo}
+//         onPressHeadline={({ value }) =>
+//           PushHelper.pushNoticePopUp(value)
+//         }
+//       /> */
+// }
+
+
+                         // PushHelper.pushHomeGame(
+                          //   Object.assign(
+                          //     {},
+                          //     {
+                          //       category: '7',
+                          //       clsName: 'GameModel',
+                          //       gameCode: '-1',
+                          //       gameId: gameId,
+                          //       gameType: gameType,
+                          //       isClose: '0',
+                          //       isInstant: '0',
+                          //       isSeal: '0',
+                          //       levelType: '1',
+                          //       name: title,
+                          //       openWay: '0',
+                          //       realName: title,
+                          //       seriesId: '1',
+                          //       subId: gameId,
+                          //       subtitle: des,
+                          //       tipFlag: '4',
+                          //       title: title,
+                          //       url: '',
+                          //     },
+                          //     item
+                          //   )
+                          // )

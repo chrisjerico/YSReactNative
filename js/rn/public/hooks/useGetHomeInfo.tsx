@@ -6,6 +6,7 @@ import { httpClient } from '../network/httpClient'
 import { BannerModel } from '../network/Model/BannerModel'
 import { CouponListModel } from '../network/Model/CouponListModel'
 import { FloatADModel } from '../network/Model/FloatADModel'
+import { HomeADModel } from '../network/Model/HomeADModel'
 import { HomeGamesModel } from '../network/Model/HomeGamesModel'
 import { LhcdocCategoryListModel } from '../network/Model/LhcdocCategoryListModel'
 import { LotteryGameModel } from '../network/Model/LotteryGameModel'
@@ -13,11 +14,13 @@ import { LotteryNumberModel } from '../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../network/Model/NoticeModel'
 import { RankListModel } from '../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
+import { SystemConfigModel } from '../network/Model/SystemConfigModel'
 import { TurntableListModel } from '../network/Model/TurntableListModel'
 import { Platform } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import {ANHelper, NativeCommand} from "../define/ANHelper/ANHelper";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 type APIListType =
   | 'game_homeGames'
@@ -33,6 +36,7 @@ type APIListType =
   | 'activity_turntableList'
   | 'game_lotteryGames'
   | 'system_config'
+  | 'system_homeAds'
 const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [onlineNum, setOnlineNum] = useState(0)
   const [onlineSwitch, setOnlineSwitch] = useState(0)
@@ -48,6 +52,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
   const [categoryList, setCategoryList] = useState<LhcdocCategoryListModel>()
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
+  const [systemConfig, setSystemConfig] = useState<SystemConfigModel>()
+  const [systemHomeAds, setSystemHomeAds] = useState<HomeADModel>()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   useEffect(() => {
@@ -76,14 +82,17 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
   }
   const init = () => {
-    if (Platform.OS == 'ios') {
-      OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-        initHost(host)
-      })
-    } else if (Platform.OS == 'android') {
-      ANHelper.call(NativeCommand.APP_HOST).then((host: string) => {
-        initHost(host)
-      })
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('AppDefine.shared.Host').then((host: string) => {
+          initHost(host)
+        })
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.APP_HOST).then((host: string) => {
+          initHost(host)
+        })
+        break;
     }
   }
 
@@ -98,61 +107,67 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         }
       }
       Axios.all(requests)
-          .then(
-            Axios.spread((...res) => {
-              for (const key in coustomArray) {
-                if (coustomArray.hasOwnProperty(key)) {
-                  const element: APIListType = coustomArray[key]
-                  switch (element) {
-                    case 'game_homeGames':
-                      setHomeGames(res[key]?.data)
-                      break
-                    case 'system_banners':
-                      setBanner(res[key]?.data)
-                      break
-                    case 'notice_latest':
-                      setNotice(res[key]?.data)
-                      break
-                    case 'system_promotions':
-                      setCouponListData(res[key]?.data)
-                      break
-                    case 'system_rankingList':
-                      setRankList(res[key]?.data)
-                      break
-                    case 'activity_redBagDetail':
-                      setRedBag(res[key]?.data)
-                      break
-                    case 'system_floatAds':
-                      setFloatAds(res[key]?.data)
-                      break
-                    case 'system_onlineCount':
-                      setOnlineNum(res[key]?.data?.data?.onlineUserCount)
-                      setOnlineSwitch(res[key]?.data?.data?.onlineSwitch)
-                      break
-                    case 'lhcdoc_lotteryNumber':
-                      setLotteryNumber(res[key]?.data)
-                      break
-                    case 'lhcdoc_categoryList':
-                      setCategoryList(res[key]?.data)
-                      break
-                    case 'activity_turntableList':
-                      setTurntableList(res[key]?.data)
-                      break
-                    case 'game_lotteryGames':
-                      setLotteryGames(res[key]?.data)
-                      break
-                    default:
-                      break
-                  }
+        .then(
+          Axios.spread((...res) => {
+            for (const key in coustomArray) {
+              if (coustomArray.hasOwnProperty(key)) {
+                const element: APIListType = coustomArray[key]
+                switch (element) {
+                  case 'game_homeGames':
+                    setHomeGames(res[key]?.data)
+                    break
+                  case 'system_banners':
+                    setBanner(res[key]?.data)
+                    break
+                  case 'notice_latest':
+                    setNotice(res[key]?.data)
+                    break
+                  case 'system_promotions':
+                    setCouponListData(res[key]?.data)
+                    break
+                  case 'system_rankingList':
+                    setRankList(res[key]?.data)
+                    break
+                  case 'activity_redBagDetail':
+                    setRedBag(res[key]?.data)
+                    break
+                  case 'system_floatAds':
+                    setFloatAds(res[key]?.data)
+                    break
+                  case 'system_onlineCount':
+                    setOnlineNum(res[key]?.data?.data?.onlineUserCount)
+                    setOnlineSwitch(res[key]?.data?.data?.onlineSwitch)
+                    break
+                  case 'lhcdoc_lotteryNumber':
+                    setLotteryNumber(res[key]?.data)
+                    break
+                  case 'lhcdoc_categoryList':
+                    setCategoryList(res[key]?.data)
+                    break
+                  case 'activity_turntableList':
+                    setTurntableList(res[key]?.data)
+                    break
+                  case 'game_lotteryGames':
+                    setLotteryGames(res[key]?.data)
+                    break
+                  case 'system_config':
+                    setSystemConfig(res[key]?.data)
+                    break
+                  case 'system_homeAds':
+                    setSystemHomeAds(res[key]?.data)
+                    break
+                  default:
+                    break
                 }
-                setLoading(false)
               }
-            })
-          )
-          .catch(error => {
-            setLoading(false)
-            console.log(error)
+              setLoading(false)
+            }
           })
+        )
+        .catch(error => {
+          setLoading(false)
+          console.log(error)
+        })
     } else {
       Axios.all([
         APIRouter.game_homeGames(),
@@ -164,23 +179,23 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         APIRouter.activity_redBagDetail(),
         APIRouter.system_floatAds(),
       ])
-          .then(
-            Axios.spread((...res) => {
-              setHomeGames(res?.[0]?.data)
-              setBanner(res?.[1]?.data)
-              setCouponListData(res?.[3]?.data)
-              setRankList(res?.[4]?.data)
-              setRedBag(res?.[6]?.data)
-              setFloatAds(res?.[7]?.data)
-              setNotice(res?.[2]?.data)
-              setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
-              setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
-              setLoading(false)
-            })
-          )
-          .catch(err => {
+        .then(
+          Axios.spread((...res) => {
+            setHomeGames(res?.[0]?.data)
+            setBanner(res?.[1]?.data)
+            setCouponListData(res?.[3]?.data)
+            setRankList(res?.[4]?.data)
+            setRedBag(res?.[6]?.data)
+            setFloatAds(res?.[7]?.data)
+            setNotice(res?.[2]?.data)
+            setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
+            setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
             setLoading(false)
           })
+        )
+        .catch(err => {
+          setLoading(false)
+        })
     }
 
   }
@@ -202,6 +217,8 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
     categoryList,
     turntableList,
     lotteryGames,
+    systemConfig,
+    systemHomeAds,
     onRefresh,
     noticeFormat,
     originalNoticeString,

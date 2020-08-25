@@ -3,12 +3,13 @@ import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface GameButtonProps {
   logo?: string;
@@ -19,7 +20,7 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageStyle?: any;
+  imageContainerStyle?: ViewStyle[] | ViewStyle;
   circleColor?: string;
   containerStyle?: ViewStyle[] | ViewStyle;
   titleStyle?: TextStyle;
@@ -27,66 +28,152 @@ interface GameButtonProps {
   titleContainerStyle?: ViewStyle;
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
+  showRightTopFlag?: boolean;
+  showCenterFlag?: boolean;
+  flagIcon?: string;
+  showSecondLevelIcon?: boolean;
+  secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
+}
+
+interface DefaultFlag {
+  center: boolean;
+}
+
+const DefaultFlag = ({ center }: DefaultFlag) => {
+  if (center) {
+    return (
+      <View style={styles.centerFlagContainer}>
+        <View style={styles.flag}>
+          <Text style={styles.flagText}>{'热门'}</Text>
+        </View>
+      </View>
+    )
+  } else {
+    return (
+      <View
+        style={[
+          styles.flag,
+          {
+            position: 'absolute',
+            right: 0,
+            top: scale(5),
+          },
+        ]}
+      >
+        <Text style={styles.flagText}>{'热门'}</Text>
+      </View>
+    )
+  }
 }
 
 const GameButton = (props: GameButtonProps) => {
   const {
     circleColor,
-    imageStyle,
-    logo = 'logo',
+    imageContainerStyle,
+    logo = 'https://i.ibb.co/W2tbj1Q/entry-login-toggle-btn.png',//FastImage.source 不能为空
     title = '',
     subTitle = '',
     showSubTitle = false,
-    onPress = () => { },
+    onPress,
     containerStyle,
     titleStyle,
     subTitleStyle,
     titleContainerStyle,
     resizeMode = 'contain',
     enableCircle = true,
+    showRightTopFlag,
+    showCenterFlag,
+    flagIcon,
+    showSecondLevelIcon,
+    secondLevelIconContainerStyle
   } = props
   return (
-    <TouchableOpacity
-      style={[styles.conatiner, containerStyle]}
-      onPress={onPress}
-    >
-      {enableCircle ? (
-        <View
-          style={[
-            styles.circleContainer,
-            {
-              backgroundColor: circleColor ? circleColor : '#ACD6FF',
-            },
-          ]}
-        >
-          <FastImage
-            style={[styles.image, imageStyle]}
-            source={{ uri: logo }}
-            resizeMode={resizeMode}
-          />
-        </View>
-      ) : (
-          <FastImage
-            style={[styles.image, imageStyle]}
-            source={{ uri: logo }}
-            resizeMode={resizeMode}
-          />
-        )}
-      <View style={[styles.titleContainer, titleContainerStyle]}>
-        <View style={styles.textContainer}>
-          <Text style={titleStyle} numberOfLines={1}>
-            {title}
-          </Text>
-        </View>
-        {showSubTitle && (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.conatiner, containerStyle]}>
+        {enableCircle ? (
+          <View
+            style={[
+              styles.circleContainer,
+              {
+                backgroundColor: circleColor ? circleColor : '#ACD6FF',
+              },
+            ]}
+          >
+            <View style={[styles.imageContainer, imageContainerStyle]}>
+              <FastImage
+                style={styles.image}
+                source={{ uri: logo }}
+                resizeMode={resizeMode}
+              />
+              {showCenterFlag &&
+                (flagIcon ? (
+                  <FastImage
+                    source={{ uri: flagIcon }}
+                    style={[styles.image, { position: 'absolute' }]}
+                  />
+                ) : (
+                    <DefaultFlag center={true} />
+                  ))}
+              {showSecondLevelIcon && (
+                <AntDesign
+                  name={'appstore1'}
+                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
+                  size={scale(25)}
+                />
+              )}
+            </View>
+          </View>
+        ) : (
+            <View style={[styles.imageContainer, imageContainerStyle]}>
+              <FastImage
+                style={styles.image}
+                source={{ uri: logo }}
+                resizeMode={resizeMode}
+              />
+              {showCenterFlag &&
+                (flagIcon ? (
+                  <FastImage
+                    source={{ uri: flagIcon }}
+                    style={[styles.image, { position: 'absolute' }]}
+                  />
+                ) : (
+                    <DefaultFlag center={true} />
+                  ))}
+              {showSecondLevelIcon && (
+                <AntDesign
+                  name={'appstore1'}
+                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
+                  size={scale(25)}
+                />
+              )}
+            </View>
+          )}
+        <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
-            <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
-              {subTitle}
+            <Text style={titleStyle} numberOfLines={1}>
+              {title}
             </Text>
           </View>
-        )}
+          {showSubTitle && (
+            <View style={styles.textContainer}>
+              <Text style={[styles.subTitle, subTitleStyle]} numberOfLines={1}>
+                {subTitle}
+              </Text>
+            </View>
+          )}
+        </View>
+        {showRightTopFlag &&
+          (flagIcon ? (
+            <FastImage
+              source={{ uri: flagIcon }}
+              style={styles.rightTopFlag}
+              resizeMode={'contain'}
+            />
+          ) : (
+              <DefaultFlag center={false} />
+            ))}
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -112,7 +199,7 @@ const styles = StyleSheet.create({
   subTitle: {
     color: '#999999',
   },
-  image: {
+  imageContainer: {
     width: '75%',
     aspectRatio: 1,
   },
@@ -121,6 +208,40 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  flag: {
+    width: scale(50),
+    backgroundColor: 'red',
+    borderRadius: scale(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  flagText: {
+    color: '#ffffff',
+    padding: scale(5),
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  rightTopFlag: {
+    position: 'absolute',
+    width: '30%',
+    aspectRatio: 1,
+    right: 0,
+    top: 0,
+  },
+  centerFlagContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+  },
+  secondLevelIcon: {
+    position: 'absolute',
+    right: -scale(30),
+    top: '50%'
+  }
 })
 
 export default GameButton

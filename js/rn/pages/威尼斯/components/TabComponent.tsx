@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { scale } from '../../../public/tools/Scale';
+import { getHtml5Image } from '../../../public/tools/tars';
 
 
 // const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>
@@ -17,12 +18,13 @@ interface TabComponentProps {
   rightGames: any[];
   renderLeftGame: (item: any, index: number) => any;
   renderRightGame: (item: any, index: number) => any;
+  elementHeight: number;
 }
 
-const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame }: TabComponentProps) => {
+const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, elementHeight }: TabComponentProps) => {
   const [routes]: any = React.useState([
-    { key: 0, title: '官方玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png' },
-    { key: 1, title: '信用玩法', logo: 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' },
+    { key: 0, title: '官方玩法', logo: getHtml5Image(23, 'home/gfwf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png'
+    { key: 1, title: '信用玩法', logo: getHtml5Image(23, 'home/xywf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' 
   ])
 
   // const routes = [
@@ -30,9 +32,13 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame }
   //   { key: '1', title: 'Second' },
   // ]
 
+  const leftGamesLength = Math.ceil(leftGames?.length / 2)
+  const rightGamesLength = Math.ceil(rightGames?.length / 2)
+
   const [index, setIndex] = useState(0)
   return (
     <TabView
+      style={{ height: (index ? rightGamesLength : leftGamesLength) * elementHeight }}
       navigationState={{ index, routes }}
       renderScene={SceneMap({
         0: () => <View style={{ flexDirection: 'row', flexWrap: 'wrap', backgroundColor: '#ffffff' }}>{leftGames?.map(renderLeftGame)}</View>,
@@ -44,6 +50,8 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame }
         return (
           <TabBar
             {...props}
+            pressOpacity={1}
+            contentContainerStyle={{ backgroundColor: '#ffffff' }}
             tabStyle={styles.tabStyle}
             renderLabel={({ route, focused }) => {
               const { logo, title }: any = route
