@@ -3,7 +3,7 @@ import { UGStore } from "../../../redux/store/UGStore"
 import UGSysConfModel from "../../../redux/model/全局/UGSysConfModel"
 import { useState, useEffect } from "react"
 import useLogOut from "./useLogOut"
-import { navigate, navigationRef } from "../../navigation/RootNavigation"
+import { navigate, navigationRef, pop } from "../../navigation/RootNavigation"
 import { ToastSuccess, ToastError } from "../../tools/tars"
 import { PageName } from "../../navigation/Navigation"
 import APIRouter from "../../network/APIRouter"
@@ -86,6 +86,13 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
   const closeAvatarList = () => { setAvatarListVisible(false) }
   const signOut = logOut
 
+  const goBack = () => {
+    !pop() &&
+      OCHelper.call(
+        'UGNavigationController.current.popViewControllerAnimated:',
+        [true]
+      )
+  }
   // effects
   useEffect(() => {
     fetchAvatarList()
@@ -120,7 +127,8 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     saveAvatar,
     signOut,
     openAvatarList,
-    closeAvatarList
+    closeAvatarList,
+    goBack
   }
 
 }

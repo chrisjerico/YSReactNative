@@ -42,6 +42,7 @@ const BZHMinePage = (props: any) => {
     signOut,
     openAvatarList,
     closeAvatarList,
+    goBack
   } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
 
   // data handle
@@ -57,13 +58,7 @@ const BZHMinePage = (props: any) => {
               name={'left'}
               color={'#ffffff'}
               size={scale(25)}
-              onPress={() => {
-                !pop() &&
-                  OCHelper.call(
-                    'UGNavigationController.current.popViewControllerAnimated:',
-                    [true]
-                  )
-              }}
+              onPress={goBack}
             />
           </View>
         ) : (
