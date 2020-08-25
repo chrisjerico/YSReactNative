@@ -46,6 +46,7 @@ const CouponBlock = ({
           showsVerticalScrollIndicator={false}
           data={coupons}
           renderItem={renderCoupon}
+          removeClippedSubviews={true}
         />
       </View>
     )

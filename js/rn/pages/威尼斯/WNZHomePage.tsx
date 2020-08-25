@@ -242,7 +242,7 @@ const WNZHomePage = (props: any) => {
             })}
           </View>
           <BannerBlock
-            isMidAd={true}
+            containerStyle={{ aspectRatio: 540 / 135 }}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}

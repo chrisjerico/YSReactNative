@@ -139,6 +139,7 @@ const BZHHomePage = () => {
           }
         >
           <BannerBlock
+            containerStyle={{ aspectRatio: 540 / 217 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -355,6 +356,15 @@ const BZHHomePage = () => {
               } = item
               return (
                 <AutoHeightCouponComponent
+                  titleStyle={{ alignSelf: 'center' }}
+                  containerStyle={{
+                    borderColor: "#d9d9d9",
+                    borderWidth: scale(1),
+                    marginBottom: scale(20),
+                    padding: scale(5),
+                    borderRadius: scale(5),
+                    paddingBottom: scale(20)
+                  }}
                   key={index}
                   title={title}
                   pic={pic}
