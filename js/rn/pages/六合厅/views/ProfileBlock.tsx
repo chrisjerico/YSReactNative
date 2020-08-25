@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
-import PushHelper from '../../../public/define/PushHelper'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
@@ -11,6 +10,7 @@ interface ProfileBlockProps {
   avatar: string;
   name: string;
   balance: string;
+  level: string;
   renderProfileButton: (item: any, index: number) => any;
   onPressDaySign: () => any;
   onPressTaskCenter: () => any;
@@ -22,30 +22,43 @@ const ProfileBlock = ({
   avatar,
   name = '',
   balance = '',
+  level,
   profileButtons = [],
   renderProfileButton,
   onPressDaySign,
   onPressTaskCenter,
   onPressReload,
-  onPressAvatar
+  onPressAvatar,
 }: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
         <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Avatar
-            onPress={onPressAvatar}
-            uri={avatar}
-          />
+          <Avatar onPress={onPressAvatar} uri={avatar} />
           <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
             <View style={styles.nameTextContainer}>
-              <Text style={styles.nameText} numberOfLines={1}>{name}</Text>
+              <Text style={styles.nameText} numberOfLines={1}>
+                {name}
+              </Text>
+              <LinearBadge
+                title={level}
+                colors={['#FFD306', '#C6A300']}
+                showIcon={false}
+                size={0.5}
+                containerStyle={{
+                  height: scale(25),
+                  marginBottom: scale(5),
+                }}
+              />
             </View>
             <View
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
             >
               <Text style={{ fontSize: scale(25) }}>{'余额 : '}</Text>
-              <Text style={{ color: '#ff861b', fontSize: scale(25) }} numberOfLines={1}>
+              <Text
+                style={{ color: '#ff861b', fontSize: scale(25) }}
+                numberOfLines={1}
+              >
                 {balance}
               </Text>
               <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />

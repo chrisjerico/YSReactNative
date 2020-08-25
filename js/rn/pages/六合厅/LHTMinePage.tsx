@@ -70,6 +70,7 @@ const LHTMinePage = (props: any) => {
     balance,
     unreadMsg,
     isTest,
+    curLevelGrade
   }: UGUserModel = UGStore.globalProps.userInfo
   const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
 
@@ -133,7 +134,7 @@ const LHTMinePage = (props: any) => {
           profileButtons={config?.profileButtons}
           name={usr}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-          // level={curLevelGrade}
+          level={curLevelGrade}
           balance={balance}
           onPressDaySign={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
