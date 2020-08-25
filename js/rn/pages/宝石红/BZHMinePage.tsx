@@ -1,17 +1,16 @@
 import React from 'react'
 import {
-  RefreshControl, ScrollView,
+  ScrollView,
   StyleSheet,
   Text,
   View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
@@ -25,7 +24,7 @@ import ProfileBlock from './views/ProfileBlock'
 const BZHMinePage = (props: any) => {
   const { setProps } = props
   const {
-    userCenter,
+    userCenterItems,
     showBackBtn,
     curLevelGrade,
     money,
@@ -46,8 +45,8 @@ const BZHMinePage = (props: any) => {
   } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
 
   // data handle
-  const features = userCenter?.slice(0, 4) ?? []
-  const featureList = userCenter?.slice(4, userCenter?.length) ?? []
+  const features = userCenterItems?.slice(0, 4) ?? []
+  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
   return (
     <>
@@ -73,8 +72,7 @@ const BZHMinePage = (props: any) => {
         showsVerticalScrollIndicator={false}
         style={styles.container}
         refreshControl={
-          <RefreshControl
-            refreshing={avatarListLoading}
+          <RefreshControlComponent
             onRefresh={fetchAvatarList}
           />
         }

@@ -10,8 +10,8 @@ import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
 
 interface UseMinePage {
-  setProps: (props: any) => any;
-  homePage: PageName;
+  setProps?: (props: any) => any;
+  homePage?: PageName;
 }
 
 const useMinePage = ({ setProps, homePage }: UseMinePage) => {
@@ -25,8 +25,13 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     unreadMsg,
     isTest,
     curLevelGrade,
+    uid,
+    nextLevelInt,
+    taskRewardTotal,
+    curLevelTitle,
+    nextLevelTitle
   }: UGUserModel = UGStore.globalProps.userInfo
-  const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
+  const { userCenterItems, mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
   const [showBackBtn, setShowBackBtn] = useState(false)
   const [avatarListLoading, setAvatarListLoading] = useState(true)
@@ -95,33 +100,40 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
   }
   // effects
   useEffect(() => {
-    fetchAvatarList()
-    setProps({
-      didFocus: async () => {
-        OCHelper.call(
-          'UGNavigationController.current.viewControllers.count'
-        ).then((ocCount) => {
-          const show =
-            ocCount > 1 ||
-            navigationRef?.current?.getRootState().routes.length > 1
-          setShowBackBtn(show)
-        })
-      },
+    fetchAvatarList().then(() => {
+      setProps && setProps({
+        didFocus: async () => {
+          OCHelper.call(
+            'UGNavigationController.current.viewControllers.count'
+          ).then((ocCount) => {
+            const show =
+              ocCount > 1 ||
+              navigationRef?.current?.getRootState().routes.length > 1
+            setShowBackBtn(show)
+          })
+        },
+      })
     })
   }, [])
 
   return {
+    uid,
+    mobile_logo,
     showBackBtn,
     avatarListLoading,
     avatarListVisible,
     avatarList,
     money,
-    userCenter,
+    userCenterItems,
     curLevelGrade,
     usr,
     isTest,
     avatar,
     unreadMsg,
+    nextLevelInt,
+    taskRewardTotal,
+    curLevelTitle,
+    nextLevelTitle,
     fetchAvatarList,
     fetchBalance,
     saveAvatar,

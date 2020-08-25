@@ -1,47 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
-  ScrollView,
+  RefreshControl, ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
-  RefreshControl,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
-import useLogOut from '../../public/hooks/tars/useLogOut'
+import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import {
-  navigate,
-  navigationRef,
-  pop,
-} from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
-import { Toast } from '../../public/tools/ToastUtils'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-import useMinePage from '../../public/hooks/tars/useMinePage'
 
 const LHTMinePage = (props: any) => {
   const { setProps } = props
   const {
-    userCenter,
+    userCenterItems,
     showBackBtn,
     curLevelGrade,
     money,
@@ -126,7 +111,7 @@ const LHTMinePage = (props: any) => {
             )
           }}
         />
-        {userCenter?.map((item, index) => {
+        {userCenterItems?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList

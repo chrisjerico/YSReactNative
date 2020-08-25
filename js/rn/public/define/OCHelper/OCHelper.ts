@@ -47,7 +47,8 @@ export class OCHelper extends OCEvent {
       const host = ios_response[0]
       const siteId = ios_response[1]
       const sysConf_ios = ios_response[2] ?? {}
-      const userCenter = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
+      const userCenterItems = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
+
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
       AppDefine.siteId = siteId;
@@ -67,7 +68,8 @@ export class OCHelper extends OCEvent {
       //@ts-ignore
       const sysConf_net = net_response[1]?.data?.data ?? {}
       const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl, userCenter })
+      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl, userCenterItems })
+
       UGStore.dispatch({ type: 'merge', userInfo, sysConf });
       UGStore.save();
       // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）

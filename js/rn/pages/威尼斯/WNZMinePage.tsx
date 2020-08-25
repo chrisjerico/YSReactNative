@@ -1,59 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
-import { navigationRef } from '../../public/navigation/RootNavigation'
+import useMinePage from '../../public/hooks/tars/useMinePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
+import {
+  LotteryType,
+  UGUserCenterType
+} from '../../redux/model/全局/UGSysConfModel'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
-const WNZMinePage = (props: any) => {
-  // states
-  const [showBackBtn, setShowBackBtn] = useState(false)
-  // functions
-  const { setProps } = props
-  // stores
+const WNZMinePage = () => {
   const {
+    userCenterItems,
     uid,
-    balance,
+    showBackBtn,
     usr,
+    mobile_logo,
+    money,
+    nextLevelInt,
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
-    nextLevelInt,
-  }: UGUserModel = UGStore.globalProps.userInfo
+  } = useMinePage({})
 
-  const {
-    mobile_logo,
-    userCenter,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
-
-  // effect
-  useEffect(() => {
-    setProps({
-      didFocus: async () => {
-        OCHelper.call(
-          'UGNavigationController.current.viewControllers.count'
-        ).then((ocCount) => {
-          const show =
-            ocCount > 1 ||
-            navigationRef?.current?.getRootState().routes.length > 1
-          setShowBackBtn(show)
-        })
-      },
-    })
-  }, [])
   // data handle
-  const tools = userCenter?.sort((a, b) => a?.code - b?.code) ?? []
+  const tools = userCenterItems?.sort((a, b) => a?.code - b?.code) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
@@ -108,7 +86,7 @@ const WNZMinePage = (props: any) => {
           showBackBtn={showBackBtn}
           name={usr}
           logo={mobile_logo}
-          balance={balance}
+          balance={money}
           onPressMenu={() => {
             PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
           }}
