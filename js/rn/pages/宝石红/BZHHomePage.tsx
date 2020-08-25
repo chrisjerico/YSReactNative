@@ -214,6 +214,7 @@ const BZHHomePage = () => {
             }}
           />
           <FlatList
+            removeClippedSubviews={true}
             style={{ paddingHorizontal: '1%' }}
             data={gameBlocks}
             renderItem={({ item, index: gameBlockIndex }) => {
