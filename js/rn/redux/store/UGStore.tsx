@@ -6,13 +6,16 @@ import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
+import SignModel from '../model/全局/SignModel';
 // 整个State的树结构
 
 export interface IGlobalState {
   // 纯数据
   userInfo?: UGUserModel;
   sysConf?: UGSysConfModel;
+  sign?: SignModel;
   BettingReducer?: BettingReducerProps;
+  value?: any;
 }
 
 // 更新Props到全局数据
@@ -26,11 +29,12 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
+    state.sign = { ...state.sign, ...act.sign };
+    // state.value = { ...state.value, ...act.value }; // 其他  example
     act.page && (state[act.page] = { ...state[act.page], ...act.props });
   } else {
-
     // 自定义Reducer写在这里。。。
-    state.BettingReducer = BettingReducer(state.BettingReducer, act);
+    state.BettingReducer = BettingReducer(state.BettingReducer, act as any);
   }
   return state;
 }
@@ -42,12 +46,13 @@ export interface UGAction<P = {}> extends Action {
   props?: P;      // 配合page使用
   sysConf?: UGSysConfModel;// 修改系统配置
   userInfo?: UGUserModel;// 修改用户信息
-  value?: any;// 其他
+  sign?: SignModel; // 登入註冊訊息 
+  // value?: any;// 其他 example
 }
 
 export class UGStore {
   // Store
-  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any };
+  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any };
 
   // 发送通知
   private static callbacks: { page: PageName, callback: () => void }[] = [];

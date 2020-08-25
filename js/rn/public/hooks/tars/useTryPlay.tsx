@@ -41,12 +41,14 @@ const useTryPlay = (options: Options = {}) => {
           onSuccess && onSuccess()
         } else {
           // 試玩失敗
-          ToastError(user_guestLogin_msg ?? '登录失败')
-          onError && onError(user_guestLogin_msg ?? '登录失败')
+          ToastError('登录失败')
+          console.log("---------user_guestLogin_msg-------", user_guestLogin_msg)
+          onError && onError(user_guestLogin_msg)
         }
       }
     } catch (error) {
-      ToastError(error)
+      ToastError('登录失败')
+      console.log(error)
       onError && onError(error)
     }
   }

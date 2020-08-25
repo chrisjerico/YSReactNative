@@ -40,12 +40,13 @@ const useRegister = (options: Options = {}) => {
           onSuccess && onSuccess()
         } else {
           // 註冊失敗
-          ToastError(msg_reg_msg ?? '注册失败')
-          onError && onError(msg_reg_msg ?? '注册失败')
+          ToastError('注册失败')
+          console.log("-------msg_reg_msg-------", msg_reg_msg)
+          onError && onError(msg_reg_msg)
         }
       }
     } catch (error) {
-      ToastError(error)
+      ToastError('注册失败')
       onError && onError(error)
     }
   }

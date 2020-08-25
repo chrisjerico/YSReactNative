@@ -20,13 +20,13 @@ const useLogOut = (options: Options = {}) => {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
-        ToastSuccess('登出成功！')
+        ToastSuccess('登出成功')
         onSuccess && onSuccess()
       }
     } catch (error) {
-      ToastError(error)
+      ToastError('登出失败')
+      console.log("-------error------", error)
       onError && onError(error)
-      // Toast('退出失败，请稍后再试')
     }
   }
   const logOut = () => {

@@ -52,7 +52,7 @@ const useLogIn = (options: Options = {}) => {
         }
       }
     } catch (error) {
-      ToastError(error)
+      ToastError('登录失败')
       onError && onError(error)
     }
   }

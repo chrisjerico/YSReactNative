@@ -18,40 +18,34 @@ interface SlidingVerification {
 
 interface UseSignInPage {
   navigation: any;
-  setProps: (props: any) => any;
-  homepage: PageName;
-  isRemember: boolean;
-  account: string;
-  password: string;
+  homePage: PageName;
   registerPage: PageName
 }
 
 const useSignInPage = ({
   navigation,
-  homepage,
-  setProps,
-  isRemember,
-  account,
-  password,
+  homePage,
   registerPage
 }: UseSignInPage) => {
   const { type }: any = navigation?.dangerouslyGetState() ?? {}
 
+  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
+  const slidingVerificationRrf = useRef(null)
+  const [account, setAccount] = useState(UGStore.globalProps.sign?.account)
+  const [password, setPassword] = useState(UGStore.globalProps.sign?.password)
+  const [isRemember, setIsRemember] = useState(UGStore.globalProps.sign?.isRemember ?? false)
+  const [showPassword, setShowPassword] = useState(false)
   const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
     nc_csessionid: undefined,
     nc_token: undefined,
     nc_sig: undefined,
   })
-  const [hidePassword, setHidePassword] = useState(true)
-  const slidingVerificationRrf = useRef(null)
-
-  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
 
   const goBack = () => {
     switch (type) {
       case 'tab':
-        navigate(homepage, {})
+        navigate(homePage, {})
         break
       case 'stack':
         pop()
@@ -66,14 +60,7 @@ const useSignInPage = ({
   }
 
   const goToHomePage = () => {
-    navigate(homepage, {})
-  }
-
-  const cleanAccountPassword = (isRemember: boolean) => {
-    if (!isRemember) {
-      console.log('----忘記帳密----')
-      setProps({ account: null, password: null })
-    }
+    navigate(homePage, {})
   }
 
   const { logIn } = useLogIn({
@@ -110,53 +97,65 @@ const useSignInPage = ({
     })
   }
 
-  // effects
-  useEffect(() => {
-    switch (type) {
-      case 'tab':
-        const unsubscribe = navigation.addListener('focus', () => {
-          OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', [
-            'isRememberPsd',
-          ])
-            .then((isRemember) => {
-              console.log('--------isRemember--------', isRemember)
-              cleanAccountPassword(isRemember)
-            })
-            .catch((error) => {
-              console.log(error)
-            })
-        })
-        return unsubscribe
-      case 'stack':
-        console.log('-------here------')
-        cleanAccountPassword(isRemember)
-        break
-      default:
-        console.log('------no navigation type------')
-    }
-  }, [])
+  const onChangeAccount = (value: any) => {
+    setAccount(value)
+    UGStore.dispatch({
+      type: 'merge', sign: {
+        account: isRemember ? account : null,
+        password: isRemember ? password : null
+      }
+    });
+  }
 
+  const onChangePassword = (value: any) => {
+    setPassword(value)
+    UGStore.dispatch({
+      type: 'merge', sign: {
+        account: isRemember ? account : null,
+        password: isRemember ? password : null
+      }
+    });
+  }
+
+  const onChangeIsRemember = () => {
+    setIsRemember(!isRemember)
+    UGStore.dispatch({
+      type: 'merge', sign: {
+        isRemember: !isRemember,
+        account: !isRemember ? account : null,
+        password: !isRemember ? password : null
+      }
+    });
+  }
+
+  const onChanePasswordSecure = () => {
+    setShowPassword(!showPassword)
+  }
+
+  const onChangeSlidingVerification = setSlidingVerification
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slidingVerification
-
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
   const valid = account && password && loginVCode_valid
-  console.log("-----------valid-----------", valid)
-  console.log("-----------account-----------", account)
-  console.log("-----------password-----------", password)
-  console.log("-----------loginVCode_valid-----------", loginVCode_valid)
+
   return {
-    hidePassword,
-    setHidePassword,
-    valid,
+    goBack,
+    goToRegisterPage,
+    goToHomePage,
+    onChangeAccount,
+    onChangePassword,
+    onChangeIsRemember,
+    onChanePasswordSecure,
+    onChangeSlidingVerification,
     signIn,
     tryPlay,
-    goBack,
+    account,
+    password,
+    isRemember,
     loginVCode,
-    goToHomePage,
-    goToRegisterPage,
-    slidingVerificationRrf,
-    setSlidingVerification
+    valid,
+    showPassword,
+    slidingVerificationRrf
   }
 }
 

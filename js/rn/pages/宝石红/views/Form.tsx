@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
 
+
 interface Form {
   onChangeText?: any;
   value?: string;
@@ -73,9 +74,9 @@ const Form = ({
               ) : (
                   <Icon
                     {...rightIconProps}
-                    type={'font-awesome'}
-                    name={'eye-slash'}
-                    size={scale(30)}
+                    type={'ionicon'}
+                    name={secureTextEntry ? 'ios-eye-off' : 'ios-eye'}
+                    size={scale(40)}
                   />
                 )
             ) : null
