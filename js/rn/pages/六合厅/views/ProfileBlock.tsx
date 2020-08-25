@@ -54,9 +54,9 @@ const ProfileBlock = ({
             <View
               style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
             >
-              <Text style={{ fontSize: scale(25) }}>{'余额 : '}</Text>
+              <Text style={{ fontSize: scale(23) }}>{'余额 : '}</Text>
               <Text
-                style={{ color: '#ff861b', fontSize: scale(25) }}
+                style={{ color: '#ff861b', fontSize: scale(23) }}
                 numberOfLines={1}
               >
                 {balance}

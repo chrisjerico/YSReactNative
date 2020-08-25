@@ -5,6 +5,7 @@ import { UGBridge } from '../ANHelper/UGBridge';
 import AppDefine from '../AppDefine';
 import { OCCall } from './OCBridge/OCCall';
 import { OCEvent } from './OCBridge/OCEvent';
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;
@@ -39,10 +40,14 @@ export class OCHelper extends OCEvent {
         OCHelper.call('UGSystemConfigModel.currentConfig').catch((error) => {
           console.log(error)
         }),
+        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').catch((error) => {
+          console.log(error)
+        })
       ])
       const host = ios_response[0]
       const siteId = ios_response[1]
       const sysConf_ios = ios_response[2] ?? {}
+      const userCenter = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
       AppDefine.host = host;
       httpClient.defaults.baseURL = host
       AppDefine.siteId = siteId;
@@ -56,12 +61,13 @@ export class OCHelper extends OCEvent {
           console.log(error)
         }
       )])
+
       //@ts-ignore
       const userInfo = net_response[0]?.data?.data ?? {}
       //@ts-ignore
       const sysConf_net = net_response[1]?.data?.data ?? {}
       const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl })
+      const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl, userCenter })
       UGStore.dispatch({ type: 'merge', userInfo, sysConf });
       UGStore.save();
       // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）

@@ -1,21 +1,30 @@
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
-import useLogIn from './useLogIn'
 import {
-  ToastStatus,
-  ToastSuccess,
   cleanNativeUser,
   ToastError,
+  ToastStatus,
+  ToastSuccess,
 } from '../../tools/tars'
+import useLogIn from './useLogIn'
 
 interface Options {
+  onSuccessRegister?: () => any;
   onSuccess?: () => any;
   onError?: (error: any) => any;
 }
 
 const useRegister = (options: Options = {}) => {
-  const { logIn } = useLogIn()
-  const { onSuccess, onError } = options
+  const { logIn } = useLogIn({
+    onSuccess: () => {
+      ToastSuccess('登录成功')
+    },
+    onError: (error) => {
+      ToastError('自动登录失败')
+      console.log('--------自動登录失败--------', error)
+    },
+  })
+  const { onSuccessRegister, onSuccess, onError } = options
   const register = async (params: UserReg) => {
     try {
       if (Platform?.OS == 'ios') {
@@ -24,10 +33,9 @@ const useRegister = (options: Options = {}) => {
         const user_reg_response = await APIRouter.user_reg(params)
         const user_reg_data = user_reg_response?.data?.data
         const msg_reg_msg = user_reg_response?.data?.msg
-        // console.log("------------user_reg_data------------", user_reg_data)
         if (user_reg_data) {
           // 註冊成功
-          ToastSuccess('注册成功')
+          onSuccessRegister && onSuccessRegister()
           const { autoLogin } = user_reg_data
           if (autoLogin) {
             //登陸
@@ -39,14 +47,10 @@ const useRegister = (options: Options = {}) => {
           }
           onSuccess && onSuccess()
         } else {
-          // 註冊失敗
-          ToastError('注册失败')
-          console.log("-------msg_reg_msg-------", msg_reg_msg)
           onError && onError(msg_reg_msg)
         }
       }
     } catch (error) {
-      ToastError('注册失败')
       onError && onError(error)
     }
   }

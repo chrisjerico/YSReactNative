@@ -2,7 +2,7 @@ import { Alert, Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import { ToastError, ToastSuccess } from '../../tools/tars'
+import { ToastError, ToastSuccess, ToastStatus } from '../../tools/tars'
 
 interface Options {
   onSuccess?: () => any;
@@ -14,18 +14,16 @@ const useLogOut = (options: Options = {}) => {
   const requestLogOut = async () => {
     try {
       if (Platform.OS == 'ios') {
+        ToastStatus('正在登出...')
         await APIRouter.user_logout()
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
-        ToastSuccess('登出成功')
         onSuccess && onSuccess()
       }
     } catch (error) {
-      ToastError('登出失败')
-      console.log("-------error------", error)
       onError && onError(error)
     }
   }

@@ -4,9 +4,7 @@ import { updateUserInfo } from '../../../redux/store/IGlobalStateHelper'
 import APIRouter from '../../network/APIRouter'
 import {
   saveNativeUser,
-  ToastError,
-  ToastStatus,
-  ToastSuccess,
+  ToastStatus
 } from '../../tools/tars'
 
 interface Options {
@@ -23,13 +21,7 @@ const useTryPlay = (options: Options = {}) => {
         const user_guestLogin_response = await APIRouter.user_guestLogin()
         const user_guestLogin_data = user_guestLogin_response?.data?.data
         const user_guestLogin_msg = user_guestLogin_response?.data?.msg
-        console.log(
-          '----------user_guestLogin_data---------',
-          user_guestLogin_data
-        )
         if (user_guestLogin_data) {
-          ToastSuccess('登录成功！')
-          // 試玩成功
           // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
           //@ts-ignore
           await saveNativeUser({
@@ -41,14 +33,10 @@ const useTryPlay = (options: Options = {}) => {
           onSuccess && onSuccess()
         } else {
           // 試玩失敗
-          ToastError('登录失败')
-          console.log("---------user_guestLogin_msg-------", user_guestLogin_msg)
           onError && onError(user_guestLogin_msg)
         }
       }
     } catch (error) {
-      ToastError('登录失败')
-      console.log(error)
       onError && onError(error)
     }
   }

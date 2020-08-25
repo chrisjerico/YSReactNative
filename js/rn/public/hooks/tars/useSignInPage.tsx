@@ -9,6 +9,7 @@ import { navigate, pop } from '../../navigation/RootNavigation'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
+import { ToastSuccess, ToastError } from '../../tools/tars'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -70,22 +71,29 @@ const useSignInPage = ({
       } else {
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
+      ToastSuccess('登录成功')
     },
-    onError: () => {
+    onError: (error) => {
       setSlidingVerification({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slidingVerificationRrf?.current?.reload()
+      ToastError('登录失败')
+      console.log("--------登录失败--------", error)
     },
   })
 
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
       goToHomePage()
+      ToastSuccess('登录成功')
     },
-    onError: () => { },
+    onError: (error) => {
+      ToastError('登录失败')
+      console.log("--------試玩失败--------", error)
+    },
   })
 
   const signIn = () => {

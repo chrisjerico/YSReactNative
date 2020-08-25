@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -12,39 +12,47 @@ import RefreshControlComponent from '../../public/components/tars/RefreshControl
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useLogOut from '../../public/hooks/tars/useLogOut'
-import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
 import {
   navigate,
   navigationRef,
-  pop,
+  pop
 } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { getHtml5Image } from '../../public/tools/tars'
+import { Toast } from '../../public/tools/ToastUtils'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
+import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-import { getHtml5Image } from '../../public/tools/tars'
-import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
-import { Toast } from '../../public/tools/ToastUtils'
 
 const LHTMinePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
+  // stores
+  const {
+    avatar,
+    usr,
+    balance,
+    unreadMsg,
+    isTest,
+    curLevelGrade,
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
   const [showBackBtn, setShowBackBtn] = useState(false)
   const [avatarListLoading, setAvatarListLoading] = useState(true)
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
+  const [money, setMoney] = useState(balance)
   // functions
   const { setProps } = props
   const { logOut } = useLogOut({
@@ -63,17 +71,6 @@ const LHTMinePage = (props: any) => {
       setAvatarListLoading(false)
     }
   }
-  // stores
-  const {
-    avatar,
-    usr,
-    balance,
-    unreadMsg,
-    isTest,
-    curLevelGrade
-  }: UGUserModel = UGStore.globalProps.userInfo
-  const { userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
-
   // effects
   useEffect(() => {
     getAvatarList()
@@ -135,7 +132,7 @@ const LHTMinePage = (props: any) => {
           name={usr}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           level={curLevelGrade}
-          balance={balance}
+          balance={money}
           onPressDaySign={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
           }}
@@ -143,11 +140,12 @@ const LHTMinePage = (props: any) => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
           onPressReload={async () => {
-            const { data } = await APIRouter.user_balance_token()
-            UGStore.dispatch({
-              type: 'merge',
-              userInfo: { balance: data.data.balance },
-            })
+            try {
+              const { data } = await APIRouter.user_balance_token()
+              const balance = data?.data?.balance
+              setMoney(balance)
+              UGStore.dispatch({ type: 'merge', userInfo: { balance } })
+            } catch (error) { }
           }}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item

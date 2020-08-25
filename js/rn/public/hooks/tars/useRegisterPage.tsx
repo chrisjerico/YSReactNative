@@ -1,11 +1,11 @@
-import { useState, useRef, useEffect } from 'react'
-import { UGStore } from '../../../redux/store/UGStore'
+import { useEffect, useRef, useState } from 'react'
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
-import { navigate } from '../../navigation/RootNavigation'
+import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
-import useRegister from './useRegister'
+import { navigate } from '../../navigation/RootNavigation'
 import APIRouter from '../../network/APIRouter'
-import { ToastSuccess, ToastError, validPassword } from '../../tools/tars'
+import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
+import useRegister from './useRegister'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -54,6 +54,9 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   }
 
   const { register } = useRegister({
+    onSuccessRegister: () => {
+      ToastSuccess('注册成功')
+    },
     onSuccess: goToHomePage,
     onError: () => {
       setSlidingVerification({
@@ -62,7 +65,8 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
         nc_sig: undefined,
       })
       slidingVerificationRrf?.current?.reload()
-    },
+      ToastError('注册失败')
+    }
   })
 
   const fetchImgCaptcha = () => {

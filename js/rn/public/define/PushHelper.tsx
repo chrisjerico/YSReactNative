@@ -92,12 +92,11 @@ export default class PushHelper {
   }
 
   // 去彩票
-
   static pushLottery(code: LotteryType) {
     if (Platform.OS != 'ios') return;
     //const a = {"category": "1", "clsName": "GameModel", "gameCode": "", "gameId": "86", "gameType": "lhc", "hotIcon": "", "icon": "https://cdn01.mlqman.cn/upload/c213/customise/picture/system/mobileIcon/3fddac4cc5161b11d7278bef9bc78e85.png", "id": "123", "isClose": "0", "isInstant": "0", "isSeal": "0", "levelType": "1", "logo": "https://cdn01.mlqman.cn/upload/c213/customise/images/kjw_logo_86.jpg?v=1581842827", "name": "", "openWay": "0", "realName": "", "seriesId": "1", "sort": "19", "subId": "86", "subtitle": "", "tipFlag": "0", "title": "新加坡六合彩", "url": ""}
     this.pushHomeGame({
-      seriesId: 1,
+      seriesId: 1, // 普通彩票
       subId: code,
       gameId: code
     } as any)
