@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -74,7 +74,6 @@ const BZHSignInPage = (props: any) => {
           <Form
             show={true}
             rightIconProps={{
-              color: showPassword ? '#84C1FF' : '#d9d9d9',
               onPress: onChanePasswordSecure,
             }}
             placeholder={'请输入密码'}
