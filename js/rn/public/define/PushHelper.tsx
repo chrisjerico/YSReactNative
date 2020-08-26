@@ -4,7 +4,7 @@ import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
 import { IGameIconListItem } from '../../redux/model/home/IGameBean';
 import { OCHelper } from './OCHelper/OCHelper';
-import { HomeGamesModel } from '../network/Model/HomeGamesModel';
+import {HomeGamesModel, List} from '../network/Model/HomeGamesModel';
 import { NSValue, } from './OCHelper/OCBridge/OCCall';
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
 import { TurntableListModel } from '../network/Model/TurntableListModel';
@@ -126,7 +126,7 @@ export default class PushHelper {
 
   }
   // 首页游戏列表跳转
-  static pushHomeGame(game: IGameIconListItem | HomeGamesModel) {
+  static pushHomeGame(game: IGameIconListItem | HomeGamesModel | List) {
     game = Object.assign({ clsName: 'GameModel' }, game);
     console.log('--------game-------', game)
     switch (Platform.OS) {

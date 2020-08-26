@@ -75,9 +75,7 @@ const PromotionListPage = ({navigation}) => {
                     fontSize: 18,
                     fontWeight: "bold"
                 }}>优惠活动</Text>
-
             </LinearGradient>
-
             <LinearGradient style={{flex: 1, paddingBottom: 50}} colors={Skin1.bgColor}>
                 {categories?.length > 0 ? <ScrollableTabView
                     renderTabBar={(props: TabBarProps) => {
@@ -90,8 +88,6 @@ const PromotionListPage = ({navigation}) => {
                                                dataSource={promotionData} filter={res}/>
                     })}
                 </ScrollableTabView> : null}
-
-
             </LinearGradient>
         </View>
     )
@@ -130,7 +126,7 @@ export const PromotionLists = ({dataSource, filter, promotionData}: { dataSource
                                       fontWeight: "bold",
                                       fontSize: 16,
                                       marginBottom: 5,
-                                      color: 'white'
+                                      color: Skin1.textColor1
                                   }}>{item.title}</Text>
                                   <FastImageAutoHeight source={{uri: item.pic}}/>
                               </View>
@@ -191,7 +187,7 @@ const RenderTabBar = (props: TabBarProps & { hidden: boolean; titles: string[] }
                             backgroundColor: idx == props.activeTab ? Skin1.themeColor : 'transparent',
                             textAlign: 'center',
                             fontSize: 15,
-                            color: idx == props.activeTab ? Skin1.textColor1 : Skin1.bgTextColor,
+                            color: idx == props.activeTab ? Skin1.textColor1 : Skin1.textColor2,
                             borderRadius: 3,
                         }}>
                         {title}

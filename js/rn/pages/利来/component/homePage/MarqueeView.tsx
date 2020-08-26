@@ -30,7 +30,7 @@ export const MarqueeView = ({textArr}: MarqueeViewProps) => {
                 height={30}
                 direction={'left'}
                 reverse={false}
-                textStyle={{fontSize: 16, color: '#FF0000'}}
+                textStyle={{fontSize: 16, color: '#000000'}}
                 onTextClick={(item) => {
                     setClickItem(item)
                     setShowModal(true)

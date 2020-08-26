@@ -19,10 +19,12 @@ import useMemberItems from "../../public/hooks/useMemberItems";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import {PageName} from "../../public/navigation/Navigation";
 import APIRouter from "../../public/network/APIRouter";
+import {httpClient} from "../../public/network/httpClient";
+import UGUserModel from "../../redux/model/全局/UGUserModel";
 
 const LLMinePage = ({navigation}) => {
     const userStore = UGStore.globalProps.userInfo
-    const {uid = "", usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance} = userStore
+    const {uid = "", usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance, avatar} = userStore
     const {UGUserCenterItem} = useMemberItems()
     const [levelWidth, setLevelWidth] = useState(193)
     const [depositItem, setDepositItem] = useState<any>()
@@ -79,7 +81,7 @@ const LLMinePage = ({navigation}) => {
                 }}>
                     <View style={{flexDirection: "row", marginHorizontal: 8, marginVertical: 16}}>
                         <Image style={{width: 50, height: 50}}
-                               source={{uri: "http://test05.6yc.com/views/mobileTemplate/2/images/money-2.png"}}/>
+                               source={{uri: avatar}}/>
                         <View style={{marginLeft: 12}}>
                             <View style={{flexDirection: "row", alignItems: "center"}}>
                                 <Text style={{color: "#ffffff", lineHeight: 20, fontSize: 14}}>{usr}</Text>
@@ -174,9 +176,29 @@ const LLMinePage = ({navigation}) => {
             <SafeAreaView>
                 <FlatList
                     scrollEnabled={false}
-                    style={{borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20}}
+                    style={{borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90}}
                     keyExtractor={(item, index) => `mine-${index}`}
                     data={UGUserCenterItem}
+                    ListFooterComponent={() => (
+                        <View style={{
+                            flexDirection: "row",
+                            flex: 1,
+                            marginLeft: 20,
+                            height: 47,
+                            alignItems: "center",
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#E0E0E0'
+                        }}>
+                            <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={loginOut}>
+                                <Image style={{height: 29, width: 29, marginRight: 10}}
+                                       source={{uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png`}}/>
+                                <Text style={{alignSelf: "center", color: "#47535B", flex: 1}}>退出登录</Text>
+                                <View style={{marginRight: 20}}>
+                                    <Icon size={20} name={'angle-right'}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                     renderItem={({item}) => (
                         <View style={{
                             flexDirection: "row",
@@ -199,18 +221,6 @@ const LLMinePage = ({navigation}) => {
                             </TouchableOpacity>
                         </View>
                     )}/>
-                <TouchableOpacity onPress={loginOut} style={{
-                    height: 55,
-                    backgroundColor: '#34343b',
-                    marginHorizontal: 16,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: 8,
-                    marginTop: 10,
-                    marginBottom: 100,
-                }}>
-                    <Text style={{color: 'white', fontSize: 21}}>退出登录</Text>
-                </TouchableOpacity>
             </SafeAreaView>
         </ScrollView>
     )

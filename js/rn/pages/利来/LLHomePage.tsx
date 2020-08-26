@@ -37,13 +37,16 @@ import RankListCP from "../../public/widget/RankList";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
 import LinearGradient from "react-native-linear-gradient";
 import UGUserModel from "../../redux/model/全局/UGUserModel";
+import ActivityComponent from "../../public/components/tars/ActivityComponent";
+import {getActivityPosition} from "../../public/tools/tars";
+import App from "react-native-safe-area-context/lib/typescript/example/App";
 
 const LLHomePage = ({setProps, navigation}) => {
-    const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
+    let {banner, notice, rankList, redBag, onlineNum, onRefresh, loading, floatAds} = useGetHomeInfo()
     const userStore = UGStore.globalProps.userInfo;
-    const { uid = "", usr, balance, isTest }: UGUserModel = userStore
+    const {uid = "", usr, balance, isTest}: UGUserModel = userStore
     const sysStore = UGStore.globalProps.sysConf;
-    const { mobile_logo = "", rankingListSwitch } = sysStore
+    const {mobile_logo = "", rankingListSwitch} = sysStore
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [show, setShow] = useState(false)
@@ -51,6 +54,7 @@ const LLHomePage = ({setProps, navigation}) => {
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const [categories, setCategories] = useState<string[]>()
     const systemStore = UGStore.globalProps.sysConf
+    const [ads, setAds] = useState([])
 
     useEffect(() => {
         initPromotions()
@@ -62,6 +66,7 @@ const LLHomePage = ({setProps, navigation}) => {
             clearInterval(timer)
         })
     }, [])
+
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -75,13 +80,26 @@ const LLHomePage = ({setProps, navigation}) => {
         setOriginalNoticeString(string)
     }, [notice])
 
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            setProps()
+        });
+
+        return unsubscribe;
+    }, [navigation]);
+
+    useEffect(() => {
+        floatAds?.data && setAds(floatAds.data)
+    }, [floatAds, uid])
+
     const reloadData = async () => {
         const user = await OCHelper.call('UGUserModel.currentUser');
         if (!user) {
-            UGStore.dispatch({ type: 'reset', userInfo:{}});
+            UGStore.dispatch({type: 'reset', userInfo: {}});
             UGStore.save();
         } else {
-            UGStore.dispatch({ type: 'merge', userInfo:user });
+            UGStore.dispatch({type: 'merge', userInfo: user});
             UGStore.save();
         }
     }
@@ -109,14 +127,6 @@ const LLHomePage = ({setProps, navigation}) => {
         } catch (error) {
         }
     }
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            setProps()
-        });
-
-        return unsubscribe;
-    }, [navigation]);
 
     return (
         <View style={{flex: 1}}>
@@ -204,6 +214,21 @@ const LLHomePage = ({setProps, navigation}) => {
                     </View>
                 </LinearGradient>
             </View>}
+            {ads.map((item: any, index) => {
+                const {image, position, linkCategory, linkPosition} = item
+                return (
+                    <ActivityComponent
+                        key={index}
+                        containerStyle={[getActivityPosition(position), position % 2 != 0 ? {top: 260} : {bottom: 260}]}
+                        enableFastImage={true}
+                        show={true}
+                        logo={image}
+                        onPress={() => {
+                            PushHelper.pushCategory(linkCategory, linkPosition)
+                        }}
+                    />
+                )
+            })}
             <RedBagItem redBag={redBag} style={{top: 200}}/>
             <TurntableListItem/>
             <MarqueePopupView onPress={() => {

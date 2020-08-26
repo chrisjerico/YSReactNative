@@ -14,32 +14,13 @@ import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {push} from "../../../../../public/navigation/RootNavigation";
 import {PageName} from "../../../../../public/navigation/Navigation";
 
-const screenWidth = Dimensions.get("screen").width
 export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number }) => {
-    const userStore = UGStore.globalProps.userInfo
-    const {uid = ""} = userStore
-    const {homeGames} = useGetHomeInfo()
-    const thirdPartGamePress = (id: string, gameID?: string) => {
-        if (uid != "") {
-            const result = homeGames.data.icons.filter((res) => res.id == id)
-            console.log(result)
-            if (gameID && result.length > 0) {
-                const gameData = result[0].list.filter((res) => res.id == gameID)
-                //@ts-ignore
-                PushHelper.pushHomeGame(gameData[0])
-            } else if (!gameID && result.length > 0) {
-
-            } else {
-
-            }
-        } else {
-            push(PageName.LLLoginPage)
-        }
+    const onPress = (list: List) => {
+        list.seriesId != '1' ? PushHelper.pushHomeGame(list) :
+            list.gameId ?
+                PushHelper.pushCategory(list.seriesId, list.gameId) :
+                PushHelper.pushCategory(list.seriesId, list.subType[0]?.gameId)
     }
-
-    useEffect(() => {
-        console.log(list[3])
-    }, [list])
 
     return (
         <View style={{paddingTop: 10, flex: 1}}>
@@ -51,17 +32,17 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
                 <Text style={{color: "#3C3C3C", fontSize: 18, fontWeight: "bold", paddingVertical: 8}}>真人娱乐</Text>
                 <ImageButton imgStyle={{height: 140, resizeMode: "stretch"}}
                              uri={list[0]?.icon}
-                             onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}/>
+                             onPress={() => onPress(list[0])}/>
                 <ImageButton imgStyle={{height: 140, marginTop: 8, resizeMode: "stretch"}}
                              uri={list[1]?.icon}
-                             onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}/>
+                             onPress={() => onPress(list[1])}/>
                 <View style={{flexDirection: "row", marginTop: 8, flex: 1}}>
                     <ImageButton imgStyle={{flex: 2/3, height: 100, width: "auto", resizeMode: "stretch"}}
                                  uri={list[2]?.icon || list[2]?.subType[0]?.icon}
-                                 onPress={() => thirdPartGamePress(list[2].id, list[2].gameId)}/>
+                                 onPress={() => onPress(list[2])}/>
                     <ImageButton imgStyle={{flex: 1/3, height: 100, width: "auto", marginLeft: 4, resizeMode: "stretch"}}
                                  uri={list[3]?.icon || list[3]?.subType[0]?.icon}
-                                 onPress={() => thirdPartGamePress(list[3].id, list[3].gameId)}/>
+                                 onPress={() => onPress(list[3])}/>
                 </View>
             </View>
         </View>

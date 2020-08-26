@@ -10,33 +10,17 @@ import {UGStore} from "../../../../../redux/store/UGStore";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 
 export const GameListView = ({list}: {list: List[]}) => {
-    const {homeGames} = useGetHomeInfo()
-    const userStore = UGStore.globalProps.userInfo
-    const { uid = "" } = userStore
-
-    const thirdPartGamePress = (id: string, gameID?: string) => {
-        if (uid != "") {
-            const result = homeGames.data.icons.filter((res) => res.id == id)
-            if (gameID && result.length > 0) {
-                const gameData = result[0].list.filter((res) => res.id == gameID)
-                //@ts-ignore
-                PushHelper.pushHomeGame(gameData[0])
-            } else if (!gameID && result.length > 0) {
-
-            } else {
-
-            }
-        } else {
-            push(PageName.ZLLoginPage)
-        }
-
-
+    const onPress = (list: List) => {
+        list.seriesId != '1' ? PushHelper.pushHomeGame(list) :
+            list.gameId ?
+                PushHelper.pushCategory(list.seriesId, list.gameId) :
+                PushHelper.pushCategory(list.seriesId, list.subType[0]?.gameId)
     }
     return (
         <FlatList scrollEnabled={false} style={{height:375}} keyExtractor={(item, index) => `boardGame-${index}`}
                   numColumns={2} data={fillArray(list, 2)} renderItem={({item, index}) => {
             return (
-                <ImageButton imgStyle={{height: 105, margin: 10, flex:1 }} uri={item.icon} onPress={() => thirdPartGamePress( item.id, item.gameId)}/>
+                <ImageButton imgStyle={{height: 105, margin: 10, flex:1 }} uri={item.icon} onPress={() => onPress(item)}/>
             )
         }}/>
     )

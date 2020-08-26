@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -14,7 +15,7 @@ interface ActivityComponentProps {
   onPress: () => any;
   show?: any;
   enableFastImage?: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const ActivityComponent = ({
