@@ -138,7 +138,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
-  const { isEncrypt = false } = config;
+  const { isEncrypt = true } = config;
   let encryptData = await encryptParams(params, isEncrypt);
   //開始請求
   //ugLog('http url=', config.baseURL, config.url)
