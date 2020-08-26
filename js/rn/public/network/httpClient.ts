@@ -9,6 +9,7 @@ import { Toast } from '../tools/ToastUtils';
 import {ugLog} from "../tools/UgLog";
 import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import {anyEmpty} from "../tools/Ext";
 interface Dictionary {
   [x: string]: any;
 }
@@ -33,6 +34,11 @@ const publicParams = {
   // able: "123"
 };
 const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary> => {
+  // for (let key in params ) {
+  //   if (anyEmpty(params[key])) {
+  //     params[key] = null
+  //   }
+  // }
   if (!isEncrypt) {
     return params;
   }
@@ -138,56 +144,71 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
-  const { isEncrypt = true } = config;
+  let { isEncrypt = true } = config;
+
+  switch (Platform.OS) {
+    case 'ios':
+
+      break;
+    case 'android':
+      isEncrypt = eval(ANHelper.callSync(CMD.SITE_ENCRYPTION))
+      ugLog('http isEncrypt=', isEncrypt)
+      break;
+  }
+
   let encryptData = await encryptParams(params, isEncrypt);
-  //開始請求
-  //ugLog('http url=', config.baseURL, config.url)
-  //ugLog('http config.url=', config.url)
-  //ugLog('http params=', params, ", isEncrypt=", isEncrypt)
-  //ugLog('http encryptData=', encryptData)
 
-  if (isEncrypt) {
-    if (config.method == 'get' || config.method == 'GET') {
+  // ugLog('http isEncrypt=', isEncrypt)
+
+  if (config.method == 'get' || config.method == 'GET') {
+    if (isEncrypt) {
       config.url += '&checkSign=1';
-      Object.keys(encryptData).map(res => {
-        if (!config.params) {
-          config.params = {};
-        }
-        config.params[res] = encryptData[res];
-      });
-    } else if (config.method == 'post' || config.method == 'POST') {
-      config.url += '&checkSign=1';
-
-      if (!config.params) config.params = {};
-      if (!config.data) config.data = {};
-      if (encryptData["slideCode[nc_sid]"]) {
-        config.data.slideCode = {}
-        config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
-        config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
-        config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
-        delete encryptData["slideCode[nc_sid]"]
-        delete encryptData["slideCode[nc_sig]"]
-        delete encryptData["slideCode[nc_token]"]
-        delete config.data["slideCode[nc_token]"]
-        delete config.data["slideCode[nc_sig]"]
-        delete config.data["slideCode[nc_sid]"]
-      }
-      if (config.noToken == true) {
-        delete encryptData?.token
-      }
-      debugger
-      for (let paramsKey in encryptData) {
-        // if (paramsKey.includes("slideCode")) {
-        //   config.data[paramsKey] = config.data[paramsKey];
-        // } else {
-
-        config.data[paramsKey] = `${encryptData[paramsKey]}`;
-        // }
-
-      }
     }
 
+    Object.keys(encryptData).map(res => {
+      if (!config.params) {
+        config.params = {};
+      }
+      config.params[res] = encryptData[res];
+    });
+  } else if (config.method == 'post' || config.method == 'POST') {
+    if (isEncrypt) {
+      config.url += '&checkSign=1';
+    }
+
+    if (!config.params) config.params = {};
+    if (!config.data) config.data = {};
+    if (encryptData["slideCode[nc_sid]"]) {
+      config.data.slideCode = {}
+      config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
+      config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
+      config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
+      delete encryptData["slideCode[nc_sid]"]
+      delete encryptData["slideCode[nc_sig]"]
+      delete encryptData["slideCode[nc_token]"]
+      delete config.data["slideCode[nc_token]"]
+      delete config.data["slideCode[nc_sig]"]
+      delete config.data["slideCode[nc_sid]"]
+    }
+    if (config.noToken == true) {
+      delete encryptData?.token
+    }
+    debugger
+    for (let paramsKey in encryptData) {
+      // if (paramsKey.includes("slideCode")) {
+      //   config.data[paramsKey] = config.data[paramsKey];
+      // } else {
+
+      config.data[paramsKey] = `${encryptData[paramsKey]}`;
+      // }
+
+    }
   }
-  //ugLog('http config.data=', config.data)
+
+  // ugLog('http url=', config.method, config.baseURL, config.url)
+  // ugLog('http params=', params)
+  // ugLog('http encryptData=', encryptData)
+  // ugLog('http config.data=', config.data)
+
   return config;
 });
