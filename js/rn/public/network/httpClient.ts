@@ -42,15 +42,6 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
     temp['checkSign'] = 1;
 
     switch (Platform.OS) {
-      case 'ios':
-
-        break;
-      case 'android':
-        // ugLog("encryptParams=", JSON.stringify(temp))
-        break;
-    }
-
-    switch (Platform.OS) {
       case "ios":
         return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
       case "android":
@@ -147,52 +138,56 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
-  const { isEncrypt = true } = config;
+  const { isEncrypt = false } = config;
   let encryptData = await encryptParams(params, isEncrypt);
   //開始請求
   //ugLog('http url=', config.baseURL, config.url)
+  //ugLog('http config.url=', config.url)
+  //ugLog('http params=', params, ", isEncrypt=", isEncrypt)
+  //ugLog('http encryptData=', encryptData)
+
   if (isEncrypt) {
-    if (Platform.OS == 'ios') {
-      if (config.method == 'get' || config.method == 'GET') {
-        config.url += '&checkSign=1';
-        Object.keys(encryptData).map(res => {
-          if (!config.params) {
-            config.params = {};
-          }
-          config.params[res] = encryptData[res];
-        });
-      } else if (config.method == 'post' || config.method == 'POST') {
-        config.url += '&checkSign=1';
-
-        if (!config.params) config.params = {};
-        if (!config.data) config.data = {};
-        if (encryptData["slideCode[nc_sid]"]) {
-          config.data.slideCode = {}
-          config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
-          config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
-          config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
-          delete encryptData["slideCode[nc_sid]"]
-          delete encryptData["slideCode[nc_sig]"]
-          delete encryptData["slideCode[nc_token]"]
-          delete config.data["slideCode[nc_token]"]
-          delete config.data["slideCode[nc_sig]"]
-          delete config.data["slideCode[nc_sid]"]
+    if (config.method == 'get' || config.method == 'GET') {
+      config.url += '&checkSign=1';
+      Object.keys(encryptData).map(res => {
+        if (!config.params) {
+          config.params = {};
         }
-        if (config.noToken == true) {
-          delete encryptData?.token
-        }
-        debugger
-        for (let paramsKey in encryptData) {
-          // if (paramsKey.includes("slideCode")) {
-          //   config.data[paramsKey] = config.data[paramsKey];
-          // } else {
+        config.params[res] = encryptData[res];
+      });
+    } else if (config.method == 'post' || config.method == 'POST') {
+      config.url += '&checkSign=1';
 
-          config.data[paramsKey] = `${encryptData[paramsKey]}`;
-          // }
+      if (!config.params) config.params = {};
+      if (!config.data) config.data = {};
+      if (encryptData["slideCode[nc_sid]"]) {
+        config.data.slideCode = {}
+        config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
+        config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
+        config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
+        delete encryptData["slideCode[nc_sid]"]
+        delete encryptData["slideCode[nc_sig]"]
+        delete encryptData["slideCode[nc_token]"]
+        delete config.data["slideCode[nc_token]"]
+        delete config.data["slideCode[nc_sig]"]
+        delete config.data["slideCode[nc_sid]"]
+      }
+      if (config.noToken == true) {
+        delete encryptData?.token
+      }
+      debugger
+      for (let paramsKey in encryptData) {
+        // if (paramsKey.includes("slideCode")) {
+        //   config.data[paramsKey] = config.data[paramsKey];
+        // } else {
 
-        }
+        config.data[paramsKey] = `${encryptData[paramsKey]}`;
+        // }
+
       }
     }
+
   }
+  //ugLog('http config.data=', config.data)
   return config;
 });

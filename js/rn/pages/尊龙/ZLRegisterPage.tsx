@@ -77,10 +77,7 @@ const ZLRegisterPage = () => {
             //     break;
             // }
 
-            console.log(requestData)
-
             if (requestData.slideCode) {
-                console.log("slideCode=" + requestData.slideCode)
                 requestData.smsCode = ""
                 requestData.imgCode = ""
                 requestData["slideCode[nc_sid]"] = requestData.slideCode["nc_csessionid"]
@@ -88,6 +85,7 @@ const ZLRegisterPage = () => {
                 requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_sig"]
                 delete requestData.slideCode
             }
+          console.log('requestData.requestData: ', requestData)
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
 
@@ -247,11 +245,16 @@ const ZLRegisterPage = () => {
           true;`;
         const [webviewHeight, setWebViewHeight] = useState(0)
         const hadnleMessage = (e: WebViewMessageEvent) => {
-          console.log("sliding response" + JSON.stringify(e?.nativeEvent?.data))
-            if (typeof e?.nativeEvent?.data == 'string') {
-                setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+          let eData = e?.nativeEvent?.data;
+          console.log("sliding response: " + eData)
+
+            if (eData?.startsWith('{')
+                      && eData?.endsWith('}')) {
+              onChange(JSON.parse(eData))
+            } else if (typeof eData == 'string') {
+              setWebViewHeight(parseInt(eData) * 1.5)
             } else {
-                onChange(e?.nativeEvent?.data)
+              onChange(eData)
             }
         }
         const webViewRef = useRef<WebView>()
