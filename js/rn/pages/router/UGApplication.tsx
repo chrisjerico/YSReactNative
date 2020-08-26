@@ -46,10 +46,10 @@ import KSMine from '../凯时/KSMinePage';
 const RootStack = createStackNavigator();
 import UGPage from '../base/UGPage';
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
-import {TrendView} from "../../public/components/TrendView";
 import { JDPromotionListPage } from '../经典/JDPromotionListPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { Platform } from 'react-native';
+import TrendView from "../../public/components/TrendView";
 
 // TabbarController
 class TabBarController extends Component<{

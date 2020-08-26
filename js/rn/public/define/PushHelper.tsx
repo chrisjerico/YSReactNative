@@ -213,13 +213,7 @@ export default class PushHelper {
         break;
       }
       case UGUserCenterType.开奖走势: {
-        let buttons: AlertButton = {
-          text: `ok`,
-          onPress: () => {
-            navigate(PageName.TrendView, {})
-          },
-        }
-        Alert.alert("开奖走势", "", [buttons])
+        navigate(PageName.TrendView, {})
         break;
       }
       case UGUserCenterType.QQ客服: {
