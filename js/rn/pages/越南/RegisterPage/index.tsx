@@ -67,8 +67,8 @@ const VietnamRegister = () => {
       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
       console.log(requestData)
 
+      console.log('requestData.slideCode: ', requestData.slideCode)
       if (requestData.slideCode) {
-        console.log(requestData.slideCode)
         requestData.smsCode = ""
         requestData.imgCode = ""
         requestData["slideCode[nc_sid]"] = requestData.slideCode["nc_csessionid"]

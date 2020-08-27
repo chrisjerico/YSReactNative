@@ -169,7 +169,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               let pics: [] = JSON.parse(picStr);
               if (!arrayEmpty(pics)) {
 
-                setProps({ backgroundImage: pics.shift()});
+                setProps({backgroundImage: pics.shift()});
                 //暂时不轮播，直接清空
                 pics = [];
 
@@ -177,11 +177,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 let tempInterval = setInterval(() => {
                   if (arrayEmpty(pics)) {
                     clearInterval(tempInterval)
-                    setProps({ bBanner: true});
+                    setProps({bBanner: true});
                   } else {
-                    setProps({ backgroundImage: pics.shift()});
+                    setProps({backgroundImage: pics.shift()});
                   }
-                }, 4000)
+                }, 4000);
+              } else {
+                setProps({ bBanner: true});
               }
             }
           });
@@ -193,6 +195,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   }, [])
 
   useEffect(() => {
+    // ugLog('bCodePush=', bCodePush, ', bBanner=', bBanner)
     switch (Platform.OS) {
       case "ios":
         break;
