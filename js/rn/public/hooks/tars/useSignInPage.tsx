@@ -9,7 +9,7 @@ import { navigate, pop } from '../../navigation/RootNavigation'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
-import { ToastSuccess, ToastError } from '../../tools/tars'
+import { ToastSuccess, ToastError, ToastStatus } from '../../tools/tars'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -65,6 +65,9 @@ const useSignInPage = ({
   }
 
   const { logIn } = useLogIn({
+    onStart: () => {
+      ToastStatus('正在登录...')
+    },
     onSuccess: () => {
       if (parseInt(login_to)) {
         goToHomePage()

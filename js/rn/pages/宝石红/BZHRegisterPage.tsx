@@ -97,7 +97,7 @@ const BZHRegisterPage = () => {
             }}
             onChangeText={onChangeRecommendGuy}
             label={
-              hide_reco == 1 ? '推荐人ID，如没有可不填写' : '請填寫推薦人ID'
+              hide_reco == 1 ? '推荐人ID，如没有可不填写' : '请填写推荐人ID'
             }
             placeholder={'推荐人ID'}
             show={hide_reco}

@@ -54,10 +54,11 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   }
 
   const { register } = useRegister({
-    onSuccessRegister: () => {
+    onSuccessWithAutoLogin: goToHomePage,
+    onSuccess: () => {
       ToastSuccess('注册成功')
+      goToHomePage()
     },
-    onSuccess: goToHomePage,
     onError: (error) => {
       setSlidingVerification({
         nc_csessionid: undefined,

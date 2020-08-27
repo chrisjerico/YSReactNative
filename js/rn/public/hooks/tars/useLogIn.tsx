@@ -12,16 +12,17 @@ interface LogIn {
 }
 
 interface Options {
+  onStart?: () => any;
   onSuccess?: () => any;
   onError?: (error: any) => any;
 }
 
 const useLogIn = (options: Options = {}) => {
-  const { onSuccess, onError } = options
+  const { onSuccess, onError, onStart } = options
   const logIn = async ({ account, password, isRemember = false }: LogIn) => {
     try {
       if (Platform?.OS == 'ios') {
-        ToastStatus('正在登录...')
+        onStart && onStart()
         // await APIRouter.user_logout()
         const user_login_response = await APIRouter.user_login(account, password)
         const user_login_data = user_login_response?.data?.data
