@@ -279,7 +279,7 @@ const TrendView = () => {
                     </Svg>
                 </ScrollView>
             </ScrollView>
-            <View style={{flexDirection: "row", zIndex: 99}}>
+            <View style={{flexDirection: "row"}}>
                 <TouchableOpacity style={{backgroundColor: "#d7213a", height: 44, width: 160, justifyContent: "center"}}
                                   onPress={() => setShowModal(true)}>
                     <Text style={{
@@ -328,9 +328,9 @@ const TrendView = () => {
                     setCurrentGame(game)
                 }} setShowModal={setShowModal} showModal={showModal}/>
             </View>
-            <View style={{flexDirection: "row"}}>
-                <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>
-            </View>
+            {/*<View style={{flexDirection: "row"}}>*/}
+            {/*    <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>*/}
+            {/*</View>*/}
             {loading && <View style={{
                 justifyContent: "center",
                 width: AppDefine.width,
