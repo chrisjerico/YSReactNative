@@ -21,11 +21,7 @@ const TrendView = () => {
     const [defaultNumber, setDefaultNumber] = useState(0)
     const [currentGame, setCurrentGame] = useState(defaultGame)
     const [loading, setLoading] = useState(false)
-
-    useEffect(() => {
-        OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-    }, [])
-
+    
     useEffect(() => {
         getData()
     }, [defaultNumber, currentGame])
