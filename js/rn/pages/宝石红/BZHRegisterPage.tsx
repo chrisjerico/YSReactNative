@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -20,18 +20,12 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { Toast } from "../../public/tools/ToastUtils";
-import { ugLog } from "../../public/tools/UgLog";
 
 const BZHRegisterPage = () => {
   const {
     slidingVerificationRrf,
     hide_reco,
-    pass_length_min,
     pass_length_max,
-    password,
-    confirmPassword,
     reg_name,
     reg_fundpwd,
     reg_qq,
@@ -47,6 +41,17 @@ const BZHRegisterPage = () => {
     agentRegbutton,
     agent,
     valid,
+    realName_valid,
+    recommendGuyLabel,
+    passwordLebel,
+    confirmPasswordLabel,
+    fundpwdLabel,
+    realNameLabel,
+    imageCodeLabel,
+    emailLabel,
+    phoneLabel,
+    wechatLabel,
+    qqLabel,
     onChangeRecommendGuy,
     obChangeAccount,
     obChangePassword,
@@ -99,9 +104,7 @@ const BZHRegisterPage = () => {
               name: 'users',
             }}
             onChangeText={onChangeRecommendGuy}
-            label={
-              hide_reco == 1 ? '推荐人ID，如没有可不填写' : '请填写推荐人ID'
-            }
+            label={recommendGuyLabel}
             placeholder={'推荐人ID'}
             show={hide_reco}
           />
@@ -116,7 +119,7 @@ const BZHRegisterPage = () => {
               name: 'lock',
             }}
             onChangeText={obChangePassword}
-            label={'*请使用至少' + pass_length_min + '位字符至' + pass_length_max + '字符'}
+            label={passwordLebel}
             placeholder={'密码'}
             secureTextEntry={!showPassword}
             showRightIcon
@@ -131,7 +134,7 @@ const BZHRegisterPage = () => {
               name: 'lock',
             }}
             onChangeText={onChangeConfirmPassword}
-            label={password == confirmPassword ? null : '密码不一致'}
+            label={confirmPasswordLabel}
             placeholder={'确认密码'}
             secureTextEntry={!showConfirmPassword}
             showRightIcon
@@ -144,8 +147,9 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'user',
             }}
+            valid={realName_valid}
             onChangeText={onChaneRealName}
-            label={'*必须与您的银行账户名称相同，以免未能到账！'}
+            label={realNameLabel}
             placeholder={'真实姓名'}
             show={reg_name}
           />
@@ -154,7 +158,7 @@ const BZHRegisterPage = () => {
               name: 'lock',
             }}
             onChangeText={onChaneFundPassword}
-            label={'*请输入4数字取款密码'}
+            label={fundpwdLabel}
             placeholder={'取款密码'}
             secureTextEntry={!showFundPassword}
             showRightIcon
@@ -170,7 +174,7 @@ const BZHRegisterPage = () => {
               type: 'antdesign',
             }}
             onChangeText={onChaneQQ}
-            label={'*请输入合法的QQ号'}
+            label={qqLabel}
             placeholder={'QQ号'}
             show={reg_qq}
           />
@@ -180,7 +184,7 @@ const BZHRegisterPage = () => {
               type: 'font-awesome',
             }}
             onChangeText={onChaneWeChat}
-            label={'*请输入合法的微信号'}
+            label={wechatLabel}
             placeholder={'微信号'}
             show={reg_wx}
           />
@@ -189,7 +193,7 @@ const BZHRegisterPage = () => {
               name: 'smartphone',
             }}
             onChangeText={onChanePhone}
-            label={'*请输入合法的手机号'}
+            label={phoneLabel}
             placeholder={'手机号'}
             show={reg_phone}
           />
@@ -199,7 +203,7 @@ const BZHRegisterPage = () => {
               name: 'email-outline',
             }}
             onChangeText={onChangeEmail}
-            label={'*请输入合法的电子邮箱'}
+            label={emailLabel}
             placeholder={'电子邮箱'}
             show={reg_email}
           />
@@ -208,7 +212,7 @@ const BZHRegisterPage = () => {
               name: 'lock',
             }}
             onChangeText={onChangeImageCode}
-            label={'*请输入验证码'}
+            label={imageCodeLabel}
             placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
             show={reg_vcode == 1 || reg_vcode == 3}
             showRightIcon={true}

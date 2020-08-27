@@ -122,10 +122,9 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const account_valid = account?.length >= 6
   const password_valid = validPassword(password, pass_limit) && password?.length >= pass_length_min && password?.length <= pass_length_max
   const confirmPassword_valid = confirmPassword == password
-  const recommendGuy_valid = recommendGuy || !hide_reco || hide_reco == 1
+  const recommendGuy_valid = /^\d+$/.test(recommendGuy) || !hide_reco || hide_reco == 1
   const realName_valid = realName || !reg_name || reg_name == 1
-  const fundPassword_valid =
-    fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1
+  const fundPassword_valid = ((fundPassword?.length == 4) && (/^\d+$/.test(fundPassword))) || !reg_fundpwd || reg_fundpwd == 1
   const qq_valid = qq?.length >= 5 || !reg_qq || reg_qq == 1
   const weChat_valid = weChat || !reg_wx || reg_wx == 1
   const email_valid = email || !reg_email || reg_email == 1
@@ -171,6 +170,38 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
 
   //
 
+  const getPasswordLimitString = () => {
+    if (pass_limit == 1) {
+      return '，密码须有数字及字母'
+    } else if (pass_limit == 2) {
+      return '，密码须有数字及字母及字符'
+    } else {
+      return ''
+    }
+  }
+
+  const getLabel = (reco: number, label: string) => {
+    if (reco == 1) {
+      return label + '(选填)'
+    } else if (reco == 2) {
+      return "*" + label
+
+    } else {
+      return label
+    }
+  }
+
+  const qqLabel = getLabel(reg_qq, '请输入合法的QQ号')
+  const wechatLabel = getLabel(reg_wx, '请输入合法的微信号')
+  const phoneLabel = getLabel(reg_phone, '请输入合法的手机号')
+  const emailLabel = getLabel(reg_email, '请输入合法的电子邮箱')
+  const recommendGuyLabel = getLabel(hide_reco, '请填写推荐人ID，只能包含数字')    //hide_reco == 1 ? '推荐人ID，只能包含数字，如没有可不填写(选填)' : '*请填写推荐人ID，只能包含数字'
+  const fundpwdLabel = getLabel(reg_fundpwd, '请输入4数字取款密码') //reg_fundpwd == 1 ? '请输入4数字取款密码(选填)' : '*请输入4数字取款密码'
+  const realNameLabel = getLabel(reg_name, '必须与您的银行账户名称相同，以免未能到账') // reg_name == 1 ? '必须与您的银行账户名称相同，以免未能到账！(选填)' : '*必须与您的银行账户名称相同，以免未能到账！'
+  const passwordLebel = '*请使用至少' + pass_length_min + '位至' + pass_length_max + '位英文或数字的组合' + getPasswordLimitString()
+  const confirmPasswordLabel = password == confirmPassword ? '' : '密码不一致'
+  const imageCodeLabel = '*请输入验证码'
+
   const signUp = () => {
     if (valid) {
       const params = {
@@ -193,6 +224,8 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
       register(params as any)
     }
   }
+
+
   return {
     slidingVerificationRrf,
     hide_reco,
@@ -215,6 +248,23 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     agentRegbutton,
     agent,
     valid,
+    pass_limit,
+    passwordLebel,
+    recommendGuyLabel,
+    confirmPasswordLabel,
+    fundpwdLabel,
+    realNameLabel,
+    imageCodeLabel,
+    emailLabel,
+    phoneLabel,
+    qqLabel,
+    wechatLabel,
+    password_valid,
+    recommendGuy_valid,
+    account_valid,
+    confirmPassword_valid,
+    realName_valid,
+    fundPassword_valid,
     onChangeRecommendGuy,
     obChangeAccount,
     obChangePassword,

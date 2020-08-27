@@ -1,5 +1,12 @@
 import React from 'react'
-import { KeyboardType, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import {
+  KeyboardType,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+  TextStyle,
+} from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
 
@@ -18,6 +25,8 @@ interface Form {
   onFocus?: () => any;
   maxLength?: number;
   leftIcon?: LeftIcon;
+  labelTextStyle?: TextStyle | TextStyle;
+  valid?: boolean;
 }
 
 interface LeftIcon {
@@ -44,6 +53,8 @@ const Form = ({
   onFocus,
   maxLength,
   leftIcon,
+  labelTextStyle,
+  valid,
 }: Form) => {
   if (show) {
     return (
@@ -94,7 +105,11 @@ const Form = ({
         />
         {enableLabel ? (
           <Text
-            style={{ color: 'red', fontSize: scale(15), paddingTop: scale(5) }}
+            style={[
+              styles.labelText,
+              valid ? { color: 'green' } : { color: 'red' },
+              labelTextStyle,
+            ]}
           >
             {label}
           </Text>
@@ -110,6 +125,10 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 5,
+  },
+  labelText: {
+    fontSize: scale(15),
+    paddingTop: scale(5),
   },
 })
 
