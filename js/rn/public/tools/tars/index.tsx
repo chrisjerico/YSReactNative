@@ -16,7 +16,7 @@ interface SaveNativeUser {
 export const validPassword = (password: string, pass_limit: number) => {
   if (password) {
     if (pass_limit) {
-      if ([pass_limit == 1]) {
+      if (pass_limit == 1) {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
       } else if ([pass_limit == 2]) {
         return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)

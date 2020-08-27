@@ -120,7 +120,7 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slidingVerification
   const account_valid = account?.length >= 6
-  const password_valid = validPassword(password, pass_limit)
+  const password_valid = validPassword(password, pass_limit) && password?.length >= pass_length_min && password?.length <= pass_length_max
   const confirmPassword_valid = confirmPassword == password
   const recommendGuy_valid = recommendGuy || !hide_reco || hide_reco == 1
   const realName_valid = realName || !reg_name || reg_name == 1

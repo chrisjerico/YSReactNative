@@ -27,6 +27,6 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
-    get yubaoBgColor() { return this.homeContentSubColor }
+    yubaoBgColor: "#8E8E8E"
   },
 }
