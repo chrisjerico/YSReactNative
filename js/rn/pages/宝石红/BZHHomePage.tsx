@@ -414,7 +414,7 @@ const BZHHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'0827'}
+            version={'2000ms'}
           />
           <BottomGap />
         </ScrollView>
