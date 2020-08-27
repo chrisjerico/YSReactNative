@@ -2,6 +2,9 @@ import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from './../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
+import {Platform} from "react-native";
+import {ANHelper} from "../ANHelper/ANHelper";
+import {CMD} from "../ANHelper/hp/CmdDefine";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
@@ -58,7 +61,7 @@ export function setRnPageInfo() {
   });
 
   let skitType = Skin1.skitType;
-
+  // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   // if (skitType.indexOf('白曜') != -1) {
   //   pages = pages.concat([

@@ -17,6 +17,9 @@ interface JDPromotionListVars {
 }
 
 // 声明Props
+/**
+ * 优惠券列表
+ */
 export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListProps, JDPromotionListVars> {
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
@@ -164,7 +167,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
               fontSize: 15,
               color: idx == props.activeTab ? 'white' : Skin1.bgTextColor,
               borderRadius: 3,
-              overflow: true,
+              overflow: 'hidden',
             }}>
             {title}
           </Text>

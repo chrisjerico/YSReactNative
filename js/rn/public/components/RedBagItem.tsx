@@ -8,6 +8,14 @@ import PushHelper from "../define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
 import { useDimensions } from '@react-native-community/hooks'
+
+/**
+ * 红包
+ *
+ * @param redBag
+ * @param loginPage
+ * @constructor
+ */
 const RedBagItem = ({ redBag, loginPage }: { redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
   const { width, height } = useDimensions().screen
   const { isTest = false, uid = "" } = UGStore.globalProps.userInfo

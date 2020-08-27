@@ -12,6 +12,11 @@ import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { navigationRef } from '../../public/navigation/RootNavigation'
+import {ugLog} from "../../public/tools/UgLog";
+import StringUtils from "../../public/tools/StringUtils";
+import {Platform} from "react-native";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 
 // Props
@@ -64,7 +69,8 @@ export default (Page: Function) => {
         navigation.removeListener('focus', null)
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
-          console.log('成为焦点', name, params)
+          ugLog('成为焦点', name, params)
+
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;
@@ -74,7 +80,15 @@ export default (Page: Function) => {
         })
         navigation.addListener('transitionEnd', (e) => {
           if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            //检查一下Native主页下面的tab是显示还是隐藏
+            switch (Platform.OS) {
+              case "ios":
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+                break;
+              case "android":
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+                break;
+            }
           }
         })
         // 监听dispatch
@@ -86,6 +100,7 @@ export default (Page: Function) => {
 
       // 设置props
       const defaultProps: UGBasePageProps = {
+        //Android渐变色数量必须 >= 2
         backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
@@ -114,7 +129,7 @@ export default (Page: Function) => {
             <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
         </LinearGradient>
-      )
+      );
     }
   }
 }

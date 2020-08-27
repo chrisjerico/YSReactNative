@@ -20,6 +20,9 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHRegisterPage = () => {
   const {

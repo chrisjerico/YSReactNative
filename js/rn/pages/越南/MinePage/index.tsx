@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
+import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform} from "react-native"
 import React, { useCallback, useEffect } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import FastImage from "react-native-fast-image"
@@ -227,7 +227,14 @@ const Header = () => {
       <View style={{ height: 45, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
         <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
           pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case 'android':
+
+              break;
+          }
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity >
