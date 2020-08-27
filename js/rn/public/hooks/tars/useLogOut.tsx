@@ -14,11 +14,11 @@ const useLogOut = (options: Options = {}) => {
   const requestLogOut = async () => {
     try {
       if (Platform.OS == 'ios') {
-        ToastStatus('正在登出...')
+        ToastStatus('正在退出...')
         await APIRouter.user_logout()
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+        // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
         onSuccess && onSuccess()

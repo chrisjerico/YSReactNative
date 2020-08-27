@@ -301,7 +301,7 @@ const BZHHomePage = () => {
                         }}
                         titleContainerStyle={{
                           marginTop: scale(5),
-                          aspectRatio: 2,
+                          aspectRatio: 2.5,
                         }}
                         onPress={() => {
                           if (subType) {

@@ -20,7 +20,7 @@ const useRegister = (options: Options = {}) => {
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('自动登录失败')
+      ToastError('自动登录失败' + error ? ' : ' + error : '')
       console.log('--------自動登录失败--------', error)
     },
   })

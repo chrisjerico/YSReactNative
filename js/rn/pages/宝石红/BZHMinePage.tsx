@@ -41,7 +41,6 @@ const BZHMinePage = (props: any) => {
   } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
 
   // data handle
-  console.log('----------userCenterItems--------', userCenterItems)
   const features = userCenterItems?.slice(0, 4) ?? []
   const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
@@ -87,7 +86,7 @@ const BZHMinePage = (props: any) => {
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
-                logo={logo ?? config?.defaultProfileToolLogos[index]}
+                logo={logo} // ?? config?.defaultProfileToolLogos[index]
                 title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
@@ -101,7 +100,7 @@ const BZHMinePage = (props: any) => {
               key={index}
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
-              logo={logo ?? config?.defaultFeatureLogos[code]}
+              logo={logo} //  ?? config?.defaultFeatureLogos[code]
               unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
               onPress={() => {

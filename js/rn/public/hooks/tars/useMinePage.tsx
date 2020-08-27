@@ -42,10 +42,10 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
   const { logOut } = useLogOut({
     onSuccess: () => {
       navigate(homePage, {})
-      ToastSuccess('登出成功')
     },
     onError: (error) => {
-      ToastError('登出失败')
+      ToastError(error || '登出失败')
+      console.log('--------登出失败--------', error)
     },
   })
   const fetchAvatarList = async () => {

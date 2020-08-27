@@ -58,14 +58,15 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
       ToastSuccess('注册成功')
     },
     onSuccess: goToHomePage,
-    onError: () => {
+    onError: (error) => {
       setSlidingVerification({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slidingVerificationRrf?.current?.reload()
-      ToastError('注册失败')
+      ToastError(error || '注册失败')
+      console.log("-------注册失败-------", error)
     }
   })
 

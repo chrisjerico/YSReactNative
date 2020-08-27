@@ -66,7 +66,6 @@ export enum UGUserCenterType {
   存款纪录 = 106,
   取款纪录 = 107,
   资金明细 = 108
-
 }
 
 // 我的页功能按钮

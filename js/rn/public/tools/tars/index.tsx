@@ -36,7 +36,7 @@ export const saveNativeUser = async ({
   isRememberPsd = false,
   userName,
   userPsw,
-}: // notification = 'UGNotificationLoginComplete',
+}:
   SaveNativeUser) => {
   try {
     await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
@@ -54,7 +54,7 @@ export const saveNativeUser = async ({
     )
     // await OCHelper.call(
     //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-    //   [notification]
+    //   ['UGNotificationLoginComplete']
     // )
     // await OCHelper.call(
     //   'UGNavigationController.current.popToRootViewControllerAnimated:',

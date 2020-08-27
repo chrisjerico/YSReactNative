@@ -28,7 +28,7 @@ const useLogIn = (options: Options = {}) => {
         const user_login_msg = user_login_response?.data?.msg
         if (user_login_data) {
           // 登录成功
-          await cleanNativeUser()
+          // await cleanNativeUser()
           await saveNativeUser({
             currentUser: [
               UGUserModel.getYS(user_login_data),
