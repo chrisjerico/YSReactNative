@@ -12,25 +12,22 @@ interface SaveNativeUser {
   notification?: string;
 }
 
-export const updateUserInfo = async () => {
-  try {
-    const user_info_response = await APIRouter.user_info()
-    const user_info_data = user_info_response?.data?.data
-    const user_info_msg = user_info_response?.data?.msg
-    if (user_info_data) {
-      console.log("---------user_info_data---------", user_info_data)
-      UGStore.dispatch({ type: 'merge', userInfo: user_info_data })
-      UGStore.save()
-      return user_info_response
+
+export const validPassword = (password: string, pass_limit: number) => {
+  if (password) {
+    if (pass_limit) {
+      if ([pass_limit == 1]) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
+      } else if ([pass_limit == 2]) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
+      } else {
+        return false
+      }
     } else {
-      throw user_info_msg ?? '更新使用者失败'
+      return true
     }
-  } catch (error) {
-    console.log('-------------updateUserInfo error-------------', error)
-    throw error
-    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+  } else {
+    return false
   }
 }
 
@@ -39,8 +36,8 @@ export const saveNativeUser = async ({
   isRememberPsd = false,
   userName,
   userPsw,
-  notification = 'UGNotificationLoginComplete',
-}: SaveNativeUser) => {
+}:
+  SaveNativeUser) => {
   try {
     await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
     await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
@@ -57,7 +54,7 @@ export const saveNativeUser = async ({
     )
     // await OCHelper.call(
     //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-    //   [notification]
+    //   ['UGNotificationLoginComplete']
     // )
     // await OCHelper.call(
     //   'UGNavigationController.current.popToRootViewControllerAnimated:',
@@ -68,46 +65,64 @@ export const saveNativeUser = async ({
   }
 }
 
-
 export const cleanNativeUser = async () => {
   try {
     const user = await OCHelper.call('UGUserModel.currentUser')
     if (user) {
       const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }])
+      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
+        { token: sessid },
+      ])
       await OCHelper.call('UGUserModel.setCurrentUser:')
-      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-      UGStore.dispatch({ type: 'reset', userInfo: {} });
+      await OCHelper.call(
+        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+        ['UGNotificationUserLogout']
+      )
+      UGStore.dispatch({ type: 'reset', userInfo: {} })
     }
   } catch (error) {
-    throw error ?? '清除旧使用者失败'
+    throw error ?? 'cleanNativeUser Error'
   }
 }
 
-
 export const ToastSuccess = (msg: any) => {
-  console.log("--------ToastSuccess--------", msg)
+  console.log('--------ToastSuccess--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [typeof m === 'string' ? m : ''])
+  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+    typeof m === 'string' ? m : '',
+  ])
 }
 
 export const ToastError = (msg: any) => {
-  console.log("--------ToastError--------", msg)
+  console.log('--------ToastError--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [typeof m === 'string' ? m : ''])
+  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+    typeof m === 'string' ? m : '',
+  ])
 }
-
 
 export const ToastStatus = (msg: any) => {
-  console.log("--------ToastStatus--------", msg)
+  console.log('--------ToastStatus--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
+  OCHelper.call('SVProgressHUD.showWithStatus:', [
+    typeof m === 'string' ? m : '',
+  ])
 }
 
-
-export const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' = 'png') => {
-  return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
-  // return 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+export const getHtml5Image = (
+  id: number,
+  path: string,
+  type: 'png' | 'jpg' | 'gif' = 'png'
+) => {
+  return (
+    AppDefine.host +
+    '/views/mobileTemplate/' +
+    id?.toString() +
+    '/images/' +
+    path +
+    '.' +
+    type
+  )
 }
 
 export const getActivityPosition = (position: number) => {

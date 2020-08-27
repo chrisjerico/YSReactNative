@@ -66,10 +66,6 @@ export class OCEvent extends OCCall {
     });
   }
 
-  // public static addLoginCompleteListener(onEvent: (params: any) => {}) {
-  //   this.addEvent(OCEventType.UGNotificationLoginComplete, onEvent)
-  // }
-
   public static addEvent(type: OCEventType, event: Function) {
     this.events.push({ type: type, event: event });
   }

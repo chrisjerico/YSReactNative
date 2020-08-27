@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, View, Image } from 'react-native'
+import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -11,6 +11,8 @@ interface AutoHeightCouponAutoHeightCouponComponentProps {
   pic: string;
   onPress: (setShowPop: (showPop: boolean) => any) => any;
   content: string;
+  containerStyle?: ViewStyle | ViewStyle[];
+  titleStyle?: TextStyle | TextStyle[];
 }
 
 const AutoHeightCouponComponent = ({
@@ -18,14 +20,16 @@ const AutoHeightCouponComponent = ({
   pic,
   onPress,
   content,
+  containerStyle,
+  titleStyle
 }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
   const [show, setShow] = useState(true)
   if (show) {
     return (
-      <View style={{ width: '100%' }}>
-        <Text style={{ fontSize: scale(25), marginVertical: scale(10) }}>
+      <View style={[{ width: '100%' }, containerStyle]}>
+        <Text style={[styles.title, titleStyle]}>
           {title}
         </Text>
         <TouchableImage
@@ -145,6 +149,10 @@ const styles = StyleSheet.create({
     borderColor: '#8E8E8E',
     width: scale(220),
   },
+  title: {
+    fontSize: scale(25),
+    marginVertical: scale(10)
+  }
 })
 
 export default AutoHeightCouponComponent

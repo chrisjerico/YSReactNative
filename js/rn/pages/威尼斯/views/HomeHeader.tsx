@@ -74,7 +74,7 @@ const HomeHeader = ({
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={onPressUser}>
                 <View style={styles.balanceContainer}>
-                  <Text style={{ color: '#ffffff', fontSize: scale(13) }}>
+                  <Text style={{ color: '#ffffff', fontSize: scale(15) }}>
                     {balance}
                   </Text>
                   <AntDesign

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, ScrollView, StyleSheet } from 'react-native'
+import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useActivity from '../../public/hooks/tars/useActivity'
 import useHome from '../../public/hooks/tars/useHome'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
@@ -24,12 +22,10 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
-import GameBlock, { GameSubType } from './views/GameBlock'
+import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import NavBlock from './views/NavBlock'
 
@@ -37,7 +33,7 @@ const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // states
-  const [gameSubTypes, setGameSubTypes] = useState<GameSubType[]>([])
+  const [gameSubTypes, setGameSubTypes] = useState([])
   // functions
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
@@ -59,23 +55,25 @@ const BZHHomePage = () => {
     webName,
     m_promote_pos,
     rankingListSwitch,
+    adSliderTimer,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   // effect
   const {
     loading,
+    refresh,
     rankList,
     banner,
     homeGame,
     notice,
     onlineNum,
     couponList,
-    systemConfig,
     homeAd,
+    roulette,
+    redBag,
+    floatAd,
     refreshHome,
   } = useHome()
-
-  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -83,7 +81,6 @@ const BZHHomePage = () => {
     }
   }, [notice])
   // data handle
-  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
@@ -128,17 +125,21 @@ const BZHHomePage = () => {
           showsVerticalScrollIndicator={false}
           style={styles.container}
           refreshControl={
-            <RefreshControlComponent
+            <RefreshControl
+              refreshing={refresh}
               onRefresh={async () => {
                 try {
-                  await Promise.all([refreshHome(), refreshActivity()])
+                  await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
-                } catch (error) { }
+                } catch (error) {
+                  console.log(error)
+                }
               }}
             />
           }
         >
           <BannerBlock
+            containerStyle={{ aspectRatio: 540 / 217 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -213,6 +214,7 @@ const BZHHomePage = () => {
             }}
           />
           <FlatList
+            removeClippedSubviews={true}
             style={{ paddingHorizontal: '1%' }}
             data={gameBlocks}
             renderItem={({ item, index: gameBlockIndex }) => {
@@ -299,7 +301,7 @@ const BZHHomePage = () => {
                         }}
                         titleContainerStyle={{
                           marginTop: scale(5),
-                          aspectRatio: 2,
+                          aspectRatio: 2.5,
                         }}
                         onPress={() => {
                           if (subType) {
@@ -307,7 +309,10 @@ const BZHHomePage = () => {
                             const updateGameSubTypes =
                               gameBlocks?.map((_, blockIndex) => {
                                 if (gameBlockIndex == blockIndex) {
-                                  if (gameIndex == gameSubTypes[blockIndex]?.gameIndexHistory) {
+                                  if (
+                                    gameIndex ==
+                                    gameSubTypes[blockIndex]?.gameIndexHistory
+                                  ) {
                                     return {}
                                   } else {
                                     return {
@@ -352,6 +357,15 @@ const BZHHomePage = () => {
               } = item
               return (
                 <AutoHeightCouponComponent
+                  titleStyle={{ alignSelf: 'center' }}
+                  containerStyle={{
+                    borderColor: "#d9d9d9",
+                    borderWidth: scale(1),
+                    marginBottom: scale(20),
+                    padding: scale(5),
+                    borderRadius: scale(5),
+                    paddingBottom: scale(20)
+                  }}
                   key={index}
                   title={title}
                   pic={pic}
@@ -399,23 +413,25 @@ const BZHHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'修正Banner比例'}
+            debug={true}
+            version={'5000ms'}
           />
           <BottomGap />
         </ScrollView>
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
+          show={(uid && redBagLogo && !isTest)}
           logo={redBagLogo}
           onPress={() => {
             PushHelper.pushRedBag(redBag)
           }}
         />
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
-          show={uid && roulette && !isTest}
+          show={(uid && roulette && !isTest)}
           logo={'dzp_btn'}
           onPress={() => {
             PushHelper.pushWheel(roulette)
@@ -426,6 +442,7 @@ const BZHHomePage = () => {
           return (
             <ActivityComponent
               key={index}
+              refresh={refresh}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}

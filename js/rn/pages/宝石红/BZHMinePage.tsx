@@ -1,103 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import React from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
-import useLogOut from '../../public/hooks/tars/useLogOut'
-import useMemberItems from '../../public/hooks/useMemberItems'
+import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, navigationRef, pop } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getHtml5Image } from '../../public/tools/tars'
-import { Toast } from '../../public/tools/ToastUtils'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
 import PickAvatarComponent from './components/PickAvatarComponent'
 import ProfileBlock from './views/ProfileBlock'
+import config from './config'
 
-const BZHMinePage = (props) => {
-  // yellowBox
-  console.disableYellowBox = true
-  // hooks
-  const { setProps, navigation } = props
-  const { logOut } = useLogOut({
-    onSuccess: () => {
-      navigate(PageName.BZHHomePage, {})
-    },
-  })
-  const { UGUserCenterItem } = useMemberItems()
-  // stores
+const BZHMinePage = (props: any) => {
+  const { setProps } = props
   const {
-    avatar,
-    balance,
+    userCenterItems,
+    showBackBtn,
+    curLevelGrade,
+    money,
     usr,
     isTest,
+    avatar,
     unreadMsg,
-    curLevelGrade,
-  }: UGUserModel = UGStore.globalProps.userInfo
-  // states
-  const [visible, setVisible] = useState(false)
-  const [avatarList, setAvatarList] = useState([])
-  const [avatarListLoading, setAvatarListLoading] = useState(true)
-  const [showBackBtn, setShowBackBtn] = useState(false)
-  // effects
-  const getAvatarList = async () => {
-    try {
-      setAvatarListLoading(true)
-      const value = await APIRouter.system_avatarList()
-      const avatarList = value?.data?.data ?? []
-      setAvatarList(avatarList)
-    } catch (error) {
-    } finally {
-      setAvatarListLoading(false)
-    }
-  }
+    avatarListLoading,
+    avatarListVisible,
+    avatarList,
+    fetchAvatarList,
+    fetchBalance,
+    saveAvatar,
+    signOut,
+    openAvatarList,
+    closeAvatarList,
+    goBack,
+  } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
 
-  useEffect(() => {
-    getAvatarList()
-    setProps({
-      didFocus: async () => {
-        OCHelper.call('UGNavigationController.current.viewControllers.count').then(
-          (ocCount) => {
-            const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1
-            console.log(show)
-            setShowBackBtn(show)
-          }
-        )
-      }
-    })
-  }, [])
-
-  // data
-  const features = UGUserCenterItem?.slice(0, 4) ?? []
-  const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
+  // data handle
+  const features = userCenterItems?.slice(0, 4) ?? []
+  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
   return (
     <>
-      <SafeAreaHeader
-        headerColor={BZHThemeColor.宝石红.themeColor}
-      >
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
         {showBackBtn ? (
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
             <AntDesign
               name={'left'}
               color={'#ffffff'}
               size={scale(25)}
-              onPress={() => {
-                !pop() &&
-                  OCHelper.call(
-                    'UGNavigationController.current.popViewControllerAnimated:',
-                    [true]
-                  )
-              }}
+              onPress={goBack}
             />
           </View>
         ) : (
@@ -111,29 +67,14 @@ const BZHMinePage = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={getAvatarList} />}
+        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
-          onPressAvatar={() => !isTest && setVisible(true)}
-          onPressReload={async () => {
-            try {
-              const { data } = await APIRouter.user_balance_token()
-              UGStore.dispatch({
-                type: 'merge',
-                userInfo: { balance: data?.data?.balance },
-              })
-              setProps()
-            } catch (error) {
-              console.log('user_balance_token error', error)
-            }
-          }}
+          onPressAvatar={openAvatarList}
+          onPressReload={fetchBalance}
           level={curLevelGrade}
-          avatar={
-            isTest
-              ? getHtml5Image(18, 'money-2')
-              : avatar
-          }
-          money={balance}
+          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          money={money}
           name={usr}
           features={features}
           renderFeature={(item, index) => {
@@ -145,7 +86,7 @@ const BZHMinePage = (props) => {
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
-                logo={logo}
+                logo={logo ?? config?.defaultProfileToolLogos[index]} // ?? config?.defaultProfileToolLogos[index]
                 title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
@@ -159,7 +100,7 @@ const BZHMinePage = (props) => {
               key={index}
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
-              logo={logo}
+              logo={logo} //  ?? config?.defaultFeatureLogos[code]
               unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
               onPress={() => {
@@ -173,38 +114,18 @@ const BZHMinePage = (props) => {
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
           titleStyle={styles.logOutTitle}
-          onPress={logOut}
+          onPress={signOut}
         />
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
         color={BZHThemeColor.宝石红.themeColor}
         loading={avatarListLoading}
-        visible={visible}
-        initAvatar={
-          isTest
-            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
-            : avatar
-        }
+        visible={avatarListVisible}
+        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         avatars={avatarList}
-        onPressSave={async ({ url, filename }) => {
-          try {
-            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
-            const value = await APIRouter.task_changeAvatar(filename)
-            if (value?.data?.code == 0) {
-              Toast('修改头像成功')
-            } else {
-              Toast('修改头像失败')
-            }
-          } catch (err) {
-            Toast(err)
-          } finally {
-            setVisible(false)
-          }
-        }}
-        onPressCancel={() => {
-          setVisible(false)
-        }}
+        onPressSave={saveAvatar}
+        onPressCancel={closeAvatarList}
       />
     </>
   )

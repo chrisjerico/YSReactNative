@@ -4,7 +4,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
-import { ToastError, ToastStatus, ToastSuccess } from '../tools/ToastUtils'
+import { ToastSuccess, ToastError, ToastStatus } from '../tools/tars'
 
 interface Options {
   onSuccess?: () => any;
@@ -60,9 +60,9 @@ const login = async ({ usr, pwd }) => {
     )
     const user_info_response = await APIRouter.user_info()
     await OCHelper.call('UGUserModel.setCurrentUser:', [
-      { ...user_info_response?.data, ...UGUserModel.getYS(data) },
+      { ...user_info_response?.data?.data, ...UGUserModel.getYS(data) },
     ])
-    UGStore.dispatch({ type: 'merge', userInfo: user_info_response?.data })
+    UGStore.dispatch({ type: 'merge', userInfo: user_info_response?.data?.data })
     UGStore.save()
   } catch (error) {
     throw '自动登录失败'

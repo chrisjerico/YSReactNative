@@ -1,4 +1,5 @@
-import React from 'react'
+import SafeAreaHeader from "../../../public/views/tars/SafeAreaHeader"
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -6,58 +7,34 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { Button } from 'react-native-elements'
+import { scale, scaleHeight } from "../../../public/tools/Scale"
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
-import PushHelper from '../../public/define/PushHelper'
-import useSignInPage from '../../public/hooks/tars/useSignInPage'
-import { PageName } from '../../public/navigation/Navigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import CheckBox from './views/CheckBox'
-import Form from './views/Form'
+import Form from "./Form"
+import ReloadSlidingVerification from "../../../public/components/tars/ReloadSlidingVerification"
+import { BZHThemeColor } from "../../../public/theme/colors/BZHThemeColor"
+import CheckBox from './CheckBox'
+import { Button } from 'react-native-elements'
 
-const BZHSignInPage = (props: any) => {
-  // yellowBox
-  console.disableYellowBox = true
-  // functions
-  const { navigation } = props
-  const {
-    goBack,
-    goToRegisterPage,
-    goToHomePage,
-    onChangeAccount,
-    onChangePassword,
-    onChangeIsRemember,
-    onChanePasswordSecure,
-    onChangeSlidingVerification,
-    signIn,
-    tryPlay,
-    account,
-    password,
-    isRemember,
-    loginVCode,
-    valid,
-    showPassword,
-    slidingVerificationRrf,
-  } = useSignInPage({
-    navigation: navigation,
-    homePage: PageName.BZHHomePage,
-    registerPage: PageName.BZHRegisterPage,
-  })
+interface SignInProps {
+  slidingVerificationRef: any;
+  account: string; 
+  onChangeAccount: () => any;
+  hidePassword: boolean;
+  onPressHidePassword, onChangePassword, password, isRemember, onPressRemember, loginVCode, onPressTryPlay, onPressReturnHome,onPressLoginRightNow,valid,onChangeSlidingVerification
+}
+
+const SignIn = ({ slidingVerificationRef,account, onChangeAccount, hidePassword, onPressHidePassword, onChangePassword, password, isRemember, onPressRemember, loginVCode, onPressTryPlay, onPressReturnHome,onPressLoginRightNow,valid,onChangeSlidingVerification } : SignInProps) => {
 
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <TouchableWithoutFeedback onPress={goBack}>
+        <TouchableWithoutFeedback onPress={() => { }}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
         </TouchableWithoutFeedback>
         <Text style={styles.headerTitle}>{'登录'}</Text>
         <TouchableWithoutFeedback
           onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+            // PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         >
           <Text style={styles.headerTitle}>{'客服'}</Text>
@@ -71,10 +48,15 @@ const BZHSignInPage = (props: any) => {
             value={account}
             onChangeText={onChangeAccount}
           />
+
+          {/* (value: any) => {
+            setProps({ account: value })
+          } */}
           <Form
             show={true}
             rightIconProps={{
-              onPress: onChanePasswordSecure,
+              color: hidePassword ? '#d9d9d9' : '#84C1FF',
+              onPress: onPressHidePassword,
             }}
             placeholder={'请输入密码'}
             leftIcon={{
@@ -82,13 +64,16 @@ const BZHSignInPage = (props: any) => {
             }}
             value={password}
             onChangeText={onChangePassword}
-            secureTextEntry={!showPassword}
+            secureTextEntry={hidePassword}
             showRightIcon
           />
-          <CheckBox check={isRemember} onPress={onChangeIsRemember} />
+          <CheckBox
+            check={isRemember}
+            onPress={onPressRemember}
+          />
           {loginVCode ? (
             <ReloadSlidingVerification
-              ref={slidingVerificationRrf}
+              ref={slidingVerificationRef}
               onChange={onChangeSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />
@@ -98,7 +83,7 @@ const BZHSignInPage = (props: any) => {
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
-            onPress={signIn}
+            onPress={onPressLoginRightNow}
             activeOpacity={1}
           />
           <Button
@@ -110,14 +95,16 @@ const BZHSignInPage = (props: any) => {
               width: '100%',
             }}
             titleStyle={{ color: '#EA0000' }}
-            onPress={goToRegisterPage}
+            onPress={() => {
+              // navigate(PageName.BZHRegisterPage, {})
+            }}
             activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
-            <TouchableWithoutFeedback onPress={tryPlay}>
+            <TouchableWithoutFeedback onPress={onPressTryPlay}>
               <Text>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={goToHomePage}>
+            <TouchableWithoutFeedback onPress={onPressReturnHome}>
               <Text>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
@@ -166,4 +153,10 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BZHSignInPage
+// () => {
+//   logIn({
+//     account,
+//     password: password?.md5(),
+//     isRemember,
+//   })
+// }

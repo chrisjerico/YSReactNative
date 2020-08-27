@@ -1,179 +1,76 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import SlidingVerification from '../../public/components/SlidingVerification'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
-import useRegister from '../../public/hooks/tars/useRegister'
+import useRegisterPage from '../../public/hooks/tars/useRegisterPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, pop, push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
+import { pop, push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { ToastError, ToastSuccess } from '../../public/tools/tars'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { UGStore } from '../../redux/store/UGStore'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import AgentRedButton from './views/AgentRedButton'
 import Form from './views/Form'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
 
-interface SlidingVerification {
-  nc_csessionid?: string;
-  nc_token?: string;
-  nc_sig?: string;
-}
-
-const validPassword = (password: string, pass_limit: number) => {
-  if (password) {
-    if (pass_limit) {
-      if ([pass_limit == 1]) {
-        return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == 2]) {
-        return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
-      } else {
-        return false
-      }
-    } else {
-      return true
-    }
-  } else {
-    return false
-  }
-}
-
 const BZHRegisterPage = () => {
-  // functions
-  const jumpToHomePage = () => {
-    navigate(PageName.BZHHomePage, {})
-  }
-  // hooks
-  const { register } = useRegister({
-    onSuccess: jumpToHomePage,
-    onError: () => {
-      setSlidingVerification({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
-      reloadSliding?.current?.reload()
-    },
-  })
-  // stores
   const {
-    hide_reco, // 代理人 0隱藏，1选填，2必填
-    reg_name, // 真实姓名 0隱藏，1选填，2必填
-    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
-    reg_qq, // QQ 0隱藏，1选填，2必填
-    reg_wx, // 微信 0隱藏，1选填，2必填
-    reg_phone, // 手机 0隱藏，1选填，2必填
-    reg_email, // 邮箱 0隱藏，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    smsVerify, // 手机短信验证,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
-  // states
-  const [recommendGuy, setRecommendGuy] = useState(null)
-  const [account, setAccount] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [confirmPassword, setConfirmPassword] = useState(null)
-  const [realName, setRealName] = useState(null)
-  const [fundPassword, setFundPassword] = useState(null)
-  const [qq, setQQ] = useState(null)
-  const [weChat, setWeChat] = useState(null)
-  const [phoneNumber, setPhoneNumber] = useState(null)
-  const [correctImageCode, setCorrectImageCode] = useState('')
-  const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] =
-    useState<SlidingVerification>
-      ({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
-  const [email, setEmail] = useState(null)
-  const [sms, setSms] = useState(null)
-
-  const [hidePassword, setHidePassword] = useState(true)
-  const [hideConfirmPassword, setHideConfirmPassword] = useState(true)
-  const [hideFundPassword, setHideFundPassword] = useState(true)
-  const [agent, setAgent] = useState(false)
-  const reloadSliding = useRef(null)
-
-  // effects
-  useEffect(() => {
-    if (reg_vcode == 1) {
-      getImgCaptcha()
-    } else {
-      setCorrectImageCode('')
-    }
-  }, [reg_vcode])
-
-  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
-
-  const account_valid = account?.length >= 6
-  const password_valid = validPassword(password, pass_limit)
-  const confirmPassword_valid = confirmPassword == password
-  const recommendGuy_valid = recommendGuy || !hide_reco || hide_reco == 1
-  const realName_valid = realName || !reg_name || reg_name == 1
-  const fundPassword_valid =
-    fundPassword?.length == 4 || !reg_fundpwd || reg_fundpwd == 1
-  const qq_valid = qq?.length >= 5 || !reg_qq || reg_qq == 1
-  const weChat_valid = weChat || !reg_wx || reg_wx == 1
-  const email_valid = email || !reg_email || reg_email == 1
-  const phoneNumber_valid = phoneNumber || !reg_phone || reg_phone == 1
-  const reg_vcode_valid =
-    (nc_csessionid && nc_token && nc_sig) ||
-    !reg_vcode ||
-    reg_vcode == 1 ||
-    reg_vcode == 3
-  const sms_valid = sms?.length == 6 || !smsVerify
-
-  const valid =
-    account_valid &&
-    password_valid &&
-    confirmPassword_valid &&
-    recommendGuy_valid &&
-    realName_valid &&
-    fundPassword_valid &&
-    qq_valid &&
-    weChat_valid &&
-    email_valid &&
-    phoneNumber_valid &&
-    reg_vcode_valid &&
-    sms_valid
-
-  const getImgCaptcha = () => {
-    APIRouter.secure_imgCaptcha().then((value) => {
-      setCorrectImageCode(value?.data)
-    })
-  }
-  const getSms = async () => {
-    try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
-      const { code, msg } = data ?? {}
-      if (code != 0) {
-        throw { message: msg }
-      } else {
-        ToastSuccess(msg)
-      }
-    } catch (error) {
-      ToastError(error?.message)
-    }
-  }
+    slidingVerificationRrf,
+    hide_reco,
+    pass_length_min,
+    pass_length_max,
+    password,
+    confirmPassword,
+    reg_name,
+    reg_fundpwd,
+    reg_qq,
+    reg_wx,
+    reg_phone,
+    reg_email,
+    reg_vcode,
+    showPassword,
+    showConfirmPassword,
+    showFundPassword,
+    correctImageCode,
+    smsVerify,
+    agentRegbutton,
+    agent,
+    valid,
+    onChangeRecommendGuy,
+    obChangeAccount,
+    obChangePassword,
+    onChangeConfirmPassword,
+    onChaneRealName,
+    onChaneFundPassword,
+    onChaneQQ,
+    onChaneWeChat,
+    onChanePhone,
+    onChangeEmail,
+    onChangeImageCode,
+    onChaneSms,
+    onChangeSlidingVerification,
+    onChanePasswordSecure,
+    onChaneConfirmPasswordSecure,
+    onChaneFundPasswordSecure,
+    fetchImgCaptcha,
+    fetchSms,
+    goToHomePage,
+    signUp,
+    setAgent,
+  } = useRegisterPage({
+    homePage: PageName.BZHHomePage,
+  })
 
   return (
     <>
@@ -201,15 +98,15 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'users',
             }}
-            onChangeText={(value: any) => setRecommendGuy(value)}
+            onChangeText={onChangeRecommendGuy}
             label={
-              hide_reco == 1 ? '推荐人ID，如没有可不填写' : '請填寫推薦人ID'
+              hide_reco == 1 ? '推荐人ID，如没有可不填写' : '请填写推荐人ID'
             }
             placeholder={'推荐人ID'}
             show={hide_reco}
           />
           <Form
-            onChangeText={(value: any) => setAccount(value)}
+            onChangeText={obChangeAccount}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={2}
@@ -218,16 +115,13 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'lock',
             }}
-            onChangeText={(value: any) => setPassword(value)}
+            onChangeText={obChangePassword}
             label={'*请使用至少' + pass_length_min + '位字符'}
             placeholder={'密码'}
-            secureTextEntry={hidePassword}
+            secureTextEntry={!showPassword}
             showRightIcon
             rightIconProps={{
-              color: hidePassword ? '#d9d9d9' : '#84C1FF',
-              onPress: () => {
-                setHidePassword(!hidePassword)
-              },
+              onPress: onChanePasswordSecure,
             }}
             show={2}
             maxLength={pass_length_max}
@@ -236,16 +130,13 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'lock',
             }}
-            onChangeText={(value: any) => setConfirmPassword(value)}
+            onChangeText={onChangeConfirmPassword}
             label={password == confirmPassword ? null : '密码不一致'}
             placeholder={'确认密码'}
-            secureTextEntry={hideConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
             showRightIcon
             rightIconProps={{
-              color: hideConfirmPassword ? '#d9d9d9' : '#84C1FF',
-              onPress: () => {
-                setHideConfirmPassword(!hideConfirmPassword)
-              },
+              onPress: onChaneConfirmPasswordSecure,
             }}
             show={2}
           />
@@ -253,7 +144,7 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'user',
             }}
-            onChangeText={(value: any) => setRealName(value)}
+            onChangeText={onChaneRealName}
             label={'*必须与您的银行账户名称相同，以免未能到账！'}
             placeholder={'真实姓名'}
             show={reg_name}
@@ -262,16 +153,13 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'lock',
             }}
-            onChangeText={(value: any) => setFundPassword(value)}
+            onChangeText={onChaneFundPassword}
             label={'*请输入4数字取款密码'}
             placeholder={'取款密码'}
-            secureTextEntry={hideFundPassword}
+            secureTextEntry={!showFundPassword}
             showRightIcon
             rightIconProps={{
-              color: hideFundPassword ? '#d9d9d9' : '#84C1FF',
-              onPress: () => {
-                setHideFundPassword(!hideFundPassword)
-              },
+              onPress: onChaneFundPasswordSecure,
             }}
             show={reg_fundpwd}
             maxLength={4}
@@ -281,7 +169,7 @@ const BZHRegisterPage = () => {
               name: 'QQ',
               type: 'antdesign',
             }}
-            onChangeText={(value: any) => setQQ(value)}
+            onChangeText={onChaneQQ}
             label={'*请输入合法的QQ号'}
             placeholder={'QQ号'}
             show={reg_qq}
@@ -291,7 +179,7 @@ const BZHRegisterPage = () => {
               name: 'wechat',
               type: 'font-awesome',
             }}
-            onChangeText={(value: any) => setWeChat(value)}
+            onChangeText={onChaneWeChat}
             label={'*请输入合法的微信号'}
             placeholder={'微信号'}
             show={reg_wx}
@@ -300,7 +188,7 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'smartphone',
             }}
-            onChangeText={(value: any) => setPhoneNumber(value)}
+            onChangeText={onChanePhone}
             label={'*请输入合法的手机号'}
             placeholder={'手机号'}
             show={reg_phone}
@@ -310,7 +198,7 @@ const BZHRegisterPage = () => {
               type: 'material-community',
               name: 'email-outline',
             }}
-            onChangeText={(value: any) => setEmail(value)}
+            onChangeText={onChangeEmail}
             label={'*请输入合法的电子邮箱'}
             placeholder={'电子邮箱'}
             show={reg_email}
@@ -319,13 +207,13 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'lock',
             }}
-            onChangeText={(value: any) => setImageCode(value)}
+            onChangeText={onChangeImageCode}
             label={'*请输入验证码'}
             placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
             show={reg_vcode == 1 || reg_vcode == 3}
             showRightIcon={true}
             renderRightIcon={() => (
-              <TouchableWithoutFeedback onPress={getImgCaptcha}>
+              <TouchableWithoutFeedback onPress={fetchImgCaptcha}>
                 <FastImage
                   source={{ uri: correctImageCode }}
                   resizeMode={'contain'}
@@ -335,7 +223,7 @@ const BZHRegisterPage = () => {
             )}
             onFocus={() => {
               if (correctImageCode == '') {
-                getImgCaptcha()
+                fetchImgCaptcha()
               }
             }}
             maxLength={4}
@@ -344,14 +232,14 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'lock',
             }}
-            onChangeText={(value: any) => setSms(value)}
+            onChangeText={onChaneSms}
             placeholder={'短信验证码'}
             show={smsVerify}
             showRightIcon={true}
             renderRightIcon={() => (
               <Button
                 title={'获取验证码'}
-                onPress={getSms}
+                onPress={fetchSms}
                 titleStyle={{ fontSize: scale(20), fontWeight: '600' }}
                 activeOpacity={1}
               />
@@ -359,8 +247,8 @@ const BZHRegisterPage = () => {
           />
           {reg_vcode == 2 ? (
             <ReloadSlidingVerification
-              ref={reloadSliding}
-              onChange={setSlidingVerification}
+              ref={slidingVerificationRrf}
+              onChange={onChangeSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />
           ) : null}
@@ -380,28 +268,7 @@ const BZHRegisterPage = () => {
             disabled={!valid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
-            onPress={() => {
-              if (valid) {
-                const params = {
-                  inviter: recommendGuy, // 推荐人ID
-                  usr: account, // 账号
-                  pwd: password?.md5(), // 密码
-                  fundPwd: fundPassword?.md5(), // 取款密码
-                  fullName: realName, // 真实姓名
-                  qq: qq, // QQ号
-                  wx: weChat, // 微信号
-                  phone: phoneNumber, // 手机号
-                  smsCode: sms ?? '', // 短信验证码
-                  imgCode: imageCode ?? '', // 字母验证码,
-                  'slideCode[nc_sid]': slidingVerification?.nc_csessionid,
-                  'slideCode[nc_token]': slidingVerification?.nc_token,
-                  'slideCode[nc_sig]': slidingVerification?.nc_sig,
-                  email: email, // 邮箱
-                  regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
-                }
-                register(params as any)
-              }
-            }}
+            onPress={signUp}
             activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
@@ -412,7 +279,7 @@ const BZHRegisterPage = () => {
             >
               <Text>{'返回登录'}</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={jumpToHomePage}>
+            <TouchableWithoutFeedback onPress={goToHomePage}>
               <Text>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>

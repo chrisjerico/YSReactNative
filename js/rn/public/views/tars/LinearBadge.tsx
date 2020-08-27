@@ -17,6 +17,7 @@ interface LinearBadgeProps {
   showIcon?: boolean;
   containerStyle?: ViewStyle;
   textStyle?: TextStyle;
+  size?: number;
 }
 
 const LinearBadge = ({
@@ -26,13 +27,17 @@ const LinearBadge = ({
   showIcon = true,
   containerStyle,
   textStyle,
+  size = 1
 }: LinearBadgeProps) => (
     <TouchableWithoutFeedback onPress={onPress}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         colors={colors} // ['#9393FF', 'rgb(91, 91, 220)']
-        style={[styles.container, containerStyle]}
+        style={[styles.container, {
+          width: scale(125 * size),
+          borderRadius: scale(50 * size),
+        }, containerStyle]}
       >
         <Text style={[styles.text, textStyle]}>{title}</Text>
         {showIcon ? (
@@ -50,8 +55,6 @@ const LinearBadge = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: scale(125),
-    borderRadius: scale(50),
     height: scale(33),
     flexDirection: 'row',
     alignItems: 'center',

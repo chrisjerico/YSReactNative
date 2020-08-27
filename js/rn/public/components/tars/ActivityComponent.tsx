@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -14,7 +14,8 @@ interface ActivityComponentProps {
   onPress: () => any;
   show?: any;
   enableFastImage?: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
+  refresh?: boolean;
 }
 
 const ActivityComponent = ({
@@ -23,8 +24,13 @@ const ActivityComponent = ({
   show,
   enableFastImage = true,
   containerStyle,
+  refresh
 }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
+
+  useEffect(() => {
+    setHide(false)
+  }, [refresh])
 
   if (show && !hide) {
     return (
@@ -42,11 +48,7 @@ const ActivityComponent = ({
           }}
         >
           <View style={styles.iconContainer}>
-            <AntDesign
-              name={'closecircleo'}
-              size={scale(35)}
-              color={'red'}
-            />
+            <AntDesign name={'closecircleo'} size={scale(35)} color={'red'} />
           </View>
         </TouchableWithoutFeedback>
       </View>
