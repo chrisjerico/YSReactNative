@@ -81,7 +81,7 @@ export const cleanNativeUser = async () => {
       UGStore.dispatch({ type: 'reset', userInfo: {} })
     }
   } catch (error) {
-    throw error ?? '清除旧使用者失败'
+    throw error ?? 'cleanNativeUser Error'
   }
 }
 

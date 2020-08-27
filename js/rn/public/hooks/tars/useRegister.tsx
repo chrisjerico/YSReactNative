@@ -39,7 +39,6 @@ const useRegister = (options: Options = {}) => {
           const { autoLogin } = user_reg_data
           if (autoLogin) {
             //登陸
-            await cleanNativeUser()
             await logIn({
               account: usr,
               password: pwd,

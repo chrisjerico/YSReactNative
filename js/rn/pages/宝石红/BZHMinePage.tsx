@@ -86,7 +86,7 @@ const BZHMinePage = (props: any) => {
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
-                logo={logo} // ?? config?.defaultProfileToolLogos[index]
+                logo={logo ?? config?.defaultProfileToolLogos[index]} // ?? config?.defaultProfileToolLogos[index]
                 title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />

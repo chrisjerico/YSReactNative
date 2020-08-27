@@ -413,8 +413,8 @@ const BZHHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'修正Banner比例'}
+            debug={true}
+            version={'0827'}
           />
           <BottomGap />
         </ScrollView>
