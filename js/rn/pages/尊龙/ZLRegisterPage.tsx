@@ -85,7 +85,7 @@ const ZLRegisterPage = () => {
                 requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_sig"]
                 delete requestData.slideCode
             }
-          console.log('requestData.requestData: ', requestData)
+          // console.log('requestData.requestData: ', requestData)
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
 
@@ -93,6 +93,7 @@ const ZLRegisterPage = () => {
               throw { message: data?.msg }
             }
 
+            ugLog('data?.data?.autoLogin=', data?.data?.autoLogin)
             if (data?.data?.autoLogin) {
                 let user;
 
@@ -108,6 +109,8 @@ const ZLRegisterPage = () => {
                 }
 
                 const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
+                ugLog('log info=', loginData)
+
                 if (user) {
                     console.log('退出旧账号');
                     console.log(user);
@@ -145,6 +148,7 @@ const ZLRegisterPage = () => {
                 }
 
                 const { data: UserInfo, } = await APIRouter.user_info()
+              ugLog('log UserInfo=', UserInfo)
 
                 switch (Platform.OS) {
                   case 'ios':
@@ -170,21 +174,26 @@ const ZLRegisterPage = () => {
                     Toast('登录成功');
                     break;
                 }
+
+                hideLoading();
                 popToRoot();
-            }
-            if (data?.data?.autoLogin == false) {
-                switch (Platform.OS) {
-                  case 'ios':
-                    OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
-                    break;
-                  case 'android':
-                    Toast(data.msg);
-                    break;
-                }
-                popToRoot();
-                navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
+            } else if (data?.data?.autoLogin == false) {
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                  break;
+                case 'android':
+                  Toast(data.msg);
+                  break;
+              }
+
+              hideLoading();
+              popToRoot();
+              navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
+          hideLoading();
+
           ugLog(error)
             EventRegister.emit('reload')
             reRenderCode()
@@ -212,7 +221,6 @@ const ZLRegisterPage = () => {
 
         }
 
-      hideLoading();
     }
     useEffect(() => {
         if (allowreg == false) {

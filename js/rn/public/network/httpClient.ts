@@ -9,7 +9,7 @@ import { Toast } from '../tools/ToastUtils';
 import {ugLog} from "../tools/UgLog";
 import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
-import {anyEmpty} from "../tools/Ext";
+import {anyEmpty, anyNull} from "../tools/Ext";
 interface Dictionary {
   [x: string]: any;
 }
@@ -39,10 +39,17 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   //     params[key] = null
   //   }
   // }
-  if (!isEncrypt) {
-    return params;
+  let temp = {};
+  //过滤掉 null 或 "",
+  for (let paramsKey in params) {
+    if (!anyEmpty(params[paramsKey])) {
+      temp[paramsKey] = params[paramsKey]
+    }
   }
-  let temp = Object.assign({}, params);
+
+  if (!isEncrypt) {
+    return temp;
+  }
 
   try {
     temp['checkSign'] = 1;
@@ -106,15 +113,7 @@ httpClient.interceptors.response.use(
               })
               break;
             case "android":
-              // ANHelper.callAsync(CMD.SAVE_DATA,
-              //     {
-              //       key: NA_DATA.USER_INFO,
-              //     }).then(((any?: any) => {
-              //       updateUserInfo()
-              //       UGStore.dispatch({type: 'reset', userInfo: {}})
-              //       // Toast('帐号已被登出');
-              //
-              // }))
+              ANHelper.callAsync(CMD.LOG_OUT)
               break;
 
           }
@@ -152,7 +151,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
       break;
     case 'android':
       isEncrypt = eval(ANHelper.callSync(CMD.SITE_ENCRYPTION))
-      ugLog('http isEncrypt=', isEncrypt)
+      // ugLog('http isEncrypt=', isEncrypt)
       break;
   }
 
@@ -160,7 +159,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
 
   // ugLog('http isEncrypt=', isEncrypt)
 
-  if (config.method == 'get' || config.method == 'GET') {
+  if (config?.method?.toLowerCase() == 'get') {
     if (isEncrypt) {
       config.url += '&checkSign=1';
     }
@@ -171,7 +170,7 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
       }
       config.params[res] = encryptData[res];
     });
-  } else if (config.method == 'post' || config.method == 'POST') {
+  } else if (config?.method?.toLowerCase() == 'post') {
     if (isEncrypt) {
       config.url += '&checkSign=1';
     }
