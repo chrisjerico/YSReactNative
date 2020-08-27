@@ -5,7 +5,7 @@ import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { getHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {
@@ -16,10 +16,11 @@ import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import config from './config'
 
 const WNZMinePage = () => {
+  const { getHtml5Image } = useHtml5Image()
   const {
-    userCenterItems,
     uid,
     showBackBtn,
     usr,
@@ -30,10 +31,12 @@ const WNZMinePage = () => {
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
+    userCenterItems,
     fetchAvatarList
-  } = useMinePage({})
+  } = useMinePage({ defaultUserCenterLogo: config.defaultUserCenterLogos })
 
   // data handle
+
   const tools = userCenterItems?.sort((a, b) => a?.code - b?.code) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
@@ -156,6 +159,7 @@ const WNZMinePage = () => {
               }}
               renderTool={(item, index) => {
                 const { code, name, logo } = item
+                console.log(code)
                 return (
                   <GameButton
                     key={index}

@@ -44,26 +44,27 @@ const HomeHeader = ({
               )
           }}
         />
-      ) : (
-          uid ? <FastImage
-            source={{
-              uri: logo,
-            }}
-            style={{ width: '30%', height: '100%' }}
-            resizeMode={'contain'}
-          /> : <View style={{ flex: 1 }} />
-        )}
-      {(!uid && !showBackBtn) && (
+      ) : uid ? (
         <FastImage
           source={{
             uri: logo,
           }}
-          style={{ width: '30%', height: '100%' }}
+          style={{ width: '35%', height: '100%' }}
+          resizeMode={'contain'}
+        />
+      ) : (
+            <View style={{ flex: 1 }} />
+          )}
+      {!uid && !showBackBtn && (
+        <FastImage
+          source={{
+            uri: logo,
+          }}
+          style={{ width: '35%', height: '100%' }}
           resizeMode={'contain'}
         />
       )}
-      {
-        !showBackBtn &&
+      {!showBackBtn && (
         <View style={styles.rightContainer}>
           {uid && (
             <>
@@ -74,9 +75,7 @@ const HomeHeader = ({
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={onPressUser}>
                 <View style={styles.balanceContainer}>
-                  <Text style={{ color: '#ffffff', fontSize: scale(15) }}>
-                    {balance}
-                  </Text>
+                  <Text style={styles.balanceText}>{balance}</Text>
                   <AntDesign
                     name={'pluscircle'}
                     color={'#ffffff'}
@@ -107,7 +106,7 @@ const HomeHeader = ({
             </View>
           </TouchableWithoutFeedback>
         </View>
-      }
+      )}
     </View>
   )
 }
@@ -137,11 +136,15 @@ const styles = StyleSheet.create({
     marginRight: scale(10),
   },
   nameText: {
-    fontSize: scale(17),
+    fontSize: scale(18),
     marginRight: scale(5),
     color: '#ffffff',
     width: '30%',
     textAlign: 'right',
+  },
+  balanceText: {
+    color: '#ffffff',
+    fontSize: scale(16),
   },
 })
 

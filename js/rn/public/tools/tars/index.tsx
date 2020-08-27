@@ -1,7 +1,6 @@
-import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
-import { OCHelper } from '../../define/OCHelper/OCHelper'
 import AppDefine from '../../define/AppDefine'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
 
 interface SaveNativeUser {
@@ -109,21 +108,32 @@ export const ToastStatus = (msg: any) => {
   ])
 }
 
-export const getHtml5Image = (
-  id: number,
-  path: string,
-  type: 'png' | 'jpg' | 'gif' = 'png'
-) => {
-  return (
-    AppDefine.host +
-    '/views/mobileTemplate/' +
-    id?.toString() +
-    '/images/' +
-    path +
-    '.' +
-    type
-  )
+export const useHtml5Image = (host: string = AppDefine.host) => {
+  const getHtml5Image = (
+    id: number,
+    path: string,
+    type: 'png' | 'jpg' | 'gif' = 'png',
+  ) => {
+    if (id) {
+      return (host +
+        '/views/mobileTemplate/' +
+        id?.toString() +
+        '/images/' +
+        path +
+        '.' +
+        type)
+    } else {
+      return (host +
+        '/images/' +
+        path +
+        '.' +
+        type)
+    }
+
+  }
+  return { getHtml5Image }
 }
+
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {

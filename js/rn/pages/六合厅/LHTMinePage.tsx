@@ -14,7 +14,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -26,6 +26,7 @@ import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = (props: any) => {
   const { setProps } = props
+  const { getHtml5Image } = useHtml5Image()
   const {
     userCenterItems,
     showBackBtn,
@@ -45,7 +46,7 @@ const LHTMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.LHTHomePage })
+  } = useMinePage({ setProps, homePage: PageName.LHTHomePage, defaultUserCenterLogo: config.defaultUserCenterLogos })
 
   return (
     <>

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { scale } from '../../../public/tools/Scale';
-import { getHtml5Image } from '../../../public/tools/tars';
+import { useHtml5Image } from '../../../public/tools/tars';
 
+const { getHtml5Image } = useHtml5Image()
 
 // const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>
 // const SecondRoute = () => <View><Text>{"SecondRoute"}</Text></View>

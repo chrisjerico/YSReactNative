@@ -5,7 +5,7 @@ import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComp
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import {
   OCEvent,
-  OCEventType
+  OCEventType,
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useHome from '../../public/hooks/tars/useHome'
@@ -18,9 +18,9 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
   getActivityPosition,
-  getHtml5Image,
+  useHtml5Image,
   ToastError,
-  ToastSuccess
+  ToastSuccess,
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -34,7 +34,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, {
   LotteryType,
-  UGUserCenterType
+  UGUserCenterType,
 } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -53,6 +53,7 @@ const LHTHomePage = (props: any) => {
   const [leftGames, setLeftGames] = useState(config?.preferences)
   // functions
   const { setProps } = props
+  const { getHtml5Image } = useHtml5Image()
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {

@@ -8,7 +8,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
@@ -19,6 +19,7 @@ import config from './config'
 
 const BZHMinePage = (props: any) => {
   const { setProps } = props
+  const { getHtml5Image } = useHtml5Image()
   const {
     userCenterItems,
     showBackBtn,
@@ -38,7 +39,7 @@ const BZHMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.BZHHomePage })
+  } = useMinePage({ setProps, homePage: PageName.BZHHomePage, defaultUserCenterLogo: config.defaultUserCenterLogos })
 
   // data handle
   const features = userCenterItems?.slice(0, 4) ?? []
