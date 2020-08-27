@@ -57,6 +57,7 @@ const useHome = () => {
     try {
       !loading && setRefresh(true)
       const response = await Promise.all(apis)
+      // console.log("--------response------", response)
       // globals state
       const userInfo = response[0]?.data?.data ?? {}
       const sysConf = response[1]?.data?.data ?? {}

@@ -455,6 +455,7 @@ const LHTHomePage = (props: any) => {
           </View>
         </ScrollView>
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
@@ -463,6 +464,7 @@ const LHTHomePage = (props: any) => {
           }}
         />
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
@@ -476,6 +478,7 @@ const LHTHomePage = (props: any) => {
           return (
             <ActivityComponent
               key={index}
+              refresh={refresh}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}

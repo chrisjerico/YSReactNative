@@ -5,6 +5,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper, NativeCommand } from '../define/ANHelper/ANHelper';
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
+import { B_DEBUG } from '../tools/UgLog';
 
 interface Dictionary {
   [x: string]: any;
@@ -22,7 +23,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 2000,
+  timeout: B_DEBUG ? 5000 : 1000,
   headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {

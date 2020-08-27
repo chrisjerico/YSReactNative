@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -15,6 +15,7 @@ interface ActivityComponentProps {
   show?: any;
   enableFastImage?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
+  refresh?: boolean;
 }
 
 const ActivityComponent = ({
@@ -23,8 +24,13 @@ const ActivityComponent = ({
   show,
   enableFastImage = true,
   containerStyle,
+  refresh
 }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
+
+  useEffect(() => {
+    setHide(false)
+  }, [refresh])
 
   if (show && !hide) {
     return (

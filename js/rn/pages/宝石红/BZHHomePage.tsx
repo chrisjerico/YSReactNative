@@ -414,22 +414,24 @@ const BZHHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={true}
-            version={'2000ms'}
+            version={'5000ms'}
           />
           <BottomGap />
         </ScrollView>
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
+          show={(uid && redBagLogo && !isTest)}
           logo={redBagLogo}
           onPress={() => {
             PushHelper.pushRedBag(redBag)
           }}
         />
         <ActivityComponent
+          refresh={refresh}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
-          show={uid && roulette && !isTest}
+          show={(uid && roulette && !isTest)}
           logo={'dzp_btn'}
           onPress={() => {
             PushHelper.pushWheel(roulette)
@@ -440,6 +442,7 @@ const BZHHomePage = () => {
           return (
             <ActivityComponent
               key={index}
+              refresh={refresh}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}

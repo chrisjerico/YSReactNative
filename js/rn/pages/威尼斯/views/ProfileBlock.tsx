@@ -63,7 +63,7 @@ const ProfileBlock = ({
                 }}
               >
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
-                  {curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : ''}
+                  {curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差'}
                 </Text>
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
                   {taskRewardTotal_f + '/' + nextLevelInt_f}
