@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  RefreshControl, ScrollView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -76,12 +77,8 @@ const LHTMinePage = (props: any) => {
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={avatarListLoading}
-            onRefresh={fetchAvatarList}
-          />
-        }
+        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+
       >
         <ProfileBlock
           onPressAvatar={openAvatarList}

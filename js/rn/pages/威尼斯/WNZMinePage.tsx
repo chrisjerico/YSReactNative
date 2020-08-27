@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -28,6 +29,7 @@ const WNZMinePage = () => {
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
+    fetchAvatarList
   } = useMinePage({})
 
   // data handle
@@ -98,7 +100,8 @@ const WNZMinePage = () => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+      >
         <ProfileBlock
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}
