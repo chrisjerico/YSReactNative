@@ -1,32 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useDispatch, useSelector } from 'react-redux'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
-import useLoginOut from '../../public/hooks/useLoginOut'
+import useLogOut from '../../public/hooks/tars/useLogOut'
 import useMemberItems from '../../public/hooks/useMemberItems'
 import { PageName } from '../../public/navigation/Navigation'
+import { navigate, navigationRef, pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { scale } from '../../public/tools/Scale'
+import { getHtml5Image } from '../../public/tools/tars'
+import { Toast } from '../../public/tools/ToastUtils'
+import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { ActionType } from '../../redux/store/ActionTypes'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { IGlobalState, UGStore } from '../../redux/store/UGStore'
-import Header from './views/mines/Header'
-import PickAvatarComponent from './views/mines/PickAvatarComponent'
-import ProfileBlock from './views/mines/ProfileBlock'
-import { Toast } from '../../public/tools/ToastUtils'
+import { UGStore } from '../../redux/store/UGStore'
+import PickAvatarComponent from './components/PickAvatarComponent'
+import ProfileBlock from './views/ProfileBlock'
 
-const BZHMinePage = ({ navigation }) => {
+const BZHMinePage = (props) => {
   // yellowBox
   console.disableYellowBox = true
   // hooks
-  const dispatch = useDispatch()
-  const { loginOut } = useLoginOut(PageName.BZHHomePage)
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const { setProps, navigation } = props
+  const { logOut } = useLogOut({
+    onSuccess: () => {
+      navigate(PageName.BZHHomePage, {})
+    },
+  })
+  const { UGUserCenterItem } = useMemberItems()
+  // stores
   const {
     avatar,
     balance,
@@ -34,48 +42,106 @@ const BZHMinePage = ({ navigation }) => {
     isTest,
     unreadMsg,
     curLevelGrade,
-  }: UGUserModel = userStore
-  const { UGUserCenterItem } = useMemberItems()
+  }: UGUserModel = UGStore.globalProps.userInfo
+  // states
   const [visible, setVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
+  const [avatarListLoading, setAvatarListLoading] = useState(true)
+  const [showBackBtn, setShowBackBtn] = useState(false)
+  // effects
+  const getAvatarList = async () => {
+    try {
+      setAvatarListLoading(true)
+      const value = await APIRouter.system_avatarList()
+      const avatarList = value?.data?.data ?? []
+      setAvatarList(avatarList)
+    } catch (error) {
+    } finally {
+      setAvatarListLoading(false)
+    }
+  }
 
   useEffect(() => {
-    APIRouter.system_avatarList().then((value) => {
-      setAvatarList(value?.data?.data ?? [])
+    getAvatarList()
+    setProps({
+      didFocus: async () => {
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then(
+          (ocCount) => {
+            const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1
+            console.log(show)
+            setShowBackBtn(show)
+          }
+        )
+      }
     })
-    const unsubscribe = navigation.addListener('focus', () => {
-      console.log('-----成為焦點-----')
-      updateUserInfo()
-    })
-    return unsubscribe
   }, [])
 
+  // data
   const features = UGUserCenterItem?.slice(0, 4) ?? []
   const featureList = UGUserCenterItem?.slice(4, UGUserCenterItem.length) ?? []
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Header title={'会员中心'} />
-      <ScrollView style={styles.container}>
+    <>
+      <SafeAreaHeader
+        headerColor={BZHThemeColor.宝石红.themeColor}
+      >
+        {showBackBtn ? (
+          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+            <AntDesign
+              name={'left'}
+              color={'#ffffff'}
+              size={scale(25)}
+              onPress={() => {
+                !pop() &&
+                  OCHelper.call(
+                    'UGNavigationController.current.popViewControllerAnimated:',
+                    [true]
+                  )
+              }}
+            />
+          </View>
+        ) : (
+            <View style={{ flex: 1 }} />
+          )}
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={styles.headerTitle}>{'会员中心'}</Text>
+        </View>
+        <View style={{ flex: 1 }} />
+      </SafeAreaHeader>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+        refreshControl={<RefreshControlComponent onRefresh={getAvatarList} />}
+      >
         <ProfileBlock
-          onPressAvatar={() => setVisible(true)}
+          onPressAvatar={() => !isTest && setVisible(true)}
           onPressReload={async () => {
-            const { data } = await APIRouter.user_balance_token()
-            dispatch({
-              type: ActionType.UpdateUserInfo,
-              props: { balance: data.data.balance },
-            })
+            try {
+              const { data } = await APIRouter.user_balance_token()
+              UGStore.dispatch({
+                type: 'merge',
+                userInfo: { balance: data?.data?.balance },
+              })
+              setProps()
+            } catch (error) {
+              console.log('user_balance_token error', error)
+            }
           }}
           level={curLevelGrade}
-          avatar={avatar}
+          avatar={
+            isTest
+              ? getHtml5Image(18, 'money-2')
+              : avatar
+          }
           money={balance}
-          name={isTest ? '遊客' : usr}
+          name={usr}
           features={features}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
             return (
               <GameButton
                 key={index}
+                showSecondLevelIcon={false}
                 containerStyle={{ width: '20%' }}
                 titleStyle={{ fontSize: scale(25) }}
                 enableCircle={false}
@@ -94,60 +160,74 @@ const BZHMinePage = ({ navigation }) => {
               containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
-              unreadMsg={unreadMsg}
+              unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
-              onPress={() => PushHelper.pushUserCenterType(code)}
+              onPress={() => {
+                PushHelper.pushUserCenterType(code)
+              }}
             />
           )
         })}
         <Button
+          activeOpacity={1}
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
           titleStyle={styles.logOutTitle}
-          onPress={loginOut}
+          onPress={logOut}
         />
+        <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        color={BZHThemeColor.宝石红.themeColor}
+        loading={avatarListLoading}
         visible={visible}
+        initAvatar={
+          isTest
+            ? getHtml5Image(18, 'money-2') //'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+            : avatar
+        }
         avatars={avatarList}
-        onPressSave={({ url, filename }) => {
-          setVisible(false)
-          UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: { avatar: url } })
-          APIRouter.task_changeAvatar(filename).then((value) => {
+        onPressSave={async ({ url, filename }) => {
+          try {
+            UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
+            const value = await APIRouter.task_changeAvatar(filename)
             if (value?.data?.code == 0) {
               Toast('修改头像成功')
             } else {
               Toast('修改头像失败')
             }
-          })
+          } catch (err) {
+            Toast(err)
+          } finally {
+            setVisible(false)
+          }
         }}
         onPressCancel={() => {
           setVisible(false)
         }}
       />
-    </SafeAreaView>
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
-    flex: 1,
-  },
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.bgColor?.[0],
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   logOutButton: {
     backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
-    marginBottom: scaleHeight(60),
     borderRadius: scale(7),
     height: scale(70),
   },
   logOutTitle: {
     color: '#e53333',
+  },
+  headerTitle: {
+    color: '#ffffff',
+    fontSize: scale(25),
   },
 })
 

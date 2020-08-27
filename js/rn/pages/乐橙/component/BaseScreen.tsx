@@ -1,7 +1,8 @@
 import * as React from "react";
 import {Dimensions, SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
-import {Navigation} from "../../../public/navigation/Navigation";
+import {} from "../../../public/navigation/Navigation";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { pop } from "../../../public/navigation/RootNavigation";
 
 interface BaseScreenProps {
     children?: any
@@ -29,7 +30,7 @@ export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps)
                         width: "100%",
                         alignSelf: "center"
                     }}>{screenName}</Text>
-                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => Navigation.pop()}>
+                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
                         <Icon size={33} name={icon || 'angle-left'}/>
                     </TouchableOpacity>
                 </View>

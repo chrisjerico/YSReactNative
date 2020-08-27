@@ -8,7 +8,6 @@ import PushHelper from "../../public/define/PushHelper"
 import { MarqueeHorizontal } from 'react-native-marquee-ab';
 import { UGUserCenterType, UGUserCenterItem } from "../../redux/model/全局/UGSysConfModel"
 import { PageName } from '../../public/navigation/Navigation';
-import { useSelector, useDispatch } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
 import { BannerModel, } from "../../public/network/Model/BannerModel"
@@ -16,7 +15,6 @@ import { Icon, Button } from 'react-native-elements';
 import { httpClient } from "../../public/network/httpClient"
 import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import { ActionType } from "../../redux/store/ActionTypes"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
 import { push, navigate } from "../../public/navigation/RootNavigation"
 import AppDefine from "../../public/define/AppDefine"
@@ -29,12 +27,13 @@ import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab
 import { List } from "../../public/network/Model/HomeGamesModel"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import useMemberItems from "../../public/hooks/useMemberItems"
+import useLoginOut from "../../public/hooks/useLoginOut"
 const GDBMinePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "" } = userStore
-  const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const systemStore = UGStore.globalProps.sysConf
 
   const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, } = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -73,19 +72,14 @@ const GDBMinePage = ({ navigation }) => {
   )
 }
 const AcctountDetail = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+  const userStore = UGStore.globalProps.userInfo
   const { uid = "", balance = 0 } = userStore
-  const dispatch = useDispatch()
-  const updateUserInfo = useCallback(
-    (props: UGUserModel) => dispatch({ type: ActionType.UpdateUserInfo, props: props }),
-    [dispatch]
-  )
   const [hideAmount, setHideAmount] = useState(false)
   const requestBalance = async () => {
     try {
       //@ts-ignore
       const { data, status } = await APIRouter.user_balance_token()
-      updateUserInfo({ ...userStore, balance: data.data.balance })
+      UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
     } catch (error) {
 
     }
@@ -105,7 +99,7 @@ const AcctountDetail = () => {
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
 
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data })
 
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
@@ -123,6 +117,7 @@ const AcctountDetail = () => {
     }
     return str
   }
+  const { loginOut } = useLoginOut(PageName.GDBHomePage)
   const { width } = useDimensions().screen
   const { UGUserCenterItem } = useMemberItems()
   const [centerItem, setCenterItem] = useState<UGUserCenterItem[]>([])
@@ -171,11 +166,19 @@ const AcctountDetail = () => {
 
       </View>
       <FlatList numColumns={3} renderItem={({ item }) => {
-        return <TouchableOpacity style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginTop: 20 }}>
+        return <TouchableOpacity onPress={() => {
+          if (item.code == UGUserCenterType.登出) {
+            loginOut()
+          } else {
+            PushHelper.pushUserCenterType(item.code)
+          }
+
+        }} style={{ width: (width - 20) / 3, justifyContent: 'center', alignItems: 'center', marginBottom: 10, marginTop: 20 }}>
           <Image source={{ uri: item.logo }} style={{ width: 30, height: 30, tintColor: "gray" }} />
           <Text style={{ color: '#a0a0a0', marginTop: 10, fontWeight: "bold", fontSize: 13 }}>{item.name}</Text>
         </TouchableOpacity>
       }} data={centerItem} style={{ flex: 1, backgroundColor: "#242424", borderRadius: 12, marginTop: 10 }} />
+      <View style={{ height: 100 }}></View>
     </View>
   )
 }

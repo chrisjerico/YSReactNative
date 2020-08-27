@@ -1,22 +1,25 @@
-import { View, Text, TouchableWithoutFeedback, FlatList } from "react-native"
+import { View, Text, TouchableWithoutFeedback, FlatList, Linking, Platform } from "react-native"
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import LinearGradient from "react-native-linear-gradient";
 import { useDimensions } from '@react-native-community/hooks'
 import React, { useEffect, useState, useRef } from 'react'
-import { useSafeArea } from "react-native-safe-area-context";
 import { pop, popToRoot } from "../../public/navigation/RootNavigation";
-import { OCHelper } from "../../public/define/OCHelper/OCHelper";
 import { useNavigationState } from "@react-navigation/native";
-import ScrollableTabView, { TabBarProps, ScrollableTabBar } from "react-native-scrollable-tab-view";
+import AutoHeightWebView from 'react-native-autoheight-webview';
+import FastImage, { FastImageProperties } from "react-native-fast-image";
+import LinearGradient from "react-native-linear-gradient";
+import { useSafeArea } from "react-native-safe-area-context";
+import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view";
+import AppDefine from "../../public/define/AppDefine";
+import { OCHelper } from "../../public/define/OCHelper/OCHelper";
+import PushHelper from "../../public/define/PushHelper";
+import usePopUpView from "../../public/hooks/usePopUpView";
 import APIRouter from "../../public/network/APIRouter";
 import { PromotionsModel } from "../../public/network/Model/PromotionsModel";
-import WebView from "react-native-webview";
-import FastImage, { FastImageProperties } from "react-native-fast-image";
-import usePopUpView from "../../public/hooks/usePopUpView";
-import AppDefine from "../../public/define/AppDefine";
-import AutoHeightWebView from 'react-native-autoheight-webview'
-import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {ugLog} from "../../public/tools/UgLog";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+
 const PromotionListPage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { top } = useSafeArea()
@@ -24,10 +27,20 @@ const PromotionListPage = ({ navigation }) => {
   const [categories, setCategories] = useState<string[]>()
   useEffect(() => {
     init()
-    const unsubscribe = navigation.addListener('focus', async () => {
-      const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
-      setCurrentNativeSelectedTab(index)
-    });
+
+    let unsubscribe;
+    switch (Platform.OS) {
+      case "ios":
+        unsubscribe = navigation.addListener('focus', async () => {
+          const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
+          setCurrentNativeSelectedTab(index)
+        });
+        break;
+      case "android":
+        //TODO
+        setCurrentNativeSelectedTab(0)
+        break;
+    }
 
     return unsubscribe;
   }, [])
@@ -37,20 +50,23 @@ const PromotionListPage = ({ navigation }) => {
   const init = async () => {
 
     try {
-      const { data, status } = await APIRouter.system_promotions()
+      const { data } = await APIRouter.system_promotions()
       setPromotionData(data)
       let categoriesArray = []
-      data.data.list.map((res) => {
+      data?.data?.list.map((res) => {
         categoriesArray.push(res.category)
       })
       categoriesArray = [...new Set(categoriesArray)];
       categoriesArray.sort()
       setCategories(categoriesArray)
     } catch (error) {
-
+      ugLog("error=", error)
     }
 
   }
+
+  ugLog("currentNativeSelectedTab=", currentNativeSelectedTab, state.index);
+
   return (
     <View style={{ flex: 1, backgroundColor: 'balck' }}>
       <LinearGradient style={{ height: top, width: width }} colors={Skin1.navBarBgColor}></LinearGradient>
@@ -62,11 +78,18 @@ const PromotionListPage = ({ navigation }) => {
               buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
               onPress={() => {
                 popToRoot()
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                  case "ios":
+                    OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    break;
+                  case "android":
+                    //TODO
+                    break;
+                }
               }}
             />
           </View> : null}
-        <Text style={{ textAlign: 'center', color: Skin1.textColor3, fontSize: 16, fontWeight: "bold" }}>优惠活动</Text>
+        <Text style={{ textAlign: 'center', color: Skin1.isBlack ? 'white' : Skin1.textColor3, fontSize: 18, fontWeight: "bold" }}>优惠活动</Text>
 
       </LinearGradient>
 
@@ -84,17 +107,27 @@ const PromotionListPage = ({ navigation }) => {
 
       </LinearGradient>
     </View>
-  )
+  );
 }
 export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
   const [selectId, setSelectedId] = useState(-1)
   const { width } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
-  console.log(dataSource.data.list.filter((res) => res.category == filter))
+  const onPromotionItemPress = (data: any, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
+    if (data?.linkUrl != "") {
+      Linking.openURL(data?.linkUrl)
+    }
+    else if (data.linkCategory == 0 && data.linkPosition == 0) {
+      onPopViewPress(data, type, onPress ? onPress : () => { })
+    } else {
+      PushHelper.pushCategory(data.linkCategory, data.linkPosition)
+    }
+
+  }
   return (
     <FlatList keyExtractor={(item, index) => item.id + index} data={filter != "0" ? dataSource.data.list.filter((res) => res.category == filter) : dataSource?.data?.list} renderItem={({ item, index }) => {
       return <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-        <TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
+        <TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, promotionData?.data?.style ?? 'popup', () => {
           if (selectId == index) {
             setSelectedId(-1)
           } else {
@@ -143,7 +176,6 @@ const RenderTabBar = (props: TabBarProps & { hidden: boolean; titles: string[] }
   if (props.hidden) {
     return null;
   }
-  console.log(props)
   const { tabs } = props;
   return (
     <View style={{ marginLeft: 5, flexDirection: 'row', height: 45 }}>

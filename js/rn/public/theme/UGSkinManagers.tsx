@@ -19,6 +19,8 @@ import { LCThemeColor } from "./colors/LCThemeColor";
 import { KSThemeColor } from "./colors/KSThemeColor";
 import { WNZThemeColor } from "./colors/WNZThemeColor";
 import { PYThemeColor } from './colors/PYThemeColor'
+import { BZHThemeColor } from './colors/BZHThemeColor';
+
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
@@ -32,7 +34,8 @@ export default class UGSkinManagers extends UGThemeColor {
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
     ...WNZThemeColor, // 威尼斯
-    ...PYThemeColor
+    ...PYThemeColor,
+    ...BZHThemeColor // 宝石红
   }
   // 更新皮肤
   static updateSkin(sysConf: UGSysConfModel) {
@@ -60,10 +63,14 @@ export default class UGSkinManagers extends UGThemeColor {
       22: `凯时`,
       21: `宝石红`,
       23: `威尼斯`,
+      25: '天空蓝',
       26: `白曜`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
+    if (B_DEBUG) {
+      key = '威尼斯'
+    }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
@@ -76,7 +83,6 @@ export default class UGSkinManagers extends UGThemeColor {
       Skin1 = skin
       console.log('当前为皮肤：' + skin.skitString, skin)
     }
-
     this.updateOcSkin()
   }
 
@@ -151,7 +157,9 @@ export default class UGSkinManagers extends UGThemeColor {
             key,
           ])
         }
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
       }
+      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess']);
     }
 
     // 刷新标签栏、导航条

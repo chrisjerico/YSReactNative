@@ -9,7 +9,6 @@ import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import APIRouter from '../../../public/network/APIRouter';
-import { ActionType } from '../../../redux/store/ActionTypes';
 import { UGStore } from '../../../redux/store/UGStore';
 import { pop, push, navigate } from '../../../public/navigation/RootNavigation';
 import useLoginIn from '../../../public/hooks/useLoginIn';
@@ -64,7 +63,7 @@ const VietnamLogin = ({ route, navigation }) => {
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: userInfo } = await APIRouter.user_info()
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: userInfo.data });
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
       }
@@ -246,7 +245,14 @@ const Header = () => {
       <View style={{ height: 45, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
         <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
           pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case 'android':
+
+              break;
+          }
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity >

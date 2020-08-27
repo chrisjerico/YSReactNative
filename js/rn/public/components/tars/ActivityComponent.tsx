@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { Icon } from 'react-native-elements'
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface ActivityComponentProps {
   logo: string;
@@ -25,25 +30,25 @@ const ActivityComponent = ({
     return (
       <View style={[styles.container, containerStyle]}>
         <TouchableImage
-          containerStyle={{ marginRight: scale(50) }}
+          containerStyle={{ padding: scale(20) }}
           enableFastImage={enableFastImage}
           pic={logo}
           onPress={onPress}
           resizeMode={'contain'}
         />
-        <TouchableOpacity
-          style={styles.iconContainer}
+        <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)
           }}
         >
-          <Icon
-            type={'evilicon'}
-            name={'close'}
-            size={scale(35)}
-            color={'#ffffff'}
-          />
-        </TouchableOpacity>
+          <View style={styles.iconContainer}>
+            <AntDesign
+              name={'closecircleo'}
+              size={scale(35)}
+              color={'red'}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     )
   } else {
@@ -56,11 +61,8 @@ const styles = StyleSheet.create({
     width: scale(150),
     aspectRatio: 1,
     position: 'absolute',
-    top: scale(500),
-    right: 0,
   },
   iconContainer: {
-    backgroundColor: 'red',
     width: scale(35),
     aspectRatio: 1,
     justifyContent: 'center',
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     borderRadius: scale(35),
     position: 'absolute',
     top: scale(20),
-    right: scale(10),
+    right: scale(20),
   },
 })
 

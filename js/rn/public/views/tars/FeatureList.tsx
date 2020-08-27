@@ -3,9 +3,9 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
+  TouchableWithoutFeedback,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -19,45 +19,33 @@ interface FeatureListProps {
 }
 
 const FeatureList = ({
-  logo = 'url',
-  title = '我的钱包',
+  logo = '',
+  title,
   onPress,
   containerStyle,
   showUnreadMsg = false,
   unreadMsg,
 }: FeatureListProps) => {
   return (
-    <TouchableOpacity
-      style={[styles.container, containerStyle]}
-      onPress={onPress}
-    >
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode={'contain'}
-          style={styles.image}
-          source={{ uri: logo }}
-        />
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      {showUnreadMsg ? (
-        <View
-          style={{
-            width: scale(30),
-            aspectRatio: 1,
-            borderRadius: scale(30),
-            backgroundColor: 'red',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
-            {unreadMsg}
-          </Text>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.container, containerStyle]}>
+        <View style={styles.imageContainer}>
+          <Image
+            resizeMode={'contain'}
+            style={styles.image}
+            source={{ uri: logo }}
+          />
+          <Text style={styles.title}>{title}</Text>
         </View>
-      ) : (
-          <Text style={styles.text}>{'>'}</Text>
-        )}
-    </TouchableOpacity>
+        {showUnreadMsg ? (
+          <View style={styles.unReadContainer}>
+            <Text style={styles.unReadText}>{unreadMsg}</Text>
+          </View>
+        ) : (
+            <Text style={styles.text}>{'>'}</Text>
+          )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -86,6 +74,18 @@ const styles = StyleSheet.create({
     fontSize: scale(30),
     fontWeight: '400',
     paddingLeft: scale(25),
+  },
+  unReadContainer: {
+    width: scale(30),
+    aspectRatio: 1,
+    borderRadius: scale(30),
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  unReadText: {
+    color: '#ffffff',
+    fontSize: scale(20),
   },
 })
 

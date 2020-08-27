@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
+import {View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert, Platform} from "react-native"
 import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -8,12 +8,10 @@ import { Icon } from "react-native-elements"
 import { navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
 import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
-import { useSelector } from "react-redux"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import AppDefine from "../../public/define/AppDefine"
 import UGUserModel from "../../redux/model/全局/UGUserModel"
-import { ActionType } from "../../redux/store/ActionTypes"
 import { EventRegister } from 'react-native-event-listeners'
 import FastImage from "react-native-fast-image"
 import { useDimensions } from "@react-native-community/hooks"
@@ -38,7 +36,7 @@ const GDRegisterPage = () => {
   const [regType, setRegType] = useState<'user' | 'agent'>("user")
   const [secureTextEntry, setSecureTextEntry] = useState(true)
   const [repwdSecureTextEntry, setRepwdSecureTextEntry] = useState(true)
-  const SystemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const SystemStore = UGStore.globalProps.sysConf
   const [code, setCode] = useState("")
   const {
     hide_reco, // 代理人 0不填，1选填，2必填
@@ -88,8 +86,7 @@ const GDRegisterPage = () => {
           const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
           await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
           await OCHelper.call('UGUserModel.setCurrentUser:');
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-          UGStore.dispatch({ type: ActionType.Clear_User })
+          UGStore.dispatch({ type: 'reset', userInfo: {} })
         }
         await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
         await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
@@ -99,7 +96,7 @@ const GDRegisterPage = () => {
         await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         const { data: UserInfo, } = await APIRouter.user_info()
 
-        UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: UserInfo?.data });
+        UGStore.dispatch({ type: 'merge', userInfo: UserInfo?.data });
 
         UGStore.save();
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
@@ -380,7 +377,15 @@ const Header = () => {
     <View style={{ height: 44 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
       <TouchableWithoutFeedback onPress={() => {
         pop();
-        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            break;
+          case 'android':
+
+            break;
+        }
+
       }}>
         <Icon name="keyboard-arrow-left" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
       </TouchableWithoutFeedback>

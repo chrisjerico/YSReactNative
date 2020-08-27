@@ -2,38 +2,84 @@ import * as React from "react";
 import {TouchableWithoutFeedback, View, Text, Platform} from "react-native";
 import PushHelper from "../../../../public/define/PushHelper";
 import UGUserModel from "../../../../redux/model/全局/UGUserModel";
-import {ActionType} from "../../../../redux/store/ActionTypes";
 import APIRouter from "../../../../public/network/APIRouter";
 import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
 import {OCHelper} from "../../../../public/define/OCHelper/OCHelper";
-import {useSelector} from "react-redux";
+import {hideLoading, showLoading, UGLoadingType} from "../../../../public/widget/UGLoadingCP";
+import {ANHelper} from "../../../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../../../public/tools/ToastUtils";
+import {NA_DATA} from "../../../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../../../public/define/ANHelper/hp/CmdDefine";
 
 export const LoginButtonBar = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const { uid = "", curLevelTitle, usr, balance, isTest } = userStore
     const testPlay = async () => {
-        try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-            const { data, status } = await APIRouter.user_guestLogin()
-            debugger
-            if (Platform.OS == 'ios') {
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-                //@ts-ignore
-                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-                const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: ActionType.UpdateUserInfo, props: userInfo?.data });
-                UGStore.save();
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
-            }
-        } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
-            console.log(error)
+      try {
+
+        showLoading({type: UGLoadingType.Loading, text: '正在登录...'});
+
+        // switch (Platform.OS) {
+        //   case 'ios':
+        //     OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+        //     break;
+        //   case 'android':
+        //     Toast('正在登录...')
+        //     break;
+        // }
+
+        const {data, status} = await APIRouter.user_guestLogin()
+        debugger
+
+        switch (Platform.OS) {
+          case "ios":
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+            //@ts-ignore
+            await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data.data)]);
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd']);
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName']);
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw']);
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+            break;
+          case "android":
+            await ANHelper.callAsync(CMD.SAVE_DATA,
+              {
+                key: NA_DATA.LOGIN_INFO,
+                ...data?.data
+              });
+            break;
         }
+
+        const {data: userInfo} = await APIRouter.user_info()
+
+        switch (Platform.OS) {
+          case "ios":
+            //TODO
+            break;
+          case "android":
+            await ANHelper.callAsync(CMD.SAVE_DATA,
+              {
+                key: NA_DATA.USER_INFO,
+                ...userInfo?.data
+              })
+            break;
+        }
+
+        UGStore.dispatch({type: 'merge', userInfo: userInfo?.data});
+        UGStore.save();
+
+        Toast('登录成功！');
+        // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+
+
+      } catch (error) {
+        // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '登入失败']);
+        Toast(error?.message ?? '登入失败');
+        console.log(error)
+      }
+
+      hideLoading()
     }
 
     return (

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
-import { mergeProps } from '../tools/FUtils';
-import { View, ViewProps } from 'react-native';
-import { Navigation } from '../navigation/Navigation';
+import { deepMergeProps } from '../tools/FUtils';
+import {Platform, View, ViewProps} from 'react-native';
+import {  } from '../navigation/Navigation';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { pop } from '../navigation/RootNavigation';
 
@@ -32,8 +32,15 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
         icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
         buttonStyle={[{ backgroundColor: 'transparent', marginLeft: -8 }, style]}
         onPress={() => {
-          Navigation.pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          pop();
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case 'android':
+
+              break;
+          }
         }}
       />
     );
@@ -55,12 +62,12 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
     );
     // 隐藏下划线
     if (props.hideUnderline) {
-      props = mergeProps(props, { containerStyle: { borderBottomWidth: 0 } });
+      props = deepMergeProps(props, { containerStyle: { borderBottomWidth: 0 } });
     }
 
     // 渐变色
     if (props.gradientColor) {
-      props = mergeProps(props, { ViewComponent: LinearGradient, linearGradientProps: { colors: props.gradientColor, start: { x: 0, y: 1 }, end: { x: 1, y: 1 } } });
+      props = deepMergeProps(props, { ViewComponent: LinearGradient, linearGradientProps: { colors: props.gradientColor, start: { x: 0, y: 1 }, end: { x: 1, y: 1 } } });
     }
     return <Header {...props} />;
   }

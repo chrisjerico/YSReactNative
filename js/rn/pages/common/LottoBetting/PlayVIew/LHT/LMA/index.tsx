@@ -1,18 +1,16 @@
 import { View, ScrollView, Text, FlatList, TouchableWithoutFeedback } from "react-native"
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux"
 import { useDimensions } from "@react-native-community/hooks"
-import { IGlobalState } from "../../../../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../../../../redux/store/UGStore"
 import { getHKballColor } from "../../lottoSetting"
 import { BettingReducerActions } from "../../../../../../redux/reducer/BettingReducer"
 const itemSize = 40
 const LMAContainer = () => {
-  const { currentPlayOdd, } = useSelector((state: IGlobalState) => state.BettingReducer)
+  const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   const [plays, setPlays] = useState([])
   const [currentFilter, setCurrentFilter] = useState("")
   const { width } = useDimensions().screen
   const [currentOdd, setCurrentOdd] = useState("")
-  const dispatch = useDispatch()
   useEffect(() => {
     const playsStringArray = []
     currentPlayOdd.playGroups.map((res) => {
@@ -27,7 +25,7 @@ const LMAContainer = () => {
     if (result.length > 0) {
       setCurrentOdd(result[0]?.plays?.[0]?.odds.replace("00", "").replace(".00", "") ?? "")
     }
-    dispatch({ type: BettingReducerActions.cleanBetGroupResult })
+    UGStore.dispatch({ type: BettingReducerActions.cleanBetGroupResult })
   }, [currentFilter])
   //玩法列表
   return (
@@ -47,7 +45,7 @@ const LMAContainer = () => {
           if (index < 45) {
             return (
               <TouchableWithoutFeedback onPress={() => {
-                dispatch({ type: BettingReducerActions.itemGroupPress, value: res })
+                UGStore.dispatch({ type: BettingReducerActions.itemGroupPress, value: res })
               }}>
                 <View key={index} style={{ width: ((width / 4 * 3) - 5) / 3, borderWidth: 1, borderColor: '#444', height: itemSize }}>
                   <View style={{ flex: 1, borderWidth: 1, borderColor: '#444', justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row', backgroundColor: "#00000000" }}>
@@ -62,7 +60,7 @@ const LMAContainer = () => {
           } else {
             return (
               <TouchableWithoutFeedback onPress={() => {
-                dispatch({ type: BettingReducerActions.itemGroupPress, value: res })
+                UGStore.dispatch({ type: BettingReducerActions.itemGroupPress, value: res })
               }}>
                 <View key={index} style={{ width: ((width / 4 * 3) - 5) / 2, borderWidth: 1, borderColor: '#444', height: itemSize }}>
                   <View style={{ flex: 1, borderWidth: 1, borderColor: '#444', justifyContent: 'flex-start', alignItems: 'center', flexDirection: 'row', backgroundColor: "#00000000" }}>

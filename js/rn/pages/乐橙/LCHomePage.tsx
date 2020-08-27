@@ -49,7 +49,7 @@ import {httpClient} from "../../public/network/httpClient";
 const LCHomePage = ({navigation}) => {
     const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
-    const systemStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const systemStore = UGStore.globalProps.sysConf;
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const {width} = useDimensions().screen
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -77,11 +77,27 @@ const LCHomePage = ({navigation}) => {
             return Object.assign({clsName: 'UGNoticeModel', hiddenBottomLine: 'No'}, item);
 
         })
-        if (Platform.OS != 'ios') return;
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        switch (Platform.OS) {
+          case "ios":
+              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+            break;
+          case "android":
+            //TODO
+            break;
+        }
     }
     const reloadData = async () => {
-        const user = await OCHelper.call('UGUserModel.currentUser');
+        let user;
+
+        switch (Platform.OS) {
+          case "ios":
+              user = await OCHelper.call('UGUserModel.currentUser');
+            break;
+          case "android":
+              user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+            break;
+        }
+
         if (!user) {
             UGStore.dispatch({type: ActionType.Clear_User,});
             UGStore.save();

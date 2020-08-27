@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { View } from 'react-native';
+import {Platform, View} from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
@@ -9,6 +9,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import AppDefine from '../../../public/define/AppDefine';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 
 interface IProps {
   list: Array<UGPromoteModel>;
@@ -57,34 +59,51 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
               pm.clsName = 'UGPromoteModel';
             }
             debugger
-            switch (this.style2) {
-              // 内页
-              case 'page': {
-                OCHelper.call(({ vc }) => ({
-                  vc: {
-                    selectors: 'UGPromoteDetailController.new[setItem:]',
-                    args1: [pm],
-                  },
-                  ret: {
-                    selectors: 'UGNavigationController.current.pushViewController:animated:',
-                    args1: [vc, true],
-                  },
-                }));
+
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [pm.linkCategory, pm.linkPosition]).then((ret) => {
+                  if (ret) return;
+
+                  switch (this.style2) {
+                    // 内页
+                    case 'page': {
+                      OCHelper.call(({ vc }) => ({
+                        vc: {
+                          selectors: 'UGPromoteDetailController.new[setItem:]',
+                          args1: [pm],
+                        },
+                        ret: {
+                          selectors: 'UGNavigationController.current.pushViewController:animated:',
+                          args1: [vc, true],
+                        },
+                      }));
+                      break;
+                    }
+                    // 弹框
+                    case 'popup': {
+                      OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+                      break;
+                    }
+                    // 折叠
+                    case 'slide': {
+                      this.setState({
+                        selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
+                      });
+                      break;
+                    }
+                  }
+                })
                 break;
-              }
-              // 弹框
-              case 'popup': {
-                OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [pm]);
+              case 'android':
+                ANHelper.callAsync(CMD.OPEN_COUPON,
+                  {
+                    ...pm,
+                    style: this.style2,
+                  })
                 break;
-              }
-              // 折叠
-              case 'slide': {
-                this.setState({
-                  selectedIndex: this.state.selectedIndex === idx ? -1 : idx,
-                });
-                break;
-              }
             }
+
           }}>
           {pm.title?.length > 0 && <Text style={{ marginTop: 10, marginBottom: 5, marginLeft: 5, color: Skin1.textColor1, fontSize: 16, fontWeight: '500' }}>{pm.title}</Text>}
           <FastImage

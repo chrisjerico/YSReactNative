@@ -1,188 +1,478 @@
-import React from 'react'
-import {
-  RefreshControl,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import PushHelper from '../../public/define/PushHelper'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
-import { scale } from '../../public/tools/Scale'
+import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import {
+  OCEvent,
+  OCEventType
+} from '../../public/define/OCHelper/OCBridge/OCEvent'
+import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
+import useActivity from '../../public/hooks/tars/useActivity'
+import useHome from '../../public/hooks/tars/useHome'
+import { PageName } from '../../public/navigation/Navigation'
+import { push } from '../../public/navigation/RootNavigation'
+import { httpClient } from '../../public/network/httpClient'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { scale, scaleHeight } from '../../public/tools/Scale'
+import { getActivityPosition, updateUserInfo, ToastError } from '../../public/tools/tars'
+import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomGap from '../../public/views/tars/BottomGap'
+import BottomLogo from '../../public/views/tars/BottomLogo'
+import Button from '../../public/views/tars/Button'
+import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { IGlobalState } from '../../redux/store/UGStore'
+import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
-import Header from './views/Header'
+import GameBlock, { GameSubType } from './views/GameBlock'
+import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
+import { Toast } from '../../public/tools/ToastUtils'
 
-const WNZHomePage = () => {
-  const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
-  const { avatar, balance, usr }: UGUserModel = userStore
-  const { loading, banner, notice, homeGames, categoryList } = useGetHomeInfo([
-    'system_banners',
-    'notice_latest',
-    'game_homeGames',
-    'lhcdoc_categoryList',
-  ])
+const WNZHomePage = (props: any) => {
+  // yellowBox
+  console.disableYellowBox = true
+  // states
+  const [gameSubType, setGameSubType] = useState<GameSubType>({})
+  // functions
+  const { setProps } = props
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: "#ffffff",
+      },
+    })
+  }
+  // stores
+  const {
+    balance,
+    usr,
+    uid,
+    isTest,
+  }: UGUserModel = UGStore.globalProps.userInfo
+  const {
+    mobile_logo,
+    webName,
+    rankingListSwitch,
+    m_promote_pos
+  }: UGSysConfModel = UGStore.globalProps.sysConf
 
+  // effect
+  const {
+    loading,
+    rankList,
+    banner,
+    homeGame,
+    notice,
+    onlineNum,
+    couponList,
+    systemConfig,
+    homeAd,
+    lotteryGames,
+    refreshHome,
+  } = useHome()
+
+  const { roulette, redBag, floatAd, refreshActivity } = useActivity(uid)
+
+  useEffect(() => {
+    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+      try {
+        await updateUserInfo()
+        setProps()
+      } catch (error) {
+        ToastError('登录失败')
+        console.log(error)
+      }
+    })
+    OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
+      try {
+        UGStore.dispatch({ type: 'reset', userInfo: {} })
+        UGStore.save()
+        setProps()
+      } catch (error) {
+        ToastError('登出失败')
+        console.log(error)
+      }
+    })
+    return () => {
+      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+      OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (notice?.data?.popup && !B_DEBUG) {
+      PushHelper.pushAnnouncement(announcements)
+    }
+  }, [notice])
+  // data handle
+  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
+  const redBagLogo = redBag?.data?.redBagLogo
+  const bannersInterval = parseInt(banner?.data?.interval)
+  const adSliderTimer = parseInt(systemConfig?.data?.adSliderTimer)
   const banners = banner?.data?.list ?? []
   const notices = notice?.data?.scroll ?? []
+  const ads = homeAd?.data ?? []
   const navs =
-    homeGames?.data?.navs?.sort((nav: any) => -nav.sort)?.slice(0, 5) ?? []
+    homeGame?.data?.navs
+      ?.sort((a: any, b: any) => a.sort - b.sort)
+      ?.slice(0, 5) ?? []
   let games = []
-  homeGames?.data?.icons?.forEach(
+  homeGame?.data?.icons?.forEach(
     (item) => (games = games.concat(item?.list) ?? [])
   )
-  games = games.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
-  const leftGames = categoryList?.data ?? []
+  games = games?.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
+  const rankLists = rankList?.data?.list ?? []
+  // 官 信
+  let lotterys = []
+  lotteryGames?.data?.forEach((ele) => (lotterys = lotterys.concat(ele?.list)))
+  const customiseGames = lotterys.filter((ele) => ele?.customise == '2') // 信
+  const officialGames = lotterys.filter((ele) => ele?.customise == '0') // 官
+  const announcements =
+    notice?.data?.popup?.map((item: any) => {
+      return Object.assign(
+        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
+        item
+      )
+    }) ?? []
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      {loading ? (
-        <ProgressCircle />
-      ) : (
-          <>
-            <Header name={usr} />
-            <ScrollView
-              style={styles.container}
-              scrollEnabled={true}
-              refreshControl={<RefreshControl refreshing={false} />}
-            >
-              <BannerBlock
-                onlineNum={0}
-                banners={banners}
-                renderBanner={(item, index) => {
-                  const { linkCategory, linkPosition, pic } = item
-                  return (
-                    <TouchableImage
-                      key={index}
-                      pic={pic}
-                      onPress={() => {
-                        PushHelper.pushCategory(linkCategory, linkPosition)
-                      }}
-                    />
-                  )
-                }}
-              />
-              <NoticeBlock
-                containerStyle={{ borderRadius: 0, marginBottom: scale(10) }}
-                iconContainerStyle={{
-                  borderColor: 'red',
-                  borderWidth: scale(1),
-                  marginHorizontal: scale(10),
-                  borderRadius: scale(2),
-                }}
-                notices={notices}
-                onPressNotice={({ value }) => PushHelper.pushNoticePopUp(value)}
-                logoTextStyle={{ color: 'red' }}
-              />
-              <View style={{ flexDirection: 'row' }}>
-                {navs.map((item, index) => {
-                  const { icon, name } = item
-                  return (
-                    <GameButton
-                      key={index}
-                      logo={icon}
-                      title={name}
-                      containerStyle={{
-                        width: '20%',
-                        backgroundColor: '#ffffff',
-                        height: 115,
-                        justifyContent: 'center',
-                      }}
-                      circleColor={'transparent'}
-                    />
-                  )
-                })}
-              </View>
-              <TouchableImage
-                pic={
-                  'http://test10.6yc.com/views/mobileTemplate/23/images/home/banner.gif'
+  if (loading) {
+    return <ProgressCircle />
+  } else {
+    return (
+      <>
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} >
+          <HomeHeader
+            uid={uid}
+            showBackBtn={false}
+            name={usr}
+            logo={mobile_logo}
+            balance={balance}
+            onPressMenu={() => {
+              PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
+            }}
+            onPressComment={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
+            }}
+            onPressUser={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+            }}
+          />
+        </SafeAreaHeader>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
+          refreshControl={
+            <RefreshControlComponent
+              onRefresh={async () => {
+                try {
+                  await Promise.all([refreshHome(), refreshActivity(), updateUserInfo().catch(error => {
+                    console.log(error)
+                  })])
+                  PushHelper.pushAnnouncement(announcements)
+                } catch (error) {
                 }
-                onPress={() => { }}
-                containerStyle={{ width: '100%', aspectRatio: 4 }}
-              />
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {games.map((item, index) => {
-                  const { logo, name } = item
-                  return (
-                    <View
-                      key={index}
-                      style={{
-                        width: '25%',
-                        height: scale(125),
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <GameButton
-                        logo={logo}
-                        title={name}
-                        containerStyle={{
-                          width: '90%',
-                          backgroundColor: '#ffffff',
-                          height: '90%',
-                          borderRadius: scale(10),
-                        }}
-                        circleColor={'transparent'}
-                      />
-                    </View>
-                  )
-                })}
-              </View>
-              <TabComponent
-                leftGames={leftGames}
-                rightGames={leftGames}
-                renderLeftGame={(item, index) => {
-                  const { name, icon, show, id, desc } = item
-                  return (
-                    <RowGameButtom
-                      key={index}
-                      logo={icon}
-                      name={name}
-                      desc={desc}
-                      logoBallText={'官'}
-                    />
-                  )
-                }}
-                renderRightGame={(item, index) => {
-                  const { name, icon, show, id, desc } = item
-                  return (
-                    <RowGameButtom
-                      key={index}
-                      logo={icon}
-                      name={name}
-                      desc={desc}
-                      logoBallText={'信'}
-                    />
-                  )
-                }}
-              />
-              <AnimatedRankComponent
-                rankLists={[]}
-                rankContainerStyle={{ borderRadius: 0 }}
-              />
-            </ScrollView>
-          </>
-        )}
-    </SafeAreaView>
-  )
+              }}
+            />
+          }
+        >
+          <BannerBlock
+            autoplayTimeout={bannersInterval}
+            onlineNum={onlineNum}
+            banners={banners}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, pic } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={pic}
+                  resizeMode={'stretch'}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }}
+                />
+              )
+            }}
+          />
+          <NoticeBlock
+            containerStyle={{ borderRadius: 0, marginBottom: scale(10) }}
+            iconContainerStyle={{
+              borderColor: 'red',
+              borderWidth: scale(1),
+              marginHorizontal: scale(10),
+              borderRadius: scale(2),
+            }}
+            notices={notices}
+            onPressNotice={({ content }) => {
+              PushHelper.pushNoticePopUp(content)
+            }}
+            logoTextStyle={{ color: 'red' }}
+          />
+          <View style={{ flexDirection: 'row', backgroundColor: '#ffffff' }}>
+            {navs?.map((item, index) => {
+              const { icon, name, gameId } = item
+              return (
+                <GameButton
+                  key={index}
+                  logo={icon}
+                  title={name}
+                  containerStyle={{
+                    width: '20%',
+                    backgroundColor: '#ffffff',
+                    height: 115,
+                    justifyContent: 'center',
+                  }}
+                  circleColor={'transparent'}
+                  onPress={() => {
+                    if (gameId == 9) {
+                      goToJDPromotionListPage()
+                    } else {
+                      PushHelper.pushHomeGame(item as any)
+                    }
+                  }}
+                />
+              )
+            })}
+          </View>
+          <BannerBlock
+            isMidAd={true}
+            visible={ads?.length > 0}
+            autoplayTimeout={adSliderTimer}
+            showOnlineNum={false}
+            banners={ads}
+            renderBanner={(item, index) => {
+              const { linkCategory, linkPosition, image } = item
+              return (
+                <TouchableImage
+                  key={index}
+                  pic={image}
+                  resizeMode={'stretch'}
+                  onPress={() => {
+                    PushHelper.pushCategory(linkCategory, linkPosition)
+                  }}
+                />
+              )
+            }}
+          />
+          <GameBlock
+            numColumns={4}
+            games={games}
+            gameSubType={gameSubType}
+            subTypeContainerStyle={{
+              paddingHorizontal: scale(10),
+            }}
+            renderSubType={(item, index) => {
+              const { title } = item
+              return (
+                <Button
+                  key={index}
+                  containerStyle={{
+                    width: '20%',
+                    marginLeft: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
+                    marginRight: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
+                    marginBottom: scale(20),
+                    backgroundColor: WNZThemeColor.威尼斯.themeColor,
+                    paddingVertical: scale(20),
+                    borderRadius: scale(5),
+                  }}
+                  textStyle={{ color: '#ffffff', fontSize: scale(15) }}
+                  text={title}
+                  onPress={() => {
+                    PushHelper.pushHomeGame(item)
+                  }}
+                />
+              )
+            }}
+            renderGame={(item, index) => {
+              const { logo, name, hotIcon, tipFlag, subType, icon } = item
+              const flagType = parseInt(tipFlag)
+              return (
+                <View key={index} style={styles.gameContainer}>
+                  <GameButton
+                    logo={icon || logo}
+                    showSecondLevelIcon={subType}
+                    showRightTopFlag={flagType > 0 && flagType < 4}
+                    showCenterFlag={flagType == 4}
+                    flagIcon={hotIcon}
+                    title={name}
+                    containerStyle={{
+                      width: '90%',
+                      backgroundColor: '#ffffff',
+                      aspectRatio: 0.9,
+                      borderRadius: scale(10),
+                      justifyContent: 'center',
+                    }}
+                    titleContainerStyle={{
+                      aspectRatio: 5,
+                      paddingTop: scale(5),
+                    }}
+                    secondLevelIconContainerStyle={{ right: -scale(10), top: null, bottom: 0 }}
+                    enableCircle={false}
+                    onPress={() => {
+                      if (subType) {
+                        const cutRow = Math.ceil((index + 1) / 4)
+                        if (index == gameSubType?.gameIndexHistory) {
+                          setGameSubType({})
+                        } else {
+                          setGameSubType({
+                            cutRow,
+                            gameIndexHistory: index,
+                            subType
+                          })
+                        }
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
+                    }}
+                  />
+                </View>
+              )
+
+            }}
+          />
+          <TabComponent
+            elementHeight={scale(100)}
+            leftGames={officialGames}
+            rightGames={customiseGames}
+            renderLeftGame={(item, index) => {
+              const { title, pic, openCycle, id, gameType } = item
+              return (
+                <RowGameButtom
+                  key={index}
+                  logo={pic}
+                  name={title}
+                  desc={openCycle}
+                  logoBallText={'官'}
+                  onPress={() => {
+                    PushHelper.pushLottery(id)
+                  }}
+                />
+              )
+            }}
+            renderRightGame={(item, index) => {
+              const { title, pic, openCycle, id } = item
+              return (
+                <RowGameButtom
+                  key={index}
+                  logo={pic}
+                  name={title}
+                  desc={openCycle}
+                  logoBallText={'信'}
+                  onPress={() => {
+                    PushHelper.pushLottery(id)
+                  }}
+                />
+              )
+            }}
+          />
+          <CouponBlock
+            visible={m_promote_pos}
+            onPressMore={goToJDPromotionListPage}
+            containerStyle={styles.subComponent}
+            coupons={coupons}
+            renderCoupon={({ item, index }) => {
+              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+              return (
+                <AutoHeightCouponComponent
+                  key={index}
+                  title={title}
+                  pic={pic}
+                  content={content}
+                  onPress={(setShowPop) => {
+                    if (linkUrl) {
+                      PushHelper.openWebView(linkUrl)
+                    } else if (!linkCategory && !linkPosition) {
+                      setShowPop(true)
+                    }
+                    else {
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }
+                  }}
+                />
+              )
+            }}
+          />
+          <AnimatedRankComponent
+            type={rankingListSwitch}
+            rankLists={rankLists}
+            rankContainerStyle={{ borderRadius: 0 }}
+            initialAnimatedHeight={scale(0)}
+            finalAnimatedHeight={
+              scale(195) + scale((rankLists?.length ?? 0) * 50)
+            }
+          />
+          <BottomLogo
+            webName={webName}
+            onPressComputer={() => {
+              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+            }}
+            onPressPromotion={goToJDPromotionListPage}
+            debug={false}
+            version={'修正Banner比例'}
+          />
+          <BottomGap />
+        </ScrollView>
+        <ActivityComponent
+          containerStyle={{ top: scale(250), right: 0 }}
+          show={uid && redBagLogo && !isTest}
+          logo={redBagLogo}
+          onPress={() => {
+            PushHelper.pushRedBag(redBag)
+          }}
+        />
+        <ActivityComponent
+          containerStyle={{ top: scale(400), right: 0 }}
+          enableFastImage={false}
+          show={uid && roulette && !isTest}
+          logo={'dzp_btn'}
+          onPress={() => {
+            PushHelper.pushWheel(roulette)
+          }}
+        />
+        {floatAd?.map((item: any, index) => {
+          const { image, position, linkCategory, linkPosition } = item
+          return (
+            <ActivityComponent
+              key={index}
+              containerStyle={getActivityPosition(position)}
+              enableFastImage={true}
+              show={uid && !isTest}
+              logo={image}
+              onPress={() => {
+                PushHelper.pushCategory(linkCategory, linkPosition)
+              }}
+            />
+          )
+        })}
+      </>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#D0D0D0',
   },
-  safeArea: {
-    backgroundColor: '#BF242A',
-    flex: 1,
+  gameContainer: {
+    width: '25%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: scale(5),
+  },
+  bottomComponent: {
+    paddingBottom: scaleHeight(70),
+  },
+  subComponent: {
+    marginTop: scale(10),
+    backgroundColor: '#ffffff',
   },
 })
 

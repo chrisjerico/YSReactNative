@@ -1,15 +1,14 @@
 import {SafeAreaView, View, Image, Text} from "react-native";
 import {LoginButtonBar} from "./LoginButtonBar";
 import * as React from "react";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
 import FastImage from "react-native-fast-image";
 import {useEffect} from "react";
 
 export const HomeHeaderButtonBar = () => {
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const {balance, uid} = userStore
-    const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+    const sysStore = UGStore.globalProps.sysConf;
     const { mobile_logo = "" } = sysStore
     useEffect(() => {
         console.log("uid:" ,uid)

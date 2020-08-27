@@ -1,12 +1,11 @@
 import { View, Text, StyleSheet } from "react-native"
 import { useDimensions } from "@react-native-community/hooks"
 import React from 'react'
-import { useSelector } from "react-redux"
-import { IGlobalState } from "../../../redux/store/UGStore"
+import { IGlobalState, UGStore } from "../../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
 const Header = () => {
   const { width } = useDimensions().screen
-  const sysStore = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const sysStore = UGStore.globalProps.sysConf;
   const { mobile_logo = "" } = sysStore
   return (
     <View style={{ width: width - 10, marginHorizontal: 5, flexDirection: 'row', alignItems: 'center', backgroundColor: "#1d2128", paddingVertical: 5 }}>

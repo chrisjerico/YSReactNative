@@ -7,14 +7,13 @@ import {GameListView} from "./lotteyTab/GameListView";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {Icon, List} from "../../../../../public/network/Model/HomeGamesModel";
 import {View} from "react-native";
-import {useSelector} from "react-redux";
-import {IGlobalState} from "../../../../../redux/store/UGStore";
+import {IGlobalState, UGStore} from "../../../../../redux/store/UGStore";
 import PushHelper from "../../../../../public/define/PushHelper";
 
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
-    const userStore = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const userStore = UGStore.globalProps.userInfo;
     const {uid = ""} = userStore
 
     useEffect(() => {

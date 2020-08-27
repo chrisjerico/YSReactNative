@@ -27,12 +27,12 @@ import { useLanguageContext } from "../../../public/context/LanguageContextProvi
 import RankListCP from "../../../public/widget/RankList";
 import useSpriteImage from "../../../public/hooks/useSpriteImage";
 import { httpClient } from "../../../public/network/httpClient";
-import { useSelector } from "react-redux";
-import { IGlobalState } from "../../../redux/store/UGStore";
+import { IGlobalState, UGStore } from "../../../redux/store/UGStore";
 import PromotionsBlock from "../../../public/components/PromotionsBlock";
+import Banner from "../../尊龙/CP/Banner";
 
 const VietnamHomePage = () => {
-  const { banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh, noticeFormat, originalNoticeString } = useGetHomeInfo()
+  const { banner, notice, homeGames, couponListData, rankList, redBag, onlineSwitch, onlineNum, loading, onRefresh, noticeFormat, originalNoticeString } = useGetHomeInfo()
   const [show, setShow] = useState(false)
   const [content, setContent] = useState("")
   const [navBarData, setNavBarData] = useState([])
@@ -41,7 +41,7 @@ const VietnamHomePage = () => {
   const { width, height } = useDimensions().screen
   const [selectId, setSelectedId] = useState(-1)
   const { onPopViewPress } = usePopUpView()
-  const { webName } = useSelector((state: IGlobalState) => state.SysConfReducer)
+  const { webName } = UGStore.globalProps.sysConf;
   const { imageArray } = useSpriteImage({
     source: "http://test24.6yc.com/views/mobileTemplate/24/images/icon_game_type.png",
     size: {
@@ -93,7 +93,7 @@ const VietnamHomePage = () => {
   return (
     <HomeBase loginPage={PageName.VietnamLogin} needPadding={false} backgroundColor={'white'} header={<Header />} marginTop={46}>
       <View style={{ alignItems: 'center', }}>
-        <Banner bannerData={banner} onlineNum={onlineNum} />
+        <Banner style={{ marginBottom: 5 }} size={{ width: width - 24, height: 0 }} onlineSwitch={onlineSwitch} bannerData={banner} onlineNum={onlineNum} />
         <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', paddingLeft: -5 }}>
           <Icon name="ios-volume-high" type="ionicon" color="#646f95" size={24} />
           <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: 'white' }}
@@ -133,7 +133,7 @@ const VietnamHomePage = () => {
                       break;
                     // push(PageName)
                     case 5:
-                      push(PageName.PromotionListPage)
+                      push(PageName.JDPromotionListPage)
                       break
                     // PushHelper.pushCategory("70")
                     default:
@@ -200,7 +200,7 @@ const VietnamHomePage = () => {
           <Text style={{ color: 'black', fontWeight: "bold" }}>优惠活动</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>
           <Text style={{ color: 'black', fontWeight: "bold", }}>{"查看详情"}<Text> >></Text></Text>
         </TouchableWithoutFeedback>
@@ -220,62 +220,13 @@ const VietnamHomePage = () => {
           PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
         }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }} >💻电脑版</Text>
         <Text style={{ color: 'black', textAlign: 'center' }} onPress={() => {
-          push(PageName.PromotionListPage)
+          push(PageName.JDPromotionListPage)
         }}>🎁<Text>优惠活动</Text></Text>
       </View>
       <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
       <View style={{ height: 100 }}></View>
     </HomeBase>
   )
-}
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
-  const { width, } = useDimensions().window
-  const BannerRef = useRef<Carousel>()
-  const [height, setHeight] = useState(50)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      //@ts-ignore
-      BannerRef?.current?.gotoNextPage()
-    }, 2000);
-    return (() => {
-      clearInterval(timer)
-    })
-  }, [bannerData])
-  const bannerWidth = width - 24
-  if (bannerData?.data?.list?.length > 0) {
-    return (
-      <View style={{ marginBottom: 5, height: height }}>
-        <Carousel
-          autoplay
-          index={0}
-          ref={BannerRef}
-          loop
-          pageSize={bannerWidth}
-        >
-          {bannerData?.data?.list?.map((res, index) => {
-            return (
-              <TouchableWithoutFeedback key={index + res.linkCategory} onPress={() => {
-                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-              }}>
-                <FastImage onLoad={(e) => {
-                  setHeight(e.nativeEvent.height * ((bannerWidth) / e.nativeEvent.width))
-
-                }} key={'banner' + index} style={{ width: bannerWidth, height: height, borderRadius: 10 }} source={{ uri: res.pic }} >
-
-                </FastImage>
-              </TouchableWithoutFeedback>)
-          })}
-        </Carousel>
-        <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>{"当前在线"}:{onlineNum}</Text>
-        </View>
-      </View>
-    )
-
-  } else {
-    return <View style={{ height: (Dimensions.get("screen").width - 20) / 2, }}></View>
-  }
-
 }
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen
