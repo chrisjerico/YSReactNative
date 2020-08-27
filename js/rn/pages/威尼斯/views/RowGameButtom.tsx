@@ -41,7 +41,7 @@ const RowGameButtom = ({
               width: scale(150),
             }}
           >
-            <Text numberOfLines={1}>{name}</Text>
+            <Text numberOfLines={1} style={{ fontSize: scale(20) }}>{name}</Text>
             <Text
               style={{
                 fontSize: scale(15),
