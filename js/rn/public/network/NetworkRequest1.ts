@@ -78,11 +78,6 @@ export default class NetworkRequest1 {
     return CCSessionModel.req('c=lhcdoc&a=contentReplyList', {contentId: contentId, replyPId: replyPId, page: page, rows: rows}, false);
   }
 
-  // 获取分类的优惠活动
-  static system_getPromotionsType() {
-    return CCSessionModel.req('c=system&a=getPromotionsType');
-  }
-
   // 获取首页优惠活动
   static systeam_promotions(): Promise<UGPromoteListModel> {
     return CCSessionModel.req('c=system&a=promotions');
