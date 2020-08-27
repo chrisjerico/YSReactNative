@@ -25,6 +25,7 @@ const WNZMinePage = () => {
     usr,
     mobile_logo,
     money,
+    curLevelInt,
     nextLevelInt,
     taskRewardTotal,
     curLevelTitle,
@@ -103,6 +104,7 @@ const WNZMinePage = () => {
       <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
+          curLevelInt={curLevelInt}
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}
           curLevelTitle={curLevelTitle}

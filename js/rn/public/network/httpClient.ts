@@ -22,7 +22,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 5000,
+  timeout: 5000, // 0 no limit
   headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {
@@ -95,7 +95,7 @@ httpClient.interceptors.response.use(
       // console.warn('連接到服務器失敗', err);
     }
     if (err?.toString()?.indexOf('timeout') != -1) {
-      return Promise.reject(err?.response ?? err)
+      return Promise.reject('伺服器回应超时')
     } else {
       return Promise.reject(err?.response ?? err)
     }

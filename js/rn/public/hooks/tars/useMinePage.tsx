@@ -27,9 +27,10 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     curLevelGrade,
     uid,
     nextLevelInt,
+    curLevelInt,
     taskRewardTotal,
     curLevelTitle,
-    nextLevelTitle
+    nextLevelTitle,
   }: UGUserModel = UGStore.globalProps.userInfo
   const { userCenterItems, mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
@@ -130,6 +131,7 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     isTest,
     avatar,
     unreadMsg,
+    curLevelInt,
     nextLevelInt,
     taskRewardTotal,
     curLevelTitle,
