@@ -138,7 +138,7 @@ class APIRouter {
         noToken: true
       } as any);
     } catch (error) {
-      throw '登陆失败'
+      throw error
     }
   }
   static user_balance_token = async () => {

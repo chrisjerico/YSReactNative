@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 500 / 270,
-    backgroundColor: '#d9d9d9',
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
     paddingBottom: scale(30)
   },
   whiteBlock: {
