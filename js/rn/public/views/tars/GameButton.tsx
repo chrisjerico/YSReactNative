@@ -33,6 +33,8 @@ interface GameButtonProps {
   flagIcon?: string;
   showSecondLevelIcon?: boolean;
   secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
+  showUnReadMsg?: boolean;
+  unreadMsg?: number
 }
 
 interface DefaultFlag {
@@ -85,7 +87,9 @@ const GameButton = (props: GameButtonProps) => {
     showCenterFlag,
     flagIcon,
     showSecondLevelIcon,
-    secondLevelIconContainerStyle
+    secondLevelIconContainerStyle,
+    showUnReadMsg = false,
+    unreadMsg
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -148,6 +152,11 @@ const GameButton = (props: GameButtonProps) => {
               )}
             </View>
           )}
+        {
+          showUnReadMsg && <View style={styles.unReadMsgContainer}>
+            <Text style={styles.unReadMsgText}>{unreadMsg}</Text>
+          </View>
+        }
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
             <Text style={titleStyle} numberOfLines={1}>
@@ -241,7 +250,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -scale(30),
     top: '50%'
-  }
+  },
+  unReadMsgContainer: {
+    height: scale(40),
+    width: scale(40),
+    borderRadius: scale(40),
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: scale(15),
+    top: -scale(15),
+  },
+  unReadMsgText: { color: '#ffffff' },
 })
 
 export default GameButton

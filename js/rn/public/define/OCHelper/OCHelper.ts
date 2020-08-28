@@ -65,6 +65,7 @@ export class OCHelper extends OCEvent {
 
       //@ts-ignore
       const userInfo = net_response[0]?.data?.data ?? {}
+      console.log("--------userInfo-------", userInfo)
       //@ts-ignore
       const sysConf_net = net_response[1]?.data?.data ?? {}
       console.log("---------sysConf_net--------", sysConf_net)

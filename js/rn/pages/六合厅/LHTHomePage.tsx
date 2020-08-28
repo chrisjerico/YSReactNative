@@ -200,7 +200,7 @@ const LHTHomePage = (props: any) => {
                   await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
-                  console.log(error)
+                  console.log("-------error------", error)
                 }
               }}
             />

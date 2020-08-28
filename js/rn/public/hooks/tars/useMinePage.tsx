@@ -9,7 +9,7 @@ import { PageName } from "../../navigation/Navigation"
 import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
 
-interface DefaultUserCenterLogo {
+interface DefaultUserCenterLogos {
   1: string, // 存款
   2: string, // 取款
   3: string, // 银行卡管理
@@ -33,10 +33,10 @@ interface DefaultUserCenterLogo {
 interface UseMinePage {
   setProps?: (props: any) => any;
   homePage?: PageName;
-  defaultUserCenterLogo: DefaultUserCenterLogo
+  defaultUserCenterLogos: DefaultUserCenterLogos
 }
 
-const useMinePage = ({ setProps, homePage, defaultUserCenterLogo }: UseMinePage) => {
+const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage) => {
   // yellowBox
   console.disableYellowBox = true
   // stores
@@ -57,7 +57,7 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogo }: UseMinePage)
   const { mobile_logo, userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
   const userCenterItems = userCenter?.map(ele => {
     const { logo, code } = ele
-    const newLogo = (logo?.length == 0 || !logo) ? defaultUserCenterLogo?.[code] : logo
+    const newLogo = (logo?.length == 0 || !logo) ? defaultUserCenterLogos?.[code] : logo
     return Object.assign({}, ele, { logo: newLogo })
   })
   // states
@@ -83,7 +83,7 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogo }: UseMinePage)
       const avatarList = response?.data?.data ?? []
       setAvatarList(avatarList)
     } catch (error) {
-      console.log(error)
+      console.log("-------error------", error)
     } finally {
       setAvatarListLoading(false)
     }
@@ -95,7 +95,9 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogo }: UseMinePage)
       const balance = data?.data?.balance
       setMoney(balance)
       UGStore.dispatch({ type: 'merge', userInfo: { balance } })
-    } catch (error) { }
+    } catch (error) {
+      console.log("-------error------", error)
+    }
   }
 
   const saveAvatar = async ({ url, filename }) => {

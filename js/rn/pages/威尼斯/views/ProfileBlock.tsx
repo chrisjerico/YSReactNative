@@ -32,9 +32,9 @@ const ProfileBlock = ({
   const curLevelInt_f = parseFloat(curLevelInt) || 0
   const nextLevelInt_f = parseFloat(nextLevelInt) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
-  const rate = nextLevelInt_f ? curLevelInt_f / nextLevelInt_f : 0
+  const rate = nextLevelInt_f ? taskRewardTotal_f / nextLevelInt_f : 0
   const diffLevelInt_f = nextLevelInt_f - curLevelInt_f
-  console.log("---------taskRewardTotal---------", taskRewardTotal)
+
   return (
     <View style={styles.imageBackgroundContainer}>
       <ImageBackground style={styles.image} source={{ uri: backgroundImage }}>
@@ -70,7 +70,7 @@ const ProfileBlock = ({
                   {curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}
                 </Text>
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
-                  {curLevelInt_f + '/' + nextLevelInt_f}
+                  {taskRewardTotal_f + '/' + nextLevelInt_f}
                 </Text>
               </View>
             </View>

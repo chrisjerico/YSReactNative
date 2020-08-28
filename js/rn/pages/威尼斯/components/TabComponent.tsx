@@ -4,15 +4,7 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { scale } from '../../../public/tools/Scale';
 import { useHtml5Image } from '../../../public/tools/tars';
 
-const { getHtml5Image } = useHtml5Image()
-
-// const FirstRoute = () => <View style={{ backgroundColor: '#ffffff', height: 200 }}><Text>{"FirstRoute"}</Text></View>
-// const SecondRoute = () => <View><Text>{"SecondRoute"}</Text></View>
-
-// const renderScene = SceneMap({
-//   0: FirstRoute,
-//   1: SecondRoute,
-// });
+const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
 interface TabComponentProps {
   leftGames: any[];
@@ -27,11 +19,6 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, 
     { key: 0, title: '官方玩法', logo: getHtml5Image(23, 'home/gfwf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png'
     { key: 1, title: '信用玩法', logo: getHtml5Image(23, 'home/xywf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' 
   ])
-
-  // const routes = [
-  //   { key: '0', title: 'First' },
-  //   { key: '1', title: 'Second' },
-  // ]
 
   const leftGamesLength = Math.ceil(leftGames?.length / 2)
   const rightGamesLength = Math.ceil(rightGames?.length / 2)

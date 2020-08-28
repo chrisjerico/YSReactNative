@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View, Text } from 'react-native'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
@@ -10,7 +10,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {
   LotteryType,
-  UGUserCenterType
+  UGUserCenterType,
 } from '../../redux/model/全局/UGSysConfModel'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
@@ -18,7 +18,8 @@ import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 import config from './config'
 
-const WNZMinePage = () => {
+const WNZMinePage = (props: any) => {
+  const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
   const {
     uid,
@@ -32,8 +33,12 @@ const WNZMinePage = () => {
     curLevelTitle,
     nextLevelTitle,
     userCenterItems,
-    fetchAvatarList
-  } = useMinePage({ defaultUserCenterLogo: config.defaultUserCenterLogos })
+    unreadMsg,
+    fetchAvatarList,
+  } = useMinePage({
+    setProps,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
 
   // data handle
 
@@ -104,7 +109,9 @@ const WNZMinePage = () => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+      <ScrollView
+        style={styles.container}
+        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
           curLevelInt={curLevelInt}
@@ -159,12 +166,13 @@ const WNZMinePage = () => {
               }}
               renderTool={(item, index) => {
                 const { code, name, logo } = item
-                console.log(code)
                 return (
                   <GameButton
                     key={index}
                     logo={logo}
                     title={name}
+                    showUnReadMsg={code == 9}
+                    unreadMsg={unreadMsg}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
                     imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}
@@ -172,6 +180,7 @@ const WNZMinePage = () => {
                     onPress={() => PushHelper.pushUserCenterType(code)}
                   />
                 )
+
               }}
             />
           )

@@ -46,7 +46,7 @@ const LHTMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.LHTHomePage, defaultUserCenterLogo: config.defaultUserCenterLogos })
+  } = useMinePage({ setProps, homePage: PageName.LHTHomePage, defaultUserCenterLogos: config.defaultUserCenterLogos })
 
   return (
     <>
