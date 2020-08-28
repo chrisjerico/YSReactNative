@@ -23,6 +23,7 @@ export enum CMD {
   VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
   APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
+  SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token

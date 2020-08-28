@@ -77,10 +77,7 @@ const ZLRegisterPage = () => {
             //     break;
             // }
 
-            console.log(requestData)
-
             if (requestData.slideCode) {
-                console.log("slideCode=" + requestData.slideCode)
                 requestData.smsCode = ""
                 requestData.imgCode = ""
                 requestData["slideCode[nc_sid]"] = requestData.slideCode["nc_csessionid"]
@@ -88,6 +85,7 @@ const ZLRegisterPage = () => {
                 requestData["slideCode[nc_sig]"] = requestData.slideCode["nc_sig"]
                 delete requestData.slideCode
             }
+          // console.log('requestData.requestData: ', requestData)
             const { data, status } = await APIRouter.user_reg({ ...requestData, pwd: password, regType: regType, fundPwd: fundPwd })
             reRenderCode()
 
@@ -95,6 +93,7 @@ const ZLRegisterPage = () => {
                 throw { message: data?.msg }
             }
 
+            ugLog('data?.data?.autoLogin=', data?.data?.autoLogin)
             if (data?.data?.autoLogin) {
                 let user;
 
@@ -110,6 +109,8 @@ const ZLRegisterPage = () => {
                 }
 
                 const { data: loginData, status } = await APIRouter.user_login(data.data.usr, password)
+                ugLog('log info=', loginData)
+
                 if (user) {
                     console.log('退出旧账号');
                     console.log(user);
@@ -147,6 +148,7 @@ const ZLRegisterPage = () => {
                 }
 
                 const { data: UserInfo, } = await APIRouter.user_info()
+              ugLog('log UserInfo=', UserInfo)
 
                 switch (Platform.OS) {
                     case 'ios':
@@ -172,22 +174,27 @@ const ZLRegisterPage = () => {
                         Toast('登录成功');
                         break;
                 }
+
+                hideLoading();
                 popToRoot();
-            }
-            if (data?.data?.autoLogin == false) {
-                switch (Platform.OS) {
-                    case 'ios':
-                        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
-                        break;
-                    case 'android':
-                        Toast(data.msg);
-                        break;
-                }
-                popToRoot();
-                navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
+            } else if (data?.data?.autoLogin == false) {
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                  break;
+                case 'android':
+                  Toast(data.msg);
+                  break;
+              }
+
+              hideLoading();
+              popToRoot();
+              navigate(PageName.ZLLoginPage, { usr: requestData[FormName.usr], pwd: requestData[FormName.pwd] })
             }
         } catch (error) {
-            ugLog(error)
+          hideLoading();
+
+          ugLog(error)
             EventRegister.emit('reload')
             reRenderCode()
             if (error.message.includes("推荐人")) {
@@ -214,7 +221,6 @@ const ZLRegisterPage = () => {
 
         }
 
-        hideLoading();
     }
     useEffect(() => {
         if (allowreg == false) {
@@ -240,18 +246,23 @@ const ZLRegisterPage = () => {
         }
     }
     const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
-        const webViewScript = `setTimeout(function() { 
+        const webViewScript = `setTimeout(function() {
             document.getElementById('app').style.background = 'black'
-            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight); 
+            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
           }, 500);
           true;`;
         const [webviewHeight, setWebViewHeight] = useState(0)
         const hadnleMessage = (e: WebViewMessageEvent) => {
-            console.log("sliding response" + JSON.stringify(e?.nativeEvent?.data))
-            if (typeof e?.nativeEvent?.data == 'string') {
-                setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+          let eData = e?.nativeEvent?.data;
+          console.log("sliding response: " + eData)
+
+            if (eData?.startsWith('{')
+                      && eData?.endsWith('}')) {
+              onChange(JSON.parse(eData))
+            } else if (typeof eData == 'string') {
+              setWebViewHeight(parseInt(eData) * 1.5)
             } else {
-                onChange(e?.nativeEvent?.data)
+              onChange(eData)
             }
         }
         const webViewRef = useRef<WebView>()
