@@ -497,7 +497,7 @@ const LHTHomePage = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D0D0D0',
+    backgroundColor: '#f2f2f2',
   },
   contentContainer: {
     paddingHorizontal: scale(16),

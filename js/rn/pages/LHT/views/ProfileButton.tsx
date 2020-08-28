@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   container: {
     width: scale(158),
     aspectRatio: 158 / 60,
-    backgroundColor: '#ff861b',
+    backgroundColor: '#ff6b1b',
     borderRadius: scale(10),
     flexDirection: 'row',
     justifyContent: 'center',
