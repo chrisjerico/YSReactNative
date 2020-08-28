@@ -13,8 +13,8 @@ const config = {
     8: getHtml5Image(23, 'center/transfer'), // 额度转换
     9: getHtml5Image(23, 'center/message'), // 站内信
     10: getHtml5Image(23, 'center/person_summary'), // 安全中心
-    11: getHtml5Image(23, 'center/person_summary'), // 任务中心
-    12: getHtml5Image(23, 'center/person_summary'), // 个人信息
+    11: getHtml5Image(23, 'center/my_redenvelope'), // 任务中心
+    12: getHtml5Image(23, 'center/user_info'), // 个人信息
     13: getHtml5Image(7, 'zhmx'), // 建议反馈
     14: getIbbImage('DtPJymN/online-Service'), // 在线客服 X
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
