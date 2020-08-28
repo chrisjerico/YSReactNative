@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     aspectRatio: 500 / 65,
     flexDirection: 'row',
     paddingHorizontal: scale(10),
-    marginVertical: scale(10),
+    marginTop: scale(10),
   },
   leftButtonContainer: {
     flex: 1,

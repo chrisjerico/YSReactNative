@@ -18,9 +18,10 @@ interface GameBlockProps {
   renderSubType: (item: IGameIconListItem, index: number) => any;
   subTypeContainerStyle?: ViewStyle | ViewStyle[];
   numColumns: number;
+  containerStyle?: ViewStyle | ViewStyle[];
 }
 
-const GameBlock = ({ games, renderGame, gameSubType, renderSubType, subTypeContainerStyle, numColumns }: GameBlockProps) => {
+const GameBlock = ({ games, renderGame, gameSubType, renderSubType, subTypeContainerStyle, numColumns, containerStyle }: GameBlockProps) => {
 
   const { cutRow, subType } = gameSubType
   const sliceCount = cutRow ? (cutRow * numColumns) : -1
@@ -28,7 +29,7 @@ const GameBlock = ({ games, renderGame, gameSubType, renderSubType, subTypeConta
   const subGames = sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
 
   return (
-    <View>
+    <View style={containerStyle}>
       <View style={styles.gamesContainer}>{mainGames?.map(renderGame)}</View>
       {
         <View style={[styles.gamesContainer, subTypeContainerStyle]}>

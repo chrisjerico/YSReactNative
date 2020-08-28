@@ -34,6 +34,7 @@ import TabComponent from './components/TabComponent'
 import GameBlock, { GameSubType } from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
+import config from './config'
 
 const WNZHomePage = (props: any) => {
   // yellowBox
@@ -184,6 +185,7 @@ const WNZHomePage = (props: any) => {
           }
         >
           <BannerBlock
+            containerStyle={{ aspectRatio: 540 / 240 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -202,9 +204,9 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <NoticeBlock
-            containerStyle={{ borderRadius: 0, marginBottom: scale(10) }}
+            containerStyle={{ borderRadius: 0, marginBottom: scale(3), aspectRatio: 540 / 35 }}
             iconContainerStyle={{
-              borderColor: 'red',
+              borderColor: '#ef473a',
               borderWidth: scale(1),
               marginHorizontal: scale(10),
               borderRadius: scale(2),
@@ -213,7 +215,8 @@ const WNZHomePage = (props: any) => {
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
-            logoTextStyle={{ color: 'red' }}
+            logoTextStyle={{ color: 'red', fontSize: scale(16), padding: scale(5) }}
+            textStyle={{ fontSize: scale(16) }}
           />
           <View style={{ flexDirection: 'row', backgroundColor: '#ffffff' }}>
             {navs?.map((item, index) => {
@@ -226,9 +229,10 @@ const WNZHomePage = (props: any) => {
                   containerStyle={{
                     width: '20%',
                     backgroundColor: '#ffffff',
-                    height: 115,
+                    height: scale(115),
                     justifyContent: 'center',
                   }}
+                  titleStyle={{ color: config?.navColors[index], fontSize: scale(23) }}
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
@@ -242,7 +246,7 @@ const WNZHomePage = (props: any) => {
             })}
           </View>
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 135 }}
+            containerStyle={{ aspectRatio: 540 / 145, marginTop: scale(5) }}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
@@ -262,6 +266,7 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <GameBlock
+            containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
             games={games}
             gameSubType={gameSubType}
@@ -303,7 +308,7 @@ const WNZHomePage = (props: any) => {
                     flagIcon={hotIcon}
                     title={name}
                     containerStyle={{
-                      width: '90%',
+                      width: '100%',
                       backgroundColor: '#ffffff',
                       aspectRatio: 0.9,
                       borderRadius: scale(10),
@@ -474,13 +479,13 @@ const WNZHomePage = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D0D0D0',
+    backgroundColor: '#f2f2f2',
   },
   gameContainer: {
     width: '25%',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: scale(5),
+    padding: scale(5)
   },
   bottomComponent: {
     paddingBottom: scaleHeight(70),

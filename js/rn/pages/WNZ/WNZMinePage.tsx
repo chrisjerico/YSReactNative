@@ -193,7 +193,7 @@ const WNZMinePage = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D0D0D0',
+    backgroundColor: '#f2f2f2',
   },
   imageBackgroundContainer: {
     width: '100%',

@@ -23,7 +23,14 @@ const config = {
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
     19: getIbbImage('FBLBM0C/qq-Service'), // QQ客服 X
     20: getIbbImage('4gLtWb1/kjw') // 開獎網 X
-  }
+  },
+  navColors: [
+    '#edb93f',
+    '#77674d',
+    '#e62e25',
+    '#52b653',
+    '#007aff'
+  ]
 }
 
 export default config
