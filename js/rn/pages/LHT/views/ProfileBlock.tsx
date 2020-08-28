@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
     fontSize: scale(20),
     paddingRight: scale(5),
     marginBottom: scale(5),
+    width: '55%'
   },
   nameTextContainer: {
     flexDirection: 'row',

@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/AntDesign'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Datum } from '../../../public/network/Model/SystemAvatarListModel'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../public/tools/Scale'
-import Avatar from '../../../public/views/tars/Avatar'
-import ProgressCircle from '../../../public/views/tars/ProgressCircle'
+import Avatar from '../../views/tars/Avatar'
+import ProgressCircle from '../../views/tars/ProgressCircle'
 
 interface PickAvatarComponentProps {
   visible: boolean;
@@ -30,7 +29,7 @@ const PickAvatarComponent = ({
   onPressCancel,
   loading,
   initAvatar,
-  color
+  color,
 }: PickAvatarComponentProps) => {
   const [avatar, setAvatar] = useState(initAvatar)
   const [fileName, setfileName] = useState('')
@@ -49,7 +48,7 @@ const PickAvatarComponent = ({
               <View
                 style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
               >
-                <Icon
+                <AntDesign
                   name={'left'}
                   color={'#9D9D9D'}
                   size={scale(30)}
@@ -79,7 +78,7 @@ const PickAvatarComponent = ({
                     )
                   })}
                 </ScrollView>
-                <Icon
+                <AntDesign
                   name={'right'}
                   color={'#9D9D9D'}
                   size={scale(30)}

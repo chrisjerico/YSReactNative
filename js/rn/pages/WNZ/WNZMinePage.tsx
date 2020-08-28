@@ -170,7 +170,6 @@ const WNZMinePage = (props: any) => {
                   <GameButton
                     key={index}
                     logo={logo}
-                    localLogo={require('./changlong.png')}
                     title={name}
                     showUnReadMsg={code == 9}
                     unreadMsg={unreadMsg}

@@ -18,11 +18,11 @@ const config = {
     13: getHtml5Image(21, 'center/menu-feedback'), // 建议反馈
     14: getHtml5Image(21, 'zxkf'), // 在线客服
     15: getHtml5Image(21, 'center/money'), // 活动彩金
-    16: 'https://i.ibb.co/0ZjBxJY/changlong-2x.png', // 长龙助手
+    16: '', // 长龙助手
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
-    19: getHtml5Image(21, 'center/menu-feedback'), // QQ客服
-    20: getHtml5Image(21, 'center/kj_trend') // 開獎網
+    19: '', // QQ客服
+    20: '' // 開獎網
   }
 }
 

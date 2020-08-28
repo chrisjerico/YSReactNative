@@ -134,6 +134,10 @@ export const useHtml5Image = (host: string = AppDefine.host) => {
   return { getHtml5Image }
 }
 
+export const getIbbImage = (path: string) => {
+  return 'https://i.ibb.co/' + path + '.png'
+}
+
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {

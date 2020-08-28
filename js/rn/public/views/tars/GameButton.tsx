@@ -36,6 +36,7 @@ interface GameButtonProps {
   showUnReadMsg?: boolean;
   unreadMsg?: number;
   localLogo?: any;
+  useLocalLogo?: boolean;
 }
 
 interface DefaultFlag {
@@ -91,7 +92,8 @@ const GameButton = (props: GameButtonProps) => {
     secondLevelIconContainerStyle,
     showUnReadMsg = false,
     unreadMsg,
-    localLogo
+    localLogo,
+    useLocalLogo = false
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -108,7 +110,7 @@ const GameButton = (props: GameButtonProps) => {
             <View style={[styles.imageContainer, imageContainerStyle]}>
               <FastImage
                 style={styles.image}
-                source={localLogo ? localLogo : { uri: logo }}
+                source={useLocalLogo ? localLogo : { uri: logo }}
                 resizeMode={resizeMode}
               />
               {showCenterFlag &&
@@ -133,7 +135,7 @@ const GameButton = (props: GameButtonProps) => {
             <View style={[styles.imageContainer, imageContainerStyle]}>
               <FastImage
                 style={styles.image}
-                source={localLogo ? localLogo : { uri: logo }}
+                source={useLocalLogo ? localLogo : { uri: logo }}
                 resizeMode={resizeMode}
               />
               {showCenterFlag &&

@@ -1,30 +1,23 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
+import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import PickAvatarComponent from '../宝石红/components/PickAvatarComponent'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
-import ProfileButton from './views/ProfileButton'
 
-const LHTMinePage = (props: any) => {
+const BZHMinePage = (props: any) => {
   const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
   const {
@@ -46,11 +39,15 @@ const LHTMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.LHTHomePage, defaultUserCenterLogos: config.defaultUserCenterLogos })
+  } = useMinePage({ setProps, homePage: PageName.BZHHomePage, defaultUserCenterLogos: config.defaultUserCenterLogos })
+
+  // data handle
+  const features = userCenterItems?.slice(0, 4) ?? []
+  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
   return (
     <>
-      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
         {showBackBtn ? (
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
             <AntDesign
@@ -64,74 +61,66 @@ const LHTMinePage = (props: any) => {
             <View style={{ flex: 1 }} />
           )}
         <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={styles.headerTitle}>{'我的'}</Text>
+          <Text style={styles.headerTitle}>{'会员中心'}</Text>
         </View>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
-        >
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text style={styles.headerTitle}>{'客服'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={{ flex: 1 }} />
       </SafeAreaHeader>
       <ScrollView
+        showsVerticalScrollIndicator={false}
         style={styles.container}
         refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
-
       >
         <ProfileBlock
           onPressAvatar={openAvatarList}
-          profileButtons={config?.profileButtons}
-          name={usr}
-          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-          level={curLevelGrade}
-          balance={money}
-          onPressDaySign={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-          }}
-          onPressTaskCenter={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
-          }}
           onPressReload={fetchBalance}
-          renderProfileButton={(item, index) => {
-            const { title, logo, userCenterType } = item
+          level={curLevelGrade}
+          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          money={money}
+          name={usr}
+          features={features}
+          renderFeature={(item, index) => {
+            const { logo, name, code } = item
             return (
-              <ProfileButton
+              <GameButton
                 key={index}
-                title={title}
+                showSecondLevelIcon={false}
+                containerStyle={{ width: '20%' }}
+                titleStyle={{ fontSize: scale(25) }}
+                enableCircle={false}
                 logo={logo}
-                onPress={() => {
-                  PushHelper.pushUserCenterType(userCenterType)
-                }}
+                title={name}
+                onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
           }}
         />
-        {userCenterItems?.map((item, index) => {
+        {featureList?.map((item, index) => {
           const { code, name, logo } = item
           return (
             <FeatureList
               key={index}
+              containerStyle={{ backgroundColor: '#ffffff' }}
               title={name}
               logo={logo}
-              unreadMsg={unreadMsg}
+              unreadMsg={unreadMsg || 0}
               showUnreadMsg={code == 9}
-              onPress={() => PushHelper.pushUserCenterType(code)}
+              onPress={() => {
+                PushHelper.pushUserCenterType(code)
+              }}
             />
           )
         })}
         <Button
+          activeOpacity={1}
           title={'退出登录'}
           buttonStyle={styles.logOutButton}
+          titleStyle={styles.logOutTitle}
           onPress={signOut}
-          activeOpacity={1}
         />
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
-        color={LHThemeColor.六合厅.themeColor}
+        color={BZHThemeColor.宝石红.themeColor}
         loading={avatarListLoading}
         visible={avatarListVisible}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
@@ -145,13 +134,18 @@ const LHTMinePage = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    flex: 1,
+    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
   logOutButton: {
-    backgroundColor: '#ff861b',
+    backgroundColor: '#ffffff',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
+    borderRadius: scale(7),
     height: scale(70),
+  },
+  logOutTitle: {
+    color: '#e53333',
   },
   headerTitle: {
     color: '#ffffff',
@@ -159,4 +153,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LHTMinePage
+export default BZHMinePage
