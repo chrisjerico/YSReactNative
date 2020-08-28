@@ -2,7 +2,7 @@ import { Alert, Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import { ToastError, ToastSuccess, ToastStatus } from '../../tools/tars'
+import { ToastStatus } from '../../tools/tars'
 
 interface Options {
   onSuccess?: () => any;
