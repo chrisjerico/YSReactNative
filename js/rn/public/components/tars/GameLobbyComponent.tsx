@@ -106,7 +106,7 @@ const GameLobbyComponent = ({
               {...props}
               pressOpacity={1}
               contentContainerStyle={{ backgroundColor: '#ffffff' }}
-              tabStyle={styles.subTabStyle}
+              tabStyle={styles.tabStyle}
               renderLabel={({ route, focused }) => {
                 return (
                   <View
@@ -161,32 +161,13 @@ const GameLobbyComponent = ({
 }
 
 const styles = StyleSheet.create({
-  mainTabContainer: {
-    width: '100%',
-    aspectRatio: 540 / 55,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  mainTab: {
-    width: '49%',
-    backgroundColor: '#ff6b1b',
-    borderTopRightRadius: scale(10),
-    borderTopLeftRadius: scale(10),
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  tabText: {
-    color: '#ffffff',
-    paddingLeft: scale(5),
-  },
   scene: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: '#ffffff',
     justifyContent: 'flex-start',
   },
-  subTabStyle: {
+  tabStyle: {
     backgroundColor: '#ffffff',
     height: scale(60),
   },

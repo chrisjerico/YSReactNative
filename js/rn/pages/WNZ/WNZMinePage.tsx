@@ -172,7 +172,7 @@ const WNZMinePage = (props: any) => {
                     key={index}
                     logo={logo}
                     title={name}
-                    showUnReadMsg={code == 9}
+                    showUnReadMsg={code == 9 && unreadMsg != 0}
                     unreadMsg={unreadMsg}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
                     imageContainerStyle={{ width: '30%' }}
