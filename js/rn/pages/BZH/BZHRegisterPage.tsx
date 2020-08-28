@@ -41,7 +41,6 @@ const BZHRegisterPage = () => {
     agentRegbutton,
     agent,
     valid,
-    realName_valid,
     recommendGuyLabel,
     passwordLebel,
     confirmPasswordLabel,
@@ -147,7 +146,6 @@ const BZHRegisterPage = () => {
             leftIcon={{
               name: 'user',
             }}
-            valid={realName_valid}
             onChangeText={onChaneRealName}
             label={realNameLabel}
             placeholder={'真实姓名'}

@@ -1,33 +1,40 @@
-import { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
+import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
 import AppDefine from '../../define/AppDefine'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
 interface GameLobbyComponentProps {
-  tabGames: any[];
+  tabGames: TabGame[];
   rowHeight: number;
   renderScene: (item: any, index: number) => any;
 }
 
-interface SceneProps {
+export interface TabGame {
+  games: IGameIconListItem[];
+  name: string;
+}
+
+export interface SceneProps {
   data: any[];
   renderItem: (item: any, index: number) => any;
   containerStyle?: ViewStyle | ViewStyle[];
 }
 
-const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
+export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
   return (
     <View style={[styles.scene, containerStyle]}>{data.map(renderItem)}</View>
   )
 }
 
-const GameLobbyComponent = ({
+const GameLobbyTabComponent = ({
   tabGames = [],
   rowHeight,
   renderScene,
 }: GameLobbyComponentProps) => {
+
   const getTabWidth = () => {
     const length = tabGames?.length ?? 1
     const width = AppDefine.width / length
@@ -42,8 +49,9 @@ const GameLobbyComponent = ({
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.games
     if (games) {
-      const fullRow = Math.floor(games?.length ?? 0 / 3)
-      const row = games?.length ?? 0 % 3
+      const length = games?.length ?? 0
+      const fullRow = Math.floor(length / 3)
+      const row = length % 3
       if (row == 0) {
         return rowHeight * fullRow + scale(60)
       } else {
@@ -82,6 +90,10 @@ const GameLobbyComponent = ({
         title: StringUtils.getInstance().deleteHtml(item?.name ?? ''),
       }
     }) ?? []
+
+  useEffect(() => {
+    setHeight(getSceneHeight(index))
+  }, [tabGames])
 
   return (
     <TabView
@@ -179,4 +191,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default GameLobbyComponent
+export default GameLobbyTabComponent

@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
   TextStyle,
+  TextInput,
 } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'

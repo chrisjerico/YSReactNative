@@ -123,7 +123,7 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const password_valid = validPassword(password, pass_limit) && password?.length >= pass_length_min && password?.length <= pass_length_max
   const confirmPassword_valid = confirmPassword == password
   const recommendGuy_valid = /^\d+$/.test(recommendGuy) || !hide_reco || hide_reco == 1
-  const realName_valid = realName || !reg_name || reg_name == 1
+  const realName_valid = /^[\u4E00-\u9FA5]+$/.test(realName) || !reg_name || reg_name == 1
   const fundPassword_valid = ((fundPassword?.length == 4) && (/^\d+$/.test(fundPassword))) || !reg_fundpwd || reg_fundpwd == 1
   const qq_valid = qq?.length >= 5 || !reg_qq || reg_qq == 1
   const weChat_valid = weChat || !reg_wx || reg_wx == 1
