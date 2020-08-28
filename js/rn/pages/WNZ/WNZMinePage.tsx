@@ -111,7 +111,8 @@ const WNZMinePage = (props: any) => {
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        // refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
           curLevelInt={curLevelInt}

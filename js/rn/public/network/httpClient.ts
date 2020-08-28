@@ -7,9 +7,9 @@ import { CMD } from "../define/ANHelper/hp/CmdDefine";
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { Toast } from '../tools/ToastUtils';
-import {ugLog} from "../tools/UgLog";
-import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
-import {anyEmpty, anyNull} from "../tools/Ext";
+import { ugLog } from "../tools/UgLog";
+import { NA_DATA } from "../define/ANHelper/hp/DataDefine";
+import { anyEmpty, anyNull } from "../tools/Ext";
 interface Dictionary {
   [x: string]: any;
 }
@@ -26,7 +26,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 5000, // 0 no limit
+  timeout: 3000, // 0 no limit
   headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {

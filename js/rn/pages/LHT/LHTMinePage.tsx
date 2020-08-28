@@ -79,7 +79,7 @@ const LHTMinePage = (props: any) => {
       <ScrollView
         style={styles.container}
         refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
-
+        showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
           onPressAvatar={openAvatarList}

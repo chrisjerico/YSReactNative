@@ -17,8 +17,8 @@ interface TabComponentProps {
 
 const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, elementHeight }: TabComponentProps) => {
   const [routes]: any = React.useState([
-    { key: 0, title: '官方玩法', logo: getHtml5Image(23, 'home/gfwf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/gfwf.png'
-    { key: 1, title: '信用玩法', logo: getHtml5Image(23, 'home/xywf') }, // 'http://test10.6yc.com/views/mobileTemplate/23/images/home/xywf.png' 
+    { key: 0, title: '官方玩法', logo: getHtml5Image(23, 'home/gfwf') },
+    { key: 1, title: '信用玩法', logo: getHtml5Image(23, 'home/xywf') },
   ])
 
   const leftGamesLength = Math.ceil(leftGames?.length / 2)
