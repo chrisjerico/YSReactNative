@@ -349,6 +349,7 @@ const WNZHomePage = (props: any) => {
               return (
                 <RowGameButtom
                   key={index}
+                  showRightBorder={index % 2 == 0}
                   logo={pic}
                   name={title}
                   desc={openCycle}
@@ -364,6 +365,7 @@ const WNZHomePage = (props: any) => {
               return (
                 <RowGameButtom
                   key={index}
+                  showRightBorder={index % 2 == 0}
                   logo={pic}
                   name={title}
                   desc={openCycle}

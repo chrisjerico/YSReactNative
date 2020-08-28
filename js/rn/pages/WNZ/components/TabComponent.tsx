@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { scale } from '../../../public/tools/Scale';
 import { useHtml5Image } from '../../../public/tools/tars';
+import AppDefine from '../../../public/define/AppDefine';
 
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
@@ -39,34 +40,41 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, 
           <TabBar
             {...props}
             pressOpacity={1}
-            contentContainerStyle={{ backgroundColor: '#ffffff' }}
+            contentContainerStyle={{ backgroundColor: '#ffffff', }}
             tabStyle={styles.tabStyle}
             renderLabel={({ route, focused }) => {
               const { logo, title }: any = route
               return (
                 <>
-                  <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={{ uri: logo }} style={{ width: scale(50), aspectRatio: 1 }} resizeMode={'contain'} />
-                    <Text
-                      style={[
-                        { fontWeight: '600', paddingLeft: scale(5) },
-                      ]}
-                    >
-                      {title}
-                    </Text>
+                  <View style={styles.tabContainer}>
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginBottom: scale(15), paddingLeft: scale(15) }}>
+                      <Image source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
+                      <Text
+                        style={[
+                          { paddingLeft: scale(10), fontSize: scale(23), fontWeight: '300' },
+                        ]}
+                      >
+                        {title}
+                      </Text>
+                    </View>
+                    {
+                      !route?.key && <View style={{ width: scale(1), backgroundColor: '#d9d9d9', height: scale(50), alignSelf: 'flex-end', marginBottom: scale(5) }} />
+                    }
                   </View>
-                  {focused ? (
-                    <View
-                      style={{
-                        height: scale(5),
-                        width: '100%',
-                        backgroundColor: route.key ? 'red' : 'green',
-                        borderRadius: scale(100),
-                        marginTop: scale(5),
-                      }}
-                    ></View>
-                  ) : null}
-                </>
+                  {
+                    focused ? (
+                      <View
+                        style={{
+                          height: scale(2),
+                          width: '75%',
+                          backgroundColor: route?.key ? '#f44600' : '#80c025',
+                          borderRadius: scale(100),
+                          alignSelf: 'center',
+                        }}
+                      ></View>
+                    ) : null
+                  }
+                </ >
               )
             }}
           />
@@ -79,8 +87,11 @@ const TabComponent = ({ leftGames, rightGames, renderLeftGame, renderRightGame, 
 const styles = StyleSheet.create({
   tabStyle: {
     backgroundColor: '#ffffff',
-    height: scale(100),
+    height: scale(100)
   },
+  tabContainer: {
+    width: AppDefine.width / 2, flexDirection: 'row'
+  }
 })
 
 export default TabComponent

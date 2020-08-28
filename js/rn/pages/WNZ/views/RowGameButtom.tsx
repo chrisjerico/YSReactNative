@@ -9,6 +9,7 @@ interface RowGameButtomProps {
   desc: string;
   logoBallText: string;
   onPress: () => any;
+  showRightBorder?: boolean;
 }
 
 const RowGameButtom = ({
@@ -16,45 +17,54 @@ const RowGameButtom = ({
   name,
   desc,
   logoBallText,
-  onPress
+  onPress,
+  showRightBorder = false
 }: RowGameButtomProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
-        <View style={{ flex: 1, alignItems: 'flex-end' }}>
-          <View style={styles.logoBall}>
-            <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
-              {logoBallText}
-            </Text>
-          </View>
+        {/* <View style={{ flex: 1, alignItems: 'flex-end' }}> */}
+        <View style={styles.logoBall}>
+          <Text style={{ color: '#ffffff', fontSize: scale(15) }}>
+            {logoBallText}
+          </Text>
         </View>
+        {/* </View> */}
         <View style={styles.logoContainer}>
-          <FastImage
-            source={{ uri: logo }}
-            style={{ width: scale(50), aspectRatio: 1 }}
-            resizeMode={'contain'}
-          />
-          <View
-            style={{
-              justifyContent: 'space-around',
-              marginLeft: scale(25),
-              width: scale(150),
-            }}
-          >
-            <Text numberOfLines={1} style={{ fontSize: scale(20) }}>{name}</Text>
-            <Text
+          <View style={{
+            flexDirection: 'row', flex: 1, marginLeft: scale(20)
+          }}>
+            <FastImage
+              source={{ uri: logo }}
+              style={{ width: scale(60), aspectRatio: 1 }}
+              resizeMode={'contain'}
+            />
+            <View
               style={{
-                fontSize: scale(15),
-                color: '#8E8E8E',
-                paddingTop: scale(5),
+                justifyContent: 'center',
+                marginLeft: scale(5),
+                width: scale(150),
               }}
-              numberOfLines={1}
             >
-              {desc}
-            </Text>
+              <Text numberOfLines={1} style={{ fontSize: scale(20), fontWeight: '300' }}>{name}</Text>
+              <Text
+                style={{
+                  fontSize: scale(15),
+                  color: '#666',
+                  paddingTop: scale(5),
+                }}
+                numberOfLines={1}
+              >
+                {desc}
+              </Text>
+            </View>
           </View>
+          {
+            showRightBorder &&
+            <View style={{ width: scale(1), backgroundColor: '#d9d9d9', height: scale(50), marginTop: scale(10) }} />
+          }
         </View>
-        <View style={{ flex: 1 }} />
+        {/* <View style={{ flex: 1 }} /> */}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -76,14 +86,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: scale(5),
     marginTop: scale(5),
+    position: 'absolute',
+    right: 0,
+    top: 0
   },
   logoContainer: {
     flexDirection: 'row',
-    flex: 3,
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    borderRightWidth: scale(1),
-    borderColor: '#d9d9d9',
+    justifyContent: 'space-between',
+    // borderRightWidth: scale(1),
+    // borderColor: '#d9d9d9',
   },
 })
 export default RowGameButtom

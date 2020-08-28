@@ -39,7 +39,7 @@ const FeatureList = ({
         </View>
         {showUnreadMsg ? (
           <View style={styles.unReadContainer}>
-            <Text style={styles.unReadText}>{unreadMsg}</Text>
+            <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         ) : (
             <Text style={styles.text}>{'>'}</Text>

@@ -158,7 +158,7 @@ const GameButton = (props: GameButtonProps) => {
           )}
         {
           showUnReadMsg && <View style={styles.unReadMsgContainer}>
-            <Text style={styles.unReadMsgText}>{unreadMsg}</Text>
+            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         }
         <View style={[styles.titleContainer, titleContainerStyle]}>
@@ -256,17 +256,17 @@ const styles = StyleSheet.create({
     top: '50%'
   },
   unReadMsgContainer: {
-    height: scale(40),
-    width: scale(40),
-    borderRadius: scale(40),
+    width: scale(25),
+    aspectRatio: 1,
+    borderRadius: scale(200),
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: scale(15),
-    top: -scale(15),
+    right: scale(30),
+    top: -scale(10),
   },
-  unReadMsgText: { color: '#ffffff' },
+  unReadMsgText: { color: '#ffffff', fontSize: scale(15), textAlign: 'center' },
 })
 
 export default GameButton
