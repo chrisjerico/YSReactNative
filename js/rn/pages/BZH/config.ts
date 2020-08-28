@@ -1,4 +1,4 @@
-import { useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image, getIbbImage } from '../../public/tools/tars'
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com')
 
 const config = {
@@ -18,11 +18,11 @@ const config = {
     13: getHtml5Image(21, 'center/menu-feedback'), // 建议反馈
     14: getHtml5Image(21, 'zxkf'), // 在线客服
     15: getHtml5Image(21, 'center/money'), // 活动彩金
-    16: '', // 长龙助手
+    16: getIbbImage('Twnz2tK/changlong'), // 长龙助手
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
-    19: '', // QQ客服
-    20: '' // 開獎網
+    19: getIbbImage('pw7LqkR/qq'), // QQ客服
+    20: getIbbImage('qRBq508/kjw') // 開獎網
   }
 }
 
