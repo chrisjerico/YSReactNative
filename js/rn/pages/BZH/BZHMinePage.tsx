@@ -84,8 +84,10 @@ const BZHMinePage = (props: any) => {
               <GameButton
                 key={index}
                 showSecondLevelIcon={false}
-                containerStyle={{ width: '20%' }}
-                titleStyle={{ fontSize: scale(25) }}
+                containerStyle={{ width: '25%' }}
+                imageContainerStyle={{ width: '50%' }}
+                titleContainerStyle={{ aspectRatio: 3.5 }}
+                titleStyle={{ fontSize: scale(22), fontWeight: '300' }}
                 enableCircle={false}
                 logo={logo}
                 title={name}
@@ -99,7 +101,9 @@ const BZHMinePage = (props: any) => {
           return (
             <FeatureList
               key={index}
-              containerStyle={{ backgroundColor: '#ffffff' }}
+              containerStyle={{ backgroundColor: '#ffffff', aspectRatio: 490 / 68 }}
+              arrowTextStyle={{ color: '#d82e2f' }}
+              titleStyle={{ fontSize: scale(22) }}
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}

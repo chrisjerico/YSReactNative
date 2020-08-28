@@ -139,7 +139,7 @@ const BZHHomePage = () => {
           }
         >
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 217 }}
+            containerStyle={{ aspectRatio: 540 / 240 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -163,11 +163,11 @@ const BZHHomePage = () => {
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
+            logoTextStyle={{ fontSize: scale(15), paddingLeft: scale(10) }}
           />
           {navs?.length > 0 && (
             <NavBlock
               navs={navs}
-              containerStyle={{ alignItems: 'center' }}
               renderNav={(item, index) => {
                 const { icon, name, logo, gameId } = item
                 return (
@@ -179,8 +179,8 @@ const BZHHomePage = () => {
                     enableCircle={false}
                     logo={icon ? icon : logo}
                     title={name}
-                    titleStyle={{ fontSize: scale(25) }}
-                    titleContainerStyle={{ aspectRatio: 3 }}
+                    titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
+                    titleContainerStyle={{ aspectRatio: 6 }}
                     onPress={() => {
                       if (gameId == 9) {
                         goToJDPromotionListPage()

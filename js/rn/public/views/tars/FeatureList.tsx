@@ -6,6 +6,7 @@ import {
   View,
   ViewStyle,
   TouchableWithoutFeedback,
+  TextStyle,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -16,6 +17,8 @@ interface FeatureListProps {
   containerStyle?: ViewStyle;
   showUnreadMsg?: boolean;
   unreadMsg?: number;
+  arrowTextStyle?: TextStyle | TextStyle[];
+  titleStyle?: TextStyle | TextStyle[];
 }
 
 const FeatureList = ({
@@ -25,6 +28,8 @@ const FeatureList = ({
   containerStyle,
   showUnreadMsg = false,
   unreadMsg,
+  arrowTextStyle,
+  titleStyle
 }: FeatureListProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -35,14 +40,14 @@ const FeatureList = ({
             style={styles.image}
             source={{ uri: logo }}
           />
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
         </View>
         {showUnreadMsg ? (
           <View style={styles.unReadContainer}>
             <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         ) : (
-            <Text style={styles.text}>{'>'}</Text>
+            <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
           )}
       </View>
     </TouchableWithoutFeedback>
@@ -62,6 +67,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flexDirection: 'row',
+    alignItems: 'center'
   },
   image: {
     width: scale(35),
@@ -72,7 +78,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: scale(30),
-    fontWeight: '400',
+    fontWeight: '300',
     paddingLeft: scale(25),
   },
   unReadContainer: {

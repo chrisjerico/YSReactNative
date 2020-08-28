@@ -70,7 +70,7 @@ const ProfileBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 500 / 270,
+    aspectRatio: 500 / 250,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
     paddingBottom: scale(30)
   },

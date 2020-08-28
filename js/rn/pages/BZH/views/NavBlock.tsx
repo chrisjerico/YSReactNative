@@ -18,12 +18,12 @@ const NavBlock = ({ renderNav, navs = [], containerStyle }: NavBlockProps) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 130,
+    aspectRatio: 540 / 100,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
-  },
+    alignItems: 'flex-start'
+  }
 })
 
 export default NavBlock
