@@ -107,7 +107,14 @@ const BZHHomePage = () => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+        <SafeAreaHeader
+          containerStyle={{
+            aspectRatio: 540 / 50,
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
+          }}
+          headerColor={BZHThemeColor.宝石红.themeColor}
+        >
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}
@@ -122,8 +129,8 @@ const BZHHomePage = () => {
           />
         </SafeAreaHeader>
         <ScrollView
-          showsVerticalScrollIndicator={false}
           style={styles.container}
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
               refreshing={refresh}
@@ -132,14 +139,14 @@ const BZHHomePage = () => {
                   await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
-                  console.log("-------error------", error)
+                  console.log('-------error------', error)
                 }
               }}
             />
           }
         >
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 240 }}
+            containerStyle={{ aspectRatio: 540 / 218 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -158,43 +165,50 @@ const BZHHomePage = () => {
             }}
           />
           <NoticeBlock
+            logoTextStyle={{
+              fontSize: scale(18),
+              paddingHorizontal: scale(10),
+            }}
+            textStyle={{ fontSize: scale(18) }}
             containerStyle={{ borderRadius: 0 }}
             notices={notices}
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
-            logoTextStyle={{ fontSize: scale(15), paddingLeft: scale(10) }}
           />
-          {navs?.length > 0 && (
-            <NavBlock
-              navs={navs}
-              renderNav={(item, index) => {
-                const { icon, name, logo, gameId } = item
-                return (
-                  <GameButton
-                    showSecondLevelIcon={false}
-                    key={index}
-                    containerStyle={{ width: '25%' }}
-                    imageContainerStyle={{ width: '45%' }}
-                    enableCircle={false}
-                    logo={icon ? icon : logo}
-                    title={name}
-                    titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
-                    titleContainerStyle={{ aspectRatio: 6 }}
-                    onPress={() => {
-                      if (gameId == 9) {
-                        goToJDPromotionListPage()
-                      } else {
-                        PushHelper.pushHomeGame(item)
-                      }
-                    }}
-                  />
-                )
-              }}
-            />
-          )}
+          <NavBlock
+            visible={navs?.length > 0}
+            navs={navs}
+            renderNav={(item, index) => {
+              const { icon, name, logo, gameId } = item
+              return (
+                <GameButton
+                  showSubTitle={false}
+                  showSecondLevelIcon={false}
+                  key={index}
+                  containerStyle={{ width: '25%', marginTop: scale(15) }}
+                  imageContainerStyle={{ width: '30%' }}
+                  enableCircle={false}
+                  logo={icon ? icon : logo}
+                  title={name}
+                  titleStyle={{
+                    fontSize: scale(20),
+                    fontWeight: '300',
+                    paddingTop: scale(5),
+                  }}
+                  titleContainerStyle={{ aspectRatio: 5 }}
+                  onPress={() => {
+                    if (gameId == 9) {
+                      goToJDPromotionListPage()
+                    } else {
+                      PushHelper.pushHomeGame(item)
+                    }
+                  }}
+                />
+              )
+            }}
+          />
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 135 }}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
@@ -214,13 +228,23 @@ const BZHHomePage = () => {
             }}
           />
           <FlatList
-            removeClippedSubviews={true}
             style={{ paddingHorizontal: '1%' }}
+            removeClippedSubviews={true}
             data={gameBlocks}
             renderItem={({ item, index: gameBlockIndex }) => {
               const { name, list } = item
               return (
                 <GameBlock
+                  containerStyle={styles.subComponent}
+                  contentContainerStyle={{ paddingTop: scale(20) }}
+                  subTypeContainerStyle={{
+                    marginBottom: scale(20),
+                    paddingHorizontal: scale(20),
+                  }}
+                  title={name}
+                  games={list}
+                  gameSubType={gameSubTypes[gameBlockIndex]}
+                  numColumns={3}
                   onPressTotal={() => {
                     if (uid) {
                       PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
@@ -228,16 +252,6 @@ const BZHHomePage = () => {
                       push(PageName.BZHSignInPage)
                     }
                   }}
-                  title={name}
-                  containerStyle={styles.subComponent}
-                  contentContainerStyle={{ paddingTop: scale(20) }}
-                  subTypeContainerStyle={{
-                    marginBottom: scale(20),
-                    paddingHorizontal: scale(20),
-                  }}
-                  games={list}
-                  gameSubType={gameSubTypes[gameBlockIndex]}
-                  numColumns={3}
                   renderSubType={(item, index) => {
                     const { title } = item
                     return (
@@ -359,12 +373,12 @@ const BZHHomePage = () => {
                 <AutoHeightCouponComponent
                   titleStyle={{ alignSelf: 'center' }}
                   containerStyle={{
-                    borderColor: "#d9d9d9",
+                    borderColor: '#d9d9d9',
                     borderWidth: scale(1),
                     marginBottom: scale(20),
                     padding: scale(5),
                     borderRadius: scale(5),
-                    paddingBottom: scale(20)
+                    paddingBottom: scale(20),
                   }}
                   key={index}
                   title={title}
@@ -421,7 +435,7 @@ const BZHHomePage = () => {
         <ActivityComponent
           refresh={refresh}
           containerStyle={{ top: scale(250), right: 0 }}
-          show={(uid && redBagLogo && !isTest)}
+          show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
           onPress={() => {
             PushHelper.pushRedBag(redBag)
@@ -431,7 +445,7 @@ const BZHHomePage = () => {
           refresh={refresh}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
-          show={(uid && roulette && !isTest)}
+          show={uid && roulette && !isTest}
           logo={'dzp_btn'}
           onPress={() => {
             PushHelper.pushWheel(roulette)

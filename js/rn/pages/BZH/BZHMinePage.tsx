@@ -1,7 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Button } from 'react-native-elements'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import { ScrollView } from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -11,10 +9,12 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
+import Button from '../../public/views/tars/Button'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import config from './config'
+import MineHeader from './views/MineHeader'
 import ProfileBlock from './views/ProfileBlock'
 
 const BZHMinePage = (props: any) => {
@@ -39,7 +39,11 @@ const BZHMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.BZHHomePage, defaultUserCenterLogos: config.defaultUserCenterLogos })
+  } = useMinePage({
+    setProps,
+    homePage: PageName.BZHHomePage,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
 
   // data handle
   const features = userCenterItems?.slice(0, 4) ?? []
@@ -47,27 +51,22 @@ const BZHMinePage = (props: any) => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        {showBackBtn ? (
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
-            <AntDesign
-              name={'left'}
-              color={'#ffffff'}
-              size={scale(25)}
-              onPress={goBack}
-            />
-          </View>
-        ) : (
-            <View style={{ flex: 1 }} />
-          )}
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={styles.headerTitle}>{'会员中心'}</Text>
-        </View>
-        <View style={{ flex: 1 }} />
+      <SafeAreaHeader
+        containerStyle={{
+          aspectRatio: 540 / 50,
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        }}
+        headerColor={BZHThemeColor.宝石红.themeColor}
+      >
+        <MineHeader showBackBtn={showBackBtn} onPressGoBack={goBack} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={styles.container}
+        style={{
+          flex: 1,
+          backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+        }}
         refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
@@ -101,7 +100,10 @@ const BZHMinePage = (props: any) => {
           return (
             <FeatureList
               key={index}
-              containerStyle={{ backgroundColor: '#ffffff', aspectRatio: 490 / 68 }}
+              containerStyle={{
+                backgroundColor: '#ffffff',
+                aspectRatio: 490 / 68,
+              }}
               arrowTextStyle={{ color: '#d82e2f' }}
               titleStyle={{ fontSize: scale(22) }}
               title={name}
@@ -115,10 +117,15 @@ const BZHMinePage = (props: any) => {
           )
         })}
         <Button
-          activeOpacity={1}
-          title={'退出登录'}
-          buttonStyle={styles.logOutButton}
-          titleStyle={styles.logOutTitle}
+          text={'退出登录'}
+          containerStyle={{
+            backgroundColor: '#ffffff',
+            marginHorizontal: scale(25),
+            marginVertical: scale(25),
+            borderRadius: scale(7),
+            height: scale(70),
+          }}
+          textStyle={{ color: '#e53333' }}
           onPress={signOut}
         />
         <BottomGap />
@@ -135,26 +142,5 @@ const BZHMinePage = (props: any) => {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-  },
-  logOutButton: {
-    backgroundColor: '#ffffff',
-    marginHorizontal: scale(25),
-    marginVertical: scale(25),
-    borderRadius: scale(7),
-    height: scale(70),
-  },
-  logOutTitle: {
-    color: '#e53333',
-  },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: scale(25),
-  },
-})
 
 export default BZHMinePage

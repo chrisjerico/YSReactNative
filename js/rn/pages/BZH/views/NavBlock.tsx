@@ -3,22 +3,27 @@ import { StyleSheet, View, ViewStyle } from 'react-native'
 
 interface NavBlockProps {
   navs: any[];
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle;
   renderNav: (item: any, index: number) => any;
+  visible?: boolean;
 }
 
-const NavBlock = ({ renderNav, navs = [], containerStyle }: NavBlockProps) => {
-  return (
-    <View style={[styles.container, containerStyle]}>
-      {navs.map(renderNav)}
-    </View>
-  )
+const NavBlock = ({ renderNav, navs = [], containerStyle, visible }: NavBlockProps) => {
+  if (visible) {
+    return (
+      <View style={[styles.container, containerStyle]}>
+        {navs.map(renderNav)}
+      </View>
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 100,
+    aspectRatio: 540 / 105,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'space-around',

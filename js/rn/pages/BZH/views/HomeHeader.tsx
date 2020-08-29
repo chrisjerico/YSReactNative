@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
+import Button from '../../../public/views/tars/Button'
 
 interface HomeHeaderProps {
   name: string;
@@ -32,9 +32,9 @@ const HomeHeader = ({
           <View style={styles.left}>
             {isTest ? (
               <Button
-                title={'注册'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
+                text={'注册'}
+                containerStyle={styles.button}
+                textStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
               />
             ) : null}
@@ -59,11 +59,10 @@ const HomeHeader = ({
           <View style={styles.row}>
             <View style={styles.left}>
               <Button
-                title={'登录'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
+                text={'登录'}
+                containerStyle={styles.button}
+                textStyle={styles.buttonTitle}
                 onPress={onPressSignIn}
-                activeOpacity={1}
               />
             </View>
             <View style={styles.imageContainer}>
@@ -77,11 +76,10 @@ const HomeHeader = ({
             </View>
             <View style={styles.right}>
               <Button
-                title={'注册'}
-                buttonStyle={styles.button}
-                titleStyle={styles.buttonTitle}
+                text={'注册'}
+                containerStyle={styles.button}
+                textStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
-                activeOpacity={1}
               />
             </View>
           </View>
@@ -96,14 +94,16 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   button: {
-    width: scale(80),
-    backgroundColor: '#CE0000',
-    borderColor: '#ffffff',
-    borderWidth: scale(1),
+    width: scale(65),
+    backgroundColor: '#d82e2f',
+    borderColor: '#fefefe',
+    borderWidth: scale(1.5),
     paddingVertical: scale(5),
+    borderRadius: scale(5)
   },
   buttonTitle: {
-    fontSize: scale(25),
+    fontSize: scale(18),
+    color: '#ffffff'
   },
   logo: {
     width: '100%',

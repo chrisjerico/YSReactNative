@@ -41,6 +41,8 @@ const BannerBlock = ({
             left: null,
             right: 10,
           }}
+          dotColor={'#ffffff'}
+          activeDotColor={'#fff000'}
         >
           {banners?.map(renderBanner)}
         </UGSwiper>
@@ -67,7 +69,7 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 310,
+    aspectRatio: 540 / 128 //540 / 310,
   },
   bannerContainer: {
     flex: 1,

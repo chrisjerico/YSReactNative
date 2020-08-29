@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export interface GameSubType {
   cutRow?: number;
@@ -49,11 +50,14 @@ const GameBlock = ({
     <View style={[styles.container, containerStyle]}>
       <View style={styles.headerConatiner}>
         <View style={styles.titleContainer}>
-          <View style={styles.titleBlank} />
+          <View style={styles.titlePillar} />
           <Text style={styles.title}>{title}</Text>
         </View>
         <TouchableWithoutFeedback onPress={onPressTotal}>
-          <Text style={[styles.title, { color: '#EA0000' }]}>{'全部 >'}</Text>
+          <View style={styles.titleContainer}>
+            <Text style={[styles.title, { color: '#e53333' }]}>{'全部 '}</Text>
+            <Ionicons name={'ios-arrow-forward'} size={scale(18)} color={'#e53333'} style={{ marginTop: scale(3) }} />
+          </View>
         </TouchableWithoutFeedback>
       </View>
       <View style={[contentContainerStyle]}>
@@ -82,12 +86,11 @@ const styles = StyleSheet.create({
   },
   headerConatiner: {
     width: '100%',
-    height: scale(53),
-    borderColor: '#dddddd',
+    aspectRatio: 11.8,
+    borderColor: '#f2f2f2',
     borderBottomWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
   },
   gamesContainer: {
     flexDirection: 'row',
@@ -96,19 +99,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: scale(25),
+    fontSize: scale(23),
   },
-  titleBlank: {
-    width: scale(7),
-    height: '70%',
-    backgroundColor: '#EA0000',
+  titlePillar: {
+    width: scale(5.5),
+    height: '110%',
+    backgroundColor: '#e53333',
     marginRight: scale(10),
     borderRadius: scale(10),
+    marginTop: scale(3)
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: '100%',
+    marginBottom: scale(10)
   },
 })
 
