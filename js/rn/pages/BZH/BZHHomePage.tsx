@@ -94,7 +94,7 @@ const BZHHomePage = () => {
     homeGame?.data?.navs
       ?.sort((a: any, b: any) => a.sort - b.sort)
       ?.slice(0, 4) ?? []
-  const gameBlocks = homeGame?.data?.icons ?? []
+  const homeGames = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
@@ -224,7 +224,7 @@ const BZHHomePage = () => {
           <FlatList
             style={{ paddingHorizontal: '1%' }}
             removeClippedSubviews={true}
-            data={gameBlocks}
+            data={homeGames}
             renderItem={({ item }) => {
               const { name, list } = item
               return (
@@ -233,7 +233,8 @@ const BZHHomePage = () => {
                   title={name}
                   onPressTotal={() => {
                     if (uid) {
-                      PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                      push(PageName.BZHGameLobbyPage, { homeGames })
+                      // PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
                     } else {
                       push(PageName.BZHSignInPage)
                     }

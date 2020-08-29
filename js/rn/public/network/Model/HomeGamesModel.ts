@@ -129,10 +129,10 @@ export interface List {
 }
 
 export interface Icon {
-    id: string;
+    id?: string;
     name: string;
-    style: string;
-    logo: string;
+    style?: string;
+    logo?: string;
     list: List[];
 }
 

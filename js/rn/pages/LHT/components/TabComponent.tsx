@@ -7,17 +7,15 @@ import {
   ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import GameLobbyTabComponent, {
-  Scene,
-  TabGame
-} from '../../../public/components/tars/GameLobbyTabComponent'
+import GameLobbyTabComponent, { Scene } from '../../../public/components/tars/GameLobbyTabComponent'
+import { Icon } from '../../../public/network/Model/HomeGamesModel'
 import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 
 interface TabComponentProps {
   containerStyle?: ViewStyle;
   leftGames: any[];
-  rightGames: TabGame[];
+  rightGames: Icon[];
   renderLeftGame: (item: any, index: number) => any;
   renderRightGame: (item: any, index: number) => any;
   unActiveTabColor: string;

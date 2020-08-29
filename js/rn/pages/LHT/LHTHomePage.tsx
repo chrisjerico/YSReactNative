@@ -18,9 +18,9 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
   getActivityPosition,
-
   ToastError,
-  ToastSuccess, useHtml5Image
+  ToastSuccess,
+  useHtml5Image
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -45,13 +45,12 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
-import APIRouter from '../../public/network/APIRouter'
 
 const LHTHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
   // states
-  const [leftGames, setLeftGames] = useState(config?.preferences)
+  const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
   const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
@@ -162,11 +161,10 @@ const LHTHomePage = (props: any) => {
     },
     ...lotterys.slice(6),
   ]
-  const rightGames =
+  const homeGames =
     homeGame?.data?.icons?.map((tab) => {
       const { list, name } = tab
-      const games = list?.filter((ele) => ele.levelType == '1')
-      return { games, name }
+      return { name, list: list?.filter((ele) => ele.levelType == '1') ?? [] }
     }) ?? []
 
   if (loading) {
@@ -174,9 +172,7 @@ const LHTHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader
-          headerColor={LHThemeColor.六合厅.themeColor}
-        >
+        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
           <HomeHeader
             avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}
@@ -201,7 +197,7 @@ const LHTHomePage = (props: any) => {
                   await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
-                  console.log("-------error------", error)
+                  console.log('-------error------', error)
                 }
               }}
             />
@@ -228,8 +224,14 @@ const LHTHomePage = (props: any) => {
           />
           <View style={styles.contentContainer}>
             <NoticeBlock
-              containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
-              iconContainerStyle={{ width: scale(20), marginHorizontal: scale(15) }}
+              containerStyle={[
+                styles.subComponent,
+                { borderRadius: scale(100) },
+              ]}
+              iconContainerStyle={{
+                width: scale(20),
+                marginHorizontal: scale(15),
+              }}
               notices={notices}
               logo={getHtml5Image(14, 'notice')}
               onPressNotice={({ content }) => {
@@ -237,7 +239,10 @@ const LHTHomePage = (props: any) => {
               }}
             />
             <NavBlock
-              containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
+              containerStyle={[
+                styles.subComponent,
+                { borderRadius: scale(20) },
+              ]}
               navs={navs}
               lotterys={plusLotterys}
               date={lotteryDate}
@@ -300,8 +305,8 @@ const LHTHomePage = (props: any) => {
               activeTabColor={'#ff6b1b'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
-              leftGames={leftGames?.concat(config?.moreLottery)}
-              rightGames={rightGames as any}
+              leftGames={preferenceGames?.concat(config?.moreLottery)}
+              rightGames={homeGames}
               renderLeftGame={(item, index) => {
                 const { title, logo, des, gameType, selected, gameId } = item
                 const logoUrl = getHtml5Image(14, logo)
@@ -317,7 +322,7 @@ const LHTHomePage = (props: any) => {
                       showSubTitle
                       containerStyle={{
                         width: '33.3%',
-                        marginBottom: scale(20)
+                        marginBottom: scale(20),
                       }}
                       titleContainerStyle={{
                         marginTop: scale(5),
@@ -325,16 +330,16 @@ const LHTHomePage = (props: any) => {
                       }}
                       imageContainerStyle={{
                         width: logo == 'gdcz' ? '50%' : '90%',
-                        alignSelf: 'center'
+                        alignSelf: 'center',
                       }}
                       titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
                       subTitleStyle={{ fontSize: scale(19) }}
                       onPress={() => {
                         if (gameType == 'more') {
                           navigate(PageName.LHTPreferencePage, {
-                            initPreferences: leftGames,
+                            initPreferences: preferenceGames,
                             onPressConfirm: (preferences: any) => {
-                              setLeftGames(preferences)
+                              setPreferenceGames(preferences)
                             },
                           })
                         } else if (gameType == 'clzx') {

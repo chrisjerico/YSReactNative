@@ -11,6 +11,7 @@ import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP';
 import { TransitionPage } from '../base/TransitionPage';
 import UGPage from '../base/UGPage';
+import BZHGameLobbyPage from '../BZH/BZHGameLobbyPage';
 import BZHHomePage from "../BZH/BZHHomePage";
 import BZHMinePage from "../BZH/BZHMinePage";
 import BZHRegisterPage from '../BZH/BZHRegisterPage';
@@ -118,6 +119,9 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={UGPage(GDRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHRegisterPage} component={UGPage(BZHRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={UGPage(BZHSignInPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHGameLobbyPage} component={UGPage(BZHGameLobbyPage)} />
+
+
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />

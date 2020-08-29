@@ -1,21 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
-import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
+import { Icon } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
 interface GameLobbyComponentProps {
-  tabGames: TabGame[];
-  rowHeight: number;
+  tabGames: Icon[];
+  rowHeight?: number;
   renderScene: (item: any, index: number) => any;
   focusTabColor: string;
-}
-
-export interface TabGame {
-  games: IGameIconListItem[];
-  name: string;
+  sceneContainerStyle?: ViewStyle | ViewStyle;
+  baseHeight?: number;
 }
 
 export interface SceneProps {
@@ -32,9 +29,11 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 
 const GameLobbyTabComponent = ({
   tabGames = [],
-  rowHeight,
+  rowHeight = scale(200),
   renderScene,
-  focusTabColor
+  focusTabColor,
+  sceneContainerStyle,
+  baseHeight = scale(60)
 }: GameLobbyComponentProps) => {
 
   const getTabWidth = () => {
@@ -49,15 +48,15 @@ const GameLobbyTabComponent = ({
   }
 
   const getSceneHeight = (index: number) => {
-    const games = tabGames?.[index]?.games
+    const games = tabGames?.[index]?.list
     if (games) {
       const length = games?.length ?? 0
       const fullRow = Math.floor(length / 3)
       const row = length % 3
       if (row == 0) {
-        return rowHeight * fullRow + scale(60)
+        return rowHeight * fullRow + baseHeight
       } else {
-        return rowHeight * (fullRow + 1) + scale(60)
+        return rowHeight * (fullRow + 1) + baseHeight
       }
     } else {
       return 0
@@ -69,13 +68,9 @@ const GameLobbyTabComponent = ({
     scenes[index] = () => {
       return (
         <Scene
-          data={item?.games ?? []}
+          data={item?.list ?? []}
           renderItem={renderScene}
-          containerStyle={{
-            paddingTop: scale(25),
-            borderTopColor: '#d9d9d9',
-            borderTopWidth: scale(1),
-          }}
+          containerStyle={sceneContainerStyle}
         />
       )
     }
@@ -146,7 +141,7 @@ const GameLobbyTabComponent = ({
                         style={{
                           height: scale(2),
                           width: '100%',
-                          backgroundColor: '#46A3FF',
+                          backgroundColor: focusTabColor,
                           borderRadius: scale(100),
                           marginTop: scale(5),
                         }}
@@ -180,6 +175,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: '#ffffff',
     justifyContent: 'flex-start',
+    paddingTop: scale(25),
+    borderTopColor: '#d9d9d9',
+    borderTopWidth: scale(1),
+
   },
   tabStyle: {
     backgroundColor: '#ffffff',
