@@ -5,7 +5,7 @@ import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComp
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import {
   OCEvent,
-  OCEventType,
+  OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useHome from '../../public/hooks/tars/useHome'
@@ -18,9 +18,9 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
   getActivityPosition,
-  useHtml5Image,
+
   ToastError,
-  ToastSuccess,
+  ToastSuccess, useHtml5Image
 } from '../../public/tools/tars'
 import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
@@ -34,7 +34,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import UGSysConfModel, {
   LotteryType,
-  UGUserCenterType,
+  UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
@@ -45,6 +45,7 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
+import APIRouter from '../../public/network/APIRouter'
 
 const LHTHomePage = (props: any) => {
   // yellowBox
@@ -74,6 +75,7 @@ const LHTHomePage = (props: any) => {
       setProps()
     },
   })
+
   // stores
   const {
     uid,
@@ -105,6 +107,19 @@ const LHTHomePage = (props: any) => {
     floatAd,
     refreshHome,
   } = useHome()
+
+  const [money, setMoney] = useState(balance)
+
+  const fetchBalance = async () => {
+    try {
+      const { data } = await APIRouter.user_balance_token()
+      const balance = data?.data?.balance
+      setMoney(balance)
+      UGStore.dispatch({ type: 'merge', userInfo: { balance } })
+    } catch (error) {
+      console.log("-------error------", error)
+    }
+  }
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -174,7 +189,6 @@ const LHTHomePage = (props: any) => {
       <>
         <SafeAreaHeader
           headerColor={LHThemeColor.六合厅.themeColor}
-          containerStyle={{ paddingHorizontal: scale(10) }}
         >
           <HomeHeader
             avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
@@ -207,6 +221,7 @@ const LHTHomePage = (props: any) => {
           }
         >
           <BannerBlock
+            containerStyle={{ aspectRatio: 540 / 230 }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -226,7 +241,8 @@ const LHTHomePage = (props: any) => {
           />
           <View style={styles.contentContainer}>
             <NoticeBlock
-              containerStyle={styles.subComponent}
+              containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
+              iconContainerStyle={{ width: scale(20), marginHorizontal: scale(15) }}
               notices={notices}
               logo={getHtml5Image(14, 'notice')}
               onPressNotice={({ content }) => {
@@ -234,13 +250,14 @@ const LHTHomePage = (props: any) => {
               }}
             />
             <NavBlock
-              containerStyle={styles.subComponent}
+              containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
               navs={navs}
               lotterys={plusLotterys}
               date={lotteryDate}
               advertisement={getHtml5Image(14, 'banner', 'gif')}
               lotteryLogo={getHtml5Image(14, 'tjzx')}
-              balance={balance}
+              balanceLogo={getHtml5Image(14, 'yue')}
+              balance={money}
               customerServiceLogo={getHtml5Image(14, 'zxkf')}
               onPressSavePoint={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.存款)
@@ -252,6 +269,7 @@ const LHTHomePage = (props: any) => {
               onPressSmileLogo={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
               }
+              onPressReload={fetchBalance}
               renderNav={(item, index) => {
                 const { icon, name, logo, gameId } = item
                 return (
@@ -291,11 +309,13 @@ const LHTHomePage = (props: any) => {
             />
             <TabComponent
               rowHeight={scale(200)}
-              activeTabColor={'#ff8610'}
+              leftIcon={getHtml5Image(14, 'hot_icon')}
+              rightIcon={getHtml5Image(14, 'cai_icon')}
+              activeTabColor={'#ff6b1b'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
               leftGames={leftGames?.concat(config?.moreLottery)}
-              rightGames={rightGames}
+              rightGames={rightGames as any}
               renderLeftGame={(item, index) => {
                 const { title, logo, des, gameType, selected, gameId } = item
                 const logoUrl = getHtml5Image(14, logo)
@@ -310,15 +330,18 @@ const LHTHomePage = (props: any) => {
                       showSubTitle
                       containerStyle={{
                         width: '33.3%',
-                        height: scale(180),
-                        marginBottom: scale(20),
+                        marginBottom: scale(20)
                       }}
                       titleContainerStyle={{
                         marginTop: scale(5),
                         aspectRatio: 3,
                       }}
-                      titleStyle={{ fontSize: scale(23) }}
-                      subTitleStyle={{ fontSize: scale(23) }}
+                      imageContainerStyle={{
+                        width: logo == 'gdcz' ? '50%' : '90%',
+                        alignSelf: 'center'
+                      }}
+                      titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
+                      subTitleStyle={{ fontSize: scale(19) }}
                       onPress={() => {
                         if (gameType == 'more') {
                           navigate(PageName.LHTPreferencePage, {
@@ -500,7 +523,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
   contentContainer: {
-    paddingHorizontal: scale(16),
+    paddingHorizontal: scale(10),
     paddingTop: scale(10),
   },
   subComponent: {

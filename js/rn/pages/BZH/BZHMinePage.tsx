@@ -12,9 +12,9 @@ import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import config from './config'
-import MineHeader from './views/MineHeader'
 import ProfileBlock from './views/ProfileBlock'
 
 const BZHMinePage = (props: any) => {
@@ -59,7 +59,7 @@ const BZHMinePage = (props: any) => {
         }}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
-        <MineHeader showBackBtn={showBackBtn} onPressGoBack={goBack} />
+        <MineHeader showBackBtn={showBackBtn} onPressLeftTool={goBack} shoeRightTool={false} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -104,7 +104,7 @@ const BZHMinePage = (props: any) => {
                 backgroundColor: '#ffffff',
                 aspectRatio: 490 / 68,
               }}
-              arrowTextStyle={{ color: '#d82e2f' }}
+              arrowColor={'#d82e2f'}
               titleStyle={{ fontSize: scale(22) }}
               title={name}
               logo={logo}

@@ -153,7 +153,7 @@ const config = {
       userCenterType: UGUserCenterType.存款,
     },
     {
-      title: '我要提现',
+      title: '马上提现',
       logo: getHtml5Image(14, 'tx'),
       userCenterType: UGUserCenterType.取款,
     },

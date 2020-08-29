@@ -146,6 +146,11 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     })
   }, [])
 
+
+  // useEffect(() => {
+  //   setMoney(balance)
+  // }, [balance])
+
   return {
     uid,
     mobile_logo,

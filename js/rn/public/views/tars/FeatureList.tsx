@@ -9,6 +9,7 @@ import {
   TextStyle,
 } from 'react-native'
 import { scale } from '../../tools/Scale'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface FeatureListProps {
   logo: string;
@@ -17,8 +18,8 @@ interface FeatureListProps {
   containerStyle?: ViewStyle;
   showUnreadMsg?: boolean;
   unreadMsg?: number;
-  arrowTextStyle?: TextStyle | TextStyle[];
   titleStyle?: TextStyle | TextStyle[];
+  arrowColor?: string;
 }
 
 const FeatureList = ({
@@ -28,7 +29,7 @@ const FeatureList = ({
   containerStyle,
   showUnreadMsg = false,
   unreadMsg,
-  arrowTextStyle,
+  arrowColor = '#000000',
   titleStyle
 }: FeatureListProps) => {
   return (
@@ -47,7 +48,13 @@ const FeatureList = ({
             <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         ) : (
-            <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
+            <AntDesign
+              name={'right'}
+              color={arrowColor}
+              size={scale(20)}
+            // onPress={onPressLeftTool}
+            />
+            // <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
           )}
       </View>
     </TouchableWithoutFeedback>
@@ -60,10 +67,11 @@ const styles = StyleSheet.create({
     aspectRatio: 490 / 75,
     borderBottomColor: '#F0F0F0',
     borderBottomWidth: scale(1),
-    paddingHorizontal: scale(25),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: scale(15),
+    alignSelf: 'center'
   },
   imageContainer: {
     flexDirection: 'row',

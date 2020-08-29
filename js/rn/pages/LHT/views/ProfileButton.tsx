@@ -33,7 +33,7 @@ const ProfileButton = ({
 const styles = StyleSheet.create({
   container: {
     width: scale(158),
-    aspectRatio: 158 / 60,
+    aspectRatio: 2.8,
     backgroundColor: '#ff6b1b',
     borderRadius: scale(10),
     flexDirection: 'row',

@@ -10,9 +10,9 @@ interface NoticeBlockProps {
   logo?: string;
   logoText?: string;
   notices: INoticeScroll[];
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   onPressNotice: (item: any) => any;
-  iconContainerStyle?: ViewStyle;
+  iconContainerStyle?: ViewStyle | ViewStyle[];
   logoTextStyle?: TextStyle | TextStyle[];
   textStyle?: TextStyle | TextStyle[];
 }
@@ -68,11 +68,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    // flex: 70,
     alignItems: 'center',
   },
   iconImage: {
-    width: '30%',
+    width: '100%',
     aspectRatio: 1,
   },
   noticContainer: {

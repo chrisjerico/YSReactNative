@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   circleContainer: {
-    width: '70%',
+    width: '50%',
     aspectRatio: 1,
     borderRadius: scale(150),
     justifyContent: 'center',

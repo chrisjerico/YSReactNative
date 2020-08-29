@@ -1,14 +1,15 @@
 import React from 'react'
 import {
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
   ViewStyle,
+  StyleSheet
 } from 'react-native'
-import { Button, Icon } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
+import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
 import { scale } from '../../../public/tools/Scale'
+import Button from '../../../public/views/tars/Button'
 
 interface NavBlockProps {
   customerServiceLogo: string;
@@ -16,7 +17,7 @@ interface NavBlockProps {
   advertisement: string;
   navs: any[];
   lotterys: Lottery[];
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   date: string;
   onPressSavePoint: () => any;
   onPressGetPoint: () => any;
@@ -26,6 +27,8 @@ interface NavBlockProps {
   renderLottery: (item: Lottery, index: number) => any;
   balance: string;
   renderAd?: () => any;
+  balanceLogo: string;
+  onPressReload: () => any;
 }
 
 interface Lottery {
@@ -50,35 +53,34 @@ const NavBlock = ({
   customerServiceLogo = '',
   containerStyle,
   balance,
-  renderAd
+  renderAd,
+  balanceLogo,
+  onPressReload
 }: NavBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.topContainer}>
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
-          <Icon
-            type={'material'}
-            name={'attach-money'}
-            size={scale(25)}
-            color={'#ff8610'}
+          <FastImage
+            style={styles.recommendImage}
+            source={{ uri: balanceLogo }}
           />
-          <Text style={{ color: '#ff8610' }}>{balance}</Text>
+          <Text style={{ color: '#ff861b' }}>{balance}</Text>
+          <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
         </View>
         <View style={styles.topRightContainer}>
           <Button
-            title={'充值'}
-            buttonStyle={[styles.button, { backgroundColor: '#ff8610' }]}
-            titleStyle={styles.title}
+            text={'充值'}
+            containerStyle={[styles.button, { backgroundColor: '#ff8610' }]}
+            textStyle={styles.title}
             onPress={onPressSavePoint}
-            activeOpacity={1}
           />
           <Button
-            title={'提现'}
-            buttonStyle={[styles.button, { backgroundColor: '#4285f4' }]}
-            titleStyle={styles.title}
+            text={'提现'}
+            containerStyle={[styles.button, { backgroundColor: '#4285f4' }]}
+            textStyle={styles.title}
             onPress={onPressGetPoint}
-            activeOpacity={1}
           />
           <TouchableWithoutFeedback onPress={onPressSmileLogo}>
             <View style={styles.smileImageContainer}>
@@ -101,9 +103,9 @@ const NavBlock = ({
           <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
         </View>
         <View style={styles.awardsContainer}>
-          <Text>{'第 '}</Text>
-          <Text style={{ color: '#ff861b' }}>{date}</Text>
-          <Text>{' 期开奖结果'}</Text>
+          <Text style={styles.awardsText}>{'第 '}</Text>
+          <Text style={[styles.awardsText, { color: '#ff861b' }]}>{date}</Text>
+          <Text style={styles.awardsText}>{' 期开奖结果'}</Text>
         </View>
       </View>
       <View style={styles.lotterysCintainer}>
@@ -157,12 +159,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   button: {
-    aspectRatio: 3.25 / 1.5625,
+    width: scale(70),
+    aspectRatio: 2,
     borderRadius: scale(25),
     marginRight: scale(10),
   },
   title: {
     fontSize: scale(20),
+    color: '#ffffff'
   },
   titleContainer: {
     flexDirection: 'row',
@@ -178,15 +182,16 @@ const styles = StyleSheet.create({
   awardsContainer: {
     flex: 1,
     backgroundColor: '#eeeeee',
-    aspectRatio: 3.25 / 0.5625,
+    aspectRatio: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: scale(20),
   },
   recommendImage: {
-    width: '15%',
+    width: '10%',
     aspectRatio: 1,
+    marginHorizontal: scale(5)
   },
   adImage: {
     width: '95%',
@@ -202,6 +207,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  awardsText: {
+    fontWeight: '600'
+  }
 })
 
 export default NavBlock

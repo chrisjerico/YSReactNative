@@ -10,6 +10,7 @@ interface GameLobbyComponentProps {
   tabGames: TabGame[];
   rowHeight: number;
   renderScene: (item: any, index: number) => any;
+  focusTabColor: string;
 }
 
 export interface TabGame {
@@ -33,6 +34,7 @@ const GameLobbyTabComponent = ({
   tabGames = [],
   rowHeight,
   renderScene,
+  focusTabColor
 }: GameLobbyComponentProps) => {
 
   const getTabWidth = () => {
@@ -134,7 +136,7 @@ const GameLobbyTabComponent = ({
                           fontSize: scale(25),
                           marginBottom: scale(5),
                         },
-                        focused ? styles.focusedText : styles.text,
+                        focused ? { color: focusTabColor } : styles.text,
                       ]}
                     >
                       {route.title}

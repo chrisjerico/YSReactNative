@@ -4,13 +4,10 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import GameLobbyTabComponent, {
-  TabGame,
-  Scene,
-} from '../../../public/components/tars/GameLobbyTabComponent'
+import FastImage from 'react-native-fast-image'
+import GameLobbyTabComponent, { Scene, TabGame } from '../../../public/components/tars/GameLobbyTabComponent'
 import { scale } from '../../../public/tools/Scale'
 
 interface TabComponentProps {
@@ -22,6 +19,8 @@ interface TabComponentProps {
   unActiveTabColor: string;
   activeTabColor: string;
   rowHeight: number;
+  leftIcon: string;
+  rightIcon: string;
 }
 
 const TabComponent = ({
@@ -33,6 +32,8 @@ const TabComponent = ({
   unActiveTabColor,
   activeTabColor,
   rowHeight,
+  leftIcon,
+  rightIcon
 }: TabComponentProps) => {
   const [index, setIndex] = useState(0)
 
@@ -48,11 +49,9 @@ const TabComponent = ({
               },
             ]}
           >
-            <FontAwesome5
-              name={'fire'}
-              color={'#ffffff'}
-              style={{ paddingRight: scale(5) }}
-              size={scale(20)}
+            <FastImage
+              style={styles.image}
+              source={{ uri: leftIcon }}
             />
             <Text style={styles.tabText}>{'热门资讯'}</Text>
           </View>
@@ -66,11 +65,9 @@ const TabComponent = ({
               },
             ]}
           >
-            <FontAwesome5
-              name={'award'}
-              color={'#ffffff'}
-              style={{ paddingRight: scale(5) }}
-              size={scale(20)}
+            <FastImage
+              style={styles.image}
+              source={{ uri: rightIcon }}
             />
             <Text style={styles.tabText}>{'购彩大厅'}</Text>
           </View>
@@ -78,6 +75,7 @@ const TabComponent = ({
       </View>
       {index ? (
         <GameLobbyTabComponent
+          focusTabColor={'#4285f4'}
           tabGames={rightGames}
           rowHeight={rowHeight}
           renderScene={renderRightGame}
@@ -123,6 +121,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     justifyContent: 'flex-start',
   },
+  image: {
+    width: '10%',
+    aspectRatio: 1
+  }
 })
 
 export default TabComponent

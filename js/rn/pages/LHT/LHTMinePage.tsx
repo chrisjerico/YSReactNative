@@ -1,13 +1,8 @@
 import React from 'react'
 import {
   ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
+  StyleSheet
 } from 'react-native'
-import { Button } from 'react-native-elements'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -18,11 +13,13 @@ import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import FeatureList from '../../public/views/tars/FeatureList'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
+import Button from '../../public/views/tars/Button'
 
 const LHTMinePage = (props: any) => {
   const { setProps } = props
@@ -46,35 +43,23 @@ const LHTMinePage = (props: any) => {
     openAvatarList,
     closeAvatarList,
     goBack,
-  } = useMinePage({ setProps, homePage: PageName.LHTHomePage, defaultUserCenterLogos: config.defaultUserCenterLogos })
+  } = useMinePage({
+    setProps,
+    homePage: PageName.LHTHomePage,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
 
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        {showBackBtn ? (
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
-            <AntDesign
-              name={'left'}
-              color={'#ffffff'}
-              size={scale(25)}
-              onPress={goBack}
-            />
-          </View>
-        ) : (
-            <View style={{ flex: 1 }} />
-          )}
-        <View style={{ flex: 1, alignItems: 'center' }}>
-          <Text style={styles.headerTitle}>{'我的'}</Text>
-        </View>
-        <TouchableWithoutFeedback
-          onPress={() => {
+        <MineHeader
+          showBackBtn={showBackBtn}
+          shoeRightTool={true}
+          onPressLeftTool={goBack}
+          onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
-        >
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text style={styles.headerTitle}>{'客服'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        />
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
@@ -82,6 +67,7 @@ const LHTMinePage = (props: any) => {
         showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
+          shoeSignBadge={false}
           onPressAvatar={openAvatarList}
           profileButtons={config?.profileButtons}
           name={usr}
@@ -114,6 +100,11 @@ const LHTMinePage = (props: any) => {
           return (
             <FeatureList
               key={index}
+              containerStyle={{
+                aspectRatio: 490 / 56,
+                width: '95%'
+              }}
+              titleStyle={{ fontSize: scale(20) }}
               title={name}
               logo={logo}
               unreadMsg={unreadMsg}
@@ -123,10 +114,10 @@ const LHTMinePage = (props: any) => {
           )
         })}
         <Button
-          title={'退出登录'}
-          buttonStyle={styles.logOutButton}
+          text={'退出登录'}
+          containerStyle={styles.logOutButton}
+          textStyle={{ color: '#ffffff' }}
           onPress={signOut}
-          activeOpacity={1}
         />
         <BottomGap />
       </ScrollView>
@@ -148,10 +139,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   logOutButton: {
-    backgroundColor: '#ff861b',
+    backgroundColor: '#ff6b1b',
     marginHorizontal: scale(25),
     marginVertical: scale(25),
     height: scale(70),
+    borderRadius: scale(5)
   },
   headerTitle: {
     color: '#ffffff',

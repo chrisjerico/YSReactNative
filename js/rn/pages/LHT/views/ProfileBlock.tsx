@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -16,6 +17,7 @@ interface ProfileBlockProps {
   onPressTaskCenter: () => any;
   onPressReload: () => any;
   onPressAvatar: () => any;
+  shoeSignBadge: boolean;
 }
 
 const ProfileBlock = ({
@@ -29,17 +31,20 @@ const ProfileBlock = ({
   onPressTaskCenter,
   onPressReload,
   onPressAvatar,
+  shoeSignBadge,
 }: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
-        <View style={{ flex: 3, flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Avatar onPress={onPressAvatar} uri={avatar} />
-          <View style={{ paddingLeft: scale(18), paddingBottom: scale(25) }}>
+        <View style={{ flex: 3.2, flexDirection: 'row', alignItems: 'center' }}>
+          <Avatar onPress={onPressAvatar} uri={avatar} size={90} />
+          <View style={{ paddingLeft: scale(18) }}>
             <View style={styles.nameTextContainer}>
-              <Text style={styles.nameText} numberOfLines={1}>
-                {name}
-              </Text>
+              <View style={{ maxWidth: scale(150) }}>
+                <Text style={styles.nameText} numberOfLines={1}>
+                  {name}
+                </Text>
+              </View>
               <LinearBadge
                 title={level}
                 colors={['#FFD306', '#C6A300']}
@@ -52,34 +57,48 @@ const ProfileBlock = ({
               />
             </View>
             <View
-              style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
+              style={{ flexDirection: 'row', flex: 0.9 }}
             >
-              <Text style={{ fontSize: scale(23) }}>{'余额 : '}</Text>
+              <Text style={{ fontSize: scale(19) }}>{'余额 : '}</Text>
               <Text
-                style={{ color: '#ff861b', fontSize: scale(23) }}
+                style={{ color: '#ff861b', fontSize: scale(19) }}
                 numberOfLines={1}
               >
-                {balance}
+                {balance + 'RMB'}
               </Text>
-              <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
+              <ReLoadComponent onPress={onPressReload} color={'#ff861b'} containerStyle={{ justifyContent: 'flex-start' }} />
             </View>
           </View>
         </View>
-        <View style={{ flex: 1, paddingRight: scale(10) }}>
-          <View style={styles.taskBadge}>
-            <LinearBadge
-              title={'任务中心'}
-              colors={['#9393FF', 'rgb(91, 91, 220)']}
-              onPress={onPressTaskCenter}
+        <View style={{ flex: 1, marginRight: scale(10), marginBottom: scale(40) }}>
+          <TouchableWithoutFeedback onPress={onPressTaskCenter}>
+            {/* <View style={styles.taskBadge}> */}
+            <FastImage
+              source={{
+                uri:
+                  'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
+              }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode={'contain'}
             />
-          </View>
-          <View style={styles.signBadge}>
-            <LinearBadge
-              title={'每日签到'}
-              colors={['#FFD306', '#C6A300']}
-              onPress={onPressDaySign}
-            />
-          </View>
+            {/* </View> */}
+          </TouchableWithoutFeedback>
+          {/* <View style={styles.signBadge}>
+            {shoeSignBadge && (
+              <FastImage
+                source={{
+                  uri:
+                    'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
+                }}
+                style={{
+                  width: scale(100),
+                  aspectRatio: 3,
+                  backgroundColor: 'red',
+                }}
+                resizeMode={'contain'}
+              />
+            )}
+          </View> */}
         </View>
       </View>
       <View style={styles.profileButtonsContainer}>
@@ -102,36 +121,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   profileButtonsContainer: {
-    flex: 1,
+    flex: 0.8,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    alignItems: 'center',
   },
   shareIdText: {
     color: '#00A600',
   },
-  taskBadge: {
-    flex: 1.5,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    marginBottom: scale(5),
-  },
+  // taskBadge: {
+  //   flex: 1,
+  //   justifyContent: 'flex-end',
+  //   alignItems: 'flex-end',
+  // },
   signBadge: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   nameText: {
-    fontWeight: '600',
+    fontWeight: '500',
     fontSize: scale(20),
     paddingRight: scale(5),
     marginBottom: scale(5),
-    width: '55%'
   },
   nameTextContainer: {
     flexDirection: 'row',
-    flex: 1.5,
+    flex: 1,
     alignItems: 'flex-end',
+    paddingBottom: scale(10)
   },
 })
 

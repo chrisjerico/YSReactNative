@@ -1,9 +1,16 @@
 import React from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 
-const MineHeader = ({ showBackBtn, onPressGoBack }) => {
+interface MineHeaderProps {
+  showBackBtn: boolean;
+  shoeRightTool: boolean;
+  onPressLeftTool?: () => any;
+  onPressRightTool?: () => any;
+}
+
+const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightTool }: MineHeaderProps) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       {showBackBtn ? (
@@ -12,7 +19,7 @@ const MineHeader = ({ showBackBtn, onPressGoBack }) => {
             name={'left'}
             color={'#ffffff'}
             size={scale(25)}
-            onPress={onPressGoBack}
+            onPress={onPressLeftTool}
           />
         </View>
       ) : (
@@ -21,7 +28,16 @@ const MineHeader = ({ showBackBtn, onPressGoBack }) => {
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Text style={styles.headerTitle}>{'会员中心'}</Text>
       </View>
-      <View style={{ flex: 1 }} />
+      {
+        shoeRightTool &&
+        <TouchableWithoutFeedback
+          onPress={onPressRightTool}
+        >
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+            <Text style={styles.headerTitle}>{'客服'}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      }
     </View>
   )
 }
