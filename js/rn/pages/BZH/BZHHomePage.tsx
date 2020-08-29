@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHome from '../../public/hooks/tars/useHome'
 import { PageName } from '../../public/navigation/Navigation'
@@ -22,7 +23,9 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, {
+  UGUserCenterType,
+} from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/GameBlock'
@@ -32,8 +35,6 @@ import NavBlock from './views/NavBlock'
 const BZHHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
-  // states
-  const [gameSubTypes, setGameSubTypes] = useState([])
   // functions
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
@@ -231,20 +232,12 @@ const BZHHomePage = () => {
             style={{ paddingHorizontal: '1%' }}
             removeClippedSubviews={true}
             data={gameBlocks}
-            renderItem={({ item, index: gameBlockIndex }) => {
+            renderItem={({ item }) => {
               const { name, list } = item
               return (
                 <GameBlock
                   containerStyle={styles.subComponent}
-                  contentContainerStyle={{ paddingTop: scale(20) }}
-                  subTypeContainerStyle={{
-                    marginBottom: scale(20),
-                    paddingHorizontal: scale(20),
-                  }}
                   title={name}
-                  games={list}
-                  gameSubType={gameSubTypes[gameBlockIndex]}
-                  numColumns={3}
                   onPressTotal={() => {
                     if (uid) {
                       PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
@@ -252,101 +245,96 @@ const BZHHomePage = () => {
                       push(PageName.BZHSignInPage)
                     }
                   }}
-                  renderSubType={(item, index) => {
-                    const { title } = item
-                    return (
-                      <Button
-                        key={index}
-                        containerStyle={{
-                          width: '27%',
-                          marginLeft: index % 3 == 1 ? '9.5%' : 0,
-                          marginRight: index % 3 == 1 ? '9.5%' : 0,
-                          marginBottom: scale(20),
-                          backgroundColor: BZHThemeColor.宝石红.themeLightColor,
-                          paddingVertical: scale(20),
-                          borderRadius: scale(5),
-                        }}
-                        textStyle={{ color: '#000000', fontSize: scale(15) }}
-                        text={title}
-                        onPress={() => {
-                          PushHelper.pushHomeGame(item)
-                        }}
-                      />
-                    )
-                  }}
-                  renderGame={(item, gameIndex) => {
-                    const {
-                      title,
-                      logo,
-                      icon,
-                      name,
-                      subtitle,
-                      tipFlag,
-                      hotIcon,
-                      subType,
-                    } = item
-                    const showFlag = parseInt(tipFlag)
-                    return (
-                      <GameButton
-                        key={gameIndex}
-                        showRightTopFlag={showFlag > 0 && showFlag < 4}
-                        showCenterFlag={showFlag == 4}
-                        showSecondLevelIcon={subType}
-                        flagIcon={hotIcon}
-                        resizeMode={'contain'}
-                        containerStyle={[
-                          styles.gameContainer,
-                          {
-                            marginLeft: gameIndex % 3 == 1 ? '5%' : 0,
-                            marginRight: gameIndex % 3 == 1 ? '5%' : 0,
-                          },
-                        ]}
-                        imageContainerStyle={{ width: '60%' }}
-                        enableCircle={false}
-                        logo={icon || logo}
-                        title={name || title}
-                        subTitle={subtitle}
-                        showSubTitle
-                        titleStyle={{
-                          fontSize: scale(25),
-                        }}
-                        subTitleStyle={{
-                          fontSize: scale(20),
-                        }}
-                        titleContainerStyle={{
-                          marginTop: scale(5),
-                          aspectRatio: 2.5,
-                        }}
-                        onPress={() => {
-                          if (subType) {
-                            const cutRow = Math.ceil((gameIndex + 1) / 3)
-                            const updateGameSubTypes =
-                              gameBlocks?.map((_, blockIndex) => {
-                                if (gameBlockIndex == blockIndex) {
-                                  if (
-                                    gameIndex ==
-                                    gameSubTypes[blockIndex]?.gameIndexHistory
-                                  ) {
-                                    return {}
-                                  } else {
-                                    return {
-                                      cutRow,
-                                      subType,
-                                      gameIndexHistory: gameIndex,
-                                    }
-                                  }
-                                } else {
-                                  return gameSubTypes[blockIndex] ?? {}
-                                }
-                              }) ?? []
-                            setGameSubTypes(updateGameSubTypes)
-                          } else {
-                            PushHelper.pushHomeGame(item)
-                          }
-                        }}
-                      />
-                    )
-                  }}
+                  renderGameContent={() => (
+                    <GameSubTypeComponent
+                      containerStyle={{ paddingTop: scale(20) }}
+                      subTypeContainerStyle={{
+                        marginBottom: scale(20),
+                        paddingHorizontal: scale(20),
+                      }}
+                      games={list}
+                      numColumns={3}
+                      renderSubType={(item, index) => {
+                        const { title } = item
+                        return (
+                          <Button
+                            key={index}
+                            containerStyle={{
+                              width: '27%',
+                              marginLeft: index % 3 == 1 ? '9.5%' : 0,
+                              marginRight: index % 3 == 1 ? '9.5%' : 0,
+                              marginBottom: scale(20),
+                              backgroundColor:
+                                BZHThemeColor.宝石红.themeLightColor,
+                              paddingVertical: scale(20),
+                              borderRadius: scale(5),
+                            }}
+                            textStyle={{
+                              color: '#000000',
+                              fontSize: scale(15),
+                            }}
+                            text={title}
+                            onPress={() => {
+                              PushHelper.pushHomeGame(item)
+                            }}
+                          />
+                        )
+                      }}
+                      renderGame={({ item, index, onPressGameSubType }) => {
+                        const {
+                          title,
+                          logo,
+                          icon,
+                          name,
+                          subtitle,
+                          tipFlag,
+                          hotIcon,
+                          subType,
+                        } = item
+                        const showFlag = parseInt(tipFlag)
+                        return (
+                          <GameButton
+                            key={index}
+                            showRightTopFlag={showFlag > 0 && showFlag < 4}
+                            showCenterFlag={showFlag == 4}
+                            showSecondLevelIcon={subType}
+                            flagIcon={hotIcon}
+                            resizeMode={'contain'}
+                            containerStyle={[
+                              styles.gameContainer,
+                              {
+                                marginLeft: index % 3 == 1 ? '5%' : 0,
+                                marginRight: index % 3 == 1 ? '5%' : 0,
+                              },
+                            ]}
+                            imageContainerStyle={{ width: '60%' }}
+                            enableCircle={false}
+                            logo={icon || logo}
+                            title={name || title}
+                            subTitle={subtitle}
+                            showSubTitle
+                            titleStyle={{
+                              fontSize: scale(25),
+                            }}
+                            subTitleStyle={{
+                              fontSize: scale(20),
+                            }}
+                            titleContainerStyle={{
+                              marginTop: scale(5),
+                              aspectRatio: 2.5,
+                            }}
+                            onPress={() => {
+                              if (subType) {
+                                onPressGameSubType(index)
+                              } else {
+                                PushHelper.pushHomeGame(item)
+                              }
+                            }}
+                          />
+                        )
+                      }}
+                    />
+                  )}
                 />
               )
             }}
@@ -484,11 +472,7 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
-  },
-  couponBanner: {
-    width: '100%',
-    aspectRatio: 2,
-  },
+  }
 })
 
 export default BZHHomePage
