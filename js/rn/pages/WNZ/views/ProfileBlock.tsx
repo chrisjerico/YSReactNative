@@ -36,8 +36,8 @@ const ProfileBlock = ({
   const diffLevelInt_f = nextLevelInt_f - curLevelInt_f
 
   return (
-    <View style={styles.imageBackgroundContainer}>
-      <ImageBackground style={styles.image} source={{ uri: backgroundImage }}>
+    <View style={styles.container}>
+      <ImageBackground style={styles.image} source={{ uri: backgroundImage }} resizeMode={'stretch'}>
         <View style={{ flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 8 }}>
             <View style={styles.taskRewardTitleContainer}>
@@ -93,11 +93,8 @@ const ProfileBlock = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#D0D0D0',
-  },
-  imageBackgroundContainer: {
     width: '100%',
-    aspectRatio: 500 / 200,
+    aspectRatio: 500 / 210,
   },
   image: {
     width: '100%',

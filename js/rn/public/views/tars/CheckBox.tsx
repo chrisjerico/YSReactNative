@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import {
-  ScrollView,
-  StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
-import { Button, Icon } from 'react-native-elements'
 
 const CheckBox = ({ check, onPress }) => (
   <TouchableWithoutFeedback onPress={onPress}>

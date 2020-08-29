@@ -14,10 +14,10 @@ import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import CheckBox from '../../public/views/tars/CheckBox'
+import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import CheckBox from './views/CheckBox'
-import Form from './views/Form'
 
 const BZHSignInPage = (props: any) => {
   // yellowBox

@@ -12,11 +12,7 @@ interface ToolBlockProps {
 const ToolBlock = ({ tools, renderTool, title, contentContainer }: ToolBlockProps) => {
   return (
     <View
-      style={{
-        width: '100%',
-        paddingHorizontal: scale(10),
-        marginVertical: scale(10),
-      }}
+      style={styles.container}
     >
       <View
         style={{
@@ -50,6 +46,11 @@ const ToolBlock = ({ tools, renderTool, title, contentContainer }: ToolBlockProp
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    paddingHorizontal: scale(10),
+    marginVertical: scale(8),
+  },
   contentContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -19,18 +19,16 @@ import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import NavBlock from '../../public/views/tars/NavBlock'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
-import NavBlock from './views/NavBlock'
 
 const BZHHomePage = () => {
   // yellowBox
@@ -109,11 +107,6 @@ const BZHHomePage = () => {
     return (
       <>
         <SafeAreaHeader
-          containerStyle={{
-            aspectRatio: 540 / 50,
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-          }}
           headerColor={BZHThemeColor.宝石红.themeColor}
         >
           <HomeHeader
@@ -190,7 +183,7 @@ const BZHHomePage = () => {
                   containerStyle={{ width: '25%', marginTop: scale(15) }}
                   imageContainerStyle={{ width: '30%' }}
                   enableCircle={false}
-                  logo={icon ? icon : logo}
+                  logo={icon || logo}
                   title={name}
                   titleStyle={{
                     fontSize: scale(20),

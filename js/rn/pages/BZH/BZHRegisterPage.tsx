@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -16,10 +16,10 @@ import { PageName } from '../../public/navigation/Navigation'
 import { pop, push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import AgentRedButton from '../../public/views/tars/AgentRedButton'
+import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import AgentRedButton from './views/AgentRedButton'
-import Form from './views/Form'
 
 const BZHRegisterPage = () => {
   const {

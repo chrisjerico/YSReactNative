@@ -58,10 +58,11 @@ const ButtonGroup = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 500 / 65,
+    aspectRatio: 500 / 73,
     flexDirection: 'row',
     paddingHorizontal: scale(10),
-    marginTop: scale(10),
+    marginTop: scale(12),
+    marginBottom: scale(7)
   },
   leftButtonContainer: {
     flex: 1,

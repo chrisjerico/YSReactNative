@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import {
   OCEvent,
   OCEventType
@@ -31,16 +32,15 @@ import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
-import GameBlock, { GameSubType } from './views/GameBlock'
+import config from './config'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
-import config from './config'
+import NavBlock from '../../public/views/tars/NavBlock'
+
 
 const WNZHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
-  // states
-  const [gameSubType, setGameSubType] = useState<GameSubType>({})
   // functions
   const { setProps } = props
   const goToJDPromotionListPage = () => {
@@ -149,7 +149,8 @@ const WNZHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+        <SafeAreaHeader
+          headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
             uid={uid}
             showBackBtn={false}
@@ -204,7 +205,7 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <NoticeBlock
-            containerStyle={{ borderRadius: 0, marginBottom: scale(3), aspectRatio: 540 / 35 }}
+            containerStyle={{ borderRadius: 0, marginBottom: scale(5), aspectRatio: 540 / 35 }}
             iconContainerStyle={{
               borderColor: '#ef473a',
               borderWidth: scale(1),
@@ -218,20 +219,22 @@ const WNZHomePage = (props: any) => {
             logoTextStyle={{ color: 'red', fontSize: scale(16), padding: scale(5) }}
             textStyle={{ fontSize: scale(16) }}
           />
-          <View style={{ flexDirection: 'row', backgroundColor: '#ffffff' }}>
-            {navs?.map((item, index) => {
-              const { icon, name, gameId } = item
+          <NavBlock
+            visible={navs?.length > 0}
+            navs={navs}
+            renderNav={(item, index) => {
+              const { icon, name, logo, gameId } = item
               return (
                 <GameButton
                   key={index}
-                  logo={icon}
+                  logo={icon || logo}
                   title={name}
                   containerStyle={{
                     width: '20%',
                     backgroundColor: '#ffffff',
-                    height: scale(115),
                     justifyContent: 'center',
                   }}
+                  titleContainerStyle={{ aspectRatio: 5 }}
                   titleStyle={{ color: config?.navColors[index], fontSize: scale(23) }}
                   circleColor={'transparent'}
                   onPress={() => {
@@ -243,10 +246,10 @@ const WNZHomePage = (props: any) => {
                   }}
                 />
               )
-            })}
-          </View>
+            }}
+          />
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 145, marginTop: scale(5) }}
+            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5) }}
             visible={ads?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
@@ -265,11 +268,10 @@ const WNZHomePage = (props: any) => {
               )
             }}
           />
-          <GameBlock
+          <GameSubTypeComponent
             containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
             games={games}
-            gameSubType={gameSubType}
             subTypeContainerStyle={{
               paddingHorizontal: scale(10),
             }}
@@ -280,8 +282,8 @@ const WNZHomePage = (props: any) => {
                   key={index}
                   containerStyle={{
                     width: '20%',
-                    marginLeft: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
-                    marginRight: index % 4 == 1 || index % 4 == 2 ? '5%' : 0,
+                    marginLeft: '2.5%',
+                    marginRight: '2.5%',
                     marginBottom: scale(20),
                     backgroundColor: WNZThemeColor.威尼斯.themeColor,
                     paddingVertical: scale(20),
@@ -295,7 +297,7 @@ const WNZHomePage = (props: any) => {
                 />
               )
             }}
-            renderGame={(item, index) => {
+            renderGame={({ item, index, onPressGameSubType }) => {
               const { logo, name, hotIcon, tipFlag, subType, icon } = item
               const flagType = parseInt(tipFlag)
               return (
@@ -326,16 +328,7 @@ const WNZHomePage = (props: any) => {
                     enableCircle={false}
                     onPress={() => {
                       if (subType) {
-                        const cutRow = Math.ceil((index + 1) / 4)
-                        if (index == gameSubType?.gameIndexHistory) {
-                          setGameSubType({})
-                        } else {
-                          setGameSubType({
-                            cutRow,
-                            gameIndexHistory: index,
-                            subType,
-                          })
-                        }
+                        onPressGameSubType(index)
                       } else {
                         PushHelper.pushHomeGame(item)
                       }
@@ -486,9 +479,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: scale(5)
-  },
-  bottomComponent: {
-    paddingBottom: scaleHeight(70),
   },
   subComponent: {
     marginTop: scale(10),
