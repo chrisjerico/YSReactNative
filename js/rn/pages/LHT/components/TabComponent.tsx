@@ -7,7 +7,11 @@ import {
   ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import GameLobbyTabComponent, { Scene, TabGame } from '../../../public/components/tars/GameLobbyTabComponent'
+import GameLobbyTabComponent, {
+  Scene,
+  TabGame
+} from '../../../public/components/tars/GameLobbyTabComponent'
+import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 
 interface TabComponentProps {
@@ -33,7 +37,7 @@ const TabComponent = ({
   activeTabColor,
   rowHeight,
   leftIcon,
-  rightIcon
+  rightIcon,
 }: TabComponentProps) => {
   const [index, setIndex] = useState(0)
 
@@ -49,10 +53,7 @@ const TabComponent = ({
               },
             ]}
           >
-            <FastImage
-              style={styles.image}
-              source={{ uri: leftIcon }}
-            />
+            <FastImage style={styles.image} source={{ uri: leftIcon }} />
             <Text style={styles.tabText}>{'热门资讯'}</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -65,17 +66,14 @@ const TabComponent = ({
               },
             ]}
           >
-            <FastImage
-              style={styles.image}
-              source={{ uri: rightIcon }}
-            />
+            <FastImage style={styles.image} source={{ uri: rightIcon }} />
             <Text style={styles.tabText}>{'购彩大厅'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
       {index ? (
         <GameLobbyTabComponent
-          focusTabColor={'#4285f4'}
+          focusTabColor={LHThemeColor.六合厅.themeColor}
           tabGames={rightGames}
           rowHeight={rowHeight}
           renderScene={renderRightGame}
@@ -123,8 +121,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '10%',
-    aspectRatio: 1
-  }
+    aspectRatio: 1,
+  },
 })
 
 export default TabComponent

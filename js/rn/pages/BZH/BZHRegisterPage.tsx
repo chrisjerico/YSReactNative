@@ -20,6 +20,7 @@ import AgentRedButton from '../../public/views/tars/AgentRedButton'
 import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import MineHeader from '../../public/views/tars/MineHeader'
 
 const BZHRegisterPage = () => {
   const {
@@ -79,17 +80,15 @@ const BZHRegisterPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <TouchableWithoutFeedback onPress={pop}>
-          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableWithoutFeedback>
-        <Text style={styles.headerTitle}>{'注册'}</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
+        <MineHeader
+          title={'注册'}
+          showBackBtn={true}
+          onPressLeftTool={pop}
+          shoeRightTool={true}
+          onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
-        >
-          <Text style={styles.headerTitle}>{'客服'}</Text>
-        </TouchableWithoutFeedback>
+        />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>

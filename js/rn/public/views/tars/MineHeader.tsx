@@ -8,9 +8,10 @@ interface MineHeaderProps {
   shoeRightTool: boolean;
   onPressLeftTool?: () => any;
   onPressRightTool?: () => any;
+  title: string;
 }
 
-const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightTool }: MineHeaderProps) => {
+const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightTool, title }: MineHeaderProps) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       {showBackBtn ? (
@@ -26,17 +27,17 @@ const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightT
           <View style={{ flex: 1 }} />
         )}
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={styles.headerTitle}>{'会员中心'}</Text>
+        <Text style={styles.headerTitle}>{title}</Text>
       </View>
       {
-        shoeRightTool &&
-        <TouchableWithoutFeedback
-          onPress={onPressRightTool}
-        >
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text style={styles.headerTitle}>{'客服'}</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        shoeRightTool ?
+          <TouchableWithoutFeedback
+            onPress={onPressRightTool}
+          >
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <Text style={styles.rightTextStyle}>{'客服'}</Text>
+            </View>
+          </TouchableWithoutFeedback> : <View style={{ flex: 1 }} />
       }
     </View>
   )
@@ -45,8 +46,13 @@ const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightT
 const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
-    fontSize: scale(25),
+    fontSize: scale(24),
+    fontWeight: '500'
   },
+  rightTextStyle: {
+    color: '#ffffff',
+    fontSize: scale(21),
+  }
 })
 
 export default MineHeader

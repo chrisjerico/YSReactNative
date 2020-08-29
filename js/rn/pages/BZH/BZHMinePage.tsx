@@ -21,10 +21,10 @@ const BZHMinePage = (props: any) => {
   const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
   const {
+    balance,
     userCenterItems,
     showBackBtn,
     curLevelGrade,
-    money,
     usr,
     isTest,
     avatar,
@@ -33,7 +33,6 @@ const BZHMinePage = (props: any) => {
     avatarListVisible,
     avatarList,
     fetchAvatarList,
-    fetchBalance,
     saveAvatar,
     signOut,
     openAvatarList,
@@ -59,7 +58,12 @@ const BZHMinePage = (props: any) => {
         }}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
-        <MineHeader showBackBtn={showBackBtn} onPressLeftTool={goBack} shoeRightTool={false} />
+        <MineHeader
+          showBackBtn={showBackBtn}
+          onPressLeftTool={goBack}
+          shoeRightTool={false}
+          title={'会员中心'}
+        />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -70,11 +74,10 @@ const BZHMinePage = (props: any) => {
         refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
       >
         <ProfileBlock
+          balance={balance}
           onPressAvatar={openAvatarList}
-          onPressReload={fetchBalance}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-          money={money}
           name={usr}
           features={features}
           renderFeature={(item, index) => {
@@ -121,11 +124,11 @@ const BZHMinePage = (props: any) => {
           containerStyle={{
             backgroundColor: '#ffffff',
             marginHorizontal: scale(25),
-            marginVertical: scale(25),
+            marginVertical: scale(15),
             borderRadius: scale(7),
             height: scale(70),
           }}
-          textStyle={{ color: '#e53333' }}
+          textStyle={{ color: '#db6372', fontSize: scale(21) }}
           onPress={signOut}
         />
         <BottomGap />

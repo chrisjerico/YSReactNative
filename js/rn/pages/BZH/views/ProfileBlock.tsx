@@ -1,31 +1,29 @@
 import React from 'react'
 import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
 import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
+import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 
 interface ProfileBlockProps {
-  money: string | number;
+  balance: string | number;
   features: any[];
   renderFeature: (item: any, index: number) => any;
   avatar: string;
   containerStyle?: ViewStyle;
   name: string;
-  onPressReload: () => any;
   level: string;
   onPressAvatar: () => any;
 }
 
 const ProfileBlock = ({
   avatar,
-  money,
+  balance,
   features,
   renderFeature,
   containerStyle,
   name,
-  onPressReload,
   level,
   onPressAvatar
 }: ProfileBlockProps) => {
@@ -47,14 +45,14 @@ const ProfileBlock = ({
               />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
-              <Text
-                style={styles.text}
-              >
-                {'余额 ￥' + money}
-              </Text>
-              <ReLoadComponent
-                onPress={onPressReload}
+              <ReLoadBalanceComponent
+                animatedContainerStyle={{ marginTop: scale(3) }}
+                title={'余额 ¥ '}
+                titleStyle={{ fontSize: scale(22) }}
+                balance={balance}
+                balanceStyle={{ color: '#000000', fontSize: scale(22) }}
                 color={'#000000'}
+                size={20}
               />
             </View>
           </View>

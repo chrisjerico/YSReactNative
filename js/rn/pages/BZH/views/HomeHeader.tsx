@@ -50,8 +50,8 @@ const HomeHeader = ({
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
-              <Text numberOfLines={1}>{name}</Text>
-              <Text numberOfLines={1}>{'￥' + balance}</Text>
+              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>{name}</Text>
+              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>{'￥' + balance}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>

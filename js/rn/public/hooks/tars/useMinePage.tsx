@@ -65,7 +65,6 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   const [avatarListLoading, setAvatarListLoading] = useState(true)
   const [avatarListVisible, setAvatarListVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
-  const [money, setMoney] = useState(balance)
   // functions
   const { logOut } = useLogOut({
     onSuccess: () => {
@@ -89,16 +88,6 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     }
   }
 
-  const fetchBalance = async () => {
-    try {
-      const { data } = await APIRouter.user_balance_token()
-      const balance = data?.data?.balance
-      setMoney(balance)
-      UGStore.dispatch({ type: 'merge', userInfo: { balance } })
-    } catch (error) {
-      console.log("-------error------", error)
-    }
-  }
 
   const saveAvatar = async ({ url, filename }) => {
     try {
@@ -147,18 +136,14 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   }, [])
 
 
-  // useEffect(() => {
-  //   setMoney(balance)
-  // }, [balance])
-
   return {
+    balance,
     uid,
     mobile_logo,
     showBackBtn,
     avatarListLoading,
     avatarListVisible,
     avatarList,
-    money,
     userCenterItems,
     curLevelGrade,
     usr,
@@ -171,7 +156,6 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     curLevelTitle,
     nextLevelTitle,
     fetchAvatarList,
-    fetchBalance,
     saveAvatar,
     signOut,
     openAvatarList,

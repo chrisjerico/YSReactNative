@@ -18,6 +18,7 @@ import CheckBox from '../../public/views/tars/CheckBox'
 import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import MineHeader from '../../public/views/tars/MineHeader'
 
 const BZHSignInPage = (props: any) => {
   // yellowBox
@@ -51,17 +52,15 @@ const BZHSignInPage = (props: any) => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <TouchableWithoutFeedback onPress={goBack}>
-          <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
-        </TouchableWithoutFeedback>
-        <Text style={styles.headerTitle}>{'登录'}</Text>
-        <TouchableWithoutFeedback
-          onPress={() => {
+        <MineHeader
+          title={'登录'}
+          showBackBtn={true}
+          onPressLeftTool={goBack}
+          shoeRightTool={true}
+          onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
-        >
-          <Text style={styles.headerTitle}>{'客服'}</Text>
-        </TouchableWithoutFeedback>
+        />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
@@ -70,6 +69,10 @@ const BZHSignInPage = (props: any) => {
             placeholder={'请输入会员帐号'}
             value={account}
             onChangeText={onChangeAccount}
+            leftIcon={{
+              name: 'user-circle',
+              type: 'font-awesome'
+            }}
           />
           <Form
             show={true}
@@ -78,7 +81,8 @@ const BZHSignInPage = (props: any) => {
             }}
             placeholder={'请输入密码'}
             leftIcon={{
-              name: 'lock',
+              name: 'unlock-alt',
+              type: 'font-awesome'
             }}
             value={password}
             onChangeText={onChangePassword}
@@ -115,10 +119,10 @@ const BZHSignInPage = (props: any) => {
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text>{'免费试玩'}</Text>
+              <Text style={{ color: "#666" }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={goToHomePage}>
-              <Text>{'返回首页'}</Text>
+              <Text style={{ color: "#666" }}>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
         </View>

@@ -108,19 +108,6 @@ const LHTHomePage = (props: any) => {
     refreshHome,
   } = useHome()
 
-  const [money, setMoney] = useState(balance)
-
-  const fetchBalance = async () => {
-    try {
-      const { data } = await APIRouter.user_balance_token()
-      const balance = data?.data?.balance
-      setMoney(balance)
-      UGStore.dispatch({ type: 'merge', userInfo: { balance } })
-    } catch (error) {
-      console.log("-------error------", error)
-    }
-  }
-
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
       PushHelper.pushAnnouncement(announcements)
@@ -257,7 +244,7 @@ const LHTHomePage = (props: any) => {
               advertisement={getHtml5Image(14, 'banner', 'gif')}
               lotteryLogo={getHtml5Image(14, 'tjzx')}
               balanceLogo={getHtml5Image(14, 'yue')}
-              balance={money}
+              balance={balance}
               customerServiceLogo={getHtml5Image(14, 'zxkf')}
               onPressSavePoint={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.存款)
@@ -269,7 +256,6 @@ const LHTHomePage = (props: any) => {
               onPressSmileLogo={() =>
                 PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
               }
-              onPressReload={fetchBalance}
               renderNav={(item, index) => {
                 const { icon, name, logo, gameId } = item
                 return (
@@ -322,8 +308,9 @@ const LHTHomePage = (props: any) => {
                 if (selected) {
                   return (
                     <GameButton
-                      showSecondLevelIcon={false}
                       key={index}
+                      showSecondLevelIcon={false}
+                      circleColor={'#b3cde6'}
                       logo={logoUrl}
                       title={title}
                       subTitle={des}
@@ -372,6 +359,7 @@ const LHTHomePage = (props: any) => {
                 return (
                   <GameButton
                     key={index}
+                    circleColor={'#b3cde6'}
                     showRightTopFlag={showFlag > 0 && showFlag < 4}
                     showCenterFlag={showFlag == 4}
                     showSecondLevelIcon={subType}

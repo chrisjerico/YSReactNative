@@ -25,10 +25,10 @@ const LHTMinePage = (props: any) => {
   const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
   const {
+    balance,
     userCenterItems,
     showBackBtn,
     curLevelGrade,
-    money,
     usr,
     isTest,
     avatar,
@@ -37,7 +37,6 @@ const LHTMinePage = (props: any) => {
     avatarListVisible,
     avatarList,
     fetchAvatarList,
-    fetchBalance,
     saveAvatar,
     signOut,
     openAvatarList,
@@ -53,6 +52,7 @@ const LHTMinePage = (props: any) => {
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
         <MineHeader
+          title={'会员中心'}
           showBackBtn={showBackBtn}
           shoeRightTool={true}
           onPressLeftTool={goBack}
@@ -73,14 +73,13 @@ const LHTMinePage = (props: any) => {
           name={usr}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           level={curLevelGrade}
-          balance={money}
+          balance={balance}
           onPressDaySign={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
           }}
           onPressTaskCenter={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
           }}
-          onPressReload={fetchBalance}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (

@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
+import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
@@ -15,7 +15,6 @@ interface ProfileBlockProps {
   renderProfileButton: (item: any, index: number) => any;
   onPressDaySign: () => any;
   onPressTaskCenter: () => any;
-  onPressReload: () => any;
   onPressAvatar: () => any;
   shoeSignBadge: boolean;
 }
@@ -29,7 +28,6 @@ const ProfileBlock = ({
   renderProfileButton,
   onPressDaySign,
   onPressTaskCenter,
-  onPressReload,
   onPressAvatar,
   shoeSignBadge,
 }: ProfileBlockProps) => {
@@ -56,21 +54,20 @@ const ProfileBlock = ({
                 }}
               />
             </View>
-            <View
-              style={{ flexDirection: 'row', flex: 0.9 }}
-            >
-              <Text style={{ fontSize: scale(19) }}>{'余额 : '}</Text>
-              <Text
-                style={{ color: '#ff861b', fontSize: scale(19) }}
-                numberOfLines={1}
-              >
-                {balance + 'RMB'}
-              </Text>
-              <ReLoadComponent onPress={onPressReload} color={'#ff861b'} containerStyle={{ justifyContent: 'flex-start' }} />
+            <View style={{ flexDirection: 'row', flex: 0.9 }}>
+              <ReLoadBalanceComponent
+                title={'余额 : '}
+                color={'#ff861b'}
+                containerStyle={{ justifyContent: 'flex-start' }}
+                size={20}
+                balance={balance}
+              />
             </View>
           </View>
         </View>
-        <View style={{ flex: 1, marginRight: scale(10), marginBottom: scale(40) }}>
+        <View
+          style={{ flex: 1, marginRight: scale(10), marginBottom: scale(40) }}
+        >
           <TouchableWithoutFeedback onPress={onPressTaskCenter}>
             {/* <View style={styles.taskBadge}> */}
             <FastImage
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     alignItems: 'flex-end',
-    paddingBottom: scale(10)
+    paddingBottom: scale(10),
   },
 })
 

@@ -1,13 +1,13 @@
 import React from 'react'
 import {
-  Text,
+  StyleSheet, Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
-  StyleSheet
+  ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import ReLoadComponent from '../../../public/components/tars/ReLoadComponent'
+import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
+import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
 
@@ -28,7 +28,6 @@ interface NavBlockProps {
   balance: string;
   renderAd?: () => any;
   balanceLogo: string;
-  onPressReload: () => any;
 }
 
 interface Lottery {
@@ -55,7 +54,6 @@ const NavBlock = ({
   balance,
   renderAd,
   balanceLogo,
-  onPressReload
 }: NavBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -63,11 +61,10 @@ const NavBlock = ({
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
           <FastImage
-            style={styles.recommendImage}
+            style={styles.balanceLogo}
             source={{ uri: balanceLogo }}
           />
-          <Text style={{ color: '#ff861b' }}>{balance}</Text>
-          <ReLoadComponent onPress={onPressReload} color={'#ff861b'} />
+          <ReLoadBalanceComponent color={'#ff861b'} balance={balance} />
         </View>
         <View style={styles.topRightContainer}>
           <Button
@@ -78,7 +75,7 @@ const NavBlock = ({
           />
           <Button
             text={'提现'}
-            containerStyle={[styles.button, { backgroundColor: '#4285f4' }]}
+            containerStyle={[styles.button, { backgroundColor: LHThemeColor.六合厅.themeColor }]}
             textStyle={styles.title}
             onPress={onPressGetPoint}
           />
@@ -97,7 +94,7 @@ const NavBlock = ({
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
           <FastImage
-            style={styles.recommendImage}
+            style={styles.lotteryLogo}
             source={{ uri: lotteryLogo }}
           />
           <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: scale(20),
   },
-  recommendImage: {
+  lotteryLogo: {
     width: '10%',
     aspectRatio: 1,
     marginHorizontal: scale(5)
@@ -209,6 +206,11 @@ const styles = StyleSheet.create({
   },
   awardsText: {
     fontWeight: '600'
+  },
+  balanceLogo: {
+    width: scale(22),
+    aspectRatio: 1,
+    marginHorizontal: scale(5)
   }
 })
 

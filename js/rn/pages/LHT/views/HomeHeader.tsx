@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
@@ -34,7 +35,7 @@ const HomeHeader = ({
     <>
       <View style={styles.leftContainer}>
         <FastImage
-          resizeMode={'contain'}
+          resizeMode={'stretch'}
           style={styles.image}
           source={{ uri: leftLogo }}
         />
@@ -42,7 +43,7 @@ const HomeHeader = ({
       <View style={styles.rightContainer}>
         {showLogout ? (
           <>
-            <Avatar uri={avatar} size={50} />
+            <Avatar uri={avatar} size={40} />
             <View style={styles.nameContainer}>
               <Text style={styles.nameText} numberOfLines={1}>
                 {name}
@@ -53,7 +54,7 @@ const HomeHeader = ({
               title={'退出'}
               colors={['#ffffff', '#ffffff']}
               containerStyle={styles.badgeContainer}
-              textStyle={{ color: '#2894FF', fontSize: scale(20) }}
+              textStyle={{ color: LHThemeColor.六合厅.themeColor, fontSize: scale(20) }}
               onPress={onPressSignOut}
             />
             <Text style={styles.text}>{' | '}</Text>
@@ -111,9 +112,9 @@ const styles = StyleSheet.create({
     borderRadius: scale(75),
   },
   leftContainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'flex-start',
+    backgroundColor: 'red'
   },
   rightContainer: {
     flex: 3,
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   nameContainer: {
-    width: scale(100),
+    maxWidth: scale(150),
     justifyContent: 'center',
     alignItems: 'center',
   },
