@@ -266,12 +266,15 @@ const TrendView = () => {
                     </View>
                     <Svg height="100%" width="100%"
                          style={{position: "absolute"}}>
-                        {trendData?.positionArr.map((item, index) => {
-                            return index != 0 &&
-                                <Line x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
-                                      y2={trendData?.positionArr[index - 1].y}
-                                      stroke="#409fdc" strokeWidth="1"/>
-                        })}
+                        {/*{trendData?.positionArr.map((item, index) => {*/}
+                        {/*    return index != 0 &&*/}
+                        {/*        <Line x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}*/}
+                        {/*              y2={trendData?.positionArr[index - 1].y}*/}
+                        {/*              stroke="#409fdc" strokeWidth="1"/>*/}
+                        {/*})}*/}
+                        <Line x1={trendData?.positionArr[0].x} y1={trendData?.positionArr[0].y} x2={trendData?.positionArr[1].x}
+                              y2={trendData?.positionArr[0].y}
+                              stroke="#409fdc" strokeWidth="1"/>
                     </Svg>
                 </ScrollView>
             </ScrollView>
