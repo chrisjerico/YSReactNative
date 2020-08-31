@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import { Icon, List } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
@@ -95,7 +95,7 @@ const GameLobbyTabComponent = ({
 
   const scrollTo = (index: number) => {
     scroll?.current?.scrollTo({
-      x: index * scale(100),
+      x: (index - 1) * getTabWidth(), //scale(100),
       y: 0,
       animated: true,
     })
