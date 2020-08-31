@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {chunkArray} from "../tools/ChunkArr";
 import {getTrendData} from "../utils/getTrendData";
 import {TrendData} from "../interface/trendData";
-import Svg, {Line} from "react-native-svg";
+import Svg, {Line, G} from "react-native-svg";
 import APIRouter from "../network/APIRouter";
 import {ChooseGameModal} from "./ChooseGameModal";
 import PushHelper from "../define/PushHelper";
@@ -265,13 +265,15 @@ const TrendView = () => {
                         </>
                     </View>
                     {trendData?.positionArr && trendData?.positionArr?.length > 0 && <Svg height={"100%"} width={"100%"}
-                          style={{backgroundColor: "transparent"}}>
+                          style={{position: "absolute"}}>
+                        <G>
                         {trendData?.positionArr.map((item, index) => {
                             return index != 0 &&
                                 <Line x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
                                       y2={trendData?.positionArr[index - 1].y}
                                       stroke="#409fdc" strokeWidth="1"/>
                         })}
+                        </G>
                     </Svg>}
                 </ScrollView>
             </ScrollView>
