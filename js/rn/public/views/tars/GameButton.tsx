@@ -202,6 +202,7 @@ const styles = StyleSheet.create({
     width: scale(150),
     alignItems: 'center',
     justifyContent: 'flex-start',
+    overflow: 'hidden'
   },
   circleContainer: {
     width: '50%',

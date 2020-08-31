@@ -1,6 +1,6 @@
 import React from 'react'
-import { ScrollView, StyleSheet, FlatList, Text } from 'react-native'
-import GameLobbyTabComponent, { Scene } from '../../public/components/tars/GameLobbyTabComponent'
+import { FlatList, ScrollView, StyleSheet } from 'react-native'
+import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
@@ -31,19 +31,21 @@ const BZHGameLobbyPage = ({ route }) => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <GameLobbyTabComponent
+          containerStyle={{ marginTop: scale(10) }}
           initialTabIndex={initialTabIndex}
-          baseHeight={scale(70)}
-          rowHeight={scale(170)}
+          baseHeight={scale(130)}
+          itemHeight={scale(130)}
           tabGames={tabGames}
           focusTabColor={BZHThemeColor.宝石红.themeColor}
           tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ games, tab, index }) => {
             return (
               <FlatList
+                legacyImplementation={false}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
-                style={{ backgroundColor: '#ffffff', marginTop: scale(10), width: '100%' }}
-                contentContainerStyle={{ paddingTop: scale(20), width: '100%' }}
+                style={{ backgroundColor: '#ffffff', marginTop: scale(10), marginHorizontal: scale(10), borderRadius: scale(5) }}
+                contentContainerStyle={{ paddingTop: scale(45), width: '100%' }}
                 numColumns={3}
                 data={games as any}
                 renderItem={({ item }) => {
@@ -57,7 +59,7 @@ const BZHGameLobbyPage = ({ route }) => {
                       key={index}
                       resizeMode={'contain'}
                       containerStyle={styles.gameContainer}
-                      imageContainerStyle={{ width: '40%' }}
+                      imageContainerStyle={{ width: '35%' }}
                       enableCircle={false}
                       logo={pic}
                       title={title}
@@ -65,17 +67,13 @@ const BZHGameLobbyPage = ({ route }) => {
                       titleStyle={{
                         fontSize: scale(16),
                       }}
-                      subTitleStyle={{
-                        fontSize: scale(20),
-                      }}
                       titleContainerStyle={{
-                        marginTop: scale(5),
-                        aspectRatio: 2.5,
+                        aspectRatio: 2.8,
                       }}
                       onPress={() =>
                         PushHelper.pushHomeGame(Object.assign({}, item, {
                           seriesId: SeriesId[tab],
-                          "gameId": id,
+                          gameId: id,
                           subId: id,
                         }))
                       }
@@ -96,63 +94,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    marginBottom: scale(20)
   },
   gameContainer: {
     width: '33.3%',
-    height: null,
-    alignSelf: 'center',
-    marginBottom: scale(20),
+    height: scale(130),
+    alignSelf: 'center'
   },
 })
 
 export default BZHGameLobbyPage
-
-              // <Scene
-              //   key={index}
-              //   data={games}
-              //   containerStyle={{ marginTop: scale(10) }}
-              //   renderItem={(item, index) => {
-              //     const {
-              //       title,
-              //       pic,
-              //       name,
-              //       id
-              //     } = item
-              //     return (
-              //       <GameButton
-              //         key={index}
-              //         resizeMode={'contain'}
-              //         containerStyle={[
-              //           styles.gameContainer,
-              //           {
-              //             marginLeft: index % 3 == 1 ? '5%' : 0,
-              //             marginRight: index % 3 == 1 ? '5%' : 0,
-              //           },
-              //         ]}
-              //         imageContainerStyle={{ width: '40%' }}
-              //         enableCircle={false}
-              //         logo={pic}
-              //         title={title}
-              //         subTitle={name}
-              //         showSubTitle={false}
-              //         titleStyle={{
-              //           fontSize: scale(16),
-              //         }}
-              //         subTitleStyle={{
-              //           fontSize: scale(20),
-              //         }}
-              //         titleContainerStyle={{
-              //           marginTop: scale(5),
-              //           aspectRatio: 2.5,
-              //         }}
-              //         onPress={() =>
-              //           PushHelper.pushHomeGame(Object.assign({}, item, {
-              //             seriesId: SeriesId[tab],
-              //             "gameId": id,
-              //             subId: id,
-              //           }))
-              //         }
-              //       />
-              //     )
-              //   }}
-              // />

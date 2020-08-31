@@ -299,7 +299,7 @@ const LHTHomePage = (props: any) => {
               }}
             />
             <TabComponent
-              rowHeight={scale(200)}
+              itemHeight={scale(200)}
               leftIcon={getHtml5Image(14, 'hot_icon')}
               rightIcon={getHtml5Image(14, 'cai_icon')}
               activeTabColor={'#ff6b1b'}

@@ -9,12 +9,13 @@ import StringUtils from '../../tools/StringUtils'
 
 interface GameLobbyComponentProps {
   tabGames: (Icon | Data)[];
-  rowHeight?: number;
+  itemHeight?: number;
   renderScene?: ({ games, index, tab }: Render) => any;
   focusTabColor: string;
   baseHeight?: number;
   initialTabIndex: number;
   tabTextStyle?: TextStyle | TextStyle;
+  containerStyle?: ViewStyle | ViewStyle;
 }
 
 interface Render {
@@ -35,21 +36,24 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
   )
 }
 
+const minTabWidth = scale(100)
+
 const GameLobbyTabComponent = ({
   tabGames = [],
-  rowHeight = scale(200),
   focusTabColor,
   baseHeight = scale(60),
   initialTabIndex = 0,
   renderScene,
-  tabTextStyle
+  tabTextStyle,
+  itemHeight,
+  containerStyle
 }: GameLobbyComponentProps) => {
+
   const getTabWidth = () => {
-    const length = tabGames?.length ?? 1
-    const width = AppDefine.width / length
-    const minWidth = scale(100)
-    if (width < minWidth) {
-      return minWidth
+    const gameCount = tabGames?.length ?? 1
+    const width = AppDefine.width / gameCount
+    if (width < minTabWidth) {
+      return minTabWidth
     } else {
       return width
     }
@@ -59,14 +63,9 @@ const GameLobbyTabComponent = ({
     //@ts-ignore
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
-      const length = games?.length ?? 0
-      const fullRow = Math.floor(length / 3)
-      const row = length % 3
-      if (row == 0) {
-        return rowHeight * fullRow + baseHeight
-      } else {
-        return rowHeight * (fullRow + 1) + baseHeight
-      }
+      const gameCount = games?.length ?? 0
+      const row = Math.ceil(gameCount / 3)
+      return itemHeight * row + baseHeight
     } else {
       return 0
     }
@@ -95,7 +94,7 @@ const GameLobbyTabComponent = ({
 
   const scrollTo = (index: number) => {
     scroll?.current?.scrollTo({
-      x: (index - 1) * getTabWidth(), //scale(100),
+      x: (index - 1) * getTabWidth(),
       y: 0,
       animated: true,
     })
@@ -123,11 +122,12 @@ const GameLobbyTabComponent = ({
   return (
     <TabView
       initialLayout={{ width: AppDefine.width }}
-      style={{
+      style={[{
         height,
         borderBottomRightRadius: scale(10),
         borderBottomLeftRadius: scale(10),
-      }}
+      }, containerStyle
+      ]}
       navigationState={{ index, routes }}
       renderTabBar={(props: any) => {
         return (

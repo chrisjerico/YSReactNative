@@ -21,7 +21,7 @@ interface TabComponentProps {
   renderRightGame: (item: any, index: number) => any;
   unActiveTabColor: string;
   activeTabColor: string;
-  rowHeight: number;
+  itemHeight: number;
   leftIcon: string;
   rightIcon: string;
 }
@@ -34,7 +34,7 @@ const TabComponent = ({
   containerStyle,
   unActiveTabColor,
   activeTabColor,
-  rowHeight,
+  itemHeight,
   leftIcon,
   rightIcon,
 }: TabComponentProps) => {
@@ -75,7 +75,7 @@ const TabComponent = ({
           initialTabIndex={0}
           focusTabColor={LHThemeColor.六合厅.themeColor}
           tabGames={rightGames}
-          rowHeight={rowHeight}
+          itemHeight={itemHeight}
           renderScene={({ games, index }) => {
             return <Scene key={index} data={games} renderItem={renderRightGame} />
           }}
