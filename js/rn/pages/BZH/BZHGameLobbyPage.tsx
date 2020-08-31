@@ -41,7 +41,8 @@ const BZHGameLobbyPage = ({ route }) => {
           renderScene={({ games, tab, index }) => {
             return (
               <FlatList
-                legacyImplementation={false}
+                listKey={tab + 'BZHGameLobbyPage'}
+                keyExtractor={(_, index) => tab + index.toString()}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
                 style={{ backgroundColor: '#ffffff', marginTop: scale(10), marginHorizontal: scale(10), borderRadius: scale(5) }}
@@ -78,7 +79,6 @@ const BZHGameLobbyPage = ({ route }) => {
                         }))
                       }
                     />
-
                   )
                 }}
               />)

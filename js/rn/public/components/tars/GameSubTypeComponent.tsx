@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
-import { IGameIconListItem } from '../../../redux/model/home/IGameBean'
+import { FlatList, View, ViewStyle } from 'react-native'
+import { List, SubType } from '../../network/Model/HomeGamesModel'
 
 interface RenderGame {
-  item: any;
+  item: List;
   index: number;
   onPressGameSubType: (index: number) => any;
 }
 
 interface GameSubTypeComponentProps {
   containerStyle?: ViewStyle | ViewStyle[];
-  games: any[];
+  games: List[];
   renderGame: (params: RenderGame) => any;
-  renderSubType?: (item: IGameIconListItem, index: number) => any;
+  renderSubType?: ({ item, index }: RenderSubType) => any;
   subTypeContainerStyle?: ViewStyle | ViewStyle[];
   numColumns: number;
+  subTypeNumColumns: number;
+  listKey: string;
+}
+
+interface RenderSubType {
+  item: SubType;
+  index: number;
 }
 
 const GameSubTypeComponent = ({
@@ -24,6 +31,8 @@ const GameSubTypeComponent = ({
   renderSubType,
   subTypeContainerStyle,
   numColumns,
+  subTypeNumColumns,
+  listKey
 }: GameSubTypeComponentProps) => {
 
   const [indexHistory, setIndexHistory] = useState(-1)
@@ -50,36 +59,47 @@ const GameSubTypeComponent = ({
 
   return (
     <View style={containerStyle}>
-      <View style={styles.gamesContainer}>
-        {mainGames?.map((item, index) => {
+      <FlatList
+        removeClippedSubviews={true}
+        listKey={listKey + 'mainGames'}
+        keyExtractor={(_, index) => listKey + index.toString()}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        numColumns={numColumns}
+        data={mainGames}
+        renderItem={({ item, index }) => {
           return renderGame({ item, index, onPressGameSubType })
-        })}
-      </View>
-      {subType?.length > 0 && (
-        <View style={[styles.gamesContainer, subTypeContainerStyle]}>
-          {subType?.map(renderSubType)}
-        </View>
-      )}
-      <View style={styles.gamesContainer}>
-        {subGames?.map((item, index) => {
+        }}
+      />
+      <FlatList
+        removeClippedSubviews={true}
+        listKey={listKey + 'subType'}
+        keyExtractor={(_, index) => listKey + index.toString()}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        numColumns={subTypeNumColumns}
+        style={subTypeContainerStyle}
+        data={subType}
+        renderItem={renderSubType}
+      />
+      <FlatList
+        removeClippedSubviews={true}
+        listKey={listKey + 'subGames'}
+        keyExtractor={(_, index) => listKey + index.toString()}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        numColumns={numColumns}
+        data={subGames}
+        renderItem={({ item, index }) => {
           return renderGame({
             item,
             index: index + (mainGames?.length ?? 0),
             onPressGameSubType,
           })
-        })}
-      </View>
+        }}
+      />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  gamesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  }
-})
 
 export default GameSubTypeComponent

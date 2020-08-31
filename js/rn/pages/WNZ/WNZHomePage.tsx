@@ -269,13 +269,16 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <GameSubTypeComponent
+            listKey={'WNZHomePage'}
             containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
             games={games}
             subTypeContainerStyle={{
+              marginTop: scale(10),
               paddingHorizontal: scale(10),
             }}
-            renderSubType={(item, index) => {
+            subTypeNumColumns={4}
+            renderSubType={({ item, index }) => {
               const { title } = item
               return (
                 <Button

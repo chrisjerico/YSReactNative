@@ -93,9 +93,12 @@ const GameLobbyTabComponent = ({
   }
 
   const scrollTo = (index: number) => {
-    scroll?.current?.scrollTo({
-      x: (index - 1) * getTabWidth(),
-      y: 0,
+    const width = getTabWidth()
+    console.log("--------width-------", width)
+    // scroll.current.scrollToEnd({ animated: true })
+    scroll.current.scrollTo({
+      x: 700,
+      y: 700,
       animated: true,
     })
   }
@@ -110,7 +113,7 @@ const GameLobbyTabComponent = ({
     }) ?? []
 
   useEffect(() => {
-    scrollTo(index)
+    scrollTo(initialTabIndex)
   }, [])
 
   // useEffect(() => {
@@ -136,8 +139,6 @@ const GameLobbyTabComponent = ({
             horizontal={true}
             style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
             showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={200}
-            decelerationRate={'fast'}
           >
             <TabBar
               ref={tab}

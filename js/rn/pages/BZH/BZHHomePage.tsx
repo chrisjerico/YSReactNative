@@ -224,7 +224,9 @@ const BZHHomePage = ({ navigation }) => {
             }}
           />
           <FlatList
+            listKey={'6633dwdd'}
             style={{ paddingHorizontal: '1%' }}
+            keyExtractor={(item) => item?.name}
             removeClippedSubviews={true}
             data={homeGames}
             renderItem={({ item }) => {
@@ -244,6 +246,7 @@ const BZHHomePage = ({ navigation }) => {
                   }}
                   renderGameContent={() => (
                     <GameSubTypeComponent
+                      listKey={name}
                       containerStyle={{ paddingTop: scale(20) }}
                       subTypeContainerStyle={{
                         marginBottom: scale(20),
@@ -251,7 +254,8 @@ const BZHHomePage = ({ navigation }) => {
                       }}
                       games={list}
                       numColumns={3}
-                      renderSubType={(item, index) => {
+                      subTypeNumColumns={3}
+                      renderSubType={({ item, index }) => {
                         const { title } = item
                         return (
                           <Button
@@ -294,7 +298,7 @@ const BZHHomePage = ({ navigation }) => {
                             key={index}
                             showRightTopFlag={showFlag > 0 && showFlag < 4}
                             showCenterFlag={showFlag == 4}
-                            showSecondLevelIcon={subType}
+                            showSecondLevelIcon={subType ? true : false}
                             flagIcon={hotIcon}
                             resizeMode={'contain'}
                             containerStyle={[

@@ -160,11 +160,7 @@ const GameButton = (props: GameButtonProps) => {
               )}
             </View>
           )}
-        {
-          showUnReadMsg && <View style={styles.unReadMsgContainer}>
-            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
-          </View>
-        }
+
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
             <Text style={titleStyle} numberOfLines={1}>
@@ -179,6 +175,11 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
+        {
+          showUnReadMsg && <View style={styles.unReadMsgContainer}>
+            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+          </View>
+        }
         {showRightTopFlag &&
           (flagIcon ? (
             <View style={[styles.rightTopFlag, flagContainer]}
@@ -202,7 +203,6 @@ const styles = StyleSheet.create({
     width: scale(150),
     alignItems: 'center',
     justifyContent: 'flex-start',
-    overflow: 'hidden'
   },
   circleContainer: {
     width: '50%',
