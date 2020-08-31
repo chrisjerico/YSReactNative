@@ -275,67 +275,67 @@ const TrendView = () => {
             {/*        </Svg>*/}
             {/*    </ScrollView>*/}
             {/*</ScrollView>*/}
+            <View style={{flexDirection: "row"}}>
+                <TouchableOpacity style={{backgroundColor: "#d7213a", height: 44, width: 160, justifyContent: "center"}}
+                                  onPress={() => setShowModal(true)}>
+                    <Text style={{
+                        textAlign: "center",
+                        color: "white",
+                        paddingHorizontal: 16
+                    }}>{currentGame.title}</Text>
+                </TouchableOpacity>
+                <View style={{flex: 1, flexDirection: "row", paddingRight: 8, alignItems: "center"}}>
+                    <View style={{flex: 1}}/>
+                    <TouchableOpacity style={{
+                        backgroundColor: "#e74d39",
+                        marginVertical: 6,
+                        width: 33,
+                        height: 26,
+                        borderRadius: 4,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }} onPress={() => getData()}>
+                        <Image style={{width: 20, height: 20}}
+                               source={{uri: "https://test10.6yc.com/images/kj_refresh.png"}}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{
+                        backgroundColor: "#e77d21",
+                        marginVertical: 6,
+                        borderRadius: 4,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginLeft: 4
+                    }} onPress={() => setShowModal(true)}>
+                        <Text style={{color: "white", paddingHorizontal: 8, paddingVertical: 6}}>选择彩种</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{
+                        backgroundColor: "#e74d39",
+                        marginVertical: 6,
+                        borderRadius: 4,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginLeft: 4
+                    }} onPress={() => PushHelper.pushCategory(1, currentGame.id)}>
+                        <Text style={{color: "white", paddingHorizontal: 8, paddingVertical: 6}}>去下注</Text>
+                    </TouchableOpacity>
+                </View>
+                <ChooseGameModal setCurrentGame={(game) => {
+                    setDefaultNumber(0)
+                    setCurrentGame(game)
+                }} setShowModal={setShowModal} showModal={showModal}/>
+            </View>
             {/*<View style={{flexDirection: "row"}}>*/}
-            {/*    <TouchableOpacity style={{backgroundColor: "#d7213a", height: 44, width: 160, justifyContent: "center"}}*/}
-            {/*                      onPress={() => setShowModal(true)}>*/}
-            {/*        <Text style={{*/}
-            {/*            textAlign: "center",*/}
-            {/*            color: "white",*/}
-            {/*            paddingHorizontal: 16*/}
-            {/*        }}>{currentGame.title}</Text>*/}
-            {/*    </TouchableOpacity>*/}
-            {/*    <View style={{flex: 1, flexDirection: "row", paddingRight: 8, alignItems: "center"}}>*/}
-            {/*        <View style={{flex: 1}}/>*/}
-            {/*        <TouchableOpacity style={{*/}
-            {/*            backgroundColor: "#e74d39",*/}
-            {/*            marginVertical: 6,*/}
-            {/*            width: 33,*/}
-            {/*            height: 26,*/}
-            {/*            borderRadius: 4,*/}
-            {/*            justifyContent: "center",*/}
-            {/*            alignItems: "center"*/}
-            {/*        }} onPress={() => getData()}>*/}
-            {/*            <Image style={{width: 20, height: 20}}*/}
-            {/*                   source={{uri: "https://test10.6yc.com/images/kj_refresh.png"}}/>*/}
-            {/*        </TouchableOpacity>*/}
-            {/*        <TouchableOpacity style={{*/}
-            {/*            backgroundColor: "#e77d21",*/}
-            {/*            marginVertical: 6,*/}
-            {/*            borderRadius: 4,*/}
-            {/*            justifyContent: "center",*/}
-            {/*            alignItems: "center",*/}
-            {/*            marginLeft: 4*/}
-            {/*        }} onPress={() => setShowModal(true)}>*/}
-            {/*            <Text style={{color: "white", paddingHorizontal: 8, paddingVertical: 6}}>选择彩种</Text>*/}
-            {/*        </TouchableOpacity>*/}
-            {/*        <TouchableOpacity style={{*/}
-            {/*            backgroundColor: "#e74d39",*/}
-            {/*            marginVertical: 6,*/}
-            {/*            borderRadius: 4,*/}
-            {/*            justifyContent: "center",*/}
-            {/*            alignItems: "center",*/}
-            {/*            marginLeft: 4*/}
-            {/*        }} onPress={() => PushHelper.pushCategory(1, currentGame.id)}>*/}
-            {/*            <Text style={{color: "white", paddingHorizontal: 8, paddingVertical: 6}}>去下注</Text>*/}
-            {/*        </TouchableOpacity>*/}
-            {/*    </View>*/}
-            {/*    <ChooseGameModal setCurrentGame={(game) => {*/}
-            {/*        setDefaultNumber(0)*/}
-            {/*        setCurrentGame(game)*/}
-            {/*    }} setShowModal={setShowModal} showModal={showModal}/>*/}
+            {/*    <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>*/}
             {/*</View>*/}
-            {/*/!*<View style={{flexDirection: "row"}}>*!/*/}
-            {/*/!*    <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>*!/*/}
-            {/*/!*</View>*!/*/}
-            {/*{loading && <View style={{*/}
-            {/*    justifyContent: "center",*/}
-            {/*    width: AppDefine.width,*/}
-            {/*    height: AppDefine.height,*/}
-            {/*    position: "absolute",*/}
-            {/*    backgroundColor: "rgba(0,0,0,0.5)"*/}
-            {/*}}>*/}
-            {/*    <ActivityIndicator size={"small"} color={"white"}/>*/}
-            {/*</View>}*/}
+            {loading && <View style={{
+                justifyContent: "center",
+                width: AppDefine.width,
+                height: AppDefine.height,
+                position: "absolute",
+                backgroundColor: "rgba(0,0,0,0.5)"
+            }}>
+                <ActivityIndicator size={"small"} color={"white"}/>
+            </View>}
         </BaseScreen>
     )
 }
