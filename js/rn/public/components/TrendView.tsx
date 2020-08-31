@@ -273,6 +273,7 @@ const TrendView = () => {
                                       stroke="#409fdc" strokeWidth="1"/>
                         })}
                     </Svg>
+                    
                 </ScrollView>
             </ScrollView>
             <View style={{flexDirection: "row"}}>
