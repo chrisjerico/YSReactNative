@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, TouchableWithoutFeedback, StyleSheet } from 'react-native'
+import {Text, View, TouchableWithoutFeedback, StyleSheet, Platform} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -37,11 +37,19 @@ const HomeHeader = ({
           color={'#ffffff'}
           size={scale(25)}
           onPress={() => {
-            !pop() &&
-              OCHelper.call(
-                'UGNavigationController.current.popViewControllerAnimated:',
-                [true]
-              )
+            if (!pop()) {
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call(
+                    'UGNavigationController.current.popViewControllerAnimated:',
+                    [true]
+                  )
+                  break;
+                case 'android':
+
+                  break;
+              }
+            }
           }}
         />
       ) : uid ? (
