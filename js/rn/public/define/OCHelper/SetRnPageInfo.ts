@@ -59,7 +59,7 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
-  let skitType = Skin1.skitType; 
+  let skitType = Skin1.skitType;
   // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   // if (skitType.indexOf('白曜') != -1) {
@@ -250,7 +250,7 @@ export function setRnPageInfo() {
       {
         // 首页
         tabbarItemPath: '/home',
-        rnName: PageName.ZLHomePage,
+        rnName: PageName.TrendView,
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
