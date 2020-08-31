@@ -265,7 +265,7 @@ const TrendView = () => {
                         </>
                     </View>
                     {trendData?.positionArr && trendData?.positionArr?.length > 0 && <Svg height="100%" width="100%"
-                          style={{position: "absolute"}}>
+                          style={{position: "absolute", backgroundColor: "transparent"}}>
                         {trendData?.positionArr.map((item, index) => {
                             return index != 0 &&
                                 <Line x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
