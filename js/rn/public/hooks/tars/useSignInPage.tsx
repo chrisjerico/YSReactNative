@@ -1,15 +1,12 @@
-import { useRef, useState, useEffect } from 'react'
-import UGSysConfModel, {
-  UGUserCenterType,
-} from '../../../redux/model/全局/UGSysConfModel'
+import { useRef, useState } from 'react'
+import UGSysConfModel, { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { navigate, pop } from '../../navigation/RootNavigation'
+import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
-import { OCHelper } from '../../define/OCHelper/OCHelper'
-import { ToastSuccess, ToastError, ToastStatus } from '../../tools/tars'
 
 interface SlidingVerification {
   nc_csessionid: string;

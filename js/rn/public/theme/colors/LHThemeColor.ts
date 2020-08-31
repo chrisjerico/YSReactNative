@@ -23,7 +23,7 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#2894FF',
+    themeColor: '#4285f4', // #2894FF
     themeLightColor: '#ACD6FF',
     isBlack: false,
     is23: false,

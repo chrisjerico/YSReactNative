@@ -9,12 +9,34 @@ import { PageName } from "../../navigation/Navigation"
 import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
 
+interface DefaultUserCenterLogos {
+  1: string, // 存款
+  2: string, // 取款
+  3: string, // 银行卡管理
+  4: string, // 利息宝
+  5: string, // 推荐收益
+  6: string, // 彩票注单记录
+  7: string, // 其他注单记录
+  8: string, // 额度转换
+  9: string, // 站内信
+  10: string, // 安全中心
+  11: string, // 任务中心
+  12: string, // 个人信息
+  13: string, // 建议反馈
+  14: string, // 在线客服
+  15: string, // 活动彩金
+  16: string, // 长龙助手
+  17: string, // 全民竞猜
+  18: string, // 开奖走势
+  19: string, // QQ客服
+}
 interface UseMinePage {
   setProps?: (props: any) => any;
   homePage?: PageName;
+  defaultUserCenterLogos: DefaultUserCenterLogos
 }
 
-const useMinePage = ({ setProps, homePage }: UseMinePage) => {
+const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage) => {
   // yellowBox
   console.disableYellowBox = true
   // stores
@@ -32,13 +54,17 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     curLevelTitle,
     nextLevelTitle,
   }: UGUserModel = UGStore.globalProps.userInfo
-  const { userCenterItems, mobile_logo }: UGSysConfModel = UGStore.globalProps.sysConf
+  const { mobile_logo, userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
+  const userCenterItems = userCenter?.map(ele => {
+    const { logo, code } = ele
+    const newLogo = (logo?.length == 0 || !logo) ? defaultUserCenterLogos?.[code] : logo
+    return Object.assign({}, ele, { logo: newLogo })
+  })
   // states
   const [showBackBtn, setShowBackBtn] = useState(false)
   const [avatarListLoading, setAvatarListLoading] = useState(true)
   const [avatarListVisible, setAvatarListVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
-  const [money, setMoney] = useState(balance)
   // functions
   const { logOut } = useLogOut({
     onSuccess: () => {
@@ -56,20 +82,12 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
       const avatarList = response?.data?.data ?? []
       setAvatarList(avatarList)
     } catch (error) {
-      console.log(error)
+      console.log("-------error------", error)
     } finally {
       setAvatarListLoading(false)
     }
   }
 
-  const fetchBalance = async () => {
-    try {
-      const { data } = await APIRouter.user_balance_token()
-      const balance = data?.data?.balance
-      setMoney(balance)
-      UGStore.dispatch({ type: 'merge', userInfo: { balance } })
-    } catch (error) { }
-  }
 
   const saveAvatar = async ({ url, filename }) => {
     try {
@@ -117,14 +135,15 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     })
   }, [])
 
+
   return {
+    balance,
     uid,
     mobile_logo,
     showBackBtn,
     avatarListLoading,
     avatarListVisible,
     avatarList,
-    money,
     userCenterItems,
     curLevelGrade,
     usr,
@@ -137,7 +156,6 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
     curLevelTitle,
     nextLevelTitle,
     fetchAvatarList,
-    fetchBalance,
     saveAvatar,
     signOut,
     openAvatarList,

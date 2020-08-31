@@ -3,7 +3,7 @@ import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../../redux/store/IGlobalStateHelper'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import { cleanNativeUser, saveNativeUser, ToastStatus } from '../../tools/tars'
+import { saveNativeUser } from '../../tools/tars'
 
 interface LogIn {
   isRemember?: boolean;
