@@ -30,7 +30,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 
-const BZHHomePage = () => {
+const BZHHomePage = ({ navigation }) => {
   // yellowBox
   console.disableYellowBox = true
   // functions
@@ -235,8 +235,9 @@ const BZHHomePage = () => {
                   title={name}
                   onPressTotal={() => {
                     if (uid) {
-                      const initialTabIndex = tabs?.findIndex(item => item == name)
-                      push(PageName.BZHGameLobbyPage, { tabGames, initialTabIndex: initialTabIndex < 0 ? 0 : initialTabIndex })
+                      const index = tabs?.findIndex(item => item == name)
+                      const initialTabIndex = index < 0 ? 0 : index
+                      push(PageName.BZHGameLobbyPage, { tabGames, initialTabIndex })
                     } else {
                       push(PageName.BZHSignInPage)
                     }

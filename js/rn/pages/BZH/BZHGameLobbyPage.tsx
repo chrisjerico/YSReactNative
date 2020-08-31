@@ -10,8 +10,8 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { SeriesId } from '../../redux/model/全局/UGSysConfModel'
 
-const BZHGameLobbyPage = ({ tabGames, initialTabIndex }) => {
-
+const BZHGameLobbyPage = ({ route }) => {
+  const { initialTabIndex, tabGames } = route?.params ?? {}
   return (
     <>
       <SafeAreaHeader
@@ -32,15 +32,16 @@ const BZHGameLobbyPage = ({ tabGames, initialTabIndex }) => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <GameLobbyTabComponent
           initialTabIndex={initialTabIndex}
-          baseHeight={scale(70)}
-          sceneContainerStyle={{ marginTop: scale(10) }}
-          rowHeight={scale(200)}
+          baseHeight={scale(100)}
+          rowHeight={scale(155)}
           tabGames={tabGames}
           focusTabColor={BZHThemeColor.宝石红.themeColor}
+          tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ games, tab, index }) => {
             return (<Scene
               key={index}
               data={games}
+              containerStyle={{ marginTop: scale(10) }}
               renderItem={(item, index) => {
                 const {
                   title,
@@ -59,14 +60,14 @@ const BZHGameLobbyPage = ({ tabGames, initialTabIndex }) => {
                         marginRight: index % 3 == 1 ? '5%' : 0,
                       },
                     ]}
-                    imageContainerStyle={{ width: '60%' }}
+                    imageContainerStyle={{ width: '40%' }}
                     enableCircle={false}
                     logo={pic}
                     title={title}
                     subTitle={name}
                     showSubTitle={false}
                     titleStyle={{
-                      fontSize: scale(25),
+                      fontSize: scale(16),
                     }}
                     subTitleStyle={{
                       fontSize: scale(20),

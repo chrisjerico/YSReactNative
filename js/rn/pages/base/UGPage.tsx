@@ -12,11 +12,11 @@ import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { navigationRef } from '../../public/navigation/RootNavigation'
-import {ugLog} from "../../public/tools/UgLog";
+import { ugLog } from "../../public/tools/UgLog";
 import StringUtils from "../../public/tools/StringUtils";
-import {Platform} from "react-native";
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import { Platform } from "react-native";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 
 
 // Props
@@ -86,7 +86,7 @@ export default (Page: Function) => {
                 OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
                 break;
               case "android":
-                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
                 break;
             }
           }
@@ -126,10 +126,10 @@ export default (Page: Function) => {
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
+            <Page  {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
         </LinearGradient>
-      );
+      ); // navigation={this.props.navigation}
     }
   }
 }

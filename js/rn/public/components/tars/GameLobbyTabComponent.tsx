@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { ScrollView, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import { Icon, List } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
@@ -11,11 +11,10 @@ interface GameLobbyComponentProps {
   tabGames: (Icon | Data)[];
   rowHeight?: number;
   renderScene?: ({ games, index, tab }: Render) => any;
-  // renderGame?: ({ item, index, tab }: Render) => any;
   focusTabColor: string;
-  sceneContainerStyle?: ViewStyle | ViewStyle;
   baseHeight?: number;
   initialTabIndex: number;
+  tabTextStyle?: TextStyle | TextStyle;
 }
 
 interface Render {
@@ -40,10 +39,10 @@ const GameLobbyTabComponent = ({
   tabGames = [],
   rowHeight = scale(200),
   focusTabColor,
-  sceneContainerStyle,
   baseHeight = scale(60),
   initialTabIndex = 0,
   renderScene,
+  tabTextStyle
 }: GameLobbyComponentProps) => {
   const getTabWidth = () => {
     const length = tabGames?.length ?? 1
@@ -82,21 +81,25 @@ const GameLobbyTabComponent = ({
     }
   })
 
-  const [height, setHeight] = useState(getSceneHeight(0))
+  const [height, setHeight] = useState(getSceneHeight(initialTabIndex))
   const [index, setIndex] = useState(initialTabIndex)
   const scroll = useRef(null)
+  const tab = useRef(null)
 
   const changeIndex = (index: number) => {
     const height = getSceneHeight(index)
     setIndex(index)
     setHeight(height)
+    scrollTo(index)
+  }
+
+  const scrollTo = (index: number) => {
     scroll?.current?.scrollTo({
       x: index * scale(100),
       y: 0,
       animated: true,
     })
   }
-
 
   const routes =
     tabGames?.map((item, index) => {
@@ -108,13 +111,14 @@ const GameLobbyTabComponent = ({
     }) ?? []
 
   useEffect(() => {
-    setHeight(getSceneHeight(index))
-  }, [tabGames])
+    scrollTo(index)
+  }, [])
 
-  useEffect(() => {
-    changeIndex(initialTabIndex)
+  // useEffect(() => {
+  //   const height = getSceneHeight(index)
+  //   setHeight(height)
 
-  }, [initialTabIndex])
+  // }, [tabGames])
 
   return (
     <TabView
@@ -136,7 +140,9 @@ const GameLobbyTabComponent = ({
             decelerationRate={'fast'}
           >
             <TabBar
+              ref={tab}
               {...props}
+              lazy={true}
               pressOpacity={1}
               contentContainerStyle={{ backgroundColor: '#ffffff' }}
               tabStyle={styles.tabStyle}
@@ -155,6 +161,7 @@ const GameLobbyTabComponent = ({
                           fontSize: scale(25),
                           marginBottom: scale(5),
                         },
+                        tabTextStyle,
                         focused ? { color: focusTabColor } : styles.text,
                       ]}
                     >
