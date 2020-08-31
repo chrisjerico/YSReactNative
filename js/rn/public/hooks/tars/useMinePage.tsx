@@ -8,6 +8,7 @@ import { ToastSuccess, ToastError } from "../../tools/tars"
 import { PageName } from "../../navigation/Navigation"
 import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
+import {Platform} from "react-native";
 
 interface UseMinePage {
   setProps?: (props: any) => any;
@@ -93,11 +94,19 @@ const useMinePage = ({ setProps, homePage }: UseMinePage) => {
   const signOut = logOut
 
   const goBack = () => {
-    !pop() &&
-      OCHelper.call(
-        'UGNavigationController.current.popViewControllerAnimated:',
-        [true]
-      )
+    if (!pop()) {
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call(
+            'UGNavigationController.current.popViewControllerAnimated:',
+            [true]
+          )
+          break;
+        case 'android':
+
+          break;
+      }
+    }
   }
   // effects
   useEffect(() => {

@@ -169,14 +169,14 @@ const KSRegister = () => {
     } catch (error) {
       EventRegister.emit('reload')
       reRenderCode()
-      if (error.message.includes("推荐人")) {
+      if (error?.message?.includes("推荐人")) {
         Alert.alert(error?.message, "")
         switch (Platform.OS) {
           case 'ios':
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
             break;
           case 'android':
-
+            Toast(error?.message ?? '注册失败');
             break;
         }
       } else {
