@@ -17,6 +17,9 @@ import { Toast } from '../../public/tools/ToastUtils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppDefine from '../../public/define/AppDefine';
 import { Res } from '../../Res/icon/Resources';
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 
 class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
   // 成为焦点页面
@@ -24,6 +27,7 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
 
   requestData() {
     // 获取功能按钮列表
+    //TODO Android
     OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
       let dataArray = list.map(item => new UGUserCenterItem(item));
       this.setProps({ dataArray: dataArray });
@@ -149,14 +153,31 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
                   onPress: async () => {
                     NetworkRequest1.user_logout();
 
-                    if (Platform.OS == 'ios') {
-                      await OCHelper.call('UGUserModel.setCurrentUser:', []);
-                      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                      await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-                      Toast('退出成功');
-                    } else {
-                      // TODO 安卓
+                    switch (Platform.OS) {
+                      case 'ios':
+                        await OCHelper.call('UGUserModel.setCurrentUser:', []);
+                        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+                        break;
+                      case 'android':
+                        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LOGIN_INFO })
+                        let loginInfo = JSON.parse(result);
+
+                        //保留 account, pwd, isRemember，下载登录的时候使用
+                        await ANHelper.callAsync(CMD.SAVE_DATA,
+                          {
+                            key: NA_DATA.LOGIN_INFO,
+                            account: loginInfo?.account,
+                            pwd: loginInfo?.pwd,
+                            isRemember: loginInfo?.isRemember,
+                          });
+
+                        await ANHelper.callAsync(CMD.SAVE_DATA,
+                          { key: NA_DATA.USER_INFO, });
+                        break;
                     }
+
+                    Toast('退出成功');
                   },
                 },
               ]);
