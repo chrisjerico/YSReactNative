@@ -9,13 +9,14 @@ import {
 import FastImage from 'react-native-fast-image'
 import GameLobbyTabComponent, { Scene } from '../../../public/components/tars/GameLobbyTabComponent'
 import { Icon } from '../../../public/network/Model/HomeGamesModel'
+import { Data } from '../../../public/network/Model/HomeRecommendModel'
 import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 
 interface TabComponentProps {
   containerStyle?: ViewStyle;
   leftGames: any[];
-  rightGames: Icon[];
+  rightGames: (Icon | Data)[];
   renderLeftGame: (item: any, index: number) => any;
   renderRightGame: (item: any, index: number) => any;
   unActiveTabColor: string;
@@ -71,10 +72,13 @@ const TabComponent = ({
       </View>
       {index ? (
         <GameLobbyTabComponent
+          initialTabIndex={0}
           focusTabColor={LHThemeColor.六合厅.themeColor}
           tabGames={rightGames}
           rowHeight={rowHeight}
-          renderScene={renderRightGame}
+          renderScene={({ games, index }) => {
+            return <Scene key={index} data={games} renderItem={renderRightGame} />
+          }}
         />
       ) : (
           <Scene

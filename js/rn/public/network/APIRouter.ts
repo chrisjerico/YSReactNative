@@ -26,6 +26,7 @@ import { SystemConfigModel } from './Model/SystemConfigModel';
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
 import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
+import { HomeRecommendModel } from "./Model/HomeRecommendModel";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -50,6 +51,9 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static game_homeRecommend = async () => {
+    return httpClient.get<HomeRecommendModel>('c=game&a=homeRecommend')
+  }
   /**
    * 首頁遊戲資料
    */

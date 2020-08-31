@@ -1,41 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
-import { Icon } from '../../../public/network/Model/HomeGamesModel'
+import { Icon, List } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
+import { Data, Game } from '../../network/Model/HomeRecommendModel'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
 interface GameLobbyComponentProps {
-  tabGames: Icon[];
+  tabGames: (Icon | Data)[];
   rowHeight?: number;
-  renderScene: (item: any, index: number) => any;
+  renderScene?: ({ games, index, tab }: Render) => any;
+  // renderGame?: ({ item, index, tab }: Render) => any;
   focusTabColor: string;
   sceneContainerStyle?: ViewStyle | ViewStyle;
   baseHeight?: number;
+  initialTabIndex: number;
+}
+
+interface Render {
+  games: List[] | Game[];
+  index: number;
+  tab: string;
 }
 
 export interface SceneProps {
-  data: any[];
+  data: any;
   renderItem: (item: any, index: number) => any;
   containerStyle?: ViewStyle | ViewStyle[];
 }
 
 export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
   return (
-    <View style={[styles.scene, containerStyle]}>{data.map(renderItem)}</View>
+    <View style={[styles.scene, containerStyle]}>{data?.map(renderItem)}</View>
   )
 }
 
 const GameLobbyTabComponent = ({
   tabGames = [],
   rowHeight = scale(200),
-  renderScene,
   focusTabColor,
   sceneContainerStyle,
-  baseHeight = scale(60)
+  baseHeight = scale(60),
+  initialTabIndex = 0,
+  renderScene,
 }: GameLobbyComponentProps) => {
-
   const getTabWidth = () => {
     const length = tabGames?.length ?? 1
     const width = AppDefine.width / length
@@ -48,7 +57,8 @@ const GameLobbyTabComponent = ({
   }
 
   const getSceneHeight = (index: number) => {
-    const games = tabGames?.[index]?.list
+    //@ts-ignore
+    const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
       const length = games?.length ?? 0
       const fullRow = Math.floor(length / 3)
@@ -64,33 +74,47 @@ const GameLobbyTabComponent = ({
   }
 
   let scenes = {}
-  tabGames?.forEach((item, index) => {
+  tabGames?.forEach((item: any, index: number) => {
     scenes[index] = () => {
-      return (
-        <Scene
-          data={item?.list ?? []}
-          renderItem={renderScene}
-          containerStyle={sceneContainerStyle}
-        />
-      )
+      const tab = item?.name ?? item?.categoryName ?? ''
+      const games = item?.list ?? item?.games ?? []
+      return renderScene && renderScene({ games, index, tab })
     }
   })
 
   const [height, setHeight] = useState(getSceneHeight(0))
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(initialTabIndex)
   const scroll = useRef(null)
+
+  const changeIndex = (index: number) => {
+    const height = getSceneHeight(index)
+    setIndex(index)
+    setHeight(height)
+    scroll?.current?.scrollTo({
+      x: index * scale(100),
+      y: 0,
+      animated: true,
+    })
+  }
+
 
   const routes =
     tabGames?.map((item, index) => {
       return {
         key: index.toString(),
-        title: StringUtils.getInstance().deleteHtml(item?.name ?? ''),
+        //@ts-ignore
+        title: StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? ''),
       }
     }) ?? []
 
   useEffect(() => {
     setHeight(getSceneHeight(index))
   }, [tabGames])
+
+  useEffect(() => {
+    changeIndex(initialTabIndex)
+
+  }, [initialTabIndex])
 
   return (
     <TabView
@@ -155,16 +179,7 @@ const GameLobbyTabComponent = ({
         )
       }}
       renderScene={SceneMap(scenes)}
-      onIndexChange={(index) => {
-        const height = getSceneHeight(index)
-        setIndex(index)
-        setHeight(height)
-        scroll.current.scrollTo({
-          x: index * scale(100),
-          y: 0,
-          animated: true,
-        })
-      }}
+      onIndexChange={changeIndex}
     />
   )
 }
@@ -178,7 +193,6 @@ const styles = StyleSheet.create({
     paddingTop: scale(25),
     borderTopColor: '#d9d9d9',
     borderTopWidth: scale(1),
-
   },
   tabStyle: {
     backgroundColor: '#ffffff',

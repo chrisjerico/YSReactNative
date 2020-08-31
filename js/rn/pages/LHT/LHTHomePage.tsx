@@ -161,11 +161,11 @@ const LHTHomePage = (props: any) => {
     },
     ...lotterys.slice(6),
   ]
-  const homeGames =
-    homeGame?.data?.icons?.map((tab) => {
-      const { list, name } = tab
-      return { name, list: list?.filter((ele) => ele.levelType == '1') ?? [] }
-    }) ?? []
+  // const homeGames = homeGame?.data?.icons
+  const homeGames = homeGame?.data?.icons?.map((tab) => {
+    const { list, name } = tab
+    return { name, list: list?.filter((ele) => ele.levelType == '1') ?? [] }
+  }) ?? []
 
   if (loading) {
     return <ProgressCircle />
@@ -367,7 +367,7 @@ const LHTHomePage = (props: any) => {
                     circleColor={'#b3cde6'}
                     showRightTopFlag={showFlag > 0 && showFlag < 4}
                     showCenterFlag={showFlag == 4}
-                    showSecondLevelIcon={subType}
+                    showSecondLevelIcon={subType ? true : false}
                     flagIcon={hotIcon}
                     logo={icon || logo}
                     title={title}

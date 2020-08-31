@@ -343,7 +343,7 @@ const WNZHomePage = (props: any) => {
             leftGames={officialGames}
             rightGames={customiseGames}
             renderLeftGame={(item, index) => {
-              const { title, pic, openCycle, id, gameType } = item
+              const { title, pic, openCycle, id } = item
               return (
                 <RowGameButtom
                   key={index}

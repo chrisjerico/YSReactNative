@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react'
-import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import MineHeader from '../../public/views/tars/MineHeader'
+import React from 'react'
+import { ScrollView, StyleSheet } from 'react-native'
+import GameLobbyTabComponent, { Scene } from '../../public/components/tars/GameLobbyTabComponent'
+import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
-import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
+import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
-import PushHelper from '../../public/define/PushHelper'
+import MineHeader from '../../public/views/tars/MineHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { SeriesId } from '../../redux/model/全局/UGSysConfModel'
 
-const BZHGameLobbyPage = ({ homeGames }) => {
+const BZHGameLobbyPage = ({ tabGames, initialTabIndex }) => {
 
-  console.log("--------homeGames------", homeGames)
   return (
     <>
       <SafeAreaHeader
@@ -31,39 +31,61 @@ const BZHGameLobbyPage = ({ homeGames }) => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <GameLobbyTabComponent
+          initialTabIndex={initialTabIndex}
           baseHeight={scale(70)}
           sceneContainerStyle={{ marginTop: scale(10) }}
           rowHeight={scale(200)}
-          tabGames={homeGames ?? []}
+          tabGames={tabGames}
           focusTabColor={BZHThemeColor.宝石红.themeColor}
-          renderScene={(item, index) => {
-            const { logo, icon, title, hotIcon, tipFlag, subType } = item
-            const showFlag = parseInt(tipFlag)
-            return (
-              <GameButton
-                key={index}
-                circleColor={'#b3cde6'}
-                showRightTopFlag={showFlag > 0 && showFlag < 4}
-                showCenterFlag={showFlag == 4}
-                showSecondLevelIcon={subType}
-                flagIcon={hotIcon}
-                logo={icon || logo}
-                title={title}
-                showSubTitle={false}
-                containerStyle={{
-                  width: '33.3%',
-                  height: scale(180),
-                  marginBottom: scale(20),
-                }}
-                titleContainerStyle={{
-                  marginTop: scale(5),
-                  aspectRatio: 3,
-                }}
-                titleStyle={{ fontSize: scale(23) }}
-                subTitleStyle={{ fontSize: scale(23) }}
-                onPress={() => PushHelper.pushHomeGame(item)}
-              />
-            )
+          renderScene={({ games, tab, index }) => {
+            return (<Scene
+              key={index}
+              data={games}
+              renderItem={(item, index) => {
+                const {
+                  title,
+                  pic,
+                  name,
+                  id
+                } = item
+                return (
+                  <GameButton
+                    key={index}
+                    resizeMode={'contain'}
+                    containerStyle={[
+                      styles.gameContainer,
+                      {
+                        marginLeft: index % 3 == 1 ? '5%' : 0,
+                        marginRight: index % 3 == 1 ? '5%' : 0,
+                      },
+                    ]}
+                    imageContainerStyle={{ width: '60%' }}
+                    enableCircle={false}
+                    logo={pic}
+                    title={title}
+                    subTitle={name}
+                    showSubTitle={false}
+                    titleStyle={{
+                      fontSize: scale(25),
+                    }}
+                    subTitleStyle={{
+                      fontSize: scale(20),
+                    }}
+                    titleContainerStyle={{
+                      marginTop: scale(5),
+                      aspectRatio: 2.5,
+                    }}
+                    onPress={() =>
+                      PushHelper.pushHomeGame(Object.assign({}, item, {
+                        seriesId: SeriesId[tab],
+                        "gameId": id,
+                        subId: id,
+                      }))
+                    }
+                  />
+                )
+              }}
+            />)
           }}
         />
       </ScrollView>
@@ -75,6 +97,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+  },
+  gameContainer: {
+    width: '30%',
+    height: null,
+    marginBottom: scale(20),
   },
 })
 

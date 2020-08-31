@@ -37,13 +37,15 @@ interface GameButtonProps {
   unreadMsg?: number;
   localLogo?: any;
   useLocalLogo?: boolean;
+  flagContainer?: ViewStyle | ViewStyle[];
 }
 
 interface DefaultFlag {
   center: boolean;
+  flagContainer?: ViewStyle | ViewStyle[];
 }
 
-const DefaultFlag = ({ center }: DefaultFlag) => {
+const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
   if (center) {
     return (
       <View style={styles.centerFlagContainer}>
@@ -62,6 +64,7 @@ const DefaultFlag = ({ center }: DefaultFlag) => {
             right: 0,
             top: scale(5),
           },
+          flagContainer
         ]}
       >
         <Text style={styles.flagText}>{'热门'}</Text>
@@ -93,7 +96,8 @@ const GameButton = (props: GameButtonProps) => {
     showUnReadMsg = false,
     unreadMsg,
     localLogo,
-    useLocalLogo = false
+    useLocalLogo = false,
+    flagContainer
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -177,13 +181,16 @@ const GameButton = (props: GameButtonProps) => {
         </View>
         {showRightTopFlag &&
           (flagIcon ? (
-            <FastImage
-              source={{ uri: flagIcon }}
-              style={styles.rightTopFlag}
-              resizeMode={'contain'}
-            />
+            <View style={[styles.rightTopFlag, flagContainer]}
+            >
+              <FastImage
+                style={{ width: '100%', height: '100%' }}
+                source={{ uri: flagIcon }}
+                resizeMode={'contain'}
+              />
+            </View>
           ) : (
-              <DefaultFlag center={false} />
+              <DefaultFlag center={false} flagContainer={flagContainer} />
             ))}
       </View>
     </TouchableWithoutFeedback>

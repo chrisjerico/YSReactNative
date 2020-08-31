@@ -10,6 +10,7 @@ import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
+import { HomeRecommendModel } from '../../network/Model/HomeRecommendModel'
 
 const routers = [
   'user_info', // global
@@ -25,7 +26,8 @@ const routers = [
   'game_lotteryGames',
   'activity_turntableList',
   'activity_redBagDetail',
-  'system_floatAds'
+  'system_floatAds',
+  'game_homeRecommend'
 ]
 
 const useHome = () => {
@@ -44,6 +46,7 @@ const useHome = () => {
   const [roulette, setRoulette] = useState()
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAd, setFloatAd] = useState<any[]>()
+  const [homeRecommend, setHomeRecommend] = useState<HomeRecommendModel>()
 
   const apis = routers.map(async (router) => {
     try {
@@ -78,6 +81,7 @@ const useHome = () => {
       response[11] && setRoulette(response[11]?.data?.data)
       response[12] && setRedBag(response[12]?.data)
       response[13] && setFloatAd(response[13]?.data?.data)
+      response[14] && setHomeRecommend(response[14]?.data)
     } catch (error) {
       console.log("--------useHome error--------", error)
     } finally {
@@ -107,6 +111,7 @@ const useHome = () => {
     roulette,
     redBag,
     floatAd,
+    homeRecommend,
     refreshHome
   }
 

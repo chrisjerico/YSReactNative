@@ -71,6 +71,7 @@ const BZHHomePage = () => {
     roulette,
     redBag,
     floatAd,
+    homeRecommend,
     refreshHome,
   } = useHome()
 
@@ -95,12 +96,13 @@ const BZHHomePage = () => {
       ?.sort((a: any, b: any) => a.sort - b.sort)
       ?.slice(0, 4) ?? []
   const homeGames = homeGame?.data?.icons ?? []
+  const tabGames = homeRecommend?.data
+  const tabs = tabGames?.map(item => item?.categoryName) ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const ads = homeAd?.data ?? []
 
-  console.log('--------寶石紅渲染--------')
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -233,8 +235,8 @@ const BZHHomePage = () => {
                   title={name}
                   onPressTotal={() => {
                     if (uid) {
-                      push(PageName.BZHGameLobbyPage, { homeGames })
-                      // PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅)
+                      const initialTabIndex = tabs?.findIndex(item => item == name)
+                      push(PageName.BZHGameLobbyPage, { tabGames, initialTabIndex: initialTabIndex < 0 ? 0 : initialTabIndex })
                     } else {
                       push(PageName.BZHSignInPage)
                     }
