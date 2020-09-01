@@ -2,9 +2,9 @@ import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from './../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
-import {Platform} from "react-native";
-import {ANHelper} from "../ANHelper/ANHelper";
-import {CMD} from "../ANHelper/hp/CmdDefine";
+import { Platform } from "react-native";
+import { ANHelper } from "../ANHelper/ANHelper";
+import { CMD } from "../ANHelper/hp/CmdDefine";
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];

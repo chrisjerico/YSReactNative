@@ -6,48 +6,53 @@ import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
-
+import SignModel from '../model/全局/SignModel';
 // 整个State的树结构
+
 export interface IGlobalState {
-    // 纯数据
-    userInfo?: UGUserModel;
-    sysConf?: UGSysConfModel;
-    BettingReducer?: BettingReducerProps;
+  // 纯数据
+  userInfo?: UGUserModel;
+  sysConf?: UGSysConfModel;
+  sign?: SignModel;
+  BettingReducer?: BettingReducerProps;
+  value?: any;
 }
 
 // 更新Props到全局数据
 function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     const state: IGlobalState = Object.assign({}, prevState);
 
-    if (act.type == 'reset') {
-        act.sysConf && (state.sysConf = act.sysConf);
-        act.userInfo && (state.userInfo = act.userInfo);
-        act.page && (state[act.page] = act.props);
-    } else if (act.type == 'merge') {
-        state.sysConf = {...state.sysConf, ...act.sysConf};
-        state.userInfo = {...state.userInfo, ...act.userInfo};
-        if (act.page) state[act.page] = {...state[act.page], ...act.props};
-    } else {
-
-        // 自定义Reducer写在这里。。。
-        state.BettingReducer = BettingReducer(state.BettingReducer, act);
-    }
-    return state;
+  if (act.type == 'reset') {
+    act.sysConf && (state.sysConf = act.sysConf);
+    act.userInfo && (state.userInfo = act.userInfo);
+    act.page && (state[act.page] = act.props);
+  } else if (act.type == 'merge') {
+    state.sysConf = { ...state.sysConf, ...act.sysConf };
+    state.userInfo = { ...state.userInfo, ...act.userInfo };
+    state.sign = { ...state.sign, ...act.sign };
+    // state.value = { ...state.value, ...act.value }; // 其他  example
+    act.page && (state[act.page] = { ...state[act.page], ...act.props });
+  } else {
+    // 自定义Reducer写在这里。。。
+    state.BettingReducer = BettingReducer(state.BettingReducer, act as any);
+  }
+  return state;
 }
 
 // 声明UGAction
 export interface UGAction<P = {}> extends Action {
-    type: 'reset' | 'merge' | BettingReducerActions; // reset替换整个对象，merge只改变指定变量
-    page?: PageName;  // 配合props使用
-    props?: P;      // 配合page使用
-    sysConf?: UGSysConfModel;// 修改系统配置
-    userInfo?: UGUserModel;// 修改用户信息
-    value?: any;// 其他
+  type: 'reset' | 'merge' | BettingReducerActions; // reset替换整个对象，merge只改变指定变量
+  page?: PageName;  // 配合props使用
+  props?: P;      // 配合page使用
+  sysConf?: UGSysConfModel;// 修改系统配置
+  userInfo?: UGUserModel;// 修改用户信息
+  sign?: SignModel; // 登入註冊訊息 
+  // value?: any;// 其他 example
 }
 
 export class UGStore {
   // Store
-  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any };
+  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any };
 
     // 发送通知
     private static callbacks: { page: PageName, callback: () => void }[] = [];

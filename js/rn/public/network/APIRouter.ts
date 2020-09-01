@@ -1,35 +1,32 @@
+import { AxiosResponse } from "axios";
+import { Platform } from "react-native";
+import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
+import { ANHelper } from "../define/ANHelper/ANHelper";
+import { CMD } from "../define/ANHelper/hp/CmdDefine";
+import { OCHelper } from '../define/OCHelper/OCHelper';
 import { UGStore } from './../../redux/store/UGStore';
-import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import { CachePolicyEnum, httpClient } from './httpClient'
-import { BalanceModel } from './Model/BalanceModel'
-import { BannerModel } from './Model/BannerModel'
-import { FloatADModel } from './Model/FloatADModel'
-import { HomeADModel } from './Model/HomeADModel'
-import { HomeGamesModel } from './Model/HomeGamesModel'
-import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
-import { LoginModel } from './Model/LoginModel'
-import { LogoutModel } from './Model/LogoutModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
-import { NoticeModel } from './Model/NoticeModel'
-import { OnlineModel } from './Model/OnlineModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
-import { PromotionsModel } from './Model/PromotionsModel'
-import { RankListModel } from './Model/RankListModel'
-import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
-import { RegisterModel } from './Model/RegisterModel'
-import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
-import { SystemConfigModel } from './Model/SystemConfigModel'
-import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
-import { TurntableListModel } from './Model/TurntableListModel'
-import { UserInfoModel } from './Model/UserInfoModel'
-import { YueBaoStatModel } from './Model/YueBaoStatModel'
-import {Platform} from "react-native";
-import {ANHelper} from "../define/ANHelper/ANHelper";
-import {ugLog} from "../tools/UgLog";
-import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
-import {CMD} from "../define/ANHelper/hp/CmdDefine";
-import {AxiosResponse} from "axios";
+import { CachePolicyEnum, httpClient } from './httpClient';
+import { BalanceModel } from './Model/BalanceModel';
+import { BannerModel } from './Model/BannerModel';
+import { FloatADModel } from './Model/FloatADModel';
+import { HomeADModel } from './Model/HomeADModel';
+import { HomeGamesModel } from './Model/HomeGamesModel';
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel';
+import { LoginModel } from './Model/LoginModel';
+import { LottoGamesModel } from './Model/LottoGamesModel';
+import { NoticeModel } from './Model/NoticeModel';
+import { OnlineModel } from './Model/OnlineModel';
+import { PlayOddDataModel } from './Model/PlayOddDataModel';
+import { PromotionsModel } from './Model/PromotionsModel';
+import { RankListModel } from './Model/RankListModel';
+import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
+import { RegisterModel } from './Model/RegisterModel';
+import { SystemAvatarListModel } from './Model/SystemAvatarListModel';
+import { SystemConfigModel } from './Model/SystemConfigModel';
+import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
+import { TurntableListModel } from './Model/TurntableListModel';
+import { YueBaoStatModel } from './Model/YueBaoStatModel';
+import { HomeRecommendModel } from "./Model/HomeRecommendModel";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -54,6 +51,9 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static game_homeRecommend = async () => {
+    return httpClient.get<HomeRecommendModel>('c=game&a=homeRecommend')
+  }
   /**
    * 首頁遊戲資料
    */
@@ -87,7 +87,7 @@ class APIRouter {
         break;
       case "android":
         tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-            { blGet: true, });
+          { blGet: true, });
         break;
     }
 
@@ -142,7 +142,7 @@ class APIRouter {
         noToken: true
       } as any);
     } catch (error) {
-      throw '登陆失败'
+      throw error
     }
   }
   static user_balance_token = async () => {

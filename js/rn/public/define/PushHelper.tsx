@@ -1,27 +1,30 @@
-import { UGAgentApplyInfo, UGUserCenterType, UGTabbarItem, LotteryType } from '../../redux/model/全局/UGSysConfModel';
+import {LotteryType, UGAgentApplyInfo, UGTabbarItem, UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from './AppDefine';
 import {Alert, AlertButton, Platform} from 'react-native';
 import NetworkRequest1 from '../network/NetworkRequest1';
-import { IGameIconListItem } from '../../redux/model/home/IGameBean';
-import { OCHelper } from './OCHelper/OCHelper';
-import {HomeGamesModel, List} from '../network/Model/HomeGamesModel';
-import { NSValue, } from './OCHelper/OCBridge/OCCall';
-import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel';
-import { TurntableListModel } from '../network/Model/TurntableListModel';
-import { Toast } from '../tools/ToastUtils';
-import { httpClient } from '../network/httpClient';
+import {OCHelper} from './OCHelper/OCHelper';
+import {NSValue,} from './OCHelper/OCBridge/OCCall';
+import {RedBagDetailActivityModel} from '../network/Model/RedBagDetailActivityModel';
+import {TurntableListModel} from '../network/Model/TurntableListModel';
+import {Toast} from '../tools/ToastUtils';
+import {httpClient} from '../network/httpClient';
+import {popToRoot, push} from '../navigation/RootNavigation';
+import {PageName} from '../navigation/Navigation';
+import {ANHelper} from "./ANHelper/ANHelper";
+import {MenuType} from "./ANHelper/hp/GotoDefine";
+import {NA_DATA} from "./ANHelper/hp/DataDefine";
+import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
 
 export enum PushRightMenuFrom {
   首頁 = '1',
   彩種 = '2',
 }
 
-import { popToRoot, push } from '../navigation/RootNavigation';
-import { PageName } from '../navigation/Navigation';
-import {ANHelper} from "./ANHelper/ANHelper";
-import {MenuType} from "./ANHelper/hp/GotoDefine";
-import {NA_DATA} from "./ANHelper/hp/DataDefine";
-import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
+interface PushHomeGame {
+  seriesId: string,
+  gameId: string,
+  subId: string,
+}
 
 export default class PushHelper {
   //
@@ -74,7 +77,7 @@ export default class PushHelper {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
         break;
       case "android":
-        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LOGIN_INFO })
         let loginInfo = JSON.parse(result);
 
         //保留 account, pwd, isRemember，下载登录的时候使用
@@ -126,7 +129,7 @@ export default class PushHelper {
 
   }
   // 首页游戏列表跳转
-  static pushHomeGame(game: IGameIconListItem | HomeGamesModel | List) {
+  static pushHomeGame(game: PushHomeGame) {
     game = Object.assign({ clsName: 'GameModel' }, game);
     console.log('--------game-------', game)
     switch (Platform.OS) {
@@ -137,7 +140,7 @@ export default class PushHelper {
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, game)
         break;
     }
-  }
+  } // IGameIconListItem | HomeGamesModel | List |
 
   /**
    * 打开红包
@@ -164,12 +167,23 @@ export default class PushHelper {
   }
 
   // 去彩票
-
   static pushLottery(code: LotteryType) {
     if (Platform.OS != 'ios') return;
+    //const a = {"category": "1", "clsName": "GameModel", "gameCode": "", "gameId": "86", "gameType": "lhc", "hotIcon": "", "icon": "https://cdn01.mlqman.cn/upload/c213/customise/picture/system/mobileIcon/3fddac4cc5161b11d7278bef9bc78e85.png", "id": "123", "isClose": "0", "isInstant": "0", "isSeal": "0", "levelType": "1", "logo": "https://cdn01.mlqman.cn/upload/c213/customise/images/kjw_logo_86.jpg?v=1581842827", "name": "", "openWay": "0", "realName": "", "seriesId": "1", "sort": "19", "subId": "86", "subtitle": "", "tipFlag": "0", "title": "新加坡六合彩", "url": ""}
     this.pushHomeGame({
-      seriesId: 1,
-      subId: code
+      seriesId: 1, // 普通彩票
+      subId: code,
+      gameId: code
+    } as any)
+  }
+
+  // 去捕魚
+  static pushFish(code: string) {
+    if (Platform.OS != 'ios') return;
+    this.pushHomeGame({
+      seriesId: 3, // 捕魚
+      subId: code,
+      gameId: code
     } as any)
   }
 
@@ -430,7 +444,7 @@ export default class PushHelper {
                 seriesId: '7',
                 subId: MenuType.QD,
               })
-           }
+          }
             break
           case UGUserCenterType.取款: {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,

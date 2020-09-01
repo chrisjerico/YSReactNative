@@ -14,7 +14,6 @@ interface BannerBlockProps {
   autoplayTimeout: number;
   visible?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
-  isMidAd?: boolean;
 }
 
 interface BadgePosition {
@@ -30,11 +29,10 @@ const BannerBlock = ({
   autoplayTimeout,
   visible = true,
   containerStyle,
-  isMidAd
 }: BannerBlockProps) => {
   if (visible) {
     return (
-      <View style={[isMidAd ? styles.midAdContainer : styles.container, containerStyle]}>
+      <View style={[styles.container, containerStyle]}>
         <UGSwiper
           autoplayTimeout={autoplayTimeout}
           showsPagination={true}
@@ -43,6 +41,8 @@ const BannerBlock = ({
             left: null,
             right: 10,
           }}
+          dotColor={'#ffffff'}
+          activeDotColor={'#fff000'}
         >
           {banners?.map(renderBanner)}
         </UGSwiper>
@@ -69,11 +69,7 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 310,
-  },
-  midAdContainer: {
-    width: '100%',
-    aspectRatio: 540 / 217,
+    aspectRatio: 540 / 128 //540 / 310,
   },
   bannerContainer: {
     flex: 1,
