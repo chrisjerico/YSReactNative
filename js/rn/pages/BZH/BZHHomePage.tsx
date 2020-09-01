@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useHome from '../../public/hooks/tars/useHome'
+import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getActivityPosition } from '../../public/tools/tars'
-import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -24,93 +23,52 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 
-const BZHHomePage = ({ navigation }) => {
-  // yellowBox
-  console.disableYellowBox = true
-  // functions
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
-  // stores
+const BZHHomePage = () => {
   const {
-    uid,
-    usr,
-    balance,
-    isTest,
-  }: UGUserModel = UGStore.globalProps.userInfo
+    goToJDPromotionListPage,
+    refreshHome,
+    loading,
+    refresh,
+    bannersInterval,
+    onlineNum,
+    banners,
+    notices,
+    midBanners,
+    announcements,
+    navs,
+    homeGames,
+    lobbys,
+    lobbyGames,
+    coupons,
+    rankLists,
+    redBag,
+    redBagLogo,
+    roulette,
+    floatAd,
+    userInfo,
+    sysConf,
+  } = useHomePage()
 
+  const { uid, usr, balance, isTest } = userInfo
   const {
     mobile_logo,
     webName,
     m_promote_pos,
     rankingListSwitch,
     adSliderTimer,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
+  } = sysConf
 
-  // effect
-  const {
-    loading,
-    refresh,
-    rankList,
-    banner,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    homeAd,
-    roulette,
-    redBag,
-    floatAd,
-    homeRecommend,
-    refreshHome,
-  } = useHome()
-
-  useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
-    }
-  }, [notice])
-  // data handle
-  const bannersInterval = parseInt(banner?.data?.interval)
-  const banners = banner?.data?.list ?? []
-  const notices = notice?.data?.scroll ?? []
-  const announcements =
-    notice?.data?.popup?.map((item: any) => {
-      return Object.assign(
-        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
-        item
-      )
-    }) ?? []
-  const navs =
-    homeGame?.data?.navs
-      ?.sort((a: any, b: any) => a.sort - b.sort)
-      ?.slice(0, 4) ?? []
-  const homeGames = homeGame?.data?.icons ?? []
-  const tabGames = homeRecommend?.data
-  const tabs = tabGames?.map(item => item?.categoryName) ?? []
-  const rankLists = rankList?.data?.list ?? []
-  const redBagLogo = redBag?.data?.redBagLogo
-  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
-  const ads = homeAd?.data ?? []
-
+  console.log("---------BZHHomePage---------")
   if (loading) {
     return <ProgressCircle />
   } else {
     return (
       <>
-        <SafeAreaHeader
-          headerColor={BZHThemeColor.宝石红.themeColor}
-        >
+        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}
@@ -205,10 +163,10 @@ const BZHHomePage = ({ navigation }) => {
             }}
           />
           <BannerBlock
-            visible={ads?.length > 0}
+            visible={midBanners?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
-            banners={ads}
+            banners={midBanners}
             renderBanner={(item, index) => {
               const { linkCategory, linkPosition, image } = item
               return (
@@ -237,9 +195,17 @@ const BZHHomePage = ({ navigation }) => {
                   title={name}
                   onPressTotal={() => {
                     if (uid) {
-                      const index = tabs?.findIndex(item => item == name)
+                      let index = 0
+                      if (name == '视讯') {
+                        index = lobbys?.findIndex((item) => item == '真人')
+                      } else {
+                        index = lobbys?.findIndex((item) => item == name)
+                      }
                       const initialTabIndex = index < 0 ? 0 : index
-                      push(PageName.BZHGameLobbyPage, { tabGames, initialTabIndex })
+                      push(PageName.BZHGameLobbyPage, {
+                        tabGames: lobbyGames,
+                        initialTabIndex,
+                      })
                     } else {
                       push(PageName.BZHSignInPage)
                     }
@@ -281,7 +247,7 @@ const BZHHomePage = ({ navigation }) => {
                           />
                         )
                       }}
-                      renderGame={({ item, index, onPressGameSubType }) => {
+                      renderGame={({ item, index, showGameSubType }) => {
                         const {
                           title,
                           logo,
@@ -326,7 +292,7 @@ const BZHHomePage = ({ navigation }) => {
                             }}
                             onPress={() => {
                               if (subType) {
-                                onPressGameSubType(index)
+                                showGameSubType(index)
                               } else {
                                 PushHelper.pushHomeGame(item)
                               }
@@ -473,7 +439,7 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
-  }
+  },
 })
 
 export default BZHHomePage

@@ -4,10 +4,9 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
@@ -16,9 +15,9 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import CheckBox from '../../public/views/tars/CheckBox'
 import Form from '../../public/views/tars/Form'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import MineHeader from '../../public/views/tars/MineHeader'
 
 const BZHSignInPage = (props: any) => {
   // yellowBox

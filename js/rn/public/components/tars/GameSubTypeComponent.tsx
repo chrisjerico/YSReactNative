@@ -5,7 +5,7 @@ import { List, SubType } from '../../network/Model/HomeGamesModel'
 interface RenderGame {
   item: List;
   index: number;
-  onPressGameSubType: (index: number) => any;
+  showGameSubType: (index: number) => any;
 }
 
 interface GameSubTypeComponentProps {
@@ -39,7 +39,7 @@ const GameSubTypeComponent = ({
   const [cutRow, setCutRow] = useState(-1)
   const [subType, setSubType] = useState([])
 
-  const onPressGameSubType = (index: number) => {
+  const showGameSubType = (index: number) => {
     const cutRow = Math.ceil((index + 1) / numColumns)
     if (index == indexHistory) {
       setIndexHistory(null)
@@ -68,7 +68,7 @@ const GameSubTypeComponent = ({
         numColumns={numColumns}
         data={mainGames}
         renderItem={({ item, index }) => {
-          return renderGame({ item, index, onPressGameSubType })
+          return renderGame({ item, index, showGameSubType })
         }}
       />
       <FlatList
@@ -94,7 +94,7 @@ const GameSubTypeComponent = ({
           return renderGame({
             item,
             index: index + (mainGames?.length ?? 0),
-            onPressGameSubType,
+            showGameSubType,
           })
         }}
       />

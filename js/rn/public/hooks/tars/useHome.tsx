@@ -5,12 +5,14 @@ import { BannerModel } from '../../network/Model/BannerModel'
 import { CouponListModel } from '../../network/Model/CouponListModel'
 import { HomeADModel } from '../../network/Model/HomeADModel'
 import { HomeGamesModel } from '../../network/Model/HomeGamesModel'
+import { HomeRecommendModel } from '../../network/Model/HomeRecommendModel'
 import { LotteryGameModel } from '../../network/Model/LotteryGameModel'
 import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
-import { HomeRecommendModel } from '../../network/Model/HomeRecommendModel'
+import { SystemConfigData } from '../../network/Model/SystemConfigModel'
+import { UserInfoData } from '../../network/Model/UserInfoModel'
 
 const routers = [
   'user_info', // global
@@ -34,6 +36,8 @@ const useHome = () => {
 
   const [loading, setLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
+  // const [userInfo, setUserInfo] = useState<UserInfoModel>()
+  // const [sysConfig, setSysConfig] = useState<SystemConfigModel>()
   const [rankList, setRankList] = useState<RankListModel>()
   const [banner, setBanner] = useState<BannerModel>()
   const [homeGame, setHomeGame] = useState<HomeGamesModel>()
@@ -62,13 +66,15 @@ const useHome = () => {
       const response = await Promise.all(apis)
       // console.log("--------response------", response)
       // globals state
-      const userInfo = response[0]?.data?.data ?? {}
-      const sysConf = response[1]?.data?.data ?? {}
+      const userInfo = response[0]?.data?.data as UserInfoData ?? {} as UserInfoData
+      const sysConf = response[1]?.data?.data as SystemConfigData ?? {} as SystemConfigData
       const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf
       //@ts-ignore
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf: { loginVCode, login_to, adSliderTimer, appDownloadUrl } })
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf: { loginVCode, login_to, adSliderTimer: parseInt(adSliderTimer), appDownloadUrl } })
       UGStore.save()
       // local state
+      // response[0] && setUserInfo(response[0]?.data)
+      // response[1] && setSysConfig(response[1]?.data)
       response[2] && setRankList(response[2]?.data)
       response[3] && setBanner(response[3]?.data)
       response[4] && setHomeGame(response[4]?.data)

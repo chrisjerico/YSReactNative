@@ -14,10 +14,10 @@ interface PreferenceButtonProps {
   onPress?: () => any;
 }
 
-interface LHTPreferenceProps {
-  initPreferences: Preference[];
-  onPressConfirm?: (preferences: Preference[]) => any;
-}
+// interface LHTPreferenceProps {
+//   initPreferences: Preference[];
+//   onPressConfirm?: (preferences: Preference[]) => any;
+// }
 
 interface Preference {
   title: string;
@@ -65,10 +65,8 @@ const PreferenceButton = ({
     </View>
   )
 }
-const LHTPreference = ({
-  onPressConfirm,
-  initPreferences,
-}: LHTPreferenceProps) => {
+const LHTPreferencePage = ({ route }) => {
+  const { onPressConfirm, initPreferences } = route?.params ?? {}
   const [preferences, setPreferences] = useState(initPreferences)
 
   useEffect(() => {
@@ -116,7 +114,9 @@ const LHTPreference = ({
                       return ele
                     }
                   })
-                  const selectedPreferences = newPreferences.filter(ele => ele?.selected)
+                  const selectedPreferences = newPreferences.filter(
+                    (ele) => ele?.selected
+                  )
                   if (selectedPreferences?.length > 11) {
                     ToastError('最多设置11个常用资讯')
                   } else if (selectedPreferences?.length < 2) {
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LHTPreference
+export default LHTPreferencePage

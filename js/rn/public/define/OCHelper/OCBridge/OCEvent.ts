@@ -24,7 +24,7 @@ export class OCEvent extends OCCall {
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
-      console.log('OCEvent rn收到oc通知：', params);
+      // console.log('OCEvent rn收到oc通知：', params);
 
       if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
         const { didFocus } = UGStore.getPageProps(getCurrentPage());

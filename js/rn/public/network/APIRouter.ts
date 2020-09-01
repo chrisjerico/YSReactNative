@@ -27,6 +27,7 @@ import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
 import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
 import { HomeRecommendModel } from "./Model/HomeRecommendModel";
+import { UserInfoModel } from "./Model/UserInfoModel";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -92,7 +93,7 @@ class APIRouter {
     }
 
     if (tokenParams) {
-      return httpClient.get("c=user&a=info&" + tokenParams)
+      return httpClient.get<UserInfoModel>("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({
         msg: 'no token'

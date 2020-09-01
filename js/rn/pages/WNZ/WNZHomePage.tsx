@@ -300,14 +300,14 @@ const WNZHomePage = (props: any) => {
                 />
               )
             }}
-            renderGame={({ item, index, onPressGameSubType }) => {
+            renderGame={({ item, index, showGameSubType }) => {
               const { logo, name, hotIcon, tipFlag, subType, icon } = item
               const flagType = parseInt(tipFlag)
               return (
                 <View key={index} style={styles.gameContainer}>
                   <GameButton
                     logo={icon || logo}
-                    showSecondLevelIcon={subType}
+                    showSecondLevelIcon={subType ? true : false}
                     showRightTopFlag={flagType > 0 && flagType < 4}
                     showCenterFlag={flagType == 4}
                     flagIcon={hotIcon}
@@ -331,7 +331,7 @@ const WNZHomePage = (props: any) => {
                     enableCircle={false}
                     onPress={() => {
                       if (subType) {
-                        onPressGameSubType(index)
+                        showGameSubType(index)
                       } else {
                         PushHelper.pushHomeGame(item)
                       }
