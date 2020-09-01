@@ -364,7 +364,8 @@ const WNZHomePage = (props: any) => {
             renderScene={({ item, tab }) => {
               return (
                 <FlatList
-                  initialNumToRender={5}
+                  legacyImplementation={true}
+                  removeClippedSubviews={true}
                   listKey={'WNZHomePage' + tab}
                   style={{ backgroundColor: '#ffffff' }}
                   scrollEnabled={false}

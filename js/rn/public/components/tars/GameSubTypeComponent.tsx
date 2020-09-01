@@ -60,7 +60,7 @@ const GameSubTypeComponent = ({
   return (
     <View style={containerStyle}>
       <FlatList
-        initialNumToRender={5}
+        legacyImplementation={true}
         removeClippedSubviews={true}
         listKey={listKey + 'mainGames'}
         keyExtractor={(_, index) => listKey + index.toString()}
@@ -73,7 +73,7 @@ const GameSubTypeComponent = ({
         }}
       />
       <FlatList
-        initialNumToRender={5}
+        legacyImplementation
         removeClippedSubviews={true}
         listKey={listKey + 'subType'}
         keyExtractor={(_, index) => listKey + index.toString()}
@@ -85,7 +85,7 @@ const GameSubTypeComponent = ({
         renderItem={renderSubType}
       />
       <FlatList
-        initialNumToRender={5}
+        legacyImplementation
         removeClippedSubviews={true}
         listKey={listKey + 'subGames'}
         keyExtractor={(_, index) => listKey + index.toString()}
