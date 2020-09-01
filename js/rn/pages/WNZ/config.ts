@@ -1,4 +1,4 @@
-import { useHtml5Image, getIbbImage } from "../../public/tools/tars"
+import { useHtml5Image, getIbbImage } from '../../public/tools/tars'
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
 
 const config = {
@@ -22,15 +22,54 @@ const config = {
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
     19: getIbbImage('FBLBM0C/qq-Service'), // QQ客服 X
-    20: getIbbImage('4gLtWb1/kjw') // 開獎網 X
+    20: getIbbImage('4gLtWb1/kjw'), // 開獎網 X
   },
-  navColors: [
-    '#edb93f',
-    '#77674d',
-    '#e62e25',
-    '#52b653',
-    '#007aff'
-  ]
+  navColors: ['#edb93f', '#77674d', '#e62e25', '#52b653', '#007aff'],
+  menus: [
+    {
+      title: '登录/注册',
+    },
+    {
+      title: '会员中心',
+    },
+    {
+      title: '额度转换',
+    },
+    {
+      title: '幸运棋牌',
+    },
+    {
+      title: '彩票游戏',
+    },
+    {
+      title: 'AG视讯',
+    },
+    {
+      title: '真人视讯',
+    },
+    {
+      title: '电子游艺',
+    },
+    {
+      title: '捕鱼达人',
+    },
+    {
+      title: '体育游戏'
+    },
+    {
+      title: '棋牌游戏'
+    },
+    {
+      title: '更多彩种'
+    }, {
+      title: '投注记录'
+    },
+    {
+      title: '开奖结果'
+    }, {
+      title: '长龙排行'
+    }
+  ],
 }
 
 export default config

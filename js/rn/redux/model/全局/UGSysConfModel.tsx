@@ -201,15 +201,16 @@ export default class UGSysConfModel {
   lhcdocLotteryStr?: string; // 六合彩预备开奖文字
   lhcPriceList?: Array<LHPriceModel>; // 六合发帖价格范围
 
-  mobileMenu: Array<UGTabbarItem>; // 底部Tab按钮
-  userCenter: Array<UGUserCenterItem>; // 我的页功能按钮
-  userCenterItems: Array<userCenterItems>;
+  mobileMenu?: Array<UGTabbarItem>; // 底部Tab按钮
+  userCenter?: Array<UGUserCenterItem>; // 我的页功能按钮
 
   // 登陸頁
-  loginVCode: boolean;
-  login_to: "0" | "1";
-  adSliderTimer: number;
-  appDownloadUrl: string;
+  loginVCode?: boolean;
+  login_to?: "0" | "1";
+  adSliderTimer?: number;
+  appDownloadUrl?: string;
+  // 我的頁
+  userCenterItems?: Array<userCenterItems>;
 }
 
 interface userCenterItems {

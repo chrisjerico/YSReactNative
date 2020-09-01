@@ -6352,6 +6352,14 @@ react-native-code-push@^6.1.0:
     semver "^7.3.2"
     xcode "3.0.1"
 
+react-native-dash@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/react-native-dash/-/react-native-dash-0.0.11.tgz#cf1b0108e4660217cf0300b872231a5cadb9c4a8"
+  integrity sha512-edgspmVtGVYxOhGs8STCj7+VyQYUR1RkiGHkWDGwiQkEEIFrxWLa3D9ZIrLsm3LKU4XGQ2iEqCv9fJQSeTyAJA==
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-measureme "0.0.2"
+
 react-native-dialog-input@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/react-native-dialog-input/-/react-native-dialog-input-1.0.8.tgz#6813d3b158bbb85d83a94310f38695d9f2b02682"
@@ -6425,6 +6433,11 @@ react-native-marquee-ab@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/react-native-marquee-ab/-/react-native-marquee-ab-1.2.6.tgz#5bbbed6f48894d84926210b68453f815b7d38380"
   integrity sha512-2/XJ3qCiyaY6n69mQ1hb7FLhEPz2ZsAr3W3JlL1Jxk+wwOnzfuZcSbnEUAzjuXon8srebgu9W+TgmPkLxan9uA==
+
+react-native-measureme@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.2.tgz#7f54eeb0813d461ef6c49d921e42e253d649c47a"
+  integrity sha512-m7Td7w1pVdIf7a3ejN7K/67AU+TtkZqTt9/ieKamirLRI3fjLToupmOKDtIOU3Y56oKojzTKz1lBbYSPN28HWA==
 
 react-native-modal-dropdown@^0.7.0:
   version "0.7.0"

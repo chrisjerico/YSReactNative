@@ -1,5 +1,12 @@
-import React, { useEffect } from 'react'
-import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useRef } from 'react'
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import FastImage from 'react-native-fast-image'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -7,16 +14,14 @@ import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCo
 import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import AppDefine from '../../public/define/AppDefine'
-import {
-  OCEvent,
-  OCEventType
-} from '../../public/define/OCHelper/OCBridge/OCEvent'
-import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
+import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, ToastError, useHtml5Image } from '../../public/tools/tars'
+import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -29,10 +34,10 @@ import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { UGStore } from '../../redux/store/UGStore'
+import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
+import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
 
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
@@ -42,31 +47,24 @@ const renderLabel = ({ route, focused }) => {
   return (
     <>
       <View style={styles.tabContainer}>
-        <View
-          style={styles.titleContainer}
-        >
+        <View style={styles.titleContainer}>
           <FastImage
             source={{ uri: logo }}
             style={{ width: scale(55), aspectRatio: 1 }}
             resizeMode={'contain'}
           />
-          <Text
-            style={styles.titleText}
-          >
-            {title}
-          </Text>
+          <Text style={styles.titleText}>{title}</Text>
         </View>
-        {title == '官方玩法' &&
-          <View
-            style={styles.grayLineContainer}
-          />
-        }
+        {title == '官方玩法' && <View style={styles.grayLineContainer} />}
       </View>
       {focused && (
         <View
-          style={[styles.bottomLineContainer, {
-            backgroundColor: title == '官方玩法' ? '#80c025' : '#f44600'
-          }]}
+          style={[
+            styles.bottomLineContainer,
+            {
+              backgroundColor: title == '官方玩法' ? '#80c025' : '#f44600',
+            },
+          ]}
         />
       )}
     </>
@@ -77,8 +75,8 @@ const WNZHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
 
-  const { setProps } = props
-
+  // const { setProps } = props
+  const menu = useRef(null)
   const {
     goToJDPromotionListPage,
     refreshHome,
@@ -101,7 +99,7 @@ const WNZHomePage = (props: any) => {
     redBagLogo,
     roulette,
     officialGames,
-    customiseGames
+    customiseGames,
   } = useHomePage()
 
   const { uid, usr, balance, isTest } = userInfo
@@ -113,31 +111,31 @@ const WNZHomePage = (props: any) => {
     adSliderTimer,
   } = sysConf
 
-  useEffect(() => {
-    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
-      try {
-        await updateUserInfo()
-        setProps()
-      } catch (error) {
-        ToastError('登录失败')
-        console.log(error)
-      }
-    })
-    OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
-      try {
-        UGStore.dispatch({ type: 'reset', userInfo: {} })
-        UGStore.save()
-        setProps()
-      } catch (error) {
-        ToastError('登出失败')
-        console.log(error)
-      }
-    })
-    return () => {
-      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
-      OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
-    }
-  }, [])
+  // useEffect(() => {
+  //   OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+  //     try {
+  //       await updateUserInfo()
+  //       setProps()
+  //     } catch (error) {
+  //       ToastError('登录失败')
+  //       console.log(error)
+  //     }
+  //   })
+  //   OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
+  //     try {
+  //       UGStore.dispatch({ type: 'reset', userInfo: {} })
+  //       UGStore.save()
+  //       setProps()
+  //     } catch (error) {
+  //       ToastError('登出失败')
+  //       console.log(error)
+  //     }
+  //   })
+  //   return () => {
+  //     OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+  //     OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
+  //   }
+  // }, [])
 
   let homeGamesConcat = []
   homeGames.forEach(
@@ -146,12 +144,15 @@ const WNZHomePage = (props: any) => {
 
   const tabGames = [
     {
-      name: '官方玩法', logo: getHtml5Image(23, 'home/gfwf'), games: officialGames,
-
-    }, {
-      name: '信用玩法', logo: getHtml5Image(23, 'home/xywf'), games: customiseGames,
-
-    }
+      name: '官方玩法',
+      logo: getHtml5Image(23, 'home/gfwf'),
+      games: officialGames,
+    },
+    {
+      name: '信用玩法',
+      logo: getHtml5Image(23, 'home/xywf'),
+      games: customiseGames,
+    },
   ]
 
   if (loading) {
@@ -159,8 +160,7 @@ const WNZHomePage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader
-          headerColor={WNZThemeColor.威尼斯.themeColor}>
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
           <HomeHeader
             uid={uid}
             showBackBtn={false}
@@ -168,7 +168,8 @@ const WNZHomePage = (props: any) => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
+              menu?.current?.show()
+              // PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
             }}
             onPressComment={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
@@ -189,7 +190,7 @@ const WNZHomePage = (props: any) => {
                   await refreshHome()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
-                  console.log("-------error------", error)
+                  console.log('-------error------', error)
                 }
               }}
             />
@@ -215,7 +216,11 @@ const WNZHomePage = (props: any) => {
             }}
           />
           <NoticeBlock
-            containerStyle={{ borderRadius: 0, marginBottom: scale(5), aspectRatio: 540 / 35 }}
+            containerStyle={{
+              borderRadius: 0,
+              marginBottom: scale(5),
+              aspectRatio: 540 / 35,
+            }}
             iconContainerStyle={{
               borderColor: '#ef473a',
               borderWidth: scale(1),
@@ -226,7 +231,11 @@ const WNZHomePage = (props: any) => {
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
-            logoTextStyle={{ color: 'red', fontSize: scale(16), padding: scale(5) }}
+            logoTextStyle={{
+              color: 'red',
+              fontSize: scale(16),
+              padding: scale(5),
+            }}
             textStyle={{ fontSize: scale(16) }}
           />
           <NavBlock
@@ -245,13 +254,16 @@ const WNZHomePage = (props: any) => {
                     justifyContent: 'center',
                   }}
                   titleContainerStyle={{ aspectRatio: 5 }}
-                  titleStyle={{ color: config?.navColors[index], fontSize: scale(23) }}
+                  titleStyle={{
+                    color: config?.navColors[index],
+                    fontSize: scale(23),
+                  }}
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
                       goToJDPromotionListPage()
                     } else {
-                      PushHelper.pushHomeGame(item as any)
+                      PushHelper.pushHomeGame(item)
                     }
                   }}
                 />
@@ -371,8 +383,10 @@ const WNZHomePage = (props: any) => {
                   scrollEnabled={false}
                   showsVerticalScrollIndicator={false}
                   numColumns={2}
-                  data={item as any}
+                  //@ts-ignore
+                  data={item}
                   renderItem={({ item, index }) => {
+                    //@ts-ignore
                     const { title, pic, openCycle, id } = item
                     return (
                       <RowGameButtom
@@ -382,7 +396,7 @@ const WNZHomePage = (props: any) => {
                         desc={openCycle}
                         logoBallText={tab == '官方玩法' ? '官' : '信'}
                         onPress={() => {
-                          PushHelper.pushLottery(id)
+                          PushHelper.pushLottery(parseInt(id))
                         }}
                       />
                     )
@@ -481,6 +495,23 @@ const WNZHomePage = (props: any) => {
             />
           )
         })}
+        <MenuModalComponent
+          ref={menu}
+          renderMenu={({ item }) => {
+            const { title } = item
+            return (
+              <Menu
+                color={WNZThemeColor.威尼斯.themeColor}
+                title={title}
+                onPress={() => {
+                  menu?.current?.close()
+                  push(PageName.WNZSignInPage)
+                }}
+              />
+            )
+          }}
+          menus={config?.menus}
+        />
       </>
     )
   }
@@ -494,7 +525,7 @@ const styles = StyleSheet.create({
     width: '25%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: scale(5)
+    padding: scale(5),
   },
   subComponent: {
     marginTop: scale(10),
@@ -527,8 +558,14 @@ const styles = StyleSheet.create({
     height: scale(2),
     width: '70%',
     borderRadius: scale(100),
-    alignSelf: 'center'
-  }
+    alignSelf: 'center',
+  },
+  menuConatiner: {
+    width: '100%',
+    aspectRatio: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
 
 export default WNZHomePage

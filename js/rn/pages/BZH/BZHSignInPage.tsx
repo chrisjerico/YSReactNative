@@ -66,7 +66,7 @@ const BZHSignInPage = (props: any) => {
           <Form
             show={true}
             placeholder={'请输入会员帐号'}
-            value={account}
+            // value={account}
             onChangeText={onChangeAccount}
             leftIcon={{
               name: 'user-circle',
@@ -83,7 +83,7 @@ const BZHSignInPage = (props: any) => {
               name: 'unlock-alt',
               type: 'font-awesome'
             }}
-            value={password}
+            // value={password}
             onChangeText={onChangePassword}
             secureTextEntry={!showPassword}
             showRightIcon

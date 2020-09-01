@@ -94,7 +94,7 @@ export interface SystemConfigData {
   lhcPriceList: LhcPriceList[];
   lhcdocMiCard: boolean;
   loginVCode: boolean;
-  login_to: string;
+  login_to: "0" | "1";
   m_promote_pos: string;
   maxWithdrawMoney: string;
   minWithdrawMoney: string;

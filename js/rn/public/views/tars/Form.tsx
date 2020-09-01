@@ -15,11 +15,16 @@ interface Form {
   containerStyle?: ViewStyle;
   enableLabel?: boolean;
   renderRightIcon?: () => any;
+  renderLeftIcon?: () => any;
   onFocus?: () => any;
   maxLength?: number;
   leftIcon?: LeftIcon;
   labelTextStyle?: TextStyle | TextStyle;
   valid?: boolean;
+  showLeftIcon?: boolean;
+  inputContainerStyle?: ViewStyle | ViewStyle;
+  inputStyle?: ViewStyle | ViewStyle;
+  formStyle?: ViewStyle | ViewStyle;
 }
 
 interface LeftIcon {
@@ -43,33 +48,51 @@ const Form = ({
   containerStyle,
   enableLabel = true,
   renderRightIcon,
+  renderLeftIcon,
   onFocus,
   maxLength,
   leftIcon,
   labelTextStyle,
   valid,
+  showLeftIcon = true,
+  inputContainerStyle,
+  inputStyle,
+  formStyle
 }: Form) => {
   if (show) {
     return (
       <View style={[styles.container, containerStyle]}>
         <Input
-          style={{
-            height: '50%',
-            width: '100%',
-          }}
+          style={[
+            {
+              height: '50%',
+              width: '100%',
+            },
+            formStyle,
+          ]}
+          inputContainerStyle={inputContainerStyle}
+          inputStyle={inputStyle}
           maxLength={maxLength}
           placeholder={placeholder}
-          containerStyle={{
-            paddingLeft: 0,
-            paddingRight: 0,
-          }}
-          leftIcon={{
-            name: 'user',
-            type: 'feather',
-            color: '#d9d9d9',
-            size: scale(30),
-            ...leftIcon,
-          }}
+          containerStyle={[
+            {
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
+          ]}
+          leftIcon={
+            showLeftIcon
+              ? renderLeftIcon
+                ? renderLeftIcon()
+                : {
+                  name: 'user',
+                  type: 'feather',
+                  color: '#d9d9d9',
+                  size: scale(30),
+                  ...leftIcon,
+                }
+              : null
+          }
           rightIcon={
             showRightIcon ? (
               renderRightIcon ? (

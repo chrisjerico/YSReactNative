@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
 import { push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
+import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
+import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { SystemConfigData } from '../../../public/network/Model/SystemConfigModel'
-import { UserInfoData } from '../../../public/network/Model/UserInfoModel'
 import useHome from './useHome'
-import UGUserModel from '../../../redux/model/全局/UGUserModel'
-import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
-import { UGStore } from '../../../redux/store/UGStore'
 
 const useHomePage = () => {
   const goToJDPromotionListPage = () => {

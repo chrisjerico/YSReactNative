@@ -1,19 +1,31 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, TouchableWithoutFeedback, View } from 'react-native'
 import Modal from 'react-native-modal'
+import { scale } from '../../../public/tools/Scale'
 
 interface MenuModalComponentProps {
   menus: any[];
-  renderMenu: () => any;
+  renderMenu: (params: RenderMenu) => any;
 }
 
-const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref: any) => {
+interface RenderMenu {
+  item: any;
+  index: number;
+}
+
+const MenuModalComponent = (
+  { menus, renderMenu }: MenuModalComponentProps,
+  ref: any
+) => {
   const [visible, setVisible] = useState(false)
 
   useImperativeHandle(ref, () => ({
     show: () => {
       setVisible(true)
     },
+    close: () => {
+      setVisible(false)
+    }
   }))
 
   return (
@@ -31,10 +43,15 @@ const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref:
         >
           <View style={{ flex: 1 }} />
         </TouchableWithoutFeedback>
-        <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
-          {
-            menus?.map(renderMenu)
-          }
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
+          <FlatList
+            keyExtractor={(item) => item?.title}
+            style={{ marginTop: scale(75), backgroundColor: '#ffffff', borderRadius: scale(10), marginRight: scale(35), marginBottom: scale(100) }}
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+            data={menus}
+            renderItem={renderMenu}
+          />
         </View>
       </View>
     </Modal>
