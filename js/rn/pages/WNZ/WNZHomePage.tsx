@@ -1,87 +1,117 @@
 import React, { useEffect } from 'react'
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
+import { FlatList, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
+import AppDefine from '../../public/define/AppDefine'
 import {
   OCEvent,
   OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
-import useHome from '../../public/hooks/tars/useHome'
-import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
+import useHomePage from '../../public/hooks/tars/useHomePage'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
-import { getActivityPosition, ToastError } from '../../public/tools/tars'
-import { B_DEBUG } from '../../public/tools/UgLog'
+import { scale } from '../../public/tools/Scale'
+import { getActivityPosition, ToastError, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import NavBlock from '../../public/views/tars/NavBlock'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { UGStore } from '../../redux/store/UGStore'
-import TabComponent from './components/TabComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
 import RowGameButtom from './views/RowGameButtom'
-import NavBlock from '../../public/views/tars/NavBlock'
 
+const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+
+const renderLabel = ({ route, focused }) => {
+  const { logo, title } = route ?? {}
+  return (
+    <>
+      <View style={styles.tabContainer}>
+        <View
+          style={styles.titleContainer}
+        >
+          <FastImage
+            source={{ uri: logo }}
+            style={{ width: scale(55), aspectRatio: 1 }}
+            resizeMode={'contain'}
+          />
+          <Text
+            style={styles.titleText}
+          >
+            {title}
+          </Text>
+        </View>
+        {title == '官方玩法' &&
+          <View
+            style={styles.grayLineContainer}
+          />
+        }
+      </View>
+      {focused && (
+        <View
+          style={[styles.bottomLineContainer, {
+            backgroundColor: title == '官方玩法' ? '#80c025' : '#f44600'
+          }]}
+        />
+      )}
+    </>
+  )
+}
 
 const WNZHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
-  // functions
+
   const { setProps } = props
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
-  // stores
+
   const {
-    balance,
-    usr,
-    uid,
-    isTest,
-  }: UGUserModel = UGStore.globalProps.userInfo
+    goToJDPromotionListPage,
+    refreshHome,
+    loading,
+    refresh,
+    userInfo,
+    sysConf,
+    bannersInterval,
+    onlineNum,
+    banners,
+    notices,
+    midBanners,
+    announcements,
+    navs,
+    homeGames,
+    coupons,
+    rankLists,
+    floatAds,
+    redBag,
+    redBagLogo,
+    roulette,
+    officialGames,
+    customiseGames
+  } = useHomePage()
+
+  const { uid, usr, balance, isTest } = userInfo
   const {
     mobile_logo,
     webName,
-    rankingListSwitch,
     m_promote_pos,
+    rankingListSwitch,
     adSliderTimer,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
-
-  // effect
-  const {
-    loading,
-    refresh,
-    rankList,
-    banner,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    homeAd,
-    lotteryGames,
-    refreshHome,
-    roulette,
-    redBag,
-    floatAd,
-  } = useHome()
+  } = sysConf
 
   useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
@@ -109,40 +139,20 @@ const WNZHomePage = (props: any) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
-    }
-  }, [notice])
-  // data handle
-  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
-  const redBagLogo = redBag?.data?.redBagLogo
-  const bannersInterval = parseInt(banner?.data?.interval)
-  const banners = banner?.data?.list ?? []
-  const notices = notice?.data?.scroll ?? []
-  const ads = homeAd?.data ?? []
-  const navs =
-    homeGame?.data?.navs
-      ?.sort((a: any, b: any) => a.sort - b.sort)
-      ?.slice(0, 5) ?? []
-  let games = []
-  homeGame?.data?.icons?.forEach(
-    (item) => (games = games.concat(item?.list) ?? [])
+  let homeGamesConcat = []
+  homeGames.forEach(
+    (item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? [])
   )
-  games = games?.sort((game: any) => -game.sort)?.slice(0, 24) ?? []
-  const rankLists = rankList?.data?.list ?? []
-  // 官 信
-  let lotterys = []
-  lotteryGames?.data?.forEach((ele) => (lotterys = lotterys.concat(ele?.list)))
-  const customiseGames = lotterys.filter((ele) => ele?.customise == '2') // 信
-  const officialGames = lotterys.filter((ele) => ele?.customise == '0') // 官
-  const announcements =
-    notice?.data?.popup?.map((item: any) => {
-      return Object.assign(
-        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
-        item
-      )
-    }) ?? []
+
+  const tabGames = [
+    {
+      name: '官方玩法', logo: getHtml5Image(23, 'home/gfwf'), games: officialGames,
+
+    }, {
+      name: '信用玩法', logo: getHtml5Image(23, 'home/xywf'), games: customiseGames,
+
+    }
+  ]
 
   if (loading) {
     return <ProgressCircle />
@@ -250,10 +260,10 @@ const WNZHomePage = (props: any) => {
           />
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5) }}
-            visible={ads?.length > 0}
+            visible={midBanners?.length > 0}
             autoplayTimeout={adSliderTimer}
             showOnlineNum={false}
-            banners={ads}
+            banners={midBanners}
             renderBanner={(item, index) => {
               const { linkCategory, linkPosition, image } = item
               return (
@@ -272,7 +282,7 @@ const WNZHomePage = (props: any) => {
             listKey={'WNZHomePage'}
             containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
-            games={games}
+            games={homeGamesConcat}
             subTypeContainerStyle={{
               marginTop: scale(10),
               paddingHorizontal: scale(10),
@@ -341,38 +351,40 @@ const WNZHomePage = (props: any) => {
               )
             }}
           />
-          <TabComponent
-            elementHeight={scale(100)}
-            leftGames={officialGames}
-            rightGames={customiseGames}
-            renderLeftGame={(item, index) => {
-              const { title, pic, openCycle, id } = item
+          <GameLobbyTabComponent
+            tabGames={tabGames}
+            numColumns={2}
+            enableAutoScrollTab={false}
+            tabScrollEnabled={false}
+            initialTabIndex={0}
+            baseHeight={scale(100)}
+            itemHeight={scale(100)}
+            tabStyle={{ height: scale(100) }}
+            renderLabel={renderLabel}
+            renderScene={({ item, tab }) => {
               return (
-                <RowGameButtom
-                  key={index}
-                  showRightBorder={index % 2 == 0}
-                  logo={pic}
-                  name={title}
-                  desc={openCycle}
-                  logoBallText={'官'}
-                  onPress={() => {
-                    PushHelper.pushLottery(id)
-                  }}
-                />
-              )
-            }}
-            renderRightGame={(item, index) => {
-              const { title, pic, openCycle, id } = item
-              return (
-                <RowGameButtom
-                  key={index}
-                  showRightBorder={index % 2 == 0}
-                  logo={pic}
-                  name={title}
-                  desc={openCycle}
-                  logoBallText={'信'}
-                  onPress={() => {
-                    PushHelper.pushLottery(id)
+                <FlatList
+                  initialNumToRender={5}
+                  listKey={'WNZHomePage' + tab}
+                  style={{ backgroundColor: '#ffffff' }}
+                  scrollEnabled={false}
+                  showsVerticalScrollIndicator={false}
+                  numColumns={2}
+                  data={item as any}
+                  renderItem={({ item, index }) => {
+                    const { title, pic, openCycle, id } = item
+                    return (
+                      <RowGameButtom
+                        showRightBorder={index % 2 == 0}
+                        logo={pic}
+                        name={title}
+                        desc={openCycle}
+                        logoBallText={tab == '官方玩法' ? '官' : '信'}
+                        onPress={() => {
+                          PushHelper.pushLottery(id)
+                        }}
+                      />
+                    )
                   }}
                 />
               )
@@ -452,7 +464,7 @@ const WNZHomePage = (props: any) => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any, index) => {
+        {floatAds?.map((item: any, index) => {
           const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent
@@ -487,6 +499,35 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
     backgroundColor: '#ffffff',
   },
+  tabContainer: {
+    width: AppDefine.width / 2,
+    flexDirection: 'row',
+  },
+  titleText: {
+    paddingLeft: scale(10),
+    fontSize: scale(23),
+    fontWeight: '300',
+  },
+  grayLineContainer: {
+    width: scale(1),
+    backgroundColor: '#d9d9d9',
+    height: scale(50),
+    alignSelf: 'flex-end',
+    marginBottom: scale(5),
+  },
+  titleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: scale(15),
+    paddingLeft: scale(15),
+  },
+  bottomLineContainer: {
+    height: scale(2),
+    width: '70%',
+    borderRadius: scale(100),
+    alignSelf: 'center'
+  }
 })
 
 export default WNZHomePage

@@ -72,12 +72,17 @@ const TabComponent = ({
       </View>
       {index ? (
         <GameLobbyTabComponent
+          containerStyle={{
+            borderBottomRightRadius: scale(10),
+            borderBottomLeftRadius: scale(10),
+          }}
+          numColumns={3}
           initialTabIndex={0}
           focusTabColor={LHThemeColor.六合厅.themeColor}
           tabGames={rightGames}
           itemHeight={itemHeight}
-          renderScene={({ games, index }) => {
-            return <Scene key={index} data={games} renderItem={renderRightGame} />
+          renderScene={({ item, index }) => {
+            return <Scene key={index} data={item} renderItem={renderRightGame} />
           }}
         />
       ) : (

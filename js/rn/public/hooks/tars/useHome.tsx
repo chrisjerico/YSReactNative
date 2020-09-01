@@ -13,6 +13,8 @@ import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { SystemConfigData } from '../../network/Model/SystemConfigModel'
 import { UserInfoData } from '../../network/Model/UserInfoModel'
+import { FloatADModel } from '../../network/Model/FloatADModel'
+import { TurntableListModel } from '../../network/Model/TurntableListModel'
 
 const routers = [
   'user_info', // global
@@ -46,10 +48,10 @@ const useHome = () => {
   const [couponList, setCouponList] = useState<CouponListModel>()
   const [homeAd, setHomeAd] = useState<HomeADModel>()
   const [lotteryNumber, setLotteryNumber] = useState<LotteryNumberModel>()
-  const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
-  const [roulette, setRoulette] = useState()
+  const [lotteryGame, setLotteryGame] = useState<LotteryGameModel>()
+  const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
-  const [floatAd, setFloatAd] = useState<any[]>()
+  const [floatAd, setFloatAd] = useState<FloatADModel>()
   const [homeRecommend, setHomeRecommend] = useState<HomeRecommendModel>()
 
   const apis = routers.map(async (router) => {
@@ -83,10 +85,10 @@ const useHome = () => {
       response[7] && setCouponList(response[7]?.data)
       response[8] && setHomeAd(response[8]?.data)
       response[9] && setLotteryNumber(response[9]?.data)
-      response[10] && setLotteryGames(response[10]?.data)
-      response[11] && setRoulette(response[11]?.data?.data)
+      response[10] && setLotteryGame(response[10]?.data)
+      response[11] && setTurntableList(response[11]?.data)
       response[12] && setRedBag(response[12]?.data)
-      response[13] && setFloatAd(response[13]?.data?.data)
+      response[13] && setFloatAd(response[13]?.data)
       response[14] && setHomeRecommend(response[14]?.data)
     } catch (error) {
       console.log("--------useHome error--------", error)
@@ -113,8 +115,8 @@ const useHome = () => {
     couponList,
     homeAd,
     lotteryNumber,
-    lotteryGames,
-    roulette,
+    lotteryGame,
+    turntableList,
     redBag,
     floatAd,
     homeRecommend,

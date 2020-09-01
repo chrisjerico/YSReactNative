@@ -33,6 +33,8 @@ const BZHHomePage = () => {
     refreshHome,
     loading,
     refresh,
+    userInfo,
+    sysConf,
     bannersInterval,
     onlineNum,
     banners,
@@ -41,16 +43,13 @@ const BZHHomePage = () => {
     announcements,
     navs,
     homeGames,
-    lobbys,
-    lobbyGames,
+    recommendGames,
     coupons,
     rankLists,
+    floatAds,
     redBag,
     redBagLogo,
     roulette,
-    floatAd,
-    userInfo,
-    sysConf,
   } = useHomePage()
 
   const { uid, usr, balance, isTest } = userInfo
@@ -62,7 +61,8 @@ const BZHHomePage = () => {
     adSliderTimer,
   } = sysConf
 
-  console.log("---------BZHHomePage---------")
+  const recommendGameTabs = recommendGames?.map((item) => item?.categoryName) ?? []
+
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -197,13 +197,13 @@ const BZHHomePage = () => {
                     if (uid) {
                       let index = 0
                       if (name == '视讯') {
-                        index = lobbys?.findIndex((item) => item == '真人')
+                        index = recommendGameTabs?.findIndex((item) => item == '真人')
                       } else {
-                        index = lobbys?.findIndex((item) => item == name)
+                        index = recommendGameTabs?.findIndex((item) => item == name)
                       }
                       const initialTabIndex = index < 0 ? 0 : index
                       push(PageName.BZHGameLobbyPage, {
-                        tabGames: lobbyGames,
+                        tabGames: recommendGames,
                         initialTabIndex,
                       })
                     } else {
@@ -406,7 +406,7 @@ const BZHHomePage = () => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any, index) => {
+        {floatAds?.map((item: any, index) => {
           const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent

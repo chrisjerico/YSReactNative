@@ -5,14 +5,14 @@ import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComp
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import {
   OCEvent,
-  OCEventType
+  OCEventType,
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
-import useHome from '../../public/hooks/tars/useHome'
+import useHomePage from '../../public/hooks/tars/useHomePage'
 import useLogOut from '../../public/hooks/tars/useLogOut'
 import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, push } from '../../public/navigation/RootNavigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -20,9 +20,8 @@ import {
   getActivityPosition,
   ToastError,
   ToastSuccess,
-  useHtml5Image
+  useHtml5Image,
 } from '../../public/tools/tars'
-import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -32,13 +31,11 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, {
+import {
   LotteryType,
-  UGUserCenterType
+  UGUserCenterType,
 } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
-import { UGStore } from '../../redux/store/UGStore'
 import TabComponent from './components/TabComponent'
 import config from './config'
 import BottomToolBlock from './views/BottomToolBlock'
@@ -54,13 +51,7 @@ const LHTHomePage = (props: any) => {
   // functions
   const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
+
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
       ToastSuccess('登录成功！')
@@ -75,43 +66,40 @@ const LHTHomePage = (props: any) => {
     },
   })
 
-  // stores
   const {
-    uid,
-    avatar,
-    usr,
-    isTest,
-    balance,
-  }: UGUserModel = UGStore.globalProps.userInfo
+    goToJDPromotionListPage,
+    refreshHome,
+    loading,
+    refresh,
+    userInfo,
+    sysConf,
+    lotteryDate,
+    bannersInterval,
+    onlineNum,
+    lotterys,
+    banners,
+    notices,
+    midBanners,
+    announcements,
+    navs,
+    homeGames,
+    coupons,
+    rankLists,
+    floatAds,
+    redBag,
+    redBagLogo,
+    roulette,
+  } = useHomePage()
+
+  const { uid, usr, balance, isTest, avatar } = userInfo
   const {
     mobile_logo,
     webName,
     m_promote_pos,
     rankingListSwitch,
+    adSliderTimer,
     appDownloadUrl,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
-  // effect
-  const {
-    loading,
-    refresh,
-    rankList,
-    banner,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    lotteryNumber,
-    roulette,
-    redBag,
-    floatAd,
-    refreshHome,
-  } = useHome()
-
-  useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
-    }
-  }, [notice])
+  } = sysConf
 
   useEffect(() => {
     OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
@@ -126,33 +114,6 @@ const LHTHomePage = (props: any) => {
       OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
     }
   }, [])
-  // data handle
-  const bannersInterval = parseInt(banner?.data?.interval)
-  const rankLists = rankList?.data?.list ?? []
-  const redBagLogo = redBag?.data?.redBagLogo
-  const banners = banner?.data?.list ?? []
-  const notices = notice?.data?.scroll ?? []
-  const announcements =
-    notice?.data?.popup?.map((item: any) => {
-      return Object.assign(
-        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
-        item
-      )
-    }) ?? []
-  const navs =
-    homeGame?.data?.navs
-      ?.sort((a: any, b: any) => a.sort - b.sort)
-      .slice(0, 8) ?? []
-  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
-  const numbers = lotteryNumber?.data?.numbers?.split(',') ?? []
-  const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
-  const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
-  const lotteryDate = lotteryNumber?.data?.issue
-  const lotterys = numbers?.map((number, index) => ({
-    number,
-    color: numColors[index],
-    sx: numSxs[index],
-  }))
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -161,11 +122,6 @@ const LHTHomePage = (props: any) => {
     },
     ...lotterys.slice(6),
   ]
-  // const homeGames = homeGame?.data?.icons
-  const homeGames = homeGame?.data?.icons?.map((tab) => {
-    const { list, name } = tab
-    return { name, list: list?.filter((ele) => ele.levelType == '1') ?? [] }
-  }) ?? []
 
   if (loading) {
     return <ProgressCircle />
@@ -188,7 +144,7 @@ const LHTHomePage = (props: any) => {
         </SafeAreaHeader>
         <ScrollView
           style={styles.container}
-          scrollEnabled={true}
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
               refreshing={refresh}
@@ -490,7 +446,7 @@ const LHTHomePage = (props: any) => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any, index) => {
+        {floatAds?.map((item: any, index) => {
           const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent

@@ -29,10 +29,12 @@ const useHomePage = () => {
     onlineNum,
     couponList,
     homeAd,
-    roulette,
+    turntableList,
     redBag,
     floatAd,
     homeRecommend,
+    lotteryGame,
+    lotteryNumber,
     refreshHome,
   } = useHome()
 
@@ -55,12 +57,24 @@ const useHomePage = () => {
       ?.sort((a: any, b: any) => a.sort - b.sort)
       ?.slice(0, 4) ?? []
   const homeGames = homeGame?.data?.icons ?? []
-  const lobbyGames = homeRecommend?.data
-  const lobbys = lobbyGames?.map((item) => item?.categoryName) ?? []
+  const recommendGames = homeRecommend?.data
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const midBanners = homeAd?.data ?? []
+  const floatAds = floatAd?.data ?? []
+  const roulette = turntableList?.data
+  const lotteryDate = lotteryNumber?.data?.issue
+  const lotteryNumbers = lotteryNumber?.data?.numbers?.split(',') ?? []
+  const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
+  const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
+  const lotterys = lotteryNumbers?.map((item, index) => { return ({ number: item, color: numColors[index], sx: numSxs[index] }) })
+  // 官 信
+  let official_customise_games = []
+  lotteryGame?.data?.forEach((ele) => (official_customise_games = official_customise_games?.concat(ele?.list)))
+  const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
+  const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
+
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -73,22 +87,25 @@ const useHomePage = () => {
     refreshHome,
     loading,
     refresh,
+    lotteryDate,
     onlineNum,
     bannersInterval,
+    lotterys,
     banners,
     notices,
     midBanners,
     announcements,
     navs,
     homeGames,
-    lobbys,
-    lobbyGames,
+    recommendGames,
+    officialGames,
+    customiseGames,
     coupons,
     rankLists,
     redBag,
     redBagLogo,
     roulette,
-    floatAd,
+    floatAds,
     userInfo,
     sysConf
   }

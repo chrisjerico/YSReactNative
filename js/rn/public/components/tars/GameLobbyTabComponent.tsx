@@ -8,25 +8,50 @@ import {
   ViewStyle
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
-import { Icon, List } from '../../../public/network/Model/HomeGamesModel'
+import { List } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
-import { Data, Game } from '../../network/Model/HomeRecommendModel'
+import { Game } from '../../network/Model/HomeRecommendModel'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
 interface GameLobbyComponentProps {
-  tabGames: (Icon | Data)[];
+  tabGames: TabGame[];
   itemHeight?: number;
   renderScene?: (params: Render) => any;
-  focusTabColor: string;
+  focusTabColor?: string;
   baseHeight?: number;
   initialTabIndex: number;
   tabTextStyle?: TextStyle | TextStyle;
   containerStyle?: ViewStyle | ViewStyle;
+  tabWidth?: number;
+  renderLabel?: (params: RenderLabel) => any;
+  tabStyle?: ViewStyle | ViewStyle[];
+  contentOffset?: ContentOffset;
+  enableAutoScrollTab?: boolean;
+  tabScrollEnabled?: boolean;
+  numColumns: number;
+}
+
+interface ContentOffset {
+  x: number;
+  y: number;
+}
+
+interface RenderLabel {
+  route: any;
+  focused: boolean;
+}
+
+interface TabGame {
+  name?: string;
+  categoryName?: string;
+  logo?: string;
+  list?: List[];
+  games?: Game[];
 }
 
 interface Render {
-  games: List[] | Game[];
+  item: List[] | Game[];
   index: number;
   tab: string;
 }
@@ -54,15 +79,23 @@ const GameLobbyTabComponent = ({
   tabTextStyle,
   itemHeight,
   containerStyle,
+  tabWidth,
+  renderLabel,
+  tabStyle,
+  contentOffset,
+  enableAutoScrollTab = true,
+  tabScrollEnabled = true,
+  numColumns
 }: GameLobbyComponentProps) => {
   // yellowBox
   console.disableYellowBox = true
+
   const getSceneHeight = (index: number) => {
     //@ts-ignore
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
       const gameCount = games?.length ?? 0
-      const gameRow = Math.ceil(gameCount / 3)
+      const gameRow = Math.ceil(gameCount / numColumns)
       return itemHeight * gameRow + baseHeight
     } else {
       return 0
@@ -78,6 +111,9 @@ const GameLobbyTabComponent = ({
   }
 
   const getTabWidth = () => {
+    if (tabWidth) {
+      return tabWidth
+    }
     const tabCount = getTabCount()
     const width = tabCount ? AppDefine.width / tabCount : 0
     if (width < minTabWidth) {
@@ -88,11 +124,11 @@ const GameLobbyTabComponent = ({
   }
 
   let scenes = {}
-  tabGames?.forEach((item: any, index: number) => {
+  tabGames?.forEach((ele: any, index: number) => {
     scenes[index] = () => {
-      const tab = item?.name ?? item?.categoryName ?? ''
-      const games = item?.list ?? item?.games ?? []
-      return renderScene && renderScene({ games, index, tab })
+      const tab = ele?.name ?? ele?.categoryName ?? ''
+      const item = ele?.list ?? ele?.games ?? []
+      return renderScene ? renderScene({ item, index, tab }) : null
     }
   })
 
@@ -100,7 +136,7 @@ const GameLobbyTabComponent = ({
     const height = getSceneHeight(index)
     const x = getTabXPosition(index)
     setHeight(height)
-    scrollTabTo(x)
+    enableAutoScrollTab && scrollTabTo(x)
     setIndex(index)
   }
 
@@ -136,67 +172,74 @@ const GameLobbyTabComponent = ({
     tabGames?.map((item, index) => {
       return {
         key: index.toString(),
-        //@ts-ignore
-        title: StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? ''),
+        title: StringUtils.getInstance().deleteHtml(
+          item?.name ?? item?.categoryName ?? ''
+        ),
+        logo: item?.logo,
       }
     }) ?? []
 
   return (
     <TabView
       initialLayout={{ width: AppDefine.width }}
-      style={[
-        {
-          height,
-          borderBottomRightRadius: scale(10),
-          borderBottomLeftRadius: scale(10),
-        },
-        containerStyle,
-      ]}
+      style={[containerStyle, { height }]}
       navigationState={{ index, routes }}
       renderTabBar={(props: any) => {
         return (
           <ScrollView
+            scrollEnabled={tabScrollEnabled}
             ref={scroll}
             horizontal={true}
             removeClippedSubviews={true}
             style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
             showsHorizontalScrollIndicator={false}
-            contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
+            contentOffset={
+              contentOffset
+                ? contentOffset
+                : { x: getTabXPosition(initialTabIndex), y: 0 }
+            }
             scrollEventThrottle={5000}
           >
             <TabBar
               {...props}
-              lazy={true}
+              lazy={false}
               pressOpacity={1}
               contentContainerStyle={{ backgroundColor: '#ffffff' }}
-              tabStyle={styles.tabStyle}
-              renderLabel={({ route, focused }) => {
-                return (
-                  <View
-                    style={{
-                      width: getTabWidth(),
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text
-                      style={[
-                        styles.tabText,
-                        tabTextStyle,
-                        focused ? { color: focusTabColor } : styles.text,
-                      ]}
-                    >
-                      {route.title}
-                    </Text>
-                    {focused && (
+              tabStyle={[styles.tabStyle, tabStyle]}
+              renderLabel={
+                renderLabel
+                  ? renderLabel
+                  : ({ route, focused }) => {
+                    return (
                       <View
-                        style={[styles.focusBar, {
-                          backgroundColor: focusTabColor,
-                        }]}
-                      />
-                    )}
-                  </View>
-                )
-              }}
+                        style={{
+                          width: getTabWidth(),
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Text
+                          style={[
+                            styles.tabText,
+                            tabTextStyle,
+                            focused ? { color: focusTabColor } : styles.text,
+                          ]}
+                        >
+                          {route?.title}
+                        </Text>
+                        {focused && (
+                          <View
+                            style={[
+                              styles.focusBar,
+                              {
+                                backgroundColor: focusTabColor,
+                              },
+                            ]}
+                          />
+                        )}
+                      </View>
+                    )
+                  }
+              }
             />
           </ScrollView>
         )
@@ -220,6 +263,8 @@ const styles = StyleSheet.create({
   tabStyle: {
     backgroundColor: '#ffffff',
     height: scale(60),
+    padding: 0,
+    margin: 0
   },
   focusedText: {
     color: '#46A3FF',
@@ -239,5 +284,6 @@ const styles = StyleSheet.create({
     marginBottom: scale(5),
   }
 })
+
 
 export default GameLobbyTabComponent

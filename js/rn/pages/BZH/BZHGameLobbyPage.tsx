@@ -31,30 +31,36 @@ const BZHGameLobbyPage = ({ route }) => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <GameLobbyTabComponent
-          containerStyle={{ marginTop: scale(10) }}
+          containerStyle={{
+            borderBottomRightRadius: scale(10),
+            borderBottomLeftRadius: scale(10),
+            marginTop: scale(10),
+          }}
+          numColumns={3}
           initialTabIndex={initialTabIndex}
           baseHeight={scale(130)}
           itemHeight={scale(130)}
           tabGames={tabGames}
           focusTabColor={BZHThemeColor.宝石红.themeColor}
           tabTextStyle={{ fontSize: scale(20) }}
-          renderScene={({ games, tab, index }) => {
+          renderScene={({ item, tab, index }) => {
             return (
               <FlatList
                 listKey={tab + 'BZHGameLobbyPage'}
                 keyExtractor={(_, index) => tab + index.toString()}
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={false}
-                style={{ backgroundColor: '#ffffff', marginTop: scale(10), marginHorizontal: scale(10), borderRadius: scale(5) }}
+                style={{
+                  backgroundColor: '#ffffff',
+                  marginTop: scale(10),
+                  marginHorizontal: scale(10),
+                  borderRadius: scale(5),
+                }}
                 contentContainerStyle={{ paddingTop: scale(45), width: '100%' }}
                 numColumns={3}
-                data={games as any}
+                data={item as any}
                 renderItem={({ item }) => {
-                  const {
-                    title,
-                    pic,
-                    id
-                  } = item
+                  const { title, pic, id } = item
                   return (
                     <GameButton
                       key={index}
@@ -72,18 +78,20 @@ const BZHGameLobbyPage = ({ route }) => {
                         aspectRatio: 2.8,
                       }}
                       onPress={() =>
-                        PushHelper.pushHomeGame(Object.assign({}, item, {
-                          seriesId: SeriesId[tab],
-                          gameId: id,
-                          subId: id,
-                        }))
+                        PushHelper.pushHomeGame(
+                          Object.assign({}, item, {
+                            seriesId: SeriesId[tab],
+                            gameId: id,
+                            subId: id,
+                          })
+                        )
                       }
                     />
                   )
                 }}
-              />)
+              />
+            )
           }}
-
         />
       </ScrollView>
     </>
@@ -94,12 +102,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-    marginBottom: scale(20)
+    marginBottom: scale(20),
   },
   gameContainer: {
     width: '33.3%',
     height: scale(130),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 })
 
