@@ -6,6 +6,7 @@ import { navigate } from '../../navigation/RootNavigation'
 import APIRouter from '../../network/APIRouter'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
 import useRegister from './useRegister'
+import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -80,7 +81,9 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   }
   const fetchSms = async () => {
     try {
+      showLoading({ type: UGLoadingType.Loading });
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
+      hideLoading()
       const { code, msg } = data ?? {}
       if (code != 0) {
         throw { message: msg }
@@ -88,6 +91,7 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
         ToastSuccess(msg)
       }
     } catch (error) {
+      hideLoading()
       ToastError(error?.message)
     }
   }

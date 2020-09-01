@@ -1,4 +1,4 @@
-import {View, Text, TouchableWithoutFeedback, FlatList, Linking} from "react-native"
+import {View, Text, TouchableWithoutFeedback, FlatList, Linking, Platform} from "react-native"
 import {Header, HeaderProps, Button} from 'react-native-elements';
 import {Skin1} from '../../public/theme/UGSkinManagers';
 import LinearGradient from "react-native-linear-gradient";
@@ -26,10 +26,19 @@ const PromotionListPage = ({navigation}) => {
     const [categories, setCategories] = useState<string[]>()
     useEffect(() => {
         init()
-        const unsubscribe = navigation.addListener('focus', async () => {
-            const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
-            setCurrentNativeSelectedTab(index)
-        });
+        let unsubscribe;
+        switch (Platform.OS) {
+            case "ios":
+                unsubscribe = navigation.addListener('focus', async () => {
+                    const index = await OCHelper.call("UGTabbarController.shared.selectedIndex")
+                    setCurrentNativeSelectedTab(index)
+                });
+                break;
+            case "android":
+                //TODO
+                setCurrentNativeSelectedTab(0)
+                break;
+        }
 
         return unsubscribe;
     }, [])
@@ -65,7 +74,14 @@ const PromotionListPage = ({navigation}) => {
                             buttonStyle={[{backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start'},]}
                             onPress={() => {
                                 popToRoot()
-                                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                                switch (Platform.OS) {
+                                  case 'ios':
+
+                                    break;
+                                  case 'android':
+                                      OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                                    break;
+                                }
                             }}
                         />
                     </View> : null}

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Dimensions, SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
+import {Dimensions, Platform, SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {pop} from "../../../public/navigation/RootNavigation";
 import {OCHelper} from "../../../public/define/OCHelper/OCHelper";
@@ -32,7 +32,14 @@ export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps)
                     }}>{screenName}</Text>
                     <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
                         pop()
-                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        switch (Platform.OS) {
+                          case 'ios':
+                              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                            break;
+                          case 'android':
+
+                            break;
+                        }
                     }}>
                         <Icon size={33} name={icon || 'angle-left'}/>
                     </TouchableOpacity>

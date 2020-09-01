@@ -33,6 +33,8 @@ import HomeBase from "../../../public/components/HomeBase"
 import Account from "./Account"
 import QuickStart from "./QuickStart"
 import RankListCP from "../../../public/widget/RankList"
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 
 
 const KSHomePage = ({ navigation }) => {
@@ -72,7 +74,7 @@ const KSHomePage = ({ navigation }) => {
           OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
         break;
       case "android":
-          //TODO
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
         break;
     }
   }

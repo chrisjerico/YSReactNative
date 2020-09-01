@@ -8,6 +8,7 @@ import { ToastSuccess, ToastError } from "../../tools/tars"
 import { PageName } from "../../navigation/Navigation"
 import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
+import {Platform} from "react-native";
 
 interface DefaultUserCenterLogos {
   1: string, // 存款
@@ -111,11 +112,19 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   const signOut = logOut
 
   const goBack = () => {
-    !pop() &&
-      OCHelper.call(
-        'UGNavigationController.current.popViewControllerAnimated:',
-        [true]
-      )
+    if (!pop()) {
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call(
+            'UGNavigationController.current.popViewControllerAnimated:',
+            [true]
+          )
+          break;
+        case 'android':
+
+          break;
+      }
+    }
   }
   // effects
   useEffect(() => {

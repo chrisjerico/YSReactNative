@@ -21,6 +21,7 @@ import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MineHeader from '../../public/views/tars/MineHeader'
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHRegisterPage = () => {
   const {
@@ -125,7 +126,7 @@ const BZHRegisterPage = () => {
               onPress: onChanePasswordSecure,
             }}
             show={2}
-            maxLength={pass_length_max}
+            maxLength={parseInt(pass_length_max)}//实际为 string
           />
           <Form
             leftIcon={{

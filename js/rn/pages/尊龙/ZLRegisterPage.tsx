@@ -205,7 +205,7 @@ const ZLRegisterPage = () => {
                         OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
                         break;
                     case 'android':
-
+                        Toast(error?.message ?? '注册失败');
                         break;
                 }
             } else {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {Alert, Image, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Alert, Image, Platform, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {BaseScreen} from "../乐橙/component/BaseScreen";
 import AppDefine from "../../public/define/AppDefine";
 import {navigate, popToRoot} from "../../public/navigation/RootNavigation";
@@ -12,6 +12,7 @@ import UGUserModel from "../../redux/model/全局/UGUserModel";
 import {EventRegister} from "react-native-event-listeners";
 // @ts-ignore
 import md5 from 'blueimp-md5';
+import {Toast} from "../../public/tools/ToastUtils";
 
 export const LLRegisterPage = () => {
     const [acc, setAcc] = useState("")
@@ -41,7 +42,14 @@ export const LLRegisterPage = () => {
     const onSubmit = async () => {
         try {
             const password = md5(pwd)
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+            switch (Platform.OS) {
+              case 'ios':
+                  OCHelper.call('SVProgressHUD.showWithStatus:', ['正在注册...']);
+                break;
+              case 'android':
+                Toast('正在注册...');
+                break;
+            }
 
             // if (requestData.slideCode) {
             //     console.log(requestData.slideCode)
