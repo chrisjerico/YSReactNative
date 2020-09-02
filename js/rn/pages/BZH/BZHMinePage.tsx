@@ -120,7 +120,7 @@ const BZHMinePage = (props: any) => {
           )
         })}
         <Button
-          text={'退出登录'}
+          title={'退出登录'}
           containerStyle={{
             backgroundColor: '#ffffff',
             marginHorizontal: scale(25),
@@ -128,7 +128,7 @@ const BZHMinePage = (props: any) => {
             borderRadius: scale(7),
             height: scale(70),
           }}
-          textStyle={{ color: '#db6372', fontSize: scale(21) }}
+          titleStyle={{ color: '#db6372', fontSize: scale(21) }}
           onPress={signOut}
         />
         <BottomGap />

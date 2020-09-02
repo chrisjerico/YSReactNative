@@ -50,7 +50,7 @@ const BZHHomePage = () => {
     redBag,
     redBagLogo,
     roulette,
-  } = useHomePage()
+  } = useHomePage({})
 
   const { uid, usr, balance, isTest } = userInfo
   const {
@@ -101,6 +101,7 @@ const BZHHomePage = () => {
         >
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 218 }}
+            badgeStyle={{ top: scale(-210) }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}

@@ -14,11 +14,7 @@ interface BannerBlockProps {
   autoplayTimeout: number;
   visible?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
-}
-
-interface BadgePosition {
-  top: number;
-  right: number;
+  badgeStyle?: ViewStyle | ViewStyle[];
 }
 
 const BannerBlock = ({
@@ -29,6 +25,7 @@ const BannerBlock = ({
   autoplayTimeout,
   visible = true,
   containerStyle,
+  badgeStyle
 }: BannerBlockProps) => {
   if (visible) {
     return (
@@ -52,9 +49,10 @@ const BannerBlock = ({
             badgeStyle={[
               styles.badge,
               {
-                top: scale(-300),
+                top: scale(-200),
                 right: scale(10),
               },
+              badgeStyle
             ]}
             value={'当前在线:' + onlineNum}
           />

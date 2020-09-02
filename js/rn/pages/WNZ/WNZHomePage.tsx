@@ -16,8 +16,6 @@ import GameSubTypeComponent from '../../public/components/tars/GameSubTypeCompon
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -75,11 +73,12 @@ const WNZHomePage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
 
-  // const { setProps } = props
+  const { setProps } = props
   const menu = useRef(null)
   const {
     goToJDPromotionListPage,
     refreshHome,
+    signOut,
     loading,
     refresh,
     userInfo,
@@ -100,7 +99,12 @@ const WNZHomePage = (props: any) => {
     roulette,
     officialGames,
     customiseGames,
-  } = useHomePage()
+  } = useHomePage({
+    onSuccessLogOut: () => {
+      menu?.current?.close()
+      setProps()
+    }
+  })
 
   const { uid, usr, balance, isTest } = userInfo
   const {
@@ -110,32 +114,6 @@ const WNZHomePage = (props: any) => {
     rankingListSwitch,
     adSliderTimer,
   } = sysConf
-
-  // useEffect(() => {
-  //   OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
-  //     try {
-  //       await updateUserInfo()
-  //       setProps()
-  //     } catch (error) {
-  //       ToastError('登录失败')
-  //       console.log(error)
-  //     }
-  //   })
-  //   OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
-  //     try {
-  //       UGStore.dispatch({ type: 'reset', userInfo: {} })
-  //       UGStore.save()
-  //       setProps()
-  //     } catch (error) {
-  //       ToastError('登出失败')
-  //       console.log(error)
-  //     }
-  //   })
-  //   return () => {
-  //     OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
-  //     OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
-  //   }
-  // }, [])
 
   let homeGamesConcat = []
   homeGames.forEach(
@@ -168,8 +146,7 @@ const WNZHomePage = (props: any) => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              menu?.current?.show()
-              // PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
+              menu?.current?.open()
             }}
             onPressComment={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
@@ -198,6 +175,7 @@ const WNZHomePage = (props: any) => {
         >
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 240 }}
+            badgeStyle={{ top: scale(-230) }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -314,8 +292,8 @@ const WNZHomePage = (props: any) => {
                     paddingVertical: scale(20),
                     borderRadius: scale(5),
                   }}
-                  textStyle={{ color: '#ffffff', fontSize: scale(15) }}
-                  text={title}
+                  titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
+                  title={title}
                   onPress={() => {
                     PushHelper.pushHomeGame(item)
                   }}
@@ -497,20 +475,29 @@ const WNZHomePage = (props: any) => {
         })}
         <MenuModalComponent
           ref={menu}
+          menus={
+            uid
+              ? config?.menus?.concat(config?.menuSignOut)
+              // @ts-ignore
+              : config?.menuSignIn?.concat(config?.menus)
+          }
           renderMenu={({ item }) => {
-            const { title } = item
+            const { title, onPress } = item
             return (
               <Menu
                 color={WNZThemeColor.威尼斯.themeColor}
                 title={title}
                 onPress={() => {
-                  menu?.current?.close()
-                  push(PageName.WNZSignInPage)
+                  if (title == '安全退出') {
+                    signOut()
+                  } else {
+                    menu?.current?.close()
+                    onPress && onPress()
+                  }
                 }}
               />
             )
           }}
-          menus={config?.menus}
         />
       </>
     )
@@ -569,3 +556,29 @@ const styles = StyleSheet.create({
 })
 
 export default WNZHomePage
+
+// useEffect(() => {
+//   OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+//     try {
+//       await updateUserInfo()
+//       setProps()
+//     } catch (error) {
+//       ToastError('登录失败')
+//       console.log(error)
+//     }
+//   })
+//   OCEvent.addEvent(OCEventType.UGNotificationUserLogout, async () => {
+//     try {
+//       UGStore.dispatch({ type: 'reset', userInfo: {} })
+//       UGStore.save()
+//       setProps()
+//     } catch (error) {
+//       ToastError('登出失败')
+//       console.log(error)
+//     }
+//   })
+//   return () => {
+//     OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+//     OCEvent.removeEvents(OCEventType.UGNotificationUserLogout)
+//   }
+// }, [])

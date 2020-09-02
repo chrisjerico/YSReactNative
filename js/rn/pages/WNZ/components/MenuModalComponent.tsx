@@ -20,7 +20,7 @@ const MenuModalComponent = (
   const [visible, setVisible] = useState(false)
 
   useImperativeHandle(ref, () => ({
-    show: () => {
+    open: () => {
       setVisible(true)
     },
     close: () => {

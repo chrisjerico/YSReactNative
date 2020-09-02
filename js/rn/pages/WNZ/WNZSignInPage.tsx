@@ -1,61 +1,159 @@
-import useSignInPage from "../../public/hooks/tars/useSignInPage"
-import { WNZThemeColor } from "../../public/theme/colors/WNZThemeColor"
-import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
-import SafeAreaHeader from "../../public/views/tars/SafeAreaHeader"
-import Form from "../../public/views/tars/Form"
-import { scale } from "../../public/tools/Scale"
+import React, { useRef } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import useSignInPage from '../../public/hooks/tars/useSignInPage'
+import { PageName } from '../../public/navigation/Navigation'
+import { popToRoot } from '../../public/navigation/RootNavigation'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { scale } from '../../public/tools/Scale'
+import Button from '../../public/views/tars/Button'
+import CheckBox from '../../public/views/tars/CheckBox'
+import Form from '../../public/views/tars/Form'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import MenuModalComponent from './components/MenuModalComponent'
+import config from './config'
+import Menu from './views/Menu'
+import SignInHeader from './views/SignInHeader'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 
-const WNZSignInPage = ({ navigation }) => {
-  const { account, onChangeAccount, onChanePasswordSecure, password, onChangePassword, showPassword } = useSignInPage(navigation)
+const WNZSignInPage = () => {
+  const menu = useRef(null)
+  const {
+    signIn,
+    value,
+    onChange,
+    goToRegisterPage,
+    loginVCode,
+    slidingVerificationRrf,
+  } = useSignInPage({
+    homePage: PageName.WNZHomePage,
+    registerPage: PageName.WNZRegisterPage,
+  })
+
+  const { isRemember } = value
+
+  const {
+    onChangePassword,
+    onChangeAccount,
+    onChangeIsRemember,
+    onChangeSlidingVerification,
+  } = onChange
 
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-
+        <SignInHeader
+          onPressLeftTool={popToRoot}
+          onPressMenu={() => {
+            menu?.current?.open()
+          }}
+          onPressRegister={goToRegisterPage}
+        />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Form
           show={true}
-          inputContainerStyle={{ borderWidth: scale(1), borderRadius: scale(5), backgroundColor: '#ffffff', borderColor: '#d9d9d9', paddingLeft: scale(20) }}
-          inputStyle={{ paddingLeft: scale(10) }}
-          placeholder={'请输入会员帐号'}
-          renderLeftIcon={() =>
-            <View style={{ justifyContent: 'center', alignItems: 'center', width: scale(60) }}>
-              <Text style={{ fontSize: scale(25) }}>{'帐号'}</Text>
+          containerStyle={{ marginTop: scale(43), aspectRatio: null }}
+          inputContainerStyle={styles.inputContainerStyle}
+          inputStyle={styles.inputStyle}
+          placeholder={'请输入用户名'}
+          renderLeftIcon={() => (
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.inputText}>{'帐号'}</Text>
             </View>
-          }
-          // value={account}
+          )}
           onChangeText={onChangeAccount}
           leftIcon={{
             name: 'user-circle',
-            type: 'font-awesome'
+            type: 'font-awesome',
           }}
           showRightIcon={false}
           showLeftIcon={true}
+          enableLabel={false}
         />
         <Form
           show={true}
-          rightIconProps={{
-            onPress: onChanePasswordSecure,
-          }}
+          containerStyle={{ marginTop: scale(8), aspectRatio: null }}
+          inputContainerStyle={styles.inputContainerStyle}
+          inputStyle={styles.inputStyle}
           placeholder={'请输入密码'}
-          leftIcon={{
-            name: 'unlock-alt',
-            type: 'font-awesome'
-          }}
-          // value={password}
+          renderLeftIcon={() => (
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.inputText}>{'密码'}</Text>
+            </View>
+          )}
           onChangeText={onChangePassword}
-          secureTextEntry={!showPassword}
+          leftIcon={{
+            name: 'user-circle',
+            type: 'font-awesome',
+          }}
           showRightIcon={false}
-          showLeftIcon={false}
-
+          showLeftIcon={true}
+          enableLabel={false}
+          showContent={false}
+        />
+        <View style={styles.checkBoxBlock}>
+          <CheckBox
+            check={isRemember}
+            onPress={onChangeIsRemember}
+            label={'记住帐号密码'}
+            labelTextStyle={{ color: '#888888' }}
+          />
+          <Text style={{ color: '#888888' }}>{'忘记密码'}</Text>
+        </View>
+        <Button
+          title={'登陆'}
+          containerStyle={styles.loginButton}
+          titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
+          onPress={signIn}
+        />
+        {loginVCode && (
+          <ReloadSlidingVerification
+            ref={slidingVerificationRrf}
+            onChange={onChangeSlidingVerification}
+            containerStyle={{ marginBottom: scale(20), backgroundColor: '#f2f2f2' }}
+            backgroundColor={'#f2f2f2'}
+          />
+        )}
+        <Button
+          title={'立即注册'}
+          containerStyle={styles.whiteButton}
+          titleStyle={styles.whitwButtonTitle}
+          onPress={goToRegisterPage}
+        />
+        <Button
+          title={'在线客服'}
+          containerStyle={styles.whiteButton}
+          titleStyle={styles.whitwButtonTitle}
+        />
+        <Button
+          title={'免费试玩'}
+          containerStyle={styles.whiteButton}
+          titleStyle={styles.whitwButtonTitle}
+        />
+        <Button
+          title={'返回首页'}
+          containerStyle={styles.whiteButton}
+          titleStyle={styles.whitwButtonTitle}
+        />
+        <MenuModalComponent
+          ref={menu}
+          menus={
+            // @ts-ignore
+            config?.menuSignIn?.concat(config?.menus)
+          }
+          renderMenu={({ item }) => {
+            const { title, onPress } = item
+            return (
+              <Menu
+                color={WNZThemeColor.威尼斯.themeColor}
+                title={title}
+                onPress={() => {
+                  menu?.current?.close()
+                  onPress && onPress()
+                }}
+              />
+            )
+          }}
         />
       </ScrollView>
     </>
@@ -65,9 +163,54 @@ const WNZSignInPage = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
-    paddingHorizontal: scale(20)
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: scale(20),
   },
-
+  inputContainerStyle: {
+    borderWidth: scale(1),
+    borderRadius: scale(10),
+    backgroundColor: '#ffffff',
+    borderColor: '#d9d9d9',
+    paddingLeft: scale(20),
+    height: scale(63),
+  },
+  inputStyle: {
+    paddingLeft: scale(10),
+  },
+  inputTitleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scale(60),
+  },
+  inputText: { fontSize: scale(25) },
+  loginButton: {
+    width: '100%',
+    backgroundColor: '#dd524d',
+    marginTop: scale(32),
+    aspectRatio: 10,
+    borderRadius: scale(5),
+    marginBottom: scale(38),
+  },
+  checkBoxBlock: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(20),
+    aspectRatio: 6,
+  },
+  whiteButton: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    marginTop: scale(15),
+    aspectRatio: 10,
+    borderRadius: scale(5),
+    borderColor: '#ccc',
+    borderWidth: scale(1),
+  },
+  whitwButtonTitle: {
+    color: '#f13031',
+    fontSize: scale(25),
+  },
 })
 export default WNZSignInPage

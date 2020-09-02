@@ -50,6 +50,7 @@ import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
 import WNZSignInPage from '../WNZ/WNZSignInPage';
+import WNZRegisterPage from '../WNZ/WNZRegisterPage';
 
 // TabbarController
 class TabBarController extends Component<{
@@ -70,7 +71,6 @@ class TabBarController extends Component<{
   render() {
     let initialName = ExtUGApplication.tabUI();
     ugLog('tab initialName=', initialName)
-
     return (
       <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }}
         tabBarOptions={this.tabBarOptions}>
@@ -122,6 +122,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={UGPage(BZHSignInPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={UGPage(WNZSignInPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZRegisterPage} component={UGPage(WNZRegisterPage)} />
 
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />

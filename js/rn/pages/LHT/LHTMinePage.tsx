@@ -113,9 +113,9 @@ const LHTMinePage = (props: any) => {
           )
         })}
         <Button
-          text={'退出登录'}
+          title={'退出登录'}
           containerStyle={styles.logOutButton}
-          textStyle={{ color: '#ffffff' }}
+          titleStyle={{ color: '#ffffff' }}
           onPress={signOut}
         />
         <BottomGap />

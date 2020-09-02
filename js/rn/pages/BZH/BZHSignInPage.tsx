@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
@@ -18,35 +18,40 @@ import Form from '../../public/views/tars/Form'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { pop } from '../../public/navigation/RootNavigation'
 
 const BZHSignInPage = (props: any) => {
   // yellowBox
   console.disableYellowBox = true
   // functions
-  const { navigation } = props
+  // const { navigation } = props
   const {
-    goBack,
+    // goBack,
     goToRegisterPage,
     goToHomePage,
+    onChange,
+    signIn,
+    tryPlay,
+    loginVCode,
+    valid,
+    value,
+    showPassword,
+    slidingVerificationRrf,
+  } = useSignInPage({
+    // navigation: navigation,
+    homePage: PageName.BZHHomePage,
+    registerPage: PageName.BZHRegisterPage,
+  })
+
+  const {
     onChangeAccount,
     onChangePassword,
     onChangeIsRemember,
     onChanePasswordSecure,
     onChangeSlidingVerification,
-    signIn,
-    tryPlay,
-    account,
-    password,
-    isRemember,
-    loginVCode,
-    valid,
-    showPassword,
-    slidingVerificationRrf,
-  } = useSignInPage({
-    navigation: navigation,
-    homePage: PageName.BZHHomePage,
-    registerPage: PageName.BZHRegisterPage,
-  })
+  } = onChange
+
+  const { isRemember } = value
 
   return (
     <>
@@ -54,7 +59,7 @@ const BZHSignInPage = (props: any) => {
         <MineHeader
           title={'登录'}
           showBackBtn={true}
-          onPressLeftTool={goBack}
+          onPressLeftTool={pop}
           shoeRightTool={true}
           onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
@@ -66,11 +71,10 @@ const BZHSignInPage = (props: any) => {
           <Form
             show={true}
             placeholder={'请输入会员帐号'}
-            // value={account}
             onChangeText={onChangeAccount}
             leftIcon={{
               name: 'user-circle',
-              type: 'font-awesome'
+              type: 'font-awesome',
             }}
           />
           <Form
@@ -81,21 +85,25 @@ const BZHSignInPage = (props: any) => {
             placeholder={'请输入密码'}
             leftIcon={{
               name: 'unlock-alt',
-              type: 'font-awesome'
+              type: 'font-awesome',
             }}
-            // value={password}
             onChangeText={onChangePassword}
-            secureTextEntry={!showPassword}
+            showContent={showPassword}
             showRightIcon
           />
-          <CheckBox check={isRemember} onPress={onChangeIsRemember} />
-          {loginVCode ? (
+          <CheckBox
+            check={isRemember}
+            onPress={onChangeIsRemember}
+            label={'记住密码'}
+            containerStyle={{ alignSelf: 'flex-start' }}
+          />
+          {loginVCode && (
             <ReloadSlidingVerification
               ref={slidingVerificationRrf}
               onChange={onChangeSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />
-          ) : null}
+          )}
           <Button
             title={'立即登录'}
             disabled={!valid}
@@ -118,10 +126,10 @@ const BZHSignInPage = (props: any) => {
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text style={{ color: "#666" }}>{'免费试玩'}</Text>
+              <Text style={{ color: '#666' }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={goToHomePage}>
-              <Text style={{ color: "#666" }}>{'返回首页'}</Text>
+              <Text style={{ color: '#666' }}>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
         </View>

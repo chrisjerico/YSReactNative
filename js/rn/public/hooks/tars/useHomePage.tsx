@@ -7,15 +7,16 @@ import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import useHome from './useHome'
+import useLogOut from './useLogOut'
+import { ToastError } from '../../tools/tars'
 
-const useHomePage = () => {
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
+interface UseHomePage {
+  onSuccessLogOut?: () => any;
+}
+
+const useHomePage = ({
+  onSuccessLogOut
+}: UseHomePage) => {
 
   const {
     loading,
@@ -35,6 +36,23 @@ const useHomePage = () => {
     lotteryNumber,
     refreshHome,
   } = useHome()
+
+  const goToJDPromotionListPage = () => {
+    push(PageName.JDPromotionListPage, {
+      containerStyle: {
+        backgroundColor: '#ffffff',
+      },
+    })
+  }
+
+  const { logOut } = useLogOut({
+    onSuccess: onSuccessLogOut,
+    onError: (error) => {
+      ToastError(error || '登出失败')
+      console.log('--------登出失败--------', error)
+    },
+  })
+  const signOut = logOut
 
   // stores
   const userInfo: UGUserModel = UGStore.globalProps.userInfo
@@ -83,6 +101,7 @@ const useHomePage = () => {
   return {
     goToJDPromotionListPage,
     refreshHome,
+    signOut,
     loading,
     refresh,
     lotteryDate,

@@ -8,7 +8,7 @@ interface Form {
   value?: string;
   placeholder: string;
   rightIconProps?: any;
-  secureTextEntry?: boolean;
+  showContent?: boolean;
   showRightIcon?: boolean;
   label?: string;
   show: any;
@@ -41,7 +41,7 @@ const Form = ({
   onChangeText,
   placeholder,
   rightIconProps = {},
-  secureTextEntry = false,
+  showContent = true,
   showRightIcon = false,
   label,
   show,
@@ -101,9 +101,9 @@ const Form = ({
                   <Icon
                     {...rightIconProps}
                     type={'ionicon'}
-                    name={secureTextEntry ? 'ios-eye-off' : 'ios-eye'}
+                    name={showContent ? 'ios-eye' : 'ios-eye-off'}
                     size={scale(40)}
-                    color={secureTextEntry ? '#d9d9d9' : '#84C1FF'}
+                    color={showContent ? '#84C1FF' : '#d9d9d9'}
                   />
                 )
             ) : null
@@ -116,7 +116,7 @@ const Form = ({
           }}
           value={value}
           onChangeText={onChangeText}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={!showContent}
           onFocus={onFocus}
         />
         {enableLabel ? (

@@ -1,4 +1,7 @@
-import { useHtml5Image, getIbbImage } from '../../public/tools/tars'
+import { PageName } from '../../public/navigation/Navigation'
+import { push } from '../../public/navigation/RootNavigation'
+import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
 
 const config = {
@@ -27,48 +30,73 @@ const config = {
   navColors: ['#edb93f', '#77674d', '#e62e25', '#52b653', '#007aff'],
   menus: [
     {
-      title: '登录/注册',
-    },
-    {
       title: '会员中心',
+      onPress: () => { },
     },
     {
       title: '额度转换',
+      onPress: () => { },
     },
     {
       title: '幸运棋牌',
+      onPress: () => { },
     },
     {
       title: '彩票游戏',
+      onPress: () => { },
     },
     {
       title: 'AG视讯',
+      onPress: () => { },
     },
     {
       title: '真人视讯',
+      onPress: () => { },
     },
     {
       title: '电子游艺',
+      onPress: () => { },
     },
     {
       title: '捕鱼达人',
+      onPress: () => { },
     },
     {
-      title: '体育游戏'
+      title: '体育游戏',
+      onPress: () => { },
     },
     {
-      title: '棋牌游戏'
+      title: '棋牌游戏',
+      onPress: () => { },
     },
     {
-      title: '更多彩种'
-    }, {
-      title: '投注记录'
+      title: '更多彩种',
+      onPress: () => { },
     },
     {
-      title: '开奖结果'
-    }, {
-      title: '长龙排行'
-    }
+      title: '投注记录',
+      onPress: () => { },
+    },
+    {
+      title: '开奖结果',
+      onPress: () => { },
+    },
+    {
+      title: '长龙排行',
+      onPress: () => { },
+    },
+  ],
+  menuSignIn: [
+    {
+      title: '登录/注册',
+      onPress: () => push(PageName.WNZSignInPage),
+    },
+  ],
+  menuSignOut: [
+    {
+      title: '安全退出',
+      onPress: () => { },
+    },
   ],
 }
 

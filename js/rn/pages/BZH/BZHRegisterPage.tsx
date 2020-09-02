@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import AgentRedButtonComponent from '../../public/components/tars/AgentRedButtonComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useRegisterPage from '../../public/hooks/tars/useRegisterPage'
@@ -16,15 +16,29 @@ import { PageName } from '../../public/navigation/Navigation'
 import { pop, push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import AgentRedButton from '../../public/views/tars/AgentRedButton'
 import Form from '../../public/views/tars/Form'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import MineHeader from '../../public/views/tars/MineHeader'
 
 const BZHRegisterPage = () => {
   const {
+    reg,
+    show,
     slidingVerificationRrf,
+    correctImageCode,
+    label,
+    valid,
+    onChange,
+    fetchImgCaptcha,
+    fetchSms,
+    goToHomePage,
+    signUp,
+  } = useRegisterPage({
+    homePage: PageName.BZHHomePage,
+  })
+
+  const {
     hide_reco,
     pass_length_max,
     reg_name,
@@ -34,24 +48,10 @@ const BZHRegisterPage = () => {
     reg_phone,
     reg_email,
     reg_vcode,
-    showPassword,
-    showConfirmPassword,
-    showFundPassword,
-    correctImageCode,
     smsVerify,
     agentRegbutton,
-    agent,
-    valid,
-    recommendGuyLabel,
-    passwordLebel,
-    confirmPasswordLabel,
-    fundpwdLabel,
-    realNameLabel,
-    imageCodeLabel,
-    emailLabel,
-    phoneLabel,
-    wechatLabel,
-    qqLabel,
+  } = reg
+  const {
     onChangeRecommendGuy,
     obChangeAccount,
     obChangePassword,
@@ -68,15 +68,25 @@ const BZHRegisterPage = () => {
     onChanePasswordSecure,
     onChaneConfirmPasswordSecure,
     onChaneFundPasswordSecure,
-    fetchImgCaptcha,
-    fetchSms,
-    goToHomePage,
-    signUp,
-    setAgent,
-  } = useRegisterPage({
-    homePage: PageName.BZHHomePage,
-  })
+    onChangeAgent,
+  } = onChange
 
+  const { totalValid } = valid
+
+  const {
+    recommendGuyLabel,
+    passwordLebel,
+    confirmPasswordLabel,
+    fundpwdLabel,
+    realNameLabel,
+    imageCodeLabel,
+    emailLabel,
+    phoneLabel,
+    wechatLabel,
+    qqLabel,
+  } = label
+
+  const { showPassword, showConfirmPassword, showFundPassword } = show
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
@@ -119,7 +129,7 @@ const BZHRegisterPage = () => {
             onChangeText={obChangePassword}
             label={passwordLebel}
             placeholder={'密码'}
-            secureTextEntry={!showPassword}
+            showContent={!showPassword}
             showRightIcon
             rightIconProps={{
               onPress: onChanePasswordSecure,
@@ -134,7 +144,7 @@ const BZHRegisterPage = () => {
             onChangeText={onChangeConfirmPassword}
             label={confirmPasswordLabel}
             placeholder={'确认密码'}
-            secureTextEntry={!showConfirmPassword}
+            showContent={!showConfirmPassword}
             showRightIcon
             rightIconProps={{
               onPress: onChaneConfirmPasswordSecure,
@@ -157,7 +167,7 @@ const BZHRegisterPage = () => {
             onChangeText={onChaneFundPassword}
             label={fundpwdLabel}
             placeholder={'取款密码'}
-            secureTextEntry={!showFundPassword}
+            showContent={!showFundPassword}
             showRightIcon
             rightIconProps={{
               onPress: onChaneFundPasswordSecure,
@@ -242,31 +252,22 @@ const BZHRegisterPage = () => {
                 title={'获取验证码'}
                 onPress={fetchSms}
                 titleStyle={{ fontSize: scale(20), fontWeight: '600' }}
-                activeOpacity={1}
               />
             )}
           />
-          {reg_vcode == 2 ? (
+          {reg_vcode == 2 && (
             <ReloadSlidingVerification
               ref={slidingVerificationRrf}
               onChange={onChangeSlidingVerification}
               containerStyle={{ marginBottom: scale(20) }}
             />
-          ) : null}
-          {parseInt(agentRegbutton) ? (
-            <AgentRedButton
-              toggle={agent}
-              onPressLeftButton={() => {
-                setAgent(false)
-              }}
-              onPressRightButton={() => {
-                setAgent(true)
-              }}
-            />
-          ) : null}
+          )}
+          {parseInt(agentRegbutton) && (
+            <AgentRedButtonComponent onChangeAgent={onChangeAgent} />
+          )}
           <Button
             title={'注册'}
-            disabled={!valid}
+            disabled={!totalValid}
             buttonStyle={styles.button}
             titleStyle={{ color: '#ffffff' }}
             onPress={signUp}

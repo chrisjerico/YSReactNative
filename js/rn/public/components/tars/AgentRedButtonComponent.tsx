@@ -1,26 +1,22 @@
-import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
-import { scale } from '../../../public/tools/Scale'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { scale } from '../../tools/Scale'
 
-interface AgentRedButton {
-  toggle: boolean;
-  onPressRightButton: () => any;
-  onPressLeftButton: () => any;
+interface AgentRedButtonComponentProps {
+  onChangeAgent: (toggle: boolean) => any;
 }
 
-const AgentRedButton = ({
-  toggle = false,
-  onPressRightButton,
-  onPressLeftButton,
-}: AgentRedButton) => {
+const AgentRedButtonComponent = ({ onChangeAgent }: AgentRedButtonComponentProps) => {
+  const [toggle, setToggle] = useState(true)
+
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={onPressLeftButton}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setToggle(false)
+          onChangeAgent && onChangeAgent(false)
+        }}
+      >
         <View
           style={[
             styles.textContainer,
@@ -33,7 +29,12 @@ const AgentRedButton = ({
           </Text>
         </View>
       </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback onPress={onPressRightButton}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setToggle(true)
+          onChangeAgent && onChangeAgent(true)
+        }}
+      >
         <View
           style={[
             styles.textContainer,
@@ -83,4 +84,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AgentRedButton
+export default AgentRedButtonComponent

@@ -1,6 +1,5 @@
 import React from 'react'
-import { ScrollView, StyleSheet, View, Text } from 'react-native'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import { ScrollView, StyleSheet } from 'react-native'
 import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -10,13 +9,13 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {
   LotteryType,
-  UGUserCenterType,
+  UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
+import config from './config'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
-import config from './config'
 
 const WNZMinePage = (props: any) => {
   const { setProps } = props
@@ -26,7 +25,6 @@ const WNZMinePage = (props: any) => {
     showBackBtn,
     usr,
     mobile_logo,
-    money,
     curLevelInt,
     nextLevelInt,
     taskRewardTotal,
@@ -34,6 +32,7 @@ const WNZMinePage = (props: any) => {
     nextLevelTitle,
     userCenterItems,
     unreadMsg,
+    balance,
     fetchAvatarList,
   } = useMinePage({
     setProps,
@@ -88,7 +87,7 @@ const WNZMinePage = (props: any) => {
       UGUserCenterType.推荐收益,
     ].includes(ele.code)
   )
-
+  console.log("---------WNZMinePage---------")
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -97,7 +96,7 @@ const WNZMinePage = (props: any) => {
           showBackBtn={showBackBtn}
           name={usr}
           logo={mobile_logo}
-          balance={money}
+          balance={balance}
           onPressMenu={() => {
             PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
           }}

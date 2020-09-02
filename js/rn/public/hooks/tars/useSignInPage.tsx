@@ -15,17 +15,17 @@ interface SlidingVerification {
 }
 
 interface UseSignInPage {
-  navigation: any;
+  // navigation: any;
   homePage?: PageName;
-  registerPage?: PageName
+  registerPage?: PageName;
 }
 
 const useSignInPage = ({
-  navigation,
+  // navigation,
   homePage,
   registerPage
 }: UseSignInPage) => {
-  const { type }: any = navigation?.dangerouslyGetState() ?? {}
+  // const { type }: any = navigation?.dangerouslyGetState() ?? {}
 
   const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
   // states
@@ -40,21 +40,21 @@ const useSignInPage = ({
     nc_sig: undefined,
   })
 
-  const goBack = () => {
-    switch (type) {
-      case 'tab':
-        navigate(homePage, {})
-        break
-      case 'stack':
-        pop()
-        break
-      default:
-        console.log('------no navigation type------')
-    }
-  }
+  // const goBack = () => {
+  //   switch (type) {
+  //     case 'tab':
+  //       goToHomePage()
+  //       break
+  //     case 'stack':
+  //       pop()
+  //       break
+  //     default:
+  //       console.log('------no navigation type------')
+  //   }
+  // }
 
   const goToRegisterPage = () => {
-    registerPage && navigate(registerPage, {})
+    homePage && navigate(registerPage, {})
   }
 
   const goToHomePage = () => {
@@ -146,22 +146,30 @@ const useSignInPage = ({
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
   const valid = account && password && loginVCode_valid
 
-  return {
-    goBack,
-    goToRegisterPage,
-    goToHomePage,
+  const value = {
+    account,
+    password,
+    isRemember,
+  }
+
+  const onChange = {
     onChangeAccount,
     onChangePassword,
     onChangeIsRemember,
     onChanePasswordSecure,
     onChangeSlidingVerification,
+  }
+
+  return {
+    // goBack,
+    goToHomePage,
+    goToRegisterPage,
     signIn,
     tryPlay,
-    account,
-    password,
-    isRemember,
-    loginVCode,
+    onChange,
+    value,
     valid,
+    loginVCode,
     showPassword,
     slidingVerificationRrf
   }
