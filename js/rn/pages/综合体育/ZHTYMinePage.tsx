@@ -28,6 +28,7 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
   requestData() {
     // 获取功能按钮列表
     //TODO Android
+
     OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
       let dataArray = list.map(item => new UGUserCenterItem(item));
       this.setProps({ dataArray: dataArray });

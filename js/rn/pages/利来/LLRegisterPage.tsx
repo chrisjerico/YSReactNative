@@ -13,6 +13,9 @@ import {EventRegister} from "react-native-event-listeners";
 // @ts-ignore
 import md5 from 'blueimp-md5';
 import {Toast} from "../../public/tools/ToastUtils";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 
 export const LLRegisterPage = () => {
     const [acc, setAcc] = useState("")
@@ -73,33 +76,89 @@ export const LLRegisterPage = () => {
             if (data?.data?.autoLogin) {
                 const user = await OCHelper.call('UGUserModel.currentUser');
 
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                switch (Platform.OS) {
+                  case 'ios':
+                      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+                    break;
+                  case 'android':
+                    Toast('注册成功');
+                    break;
+                }
                 const {data: loginData, status} = await APIRouter.user_login(data.data.usr, password)
                 if (user) {
                     console.log('退出旧账号');
                     console.log(user);
-                    const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-                    await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
-                    await OCHelper.call('UGUserModel.setCurrentUser:');
-                    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                    switch (Platform.OS) {
+                        case 'ios':
+                            const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
+                            await OCHelper.call('UGUserModel.setCurrentUser:');
+                            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                            break;
+                        case 'android':
+                            await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
+                            await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
+                            break;
+                    }
                     UGStore.dispatch({type: 'reset'})
                 }
-                await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [acc, 'userName']);
-                await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [pwd, 'userPsw']);
-                await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                switch (Platform.OS) {
+                    case 'ios':
+                        await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [acc, 'userName']);
+                        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [pwd, 'userPsw']);
+                        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+                        await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                        break;
+                    case 'android':
+                        await ANHelper.callAsync(CMD.SAVE_DATA,
+                          {
+                              key: NA_DATA.LOGIN_INFO,
+                              ...loginData?.data
+                          });
+                        break;
+                }
                 const {data: UserInfo,} = await APIRouter.user_info()
-                await OCHelper.call('UGUserModel.setCurrentUser:', [{...UserInfo.data, ...UGUserModel.getYS(loginData?.data)}]);
+
+                switch (Platform.OS) {
+                    case 'ios':
+                        await OCHelper.call('UGUserModel.setCurrentUser:', [{...UserInfo.data, ...UGUserModel.getYS(loginData?.data)}]);
+                        break;
+                    case 'android':
+                        await ANHelper.callAsync(CMD.SAVE_DATA,
+                          {
+                              key: NA_DATA.USER_INFO,
+                              ...UserInfo?.data
+                          })
+                        break;
+                }
+
                 UGStore.dispatch({type: 'merge', props: UserInfo?.data});
 
                 UGStore.save();
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+
+                switch (Platform.OS) {
+                  case 'ios':
+                      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["登录成功"]);
+                    break;
+                  case 'android':
+                    Toast('登录成功')
+                    break;
+                }
+
                 popToRoot();
             }
             if (data?.data?.autoLogin == false) {
-                OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                switch (Platform.OS) {
+                  case 'ios':
+                      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [data.msg ?? ""]);
+                    break;
+                  case 'android':
+                    Toast(data.msg ?? "")
+                    break;
+                }
+
                 popToRoot();
                 navigate(PageName.LLLoginPage, {usr: acc, pwd: pwd})
             }
@@ -107,9 +166,23 @@ export const LLRegisterPage = () => {
             EventRegister.emit('reload')
             if (error.message.includes("推荐人")) {
                 Alert.alert(error?.message, "")
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+                switch (Platform.OS) {
+                  case 'ios':
+                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
+                    break;
+                  case 'android':
+
+                    break;
+                }
             } else {
-                OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+                switch (Platform.OS) {
+                    case 'ios':
+                        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '注册失败']);
+                        break;
+                    case 'android':
+                        Toast(error?.message ?? '注册失败')
+                        break;
+                }
             }
 
         }
