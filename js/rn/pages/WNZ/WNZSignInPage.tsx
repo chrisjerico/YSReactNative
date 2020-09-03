@@ -8,15 +8,16 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
-import Form from '../../public/views/tars/Form'
+import FormComponent from '../../public/components/tars/FormComponent'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
+import WNZFormComponent from './components/WNZFormComponent'
+
 
 const WNZSignInPage = () => {
-
   const menu = useRef(null)
 
   const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
@@ -53,47 +54,31 @@ const WNZSignInPage = () => {
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Form
+        <WNZFormComponent
           show={true}
           containerStyle={{ marginTop: scale(43), aspectRatio: null }}
           inputContainerStyle={styles.inputContainerStyle}
           inputStyle={styles.inputStyle}
           placeholder={'请输入用户名'}
-          renderLeftIcon={() => (
-            <View style={styles.inputTitleContainer}>
-              <Text style={styles.inputText}>{'帐号'}</Text>
-            </View>
-          )}
           onChangeText={onChangeAccount}
-          leftIcon={{
-            name: 'user-circle',
-            type: 'font-awesome',
-          }}
           showRightIcon={false}
           showLeftIcon={true}
           enableLabel={false}
           defaultValue={account}
+          title={'帐号'}
         />
-        <Form
+        <WNZFormComponent
           show={true}
           containerStyle={{ marginTop: scale(8), aspectRatio: null }}
           inputContainerStyle={styles.inputContainerStyle}
           inputStyle={styles.inputStyle}
           placeholder={'请输入密码'}
-          renderLeftIcon={() => (
-            <View style={styles.inputTitleContainer}>
-              <Text style={styles.inputText}>{'密码'}</Text>
-            </View>
-          )}
           onChangeText={onChangePassword}
-          leftIcon={{
-            name: 'user-circle',
-            type: 'font-awesome',
-          }}
           showRightIcon={false}
           showLeftIcon={true}
           enableLabel={false}
           defaultValue={password}
+          title={'密码'}
         />
         <View style={styles.checkBoxBlock}>
           <CheckBox

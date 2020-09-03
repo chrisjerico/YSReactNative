@@ -4,18 +4,18 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
-import { Button } from 'react-native-elements'
+import FormComponent from '../../public/components/tars/FormComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop } from '../../public/navigation/RootNavigation'
+import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
-import Form from '../../public/views/tars/Form'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -37,7 +37,7 @@ const BZHSignInPage = () => {
     onChangeSlideCode,
   } = onChange
 
-  const { goToRegisterPage, goToHomePage } = goTo
+  const { goToRegisterPage } = goTo
 
   const { slideCode } = ref
 
@@ -60,7 +60,7 @@ const BZHSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
-          <Form
+          <FormComponent
             show={true}
             placeholder={'请输入会员帐号'}
             onChangeText={onChangeAccount}
@@ -70,7 +70,7 @@ const BZHSignInPage = () => {
             }}
             defaultValue={account}
           />
-          <Form
+          <FormComponent
             show={true}
             placeholder={'请输入密码'}
             leftIcon={{
@@ -80,6 +80,7 @@ const BZHSignInPage = () => {
             onChangeText={onChangePassword}
             showRightIcon
             defaultValue={password}
+            rightIconType={'eye'}
           />
           <CheckBox
             onPress={onChangeRemember}
@@ -96,28 +97,28 @@ const BZHSignInPage = () => {
           <Button
             title={'立即登录'}
             disabled={!valid}
-            buttonStyle={styles.button}
-            titleStyle={{ color: '#ffffff' }}
+            containerStyle={styles.button}
+            titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signIn}
-            activeOpacity={1}
           />
           <Button
             title={'快速注册'}
-            buttonStyle={{
+            containerStyle={{
               backgroundColor: '#ffffff',
               borderColor: '#F0F0F0',
               borderWidth: scale(1),
               width: '100%',
+              aspectRatio: 8,
+              borderRadius: scale(5),
             }}
-            titleStyle={{ color: '#EA0000' }}
+            titleStyle={{ color: '#EA0000', fontSize: scale(23) }}
             onPress={goToRegisterPage}
-            activeOpacity={1}
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>
               <Text style={{ color: '#666' }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={goToHomePage}>
+            <TouchableWithoutFeedback onPress={popToRoot}>
               <Text style={{ color: '#666' }}>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
@@ -159,6 +160,8 @@ const styles = StyleSheet.create({
     backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
+    aspectRatio: 8,
+    borderRadius: scale(5),
   },
   headerTitle: {
     color: '#ffffff',

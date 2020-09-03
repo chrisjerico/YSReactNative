@@ -46,12 +46,12 @@ const MineHeader = ({ showBackBtn, onPressLeftTool, showRightTool, onPressRightT
 const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
-    fontSize: scale(24),
+    fontSize: scale(25),
     fontWeight: '500'
   },
   rightTextStyle: {
     color: '#ffffff',
-    fontSize: scale(21),
+    fontSize: scale(22),
   }
 })
 

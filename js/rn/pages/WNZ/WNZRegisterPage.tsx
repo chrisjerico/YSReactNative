@@ -7,9 +7,9 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import Form from '../../public/views/tars/Form'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MenuModalComponent from './components/MenuModalComponent'
+import WNZFormComponent from './components/WNZFormComponent'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
@@ -26,7 +26,9 @@ const WNZRegisterPage = () => {
     sign,
     valid,
     limit,
-  } = useRegisterPage({})
+  } = useRegisterPage({
+    homePage: PageName.WNZHomePage
+  })
 
   const {
     showRecommendGuy,
@@ -94,105 +96,89 @@ const WNZRegisterPage = () => {
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <Form
-          leftIcon={{
-            name: 'users',
-          }}
+        <WNZFormComponent
+          inputContainerStyle={styles.inputContainerStyle}
           onChangeText={onChangeRecommendGuy}
           label={recommendGuyLabel}
           placeholder={'推荐人ID'}
           show={showRecommendGuy}
+          title={'推荐人'}
         />
-        <Form
+        <WNZFormComponent
           onChangeText={obChangeAccount}
           label={'*请使用6-15位英文或数字的组合'}
           placeholder={'帐号'}
           show={showName}
+          title={'用护照号'}
         />
-        <Form
-          leftIcon={{
-            name: 'lock',
-          }}
+        <WNZFormComponent
           onChangeText={obChangePassword}
           label={passwordLebel}
           placeholder={'密码'}
           showRightIcon
           show={true}
           maxLength={pass_length_max}
+          title={'登录密码'}
+          rightIconType={'eye'}
         />
-        <Form
-          leftIcon={{
-            name: 'lock',
-          }}
+        <WNZFormComponent
           onChangeText={onChangeConfirmPassword}
           label={confirmPasswordLabel}
           placeholder={'确认密码'}
           showRightIcon
           show={true}
+          title={'确认密码'}
         />
-        <Form
-          leftIcon={{
-            name: 'user',
-          }}
+        <WNZFormComponent
           onChangeText={onChaneRealName}
           label={realNameLabel}
           placeholder={'真实姓名'}
           show={showName}
+          title={'真实姓名'}
         />
-        <Form
-          leftIcon={{
-            name: 'lock',
-          }}
+        <WNZFormComponent
           onChangeText={onChaneFundPassword}
           label={fundpwdLabel}
           placeholder={'取款密码'}
           showRightIcon
           show={showfundpwd}
           maxLength={4}
+          title={'取款密码'}
+
         />
-        <Form
-          leftIcon={{
-            name: 'QQ',
-            type: 'antdesign',
-          }}
+        <WNZFormComponent
           onChangeText={onChaneQQ}
           label={qqLabel}
           placeholder={'QQ号'}
           show={showQQ}
+          title={'QQ号'}
+
         />
-        <Form
-          leftIcon={{
-            name: 'wechat',
-            type: 'font-awesome',
-          }}
+        <WNZFormComponent
           onChangeText={onChaneWeChat}
           label={wechatLabel}
           placeholder={'微信号'}
           show={showWx}
+          title={'微信号'}
+
         />
-        <Form
-          leftIcon={{
-            name: 'smartphone',
-          }}
+        <WNZFormComponent
           onChangeText={onChanePhone}
           label={phoneLabel}
           placeholder={'手机号'}
           show={showPhone}
+          title={'手机号码'}
+
         />
-        <Form
-          leftIcon={{
-            type: 'material-community',
-            name: 'email-outline',
-          }}
+        <WNZFormComponent
           onChangeText={onChangeEmail}
           label={emailLabel}
           placeholder={'电子邮箱'}
           show={showEmail}
+          title={'电子邮箱'}
+
         />
-        <Form
-          leftIcon={{
-            name: 'lock',
-          }}
+        <WNZFormComponent
           onChangeText={onChangeImageCode}
           label={imageCodeLabel}
           placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
@@ -202,22 +188,25 @@ const WNZRegisterPage = () => {
             showImageTouchCaptcha ? 'touchImgCaptcha' : 'imgCaptcha'
           }
           maxLength={4}
+          title={'验证码'}
+
         />
-        <Form
-          leftIcon={{
-            name: 'lock',
-          }}
+        <WNZFormComponent
           onChangeText={onChaneSms}
           placeholder={'短信验证码'}
           show={showSms}
           showRightIcon={true}
           rightIconType={'sms'}
+          title={'短信验证'}
         />
         <ReloadSlidingVerification
           ref={slideCode}
           show={showSlideCode}
           onChange={onChangeSlideCode}
-          containerStyle={{ marginBottom: scale(20) }}
+          containerStyle={{
+            marginBottom: scale(20), backgroundColor: '#f2f2f2',
+          }}
+          backgroundColor={'#f2f2f2'}
         />
         <AgentRedButtonComponent
           show={parseInt(agentRegbutton) ? true : false}
@@ -253,6 +242,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     paddingHorizontal: scale(20),
+    paddingTop: scale(23),
+  },
+  inputContainerStyle: {
+    borderWidth: scale(1),
+    borderRadius: scale(10),
+    backgroundColor: '#ffffff',
+    borderColor: '#d9d9d9',
+    paddingLeft: scale(20),
+    height: scale(63),
+  },
+  inputTitleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: scale(60),
+  },
+  inputText: {
+    fontSize: scale(25),
   },
 })
 

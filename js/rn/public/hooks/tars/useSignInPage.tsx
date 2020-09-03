@@ -15,8 +15,8 @@ interface SlidingVerification {
 }
 
 interface UseSignInPage {
-  homePage?: PageName;
-  registerPage?: PageName;
+  homePage: PageName;
+  registerPage: PageName;
 }
 
 const useSignInPage = ({

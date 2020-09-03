@@ -7,14 +7,15 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import { Icon, Input } from 'react-native-elements'
+import { Input, Icon } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../public/tools/Scale'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import APIRouter from '../../network/APIRouter'
+import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
-import Button from './Button'
+import Button from '../../views/tars/Button'
 
-interface Form {
+export interface FormComponentProps {
   onChangeText?: any;
   value?: string;
   placeholder: string;
@@ -26,7 +27,6 @@ interface Form {
   renderRightIcon?: () => any;
   renderLeftIcon?: () => any;
   maxLength?: number;
-  leftIcon?: LeftIcon;
   labelTextStyle?: TextStyle | TextStyle;
   showLeftIcon?: boolean;
   inputContainerStyle?: ViewStyle | ViewStyle;
@@ -34,6 +34,10 @@ interface Form {
   formStyle?: ViewStyle | ViewStyle;
   defaultValue?: string;
   rightIconType?: 'eye' | 'imgCaptcha' | 'touchImgCaptcha' | 'sms';
+  leftIconContainerStyle?: ViewStyle | ViewStyle;
+  rightIconContainerStyle?: ViewStyle | ViewStyle;
+  leftIconName?: string;
+  leftIcon?: LeftIcon;
 }
 
 interface LeftIcon {
@@ -55,7 +59,81 @@ const ImgCaptcha = ({ onPress, correctImageCode }) => (
   </TouchableWithoutFeedback>
 )
 
-const Form = ({
+const RightIcon = ({
+  showRightIcon,
+  rightIconType,
+  renderRightIcon,
+  showContent,
+  onPressEye,
+  onPressImgCaptcha,
+  correctImageCode,
+  onPressSms,
+}) => {
+  if (showRightIcon) {
+    if (renderRightIcon) {
+      return renderRightIcon()
+    } else {
+      switch (rightIconType) {
+        case 'eye':
+          return (
+            <Ionicons
+              name={showContent ? 'ios-eye' : 'ios-eye-off'}
+              size={scale(40)}
+              color={showContent ? '#84C1FF' : '#d9d9d9'}
+              onPress={onPressEye}
+            />
+          )
+        case 'imgCaptcha':
+          return (
+            <ImgCaptcha
+              onPress={onPressImgCaptcha}
+              correctImageCode={correctImageCode}
+            />
+          )
+        case 'sms':
+          return (
+            <Button
+              title={'获取验证码'}
+              onPress={onPressSms}
+              titleStyle={{ fontSize: scale(20) }}
+              containerStyle={{
+                aspectRatio: 4,
+                width: scale(150),
+                backgroundColor: '#F1E1FF',
+                borderRadius: scale(5),
+              }}
+            />
+          )
+        default:
+          return null
+      }
+    }
+  } else {
+    return null
+  }
+}
+
+const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName }) => {
+  if (showLeftIcon) {
+    if (renderLeftIcon) {
+      return renderLeftIcon()
+    } else {
+      return (
+        <Icon
+          name={leftIconName}
+          type={'feather'}
+          color={'#d9d9d9'}
+          size={scale(30)}
+          {...leftIcon}
+        />
+      )
+    }
+  } else {
+    return null
+  }
+}
+
+const FormComponent = ({
   value,
   onChangeText,
   placeholder,
@@ -67,7 +145,7 @@ const Form = ({
   renderRightIcon,
   renderLeftIcon,
   maxLength,
-  leftIcon,
+  leftIconName,
   labelTextStyle,
   showLeftIcon = true,
   inputContainerStyle,
@@ -75,7 +153,10 @@ const Form = ({
   formStyle,
   defaultValue,
   rightIconType,
-}: Form) => {
+  leftIconContainerStyle,
+  rightIconContainerStyle,
+  leftIcon,
+}: FormComponentProps) => {
   const [showContent, setShowContent] = useState(true)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const phoneNumber = useRef('')
@@ -110,51 +191,6 @@ const Form = ({
       })
   }
 
-  const getRightIcon = () => {
-    if (showRightIcon) {
-      if (renderRightIcon) {
-        return renderRightIcon()
-      } else {
-        switch (rightIconType) {
-          case 'eye':
-            return (
-              <Icon
-                type={'ionicon'}
-                name={showContent ? 'ios-eye' : 'ios-eye-off'}
-                size={scale(40)}
-                color={showContent ? '#84C1FF' : '#d9d9d9'}
-                onPress={() => setShowContent(!showContent)}
-              />
-            )
-          case 'imgCaptcha':
-            return (
-              <ImgCaptcha
-                onPress={fetchImgCaptcha}
-                correctImageCode={correctImageCode}
-              />
-            )
-          case 'sms':
-            return (
-              <Button
-                title={'获取验证码'}
-                onPress={fetchSms}
-                titleStyle={{ fontSize: scale(20) }}
-                containerStyle={{
-                  aspectRatio: 4,
-                  width: scale(150),
-                  backgroundColor: '#F1E1FF',
-                  borderRadius: scale(5),
-                }}
-              />
-            )
-          default:
-            return null
-        }
-      }
-    } else {
-      return null
-    }
-  }
   if (show) {
     return (
       <View style={[styles.container, containerStyle]}>
@@ -168,7 +204,7 @@ const Form = ({
           ]}
           defaultValue={defaultValue}
           inputContainerStyle={inputContainerStyle}
-          inputStyle={inputStyle}
+          inputStyle={[styles.inputStyle, inputStyle]}
           maxLength={maxLength}
           placeholder={placeholder}
           containerStyle={[
@@ -178,20 +214,30 @@ const Form = ({
             },
           ]}
           leftIcon={
-            showLeftIcon
-              ? renderLeftIcon
-                ? renderLeftIcon()
-                : {
-                  name: 'user',
-                  type: 'feather',
-                  color: '#d9d9d9',
-                  size: scale(30),
-                  ...leftIcon,
-                }
-              : null
+            <LeftIcon
+              leftIcon={leftIcon}
+              leftIconName={leftIconName}
+              renderLeftIcon={renderLeftIcon}
+              showLeftIcon={showLeftIcon}
+            />
           }
-          rightIcon={getRightIcon}
-          leftIconContainerStyle={styles.leftIconContainerStyle}
+          rightIcon={
+            <RightIcon
+              showContent={showContent}
+              showRightIcon={showRightIcon}
+              rightIconType={rightIconType}
+              onPressEye={() => setShowContent(!showContent)}
+              onPressImgCaptcha={fetchImgCaptcha}
+              onPressSms={fetchSms}
+              renderRightIcon={renderRightIcon}
+              correctImageCode={correctImageCode}
+            />
+          }
+          leftIconContainerStyle={[
+            styles.leftIconContainerStyle,
+            leftIconContainerStyle,
+          ]}
+          rightIconContainerStyle={rightIconContainerStyle}
           value={value}
           onChangeText={
             rightIconType == 'sms'
@@ -234,6 +280,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: scale(40),
   },
+  inputStyle: {
+    flex: 1,
+    // backgroundColor: 'red'
+  },
 })
 
-export default Form
+export default FormComponent

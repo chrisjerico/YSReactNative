@@ -4,18 +4,18 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import AgentRedButtonComponent from '../../public/components/tars/AgentRedButtonComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useRegisterPage from '../../public/hooks/tars/useRegisterPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, push } from '../../public/navigation/RootNavigation'
+import { pop, push, popToRoot } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
-import Form from '../../public/views/tars/Form'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -26,11 +26,12 @@ const BZHRegisterPage = () => {
     ref,
     label,
     onChange,
-    goTo,
     sign,
     valid,
     limit,
-  } = useRegisterPage({})
+  } = useRegisterPage({
+    homePage: PageName.BZHHomePage
+  })
 
   const {
     showRecommendGuy,
@@ -78,8 +79,6 @@ const BZHRegisterPage = () => {
 
   const { slideCode } = ref
 
-  const { goToHomePage } = goTo
-
   const { signUp } = sign
 
   const { pass_length_max } = limit
@@ -104,63 +103,57 @@ const BZHRegisterPage = () => {
               {'为了您的资金安全，请使用真实资料!'}
             </Text>
           </View>
-          <Form
-            leftIcon={{
-              name: 'users',
-            }}
+          <FormComponent
+            leftIconName={'users'}
             onChangeText={onChangeRecommendGuy}
             label={recommendGuyLabel}
             placeholder={'推荐人ID'}
             show={showRecommendGuy}
           />
-          <Form
+          <FormComponent
             onChangeText={obChangeAccount}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={showName}
+            leftIconName={'users'}
           />
-          <Form
-            leftIcon={{
-              name: 'lock',
-            }}
+          <FormComponent
+            leftIconName={'lock'}
             onChangeText={obChangePassword}
             label={passwordLebel}
             placeholder={'密码'}
             showRightIcon
             show={true}
             maxLength={pass_length_max}
+            rightIconType={'eye'}
           />
-          <Form
-            leftIcon={{
-              name: 'lock',
-            }}
+          <FormComponent
+            leftIconName={'lock'}
             onChangeText={onChangeConfirmPassword}
             label={confirmPasswordLabel}
             placeholder={'确认密码'}
             showRightIcon
             show={true}
+            rightIconType={'eye'}
           />
-          <Form
-            leftIcon={{
-              name: 'user',
-            }}
+          <FormComponent
+            leftIconName={'user'}
             onChangeText={onChaneRealName}
             label={realNameLabel}
             placeholder={'真实姓名'}
             show={showName}
           />
-          <Form
-            leftIcon={{
-              name: 'lock',
-            }}
+          <FormComponent
+            leftIconName={'lock'}
             onChangeText={onChaneFundPassword}
             label={fundpwdLabel}
             placeholder={'取款密码'}
             showRightIcon
             show={showfundpwd}
             maxLength={4}
+            rightIconType={'eye'}
           />
-          <Form
+          <FormComponent
             leftIcon={{
               name: 'QQ',
               type: 'antdesign',
@@ -170,7 +163,7 @@ const BZHRegisterPage = () => {
             placeholder={'QQ号'}
             show={showQQ}
           />
-          <Form
+          <FormComponent
             leftIcon={{
               name: 'wechat',
               type: 'font-awesome',
@@ -180,16 +173,14 @@ const BZHRegisterPage = () => {
             placeholder={'微信号'}
             show={showWx}
           />
-          <Form
-            leftIcon={{
-              name: 'smartphone',
-            }}
+          <FormComponent
+            leftIconName={'smartphone'}
             onChangeText={onChanePhone}
             label={phoneLabel}
             placeholder={'手机号'}
             show={showPhone}
           />
-          <Form
+          <FormComponent
             leftIcon={{
               type: 'material-community',
               name: 'email-outline',
@@ -199,10 +190,8 @@ const BZHRegisterPage = () => {
             placeholder={'电子邮箱'}
             show={showEmail}
           />
-          <Form
-            leftIcon={{
-              name: 'lock',
-            }}
+          <FormComponent
+            leftIconName={'lock'}
             onChangeText={onChangeImageCode}
             label={imageCodeLabel}
             placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
@@ -213,10 +202,8 @@ const BZHRegisterPage = () => {
             }
             maxLength={4}
           />
-          <Form
-            leftIcon={{
-              name: 'lock',
-            }}
+          <FormComponent
+            leftIconName={'lock'}
             onChangeText={onChaneSms}
             placeholder={'短信验证码'}
             show={showSms}
@@ -248,7 +235,7 @@ const BZHRegisterPage = () => {
             >
               <Text>{'返回登录'}</Text>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={goToHomePage}>
+            <TouchableWithoutFeedback onPress={popToRoot}>
               <Text>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
