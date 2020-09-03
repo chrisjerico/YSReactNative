@@ -4,51 +4,58 @@ import { scale } from '../../tools/Scale'
 
 interface AgentRedButtonComponentProps {
   onChangeAgent: (toggle: boolean) => any;
+  show: boolean;
 }
 
-const AgentRedButtonComponent = ({ onChangeAgent }: AgentRedButtonComponentProps) => {
+const AgentRedButtonComponent = ({
+  onChangeAgent,
+  show,
+}: AgentRedButtonComponentProps) => {
   const [toggle, setToggle] = useState(true)
-
-  return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setToggle(false)
-          onChangeAgent && onChangeAgent(false)
-        }}
-      >
-        <View
-          style={[
-            styles.textContainer,
-            styles.leftButton,
-            toggle ? {} : styles.enableTextContainer,
-          ]}
+  if (show) {
+    return (
+      <View style={styles.container}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setToggle(false)
+            onChangeAgent && onChangeAgent(false)
+          }}
         >
-          <Text style={[styles.text, toggle ? {} : styles.enableText]}>
-            {'普通用戶'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setToggle(true)
-          onChangeAgent && onChangeAgent(true)
-        }}
-      >
-        <View
-          style={[
-            styles.textContainer,
-            styles.rightButton,
-            toggle ? styles.enableTextContainer : {},
-          ]}
+          <View
+            style={[
+              styles.textContainer,
+              styles.leftButton,
+              toggle ? {} : styles.enableTextContainer,
+            ]}
+          >
+            <Text style={[styles.text, toggle ? {} : styles.enableText]}>
+              {'普通用戶'}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setToggle(true)
+            onChangeAgent && onChangeAgent(true)
+          }}
         >
-          <Text style={[styles.text, toggle ? styles.enableText : {}]}>
-            {'注册代理'}
-          </Text>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
-  )
+          <View
+            style={[
+              styles.textContainer,
+              styles.rightButton,
+              toggle ? styles.enableTextContainer : {},
+            ]}
+          >
+            <Text style={[styles.text, toggle ? styles.enableText : {}]}>
+              {'注册代理'}
+            </Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    )
+  } else {
+    return null
+  }
 }
 
 const styles = StyleSheet.create({

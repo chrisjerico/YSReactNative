@@ -25,7 +25,7 @@ const BZHGameLobbyPage = ({ route }) => {
         <MineHeader
           showBackBtn={true}
           onPressLeftTool={pop}
-          shoeRightTool={false}
+          showRightTool={false}
           title={'游戏大厅'}
         />
       </SafeAreaHeader>

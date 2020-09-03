@@ -7,17 +7,13 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { ToastError } from '../../public/tools/tars'
+import MineHeader from '../../public/views/tars/MineHeader'
 
 interface PreferenceButtonProps {
   title: string;
   selected?: boolean;
   onPress?: () => any;
 }
-
-// interface LHTPreferenceProps {
-//   initPreferences: Preference[];
-//   onPressConfirm?: (preferences: Preference[]) => any;
-// }
 
 interface Preference {
   title: string;
@@ -79,14 +75,12 @@ const LHTPreferencePage = ({ route }) => {
         headerColor={LHThemeColor.六合厅.themeColor}
         containerStyle={{ paddingHorizontal: scale(10) }}
       >
-        <AntDesign
-          name={'left'}
-          color={'#ffffff'}
-          size={scale(25)}
-          onPress={pop}
+        <MineHeader
+          title={'偏好设置'}
+          onPressLeftTool={pop}
+          showRightTool={false}
+          showBackBtn={true}
         />
-        <Text style={styles.headerTitle}>{'偏好设置'}</Text>
-        <View />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
         <Text style={styles.title}>{'选择您感兴趣的彩种'}</Text>
@@ -105,7 +99,7 @@ const LHTPreferencePage = ({ route }) => {
                 title={title}
                 selected={selected}
                 onPress={() => {
-                  const newPreferences = preferences?.map((ele, _index) => {
+                  const newPreferences = preferences?.map((ele: any, _index: number) => {
                     if (index == _index) {
                       return Object.assign({}, item, {
                         selected: !ele?.selected,
@@ -115,7 +109,7 @@ const LHTPreferencePage = ({ route }) => {
                     }
                   })
                   const selectedPreferences = newPreferences.filter(
-                    (ele) => ele?.selected
+                    (ele: any) => ele?.selected
                   )
                   if (selectedPreferences?.length > 11) {
                     ToastError('最多设置11个常用资讯')

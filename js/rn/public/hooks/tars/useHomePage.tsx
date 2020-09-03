@@ -11,12 +11,10 @@ import useLogOut from './useLogOut'
 import { ToastError } from '../../tools/tars'
 
 interface UseHomePage {
-  onSuccessLogOut?: () => any;
+  // onSuccessLogOut?: () => any;
 }
 
-const useHomePage = ({
-  onSuccessLogOut
-}: UseHomePage) => {
+const useHomePage = ({ setProps }) => {
 
   const {
     loading,
@@ -46,7 +44,7 @@ const useHomePage = ({
   }
 
   const { logOut } = useLogOut({
-    onSuccess: onSuccessLogOut,
+    onSuccess: setProps,
     onError: (error) => {
       ToastError(error || '登出失败')
       console.log('--------登出失败--------', error)

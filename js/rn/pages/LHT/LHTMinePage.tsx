@@ -54,7 +54,7 @@ const LHTMinePage = (props: any) => {
         <MineHeader
           title={'会员中心'}
           showBackBtn={showBackBtn}
-          shoeRightTool={true}
+          showRightTool={true}
           onPressLeftTool={goBack}
           onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)

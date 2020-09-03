@@ -35,8 +35,9 @@ const useSignInPage = ({
     nc_token: undefined,
     nc_sig: undefined,
   })
+  // refs
   const slideCodeRef = useRef(null)
-  const remember = useRef(sign?.remember)
+  const rememberRef = useRef(sign?.remember)
 
   const goToRegisterPage = () => {
     homePage && navigate(registerPage, {})
@@ -93,8 +94,8 @@ const useSignInPage = ({
   const onChangeAccount = (value: string) => {
     UGStore.dispatch({
       type: 'merge', sign: {
-        account: remember.current ? value : null,
-        password: remember.current ? password : null
+        account: rememberRef.current ? value : null,
+        password: rememberRef.current ? password : null
       }
     });
     setAccount(value)
@@ -103,15 +104,15 @@ const useSignInPage = ({
   const onChangePassword = (value: string) => {
     UGStore.dispatch({
       type: 'merge', sign: {
-        account: remember.current ? account : null,
-        password: remember.current ? value : null
+        account: rememberRef.current ? account : null,
+        password: rememberRef.current ? value : null
       }
     });
     setPassword(value)
   }
 
   const onChangeRemember = (value: boolean) => {
-    remember.current = value
+    rememberRef.current = value
     UGStore.dispatch({
       type: 'merge', sign: {
         remember: value,
@@ -130,7 +131,7 @@ const useSignInPage = ({
   const value = {
     account,
     password,
-    remember: remember.current,
+    remember: rememberRef.current,
   }
 
   const onChange = {

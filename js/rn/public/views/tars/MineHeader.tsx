@@ -5,13 +5,13 @@ import { scale } from '../../../public/tools/Scale'
 
 interface MineHeaderProps {
   showBackBtn: boolean;
-  shoeRightTool: boolean;
+  showRightTool: boolean;
   onPressLeftTool?: () => any;
   onPressRightTool?: () => any;
   title: string;
 }
 
-const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightTool, title }: MineHeaderProps) => {
+const MineHeader = ({ showBackBtn, onPressLeftTool, showRightTool, onPressRightTool, title }: MineHeaderProps) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       {showBackBtn ? (
@@ -30,7 +30,7 @@ const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightT
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
       {
-        shoeRightTool ?
+        showRightTool ?
           <TouchableWithoutFeedback
             onPress={onPressRightTool}
           >

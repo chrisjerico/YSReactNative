@@ -52,7 +52,7 @@ const BZHSignInPage = () => {
           title={'登录'}
           showBackBtn={true}
           onPressLeftTool={pop}
-          shoeRightTool={true}
+          showRightTool={true}
           onPressRightTool={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}

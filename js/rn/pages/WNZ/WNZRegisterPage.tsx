@@ -1,7 +1,5 @@
 import React, { useRef } from 'react'
-import { ScrollView, StyleSheet, TouchableWithoutFeedback } from 'react-native'
-import { Button } from 'react-native-elements'
-import FastImage from 'react-native-fast-image'
+import { ScrollView, StyleSheet } from 'react-native'
 import AgentRedButtonComponent from '../../public/components/tars/AgentRedButtonComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import useRegisterPage from '../../public/hooks/tars/useRegisterPage'
@@ -20,32 +18,30 @@ const WNZRegisterPage = () => {
   const menu = useRef(null)
 
   const {
-    reg,
     show,
-    slidingVerificationRrf,
-    correctImageCode,
+    ref,
     label,
-    valid,
     onChange,
-    fetchImgCaptcha,
-    fetchSms,
-    goToHomePage,
-    signUp,
+    goTo,
+    sign,
+    valid,
+    limit,
   } = useRegisterPage({})
 
   const {
-    hide_reco,
-    pass_length_max,
-    reg_name,
-    reg_fundpwd,
-    reg_qq,
-    reg_wx,
-    reg_phone,
-    reg_email,
-    reg_vcode,
-    smsVerify,
+    showRecommendGuy,
+    showName,
+    showfundpwd,
+    showQQ,
+    showWx,
+    showEmail,
+    showPhone,
+    showSms,
+    showSlideCode,
+    showImageCaptcha,
+    showImageTouchCaptcha,
     agentRegbutton,
-  } = reg
+  } = show
   const {
     onChangeRecommendGuy,
     obChangeAccount,
@@ -59,14 +55,9 @@ const WNZRegisterPage = () => {
     onChangeEmail,
     onChangeImageCode,
     onChaneSms,
-    onChangeSlidingVerification,
-    onChanePasswordSecure,
-    onChaneConfirmPasswordSecure,
-    onChaneFundPasswordSecure,
+    onChangeSlideCode,
     onChangeAgent,
   } = onChange
-
-  const { totalValid } = valid
 
   const {
     recommendGuyLabel,
@@ -81,7 +72,13 @@ const WNZRegisterPage = () => {
     qqLabel,
   } = label
 
-  const { showPassword, showConfirmPassword, showFundPassword } = show
+  const { slideCode } = ref
+
+  const { goToHomePage } = goTo
+
+  const { signUp } = sign
+
+  const { pass_length_max } = limit
 
   return (
     <>
@@ -104,13 +101,13 @@ const WNZRegisterPage = () => {
           onChangeText={onChangeRecommendGuy}
           label={recommendGuyLabel}
           placeholder={'推荐人ID'}
-          show={hide_reco}
+          show={showRecommendGuy}
         />
         <Form
           onChangeText={obChangeAccount}
           label={'*请使用6-15位英文或数字的组合'}
           placeholder={'帐号'}
-          show={2}
+          show={showName}
         />
         <Form
           leftIcon={{
@@ -119,12 +116,8 @@ const WNZRegisterPage = () => {
           onChangeText={obChangePassword}
           label={passwordLebel}
           placeholder={'密码'}
-          showContent={!showPassword}
           showRightIcon
-          rightIconProps={{
-            onPress: onChanePasswordSecure,
-          }}
-          show={2}
+          show={true}
           maxLength={pass_length_max}
         />
         <Form
@@ -134,12 +127,8 @@ const WNZRegisterPage = () => {
           onChangeText={onChangeConfirmPassword}
           label={confirmPasswordLabel}
           placeholder={'确认密码'}
-          showContent={!showConfirmPassword}
           showRightIcon
-          rightIconProps={{
-            onPress: onChaneConfirmPasswordSecure,
-          }}
-          show={2}
+          show={true}
         />
         <Form
           leftIcon={{
@@ -148,7 +137,7 @@ const WNZRegisterPage = () => {
           onChangeText={onChaneRealName}
           label={realNameLabel}
           placeholder={'真实姓名'}
-          show={reg_name}
+          show={showName}
         />
         <Form
           leftIcon={{
@@ -157,12 +146,8 @@ const WNZRegisterPage = () => {
           onChangeText={onChaneFundPassword}
           label={fundpwdLabel}
           placeholder={'取款密码'}
-          showContent={!showFundPassword}
           showRightIcon
-          rightIconProps={{
-            onPress: onChaneFundPasswordSecure,
-          }}
-          show={reg_fundpwd}
+          show={showfundpwd}
           maxLength={4}
         />
         <Form
@@ -173,7 +158,7 @@ const WNZRegisterPage = () => {
           onChangeText={onChaneQQ}
           label={qqLabel}
           placeholder={'QQ号'}
-          show={reg_qq}
+          show={showQQ}
         />
         <Form
           leftIcon={{
@@ -183,7 +168,7 @@ const WNZRegisterPage = () => {
           onChangeText={onChaneWeChat}
           label={wechatLabel}
           placeholder={'微信号'}
-          show={reg_wx}
+          show={showWx}
         />
         <Form
           leftIcon={{
@@ -192,7 +177,7 @@ const WNZRegisterPage = () => {
           onChangeText={onChanePhone}
           label={phoneLabel}
           placeholder={'手机号'}
-          show={reg_phone}
+          show={showPhone}
         />
         <Form
           leftIcon={{
@@ -202,7 +187,7 @@ const WNZRegisterPage = () => {
           onChangeText={onChangeEmail}
           label={emailLabel}
           placeholder={'电子邮箱'}
-          show={reg_email}
+          show={showEmail}
         />
         <Form
           leftIcon={{
@@ -210,23 +195,12 @@ const WNZRegisterPage = () => {
           }}
           onChangeText={onChangeImageCode}
           label={imageCodeLabel}
-          placeholder={reg_vcode == 3 ? '点击显示验证码' : '验证码'}
-          show={reg_vcode == 1 || reg_vcode == 3}
+          placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
+          show={showImageCaptcha || showImageTouchCaptcha}
           showRightIcon={true}
-          renderRightIcon={() => (
-            <TouchableWithoutFeedback onPress={fetchImgCaptcha}>
-              <FastImage
-                source={{ uri: correctImageCode }}
-                resizeMode={'contain'}
-                style={{ width: scale(150), height: '100%' }}
-              />
-            </TouchableWithoutFeedback>
-          )}
-          onFocus={() => {
-            if (correctImageCode == '') {
-              fetchImgCaptcha()
-            }
-          }}
+          rightIconType={
+            showImageTouchCaptcha ? 'touchImgCaptcha' : 'imgCaptcha'
+          }
           maxLength={4}
         />
         <Form
@@ -235,26 +209,20 @@ const WNZRegisterPage = () => {
           }}
           onChangeText={onChaneSms}
           placeholder={'短信验证码'}
-          show={smsVerify}
+          show={showSms}
           showRightIcon={true}
-          renderRightIcon={() => (
-            <Button
-              title={'获取验证码'}
-              onPress={fetchSms}
-              titleStyle={{ fontSize: scale(20), fontWeight: '600' }}
-            />
-          )}
+          rightIconType={'sms'}
         />
-        {reg_vcode == 2 && (
-          <ReloadSlidingVerification
-            ref={slidingVerificationRrf}
-            onChange={onChangeSlidingVerification}
-            containerStyle={{ marginBottom: scale(20) }}
-          />
-        )}
-        {parseInt(agentRegbutton) && (
-          <AgentRedButtonComponent onChangeAgent={onChangeAgent} />
-        )}
+        <ReloadSlidingVerification
+          ref={slideCode}
+          show={showSlideCode}
+          onChange={onChangeSlideCode}
+          containerStyle={{ marginBottom: scale(20) }}
+        />
+        <AgentRedButtonComponent
+          show={parseInt(agentRegbutton) ? true : false}
+          onChangeAgent={onChangeAgent}
+        />
       </ScrollView>
       <MenuModalComponent
         ref={menu}

@@ -60,15 +60,11 @@ const LHTHomePage = (props: any) => {
       ToastError(error ?? '試玩失败')
     },
   })
-  const { logOut } = useLogOut({
-    onSuccess: () => {
-      setProps()
-    },
-  })
 
   const {
     goToJDPromotionListPage,
     refreshHome,
+    signOut,
     loading,
     refresh,
     userInfo,
@@ -89,7 +85,8 @@ const LHTHomePage = (props: any) => {
     redBag,
     redBagLogo,
     roulette,
-  } = useHomePage()
+
+  } = useHomePage({ setProps })
 
   const { uid, usr, balance, isTest, avatar } = userInfo
   const {
@@ -135,7 +132,7 @@ const LHTHomePage = (props: any) => {
             showLogout={uid ? true : false}
             leftLogo={mobile_logo}
             rightLogo={getHtml5Image(14, 'top_yhhd')}
-            onPressSignOut={logOut}
+            onPressSignOut={signOut}
             onPressSignIn={PushHelper.pushLogin}
             onPressSignUp={PushHelper.pushRegister}
             onPressTryPlay={tryPlay}

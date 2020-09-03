@@ -61,7 +61,7 @@ const BZHMinePage = (props: any) => {
         <MineHeader
           showBackBtn={showBackBtn}
           onPressLeftTool={goBack}
-          shoeRightTool={false}
+          showRightTool={false}
           title={'会员中心'}
         />
       </SafeAreaHeader>

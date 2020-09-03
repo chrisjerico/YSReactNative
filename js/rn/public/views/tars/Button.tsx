@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 
   },
   disabledContainer: {
-    backgroundColor: '#ADADAD'
+    backgroundColor: '#c6c6c6'
   }
 })
 

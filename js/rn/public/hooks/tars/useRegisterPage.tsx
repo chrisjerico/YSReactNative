@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
@@ -19,7 +19,6 @@ interface UseRegisterPage {
 
 const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   // states
-  const slidingVerificationRrf = useRef(null)
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
   const [password, setPassword] = useState(null)
@@ -31,22 +30,16 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const [phoneNumber, setPhoneNumber] = useState(null)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
-  const [slidingVerification, setSlidingVerification] =
-    useState<SlidingVerification>
-      ({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
+  const [slideCode, setSlideCode] = useState<SlidingVerification>({
+    nc_csessionid: undefined,
+    nc_token: undefined,
+    nc_sig: undefined,
+  })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
-
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [showFundPassword, setShowFundPassword] = useState(false)
   const [agent, setAgent] = useState(false)
-
-  // functions
+  // refs
+  const slideCodeRef = useRef(null)
 
   const goToHomePage = () => {
     homePage && navigate(homePage, {})
@@ -59,12 +52,12 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
       goToHomePage()
     },
     onError: (error) => {
-      setSlidingVerification({
+      setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
-      slidingVerificationRrf?.current?.reload()
+      slideCodeRef?.current?.reload()
       ToastError(error || '注册失败')
       console.log('-------注册失败-------', error)
     },
@@ -107,17 +100,8 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     smsVerify, // 手机短信验证,
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
-  // effects
-  useEffect(() => {
-    if (reg_vcode == 1) {
-      fetchImgCaptcha()
-    } else {
-      setCorrectImageCode('')
-    }
-  }, [reg_vcode])
-
   // data handle
-  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
+  const { nc_csessionid, nc_token, nc_sig } = slideCode
   const account_valid = account?.length >= 6
   const password_valid =
     validPassword(password, pass_limit) &&
@@ -143,7 +127,7 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     reg_vcode == 3
   const sms_valid = sms?.length == 6 || !smsVerify
 
-  const totalValid =
+  const valid =
     account_valid &&
     password_valid &&
     confirmPassword_valid &&
@@ -170,12 +154,7 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const onChangeEmail = (value: any) => setEmail(value)
   const onChangeImageCode = (value: any) => setImageCode(value)
   const onChaneSms = (value: any) => setSms(value)
-  const onChangeSlidingVerification = setSlidingVerification
-  // Secure
-  const onChanePasswordSecure = () => setShowPassword(!showPassword)
-  const onChaneConfirmPasswordSecure = () =>
-    setShowConfirmPassword(!showConfirmPassword)
-  const onChaneFundPasswordSecure = () => setShowFundPassword(!showFundPassword)
+  const onChangeSlideCode = setSlideCode
 
   //
 
@@ -216,11 +195,11 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     pass_length_max +
     '位英文或数字的组合' +
     getPasswordLimitString()
-  const confirmPasswordLabel = password == confirmPassword ? '' : '密码不一致'
+  const confirmPasswordLabel = (password == confirmPassword) && confirmPassword ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
   const signUp = () => {
-    if (totalValid) {
+    if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
         usr: account, // 账号
@@ -232,9 +211,9 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
         phone: phoneNumber, // 手机号
         smsCode: sms ?? '', // 短信验证码
         imgCode: imageCode ?? '', // 字母验证码,
-        'slideCode[nc_sid]': slidingVerification?.nc_csessionid,
-        'slideCode[nc_token]': slidingVerification?.nc_token,
-        'slideCode[nc_sig]': slidingVerification?.nc_sig,
+        'slideCode[nc_sid]': slideCode?.nc_csessionid,
+        'slideCode[nc_token]': slideCode?.nc_token,
+        'slideCode[nc_sig]': slideCode?.nc_sig,
         email: email, // 邮箱
         regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
       }
@@ -256,37 +235,23 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     onChangeEmail,
     onChangeImageCode,
     onChaneSms,
-    onChangeSlidingVerification,
-    onChanePasswordSecure,
-    onChaneConfirmPasswordSecure,
-    onChaneFundPasswordSecure,
+    onChangeSlideCode,
     onChangeAgent,
   }
 
-  const reg = {
-    hide_reco, // 代理人 0隱藏，1选填，2必填
-    reg_name, // 真实姓名 0隱藏，1选填，2必填
-    reg_fundpwd, // 取款密码 0隱藏，1选填，2必填
-    reg_qq, // QQ 0隱藏，1选填，2必填
-    reg_wx, // 微信 0隱藏，1选填，2必填
-    reg_phone, // 手机 0隱藏，1选填，2必填
-    reg_email, // 邮箱 0隱藏，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
+  const show = {
+    showRecommendGuy: hide_reco > 0 ? true : false, // 代理人 0隱藏，1选填，2必填
+    showName: reg_name > 0 ? true : false, // 真实姓名 0隱藏，1选填，2必填
+    showfundpwd: reg_fundpwd > 0 ? true : false, // 取款密码 0隱藏，1选填，2必填
+    showQQ: reg_qq > 0 ? true : false, // QQ 0隱藏，1选填，2必填
+    showWx: reg_wx > 0 ? true : false, // 微信 0隱藏，1选填，2必填
+    showPhone: reg_phone > 0 ? true : false, // 手机 0隱藏，1选填，2必填
+    showEmail: reg_email > 0 ? true : false, // 邮箱 0隱藏，1选填，2必填
+    showSlideCode: reg_vcode == 2 ? true : false,
+    showImageCaptcha: reg_vcode == 1 ? true : false,
+    showImageTouchCaptcha: reg_vcode == 3 ? true : false,
     agentRegbutton, // 是否开启代理注册，0=关闭；1=开启
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    smsVerify, // 手机短信验证,
-  }
-
-  const valid = {
-    totalValid,
-    password_valid,
-    recommendGuy_valid,
-    account_valid,
-    confirmPassword_valid,
-    realName_valid,
-    fundPassword_valid,
+    showSms: smsVerify, // 手机短信验证,
   }
 
   const label = {
@@ -302,24 +267,33 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     wechatLabel,
   }
 
-  const show = {
-    showPassword,
-    showConfirmPassword,
-    showFundPassword,
+  const ref = {
+    slideCode: slideCodeRef
+  }
+
+  const goTo = {
+    goToHomePage,
+  }
+
+  const sign = {
+    signUp,
+  }
+
+  const limit = {
+    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
+    pass_length_min, // 注册密码最小长度
+    pass_length_max, // 注册密码最大长度,
   }
 
   return {
-    reg,
     show,
-    slidingVerificationRrf,
-    correctImageCode,
+    ref,
     valid,
     label,
     onChange,
-    fetchImgCaptcha,
-    fetchSms,
-    goToHomePage,
-    signUp,
+    goTo,
+    sign,
+    limit
   }
 }
 
