@@ -178,18 +178,20 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         APIRouter.system_onlineCount(),
         APIRouter.activity_redBagDetail(),
         APIRouter.system_floatAds(),
+        APIRouter.system_homeAds(),
       ])
         .then(
           Axios.spread((...res) => {
             setHomeGames(res?.[0]?.data)
             setBanner(res?.[1]?.data)
+            setNotice(res?.[2]?.data)
             setCouponListData(res?.[3]?.data)
             setRankList(res?.[4]?.data)
-            setRedBag(res?.[6]?.data)
-            setFloatAds(res?.[7]?.data)
-            setNotice(res?.[2]?.data)
             setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
             setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
+            setRedBag(res?.[6]?.data)
+            setFloatAds(res?.[7]?.data)
+            setSystemHomeAds(res?.[8].data)
             setLoading(false)
           })
         )

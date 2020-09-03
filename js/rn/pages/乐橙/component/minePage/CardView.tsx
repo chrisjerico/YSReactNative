@@ -19,7 +19,6 @@ export const CardView = () => {
         UGUserCenterItem && setDepositItem(UGUserCenterItem.find((item) => item.name == '存款'))
         UGUserCenterItem && setWithdrawItem(UGUserCenterItem.find((item) => item.name == '取款'))
         UGUserCenterItem && setLXBItem(UGUserCenterItem.find((item) => item.name == '利息宝'))
-        console.log("UGUserCenterItemL:", UGUserCenterItem)
     }, [UGUserCenterItem])
 
     return (

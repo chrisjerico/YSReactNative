@@ -68,9 +68,6 @@ export default class UGSkinManagers extends UGThemeColor {
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];
-    if (B_DEBUG) {
-      key = '威尼斯'
-    }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] };
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex();
@@ -97,7 +94,8 @@ export default class UGSkinManagers extends UGThemeColor {
       skin.skitType.indexOf('金星黑') == -1 &&
       skin.skitType.indexOf('宝石红') == -1 &&
       skin.skitType.indexOf('六合厅') == -1 &&
-      skin.skitType.indexOf('威尼斯') == -1
+      skin.skitType.indexOf('威尼斯') == -1 &&
+      skin.skitType.indexOf('乐橙') == -1
     )
       return
 

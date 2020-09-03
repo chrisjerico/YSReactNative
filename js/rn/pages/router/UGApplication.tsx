@@ -52,6 +52,8 @@ import {anyNull} from "../../public/tools/Ext";
 import {ugLog} from "../../public/tools/UgLog";
 import ExtUGApplication from "../../public/tools/ui/ExtUGApplication";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import LCLoginPage from "../乐橙/LCLoginPage";
+import LCRegisterPage from "../乐橙/LCRegisterPage";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -114,6 +116,8 @@ const StackScreens = () => {
     return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LCRegisterPage} component={UGPage(LCRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />

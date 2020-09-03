@@ -9,6 +9,7 @@ import useMemberItems from "../../public/hooks/useMemberItems";
 import PushHelper from "../../public/define/PushHelper";
 import useLoginOut from "../../public/hooks/useLoginOut";
 import { PageName } from "../../public/navigation/Navigation";
+import LinearGradient from "react-native-linear-gradient";
 
 const LCMinePage = () => {
     const userStore = UGStore.globalProps.userInfo;
@@ -51,9 +52,16 @@ const LCMinePage = () => {
                                 </TouchableOpacity>
                             </View>
                         )} />
-                    <TouchableOpacity onPress={loginOut} style={{ height: 55, backgroundColor: '#34343b', justifyContent: 'center', alignItems: 'center', borderRadius: 8, marginTop: 10, marginBottom: 150 }}>
-                        <Text style={{ color: 'white', fontSize: 21 }}>退出登录</Text>
-                    </TouchableOpacity>
+                    <LinearGradient style={{marginTop: 10, marginBottom: 90, height: 55, borderRadius: 8, marginHorizontal: 20}} colors={["#df830f", "#ffc200"]}>
+                        <TouchableOpacity onPress={loginOut} style={{
+                            height: 55,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: 8,
+                        }}>
+                            <Text style={{color: 'white', fontSize: 21}}>退出登录</Text>
+                        </TouchableOpacity>
+                    </LinearGradient>
                 </SafeAreaView>
             </ScrollView>
         </BaseScreen>

@@ -1,15 +1,17 @@
 import * as React from "react";
-import {TouchableWithoutFeedback, View, Text, Platform} from "react-native";
+import {Platform, Text, TouchableWithoutFeedback, View} from "react-native";
 import PushHelper from "../../../../public/define/PushHelper";
 import UGUserModel from "../../../../redux/model/全局/UGUserModel";
 import APIRouter from "../../../../public/network/APIRouter";
-import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
+import {UGStore} from "../../../../redux/store/UGStore";
 import {OCHelper} from "../../../../public/define/OCHelper/OCHelper";
 import {hideLoading, showLoading, UGLoadingType} from "../../../../public/widget/UGLoadingCP";
 import {ANHelper} from "../../../../public/define/ANHelper/ANHelper";
 import {Toast} from "../../../../public/tools/ToastUtils";
 import {NA_DATA} from "../../../../public/define/ANHelper/hp/DataDefine";
 import {CMD} from "../../../../public/define/ANHelper/hp/CmdDefine";
+import {navigate, push} from "../../../../public/navigation/RootNavigation";
+import {PageName} from "../../../../public/navigation/Navigation";
 
 export const LoginButtonBar = () => {
     const userStore = UGStore.globalProps.userInfo;
@@ -91,7 +93,7 @@ export const LoginButtonBar = () => {
             </TouchableWithoutFeedback>
             <View style={{backgroundColor: "#333", width: 1, height: 20, marginHorizontal: 10, marginVertical: 9}}/>
             <TouchableWithoutFeedback onPress={() => {
-                PushHelper.pushRegister()
+                navigate(PageName.LCRegisterPage)
             }}>
                 <Text style={{color: "#333", fontSize: 17.6, lineHeight: 24.6}}>注册</Text>
             </TouchableWithoutFeedback>

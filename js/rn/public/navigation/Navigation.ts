@@ -1,3 +1,4 @@
+import LCLoginPage from "../../pages/乐橙/LCLoginPage";
 
 export enum PageName {
   TransitionPage = 'TransitionPage',
@@ -44,7 +45,9 @@ export enum PageName {
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
   VietnamGameList = "VietnamGameList",
-  LHTPreferencePage = "LHTPreferencePage"
+  LHTPreferencePage = "LHTPreferencePage",
+  LCLoginPage = "LCLoginPage",
+  LCRegisterPage = "LCRegisterPage",
 }
 
 // export class  {

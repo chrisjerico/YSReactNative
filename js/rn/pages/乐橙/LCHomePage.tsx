@@ -11,17 +11,16 @@ import {
     SafeAreaView,
     ScrollView,
     Text,
+    TouchableOpacity,
     TouchableWithoutFeedback,
-    View,
-    TouchableOpacity
+    View
 } from "react-native";
-import {BannerView} from "./component/homePage/BannerView";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {HomeHeaderButtonBar} from "./component/homePage/HomeHeaderButtonBar";
 import {HomeTabView} from "./component/homePage/homeTabView/HomeTabView";
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo";
 import {navigate, push} from "../../public/navigation/RootNavigation";
 import {PageName} from "../../public/navigation/Navigation";
-import {Icon, Button} from 'react-native-elements';
 import {useDimensions} from "@react-native-community/hooks";
 import {OCHelper} from "../../public/define/OCHelper/OCHelper";
 import {PromotionsModel} from "../../public/network/Model/PromotionsModel";
@@ -30,13 +29,11 @@ import usePopUpView from "../../public/hooks/usePopUpView";
 import AutoHeightWebView from "react-native-autoheight-webview";
 import FastImage from "react-native-fast-image";
 import RedBagItem from "../../public/components/RedBagItem";
-import {useSelector} from "react-redux";
-import {IGlobalState, UGStore} from "../../redux/store/UGStore";
+import {UGStore} from "../../redux/store/UGStore";
 import {TurntableListModel} from "../../public/network/Model/TurntableListModel";
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall";
 import AppDefine from "../../public/define/AppDefine";
 import PushHelper from "../../public/define/PushHelper";
-import {WinningList} from "../../public/components/WinningList";
 import {updateUserInfo} from "../../redux/store/IGlobalStateHelper";
 import {ActionType} from "../../redux/store/ActionTypes";
 import PromotionsBlock from "../../public/components/PromotionsBlock";
@@ -45,11 +42,18 @@ import {MarqueeHorizontal} from 'react-native-marquee-ab';
 import Carousel from "react-native-banner-carousel";
 import {BannerModel} from "../../public/network/Model/BannerModel";
 import {httpClient} from "../../public/network/httpClient";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {HomeADModel} from "../../public/network/Model/HomeADModel";
+import GameButton from "../../public/views/tars/GameButton";
+import {scale} from "../../public/tools/Scale";
+import NavBlock from "./component/homePage/NavBlock";
 
 const LCHomePage = ({navigation}) => {
-    const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading} = useGetHomeInfo()
+    const {banner, notice, rankList, redBag, onlineNum, onRefresh, loading, systemHomeAds, homeGames} = useGetHomeInfo()
     const [categories, setCategories] = useState<string[]>()
-    const systemStore = UGStore.globalProps.sysConf;
+    const {webName, rankingListSwitch} = UGStore.globalProps.sysConf;
     const [promotionData, setPromotionData] = useState<PromotionsModel>()
     const {width} = useDimensions().screen
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -59,6 +63,9 @@ const LCHomePage = ({navigation}) => {
     useEffect(() => {
         initPromotions()
     }, [])
+    useEffect(() => {
+        console.log("adad", homeGames?.data?.navs)
+    }, [homeGames])
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
@@ -78,24 +85,24 @@ const LCHomePage = ({navigation}) => {
 
         })
         switch (Platform.OS) {
-          case "ios":
-              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-            break;
-          case "android":
-            //TODO
-            break;
+            case "ios":
+                OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+                break;
+            case "android":
+                //TODO
+                break;
         }
     }
     const reloadData = async () => {
         let user;
 
         switch (Platform.OS) {
-          case "ios":
-              user = await OCHelper.call('UGUserModel.currentUser');
-            break;
-          case "android":
-              user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
-            break;
+            case "ios":
+                user = await OCHelper.call('UGUserModel.currentUser');
+                break;
+            case "android":
+                user = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.USER_INFO});
+                break;
         }
 
         if (!user) {
@@ -138,8 +145,6 @@ const LCHomePage = ({navigation}) => {
                                                         onRefresh={onRefresh}/>}
                         style={{flex: 1}}>
                 <Banner onlineNum={onlineNum} bannerData={banner}/>
-                {/* <BannerView
-                    list={banner && banner.data ? banner.data.list : []} /> */}
                 <View style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -151,7 +156,6 @@ const LCHomePage = ({navigation}) => {
                 }}>
                     <FastImage source={{uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png"}}
                                style={{width: 12, height: 12}}/>
-                    {/* <Icon name="ios-volume-high" type="ionicon" color="black" size={24} /> */}
                     <MarqueeHorizontal textStyle={{color: "black", fontSize: 13.2}}
                                        bgContainerStyle={{backgroundColor: "white"}}
                                        width={width - 60}
@@ -165,17 +169,40 @@ const LCHomePage = ({navigation}) => {
                                        }}
                                        textList={noticeFormat}/>
                 </View>
-                {/* <View style={{
-                    position: 'absolute',
-                    top: 30,
-                    right: 10,
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    borderRadius: 16,
-                    padding: 5
-                }}>
-                    <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View> */}
-                {/*<MarqueeView notice={notice && notice.data ? notice.data.scroll : []}/>*/}
+                <Banner onlineNum={onlineNum} bannerData={systemHomeAds} showOnlineCount={false} customHeight={150}/>
+                {homeGames?.data?.navs?.length > 0 && (
+                    <NavBlock
+                        navs={homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4)}
+                        containerStyle={{ alignItems: 'center' }}
+                        renderNav={(item, index) => {
+                            const { icon, name, logo, gameId } = item
+                            return (
+                                <GameButton
+                                    showSecondLevelIcon={false}
+                                    key={index}
+                                    containerStyle={{ width: '25%' }}
+                                    imageContainerStyle={{ width: '45%' }}
+                                    enableCircle={false}
+                                    logo={icon ? icon : logo}
+                                    title={name}
+                                    titleStyle={{ fontSize: scale(25) }}
+                                    titleContainerStyle={{ aspectRatio: 3 }}
+                                    onPress={() => {
+                                        if (gameId == 9) {
+                                            push(PageName.JDPromotionListPage, {
+                                                containerStyle: {
+                                                    backgroundColor: '#ffffff',
+                                                },
+                                            })
+                                        } else {
+                                            PushHelper.pushHomeGame(item)
+                                        }
+                                    }}
+                                />
+                            )
+                        }}
+                    />
+                )}
                 <HomeTabView/>
                 <View style={{flexDirection: "row", alignItems: "center"}}>
                     <Icon size={16} name={"gift"}/>
@@ -188,21 +215,36 @@ const LCHomePage = ({navigation}) => {
                 <View>
                     <PromotionsBlock/>
                 </View>
-                <RankListCP timing={10000} backgroundColor={'white'} textColor={'black'} width={width - 24}
-                            ranks={rankList}/>
-                {/* {rankList && rankList.data.list.length > 0 &&
-                    <Text style={{ fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10 }}>中奖排行榜</Text>} */}
-                {/* <WinningList data={rankList ? rankList.data.list : []} /> */}
+                {rankingListSwitch === 1 ? <SafeAreaView style={{marginHorizontal: 10}}>
+                        <View style={{flexDirection: 'row', alignItems: "center"}}>
+                            <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
+                            <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
+                        </View>
+                        <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                                    width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                    </SafeAreaView> :
+                    <SafeAreaView style={{marginHorizontal: 10}}>
+                        <View style={{flexDirection: 'row', alignItems: "center"}}>
+                            <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
+                            <Text style={{
+                                fontSize: 16,
+                                lineHeight: 22,
+                                color: "#3c3c3c",
+                                marginVertical: 10
+                            }}>投注排行榜</Text>
+                        </View>
+                        <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                                    width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                    </SafeAreaView>}
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
                     <Text onPress={() => {
-                        console.log(httpClient.defaults.baseURL + '/index2.php')
                         PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                     }} style={{color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5}}>💻 电 脑 版</Text>
                     <Text style={{color: 'black', textAlign: 'center'}} onPress={() => {
                         push(PageName.PromotionListPage)
                     }}>🎁优惠活动</Text>
                 </View>
-                <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
+                <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT © {webName} RESERVED</Text>
                 <View style={{height: 100}}></View>
             </ScrollView>
             <RedBagItem redBag={redBag}/>
@@ -331,7 +373,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
 }
 const TurntableListItem = () => {
     const {width, height} = useDimensions().screen
-    const {isTest = false, uid = ""} = useSelector((state: IGlobalState) => state.UserInfoReducer)
+    const {isTest = false, uid = ""} = UGStore.globalProps.userInfo
     const [turntableListVisiable, setTurntableListVisiable] = useState(false)
     const [turntableList, setTurntableList] = useState<TurntableListModel>()
     useEffect(() => {
@@ -408,7 +450,7 @@ const TurntableListItem = () => {
     }
 
 }
-const Banner = ({bannerData, onlineNum = 0}: { bannerData: BannerModel, onlineNum: number }) => {
+const Banner = ({bannerData, onlineNum = 0, showOnlineCount = true, customHeight}: { bannerData: BannerModel | HomeADModel, onlineNum: number, showOnlineCount?: boolean, customHeight?: number }) => {
     const {width,} = useDimensions().window
     const BannerRef = React.useRef<Carousel>()
     const [height, setHeight] = useState(100)
@@ -421,10 +463,14 @@ const Banner = ({bannerData, onlineNum = 0}: { bannerData: BannerModel, onlineNu
             clearInterval(timer)
         })
     }, [bannerData])
-    if (bannerData?.data?.list?.length > 0) {
+
+    useEffect(() => {
+        customHeight && setHeight(customHeight)
+    }, [customHeight])
+
+    if (bannerData?.data?.list?.length > 0 || bannerData?.data?.length > 0) {
         return (
             <View style={{marginBottom: 10,}}>
-
                 <Carousel
                     autoplay
                     index={0}
@@ -432,23 +478,33 @@ const Banner = ({bannerData, onlineNum = 0}: { bannerData: BannerModel, onlineNu
                     loop
                     pageSize={width}
                 >
-                    {bannerData?.data?.list?.map((res, index) => {
+                    {bannerData?.data?.list ? bannerData?.data?.list?.map((res, index) => {
                         return (
                             <TouchableWithoutFeedback onPress={() => {
                                 PushHelper.pushCategory(res.linkCategory, res.linkPosition)
                             }}>
                                 <FastImage onLoad={(e) => {
-                                    console.log(e.nativeEvent.height, e.nativeEvent.width, e.nativeEvent.height * ((width) / e.nativeEvent.width))
                                     setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width))
-
                                 }} key={'banner' + index} style={{width: width, height: height,}}
                                            source={{uri: res.pic}}>
 
                                 </FastImage>
                             </TouchableWithoutFeedback>)
+                    }) : bannerData?.data?.map((res, index) => {
+                        return (
+                            <TouchableWithoutFeedback onPress={() => {
+                                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+                            }}>
+                                <FastImage onLoad={(e) => {
+                                    setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width))
+                                }} key={'banner' + index} style={{width: width, height: height,}}
+                                           source={{uri: res.image}}>
+
+                                </FastImage>
+                            </TouchableWithoutFeedback>)
                     })}
                 </Carousel>
-                <View style={{
+                {showOnlineCount && <View style={{
                     position: 'absolute',
                     top: 10,
                     right: 10,
@@ -457,12 +513,11 @@ const Banner = ({bannerData, onlineNum = 0}: { bannerData: BannerModel, onlineNu
                     padding: 5
                 }}>
                     <Text style={{color: 'white'}}>当前在线:{onlineNum}</Text>
-                </View>
+                </View>}
             </View>
         )
-
     } else {
-        return <View style={{height: (Dimensions.get("screen").width) / 2,}}></View>
+        return <View style={{height: (Dimensions.get("screen").width) / 2}}/>
     }
 
 }

@@ -10,9 +10,7 @@ export const HomeHeaderButtonBar = () => {
     const {balance, uid} = userStore
     const sysStore = UGStore.globalProps.sysConf;
     const { mobile_logo = "" } = sysStore
-    useEffect(() => {
-        console.log("uid:" ,uid)
-    }, [uid])
+
     return (
         <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
             <View style={{flexDirection: "row", marginHorizontal: 10, backgroundColor: "#FFFFFF"}}>

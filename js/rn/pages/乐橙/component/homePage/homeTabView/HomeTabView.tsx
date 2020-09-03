@@ -17,7 +17,6 @@ export const HomeTabView = () => {
     const {uid = ""} = userStore
 
     useEffect(() => {
-        homeGames?.data?.icons && console.log(homeGames?.data?.icons)
         homeGames?.data?.icons && setGames(homeGames.data.icons)
     }, [homeGames])
 
@@ -39,7 +38,6 @@ export const HomeTabView = () => {
     }
 
     const onPress = (list: List) => {
-        console.log(list)
         list.seriesId != '1' ? thirdPartGamePress(list.seriesId, list.gameId) :
             list.gameId ?
                 PushHelper.pushCategory(list.seriesId, list.gameId) :
