@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot } from '../../public/navigation/RootNavigation'
@@ -13,30 +14,32 @@ import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
-import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 
 const WNZSignInPage = () => {
+
   const menu = useRef(null)
-  const {
-    signIn,
-    value,
-    onChange,
-    goToRegisterPage,
-    loginVCode,
-    slidingVerificationRrf,
-  } = useSignInPage({
+
+  const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
     homePage: PageName.WNZHomePage,
     registerPage: PageName.WNZRegisterPage,
   })
 
-  const { isRemember } = value
+  const { remember, account, password } = value
 
   const {
     onChangePassword,
     onChangeAccount,
-    onChangeIsRemember,
-    onChangeSlidingVerification,
+    onChangeRemember,
+    onChangeSlideCode,
   } = onChange
+
+  const { goToRegisterPage } = goTo
+
+  const { slideCode } = ref
+
+  const { loginVCode } = show
+
+  const { signIn } = sign
 
   return (
     <>
@@ -69,6 +72,7 @@ const WNZSignInPage = () => {
           showRightIcon={false}
           showLeftIcon={true}
           enableLabel={false}
+          defaultValue={account}
         />
         <Form
           show={true}
@@ -89,31 +93,34 @@ const WNZSignInPage = () => {
           showRightIcon={false}
           showLeftIcon={true}
           enableLabel={false}
-          showContent={false}
+          defaultValue={password}
         />
         <View style={styles.checkBoxBlock}>
           <CheckBox
-            check={isRemember}
-            onPress={onChangeIsRemember}
+            onPress={onChangeRemember}
             label={'记住帐号密码'}
             labelTextStyle={{ color: '#888888' }}
+            defaultValue={remember}
           />
           <Text style={{ color: '#888888' }}>{'忘记密码'}</Text>
         </View>
         <Button
+          disabled={!valid}
           title={'登陆'}
           containerStyle={styles.loginButton}
           titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
           onPress={signIn}
         />
-        {loginVCode && (
-          <ReloadSlidingVerification
-            ref={slidingVerificationRrf}
-            onChange={onChangeSlidingVerification}
-            containerStyle={{ marginBottom: scale(20), backgroundColor: '#f2f2f2' }}
-            backgroundColor={'#f2f2f2'}
-          />
-        )}
+        <ReloadSlidingVerification
+          ref={slideCode}
+          show={loginVCode}
+          onChange={onChangeSlideCode}
+          containerStyle={{
+            marginBottom: scale(20),
+            backgroundColor: '#f2f2f2',
+          }}
+          backgroundColor={'#f2f2f2'}
+        />
         <Button
           title={'立即注册'}
           containerStyle={styles.whiteButton}

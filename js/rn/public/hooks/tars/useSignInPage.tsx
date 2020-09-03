@@ -3,7 +3,7 @@ import UGSysConfModel, { UGUserCenterType } from '../../../redux/model/全局/UG
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { navigate, pop } from '../../navigation/RootNavigation'
+import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
@@ -15,43 +15,28 @@ interface SlidingVerification {
 }
 
 interface UseSignInPage {
-  // navigation: any;
   homePage?: PageName;
   registerPage?: PageName;
 }
 
 const useSignInPage = ({
-  // navigation,
   homePage,
   registerPage
 }: UseSignInPage) => {
-  // const { type }: any = navigation?.dangerouslyGetState() ?? {}
 
-  const { loginVCode, login_to }: UGSysConfModel = UGStore.globalProps.sysConf
+  // stores
+  const { sysConf, sign } = UGStore?.globalProps ?? {}
+  const { loginVCode, login_to }: UGSysConfModel = sysConf
   // states
-  const slidingVerificationRrf = useRef(null)
-  const [account, setAccount] = useState(UGStore.globalProps.sign?.account)
-  const [password, setPassword] = useState(UGStore.globalProps.sign?.password)
-  const [isRemember, setIsRemember] = useState(UGStore.globalProps.sign?.isRemember ?? false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [slidingVerification, setSlidingVerification] = useState<SlidingVerification>({
+  const [account, setAccount] = useState(sign?.account)
+  const [password, setPassword] = useState(sign?.password)
+  const [slideCode, setSlideCode] = useState<SlidingVerification>({
     nc_csessionid: undefined,
     nc_token: undefined,
     nc_sig: undefined,
   })
-
-  // const goBack = () => {
-  //   switch (type) {
-  //     case 'tab':
-  //       goToHomePage()
-  //       break
-  //     case 'stack':
-  //       pop()
-  //       break
-  //     default:
-  //       console.log('------no navigation type------')
-  //   }
-  // }
+  const slideCodeRef = useRef(null)
+  const remember = useRef(sign?.remember)
 
   const goToRegisterPage = () => {
     homePage && navigate(registerPage, {})
@@ -74,12 +59,12 @@ const useSignInPage = ({
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      setSlidingVerification({
+      setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
-      slidingVerificationRrf?.current?.reload()
+      slideCodeRef?.current?.reload()
       ToastError(error || '登录失败')
       console.log("--------登录失败--------", error)
     },
@@ -98,80 +83,89 @@ const useSignInPage = ({
 
   const signIn = () => {
     logIn({
-      account,
+      account: account,
       //@ts-ignore
       password: password?.md5(),
-      isRemember,
+      slideCode
     })
   }
 
-  const onChangeAccount = (value: any) => {
+  const onChangeAccount = (value: string) => {
+    UGStore.dispatch({
+      type: 'merge', sign: {
+        account: remember.current ? value : null,
+        password: remember.current ? password : null
+      }
+    });
     setAccount(value)
-    UGStore.dispatch({
-      type: 'merge', sign: {
-        account: isRemember ? account : null,
-        password: isRemember ? password : null
-      }
-    });
   }
 
-  const onChangePassword = (value: any) => {
+  const onChangePassword = (value: string) => {
+    UGStore.dispatch({
+      type: 'merge', sign: {
+        account: remember.current ? account : null,
+        password: remember.current ? value : null
+      }
+    });
     setPassword(value)
+  }
+
+  const onChangeRemember = (value: boolean) => {
+    remember.current = value
     UGStore.dispatch({
       type: 'merge', sign: {
-        account: isRemember ? account : null,
-        password: isRemember ? password : null
+        remember: value,
+        account: value ? account : null,
+        password: value ? password : null
       }
     });
   }
 
-  const onChangeIsRemember = () => {
-    setIsRemember(!isRemember)
-    UGStore.dispatch({
-      type: 'merge', sign: {
-        isRemember: !isRemember,
-        account: !isRemember ? account : null,
-        password: !isRemember ? password : null
-      }
-    });
-  }
-
-  const onChanePasswordSecure = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const onChangeSlidingVerification = setSlidingVerification
+  const onChangeSlideCode = setSlideCode
   // data handle
-  const { nc_csessionid, nc_token, nc_sig } = slidingVerification
+  const { nc_csessionid, nc_token, nc_sig } = slideCode
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
-  const valid = account && password && loginVCode_valid
+  const valid = (account && password && loginVCode_valid) ? true : false
 
   const value = {
     account,
     password,
-    isRemember,
+    remember: remember.current,
   }
 
   const onChange = {
     onChangeAccount,
     onChangePassword,
-    onChangeIsRemember,
-    onChanePasswordSecure,
-    onChangeSlidingVerification,
+    onChangeRemember,
+    onChangeSlideCode,
+  }
+
+  const goTo = {
+    goToHomePage,
+    goToRegisterPage,
+  }
+
+  const ref = {
+    slideCode: slideCodeRef
+  }
+
+  const show = {
+    loginVCode
+  }
+
+  const _sign = {
+    signIn,
+    tryPlay,
   }
 
   return {
-    // goBack,
-    goToHomePage,
-    goToRegisterPage,
-    signIn,
-    tryPlay,
+    goTo,
     onChange,
     value,
+    ref,
     valid,
-    loginVCode,
-    showPassword,
-    slidingVerificationRrf
+    show,
+    sign: _sign
   }
 }
 

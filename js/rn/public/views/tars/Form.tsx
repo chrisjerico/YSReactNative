@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
@@ -8,7 +8,7 @@ interface Form {
   value?: string;
   placeholder: string;
   rightIconProps?: any;
-  showContent?: boolean;
+  // showContent?: boolean;
   showRightIcon?: boolean;
   label?: string;
   show: any;
@@ -25,6 +25,7 @@ interface Form {
   inputContainerStyle?: ViewStyle | ViewStyle;
   inputStyle?: ViewStyle | ViewStyle;
   formStyle?: ViewStyle | ViewStyle;
+  defaultValue?: string;
 }
 
 interface LeftIcon {
@@ -41,7 +42,7 @@ const Form = ({
   onChangeText,
   placeholder,
   rightIconProps = {},
-  showContent = true,
+  // showContent = true,
   showRightIcon = false,
   label,
   show,
@@ -57,8 +58,10 @@ const Form = ({
   showLeftIcon = true,
   inputContainerStyle,
   inputStyle,
-  formStyle
+  formStyle,
+  defaultValue
 }: Form) => {
+  const [showContent, setShowContent] = useState(true)
   if (show) {
     return (
       <View style={[styles.container, containerStyle]}>
@@ -70,6 +73,7 @@ const Form = ({
             },
             formStyle,
           ]}
+          defaultValue={defaultValue}
           inputContainerStyle={inputContainerStyle}
           inputStyle={inputStyle}
           maxLength={maxLength}
@@ -104,6 +108,7 @@ const Form = ({
                     name={showContent ? 'ios-eye' : 'ios-eye-off'}
                     size={scale(40)}
                     color={showContent ? '#84C1FF' : '#d9d9d9'}
+                    onPress={() => setShowContent(!showContent)}
                   />
                 )
             ) : null

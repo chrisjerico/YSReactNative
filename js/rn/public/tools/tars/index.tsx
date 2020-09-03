@@ -5,10 +5,10 @@ import { scale } from '../Scale'
 
 interface SaveNativeUser {
   currentUser: any[];
-  isRememberPsd?: boolean;
-  userName: string;
-  userPsw: string;
-  notification?: string;
+  // isRememberPsd?: boolean;
+  // userName: string;
+  // userPsw: string;
+  // notification?: string;
 }
 
 
@@ -32,25 +32,25 @@ export const validPassword = (password: string, pass_limit: number) => {
 
 export const saveNativeUser = async ({
   currentUser,
-  isRememberPsd = false,
-  userName,
-  userPsw,
+  // isRememberPsd = false,
+  // userName,
+  // userPsw,
 }:
   SaveNativeUser) => {
   try {
     await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-      isRememberPsd,
-      'isRememberPsd',
-    ])
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userName, 'userName']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userPsw, 'userPsw']
-    )
+    // await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
+    //   isRememberPsd,
+    //   'isRememberPsd',
+    // ])
+    // await OCHelper.call(
+    //   'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+    //   [userName, 'userName']
+    // )
+    // await OCHelper.call(
+    //   'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+    //   [userPsw, 'userPsw']
+    // )
     // await OCHelper.call(
     //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
     //   ['UGNotificationLoginComplete']

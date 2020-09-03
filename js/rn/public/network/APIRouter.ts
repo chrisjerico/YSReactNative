@@ -99,7 +99,9 @@ class APIRouter {
         msg: 'no token'
       })
     }
+
   }
+
   static user_guestLogin = async () => {
     return httpClient.post<LoginModel>("c=user&a=guestLogin", {
       usr: '46da83e1773338540e1e1c973f6c8a68',

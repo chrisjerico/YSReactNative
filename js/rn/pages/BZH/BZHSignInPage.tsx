@@ -4,13 +4,14 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { Button } from 'react-native-elements'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
+import { pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import CheckBox from '../../public/views/tars/CheckBox'
@@ -18,40 +19,31 @@ import Form from '../../public/views/tars/Form'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { pop } from '../../public/navigation/RootNavigation'
 
-const BZHSignInPage = (props: any) => {
-  // yellowBox
+const BZHSignInPage = () => {
   console.disableYellowBox = true
-  // functions
-  // const { navigation } = props
-  const {
-    // goBack,
-    goToRegisterPage,
-    goToHomePage,
-    onChange,
-    signIn,
-    tryPlay,
-    loginVCode,
-    valid,
-    value,
-    showPassword,
-    slidingVerificationRrf,
-  } = useSignInPage({
-    // navigation: navigation,
+
+  const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
     homePage: PageName.BZHHomePage,
     registerPage: PageName.BZHRegisterPage,
   })
 
+  const { remember, account, password } = value
+
   const {
-    onChangeAccount,
     onChangePassword,
-    onChangeIsRemember,
-    onChanePasswordSecure,
-    onChangeSlidingVerification,
+    onChangeAccount,
+    onChangeRemember,
+    onChangeSlideCode,
   } = onChange
 
-  const { isRemember } = value
+  const { goToRegisterPage, goToHomePage } = goTo
+
+  const { slideCode } = ref
+
+  const { loginVCode } = show
+
+  const { signIn, tryPlay } = sign
 
   return (
     <>
@@ -76,34 +68,31 @@ const BZHSignInPage = (props: any) => {
               name: 'user-circle',
               type: 'font-awesome',
             }}
+            defaultValue={account}
           />
           <Form
             show={true}
-            rightIconProps={{
-              onPress: onChanePasswordSecure,
-            }}
             placeholder={'请输入密码'}
             leftIcon={{
               name: 'unlock-alt',
               type: 'font-awesome',
             }}
             onChangeText={onChangePassword}
-            showContent={showPassword}
             showRightIcon
+            defaultValue={password}
           />
           <CheckBox
-            check={isRemember}
-            onPress={onChangeIsRemember}
+            onPress={onChangeRemember}
             label={'记住密码'}
             containerStyle={{ alignSelf: 'flex-start' }}
+            defaultValue={remember}
           />
-          {loginVCode && (
-            <ReloadSlidingVerification
-              ref={slidingVerificationRrf}
-              onChange={onChangeSlidingVerification}
-              containerStyle={{ marginBottom: scale(20) }}
-            />
-          )}
+          <ReloadSlidingVerification
+            ref={slideCode}
+            show={loginVCode}
+            onChange={onChangeSlideCode}
+            containerStyle={{ marginBottom: scale(20) }}
+          />
           <Button
             title={'立即登录'}
             disabled={!valid}

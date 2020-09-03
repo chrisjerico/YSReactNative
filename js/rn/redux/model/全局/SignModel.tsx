@@ -1,7 +1,7 @@
 interface SignModel {
   account?: string;
   password?: string;
-  isRemember?: boolean;
+  remember?: boolean;
 }
 
 

@@ -13,7 +13,7 @@ interface Button {
 const Button = ({ containerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false }: Button) => {
   return (
     <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
-      <View style={disabled ? [styles.disabledContainer] : [styles.container, containerStyle]}>
+      <View style={disabled ? [styles.container, containerStyle, styles.disabledContainer] : [styles.container, containerStyle]}>
         <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>{title}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -29,8 +29,7 @@ const styles = StyleSheet.create({
 
   },
   disabledContainer: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: '#ADADAD'
   }
 })
 

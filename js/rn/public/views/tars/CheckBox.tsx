@@ -1,33 +1,54 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, TextStyle } from 'react-native'
+import React, { useState } from 'react'
+import {
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+  TextStyle,
+} from 'react-native'
 import Feather from 'react-native-vector-icons/Feather'
 import { scale } from '../../../public/tools/Scale'
 
 interface CheckBoxProps {
-  check: boolean;
-  onPress: () => any;
+  onPress: (check: boolean) => any;
   label: string;
   containerStyle?: ViewStyle | ViewStyle;
   labelTextStyle?: TextStyle | TextStyle;
+  defaultValue?: boolean;
 }
 
-const CheckBox = ({ check, onPress, label, containerStyle, labelTextStyle }: CheckBoxProps) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <View style={[styles.container, containerStyle]}>
-      {check ? (
-        <Feather
-          name={'check'}
-          color={'#ffffff'}
-          style={styles.iconStyle}
-          size={scale(25)}
-        />
-      ) : (
-          <View style={styles.nonCheckContainer}></View>
-        )}
-      <Text style={[styles.label, labelTextStyle]}>{label}</Text>
-    </View>
-  </TouchableWithoutFeedback>
-)
+const CheckBox = ({
+  onPress,
+  label,
+  containerStyle,
+  labelTextStyle,
+  defaultValue = false,
+}: CheckBoxProps) => {
+  const [check, setCheck] = useState(defaultValue)
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onPress && onPress(!check)
+        setCheck(!check)
+      }}
+    >
+      <View style={[styles.container, containerStyle]}>
+        {check ? (
+          <Feather
+            name={'check'}
+            color={'#ffffff'}
+            style={styles.iconStyle}
+            size={scale(25)}
+          />
+        ) : (
+            <View style={styles.nonCheckContainer}></View>
+          )}
+        <Text style={[styles.label, labelTextStyle]}>{label}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
