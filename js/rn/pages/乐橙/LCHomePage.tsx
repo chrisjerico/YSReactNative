@@ -63,9 +63,7 @@ const LCHomePage = ({navigation}) => {
     useEffect(() => {
         initPromotions()
     }, [])
-    useEffect(() => {
-        console.log("adad", homeGames?.data?.navs)
-    }, [homeGames])
+
     useEffect(() => {
         let string = ""
         const noticeData = notice?.data?.scroll?.map((res) => {
