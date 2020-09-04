@@ -3,7 +3,7 @@ import { StyleSheet, Text, ViewStyle } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../../public/components/tars/FormComponent'
 import { scale } from '../../../public/tools/Scale'
 
-const WNZFormComponent = (props: FormComponentProps & { title: string, leftIconContainerStyle?: ViewStyle }) => {
+const Form = (props: FormComponentProps & { title: string, leftIconContainerStyle?: ViewStyle }) => {
   const { title, leftIconContainerStyle } = props
   return (
     <FormComponent
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default WNZFormComponent
+export default Form

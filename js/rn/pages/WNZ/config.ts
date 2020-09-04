@@ -1,6 +1,8 @@
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import PushHelper from '../../public/define/PushHelper'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
 
@@ -31,23 +33,23 @@ const config = {
   menus: [
     {
       title: '会员中心',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.我的页) },
     },
     {
       title: '额度转换',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.额度转换) },
     },
     {
       title: '幸运棋牌',
-      onPress: () => { },
+      onPress: () => { PushHelper.openWebView('http://test05.6yc.com/mobile/realAuto/goToGame/59/1/') },
     },
     {
       title: '彩票游戏',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushLotteryHome() },
     },
     {
       title: 'AG视讯',
-      onPress: () => { },
+      onPress: () => { PushHelper.openWebView('http://test05.6yc.com/mobile/realAuto/goToGame/59/1/') },
     },
     {
       title: '真人视讯',
@@ -71,19 +73,19 @@ const config = {
     },
     {
       title: '更多彩种',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushLotteryHome() },
     },
     {
       title: '投注记录',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录) },
     },
     {
       title: '开奖结果',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖走势) },
     },
     {
       title: '长龙排行',
-      onPress: () => { },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.长龙助手) },
     },
   ],
   menuSignIn: [

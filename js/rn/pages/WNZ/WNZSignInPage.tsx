@@ -12,7 +12,7 @@ import CheckBox from '../../public/views/tars/CheckBox'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
-import WNZFormComponent from './components/WNZFormComponent'
+import Form from './views/Form'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
@@ -41,7 +41,7 @@ const WNZSignInPage = () => {
   const { loginVCode } = show
 
   const { signIn, tryPlay } = sign
-  console.log("------valid------", valid)
+  console.log('------valid------', valid)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -55,7 +55,7 @@ const WNZSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <WNZFormComponent
+          <Form
             show={true}
             leftIconContainerStyle={{ width: scale(75) }}
             containerStyle={{ marginTop: scale(43), aspectRatio: null }}
@@ -69,7 +69,7 @@ const WNZSignInPage = () => {
             defaultValue={account}
             title={'帐号'}
           />
-          <WNZFormComponent
+          <Form
             show={true}
             leftIconContainerStyle={{ width: scale(75) }}
             containerStyle={{ marginTop: scale(8), aspectRatio: null }}
@@ -92,14 +92,6 @@ const WNZSignInPage = () => {
             />
             <Text style={{ color: '#888888' }}>{'忘记密码'}</Text>
           </View>
-          <Button
-            disabled={!valid}
-            title={'登陆'}
-            containerStyle={[styles.loginButton, { backgroundColor: '#dd524d', }]}
-            disabledContainerStyle={styles.loginButton}
-            titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
-            onPress={signIn}
-          />
           <ReloadSlidingVerification
             ref={slideCode}
             show={loginVCode}
@@ -109,6 +101,17 @@ const WNZSignInPage = () => {
               backgroundColor: '#f2f2f2',
             }}
             backgroundColor={'#f2f2f2'}
+          />
+          <Button
+            disabled={!valid}
+            title={'登陆'}
+            containerStyle={[
+              styles.loginButton,
+              { backgroundColor: '#dd524d' },
+            ]}
+            disabledContainerStyle={styles.loginButton}
+            titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
+            onPress={signIn}
           />
           <Button
             title={'立即注册'}
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
   whitwButtonTitle: {
     color: '#f13031',
     fontSize: scale(25),
-    fontWeight: '300'
+    fontWeight: '300',
   },
 })
 export default WNZSignInPage

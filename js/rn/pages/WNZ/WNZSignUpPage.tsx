@@ -12,7 +12,7 @@ import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
-import WNZFormComponent from './components/WNZFormComponent'
+import Form from './views/Form'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
@@ -99,7 +99,7 @@ const WNZSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <WNZFormComponent
+          <Form
             inputContainerStyle={styles.inputContainerStyle}
             onChangeText={onChangeRecommendGuy}
             label={recommendGuyLabel}
@@ -107,14 +107,14 @@ const WNZSignUpPage = () => {
             show={showRecommendGuy}
             title={'推荐人'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={obChangeAccount}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={showName}
             title={'用护照号'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={obChangePassword}
             label={passwordLebel}
             placeholder={'密码'}
@@ -124,7 +124,7 @@ const WNZSignUpPage = () => {
             title={'登录密码'}
             rightIconType={'eye'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChangeConfirmPassword}
             label={confirmPasswordLabel}
             placeholder={'确认密码'}
@@ -132,14 +132,14 @@ const WNZSignUpPage = () => {
             show={true}
             title={'确认密码'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChaneRealName}
             label={realNameLabel}
             placeholder={'真实姓名'}
             show={showName}
             title={'真实姓名'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChaneFundPassword}
             label={fundpwdLabel}
             placeholder={'取款密码'}
@@ -148,35 +148,35 @@ const WNZSignUpPage = () => {
             maxLength={4}
             title={'取款密码'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChaneQQ}
             label={qqLabel}
             placeholder={'QQ号'}
             show={showQQ}
             title={'QQ号'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChaneWeChat}
             label={wechatLabel}
             placeholder={'微信号'}
             show={showWx}
             title={'微信号'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChanePhone}
             label={phoneLabel}
             placeholder={'手机号'}
             show={showPhone}
             title={'手机号码'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChangeEmail}
             label={emailLabel}
             placeholder={'电子邮箱'}
             show={showEmail}
             title={'电子邮箱'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChangeImageCode}
             label={imageCodeLabel}
             placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
@@ -188,7 +188,7 @@ const WNZSignUpPage = () => {
             maxLength={4}
             title={'验证码'}
           />
-          <WNZFormComponent
+          <Form
             onChangeText={onChaneSms}
             placeholder={'短信验证码'}
             show={showSms}
@@ -214,10 +214,13 @@ const WNZSignUpPage = () => {
             disabled={!valid}
             title={'立即注册'}
             containerStyle={styles.signUpButton}
-            disabledContainerStyle={{
-              opacity: 0.5,
-              backgroundColor: '#dd524d',
-            }}
+            disabledContainerStyle={[
+              styles.signUpButton,
+              {
+                opacity: 0.5,
+                backgroundColor: '#dd524d',
+              },
+            ]}
             titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
             onPress={signUp}
           />
