@@ -13,16 +13,30 @@ import {
 } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
-import HomeHeader from './views/HomeHeader'
+import HomeHeader, { HomeHeaderProps } from './views/HomeHeader'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import useMindeHeader from '../../public/hooks/tars/useMineHeader'
 
-const WNZMinePage = (props: any) => {
-  const { setProps } = props
+
+const MineHeaderComponent = (props: HomeHeaderProps) => {
+  const { showBackBtn } = useMindeHeader()
+  return (
+    <HomeHeader
+      {...props}
+      showBackBtn={showBackBtn}
+    />
+  )
+}
+
+const WNZMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
+  const { value, fetchAvatarList } = useMinePage({
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
+
   const {
     uid,
-    showBackBtn,
     usr,
     mobile_logo,
     curLevelInt,
@@ -33,14 +47,9 @@ const WNZMinePage = (props: any) => {
     userCenterItems,
     unreadMsg,
     balance,
-    fetchAvatarList,
-  } = useMinePage({
-    setProps,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+  } = value
 
   // data handle
-
   const tools = userCenterItems?.sort((a, b) => a?.code - b?.code) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
@@ -87,13 +96,11 @@ const WNZMinePage = (props: any) => {
       UGUserCenterType.推荐收益,
     ].includes(ele.code)
   )
-  console.log("---------WNZMinePage---------")
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <HomeHeader
+        <MineHeaderComponent
           uid={uid}
-          showBackBtn={showBackBtn}
           name={usr}
           logo={mobile_logo}
           balance={balance}
@@ -108,10 +115,7 @@ const WNZMinePage = (props: any) => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <ProfileBlock
           curLevelInt={curLevelInt}
           nextLevelInt={nextLevelInt}
@@ -179,7 +183,6 @@ const WNZMinePage = (props: any) => {
                     onPress={() => PushHelper.pushUserCenterType(code)}
                   />
                 )
-
               }}
             />
           )

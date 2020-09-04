@@ -1,26 +1,25 @@
-import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import React, { useRef } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import AgentRedButtonComponent from '../../public/components/tars/AgentRedButtonComponent'
-import FormComponent from '../../public/components/tars/FormComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
-import useRegisterPage from '../../public/hooks/tars/useRegisterPage'
+import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, push, popToRoot } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
-import { scale, scaleHeight } from '../../public/tools/Scale'
+import { pop, popToRoot } from '../../public/navigation/RootNavigation'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
-import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import MenuModalComponent from './components/MenuModalComponent'
+import WNZFormComponent from './components/WNZFormComponent'
+import config from './config'
+import Menu from './views/Menu'
+import SignInHeader from './views/SignInHeader'
 
-const BZHRegisterPage = () => {
+const WNZSignUpPage = () => {
+  const menu = useRef(null)
+
   const {
     show,
     ref,
@@ -29,8 +28,10 @@ const BZHRegisterPage = () => {
     sign,
     valid,
     limit,
-  } = useRegisterPage({
-    homePage: PageName.BZHHomePage
+    goTo,
+  } = useSignUpPage({
+    homePage: PageName.WNZHomePage,
+    signInPage: PageName.WNZSignInPage,
   })
 
   const {
@@ -79,119 +80,103 @@ const BZHRegisterPage = () => {
 
   const { slideCode } = ref
 
-  const { signUp } = sign
+  const { signUp, tryPlay } = sign
 
   const { pass_length_max } = limit
 
+  const { goToSignInPage } = goTo
+
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <MineHeader
-          title={'注册'}
-          showBackBtn={true}
+      <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+        <SignInHeader
           onPressLeftTool={pop}
-          showRightTool={true}
-          onPressRightTool={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          onPressMenu={() => {
+            menu?.current?.open()
           }}
+          onPressRegister={goToSignInPage}
         />
       </SafeAreaHeader>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <View style={styles.whiteBlock}>
-          <View style={{ width: '100%', marginBottom: scale(20) }}>
-            <Text style={{ color: 'red' }}>
-              {'为了您的资金安全，请使用真实资料!'}
-            </Text>
-          </View>
-          <FormComponent
-            leftIconName={'users'}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <WNZFormComponent
+            inputContainerStyle={styles.inputContainerStyle}
             onChangeText={onChangeRecommendGuy}
             label={recommendGuyLabel}
             placeholder={'推荐人ID'}
             show={showRecommendGuy}
+            title={'推荐人'}
           />
-          <FormComponent
+          <WNZFormComponent
             onChangeText={obChangeAccount}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={showName}
-            leftIconName={'users'}
+            title={'用护照号'}
           />
-          <FormComponent
-            leftIconName={'lock'}
+          <WNZFormComponent
             onChangeText={obChangePassword}
             label={passwordLebel}
             placeholder={'密码'}
             showRightIcon
             show={true}
             maxLength={pass_length_max}
+            title={'登录密码'}
             rightIconType={'eye'}
           />
-          <FormComponent
-            leftIconName={'lock'}
+          <WNZFormComponent
             onChangeText={onChangeConfirmPassword}
             label={confirmPasswordLabel}
             placeholder={'确认密码'}
             showRightIcon
             show={true}
-            rightIconType={'eye'}
+            title={'确认密码'}
           />
-          <FormComponent
-            leftIconName={'user'}
+          <WNZFormComponent
             onChangeText={onChaneRealName}
             label={realNameLabel}
             placeholder={'真实姓名'}
             show={showName}
+            title={'真实姓名'}
           />
-          <FormComponent
-            leftIconName={'lock'}
+          <WNZFormComponent
             onChangeText={onChaneFundPassword}
             label={fundpwdLabel}
             placeholder={'取款密码'}
             showRightIcon
             show={showfundpwd}
             maxLength={4}
-            rightIconType={'eye'}
+            title={'取款密码'}
           />
-          <FormComponent
-            leftIcon={{
-              name: 'QQ',
-              type: 'antdesign',
-            }}
+          <WNZFormComponent
             onChangeText={onChaneQQ}
             label={qqLabel}
             placeholder={'QQ号'}
             show={showQQ}
+            title={'QQ号'}
           />
-          <FormComponent
-            leftIcon={{
-              name: 'wechat',
-              type: 'font-awesome',
-            }}
+          <WNZFormComponent
             onChangeText={onChaneWeChat}
             label={wechatLabel}
             placeholder={'微信号'}
             show={showWx}
+            title={'微信号'}
           />
-          <FormComponent
-            leftIconName={'smartphone'}
+          <WNZFormComponent
             onChangeText={onChanePhone}
             label={phoneLabel}
             placeholder={'手机号'}
             show={showPhone}
+            title={'手机号码'}
           />
-          <FormComponent
-            leftIcon={{
-              type: 'material-community',
-              name: 'email-outline',
-            }}
+          <WNZFormComponent
             onChangeText={onChangeEmail}
             label={emailLabel}
             placeholder={'电子邮箱'}
             show={showEmail}
+            title={'电子邮箱'}
           />
-          <FormComponent
-            leftIconName={'lock'}
+          <WNZFormComponent
             onChangeText={onChangeImageCode}
             label={imageCodeLabel}
             placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
@@ -201,46 +186,89 @@ const BZHRegisterPage = () => {
               showImageTouchCaptcha ? 'touchImgCaptcha' : 'imgCaptcha'
             }
             maxLength={4}
+            title={'验证码'}
           />
-          <FormComponent
-            leftIconName={'lock'}
+          <WNZFormComponent
             onChangeText={onChaneSms}
             placeholder={'短信验证码'}
             show={showSms}
             showRightIcon={true}
             rightIconType={'sms'}
+            title={'短信验证'}
           />
           <ReloadSlidingVerification
             ref={slideCode}
             show={showSlideCode}
             onChange={onChangeSlideCode}
-            containerStyle={{ marginBottom: scale(20) }}
+            containerStyle={{
+              marginBottom: scale(20),
+              backgroundColor: '#f2f2f2',
+            }}
+            backgroundColor={'#f2f2f2'}
           />
           <AgentRedButtonComponent
             show={parseInt(agentRegbutton) ? true : false}
             onChangeAgent={onChangeAgent}
           />
           <Button
-            title={'注册'}
             disabled={!valid}
-            containerStyle={styles.button}
-            titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
+            title={'立即注册'}
+            containerStyle={styles.signUpButton}
+            disabledContainerStyle={{
+              opacity: 0.5,
+              backgroundColor: '#dd524d',
+            }}
+            titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
             onPress={signUp}
           />
-          <View style={styles.bottomButtonContainer}>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                push(PageName.BZHSignInPage, {})
-              }}
-            >
-              <Text>{'返回登录'}</Text>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text>{'返回首页'}</Text>
-            </TouchableWithoutFeedback>
-          </View>
+          <Button
+            title={'已有帐号，直接登陆'}
+            containerStyle={styles.whiteButton}
+            titleStyle={styles.whitwButtonTitle}
+            onPress={pop}
+          />
+          <Button
+            title={'免费试玩'}
+            containerStyle={styles.whiteButton}
+            titleStyle={styles.whitwButtonTitle}
+            onPress={tryPlay}
+          />
+          <Button
+            title={'在线客服'}
+            containerStyle={styles.whiteButton}
+            titleStyle={styles.whitwButtonTitle}
+            onPress={() =>
+              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+            }
+          />
+          <Button
+            title={'返回首页'}
+            containerStyle={styles.whiteButton}
+            titleStyle={styles.whitwButtonTitle}
+            onPress={popToRoot}
+          />
         </View>
       </ScrollView>
+      <MenuModalComponent
+        ref={menu}
+        menus={
+          // @ts-ignore
+          config?.menuSignIn?.concat(config?.menus)
+        }
+        renderMenu={({ item }) => {
+          const { title, onPress } = item
+          return (
+            <Menu
+              color={WNZThemeColor.威尼斯.themeColor}
+              title={title}
+              onPress={() => {
+                menu?.current?.close()
+                onPress && onPress()
+              }}
+            />
+          )
+        }}
+      />
     </>
   )
 }
@@ -248,36 +276,48 @@ const BZHRegisterPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: scale(20),
+    marginTop: scale(23),
+    marginBottom: scale(100),
   },
-  whiteBlock: {
-    backgroundColor: '#ffffff',
-    width: '95%',
-    alignSelf: 'center',
+  inputContainerStyle: {
+    borderWidth: scale(1),
     borderRadius: scale(10),
-    marginTop: scale(15),
-    paddingHorizontal: scale(25),
-    paddingTop: scale(25),
-    marginBottom: scaleHeight(70),
+    backgroundColor: '#ffffff',
+    borderColor: '#d9d9d9',
+    paddingLeft: scale(20),
+    height: scale(63),
   },
-  bottomButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  inputTitleContainer: {
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    paddingVertical: scale(25),
+    width: scale(60),
   },
-  button: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
+  inputText: {
+    fontSize: scale(25),
+  },
+  signUpButton: {
     width: '100%',
-    marginVertical: scale(20),
-    aspectRatio: 8,
+    backgroundColor: '#dd524d',
+    marginTop: scale(32),
+    aspectRatio: 10,
     borderRadius: scale(5),
   },
-  headerTitle: {
-    color: '#ffffff',
+  whiteButton: {
+    width: '100%',
+    backgroundColor: '#ffffff',
+    marginTop: scale(15),
+    aspectRatio: 10,
+    borderRadius: scale(5),
+    borderColor: '#ccc',
+    borderWidth: scale(1),
+  },
+  whitwButtonTitle: {
+    color: '#f13031',
     fontSize: scale(25),
+    fontWeight: '300',
   },
 })
 
-export default BZHRegisterPage
+export default WNZSignUpPage

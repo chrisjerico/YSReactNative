@@ -70,7 +70,6 @@ export default (Page: Function) => {
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
           ugLog('成为焦点', name, params)
-
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;

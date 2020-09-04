@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet
-} from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
+import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -12,22 +10,31 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
+import Button from '../../public/views/tars/Button'
 import FeatureList from '../../public/views/tars/FeatureList'
-import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-import Button from '../../public/views/tars/Button'
 
-const LHTMinePage = (props: any) => {
-  const { setProps } = props
+const LHTMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
+  const {
+    value,
+    fetchAvatarList,
+    saveAvatar,
+    sign,
+    openAvatarList,
+    closeAvatarList,
+  } = useMinePage({
+    homePage: PageName.LHTHomePage,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
+
   const {
     balance,
     userCenterItems,
-    showBackBtn,
     curLevelGrade,
     usr,
     isTest,
@@ -36,27 +43,16 @@ const LHTMinePage = (props: any) => {
     avatarListLoading,
     avatarListVisible,
     avatarList,
-    fetchAvatarList,
-    saveAvatar,
-    signOut,
-    openAvatarList,
-    closeAvatarList,
-    goBack,
-  } = useMinePage({
-    setProps,
-    homePage: PageName.LHTHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+  } = value
 
+  const { signOut } = sign
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <MineHeader
+        <MineHeaderComponent
           title={'会员中心'}
-          showBackBtn={showBackBtn}
-          showRightTool={true}
-          onPressLeftTool={goBack}
-          onPressRightTool={() => {
+          showCustomerService={true}
+          onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
@@ -101,7 +97,7 @@ const LHTMinePage = (props: any) => {
               key={index}
               containerStyle={{
                 aspectRatio: 490 / 56,
-                width: '95%'
+                width: '95%',
               }}
               titleStyle={{ fontSize: scale(20) }}
               title={name}
@@ -142,7 +138,7 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(25),
     marginVertical: scale(25),
     height: scale(70),
-    borderRadius: scale(5)
+    borderRadius: scale(5),
   },
   headerTitle: {
     color: '#ffffff',

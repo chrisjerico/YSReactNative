@@ -6,19 +6,24 @@ import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
+import { ToastError, ToastSuccess } from '../../tools/tars'
+import useTryPlay from '../useTryPlay'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
-import { ToastError } from '../../tools/tars'
 
 interface UseHomePage {
-  // onSuccessLogOut?: () => any;
+  onSuccessSignOut?: () => any;
+  onSuccessTryPlay?: () => any;
 }
 
-const useHomePage = ({ setProps }) => {
+const useHomePage = ({
+  onSuccessSignOut,
+  onSuccessTryPlay
+}: UseHomePage) => {
 
   const {
     loading,
-    refresh,
+    refreshing,
     rankList,
     banner,
     homeGame,
@@ -32,7 +37,7 @@ const useHomePage = ({ setProps }) => {
     homeRecommend,
     lotteryGame,
     lotteryNumber,
-    refreshHome,
+    refresh,
   } = useHome()
 
   const goToJDPromotionListPage = () => {
@@ -43,8 +48,18 @@ const useHomePage = ({ setProps }) => {
     })
   }
 
+  const { tryPlay } = useTryPlay({
+    onSuccess: () => {
+      ToastSuccess('登录成功！')
+      onSuccessTryPlay && onSuccessTryPlay()
+    },
+    onError: (error) => {
+      ToastError(error ?? '試玩失败')
+    },
+  })
+
   const { logOut } = useLogOut({
-    onSuccess: setProps,
+    onSuccess: onSuccessSignOut,
     onError: (error) => {
       ToastError(error || '登出失败')
       console.log('--------登出失败--------', error)
@@ -96,12 +111,18 @@ const useHomePage = ({ setProps }) => {
     }
   }, [notice])
 
-  return {
-    goToJDPromotionListPage,
-    refreshHome,
-    signOut,
+  const goTo = {
+    goToJDPromotionListPage
+  }
+
+  const sign = {
+    tryPlay,
+    signOut
+  }
+
+  const value = {
     loading,
-    refresh,
+    refreshing,
     lotteryDate,
     onlineNum,
     bannersInterval,
@@ -123,6 +144,13 @@ const useHomePage = ({ setProps }) => {
     floatAds,
     userInfo,
     sysConf
+  }
+
+  return {
+    goTo,
+    sign,
+    value,
+    refresh
   }
 }
 

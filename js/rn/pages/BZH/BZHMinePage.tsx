@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
+import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -12,18 +13,28 @@ import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
-import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 
-const BZHMinePage = (props: any) => {
-  const { setProps } = props
+const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
+  const {
+    value,
+    sign,
+    fetchAvatarList,
+    saveAvatar,
+    openAvatarList,
+    closeAvatarList,
+  } = useMinePage({
+    homePage: PageName.BZHHomePage,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
+
   const {
     balance,
     userCenterItems,
-    showBackBtn,
     curLevelGrade,
     usr,
     isTest,
@@ -32,18 +43,9 @@ const BZHMinePage = (props: any) => {
     avatarListLoading,
     avatarListVisible,
     avatarList,
-    fetchAvatarList,
-    saveAvatar,
-    signOut,
-    openAvatarList,
-    closeAvatarList,
-    goBack,
-  } = useMinePage({
-    setProps,
-    homePage: PageName.BZHHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+  } = value
 
+  const { signOut } = sign
   // data handle
   const features = userCenterItems?.slice(0, 4) ?? []
   const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
@@ -58,17 +60,17 @@ const BZHMinePage = (props: any) => {
         }}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
-        <MineHeader
-          showBackBtn={showBackBtn}
-          onPressLeftTool={goBack}
-          showRightTool={false}
+        <MineHeaderComponent
           title={'会员中心'}
+          showCustomerService={false}
+          onPressCustomerService={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }}
         />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          flex: 1,
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
         refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}

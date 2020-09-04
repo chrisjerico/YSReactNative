@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
+  useState
 } from 'react'
 import { ViewStyle } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
@@ -36,7 +36,8 @@ const ReloadSlidingVerification = (
   const [height, setHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
     if (typeof e?.nativeEvent?.data == 'string') {
-      setHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+      console.log("-------e?.nativeEvent?.data", e?.nativeEvent)
+      setHeight(parseInt(e?.nativeEvent?.data))
     } else {
       onChange(e?.nativeEvent?.data)
     }
@@ -57,7 +58,7 @@ const ReloadSlidingVerification = (
     return (
       <WebView
         ref={webViewRef}
-        style={[{ minHeight: height }, containerStyle]}
+        style={[{ minHeight: height * 1.5 }, containerStyle]}
         containerStyle={height > 0 ? null : { opacity: 0 }}
         javaScriptEnabled
         injectedJavaScript={webViewScript}

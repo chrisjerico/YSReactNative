@@ -1,15 +1,15 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, ViewStyle } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../../public/components/tars/FormComponent'
 import { scale } from '../../../public/tools/Scale'
 
-const WNZFormComponent = (props: FormComponentProps & { title: string }) => {
-  const { title } = props
+const WNZFormComponent = (props: FormComponentProps & { title: string, leftIconContainerStyle?: ViewStyle }) => {
+  const { title, leftIconContainerStyle } = props
   return (
     <FormComponent
       {...props}
       inputContainerStyle={styles.inputContainerStyle}
-      leftIconContainerStyle={styles.leftIconContainerStyle}
+      leftIconContainerStyle={[styles.leftIconContainerStyle, leftIconContainerStyle]}
       rightIconContainerStyle={{ marginRight: scale(10) }}
       renderLeftIcon={() => <Text style={styles.inputText}>{title}</Text>}
     />

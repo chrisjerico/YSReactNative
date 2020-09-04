@@ -5,12 +5,10 @@ import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComp
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import {
   OCEvent,
-  OCEventType,
+  OCEventType
 } from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useLogOut from '../../public/hooks/tars/useLogOut'
-import useTryPlay from '../../public/hooks/useTryPlay'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
@@ -18,9 +16,7 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import {
   getActivityPosition,
-  ToastError,
-  ToastSuccess,
-  useHtml5Image,
+  useHtml5Image
 } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -33,7 +29,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import {
   LotteryType,
-  UGUserCenterType,
+  UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
 import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import TabComponent from './components/TabComponent'
@@ -42,31 +38,29 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
+import useRerender from '../../public/hooks/tars/useRerender'
 
-const LHTHomePage = (props: any) => {
+const LHTHomePage = () => {
   // yellowBox
   console.disableYellowBox = true
   // states
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
-  const { setProps } = props
+  // const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
 
-  const { tryPlay } = useTryPlay({
-    onSuccess: () => {
-      ToastSuccess('登录成功！')
-    },
-    onError: (error) => {
-      ToastError(error ?? '試玩失败')
-    },
+  const { renender } = useRerender()
+  const { goTo, value, sign, refresh } = useHomePage({
+    onSuccessTryPlay: renender,
+    onSuccessSignOut: renender
   })
 
+  const { signOut, tryPlay } = sign
+  const { goToJDPromotionListPage } = goTo
+
   const {
-    goToJDPromotionListPage,
-    refreshHome,
-    signOut,
     loading,
-    refresh,
+    refreshing,
     userInfo,
     sysConf,
     lotteryDate,
@@ -85,9 +79,7 @@ const LHTHomePage = (props: any) => {
     redBag,
     redBagLogo,
     roulette,
-
-  } = useHomePage({ setProps })
-
+  } = value
   const { uid, usr, balance, isTest, avatar } = userInfo
   const {
     mobile_logo,
@@ -98,19 +90,19 @@ const LHTHomePage = (props: any) => {
     appDownloadUrl,
   } = sysConf
 
-  useEffect(() => {
-    OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
-      try {
-        await updateUserInfo()
-        setProps()
-      } catch (error) {
-        console.log(error)
-      }
-    })
-    return () => {
-      OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
-    }
-  }, [])
+  // useEffect(() => {
+  //   OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
+  //     try {
+  //       await updateUserInfo()
+  //       renender()
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   })
+  //   return () => {
+  //     OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
+  //   }
+  // }, [])
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -120,6 +112,7 @@ const LHTHomePage = (props: any) => {
     ...lotterys.slice(6),
   ]
 
+  console.log("--------渲染LHTHOME-------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -144,10 +137,10 @@ const LHTHomePage = (props: any) => {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={refresh}
+              refreshing={refreshing}
               onRefresh={async () => {
                 try {
-                  await refreshHome()
+                  await refresh()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                   console.log('-------error------', error)
@@ -425,7 +418,7 @@ const LHTHomePage = (props: any) => {
           </View>
         </ScrollView>
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
@@ -434,7 +427,7 @@ const LHTHomePage = (props: any) => {
           }}
         />
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
@@ -448,7 +441,7 @@ const LHTHomePage = (props: any) => {
           return (
             <ActivityComponent
               key={index}
-              refresh={refresh}
+              refreshing={refreshing}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}

@@ -22,20 +22,20 @@ export interface FormComponentProps {
   showRightIcon?: boolean;
   label?: string;
   show: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   enableLabel?: boolean;
   renderRightIcon?: () => any;
   renderLeftIcon?: () => any;
   maxLength?: number;
-  labelTextStyle?: TextStyle | TextStyle;
+  labelTextStyle?: TextStyle | TextStyle[];
   showLeftIcon?: boolean;
-  inputContainerStyle?: ViewStyle | ViewStyle;
-  inputStyle?: ViewStyle | ViewStyle;
-  formStyle?: ViewStyle | ViewStyle;
+  inputContainerStyle?: ViewStyle | ViewStyle[];
+  inputStyle?: ViewStyle | ViewStyle[];
+  formStyle?: ViewStyle | ViewStyle[];
   defaultValue?: string;
   rightIconType?: 'eye' | 'imgCaptcha' | 'touchImgCaptcha' | 'sms';
-  leftIconContainerStyle?: ViewStyle | ViewStyle;
-  rightIconContainerStyle?: ViewStyle | ViewStyle;
+  leftIconContainerStyle?: ViewStyle | ViewStyle[];
+  rightIconContainerStyle?: ViewStyle | ViewStyle[];
   leftIconName?: string;
   leftIcon?: LeftIcon;
 }
@@ -200,19 +200,15 @@ const FormComponent = ({
               height: '50%',
               width: '100%',
             },
+            styles.zero,
             formStyle,
           ]}
           defaultValue={defaultValue}
-          inputContainerStyle={inputContainerStyle}
+          inputContainerStyle={[styles.zero, inputContainerStyle]}
           inputStyle={[styles.inputStyle, inputStyle]}
           maxLength={maxLength}
           placeholder={placeholder}
-          containerStyle={[
-            {
-              paddingLeft: 0,
-              paddingRight: 0,
-            },
-          ]}
+          containerStyle={[styles.containerStyle]}
           leftIcon={
             <LeftIcon
               leftIcon={leftIcon}
@@ -282,7 +278,20 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    // backgroundColor: 'red'
+  },
+  zero: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    marginLeft: 0,
+    marginRight: 0,
+    paddingHorizontal: 0,
+    marginHorizontal: 0,
+    padding: 0,
+    margin: 0,
+  },
+  containerStyle: {
+    paddingLeft: 0,
+    paddingRight: 0,
   },
 })
 

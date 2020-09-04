@@ -28,11 +28,13 @@ import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 
 const BZHHomePage = () => {
+  const { goTo, refresh, value } = useHomePage({})
+
+  const { goToJDPromotionListPage } = goTo
+
   const {
-    goToJDPromotionListPage,
-    refreshHome,
     loading,
-    refresh,
+    refreshing,
     userInfo,
     sysConf,
     bannersInterval,
@@ -50,7 +52,7 @@ const BZHHomePage = () => {
     redBag,
     redBagLogo,
     roulette,
-  } = useHomePage({})
+  } = value
 
   const { uid, usr, balance, isTest } = userInfo
   const {
@@ -61,7 +63,8 @@ const BZHHomePage = () => {
     adSliderTimer,
   } = sysConf
 
-  const recommendGameTabs = recommendGames?.map((item) => item?.categoryName) ?? []
+  const recommendGameTabs =
+    recommendGames?.map((item) => item?.categoryName) ?? []
 
   if (loading) {
     return <ProgressCircle />
@@ -87,10 +90,10 @@ const BZHHomePage = () => {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={refresh}
+              refreshing={refreshing}
               onRefresh={async () => {
                 try {
-                  await refreshHome()
+                  await refresh()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                   console.log('-------error------', error)
@@ -198,9 +201,13 @@ const BZHHomePage = () => {
                     if (uid) {
                       let index = 0
                       if (name == '视讯') {
-                        index = recommendGameTabs?.findIndex((item) => item == '真人')
+                        index = recommendGameTabs?.findIndex(
+                          (item) => item == '真人'
+                        )
                       } else {
-                        index = recommendGameTabs?.findIndex((item) => item == name)
+                        index = recommendGameTabs?.findIndex(
+                          (item) => item == name
+                        )
                       }
                       const initialTabIndex = index < 0 ? 0 : index
                       push(PageName.BZHGameLobbyPage, {
@@ -237,11 +244,11 @@ const BZHHomePage = () => {
                               paddingVertical: scale(20),
                               borderRadius: scale(5),
                             }}
-                            textStyle={{
+                            titleStyle={{
                               color: '#000000',
                               fontSize: scale(15),
                             }}
-                            text={title}
+                            title={title}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
                             }}
@@ -389,7 +396,7 @@ const BZHHomePage = () => {
           <BottomGap />
         </ScrollView>
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
@@ -398,7 +405,7 @@ const BZHHomePage = () => {
           }}
         />
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
@@ -412,7 +419,7 @@ const BZHHomePage = () => {
           return (
             <ActivityComponent
               key={index}
-              refresh={refresh}
+              refreshing={refreshing}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}

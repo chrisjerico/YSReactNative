@@ -16,12 +16,12 @@ interface SlidingVerification {
 
 interface UseSignInPage {
   homePage: PageName;
-  registerPage: PageName;
+  signUpPage: PageName;
 }
 
 const useSignInPage = ({
   homePage,
-  registerPage
+  signUpPage
 }: UseSignInPage) => {
 
   // stores
@@ -40,7 +40,7 @@ const useSignInPage = ({
   const rememberRef = useRef(sign?.remember)
 
   const goToRegisterPage = () => {
-    homePage && navigate(registerPage, {})
+    homePage && navigate(signUpPage, {})
   }
 
   const goToHomePage = () => {

@@ -36,7 +36,7 @@ const routers = [
 const useHome = () => {
 
   const [loading, setLoading] = useState(true)
-  const [refresh, setRefresh] = useState(true)
+  const [refreshing, setRefreshing] = useState(true)
   // const [userInfo, setUserInfo] = useState<UserInfoModel>()
   // const [sysConfig, setSysConfig] = useState<SystemConfigModel>()
   const [rankList, setRankList] = useState<RankListModel>()
@@ -63,7 +63,7 @@ const useHome = () => {
 
   const callApis = async () => {
     try {
-      !loading && setRefresh(true)
+      !loading && setRefreshing(true)
       const response = await Promise.all(apis)
       // globals state
       const sysConf = response[13]?.data?.data as SystemConfigData ?? {} as SystemConfigData
@@ -93,11 +93,11 @@ const useHome = () => {
       console.log("--------useHome error--------", error)
     } finally {
       setLoading(false)
-      setRefresh(false)
+      setRefreshing(false)
     }
   }
 
-  const refreshHome = callApis
+  const refresh = callApis
 
   useEffect(() => {
     callApis()
@@ -105,7 +105,7 @@ const useHome = () => {
 
   return {
     loading,
-    refresh,
+    refreshing,
     rankList,
     banner,
     homeGame,
@@ -119,7 +119,7 @@ const useHome = () => {
     redBag,
     floatAd,
     homeRecommend,
-    refreshHome
+    refresh
   }
 
 }

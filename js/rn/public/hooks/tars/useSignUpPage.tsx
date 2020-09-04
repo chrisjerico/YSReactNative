@@ -3,8 +3,8 @@ import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import APIRouter from '../../network/APIRouter'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
+import useTryPlay from '../useTryPlay'
 import useRegister from './useRegister'
 
 interface SlidingVerification {
@@ -14,10 +14,11 @@ interface SlidingVerification {
 }
 
 interface UseRegisterPage {
-  homePage: PageName;
+  homePage?: PageName;
+  signInPage?: PageName;
 }
 
-const useRegisterPage = ({ homePage }: UseRegisterPage) => {
+const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
@@ -28,7 +29,6 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const [qq, setQQ] = useState(null)
   const [weChat, setWeChat] = useState(null)
   const [phoneNumber, setPhoneNumber] = useState(null)
-  const [correctImageCode, setCorrectImageCode] = useState('')
   const [imageCode, setImageCode] = useState(null)
   const [slideCode, setSlideCode] = useState<SlidingVerification>({
     nc_csessionid: undefined,
@@ -44,6 +44,20 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   const goToHomePage = () => {
     homePage && navigate(homePage, {})
   }
+
+  const goToSignInPage = () => {
+    signInPage && navigate(signInPage, {})
+  }
+  const { tryPlay } = useTryPlay({
+    onSuccess: () => {
+      goToHomePage()
+      ToastSuccess('登录成功')
+    },
+    onError: (error) => {
+      ToastError('登录失败' + error ? ' : ' + error : '')
+      console.log("--------試玩失败--------", error)
+    },
+  })
 
   const { register } = useRegister({
     onSuccessWithAutoLogin: goToHomePage,
@@ -63,26 +77,6 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
     },
   })
 
-  const fetchImgCaptcha = () => {
-    APIRouter.secure_imgCaptcha()
-      .then((value) => {
-        setCorrectImageCode(value?.data)
-      })
-      .catch((error) => { })
-  }
-  const fetchSms = async () => {
-    try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
-      const { code, msg } = data ?? {}
-      if (code != 0) {
-        throw { message: msg }
-      } else {
-        ToastSuccess(msg)
-      }
-    } catch (error) {
-      ToastError(error?.message)
-    }
-  }
   // stores
   const {
     hide_reco, // 代理人 0隱藏，1选填，2必填
@@ -273,10 +267,12 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
 
   const goTo = {
     goToHomePage,
+    goToSignInPage
   }
 
   const sign = {
     signUp,
+    tryPlay
   }
 
   const limit = {
@@ -297,4 +293,4 @@ const useRegisterPage = ({ homePage }: UseRegisterPage) => {
   }
 }
 
-export default useRegisterPage
+export default useSignUpPage

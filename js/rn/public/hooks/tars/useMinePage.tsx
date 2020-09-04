@@ -1,13 +1,14 @@
+import { useEffect, useState } from "react"
+import UGSysConfModel from "../../../redux/model/全局/UGSysConfModel"
 import UGUserModel from "../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../redux/store/UGStore"
-import UGSysConfModel from "../../../redux/model/全局/UGSysConfModel"
-import { useState, useEffect } from "react"
-import useLogOut from "./useLogOut"
-import { navigate, navigationRef, pop } from "../../navigation/RootNavigation"
-import { ToastSuccess, ToastError } from "../../tools/tars"
-import { PageName } from "../../navigation/Navigation"
-import APIRouter from "../../network/APIRouter"
 import { OCHelper } from "../../define/OCHelper/OCHelper"
+import { PageName } from "../../navigation/Navigation"
+import { navigate, pop, navigationRef } from "../../navigation/RootNavigation"
+import APIRouter from "../../network/APIRouter"
+import { ToastError, ToastSuccess } from "../../tools/tars"
+import useLogOut from "./useLogOut"
+import { OCEvent, OCEventType } from "../../define/OCHelper/OCBridge/OCEvent"
 
 interface DefaultUserCenterLogos {
   1: string, // 存款
@@ -31,12 +32,11 @@ interface DefaultUserCenterLogos {
   19: string, // QQ客服
 }
 interface UseMinePage {
-  setProps?: (props: any) => any;
   homePage?: PageName;
   defaultUserCenterLogos: DefaultUserCenterLogos
 }
 
-const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage) => {
+const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   // yellowBox
   console.disableYellowBox = true
   // stores
@@ -61,7 +61,6 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     return Object.assign({}, ele, { logo: newLogo })
   })
   // states
-  const [showBackBtn, setShowBackBtn] = useState(false)
   const [avatarListLoading, setAvatarListLoading] = useState(true)
   const [avatarListVisible, setAvatarListVisible] = useState(false)
   const [avatarList, setAvatarList] = useState([])
@@ -110,37 +109,16 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   const closeAvatarList = () => { setAvatarListVisible(false) }
   const signOut = logOut
 
-  const goBack = () => {
-    !pop() &&
-      OCHelper.call(
-        'UGNavigationController.current.popViewControllerAnimated:',
-        [true]
-      )
-  }
   // effects
+
   useEffect(() => {
-    fetchAvatarList().then(() => {
-      setProps && setProps({
-        didFocus: async () => {
-          OCHelper.call(
-            'UGNavigationController.current.viewControllers.count'
-          ).then((ocCount) => {
-            const show =
-              ocCount > 1 ||
-              navigationRef?.current?.getRootState().routes.length > 1
-            setShowBackBtn(show)
-          })
-        },
-      })
-    })
+    fetchAvatarList()
   }, [])
 
-
-  return {
+  const value = {
     balance,
     uid,
     mobile_logo,
-    showBackBtn,
     avatarListLoading,
     avatarListVisible,
     avatarList,
@@ -155,12 +133,19 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
+  }
+
+  const sign = {
+    signOut
+  }
+
+  return {
+    value,
+    sign,
     fetchAvatarList,
     saveAvatar,
-    signOut,
     openAvatarList,
     closeAvatarList,
-    goBack
   }
 
 }

@@ -25,7 +25,7 @@ const BZHSignInPage = () => {
 
   const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
     homePage: PageName.BZHHomePage,
-    registerPage: PageName.BZHRegisterPage,
+    signUpPage: PageName.BZHSignUpPage
   })
 
   const { remember, account, password } = value
