@@ -198,6 +198,15 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: true,
       },
+      {
+        // 游戏大厅
+        tabbarItemPath: '/lotteryList',
+        vcName: 'UGYYLotteryHomeViewController',
+        rnName: PageName.BZHGameLobbyPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }
     ])
   }
 

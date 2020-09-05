@@ -88,7 +88,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
-        <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
         <Router.TabScreen name={PageName.GDBHomePage} component={UGPage(GDBHomePage)} />
         <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />

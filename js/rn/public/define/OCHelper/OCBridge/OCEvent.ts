@@ -27,7 +27,9 @@ export class OCEvent extends OCCall {
       // console.log('OCEvent rn收到oc通知：', params);
 
       if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
-        const { didFocus } = UGStore.getPageProps(getCurrentPage());
+        const currentPage = getCurrentPage()
+        console.log("------------currentPage---------", currentPage)
+        const { didFocus } = UGStore.getPageProps(currentPage);
         didFocus && didFocus();
       }
 

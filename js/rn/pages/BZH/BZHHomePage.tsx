@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -66,8 +66,14 @@ const BZHHomePage = () => {
   const recommendGameTabs =
     recommendGames?.map((item) => item?.categoryName) ?? []
 
+  console.log('---------sysConf-------', sysConf)
   if (loading) {
-    return <ProgressCircle />
+    return (
+      <>
+        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor} />
+        <ProgressCircle />
+      </>
+    )
   } else {
     return (
       <>

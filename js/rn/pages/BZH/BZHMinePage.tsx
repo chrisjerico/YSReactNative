@@ -73,7 +73,11 @@ const BZHMinePage = () => {
         style={{
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        refreshControl={
+          <RefreshControlComponent
+            onRefresh={fetchAvatarList}
+          />
+        }
       >
         <ProfileBlock
           balance={balance}
