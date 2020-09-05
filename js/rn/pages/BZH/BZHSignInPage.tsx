@@ -4,9 +4,9 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
-import FormComponent from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
@@ -25,7 +25,7 @@ const BZHSignInPage = () => {
 
   const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
     homePage: PageName.BZHHomePage,
-    signUpPage: PageName.BZHSignUpPage
+    signUpPage: PageName.BZHSignUpPage,
   })
 
   const { remember, account, password } = value
@@ -51,16 +51,16 @@ const BZHSignInPage = () => {
         <MineHeader
           title={'登录'}
           showBackBtn={true}
-          onPressLeftTool={pop}
-          showRightTool={true}
-          onPressRightTool={() => {
+          onPressBackBtn={pop}
+          showCustomerService={true}
+          onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
-          <FormComponent
+          <SignInForm
             show={true}
             placeholder={'请输入会员帐号'}
             onChangeText={onChangeAccount}
@@ -69,8 +69,10 @@ const BZHSignInPage = () => {
               type: 'font-awesome',
             }}
             defaultValue={account}
+            enableLabel={false}
           />
-          <FormComponent
+          <SignInForm
+            enableLabel={false}
             show={true}
             placeholder={'请输入密码'}
             leftIcon={{
@@ -92,26 +94,24 @@ const BZHSignInPage = () => {
             ref={slideCode}
             show={loginVCode}
             onChange={onChangeSlideCode}
-            containerStyle={{ marginBottom: scale(20) }}
           />
           <Button
             title={'立即登录'}
             disabled={!valid}
-            containerStyle={styles.button}
+            containerStyle={[
+              styles.button,
+              {
+                backgroundColor: BZHThemeColor.宝石红.themeColor,
+              },
+            ]}
+            disabledContainerStyle={styles.button}
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signIn}
           />
           <Button
             title={'快速注册'}
-            containerStyle={{
-              backgroundColor: '#ffffff',
-              borderColor: '#F0F0F0',
-              borderWidth: scale(1),
-              width: '100%',
-              aspectRatio: 8,
-              borderRadius: scale(5),
-            }}
-            titleStyle={{ color: '#EA0000', fontSize: scale(23) }}
+            containerStyle={styles.signUpButton}
+            titleStyle={{ color: 'red', fontSize: scale(23) }}
             onPress={goToRegisterPage}
           />
           <View style={styles.bottomButtonContainer}>
@@ -128,6 +128,14 @@ const BZHSignInPage = () => {
   )
 }
 
+const SignInForm = (props: FormComponentProps) => (
+  <FormComponent
+    {...props}
+    containerStyle={{ marginBottom: scale(20) }}
+    inputContainerStyle={{ borderColor: '#d9d9d9' }}
+  />
+)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -143,29 +151,28 @@ const styles = StyleSheet.create({
     paddingTop: scale(25),
     marginBottom: scaleHeight(70),
   },
-  buttonContainer: {
-    width: '100%',
-    justifyContent: 'space-between',
-    marginTop: scale(20),
-    aspectRatio: 4,
-  },
   bottomButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     paddingVertical: scale(25),
+    marginTop: scale(10),
   },
   button: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
-    marginVertical: scale(20),
+    marginTop: scale(20),
+    marginBottom: scale(25),
     aspectRatio: 8,
     borderRadius: scale(5),
   },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: scale(25),
+  signUpButton: {
+    backgroundColor: '#ffffff',
+    borderColor: '#F0F0F0',
+    borderWidth: scale(1),
+    width: '100%',
+    aspectRatio: 8,
+    borderRadius: scale(5),
   },
 })
 

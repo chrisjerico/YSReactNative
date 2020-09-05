@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 
 interface AgentRedButtonComponentProps {
   onChangeAgent: (toggle: boolean) => any;
   show: boolean;
+  containerStyle?: ViewStyle | ViewStyle[];
 }
 
 const AgentRedButtonComponent = ({
   onChangeAgent,
   show,
+  containerStyle
 }: AgentRedButtonComponentProps) => {
   const [toggle, setToggle] = useState(true)
   if (show) {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         <TouchableWithoutFeedback
           onPress={() => {
             setToggle(false)

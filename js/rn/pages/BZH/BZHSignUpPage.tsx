@@ -4,15 +4,15 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import AgentRedButtonComponent from '../../public/components/tars/AgentRedButtonComponent'
-import FormComponent from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, push, popToRoot } from '../../public/navigation/RootNavigation'
+import { pop, popToRoot, push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -21,17 +21,9 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignUpPage = () => {
-  const {
-    show,
-    ref,
-    label,
-    onChange,
-    sign,
-    valid,
-    limit,
-  } = useSignUpPage({
+  const { show, ref, label, onChange, sign, valid, limit } = useSignUpPage({
     homePage: PageName.BZHHomePage,
-    signInPage: PageName.BZHSignInPage
+    signInPage: PageName.BZHSignInPage,
   })
 
   const {
@@ -90,35 +82,30 @@ const BZHSignUpPage = () => {
         <MineHeader
           title={'注册'}
           showBackBtn={true}
-          onPressLeftTool={pop}
-          showRightTool={true}
-          onPressRightTool={() => {
+          onPressBackBtn={pop}
+          showCustomerService={true}
+          onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.whiteBlock}>
-          <View style={{ width: '100%', marginBottom: scale(20) }}>
-            <Text style={{ color: 'red' }}>
-              {'为了您的资金安全，请使用真实资料!'}
-            </Text>
-          </View>
-          <FormComponent
+          <SignUpForm
             leftIconName={'users'}
             onChangeText={onChangeRecommendGuy}
             label={recommendGuyLabel}
             placeholder={'推荐人ID'}
             show={showRecommendGuy}
           />
-          <FormComponent
+          <SignUpForm
             onChangeText={obChangeAccount}
             label={'*请使用6-15位英文或数字的组合'}
             placeholder={'帐号'}
             show={showName}
             leftIconName={'users'}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'lock'}
             onChangeText={obChangePassword}
             label={passwordLebel}
@@ -128,7 +115,7 @@ const BZHSignUpPage = () => {
             maxLength={pass_length_max}
             rightIconType={'eye'}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'lock'}
             onChangeText={onChangeConfirmPassword}
             label={confirmPasswordLabel}
@@ -137,14 +124,14 @@ const BZHSignUpPage = () => {
             show={true}
             rightIconType={'eye'}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'user'}
             onChangeText={onChaneRealName}
             label={realNameLabel}
             placeholder={'真实姓名'}
             show={showName}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'lock'}
             onChangeText={onChaneFundPassword}
             label={fundpwdLabel}
@@ -154,7 +141,7 @@ const BZHSignUpPage = () => {
             maxLength={4}
             rightIconType={'eye'}
           />
-          <FormComponent
+          <SignUpForm
             leftIcon={{
               name: 'QQ',
               type: 'antdesign',
@@ -164,7 +151,7 @@ const BZHSignUpPage = () => {
             placeholder={'QQ号'}
             show={showQQ}
           />
-          <FormComponent
+          <SignUpForm
             leftIcon={{
               name: 'wechat',
               type: 'font-awesome',
@@ -174,14 +161,14 @@ const BZHSignUpPage = () => {
             placeholder={'微信号'}
             show={showWx}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'smartphone'}
             onChangeText={onChanePhone}
             label={phoneLabel}
             placeholder={'手机号'}
             show={showPhone}
           />
-          <FormComponent
+          <SignUpForm
             leftIcon={{
               type: 'material-community',
               name: 'email-outline',
@@ -191,7 +178,7 @@ const BZHSignUpPage = () => {
             placeholder={'电子邮箱'}
             show={showEmail}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'lock'}
             onChangeText={onChangeImageCode}
             label={imageCodeLabel}
@@ -203,7 +190,7 @@ const BZHSignUpPage = () => {
             }
             maxLength={4}
           />
-          <FormComponent
+          <SignUpForm
             leftIconName={'lock'}
             onChangeText={onChaneSms}
             placeholder={'短信验证码'}
@@ -215,16 +202,22 @@ const BZHSignUpPage = () => {
             ref={slideCode}
             show={showSlideCode}
             onChange={onChangeSlideCode}
-            containerStyle={{ marginBottom: scale(20) }}
           />
           <AgentRedButtonComponent
             show={parseInt(agentRegbutton) ? true : false}
             onChangeAgent={onChangeAgent}
+            containerStyle={{ marginTop: scale(20) }}
           />
           <Button
             title={'注册'}
             disabled={!valid}
-            containerStyle={styles.button}
+            containerStyle={[
+              styles.button,
+              {
+                backgroundColor: BZHThemeColor.宝石红.themeColor,
+              },
+            ]}
+            disabledContainerStyle={styles.button}
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
@@ -234,10 +227,10 @@ const BZHSignUpPage = () => {
                 push(PageName.BZHSignInPage, {})
               }}
             >
-              <Text>{'返回登录'}</Text>
+              <Text style={{ fontWeight: '300' }}>{'返回登录'}</Text>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text>{'返回首页'}</Text>
+              <Text style={{ fontWeight: '300' }}>{'返回首页'}</Text>
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -245,6 +238,14 @@ const BZHSignUpPage = () => {
     </>
   )
 }
+
+const SignUpForm = (props: FormComponentProps) => (
+  <FormComponent
+    {...props}
+    containerStyle={{ marginBottom: scale(10) }}
+    inputContainerStyle={{ borderColor: '#d9d9d9' }}
+  />
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -269,16 +270,19 @@ const styles = StyleSheet.create({
     paddingVertical: scale(25),
   },
   button: {
-    backgroundColor: BZHThemeColor.宝石红.themeColor,
     width: '100%',
     marginVertical: scale(20),
     aspectRatio: 8,
     borderRadius: scale(5),
   },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: scale(25),
-  },
 })
 
 export default BZHSignUpPage
+
+{
+  /* <View style={{ width: '100%', marginBottom: scale(20) }}>
+            <Text style={{ color: 'red' }}>
+              {'为了您的资金安全，请使用真实资料!'}
+            </Text>
+          </View> */
+}

@@ -79,7 +79,7 @@ const BZHHomePage = () => {
             name={usr}
             balance={balance}
             onPressSignIn={() => push(PageName.BZHSignInPage)}
-            onPressSignUp={() => push(PageName.BZHRegisterPage)}
+            onPressSignUp={() => push(PageName.BZHSignUpPage)}
             onPressUser={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.我的页)
             }}

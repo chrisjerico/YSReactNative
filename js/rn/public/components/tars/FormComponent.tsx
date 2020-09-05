@@ -38,6 +38,7 @@ export interface FormComponentProps {
   rightIconContainerStyle?: ViewStyle | ViewStyle[];
   leftIconName?: string;
   leftIcon?: LeftIcon;
+  placeholderTextColor?: string;
 }
 
 interface LeftIcon {
@@ -156,8 +157,9 @@ const FormComponent = ({
   leftIconContainerStyle,
   rightIconContainerStyle,
   leftIcon,
+  placeholderTextColor = '#000000'
 }: FormComponentProps) => {
-  const [showContent, setShowContent] = useState(true)
+  const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
   const phoneNumber = useRef('')
 
@@ -209,6 +211,7 @@ const FormComponent = ({
           maxLength={maxLength}
           placeholder={placeholder}
           containerStyle={[styles.containerStyle]}
+          placeholderTextColor={placeholderTextColor}
           leftIcon={
             <LeftIcon
               leftIcon={leftIcon}
@@ -243,7 +246,7 @@ const FormComponent = ({
               }
               : onChangeText
           }
-          secureTextEntry={!showContent}
+          secureTextEntry={rightIconType == 'eye' ? !showContent : false}
           onFocus={() => {
             if (correctImageCode == '' && rightIconType == 'touchImgCaptcha') {
               fetchImgCaptcha()
@@ -263,12 +266,14 @@ const FormComponent = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 5,
+    // aspectRatio: 5,
   },
   labelText: {
     fontSize: scale(15),
     paddingTop: scale(5),
     color: 'red',
+    fontWeight: '300',
+    marginTop: scale(10)
   },
   leftIconContainerStyle: {
     marginLeft: 0,
@@ -277,7 +282,9 @@ const styles = StyleSheet.create({
     width: scale(40),
   },
   inputStyle: {
-    flex: 1,
+    fontSize: scale(19),
+    fontWeight: '300',
+    color: '#000000'
   },
   zero: {
     paddingLeft: 0,
