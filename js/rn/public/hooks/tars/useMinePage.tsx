@@ -2,13 +2,11 @@ import { useEffect, useState } from "react"
 import UGSysConfModel from "../../../redux/model/全局/UGSysConfModel"
 import UGUserModel from "../../../redux/model/全局/UGUserModel"
 import { UGStore } from "../../../redux/store/UGStore"
-import { OCHelper } from "../../define/OCHelper/OCHelper"
 import { PageName } from "../../navigation/Navigation"
-import { navigate, pop, navigationRef } from "../../navigation/RootNavigation"
+import { navigate } from "../../navigation/RootNavigation"
 import APIRouter from "../../network/APIRouter"
 import { ToastError, ToastSuccess } from "../../tools/tars"
 import useLogOut from "./useLogOut"
-import { OCEvent, OCEventType } from "../../define/OCHelper/OCBridge/OCEvent"
 
 interface DefaultUserCenterLogos {
   1: string, // 存款

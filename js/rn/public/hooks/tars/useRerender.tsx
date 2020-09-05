@@ -3,11 +3,11 @@ import { useState } from "react"
 const useRerender = () => {
   const [state, setState] = useState(false)
 
-  const renender = () => {
+  const rerender = () => {
     setState(!state)
   }
   return {
-    renender
+    rerender
   }
 }
 

@@ -6,7 +6,6 @@ import { CouponListModel } from '../../network/Model/CouponListModel'
 import { FloatADModel } from '../../network/Model/FloatADModel'
 import { HomeADModel } from '../../network/Model/HomeADModel'
 import { HomeGamesModel } from '../../network/Model/HomeGamesModel'
-import { HomeRecommendModel } from '../../network/Model/HomeRecommendModel'
 import { LotteryGameModel } from '../../network/Model/LotteryGameModel'
 import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
@@ -30,15 +29,12 @@ const routers = [
   'system_floatAds',
   'game_homeRecommend',
   'system_config', //global
-  // 'user_info', // global
 ]
 
 const useHome = () => {
 
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(true)
-  // const [userInfo, setUserInfo] = useState<UserInfoModel>()
-  // const [sysConfig, setSysConfig] = useState<SystemConfigModel>()
   const [rankList, setRankList] = useState<RankListModel>()
   const [banner, setBanner] = useState<BannerModel>()
   const [homeGame, setHomeGame] = useState<HomeGamesModel>()
@@ -51,7 +47,6 @@ const useHome = () => {
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
   const [floatAd, setFloatAd] = useState<FloatADModel>()
-  const [homeRecommend, setHomeRecommend] = useState<HomeRecommendModel>()
 
   const apis = routers.map(async (router) => {
     try {
@@ -66,6 +61,7 @@ const useHome = () => {
       !loading && setRefreshing(true)
       const response = await Promise.all(apis)
       // globals state
+      const gameLobby = response[12]?.data?.data ?? []
       const sysConf = response[13]?.data?.data as SystemConfigData ?? {} as SystemConfigData
       const {
         loginVCode,
@@ -73,7 +69,7 @@ const useHome = () => {
         adSliderTimer,
         appDownloadUrl
       } = sysConf
-      UGStore.dispatch({ type: 'merge', sysConf: { loginVCode, login_to, adSliderTimer: parseInt(adSliderTimer), appDownloadUrl } })
+      UGStore.dispatch({ type: 'merge', sysConf: { loginVCode, login_to, adSliderTimer: parseInt(adSliderTimer), appDownloadUrl }, gameLobby })
       UGStore.save()
       // local state
       response[0] && setRankList(response[0]?.data)
@@ -88,7 +84,6 @@ const useHome = () => {
       response[9] && setTurntableList(response[9]?.data)
       response[10] && setRedBag(response[10]?.data)
       response[11] && setFloatAd(response[11]?.data)
-      response[12] && setHomeRecommend(response[12]?.data)
     } catch (error) {
       console.log("--------useHome error--------", error)
     } finally {
@@ -118,7 +113,6 @@ const useHome = () => {
     turntableList,
     redBag,
     floatAd,
-    homeRecommend,
     refresh
   }
 

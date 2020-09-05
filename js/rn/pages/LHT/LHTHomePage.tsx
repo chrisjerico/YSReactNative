@@ -49,10 +49,10 @@ const LHTHomePage = () => {
   // const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
 
-  const { renender } = useRerender()
+  const { rerender } = useRerender()
   const { goTo, value, sign, refresh } = useHomePage({
-    onSuccessTryPlay: renender,
-    onSuccessSignOut: renender
+    onSuccessTryPlay: rerender,
+    onSuccessSignOut: rerender
   })
 
   const { signOut, tryPlay } = sign

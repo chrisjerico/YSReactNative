@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { Component } from 'react';
+import React, { Component, useMemo } from 'react';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import { PageName } from '../../public/navigation/Navigation';
 import { navigationRef } from '../../public/navigation/RootNavigation';
@@ -52,6 +52,7 @@ import { UpdateVersionPage } from './UpdateVersionPage';
 import WNZSignInPage from '../WNZ/WNZSignInPage';
 import WNZSignUpPage from '../WNZ/WNZSignUpPage';
 
+
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>,
@@ -89,8 +90,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
         <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
-        <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
-        <Router.TabScreen name={PageName.GDBHomePage} component={UGPage(GDBHomePage)} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
+        <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
         <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />

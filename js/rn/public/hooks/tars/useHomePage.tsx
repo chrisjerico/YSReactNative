@@ -34,7 +34,6 @@ const useHomePage = ({
     turntableList,
     redBag,
     floatAd,
-    homeRecommend,
     lotteryGame,
     lotteryNumber,
     refresh,
@@ -70,6 +69,7 @@ const useHomePage = ({
   // stores
   const userInfo: UGUserModel = UGStore.globalProps.userInfo
   const sysConf: UGSysConfModel = UGStore.globalProps.sysConf
+  const gameLobby = UGStore.globalProps.gameLobby
   // data handle
   const bannersInterval = parseInt(banner?.data?.interval)
   const banners = banner?.data?.list ?? []
@@ -86,7 +86,7 @@ const useHomePage = ({
       ?.sort((a: any, b: any) => a.sort - b.sort)
       ?.slice(0, 4) ?? []
   const homeGames = homeGame?.data?.icons ?? []
-  const recommendGames = homeRecommend?.data
+  // const recommendGames = homeRecommend?.data
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []
@@ -133,7 +133,7 @@ const useHomePage = ({
     announcements,
     navs,
     homeGames,
-    recommendGames,
+    gameLobby,
     officialGames,
     customiseGames,
     coupons,

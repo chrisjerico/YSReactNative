@@ -18,7 +18,6 @@ const useLogOut = (options: Options = {}) => {
         await APIRouter.user_logout()
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
         await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
         onSuccess && onSuccess()

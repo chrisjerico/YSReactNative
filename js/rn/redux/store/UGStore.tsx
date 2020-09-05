@@ -7,6 +7,7 @@ import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
 import SignModel from '../model/全局/SignModel';
+import { Data } from '../../public/network/Model/HomeRecommendModel';
 // 整个State的树结构
 
 export interface IGlobalState {
@@ -16,6 +17,7 @@ export interface IGlobalState {
   sign?: SignModel;
   BettingReducer?: BettingReducerProps;
   value?: any;
+  gameLobby?: Data[]; // 遊戲大廳
 }
 
 // 更新Props到全局数据
@@ -25,12 +27,14 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   if (act.type == 'reset') {
     act.sysConf && (state.sysConf = act.sysConf);
     act.userInfo && (state.userInfo = act.userInfo);
+    act.sign && (state.sign = act.sign);
+    act.gameLobby && (state.gameLobby = act.gameLobby);
     act.page && (state[act.page] = act.props);
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
     state.sign = { ...state.sign, ...act.sign };
-    // state.value = { ...state.value, ...act.value }; // 其他  example
+    act.gameLobby && (state.gameLobby = act.gameLobby);
     act.page && (state[act.page] = { ...state[act.page], ...act.props });
   } else {
     // 自定义Reducer写在这里。。。
@@ -47,12 +51,13 @@ export interface UGAction<P = {}> extends Action {
   sysConf?: UGSysConfModel;// 修改系统配置
   userInfo?: UGUserModel;// 修改用户信息
   sign?: SignModel; // 登入註冊訊息 
+  gameLobby?: Data[]; // 遊戲大廳
   // value?: any;// 其他 example
 }
 
 export class UGStore {
   // Store
-  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any };
+  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any, gameLobby: [] };
 
   // 发送通知
   private static callbacks: { page: PageName, callback: () => void }[] = [];

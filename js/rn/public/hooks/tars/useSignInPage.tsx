@@ -21,7 +21,7 @@ interface UseSignInPage {
 
 const useSignInPage = ({
   homePage,
-  signUpPage
+  signUpPage,
 }: UseSignInPage) => {
 
   // stores

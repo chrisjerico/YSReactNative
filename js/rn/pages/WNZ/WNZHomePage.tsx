@@ -45,12 +45,12 @@ const WNZHomePage = () => {
   console.disableYellowBox = true
 
   const menu = useRef(null)
-  const { renender } = useRerender()
+  const { rerender } = useRerender()
 
   const { goTo, refresh, value, sign } = useHomePage({
     onSuccessSignOut: () => {
       menu?.current?.close()
-      renender()
+      rerender()
     },
   })
 
