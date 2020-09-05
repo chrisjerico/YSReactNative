@@ -14,6 +14,7 @@ import {ANHelper} from "./ANHelper/ANHelper";
 import {MenuType} from "./ANHelper/hp/GotoDefine";
 import {NA_DATA} from "./ANHelper/hp/DataDefine";
 import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
+import {logoutAndroid} from "./ANHelper/InfoHelper";
 
 export enum PushRightMenuFrom {
   首頁 = '1',
@@ -77,20 +78,7 @@ export default class PushHelper {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
         break;
       case "android":
-        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LOGIN_INFO })
-        let loginInfo = JSON.parse(result);
-
-        //保留 account, pwd, isRemember，下载登录的时候使用
-        await ANHelper.callAsync(CMD.SAVE_DATA,
-          {
-            key: NA_DATA.LOGIN_INFO,
-            account: loginInfo?.account,
-            pwd: loginInfo?.pwd,
-            isRemember: loginInfo?.isRemember,
-          });
-
-        await ANHelper.callAsync(CMD.SAVE_DATA,
-          { key: NA_DATA.USER_INFO, });
+        await logoutAndroid();
         break;
     }
     Toast('退出成功');

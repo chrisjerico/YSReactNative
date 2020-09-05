@@ -3,6 +3,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 import { ToastStatus } from '../../tools/tars'
+import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
 
 interface Options {
   onSuccess?: () => any;
@@ -13,11 +14,17 @@ const useLogOut = (options: Options = {}) => {
   const { onSuccess, onError } = options
   const requestLogOut = async () => {
     try {
-      if (Platform.OS == 'ios') {
         ToastStatus('正在退出...')
-        await APIRouter.user_logout()
-        await OCHelper.call('UGUserModel.setCurrentUser:', [])
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
+        switch (Platform.OS) {
+          case 'ios':
+            await APIRouter.user_logout()
+            await OCHelper.call('UGUserModel.setCurrentUser:', [])
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
+            break;
+          case 'android':
+            await logoutAndroid()
+            break;
+        }
         // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
