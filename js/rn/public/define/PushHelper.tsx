@@ -34,8 +34,15 @@ export default class PushHelper {
     // const dataModel = data?.map((item: any) => {
     //   return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
     // })
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, {popup: data})
+        break;
+    }
+
   }
   //
   static pushSecond() {
@@ -151,7 +158,19 @@ export default class PushHelper {
   }
   // 去彩票大廳
   static pushLotteryHome() {
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+          {
+            seriesId: '7',
+            subId: MenuType.GCDT,
+          })
+        break;
+    }
+
   }
 
   // 去彩票
@@ -191,8 +210,15 @@ export default class PushHelper {
     }
   }
   static pushNoticePopUp(notice: string) {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NOTICE, {rnString: notice})
+        break;
+    }
+
   }
   static openWebView(url: string) {
     switch (Platform.OS) {

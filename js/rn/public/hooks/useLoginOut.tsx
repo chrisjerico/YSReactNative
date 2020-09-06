@@ -16,6 +16,7 @@ const useLoginOut = (pageName: PageName) => {
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' });
 
       await APIRouter.user_logout()
+
       switch (Platform.OS) {
         case 'ios':
           await OCHelper.call('UGUserModel.setCurrentUser:', [])
@@ -25,17 +26,18 @@ const useLoginOut = (pageName: PageName) => {
       }
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
-      console.log("---------------登出成功---------------")
-      navigate(pageName, {})
 
       hideLoading()
 
-      //安卓放这 navigate 以后执行
+      //安卓放这里执行
       switch (Platform.OS) {
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT);
           break;
       }
+
+      console.log("---------------登出成功---------------")
+      navigate(pageName, {})
 
     } catch (error) {
       hideLoading()

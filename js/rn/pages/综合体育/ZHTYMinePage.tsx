@@ -39,7 +39,7 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
         });
         break;
       case 'android':
-        ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS })
+        ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
           .then((data) => {
             let dataArray = JSON.parse(data)
             this.setProps({ dataArray: dataArray });
