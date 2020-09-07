@@ -29,7 +29,6 @@ const useLogOut = (options: Options = {}) => {
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
         onSuccess && onSuccess()
-      }
     } catch (error) {
       onError && onError(error)
     }
