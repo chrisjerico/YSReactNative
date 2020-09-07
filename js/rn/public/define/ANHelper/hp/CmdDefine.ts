@@ -6,6 +6,7 @@
  */
 export enum CMD {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
+  OPEN_RIGHT_MENU = 'OPEN_RIGHT_MENU', //打开右侧界面
   LAUNCH_GO = 'LAUNCH_GO', //启动页功能
   OPEN_WEB = 'OPEN_WEB', //打开web
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面

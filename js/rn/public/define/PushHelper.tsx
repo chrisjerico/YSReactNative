@@ -15,6 +15,7 @@ import {MenuType} from "./ANHelper/hp/GotoDefine";
 import {NA_DATA} from "./ANHelper/hp/DataDefine";
 import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
 import {logoutAndroid} from "./ANHelper/InfoHelper";
+import {ugLog} from "../tools/UgLog";
 
 export enum PushRightMenuFrom {
   首頁 = '1',
@@ -51,8 +52,15 @@ export default class PushHelper {
   }
   // 右側選單
   static pushRightMenu(from: PushRightMenuFrom) {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_RIGHT_MENU)
+        break;
+    }
+
   }
   // 輪盤
   static async pushWheel(turntableList: TurntableListModel) {
@@ -241,6 +249,8 @@ export default class PushHelper {
   }
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
+    ugLog('pushUserCenterType code=', code)
+
     switch (Platform.OS) {
       case 'ios':
         switch (code) {
@@ -443,8 +453,8 @@ export default class PushHelper {
 
         break;
       case 'android':
-        switch (code) {
-          case UGUserCenterType.存款: {
+        switch (code.toString()) {
+          case UGUserCenterType.存款.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -452,7 +462,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.每日签到: {
+          case UGUserCenterType.每日签到.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -460,7 +470,7 @@ export default class PushHelper {
               })
           }
             break
-          case UGUserCenterType.取款: {
+          case UGUserCenterType.取款.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -468,7 +478,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.银行卡管理: {
+          case UGUserCenterType.银行卡管理.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -476,7 +486,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.利息宝: {
+          case UGUserCenterType.利息宝.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -484,14 +494,14 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.推荐收益: {
+          case UGUserCenterType.推荐收益.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
                 subId: MenuType.SYTJ,
               })
           }
-          case UGUserCenterType.彩票注单记录: {
+          case UGUserCenterType.彩票注单记录.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -499,7 +509,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.其他注单记录: {
+          case UGUserCenterType.其他注单记录.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -508,7 +518,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.额度转换: {
+          case UGUserCenterType.额度转换.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -516,7 +526,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.站内信: {
+          case UGUserCenterType.站内信.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -524,7 +534,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.安全中心: {
+          case UGUserCenterType.安全中心.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -532,7 +542,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.任务中心: {
+          case UGUserCenterType.任务中心.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -540,7 +550,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.个人信息: {
+          case UGUserCenterType.个人信息.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -548,7 +558,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.建议反馈: {
+          case UGUserCenterType.建议反馈.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -556,7 +566,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.在线客服: {
+          case UGUserCenterType.在线客服.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -564,7 +574,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.活动彩金: {
+          case UGUserCenterType.活动彩金.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -572,7 +582,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.长龙助手: {
+          case UGUserCenterType.长龙助手.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -580,7 +590,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.全民竞猜: {
+          case UGUserCenterType.全民竞猜.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -588,11 +598,11 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.开奖走势: {
+          case UGUserCenterType.开奖走势.toString(): {
             Toast('敬请期待')
             break;
           }
-          case UGUserCenterType.QQ客服: {
+          case UGUserCenterType.QQ客服.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -600,7 +610,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.资金明细: {
+          case UGUserCenterType.资金明细.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -608,7 +618,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.六合彩: {
+          case UGUserCenterType.六合彩.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -616,7 +626,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.聊天室: {
+          case UGUserCenterType.聊天室.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -624,7 +634,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.游戏大厅: {
+          case UGUserCenterType.游戏大厅.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
@@ -632,7 +642,7 @@ export default class PushHelper {
               })
             break;
           }
-          case UGUserCenterType.我的页: {
+          case UGUserCenterType.我的页.toString(): {
             ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
               {
                 seriesId: '7',
