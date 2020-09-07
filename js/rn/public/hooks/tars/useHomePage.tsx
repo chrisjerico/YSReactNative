@@ -25,7 +25,6 @@ const useHomePage = ({
     loading,
     refreshing,
     rankList,
-    banner,
     homeGame,
     notice,
     onlineNum,
@@ -70,9 +69,10 @@ const useHomePage = ({
   const userInfo: UGUserModel = UGStore.globalProps.userInfo
   const sysConf: UGSysConfModel = UGStore.globalProps.sysConf
   const gameLobby = UGStore.globalProps.gameLobby
+  const banner = UGStore.globalProps.banner
   // data handle
-  const bannersInterval = parseInt(banner?.data?.interval)
-  const banners = banner?.data?.list ?? []
+  const bannersInterval = parseInt(banner?.interval)
+  const banners = banner?.list ?? []
   const notices = notice?.data?.scroll ?? []
   const announcements =
     notice?.data?.popup?.map((item: any) => {

@@ -56,32 +56,32 @@ const config = {
     },
     {
       title: '真人视讯',
-      onPress: ({ bannersInterval, banners, gameLobby }) => {
-        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '真人视讯' })
+      onPress: () => {
+        navigate(PageName.WNZGameLobbyPage, { title: '真人视讯' })
       },
     },
     {
       title: '电子游艺',
-      onPress: ({ bannersInterval, banners, gameLobby }) => {
-        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '电子游艺' })
+      onPress: () => {
+        navigate(PageName.WNZGameLobbyPage, { title: '电子游艺' })
       },
     },
     {
       title: '捕鱼达人',
-      onPress: ({ bannersInterval, banners, gameLobby }) => {
-        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '捕鱼达人' })
+      onPress: () => {
+        navigate(PageName.WNZGameLobbyPage, { title: '捕鱼达人' })
       },
     },
     {
       title: '体育游戏',
-      onPress: ({ bannersInterval, banners, gameLobby }) => {
-        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '体育游戏' })
+      onPress: () => {
+        navigate(PageName.WNZGameLobbyPage, { title: '体育游戏' })
       },
     },
     {
       title: '棋牌游戏',
-      onPress: ({ bannersInterval, banners, gameLobby }) => {
-        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '棋牌游戏' })
+      onPress: () => {
+        navigate(PageName.WNZGameLobbyPage, { title: '棋牌游戏' })
       },
     },
     {
@@ -94,7 +94,7 @@ const config = {
     },
     {
       title: '开奖结果',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖走势) },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖网) },
     },
     {
       title: '长龙排行',

@@ -10,7 +10,7 @@ export interface List {
     realSupportTrial: number;
 }
 
-export interface Data {
+export interface Banner {
     list: List[];
     interval: string;
 }
@@ -18,6 +18,6 @@ export interface Data {
 export interface BannerModel {
     code: number;
     msg: string;
-    data: Data;
+    data: Banner;
 }
 

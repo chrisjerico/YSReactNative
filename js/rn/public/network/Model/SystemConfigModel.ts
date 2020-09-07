@@ -1,7 +1,7 @@
 export interface SystemConfigModel {
   code: number;
   msg: string;
-  data?: SystemConfigData;
+  data?: SystemConfig;
   info: Info;
 }
 
@@ -56,7 +56,7 @@ export interface UserCenter {
   status: string;
 }
 
-export interface SystemConfigData {
+export interface SystemConfig {
   activeReturnCoinRatio: number;
   activeReturnCoinStatus: boolean;
   adSliderTimer: string;

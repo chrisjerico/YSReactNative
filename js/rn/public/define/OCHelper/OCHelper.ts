@@ -53,7 +53,7 @@ export class OCHelper extends OCEvent {
       httpClient.defaults.baseURL = host
       AppDefine.siteId = siteId;
       // net
-      const apis = ['user_info', 'system_config', 'game_homeRecommend'].map(async (router) => {
+      const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners'].map(async (router) => {
         try {
           return await APIRouter[router]()
         } catch (error) {
@@ -68,7 +68,8 @@ export class OCHelper extends OCEvent {
       const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
       const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl, userCenterItems })
       const gameLobby = net_response[2]?.data?.data ?? []
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby });
+      const banner = net_response[3]?.data?.data ?? {}
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner });
       UGStore.save();
       // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
       OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {

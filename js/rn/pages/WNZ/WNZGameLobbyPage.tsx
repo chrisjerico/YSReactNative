@@ -9,11 +9,17 @@ import { scale } from '../../public/tools/Scale'
 import MineHeader from '../../public/views/tars/MineHeader'
 import { pop } from '../../public/navigation/RootNavigation'
 import GameButton from '../../public/views/tars/GameButton'
+import { UGStore } from '../../redux/store/UGStore'
 
 const WNZGameLobbyPage = ({ route }) => {
-  const { bannersInterval, banners, gameLobby, title } = route?.params ?? {}
+  const { title } = route?.params ?? {}
 
+  const gameLobby = UGStore.globalProps.gameLobby
+  const banner = UGStore.globalProps.banner
+  const bannersInterval = parseInt(banner?.interval)
+  const banners = banner?.list ?? []
   const games = gameLobby?.find((ele: any) => title.includes(ele?.categoryName))?.games
+
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>

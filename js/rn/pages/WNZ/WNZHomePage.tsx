@@ -460,7 +460,7 @@ const WNZHomePage = () => {
                     signOut()
                   } else {
                     menu?.current?.close()
-                    onPress && onPress({ bannersInterval, banners, gameLobby })
+                    onPress && onPress()
                   }
                 }}
               />

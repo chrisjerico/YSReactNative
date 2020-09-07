@@ -2,22 +2,25 @@ import { AsyncStorage } from 'react-native';
 import { Action, Unsubscribe } from 'redux';
 import { UGBasePageProps } from '../../pages/base/UGPage';
 import { PageName } from '../../public/navigation/Navigation';
+import { Banner } from '../../public/network/Model/BannerModel';
+import { HomeRecommend } from '../../public/network/Model/HomeRecommendModel';
+import UGSignModel from '../model/全局/UGSignModel';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
-import SignModel from '../model/全局/SignModel';
-import { Data } from '../../public/network/Model/HomeRecommendModel';
+
 // 整个State的树结构
 
 export interface IGlobalState {
   // 纯数据
   userInfo?: UGUserModel;
   sysConf?: UGSysConfModel;
-  sign?: SignModel;
+  sign?: UGSignModel;
   BettingReducer?: BettingReducerProps;
-  value?: any;
-  gameLobby?: Data[]; // 遊戲大廳
+  gameLobby?: HomeRecommend[]; // 遊戲大廳
+  banner?: Banner;
+  // value?: any;
 }
 
 // 更新Props到全局数据
@@ -29,12 +32,15 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.userInfo && (state.userInfo = act.userInfo);
     act.sign && (state.sign = act.sign);
     act.gameLobby && (state.gameLobby = act.gameLobby);
+    act.banner && (state.banner = act.banner);
     act.page && (state[act.page] = act.props);
+
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
     state.sign = { ...state.sign, ...act.sign };
     act.gameLobby && (state.gameLobby = act.gameLobby);
+    act.banner && (state.banner = act.banner);
     act.page && (state[act.page] = { ...state[act.page], ...act.props });
   } else {
     // 自定义Reducer写在这里。。。
@@ -50,8 +56,9 @@ export interface UGAction<P = {}> extends Action {
   props?: P;      // 配合page使用
   sysConf?: UGSysConfModel;// 修改系统配置
   userInfo?: UGUserModel;// 修改用户信息
-  sign?: SignModel; // 登入註冊訊息 
-  gameLobby?: Data[]; // 遊戲大廳
+  sign?: UGSignModel; // 登入註冊訊息 
+  gameLobby?: HomeRecommend[]; // 遊戲大廳
+  banner?: Banner;
   // value?: any;// 其他 example
 }
 
