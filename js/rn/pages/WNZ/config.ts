@@ -1,10 +1,13 @@
 import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
+import { push, navigate } from '../../public/navigation/RootNavigation'
 import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../redux/store/UGStore'
 
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
+
+const gameLobby = UGStore.globalProps.gameLobby
 
 const config = {
   defaultUserCenterLogos: {
@@ -45,7 +48,7 @@ const config = {
     },
     {
       title: '彩票游戏',
-      onPress: () => { PushHelper.pushLotteryHome() },
+      onPress: () => { PushHelper.pushLotteryLobby() },
     },
     {
       title: 'AG视讯',
@@ -53,27 +56,37 @@ const config = {
     },
     {
       title: '真人视讯',
-      onPress: () => { },
+      onPress: ({ bannersInterval, banners, gameLobby }) => {
+        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '真人视讯' })
+      },
     },
     {
       title: '电子游艺',
-      onPress: () => { },
+      onPress: ({ bannersInterval, banners, gameLobby }) => {
+        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '电子游艺' })
+      },
     },
     {
       title: '捕鱼达人',
-      onPress: () => { },
+      onPress: ({ bannersInterval, banners, gameLobby }) => {
+        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '捕鱼达人' })
+      },
     },
     {
       title: '体育游戏',
-      onPress: () => { },
+      onPress: ({ bannersInterval, banners, gameLobby }) => {
+        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '体育游戏' })
+      },
     },
     {
       title: '棋牌游戏',
-      onPress: () => { },
+      onPress: ({ bannersInterval, banners, gameLobby }) => {
+        navigate(PageName.WNZGameLobbyPage, { bannersInterval, banners, gameLobby, title: '棋牌游戏' })
+      },
     },
     {
       title: '更多彩种',
-      onPress: () => { PushHelper.pushLotteryHome() },
+      onPress: () => { PushHelper.pushLotteryLobby() },
     },
     {
       title: '投注记录',

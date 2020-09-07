@@ -15,6 +15,7 @@ interface BannerBlockProps {
   visible?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
   badgeStyle?: ViewStyle | ViewStyle[];
+  showsPagination?: boolean;
 }
 
 const BannerBlock = ({
@@ -25,14 +26,15 @@ const BannerBlock = ({
   autoplayTimeout,
   visible = true,
   containerStyle,
-  badgeStyle
+  badgeStyle,
+  showsPagination = true
 }: BannerBlockProps) => {
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <UGSwiper
           autoplayTimeout={autoplayTimeout}
-          showsPagination={true}
+          showsPagination={showsPagination}
           paginationStyle={{
             bottom: 10,
             left: null,

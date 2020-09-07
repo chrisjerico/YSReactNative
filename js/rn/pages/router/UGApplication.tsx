@@ -53,6 +53,7 @@ import WNZSignInPage from '../WNZ/WNZSignInPage';
 import WNZSignUpPage from '../WNZ/WNZSignUpPage';
 import LHTSignInPage from '../LHT/LHTSignInPage';
 import LHTSignUpPage from '../LHT/LHTSignUpPage';
+import WNZGameLobbyPage from '../WNZ/WNZGameLobbyPage';
 
 
 // TabbarController
@@ -128,6 +129,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZGameLobbyPage} component={WNZGameLobbyPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />

@@ -77,6 +77,7 @@ const WNZHomePage = () => {
     roulette,
     officialGames,
     customiseGames,
+    gameLobby
   } = value
 
   const { signOut } = sign
@@ -459,7 +460,7 @@ const WNZHomePage = () => {
                     signOut()
                   } else {
                     menu?.current?.close()
-                    onPress && onPress()
+                    onPress && onPress({ bannersInterval, banners, gameLobby })
                   }
                 }}
               />
