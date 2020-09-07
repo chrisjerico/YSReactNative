@@ -131,14 +131,21 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     fetchAvatarList().then(() => {
       setProps && setProps({
         didFocus: async () => {
-          OCHelper.call(
-            'UGNavigationController.current.viewControllers.count'
-          ).then((ocCount) => {
-            const show =
-              ocCount > 1 ||
-              navigationRef?.current?.getRootState().routes.length > 1
-            setShowBackBtn(show)
-          })
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call(
+                'UGNavigationController.current.viewControllers.count'
+              ).then((ocCount) => {
+                const show =
+                  ocCount > 1 ||
+                  navigationRef?.current?.getRootState().routes.length > 1
+                setShowBackBtn(show)
+              })
+              break;
+            case 'android':
+
+              break;
+          }
         },
       })
     })

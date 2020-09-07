@@ -14,6 +14,7 @@ import {ANHelper} from "./ANHelper/ANHelper";
 import {MenuType} from "./ANHelper/hp/GotoDefine";
 import {NA_DATA} from "./ANHelper/hp/DataDefine";
 import {CMD, OPEN_PAGE_PMS} from "./ANHelper/hp/CmdDefine";
+import {logoutAndroid} from "./ANHelper/InfoHelper";
 
 export enum PushRightMenuFrom {
   首頁 = '1',
@@ -33,8 +34,15 @@ export default class PushHelper {
     // const dataModel = data?.map((item: any) => {
     //   return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
     // })
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, {popup: data})
+        break;
+    }
+
   }
   //
   static pushSecond() {
@@ -77,20 +85,7 @@ export default class PushHelper {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
         break;
       case "android":
-        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LOGIN_INFO })
-        let loginInfo = JSON.parse(result);
-
-        //保留 account, pwd, isRemember，下载登录的时候使用
-        await ANHelper.callAsync(CMD.SAVE_DATA,
-          {
-            key: NA_DATA.LOGIN_INFO,
-            account: loginInfo?.account,
-            pwd: loginInfo?.pwd,
-            isRemember: loginInfo?.isRemember,
-          });
-
-        await ANHelper.callAsync(CMD.SAVE_DATA,
-          { key: NA_DATA.USER_INFO, });
+        await logoutAndroid();
         break;
     }
     Toast('退出成功');
@@ -163,7 +158,19 @@ export default class PushHelper {
   }
   // 去彩票大廳
   static pushLotteryHome() {
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+          {
+            seriesId: '7',
+            subId: MenuType.GCDT,
+          })
+        break;
+    }
+
   }
 
   // 去彩票
@@ -203,8 +210,15 @@ export default class PushHelper {
     }
   }
   static pushNoticePopUp(notice: string) {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NOTICE, {rnString: notice})
+        break;
+    }
+
   }
   static openWebView(url: string) {
     switch (Platform.OS) {

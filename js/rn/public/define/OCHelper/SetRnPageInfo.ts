@@ -395,11 +395,13 @@ export function setRnPageInfo() {
   // }
 
   RnPageModel.pages = pages;
-  // if (Platform.OS == 'ios') {
-  OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
 
-  // } else if (Platform.OS == 'android') {
-  //
-  //
-  // }
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
+      break;
+    case 'android':
+
+      break;
+  }
 }
