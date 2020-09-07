@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import {
-  OCEvent,
-  OCEventType
-} from '../../public/define/OCHelper/OCBridge/OCEvent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import useRerender from '../../public/hooks/tars/useRerender'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import {
-  getActivityPosition,
-  useHtml5Image
-} from '../../public/tools/tars'
+import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -31,14 +25,12 @@ import {
   LotteryType,
   UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import TabComponent from './components/TabComponent'
 import config from './config'
 import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
-import useRerender from '../../public/hooks/tars/useRerender'
 
 const LHTHomePage = () => {
   // yellowBox
@@ -52,7 +44,7 @@ const LHTHomePage = () => {
   const { rerender } = useRerender()
   const { goTo, value, sign, refresh } = useHomePage({
     onSuccessTryPlay: rerender,
-    onSuccessSignOut: rerender
+    onSuccessSignOut: rerender,
   })
 
   const { signOut, tryPlay } = sign
@@ -90,20 +82,6 @@ const LHTHomePage = () => {
     appDownloadUrl,
   } = sysConf
 
-  // useEffect(() => {
-  //   OCEvent.addEvent(OCEventType.UGNotificationLoginComplete, async () => {
-  //     try {
-  //       await updateUserInfo()
-  //       renender()
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   })
-  //   return () => {
-  //     OCEvent.removeEvents(OCEventType.UGNotificationLoginComplete)
-  //   }
-  // }, [])
-
   const plusLotterys = [
     ...lotterys.slice(0, 6),
     {
@@ -112,7 +90,6 @@ const LHTHomePage = () => {
     ...lotterys.slice(6),
   ]
 
-  console.log("--------渲染LHTHOME-------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -126,8 +103,8 @@ const LHTHomePage = () => {
             leftLogo={mobile_logo}
             rightLogo={getHtml5Image(14, 'top_yhhd')}
             onPressSignOut={signOut}
-            onPressSignIn={PushHelper.pushLogin}
-            onPressSignUp={PushHelper.pushRegister}
+            onPressSignIn={() => push(PageName.LHTSignInPage)}
+            onPressSignUp={() => push(PageName.LHTSignUpPage)}
             onPressTryPlay={tryPlay}
             onPressLogo={goToJDPromotionListPage}
           />
@@ -459,7 +436,7 @@ const LHTHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: LHThemeColor.六合厅.homeContentSubColor,
   },
   contentContainer: {
     paddingHorizontal: scale(10),
@@ -467,24 +444,6 @@ const styles = StyleSheet.create({
   },
   subComponent: {
     marginBottom: scale(10),
-  },
-  couponBanner: {
-    width: '100%',
-    aspectRatio: 2,
-  },
-  redEnvelope: {
-    width: scale(200),
-    aspectRatio: 1,
-    position: 'absolute',
-    top: scale(500),
-    right: 0,
-  },
-  turntables: {
-    width: scale(200),
-    aspectRatio: 1,
-    position: 'absolute',
-    top: scale(300),
-    right: 0,
   },
   rankBlockIconContainerStyle: {
     paddingLeft: 0,
@@ -494,16 +453,6 @@ const styles = StyleSheet.create({
 })
 
 export default LHTHomePage
-
-// {
-//   /* <DowloadApp
-//     onPressDowload={() => {
-//       PushHelper.openWebView(
-//         'https://fhapp168h.com/ad/index.php?app_id=12?islogin=false'
-//       )
-//     }}
-//   /> */
-// }
 
 // {
 //   /* <HeadlineBlock

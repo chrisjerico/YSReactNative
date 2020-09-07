@@ -7,7 +7,7 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     skitString: '威尼斯',
     tabBarBgColor: '#ffffff',
     tabNoSelectColor: '#9D9D9D',
-    homeContentSubColor: '#D0D0D0', // 額度轉換Tab
+    homeContentSubColor: '#f2f2f2', // 額度轉換Tab
     get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
     get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
     get tabSelectedColor() { return this.themeColor },
@@ -27,7 +27,7 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
-    get yubaoBgColor() { return this.homeContentSubColor }
+    yubaoBgColor: "#8E8E8E"
   },
   // 威尼斯: {
   //   skitType: '威尼斯',

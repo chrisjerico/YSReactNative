@@ -230,6 +230,14 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.LHTSignInPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
     ])
   }
 

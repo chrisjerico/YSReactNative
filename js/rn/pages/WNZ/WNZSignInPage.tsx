@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import FormComponent, {
+  FormComponentProps,
+} from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -8,11 +10,10 @@ import { popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
-import CheckBox from '../../public/views/tars/CheckBox'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
-import Form from './views/Form'
 import config from './config'
 import Menu from './views/Menu'
 import SignInHeader from './views/SignInHeader'
@@ -20,28 +21,23 @@ import SignInHeader from './views/SignInHeader'
 const WNZSignInPage = () => {
   const menu = useRef(null)
 
-  const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
+  const {
+    sign,
+    value,
+    onChange,
+    goTo,
+    show,
+    slideCodeRef,
+    valid,
+  } = useSignInPage({
     homePage: PageName.WNZHomePage,
     signUpPage: PageName.WNZSignUpPage,
   })
 
-  const { remember, account, password } = value
-
-  const {
-    onChangePassword,
-    onChangeAccount,
-    onChangeRemember,
-    onChangeSlideCode,
-  } = onChange
-
   const { goToRegisterPage } = goTo
 
-  const { slideCode } = ref
-
-  const { loginVCode } = show
-
   const { signIn, tryPlay } = sign
-  console.log('------valid------', valid)
+
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -53,54 +49,15 @@ const WNZSignInPage = () => {
           onPressRegister={goToRegisterPage}
         />
       </SafeAreaHeader>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.container}>
-          <Form
-            show={true}
-            leftIconContainerStyle={{ width: scale(75) }}
-            containerStyle={{ marginTop: scale(43), aspectRatio: null }}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            placeholder={'请输入用户名'}
-            onChangeText={onChangeAccount}
-            showRightIcon={false}
-            showLeftIcon={true}
-            enableLabel={false}
-            defaultValue={account}
-            title={'帐号'}
-          />
-          <Form
-            show={true}
-            leftIconContainerStyle={{ width: scale(75) }}
-            containerStyle={{ marginTop: scale(8), aspectRatio: null }}
-            inputContainerStyle={styles.inputContainerStyle}
-            inputStyle={styles.inputStyle}
-            placeholder={'请输入密码'}
-            onChangeText={onChangePassword}
-            showRightIcon={false}
-            showLeftIcon={true}
-            enableLabel={false}
-            defaultValue={password}
-            title={'密码'}
-          />
-          <View style={styles.checkBoxBlock}>
-            <CheckBox
-              onPress={onChangeRemember}
-              label={'记住帐号密码'}
-              labelTextStyle={{ color: '#888888' }}
-              defaultValue={remember}
-            />
-            <Text style={{ color: '#888888' }}>{'忘记密码'}</Text>
-          </View>
-          <ReloadSlidingVerification
-            ref={slideCode}
-            show={loginVCode}
-            onChange={onChangeSlideCode}
-            containerStyle={{
-              marginBottom: scale(20),
-              backgroundColor: '#f2f2f2',
-            }}
-            backgroundColor={'#f2f2f2'}
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.formContainer}>
+          <SignInFormList
+            slideCodeRef={slideCodeRef}
+            show={show}
+            onChange={onChange}
+            value={value}
+            SignInForm={SignInForm}
+            reloadSlidingVerificationColor={'#f2f2f2'}
           />
           <Button
             disabled={!valid}
@@ -165,10 +122,26 @@ const WNZSignInPage = () => {
   )
 }
 
+const SignInForm = (props: FormComponentProps) => (
+  <FormComponent
+    {...props}
+    containerStyle={{ marginTop: scale(43), aspectRatio: null }}
+    inputContainerStyle={styles.inputContainerStyle}
+    leftIconContainerStyle={styles.leftIconContainerStyle}
+    rightIconContainerStyle={{ marginRight: scale(10) }}
+    renderLeftIcon={() => (
+      <Text style={styles.inputText}>{props?.leftIconTitle}</Text>
+    )}
+  />
+)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: WNZThemeColor.威尼斯.homeContentSubColor,
+  },
+  formContainer: {
+    flex: 1,
     paddingHorizontal: scale(20),
   },
   inputContainerStyle: {
@@ -179,29 +152,13 @@ const styles = StyleSheet.create({
     paddingLeft: scale(20),
     height: scale(63),
   },
-  inputStyle: {
-    paddingLeft: scale(10),
-  },
-  inputTitleContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: scale(60),
-  },
-  inputText: { fontSize: scale(25) },
+  inputText: { fontSize: scale(23) },
   loginButton: {
     width: '100%',
     marginTop: scale(32),
     aspectRatio: 10,
     borderRadius: scale(5),
     marginBottom: scale(38),
-  },
-  checkBoxBlock: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: scale(20),
-    aspectRatio: 6,
   },
   whiteButton: {
     width: '100%',
@@ -217,5 +174,12 @@ const styles = StyleSheet.create({
     fontSize: scale(25),
     fontWeight: '300',
   },
+  leftIconContainerStyle: {
+    width: scale(75),
+    marginLeft: 0,
+    marginRight: 0,
+    alignItems: 'flex-start',
+  },
 })
+
 export default WNZSignInPage

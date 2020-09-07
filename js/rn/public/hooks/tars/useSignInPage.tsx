@@ -146,9 +146,9 @@ const useSignInPage = ({
     goToRegisterPage,
   }
 
-  const ref = {
-    slideCode: slideCodeRef
-  }
+  // const ref = {
+  //   slideCode: slideCodeRef
+  // }
 
   const show = {
     loginVCode
@@ -160,10 +160,11 @@ const useSignInPage = ({
   }
 
   return {
+    slideCodeRef,
     goTo,
     onChange,
     value,
-    ref,
+    // ref,
     valid,
     show,
     sign: _sign

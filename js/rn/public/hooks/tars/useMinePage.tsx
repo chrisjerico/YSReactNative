@@ -110,6 +110,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   // effects
 
   useEffect(() => {
+    console.log("----------a--------")
     fetchAvatarList()
   }, [])
 

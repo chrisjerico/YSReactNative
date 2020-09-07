@@ -218,15 +218,7 @@ const WNZMinePage = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f2f2f2',
-  },
-  imageBackgroundContainer: {
-    width: '100%',
-    aspectRatio: 500 / 200,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
+  }
 })
 
 export default WNZMinePage

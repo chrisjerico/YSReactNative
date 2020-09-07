@@ -18,11 +18,12 @@ const BZHGameLobbyPage = ({ route }) => {
 
   return (
     <>
+      <GameLobbyPageHeader />
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
       >
-        <GameLobbyPageHeader />
         <GameLobbyTabComponent
           containerStyle={{
             borderBottomRightRadius: scale(10),

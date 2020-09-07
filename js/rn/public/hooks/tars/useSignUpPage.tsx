@@ -261,10 +261,6 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     wechatLabel,
   }
 
-  const ref = {
-    slideCode: slideCodeRef
-  }
-
   const goTo = {
     goToHomePage,
     goToSignInPage
@@ -282,8 +278,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
 
   return {
+    slideCodeRef,
     show,
-    ref,
     valid,
     label,
     onChange,

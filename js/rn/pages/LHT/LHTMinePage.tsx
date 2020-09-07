@@ -139,11 +139,7 @@ const styles = StyleSheet.create({
     marginVertical: scale(25),
     height: scale(70),
     borderRadius: scale(5),
-  },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: scale(25),
-  },
+  }
 })
 
 export default LHTMinePage

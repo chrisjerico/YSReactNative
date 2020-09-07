@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, RefreshControl, ScrollView, StyleSheet, Text } from 'react-native'
+import React from 'react'
+import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -26,16 +26,9 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
-// import useRerender from '../../public/hooks/tars/useRerender'
-// import { useIsFocused } from '@react-navigation/native'
-
-// const sleep = async (ms = 0) => {
-//   return new Promise(r => setTimeout(r, ms));
-// }
 
 const BZHHomePage = () => {
 
-  // const { rerender } = useRerender()
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
   const {
@@ -69,33 +62,6 @@ const BZHHomePage = () => {
     adSliderTimer,
   } = sysConf
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
-
-  // navigation.addListener('focus', () => {
-  //   setState(!state)
-  //   alert("----------CC--------")
-  //   // do something
-  // });
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     setState(!state)
-  //     alert("----------CC--------")
-  //     // do something
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
-
-  // const isFocused = useIsFocused()
-
-  // useEffect(() => {
-  //   sleep(2000).then(() => {
-  //     rerender()
-
-  //   })
-  //   // alert("----------a-----------")
-  //   //Update the state you want to be updated
-  // }, [isFocused])
-
 
   if (loading) {
     return (

@@ -38,6 +38,7 @@ export interface FormComponentProps {
   rightIconContainerStyle?: ViewStyle | ViewStyle[];
   leftIconName?: string;
   leftIcon?: LeftIcon;
+  leftIconTitle?: string;
   placeholderTextColor?: string;
 }
 
@@ -114,7 +115,7 @@ const RightIcon = ({
   }
 }
 
-const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName }) => {
+const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName, leftIconTitle }) => {
   if (showLeftIcon) {
     if (renderLeftIcon) {
       return renderLeftIcon()
@@ -157,7 +158,8 @@ const FormComponent = ({
   leftIconContainerStyle,
   rightIconContainerStyle,
   leftIcon,
-  placeholderTextColor = '#000000'
+  placeholderTextColor = '#000000',
+  leftIconTitle
 }: FormComponentProps) => {
   const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
@@ -216,6 +218,7 @@ const FormComponent = ({
             <LeftIcon
               leftIcon={leftIcon}
               leftIconName={leftIconName}
+              leftIconTitle={leftIconTitle}
               renderLeftIcon={renderLeftIcon}
               showLeftIcon={showLeftIcon}
             />

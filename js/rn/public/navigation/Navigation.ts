@@ -18,6 +18,8 @@ export enum PageName {
   ZHTYMinePage = 'ZHTYMinePage',
   LHTHomePage = 'LHTHomePage',
   LHTMinePage = 'LHTMinePage',
+  LHTSignInPage = "LHTSignInPage",
+  LHTSignUpPage = "LHTSignUpPage",
   ZLHomePage = 'ZLHomePage', //尊龙主页
   ZLLoginPage = 'ZLLoginPage',//尊龙登录
   ZLMinePage = 'ZLMinePage',//尊龙我的
@@ -47,7 +49,7 @@ export enum PageName {
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
   VietnamGameList = "VietnamGameList",
-  LHTPreferencePage = "LHTPreferencePage"
+  LHTPreferencePage = "LHTPreferencePage",
 }
 
 // export class  {

@@ -51,6 +51,8 @@ import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
 import WNZSignInPage from '../WNZ/WNZSignInPage';
 import WNZSignUpPage from '../WNZ/WNZSignUpPage';
+import LHTSignInPage from '../LHT/LHTSignInPage';
+import LHTSignUpPage from '../LHT/LHTSignUpPage';
 
 
 // TabbarController
@@ -90,7 +92,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
         <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
-        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
         <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
         <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />
         <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} />
@@ -122,6 +124,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignUpPage} component={BZHSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignInPage} component={LHTSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />

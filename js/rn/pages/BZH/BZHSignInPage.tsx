@@ -7,7 +7,6 @@ import {
   View
 } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -15,34 +14,28 @@ import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
-import CheckBox from '../../public/views/tars/CheckBox'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignInPage = () => {
   console.disableYellowBox = true
 
-  const { sign, value, onChange, goTo, show, ref, valid } = useSignInPage({
+  const {
+    sign,
+    value,
+    onChange,
+    goTo,
+    show,
+    slideCodeRef,
+    valid,
+  } = useSignInPage({
     homePage: PageName.BZHHomePage,
     signUpPage: PageName.BZHSignUpPage,
-
   })
 
-  const { remember, account, password } = value
-
-  const {
-    onChangePassword,
-    onChangeAccount,
-    onChangeRemember,
-    onChangeSlideCode,
-  } = onChange
-
   const { goToRegisterPage } = goTo
-
-  const { slideCode } = ref
-
-  const { loginVCode } = show
 
   const { signIn, tryPlay } = sign
 
@@ -60,41 +53,13 @@ const BZHSignInPage = () => {
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <View style={styles.whiteBlock}>
-          <SignInForm
-            show={true}
-            placeholder={'请输入会员帐号'}
-            onChangeText={onChangeAccount}
-            leftIcon={{
-              name: 'user-circle',
-              type: 'font-awesome',
-            }}
-            defaultValue={account}
-            enableLabel={false}
-          />
-          <SignInForm
-            enableLabel={false}
-            show={true}
-            placeholder={'请输入密码'}
-            leftIcon={{
-              name: 'unlock-alt',
-              type: 'font-awesome',
-            }}
-            onChangeText={onChangePassword}
-            showRightIcon
-            defaultValue={password}
-            rightIconType={'eye'}
-          />
-          <CheckBox
-            onPress={onChangeRemember}
-            label={'记住密码'}
-            containerStyle={{ alignSelf: 'flex-start' }}
-            defaultValue={remember}
-          />
-          <ReloadSlidingVerification
-            ref={slideCode}
-            show={loginVCode}
-            onChange={onChangeSlideCode}
+        <View style={styles.formContainer}>
+          <SignInFormList
+            slideCodeRef={slideCodeRef}
+            show={show}
+            onChange={onChange}
+            value={value}
+            SignInForm={SignInForm}
           />
           <Button
             title={'立即登录'}
@@ -142,7 +107,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
   },
-  whiteBlock: {
+  formContainer: {
     backgroundColor: '#ffffff',
     width: '95%',
     alignSelf: 'center',

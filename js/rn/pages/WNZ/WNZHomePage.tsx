@@ -485,41 +485,6 @@ const styles = StyleSheet.create({
     marginTop: scale(10),
     backgroundColor: '#ffffff',
   },
-  tabContainer: {
-    width: AppDefine.width / 2,
-    flexDirection: 'row',
-  },
-  titleText: {
-    paddingLeft: scale(10),
-    fontSize: scale(23),
-    fontWeight: '300',
-  },
-  grayLineContainer: {
-    width: scale(1),
-    backgroundColor: '#d9d9d9',
-    height: scale(50),
-    alignSelf: 'flex-end',
-    marginBottom: scale(5),
-  },
-  titleContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: scale(15),
-    paddingLeft: scale(15),
-  },
-  bottomLineContainer: {
-    height: scale(2),
-    width: '70%',
-    borderRadius: scale(100),
-    alignSelf: 'center',
-  },
-  menuConatiner: {
-    width: '100%',
-    aspectRatio: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   subTypeButton: {
     width: '20%',
     marginLeft: '2.5%',
