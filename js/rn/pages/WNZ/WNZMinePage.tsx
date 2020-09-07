@@ -8,7 +8,6 @@ import { useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {
-  LotteryType,
   UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
@@ -18,6 +17,7 @@ import ButtonGroup from './views/ButtonGroup'
 import Menu from './views/Menu'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 
 const { getHtml5Image } = useHtml5Image()
 

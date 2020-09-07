@@ -1,5 +1,6 @@
 import { useHtml5Image } from '../../public/tools/tars'
-import { LotteryType, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const config = {

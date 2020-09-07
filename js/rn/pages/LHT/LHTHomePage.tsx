@@ -22,7 +22,6 @@ import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import {
-  LotteryType,
   UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
 import TabComponent from './components/TabComponent'
@@ -31,6 +30,7 @@ import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 
 const LHTHomePage = () => {
   // yellowBox

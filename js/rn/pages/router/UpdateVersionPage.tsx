@@ -1,23 +1,18 @@
+import React, { useEffect } from 'react';
+import { Platform, Text, View } from 'react-native';
 import CodePush from 'react-native-code-push';
-import React, {useEffect, useState} from 'react';
-import {View, Text, Platform, TouchableHighlight} from 'react-native';
 import * as Progress from 'react-native-progress';
-import LinearGradient from 'react-native-linear-gradient';
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
 import AppDefine from '../../public/define/AppDefine';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
-import { UGBasePageProps } from '../base/UGPage';
-import UGSkinManagers, { Skin1 } from '../../public/theme/UGSkinManagers';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
-import { UGStore } from '../../redux/store/UGStore';
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
+import UGSkinManagers from '../../public/theme/UGSkinManagers';
+import { anyEmpty, arrayEmpty } from "../../public/tools/Ext";
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
-import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
-import {navigate} from "../../public/navigation/RootNavigation";
-import {UGColor} from "../../public/theme/UGThemeColor";
-import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
-import {ugLog} from "../../public/tools/UgLog";
+import { UGStore } from '../../redux/store/UGStore';
+import { UGBasePageProps } from '../base/UGPage';
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {

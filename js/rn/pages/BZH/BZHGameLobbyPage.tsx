@@ -9,7 +9,7 @@ import { scale } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { SeriesId } from '../../redux/model/全局/UGSysConfModel'
+import { SeriesId } from '../../redux/model/全局/UGSeriesId'
 import { UGStore } from '../../redux/store/UGStore'
 
 const BZHGameLobbyPage = ({ route }) => {

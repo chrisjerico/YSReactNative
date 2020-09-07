@@ -10,15 +10,17 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import { pop } from '../../public/navigation/RootNavigation'
 import GameButton from '../../public/views/tars/GameButton'
 import { UGStore } from '../../redux/store/UGStore'
+import { SeriesId } from '../../redux/model/全局/UGSeriesId'
 
 const WNZGameLobbyPage = ({ route }) => {
-  const { title } = route?.params ?? {}
+  const { title } = route?.params ?? { title: '棋牌游戏' }
 
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   const bannersInterval = parseInt(banner?.interval)
   const banners = banner?.list ?? []
-  const games = gameLobby?.find((ele: any) => title.includes(ele?.categoryName))?.games
+  const item = gameLobby?.find((item: any) => title.includes(item?.categoryName))
+  const { games, categoryName } = item
 
   return (
     <>
@@ -27,7 +29,7 @@ const WNZGameLobbyPage = ({ route }) => {
       </SafeAreaHeader>
       <ScrollView>
         <BannerBlock
-          containerStyle={{ aspectRatio: 540 / 240 }}
+          containerStyle={{ aspectRatio: 540 / 230 }}
           badgeStyle={{ top: scale(-230) }}
           autoplayTimeout={bannersInterval}
           showOnlineNum={false}
@@ -48,16 +50,33 @@ const WNZGameLobbyPage = ({ route }) => {
           }}
         />
         <FlatList
+          style={{ marginTop: scale(45) }}
           data={games}
           numColumns={4}
           renderItem={({ item }) => {
-            const { title, pic } = item
-            return <GameButton
-              title={title}
-              enableCircle={false}
-              logo={pic}
-              containerStyle={{ width: '25%' }}
-            />
+            const { title, pic, id } = item
+            console.log(item)
+            return (
+              <GameButton
+                title={title}
+                enableCircle={false}
+                logo={pic}
+                containerStyle={{ width: '25%', marginBottom: scale(20) }}
+                imageContainerStyle={{ width: '60%' }}
+                showSubTitle={false}
+                titleContainerStyle={{ aspectRatio: 2.5 }}
+                titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
+                onPress={() => {
+                  PushHelper.pushHomeGame(
+                    Object.assign({}, item, {
+                      seriesId: SeriesId[categoryName],
+                      gameId: id,
+                      subId: id,
+                    })
+                  )
+                }}
+              />
+            )
           }}
         />
       </ScrollView>

@@ -20,44 +20,6 @@ export class UGTabbarItem {
   icon_hot: string;//热门图片路径
 }
 
-export enum LotteryType {
-  香港六合彩 = 70,
-  新加坡六合彩 = 13,
-  福彩3D = 6,
-  重庆时时彩 = 1,
-  七星彩 = 2,
-  PK10牛牛 = 3,
-  大乐透 = 12,
-  幸运飞艇 = 55,
-  "北京赛车(PK10)" = 50,
-  pc蛋蛋 = 66,
-  新加坡六合彩低频 = 113
-
-}
-
-export enum SeriesId {
-  彩票 = 1,
-  真人 = 2,
-  捕鱼 = 3,
-  电子 = 4,
-  棋牌 = 5,
-  体育 = 6,
-  导航链接 = 7,
-  // 1 普通彩票 2 真人视讯 3 捕鱼游戏 4 电子游戏 5 棋牌游戏 6 体育赛事 7导航链接 
-}
-
-export enum SeriesIdEn {
-  lottery = 1,
-  real = 2,
-  fish = 3,
-  game = 4,
-  card = 5,
-  sport = 6,
-  导航链接 = 7,
-  // ["lottery", "game", "fish", "real", "card", "esport", "sport"]
-  // ["彩票", "电子", "捕鱼", "真人", "棋牌", "电竞", "体育"]
-}
-
 
 export enum UGUserCenterType {
   存款 = 1,
