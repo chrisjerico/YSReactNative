@@ -12,7 +12,7 @@ import {BaseScreen} from "../../pages/乐橙/component/BaseScreen";
 import AppDefine from "../define/AppDefine";
 import {OCHelper} from "../define/OCHelper/OCHelper";
 
-const TrendView = () => {
+const TrendView = ({navigation}) => {
     const [trendData, setTrendData] = useState<TrendData>()
     const [headerArr, setHeaderArr] = useState([])
     const {width: screenWidth} = Dimensions.get("screen")
@@ -25,6 +25,22 @@ const TrendView = () => {
     useEffect(() => {
         getData()
     }, [defaultNumber, currentGame])
+
+    useEffect(() => {
+        // OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+        // const unsubscribe = navigation.addListener('focus', () => {
+        //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+        //     console.log("123456")
+        // }, []);
+        OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+        // const _unsubscribe = navigation.addListener('blur', () => {
+        //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+        //     console.log("123456")
+        // }, []);
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        // return _unsubscribe;
+    })
 
     useEffect(() => {
         if (trendData) {

@@ -112,7 +112,6 @@ export const getTrendData_pk10_pk10nn_xyft = (thisData, defaultNumber = 0) => {
             }
         }
     }
-    console.log("newTr", newTr)
     let maximumOmission = getMaximumOmission(newTr)
     let maximumConnection = getMaximumConnection(newTr)
     let totalTimes = getTotalTimes(newTr)
