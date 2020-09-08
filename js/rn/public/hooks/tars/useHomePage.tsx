@@ -1,8 +1,6 @@
 import { useEffect } from 'react'
 import { push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
-import UGSysConfModel from '../../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
@@ -66,8 +64,8 @@ const useHomePage = ({
   const signOut = logOut
 
   // stores
-  const userInfo: UGUserModel = UGStore.globalProps.userInfo
-  const sysConf: UGSysConfModel = UGStore.globalProps.sysConf
+  const userInfo = UGStore.globalProps.userInfo
+  const sysConf = UGStore.globalProps.sysConf
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   // data handle
@@ -86,7 +84,6 @@ const useHomePage = ({
       ?.sort((a: any, b: any) => a.sort - b.sort)
       ?.slice(0, 4) ?? []
   const homeGames = homeGame?.data?.icons ?? []
-  // const recommendGames = homeRecommend?.data
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
   const coupons = couponList?.data?.list?.slice(0, 5) ?? []

@@ -12,7 +12,7 @@ export interface Game {
   title: string;
 }
 
-export interface HomeRecommend {
+export interface Data {
   category: string;
   categoryName: string;
   games: Game[];
@@ -38,6 +38,6 @@ export interface Info {
 export interface HomeRecommendModel {
   code: number;
   msg: string;
-  data: HomeRecommend[];
+  data: Data[];
   info: Info;
 }

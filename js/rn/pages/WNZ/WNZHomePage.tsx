@@ -9,9 +9,8 @@ import {
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
-import AppDefine from '../../public/define/AppDefine'
+import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import useRerender from '../../public/hooks/tars/useRerender'
@@ -309,7 +308,7 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <GameLobbyTabComponent
+          <TabComponent
             tabGames={tabGames}
             numColumns={2}
             enableAutoScrollTab={false}

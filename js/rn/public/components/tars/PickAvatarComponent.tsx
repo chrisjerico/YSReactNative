@@ -2,14 +2,13 @@ import React, { useRef, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { Datum } from '../../../public/network/Model/SystemAvatarListModel'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
 
 interface PickAvatarComponentProps {
   visible: boolean;
-  avatars: Datum[];
+  avatars: IAvatar[];
   onPressSave: (avatar: IAvatar) => any;
   onPressCancel: () => any;
   loading: boolean;

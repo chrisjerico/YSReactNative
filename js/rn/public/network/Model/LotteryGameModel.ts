@@ -1,6 +1,6 @@
 export interface LotteryGameModel {
   code: number;
-  data: Datum[];
+  data: Data[];
   info: Info;
   msg: string;
 }
@@ -21,7 +21,7 @@ export interface TraceBack {
   settings?: any;
 }
 
-export interface Datum {
+export interface Data {
   gameType: string;
   gameTypeName: string;
   list: Game[];

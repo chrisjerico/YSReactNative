@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, ScrollView, StyleSheet } from 'react-native'
-import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
+import TabComponent from '../../public/components/tars/TabComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
@@ -24,7 +24,7 @@ const BZHGameLobbyPage = ({ route }) => {
         showsVerticalScrollIndicator={false}
         scrollEnabled={false}
       >
-        <GameLobbyTabComponent
+        <TabComponent
           containerStyle={{
             borderBottomRightRadius: scale(10),
             borderBottomLeftRadius: scale(10),

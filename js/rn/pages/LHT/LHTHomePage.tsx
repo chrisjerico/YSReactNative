@@ -21,16 +21,14 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import {
-  UGUserCenterType
-} from '../../redux/model/全局/UGSysConfModel'
-import TabComponent from './components/TabComponent'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import HomeGameComponent from './components/HomeGameComponent'
 import config from './config'
 import BottomToolBlock from './views/BottomToolBlock'
 import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
-import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 
 const LHTHomePage = () => {
   // yellowBox
@@ -38,7 +36,6 @@ const LHTHomePage = () => {
   // states
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
-  // const { setProps } = props
   const { getHtml5Image } = useHtml5Image()
 
   const { rerender } = useRerender()
@@ -89,6 +86,10 @@ const LHTHomePage = () => {
     },
     ...lotterys.slice(6),
   ]
+
+  const chooseGames = preferenceGames
+    ?.concat(config?.moreLottery)
+    ?.filter((item) => item.selected)
 
   if (loading) {
     return <ProgressCircle />
@@ -221,67 +222,61 @@ const LHTHomePage = () => {
                 )
               }}
             />
-            <TabComponent
+            <HomeGameComponent
               itemHeight={scale(200)}
               leftIcon={getHtml5Image(14, 'hot_icon')}
               rightIcon={getHtml5Image(14, 'cai_icon')}
               activeTabColor={'#ff6b1b'}
               unActiveTabColor={'#bbbbbb'}
               containerStyle={styles.subComponent}
-              leftGames={preferenceGames?.concat(config?.moreLottery)}
+              leftGames={chooseGames}
               rightGames={homeGames}
-              renderLeftGame={(item, index) => {
+              renderLeftGame={({ item, index }) => {
                 const { title, logo, des, gameType, selected, gameId } = item
                 const logoUrl = getHtml5Image(14, logo)
-                if (selected) {
-                  return (
-                    <GameButton
-                      key={index}
-                      showSecondLevelIcon={false}
-                      circleColor={'#b3cde6'}
-                      logo={logoUrl}
-                      title={title}
-                      subTitle={des}
-                      showSubTitle
-                      containerStyle={{
-                        width: '33.3%',
-                        marginBottom: scale(20),
-                      }}
-                      titleContainerStyle={{
-                        marginTop: scale(5),
-                        aspectRatio: 3,
-                      }}
-                      imageContainerStyle={{
-                        width: logo == 'gdcz' ? '50%' : '90%',
-                        alignSelf: 'center',
-                      }}
-                      titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
-                      subTitleStyle={{ fontSize: scale(19) }}
-                      onPress={() => {
-                        if (gameType == 'more') {
-                          navigate(PageName.LHTPreferencePage, {
-                            initPreferences: preferenceGames,
-                            onPressConfirm: (preferences: any) => {
-                              setPreferenceGames(preferences)
-                            },
-                          })
-                        } else if (gameType == 'clzx') {
-                          PushHelper.pushUserCenterType(
-                            UGUserCenterType.长龙助手
-                          )
-                        } else if (gameType == 'lmzs') {
-                          PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
-                        } else {
-                          PushHelper.pushLottery(gameId)
-                        }
-                      }}
-                    />
-                  )
-                } else {
-                  return null
-                }
+                return (
+                  <GameButton
+                    key={index}
+                    showSecondLevelIcon={false}
+                    circleColor={'#b3cde6'}
+                    logo={logoUrl}
+                    title={title}
+                    subTitle={des}
+                    showSubTitle
+                    containerStyle={{
+                      width: '33.3%',
+                      marginBottom: scale(20),
+                    }}
+                    titleContainerStyle={{
+                      marginTop: scale(5),
+                      aspectRatio: 3,
+                    }}
+                    imageContainerStyle={{
+                      width: logo == 'gdcz' ? '50%' : '90%',
+                      alignSelf: 'center',
+                    }}
+                    titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
+                    subTitleStyle={{ fontSize: scale(19) }}
+                    onPress={() => {
+                      if (gameType == 'more') {
+                        navigate(PageName.LHTPreferencePage, {
+                          initPreferences: preferenceGames,
+                          onPressConfirm: (preferences: any) => {
+                            setPreferenceGames(preferences)
+                          },
+                        })
+                      } else if (gameType == 'clzx') {
+                        PushHelper.pushUserCenterType(UGUserCenterType.长龙助手)
+                      } else if (gameType == 'lmzs') {
+                        PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+                      } else {
+                        PushHelper.pushLottery(gameId)
+                      }
+                    }}
+                  />
+                )
               }}
-              renderRightGame={(item, index) => {
+              renderRightGame={({ item, index }) => {
                 const { logo, icon, title, hotIcon, tipFlag, subType } = item
                 const showFlag = parseInt(tipFlag)
                 return (
@@ -290,7 +285,7 @@ const LHTHomePage = () => {
                     circleColor={'#b3cde6'}
                     showRightTopFlag={showFlag > 0 && showFlag < 4}
                     showCenterFlag={showFlag == 4}
-                    showSecondLevelIcon={subType ? true : false}
+                    showSecondLevelIcon={false} // subType ? true : false
                     flagIcon={hotIcon}
                     logo={icon || logo}
                     title={title}

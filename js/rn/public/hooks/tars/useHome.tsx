@@ -10,7 +10,6 @@ import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
-import { SystemConfig } from '../../network/Model/SystemConfigModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
 
 const routers = [
@@ -70,7 +69,7 @@ const useHome = () => {
       const response = await Promise.all(globalApis)
       // globals state
       const gameLobby = response[0]?.data?.data ?? []
-      const sysConf = response[1]?.data?.data as SystemConfig ?? {} as SystemConfig
+      const sysConf = response[1]?.data?.data ?? {}
       const {
         loginVCode,
         login_to,

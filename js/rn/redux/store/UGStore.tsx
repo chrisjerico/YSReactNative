@@ -2,8 +2,8 @@ import { AsyncStorage } from 'react-native';
 import { Action, Unsubscribe } from 'redux';
 import { UGBasePageProps } from '../../pages/base/UGPage';
 import { PageName } from '../../public/navigation/Navigation';
-import { Banner } from '../../public/network/Model/BannerModel';
-import { HomeRecommend } from '../../public/network/Model/HomeRecommendModel';
+import UGBannerModel from '../model/全局/UGBannerModel';
+import UGGameLobbyModel from '../model/全局/UGGameLobbyModel';
 import UGSignModel from '../model/全局/UGSignModel';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
@@ -14,12 +14,12 @@ import { AsyncStorageKey } from './IGlobalStateHelper';
 
 export interface IGlobalState {
   // 纯数据
+  BettingReducer?: BettingReducerProps;
   userInfo?: UGUserModel;
   sysConf?: UGSysConfModel;
   sign?: UGSignModel;
-  BettingReducer?: BettingReducerProps;
-  gameLobby?: HomeRecommend[]; // 遊戲大廳
-  banner?: Banner;
+  gameLobby?: UGGameLobbyModel[]; // 遊戲大廳
+  banner?: UGBannerModel;
   // value?: any;
 }
 
@@ -34,7 +34,6 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.gameLobby && (state.gameLobby = act.gameLobby);
     act.banner && (state.banner = act.banner);
     act.page && (state[act.page] = act.props);
-
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
@@ -57,8 +56,8 @@ export interface UGAction<P = {}> extends Action {
   sysConf?: UGSysConfModel;// 修改系统配置
   userInfo?: UGUserModel;// 修改用户信息
   sign?: UGSignModel; // 登入註冊訊息 
-  gameLobby?: HomeRecommend[]; // 遊戲大廳
-  banner?: Banner;
+  gameLobby?: UGGameLobbyModel[]; // 遊戲大廳
+  banner?: UGBannerModel;
   // value?: any;// 其他 example
 }
 

@@ -2,11 +2,11 @@
 
 export interface UserInfoModel {
   code: number;
-  data: UserInfoData;
+  data: Data;
   msg: string;
 }
 
-export interface UserInfoData {
+export interface Data {
   allowMemberCancelBet: boolean;
   avatar: string;
   balance: string;

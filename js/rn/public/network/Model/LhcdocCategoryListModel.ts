@@ -1,4 +1,4 @@
-export interface Datum {
+export interface Data {
   id: string;
   name: string;
   alias: string;
@@ -16,5 +16,5 @@ export interface Datum {
 export interface LhcdocCategoryListModel {
   code: number;
   msg: string;
-  data: Datum[];
+  data: Data[];
 }

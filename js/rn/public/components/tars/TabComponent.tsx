@@ -5,26 +5,24 @@ import {
   Text,
   TextStyle,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
-import { List } from '../../../public/network/Model/HomeGamesModel'
 import AppDefine from '../../define/AppDefine'
-import { Game } from '../../network/Model/HomeRecommendModel'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
-interface GameLobbyComponentProps {
+interface TabComponentProps {
   tabGames: TabGame[];
   itemHeight?: number;
-  renderScene?: (params: Render) => any;
+  renderScene?: ({ item, index, tab }: RenderScene) => any;
   focusTabColor?: string;
   baseHeight?: number;
   initialTabIndex: number;
   tabTextStyle?: TextStyle | TextStyle;
   containerStyle?: ViewStyle | ViewStyle;
   tabWidth?: number;
-  renderLabel?: (params: RenderLabel) => any;
+  renderLabel?: ({ route, focused }: RenderLabel) => any;
   tabStyle?: ViewStyle | ViewStyle[];
   contentOffset?: ContentOffset;
   enableAutoScrollTab?: boolean;
@@ -50,13 +48,91 @@ interface TabGame {
   games?: Game[];
 }
 
-interface Render {
+interface RenderScene {
   item: List[] | Game[];
   index: number;
   tab: string;
 }
 
-export interface SceneProps {
+interface Game {
+  gameType: string;
+  gameTypeName: string;
+  id: string;
+  isClose: string;
+  isHot: string;
+  isInstant: string;
+  isSeal: string;
+  name: string;
+  pic: string;
+  title: string;
+}
+
+interface List {
+  id: string;
+  icon: string;
+  name: string;
+  url: string;
+  category: string;
+  levelType: string;
+  sort: string;
+  seriesId: string;
+  subId: any;
+  tipFlag: string;
+  openWay: string;
+  hotIcon: string;
+  gameCode: string;
+  subtitle: string;
+  subType: SubType[];
+  gameId: any;
+  realName: string;
+  title: string;
+  type: string;
+  admin_uid: string;
+  enable: string;
+  headadd: string;
+  footadd: string;
+  domain: string;
+  docType?: number;
+  gameType: string;
+  logo: string;
+  isInstant: string;
+  isSeal: string;
+  isClose: string;
+  supportTrial?: number;
+  isPopup?: number;
+}
+
+interface SubType {
+  id: string;
+  levelType: string;
+  name: string;
+  openWay: string;
+  tipFlag: string;
+  sort: string;
+  seriesId: string;
+  subId: string;
+  parentId: string;
+  isDelete: string;
+  icon: string;
+  url: string;
+  category: string;
+  hot_icon?: any;
+  game_code: string;
+  is_plus: string;
+  site_ids: string;
+  site_id: string;
+  subtitle: string;
+  gameId: string;
+  realName: string;
+  title: string;
+  isInstant: string;
+  isSeal: string;
+  isClose: string;
+  gameType: string;
+  logo: string;
+}
+
+interface SceneProps {
   data: any;
   renderItem: (item: any, index: number) => any;
   containerStyle?: ViewStyle | ViewStyle[];
@@ -70,7 +146,7 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 
 const minTabWidth = scale(100)
 
-const GameLobbyTabComponent = ({
+const TabComponent = ({
   tabGames = [],
   focusTabColor,
   baseHeight = scale(60),
@@ -85,13 +161,9 @@ const GameLobbyTabComponent = ({
   contentOffset,
   enableAutoScrollTab = true,
   tabScrollEnabled = true,
-  numColumns
-}: GameLobbyComponentProps) => {
-  // yellowBox
-  console.disableYellowBox = true
-
+  numColumns,
+}: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
-    //@ts-ignore
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
       const gameCount = games?.length ?? 0
@@ -264,7 +336,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height: scale(60),
     padding: 0,
-    margin: 0
+    margin: 0,
   },
   focusedText: {
     color: '#46A3FF',
@@ -282,8 +354,7 @@ const styles = StyleSheet.create({
     alignSelf: 'auto',
     fontSize: scale(25),
     marginBottom: scale(5),
-  }
+  },
 })
 
-
-export default GameLobbyTabComponent
+export default TabComponent
