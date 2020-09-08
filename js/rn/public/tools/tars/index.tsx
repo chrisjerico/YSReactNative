@@ -1,16 +1,6 @@
-import { UGStore } from '../../../redux/store/UGStore'
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
-
-interface SaveNativeUser {
-  currentUser: any[];
-  // isRememberPsd?: boolean;
-  // userName: string;
-  // userPsw: string;
-  // notification?: string;
-}
-
 
 export const validPassword = (password: string, pass_limit: number) => {
   if (password) {
@@ -27,60 +17,6 @@ export const validPassword = (password: string, pass_limit: number) => {
     }
   } else {
     return false
-  }
-}
-
-export const saveNativeUser = async ({
-  currentUser,
-  // isRememberPsd = false,
-  // userName,
-  // userPsw,
-}:
-  SaveNativeUser) => {
-  try {
-    await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
-    // await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-    //   isRememberPsd,
-    //   'isRememberPsd',
-    // ])
-    // await OCHelper.call(
-    //   'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-    //   [userName, 'userName']
-    // )
-    // await OCHelper.call(
-    //   'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-    //   [userPsw, 'userPsw']
-    // )
-    // await OCHelper.call(
-    //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-    //   ['UGNotificationLoginComplete']
-    // )
-    // await OCHelper.call(
-    //   'UGNavigationController.current.popToRootViewControllerAnimated:',
-    //   [true]
-    // )
-  } catch (error) {
-    throw error ?? 'SaveNativeUser Error'
-  }
-}
-
-export const cleanNativeUser = async () => {
-  try {
-    const user = await OCHelper.call('UGUserModel.currentUser')
-    if (user) {
-      const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
-        { token: sessid },
-      ])
-      await OCHelper.call('UGUserModel.setCurrentUser:')
-      await OCHelper.call(
-        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-        ['UGNotificationUserLogout']
-      )
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
-    }
-  } catch (error) {
-    throw error ?? 'cleanNativeUser Error'
   }
 }
 
@@ -151,4 +87,10 @@ export const getActivityPosition = (position: number) => {
   } else {
     return {}
   }
+}
+
+export const stringToNumber = (x: string) => {
+  const parsed = parseInt(x);
+  if (isNaN(parsed)) { return 0; }
+  return parsed
 }

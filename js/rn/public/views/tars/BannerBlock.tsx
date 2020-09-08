@@ -29,10 +29,12 @@ const BannerBlock = ({
   badgeStyle,
   showsPagination = true
 }: BannerBlockProps) => {
+
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <UGSwiper
+          autoplay={autoplayTimeout > 0}
           autoplayTimeout={autoplayTimeout}
           showsPagination={showsPagination}
           paginationStyle={{

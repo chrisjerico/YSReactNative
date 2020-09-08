@@ -11,8 +11,9 @@ import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
+import { stringToNumber } from '../../tools/tars'
 
-const routers = [
+const localRouters = [
   'system_rankingList',
   'game_homeGames',
   'notice_latest',
@@ -24,6 +25,9 @@ const routers = [
   'activity_turntableList',
   'activity_redBagDetail',
   'system_floatAds',
+  'game_homeRecommend',
+  'system_config',
+  'system_banners',
 ]
 
 const globalRouters = [
@@ -32,96 +36,92 @@ const globalRouters = [
   'system_banners',
 ]
 
+interface Value {
+  rankList?: RankListModel;
+  homeGame?: HomeGamesModel;
+  notice?: NoticeModel;
+  onlineNum?: number;
+  couponList?: CouponListModel;
+  homeAd?: HomeADModel;
+  lotteryNumber?: LotteryNumberModel;
+  lotteryGame?: LotteryGameModel;
+  turntableList?: TurntableListModel;
+  redBag?: RedBagDetailActivityModel;
+  floatAd?: FloatADModel;
+}
+
 const useHome = () => {
 
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
-  const [rankList, setRankList] = useState<RankListModel>()
-  const [homeGame, setHomeGame] = useState<HomeGamesModel>()
-  const [notice, setNotice] = useState<NoticeModel>()
-  const [onlineNum, setOnlineCount] = useState(0)
-  const [couponList, setCouponList] = useState<CouponListModel>()
-  const [homeAd, setHomeAd] = useState<HomeADModel>()
-  const [lotteryNumber, setLotteryNumber] = useState<LotteryNumberModel>()
-  const [lotteryGame, setLotteryGame] = useState<LotteryGameModel>()
-  const [turntableList, setTurntableList] = useState<TurntableListModel>()
-  const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
-  const [floatAd, setFloatAd] = useState<FloatADModel>()
+  const [value, setValue] = useState<Value>({})
 
-  const apis = routers.map(async (router) => {
-    try {
-      return await APIRouter[router]()
-    } catch (error) {
-      // console.log(error)
-    }
-  })
-
-  const globalApis = globalRouters.map(async (router) => {
-    try {
-      return await APIRouter[router]()
-    } catch (error) {
-      // console.log(error)
-    }
-  })
-
-  const callGloableApis = async () => {
-    try {
-      const response = await Promise.all(globalApis)
-      // globals state
-      const gameLobby = response[0]?.data?.data ?? []
-      const sysConf = response[1]?.data?.data ?? {}
-      const {
-        loginVCode,
-        login_to,
-        adSliderTimer,
-        appDownloadUrl
-      } = sysConf
-      const banner = response[2]?.data?.data
-      UGStore.dispatch({ type: 'merge', sysConf: { loginVCode, login_to, adSliderTimer: parseInt(adSliderTimer), appDownloadUrl }, gameLobby, banner })
-      UGStore.save()
-    } catch (error) {
-      console.log("--------useHome callGloableApis error--------", error)
-    } finally {
-
-    }
+  const updateStore = (response: any[]) => {
+    const gameLobby = response[11]?.data?.data ?? UGStore.globalProps.gameLobby
+    const sysConf = response[12]?.data?.data ?? UGStore.globalProps.sysConf
+    const {
+      loginVCode,
+      login_to,
+      adSliderTimer,
+      appDownloadUrl
+    } = sysConf
+    const banner = response[13]?.data?.data ?? UGStore.globalProps.banner
+    UGStore.dispatch({ type: 'merge', sysConf: { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl }, gameLobby, banner })
+    UGStore.save()
   }
 
   const callApis = async () => {
     try {
-      const response = await Promise.all(apis)
-      response[0] && setRankList(response[0]?.data)
-      response[1] && setHomeGame(response[1]?.data)
-      response[2] && setNotice(response[2]?.data)
-      response[3] && setOnlineCount(response[3]?.data?.data?.onlineUserCount)
-      response[4] && setCouponList(response[4]?.data)
-      response[5] && setHomeAd(response[5]?.data)
-      response[6] && setLotteryNumber(response[6]?.data)
-      response[7] && setLotteryGame(response[7]?.data)
-      response[8] && setTurntableList(response[8]?.data)
-      response[9] && setRedBag(response[9]?.data)
-      response[10] && setFloatAd(response[10]?.data)
+      !loading && setRefreshing(true)
+      const routers = loading ? localRouters : localRouters.concat(globalRouters)
+      const response = await Promise.all(routers.map(async (router) => {
+        try {
+          return await APIRouter[router]()
+        } catch (error) {
+          // console.log(error)
+        }
+      }))
+      !loading && updateStore(response)
+      setValue({
+        rankList: response[0] ? response[0]?.data : value?.rankList,
+        homeGame: response[1] ? response[1]?.data : value?.homeGame,
+        notice: response[2] ? response[2]?.data : value?.notice,
+        onlineNum: response[3] ? response[3]?.data?.data?.onlineUserCount : value?.onlineNum,
+        couponList: response[4] ? response[4]?.data : value?.couponList,
+        homeAd: response[5] ? response[5]?.data : value?.homeAd,
+        lotteryNumber: response[6] ? response[6]?.data : value?.lotteryNumber,
+        lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
+        turntableList: response[8] ? response[8]?.data : value?.turntableList,
+        redBag: response[9] ? response[9]?.data : value?.redBag,
+        floatAd: response[10] ? response[10]?.data : value?.floatAd
+      })
     } catch (error) {
-      console.log("--------useHome callApis error--------", error)
+      console.log("--------useHome init error--------", error)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const refresh = async () => {
-    try {
-      setRefreshing(true)
-      await Promise.all([callGloableApis(), callApis()])
-    } catch (error) {
-
-    } finally {
       setRefreshing(false)
-
     }
   }
+
+  const refresh = callApis
 
   useEffect(() => {
     callApis()
   }, [])
+
+  const {
+    rankList,
+    homeGame,
+    notice,
+    onlineNum,
+    couponList,
+    homeAd,
+    lotteryNumber,
+    lotteryGame,
+    turntableList,
+    redBag,
+    floatAd,
+  } = value
 
   return {
     loading,

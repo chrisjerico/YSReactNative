@@ -43,6 +43,7 @@ const LHTMinePage = () => {
     avatarListLoading,
     avatarListVisible,
     avatarList,
+    checkinSwitch
   } = value
 
   const { signOut } = sign
@@ -63,7 +64,7 @@ const LHTMinePage = () => {
         showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
-          shoeSignBadge={false}
+          showSignBadge={checkinSwitch == '1' ? true : false}
           onPressAvatar={openAvatarList}
           profileButtons={config?.profileButtons}
           name={usr}

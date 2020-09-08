@@ -7,7 +7,7 @@ import APIRouter from '../../network/APIRouter'
 interface LogIn {
   account: string;
   password: string;
-  slideCode: any;
+  slideCode?: any;
 }
 
 interface Options {

@@ -1,37 +1,35 @@
-import { useEffect, useState } from "react"
-import UGSysConfModel from "../../../redux/model/全局/UGSysConfModel"
-import UGUserModel from "../../../redux/model/全局/UGUserModel"
-import { UGStore } from "../../../redux/store/UGStore"
-import { PageName } from "../../navigation/Navigation"
-import { navigate } from "../../navigation/RootNavigation"
-import APIRouter from "../../network/APIRouter"
-import { ToastError, ToastSuccess } from "../../tools/tars"
-import useLogOut from "./useLogOut"
+import { useEffect, useState } from 'react'
+import { UGStore } from '../../../redux/store/UGStore'
+import { PageName } from '../../navigation/Navigation'
+import { navigate } from '../../navigation/RootNavigation'
+import APIRouter from '../../network/APIRouter'
+import { ToastError, ToastSuccess } from '../../tools/tars'
+import useLogOut from './useLogOut'
 
 interface DefaultUserCenterLogos {
-  1: string, // 存款
-  2: string, // 取款
-  3: string, // 银行卡管理
-  4: string, // 利息宝
-  5: string, // 推荐收益
-  6: string, // 彩票注单记录
-  7: string, // 其他注单记录
-  8: string, // 额度转换
-  9: string, // 站内信
-  10: string, // 安全中心
-  11: string, // 任务中心
-  12: string, // 个人信息
-  13: string, // 建议反馈
-  14: string, // 在线客服
-  15: string, // 活动彩金
-  16: string, // 长龙助手
-  17: string, // 全民竞猜
-  18: string, // 开奖走势
-  19: string, // QQ客服
+  1: string; // 存款
+  2: string; // 取款
+  3: string; // 银行卡管理
+  4: string; // 利息宝
+  5: string; // 推荐收益
+  6: string; // 彩票注单记录
+  7: string; // 其他注单记录
+  8: string; // 额度转换
+  9: string; // 站内信
+  10: string; // 安全中心
+  11: string; // 任务中心
+  12: string; // 个人信息
+  13: string; // 建议反馈
+  14: string; // 在线客服
+  15: string; // 活动彩金
+  16: string; // 长龙助手
+  17: string; // 全民竞猜
+  18: string; // 开奖走势
+  19: string; // QQ客服
 }
 interface UseMinePage {
   homePage?: PageName;
-  defaultUserCenterLogos: DefaultUserCenterLogos
+  defaultUserCenterLogos: DefaultUserCenterLogos;
 }
 
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
@@ -51,11 +49,12 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
-  }: UGUserModel = UGStore.globalProps.userInfo
-  const { mobile_logo, userCenter }: UGSysConfModel = UGStore.globalProps.sysConf
-  const userCenterItems = userCenter?.map(ele => {
+  } = UGStore.globalProps.userInfo
+  const { mobile_logo, userCenter, checkinSwitch } = UGStore.globalProps.sysConf
+  const userCenterItems = userCenter?.map((ele) => {
     const { logo, code } = ele
-    const newLogo = (logo?.length == 0 || !logo) ? defaultUserCenterLogos?.[code] : logo
+    const newLogo =
+      logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
     return Object.assign({}, ele, { logo: newLogo })
   })
   // states
@@ -79,12 +78,11 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
       const avatarList = response?.data?.data ?? []
       setAvatarList(avatarList)
     } catch (error) {
-      console.log("-------error------", error)
+      console.log('-------error------', error)
     } finally {
       setAvatarListLoading(false)
     }
   }
-
 
   const saveAvatar = async ({ url, filename }) => {
     try {
@@ -97,20 +95,24 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
       }
     } catch (error) {
       ToastError('修改头像失败')
-      console.log("-------error------", error)
+      console.log('-------error------', error)
     } finally {
       setAvatarListVisible(false)
     }
   }
 
-  const openAvatarList = () => { !isTest && setAvatarListVisible(true) }
-  const closeAvatarList = () => { setAvatarListVisible(false) }
+  const openAvatarList = () => {
+    !isTest && setAvatarListVisible(true)
+  }
+  const closeAvatarList = () => {
+    setAvatarListVisible(false)
+  }
   const signOut = logOut
 
   // effects
 
   useEffect(() => {
-    console.log("----------a--------")
+    console.log('----------a--------')
     fetchAvatarList()
   }, [])
 
@@ -132,10 +134,11 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
+    checkinSwitch,
   }
 
   const sign = {
-    signOut
+    signOut,
   }
 
   return {
@@ -146,7 +149,6 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     openAvatarList,
     closeAvatarList,
   }
-
 }
 
 export default useMinePage

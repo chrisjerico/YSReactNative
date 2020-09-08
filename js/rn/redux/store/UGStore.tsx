@@ -5,10 +5,10 @@ import { PageName } from '../../public/navigation/Navigation';
 import UGBannerModel from '../model/全局/UGBannerModel';
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel';
 import UGSignModel from '../model/全局/UGSignModel';
-import UGSysConfModel from '../model/全局/UGSysConfModel';
 import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
+import UGSysConfModel from '../model/全局/UGSysConfModel';
 
 // 整个State的树结构
 

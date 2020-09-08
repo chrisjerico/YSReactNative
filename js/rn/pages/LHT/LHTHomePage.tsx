@@ -91,6 +91,7 @@ const LHTHomePage = () => {
     ?.concat(config?.moreLottery)
     ?.filter((item) => item.selected)
 
+  console.log("--------LHTHomePage--------")
   if (loading) {
     return <ProgressCircle />
   } else {

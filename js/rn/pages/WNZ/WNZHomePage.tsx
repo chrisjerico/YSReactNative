@@ -108,6 +108,7 @@ const WNZHomePage = () => {
     },
   ]
 
+  console.log("-------------a---------")
   if (loading) {
     return <ProgressCircle />
   } else {

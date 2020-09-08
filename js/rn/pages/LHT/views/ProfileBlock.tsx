@@ -16,7 +16,7 @@ interface ProfileBlockProps {
   onPressDaySign: () => any;
   onPressTaskCenter: () => any;
   onPressAvatar: () => any;
-  shoeSignBadge: boolean;
+  showSignBadge: boolean;
 }
 
 const ProfileBlock = ({
@@ -29,8 +29,9 @@ const ProfileBlock = ({
   onPressDaySign,
   onPressTaskCenter,
   onPressAvatar,
-  shoeSignBadge,
+  showSignBadge,
 }: ProfileBlockProps) => {
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
@@ -45,13 +46,15 @@ const ProfileBlock = ({
               </View>
               <LinearBadge
                 title={level}
-                colors={['#FFD306', '#C6A300']}
+                colors={['#55c6ff', '#91daff']}
                 showIcon={false}
                 size={0.5}
                 containerStyle={{
                   height: scale(25),
                   marginBottom: scale(5),
+                  width: null
                 }}
+                textStyle={{ paddingHorizontal: scale(10) }}
               />
             </View>
             <View style={{ flexDirection: 'row', flex: 0.9 }}>
@@ -65,37 +68,47 @@ const ProfileBlock = ({
             </View>
           </View>
         </View>
-        <View
-          style={{ flex: 1, marginRight: scale(10), marginBottom: scale(40) }}
-        >
-          <TouchableWithoutFeedback onPress={onPressTaskCenter}>
-            {/* <View style={styles.taskBadge}> */}
-            <FastImage
-              source={{
-                uri:
-                  'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
-              }}
-              style={{ width: '100%', height: '100%' }}
-              resizeMode={'contain'}
-            />
-            {/* </View> */}
-          </TouchableWithoutFeedback>
-          {/* <View style={styles.signBadge}>
-            {shoeSignBadge && (
+        <View style={{ flex: 1, marginRight: scale(10) }}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+            }}
+          >
+            <TouchableWithoutFeedback onPress={onPressTaskCenter}>
               <FastImage
                 source={{
                   uri:
                     'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
                 }}
                 style={{
-                  width: scale(100),
-                  aspectRatio: 3,
-                  backgroundColor: 'red',
+                  width: '100%',
+                  aspectRatio: 3.6,
+                  marginBottom: scale(5),
                 }}
                 resizeMode={'contain'}
               />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+            {showSignBadge && (
+              <TouchableWithoutFeedback onPress={onPressDaySign}>
+                <FastImage
+                  source={{
+                    uri:
+                      'http://test05.6yc.com/static/vuePublic/images/my/userInfo/dailysign.png',
+                  }}
+                  style={{
+                    width: '100%',
+                    aspectRatio: 3.6,
+                    marginTop: scale(5),
+                  }}
+                  resizeMode={'contain'}
+                />
+              </TouchableWithoutFeedback>
             )}
-          </View> */}
+          </View>
         </View>
       </View>
       <View style={styles.profileButtonsContainer}>
@@ -124,16 +137,6 @@ const styles = StyleSheet.create({
   },
   shareIdText: {
     color: '#00A600',
-  },
-  // taskBadge: {
-  //   flex: 1,
-  //   justifyContent: 'flex-end',
-  //   alignItems: 'flex-end',
-  // },
-  signBadge: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
   },
   nameText: {
     fontWeight: '500',

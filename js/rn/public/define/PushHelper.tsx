@@ -10,7 +10,6 @@ import { PageName } from '../navigation/Navigation'
 import { popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
-import { TurntableListModel } from '../network/Model/TurntableListModel'
 import NetworkRequest1 from '../network/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ANHelper } from './ANHelper/ANHelper'
@@ -32,6 +31,14 @@ interface PushAnnouncement {
   hiddenBottomLine?: string;
 }
 
+interface PushWheel {
+  end: string;
+  id: string;
+  param: any;
+  start: string;
+  type: string;
+}
+
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
     if (Platform.OS != 'ios') return
@@ -51,7 +58,7 @@ export default class PushHelper {
   // 右側選單
 
   // 輪盤
-  static async pushWheel(turntableList: TurntableListModel) {
+  static async pushWheel(turntableList: PushWheel[]) {
     const turntableListModel = Object.assign(
       { clsName: 'DZPModel' },
       turntableList?.[0]
