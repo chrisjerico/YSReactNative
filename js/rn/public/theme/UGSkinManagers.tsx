@@ -37,7 +37,7 @@ export default class UGSkinManagers extends UGThemeColor {
         ...WNZThemeColor, // 威尼斯
         ...PYThemeColor,
         ...BZHThemeColor, // 宝石红
-        ...LLThemeColor,
+        ...LLThemeColor,// 利来
     }
 
     // 更新皮肤
