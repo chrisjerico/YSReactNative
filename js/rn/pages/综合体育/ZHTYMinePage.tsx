@@ -41,8 +41,8 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
       case 'android':
         ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
           .then((data) => {
-            let dataArray = JSON.parse(data)
-            this.setProps({ dataArray: dataArray });
+            const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
+            this.setProps({ dataArray: userCenterItems });
           })
         break;
     }

@@ -19,6 +19,7 @@ import { UGBasePageProps } from '../base/UGPage';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {ugLog} from "../../public/tools/UgLog";
 
 
 // 定义Props
@@ -60,8 +61,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
     case 'android':
       ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
         .then((data) => {
-          let dataArray = JSON.parse(data)
-          setProps({ dataArray: dataArray });
+          const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
+          setProps({ dataArray: userCenterItems });
         })
       break;
   }
