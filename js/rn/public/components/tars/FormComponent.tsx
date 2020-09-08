@@ -269,13 +269,11 @@ const FormComponent = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // aspectRatio: 5,
   },
   labelText: {
     fontSize: scale(15),
-    paddingTop: scale(5),
     color: 'red',
-    fontWeight: '300',
+    fontWeight: '100',
     marginTop: scale(10)
   },
   leftIconContainerStyle: {

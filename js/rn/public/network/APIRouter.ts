@@ -80,19 +80,20 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    let tokenParams = "";
+    let token = null;
     switch (Platform.OS) {
       case "ios":
         let user = await OCHelper.call('UGUserModel.currentUser');
-        tokenParams = 'token=' + user?.token;
+        token = user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+        token = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
           { blGet: true, });
         break;
     }
 
-    if (tokenParams) {
+    if (token) {
+      const tokenParams = Platform.OS == "ios" ? 'token=' + token : token
       return httpClient.get<UserInfoModel>("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({

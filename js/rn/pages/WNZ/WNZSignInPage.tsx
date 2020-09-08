@@ -1,8 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import FormComponent, {
-  FormComponentProps,
-} from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -125,13 +123,14 @@ const WNZSignInPage = () => {
 const SignInForm = (props: FormComponentProps) => (
   <FormComponent
     {...props}
-    containerStyle={{ marginTop: scale(43), aspectRatio: null }}
+    containerStyle={{ marginBottom: scale(10) }}
     inputContainerStyle={styles.inputContainerStyle}
     leftIconContainerStyle={styles.leftIconContainerStyle}
     rightIconContainerStyle={{ marginRight: scale(10) }}
     renderLeftIcon={() => (
-      <Text style={styles.inputText}>{props?.leftIconTitle}</Text>
+      <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>
     )}
+    placeholderTextColor={'#9D9D9D'}
   />
 )
 
@@ -143,6 +142,7 @@ const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
     paddingHorizontal: scale(20),
+    paddingTop: scale(40),
   },
   inputContainerStyle: {
     borderWidth: scale(1),
@@ -152,7 +152,10 @@ const styles = StyleSheet.create({
     paddingLeft: scale(20),
     height: scale(63),
   },
-  inputText: { fontSize: scale(23) },
+  leftIconText: {
+    fontSize: scale(23),
+    fontWeight: '400',
+  },
   loginButton: {
     width: '100%',
     marginTop: scale(32),

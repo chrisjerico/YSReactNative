@@ -32,21 +32,3 @@ export async function updateUserInfo() {
     throw error
   }
 }
-
-export async function updateSysConf() {
-  try {
-    const response = await APIRouter.system_config()
-    const data = response?.data?.data ?? {}
-    const msg = response?.data?.msg
-    if (data) {
-      UGStore.dispatch({ type: 'merge', sysConf: data as any })
-      UGStore.save()
-      return data
-    } else {
-      throw { message: msg }
-    }
-  } catch (error) {
-    console.log("-------------updateSysConf error-------------", error)
-    throw error
-  }
-}

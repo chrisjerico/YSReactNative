@@ -20,8 +20,10 @@ const useTryPlay = (options: Options = {}) => {
         const user_guestLogin_data = user_guestLogin_response?.data?.data
         const user_guestLogin_msg = user_guestLogin_response?.data?.msg
         if (user_guestLogin_data) {
-          // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+          console.log("-------user_guestLogin_data-----", user_guestLogin_data)
           await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(user_guestLogin_data)])
+          // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+          // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
           await updateUserInfo()
           onSuccess && onSuccess()
         } else {

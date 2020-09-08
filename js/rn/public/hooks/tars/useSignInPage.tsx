@@ -77,7 +77,7 @@ const useSignInPage = ({
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败' + error ? ' : ' + error : '')
+      ToastError('登录失败')
       console.log("--------試玩失败--------", error)
     },
   })

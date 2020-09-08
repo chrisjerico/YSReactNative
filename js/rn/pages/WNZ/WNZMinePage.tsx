@@ -19,7 +19,7 @@ import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
   const menu = useRef(null)

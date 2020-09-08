@@ -4,8 +4,8 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
-import useTryPlay from '../useTryPlay'
 import useRegister from './useRegister'
+import useTryPlay from './useTryPlay'
 
 interface SlidingVerification {
   nc_csessionid?: string;
@@ -54,7 +54,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败' + error ? ' : ' + error : '')
+      ToastError('登录失败')
       console.log("--------試玩失败--------", error)
     },
   })
@@ -72,7 +72,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error || '注册失败')
+      ToastError('注册失败')
       console.log('-------注册失败-------', error)
     },
   })

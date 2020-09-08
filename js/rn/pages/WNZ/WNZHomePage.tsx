@@ -76,7 +76,6 @@ const WNZHomePage = () => {
     roulette,
     officialGames,
     customiseGames,
-    gameLobby
   } = value
 
   const { signOut } = sign
@@ -108,7 +107,6 @@ const WNZHomePage = () => {
     },
   ]
 
-  console.log("-------------a---------")
   if (loading) {
     return <ProgressCircle />
   } else {

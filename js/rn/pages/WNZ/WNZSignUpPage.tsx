@@ -72,7 +72,7 @@ const WNZSignUpPage = () => {
                 backgroundColor: '#dd524d',
               },
             ]}
-            titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
+            titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
           <Button
@@ -129,11 +129,13 @@ const WNZSignUpPage = () => {
 const SignUpForm = (props: FormComponentProps & { title: string }) => (
   <FormComponent
     {...props}
-    containerStyle={{ marginTop: 0, aspectRatio: null }}
+    containerStyle={{ marginBottom: scale(15) }}
     inputContainerStyle={styles.inputContainerStyle}
     leftIconContainerStyle={styles.leftIconContainerStyle}
     rightIconContainerStyle={{ marginRight: scale(10) }}
-    renderLeftIcon={() => <Text style={styles.inputText}>{props?.leftIconTitle}</Text>}
+    renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
+    labelTextStyle={{ paddingLeft: scale(20) }}
+    placeholderTextColor={"#9D9D9D"}
   />
 )
 
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
   },
   whitwButtonTitle: {
     color: '#f13031',
-    fontSize: scale(25),
+    fontSize: scale(23),
     fontWeight: '300',
   },
   inputContainerStyle: {
@@ -176,8 +178,9 @@ const styles = StyleSheet.create({
     borderColor: '#d9d9d9',
     height: scale(63),
   },
-  inputText: {
+  leftIconText: {
     fontSize: scale(23),
+    fontWeight: '400'
   },
   leftIconContainerStyle: {
     width: scale(120),
