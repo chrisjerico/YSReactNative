@@ -16,6 +16,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHMinePage = (props: any) => {
   const { setProps } = props
@@ -44,9 +45,14 @@ const BZHMinePage = (props: any) => {
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
+
   // data handle
-  const features = userCenterItems?.slice(0, 4) ?? []
-  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const features = userCenterItems?.slice(0, 1) ?? []
+  const featureList = userCenterItems?.slice(0, 1) ?? []
+
+  // ugLog('features=',features)
+  // ugLog('featureList=',featureList)
+  // ugLog('usr=',usr)
 
   return (
     <>
@@ -82,6 +88,7 @@ const BZHMinePage = (props: any) => {
           features={features}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
+            ugLog('item=', item)
             return (
               <GameButton
                 key={index}
@@ -99,6 +106,7 @@ const BZHMinePage = (props: any) => {
           }}
         />
         {featureList?.map((item, index) => {
+          ugLog('item 2 =', item)
           const { code, name, logo } = item
           return (
             <FeatureList
