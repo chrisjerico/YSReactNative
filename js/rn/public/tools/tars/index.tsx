@@ -112,7 +112,7 @@ export const cleanNativeUser = async () => {
 
     switch (Platform.OS) {
       case 'android':
-        ANHelper.callAsync(CMD.LOG_OUT)
+        await ANHelper.callAsync(CMD.LOG_OUT)
         break;
     }
 

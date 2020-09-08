@@ -9,6 +9,7 @@ import {ANHelper} from "../define/ANHelper/ANHelper";
 import {hideLoading, showLoading, UGLoadingType} from "../widget/UGLoadingCP";
 import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import {logoutAndroid} from "../define/ANHelper/InfoHelper";
 
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {

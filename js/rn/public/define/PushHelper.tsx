@@ -93,7 +93,7 @@ export default class PushHelper {
         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
         break;
       case "android":
-        ANHelper.callAsync(CMD.LOG_OUT)
+        await ANHelper.callAsync(CMD.LOG_OUT)
         break;
     }
     Toast('退出成功');

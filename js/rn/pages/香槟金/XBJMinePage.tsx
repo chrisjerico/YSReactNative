@@ -196,7 +196,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
 
                     break;
                   case 'android':
-                    ANHelper.callAsync(CMD.LOG_OUT)
+                    await ANHelper.callAsync(CMD.LOG_OUT)
                     break;
                 }
 

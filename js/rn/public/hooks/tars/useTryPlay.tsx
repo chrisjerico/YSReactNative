@@ -7,6 +7,7 @@ import {
   ToastStatus
 } from '../../tools/tars'
 import {ugLog} from "../../tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 
 interface Options {
   onSuccess?: () => any;
@@ -17,7 +18,8 @@ const useTryPlay = (options: Options = {}) => {
   const { onSuccess, onError } = options
   const tryPlay = async () => {
     try {
-      ToastStatus('正在登录...')
+      showLoading({ type: UGLoadingType.Loading });
+
       const user_guestLogin_response = await APIRouter.user_guestLogin()
       const user_guestLogin_data = user_guestLogin_response?.data?.data
       const user_guestLogin_msg = user_guestLogin_response?.data?.msg
@@ -30,12 +32,16 @@ const useTryPlay = (options: Options = {}) => {
           userPsw: '',
         })
         await updateUserInfo()
+
+        hideLoading()
         onSuccess && onSuccess()
       } else {
         // 試玩失敗
         onError && onError(user_guestLogin_msg)
       }
+
     } catch (error) {
+      hideLoading()
       onError && onError(error)
     }
   }
