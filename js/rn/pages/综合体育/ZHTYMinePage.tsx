@@ -174,7 +174,7 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
                         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
                         break;
                       case 'android':
-                        await logoutAndroid();
+                        ANHelper.callAsync(CMD.LOG_OUT)
                         break;
                     }
 

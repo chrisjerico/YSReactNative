@@ -4,6 +4,8 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 import { ToastStatus } from '../../tools/tars'
 import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 
 interface Options {
   onSuccess?: () => any;
@@ -21,14 +23,17 @@ const useLogOut = (options: Options = {}) => {
             await OCHelper.call('UGUserModel.setCurrentUser:', [])
             await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
             break;
-          case 'android':
-            await logoutAndroid()
-            break;
         }
         // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
         UGStore.dispatch({ type: 'reset', userInfo: {} })
         UGStore.save()
         onSuccess && onSuccess()
+
+      switch (Platform.OS) {
+        case 'android':
+          ANHelper.callAsync(CMD.LOG_OUT)
+          break;
+      }
     } catch (error) {
       onError && onError(error)
     }
