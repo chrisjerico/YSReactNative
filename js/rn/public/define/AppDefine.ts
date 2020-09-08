@@ -18,11 +18,13 @@ export default class AppDefine {
     // 读取本地缓存到Store
     UGStore.refreshFromLocalData();
 
-    // 原生交互相关配置
-    if (Platform.OS == 'ios') {
-      OCHelper.setup();
-    } else {
-      ANHelper.setup();
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.setup();
+        break;
+      case 'android':
+        ANHelper.setup();
+        break;
     }
   }
 }

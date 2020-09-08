@@ -20,6 +20,8 @@ import { Res } from '../../Res/icon/Resources';
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
+import {logoutAndroid} from "../../public/define/ANHelper/InfoHelper";
 
 class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
   // 成为焦点页面
@@ -29,10 +31,21 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
     // 获取功能按钮列表
     //TODO Android
 
-    OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
-      let dataArray = list.map(item => new UGUserCenterItem(item));
-      this.setProps({ dataArray: dataArray });
-    });
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
+          let dataArray = list.map(item => new UGUserCenterItem(item));
+          this.setProps({ dataArray: dataArray });
+        });
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
+          .then((data) => {
+            const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
+            this.setProps({ dataArray: userCenterItems });
+          })
+        break;
+    }
   }
 
   renderContent(): React.ReactNode {
@@ -161,20 +174,7 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
                         await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
                         break;
                       case 'android':
-                        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LOGIN_INFO })
-                        let loginInfo = JSON.parse(result);
-
-                        //保留 account, pwd, isRemember，下载登录的时候使用
-                        await ANHelper.callAsync(CMD.SAVE_DATA,
-                          {
-                            key: NA_DATA.LOGIN_INFO,
-                            account: loginInfo?.account,
-                            pwd: loginInfo?.pwd,
-                            isRemember: loginInfo?.isRemember,
-                          });
-
-                        await ANHelper.callAsync(CMD.SAVE_DATA,
-                          { key: NA_DATA.USER_INFO, });
+                        await ANHelper.callAsync(CMD.LOG_OUT)
                         break;
                     }
 

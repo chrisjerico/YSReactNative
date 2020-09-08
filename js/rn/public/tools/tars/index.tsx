@@ -2,6 +2,13 @@ import { UGStore } from '../../../redux/store/UGStore'
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
+import {Platform} from "react-native";
+import {Toast} from "../ToastUtils";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
+import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
+import {ugLog} from "../UgLog";
 
 interface SaveNativeUser {
   currentUser: any[];
@@ -38,19 +45,37 @@ export const saveNativeUser = async ({
 }:
   SaveNativeUser) => {
   try {
-    await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-      isRememberPsd,
-      'isRememberPsd',
-    ])
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userName, 'userName']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userPsw, 'userPsw']
-    )
+
+    switch (Platform.OS) {
+      case 'ios':
+        await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
+          isRememberPsd,
+          'isRememberPsd',
+        ])
+        await OCHelper.call(
+          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+          [userName, 'userName']
+        )
+        await OCHelper.call(
+          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+          [userPsw, 'userPsw']
+        )
+        break;
+      case 'android':
+        // const accountData = {
+        //   account: userName,
+        //   pwd: userPsw,
+        //   isRemember: isRememberPsd
+        // }
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.LOGIN_INFO,
+            ...currentUser[0],
+          });
+        break;
+    }
+
     // await OCHelper.call(
     //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
     //   ['UGNotificationLoginComplete']
@@ -66,19 +91,31 @@ export const saveNativeUser = async ({
 
 export const cleanNativeUser = async () => {
   try {
-    const user = await OCHelper.call('UGUserModel.currentUser')
-    if (user) {
-      const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
-        { token: sessid },
-      ])
-      await OCHelper.call('UGUserModel.setCurrentUser:')
-      await OCHelper.call(
-        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-        ['UGNotificationUserLogout']
-      )
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        if (user) {
+          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
+            { token: sessid },
+          ])
+          await OCHelper.call('UGUserModel.setCurrentUser:')
+          await OCHelper.call(
+            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+            ['UGNotificationUserLogout']
+          )
+        }
+        break;
     }
+
+    UGStore.dispatch({ type: 'reset', userInfo: {} })
+
+    switch (Platform.OS) {
+      case 'android':
+        await ANHelper.callAsync(CMD.LOG_OUT)
+        break;
+    }
+
   } catch (error) {
     throw error ?? 'cleanNativeUser Error'
   }
@@ -87,25 +124,46 @@ export const cleanNativeUser = async () => {
 export const ToastSuccess = (msg: any) => {
   console.log('--------ToastSuccess--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-    typeof m === 'string' ? m : '',
-  ])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
 
 export const ToastError = (msg: any) => {
   console.log('--------ToastError--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-    typeof m === 'string' ? m : '',
-  ])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
 
 export const ToastStatus = (msg: any) => {
   console.log('--------ToastStatus--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showWithStatus:', [
-    typeof m === 'string' ? m : '',
-  ])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
 
 export const useHtml5Image = (host: string = AppDefine.host) => {

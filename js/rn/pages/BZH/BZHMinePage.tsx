@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import {RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -16,6 +16,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHMinePage = (props: any) => {
   const { setProps } = props
@@ -44,9 +45,15 @@ const BZHMinePage = (props: any) => {
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
+
   // data handle
   const features = userCenterItems?.slice(0, 4) ?? []
-  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const featureList = userCenterItems?.slice(0, userCenterItems?.length) ?? []
+
+  // ugLog('features=',features)
+  // ugLog('fetchAvatarList=',fetchAvatarList)
+  // ugLog('featureList=',featureList)
+  // ugLog('usr=',usr)
 
   return (
     <>
@@ -71,7 +78,12 @@ const BZHMinePage = (props: any) => {
           flex: 1,
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        // refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        //TODO 暂时换掉 RefreshControlComponent，先编过
+        // refreshControl={<RefreshControl
+        //   refreshing={false}
+        //   onRefresh={fetchAvatarList}
+        // />}
       >
         <ProfileBlock
           balance={balance}
@@ -82,6 +94,8 @@ const BZHMinePage = (props: any) => {
           features={features}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
+
+            ugLog('features item=',item)
             return (
               <GameButton
                 key={index}

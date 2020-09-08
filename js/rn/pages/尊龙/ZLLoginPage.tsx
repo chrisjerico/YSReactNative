@@ -117,9 +117,6 @@ const ZLLoginPage = ({ route, navigation }) => {
             const { data: userInfo } = await APIRouter.user_info()
 
             switch (Platform.OS) {
-                case "ios":
-                    //TODO
-                    break;
                 case "android":
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                       {

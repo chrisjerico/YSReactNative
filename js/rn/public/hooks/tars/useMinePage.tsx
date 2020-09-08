@@ -78,14 +78,14 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   })
   const fetchAvatarList = async () => {
     try {
-      setAvatarListLoading(true)
-      const response = await APIRouter.system_avatarList()
-      const avatarList = response?.data?.data ?? []
-      setAvatarList(avatarList)
+      // setAvatarListLoading(true)
+      // const response = await APIRouter.system_avatarList()
+      // const avatarList = response?.data?.data ?? []
+      // setAvatarList(avatarList)
     } catch (error) {
       console.log("-------error------", error)
     } finally {
-      setAvatarListLoading(false)
+      // setAvatarListLoading(false)
     }
   }
 
@@ -131,14 +131,21 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
     fetchAvatarList().then(() => {
       setProps && setProps({
         didFocus: async () => {
-          OCHelper.call(
-            'UGNavigationController.current.viewControllers.count'
-          ).then((ocCount) => {
-            const show =
-              ocCount > 1 ||
-              navigationRef?.current?.getRootState().routes.length > 1
-            setShowBackBtn(show)
-          })
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call(
+                'UGNavigationController.current.viewControllers.count'
+              ).then((ocCount) => {
+                const show =
+                  ocCount > 1 ||
+                  navigationRef?.current?.getRootState().routes.length > 1
+                setShowBackBtn(show)
+              })
+              break;
+            case 'android':
+
+              break;
+          }
         },
       })
     })
