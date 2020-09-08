@@ -8,13 +8,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { scale } from '../../../public/tools/Scale'
 
-interface SignInHeaderProps {
+interface SignHeaderProps {
   onPressLeftTool: () => any;
   onPressMenu: () => any;
   onPressRegister: () => any;
 }
 
-const SignInHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignInHeaderProps) => {
+const SignHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignHeaderProps) => {
   return (
     <View
       style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
@@ -52,4 +52,4 @@ const SignInHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignInH
   )
 }
 
-export default SignInHeader
+export default SignHeader

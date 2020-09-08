@@ -4,17 +4,17 @@ import { FormComponentProps } from "../../components/tars/FormComponent"
 import ReloadSlidingVerification from "../../components/tars/ReloadSlidingVerification"
 import { scale } from "../../tools/Scale"
 
-interface SignUpFormListProps {
-  reloadSlidingVerificationColor: string;
+interface SignUpListProps {
+  slideCodeColor: string;
   slideCodeRef: any;
   show: any;
   onChange: any;
   label: any;
   limit: any;
-  SignUpForm?: (props: FormComponentProps) => any;
+  Form?: (props: FormComponentProps) => any;
 }
 
-const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label, slideCodeRef, limit, SignUpForm = () => { return null } }: SignUpFormListProps) => {
+const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit, Form = () => { return null } }: SignUpListProps) => {
 
   const {
     showRecommendGuy,
@@ -64,7 +64,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
 
   return (
     <>
-      <SignUpForm
+      <Form
         leftIconName={'users'}
         onChangeText={onChangeRecommendGuy}
         label={recommendGuyLabel}
@@ -72,7 +72,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         leftIconTitle={'推荐人'}
         show={showRecommendGuy}
       />
-      <SignUpForm
+      <Form
         onChangeText={obChangeAccount}
         label={'*请使用6-15位英文或数字的组合'}
         placeholder={'帐号'}
@@ -80,7 +80,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         leftIconName={'users'}
         leftIconTitle={'用户帐号'}
       />
-      <SignUpForm
+      <Form
         leftIconName={'lock'}
         onChangeText={obChangePassword}
         label={passwordLebel}
@@ -91,7 +91,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         rightIconType={'eye'}
         leftIconTitle={'登录密码'}
       />
-      <SignUpForm
+      <Form
         leftIconName={'lock'}
         onChangeText={onChangeConfirmPassword}
         label={confirmPasswordLabel}
@@ -101,7 +101,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         rightIconType={'eye'}
         leftIconTitle={'确认密码'}
       />
-      <SignUpForm
+      <Form
         leftIconName={'user'}
         onChangeText={onChaneRealName}
         label={realNameLabel}
@@ -109,7 +109,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         show={showName}
         leftIconTitle={'真实姓名'}
       />
-      <SignUpForm
+      <Form
         leftIconName={'lock'}
         onChangeText={onChaneFundPassword}
         label={fundpwdLabel}
@@ -120,7 +120,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         rightIconType={'eye'}
         leftIconTitle={'取款密码'}
       />
-      <SignUpForm
+      <Form
         leftIcon={{
           name: 'QQ',
           type: 'antdesign',
@@ -131,7 +131,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         show={showQQ}
         leftIconTitle={'QQ号'}
       />
-      <SignUpForm
+      <Form
         leftIcon={{
           name: 'wechat',
           type: 'font-awesome',
@@ -142,7 +142,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         leftIconTitle={'微信号'}
         show={showWx}
       />
-      <SignUpForm
+      <Form
         leftIconName={'smartphone'}
         onChangeText={onChanePhone}
         label={phoneLabel}
@@ -150,7 +150,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         show={showPhone}
         leftIconTitle={'手机号码'}
       />
-      <SignUpForm
+      <Form
         leftIcon={{
           type: 'material-community',
           name: 'email-outline',
@@ -161,7 +161,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         leftIconTitle={'电子邮箱'}
         show={showEmail}
       />
-      <SignUpForm
+      <Form
         leftIconName={'lock'}
         onChangeText={onChangeImageCode}
         label={imageCodeLabel}
@@ -173,7 +173,7 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         }
         maxLength={4}
       />
-      <SignUpForm
+      <Form
         leftIconName={'lock'}
         onChangeText={onChaneSms}
         placeholder={'短信验证码'}
@@ -190,9 +190,9 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
         ref={slideCodeRef}
         show={showSlideCode}
         onChange={onChangeSlideCode}
-        backgroundColor={reloadSlidingVerificationColor}
+        backgroundColor={slideCodeColor}
         containerStyle={{
-          backgroundColor: reloadSlidingVerificationColor
+          backgroundColor: slideCodeColor
         }}
       />
     </>
@@ -200,4 +200,4 @@ const SignUpFormList = ({ reloadSlidingVerificationColor, show, onChange, label,
 }
 
 
-export default SignUpFormList
+export default SignUpList

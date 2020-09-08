@@ -4,9 +4,11 @@ import {
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent, {
+  FormComponentProps,
+} from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -16,7 +18,7 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SugnUpFormList'
+import SugnUpList from '../../public/views/tars/SugnUpList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignUpPage = () => {
@@ -50,14 +52,14 @@ const BZHSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList
-            reloadSlidingVerificationColor={'#ffffff'}
+          <SugnUpList
             slideCodeRef={slideCodeRef}
+            slideCodeColor={'#ffffff'}
             show={show}
             label={label}
             limit={limit}
             onChange={onChange}
-            SignUpForm={SignUpForm}
+            Form={SignUpForm}
           />
           <Button
             title={'注册'}

@@ -18,7 +18,7 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SugnUpFormList'
+import SugnUpList from '../../public/views/tars/SugnUpList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const LHTSignUpPage = () => {
@@ -52,14 +52,14 @@ const LHTSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList
-            reloadSlidingVerificationColor={'#ffffff'}
+          <SugnUpList
             slideCodeRef={slideCodeRef}
+            slideCodeColor={'#ffffff'}
             show={show}
             label={label}
             limit={limit}
             onChange={onChange}
-            SignUpForm={SignUpForm}
+            Form={SignUpForm}
           />
           <Button
             disabled={!valid}

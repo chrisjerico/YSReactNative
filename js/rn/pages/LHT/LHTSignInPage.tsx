@@ -1,8 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import FormComponent, {
-  FormComponentProps,
-} from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
@@ -11,7 +9,7 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInList from '../../public/views/tars/SignInList'
 
 const LHTSignInPage = () => {
   const {
@@ -37,12 +35,13 @@ const LHTSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
+          <SignInList
             slideCodeRef={slideCodeRef}
+            slideCodeColor={'#ffffff'}
             show={show}
             onChange={onChange}
             value={value}
-            SignInForm={SignInForm}
+            Form={SignInForm}
           />
           <Button
             disabled={!valid}

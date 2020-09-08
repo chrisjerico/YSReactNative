@@ -1,8 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import FormComponent, {
-  FormComponentProps,
-} from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -11,12 +9,12 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SugnUpFormList'
+import SugnUpList from '../../public/views/tars/SugnUpList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
-import SignInHeader from './views/SignInHeader'
+import SignHeader from './views/SignHeader'
 
 const WNZSignUpPage = () => {
   const menu = useRef(null)
@@ -42,7 +40,7 @@ const WNZSignUpPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <SignInHeader
+        <SignHeader
           onPressLeftTool={pop}
           onPressMenu={() => {
             menu?.current?.open()
@@ -52,14 +50,14 @@ const WNZSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList
-            reloadSlidingVerificationColor={'#f2f2f2'}
+          <SugnUpList
             slideCodeRef={slideCodeRef}
+            slideCodeColor={'#f2f2f2'}
             show={show}
             label={label}
             limit={limit}
             onChange={onChange}
-            SignUpForm={SignUpForm}
+            Form={SignUpForm}
           />
           <Button
             disabled={!valid}

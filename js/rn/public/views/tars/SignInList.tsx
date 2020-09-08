@@ -1,26 +1,26 @@
 import React from 'react'
-import CheckBox from './CheckBox'
-import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { FormComponentProps } from '../../components/tars/FormComponent'
+import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
+import CheckBox from './CheckBox'
 
-interface SignInFormList {
-  reloadSlidingVerificationColor?: string;
+interface SignInListProps {
+  slideCodeColor?: string;
   slideCodeRef: any;
   value: any;
   onChange: any;
   show: any;
-  SignInForm?: (props: FormComponentProps) => any;
+  Form?: (props: FormComponentProps) => any;
 }
 
-const SignInFormList = ({
+const SignInList = ({
   slideCodeRef,
   value,
   onChange,
   show,
-  SignInForm,
-  reloadSlidingVerificationColor
-}: SignInFormList) => {
+  Form,
+  slideCodeColor
+}: SignInListProps) => {
   const { remember, account, password } = value
 
   const {
@@ -34,7 +34,7 @@ const SignInFormList = ({
 
   return (
     <>
-      <SignInForm
+      <Form
         show={true}
         placeholder={'请输入会员帐号'}
         onChangeText={onChangeAccount}
@@ -46,7 +46,7 @@ const SignInFormList = ({
         enableLabel={false}
         leftIconTitle={'帐号'}
       />
-      <SignInForm
+      <Form
         enableLabel={false}
         show={true}
         placeholder={'请输入密码'}
@@ -70,13 +70,13 @@ const SignInFormList = ({
         ref={slideCodeRef}
         show={loginVCode}
         onChange={onChangeSlideCode}
-        backgroundColor={reloadSlidingVerificationColor}
+        backgroundColor={slideCodeColor}
         containerStyle={{
-          backgroundColor: reloadSlidingVerificationColor
+          backgroundColor: slideCodeColor
         }}
       />
     </>
   )
 }
 
-export default SignInFormList
+export default SignInList

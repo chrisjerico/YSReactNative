@@ -9,12 +9,12 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInList from '../../public/views/tars/SignInList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
-import SignInHeader from './views/SignInHeader'
+import SignHeader from './views/SignHeader'
 
 const WNZSignInPage = () => {
   const menu = useRef(null)
@@ -39,7 +39,7 @@ const WNZSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <SignInHeader
+        <SignHeader
           onPressLeftTool={popToRoot}
           onPressMenu={() => {
             menu?.current?.open()
@@ -49,13 +49,13 @@ const WNZSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
+          <SignInList
             slideCodeRef={slideCodeRef}
+            slideCodeColor={'#f2f2f2'}
             show={show}
             onChange={onChange}
             value={value}
-            SignInForm={SignInForm}
-            reloadSlidingVerificationColor={'#f2f2f2'}
+            Form={SignInForm}
           />
           <Button
             disabled={!valid}
