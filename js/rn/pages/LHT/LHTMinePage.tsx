@@ -21,12 +21,11 @@ import ProfileButton from './views/ProfileButton'
 const LHTMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
   const {
+    pickAvatarComponentRef,
+    onPressAvatar,
+    onSaveAvatarSuccess,
     value,
-    fetchAvatarList,
-    saveAvatar,
     sign,
-    openAvatarList,
-    closeAvatarList,
   } = useMinePage({
     homePage: PageName.LHTHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
@@ -40,9 +39,6 @@ const LHTMinePage = () => {
     isTest,
     avatar,
     unreadMsg,
-    avatarListLoading,
-    avatarListVisible,
-    avatarList,
     checkinSwitch
   } = value
 
@@ -60,12 +56,12 @@ const LHTMinePage = () => {
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
         showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
           showSignBadge={checkinSwitch == '1' ? true : false}
-          onPressAvatar={openAvatarList}
+          onPressAvatar={onPressAvatar}
           profileButtons={config?.profileButtons}
           name={usr}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
@@ -118,13 +114,10 @@ const LHTMinePage = () => {
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        ref={pickAvatarComponentRef}
         color={LHThemeColor.六合厅.themeColor}
-        loading={avatarListLoading}
-        visible={avatarListVisible}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        avatars={avatarList}
-        onPressSave={saveAvatar}
-        onPressCancel={closeAvatarList}
+        onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>
   )

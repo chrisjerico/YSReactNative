@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import APIRouter from '../../network/APIRouter'
-import { ToastError, ToastSuccess } from '../../tools/tars'
+import { ToastError } from '../../tools/tars'
 import useLogOut from './useLogOut'
+import { useRef } from 'react'
+import useRerender from './useRerender'
 
 interface DefaultUserCenterLogos {
   1: string; // 存款
@@ -35,6 +35,10 @@ interface UseMinePage {
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   // yellowBox
   console.disableYellowBox = true
+  // states
+  const pickAvatarComponentRef = useRef(null)
+  const { rerender } = useRerender()
+
   // stores
   const {
     avatar,
@@ -57,10 +61,6 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
       logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
     return Object.assign({}, ele, { logo: newLogo })
   })
-  // states
-  const [avatarListLoading, setAvatarListLoading] = useState(true)
-  const [avatarListVisible, setAvatarListVisible] = useState(false)
-  const [avatarList, setAvatarList] = useState([])
   // functions
   const { logOut } = useLogOut({
     onSuccess: () => {
@@ -71,58 +71,17 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
       console.log('--------登出失败--------', error)
     },
   })
-  const fetchAvatarList = async () => {
-    try {
-      setAvatarListLoading(true)
-      const response = await APIRouter.system_avatarList()
-      const avatarList = response?.data?.data ?? []
-      setAvatarList(avatarList)
-    } catch (error) {
-      console.log('-------error------', error)
-    } finally {
-      setAvatarListLoading(false)
-    }
-  }
 
-  const saveAvatar = async ({ url, filename }) => {
-    try {
-      UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
-      const value = await APIRouter.task_changeAvatar(filename)
-      if (value?.data?.code == 0) {
-        ToastSuccess('修改头像成功')
-      } else {
-        ToastError('修改头像失败')
-      }
-    } catch (error) {
-      ToastError('修改头像失败')
-      console.log('-------error------', error)
-    } finally {
-      setAvatarListVisible(false)
-    }
-  }
-
-  const openAvatarList = () => {
-    !isTest && setAvatarListVisible(true)
-  }
-  const closeAvatarList = () => {
-    setAvatarListVisible(false)
-  }
   const signOut = logOut
 
-  // effects
+  const onPressAvatar = () => pickAvatarComponentRef?.current?.open()
 
-  useEffect(() => {
-    console.log('----------a--------')
-    fetchAvatarList()
-  }, [])
+  const onSaveAvatarSuccess = rerender
 
   const value = {
     balance,
     uid,
     mobile_logo,
-    avatarListLoading,
-    avatarListVisible,
-    avatarList,
     userCenterItems,
     curLevelGrade,
     usr,
@@ -142,12 +101,11 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   }
 
   return {
+    pickAvatarComponentRef,
+    onPressAvatar,
+    onSaveAvatarSuccess,
     value,
     sign,
-    fetchAvatarList,
-    saveAvatar,
-    openAvatarList,
-    closeAvatarList,
   }
 }
 

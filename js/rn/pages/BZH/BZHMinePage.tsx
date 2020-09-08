@@ -21,12 +21,11 @@ import ProfileBlock from './views/ProfileBlock'
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
   const {
+    pickAvatarComponentRef,
+    onPressAvatar,
+    onSaveAvatarSuccess,
     value,
     sign,
-    fetchAvatarList,
-    saveAvatar,
-    openAvatarList,
-    closeAvatarList,
   } = useMinePage({
     homePage: PageName.BZHHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
@@ -40,9 +39,6 @@ const BZHMinePage = () => {
     isTest,
     avatar,
     unreadMsg,
-    avatarListLoading,
-    avatarListVisible,
-    avatarList,
   } = value
 
   const { signOut } = sign
@@ -73,15 +69,11 @@ const BZHMinePage = () => {
         style={{
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        refreshControl={
-          <RefreshControlComponent
-            onRefresh={fetchAvatarList}
-          />
-        }
+        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
       >
         <ProfileBlock
           balance={balance}
-          onPressAvatar={openAvatarList}
+          onPressAvatar={onPressAvatar}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
@@ -140,13 +132,10 @@ const BZHMinePage = () => {
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        ref={pickAvatarComponentRef}
         color={BZHThemeColor.宝石红.themeColor}
-        loading={avatarListLoading}
-        visible={avatarListVisible}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        avatars={avatarList}
-        onPressSave={saveAvatar}
-        onPressCancel={closeAvatarList}
+        onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>
   )

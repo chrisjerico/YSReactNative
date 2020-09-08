@@ -27,7 +27,7 @@ const WNZGameLobbyPage = ({ route }) => {
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <MineHeader showBackBtn={true} onPressBackBtn={pop} title={title} />
       </SafeAreaHeader>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <BannerBlock
           containerStyle={{ aspectRatio: 540 / 230 }}
           badgeStyle={{ top: scale(-230) }}
@@ -50,6 +50,8 @@ const WNZGameLobbyPage = ({ route }) => {
           }}
         />
         <FlatList
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
           style={{ marginTop: scale(45) }}
           data={games}
           numColumns={4}
