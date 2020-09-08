@@ -78,14 +78,14 @@ const useMinePage = ({ setProps, homePage, defaultUserCenterLogos }: UseMinePage
   })
   const fetchAvatarList = async () => {
     try {
-      setAvatarListLoading(true)
-      const response = await APIRouter.system_avatarList()
-      const avatarList = response?.data?.data ?? []
-      setAvatarList(avatarList)
+      // setAvatarListLoading(true)
+      // const response = await APIRouter.system_avatarList()
+      // const avatarList = response?.data?.data ?? []
+      // setAvatarList(avatarList)
     } catch (error) {
       console.log("-------error------", error)
     } finally {
-      setAvatarListLoading(false)
+      // setAvatarListLoading(false)
     }
   }
 
