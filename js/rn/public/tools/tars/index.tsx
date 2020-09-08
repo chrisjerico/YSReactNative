@@ -8,6 +8,7 @@ import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
 import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
+import {ugLog} from "../UgLog";
 
 interface SaveNativeUser {
   currentUser: any[];
@@ -62,15 +63,15 @@ export const saveNativeUser = async ({
         )
         break;
       case 'android':
-        const accountData = {
-          account: userName,
-          pwd: userPsw,
-          isRemember: isRememberPsd
-        }
+        // const accountData = {
+        //   account: userName,
+        //   pwd: userPsw,
+        //   isRemember: isRememberPsd
+        // }
         await ANHelper.callAsync(CMD.SAVE_DATA,
           {
             key: NA_DATA.LOGIN_INFO,
-            ...accountData,
+            ...currentUser[0],
           });
         break;
     }
