@@ -39,17 +39,16 @@ import LinearGradient from "react-native-linear-gradient";
 import UGUserModel from "../../redux/model/全局/UGUserModel";
 import ActivityComponent from "../../public/components/tars/ActivityComponent";
 import {getActivityPosition} from "../../public/tools/tars";
-import App from "react-native-safe-area-context/lib/typescript/example/App";
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import UGSysConfModel from "../../redux/model/全局/UGSysConfModel";
 
 const LLHomePage = ({setProps, navigation}) => {
     let {banner, notice, rankList, redBag, onlineNum, onRefresh, loading, floatAds} = useGetHomeInfo()
     const userStore = UGStore.globalProps.userInfo;
     const {uid = "", usr, balance, isTest}: UGUserModel = userStore
     const sysStore = UGStore.globalProps.sysConf;
-    const {mobile_logo = "", rankingListSwitch} = sysStore
     const [originalNoticeString, setOriginalNoticeString] = useState<string>()
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [show, setShow] = useState(false)
@@ -58,6 +57,12 @@ const LLHomePage = ({setProps, navigation}) => {
     const [categories, setCategories] = useState<string[]>()
     const systemStore = UGStore.globalProps.sysConf
     const [ads, setAds] = useState([])
+    const {
+        mobile_logo,
+        webName,
+        m_promote_pos,
+        rankingListSwitch,
+    }: UGSysConfModel = UGStore.globalProps.sysConf
 
     useEffect(() => {
         initPromotions()
@@ -103,7 +108,7 @@ const LLHomePage = ({setProps, navigation}) => {
                 user = await OCHelper.call('UGUserModel.currentUser');
                 break;
             case "android":
-                user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+                user = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.USER_INFO});
                 break;
         }
         if (!user) {
@@ -120,12 +125,12 @@ const LLHomePage = ({setProps, navigation}) => {
 
         })
         switch (Platform.OS) {
-          case 'ios':
-              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-            break;
-          case 'android':
-              ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
-            break;
+            case 'ios':
+                OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+                break;
+            case 'android':
+                ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
+                break;
         }
 
     }
@@ -153,19 +158,23 @@ const LLHomePage = ({setProps, navigation}) => {
                         style={{flex: 1}}>
                 <HomeHeaderButtonBar logoIcon={mobile_logo}/>
                 <HomeTabView/>
-                {sysStore.m_promote_pos && <TouchableOpacity
-                    style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}
-                    onPress={() => {
-                        push(PageName.PromotionListPage)
-                    }}>
-                    <Icon size={16} name={"gift"}/>
-                    <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
-                    <View style={{flex: 1}}/>
-                    <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
-                </TouchableOpacity>}
-                <View style={{backgroundColor: "#ffffff"}}>
-                    <PromotionsBlock horizontal={true} titleVisible={false}/>
-                </View>
+                {m_promote_pos &&
+                <>
+                    <TouchableOpacity
+                        style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}
+                        onPress={() => {
+                            push(PageName.PromotionListPage)
+                        }}>
+                        <Icon size={16} name={"gift"}/>
+                        <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
+                        <View style={{flex: 1}}/>
+                        <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                    </TouchableOpacity>
+                    <View style={{backgroundColor: "#ffffff"}}>
+                        <PromotionsBlock horizontal={true} titleVisible={false}/>
+                    </View>
+                </>
+                }
                 <ImageButton
                     imgStyle={{
                         height: 131,
@@ -275,7 +284,8 @@ const TurntableListItem = () => {
     const getTurntableList = async () => {
         try {
             const res = await APIRouter.activity_turntableList()
-            setTurntableList(res.data)
+            console.log("res111",res?.data?.data)
+            res?.data != null && setTurntableList(res?.data)
         } catch (error) {
 
         }
@@ -296,7 +306,7 @@ const TurntableListItem = () => {
                         },
                         {
                             text: "马上登录", onPress: () => {
-                                navigate(PageName.ZLLoginPage, {})
+                                navigate(PageName.LLLoginPage, {})
                             },
                         }
                     ])
@@ -307,31 +317,11 @@ const TurntableListItem = () => {
                             }, style: "cancel"
                         },
                         {
-                            text: "马上登录", onPress: () => PushHelper.pushLogin()
+                            text: "马上登录", onPress: () => navigate(PageName.LLLoginPage, {})
                         }
                     ])
                 } else {
-                    const turntableListModel = Object.assign({clsName: 'DZPModel'}, turntableList?.[0]);
-
-                    switch (Platform.OS) {
-                      case 'ios':
-                          OCHelper.call(({vc}) => ({
-                              vc: {
-                                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-                                  args2: [turntableListModel]
-                              },
-                              ret: {
-                                  selectors: 'SGBrowserView.showMoveView:yDistance:',
-                                  args1: [vc, 100],
-                              },
-                          }));
-
-                        break;
-                      case 'android':
-                          //TODO
-                        break;
-                    }
+                    PushHelper.pushWheel(turntableList?.data)
                 }
             }}>
                 <ImageBackground style={{width: 95, height: 95, position: 'absolute', top: height / 2, right: 20}}

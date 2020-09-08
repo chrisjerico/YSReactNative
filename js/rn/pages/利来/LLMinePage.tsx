@@ -25,8 +25,7 @@ import UGUserModel from "../../redux/model/全局/UGUserModel";
 import AppDefine from "../../public/define/AppDefine";
 
 const LLMinePage = ({navigation, setProps}) => {
-    const userStore = UGStore.globalProps.userInfo
-    const {uid = "", usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance, avatar} = userStore
+    const {usr, curLevelGrade, nextLevelGrade, curLevelInt, nextLevelInt, balance, avatar} = UGStore.globalProps.userInfo
     const {UGUserCenterItem} = useMemberItems()
     const [levelWidth, setLevelWidth] = useState(193)
     const [depositItem, setDepositItem] = useState<any>()
@@ -91,7 +90,7 @@ const LLMinePage = ({navigation, setProps}) => {
             <ScrollView bounces={false} style={{}}>
                 <SafeAreaView style={{backgroundColor: "#39150D", height: 172}}>
                     <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
-                           source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/zxkf.png"}}/>
+                           source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png"}}/>
                     <View style={{
                         backgroundColor: "#F3745B",
                         marginHorizontal: 8,
@@ -154,7 +153,7 @@ const LLMinePage = ({navigation, setProps}) => {
                                     color: "#ffffff",
                                     alignSelf: "center",
                                     textAlign: "center"
-                                }}>{parseInt(balance).toFixed(0)}</Text>
+                                }}>{isNaN(parseInt(balance))? 0 : parseInt(balance).toFixed(0)}</Text>
                                 <View style={{flex: 1}}/>
                                 <Icon size={18} style={{color: "#ffffff"}} name={"refresh"} onPress={() => refresh()}/>
                             </View>
