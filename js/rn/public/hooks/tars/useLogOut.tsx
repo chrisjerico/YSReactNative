@@ -32,13 +32,15 @@ const useLogOut = (options: Options = {}) => {
         UGStore.save()
 
       hideLoading()
-        onSuccess && onSuccess()
 
       switch (Platform.OS) {
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT)
-          break;
+          return;
       }
+
+      onSuccess && onSuccess()
+
     } catch (error) {
       hideLoading()
       onError && onError(error)

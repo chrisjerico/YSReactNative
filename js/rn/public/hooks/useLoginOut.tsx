@@ -30,6 +30,8 @@ const useLoginOut = (pageName: PageName) => {
 
       hideLoading()
 
+      console.log("---------------登出成功---------------")
+
       //安卓放这里执行
       switch (Platform.OS) {
         case 'android':
@@ -37,7 +39,6 @@ const useLoginOut = (pageName: PageName) => {
           break;
       }
 
-      console.log("---------------登出成功---------------")
       navigate(pageName, {})
 
     } catch (error) {
