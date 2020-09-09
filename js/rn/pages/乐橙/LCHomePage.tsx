@@ -60,9 +60,19 @@ const LCHomePage = ({navigation}) => {
     const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
     const [show, setShow] = useState(false)
     const [content, setContent] = useState("")
+    const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
     useEffect(() => {
         initPromotions()
+        const timer = setInterval(() => {
+            getRandomString()
+        }, 500)
+        return (() => clearInterval(timer))
     }, [])
+
+    const getRandomString = () => {
+        const num = ((2 + Math.random()) * 100000).toFixed(2)
+        setRandomString("¥ " + num)
+    }
 
     useEffect(() => {
         let string = ""
@@ -139,7 +149,8 @@ const LCHomePage = ({navigation}) => {
     return (
         <View style={{flex: 1}}>
             <HomeHeaderButtonBar/>
-            <ScrollView refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
+            <ScrollView showsVerticalScrollIndicator={false}
+                        refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
                                                         onRefresh={onRefresh}/>}
                         style={{flex: 1}}>
                 <Banner onlineNum={onlineNum} bannerData={banner}/>
@@ -153,13 +164,12 @@ const LCHomePage = ({navigation}) => {
                     paddingLeft: 5
                 }}>
                     <FastImage source={{uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png"}}
-                               style={{width: 12, height: 12}}/>
-                    <MarqueeHorizontal textStyle={{color: "black", fontSize: 13.2}}
+                               style={{width: 12, height: 12, marginRight: 4}}/>
+                    <MarqueeHorizontal textStyle={{color: "black", fontSize: 16}}
                                        bgContainerStyle={{backgroundColor: "white"}}
-                                       width={width - 60}
-                                       height={24}
-
-                                       speed={40}
+                                       width={width - 50}
+                                       height={18}
+                                       speed={60}
                                        onTextClick={() => {
                                            setShow(true)
                                            setContent(originalNoticeString)
@@ -167,24 +177,24 @@ const LCHomePage = ({navigation}) => {
                                        }}
                                        textList={noticeFormat}/>
                 </View>
-                <Banner onlineNum={onlineNum} bannerData={systemHomeAds} showOnlineCount={false} customHeight={150}/>
+                {systemHomeAds?.data && <Banner onlineNum={onlineNum} bannerData={systemHomeAds} showOnlineCount={false} customHeight={150}/>}
                 {homeGames?.data?.navs?.length > 0 && (
                     <NavBlock
                         navs={homeGames?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4)}
-                        containerStyle={{ alignItems: 'center' }}
+                        containerStyle={{alignItems: 'center'}}
                         renderNav={(item, index) => {
-                            const { icon, name, logo, gameId } = item
+                            const {icon, name, logo, gameId} = item
                             return (
                                 <GameButton
                                     showSecondLevelIcon={false}
                                     key={index}
-                                    containerStyle={{ width: '25%' }}
-                                    imageContainerStyle={{ width: '45%' }}
+                                    containerStyle={{width: '25%'}}
+                                    imageContainerStyle={{width: '45%'}}
                                     enableCircle={false}
                                     logo={icon ? icon : logo}
                                     title={name}
-                                    titleStyle={{ fontSize: scale(25) }}
-                                    titleContainerStyle={{ aspectRatio: 3 }}
+                                    titleStyle={{fontSize: scale(25)}}
+                                    titleContainerStyle={{aspectRatio: 3}}
                                     onPress={() => {
                                         if (gameId == 9) {
                                             push(PageName.JDPromotionListPage, {
@@ -202,13 +212,19 @@ const LCHomePage = ({navigation}) => {
                     />
                 )}
                 <HomeTabView/>
-                <View style={{flexDirection: "row", alignItems: "center"}}>
-                    <Icon size={16} name={"gift"}/>
-                    <Text style={{fontSize: 16, color: "#333333", padding: 10}} onPress={() => {
+                <View style={{flexDirection: "row", alignItems: "center", marginHorizontal: 10}}>
+                    <Icon style={{paddingRight: 4}} size={16} name={"gift"}/>
+                    <TouchableWithoutFeedback onPress={() => {
                         push(PageName.PromotionListPage)
-                    }}>优惠活动</Text>
+                    }}>
+                        <Text style={{fontSize: 16, color: "#333333", lineHeight: 22, marginVertical: 10}}>优惠活动</Text>
+                    </TouchableWithoutFeedback>
                     <View style={{flex: 1}}/>
-                    <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                    <TouchableWithoutFeedback onPress={() => {
+                        push(PageName.PromotionListPage)
+                    }}>
+                        <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                    </TouchableWithoutFeedback>
                 </View>
                 <View>
                     <PromotionsBlock/>
@@ -231,7 +247,7 @@ const LCHomePage = ({navigation}) => {
                                 marginVertical: 10
                             }}>投注排行榜</Text>
                         </View>
-                        <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                        <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
                                     width={Dimensions.get("screen").width - 24} ranks={rankList}/>
                     </SafeAreaView>}
                 <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
@@ -243,7 +259,7 @@ const LCHomePage = ({navigation}) => {
                     }}>🎁优惠活动</Text>
                 </View>
                 <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT © {webName} RESERVED</Text>
-                <View style={{height: 100}}></View>
+                <View style={{height: 100}}/>
             </ScrollView>
             <RedBagItem redBag={redBag}/>
             <TurntableListItem/>
@@ -456,7 +472,9 @@ const Banner = ({bannerData, onlineNum = 0, showOnlineCount = true, customHeight
         const timer = setInterval(() => {
             //@ts-ignore
             BannerRef?.current?.gotoNextPage()
-        }, 2000);
+        },
+            bannerData?.data?.interval ?
+                parseInt(bannerData?.data?.interval) : parseInt(bannerData?.info?.runtime) ? parseInt(bannerData?.info?.runtime) : 2000);
         return (() => {
             clearInterval(timer)
         })

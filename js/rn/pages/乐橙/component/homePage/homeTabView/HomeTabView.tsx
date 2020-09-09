@@ -13,6 +13,7 @@ import PushHelper from "../../../../../public/define/PushHelper";
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
+    const [height, setHeight] = useState(70)
     const userStore = UGStore.globalProps.userInfo;
     const {uid = ""} = userStore
 
@@ -37,6 +38,32 @@ export const HomeTabView = () => {
         }
     }
 
+    const calculateHeight = (index: number) => {
+        let h = 0
+        const list: List[] = games[index]?.list ? games[index]?.list : []
+        if (index == 0) {
+            h += 19
+            if (list[0]) {
+                h = h + 153
+            }
+            if (list[1]) {
+                h = h + 117
+            }
+            if (list[2]) {
+                h = h + 117
+            }
+            h = h + Math.ceil((list.length - 3) / 2) * 110 + 70
+        } else if (index == 1) {
+            if (list.length > 1) {
+                h += 108
+            }
+            h = h + Math.ceil((list.length - 2) / 3) * 100
+        } else {
+            h = Math.ceil((list.length) / 2) * 125 + 70
+        }
+        setHeight(h)
+    }
+
     const onPress = (list: List) => {
         list.seriesId != '1' ? thirdPartGamePress(list.seriesId, list.gameId) :
             list.gameId ?
@@ -55,9 +82,10 @@ export const HomeTabView = () => {
 
     return (
         <ScrollableTabView
+            onChangeTab={({i}) => calculateHeight(i)}
             tabBarUnderlineStyle={{height: 2, backgroundColor: "#3c3c3c"}}
             tabBarTextStyle={{color: "#3c3c3c"}}
-            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1}]}
+            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height}]}
             renderTabBar={() => <ScrollableTabBar/>}>
             {games.length > 0 ? games.map((item, index) => {
                 return getTab(item, index)

@@ -1,4 +1,4 @@
-import {SafeAreaView, View, Image, Text} from "react-native";
+import {SafeAreaView, View, Image, Text, StatusBar} from "react-native";
 import {LoginButtonBar} from "./LoginButtonBar";
 import * as React from "react";
 import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
@@ -13,6 +13,7 @@ export const HomeHeaderButtonBar = () => {
 
     return (
         <SafeAreaView style={{backgroundColor: "#FFFFFF"}}>
+            <StatusBar  barStyle="dark-content" translucent={true} />
             <View style={{flexDirection: "row", marginHorizontal: 10, backgroundColor: "#FFFFFF"}}>
                 <FastImage resizeMode={'contain'} style={{ width: 127, height: 40 }} source={{ uri: mobile_logo }} />
                 <View style={{flex: 1}}/>
