@@ -72,7 +72,7 @@ export class ANHelper extends ANEvent {
       })
     ])
 
-    ugLog('res[3]=', res[3])
+    //ugLog('res[3]=', res[3])
     const host = res[0]
     const siteId = res[1]
     const sysConf_ios = res[2] ?? {}

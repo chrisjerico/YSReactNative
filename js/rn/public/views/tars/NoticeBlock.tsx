@@ -19,7 +19,7 @@ interface NoticeBlockProps {
 
 const NoticeBlock = ({
   logo,
-  logoText = '公告',
+  logoText = '公 告',
   notices,
   containerStyle,
   onPressNotice,
