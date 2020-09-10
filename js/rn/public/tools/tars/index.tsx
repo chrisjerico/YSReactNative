@@ -2,12 +2,12 @@ import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
 
-export const validPassword = (password: string, pass_limit: number) => {
+export const validPassword = (password: string, pass_limit: string) => {
   if (password) {
     if (pass_limit) {
-      if (pass_limit == 1) {
+      if (pass_limit == '1') {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == 2]) {
+      } else if ([pass_limit == '2']) {
         return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
       } else {
         return false
@@ -94,3 +94,4 @@ export const stringToNumber = (x: string) => {
   if (isNaN(parsed)) { return 0; }
   return parsed
 }
+

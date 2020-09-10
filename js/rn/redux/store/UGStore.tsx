@@ -9,6 +9,7 @@ import UGUserModel from '../model/全局/UGUserModel';
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer';
 import { AsyncStorageKey } from './IGlobalStateHelper';
 import UGSysConfModel from '../model/全局/UGSysConfModel';
+import { UGSysModel } from '../model/全局/UGSysModel';
 
 // 整个State的树结构
 
@@ -20,6 +21,7 @@ export interface IGlobalState {
   sign?: UGSignModel;
   gameLobby?: UGGameLobbyModel[]; // 遊戲大廳
   banner?: UGBannerModel;
+  sys?: UGSysModel;
   // value?: any;
 }
 
@@ -33,13 +35,15 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.sign && (state.sign = act.sign);
     act.gameLobby && (state.gameLobby = act.gameLobby);
     act.banner && (state.banner = act.banner);
+    act.sys && (state.sys = act.sys);
     act.page && (state[act.page] = act.props);
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf };
     state.userInfo = { ...state.userInfo, ...act.userInfo };
     state.sign = { ...state.sign, ...act.sign };
     act.gameLobby && (state.gameLobby = act.gameLobby);
-    act.banner && (state.banner = act.banner);
+    state.banner = { ...state.banner, ...act.banner };
+    state.sys = { ...state.sys, ...act.sys };
     act.page && (state[act.page] = { ...state[act.page], ...act.props });
   } else {
     // 自定义Reducer写在这里。。。
@@ -58,12 +62,13 @@ export interface UGAction<P = {}> extends Action {
   sign?: UGSignModel; // 登入註冊訊息 
   gameLobby?: UGGameLobbyModel[]; // 遊戲大廳
   banner?: UGBannerModel;
+  sys?: UGSysModel;
   // value?: any;// 其他 example
 }
 
 export class UGStore {
   // Store
-  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any, gameLobby: [] };
+  static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any, gameLobby: [], sys: {} as any };
 
   // 发送通知
   private static callbacks: { page: PageName, callback: () => void }[] = [];

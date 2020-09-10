@@ -35,7 +35,7 @@ const BZHHomePage = () => {
     loading,
     refreshing,
     userInfo,
-    sysConf,
+    sys,
     bannersInterval,
     onlineNum,
     banners,
@@ -57,10 +57,11 @@ const BZHHomePage = () => {
   const {
     mobile_logo,
     webName,
-    m_promote_pos,
-    rankingListSwitch,
-    adSliderTimer,
-  } = sysConf
+    showCoupon,
+    rankingListType,
+    midBannerTimer
+  } = sys
+
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
   if (loading) {
@@ -170,7 +171,7 @@ const BZHHomePage = () => {
           />
           <BannerBlock
             visible={midBanners?.length > 0}
-            autoplayTimeout={adSliderTimer}
+            autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
@@ -316,7 +317,7 @@ const BZHHomePage = () => {
             }}
           />
           <CouponBlock
-            visible={m_promote_pos}
+            visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
             containerStyle={{
               paddingHorizontal: '1%',
@@ -362,7 +363,7 @@ const BZHHomePage = () => {
             }}
           />
           <AnimatedRankComponent
-            type={rankingListSwitch}
+            type={rankingListType}
             containerStyle={styles.subComponent}
             iconTitleContainerStyle={{
               backgroundColor: '#ffffff',

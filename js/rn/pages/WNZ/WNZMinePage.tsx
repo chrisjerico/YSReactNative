@@ -7,9 +7,8 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import {
-  UGUserCenterType
-} from '../../redux/model/全局/UGSysConfModel'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import MineHeaderComponent from './components/MineHeaderComponent'
 import config from './config'
@@ -17,7 +16,6 @@ import ButtonGroup from './views/ButtonGroup'
 import Menu from './views/Menu'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
-import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
@@ -42,12 +40,10 @@ const WNZMinePage = () => {
     balance,
   } = value
 
-  const {
-    signOut
-  } = sign
+  const { signOut } = sign
 
   // data handle
-  const tools = userCenterItems?.sort((a, b) => a?.code - b?.code) ?? []
+  const tools = userCenterItems?.sort((a, b) => a?.sorts - b?.sorts) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
@@ -60,7 +56,7 @@ const WNZMinePage = () => {
       UGUserCenterType.建议反馈,
       UGUserCenterType.存款,
       UGUserCenterType.取款,
-    ].includes(ele.code)
+    ].includes(ele?.code)
   )
 
   const userTools = otherTools?.filter((ele) =>
@@ -73,7 +69,7 @@ const WNZMinePage = () => {
       UGUserCenterType.聊天室,
       UGUserCenterType.在线客服,
       UGUserCenterType.QQ客服,
-    ].includes(ele.code)
+    ].includes(ele?.code)
   )
 
   const recordTools = otherTools?.filter((ele) =>
@@ -83,7 +79,7 @@ const WNZMinePage = () => {
       UGUserCenterType.活动彩金,
       UGUserCenterType.彩票注单记录,
       UGUserCenterType.长龙助手,
-    ].includes(ele.code)
+    ].includes(ele?.code)
   )
 
   const activityTools = otherTools?.filter((ele) =>
@@ -91,7 +87,7 @@ const WNZMinePage = () => {
       UGUserCenterType.任务中心,
       UGUserCenterType.游戏大厅,
       UGUserCenterType.推荐收益,
-    ].includes(ele.code)
+    ].includes(ele?.code)
   )
   return (
     <>
@@ -218,7 +214,7 @@ const WNZMinePage = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f2f2f2',
-  }
+  },
 })
 
 export default WNZMinePage

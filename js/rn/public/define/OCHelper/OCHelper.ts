@@ -71,11 +71,7 @@ export class OCHelper extends OCEvent {
       const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
       const gameLobby = net_response[2]?.data?.data ?? []
       const banner = net_response[3]?.data?.data ?? {}
-
-      console.log("-----------sysConf_ios------------", sysConf_ios)
-      console.log("-----------sysConf_net------------", sysConf_net)
-
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner });
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net });
       UGStore.save();
       // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
       OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {

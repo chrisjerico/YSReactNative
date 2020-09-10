@@ -51,7 +51,6 @@ const LHTHomePage = () => {
     loading,
     refreshing,
     userInfo,
-    sysConf,
     lotteryDate,
     bannersInterval,
     onlineNum,
@@ -68,16 +67,17 @@ const LHTHomePage = () => {
     redBag,
     redBagLogo,
     roulette,
+    sys
   } = value
   const { uid, usr, balance, isTest, avatar } = userInfo
+
   const {
     mobile_logo,
     webName,
-    m_promote_pos,
-    rankingListSwitch,
-    adSliderTimer,
-    appDownloadUrl,
-  } = sysConf
+    showCoupon,
+    rankingListType,
+    appDownloadUrl
+  } = sys
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -91,7 +91,6 @@ const LHTHomePage = () => {
     ?.concat(config?.moreLottery)
     ?.filter((item) => item.selected)
 
-  console.log("--------LHTHomePage--------")
   if (loading) {
     return <ProgressCircle />
   } else {
@@ -308,7 +307,7 @@ const LHTHomePage = () => {
               }}
             />
             <CouponBlock
-              visible={m_promote_pos}
+              visible={showCoupon}
               onPressMore={goToJDPromotionListPage}
               containerStyle={styles.subComponent}
               listContainerStyle={{ borderRadius: scale(15) }}
@@ -342,7 +341,7 @@ const LHTHomePage = () => {
               }}
             />
             <AnimatedRankComponent
-              type={rankingListSwitch}
+              type={rankingListType}
               containerStyle={{ marginVertical: scale(10) }}
               iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}

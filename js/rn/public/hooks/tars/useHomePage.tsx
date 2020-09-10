@@ -8,6 +8,7 @@ import { ToastError, ToastSuccess } from '../../tools/tars'
 import useTryPlay from '../useTryPlay'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
+import useSys from './useSys'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any;
@@ -63,9 +64,9 @@ const useHomePage = ({
   })
   const signOut = logOut
 
+  const { sys } = useSys({})
   // stores
   const userInfo = UGStore.globalProps.userInfo
-  const sysConf = UGStore.globalProps.sysConf
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   // data handle
@@ -140,7 +141,7 @@ const useHomePage = ({
     roulette,
     floatAds,
     userInfo,
-    sysConf
+    sys
   }
 
   return {

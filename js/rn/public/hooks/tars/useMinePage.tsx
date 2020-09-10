@@ -5,6 +5,7 @@ import { ToastError } from '../../tools/tars'
 import useLogOut from './useLogOut'
 import { useRef } from 'react'
 import useRerender from './useRerender'
+import useSys from './useSys'
 
 interface DefaultUserCenterLogos {
   1: string; // 存款
@@ -40,6 +41,9 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   const { rerender } = useRerender()
 
   // stores
+  const { sys } = useSys({
+    defaultUserCenterLogos
+  })
   const {
     avatar,
     usr,
@@ -54,13 +58,13 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     curLevelTitle,
     nextLevelTitle,
   } = UGStore.globalProps.userInfo
-  const { mobile_logo, userCenter, checkinSwitch } = UGStore.globalProps.sysConf
-  const userCenterItems = userCenter?.map((ele) => {
-    const { logo, code } = ele
-    const newLogo =
-      logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
-    return Object.assign({}, ele, { logo: newLogo })
-  })
+  const { mobile_logo, userCenterItems, showSign } = sys
+  // const userCenterItems = userCenter?.map((ele) => {
+  //   const { logo, code } = ele
+  //   const newLogo =
+  //     logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
+  //   return Object.assign({}, ele, { logo: newLogo })
+  // })
   // functions
   const { logOut } = useLogOut({
     onSuccess: () => {
@@ -93,7 +97,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     taskRewardTotal,
     curLevelTitle,
     nextLevelTitle,
-    checkinSwitch,
+    showSign,
   }
 
   const sign = {

@@ -7,6 +7,8 @@ import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
 import useLogIn from './useLogIn'
 import useTryPlay from './useTryPlay'
+import useSys from './useSys'
+import { LoginTo } from '../../models/Types'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -25,8 +27,9 @@ const useSignInPage = ({
 }: UseSignInPage) => {
 
   // stores
-  const { sysConf, sign } = UGStore?.globalProps ?? {}
-  const { loginVCode, login_to }: UGSysConfModel = sysConf
+  const { sys } = useSys({})
+  const sign = UGStore?.globalProps.sign
+  const { loginVCode, loginTo } = sys
   // states
   const [account, setAccount] = useState(sign?.account)
   const [password, setPassword] = useState(sign?.password)
@@ -52,7 +55,7 @@ const useSignInPage = ({
       ToastStatus('正在登录...')
     },
     onSuccess: () => {
-      if (parseInt(login_to)) {
+      if (loginTo == LoginTo.首页) {
         goToHomePage()
       } else {
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
@@ -146,10 +149,6 @@ const useSignInPage = ({
     goToRegisterPage,
   }
 
-  // const ref = {
-  //   slideCode: slideCodeRef
-  // }
-
   const show = {
     loginVCode
   }
@@ -164,7 +163,6 @@ const useSignInPage = ({
     goTo,
     onChange,
     value,
-    // ref,
     valid,
     show,
     sign: _sign

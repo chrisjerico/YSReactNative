@@ -58,15 +58,16 @@ const useHome = () => {
 
   const updateStore = (response: any[]) => {
     const gameLobby = response[11]?.data?.data ?? UGStore.globalProps.gameLobby
-    const sysConf = response[12]?.data?.data ?? UGStore.globalProps.sysConf
-    const {
-      loginVCode,
-      login_to,
-      adSliderTimer,
-      appDownloadUrl
-    } = sysConf
+    const sys = response[12]?.data?.data ?? UGStore.globalProps.sys
+    // const {
+    //   loginVCode,
+    //   login_to,
+    //   adSliderTimer,
+    //   appDownloadUrl
+    // } = sysConf
     const banner = response[13]?.data?.data ?? UGStore.globalProps.banner
-    UGStore.dispatch({ type: 'merge', sysConf: { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl }, gameLobby, banner })
+    // sysConf: { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl },
+    UGStore.dispatch({ type: 'merge', gameLobby, banner, sys })
     UGStore.save()
   }
 

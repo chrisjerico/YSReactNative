@@ -1,31 +1,3 @@
-export interface SystemConfigModel {
-  code: number;
-  msg: string;
-  data?: Data;
-  info: Info;
-}
-
-export interface Info {
-  sqlList: string[];
-  debug: Debug;
-  traceBack: TraceBack;
-  runtime: string;
-}
-
-export interface TraceBack {
-  loader: string;
-  initDi: string;
-  settings?: any;
-  access?: any;
-  dispatch?: any;
-}
-
-export interface Debug {
-  file: string;
-  line: number;
-  code: number;
-}
-
 export interface LhcPriceList {
   alias: string;
   id: string;
@@ -39,7 +11,7 @@ export interface MobileMenu {
   isHot: number;
   name: string;
   path: string;
-  sort: number;
+  sort: string;
   status: number;
 }
 
@@ -47,8 +19,10 @@ export interface UserCenter {
   category: string;
   code: string;
   id: string;
+  link_url: string;
   logo: string;
   name: string;
+  parent_id: string;
   show_list_style: string;
   site_id: string;
   site_ids: string;
@@ -56,7 +30,7 @@ export interface UserCenter {
   status: string;
 }
 
-export interface Data {
+export interface UGSysModel {
   activeReturnCoinRatio: number;
   activeReturnCoinStatus: boolean;
   adSliderTimer: string;
@@ -71,9 +45,11 @@ export interface Data {
   appPopupQqImg: string;
   appPopupQqNum: string;
   appPopupWechatImg: string;
-  appPopupWechatNum: string;
+  appPopupWechatNum?: any;
+  appSelectType: string;
   appdownloadbar: string;
   autoTransferLimit: number;
+  balanceDecimal: boolean;
   betAmountIsDecimal: boolean;
   chaseNumber: string;
   chatFollowSwitch: boolean;
@@ -84,11 +60,14 @@ export interface Data {
   chatRoomSwitch: boolean;
   checkinSwitch: string;
   closeregreason: string;
+  currency: string;
   domainBindAgentId: number;
   easyRememberDomain: string;
   googleVerifier: boolean;
   hide_reco: string;
   host: string;
+  inviteCodeSwitch: string;
+  inviteWord: string;
   iosRelease: boolean;
   isIntToMoney: string;
   lhcPriceList: LhcPriceList[];
@@ -125,17 +104,19 @@ export interface Data {
   reg_name: string;
   reg_phone: string;
   reg_qq: string;
-  reg_vcode: string;
+  reg_vcode: number;
   reg_wx: string;
   selectNumber: string;
   serviceQQ1: string;
   serviceQQ2: string;
   shortCut: string;
   shortCutIcon: string;
+  showNavigationBar: string;
   smsVerify: string;
   switchAgentRecharge: boolean;
   switchAutoTransfer: boolean;
   switchShowActivityCategory: boolean;
+  switchShowFriendReferral: string;
   userCenter: UserCenter[];
   webName: string;
   yuebaoName: string;

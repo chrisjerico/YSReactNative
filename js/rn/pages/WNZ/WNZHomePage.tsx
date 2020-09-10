@@ -59,7 +59,7 @@ const WNZHomePage = () => {
     loading,
     refreshing,
     userInfo,
-    sysConf,
+    sys,
     bannersInterval,
     onlineNum,
     banners,
@@ -75,19 +75,20 @@ const WNZHomePage = () => {
     redBagLogo,
     roulette,
     officialGames,
-    customiseGames,
+    customiseGames
   } = value
 
   const { signOut } = sign
 
   const { uid, usr, balance, isTest } = userInfo
+
   const {
     mobile_logo,
     webName,
-    m_promote_pos,
-    rankingListSwitch,
-    adSliderTimer,
-  } = sysConf
+    showCoupon,
+    rankingListType,
+    midBannerTimer
+  } = sys
 
   let homeGamesConcat = []
   homeGames.forEach(
@@ -120,8 +121,8 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              PushHelper.pushRightMenu('1')
-              //menu?.current?.open()
+              //PushHelper.pushRightMenu('1')
+              menu?.current?.open()
             }}
             onPressComment={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
@@ -226,7 +227,7 @@ const WNZHomePage = () => {
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5) }}
             visible={midBanners?.length > 0}
-            autoplayTimeout={adSliderTimer}
+            autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
@@ -351,7 +352,7 @@ const WNZHomePage = () => {
             }}
           />
           <CouponBlock
-            visible={m_promote_pos}
+            visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
             containerStyle={styles.subComponent}
             coupons={coupons}
@@ -384,7 +385,7 @@ const WNZHomePage = () => {
             }}
           />
           <AnimatedRankComponent
-            type={rankingListSwitch}
+            type={rankingListType}
             rankLists={rankLists}
             rankContainerStyle={{ borderRadius: 0 }}
             initialAnimatedHeight={scale(0)}

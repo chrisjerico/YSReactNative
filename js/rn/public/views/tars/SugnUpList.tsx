@@ -1,34 +1,67 @@
 import React from 'react'
-import AgentRedButtonComponent from "../../components/tars/AgentRedButtonComponent"
-import { FormComponentProps } from "../../components/tars/FormComponent"
-import ReloadSlidingVerification from "../../components/tars/ReloadSlidingVerification"
-import { scale } from "../../tools/Scale"
+import AgentRedButtonComponent from '../../components/tars/AgentRedButtonComponent'
+import { FormComponentProps } from '../../components/tars/FormComponent'
+import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
+import { scale } from '../../tools/Scale'
+
+interface Show {
+  showRecommendGuy: boolean;
+  showName: boolean;
+  showFundPassword: boolean;
+  showQQ: boolean;
+  showWx: boolean;
+  showPhoneNumber: boolean;
+  showEmail: boolean;
+  showSlideCode: boolean;
+  showAgentButton: boolean;
+  showSms: boolean;
+}
+
+interface Label {
+  passwordLebel: string;
+  recommendGuyLabel: string;
+  confirmPasswordLabel: string;
+  fundPasswordLabel: string;
+  nameLabel: string;
+  imageCodeLabel: string;
+  emailLabel: string;
+  phoneNumberLabel: string;
+  qqLabel: string;
+  wxLabel: string;
+}
 
 interface SignUpListProps {
   slideCodeColor: string;
   slideCodeRef: any;
-  show: any;
+  show: Show;
   onChange: any;
-  label: any;
+  label: Label;
   limit: any;
   Form?: (props: FormComponentProps) => any;
 }
 
-const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit, Form = () => { return null } }: SignUpListProps) => {
-
+const SignUpList = ({
+  slideCodeColor,
+  show,
+  onChange,
+  label,
+  slideCodeRef,
+  limit,
+  Form = () => {
+    return null
+  },
+}: SignUpListProps) => {
   const {
     showRecommendGuy,
     showName,
-    showfundpwd,
+    showFundPassword,
     showQQ,
     showWx,
     showEmail,
-    showPhone,
+    showPhoneNumber,
     showSms,
     showSlideCode,
-    showImageCaptcha,
-    showImageTouchCaptcha,
-    agentRegbutton,
+    showAgentButton,
   } = show
   const {
     onChangeRecommendGuy,
@@ -41,7 +74,6 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
     onChaneWeChat,
     onChanePhone,
     onChangeEmail,
-    onChangeImageCode,
     onChaneSms,
     onChangeSlideCode,
     onChangeAgent,
@@ -51,12 +83,11 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
     recommendGuyLabel,
     passwordLebel,
     confirmPasswordLabel,
-    fundpwdLabel,
-    realNameLabel,
-    imageCodeLabel,
+    fundPasswordLabel,
+    nameLabel,
     emailLabel,
-    phoneLabel,
-    wechatLabel,
+    phoneNumberLabel,
+    wxLabel,
     qqLabel,
   } = label
 
@@ -104,7 +135,7 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
       <Form
         leftIconName={'user'}
         onChangeText={onChaneRealName}
-        label={realNameLabel}
+        label={nameLabel}
         placeholder={'真实姓名'}
         show={showName}
         leftIconTitle={'真实姓名'}
@@ -112,10 +143,10 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
       <Form
         leftIconName={'lock'}
         onChangeText={onChaneFundPassword}
-        label={fundpwdLabel}
+        label={fundPasswordLabel}
         placeholder={'取款密码'}
         showRightIcon
-        show={showfundpwd}
+        show={showFundPassword}
         maxLength={4}
         rightIconType={'eye'}
         leftIconTitle={'取款密码'}
@@ -137,7 +168,7 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
           type: 'font-awesome',
         }}
         onChangeText={onChaneWeChat}
-        label={wechatLabel}
+        label={wxLabel}
         placeholder={'微信号'}
         leftIconTitle={'微信号'}
         show={showWx}
@@ -145,9 +176,9 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
       <Form
         leftIconName={'smartphone'}
         onChangeText={onChanePhone}
-        label={phoneLabel}
+        label={phoneNumberLabel}
         placeholder={'手机号'}
-        show={showPhone}
+        show={showPhoneNumber}
         leftIconTitle={'手机号码'}
       />
       <Form
@@ -163,18 +194,6 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
       />
       <Form
         leftIconName={'lock'}
-        onChangeText={onChangeImageCode}
-        label={imageCodeLabel}
-        placeholder={showImageTouchCaptcha ? '点击显示验证码' : '验证码'}
-        show={showImageCaptcha || showImageTouchCaptcha}
-        showRightIcon={true}
-        rightIconType={
-          showImageTouchCaptcha ? 'touchImgCaptcha' : 'imgCaptcha'
-        }
-        maxLength={4}
-      />
-      <Form
-        leftIconName={'lock'}
         onChangeText={onChaneSms}
         placeholder={'短信验证码'}
         show={showSms}
@@ -182,7 +201,7 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
         rightIconType={'sms'}
       />
       <AgentRedButtonComponent
-        show={parseInt(agentRegbutton) ? true : false}
+        show={showAgentButton}
         onChangeAgent={onChangeAgent}
         containerStyle={{ marginTop: scale(20) }}
       />
@@ -192,12 +211,11 @@ const SignUpList = ({ slideCodeColor, show, onChange, label, slideCodeRef, limit
         onChange={onChangeSlideCode}
         backgroundColor={slideCodeColor}
         containerStyle={{
-          backgroundColor: slideCodeColor
+          backgroundColor: slideCodeColor,
         }}
       />
     </>
   )
 }
-
 
 export default SignUpList

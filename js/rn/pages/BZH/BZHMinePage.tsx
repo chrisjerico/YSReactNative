@@ -28,7 +28,7 @@ const BZHMinePage = () => {
     sign,
   } = useMinePage({
     homePage: PageName.BZHHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
+    defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
   const {

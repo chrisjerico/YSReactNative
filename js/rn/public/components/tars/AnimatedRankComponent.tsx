@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { RankingListType } from '../../models/Types'
 import { scale } from '../../tools/Scale'
 
 interface RankList {
@@ -17,7 +18,7 @@ interface AnimatedRankComponentProps {
   titleConatinerStyle?: ViewStyle | ViewStyle[];
   rankLists: RankList[];
   duration?: number;
-  type: number;
+  type: RankingListType;
   initialAnimatedHeight?: number;
   finalAnimatedHeight?: number;
 }
@@ -60,7 +61,7 @@ const AnimatedRankComponent = ({
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
           <FontAwesome name={'bar-chart'} size={scale(20)} />
           <Text style={styles.iconText}>
-            {type == 1 ? '中奖排行榜' : '投注排行榜'}
+            {type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}
           </Text>
         </View>
         <View style={[styles.rankContainer, rankContainerStyle]}>
@@ -73,7 +74,7 @@ const AnimatedRankComponent = ({
             </View>
             <View style={styles.textContainer}>
               <Text style={styles.title}>
-                {type == 1 ? '中奖金额' : '投注金额'}
+                {type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}
               </Text>
             </View>
           </View>
