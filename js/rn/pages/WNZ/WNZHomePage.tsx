@@ -121,7 +121,6 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              //PushHelper.pushRightMenu('1')
               menu?.current?.open()
             }}
             onPressComment={() => {

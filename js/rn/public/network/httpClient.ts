@@ -98,6 +98,7 @@ httpClient.interceptors.response.use(
       ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
         case 401://请登录后再访问, 帐号已被登出
+          console.log("-----------401---------")
           switch (Platform.OS) {
             case "ios":
               OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {

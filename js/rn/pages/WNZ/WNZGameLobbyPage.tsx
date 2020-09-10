@@ -58,7 +58,6 @@ const WNZGameLobbyPage = ({ route }) => {
           numColumns={4}
           renderItem={({ item }) => {
             const { title, pic, id } = item
-            console.log(item)
             return (
               <GameButton
                 title={title}
