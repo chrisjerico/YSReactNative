@@ -272,7 +272,7 @@ const WNZHomePage = () => {
               const { logo, name, hotIcon, tipFlag, subType, icon } = item
               const flagType = parseInt(tipFlag)
               return (
-                <View key={index} style={styles.gameContainer}>
+                <View style={styles.gameContainer}>
                   <GameButton
                     logo={icon || logo}
                     showSecondLevelIcon={subType ? true : false}

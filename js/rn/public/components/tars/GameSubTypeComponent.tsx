@@ -81,6 +81,7 @@ interface GameSubTypeComponentProps {
   numColumns: number;
   subTypeNumColumns: number;
   listKey: string;
+  contentContainerStyle?: ViewStyle | ViewStyle[];
 }
 
 interface RenderSubType {
@@ -96,7 +97,8 @@ const GameSubTypeComponent = ({
   subTypeContainerStyle,
   numColumns,
   subTypeNumColumns,
-  listKey
+  listKey,
+  contentContainerStyle
 }: GameSubTypeComponentProps) => {
 
   const [indexHistory, setIndexHistory] = useState(-1)
@@ -124,6 +126,7 @@ const GameSubTypeComponent = ({
   return (
     <View style={containerStyle}>
       <FlatList
+        contentContainerStyle={contentContainerStyle}
         legacyImplementation={true}
         removeClippedSubviews={true}
         listKey={listKey + 'mainGames'}
@@ -149,6 +152,7 @@ const GameSubTypeComponent = ({
         renderItem={renderSubType}
       />
       <FlatList
+        contentContainerStyle={contentContainerStyle}
         legacyImplementation
         removeClippedSubviews={true}
         listKey={listKey + 'subGames'}

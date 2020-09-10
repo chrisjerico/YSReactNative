@@ -11,16 +11,17 @@ import { pop } from '../../public/navigation/RootNavigation'
 import GameButton from '../../public/views/tars/GameButton'
 import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../../redux/model/全局/UGSeriesId'
+import { stringToNumber } from '../../public/tools/tars'
 
 const WNZGameLobbyPage = ({ route }) => {
   const { title } = route?.params ?? { title: '棋牌游戏' }
 
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
-  const bannersInterval = parseInt(banner?.interval)
+  const bannersInterval = stringToNumber(banner?.interval)
   const banners = banner?.list ?? []
   const item = gameLobby?.find((item: any) => title.includes(item?.categoryName))
-  const { games, categoryName } = item
+  const { games, categoryName } = item ?? {}
 
   return (
     <>

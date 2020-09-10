@@ -38,6 +38,8 @@ interface GameButtonProps {
   localLogo?: any;
   useLocalLogo?: boolean;
   flagContainer?: ViewStyle | ViewStyle[];
+  circleContainerStyle?: ViewStyle | ViewStyle[];
+
 }
 
 interface DefaultFlag {
@@ -97,7 +99,8 @@ const GameButton = (props: GameButtonProps) => {
     unreadMsg,
     localLogo,
     useLocalLogo = false,
-    flagContainer
+    flagContainer,
+    circleContainerStyle
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -109,6 +112,7 @@ const GameButton = (props: GameButtonProps) => {
               {
                 backgroundColor: circleColor ? circleColor : '#ACD6FF',
               },
+              circleContainerStyle
             ]}
           >
             <View style={[styles.imageContainer, imageContainerStyle]}>
