@@ -120,7 +120,8 @@ const WNZHomePage = () => {
             logo={mobile_logo}
             balance={balance}
             onPressMenu={() => {
-              menu?.current?.open()
+              PushHelper.pushRightMenu('1')
+              //menu?.current?.open()
             }}
             onPressComment={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.聊天室)

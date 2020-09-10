@@ -20,6 +20,12 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 
+export enum PushRightMenuFrom {
+  首頁 = '1',
+  彩種 = '2',
+}
+
+
 interface PushHomeGame {
   seriesId: string | number;
   gameId: string | number;
@@ -56,6 +62,10 @@ export default class PushHelper {
     )
   }
   // 右側選單
+  static pushRightMenu(from: '1' | '2') {
+    if (Platform.OS != 'ios') return;
+    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
+  }
 
   // 輪盤
   static async pushWheel(turntableList: PushWheel[]) {
