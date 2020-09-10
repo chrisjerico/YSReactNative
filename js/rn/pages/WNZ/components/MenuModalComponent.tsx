@@ -34,6 +34,10 @@ const MenuModalComponent = (
       animationIn={'slideInRight'}
       animationOut={'slideOutRight'}
       style={{ width: '100%' }}
+      animationInTiming={700}
+      animationOutTiming={700}
+      useNativeDriver={true}
+      hideModalContentWhileAnimating={true}
     >
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <TouchableWithoutFeedback

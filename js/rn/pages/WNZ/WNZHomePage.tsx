@@ -109,7 +109,12 @@ const WNZHomePage = () => {
   ]
 
   if (loading) {
-    return <ProgressCircle />
+    return (
+      <>
+        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} />
+        <ProgressCircle />
+      </>
+    )
   } else {
     return (
       <>
