@@ -2,6 +2,11 @@ import AppDefine from '../AppDefine';
 import {ANEvent} from './ANEvent';
 import {httpClient} from "../../network/httpClient";
 import {CMD} from "./hp/CmdDefine";
+import {UGUserCenterItem} from "../../../redux/model/全局/UGSysConfModel";
+import APIRouter from "../../network/APIRouter";
+import {UGStore} from "../../../redux/store/UGStore";
+import {NA_DATA} from "./hp/DataDefine";
+import {ugLog} from "../../tools/UgLog";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
@@ -41,18 +46,60 @@ export class ANHelper extends ANEvent {
     );
   }
 
-  static setup() {
+  static async setup() {
     super.setup();
 
-    // 设置接口域名
-    this.callAsync(CMD.APP_HOST).then((host?: string) => {
-      AppDefine.host = host;
-      httpClient.defaults.baseURL = host
-    });
+    // 获取系统配置信息
+    const res = await Promise.all([
+      // 设置接口域名
+      this.callAsync(CMD.APP_HOST).catch((error) => {
+        ugLog('APP_HOST=', error)
+      }),
 
     // 设置站点编号
-    this.callAsync(CMD.APP_SITE).then((siteId?: string) => {
-      AppDefine.siteId = siteId;
-    });
+    this.callAsync(CMD.APP_SITE).catch((error) => {
+      ugLog('APP_SITE=', error)
+    }),
+
+    // 加载系统设置
+    this.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG}).catch((error) => {
+      ugLog('CONFIG=', error)
+    }),
+
+      //加载用户中心条目信息
+      ANHelper.callAsync(CMD.ASK_MINE_ITEMS).catch((error) => {
+        ugLog('ASK_MINE_ITEMS=', error)
+      })
+    ])
+
+    //ugLog('res[3]=', res[3])
+    const host = res[0]
+    const siteId = res[1]
+    const sysConf_ios = res[2] ?? {}
+    const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
+
+    AppDefine.host = host;
+    httpClient.defaults.baseURL = host
+    AppDefine.siteId = siteId;
+    // net
+    const sysResponse = await Promise.all([APIRouter.user_info().catch(
+      (error) => {
+        ugLog('user response =', error)
+      }
+    ), APIRouter.system_config().catch(
+      (error) => {
+        ugLog('user response =', error)
+      }
+    )])
+
+    const userInfo = sysResponse[0]?.data?.data ?? {}
+    const sysConf_net = sysResponse[1]?.data?.data ?? {}
+    const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
+    const sysConf = Object.assign({}, sysConf_ios, { loginVCode, login_to, adSliderTimer, appDownloadUrl, userCenterItems })
+
+    UGStore.dispatch({ type: 'merge', userInfo, sysConf });
+    UGStore.save();
+
+
   }
 }

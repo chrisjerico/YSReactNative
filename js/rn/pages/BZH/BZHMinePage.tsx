@@ -1,6 +1,6 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
 import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
+import {RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -17,6 +17,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -42,9 +43,15 @@ const BZHMinePage = () => {
   } = value
 
   const { signOut } = sign
+
   // data handle
   const features = userCenterItems?.slice(0, 4) ?? []
-  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const featureList = userCenterItems?.slice(0, userCenterItems?.length) ?? []
+
+  // ugLog('features=',features)
+  // ugLog('fetchAvatarList=',fetchAvatarList)
+  // ugLog('featureList=',featureList)
+  // ugLog('usr=',usr)
 
   return (
     <>
@@ -80,6 +87,8 @@ const BZHMinePage = () => {
           features={features}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
+
+            ugLog('features item=',item)
             return (
               <GameButton
                 key={index}

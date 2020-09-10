@@ -11,11 +11,22 @@ const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) =>
     true;`;
   const [webviewHeight, setWebViewHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
-    if (typeof e?.nativeEvent?.data == 'string') {
-      setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+    // if (typeof e?.nativeEvent?.data == 'string') {
+    //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+    // } else {
+    //   console.log("response" + JSON.stringify(e.nativeEvent.data))
+    //   onChange(e?.nativeEvent?.data)
+    // }
+    let eData = e?.nativeEvent?.data;
+    console.log("sliding response: " + eData)
+
+    if (eData?.startsWith('{')
+      && eData?.endsWith('}')) {
+      onChange(JSON.parse(eData))
+    } else if (typeof eData == 'string') {
+      setWebViewHeight(parseInt(eData) * 1.5)
     } else {
-      console.log("response" + JSON.stringify(e.nativeEvent.data))
-      onChange(e?.nativeEvent?.data)
+      onChange(eData)
     }
   }
   const webViewRef = useRef<WebView>()
