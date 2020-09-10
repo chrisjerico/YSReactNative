@@ -6,6 +6,7 @@ import useLogOut from './useLogOut'
 import { useRef } from 'react'
 import useRerender from './useRerender'
 import useSys from './useSys'
+import {ugLog} from "../../tools/UgLog";
 
 interface DefaultUserCenterLogos {
   1: string; // 存款

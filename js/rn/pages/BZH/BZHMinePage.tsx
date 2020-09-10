@@ -76,7 +76,7 @@ const BZHMinePage = () => {
         style={{
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
+        // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
         <ProfileBlock
           balance={balance}

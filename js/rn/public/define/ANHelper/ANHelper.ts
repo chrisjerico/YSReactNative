@@ -72,11 +72,12 @@ export class ANHelper extends ANEvent {
       })
     ])
 
-    //ugLog('res[3]=', res[3])
     const host = res[0]
     const siteId = res[1]
     const sysConf_ios = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
+
+    ugLog('ANHelper userCenterItems=', userCenterItems)
 
     AppDefine.host = host;
     httpClient.defaults.baseURL = host
