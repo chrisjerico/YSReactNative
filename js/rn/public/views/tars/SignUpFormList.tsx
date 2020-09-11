@@ -30,7 +30,7 @@ interface Label {
   wxLabel: string;
 }
 
-interface SignUpListProps {
+interface SignUpFormListProps {
   slideCodeColor: string;
   slideCodeRef: any;
   show: Show;
@@ -40,7 +40,7 @@ interface SignUpListProps {
   Form?: (props: FormComponentProps) => any;
 }
 
-const SignUpList = ({
+const SignUpFormList = ({
   slideCodeColor,
   show,
   onChange,
@@ -50,7 +50,7 @@ const SignUpList = ({
   Form = () => {
     return null
   },
-}: SignUpListProps) => {
+}: SignUpFormListProps) => {
   const {
     showRecommendGuy,
     showName,
@@ -218,4 +218,4 @@ const SignUpList = ({
   )
 }
 
-export default SignUpList
+export default SignUpFormList

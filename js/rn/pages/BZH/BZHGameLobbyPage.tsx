@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 import TabComponent from '../../public/components/tars/TabComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
@@ -7,6 +7,7 @@ import { pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { SeriesId } from '../../redux/model/全局/UGSeriesId'
@@ -39,11 +40,8 @@ const BZHGameLobbyPage = ({ route }) => {
           tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ item, tab, index }) => {
             return (
-              <FlatList
-                listKey={tab + 'BZHGameLobbyPage'}
-                keyExtractor={(_, index) => tab + index.toString()}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
+              <List
+                uniqueKey={'BZHGameLobbyPage' + index.toString()}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),

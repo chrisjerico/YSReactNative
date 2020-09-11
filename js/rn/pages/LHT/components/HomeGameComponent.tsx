@@ -4,15 +4,13 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
-  FlatList,
+  ViewStyle
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import TabComponent, {
-  Scene,
-} from '../../../public/components/tars/TabComponent'
+import TabComponent from '../../../public/components/tars/TabComponent'
 import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
 import { scale } from '../../../public/tools/Scale'
+import List from '../../../public/views/tars/List'
 import { LotteryType } from '../../../redux/model/全局/UGLotteryModel'
 
 interface SubType {
@@ -161,35 +159,25 @@ const HomeGameComponent = ({
           focusTabColor={LHThemeColor.六合厅.themeColor}
           tabGames={rightGames}
           itemHeight={itemHeight}
-          renderScene={({ item, index }) => {
+          renderScene={({ item }) => {
             return (
-              <FlatList
-                listKey={'HomeGameComponentRight'}
-                keyExtractor={(_, index) =>
-                  'HomeGameComponentRight' + index.toString()
-                }
-                style={styles.flatList}
+              <List
+                uniqueKey={'HomeGameComponentRight'}
+                style={styles.list}
                 data={item}
                 renderItem={renderRightGame}
                 numColumns={3}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
               />
             )
           }}
         />
       ) : (
-          <FlatList
-            listKey={'HomeGameComponentLeft'}
-            keyExtractor={(_, index) =>
-              'HomeGameComponentLeft' + index.toString()
-            }
-            style={styles.flatList}
+          <List
+            uniqueKey={'HomeGameComponentLeft'}
+            style={styles.list}
             data={leftGames}
             renderItem={renderLeftGame}
             numColumns={3}
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={false}
           />
         )}
     </View>
@@ -226,7 +214,7 @@ const styles = StyleSheet.create({
     width: '10%',
     aspectRatio: 1,
   },
-  flatList: {
+  list: {
     paddingTop: scale(25),
     borderBottomRightRadius: scale(15),
     borderBottomLeftRadius: scale(15),

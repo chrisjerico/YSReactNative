@@ -11,9 +11,9 @@ import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
-import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
@@ -43,8 +43,8 @@ const BZHMinePage = () => {
 
   const { signOut } = sign
   // data handle
-  const features = userCenterItems?.slice(0, 4) ?? []
-  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
+  const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
   return (
     <>
@@ -77,7 +77,7 @@ const BZHMinePage = () => {
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
-          features={features}
+          features={profileUserCenterItems}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
             return (
@@ -96,10 +96,10 @@ const BZHMinePage = () => {
             )
           }}
         />
-        {featureList?.map((item, index) => {
+        {listUserCenterItems?.map((item, index) => {
           const { code, name, logo } = item
           return (
-            <FeatureList
+            <UserCenterItem
               key={index}
               containerStyle={{
                 backgroundColor: '#ffffff',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -18,6 +18,7 @@ import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
@@ -188,13 +189,12 @@ const BZHHomePage = () => {
               )
             }}
           />
-          <FlatList
-            listKey={'6633dwdd'}
+          <List
+            uniqueKey={'BZHHomePage_GameBlock'}
             style={{ paddingHorizontal: '1%' }}
-            keyExtractor={(item) => item?.name}
             removeClippedSubviews={true}
             data={homeGames}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               const { name, list } = item
               return (
                 <GameBlock
@@ -222,7 +222,7 @@ const BZHHomePage = () => {
                   }}
                   renderGameContent={() => (
                     <GameSubTypeComponent
-                      listKey={name}
+                      uniqueKey={index.toString()}
                       containerStyle={{ paddingTop: scale(20) }}
                       subTypeContainerStyle={{
                         marginBottom: scale(20),

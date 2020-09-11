@@ -11,7 +11,7 @@ import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
-import FeatureList from '../../public/views/tars/FeatureList'
+import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
@@ -90,7 +90,7 @@ const LHTMinePage = () => {
         {userCenterItems?.map((item, index) => {
           const { code, name, logo } = item
           return (
-            <FeatureList
+            <UserCenterItem
               key={index}
               containerStyle={{
                 aspectRatio: 490 / 56,

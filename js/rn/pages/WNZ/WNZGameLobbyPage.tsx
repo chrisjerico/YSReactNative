@@ -1,17 +1,18 @@
 import React from 'react'
-import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { ScrollView, FlatList } from 'react-native'
-import BannerBlock from '../../public/views/tars/BannerBlock'
-import TouchableImage from '../../public/views/tars/TouchableImage'
+import { ScrollView } from 'react-native'
 import PushHelper from '../../public/define/PushHelper'
-import { scale } from '../../public/tools/Scale'
-import MineHeader from '../../public/views/tars/MineHeader'
 import { pop } from '../../public/navigation/RootNavigation'
-import GameButton from '../../public/views/tars/GameButton'
-import { UGStore } from '../../redux/store/UGStore'
-import { SeriesId } from '../../redux/model/全局/UGSeriesId'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
+import BannerBlock from '../../public/views/tars/BannerBlock'
+import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
+import MineHeader from '../../public/views/tars/MineHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import TouchableImage from '../../public/views/tars/TouchableImage'
+import { SeriesId } from '../../redux/model/全局/UGSeriesId'
+import { UGStore } from '../../redux/store/UGStore'
 
 const WNZGameLobbyPage = ({ route }) => {
   const { title } = route?.params ?? { title: '棋牌游戏' }
@@ -50,9 +51,8 @@ const WNZGameLobbyPage = ({ route }) => {
             )
           }}
         />
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={false}
+        <List
+          uniqueKey={'WNZGameLobbyPage' + title}
           style={{ marginTop: scale(45) }}
           data={games}
           numColumns={4}

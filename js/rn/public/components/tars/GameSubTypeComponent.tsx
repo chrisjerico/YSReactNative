@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { FlatList, View, ViewStyle } from 'react-native'
+import { View, ViewStyle } from 'react-native'
+import List from '../../views/tars/List'
 
 interface SubType {
   id: string;
@@ -80,7 +81,7 @@ interface GameSubTypeComponentProps {
   subTypeContainerStyle?: ViewStyle | ViewStyle[];
   numColumns: number;
   subTypeNumColumns: number;
-  listKey: string;
+  uniqueKey: string;
   contentContainerStyle?: ViewStyle | ViewStyle[];
 }
 
@@ -97,10 +98,9 @@ const GameSubTypeComponent = ({
   subTypeContainerStyle,
   numColumns,
   subTypeNumColumns,
-  listKey,
-  contentContainerStyle
+  uniqueKey = 'uniqueKey',
+  contentContainerStyle,
 }: GameSubTypeComponentProps) => {
-
   const [indexHistory, setIndexHistory] = useState(-1)
   const [cutRow, setCutRow] = useState(-1)
   const [subType, setSubType] = useState([])
@@ -125,40 +125,31 @@ const GameSubTypeComponent = ({
 
   return (
     <View style={containerStyle}>
-      <FlatList
+      <List
+        uniqueKey={uniqueKey + 'mainGames'}
         contentContainerStyle={contentContainerStyle}
         legacyImplementation={true}
         removeClippedSubviews={true}
-        listKey={listKey + 'mainGames'}
-        keyExtractor={(_, index) => listKey + index.toString()}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
         numColumns={numColumns}
         data={mainGames}
         renderItem={({ item, index }) => {
           return renderGame({ item, index, showGameSubType })
         }}
       />
-      <FlatList
+      <List
+        uniqueKey={uniqueKey + 'subType'}
         legacyImplementation
         removeClippedSubviews={true}
-        listKey={listKey + 'subType'}
-        keyExtractor={(_, index) => listKey + index.toString()}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
         numColumns={subTypeNumColumns}
         style={subTypeContainerStyle}
         data={subType}
         renderItem={renderSubType}
       />
-      <FlatList
+      <List
+        uniqueKey={uniqueKey + 'subGames'}
         contentContainerStyle={contentContainerStyle}
         legacyImplementation
         removeClippedSubviews={true}
-        listKey={listKey + 'subGames'}
-        keyExtractor={(_, index) => listKey + index.toString()}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
         numColumns={numColumns}
         data={subGames}
         renderItem={({ item, index }) => {

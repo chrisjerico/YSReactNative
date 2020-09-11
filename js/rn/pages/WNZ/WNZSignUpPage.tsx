@@ -9,7 +9,7 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SugnUpList from '../../public/views/tars/SugnUpList'
+import SignUpFormList from '../../public/views/tars/SignUpFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
@@ -50,7 +50,7 @@ const WNZSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SugnUpList
+          <SignUpFormList
             slideCodeRef={slideCodeRef}
             slideCodeColor={'#f2f2f2'}
             show={show}

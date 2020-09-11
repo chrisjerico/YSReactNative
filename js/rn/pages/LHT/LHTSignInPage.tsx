@@ -9,7 +9,7 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInList from '../../public/views/tars/SignInList'
+import SignInFormList from '../../public/views/tars/SignInFormList'
 
 const LHTSignInPage = () => {
   const {
@@ -35,7 +35,7 @@ const LHTSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInList
+          <SignInFormList
             slideCodeRef={slideCodeRef}
             slideCodeColor={'#ffffff'}
             show={show}

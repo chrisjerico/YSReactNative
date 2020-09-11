@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import {
-  FlatList,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -24,6 +23,7 @@ import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
@@ -325,13 +325,11 @@ const WNZHomePage = () => {
             renderLabel={TabLabel}
             renderScene={({ item, tab }) => {
               return (
-                <FlatList
+                <List
+                  uniqueKey={'WNZHomePage' + tab}
                   legacyImplementation={true}
                   removeClippedSubviews={true}
-                  listKey={'WNZHomePage' + tab}
                   style={{ backgroundColor: '#ffffff' }}
-                  scrollEnabled={false}
-                  showsVerticalScrollIndicator={false}
                   numColumns={2}
                   //@ts-ignore
                   data={item}

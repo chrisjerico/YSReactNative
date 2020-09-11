@@ -4,7 +4,7 @@ import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerifi
 import { scale } from '../../tools/Scale'
 import CheckBox from './CheckBox'
 
-interface SignInListProps {
+interface SignInFormListProps {
   slideCodeColor?: string;
   slideCodeRef: any;
   value: any;
@@ -13,14 +13,14 @@ interface SignInListProps {
   Form?: (props: FormComponentProps) => any;
 }
 
-const SignInList = ({
+const SignInFormList = ({
   slideCodeRef,
   value,
   onChange,
   show,
   Form,
   slideCodeColor
-}: SignInListProps) => {
+}: SignInFormListProps) => {
   const { remember, account, password } = value
 
   const {
@@ -79,4 +79,4 @@ const SignInList = ({
   )
 }
 
-export default SignInList
+export default SignInFormList
