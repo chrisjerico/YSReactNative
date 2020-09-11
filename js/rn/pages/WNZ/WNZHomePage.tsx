@@ -249,7 +249,7 @@ const WNZHomePage = () => {
             }}
           />
           <GameSubTypeComponent
-            listKey={'WNZHomePage'}
+            uniqueKey={'WNZHomePage_GameSubTypeComponent'}
             containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
             games={homeGamesConcat}
@@ -305,6 +305,7 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
+                        //@ts-ignore
                         PushHelper.pushHomeGame(item)
                       }
                     }}
@@ -403,8 +404,8 @@ const WNZHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'zora'}
+            debug={true}
+            version={'aaaaa'}
           />
           <BottomGap />
         </ScrollView>

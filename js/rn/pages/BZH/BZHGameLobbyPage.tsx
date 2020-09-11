@@ -53,10 +53,8 @@ const BZHGameLobbyPage = ({ route }) => {
                   width: '100%',
                 }}
                 numColumns={3}
-                //@ts-ignore
                 data={item}
                 renderItem={({ item }) => {
-                  //@ts-ignore
                   const { title, pic, id } = item
                   return (
                     <GameButton

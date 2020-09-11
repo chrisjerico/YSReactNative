@@ -304,6 +304,7 @@ const BZHHomePage = () => {
                               if (subType) {
                                 showGameSubType(index)
                               } else {
+                                //@ts-ignore
                                 PushHelper.pushHomeGame(item)
                               }
                             }}

@@ -1,27 +1,48 @@
-export interface PushHomeGame {
-  id?: string; // 游戏ID
-  icon?: string; // 资料logo
-  name?: string; // 资料标题
-  url?: string; // 外部链接
-  category?: string; // 图标分类
-  levelType?: string; // 分类层级：1 无子类 2 有子类一级分类 3 子类
-  sort?: string; // 排序（数字小排前面）
-  seriesId: string | number; // 系列ID：1 普通彩票 2 真人视讯 3 捕鱼游戏 4 电子游戏 5 棋牌游戏 6 体育赛事 7导航链接
-  subId: string | number; // 1存取款 2APP下载 3聊天室 4在线客服 5长龙助手 6推广收益 7开奖网 8利息宝 9优惠活动 10游戏记录 11QQ客服 13任务大厅 14站内信 15站内信 16投诉中心
-  tipFlag?: string; // 标记：0 无 1 热门 2 活动 3 大奖
-  openWay?: string; // 打开方式：0 本窗口 1 新窗口
-  hotIcon?: string; // 热门图标url
-  gameCode?: string; // 第三级游戏ID
-  gameId: string | number; // 游戏ID
-  title?: string; // 游戏名称
-  isInstant?: string; // 是否是即开彩：1=是，0=否
-  isSeal?: string; // 是否封盘:1=是，0=否
+export interface Game {
+  id?: string;
+  icon?: string;
+  name?: string;
+  url?: string;
+  category?: string;
+  levelType?: string;
+  sort?: string;
+  seriesId?: string | number;
+  subId?: string | number;
+  tipFlag?: string;
+  openWay?: string;
+  hotIcon?: string;
+  gameCode?: string;
+  subtitle?: string;
+  subType?: SubType[];
+  gameId?: string | number;
+  realName?: string;
+  title?: string;
+  type?: string;
+  admin_uid?: string;
+  enable?: string;
+  headadd?: string;
+  footadd?: string;
+  domain?: string;
+  docType?: number;
+  gameType?: string;
+  logo?: string;
+  isInstant?: string;
+  isSeal?: string;
   isClose?: string;
-  gameType?: string; // 彩种类型，例：gd11x5（广东11选5）
-  logo?: string; // 游戏LOGO
-  docType?: string; // 是否是资料。1=是；0=否
+  supportTrial?: number;
+  isPopup?: number;
+  gameTypeName?: string;
+  isHot?: string;
+  pic?: string;
 }
 
+export interface PushHomeGame {
+  seriesId: string | number;
+  gameId: string | number;
+  subId: string | number;
+  [key: string]: any;
+  // keys<T>(o: T): any
+}
 
 export interface PushAnnouncement {
   clsName: 'UGNoticeModel';
@@ -40,4 +61,34 @@ export interface SlideCode {
   nc_csessionid?: string;
   nc_token?: string;
   nc_sig?: string;
+}
+
+export interface SubType {
+  id: string;
+  levelType: string;
+  name: string;
+  openWay: string;
+  tipFlag: string;
+  sort: string;
+  seriesId: string;
+  subId: string;
+  parentId: string;
+  isDelete: string;
+  icon: string;
+  url: string;
+  category: string;
+  hot_icon?: any;
+  game_code: string;
+  is_plus: string;
+  site_ids: string;
+  site_id: string;
+  subtitle: string;
+  gameId: string;
+  realName: string;
+  title: string;
+  isInstant: string;
+  isSeal: string;
+  isClose: string;
+  gameType: string;
+  logo: string;
 }
