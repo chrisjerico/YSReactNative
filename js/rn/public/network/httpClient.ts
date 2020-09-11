@@ -1,15 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Platform } from 'react-native';
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { ANHelper } from '../define/ANHelper/ANHelper';
 import { CMD } from "../define/ANHelper/hp/CmdDefine";
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
-import { Toast } from '../tools/ToastUtils';
+import { anyEmpty } from "../tools/Ext";
 import { ugLog } from "../tools/UgLog";
-import { NA_DATA } from "../define/ANHelper/hp/DataDefine";
-import { anyEmpty, anyNull } from "../tools/Ext";
+
 interface Dictionary {
   [x: string]: any;
 }
@@ -100,12 +98,12 @@ httpClient.interceptors.response.use(
       ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
         case 401://请登录后再访问, 帐号已被登出
+          console.log("-----------401---------")
           switch (Platform.OS) {
             case "ios":
               OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
                 OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
                   OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                    updateUserInfo()
                     UGStore.dispatch({ type: 'reset', userInfo: {} })
                     // Toast('帐号已被登出');
                   })

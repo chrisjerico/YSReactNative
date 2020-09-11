@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
   leftContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'red'
   },
   rightContainer: {
     flex: 3,

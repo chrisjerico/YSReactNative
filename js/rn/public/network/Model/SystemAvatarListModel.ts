@@ -1,4 +1,4 @@
-export interface Datum {
+export interface Data {
   filename: string;
   url: string;
 }
@@ -6,5 +6,5 @@ export interface Datum {
 export interface SystemAvatarListModel {
   code: number;
   msg: string;
-  data: Datum[];
+  data: Data[];
 }

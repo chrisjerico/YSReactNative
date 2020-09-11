@@ -8,14 +8,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { pop } from '../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 
-interface HomeHeaderProps {
+export interface HomeHeaderProps {
   name: string;
   logo: string;
   balance: string;
   onPressMenu: () => any;
   onPressComment: () => any;
   onPressUser: () => any;
-  showBackBtn: boolean;
+  showBackBtn?: boolean;
   uid: string;
 }
 
@@ -26,7 +26,7 @@ const HomeHeader = ({
   onPressMenu,
   onPressComment,
   onPressUser,
-  showBackBtn,
+  showBackBtn = false,
   uid,
 }: HomeHeaderProps) => {
   return (

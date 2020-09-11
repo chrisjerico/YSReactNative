@@ -3,17 +3,19 @@ import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback 
 
 interface Button {
   containerStyle?: ViewStyle | ViewStyle[];
-  textStyle?: TextStyle | TextStyle[];
-  text?: string;
+  disabledContainerStyle?: ViewStyle | ViewStyle[];
+  titleStyle?: TextStyle | TextStyle[];
+  title?: string;
   numberOfLines?: number;
   onPress?: () => any;
+  disabled?: boolean;
 }
 
-const Button = ({ containerStyle, textStyle, text, numberOfLines = 1, onPress }: Button) => {
+const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false }: Button) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.container, containerStyle]}>
-        <Text style={[styles.text, textStyle]} numberOfLines={numberOfLines}>{text}</Text>
+    <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
+      <View style={disabled ? [styles.disabledContainer, disabledContainerStyle] : [styles.container, containerStyle]}>
+        <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>{title}</Text>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -24,8 +26,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  text: {
+  title: {
 
+  },
+  disabledContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#c6c6c6'
   }
 })
 

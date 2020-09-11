@@ -14,11 +14,8 @@ interface BannerBlockProps {
   autoplayTimeout: number;
   visible?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
-}
-
-interface BadgePosition {
-  top: number;
-  right: number;
+  badgeStyle?: ViewStyle | ViewStyle[];
+  showsPagination?: boolean;
 }
 
 const BannerBlock = ({
@@ -29,13 +26,17 @@ const BannerBlock = ({
   autoplayTimeout,
   visible = true,
   containerStyle,
+  badgeStyle,
+  showsPagination = true
 }: BannerBlockProps) => {
+
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <UGSwiper
+          autoplay={autoplayTimeout > 0}
           autoplayTimeout={autoplayTimeout}
-          showsPagination={true}
+          showsPagination={showsPagination}
           paginationStyle={{
             bottom: 10,
             left: null,
@@ -52,9 +53,10 @@ const BannerBlock = ({
             badgeStyle={[
               styles.badge,
               {
-                top: scale(-300),
+                top: scale(-200),
                 right: scale(10),
               },
+              badgeStyle
             ]}
             value={'当前在线:' + onlineNum}
           />

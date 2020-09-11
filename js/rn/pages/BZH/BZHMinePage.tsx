@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
+import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -10,43 +11,40 @@ import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
-import FeatureList from '../../public/views/tars/FeatureList'
 import GameButton from '../../public/views/tars/GameButton'
-import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import UserCenterItem from '../../public/views/tars/UserCenterItem'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 
-const BZHMinePage = (props: any) => {
-  const { setProps } = props
+const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
+  const {
+    pickAvatarComponentRef,
+    onPressAvatar,
+    onSaveAvatarSuccess,
+    value,
+    sign,
+  } = useMinePage({
+    homePage: PageName.BZHHomePage,
+    defaultUserCenterLogos: config?.defaultUserCenterLogos,
+  })
+
   const {
     balance,
     userCenterItems,
-    showBackBtn,
     curLevelGrade,
     usr,
     isTest,
     avatar,
     unreadMsg,
-    avatarListLoading,
-    avatarListVisible,
-    avatarList,
-    fetchAvatarList,
-    saveAvatar,
-    signOut,
-    openAvatarList,
-    closeAvatarList,
-    goBack,
-  } = useMinePage({
-    setProps,
-    homePage: PageName.BZHHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+  } = value
 
+  const { signOut } = sign
   // data handle
-  const features = userCenterItems?.slice(0, 4) ?? []
-  const featureList = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
+  const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
   return (
     <>
@@ -58,28 +56,28 @@ const BZHMinePage = (props: any) => {
         }}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
-        <MineHeader
-          showBackBtn={showBackBtn}
-          onPressLeftTool={goBack}
-          shoeRightTool={false}
+        <MineHeaderComponent
           title={'会员中心'}
+          showCustomerService={false}
+          onPressCustomerService={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }}
         />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          flex: 1,
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
       >
         <ProfileBlock
           balance={balance}
-          onPressAvatar={openAvatarList}
+          onPressAvatar={onPressAvatar}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
-          features={features}
+          features={profileUserCenterItems}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
             return (
@@ -98,10 +96,10 @@ const BZHMinePage = (props: any) => {
             )
           }}
         />
-        {featureList?.map((item, index) => {
+        {listUserCenterItems?.map((item, index) => {
           const { code, name, logo } = item
           return (
-            <FeatureList
+            <UserCenterItem
               key={index}
               containerStyle={{
                 backgroundColor: '#ffffff',
@@ -120,7 +118,7 @@ const BZHMinePage = (props: any) => {
           )
         })}
         <Button
-          text={'退出登录'}
+          title={'退出登录'}
           containerStyle={{
             backgroundColor: '#ffffff',
             marginHorizontal: scale(25),
@@ -128,19 +126,16 @@ const BZHMinePage = (props: any) => {
             borderRadius: scale(7),
             height: scale(70),
           }}
-          textStyle={{ color: '#db6372', fontSize: scale(21) }}
+          titleStyle={{ color: '#db6372', fontSize: scale(21) }}
           onPress={signOut}
         />
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        ref={pickAvatarComponentRef}
         color={BZHThemeColor.宝石红.themeColor}
-        loading={avatarListLoading}
-        visible={avatarListVisible}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        avatars={avatarList}
-        onPressSave={saveAvatar}
-        onPressCancel={closeAvatarList}
+        onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>
   )

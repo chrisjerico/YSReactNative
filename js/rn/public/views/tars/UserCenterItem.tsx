@@ -11,7 +11,7 @@ import {
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-interface FeatureListProps {
+interface UserCenterItemProps {
   logo: string;
   title: string;
   onPress: () => any;
@@ -22,7 +22,7 @@ interface FeatureListProps {
   arrowColor?: string;
 }
 
-const FeatureList = ({
+const UserCenterItem = ({
   logo = '',
   title,
   onPress,
@@ -31,7 +31,7 @@ const FeatureList = ({
   unreadMsg,
   arrowColor = '#000000',
   titleStyle
-}: FeatureListProps) => {
+}: UserCenterItemProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
@@ -103,4 +103,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default FeatureList
+export default UserCenterItem

@@ -1,11 +1,9 @@
 import { Platform } from 'react-native'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
 import { updateUserInfo } from '../../../redux/store/IGlobalStateHelper'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
-import {
-  saveNativeUser,
-  ToastStatus
-} from '../../tools/tars'
+import { ToastStatus } from '../../tools/tars'
 
 interface Options {
   onSuccess?: () => any;
@@ -22,13 +20,10 @@ const useTryPlay = (options: Options = {}) => {
         const user_guestLogin_data = user_guestLogin_response?.data?.data
         const user_guestLogin_msg = user_guestLogin_response?.data?.msg
         if (user_guestLogin_data) {
+          console.log("-------user_guestLogin_data-----", user_guestLogin_data)
+          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(user_guestLogin_data)])
           // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-          //@ts-ignore
-          await saveNativeUser({
-            currentUser: [UGUserModel.getYS(user_guestLogin_data)],
-            userName: '',
-            userPsw: '',
-          })
+          // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
           await updateUserInfo()
           onSuccess && onSuccess()
         } else {

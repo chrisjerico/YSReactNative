@@ -1,8 +1,6 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet
-} from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
+import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -12,63 +10,58 @@ import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
-import FeatureList from '../../public/views/tars/FeatureList'
-import MineHeader from '../../public/views/tars/MineHeader'
+import Button from '../../public/views/tars/Button'
+import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-import Button from '../../public/views/tars/Button'
 
-const LHTMinePage = (props: any) => {
-  const { setProps } = props
+const LHTMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
+  const {
+    pickAvatarComponentRef,
+    onPressAvatar,
+    onSaveAvatarSuccess,
+    value,
+    sign,
+  } = useMinePage({
+    homePage: PageName.LHTHomePage,
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
+
   const {
     balance,
     userCenterItems,
-    showBackBtn,
     curLevelGrade,
     usr,
     isTest,
     avatar,
     unreadMsg,
-    avatarListLoading,
-    avatarListVisible,
-    avatarList,
-    fetchAvatarList,
-    saveAvatar,
-    signOut,
-    openAvatarList,
-    closeAvatarList,
-    goBack,
-  } = useMinePage({
-    setProps,
-    homePage: PageName.LHTHomePage,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+    showSign
+  } = value
 
+  const { signOut } = sign
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <MineHeader
+        <MineHeaderComponent
           title={'会员中心'}
-          showBackBtn={showBackBtn}
-          shoeRightTool={true}
-          onPressLeftTool={goBack}
-          onPressRightTool={() => {
+          showCustomerService={true}
+          onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
       </SafeAreaHeader>
       <ScrollView
         style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={fetchAvatarList} />}
+        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
         showsVerticalScrollIndicator={false}
       >
         <ProfileBlock
-          shoeSignBadge={false}
-          onPressAvatar={openAvatarList}
+          showSignBadge={showSign}
+          onPressAvatar={onPressAvatar}
           profileButtons={config?.profileButtons}
           name={usr}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
@@ -97,11 +90,11 @@ const LHTMinePage = (props: any) => {
         {userCenterItems?.map((item, index) => {
           const { code, name, logo } = item
           return (
-            <FeatureList
+            <UserCenterItem
               key={index}
               containerStyle={{
                 aspectRatio: 490 / 56,
-                width: '95%'
+                width: '95%',
               }}
               titleStyle={{ fontSize: scale(20) }}
               title={name}
@@ -113,21 +106,18 @@ const LHTMinePage = (props: any) => {
           )
         })}
         <Button
-          text={'退出登录'}
+          title={'退出登录'}
           containerStyle={styles.logOutButton}
-          textStyle={{ color: '#ffffff' }}
+          titleStyle={{ color: '#ffffff' }}
           onPress={signOut}
         />
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
+        ref={pickAvatarComponentRef}
         color={LHThemeColor.六合厅.themeColor}
-        loading={avatarListLoading}
-        visible={avatarListVisible}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        avatars={avatarList}
-        onPressSave={saveAvatar}
-        onPressCancel={closeAvatarList}
+        onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>
   )
@@ -142,12 +132,8 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(25),
     marginVertical: scale(25),
     height: scale(70),
-    borderRadius: scale(5)
-  },
-  headerTitle: {
-    color: '#ffffff',
-    fontSize: scale(25),
-  },
+    borderRadius: scale(5),
+  }
 })
 
 export default LHTMinePage

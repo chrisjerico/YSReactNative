@@ -47,11 +47,11 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
 import { List } from "../../public/network/Model/PromotionsModel"
-import {ugLog} from "../../public/tools/UgLog";
-import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
-import {Toast} from "../../public/tools/ToastUtils";
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import { ugLog } from "../../public/tools/UgLog";
+import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGLoadingCP";
+import { Toast } from "../../public/tools/ToastUtils";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -105,12 +105,12 @@ const ZLHomePage = ({ navigation, setProps }) => {
 
         })
         switch (Platform.OS) {
-          case 'ios':
-              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
-            break;
-          case 'android':
-              ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
-            break;
+            case 'ios':
+                OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
+                break;
+            case 'android':
+                ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
+                break;
         }
     }
     const init = async () => {
@@ -410,22 +410,22 @@ const TurntableListItem = () => {
                 } else {
                     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
                     switch (Platform.OS) {
-                      case 'ios':
-                          OCHelper.call(({ vc }) => ({
-                              vc: {
-                                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-                                  args2: [turntableListModel]
-                              },
-                              ret: {
-                                  selectors: 'SGBrowserView.showMoveView:yDistance:',
-                                  args1: [vc, 100],
-                              },
-                          }));
-                        break;
-                      case 'android':
+                        case 'ios':
+                            OCHelper.call(({ vc }) => ({
+                                vc: {
+                                    selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                                    args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                                    args2: [turntableListModel]
+                                },
+                                ret: {
+                                    selectors: 'SGBrowserView.showMoveView:yDistance:',
+                                    args1: [vc, 100],
+                                },
+                            }));
+                            break;
+                        case 'android':
                             //TODO
-                        break;
+                            break;
                     }
                 }
             }}>
@@ -452,12 +452,12 @@ const ZLHeader = () => {
 
     let topDistance = 0;
     switch (Platform.OS) {
-      case 'ios':
-        topDistance = insets.top;
-        break;
-      case 'android':
-        //原生处理了 安全区域，RN 不需要处理
-        break;
+        case 'ios':
+            topDistance = insets.top;
+            break;
+        case 'android':
+            //原生处理了 安全区域，RN 不需要处理
+            break;
     }
 
     return (

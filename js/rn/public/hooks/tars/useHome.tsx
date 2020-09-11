@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
-import { BannerModel } from '../../network/Model/BannerModel'
 import { CouponListModel } from '../../network/Model/CouponListModel'
+import { FloatADModel } from '../../network/Model/FloatADModel'
 import { HomeADModel } from '../../network/Model/HomeADModel'
 import { HomeGamesModel } from '../../network/Model/HomeGamesModel'
 import { LotteryGameModel } from '../../network/Model/LotteryGameModel'
@@ -10,13 +10,11 @@ import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
-import { HomeRecommendModel } from '../../network/Model/HomeRecommendModel'
+import { TurntableListModel } from '../../network/Model/TurntableListModel'
+import { stringToNumber } from '../../tools/tars'
 
-const routers = [
-  'user_info', // global
-  'system_config', //global
+const localRouters = [
   'system_rankingList',
-  'system_banners',
   'game_homeGames',
   'notice_latest',
   'system_onlineCount',
@@ -27,112 +25,122 @@ const routers = [
   'activity_turntableList',
   'activity_redBagDetail',
   'system_floatAds',
-  'game_homeRecommend'
+  'game_homeRecommend',
+  'system_config',
+  'system_banners',
 ]
+
+const globalRouters = [
+  'game_homeRecommend',
+  'system_config',
+  'system_banners',
+]
+
+interface Value {
+  rankList?: RankListModel;
+  homeGame?: HomeGamesModel;
+  notice?: NoticeModel;
+  onlineNum?: number;
+  couponList?: CouponListModel;
+  homeAd?: HomeADModel;
+  lotteryNumber?: LotteryNumberModel;
+  lotteryGame?: LotteryGameModel;
+  turntableList?: TurntableListModel;
+  redBag?: RedBagDetailActivityModel;
+  floatAd?: FloatADModel;
+}
 
 const useHome = () => {
 
   const [loading, setLoading] = useState(true)
-  const [refresh, setRefresh] = useState(true)
-  const [rankList, setRankList] = useState<RankListModel>()
-  const [banner, setBanner] = useState<BannerModel>()
-  const [homeGame, setHomeGame] = useState<HomeGamesModel>()
-  const [notice, setNotice] = useState<NoticeModel>()
-  const [onlineNum, setOnlineCount] = useState(0)
-  const [couponList, setCouponList] = useState<CouponListModel>()
-  const [homeAd, setHomeAd] = useState<HomeADModel>()
-  const [lotteryNumber, setLotteryNumber] = useState<LotteryNumberModel>()
-  const [lotteryGames, setLotteryGames] = useState<LotteryGameModel>()
-  const [roulette, setRoulette] = useState()
-  const [redBag, setRedBag] = useState<RedBagDetailActivityModel>()
-  const [floatAd, setFloatAd] = useState<any[]>()
-  const [homeRecommend, setHomeRecommend] = useState<HomeRecommendModel>()
+  const [refreshing, setRefreshing] = useState(false)
+  const [value, setValue] = useState<Value>({})
 
-  const apis = routers.map(async (router) => {
-    try {
-      return await APIRouter[router]()
-    } catch (error) {
-      // console.log(error)
-    }
-  })
+  const updateStore = (response: any[]) => {
+    const gameLobby = response[11]?.data?.data ?? UGStore.globalProps.gameLobby
+    const sys = response[12]?.data?.data ?? UGStore.globalProps.sys
+    // const {
+    //   loginVCode,
+    //   login_to,
+    //   adSliderTimer,
+    //   appDownloadUrl
+    // } = sysConf
+    const banner = response[13]?.data?.data ?? UGStore.globalProps.banner
+    // sysConf: { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl },
+    UGStore.dispatch({ type: 'merge', gameLobby, banner, sys })
+    UGStore.save()
+  }
 
   const callApis = async () => {
     try {
-      !loading && setRefresh(true)
-      const response = await Promise.all(apis)
-      // console.log("--------response------", response)
-      // globals state
-      const userInfo = response[0]?.data?.data ?? {}
-      const sysConf = response[1]?.data?.data ?? {}
-      const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf
-      //@ts-ignore
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf: { loginVCode, login_to, adSliderTimer, appDownloadUrl } })
-      UGStore.save()
-      // local state
-      response[2] && setRankList(response[2]?.data)
-      response[3] && setBanner(response[3]?.data)
-      response[4] && setHomeGame(response[4]?.data)
-      response[5] && setNotice(response[5]?.data)
-      response[6] && setOnlineCount(response[6]?.data?.data?.onlineUserCount)
-      response[7] && setCouponList(response[7]?.data)
-      response[8] && setHomeAd(response[8]?.data)
-      response[9] && setLotteryNumber(response[9]?.data)
-      response[10] && setLotteryGames(response[10]?.data)
-      response[11] && setRoulette(response[11]?.data?.data)
-      response[12] && setRedBag(response[12]?.data)
-      response[13] && setFloatAd(response[13]?.data?.data)
-      response[14] && setHomeRecommend(response[14]?.data)
+      !loading && setRefreshing(true)
+      const routers = loading ? localRouters : localRouters.concat(globalRouters)
+      const response = await Promise.all(routers.map(async (router) => {
+        try {
+          return await APIRouter[router]()
+        } catch (error) {
+          // console.log(error)
+        }
+      }))
+      !loading && updateStore(response)
+      setValue({
+        rankList: response[0] ? response[0]?.data : value?.rankList,
+        homeGame: response[1] ? response[1]?.data : value?.homeGame,
+        notice: response[2] ? response[2]?.data : value?.notice,
+        onlineNum: response[3] ? response[3]?.data?.data?.onlineUserCount : value?.onlineNum,
+        couponList: response[4] ? response[4]?.data : value?.couponList,
+        homeAd: response[5] ? response[5]?.data : value?.homeAd,
+        lotteryNumber: response[6] ? response[6]?.data : value?.lotteryNumber,
+        lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
+        turntableList: response[8] ? response[8]?.data : value?.turntableList,
+        redBag: response[9] ? response[9]?.data : value?.redBag,
+        floatAd: response[10] ? response[10]?.data : value?.floatAd
+      })
     } catch (error) {
-      console.log("--------useHome error--------", error)
+      console.log("--------useHome init error--------", error)
     } finally {
       setLoading(false)
-      setRefresh(false)
+      setRefreshing(false)
     }
   }
 
-  const refreshHome = callApis
+  const refresh = callApis
 
   useEffect(() => {
     callApis()
   }, [])
 
-  return {
-    loading,
-    refresh,
+  const {
     rankList,
-    banner,
     homeGame,
     notice,
     onlineNum,
     couponList,
     homeAd,
     lotteryNumber,
-    lotteryGames,
-    roulette,
+    lotteryGame,
+    turntableList,
     redBag,
     floatAd,
-    homeRecommend,
-    refreshHome
+  } = value
+
+  return {
+    loading,
+    refreshing,
+    rankList,
+    homeGame,
+    notice,
+    onlineNum,
+    couponList,
+    homeAd,
+    lotteryNumber,
+    lotteryGame,
+    turntableList,
+    redBag,
+    floatAd,
+    refresh
   }
 
 }
 
 export default useHome
-
-
-
-  // const init = () => {
-  //   if (Platform.OS == 'ios') {
-  //     OCHelper.call('AppDefine.shared.Host').then((host: string) => {
-  //       httpClient.defaults.baseURL = host
-  //       callApis()
-  //     }).catch(error => {
-  //       console.log("------error-----", error)
-  //     })
-  //   } else if (Platform.OS == 'android') {
-  //     ANHelper.call(NativeCommand.APP_HOST).then((host: string) => {
-  //       httpClient.defaults.baseURL = host
-  //       callApis()
-  //     })
-  //   }
-  // }

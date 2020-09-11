@@ -18,6 +18,8 @@ export enum PageName {
   ZHTYMinePage = 'ZHTYMinePage',
   LHTHomePage = 'LHTHomePage',
   LHTMinePage = 'LHTMinePage',
+  LHTSignInPage = "LHTSignInPage",
+  LHTSignUpPage = "LHTSignUpPage",
   ZLHomePage = 'ZLHomePage', //尊龙主页
   ZLLoginPage = 'ZLLoginPage',//尊龙登录
   ZLMinePage = 'ZLMinePage',//尊龙我的
@@ -25,13 +27,16 @@ export enum PageName {
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
   BZHSignInPage = 'BZHSignInPage',
-  BZHRegisterPage = 'BZHRegisterPage',
+  BZHSignUpPage = 'BZHSignUpPage',
   BZHGameLobbyPage = 'BZHGameLobbyPage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
   GDLoginPage = "GDLoginPage",
   WNZHomePage = 'WNZHomePage',
   WNZMinePage = 'WNZMinePage',
+  WNZSignUpPage = 'WNZSignUpPage',
+  WNZSignInPage = 'WNZSignInPage',
+  WNZGameLobbyPage = 'WNZGameLobbyPage',
   GDRegisterPage = "GDRegisterPage",
   PromotionListPage = "PromotionListPage",
   KSHomePage = "KSHomePage",
@@ -45,7 +50,7 @@ export enum PageName {
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
   VietnamGameList = "VietnamGameList",
-  LHTPreferencePage = "LHTPreferencePage"
+  LHTPreferencePage = "LHTPreferencePage",
 }
 
 // export class  {

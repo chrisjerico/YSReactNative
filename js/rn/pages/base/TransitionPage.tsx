@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { Text, Button } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { PageName } from '../../public/navigation/Navigation';
+import { jumpTo, push } from '../../public/navigation/RootNavigation';
+import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { UGBasePageProps } from './UGPage';
-import { UGStore } from '../../redux/store/UGStore';
-import { push, jumpTo } from '../../public/navigation/RootNavigation';
 
 // 声明Props
 export interface TransitionProps extends UGBasePageProps<TransitionProps> {

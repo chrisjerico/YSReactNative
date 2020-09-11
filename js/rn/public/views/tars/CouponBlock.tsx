@@ -1,14 +1,13 @@
 import React from 'react'
 import {
-  StyleSheet,
+  Image, StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
-  Image
+  ViewStyle
 } from 'react-native'
 import { scale } from '../../tools/Scale'
-import { FlatList } from 'react-native-gesture-handler'
+import List from './List'
 
 interface CouponBlock {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -41,9 +40,9 @@ const CouponBlock = ({
             <Text style={{ fontSize: scale(25) }}>{'查看更多>>'}</Text>
           </TouchableWithoutFeedback>
         </View>
-        <FlatList
+        <List
+          uniqueKey={'CouponBlock'}
           style={[styles.listContainer, listContainerStyle]}
-          showsVerticalScrollIndicator={false}
           data={coupons}
           renderItem={renderCoupon}
           removeClippedSubviews={true}

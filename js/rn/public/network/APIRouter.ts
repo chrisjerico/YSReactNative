@@ -27,6 +27,7 @@ import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
 import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
 import { HomeRecommendModel } from "./Model/HomeRecommendModel";
+import { UserInfoModel } from "./Model/UserInfoModel";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -79,26 +80,29 @@ class APIRouter {
     return httpClient.get<PromotionsModel>("c=system&a=promotions")
   }
   static user_info = async () => {
-    let tokenParams = "";
+    let token = null;
     switch (Platform.OS) {
       case "ios":
         let user = await OCHelper.call('UGUserModel.currentUser');
-        tokenParams = 'token=' + user?.token;
+        token = user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+        token = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
           { blGet: true, });
         break;
     }
 
-    if (tokenParams) {
-      return httpClient.get("c=user&a=info&" + tokenParams)
+    if (token) {
+      const tokenParams = Platform.OS == "ios" ? 'token=' + token : token
+      return httpClient.get<UserInfoModel>("c=user&a=info&" + tokenParams)
     } else {
       return Promise.reject({
         msg: 'no token'
       })
     }
+
   }
+
   static user_guestLogin = async () => {
     return httpClient.post<LoginModel>("c=user&a=guestLogin", {
       usr: '46da83e1773338540e1e1c973f6c8a68',

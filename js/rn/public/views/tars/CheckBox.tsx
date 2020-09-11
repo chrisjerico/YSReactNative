@@ -1,47 +1,74 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
+  StyleSheet,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
+  ViewStyle,
+  TextStyle,
 } from 'react-native'
-import { Icon } from 'react-native-elements'
+import Feather from 'react-native-vector-icons/Feather'
 import { scale } from '../../../public/tools/Scale'
 
-const CheckBox = ({ check, onPress }) => (
-  <TouchableWithoutFeedback onPress={onPress}>
-    <View
-      style={{
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
+interface CheckBoxProps {
+  onPress: (check: boolean) => any;
+  label: string;
+  containerStyle?: ViewStyle | ViewStyle;
+  labelTextStyle?: TextStyle | TextStyle;
+  defaultValue?: boolean;
+}
+
+const CheckBox = ({
+  onPress,
+  label,
+  containerStyle,
+  labelTextStyle,
+  defaultValue = false,
+}: CheckBoxProps) => {
+  const [check, setCheck] = useState(defaultValue)
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => {
+        onPress && onPress(!check)
+        setCheck(!check)
       }}
     >
-      {check ? (
-        <Icon
-          type={'feather'}
-          name={'check'}
-          color={'#ffffff'}
-          containerStyle={{
-            width: scale(25),
-            backgroundColor: 'blue',
-            aspectRatio: 1,
-            justifyContent: 'center',
-          }}
-          size={scale(20)}
-        />
-      ) : (
-          <View
-            style={{
-              width: scale(25),
-              aspectRatio: 1,
-              borderColor: 'blue',
-              borderWidth: scale(1),
-            }}
-          ></View>
-        )}
-      <Text style={{ paddingLeft: scale(10) }}>{'记住密码'}</Text>
-    </View>
-  </TouchableWithoutFeedback>
-)
+      <View style={[styles.container, containerStyle]}>
+        {check ? (
+          <Feather
+            name={'check'}
+            color={'#ffffff'}
+            style={styles.iconStyle}
+            size={scale(25)}
+          />
+        ) : (
+            <View style={styles.nonCheckContainer}></View>
+          )}
+        <Text style={[styles.label, labelTextStyle]}>{label}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    // width: scale(50),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: { paddingLeft: scale(10) },
+  nonCheckContainer: {
+    width: scale(25),
+    aspectRatio: 1,
+    borderColor: 'blue',
+    borderWidth: scale(1),
+  },
+  iconStyle: {
+    backgroundColor: 'blue',
+    width: scale(25),
+    aspectRatio: 1,
+  },
+})
 
 export default CheckBox

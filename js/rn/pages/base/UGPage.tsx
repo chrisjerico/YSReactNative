@@ -70,7 +70,6 @@ export default (Page: Function) => {
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
           ugLog('成为焦点', name, params)
-
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;
@@ -94,6 +93,7 @@ export default (Page: Function) => {
         // 监听dispatch
         this.unsubscribe = UGStore.subscribe(route.name, (() => {
           this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
+          console.log('渲染', this.props.route.name);
           this.setState({});
         }).bind(this));
       }
@@ -119,7 +119,7 @@ export default (Page: Function) => {
     }
 
     render() {
-      console.log('渲染', this.props.route.name);
+      // console.log('渲染', this.props.route.name);
       let { backgroundColor = [UGColor.BackgroundColor1, UGColor.BackgroundColor1], backgroundImage = '', navbarOpstions = {} } = this.newProps;
 
       return (

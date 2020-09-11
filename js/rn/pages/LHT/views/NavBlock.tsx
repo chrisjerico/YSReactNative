@@ -68,15 +68,15 @@ const NavBlock = ({
         </View>
         <View style={styles.topRightContainer}>
           <Button
-            text={'充值'}
+            title={'充值'}
             containerStyle={[styles.button, { backgroundColor: '#ff8610' }]}
-            textStyle={styles.title}
+            titleStyle={styles.title}
             onPress={onPressSavePoint}
           />
           <Button
-            text={'提现'}
+            title={'提现'}
             containerStyle={[styles.button, { backgroundColor: LHThemeColor.六合厅.themeColor }]}
-            textStyle={styles.title}
+            titleStyle={styles.title}
             onPress={onPressGetPoint}
           />
           <TouchableWithoutFeedback onPress={onPressSmileLogo}>
