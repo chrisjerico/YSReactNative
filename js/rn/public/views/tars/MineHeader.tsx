@@ -4,14 +4,23 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 
 interface MineHeaderProps {
-  showBackBtn: boolean;
-  shoeRightTool: boolean;
-  onPressLeftTool?: () => any;
-  onPressRightTool?: () => any;
-  title: string;
+  showCustomerService?: boolean;
+  onPressCustomerService?: () => any;
+  title?: string;
+  renderHeader?: () => any;
+  onPressBackBtn?: () => any;
+  showBackBtn?: boolean;
 }
 
-const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightTool, title }: MineHeaderProps) => {
+const MineHeader = ({
+  showCustomerService = false,
+  onPressCustomerService,
+  title,
+  renderHeader,
+  showBackBtn = false,
+  onPressBackBtn
+}: MineHeaderProps) => {
+
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       {showBackBtn ? (
@@ -20,39 +29,57 @@ const MineHeader = ({ showBackBtn, onPressLeftTool, shoeRightTool, onPressRightT
             name={'left'}
             color={'#ffffff'}
             size={scale(25)}
-            onPress={onPressLeftTool}
+            onPress={onPressBackBtn}
           />
         </View>
       ) : (
           <View style={{ flex: 1 }} />
         )}
-      <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={styles.headerTitle}>{title}</Text>
-      </View>
-      {
-        shoeRightTool ?
-          <TouchableWithoutFeedback
-            onPress={onPressRightTool}
-          >
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text style={styles.rightTextStyle}>{'客服'}</Text>
-            </View>
-          </TouchableWithoutFeedback> : <View style={{ flex: 1 }} />
-      }
+      {renderHeader ? (
+        renderHeader()
+      ) : (
+          <DefaultHeader
+            title={title}
+            showCustomerService={showCustomerService}
+            onPressCustomerService={onPressCustomerService}
+          />
+        )}
     </View>
   )
 }
 
+const DefaultHeader = ({
+  title,
+  showCustomerService,
+  onPressCustomerService,
+}) => {
+  return (
+    <>
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Text style={styles.headerTitle}>{title}</Text>
+      </View>
+      {showCustomerService ? (
+        <TouchableWithoutFeedback onPress={onPressCustomerService}>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+            <Text style={styles.rightTextStyle}>{'客服'}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      ) : (
+          <View style={{ flex: 1 }} />
+        )}
+    </>
+  )
+}
 const styles = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
-    fontSize: scale(24),
-    fontWeight: '500'
+    fontSize: scale(25),
+    fontWeight: '500',
   },
   rightTextStyle: {
     color: '#ffffff',
-    fontSize: scale(21),
-  }
+    fontSize: scale(22),
+  },
 })
 
 export default MineHeader

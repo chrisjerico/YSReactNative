@@ -19,7 +19,7 @@ export interface List {
   serverTimestamp: string;
 }
 
-export interface Datum {
+export interface Data {
   gameType: string;
   gameTypeName: string;
   list: List[];
@@ -44,7 +44,7 @@ export interface Info {
 export interface LottoGamesModel {
   code: number;
   msg: string;
-  data: Datum[];
+  data: Data[];
   info: Info;
 }
 

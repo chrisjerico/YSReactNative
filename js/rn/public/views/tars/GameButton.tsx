@@ -38,6 +38,8 @@ interface GameButtonProps {
   localLogo?: any;
   useLocalLogo?: boolean;
   flagContainer?: ViewStyle | ViewStyle[];
+  circleContainerStyle?: ViewStyle | ViewStyle[];
+
 }
 
 interface DefaultFlag {
@@ -97,7 +99,8 @@ const GameButton = (props: GameButtonProps) => {
     unreadMsg,
     localLogo,
     useLocalLogo = false,
-    flagContainer
+    flagContainer,
+    circleContainerStyle
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -109,6 +112,7 @@ const GameButton = (props: GameButtonProps) => {
               {
                 backgroundColor: circleColor ? circleColor : '#ACD6FF',
               },
+              circleContainerStyle
             ]}
           >
             <View style={[styles.imageContainer, imageContainerStyle]}>
@@ -160,11 +164,7 @@ const GameButton = (props: GameButtonProps) => {
               )}
             </View>
           )}
-        {
-          showUnReadMsg && <View style={styles.unReadMsgContainer}>
-            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
-          </View>
-        }
+
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
             <Text style={titleStyle} numberOfLines={1}>
@@ -179,6 +179,11 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
+        {
+          showUnReadMsg && <View style={styles.unReadMsgContainer}>
+            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+          </View>
+        }
         {showRightTopFlag &&
           (flagIcon ? (
             <View style={[styles.rightTopFlag, flagContainer]}
@@ -202,7 +207,6 @@ const styles = StyleSheet.create({
     width: scale(150),
     alignItems: 'center',
     justifyContent: 'flex-start',
-    overflow: 'hidden'
   },
   circleContainer: {
     width: '50%',

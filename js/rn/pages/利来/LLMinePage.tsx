@@ -1,8 +1,8 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {
     ActivityIndicator, Animated,
-    Dimensions,
+    Dimensions, Easing,
     FlatList,
     Image,
     SafeAreaView,
@@ -32,29 +32,26 @@ import {LLThemeColor} from "../../public/theme/colors/LLThemeCololr";
 
 const LLMinePage = ({navigation, setProps}) => {
     const {
+        pickAvatarComponentRef,
+        onSaveAvatarSuccess,
+        onPressAvatar,
+        value
+    } = useMinePage({
+        homePage: PageName.LLHomePage,
+        defaultUserCenterLogos: config.defaultUserCenterLogos,
+    })
+
+    const {
         balance,
-        userCenterItems,
-        showBackBtn,
         curLevelGrade,
         usr,
         isTest,
         avatar,
-        unreadMsg,
-        avatarListLoading,
-        avatarListVisible,
-        avatarList,
         nextLevelInt,
         curLevelInt,
-        saveAvatar,
-        signOut,
-        openAvatarList,
-        closeAvatarList,
-        goBack,
-    } = useMinePage({
-        setProps,
-        homePage: PageName.LLHomePage,
-        defaultUserCenterLogos: config.defaultUserCenterLogos,
-    })
+        userCenterItems,
+        unreadMsg,
+    } = value
     const {getHtml5Image} = useHtml5Image()
     const {UGUserCenterItem} = useMemberItems()
     const [levelWidth, setLevelWidth] = useState(193)
@@ -62,42 +59,30 @@ const LLMinePage = ({navigation, setProps}) => {
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
     const [missionItem, setMissionItem] = useState<any>()
-    const [loading, setLoading] = useState(false)
     const {loginOut} = useLoginOut(PageName.LLHomePage)
-    const animatedValue = new Animated.Value(0);
-    const interpolatedRotateAnimation = animatedValue.interpolate({
-        inputRange: [0, 100],
-        outputRange: ['0deg', '360deg']
+    const [spinValue, setSpinValue] = useState(new Animated.Value(0))
+    const reload = useRef(false)
+    const spinDeg = spinValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
     })
-
-    useEffect(() => {
-        loading &&  Animated.timing(animatedValue, {
-            useNativeDriver: true,
-            toValue: 100,
-            duration: 3000
-        }).start();
-    },[loading])
 
     const getLevelWidth = () => {
         setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt))
     }
 
     const refresh = async () => {
-        setLoading(true)
         const {data: userInfo} = await APIRouter.user_info()
         UGStore.dispatch({type: 'merge', props: userInfo?.data});
         setProps()
-        setLoading(false)
         UGStore.save();
     }
 
     useEffect(() => {
         navigation.addListener('focus', async () => {
-            setLoading(true)
             const {data: userInfo} = await APIRouter.user_info()
             UGStore.dispatch({type: 'merge', props: userInfo?.data});
             setProps()
-            setLoading(false)
             UGStore.save();
         });
 
@@ -121,15 +106,6 @@ const LLMinePage = ({navigation, setProps}) => {
 
     return (
         <>
-            {/*{loading && <ActivityIndicator*/}
-            {/*    style={{*/}
-            {/*        position: "absolute",*/}
-            {/*        width: AppDefine.width,*/}
-            {/*        height: AppDefine.height,*/}
-            {/*        alignSelf: "center",*/}
-            {/*        zIndex: 22,*/}
-            {/*        backgroundColor: "rgba(0,0,0,0.2)"*/}
-            {/*    }} color={"grey"} animating={true}/>}*/}
             <ScrollView bounces={false} style={{}}>
                 <SafeAreaView style={{backgroundColor: "#39150D", height: 172}}>
                     <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
@@ -142,7 +118,7 @@ const LLMinePage = ({navigation, setProps}) => {
                         borderRadius: 6,
                     }}>
                         <View style={{flexDirection: "row", marginHorizontal: 8, marginVertical: 16}}>
-                            <TouchableWithoutFeedback onPress={() => openAvatarList}>
+                            <TouchableWithoutFeedback onPress={() => onPressAvatar()}>
                                 <Image style={{width: 50, height: 50}}
                                        source={{uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}}/>
                             </TouchableWithoutFeedback>
@@ -186,8 +162,11 @@ const LLMinePage = ({navigation, setProps}) => {
                                         style={{color: "#ffffff", lineHeight: 20, fontSize: 14}}>{curLevelGrade}</Text>
                                 </View>
                                 {levelWidth === 193 ?
-                                <Text style={{color: "#ffffff", fontSize: 14}}>恭喜您已经是最高等级!</Text> :
-                                    <Text style={{color: "#ffffff", fontSize: 14}}>{`距离下一级还差${parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
+                                    <Text style={{color: "#ffffff", fontSize: 14}}>恭喜您已经是最高等级!</Text> :
+                                    <Text style={{
+                                        color: "#ffffff",
+                                        fontSize: 14
+                                    }}>{`距离下一级还差${parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
                                 }
                             </View>
                         </View>
@@ -203,9 +182,20 @@ const LLMinePage = ({navigation, setProps}) => {
                                 }}>{isNaN(parseInt(balance)) ? `¥0` : `¥` + parseInt(balance).toFixed(0)}</Text>
                                 <View style={{flex: 1}}/>
                                 <Animated.View
-                                    style={[{transform: [{rotate: interpolatedRotateAnimation}]}]}
+                                    style={[{transform: [{rotateZ: spinDeg}]}]}
                                 >
-                                <Icon size={18} style={{color: "#ffffff"}} name={"refresh"} onPress={() => refresh()}/>
+                                    <Icon size={18} style={{color: "#ffffff"}} name={"refresh"} onPress={() => {
+                                        Animated.timing(spinValue, {
+                                            toValue: 1,
+                                            duration: 3000,
+                                            easing: Easing.linear,
+                                            useNativeDriver: true,
+                                        }).start(() => {
+                                            setSpinValue(new Animated.Value(0))
+                                            reload.current = false
+                                        })
+                                        refresh()
+                                    }}/>
                                 </Animated.View>
                             </View>
                         </View>
@@ -296,13 +286,10 @@ const LLMinePage = ({navigation, setProps}) => {
                         )}/>
                 </SafeAreaView>
                 <PickAvatarComponent
+                    ref={pickAvatarComponentRef}
                     color={LLThemeColor.利来.themeColor}
-                    loading={avatarListLoading}
-                    visible={avatarListVisible}
                     initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-                    avatars={avatarList}
-                    onPressSave={saveAvatar}
-                    onPressCancel={closeAvatarList}
+                    onSaveAvatarSuccess={onSaveAvatarSuccess}
                 />
             </ScrollView>
         </>

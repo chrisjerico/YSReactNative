@@ -1,59 +1,63 @@
 import React from 'react'
-import { FlatList, ScrollView, StyleSheet } from 'react-native'
-import GameLobbyTabComponent from '../../public/components/tars/GameLobbyTabComponent'
+import { ScrollView, StyleSheet } from 'react-native'
+import TabComponent from '../../public/components/tars/TabComponent'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
+import { SeriesId } from '../../public/models/Enum'
 import { pop } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { SeriesId } from '../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../redux/store/UGStore'
 
 const BZHGameLobbyPage = ({ route }) => {
-  const { initialTabIndex, tabGames } = route?.params ?? {}
+  const gameLobby = UGStore.globalProps.gameLobby
+  const { initialTabIndex } = route?.params ?? {}
+
   return (
     <>
-      <SafeAreaHeader
-        containerStyle={{
-          aspectRatio: 540 / 50,
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-        }}
-        headerColor={BZHThemeColor.宝石红.themeColor}
+      <GameLobbyPageHeader />
+      <ScrollView
+        style={styles.container}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
       >
-        <MineHeader
-          showBackBtn={true}
-          onPressLeftTool={pop}
-          shoeRightTool={false}
-          title={'游戏大厅'}
-        />
-      </SafeAreaHeader>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <GameLobbyTabComponent
-          containerStyle={{ marginTop: scale(10) }}
-          initialTabIndex={initialTabIndex}
+        <TabComponent
+          containerStyle={{
+            borderBottomRightRadius: scale(10),
+            borderBottomLeftRadius: scale(10),
+            marginTop: scale(10),
+          }}
+          numColumns={3}
+          initialTabIndex={initialTabIndex ? initialTabIndex : 0}
           baseHeight={scale(130)}
           itemHeight={scale(130)}
-          tabGames={tabGames}
+          tabGames={gameLobby}
           focusTabColor={BZHThemeColor.宝石红.themeColor}
           tabTextStyle={{ fontSize: scale(20) }}
-          renderScene={({ games, tab, index }) => {
+          renderScene={({ item, tab, index }) => {
             return (
-              <FlatList
-                legacyImplementation={false}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-                style={{ backgroundColor: '#ffffff', marginTop: scale(10), marginHorizontal: scale(10), borderRadius: scale(5) }}
-                contentContainerStyle={{ paddingTop: scale(45), width: '100%' }}
+              <List
+                uniqueKey={'BZHGameLobbyPage' + index.toString()}
+                style={{
+                  backgroundColor: '#ffffff',
+                  marginTop: scale(10),
+                  marginHorizontal: scale(10),
+                  borderRadius: scale(5),
+                }}
+                contentContainerStyle={{
+                  paddingTop: scale(45),
+                  width: '100%',
+                }}
                 numColumns={3}
-                data={games as any}
+                //@ts-ignore
+                data={item}
                 renderItem={({ item }) => {
-                  const {
-                    title,
-                    pic,
-                    id
-                  } = item
+                  //@ts-ignore
+                  const { title, pic, id } = item
                   return (
                     <GameButton
                       key={index}
@@ -71,35 +75,50 @@ const BZHGameLobbyPage = ({ route }) => {
                         aspectRatio: 2.8,
                       }}
                       onPress={() =>
-                        PushHelper.pushHomeGame(Object.assign({}, item, {
-                          seriesId: SeriesId[tab],
-                          gameId: id,
-                          subId: id,
-                        }))
+                        PushHelper.pushHomeGame(
+                          Object.assign({}, item, {
+                            seriesId: SeriesId[tab],
+                            gameId: id,
+                            subId: id,
+                          })
+                        )
                       }
                     />
-
                   )
                 }}
-              />)
+              />
+            )
           }}
-
         />
       </ScrollView>
     </>
   )
+  //}
 }
+
+const GameLobbyPageHeader = () => (
+  <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+    <MineHeader
+      showBackBtn={true}
+      onPressBackBtn={() => {
+        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(pop)
+      }}
+      showCustomerService={false}
+      title={'游戏大厅'}
+    />
+  </SafeAreaHeader>
+)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-    marginBottom: scale(20)
+    marginBottom: scale(20),
   },
   gameContainer: {
     width: '33.3%',
     height: scale(130),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
 })
 

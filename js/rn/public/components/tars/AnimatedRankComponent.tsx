@@ -1,23 +1,24 @@
 import React, { useEffect, useRef } from 'react'
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle
-} from 'react-native'
-import { Icon } from 'react-native-elements'
-import { List } from '../../network/Model/RankListModel'
+import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
+
+interface RankList {
+  username: string;
+  coin: string;
+  type: string;
+  actionTime: string;
+}
 
 interface AnimatedRankComponentProps {
   containerStyle?: ViewStyle | ViewStyle[];
   iconTitleContainerStyle?: ViewStyle | ViewStyle[];
   rankContainerStyle?: ViewStyle | ViewStyle[];
   titleConatinerStyle?: ViewStyle | ViewStyle[];
-  rankLists: List[];
+  rankLists: RankList[];
   duration?: number;
-  type: number;
+  type: RankingListType;
   initialAnimatedHeight?: number;
   finalAnimatedHeight?: number;
 }
@@ -58,8 +59,10 @@ const AnimatedRankComponent = ({
     return (
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
-          <Icon name={'bar-chart'} type={'font-awesome'} size={scale(20)} />
-          <Text style={styles.iconText}>{type == 1 ? '中奖排行榜' : '投注排行榜'}</Text>
+          <FontAwesome name={'bar-chart'} size={scale(20)} />
+          <Text style={styles.iconText}>
+            {type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}
+          </Text>
         </View>
         <View style={[styles.rankContainer, rankContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
@@ -70,7 +73,9 @@ const AnimatedRankComponent = ({
               <Text style={styles.title}>{'游戏'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{type == 1 ? '中奖金额' : '投注金额'}</Text>
+              <Text style={styles.title}>
+                {type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}
+              </Text>
             </View>
           </View>
           <View style={styles.animatedContainer}>
@@ -80,13 +85,19 @@ const AnimatedRankComponent = ({
                 return (
                   <View key={index} style={styles.contentContainer}>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content} numberOfLines={1}>{username}</Text>
+                      <Text style={styles.content} numberOfLines={1}>
+                        {username}
+                      </Text>
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content} numberOfLines={1}>{type}</Text>
+                      <Text style={styles.content} numberOfLines={1}>
+                        {type}
+                      </Text>
                     </View>
                     <View style={styles.textContainer}>
-                      <Text style={styles.content} numberOfLines={1}>{coin}</Text>
+                      <Text style={styles.content} numberOfLines={1}>
+                        {coin}
+                      </Text>
                     </View>
                   </View>
                 )
@@ -119,7 +130,7 @@ const styles = StyleSheet.create({
   titleConatiner: {
     flexDirection: 'row',
     paddingVertical: scale(10),
-    height: scale(50)
+    height: scale(50),
   },
   contentContainer: {
     width: '100%',

@@ -32,9 +32,9 @@ const HomeHeader = ({
           <View style={styles.left}>
             {isTest ? (
               <Button
-                text={'注册'}
+                title={'注册'}
                 containerStyle={styles.button}
-                textStyle={styles.buttonTitle}
+                titleStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
               />
             ) : null}
@@ -50,8 +50,18 @@ const HomeHeader = ({
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
-              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>{name}</Text>
-              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>{'￥' + balance}</Text>
+              <Text
+                numberOfLines={1}
+                style={{ color: '#ffffff', fontSize: scale(18) }}
+              >
+                {name}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={{ color: '#ffffff', fontSize: scale(18) }}
+              >
+                {'￥' + balance}
+              </Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -59,9 +69,9 @@ const HomeHeader = ({
           <View style={styles.row}>
             <View style={styles.left}>
               <Button
-                text={'登录'}
+                title={'登录'}
                 containerStyle={styles.button}
-                textStyle={styles.buttonTitle}
+                titleStyle={styles.buttonTitle}
                 onPress={onPressSignIn}
               />
             </View>
@@ -76,9 +86,9 @@ const HomeHeader = ({
             </View>
             <View style={styles.right}>
               <Button
-                text={'注册'}
+                title={'注册'}
                 containerStyle={styles.button}
-                textStyle={styles.buttonTitle}
+                titleStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
               />
             </View>
@@ -99,11 +109,11 @@ const styles = StyleSheet.create({
     borderColor: '#fefefe',
     borderWidth: scale(1.5),
     paddingVertical: scale(5),
-    borderRadius: scale(5)
+    borderRadius: scale(5),
   },
   buttonTitle: {
     fontSize: scale(18),
-    color: '#ffffff'
+    color: '#ffffff',
   },
   logo: {
     width: '100%',

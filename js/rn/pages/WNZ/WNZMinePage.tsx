@@ -1,32 +1,35 @@
-import React from 'react'
-import { ScrollView, StyleSheet, View, Text } from 'react-native'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
-import PushHelper, { PushRightMenuFrom } from '../../public/define/PushHelper'
+import React, { useRef } from 'react'
+import { ScrollView, StyleSheet } from 'react-native'
+import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import {
-  LotteryType,
-  UGUserCenterType,
-} from '../../redux/model/全局/UGSysConfModel'
+import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import MenuModalComponent from './components/MenuModalComponent'
+import MineHeaderComponent from './components/MineHeaderComponent'
+import config from './config'
 import ButtonGroup from './views/ButtonGroup'
-import HomeHeader from './views/HomeHeader'
+import Menu from './views/Menu'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
-import config from './config'
 
-const WNZMinePage = (props: any) => {
-  const { setProps } = props
-  const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
+
+const WNZMinePage = () => {
+  const menu = useRef(null)
+
+  const { value, sign } = useMinePage({
+    defaultUserCenterLogos: config.defaultUserCenterLogos,
+  })
+
   const {
     uid,
-    showBackBtn,
     usr,
     mobile_logo,
-    money,
     curLevelInt,
     nextLevelInt,
     taskRewardTotal,
@@ -34,72 +37,68 @@ const WNZMinePage = (props: any) => {
     nextLevelTitle,
     userCenterItems,
     unreadMsg,
-    fetchAvatarList,
-  } = useMinePage({
-    setProps,
-    defaultUserCenterLogos: config.defaultUserCenterLogos,
-  })
+    balance,
+  } = value
+
+  const { signOut } = sign
 
   // data handle
-
-  const tools = userCenterItems?.sort((a, b) => a?.code - b?.code) ?? []
+  const tools = userCenterItems?.sort((a, b) => a?.sorts - b?.sorts) ?? []
   const headrTools = tools?.slice(0, 2) ?? []
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
   const usuallyTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.额度转换.toString(),
-      UGUserCenterType.全民竞猜.toString(),
-      UGUserCenterType.利息宝.toString(),
-      UGUserCenterType.开奖走势.toString(),
-      UGUserCenterType.建议反馈.toString(),
-      UGUserCenterType.存款.toString(),
-      UGUserCenterType.取款.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.额度转换,
+      UGUserCenterType.全民竞猜,
+      UGUserCenterType.利息宝,
+      UGUserCenterType.开奖走势,
+      UGUserCenterType.建议反馈,
+      UGUserCenterType.存款,
+      UGUserCenterType.取款,
+    ].includes(ele?.code)
   )
 
   const userTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.个人信息.toString(),
-      UGUserCenterType.安全中心.toString(),
-      UGUserCenterType.银行卡管理.toString(),
-      UGUserCenterType.资金明细.toString(),
-      UGUserCenterType.站内信.toString(),
-      UGUserCenterType.聊天室.toString(),
-      UGUserCenterType.在线客服.toString(),
-      UGUserCenterType.QQ客服.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.个人信息,
+      UGUserCenterType.安全中心,
+      UGUserCenterType.银行卡管理,
+      UGUserCenterType.资金明细,
+      UGUserCenterType.站内信,
+      UGUserCenterType.聊天室,
+      UGUserCenterType.在线客服,
+      UGUserCenterType.QQ客服,
+    ].includes(ele?.code)
   )
 
   const recordTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.开奖网.toString(),
-      UGUserCenterType.其他注单记录.toString(),
-      UGUserCenterType.活动彩金.toString(),
-      UGUserCenterType.彩票注单记录.toString(),
-      UGUserCenterType.长龙助手.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.开奖网,
+      UGUserCenterType.其他注单记录,
+      UGUserCenterType.活动彩金,
+      UGUserCenterType.彩票注单记录,
+      UGUserCenterType.长龙助手,
+    ].includes(ele?.code)
   )
 
   const activityTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.任务中心.toString(),
-      UGUserCenterType.游戏大厅.toString(),
-      UGUserCenterType.推荐收益.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.任务中心,
+      UGUserCenterType.游戏大厅,
+      UGUserCenterType.推荐收益,
+    ].includes(ele?.code)
   )
-
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <HomeHeader
+        <MineHeaderComponent
           uid={uid}
-          showBackBtn={showBackBtn}
           name={usr}
           logo={mobile_logo}
-          balance={money}
+          balance={balance}
           onPressMenu={() => {
-            PushHelper.pushRightMenu(PushRightMenuFrom.首頁)
+            menu?.current?.open()
           }}
           onPressComment={() => {
             PushHelper.pushLottery(LotteryType.香港六合彩)
@@ -109,10 +108,7 @@ const WNZMinePage = (props: any) => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <ProfileBlock
           curLevelInt={curLevelInt}
           nextLevelInt={nextLevelInt}
@@ -180,12 +176,37 @@ const WNZMinePage = (props: any) => {
                     onPress={() => PushHelper.pushUserCenterType(code)}
                   />
                 )
-
               }}
             />
           )
         })}
       </ScrollView>
+      <MenuModalComponent
+        ref={menu}
+        menus={
+          uid
+            ? config?.menus?.concat(config?.menuSignOut)
+            : // @ts-ignore
+            config?.menuSignIn?.concat(config?.menus)
+        }
+        renderMenu={({ item }) => {
+          const { title, onPress } = item
+          return (
+            <Menu
+              color={WNZThemeColor.威尼斯.themeColor}
+              title={title}
+              onPress={() => {
+                if (title == '安全退出') {
+                  signOut()
+                } else {
+                  menu?.current?.close()
+                  onPress && onPress()
+                }
+              }}
+            />
+          )
+        }}
+      />
     </>
   )
 }
@@ -193,14 +214,6 @@ const WNZMinePage = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f2f2f2',
-  },
-  imageBackgroundContainer: {
-    width: '100%',
-    aspectRatio: 500 / 200,
-  },
-  image: {
-    width: '100%',
-    height: '100%',
   },
 })
 

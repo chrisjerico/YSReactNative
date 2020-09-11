@@ -16,7 +16,7 @@ interface ActivityComponentProps {
   show?: any;
   enableFastImage?: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
-  refresh?: boolean;
+  refreshing?: boolean;
 }
 
 const ActivityComponent = ({
@@ -25,13 +25,13 @@ const ActivityComponent = ({
   show,
   enableFastImage = true,
   containerStyle,
-  refresh
+  refreshing
 }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
 
   useEffect(() => {
     setHide(false)
-  }, [refresh])
+  }, [refreshing])
 
   if (show && !hide) {
     return (

@@ -1,4 +1,3 @@
-import { UGStore } from '../../../redux/store/UGStore'
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
@@ -10,21 +9,12 @@ import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
 import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
 import {ugLog} from "../UgLog";
 
-interface SaveNativeUser {
-  currentUser: any[];
-  isRememberPsd?: boolean;
-  userName: string;
-  userPsw: string;
-  notification?: string;
-}
-
-
-export const validPassword = (password: string, pass_limit: number) => {
+export const validPassword = (password: string, pass_limit: string) => {
   if (password) {
     if (pass_limit) {
-      if (pass_limit == 1) {
+      if (pass_limit == '1') {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == 2]) {
+      } else if ([pass_limit == '2']) {
         return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
       } else {
         return false
@@ -34,90 +24,6 @@ export const validPassword = (password: string, pass_limit: number) => {
     }
   } else {
     return false
-  }
-}
-
-export const saveNativeUser = async ({
-  currentUser,
-  isRememberPsd = false,
-  userName,
-  userPsw,
-}:
-  SaveNativeUser) => {
-  try {
-
-    switch (Platform.OS) {
-      case 'ios':
-        await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
-        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-          isRememberPsd,
-          'isRememberPsd',
-        ])
-        await OCHelper.call(
-          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-          [userName, 'userName']
-        )
-        await OCHelper.call(
-          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-          [userPsw, 'userPsw']
-        )
-        break;
-      case 'android':
-        // const accountData = {
-        //   account: userName,
-        //   pwd: userPsw,
-        //   isRemember: isRememberPsd
-        // }
-        await ANHelper.callAsync(CMD.SAVE_DATA,
-          {
-            key: NA_DATA.LOGIN_INFO,
-            ...currentUser[0],
-          });
-        break;
-    }
-
-    // await OCHelper.call(
-    //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-    //   ['UGNotificationLoginComplete']
-    // )
-    // await OCHelper.call(
-    //   'UGNavigationController.current.popToRootViewControllerAnimated:',
-    //   [true]
-    // )
-  } catch (error) {
-    throw error ?? 'SaveNativeUser Error'
-  }
-}
-
-export const cleanNativeUser = async () => {
-  try {
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        if (user) {
-          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
-            { token: sessid },
-          ])
-          await OCHelper.call('UGUserModel.setCurrentUser:')
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationUserLogout']
-          )
-        }
-        break;
-    }
-
-    UGStore.dispatch({ type: 'reset', userInfo: {} })
-
-    switch (Platform.OS) {
-      case 'android':
-        await ANHelper.callAsync(CMD.LOG_OUT)
-        break;
-    }
-
-  } catch (error) {
-    throw error ?? 'cleanNativeUser Error'
   }
 }
 
@@ -210,3 +116,10 @@ export const getActivityPosition = (position: number) => {
     return {}
   }
 }
+
+export const stringToNumber = (x: string) => {
+  const parsed = parseInt(x);
+  if (isNaN(parsed)) { return 0; }
+  return parsed
+}
+

@@ -1,116 +1,81 @@
-import React, { useEffect } from 'react'
-import { FlatList, RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import React from 'react'
+import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useHome from '../../public/hooks/tars/useHome'
+import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getActivityPosition } from '../../public/tools/tars'
-import { B_DEBUG } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import UGSysConfModel, { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 
-const BZHHomePage = ({ navigation }) => {
-  // yellowBox
-  console.disableYellowBox = true
-  // functions
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
-  // stores
-  const {
-    uid,
-    usr,
-    balance,
-    isTest,
-  }: UGUserModel = UGStore.globalProps.userInfo
+const BZHHomePage = () => {
 
+  const { goTo, refresh, value } = useHomePage({})
+  const { goToJDPromotionListPage } = goTo
+  const {
+    loading,
+    refreshing,
+    userInfo,
+    sys,
+    bannersInterval,
+    onlineNum,
+    banners,
+    notices,
+    midBanners,
+    announcements,
+    navs,
+    homeGames,
+    gameLobby,
+    coupons,
+    rankLists,
+    floatAds,
+    redBag,
+    redBagLogo,
+    roulette,
+  } = value
+
+  const { uid, usr, balance, isTest } = userInfo
   const {
     mobile_logo,
     webName,
-    m_promote_pos,
-    rankingListSwitch,
-    adSliderTimer,
-  }: UGSysConfModel = UGStore.globalProps.sysConf
+    showCoupon,
+    rankingListType,
+    midBannerTimer
+  } = sys
 
-  // effect
-  const {
-    loading,
-    refresh,
-    rankList,
-    banner,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    homeAd,
-    roulette,
-    redBag,
-    floatAd,
-    homeRecommend,
-    refreshHome,
-  } = useHome()
-
-  useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
-    }
-  }, [notice])
-  // data handle
-  const bannersInterval = parseInt(banner?.data?.interval)
-  const banners = banner?.data?.list ?? []
-  const notices = notice?.data?.scroll ?? []
-  const announcements =
-    notice?.data?.popup?.map((item: any) => {
-      return Object.assign(
-        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
-        item
-      )
-    }) ?? []
-  const navs =
-    homeGame?.data?.navs
-      ?.sort((a: any, b: any) => a.sort - b.sort)
-      ?.slice(0, 4) ?? []
-  const homeGames = homeGame?.data?.icons ?? []
-  const tabGames = homeRecommend?.data
-  const tabs = tabGames?.map(item => item?.categoryName) ?? []
-  const rankLists = rankList?.data?.list ?? []
-  const redBagLogo = redBag?.data?.redBagLogo
-  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
-  const ads = homeAd?.data ?? []
+  const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
   if (loading) {
-    return <ProgressCircle />
+    return (
+      <>
+        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor} />
+        <ProgressCircle />
+      </>
+    )
   } else {
     return (
       <>
-        <SafeAreaHeader
-          headerColor={BZHThemeColor.宝石红.themeColor}
-        >
+        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}
@@ -118,7 +83,7 @@ const BZHHomePage = ({ navigation }) => {
             name={usr}
             balance={balance}
             onPressSignIn={() => push(PageName.BZHSignInPage)}
-            onPressSignUp={() => push(PageName.BZHRegisterPage)}
+            onPressSignUp={() => push(PageName.BZHSignUpPage)}
             onPressUser={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.我的页)
             }}
@@ -129,10 +94,10 @@ const BZHHomePage = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={refresh}
+              refreshing={refreshing}
               onRefresh={async () => {
                 try {
-                  await refreshHome()
+                  await refresh()
                   PushHelper.pushAnnouncement(announcements)
                 } catch (error) {
                   console.log('-------error------', error)
@@ -143,6 +108,7 @@ const BZHHomePage = ({ navigation }) => {
         >
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 218 }}
+            badgeStyle={{ top: scale(-210) }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
@@ -205,10 +171,10 @@ const BZHHomePage = ({ navigation }) => {
             }}
           />
           <BannerBlock
-            visible={ads?.length > 0}
-            autoplayTimeout={adSliderTimer}
+            visible={midBanners?.length > 0}
+            autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
-            banners={ads}
+            banners={midBanners}
             renderBanner={(item, index) => {
               const { linkCategory, linkPosition, image } = item
               return (
@@ -223,11 +189,12 @@ const BZHHomePage = ({ navigation }) => {
               )
             }}
           />
-          <FlatList
+          <List
+            uniqueKey={'BZHHomePage_GameBlock'}
             style={{ paddingHorizontal: '1%' }}
             removeClippedSubviews={true}
             data={homeGames}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               const { name, list } = item
               return (
                 <GameBlock
@@ -235,15 +202,27 @@ const BZHHomePage = ({ navigation }) => {
                   title={name}
                   onPressTotal={() => {
                     if (uid) {
-                      const index = tabs?.findIndex(item => item == name)
+                      let index = 0
+                      if (name == '视讯') {
+                        index = recommendGameTabs?.findIndex(
+                          (item) => item == '真人'
+                        )
+                      } else {
+                        index = recommendGameTabs?.findIndex(
+                          (item) => item == name
+                        )
+                      }
                       const initialTabIndex = index < 0 ? 0 : index
-                      push(PageName.BZHGameLobbyPage, { tabGames, initialTabIndex })
+                      push(PageName.BZHGameLobbyPage, {
+                        initialTabIndex,
+                      })
                     } else {
                       push(PageName.BZHSignInPage)
                     }
                   }}
                   renderGameContent={() => (
                     <GameSubTypeComponent
+                      uniqueKey={index.toString()}
                       containerStyle={{ paddingTop: scale(20) }}
                       subTypeContainerStyle={{
                         marginBottom: scale(20),
@@ -251,7 +230,8 @@ const BZHHomePage = ({ navigation }) => {
                       }}
                       games={list}
                       numColumns={3}
-                      renderSubType={(item, index) => {
+                      subTypeNumColumns={3}
+                      renderSubType={({ item, index }) => {
                         const { title } = item
                         return (
                           <Button
@@ -266,18 +246,18 @@ const BZHHomePage = ({ navigation }) => {
                               paddingVertical: scale(20),
                               borderRadius: scale(5),
                             }}
-                            textStyle={{
+                            titleStyle={{
                               color: '#000000',
                               fontSize: scale(15),
                             }}
-                            text={title}
+                            title={title}
                             onPress={() => {
                               PushHelper.pushHomeGame(item)
                             }}
                           />
                         )
                       }}
-                      renderGame={({ item, index, onPressGameSubType }) => {
+                      renderGame={({ item, index, showGameSubType }) => {
                         const {
                           title,
                           logo,
@@ -294,7 +274,7 @@ const BZHHomePage = ({ navigation }) => {
                             key={index}
                             showRightTopFlag={showFlag > 0 && showFlag < 4}
                             showCenterFlag={showFlag == 4}
-                            showSecondLevelIcon={subType}
+                            showSecondLevelIcon={subType ? true : false}
                             flagIcon={hotIcon}
                             resizeMode={'contain'}
                             containerStyle={[
@@ -322,7 +302,7 @@ const BZHHomePage = ({ navigation }) => {
                             }}
                             onPress={() => {
                               if (subType) {
-                                onPressGameSubType(index)
+                                showGameSubType(index)
                               } else {
                                 PushHelper.pushHomeGame(item)
                               }
@@ -337,7 +317,7 @@ const BZHHomePage = ({ navigation }) => {
             }}
           />
           <CouponBlock
-            visible={m_promote_pos}
+            visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
             containerStyle={{
               paddingHorizontal: '1%',
@@ -383,7 +363,7 @@ const BZHHomePage = ({ navigation }) => {
             }}
           />
           <AnimatedRankComponent
-            type={rankingListSwitch}
+            type={rankingListType}
             containerStyle={styles.subComponent}
             iconTitleContainerStyle={{
               backgroundColor: '#ffffff',
@@ -418,7 +398,7 @@ const BZHHomePage = ({ navigation }) => {
           <BottomGap />
         </ScrollView>
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(250), right: 0 }}
           show={uid && redBagLogo && !isTest}
           logo={redBagLogo}
@@ -427,7 +407,7 @@ const BZHHomePage = ({ navigation }) => {
           }}
         />
         <ActivityComponent
-          refresh={refresh}
+          refreshing={refreshing}
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
@@ -436,12 +416,12 @@ const BZHHomePage = ({ navigation }) => {
             PushHelper.pushWheel(roulette)
           }}
         />
-        {floatAd?.map((item: any, index) => {
+        {floatAds?.map((item: any, index) => {
           const { image, position, linkCategory, linkPosition } = item
           return (
             <ActivityComponent
               key={index}
-              refresh={refresh}
+              refreshing={refreshing}
               containerStyle={getActivityPosition(position)}
               enableFastImage={true}
               show={uid && !isTest}
@@ -469,7 +449,7 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
-  }
+  },
 })
 
 export default BZHHomePage

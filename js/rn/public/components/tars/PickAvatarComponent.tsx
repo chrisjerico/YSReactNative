@@ -1,39 +1,77 @@
-import React, { useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { Datum } from '../../../public/network/Model/SystemAvatarListModel'
 import { scale } from '../../../public/tools/Scale'
+import { UGStore } from '../../../redux/store/UGStore'
+import APIRouter from '../../network/APIRouter'
+import { ToastError, ToastSuccess } from '../../tools/tars'
 import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
 
 interface PickAvatarComponentProps {
-  visible: boolean;
-  avatars: Datum[];
-  onPressSave: (avatar: IAvatar) => any;
-  onPressCancel: () => any;
-  loading: boolean;
+  onSaveAvatarSuccess?: () => any;
   initAvatar: string;
   color: string;
 }
 
-interface IAvatar {
-  url: string;
-  filename: string;
-}
-
 const PickAvatarComponent = ({
-  visible,
-  avatars,
-  onPressSave,
-  onPressCancel,
-  loading,
   initAvatar,
   color,
-}: PickAvatarComponentProps) => {
+  onSaveAvatarSuccess
+}: PickAvatarComponentProps, ref: any) => {
   const [avatar, setAvatar] = useState(initAvatar)
+  const [avatarList, setAvatarList] = useState([])
   const [fileName, setfileName] = useState('')
   const scrollView = useRef(null)
+  const [loading, setLoading] = useState(true)
+  const [visible, setVisible] = useState(false)
+
+  const fetchAvatarList = async () => {
+    try {
+      setLoading(true)
+      const response = await APIRouter.system_avatarList()
+      const avatarList = response?.data?.data ?? []
+      setAvatarList(avatarList)
+    } catch (error) {
+      console.log('-------error------', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const saveAvatar = async ({ url, filename }) => {
+    try {
+      UGStore.dispatch({ type: 'merge', userInfo: { avatar: url } })
+      const value = await APIRouter.task_changeAvatar(filename)
+      if (value?.data?.code == 0) {
+        ToastSuccess('修改头像成功')
+        onSaveAvatarSuccess && onSaveAvatarSuccess()
+      } else {
+        ToastError('修改头像失败')
+      }
+    } catch (error) {
+      ToastError('修改头像失败')
+      console.log('-------error------', error)
+    } finally {
+      setVisible(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAvatarList()
+  }, [])
+
+  useImperativeHandle(ref, () => ({
+    open: () => {
+      setVisible(true)
+    },
+    close: () => {
+      setVisible(false)
+    },
+    fetchAvatarList: fetchAvatarList
+  }))
+
   return (
     <Modal transparent={true} visible={visible}>
       <View style={styles.container}>
@@ -62,7 +100,7 @@ const PickAvatarComponent = ({
                   showsHorizontalScrollIndicator={false}
                   ref={scrollView}
                 >
-                  {avatars?.map((item, index) => {
+                  {avatarList?.map((item, index) => {
                     const { url, filename } = item
                     return (
                       <Avatar
@@ -99,10 +137,7 @@ const PickAvatarComponent = ({
               }}
               titleStyle={{ color: '#ffffff' }}
               onPress={() =>
-                onPressSave({
-                  url: avatar,
-                  filename: fileName,
-                })
+                saveAvatar({ url: avatar, filename: fileName })
               }
             />
             <Button
@@ -110,7 +145,9 @@ const PickAvatarComponent = ({
               title={'取消'}
               buttonStyle={{ backgroundColor: '#D0D0D0', width: scale(200) }}
               titleStyle={{ color: '#ffffff' }}
-              onPress={onPressCancel}
+              onPress={() => {
+                setVisible(false)
+              }}
             />
           </View>
         </View>
@@ -143,4 +180,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default PickAvatarComponent
+export default forwardRef(PickAvatarComponent)
