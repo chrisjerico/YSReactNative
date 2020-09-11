@@ -25,7 +25,7 @@ const LHTSignInPage = () => {
     signUpPage: PageName.LHTSignUpPage,
   })
 
-  const { navigateToRegisterPage } = navigateTo
+  const { navigateToSignUpPage } = navigateTo
 
   const { signIn, tryPlay } = sign
   return (
@@ -63,7 +63,7 @@ const LHTSignInPage = () => {
             title={'马上注册'}
             containerStyle={styles.button}
             titleStyle={styles.buttonTitleStyle}
-            onPress={navigateToRegisterPage}
+            onPress={navigateToSignUpPage}
           />
           <Button
             title={'免费试玩'}

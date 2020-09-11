@@ -27,7 +27,7 @@ const BZHSignUpPage = () => {
     onChange,
     sign,
     valid,
-    limit,
+    passwordLimit,
   } = useSignUpPage({
     homePage: PageName.BZHHomePage,
     signInPage: PageName.BZHSignInPage,
@@ -55,7 +55,7 @@ const BZHSignUpPage = () => {
             slideCodeColor={'#ffffff'}
             show={show}
             label={label}
-            limit={limit}
+            passwordLimit={passwordLimit}
             onChange={onChange}
             Form={SignUpForm}
           />

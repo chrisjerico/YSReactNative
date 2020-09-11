@@ -42,7 +42,7 @@ const useSignInPage = ({
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
-  const navigateToRegisterPage = () => {
+  const navigateToSignUpPage = () => {
     homePage && navigate(signUpPage, {})
   }
 
@@ -146,7 +146,7 @@ const useSignInPage = ({
 
   const navigateTo = {
     navigateToHomePage,
-    navigateToRegisterPage,
+    navigateToSignUpPage,
   }
 
   const show = {

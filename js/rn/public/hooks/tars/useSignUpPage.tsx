@@ -35,16 +35,16 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const slideCodeRef = useRef(null)
   const agentRef = useRef<AgentType>(null)
 
-  const goToHomePage = () => {
+  const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
   }
 
-  const goToSignInPage = () => {
+  const navigateToSignInPage = () => {
     signInPage && navigate(signInPage, {})
   }
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      goToHomePage()
+      navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
@@ -54,10 +54,10 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   })
 
   const { register } = useRegister({
-    onSuccessWithAutoLogin: goToHomePage,
+    onSuccessWithAutoLogin: navigateToHomePage,
     onSuccess: () => {
       ToastSuccess('注册成功')
-      goToHomePage()
+      navigateToHomePage()
     },
     onError: (error) => {
       setSlideCode({
@@ -228,9 +228,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     wxLabel,
   }
 
-  const goTo = {
-    goToHomePage,
-    goToSignInPage
+  const navigateTo = {
+    navigateToHomePage,
+    navigateToSignInPage
   }
 
   const sign = {
@@ -244,7 +244,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     valid,
     label,
     onChange,
-    goTo,
+    navigateTo,
     sign,
     passwordLimit
   }
