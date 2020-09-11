@@ -4,7 +4,6 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import APIRouter from "../network/APIRouter";
 import {getGameList} from "../utils/getGameList";
-import AppDefine from "../define/AppDefine";
 
 export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
     let [games, setGames] = useState([])
@@ -39,9 +38,9 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
                     style={{height: 340, backgroundColor: "white", paddingVertical: 2, paddingHorizontal: 2}}
                     numColumns={3}
                     keyExtractor={(item, index) => `games-${index}`} data={games}
-                    renderItem={({item, itemIndex}) => (
+                    renderItem={({item, index}) => (
                         <TouchableOpacity
-                            key={`games-items-${itemIndex}`}
+                            key={`games-items-${index}`}
                             style={{
                                 justifyContent: "center",
                                 backgroundColor: item === chosen ? "#387EF5" : "white",
@@ -76,7 +75,7 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
                         borderColor: "#ddd",
                         borderWidth: 1,
                         borderRadius: 8,
-                        height: 60,
+                        height: 40,
                         marginRight: 4,
                     }} onPress={() => setShowModal(false)}>
                         <Text style={{textAlign: "center"}}>取消</Text>
@@ -88,11 +87,11 @@ export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
                         borderColor: "#387EF5",
                         borderWidth: 1,
                         borderRadius: 8,
-                        height: 60,
+                        height: 40,
                         backgroundColor: "#387EF5",
                     }} onPress={() => {
                         setShowModal(false)
-                        setCurrentGame(chosen)
+                        chosen && setCurrentGame(chosen)
                     }}>
                         <Text style={{textAlign: "center", color: "white"}}>确定</Text>
                     </TouchableOpacity>

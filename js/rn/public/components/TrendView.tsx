@@ -26,27 +26,34 @@ const TrendView = ({navigation}) => {
         getData()
     }, [defaultNumber, currentGame])
 
-    useEffect(() => {
-        // OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-        // const unsubscribe = navigation.addListener('focus', () => {
-        //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-        //     console.log("123456")
-        // }, []);
-        OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-        // const _unsubscribe = navigation.addListener('blur', () => {
-        //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-        //     console.log("123456")
-        // }, []);
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        // return _unsubscribe;
-    })
+    // useEffect(() => {
+    //     // OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+    //     // const unsubscribe = navigation.addListener('focus', () => {
+    //     //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+    //     //     console.log("123456")
+    //     // }, []);
+    //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+    //     // const _unsubscribe = navigation.addListener('blur', () => {
+    //     //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+    //     //     console.log("123456")
+    //     // }, []);
+    //
+    //     // Return the function to unsubscribe from the event so it gets removed on unmount
+    //     // return _unsubscribe;
+    // }, [])
 
     useEffect(() => {
         if (trendData) {
             setHeaderArr(chunkArray(trendData.header, 6))
         }
     }, [trendData])
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+        });
+        return unsubscribe;
+    }, [])
 
     const getData = () => {
         setLoading(true)
@@ -65,11 +72,11 @@ const TrendView = ({navigation}) => {
             case "pk10nn":
             case "jsk3":
             case "gd11x5":
-                return index < 9 ? `0${index}` : index
+                return index < 10 ? `0${index}` : index
             case"pcdd":
             case"cqssc":
             case"qxc":
-                return index < 9 ? `0${index - 1}` : index - 1
+                return index < 11 ? `0${index - 1}` : index - 1
         }
     }
     return (
@@ -131,7 +138,7 @@ const TrendView = ({navigation}) => {
                                             borderColor: "#ccc",
                                             color: "#ffffff",
                                             paddingVertical: 8
-                                        }}>{getHeaderIndex("cqssc", index)}</Text>
+                                        }}>{getHeaderIndex(currentGame.gameType, index)}</Text>
                                 })}
                             </View>
                         </View>
