@@ -16,7 +16,7 @@ import useRerender from '../../public/hooks/tars/useRerender'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
+import { getActivityPosition, useHtml5Image, stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -344,7 +344,7 @@ const WNZHomePage = () => {
                         desc={openCycle}
                         logoBallText={tab == '官方玩法' ? '官' : '信'}
                         onPress={() => {
-                          PushHelper.pushLottery(parseInt(id))
+                          PushHelper.pushLottery(stringToNumber(id))
                         }}
                       />
                     )

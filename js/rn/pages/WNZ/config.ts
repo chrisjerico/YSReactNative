@@ -4,6 +4,7 @@ import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
+import { SeriesId } from '../../public/models/Enum'
 
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
 
@@ -44,7 +45,7 @@ const config = {
     },
     {
       title: '幸运棋牌',
-      onPress: () => { PushHelper.openWebView('http://test05.6yc.com/mobile/realAuto/goToGame/59/1/') },
+      onPress: () => { PushHelper.pushHomeGame({ seriesId: SeriesId.棋牌, gameId: 51, subId: 51 }) },
     },
     {
       title: '彩票游戏',
@@ -52,7 +53,7 @@ const config = {
     },
     {
       title: 'AG视讯',
-      onPress: () => { PushHelper.openWebView('http://test05.6yc.com/mobile/realAuto/goToGame/59/1/') },
+      onPress: () => { PushHelper.pushHomeGame({ "gameId": 59, "seriesId": SeriesId.真人, "subId": 59, }) },
     },
     {
       title: '真人视讯',

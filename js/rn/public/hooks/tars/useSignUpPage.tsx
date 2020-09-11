@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Necessity } from '../../models/Types'
+import { Necessity } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'

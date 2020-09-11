@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { RankingListType } from '../../models/Types'
+import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
 
 interface RankList {

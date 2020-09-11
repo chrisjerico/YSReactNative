@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
 import PushHelper from '../../public/define/PushHelper'
+import { SeriesId } from '../../public/models/Enum'
 import { pop } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -11,7 +12,6 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { SeriesId } from '../../redux/model/全局/UGSeriesId'
 import { UGStore } from '../../redux/store/UGStore'
 
 const WNZGameLobbyPage = ({ route }) => {

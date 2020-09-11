@@ -1,5 +1,5 @@
 import { UGStore } from '../../../redux/store/UGStore'
-import { LoginTo, Necessity, RankingListType } from '../../models/Types'
+import { LoginTo, Necessity, RankingListType } from '../../models/Enum'
 import { stringToNumber } from '../../tools/tars'
 
 interface UseSys {

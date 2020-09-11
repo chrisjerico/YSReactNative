@@ -1,11 +1,12 @@
 import { Alert, AlertButton, Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
-import { SeriesId } from '../../redux/model/全局/UGSeriesId'
 import {
   UGAgentApplyInfo,
   UGTabbarItem,
   UGUserCenterType
 } from '../../redux/model/全局/UGSysConfModel'
+import { SeriesId } from '../models/Enum'
+import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
 import { popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
@@ -19,31 +20,6 @@ import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
-
-export enum PushRightMenuFrom {
-  首頁 = '1',
-  彩種 = '2',
-}
-
-
-interface PushHomeGame {
-  seriesId: string | number;
-  gameId: string | number;
-  subId: string | number;
-}
-
-interface PushAnnouncement {
-  clsName: 'UGNoticeModel';
-  hiddenBottomLine?: string;
-}
-
-interface PushWheel {
-  end: string;
-  id: string;
-  param: any;
-  start: string;
-  type: string;
-}
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -60,11 +36,6 @@ export default class PushHelper {
       ],
       [data]
     )
-  }
-  // 右側選單
-  static pushRightMenu(from: '1' | '2') {
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
   }
 
   // 輪盤
