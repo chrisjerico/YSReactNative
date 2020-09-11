@@ -403,7 +403,7 @@ const WNZHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={true}
+            debug={false}
             version={'zora'}
           />
           <BottomGap />
