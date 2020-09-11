@@ -6,7 +6,7 @@ import {
     Platform,
     RefreshControl,
     SafeAreaView,
-    ScrollView,
+    ScrollView, StatusBar,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -153,73 +153,84 @@ const LLHomePage = ({setProps, navigation}) => {
 
     return (
         <View style={{flex: 1}}>
-            <ScrollView refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
-                                                        onRefresh={onRefresh}/>}
-                        style={{flex: 1}}>
-                <HomeHeaderButtonBar logoIcon={mobile_logo}/>
-                <HomeTabView/>
-                {m_promote_pos &&
-                <>
-                    <TouchableOpacity
-                        style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}
+            <StatusBar barStyle="dark-content" translucent={true}/>
+            <SafeAreaView style={{flex: 1}}>
+                <ScrollView refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
+                                                            onRefresh={onRefresh}/>}
+                            style={{flex: 1}}>
+                    <HomeHeaderButtonBar logoIcon={mobile_logo}/>
+                    <HomeTabView/>
+                    {m_promote_pos &&
+                    <>
+                        <TouchableOpacity
+                            style={{flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10}}
+                            onPress={() => {
+                                push(PageName.PromotionListPage)
+                            }}>
+                            <Icon size={16} name={"gift"}/>
+                            <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
+                            <View style={{flex: 1}}/>
+                            <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                        </TouchableOpacity>
+                        <View style={{backgroundColor: "#ffffff"}}>
+                            <PromotionsBlock horizontal={true} titleVisible={false}/>
+                        </View>
+                    </>
+                    }
+                    <ImageButton
+                        imgStyle={{
+                            height: 131,
+                            width: Dimensions.get("screen").width - 16,
+                            marginHorizontal: 8,
+                            marginTop: 8
+                        }}
                         onPress={() => {
+                            uid === "" ?
+                                PushHelper.pushLogin() :
+                                PushHelper.pushUserCenterType(5)
+                        }} uri={'http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png'}/>
+                    {rankingListSwitch === 1 ? <SafeAreaView style={{marginHorizontal: 10}}>
+                            <View style={{flexDirection: 'row', alignItems: "center"}}>
+                                <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
+                                <Text style={{
+                                    fontSize: 16,
+                                    lineHeight: 22,
+                                    color: "#3c3c3c",
+                                    marginVertical: 10
+                                }}>中奖排行榜</Text>
+                            </View>
+                            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                                        width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                        </SafeAreaView> :
+                        <SafeAreaView style={{marginHorizontal: 10}}>
+                            <View style={{flexDirection: 'row', alignItems: "center"}}>
+                                <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
+                                <Text style={{
+                                    fontSize: 16,
+                                    lineHeight: 22,
+                                    color: "#3c3c3c",
+                                    marginVertical: 10
+                                }}>投注排行榜</Text>
+                            </View>
+                            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'}
+                                        textColor={'black'}
+                                        width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                        </SafeAreaView>}
+                    <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
+                        <Text onPress={() => {
+                            console.log(httpClient.defaults.baseURL + '/index2.php')
+                            PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+                        }} style={{color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5}}>💻 电 脑
+                            版</Text>
+                        <Text style={{color: 'black', textAlign: 'center'}} onPress={() => {
                             push(PageName.PromotionListPage)
-                        }}>
-                        <Icon size={16} name={"gift"}/>
-                        <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
-                        <View style={{flex: 1}}/>
-                        <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
-                    </TouchableOpacity>
-                    <View style={{backgroundColor: "#ffffff"}}>
-                        <PromotionsBlock horizontal={true} titleVisible={false}/>
+                        }}>🎁优惠活动</Text>
                     </View>
-                </>
-                }
-                <ImageButton
-                    imgStyle={{
-                        height: 131,
-                        width: Dimensions.get("screen").width - 16,
-                        marginHorizontal: 8,
-                        marginTop: 8
-                    }}
-                    onPress={() => {
-                        uid === "" ?
-                            PushHelper.pushLogin() :
-                            PushHelper.pushUserCenterType(5)
-                    }} uri={'http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png'}/>
-                {rankingListSwitch === 1 ? <SafeAreaView style={{marginHorizontal: 10}}>
-                        <View style={{flexDirection: 'row', alignItems: "center"}}>
-                            <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
-                            <Text style={{fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10}}>中奖排行榜</Text>
-                        </View>
-                        <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                                    width={Dimensions.get("screen").width - 24} ranks={rankList}/>
-                    </SafeAreaView> :
-                    <SafeAreaView style={{marginHorizontal: 10}}>
-                        <View style={{flexDirection: 'row', alignItems: "center"}}>
-                            <Icon style={{paddingRight: 4}} size={16} name={'bar-chart-o'}/>
-                            <Text style={{
-                                fontSize: 16,
-                                lineHeight: 22,
-                                color: "#3c3c3c",
-                                marginVertical: 10
-                            }}>投注排行榜</Text>
-                        </View>
-                        <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                                    width={Dimensions.get("screen").width - 24} ranks={rankList}/>
-                    </SafeAreaView>}
-                <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
-                    <Text onPress={() => {
-                        console.log(httpClient.defaults.baseURL + '/index2.php')
-                        PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-                    }} style={{color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5}}>💻 电 脑 版</Text>
-                    <Text style={{color: 'black', textAlign: 'center'}} onPress={() => {
-                        push(PageName.PromotionListPage)
-                    }}>🎁优惠活动</Text>
-                </View>
-                <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
-                <View style={{height: 100}}/>
-            </ScrollView>
+                    <Text style={{color: 'black', textAlign: 'center'}}>COPYRIGHT
+                        © {systemStore.webName} RESERVED</Text>
+                    <View style={{height: 100}}/>
+                </ScrollView>
+            </SafeAreaView>
             {uid === "" && <View style={{
                 flexDirection: "row",
                 justifyContent: "center",
@@ -284,7 +295,7 @@ const TurntableListItem = () => {
     const getTurntableList = async () => {
         try {
             const res = await APIRouter.activity_turntableList()
-            console.log("res111",res?.data?.data)
+            console.log("res111", res?.data?.data)
             res?.data != null && setTurntableList(res?.data)
         } catch (error) {
 

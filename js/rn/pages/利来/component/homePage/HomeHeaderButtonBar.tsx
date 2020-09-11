@@ -1,4 +1,4 @@
-import {Alert, AlertButton, Image, SafeAreaView, TouchableWithoutFeedback, View} from "react-native";
+import {Alert, AlertButton, Image, SafeAreaView, StatusBar, TouchableWithoutFeedback, View} from "react-native";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import PushHelper from "../../../../public/define/PushHelper";

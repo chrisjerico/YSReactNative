@@ -6,7 +6,7 @@ import {
     FlatList,
     Image,
     SafeAreaView,
-    ScrollView,
+    ScrollView, StatusBar,
     Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
@@ -106,192 +106,200 @@ const LLMinePage = ({navigation, setProps}) => {
 
     return (
         <>
-            <ScrollView bounces={false} style={{}}>
-                <SafeAreaView style={{backgroundColor: "#39150D", height: 172}}>
-                    <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
-                           source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png"}}/>
-                    <View style={{
-                        backgroundColor: "#F3745B",
-                        marginHorizontal: 8,
-                        marginVertical: 12,
-                        height: 159,
-                        borderRadius: 6,
-                    }}>
-                        <View style={{flexDirection: "row", marginHorizontal: 8, marginVertical: 16}}>
-                            <TouchableWithoutFeedback onPress={() => onPressAvatar()}>
-                                <Image style={{width: 50, height: 50}}
-                                       source={{uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}}/>
-                            </TouchableWithoutFeedback>
-                            <View style={{marginLeft: 12}}>
-                                <View style={{flexDirection: "row", alignItems: "center"}}>
-                                    <Text style={{color: "#ffffff", lineHeight: 20, fontSize: 14}}>{usr}</Text>
-                                    <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{x: 0, y: 1}}
-                                                    end={{x: 1, y: 1}}
-                                                    style={{
-                                                        marginLeft: 8,
-                                                        marginTop: 1,
-                                                        borderRadius: 3,
-                                                        width: 42,
-                                                        height: 17
-                                                    }}>
+            <StatusBar barStyle="light-content" translucent={true}/>
+            <SafeAreaView style={{backgroundColor: "#39150D"}}>
+                <ScrollView bounces={false} style={{backgroundColor: "#ffffff"}}>
+                    <SafeAreaView style={{backgroundColor: "#39150D", height: 172}}>
+                        <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
+                               source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png"}}/>
+                        <View style={{
+                            backgroundColor: "#F3745B",
+                            marginHorizontal: 8,
+                            marginVertical: 12,
+                            height: 159,
+                            borderRadius: 6,
+                        }}>
+                            <View style={{flexDirection: "row", marginHorizontal: 8, marginVertical: 16}}>
+                                <TouchableWithoutFeedback onPress={() => onPressAvatar()}>
+                                    <Image style={{width: 50, height: 50}}
+                                           source={{uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}}/>
+                                </TouchableWithoutFeedback>
+                                <View style={{marginLeft: 12}}>
+                                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                                        <Text style={{color: "#ffffff", lineHeight: 20, fontSize: 14}}>{usr}</Text>
+                                        <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{x: 0, y: 1}}
+                                                        end={{x: 1, y: 1}}
+                                                        style={{
+                                                            marginLeft: 8,
+                                                            marginTop: 1,
+                                                            borderRadius: 3,
+                                                            width: 42,
+                                                            height: 17
+                                                        }}>
+                                            <Text style={{
+                                                marginTop: 0.5,
+                                                textAlign: 'center',
+                                                color: '#8F6832',
+                                                fontStyle: 'italic',
+                                                fontWeight: '600',
+                                                fontSize: 13
+                                            }}>{curLevelGrade}</Text>
+                                        </LinearGradient>
+                                    </View>
+                                    <View style={{flexDirection: "row", alignItems: 'center'}}>
+                                        <View style={{
+                                            backgroundColor: "#FFFFFF",
+                                            width: 193,
+                                            height: 8,
+                                            borderRadius: 4
+                                        }}/>
+                                        <View style={{
+                                            position: "absolute",
+                                            backgroundColor: "#3F64D8",
+                                            width: levelWidth,
+                                            height: 8,
+                                            borderRadius: 4
+                                        }}/>
+                                        <Text
+                                            style={{
+                                                color: "#ffffff",
+                                                lineHeight: 20,
+                                                fontSize: 14
+                                            }}>{curLevelGrade}</Text>
+                                    </View>
+                                    {levelWidth === 193 ?
+                                        <Text style={{color: "#ffffff", fontSize: 14}}>恭喜您已经是最高等级!</Text> :
                                         <Text style={{
-                                            marginTop: 0.5,
-                                            textAlign: 'center',
-                                            color: '#8F6832',
-                                            fontStyle: 'italic',
-                                            fontWeight: '600',
-                                            fontSize: 13
-                                        }}>{curLevelGrade}</Text>
-                                    </LinearGradient>
+                                            color: "#ffffff",
+                                            fontSize: 14
+                                        }}>{`距离下一级还差${parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
+                                    }
                                 </View>
-                                <View style={{flexDirection: "row", alignItems: 'center'}}>
-                                    <View style={{
-                                        backgroundColor: "#FFFFFF",
-                                        width: 193,
-                                        height: 8,
-                                        borderRadius: 4
-                                    }}/>
-                                    <View style={{
-                                        position: "absolute",
-                                        backgroundColor: "#3F64D8",
-                                        width: levelWidth,
-                                        height: 8,
-                                        borderRadius: 4
-                                    }}/>
-                                    <Text
-                                        style={{color: "#ffffff", lineHeight: 20, fontSize: 14}}>{curLevelGrade}</Text>
-                                </View>
-                                {levelWidth === 193 ?
-                                    <Text style={{color: "#ffffff", fontSize: 14}}>恭喜您已经是最高等级!</Text> :
+                            </View>
+                            <View style={{marginHorizontal: 16, marginTop: 16}}>
+                                <Text style={{fontSize: 13, color: "#ffffff"}}>总余额（元）</Text>
+                                <View style={{flexDirection: "row", alignItems: "center", marginTop: 8}}>
                                     <Text style={{
+                                        fontSize: 22,
+                                        fontWeight: "bold",
                                         color: "#ffffff",
-                                        fontSize: 14
-                                    }}>{`距离下一级还差${parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
-                                }
+                                        alignSelf: "center",
+                                        textAlign: "center"
+                                    }}>{isNaN(parseInt(balance)) ? `¥0` : `¥` + parseInt(balance).toFixed(0)}</Text>
+                                    <View style={{flex: 1}}/>
+                                    <Animated.View
+                                        style={[{transform: [{rotateZ: spinDeg}]}]}
+                                    >
+                                        <Icon size={18} style={{color: "#ffffff"}} name={"refresh"} onPress={() => {
+                                            Animated.timing(spinValue, {
+                                                toValue: 1,
+                                                duration: 3000,
+                                                easing: Easing.linear,
+                                                useNativeDriver: true,
+                                            }).start(() => {
+                                                setSpinValue(new Animated.Value(0))
+                                                reload.current = false
+                                            })
+                                            refresh()
+                                        }}/>
+                                    </Animated.View>
+                                </View>
                             </View>
                         </View>
-                        <View style={{marginHorizontal: 16, marginTop: 16}}>
-                            <Text style={{fontSize: 13, color: "#ffffff"}}>总余额（元）</Text>
-                            <View style={{flexDirection: "row", alignItems: "center", marginTop: 8}}>
-                                <Text style={{
-                                    fontSize: 22,
-                                    fontWeight: "bold",
-                                    color: "#ffffff",
-                                    alignSelf: "center",
-                                    textAlign: "center"
-                                }}>{isNaN(parseInt(balance)) ? `¥0` : `¥` + parseInt(balance).toFixed(0)}</Text>
-                                <View style={{flex: 1}}/>
-                                <Animated.View
-                                    style={[{transform: [{rotateZ: spinDeg}]}]}
-                                >
-                                    <Icon size={18} style={{color: "#ffffff"}} name={"refresh"} onPress={() => {
-                                        Animated.timing(spinValue, {
-                                            toValue: 1,
-                                            duration: 3000,
-                                            easing: Easing.linear,
-                                            useNativeDriver: true,
-                                        }).start(() => {
-                                            setSpinValue(new Animated.Value(0))
-                                            reload.current = false
-                                        })
-                                        refresh()
-                                    }}/>
-                                </Animated.View>
+                    </SafeAreaView>
+                    <View style={{
+                        marginTop: 100,
+                        flexDirection: "row",
+                        width: Dimensions.get("screen").width - 16,
+                        marginHorizontal: 8
+                    }}>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(depositItem.code)}>
+                            <View style={{alignItems: "center", flex: 1}}>
+                                <Image style={{width: 36, height: 28}}
+                                       source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png"}}/>
+                                <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>充值</Text>
                             </View>
-                        </View>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(withdrawItem.code)}>
+                            <View style={{alignItems: "center", flex: 1}}>
+                                <Image style={{width: 36, height: 28}}
+                                       source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png"}}/>
+                                <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>提现</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(transferItem.code)}>
+                            <View style={{alignItems: "center", flex: 1}}>
+                                <Image style={{width: 36, height: 28}}
+                                       source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png"}}/>
+                                <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>额度转换</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(missionItem.code)}>
+                            <View style={{alignItems: "center", flex: 1}}>
+                                <Image style={{width: 36, height: 28}}
+                                       source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png"}}/>
+                                <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>任务中心</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
-                </SafeAreaView>
-                <View style={{
-                    marginTop: 100,
-                    flexDirection: "row",
-                    width: Dimensions.get("screen").width - 16,
-                    marginHorizontal: 8
-                }}>
-                    <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(depositItem.code)}>
-                        <View style={{alignItems: "center", flex: 1}}>
-                            <Image style={{width: 36, height: 28}}
-                                   source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png"}}/>
-                            <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>充值</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(withdrawItem.code)}>
-                        <View style={{alignItems: "center", flex: 1}}>
-                            <Image style={{width: 36, height: 28}}
-                                   source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png"}}/>
-                            <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>提现</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(transferItem.code)}>
-                        <View style={{alignItems: "center", flex: 1}}>
-                            <Image style={{width: 36, height: 28}}
-                                   source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png"}}/>
-                            <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>额度转换</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(missionItem.code)}>
-                        <View style={{alignItems: "center", flex: 1}}>
-                            <Image style={{width: 36, height: 28}}
-                                   source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png"}}/>
-                            <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>任务中心</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-                <SafeAreaView>
-                    <FlatList
-                        scrollEnabled={false}
-                        style={{borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90}}
-                        keyExtractor={(item, index) => `mine-${index}`}
-                        data={UGUserCenterItem}
-                        ListFooterComponent={() => (
-                            <View style={{
-                                flexDirection: "row",
-                                flex: 1,
-                                marginLeft: 20,
-                                height: 47,
-                                alignItems: "center",
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#E0E0E0'
-                            }}>
-                                <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={loginOut}>
-                                    <Image style={{height: 29, width: 29, marginRight: 10}}
-                                           source={{uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png`}}/>
-                                    <Text style={{alignSelf: "center", color: "#47535B", flex: 1}}>退出登录</Text>
-                                    <View style={{marginRight: 20}}>
-                                        <Icon size={20} name={'angle-right'}/>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                        renderItem={({item}) => (
-                            <View style={{
-                                flexDirection: "row",
-                                flex: 1,
-                                marginLeft: 20,
-                                height: 47,
-                                alignItems: "center",
-                                borderBottomWidth: 1,
-                                borderBottomColor: '#E0E0E0'
-                            }}>
-                                <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={() => {
-                                    PushHelper.pushUserCenterType(item.code)
+                    <SafeAreaView>
+                        <FlatList
+                            scrollEnabled={false}
+                            style={{borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90}}
+                            keyExtractor={(item, index) => `mine-${index}`}
+                            data={UGUserCenterItem}
+                            ListFooterComponent={() => (
+                                <View style={{
+                                    flexDirection: "row",
+                                    flex: 1,
+                                    marginLeft: 20,
+                                    height: 47,
+                                    alignItems: "center",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: '#E0E0E0'
                                 }}>
-                                    <Image style={{height: 29, width: 29, marginRight: 10}}
-                                           source={{uri: item.logo}}/>
-                                    <Text style={{alignSelf: "center", color: "#47535B", flex: 1}}>{item.name}</Text>
-                                    <View style={{marginRight: 20}}>
-                                        <Icon size={20} name={'angle-right'}/>
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        )}/>
-                </SafeAreaView>
-                <PickAvatarComponent
-                    ref={pickAvatarComponentRef}
-                    color={LLThemeColor.利来.themeColor}
-                    initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-                    onSaveAvatarSuccess={onSaveAvatarSuccess}
-                />
-            </ScrollView>
+                                    <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={loginOut}>
+                                        <Image style={{height: 29, width: 29, marginRight: 10}}
+                                               source={{uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png`}}/>
+                                        <Text style={{alignSelf: "center", color: "#47535B", flex: 1}}>退出登录</Text>
+                                        <View style={{marginRight: 20}}>
+                                            <Icon size={20} name={'angle-right'}/>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )}
+                            renderItem={({item}) => (
+                                <View style={{
+                                    flexDirection: "row",
+                                    flex: 1,
+                                    marginLeft: 20,
+                                    height: 47,
+                                    alignItems: "center",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: '#E0E0E0'
+                                }}>
+                                    <TouchableOpacity style={{flexDirection: "row", flex: 1,}} onPress={() => {
+                                        PushHelper.pushUserCenterType(item.code)
+                                    }}>
+                                        <Image style={{height: 29, width: 29, marginRight: 10}}
+                                               source={{uri: item.logo}}/>
+                                        <Text
+                                            style={{alignSelf: "center", color: "#47535B", flex: 1}}>{item.name}</Text>
+                                        <View style={{marginRight: 20}}>
+                                            <Icon size={20} name={'angle-right'}/>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            )}/>
+                    </SafeAreaView>
+                    <PickAvatarComponent
+                        ref={pickAvatarComponentRef}
+                        color={LLThemeColor.利来.themeColor}
+                        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+                        onSaveAvatarSuccess={onSaveAvatarSuccess}
+                    />
+                </ScrollView>
+            </SafeAreaView>
         </>
     )
 }
