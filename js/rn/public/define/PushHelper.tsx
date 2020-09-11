@@ -113,7 +113,6 @@ export default class PushHelper {
             true,
           ]
         )
-        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.LoginActivity)
@@ -134,7 +133,6 @@ export default class PushHelper {
             true,
           ]
         )
-        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{selectors: 'UGFundsViewController.new[setSelectIndex:]', args1: ['UGLoginViewController']}, true]);
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_PAGE, OPEN_PAGE_PMS.RegeditActivity)
@@ -280,29 +278,11 @@ export default class PushHelper {
       case 'ios':
         switch (code) {
           case UGUserCenterType.存款: {
-            OCHelper.call(
-              'UGNavigationController.current.pushViewController:animated:',
-              [
-                {
-                  selectors: 'UGFundsViewController.new[setSelectIndex:]',
-                  args1: [0],
-                },
-                true,
-              ]
-            )
+            PushHelper.pushCategory(7, 21)
             break
           }
           case UGUserCenterType.取款: {
-            OCHelper.call(
-              'UGNavigationController.current.pushViewController:animated:',
-              [
-                {
-                  selectors: 'UGFundsViewController.new[setSelectIndex:]',
-                  args1: [1],
-                },
-                true,
-              ]
-            )
+            PushHelper.pushCategory(7, 22)
             break
           }
           case UGUserCenterType.存款纪录: {
@@ -310,8 +290,9 @@ export default class PushHelper {
               'UGNavigationController.current.pushViewController:animated:',
               [
                 {
-                  selectors: 'UGFundsViewController.new[setSelectIndex:]',
-                  args1: [2],
+                  selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
+                  args1: ['UGFundsViewController'],
+                  args2: [2],
                 },
                 true,
               ]
@@ -323,8 +304,9 @@ export default class PushHelper {
               'UGNavigationController.current.pushViewController:animated:',
               [
                 {
-                  selectors: 'UGFundsViewController.new[setSelectIndex:]',
-                  args1: [3],
+                  selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
+                  args1: ['UGFundsViewController'],
+                  args2: [3],
                 },
                 true,
               ]
@@ -600,16 +582,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.资金明细: {
-            OCHelper.call(
-              'UGNavigationController.current.pushViewController:animated:',
-              [
-                {
-                  selectors: 'UGFundsViewController.new[setSelectIndex:]',
-                  args1: [4],
-                },
-                true,
-              ]
-            )
+            PushHelper.pushCategory(7, 28)
             break
           }
           case UGUserCenterType.开奖网: {
