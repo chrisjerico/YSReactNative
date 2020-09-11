@@ -360,21 +360,21 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
                         width: "100%",
                         flexDirection: 'row'
                     }}>
-                        <TouchableOpacity onPress={onDismiss} style={{
+                        <TouchableWithoutFeedback onPress={onDismiss} style={{
                             justifyContent: 'center', alignItems: 'center',
                             width: "47%", height: 50, backgroundColor: 'white',
                             borderRadius: 5, borderColor: "gray", borderWidth: 0.5
                         }}>
                             <Text>取消</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={onPress} style={{
+                        </TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={onPress} style={{
                             justifyContent: 'center',
                             alignItems: 'center', width: "47%", height: 50,
                             backgroundColor: '#46A3FF', borderRadius: 5,
                             borderColor: "gray", borderWidth: 0.5
                         }}>
                             <Text style={{color: 'white'}}>确定</Text>
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
 
