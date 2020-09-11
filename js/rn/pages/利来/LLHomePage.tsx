@@ -45,27 +45,18 @@ import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import UGSysConfModel from "../../redux/model/全局/UGSysConfModel";
 
 const LLHomePage = ({setProps, navigation}) => {
-    let {banner, notice, rankList, redBag, onlineNum, onRefresh, loading, floatAds} = useGetHomeInfo()
+    let {rankList, redBag, onRefresh, loading, floatAds} = useGetHomeInfo()
     const userStore = UGStore.globalProps.userInfo;
-    const {uid = "", usr, balance, isTest}: UGUserModel = userStore
-    const sysStore = UGStore.globalProps.sysConf;
-    const [originalNoticeString, setOriginalNoticeString] = useState<string>()
-    const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
-    const [show, setShow] = useState(false)
-    const [content, setContent] = useState("")
-    const [promotionData, setPromotionData] = useState<PromotionsModel>()
-    const [categories, setCategories] = useState<string[]>()
+    const {uid = ""}: UGUserModel = userStore
     const systemStore = UGStore.globalProps.sysConf
     const [ads, setAds] = useState([])
     const {
         mobile_logo,
-        webName,
         m_promote_pos,
         rankingListSwitch,
     }: UGSysConfModel = UGStore.globalProps.sysConf
 
     useEffect(() => {
-        initPromotions()
         const timer = setInterval(() => {
             reloadData()
             updateUserInfo()
@@ -74,20 +65,6 @@ const LLHomePage = ({setProps, navigation}) => {
             clearInterval(timer)
         })
     }, [])
-
-    useEffect(() => {
-        let string = ""
-        const noticeData = notice?.data?.scroll?.map((res) => {
-            string += res.content
-            return {label: res.id, value: res.title}
-        }) ?? []
-        if (notice?.data?.popup) {
-            openPopup(notice)
-        }
-        setnoticeFormat(noticeData)
-        setOriginalNoticeString(string)
-    }, [notice])
-
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -117,37 +94,6 @@ const LLHomePage = ({setProps, navigation}) => {
         } else {
             UGStore.dispatch({type: 'merge', userInfo: user});
             UGStore.save();
-        }
-    }
-    const openPopup = (data: any) => {
-        const dataModel = data.data?.popup.map((item, index) => {
-            return Object.assign({clsName: 'UGNoticeModel', hiddenBottomLine: 'No'}, item);
-
-        })
-        switch (Platform.OS) {
-            case 'ios':
-                OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-                break;
-            case 'android':
-                ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
-                break;
-        }
-
-    }
-
-    const initPromotions = async () => {
-        try {
-            const {data, status} = await APIRouter.system_promotions()
-            debugger
-            setPromotionData(data)
-            let categoriesArray = []
-            data.data.list.map((res) => {
-                categoriesArray.push(res.category)
-            })
-            categoriesArray = [...new Set(categoriesArray)];
-            categoriesArray.sort()
-            setCategories(categoriesArray)
-        } catch (error) {
         }
     }
 
@@ -269,11 +215,6 @@ const LLHomePage = ({setProps, navigation}) => {
             })}
             <RedBagItem redBag={redBag} style={{top: 200}}/>
             <TurntableListItem/>
-            <MarqueePopupView onPress={() => {
-                setShow(false)
-            }} content={content} show={show} onDismiss={() => {
-                setShow(false)
-            }}/>
         </View>
     )
 

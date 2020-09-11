@@ -19,6 +19,7 @@ import { NA_DATA } from './ANHelper/hp/DataDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
+import {ugLog} from "../tools/UgLog";
 import { OCHelper } from './OCHelper/OCHelper'
 
 export default class PushHelper {
