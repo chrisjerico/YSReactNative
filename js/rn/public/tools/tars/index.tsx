@@ -1,13 +1,14 @@
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
+import { PasswordStrength } from '../../models/Enum'
 
-export const validPassword = (password: string, pass_limit: string) => {
+export const validPassword = (password: string, pass_limit: PasswordStrength) => {
   if (password) {
     if (pass_limit) {
-      if (pass_limit == '1') {
+      if (pass_limit == PasswordStrength.数字字母) {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == '2']) {
+      } else if ([pass_limit == PasswordStrength.数字字母字符]) {
         return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
       } else {
         return false

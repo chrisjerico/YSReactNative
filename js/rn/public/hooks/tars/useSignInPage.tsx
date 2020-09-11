@@ -42,11 +42,11 @@ const useSignInPage = ({
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
-  const goToRegisterPage = () => {
+  const navigateToRegisterPage = () => {
     homePage && navigate(signUpPage, {})
   }
 
-  const goToHomePage = () => {
+  const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
   }
 
@@ -56,7 +56,7 @@ const useSignInPage = ({
     },
     onSuccess: () => {
       if (loginTo == LoginTo.首页) {
-        goToHomePage()
+        navigateToHomePage()
       } else {
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
@@ -76,7 +76,7 @@ const useSignInPage = ({
 
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      goToHomePage()
+      navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
@@ -144,28 +144,26 @@ const useSignInPage = ({
     onChangeSlideCode,
   }
 
-  const goTo = {
-    goToHomePage,
-    goToRegisterPage,
+  const navigateTo = {
+    navigateToHomePage,
+    navigateToRegisterPage,
   }
 
   const show = {
     loginVCode
   }
 
-  const _sign = {
-    signIn,
-    tryPlay,
-  }
-
   return {
     slideCodeRef,
-    goTo,
+    navigateTo,
     onChange,
     value,
     valid,
     show,
-    sign: _sign
+    sign: {
+      signIn,
+      tryPlay,
+    }
   }
 }
 

@@ -1,5 +1,10 @@
 import { UGStore } from '../../../redux/store/UGStore'
-import { LoginTo, Necessity, RankingListType } from '../../models/Enum'
+import {
+  LoginTo,
+  Necessity,
+  RankingListType,
+  PasswordStrength,
+} from '../../models/Enum'
 import { stringToNumber } from '../../tools/tars'
 
 interface UseSys {
@@ -41,6 +46,19 @@ const getOption = (reg: string) => {
   }
 }
 
+const getPasswordStrength = (pass_limit: string) => {
+  switch (pass_limit) {
+    case '0':
+      return PasswordStrength.不限制
+    case '1':
+      return PasswordStrength.数字字母
+    case '2':
+      return PasswordStrength.数字字母字符
+    default:
+      return PasswordStrength.不限制
+  }
+}
+
 const useSys = ({ defaultUserCenterLogos }: UseSys) => {
   const sysStore = UGStore.globalProps.sys
   const sys = {
@@ -77,6 +95,11 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
             : logo) ?? '',
       })
     }),
+    passwordLimit: {
+      strength: getPasswordStrength(sysStore?.pass_limit),
+      maxLength: stringToNumber(sysStore?.pass_length_max),
+      minLength: stringToNumber(sysStore?.pass_length_min),
+    },
   }
   return {
     sys,

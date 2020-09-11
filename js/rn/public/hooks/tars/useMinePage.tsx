@@ -59,13 +59,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     nextLevelTitle,
   } = UGStore.globalProps.userInfo
   const { mobile_logo, userCenterItems, showSign } = sys
-  // const userCenterItems = userCenter?.map((ele) => {
-  //   const { logo, code } = ele
-  //   const newLogo =
-  //     logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
-  //   return Object.assign({}, ele, { logo: newLogo })
-  // })
-  // functions
+
   const { logOut } = useLogOut({
     onSuccess: () => {
       navigate(homePage, {})

@@ -35,3 +35,9 @@ export interface PushWheel {
   start: string;
   type: string;
 }
+
+export interface SlideCode {
+  nc_csessionid?: string;
+  nc_token?: string;
+  nc_sig?: string;
+}

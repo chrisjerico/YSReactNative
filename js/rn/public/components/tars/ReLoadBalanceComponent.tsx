@@ -47,6 +47,7 @@ const ReLoadBalanceComponent = ({
     try {
       const { data } = await APIRouter.user_balance_token()
       const balance = data?.data?.balance
+      console.log("-------balance-----", balance)
       setMoney(balance)
       UGStore.dispatch({ type: 'merge', userInfo: { balance } })
     } catch (error) {
