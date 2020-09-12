@@ -1,4 +1,5 @@
 export enum RankingListType {
+  不顯示 = 0,
   中奖排行榜 = 1,
   投注排行榜 = 2
 }

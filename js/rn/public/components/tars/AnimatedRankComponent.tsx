@@ -35,7 +35,6 @@ const AnimatedRankComponent = ({
   const count = rankLists?.length
   const height = useRef(new Animated.Value(listHeight)).current
 
-  const y = useRef(new Animated.Value(0)).current
   const animated = () => {
     Animated.timing(height, {
       toValue: -(count * itemHeight),
@@ -55,7 +54,9 @@ const AnimatedRankComponent = ({
     animated()
   }, [])
 
-  if (type != 0) {
+  if (type == RankingListType.不顯示) {
+    return null
+  } else {
     return (
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
@@ -116,8 +117,6 @@ const AnimatedRankComponent = ({
         </View>
       </View>
     )
-  } else {
-    return null
   }
 }
 

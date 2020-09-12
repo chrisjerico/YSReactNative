@@ -65,9 +65,10 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
     ...sysStore,
     showCoupon: sysStore?.m_promote_pos == '1' ? true : false,
     rankingListType:
-      sysStore?.rankingListSwitch == 1
-        ? RankingListType.中奖排行榜
-        : RankingListType.投注排行榜,
+      sysStore?.rankingListSwitch ?
+        sysStore?.rankingListSwitch == 1
+          ? RankingListType.中奖排行榜
+          : RankingListType.投注排行榜 : RankingListType.不顯示,
     midBannerTimer: stringToNumber(sysStore?.adSliderTimer),
     loginTo: stringToNumber(sysStore?.login_to) ? LoginTo.首页 : LoginTo.我的页,
     showSign: sysStore.checkinSwitch == '1' ? true : false,
