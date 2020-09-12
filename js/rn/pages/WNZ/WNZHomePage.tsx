@@ -400,8 +400,7 @@ const WNZHomePage = () => {
               )
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={true}
-            version={'aaaaa'}
+            debug={false}
           />
           <BottomGap />
         </ScrollView>

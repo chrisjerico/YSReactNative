@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, FlatList, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
@@ -30,42 +30,30 @@ const AnimatedRankComponent = ({
   duration = 1000,
   type,
 }: AnimatedRankComponentProps) => {
-
-  const scroll = useRef(null)
-
-  const count = rankLists?.length ?? 0
-  const listHeight = 160
+  const listHeight = 180
   const itemHeight = 40
+  const count = rankLists?.length
+  const height = useRef(new Animated.Value(listHeight)).current
+
   const y = useRef(new Animated.Value(0)).current
   const animated = () => {
-    Animated.timing(y, {
-      delay: 0,
-      toValue: (itemHeight * count) + listHeight,
-      duration: (count + 4) * duration,
-      useNativeDriver: true
+    Animated.timing(height, {
+      toValue: -(count * itemHeight),
+      duration: count * duration,
+      useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
-        y?.setValue(0)
+        height?.setValue(listHeight)
         animated()
       }
     })
   }
 
-  const init = () => {
-    y?.stopAnimation()
-    y?.removeAllListeners()
-    y?.setValue(0)
-  }
-
   useEffect(() => {
-    init()
-    y?.addListener((animation) => {
-      const offset = animation?.value
-      scroll?.current?.scrollToOffset({ offset, animated: false })
-    })
+    height?.stopAnimation()
+    height?.setValue(listHeight)
     animated()
-    return () => y?.removeAllListeners()
-  }, [count])
+  }, [])
 
   if (type != 0) {
     return (
@@ -90,45 +78,41 @@ const AnimatedRankComponent = ({
               </Text>
             </View>
           </View>
-          <FlatList
-            ref={scroll}
-            listKey={'AnimatedRankComponent'}
-            keyExtractor={(_, index) => 'AnimatedRankComponent' + index.toString()}
-            style={{ marginBottom: scale(20), height: listHeight }}
-            ListHeaderComponent={() => <View style={{ height: listHeight }} />}
-            ListFooterComponent={() => <View style={{ height: listHeight }} />}
-            getItemLayout={(_, index) => {
-              return {
-                length: itemHeight, offset: itemHeight * index, index
-              }
-            }}
-            scrollEnabled={false}
-            removeClippedSubviews={true}
-            showsVerticalScrollIndicator={false}
-            data={rankLists}
-            renderItem={({ item }) => {
-              const { username, coin, type } = item
-              return (
-                <View style={styles.itemContainer} >
-                  <View style={styles.itemtextContainer}>
-                    <Text style={styles.item} numberOfLines={1}>
-                      {username}
-                    </Text>
+          <View style={[styles.listContainer, { height: listHeight }]}>
+            <Animated.View
+              style={{
+                width: '100%',
+                transform: [
+                  {
+                    translateY: height,
+                  },
+                ],
+              }}
+            >
+              {rankLists?.map((item, index) => {
+                const { coin, type, username } = item
+                return (
+                  <View key={index} style={styles.itemContainer}>
+                    <View style={styles.itemTextContainer}>
+                      <Text style={styles.item} numberOfLines={1}>
+                        {username}
+                      </Text>
+                    </View>
+                    <View style={styles.itemTextContainer}>
+                      <Text style={styles.item} numberOfLines={1}>
+                        {type}
+                      </Text>
+                    </View>
+                    <View style={styles.itemTextContainer}>
+                      <Text style={styles.item} numberOfLines={1}>
+                        {coin}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={styles.itemtextContainer}>
-                    <Text style={styles.item} numberOfLines={1}>
-                      {type}
-                    </Text>
-                  </View>
-                  <View style={styles.itemtextContainer}>
-                    <Text style={styles.item} numberOfLines={1}>
-                      {coin}
-                    </Text>
-                  </View>
-                </View>
-              )
-            }}
-          />
+                )
+              })}
+            </Animated.View>
+          </View>
         </View>
       </View>
     )
@@ -160,9 +144,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginVertical: 5,
     height: 30,
-    overflow: 'hidden',
+    marginVertical: 5,
   },
   title: {
     paddingTop: scale(5),
@@ -177,15 +160,20 @@ const styles = StyleSheet.create({
     fontSize: scale(25),
     paddingLeft: scale(5),
   },
+  listContainer: {
+    marginTop: scale(5),
+    marginBottom: scale(10),
+    overflow: 'hidden',
+  },
   textContainer: {
     flex: 1,
     alignItems: 'center',
   },
-  itemtextContainer: {
+  itemTextContainer: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+  },
 })
 
 export default AnimatedRankComponent
