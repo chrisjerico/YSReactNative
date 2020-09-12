@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
+  StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
   View,

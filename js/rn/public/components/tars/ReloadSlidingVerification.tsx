@@ -35,11 +35,21 @@ const ReloadSlidingVerification = (
   true;`
   const [height, setHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
-    if (typeof e?.nativeEvent?.data == 'string') {
-      console.log("-------e?.nativeEvent?.data", e?.nativeEvent)
-      setHeight(parseInt(e?.nativeEvent?.data))
+    // if (typeof e?.nativeEvent?.data == 'string') {
+    //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+    // } else {
+    //   onChange(e?.nativeEvent?.data)
+    // }
+    let eData = e?.nativeEvent?.data;
+    console.log("sliding response: " + eData)
+
+    if (eData?.startsWith('{')
+      && eData?.endsWith('}')) {
+      onChange(JSON.parse(eData))
+    } else if (typeof eData == 'string') {
+      setHeight(parseInt(eData) * 1.5)
     } else {
-      onChange(e?.nativeEvent?.data)
+      onChange(eData)
     }
   }
   const webViewRef = useRef<WebView>()
