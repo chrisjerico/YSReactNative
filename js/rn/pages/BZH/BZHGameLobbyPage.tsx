@@ -23,12 +23,9 @@ const BZHGameLobbyPage = ({ route }) => {
       <ScrollView
         style={styles.container}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
       >
         <TabComponent
           containerStyle={{
-            borderBottomRightRadius: scale(10),
-            borderBottomLeftRadius: scale(10),
             marginTop: scale(10),
           }}
           numColumns={3}

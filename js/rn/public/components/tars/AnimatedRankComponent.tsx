@@ -38,7 +38,7 @@ const AnimatedRankComponent = ({
   const animated = () => {
     Animated.timing(height, {
       toValue: -(count * itemHeight),
-      duration: count * duration,
+      duration: (count + 4.5) * duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
