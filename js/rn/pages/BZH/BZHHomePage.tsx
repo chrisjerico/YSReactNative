@@ -371,7 +371,7 @@ const BZHHomePage = () => {
               borderBottomColor: '#d9d9d9',
               borderBottomWidth: scale(1),
             }}
-            rankContainerStyle={{
+            contentContainerStyle={{
               width: '95%',
               borderWidth: scale(1),
               borderColor: '#d9d9d9',
@@ -379,10 +379,6 @@ const BZHHomePage = () => {
               marginBottom: scale(20),
             }}
             rankLists={rankLists}
-            initialAnimatedHeight={scale(0)}
-            finalAnimatedHeight={
-              scale(195) + scale((rankLists?.length ?? 0) * 50)
-            }
           />
           <BottomLogo
             webName={webName}

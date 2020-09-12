@@ -373,8 +373,4 @@ export function setRnPageInfo() {
   // if (Platform.OS == 'ios') {
   OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
 
-  // } else if (Platform.OS == 'android') {
-  //
-  //
-  // }
 }

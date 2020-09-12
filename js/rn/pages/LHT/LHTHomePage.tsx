@@ -345,10 +345,6 @@ const LHTHomePage = () => {
               containerStyle={{ marginVertical: scale(10) }}
               iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}
-              initialAnimatedHeight={scale(0)}
-              finalAnimatedHeight={
-                scale(195) + scale((rankLists?.length ?? 0) * 50)
-              }
             />
             <BottomLogo
               containerStyle={{ marginBottom: scale(30) }}

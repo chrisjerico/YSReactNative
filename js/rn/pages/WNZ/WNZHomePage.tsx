@@ -390,11 +390,7 @@ const WNZHomePage = () => {
           <AnimatedRankComponent
             type={rankingListType}
             rankLists={rankLists}
-            rankContainerStyle={{ borderRadius: 0 }}
-            initialAnimatedHeight={scale(0)}
-            finalAnimatedHeight={
-              scale(195) + scale((rankLists?.length ?? 0) * 50)
-            }
+            contentContainerStyle={{ borderRadius: 0 }}
           />
           <BottomLogo
             webName={webName}
