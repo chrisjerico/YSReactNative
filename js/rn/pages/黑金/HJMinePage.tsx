@@ -24,245 +24,146 @@ import { navigationRef, pop } from "../../public/navigation/RootNavigation"
 import { UGBasePageProps } from "../base/UGPage"
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
+import {useHtml5Image} from "../../public/tools/tars";
+import useMinePage from "../../public/hooks/tars/useMinePage";
+import config from "../BZH/config";
+import SafeAreaHeader from "../../public/views/tars/SafeAreaHeader";
+import {BZHThemeColor} from "../../public/theme/colors/BZHThemeColor";
+import MineHeaderComponent from "../../public/components/tars/MineHeaderComponent";
+import {ugLog} from "../../public/tools/UgLog";
+import GameButton from "../../public/views/tars/GameButton";
+import {scale} from "../../public/tools/Scale";
+import UserCenterItem from "../../public/views/tars/UserCenterItem";
+import Button from "../../public/views/tars/Button";
+import BottomGap from "../../public/views/tars/BottomGap";
+import PickAvatarComponent from "../../public/components/tars/PickAvatarComponent";
+import ProfileBlock from "./view/ProfileBlock";
 
-const HJMinePage = (props: UGBasePageProps) => {
-    const { setProps } = props;
-    const userStore = UGStore.globalProps.userInfo
-    const { width, } = useDimensions().window
-    const { uid = "", curLevelTitle, usr, balance, unreadMsg } = userStore
-    const [infoModel, setInfoModel] = useState<YueBaoStatModel>()
-    const { loginOut } = useLoginOut(PageName.ZLHomePage)
-    const { UGUserCenterItem } = useMemberItems()
-    const requestBalance = async () => {
-        try {
+const HJMinePage = () => {
+    const { getHtml5Image } = useHtml5Image()
+    const {
+        pickAvatarComponentRef,
+        onPressAvatar,
+        onSaveAvatarSuccess,
+        value,
+        sign,
+    } = useMinePage({
+        homePage: PageName.BZHHomePage,
+        defaultUserCenterLogos: config?.defaultUserCenterLogos,
+    })
 
-            showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+    const {
+        balance,
+        userCenterItems,
+        curLevelGrade,
+        usr,
+        isTest,
+        avatar,
+        unreadMsg,
+    } = value
 
-            // switch (Platform.OS) {
-            //   case 'ios':
-            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
-            //     break;
-            //   case 'android':
-            //       //TODO
-            //     break;
-            // }
+    const { signOut } = sign
 
-            const { data, status } = await APIRouter.user_balance_token()
-            UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
+    // data handle
+    const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
+    const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
 
-            // switch (Platform.OS) {
-            //     case 'ios':
-            //         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
-            //         break;
-            //     case 'android':
-            //         //TODO
-            //         break;
-            // }
-            Toast('刷新成功！')
-        } catch (error) {
-            Toast('刷新失败请稍后再试！')
-            // switch (Platform.OS) {
-            //   case 'ios':
-            //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
-            //     break;
-            //   case 'android':
-            //     //TODO
-            //     break;
-            // }
-            console.log(error)
-        }
+    return (
+      <>
+          {
+              //安卓原生处理过 完全区域
+              Platform.OS == 'ios' ? <SafeAreaHeader
+                containerStyle={{
+                    aspectRatio: 540 / 50,
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                }}
+                headerColor={BZHThemeColor.宝石红.themeColor}
+              >
+              </SafeAreaHeader> : null
+          }
 
-        hideLoading()
-    }
-    const init = async () => {
-        try {
-            const { data, status } = await APIRouter.yuebao_stat()
-            setInfoModel(data)
-        } catch (error) {
+          <ZLHeader/>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+                backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+            }}
+            // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
+          >
+              <ProfileBlock
+                balance={balance}
+                onPressAvatar={onPressAvatar}
+                level={curLevelGrade}
+                avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+                name={usr}
+                features={profileUserCenterItems}
+                renderFeature={(item, index) => {
+                    const { logo, name, code } = item
 
-        }
-    }
-    useEffect(() => {
-        init()
-    }, [userStore?.uid])
+                    ugLog('features item=',item)
+                    return (
+                      <GameButton
+                        key={index}
+                        showSecondLevelIcon={false}
+                        containerStyle={{ width: '25%' }}
+                        imageContainerStyle={{ width: '50%' }}
+                        titleContainerStyle={{ aspectRatio: 3.5 }}
+                        titleStyle={{ fontSize: scale(22), fontWeight: '300' }}
+                        enableCircle={false}
+                        logo={logo}
+                        title={name}
+                        onPress={() => PushHelper.pushUserCenterType(code)}
+                      />
+                    )
+                }}
+              />
+              {listUserCenterItems?.map((item, index) => {
+                  const { code, name, logo } = item
+                  return (
+                    <UserCenterItem
+                      key={index}
+                      containerStyle={{
+                          backgroundColor: '#ffffff',
+                          aspectRatio: 490 / 68,
+                      }}
+                      arrowColor={'#d82e2f'}
+                      titleStyle={{ fontSize: scale(22) }}
+                      title={name}
+                      logo={logo}
+                      unreadMsg={unreadMsg || 0}
+                      showUnreadMsg={code == 9}
+                      onPress={() => {
+                          PushHelper.pushUserCenterType(code)
+                      }}
+                    />
+                  )
+              })}
+              <Button
+                title={'退出登录'}
+                containerStyle={{
+                    backgroundColor: '#ffffff',
+                    marginHorizontal: scale(25),
+                    marginVertical: scale(15),
+                    borderRadius: scale(7),
+                    height: scale(70),
+                }}
+                titleStyle={{ color: '#db6372', fontSize: scale(21) }}
+                onPress={signOut}
+              />
+              <BottomGap />
+          </ScrollView>
+          <PickAvatarComponent
+            ref={pickAvatarComponentRef}
+            color={BZHThemeColor.宝石红.themeColor}
+            initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+            onSaveAvatarSuccess={onSaveAvatarSuccess}
+          />
+      </>
+    )
 
-    useEffect(() => {
-        setProps({
-            didFocus: async () => {
-                const { data: userInfo } = await APIRouter.user_info()
-                UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data });
-                setProps();
-                UGStore.save();
-            }
-        })
-    }, [])
-    return <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <ZLHeader />
-        <ScrollView style={{ flex: 1, paddingHorizontal: 20 }}>
-            <View style={{ height: 130, width: "100%", backgroundColor: "#2c2e36", borderRadius: 8, overflow: "hidden", flexDirection: 'row', marginBottom: 10 }}>
-                <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center', marginLeft: 20, marginTop: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                    <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
-                </FastImage>
-                <Text style={{ fontSize: 16.5, color: 'white', marginTop: 10, marginLeft: 10, marginRight: 20 }}>{usr}</Text>
-                <FastImage style={{ width: 121, height: 135, position: 'absolute', right: 20 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/lmgbh.png" }} />
-
-                <LinearGradient style={{ height: 55, width: "100%", position: 'absolute', bottom: 0, flexDirection: 'row' }} colors={colorEnum.gradientColor}>
-                    <View style={{ width: '100%', backgroundColor: "#30323b", height: 1, position: 'absolute', top: 0 }}></View>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
-                    }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon type={'font-awesome'} name={"address-card-o"} size={15} color={'gray'} />
-                            <Text style={{ color: 'white', marginLeft: 5 }}>实名认证</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.安全中心)
-                    }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon type={'font-awesome'} name={"check-square-o"} size={15} color={'gray'} />
-
-                            <Text style={{ color: 'white', marginLeft: 5 }}>账户安全</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.银行卡管理)
-                    }}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Icon type={'font-awesome'} name={"credit-card"} size={15} color={'gray'} />
-
-                            <Text style={{ color: 'white', marginLeft: 5 }}>银行卡管理</Text>
-                        </View>
-
-
-                    </TouchableOpacity>
-                </LinearGradient>
-            </View>
-            <LinearGradient colors={colorEnum.gradientColor} start={{ x: 0.5, y: 0.6 }} style={{ height: 110, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, overflow: "hidden", paddingVertical: 15 }}>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginHorizontal: 10, }}>
-                    <Text style={{ fontSize: 15, color: 'white', }}>我的账户</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, color: 'white', marginRight: 20 }}> ¥ {balance}</Text>
-                        <TouchableWithoutFeedback onPress={requestBalance}>
-                            <Icon name="refresh" type="materialIcon" color="#8c9ba7" size={24} />
-                        </TouchableWithoutFeedback>
-                    </View>
-                </View>
-                <View style={{ height: 1, width: "95%", backgroundColor: "#444", alignSelf: 'center', marginTop: 10 }}></View>
-                <View style={{ flex: 1, flexDirection: 'row', marginTop: 15 }} >
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.存款)
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15 }}> 存款</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15 }}> 额度转换</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.取款)
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15 }}> 取款</Text>
-                    </TouchableOpacity>
-                </View>
-            </LinearGradient>
-            <LinearGradient colors={colorEnum.gradientColor} style={{ paddingVertical: 20, width: "100%", backgroundColor: "#2c2e36", marginBottom: 10, borderRadius: 8, paddingHorizontal: 10, paddingTop: 15 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <Text style={{ fontSize: 15, color: 'white', }}>我的晋级之路</Text>
-                    <Text style={{ fontSize: 12, color: '#bfb9b9', marginRight: 10 }}> 每周一进行星级更新</Text>
-                </View>
-                <View style={{ height: 1, width: "95%", backgroundColor: "#444", alignSelf: 'center', marginVertical: 10 }}></View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ color: 'white', fontSize: 14 }}>{usr}</Text>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: "#55c6ff", borderRadius: 4, marginLeft: 10, padding: 3 }}>
-                            <Text style={{ fontSize: 12, color: 'white' }}>{userStore.curLevelGrade}</Text>
-                        </View>
-
-                    </View>
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
-                    }}>
-                        <Image source={{ uri: "missionhall" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Text style={{ fontSize: 14, color: 'white' }}>{"积 分："}<Text style={{ fontSize: 14 }}>{userStore.taskReward}</Text></Text>
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-                    }}>
-                        <Image source={{ uri: "dailysign" }} style={{ height: 18, aspectRatio: 150 / 39 }} />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 14, marginBottom: 5 }}>利息宝:  <Text style={{ fontSize: 12 }}>{infoModel?.data?.balance}</Text></Text>
-
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Text style={{ color: 'white', fontSize: 14 }}>成长值:</Text>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ textAlign: 'right', marginRight: 20, color: 'white', marginBottom: 3, fontSize: 12, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
-                        <View style={{ backgroundColor: '#2c2e36', height: 13, width: width * 0.7, borderRadius: 8, marginHorizontal: 10 }}>
-                            {
-                                parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ?
-                                    <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: width * 0.7 }}>
-                                        {/* <Text style={{ color: 'white', fontSize: 4, width: width * 0.7 }}>100%</Text> */}
-                                    </View> : <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: 'red', borderRadius: 8, height: "100%", width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>
-                                        {/* <Text style={{ color: 'white', fontSize: 4, width: userStore?.taskRewardTotal && userStore?.nextLevelInt ? isNaN(width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))) ? 0 : Math.min((width * 0.7 * (parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt))), width * 0.7) : 0 }}>{parseInt(userStore?.taskRewardTotal) / parseInt(userStore?.nextLevelInt) * 100}%</Text> */}
-                                    </View>
-                            }
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginRight: 20, marginTop: 4 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
-                                <Text style={{ color: 'white' }}>{userStore.curLevelGrade}</Text>
-                            </View>
-                            {parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) == 0 ? <></> : <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <FastImage style={{ width: 18, aspectRatio: 1 }} source={{ uri: "http://test10.6yc.com/images/vip.png" }} />
-                                <Text style={{ color: 'white' }}>{userStore.nextLevelGrade}</Text>
-                            </View>}
-                        </View>
-
-                    </View>
-                </View>
-
-
-
-            </LinearGradient>
-            <FlatList columnWrapperStyle={{ paddingVertical: 10 }} numColumns={3} style={{ backgroundColor: '#34343b', borderRadius: 8, paddingVertical: 10 }} renderItem={({ item }) => {
-                return (
-                    <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(item.code)
-                    }} style={{ width: (width - 40) / 3, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image
-                            resizeMode={'contain'} style={{ width: (width - 20) / 3 > 50 ? 50 : 30, aspectRatio: 1, tintColor: item.isDefaultLogo ? 'white' : undefined, overflow: "visible" }}
-                            source={{ uri: item.logo }} />
-                        {item.code == 9 && unreadMsg > 0 && (
-                            <View style={{
-                                position: 'absolute', right: 30, top: 3, backgroundColor: 'red',
-                                height: 20, width: 20,
-                                borderRadius: 10, justifyContent: 'center', alignItems: 'center'
-                            }}>
-                                <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                            </View>
-                        )}
-                        <Text style={{ color: 'white', marginTop: 10 }}>{item.name}</Text>
-
-                    </TouchableOpacity>
-                )
-            }} data={UGUserCenterItem} />
-            <TouchableOpacity onPress={loginOut} style={{ height: 55, backgroundColor: '#34343b', justifyContent: 'center', alignItems: 'center', borderRadius: 8, marginTop: 10, marginBottom: 150 }}>
-                <Text style={{ color: 'white', fontSize: 21 }}>退出登录</Text>
-            </TouchableOpacity>
-        </ScrollView>
-    </View>
 }
+
 const ZLHeader = () => {
     const { width, height } = useDimensions().window
     const insets = useSafeArea();
@@ -271,62 +172,64 @@ const ZLHeader = () => {
 
     let topDistance = 0;
     switch (Platform.OS) {
-      case 'ios':
-        topDistance = insets.top;
-        OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
-          const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
-          show != showBackBtn && setShowBackBtn(show);
-        })
-        break;
-      case 'android':
+        case 'ios':
+            topDistance = insets.top;
+            OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+                const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+                show != showBackBtn && setShowBackBtn(show);
+            })
+            break;
+        case 'android':
 
-        break;
+            break;
     }
 
     return (
-        <View style={{
-            width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
-            flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
-            paddingHorizontal: 20
-        }}>
-            {showBackBtn && (<TouchableOpacity onPress={() => {
-                if (!pop()) {
-                    switch (Platform.OS) {
+      <View style={{
+          width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
+          flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
+          paddingHorizontal: 20
+      }}>
+          {showBackBtn && (<TouchableOpacity onPress={() => {
+              if (!pop()) {
+                  switch (Platform.OS) {
                       case 'ios':
                           OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-                        break;
+                          break;
                       case 'android':
 
-                        break;
-                    }
-                }
-            }} style={{ paddingRight: 5 }}>
-                <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
-            </TouchableOpacity>)}
-            {showBackBtn && <View style={{ flex: 1 }} />}
+                          break;
+                  }
+              }
+          }} style={{ paddingRight: 5 }}>
+              <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
+          </TouchableOpacity>)}
+          {showBackBtn && <View style={{ flex: 1 }} />}
 
-            <TouchableOpacity onPress={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.站内信)
-            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
-                <Text style={{ color: "white", fontSize: 14 }}>消息</Text>
-                {unreadMsg > 0 ? <View style={{
-                    position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
-                    height: 15, width: 15,
-                    borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
-                }}>
-                    <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                </View> : null}
+          <TouchableOpacity onPress={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.站内信)
+          }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png" }} />
+              <Text style={{ color: "white", fontSize: 14 }}>消息</Text>
+              {unreadMsg > 0 ? <View style={{
+                  position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
+                  height: 15, width: 15,
+                  borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
+              }}>
+                  <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
+              </View> : null}
 
-            </TouchableOpacity>
-            {!showBackBtn && <View style={{ flex: 1 }} />}
-            <TouchableOpacity onPress={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30 }}>
-                <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
-                <Text style={{ color: "white", fontSize: 14 }}>客服</Text>
-            </TouchableOpacity>
-        </View>
+          </TouchableOpacity>
+          {!showBackBtn && <View style={{ flex: 1 }} />}
+          <TouchableOpacity onPress={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }} style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30 }}>
+              <FastImage style={{ width: 27, height: 24, marginBottom: 5 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png" }} />
+              <Text style={{ color: "white", fontSize: 14 }}>客服</Text>
+          </TouchableOpacity>
+      </View>
     )
 }
+
+
 export default HJMinePage
