@@ -52,6 +52,7 @@ import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGL
 import { Toast } from "../../public/tools/ToastUtils";
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import {anyEmpty} from "../../public/tools/Ext";
 /**
  *
  * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
@@ -143,8 +144,8 @@ const HJHomePage = ({ navigation, setProps }) => {
         setRandomString("¥ " + num)
     }
     const thirdPartGamePress = (index: number) => {
-        if (uid == '') {
-            navigate(PageName.ZLLoginPage, {})
+        if (anyEmpty(uid)) {
+            navigate(PageName.HJLoginPage, {})
         } else {
             PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[index])
         }
@@ -157,8 +158,10 @@ const HJHomePage = ({ navigation, setProps }) => {
             <ScrollView refreshControl={
                 <RefreshControl style={{ backgroundColor: 'black' }} tintColor={'white'} refreshing={loading} onRefresh={onRefresh} />
             } style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'black' }}>
-                {/* <Marquee/> */}
-                <UserStatusBar />
+                <Banner style={{ marginBottom: 10 }}
+                        size={{ width: width - 20, height: 0 }}
+                        onlineNum={onlineNum} bannerData={banner}
+                        onlineSwitch={onlineSwitch} />
                 <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg, paddingLeft: 5 }}>
                     <Icon name="ios-volume-high" type="ionicon" color="white" size={24} />
                     <MarqueeHorizontal textStyle={{ color: "white", fontSize: 13.2 }} bgContainerStyle={{ backgroundColor: colorEnum.marqueeBg }}
@@ -175,8 +178,6 @@ const HJHomePage = ({ navigation, setProps }) => {
                         textList={noticeFormat} />
                 </View>
 
-                <AcctountDetail />
-                <Banner style={{ marginBottom: 10 }} size={{ width: width - 20, height: 0 }} onlineNum={onlineNum} bannerData={banner} onlineSwitch={onlineSwitch} />
                 <View style={{ flex: 1, height: 223 / 375 * width, flexDirection: 'row', }}>
                     <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
                         <FastImage source={{ uri: homeGames?.data?.icons?.[0]?.list?.[0]?.icon }} style={{
@@ -352,7 +353,10 @@ const HJHomePage = ({ navigation, setProps }) => {
                 <Text style={{ color: 'white', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
                 <View style={{ height: 100 }}></View>
             </ScrollView>
-            <RedBagItem loginPage={PageName.ZLLoginPage} redBag={redBag} />
+
+            <AcctountDetail />
+
+            <RedBagItem loginPage={PageName.HJLoginPage} redBag={redBag} />
             <TurntableListItem />
             <MarqueePopupView onPress={() => {
                 setShow(false)
@@ -389,25 +393,7 @@ const TurntableListItem = () => {
     if (turntableListVisiable) {
         return (
             <TouchableWithoutFeedback onPress={() => {
-                if (uid == "") {
-                    Alert.alert("温馨提示", "您还未登录", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
-                        {
-                            text: "马上登录", onPress: () => {
-                                navigate(PageName.ZLLoginPage, {})
-                            },
-                        }
-                    ])
-                } else if (isTest) {
-                    Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                        { text: "取消", onPress: () => { }, style: "cancel" },
-                        {
-                            text: "马上登录", onPress: () => {
-                                navigate(PageName.ZLLoginPage, {})
-                            },
-                        }
-                    ])
-                } else {
+                if (!_checkLogin()) {
                     const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
                     switch (Platform.OS) {
                         case 'ios':
@@ -467,85 +453,15 @@ const ZLHeader = () => {
         }}>
             <FastImageAutoWidth style={{ width: 210, height: 50 }} source={{ uri: mobile_logo }} />
             <View style={{ flexDirection: 'row' }}>
-                {
-                    uid != "" ? <TouchableOpacity onPress={() => {
-                        PushHelper.pushUserCenterType(UGUserCenterType.站内信)
-                    }} style={{ flexDirection: 'column', marginRight: 20 }}>
-                        <Icon type={'materialIcon'} color={'white'} name={"notifications"} size={25} />
-                        <Text style={{ color: "#8c9ea7", marginTop: 3 }}>消息</Text>
-                        {unreadMsg > 0 ? <View style={{
-                            position: 'absolute', right: 0, top: 0, backgroundColor: 'red',
-                            height: 15, width: 15,
-                            borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
-                        }}>
-                            <Text style={{ color: 'white', fontSize: 10 }}>{unreadMsg}</Text>
-                        </View> : null}
-
-                    </TouchableOpacity> : null
-                }
-
                 <TouchableOpacity onPress={() => {
-                    PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+                    if (!_checkLogin(false)) {
+                        PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+                    }
                 }} style={{ flexDirection: 'column', marginRight: 20 }}>
                     <FastImage style={{ width: 27, height: 24 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png" }} />
-                    <Text style={{ color: "#8c9ea7", marginTop: 3 }}>客服</Text>
                 </TouchableOpacity>
             </View>
         </View>
-    )
-}
-const UserStatusBar = () => {
-    const userStore = UGStore.globalProps.userInfo
-    const { uid = "", curLevelTitle, usr, curLevelInt, nextLevelInt } = userStore
-    return (
-        <LinearGradient colors={colorEnum.gradientColor} style={{ height: 62, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-            {uid == "" ? <>
-                <TouchableWithoutFeedback onPress={() => {
-                    push(PageName.ZLLoginPage);
-                }}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 18, color: 'white' }}>登录</Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => {
-                    push(PageName.ZLRegisterPage);
-                }}>
-                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 18, color: 'white' }}>注册</Text>
-                    </View>
-                </TouchableWithoutFeedback>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => {
-                        push(PageName.ZLLoginPage);
-                    }} style={{ width: '90%', height: "70%", backgroundColor: '#B47265', borderRadius: 3, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-                        <>
-                            <Icon name="credit-card" type="materialIcon" color="white" size={24} />
-                            <View style={{ backgroundColor: 'white', height: '40%', width: 1 }}></View>
-                            <Text style={{ color: 'white' }}>取款</Text>
-                        </>
-                    </TouchableOpacity >
-                </View></> : <TouchableOpacity onPress={() => {
-                    PushHelper.pushUserCenterType(UGUserCenterType.我的页);
-                }} style={{ flexDirection: 'row', alignItems: 'flex-start', flex: 1, paddingLeft: 10 }}>
-
-                    <FastImage style={{ width: 47, aspectRatio: 1, justifyContent: 'flex-end', alignItems: 'center' }}
-                        source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/memberGrade2.png" }} >
-                        <Text style={{ marginBottom: 5, color: '#d68b74' }}>{userStore.curLevelGrade}</Text>
-                    </FastImage>
-                    <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between', height: 47 }}>
-                        <Text style={{ color: 'white', fontSize: 16 }}>{usr}</Text>
-                        <Text style={{ color: 'white', fontSize: 14, fontWeight: "400" }}>{parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal) <= 0 ? "恭喜您已经是最高等级" : "距离下一级还差" + (parseInt(userStore.nextLevelInt) - parseInt(userStore.taskRewardTotal)).toFixed(2) + "分"}</Text>
-                    </View>
-                    <TouchableOpacity style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 10
-                    }}>
-                        <Icon name="chevron-right" type="materialIcon" color="#8c9ba7" size={27} />
-                    </TouchableOpacity>
-                </TouchableOpacity>}
-
-        </LinearGradient>
     )
 }
 
@@ -597,74 +513,49 @@ const AcctountDetail = () => {
     }
     if (uid != "") {
         return (
-            <LinearGradient start={{ x: 0.5, y: 0.7 }} colors={colorEnum.gradientColor}
-                style={{ height: 110, marginBottom: 10, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', borderRadius: 10, marginTop: 10, }}>
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent: 'space-between', paddingHorizontal: 10, }}>
-                    <Text style={{ fontSize: 15, color: 'white', }}>我的账户</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 14, color: 'white', marginRight: 20 }}> ¥ {balance}</Text>
-                        <TouchableWithoutFeedback onPress={requestBalance}>
-                            <Icon name="refresh" type="materialIcon" color="#8c9ba7" size={24} />
-                        </TouchableWithoutFeedback>
-                    </View>
-                </View>
-                <View style={{ width: "95%", height: 0.5, backgroundColor: "#8c9ba7" }}></View>
+            <LinearGradient start={{ x: 0, y: 0 }} colors={colorEnum.gradientColor}
+                style={{ height: 80,
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    borderRadius: 0,}}>
+
                 <View style={{ flex: 1, flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => {
-                        if (isTest) {
-                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                                { text: "取消", onPress: () => { }, style: "cancel" },
-                                {
-                                    text: "马上登录", onPress: () => {
-                                        navigate(PageName.ZLLoginPage, {})
-                                    },
-                                }
-                            ])
-                        } else {
-                            PushHelper.pushUserCenterType(UGUserCenterType.存款)
-                        }
+                    <View style={{justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flex: 1,
+                        paddingLeft: 40,
+                    flexDirection: 'row'}}>
+                        <TouchableOpacity onPress={() => {
+                            if (!_checkLogin()) {
+                                PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                            }
 
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                        <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 存款</Text>
-                    </TouchableOpacity>
+                        }} style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
+                            <Text style={{ color: 'white', fontSize: 15.5 }}>充 值</Text>
+                        </TouchableOpacity>
+                        <Text style={{ fontSize: 14, color: 'white', marginLeft: 8 }}> ¥ {balance}</Text>
+                    </View>
 
                     <TouchableOpacity onPress={() => {
-                        if (isTest) {
-                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                                { text: "取消", onPress: () => { }, style: "cancel" },
-                                {
-                                    text: "马上登录", onPress: () => {
-                                        navigate(PageName.ZLLoginPage, {})
-                                    },
-                                }
-                            ])
-                        } else {
+                        if (!_checkLogin()) {
                             PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
                         }
 
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                    }} style={{  alignItems: 'center', justifyContent: 'center', padding: 16 }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 额度转换</Text>
+                        <Text style={{ color: 'white', fontSize: 15.5 }}>转 账</Text>
 
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
-                        if (isTest) {
-                            Alert.alert("温馨提示", "请先登录您的正式帐号", [
-                                { text: "取消", onPress: () => { }, style: "cancel" },
-                                {
-                                    text: "马上登录", onPress: () => {
-                                        navigate(PageName.ZLLoginPage, {})
-                                    },
-                                }
-                            ])
-                        } else {
+                        if (!_checkLogin()) {
                             PushHelper.pushUserCenterType(UGUserCenterType.取款)
                         }
 
-                    }} style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                    }} style={{  alignItems: 'center', justifyContent: 'center', padding: 16 }}>
                         <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png" }} />
-                        <Text style={{ color: 'white', fontSize: 15.5 }}> 取款</Text>
+                        <Text style={{ color: 'white', fontSize: 15.5 }}>提 现</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
@@ -674,6 +565,42 @@ const AcctountDetail = () => {
     }
 
 }
+
+/**
+ * 检查是否要登录
+ *
+ * @param checkTestAccount 临时账号是否也检测
+ *
+ */
+const _checkLogin = (checkTestAccount: boolean = true): boolean => {
+    const { isTest = false, uid = "" } = UGStore.globalProps.userInfo;
+
+    ugLog('test, uid', isTest, uid)
+    if (anyEmpty(uid)) {
+        Alert.alert("温馨提示", "您还未登录", [
+            { text: "取消", onPress: () => { }, style: "cancel" },
+            {
+                text: "马上登录", onPress: () => {
+                    navigate(PageName.HJLoginPage, {})
+                },
+            }
+        ]);
+        return true;
+    } else if (checkTestAccount && isTest) {
+        Alert.alert("温馨提示", "请先登录您的正式帐号", [
+            { text: "取消", onPress: () => { }, style: "cancel" },
+            {
+                text: "马上登录", onPress: () => {
+                    navigate(PageName.HJLoginPage, {})
+                },
+            }
+        ]);
+        return true;
+    }
+
+    return false;
+}
+
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
     const { width, height } = useDimensions().screen
     if (show) {
@@ -732,6 +659,10 @@ const FastImageAutoWidth = (props: FastImageProperties) => {
 }
 const styles = StyleSheet.create({
     buttonContainer: {
+        flex: 1,
+        marginRight: 5,
+    },
+    bottomInfo: {
         flex: 1,
         marginRight: 5,
     }
