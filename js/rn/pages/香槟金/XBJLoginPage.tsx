@@ -207,8 +207,15 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             buttonStyle={{ marginTop: 15, marginBottom: -5, backgroundColor: 'transparent' }}
             titleStyle={{ fontSize: 12 }}
             onPress={() => {
-              OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
-              OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay']);
+                  OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                  break;
+                case 'android':
+
+                  break;
+              }
             }}
           />
         </View>

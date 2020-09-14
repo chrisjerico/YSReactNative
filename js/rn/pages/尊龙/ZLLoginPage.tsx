@@ -4,7 +4,7 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import FastImage from 'react-native-fast-image';
 import PushHelper from '../../public/define/PushHelper';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
-import { PageName,  } from '../../public/navigation/Navigation';
+import { PageName } from '../../public/navigation/Navigation';
 import { Icon, } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
@@ -12,7 +12,7 @@ import APIRouter from '../../public/network/APIRouter';
 import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
-import { UGStore, IGlobalState } from '../../redux/store/UGStore';
+import { UGStore } from '../../redux/store/UGStore';
 import { ActionType } from '../../redux/store/ActionTypes';
 import { useDimensions } from '@react-native-community/hooks';
 import DialogInput from 'react-native-dialog-input';
@@ -117,9 +117,6 @@ const ZLLoginPage = ({ route, navigation }) => {
             const { data: userInfo } = await APIRouter.user_info()
 
             switch (Platform.OS) {
-                case "ios":
-                    //TODO
-                    break;
                 case "android":
                     await ANHelper.callAsync(CMD.SAVE_DATA,
                       {
@@ -168,6 +165,7 @@ const ZLLoginPage = ({ route, navigation }) => {
             }
             return
         }
+
         try {
             // switch (Platform.OS) {
             //     case "ios":

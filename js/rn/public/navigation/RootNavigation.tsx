@@ -54,6 +54,10 @@ export function popToRoot() {
     }
 }
 
+export function getStackLength() {
+    return navigationRef?.current?.getRootState().routes.length;
+}
+
 // 获取当前页面
 export function getCurrentPage(): PageName {
     if (navigationRef?.current?.getCurrentRoute) {

@@ -169,14 +169,14 @@ const KSRegister = () => {
     } catch (error) {
       EventRegister.emit('reload')
       reRenderCode()
-      if (error.message.includes("推荐人")) {
+      if (error?.message?.includes("推荐人")) {
         Alert.alert(error?.message, "")
         switch (Platform.OS) {
           case 'ios':
             OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
             break;
           case 'android':
-
+            Toast(error?.message ?? '注册失败');
             break;
         }
       } else {
@@ -208,11 +208,22 @@ const KSRegister = () => {
           true;`;
     const [webviewHeight, setWebViewHeight] = useState(0)
     const hadnleMessage = (e: WebViewMessageEvent) => {
-      if (typeof e?.nativeEvent?.data == 'string') {
-        setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+      // if (typeof e?.nativeEvent?.data == 'string') {
+      //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+      // } else {
+      //   console.log("response" + JSON.stringify(e.nativeEvent.data))
+      //   onChange(e?.nativeEvent?.data)
+      // }
+      let eData = e?.nativeEvent?.data;
+      console.log("sliding response: " + eData)
+
+      if (eData?.startsWith('{')
+        && eData?.endsWith('}')) {
+        onChange(JSON.parse(eData))
+      } else if (typeof eData == 'string') {
+        setWebViewHeight(parseInt(eData) * 1.5)
       } else {
-        console.log("response" + JSON.stringify(e.nativeEvent.data))
-        onChange(e?.nativeEvent?.data)
+        onChange(eData)
       }
     }
     const webViewRef = useRef<WebView>()
