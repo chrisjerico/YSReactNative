@@ -205,7 +205,7 @@ const ZLRegisterPage = () => {
                         OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
                         break;
                     case 'android':
-
+                        Toast(error?.message ?? '注册失败');
                         break;
                 }
             } else {
@@ -253,16 +253,16 @@ const ZLRegisterPage = () => {
           true;`;
         const [webviewHeight, setWebViewHeight] = useState(0)
         const hadnleMessage = (e: WebViewMessageEvent) => {
-          let eData = e?.nativeEvent?.data;
-          console.log("sliding response: " + eData)
+            let eData = e?.nativeEvent?.data;
+            console.log("sliding response: " + eData)
 
             if (eData?.startsWith('{')
-                      && eData?.endsWith('}')) {
-              onChange(JSON.parse(eData))
+              && eData?.endsWith('}')) {
+                onChange(JSON.parse(eData))
             } else if (typeof eData == 'string') {
-              setWebViewHeight(parseInt(eData) * 1.5)
+                setWebViewHeight(parseInt(eData) * 1.5)
             } else {
-              onChange(eData)
+                onChange(eData)
             }
         }
         const webViewRef = useRef<WebView>()

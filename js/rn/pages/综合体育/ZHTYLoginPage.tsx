@@ -101,39 +101,64 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
         Toast('登录成功！')
 
         async function didLogin(this: ZHTYLoginPage) {
-          // 退出旧账号（试玩账号）
-          var user = await OCHelper.call('UGUserModel.currentUser');
-          if (user) {
-            console.log('退出旧账号');
-            console.log(user);
-            var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
-            await OCHelper.call('UGUserModel.setCurrentUser:');
-          }
+          switch (Platform.OS) {
+            case 'ios':
+              // 退出旧账号（试玩账号）
+              var user = await OCHelper.call('UGUserModel.currentUser');
+              if (user) {
+                console.log('退出旧账号');
+                console.log(user);
+                var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
+                await OCHelper.call('UGUserModel.setCurrentUser:');
+              }
 
-          // 保存数据
-          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+              // 保存数据
+              await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
+              await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
 
-          // 去下一页
-          var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
-          if (simplePwds.indexOf(this.pwd) > -1) {
-            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController']},
-              true,
-            ]);
-          } else {
-            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              // 去下一页
+              var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+              if (simplePwds.indexOf(this.pwd) > -1) {
+                await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+                await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+                  {selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController']},
+                  true,
+                ]);
+              } else {
+                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              }
+              break;
+            case 'android':
+              const accountData = {
+                account: this.account,
+                pwd: this.pwd,
+                isRemember: this.props.rememberPassword,
+              };
+
+              await ANHelper.callAsync(CMD.SAVE_DATA,
+                {
+                  key: NA_DATA.LOGIN_INFO,
+                  ...accountData,
+                  ...data
+                });
+              break;
           }
         }
         didLogin.bind(this)();
       })
       .catch((err: Error) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+            break;
+          case 'android':
+            Toast(err?.message)
+            break;
+        }
         if ((this.errorTimes += 1) > 3) {
           this.setState({});
         }
@@ -240,8 +265,13 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
             titleStyle={{fontSize: 16}}
             onPress={() => {
               Navigation.pop();
-              if (Platform.OS == 'ios') {
-                OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                  break;
+                case 'android':
+
+                  break;
               }
             }}
           />

@@ -6,6 +6,7 @@
  */
 export enum CMD {
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
+  OPEN_RIGHT_MENU = 'OPEN_RIGHT_MENU', //打开右侧界面
   LAUNCH_GO = 'LAUNCH_GO', //启动页功能
   OPEN_WEB = 'OPEN_WEB', //打开web
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
@@ -26,6 +27,7 @@ export enum CMD {
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数
+  ASK_MINE_ITEMS = 'ASK_MINE_ITEMS', //个人信息item
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token
   ASK_FOR_TOKEN_AND_RSA = 'ASK_FOR_TOKEN_AND_RSA', //得到 token和rsa
   ACCESS_TOKEN = 'ACCESS_TOKEN', //得到 access token

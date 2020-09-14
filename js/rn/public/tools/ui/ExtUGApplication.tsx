@@ -15,7 +15,7 @@ import {anyEmpty, anyNull} from "../Ext";
  * */
 export default class ExtUGApplication {
 
-  //在Application初始化之前使用，手动初始化 tab列表
+  //在Application初始化之前使用，只能手动初始化 tab列表
   //Router.PageNameLists.tabList
   static TAB_LIST = [
     PageName.LXBView,
@@ -39,11 +39,14 @@ export default class ExtUGApplication {
     PageName.WNZHomePage,
     PageName.WNZMinePage,
     PageName.KSHomePage,
+    PageName.KSMine,
+    PageName.LLHomePage,
+    PageName.LLMinePage,
     PageName.UpdateVersionPage,
     PageName.JDPromotionListPage,
   ];
 
-  //在Application初始化之前使用，手动初始化 stack列表
+  //在Application初始化之前使用，只能手动初始化 stack列表
   //Router.PageNameLists.stackList
   static STACK_LIST = [
     PageName.ZLLoginPage,
@@ -56,6 +59,10 @@ export default class ExtUGApplication {
     PageName.BZHSignInPage,
     PageName.LottoBetting,
     PageName.ZLMinePage,
+    PageName.KSLogin,
+    PageName.KSRegister,
+    PageName.LLRegisterPage,
+    PageName.LLLoginPage,
     PageName.VietnamLogin,
     PageName.VietnamRegister,
     PageName.VietnamGameList,
