@@ -5,7 +5,9 @@ import { PasswordStrength } from '../../models/Enum'
 
 export const validPassword = (password: string, pass_limit: PasswordStrength) => {
   if (password) {
-    if (pass_limit) {
+    if (pass_limit == PasswordStrength.不限制) {
+      return true
+    } else {
       if (pass_limit == PasswordStrength.数字字母) {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
       } else if ([pass_limit == PasswordStrength.数字字母字符]) {
@@ -13,8 +15,6 @@ export const validPassword = (password: string, pass_limit: PasswordStrength) =>
       } else {
         return false
       }
-    } else {
-      return true
     }
   } else {
     return false

@@ -85,7 +85,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     password?.length >= minLength &&
     password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
-  const name_valid = /^[\u4E00-\u9FA5]+$/.test(name) || necessity?.name != Necessity.必填
+  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) || 
   const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
   const wx_valid = weChat || necessity?.wx != Necessity.必填
@@ -94,8 +94,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = false
-  account_valid &&
+  const valid =
+    account_valid &&
     password_valid &&
     confirmPassword_valid &&
     recommendGuy_valid &&
@@ -248,6 +248,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     sign,
     passwordLimit
   }
+
 }
 
 export default useSignUpPage
