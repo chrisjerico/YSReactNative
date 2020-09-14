@@ -39,7 +39,7 @@ interface SignUpFormListProps {
   onChange: OnChange;
   label: Label;
   passwordLimit: PasswordLimit;
-  Form?: (props: FormComponentProps) => any;
+  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any;
 }
 
 interface PasswordLimit {

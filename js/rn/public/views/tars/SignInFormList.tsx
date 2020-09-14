@@ -10,7 +10,7 @@ interface SignInFormListProps {
   value: any;
   onChange: any;
   show: any;
-  Form?: (props: FormComponentProps) => any;
+  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any;
 }
 
 const SignInFormList = ({

@@ -4,6 +4,11 @@ import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
+import {
+  hideLoading,
+  showLoading,
+  UGLoadingType
+} from '../../widget/UGLoadingCP'
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
@@ -43,30 +48,43 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     signInPage && navigate(signInPage, {})
   }
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
+      hideLoading()
       navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败')
+      hideLoading()
+      ToastError(error ?? '登录失败')
       console.log("--------試玩失败--------", error)
     },
   })
 
   const { register } = useRegister({
-    onSuccessWithAutoLogin: navigateToHomePage,
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
+    onSuccessWithAutoLogin: () => {
+      hideLoading()
+      navigateToHomePage()
+    },
     onSuccess: () => {
+      hideLoading()
       ToastSuccess('注册成功')
       navigateToHomePage()
     },
     onError: (error) => {
+      hideLoading()
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError('注册失败')
+      ToastError(error ?? '注册失败')
       console.log('-------注册失败-------', error)
     },
   })

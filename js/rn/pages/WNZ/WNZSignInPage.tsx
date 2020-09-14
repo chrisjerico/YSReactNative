@@ -120,7 +120,7 @@ const WNZSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
+const SignInForm = (props: FormComponentProps & { leftIconTitle: string }) => (
   <FormComponent
     {...props}
     containerStyle={{ marginBottom: scale(10) }}
