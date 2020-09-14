@@ -1,12 +1,16 @@
+import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError } from '../../tools/tars'
+import {
+  hideLoading,
+  showLoading,
+  UGLoadingType
+} from '../../widget/UGLoadingCP'
 import useLogOut from './useLogOut'
-import { useRef } from 'react'
 import useRerender from './useRerender'
 import useSys from './useSys'
-import {ugLog} from "../../tools/UgLog";
 
 interface DefaultUserCenterLogos {
   1: string; // 存款
@@ -35,8 +39,6 @@ interface UseMinePage {
 }
 
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
-  // yellowBox
-  console.disableYellowBox = true
   // states
   const pickAvatarComponentRef = useRef(null)
   const { rerender } = useRerender()
@@ -62,11 +64,16 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   const { mobile_logo, userCenterItems, showSign } = sys
 
   const { logOut } = useLogOut({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
+      hideLoading()
       navigate(homePage, {})
     },
     onError: (error) => {
-      ToastError(error || '登出失败')
+      hideLoading()
+      ToastError(error ?? '登出失败')
       console.log('--------登出失败--------', error)
     },
   })
