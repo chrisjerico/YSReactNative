@@ -223,6 +223,7 @@ const SignUpFormList = ({
         show={showSms}
         showRightIcon={true}
         rightIconType={'sms'}
+        leftIconTitle={'验证码'}
       />
       <AgentButtonComponent
         show={showAgentButton}

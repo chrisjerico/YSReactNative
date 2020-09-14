@@ -5,9 +5,10 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { ViewStyle } from 'react-native'
+import { Platform, ViewStyle } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
+import { stringToNumber } from '../../tools/tars'
 
 interface ReloadSlidingVerificationProps {
   onChange: (data: any) => void;
@@ -34,24 +35,29 @@ const ReloadSlidingVerification = (
   }, 500);
   true;`
   const [height, setHeight] = useState(0)
-  const hadnleMessage = (e: WebViewMessageEvent) => {
-    // if (typeof e?.nativeEvent?.data == 'string') {
-    //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
-    // } else {
-    //   onChange(e?.nativeEvent?.data)
-    // }
-    let eData = e?.nativeEvent?.data;
-    console.log("sliding response: " + eData)
 
-    if (eData?.startsWith('{')
-      && eData?.endsWith('}')) {
-      onChange(JSON.parse(eData))
-    } else if (typeof eData == 'string') {
-      setHeight(parseInt(eData) * 1.5)
-    } else {
-      onChange(eData)
+  const hadnleMessage = (e: WebViewMessageEvent) => {
+    const data = e?.nativeEvent?.data
+    switch (Platform.OS) {
+      case 'ios':
+        if (typeof data == 'string') {
+          setHeight(stringToNumber(data))
+        } else {
+          onChange(data)
+        }
+        break
+      case 'android':
+        if (data?.startsWith('{')
+          && data?.endsWith('}')) {
+          onChange(JSON.parse(data))
+        } else if (typeof data == 'string') {
+          setHeight(stringToNumber(data) * 1.5)
+        } else {
+          onChange(data)
+        }
     }
   }
+
   const webViewRef = useRef<WebView>()
 
   useImperativeHandle(ref, () => ({
