@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import {View, Text, Platform} from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,6 +17,7 @@ import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import { UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { navigate } from '../../public/navigation/RootNavigation';
+import {Toast} from "../../public/tools/ToastUtils";
 
 
 interface XBJRegisterVars {
@@ -132,7 +133,14 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       err = '请输入短信验证码';
     }
     if (err) {
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call('HUDHelper.showMsg:', [err]);
+          break;
+        case 'android':
+          Toast(err)
+          break;
+      }
       return;
     }
 
@@ -157,7 +165,14 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
         console.log(data);
       })
       .catch((err: Error) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+            break;
+          case 'android':
+            Toast(err.message)
+            break;
+        }
       });
   }
 
@@ -306,7 +321,14 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
                   startCountdown();
                 })
                 .catch(err => {
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                  switch (Platform.OS) {
+                    case 'ios':
+                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                      break;
+                    case 'android':
+                      Toast(err.message)
+                      break;
+                  }
                 });
             }}
             onChangeText={text => {

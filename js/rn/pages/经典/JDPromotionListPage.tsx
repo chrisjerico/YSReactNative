@@ -10,6 +10,8 @@ import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { UGBasePageProps } from '../base/UGPage';
+import { OCHelper } from '../../public/define/OCHelper/OCHelper';
+import { getStackLength } from '../../public/navigation/RootNavigation';
 
 
 interface JDPromotionListVars {
@@ -38,6 +40,12 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       dataArray: [],
       style: 'page',
       showTopBar: false,
+    });
+
+    OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
+      if (cnt == 1 && getStackLength() == 1) {
+        setProps({ navbarOpstions: { back: false } });
+      }
     });
 
     NetworkRequest1.systeam_promotions().then(data => {
