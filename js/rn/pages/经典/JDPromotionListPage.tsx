@@ -86,8 +86,8 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   if (dataArray.length == 0) {
     return null;
   }
-  var contentViews = dataArray.map(plm => {
-    return <JDPromotionListCP list={plm.list} style2={props.style} />;
+  var contentViews = dataArray.map((plm, index) => {
+    return <JDPromotionListCP key={index} list={plm.list} style2={props.style} />;
   });
   return (
     <ScrollableTabView
@@ -122,7 +122,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         <View style={{ position: 'absolute', left: 0, top: 42, width: AppDefine.width, height: 1, backgroundColor: '#ccc' }} />
         {titles.map((title, idx) => {
           return (
-            <View>
+            <View key={idx}>
               <Text
                 onPress={() => {
                   props.goToPage(idx);
@@ -152,6 +152,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
       {titles.map((title, idx) => {
         return (
           <Text
+            key={idx}
             onPress={() => {
               props.goToPage(idx);
             }}
