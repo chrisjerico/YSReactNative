@@ -39,6 +39,7 @@ const useLogIn = (options: Options = {}) => {
             await OCHelper.call('UGUserModel.setCurrentUser:', [
               UGUserModel.getYS(user_login_data),
             ])
+            // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
             break
           case 'android':
             await ANHelper.callAsync(CMD.SAVE_DATA, {
@@ -65,7 +66,6 @@ const useLogIn = (options: Options = {}) => {
               })
               break
           }
-
           UGStore.dispatch({ type: 'merge', userInfo: user_info_data })
           UGStore.save()
           onSuccess && onSuccess()
