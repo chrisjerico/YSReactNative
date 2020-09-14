@@ -124,7 +124,7 @@ const WNZSignUpPage = () => {
     </>
   )
 }
-const SignUpForm = (props: FormComponentProps & { title: string }) => (
+const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
   <FormComponent
     {...props}
     containerStyle={{ marginBottom: scale(15) }}

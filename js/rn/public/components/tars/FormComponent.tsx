@@ -5,17 +5,15 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
-import { Input, Icon } from 'react-native-elements'
+import { Icon, Input } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
-import {ugLog} from "../../tools/UgLog";
-import {anyEmpty} from "../../tools/Ext";
 
 export interface FormComponentProps {
   onChangeText?: any;
@@ -40,7 +38,6 @@ export interface FormComponentProps {
   rightIconContainerStyle?: ViewStyle | ViewStyle[];
   leftIconName?: string;
   leftIcon?: LeftIcon;
-  leftIconTitle?: string;
   placeholderTextColor?: string;
 }
 
@@ -117,7 +114,7 @@ const RightIcon = ({
   }
 }
 
-const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName, leftIconTitle }) => {
+const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName }) => {
   if (showLeftIcon) {
     if (renderLeftIcon) {
       return renderLeftIcon()
@@ -161,7 +158,6 @@ const FormComponent = ({
   rightIconContainerStyle,
   leftIcon,
   placeholderTextColor = '#000000',
-  leftIconTitle
 }: FormComponentProps) => {
   const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
@@ -198,9 +194,6 @@ const FormComponent = ({
   }
 
   if (show) {
-    //Android必须使用integer
-    let maxLen = parseInt(anyEmpty(maxLength) ? 0 : maxLength);
-
     return (
       <View style={[styles.container, containerStyle]}>
         <Input
@@ -215,7 +208,7 @@ const FormComponent = ({
           defaultValue={defaultValue}
           inputContainerStyle={[styles.zero, inputContainerStyle]}
           inputStyle={[styles.inputStyle, inputStyle]}
-          maxLength={maxLen}
+          maxLength={maxLength}
           placeholder={placeholder}
           containerStyle={[styles.containerStyle]}
           placeholderTextColor={placeholderTextColor}
@@ -223,7 +216,6 @@ const FormComponent = ({
             <LeftIcon
               leftIcon={leftIcon}
               leftIconName={leftIconName}
-              leftIconTitle={leftIconTitle}
               renderLeftIcon={renderLeftIcon}
               showLeftIcon={showLeftIcon}
             />

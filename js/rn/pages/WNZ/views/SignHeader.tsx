@@ -42,7 +42,7 @@ const SignHeader = ({ onPressLeftTool, onPressMenu, onPressSign }: SignHeaderPro
               style={{ marginRight: scale(5) }}
               color={'#ffffff'}
             />
-            <Text style={{ fontSize: scale(25), color: '#ffffff' }}>
+            <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
               {'菜单'}
             </Text>
           </View>
