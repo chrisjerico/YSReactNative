@@ -61,7 +61,7 @@ import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
     UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
     [self presentViewController:nav animated:true completion:nil];
  */
-const ZLHomePage = ({ navigation, setProps }) => {
+const HJHomePage = ({ navigation, setProps }) => {
 
     const { width, } = useDimensions().window
     const { onPopViewPress } = usePopUpView()
@@ -736,4 +736,4 @@ const styles = StyleSheet.create({
         marginRight: 5,
     }
 })
-export default ZLHomePage
+export default HJHomePage

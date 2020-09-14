@@ -25,7 +25,7 @@ import { UGBasePageProps } from "../base/UGPage"
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
 
-const ZLMinePage = (props: UGBasePageProps) => {
+const HJMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;
     const userStore = UGStore.globalProps.userInfo
     const { width, } = useDimensions().window
@@ -329,4 +329,4 @@ const ZLHeader = () => {
         </View>
     )
 }
-export default ZLMinePage
+export default HJMinePage

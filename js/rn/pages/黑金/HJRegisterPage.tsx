@@ -35,7 +35,7 @@ enum FormName {
     slideCode = "slideCode", // 滑动验证码,
     email = "email",
 }
-const ZLRegisterPage = () => {
+const HJRegisterPage = () => {
     const { control, register, getValues, errors, triggerValidation, handleSubmit } = useForm()
     const [regType, setRegType] = useState<'user' | 'agent'>("user")
     const [secureTextEntry, setSecureTextEntry] = useState(true)
@@ -650,4 +650,4 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
 
     )
 }
-export default ZLRegisterPage
+export default HJRegisterPage

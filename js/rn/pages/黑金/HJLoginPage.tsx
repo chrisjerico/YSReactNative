@@ -27,7 +27,7 @@ import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 let errorTimes = 0
-const ZLLoginPage = ({ route, navigation }) => {
+const HJLoginPage = ({ route, navigation }) => {
 
     const { control, errors, handleSubmit } = useForm()
     const [accountFocus, setAccountFocus] = useState(false)
@@ -371,4 +371,4 @@ const Header = () => {
         </View>
     )
 }
-export default ZLLoginPage
+export default HJLoginPage
