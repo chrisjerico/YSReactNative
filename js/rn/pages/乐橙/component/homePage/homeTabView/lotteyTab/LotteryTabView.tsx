@@ -11,8 +11,7 @@ export const LotteryTabView = ({list, onPress}: { list: List[], onPress: (list: 
                 <Image style={{width: "100%", height: "100%", flex: 1, resizeMode: 'cover', position: "absolute"}}
                        source={{uri: 'http://test30.6yc.com/views/mobileTemplate/19/images/cpbg.png'}}/>
                 <View style={{flexDirection: "row", alignItems: "center", marginVertical: 10}}>
-                    <TouchableWithoutFeedback style={{flex: 1}}
-                                              onPress={() => onPress(list[0])}>
+                    <TouchableWithoutFeedback onPress={() => onPress(list[0])}>
                         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                             <Image style={{
                                 flex: 1,
@@ -35,8 +34,7 @@ export const LotteryTabView = ({list, onPress}: { list: List[], onPress: (list: 
                             </View>
                         </View>
                     </TouchableWithoutFeedback>
-                    {list.length > 1 ? <TouchableWithoutFeedback style={{flex: 1}}
-                                               onPress={() => onPress(list[1])}>
+                    {list.length > 1 ? <TouchableWithoutFeedback onPress={() => onPress(list[1])}>
                         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                             <Image style={{
                                 flex: 1,

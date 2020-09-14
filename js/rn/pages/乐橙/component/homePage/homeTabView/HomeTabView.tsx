@@ -6,9 +6,11 @@ import {LotteryTabView} from "./lotteyTab/LotteryTabView";
 import {GameListView} from "./lotteyTab/GameListView";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {Icon, List} from "../../../../../public/network/Model/HomeGamesModel";
-import {View} from "react-native";
+import {TouchableWithoutFeedback, View, Text, ScrollView} from "react-native";
 import {IGlobalState, UGStore} from "../../../../../redux/store/UGStore";
 import PushHelper from "../../../../../public/define/PushHelper";
+import {CustomTabBar} from "../../../../../public/components/CustomTabBar";
+import AppDefine from "../../../../../public/define/AppDefine";
 
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
@@ -39,10 +41,9 @@ export const HomeTabView = () => {
     }
 
     const calculateHeight = (index: number) => {
-        let h = 0
+        let h = 50
         const list: List[] = games[index]?.list ? games[index]?.list : []
         if (index == 0) {
-            h += 19
             if (list[0]) {
                 h = h + 153
             }
@@ -74,7 +75,7 @@ export const HomeTabView = () => {
     const getTab = (item: Icon, index: number) => {
         return index == 0 ?
             <RecommendTabView onPress={onPress} list={item.list} tabLabel={item.name}/> :
-            item.name.indexOf("彩票") != -1 ?
+            index == 1 ?
                 <LotteryTabView onPress={onPress} list={item.list} tabLabel={item.name}/> :
                 <GameListView list={item.list} onPress={onPress} tabLabel={item.name}/>
     }
@@ -85,8 +86,39 @@ export const HomeTabView = () => {
             onChangeTab={({i}) => calculateHeight(i)}
             tabBarUnderlineStyle={{height: 2, backgroundColor: "#3c3c3c"}}
             tabBarTextStyle={{color: "#3c3c3c"}}
-            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height}]}
-            renderTabBar={() => <ScrollableTabBar/>}>
+            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height: 500}]}
+            renderTabBar={(props) => (
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false} style={{flexDirection: 'row'}}>
+                    {props.tabs.map((name, page) => {
+                        const isTabActive = props.activeTab === page
+                        const textColor = isTabActive ? '#000000' : '#555'
+                        const backgroundColor = "#fff"
+                        return (
+                            <TouchableWithoutFeedback
+                                key={page}
+                                onPress={() => props.goToPage(page)}
+                            >
+                                <View style={{
+                                    height: 50,
+                                    backgroundColor,
+                                    width: AppDefine.width / 5,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}>
+                                    <View style={{
+                                        borderBottomWidth: 2,
+                                        borderBottomColor: isTabActive ? "#000000" : "#fff"
+                                    }}>
+                                        <Text style={[{color: textColor, marginVertical: 8, fontSize: 16}]}>
+                                            {name}
+                                        </Text>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        )
+                    })}
+                </ScrollView>
+            )}>
             {games.length > 0 ? games.map((item, index) => {
                 return getTab(item, index)
             }) : <View/>

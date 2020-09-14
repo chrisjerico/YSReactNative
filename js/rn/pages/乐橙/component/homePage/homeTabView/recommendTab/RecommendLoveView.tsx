@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PushHelper from "../../../../../../public/define/PushHelper";
 
 export const RecommendLoveView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
-    return (
+    return list.length > 0 ? (
         <>
             <View style={{flexDirection: "row", alignItems: "center", marginTop: 10}}>
                 <Text style={{fontWeight: "bold", color: '#333', fontSize: 18}}>猜你喜欢</Text>
@@ -21,11 +21,11 @@ export const RecommendLoveView = ({list, onPress}: { list: List[], onPress: (lis
                 renderItem={({item}) => (
                     <TouchableWithoutFeedback style={{flex: 1}} onPress={() => onPress(item)}>
                         {item.icon == "" ?
-                        <Icon style={{flex: 1, height: 100, width: 100, margin: 5}} name={'image-inverted'} /> :
+                            <Icon style={{flex: 1, height: 100, width: 100, margin: 5}} name={'image-inverted'}/> :
                             <Image style={{flex: 1, height: 100, width: 100, margin: 5, resizeMode: 'stretch'}}
-                                source={{uri: item.icon}}/>}
+                                   source={{uri: item.icon}}/>}
                     </TouchableWithoutFeedback>
                 )}/>
         </>
-    )
+    ) : (<></>)
 }

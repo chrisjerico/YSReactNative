@@ -22,7 +22,7 @@ const LCMinePage = () => {
 
     return (
         <BaseScreen style={{backgroundColor: "#ffffff", flex: 1}} screenName={"我的"}>
-            <ScrollView bounces={false}>
+            <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                 <CardView/>
                 <SafeAreaView>
                     <FlatList
