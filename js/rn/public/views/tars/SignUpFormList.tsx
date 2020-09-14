@@ -131,7 +131,7 @@ const SignUpFormList = ({
         onChangeText={obChangeAccount}
         label={'*请使用6-15位英文或数字的组合'}
         placeholder={'帐号'}
-        show={showName}
+        show={true}
         leftIconName={'users'}
         leftIconTitle={'用户帐号'}
       />
