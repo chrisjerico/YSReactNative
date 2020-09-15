@@ -120,6 +120,7 @@ const HJMinePage = () => {
             )
           }}
         />
+
         <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.progressBgColor}
                         style={_styles.featureBlock}>
           {
@@ -169,10 +170,9 @@ const HJMinePage = () => {
           showSubTitle={false}
           showSecondLevelIcon={false}
           containerStyle={_styles.server}
-          imageContainerStyle={{width: '80%'}}
-          enableCircle={true}
-          circleColor={HJThemeColor.黑金.themeLightColor}
-          logo={'http://test10.6yc.com/views/mobileTemplate/16/images/service2.png'}
+          imageContainerStyle={{width: '100%'}}
+          circleColor={'transparent'}
+          logo={'https://cdn01.bimwill.com/views/mobileTemplate/28/images/icon_support.png'}
           titleStyle={{
             fontSize: scale(20),
             fontWeight: '300',

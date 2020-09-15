@@ -1,7 +1,16 @@
 import React from 'react'
-import {Alert, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle} from 'react-native'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../../public/tools/Scale'
+import {
+  Alert,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle
+} from 'react-native'
+import {BZHThemeColor} from '../../../public/theme/colors/BZHThemeColor'
+import {scale} from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
@@ -12,8 +21,10 @@ import {Icon} from "react-native-elements";
 import {navigate} from "../../../public/navigation/RootNavigation";
 import {PageName} from "../../../public/navigation/Navigation";
 import PushHelper from "../../../public/define/PushHelper";
-import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
+import {UGUserCenterItem, UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
 import FastImage from "react-native-fast-image";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
 
 interface ProfileBlockProps {
   balance: string | number;
@@ -27,47 +38,70 @@ interface ProfileBlockProps {
 }
 
 const ProfileBlock = ({
-  avatar,
-  balance,
-  features,
-  renderFeature,
-  containerStyle,
-  name,
-  level,
-  onPressAvatar
-}: ProfileBlockProps) => {
+                        avatar,
+                        balance,
+                        features,
+                        renderFeature,
+                        containerStyle,
+                        name,
+                        level,
+                        onPressAvatar
+                      }: ProfileBlockProps) => {
   return (
     <View style={[_styles.container, containerStyle]}>
-      <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 2.0 }} colors={HJThemeColor.黑金.menuHeadViewColor}
+      <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.menuHeadViewColor}
                       style={_styles.hjTopBlock}/>
       <View style={_styles.whiteBlock}>
+        <LinearBadge
+          containerStyle={_styles.fl}
+          textStyle={{paddingHorizontal: scale(10), color: 'white', fontWeight: 'bold'}}
+          title={' 领取俸禄 '}
+          colors={['#85a9ff', '#9d69fd']}
+          showIcon={false}
+          onPress={() => {
+            switch (Platform.OS) {
+              case 'ios':
+                
+                break;
+              case 'android':
+                ANHelper.callAsync(CMD.ASK_SALARY)
+                  .then((data) => {
+                  })
+                break;
+            }
+          }}/>
+
+        <View style={_styles.flex}/>
+
         <View style={_styles.profileContainer}>
-          <Avatar uri={avatar} onPress={onPressAvatar} />
+          <Avatar uri={avatar} onPress={onPressAvatar}/>
           <View style={_styles.moneyContainer}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{flexDirection: 'row'}}>
               <Text style={_styles.text}>{name}</Text>
               <LinearBadge
-                containerStyle={{ borderRadius: scale(5), width: null }}
-                textStyle={{ paddingHorizontal: scale(10) }}
+                containerStyle={{borderRadius: scale(5), width: null}}
+                textStyle={{paddingHorizontal: scale(10)}}
                 title={level}
-                colors={['#0080FF', '#97CBFF']}
-                showIcon={false}
-              />
+                colors={['#85a9ff', '#9d69fd']}
+                showIcon={false}/>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
+            <View style={_styles.ye}>
               <ReLoadBalanceComponent
-                animatedContainerStyle={{ marginTop: scale(3) }}
+                animatedContainerStyle={{marginTop: scale(3)}}
                 title={'余额 ¥ '}
-                titleStyle={{ fontSize: scale(22) }}
+                titleStyle={{fontSize: scale(22)}}
                 balance={balance}
-                balanceStyle={{ color: '#000000', fontSize: scale(22) }}
+                balanceStyle={{color: '#000000', fontSize: scale(22)}}
                 color={'#000000'}
-                size={20}
-              />
+                size={20}/>
             </View>
           </View>
         </View>
-        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 2.0 }} colors={HJThemeColor.黑金.progressBgColor}
+
+        <View style={_styles.flex}/>
+
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}}
+                        colors={HJThemeColor.黑金.progressBgColor}
                         style={_styles.featureBlock}>
           <View style={_styles.featureContainer}>
             {
@@ -76,27 +110,43 @@ const ProfileBlock = ({
           </View>
         </LinearGradient>
 
+
       </View>
     </View>
   )
 }
 
 const _styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   container: {
     width: '100%',
-    aspectRatio: 500 / 250,
+    aspectRatio: 500 / 350,
     backgroundColor: HJThemeColor.黑金.homeContentSubColor,
-    paddingBottom: scale(30)
+    paddingBottom: scale(30),
   },
   hjTopBlock: {
     width: '100%',
-    height: '80%',
+    height: '85%',
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
   },
+  fl: {//俸禄
+    borderRadius: scale(5),
+    width: 100,
+    height: 30,
+    marginRight: 16,
+    alignSelf: 'flex-end',
+  },
+  ye: { //余额
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: scale(10)
+  },
   featureBlock: {
     width: '100%',
-    height: '60%',
+    height: '30%',
     borderRadius: 8,
   },
   whiteBlock: {
@@ -106,9 +156,11 @@ const _styles = StyleSheet.create({
     paddingTop: scale(15),
     width: '95%',
     alignSelf: 'center',
+    justifyContent: 'flex-end',
   },
   profileContainer: {
     width: '100%',
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: scale(35),
