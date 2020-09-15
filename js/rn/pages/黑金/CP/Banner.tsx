@@ -1,15 +1,17 @@
-import { useDimensions } from "@react-native-community/hooks"
-import { BannerModel } from "../../../public/network/Model/BannerModel"
+import {useDimensions} from "@react-native-community/hooks"
+import {BannerModel} from "../../../public/network/Model/BannerModel"
 import Carousel from "react-native-banner-carousel"
-import { useRef, useState, useEffect } from "react"
-import { View, TouchableWithoutFeedback, Text, Dimensions, ViewStyle } from "react-native"
+import {useRef, useState, useEffect} from "react"
+import {View, TouchableWithoutFeedback, Text, Dimensions, ViewStyle} from "react-native"
 import PushHelper from "../../../public/define/PushHelper"
 import FastImage from "react-native-fast-image"
 import React from 'react'
 
-const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, size = {
-  width: 0, height: 0,
-}, style }: {
+const Banner = ({
+                  bannerData, onlineNum = 0, onlineSwitch, size = {
+    width: 0, height: 0,
+  }, style
+                }: {
   bannerData: BannerModel, onlineNum: number, onlineSwitch: number, size: {
     width: number,
     height: number
@@ -33,7 +35,7 @@ const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, size = {
   }, [bannerData,])
   if (bannerData?.data?.list?.length > 0) {
     return (
-      <View style={{ ...style }}>
+      <View style={{...style}}>
 
         <Carousel
           autoplay
@@ -42,26 +44,41 @@ const Banner = ({ bannerData, onlineNum = 0, onlineSwitch, size = {
           loop
           pageSize={size.width}
         >
-          {bannerData?.data?.list?.map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                PushHelper.pushCategory(res.linkCategory, res.linkPosition)
-              }}>
-                <FastImage onLoad={(e) => {
-                  if (!size.height) {
-                    setHeight(e.nativeEvent.height * ((size.width) / e.nativeEvent.width))
-                  }
+          {
+            bannerData?.data?.list?.map((res, index) => {
+              return (
+                <TouchableWithoutFeedback onPress={() => {
+                  PushHelper.pushCategory(res.linkCategory, res.linkPosition)
+                }}>
+                  <FastImage onLoad={(e) => {
+                    if (!size.height) {
+                      setHeight(e.nativeEvent.height * ((size.width) / e.nativeEvent.width))
+                    }
 
 
-                }} key={'banner' + index} style={{ width: size.width, height: size.height ? size.height : height, borderRadius: 10 }} source={{ uri: res.pic }} >
+                  }} key={'banner' + index}
+                             style={{width: size.width, height: size.height ? size.height : height, borderRadius: 0}}
+                             source={{uri: res.pic}}>
 
-                </FastImage>
-              </TouchableWithoutFeedback>)
-          })}
+                  </FastImage>
+                </TouchableWithoutFeedback>)
+            })
+          }
         </Carousel>
-        {onlineSwitch == 1 ? <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-          <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-        </View> : null}
+        {
+          onlineSwitch == 1
+            ? <View style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              backgroundColor: "rgba(0,0,0,0.2)",
+              borderRadius: 16,
+              padding: 5
+            }}>
+              <Text style={{color: 'white'}}>当前在线:{onlineNum}</Text>
+            </View>
+            : null
+        }
 
       </View>
     )
