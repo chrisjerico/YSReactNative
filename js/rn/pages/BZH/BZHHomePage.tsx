@@ -205,7 +205,7 @@ const BZHHomePage = () => {
                       let index = 0
                       if (name == '视讯') {
                         index = recommendGameTabs?.findIndex(
-                          (item) => item == '真人'
+                          (item) => item == '真人' || item == '视讯'
                         )
                       } else {
                         index = recommendGameTabs?.findIndex(

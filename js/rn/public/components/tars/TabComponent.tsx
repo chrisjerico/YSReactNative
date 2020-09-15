@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -102,6 +102,12 @@ const TabComponent = ({
   const [height, setHeight] = useState(getSceneHeight(initialTabIndex))
   const [index, setIndex] = useState(initialTabIndex)
   const scroll = useRef(null)
+
+
+  useEffect(() => {
+    setHeight(getSceneHeight(initialTabIndex))
+    setIndex(initialTabIndex)
+  }, [initialTabIndex])
 
   const getTabCount = () => {
     return tabGames?.length ?? 0
