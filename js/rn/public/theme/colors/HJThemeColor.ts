@@ -23,8 +23,8 @@ export const HJThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#e53333',
-    themeLightColor: '#FFECEC',
+    themeColor: '#fcba54',
+    themeLightColor: '#fbef80',
     isBlack: false,
     is23: false,
     yubaoBgColor: "#8E8E8E"

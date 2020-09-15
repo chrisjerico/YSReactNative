@@ -80,7 +80,7 @@ const HJMinePage = () => {
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
           }}
-          headerColor={BZHThemeColor.宝石红.themeColor}
+          headerColor={HJThemeColor.黑金.themeColor}
         >
         </SafeAreaHeader> : null
       }
@@ -103,16 +103,18 @@ const HJMinePage = () => {
           renderFeature={(item, index) => {
             const {logo, name, code} = item
 
+            let featureDivider = index > 0 ? {} : {borderLeftColor: 'transparent'}
+
             return (
               <Button
                 key={index}
-                containerStyle={{width: '25%'}}
+                containerStyle={ [_styles.feature_bt, featureDivider] }
                 titleStyle={{
                   fontSize: scale(22),
                   fontWeight: '300',
                   color: HJThemeColor.黑金.textColor3
                 }}
-                title={name + " "}
+                title={" " + name + " "}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
@@ -148,23 +150,42 @@ const HJMinePage = () => {
           }
         </LinearGradient>
 
-        <Button
-          title={'退出登录'}
-          containerStyle={{
-            backgroundColor: '#ffffff',
-            marginHorizontal: scale(25),
-            marginVertical: scale(15),
-            borderRadius: scale(7),
-            height: scale(70),
-          }}
-          titleStyle={{color: '#db6372', fontSize: scale(21)}}
-          onPress={signOut}
-        />
+        <LinearGradient start={{x: 0, y: 0}} end={{x: 0.5, y: 2.0}} colors={HJThemeColor.黑金.menuHeadViewColor}
+                        style={_styles.log_out}
+        >
+          <Button
+            title={'退出登录'}
+            containerStyle={{
+              height: '100%',
+            }}
+            titleStyle={{color: '#db6372', fontSize: scale(21)}}
+            onPress={signOut}/>
+        </LinearGradient>
+
         <BottomGap/>
       </ScrollView>
+      <View style={_styles.server_container}>
+        <GameButton
+          showSubTitle={false}
+          showSecondLevelIcon={false}
+          containerStyle={_styles.server}
+          imageContainerStyle={{width: '80%'}}
+          enableCircle={true}
+          circleColor={HJThemeColor.黑金.themeLightColor}
+          logo={'http://test10.6yc.com/views/mobileTemplate/16/images/service2.png'}
+          titleStyle={{
+            fontSize: scale(20),
+            fontWeight: '300',
+            paddingTop: scale(5),
+          }}
+          titleContainerStyle={{aspectRatio: 5}}
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }}/>
+      </View>
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
-        color={BZHThemeColor.宝石红.themeColor}
+        color={HJThemeColor.黑金.themeColor}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
@@ -193,17 +214,15 @@ const ZLHeader = () => {
   //     break;
   // }
 
-  let showBackBtn = true;
-
   return (
     <View style={{
       // width,
-      paddingVertical: 8,
+      height: 50,
       backgroundColor: '#1a1a1e',
       flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
       paddingHorizontal: 20
     }}>
-      <View style={{ width: '10%', alignItems: 'flex-start' }}>
+      <View style={{width: '10%', alignItems: 'flex-start'}}>
         <AntDesign
           name={'left'}
           color={'#ffffff'}
@@ -216,16 +235,19 @@ const ZLHeader = () => {
       <TouchableOpacity onPress={() => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
       }} style={{width: '10%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-        <FastImage style={{width: 27, height: 24, marginBottom: 5}}
+        <FastImage style={{width: 27, height: 24}}
                    source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
-        <Text style={{color: "white", fontSize: 14}}>消 息</Text>
-        {unreadMsg > 0 ? <View style={{
-          position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
-          height: 15, width: 15,
-          borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
-        }}>
-          <Text style={{color: 'white', fontSize: 10}}>{unreadMsg}</Text>
-        </View> : null}
+        {
+          unreadMsg > 0 ? <View style={{
+              position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
+              height: 15, width: 15,
+              borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
+            }
+            }>
+              <Text style={{color: 'white', fontSize: 10}}>{unreadMsg}</Text>
+            </View>
+            : null
+        }
 
       </TouchableOpacity>
     </View>
@@ -241,6 +263,29 @@ const _styles = {
     marginHorizontal: 9,
     paddingVertical: 8,
     paddingHorizontal: 32,
+    borderRadius: 8,
+  },
+  server_container: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: scale(15),
+    position: 'absolute'
+  },
+  feature_bt: {
+    width: '25%',
+    borderLeftColor: HJThemeColor.黑金.textColor3,
+    borderLeftWidth: 1
+  },
+  server: {
+    width: '25%',
+    marginBottom: 40,
+  },
+  log_out: {
+    height: 50,
+    marginTop: 16,
+    marginHorizontal: 9,
     borderRadius: 8,
   },
 }

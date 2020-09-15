@@ -70,7 +70,9 @@ const ProfileBlock = ({
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 2.0 }} colors={HJThemeColor.黑金.progressBgColor}
                         style={_styles.featureBlock}>
           <View style={_styles.featureContainer}>
-            {features.map(renderFeature)}
+            {
+              features.map(renderFeature)
+            }
           </View>
         </LinearGradient>
 
@@ -83,7 +85,7 @@ const _styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 500 / 250,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
     paddingBottom: scale(30)
   },
   hjTopBlock: {
