@@ -83,7 +83,7 @@ const BZHMinePage = () => {
           renderFeature={(item, index) => {
             const { logo, name, code } = item
 
-            ugLog('features item=',item)
+            //ugLog('features item=',item)
             return (
               <GameButton
                 key={index}

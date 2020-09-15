@@ -74,6 +74,7 @@ httpClient.interceptors.response.use(
         break;
       case 'android':
         // ugLog('http success res = ', JSON.stringify(response.request))
+        //ugLog("http ful filled res = ", JSON.stringify(response))
         break;
     }
     // ugLog("http ful filled res = ", JSON.stringify(response))

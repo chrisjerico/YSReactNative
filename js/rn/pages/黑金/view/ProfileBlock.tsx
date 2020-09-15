@@ -37,17 +37,15 @@ const ProfileBlock = ({
   onPressAvatar
 }: ProfileBlockProps) => {
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[_styles.container, containerStyle]}>
       <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 2.0 }} colors={HJThemeColor.黑金.menuHeadViewColor}
-                      style={styles.redBlock}>
-
-      </LinearGradient>
-      <View style={styles.whiteBlock}>
-        <View style={styles.profileContainer}>
+                      style={_styles.hjTopBlock}/>
+      <View style={_styles.whiteBlock}>
+        <View style={_styles.profileContainer}>
           <Avatar uri={avatar} onPress={onPressAvatar} />
-          <View style={styles.moneyContainer}>
+          <View style={_styles.moneyContainer}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.text}>{name}</Text>
+              <Text style={_styles.text}>{name}</Text>
               <LinearBadge
                 containerStyle={{ borderRadius: scale(5), width: null }}
                 textStyle={{ paddingHorizontal: scale(10) }}
@@ -69,26 +67,35 @@ const ProfileBlock = ({
             </View>
           </View>
         </View>
-        <View style={styles.featureContainer}>
-          {features.map(renderFeature)}
-        </View>
+        <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0.5, y: 2.0 }} colors={HJThemeColor.黑金.progressBgColor}
+                        style={_styles.featureBlock}>
+          <View style={_styles.featureContainer}>
+            {features.map(renderFeature)}
+          </View>
+        </LinearGradient>
+
       </View>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     width: '100%',
     aspectRatio: 500 / 250,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
     paddingBottom: scale(30)
   },
-  redBlock: {
+  hjTopBlock: {
     width: '100%',
     height: '80%',
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
+  },
+  featureBlock: {
+    width: '100%',
+    height: '60%',
+    borderRadius: 8,
   },
   whiteBlock: {
     height: '100%',

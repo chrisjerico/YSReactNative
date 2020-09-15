@@ -1,4 +1,7 @@
 // 代理申请信息
+import {ugLog} from "../../../public/tools/UgLog";
+import {anyEmpty} from "../../../public/tools/Ext";
+
 export interface UGAgentApplyInfo {
   username: string; // 用户名
   qq: string; // qq
@@ -87,7 +90,7 @@ export class UGUserCenterItem {
   constructor(props: UGUserCenterItem) {
     Object.assign(this, props);
     // 设置默认图标
-    if (this.logo?.indexOf('http') == -1) {
+    if (anyEmpty(this.logo) || this.logo?.indexOf('http') == -1) {
       this.logo = UGUserCenterItem.defaultLogos[props.code];
       this.isDefaultLogo = true;
     }
