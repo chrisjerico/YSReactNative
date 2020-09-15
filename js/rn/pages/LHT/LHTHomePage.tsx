@@ -299,6 +299,10 @@ const LHTHomePage = () => {
                       marginTop: scale(5),
                       aspectRatio: 3,
                     }}
+                    flagContainer={{
+                      right: scale(15),
+                      top: scale(-5)
+                    }}
                     titleStyle={{ fontSize: scale(23) }}
                     subTitleStyle={{ fontSize: scale(23) }}
                     onPress={() => PushHelper.pushHomeGame(item)}

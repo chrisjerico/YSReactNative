@@ -19,7 +19,6 @@ const BZHGameLobbyPage = ({ route }) => {
   const gameLobby = UGStore.globalProps.gameLobby
   const { initialTabIndex } = route?.params ?? {}
 
-  console.log("---------initialTabIndex---------", initialTabIndex)
   return (
     <>
       <GameLobbyPageHeader />

@@ -20,7 +20,7 @@ import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
-import {ugLog} from "../tools/UgLog";
+import { ugLog } from "../tools/UgLog";
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -41,7 +41,7 @@ export default class PushHelper {
 
         break;
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, {popup: data})
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, { popup: data })
         break;
     }
 
@@ -263,7 +263,7 @@ export default class PushHelper {
         )
         break;
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_NOTICE, {rnString: notice})
+        ANHelper.callAsync(CMD.OPEN_NOTICE, { rnString: notice })
         break;
     }
 

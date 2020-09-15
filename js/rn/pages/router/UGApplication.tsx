@@ -109,6 +109,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={UGPage(BZHGameLobbyPage)} />
+        <Router.TabScreen name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
+
       </Router.TabNavigator>
     );
   }
@@ -136,7 +138,6 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZGameLobbyPage} component={WNZGameLobbyPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
