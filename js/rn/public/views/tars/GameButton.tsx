@@ -239,10 +239,13 @@ const styles = StyleSheet.create({
     borderRadius: scale(5),
     justifyContent: 'center',
     alignItems: 'center',
+    padding: scale(5)
   },
   flagText: {
     color: '#ffffff',
-    padding: scale(5),
+    fontSize: scale(18)
+    // padding: scale(5),
+
   },
   image: {
     width: '100%',

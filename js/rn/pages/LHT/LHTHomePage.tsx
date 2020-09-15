@@ -96,7 +96,7 @@ const LHTHomePage = () => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} >
           <HomeHeader
             avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}

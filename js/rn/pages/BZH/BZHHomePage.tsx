@@ -284,14 +284,14 @@ const BZHHomePage = () => {
                                 marginRight: index % 3 == 1 ? '5%' : 0,
                               },
                             ]}
-                            imageContainerStyle={{ width: '60%' }}
+                            imageContainerStyle={{ width: '50%' }}
                             enableCircle={false}
                             logo={icon || logo}
                             title={name || title}
                             subTitle={subtitle}
                             showSubTitle
                             titleStyle={{
-                              fontSize: scale(25),
+                              fontSize: scale(21),
                             }}
                             subTitleStyle={{
                               fontSize: scale(20),

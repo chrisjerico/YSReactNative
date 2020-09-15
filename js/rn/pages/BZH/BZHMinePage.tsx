@@ -1,6 +1,6 @@
 import React from 'react'
 import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
-import {RefreshControl, ScrollView} from 'react-native'
+import { RefreshControl, ScrollView } from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -17,7 +17,7 @@ import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
-import {ugLog} from "../../public/tools/UgLog";
+import { ugLog } from "../../public/tools/UgLog";
 
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -51,11 +51,6 @@ const BZHMinePage = () => {
   return (
     <>
       <SafeAreaHeader
-        containerStyle={{
-          aspectRatio: 540 / 50,
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-        }}
         headerColor={BZHThemeColor.宝石红.themeColor}
       >
         <MineHeaderComponent
@@ -71,7 +66,7 @@ const BZHMinePage = () => {
         style={{
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-        // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
+      // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
         <ProfileBlock
           balance={balance}
@@ -83,7 +78,7 @@ const BZHMinePage = () => {
           renderFeature={(item, index) => {
             const { logo, name, code } = item
 
-            ugLog('features item=',item)
+            ugLog('features item=', item)
             return (
               <GameButton
                 key={index}

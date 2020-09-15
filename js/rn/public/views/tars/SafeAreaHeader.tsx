@@ -39,9 +39,9 @@ const SafeAreaHeader = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 50,
-    flexDirection: 'row',
-    paddingHorizontal: scale(10)
+    aspectRatio: 540 / 70,
+    paddingHorizontal: scale(10),
+    justifyContent: 'center'
   }
 })
 

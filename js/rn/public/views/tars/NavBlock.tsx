@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     aspectRatio: 540 / 105,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start'
   }
 })
