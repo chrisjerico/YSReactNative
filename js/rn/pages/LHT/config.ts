@@ -24,7 +24,7 @@ const config = {
     17: getHtml5Image(3, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
     19: getIbbImage('YLt56JH/qq-3x'), // QQ客服
-    20: '', // 開獎網
+    20: getIbbImage('Gv1DfJ4/aw-3x'), // 開獎網
   },
   preferences: [
     {
