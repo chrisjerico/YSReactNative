@@ -220,6 +220,7 @@ const TabComponent = ({
                             tabTextStyle,
                             focused ? { color: focusTabColor } : styles.text,
                           ]}
+                          numberOfLines={1}
                         >
                           {route?.title}
                         </Text>

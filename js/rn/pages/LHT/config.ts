@@ -1,12 +1,12 @@
-import { useHtml5Image } from '../../public/tools/tars'
+import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const config = {
   defaultUserCenterLogos: {
-    1: '', // 存款
-    2: '', // 取款
+    1: getIbbImage('jDD8DNd/sm-3x'), // 存款
+    2: getIbbImage('m41tMyT/tm-3x'), // 取款
     3: getHtml5Image(3, 'center/bank'), // 银行卡管理
     4: getHtml5Image(3, 'syb3'), // 利息宝
     5: getHtml5Image(null, 'lhc/menu-myreco'), // 推荐收益
@@ -18,12 +18,12 @@ const config = {
     11: getHtml5Image(3, 'center/task'), // 任务中心
     12: getHtml5Image(3, 'center/userInf'), // 个人信息
     13: getHtml5Image(3, 'center/menu-feedback'), // 建议反馈
-    14: '', // 在线客服
-    15: '', // 活动彩金
-    16: '', // 长龙助手
+    14: getIbbImage('HFwjMyQ/cs-3x'), // 在线客服
+    15: getIbbImage('8Pt1HqR/am-3x'), // 活动彩金
+    16: getIbbImage('2MnqFQg/zl-3x'), // 长龙助手
     17: getHtml5Image(3, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: '', // QQ客服
+    19: getIbbImage('YLt56JH/qq-3x'), // QQ客服
     20: '', // 開獎網
   },
   preferences: [
