@@ -111,7 +111,7 @@ const HJMinePage = () => {
                   fontWeight: '300',
                   color: 'white'
                 }}
-                title={name}
+                title={name + " "}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
@@ -127,13 +127,14 @@ const HJMinePage = () => {
                   key={index}
                   containerStyle={{
                     aspectRatio: 490 / 68,
+                    borderBottomColor: 'grey'
                   }}
-                  arrowColor={'white'}
+                  arrowColor={'transparent'}
                   titleStyle={{
                     fontSize: scale(22),
                     color: 'white'
                   }}
-                  title={name}
+                  title={name + " "}//必须要有空格
                   logo={logo}
                   unreadMsg={unreadMsg || 0}
                   showUnreadMsg={code == 9}
@@ -242,12 +243,9 @@ const ZLHeader = () => {
 
 const _styles = {
   featureBlock: {
-    marginLeft: 9,
-    marginRight: 9,
-    paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 32,
-    paddingRight: 32,
+    marginHorizontal: 9,
+    paddingVertical: 8,
+    paddingHorizontal: 32,
     borderRadius: 8,
   },
 }
