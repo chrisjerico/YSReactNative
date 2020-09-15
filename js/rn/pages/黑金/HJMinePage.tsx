@@ -39,6 +39,7 @@ import BottomGap from "../../public/views/tars/BottomGap";
 import PickAvatarComponent from "../../public/components/tars/PickAvatarComponent";
 import ProfileBlock from "./view/ProfileBlock";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
+import AntDesign from "react-native-vector-icons/AntDesign";
 
 const HJMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
@@ -109,7 +110,7 @@ const HJMinePage = () => {
                 titleStyle={{
                   fontSize: scale(22),
                   fontWeight: '300',
-                  color: 'white'
+                  color: HJThemeColor.黑金.textColor3
                 }}
                 title={name + " "}
                 onPress={() => PushHelper.pushUserCenterType(code)}
@@ -132,7 +133,7 @@ const HJMinePage = () => {
                   arrowColor={'transparent'}
                   titleStyle={{
                     fontSize: scale(22),
-                    color: 'white'
+                    color: HJThemeColor.黑金.textColor3
                   }}
                   title={name + " "}//必须要有空格
                   logo={logo}
@@ -176,50 +177,48 @@ const ZLHeader = () => {
   const {width, height} = useDimensions().window
   const insets = useSafeArea();
   const {uid = "", unreadMsg} = UGStore.globalProps.userInfo;
-  const [showBackBtn, setShowBackBtn] = useState(false);
+  // const [showBackBtn, setShowBackBtn] = useState(false);
+  //
+  // let topDistance = 0;
+  // switch (Platform.OS) {
+  //   case 'ios':
+  //     topDistance = insets.top;
+  //     OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+  //       const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+  //       show != showBackBtn && setShowBackBtn(show);
+  //     })
+  //     break;
+  //   case 'android':
+  //
+  //     break;
+  // }
 
-  let topDistance = 0;
-  switch (Platform.OS) {
-    case 'ios':
-      topDistance = insets.top;
-      OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
-        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
-        show != showBackBtn && setShowBackBtn(show);
-      })
-      break;
-    case 'android':
-
-      break;
-  }
+  let showBackBtn = true;
 
   return (
     <View style={{
-      width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
+      // width,
+      paddingVertical: 8,
+      backgroundColor: '#1a1a1e',
       flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
       paddingHorizontal: 20
     }}>
-      {showBackBtn && (<TouchableOpacity onPress={() => {
-        if (!pop()) {
-          switch (Platform.OS) {
-            case 'ios':
-              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-              break;
-            case 'android':
-
-              break;
-          }
-        }
-      }} style={{paddingRight: 5}}>
-        <Image style={{width: 25, height: 25,}} source={{uri: "back_icon"}}/>
-      </TouchableOpacity>)}
-      {showBackBtn && <View style={{flex: 1}}/>}
-
+      <View style={{ width: '10%', alignItems: 'flex-start' }}>
+        <AntDesign
+          name={'left'}
+          color={'#ffffff'}
+          size={scale(25)}
+        />
+      </View>
+      <View style={{flex: 1}}/>
+      <Text style={_styles.title}> 个人中心 </Text>
+      <View style={{flex: 1}}/>
       <TouchableOpacity onPress={() => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
-      }} style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+      }} style={{width: '10%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
         <FastImage style={{width: 27, height: 24, marginBottom: 5}}
                    source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
-        <Text style={{color: "white", fontSize: 14}}>消息</Text>
+        <Text style={{color: "white", fontSize: 14}}>消 息</Text>
         {unreadMsg > 0 ? <View style={{
           position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
           height: 15, width: 15,
@@ -229,19 +228,15 @@ const ZLHeader = () => {
         </View> : null}
 
       </TouchableOpacity>
-      {!showBackBtn && <View style={{flex: 1}}/>}
-      <TouchableOpacity onPress={() => {
-        PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-      }} style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginLeft: 30}}>
-        <FastImage style={{width: 27, height: 24, marginBottom: 5}}
-                   source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service2.png"}}/>
-        <Text style={{color: "white", fontSize: 14}}>客服</Text>
-      </TouchableOpacity>
     </View>
   )
 }
 
 const _styles = {
+  title: {
+    color: 'white',
+    fontSize: 16,
+  },
   featureBlock: {
     marginHorizontal: 9,
     paddingVertical: 8,

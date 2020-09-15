@@ -11,7 +11,7 @@ export const HJThemeColor: { [x: string]: UGThemeColor } = {
     bgColor: ['#000000', '#000000'],
     navBarBgColor: ['#000000', '#000000'],
     get tabSelectedColor() { return this.themeColor },
-    get progressBgColor() { return ['#4e4e4e', '#4e4e4e', '#030303'] },
+    get progressBgColor() { return ['#4e4e4e', '#030303', '#4e4e4e'] },
     homeContentColor: '#fefefe',
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
