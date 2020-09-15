@@ -114,7 +114,7 @@ const HJMinePage = () => {
                   fontWeight: '300',
                   color: HJThemeColor.黑金.textColor3
                 }}
-                title={" " + name + " "}
+                title={name}
                 onPress={() => PushHelper.pushUserCenterType(code)}
               />
             )
@@ -138,7 +138,7 @@ const HJMinePage = () => {
                     fontSize: scale(22),
                     color: HJThemeColor.黑金.textColor3
                   }}
-                  title={name + " "}//必须要有空格
+                  title={name}//必须要有空格
                   logo={logo}
                   unreadMsg={unreadMsg || 0}
                   showUnreadMsg={code == 9}
