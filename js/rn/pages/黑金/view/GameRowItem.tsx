@@ -10,6 +10,11 @@ interface GameRowProps {
   iconsItem: Icon,
 }
 
+/**
+ * 游戏图标条目
+ * @param iconsItem
+ * @constructor
+ */
 const GameRowItem = ({iconsItem}: GameRowProps) => {
   const iconsLength = anyLength(iconsItem?.list);
   let datas = [];
@@ -34,8 +39,7 @@ const GameRowItem = ({iconsItem}: GameRowProps) => {
         datas?.map(
           (item, index) => <FastImage
             style={_styles.item}
-            source={{ uri: item.icon }}
-          >
+            source={{uri: item.icon}}>
             <Text style={_styles.itemText}>{item.title}</Text>
           </FastImage>
         )

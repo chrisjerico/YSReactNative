@@ -56,6 +56,7 @@ import {anyEmpty} from "../../public/tools/Ext";
 import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
 import GameRow from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
+import GameColumn from "./view/GameColumn";
 
 /**
  *
@@ -156,8 +157,6 @@ const HJHomePage = ({navigation, setProps}) => {
 
   }
 
-
-
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <ZLHeader/>
@@ -190,9 +189,9 @@ const HJHomePage = ({navigation, setProps}) => {
         </View>
 
         <View style={_styles.gameContainer}>
+          <GameColumn games={homeGames}/>
           <GameRow games={homeGames}/>
         </View>
-
 
         <View style={{flex: 1, height: 223 / 375 * width, flexDirection: 'row',}}>
           <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
@@ -817,6 +816,7 @@ const _styles = StyleSheet.create({
   },
   gameContainer: {
     backgroundColor: HJThemeColor.黑金.homeContentSubColor,
+    flexDirection: 'row',
   },
   bottomInfo: {
     flex: 1,

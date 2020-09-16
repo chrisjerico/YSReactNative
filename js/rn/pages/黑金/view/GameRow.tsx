@@ -13,18 +13,22 @@ interface GameRowProps {
 
 const _rightText = '查看全部 >';
 
+/**
+ * 游戏图标
+ * @param games
+ * @constructor
+ */
 const GameRow = ({games}: GameRowProps) => {
   const icons = games?.data?.icons
   return (
-    <View>
+    <View style={_styles.flex}>
       {
-        icons?.map((item: Icon, index)=><View style={_styles.itemContainer}>
+        icons?.map((item: Icon, index) => <View style={_styles.itemContainer}>
           <View style={_styles.itemTitleContainer}>
             <View style={_styles.itemTitleDivider}/>
             <FastImage
               style={_styles.itemTitleFlag}
-              source={{ uri: 'https://i.ibb.co/hghhbCs/chongzhi-2x.png' }}
-            />
+              source={{uri: 'https://i.ibb.co/hghhbCs/chongzhi-2x.png'}}/>
             <Text style={_styles.itemTitleText}>{item.name}</Text>
             <View style={_styles.flex}/>
             <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
