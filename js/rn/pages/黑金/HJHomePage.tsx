@@ -52,7 +52,7 @@ import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoa
 import {Toast} from "../../public/tools/ToastUtils";
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
-import {anyEmpty} from "../../public/tools/Ext";
+import {anyEmpty, anyLength} from "../../public/tools/Ext";
 import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
 import GameRow from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
@@ -195,6 +195,8 @@ const HJHomePage = ({navigation, setProps}) => {
           <GameRow games={homeGames}
                    onScroll={(e) => {
                      let index = Math.floor(e.nativeEvent.contentOffset.y / gameLeftColumnHeight);
+                     const iconsLength = anyLength(homeGames.data.icons) - 1;
+                     index = index > iconsLength ? iconsLength : index;
                      setSelectGameIndex(index);
                    }}/>
         </View>

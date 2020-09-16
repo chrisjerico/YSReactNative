@@ -23,10 +23,14 @@ const _rightText = '查看全部 >';
  */
 const GameRow = ({games, onScroll}: GameRowProps) => {
   const icons = games?.data?.icons
-  const scrollHeight = anyLength(icons) * gameLeftColumnHeight;
+  const iconsLength = anyLength(icons);
+  const scrollHeight = iconsLength * gameLeftColumnHeight;
 
-  const _renderItem = ({ item }) => (
-    <View style={_styles.itemContainer}>
+  const _renderItem = ({ item, index }) => {
+
+    let bottomStyle = index == iconsLength - 1 ? { marginBottom: 2 * gameLeftColumnHeight } : {}
+
+    return <View style={[_styles.itemContainer, bottomStyle]}>
       <View style={_styles.itemTitleContainer}>
         <View style={_styles.itemTitleDivider}/>
         <FastImage
@@ -38,7 +42,7 @@ const GameRow = ({games, onScroll}: GameRowProps) => {
       </View>
       <GameRowItem iconsItem={item}/>
     </View>
-  );
+  };
 
   return (
     // <ScrollView
