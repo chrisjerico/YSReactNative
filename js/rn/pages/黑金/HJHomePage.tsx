@@ -53,6 +53,9 @@ import {Toast} from "../../public/tools/ToastUtils";
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {anyEmpty} from "../../public/tools/Ext";
+import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
+import GameRow from "./view/GameRow";
+import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 
 /**
  *
@@ -186,6 +189,11 @@ const HJHomePage = ({navigation, setProps}) => {
                              textList={noticeFormat}/>
         </View>
 
+        <View style={_styles.gameContainer}>
+          <GameRow games={homeGames}/>
+        </View>
+
+
         <View style={{flex: 1, height: 223 / 375 * width, flexDirection: 'row',}}>
           <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 0)}>
             <FastImage source={{uri: homeGames?.data?.icons?.[0]?.list?.[0]?.icon}} style={{
@@ -311,7 +319,7 @@ const HJHomePage = ({navigation, setProps}) => {
               </TouchableWithoutFeedback>
             </View>
           </View>
-          <TouchableWithoutFeedback style={styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
+          <TouchableWithoutFeedback style={_styles.buttonContainer} onPress={thirdPartGamePress.bind(null, 7)}>
             <FastImage source={{uri: homeGames?.data?.icons?.[0]?.list?.[7]?.icon}}
                        style={{
                          flex: 0.35,
@@ -334,7 +342,7 @@ const HJHomePage = ({navigation, setProps}) => {
         </View>
         <View style={{flexDirection: 'row', height: 67, marginTop: 7}}>
           <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 8)}>
-            <View style={styles.buttonContainer}>
+            <View style={_styles.buttonContainer}>
               <FastImage source={{uri: homeGames?.data?.icons?.[0]?.list?.[8]?.icon}}
                          style={{borderRadius: 10, paddingVertical: 10, paddingLeft: 5, height: 67,}}>
                 <Text style={{
@@ -350,7 +358,7 @@ const HJHomePage = ({navigation, setProps}) => {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 9)}>
-            <View style={styles.buttonContainer}>
+            <View style={_styles.buttonContainer}>
               <FastImage source={{uri: homeGames?.data?.icons?.[0]?.list?.[9]?.icon}}
                          style={{borderRadius: 10, height: 67, paddingLeft: 5, paddingTop: 10}}>
                 <Text style={{
@@ -366,7 +374,7 @@ const HJHomePage = ({navigation, setProps}) => {
             </View>
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={thirdPartGamePress.bind(null, 10)}>
-            <View style={styles.buttonContainer}>
+            <View style={_styles.buttonContainer}>
               <FastImage source={{uri: homeGames?.data?.icons?.[0]?.list?.[10]?.icon}}
                          style={{flex: 1, borderRadius: 10, paddingLeft: 5, paddingTop: 10, height: 67,}}>
                 <Text style={{
@@ -802,14 +810,17 @@ const FastImageAutoWidth = (props: FastImageProperties) => {
     }}/>
   )
 }
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     marginRight: 5,
   },
+  gameContainer: {
+    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
+  },
   bottomInfo: {
     flex: 1,
     marginRight: 5,
-  }
+  },
 })
 export default HJHomePage

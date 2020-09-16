@@ -17,7 +17,7 @@ export const HJThemeColor: { [x: string]: UGThemeColor } = {
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
     get menuHeadViewColor() { return ['#fcba54', '#fbef80', '#fcba54'] },
     textColor1: '#111111',
-    textColor2: '#555555',
+    textColor2: '#6b6c6c',
     textColor3: '#C1C1C1',
     textColor4: '#ffffff',
     conversionCellColor: '#444',
