@@ -32,10 +32,7 @@ const GameColumn = ({games}: GameRowProps) => {
               resizeMode={'contain'}
               onPress={() => {
                 // PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            >
-
-            </TouchableImage>
+              }} />
             <Text style={_styles.itemTitleText}>{item.name}</Text>
           </View>
         })
@@ -51,13 +48,16 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    width: scale(49),
-    height: scale(120),
+    width: scale(70),
+    height: scale(172),
   },
   itemTitleText: {
+    width: scale(47),
+    height: scale(120),
     position: 'absolute',
     fontSize: scale(24),
     color: 'white',
+    textAlignVertical: 'center',
     marginHorizontal: scale(4),
     fontWeight: '300',
   },

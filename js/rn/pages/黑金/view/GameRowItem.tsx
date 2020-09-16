@@ -40,7 +40,8 @@ const GameRowItem = ({iconsItem}: GameRowProps) => {
           (item, index) => <FastImage
             style={_styles.item}
             source={{uri: item.icon}}>
-            <Text style={_styles.itemText}>{item.title}</Text>
+            <Text style={_styles.itemText}
+                  numberOfLines={1} >{item.title}</Text>
           </FastImage>
         )
       }
@@ -68,7 +69,7 @@ const _styles = StyleSheet.create({
     marginBottom: scale(4),
     fontSize: scale(24),
     color: 'white',
-    backgroundColor: '#00000022'
+    backgroundColor: '#00000022',
   },
 });
 

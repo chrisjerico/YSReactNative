@@ -28,7 +28,7 @@ const GameRow = ({games}: GameRowProps) => {
             <View style={_styles.itemTitleDivider}/>
             <FastImage
               style={_styles.itemTitleFlag}
-              source={{uri: 'https://i.ibb.co/hghhbCs/chongzhi-2x.png'}}/>
+              source={{uri: 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/icon_live.png'}}/>
             <Text style={_styles.itemTitleText}>{item.name}</Text>
             <View style={_styles.flex}/>
             <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
@@ -44,6 +44,7 @@ const GameRow = ({games}: GameRowProps) => {
 const _styles = StyleSheet.create({
   itemContainer: {
     marginBottom: scale(32),
+    marginRight: scale(24),
   },
   itemTitleContainer: {
     flexDirection: 'row',
@@ -63,12 +64,11 @@ const _styles = StyleSheet.create({
   itemTitleFlag: {
     width: scale(60),
     height: scale(40),
-    marginHorizontal: scale(12),
+    marginHorizontal: scale(8),
   },
   itemTitleText: {
-    fontSize: scale(30),
+    fontSize: scale(28),
     color: HJThemeColor.黑金.themeColor,
-    marginHorizontal: scale(4),
     fontWeight: '300'
   },
   itemTitleRightText: {
