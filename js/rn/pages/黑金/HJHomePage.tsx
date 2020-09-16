@@ -57,6 +57,7 @@ import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
 import GameRow, {gameRowContentHeight} from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import GameColumn, {gameLeftColumnHeight} from "./view/GameColumn";
+import {scale} from "../../public/tools/Scale";
 
 /**
  *
@@ -455,33 +456,21 @@ const AcctountDetail = () => {
   if (uid != "") {
     return (
       <LinearGradient start={{x: 0, y: 0}} colors={colorEnum.gradientColor}
-                      style={{
-                        height: 80,
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        borderRadius: 0,
-                      }}>
+                      style={_styles.bottom_layout}>
 
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flex: 1,
-            paddingLeft: 40,
-            flexDirection: 'row'
-          }}>
+          <View style={_styles.bottom_info}>
             <TouchableOpacity onPress={() => {
               if (!_checkLogin()) {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款)
               }
 
-            }} style={{alignItems: 'center', justifyContent: 'center'}}>
-              <FastImage style={{width: 34, height: 34}}
+            }} style={_styles.bottom_center}>
+              <FastImage style={_styles.bottom_icon}
                          source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
-              <Text style={{color: 'white', fontSize: 15.5}}>充 值</Text>
+              <Text style={_styles.bottom_font}>充值</Text>
             </TouchableOpacity>
-            <Text style={{fontSize: 14, color: 'white', marginLeft: 8}}> ¥ {balance}</Text>
+            <Text style={_styles.bottom_money}> ¥ {balance}</Text>
           </View>
 
           <TouchableOpacity onPress={() => {
@@ -489,10 +478,10 @@ const AcctountDetail = () => {
               PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
             }
 
-          }} style={{alignItems: 'center', justifyContent: 'center', padding: 16}}>
-            <FastImage style={{width: 34, height: 34}}
+          }} style={[_styles.bottom_center, {padding: 16}]}>
+            <FastImage style={_styles.bottom_icon}
                        source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
-            <Text style={{color: 'white', fontSize: 15.5}}>转 账</Text>
+            <Text style={_styles.bottom_font}>转账</Text>
 
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
@@ -500,10 +489,10 @@ const AcctountDetail = () => {
               PushHelper.pushUserCenterType(UGUserCenterType.取款)
             }
 
-          }} style={{alignItems: 'center', justifyContent: 'center', padding: 16}}>
-            <FastImage style={{width: 34, height: 34}}
+          }} style={[_styles.bottom_center, {padding: 16}]}>
+            <FastImage style={_styles.bottom_icon}
                        source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
-            <Text style={{color: 'white', fontSize: 15.5}}>提 现</Text>
+            <Text style={_styles.bottom_font}>提现</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -645,6 +634,37 @@ const _styles = StyleSheet.create({
   bottomInfo: {
     flex: 1,
     marginRight: 5,
+  },
+  bottom_icon: {
+    width: scale(36),
+    height: scale(36)
+  },
+  bottom_layout: {
+    height: 70,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 0,
+  },
+  bottom_info: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
+    paddingLeft: 40,
+    flexDirection: 'row'
+  },
+  bottom_center: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bottom_font: {
+    color: 'white',
+    fontSize: scale(24)
+  },
+  bottom_money: {
+    fontSize: scale(22),
+    color: 'white',
+    marginLeft: scale(12)
   },
 })
 export default HJHomePage

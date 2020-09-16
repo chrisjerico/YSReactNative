@@ -32,15 +32,20 @@ const GameColumn = ({games, selectGameIndex, clickListener}: GameRowProps) => {
             <TouchableImage
               containerStyle={_styles.item}
               key={index}
-              pic={ index == selectGameIndex
+              pic={index == selectGameIndex
                 ? 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden_active.png'
-                  : 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden.png'}
+                : 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden.png'}
               resizeMode={'contain'}
               onPress={() => {
-                ugLog('click=', index)
                 clickListener(index)
-              }} />
-
+              }}/>
+            <Text style={[_styles.itemTitleText, {
+              color: index == selectGameIndex
+                ? '#9f4b0c'
+                : 'white'
+            }]} onPress={() => {
+              clickListener(index)
+            }}>{item.name}</Text>
           </View>
         })
       }
