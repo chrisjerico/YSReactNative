@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {HomeGamesModel} from "../../../public/network/Model/HomeGamesModel";
+import {HomeGamesModel, Icon} from "../../../public/network/Model/HomeGamesModel";
 import GameRowItem from "./GameRowItem";
 import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
@@ -13,13 +13,12 @@ interface GameRowProps {
 
 const _rightText = '查看全部 >';
 
-const GameRow = ({games}) => {
+const GameRow = ({games}: GameRowProps) => {
   const icons = games?.data?.icons
-  const iconsLength = anyLength(icons?.list);
   return (
     <View>
       {
-        icons?.map((item, index)=><View style={_styles.itemContainer}>
+        icons?.map((item: Icon, index)=><View style={_styles.itemContainer}>
           <View style={_styles.itemTitleContainer}>
             <View style={_styles.itemTitleDivider}/>
             <FastImage

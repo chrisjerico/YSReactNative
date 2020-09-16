@@ -10,7 +10,7 @@ interface GameRowProps {
   iconsItem: Icon,
 }
 
-const GameRowItem = ({iconsItem}) => {
+const GameRowItem = ({iconsItem}: GameRowProps) => {
   const iconsLength = anyLength(iconsItem?.list);
   let datas = [];
   if (iconsLength > 0) {
