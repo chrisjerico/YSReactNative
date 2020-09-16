@@ -21,6 +21,7 @@ import { WNZThemeColor } from "./colors/WNZThemeColor";
 import { PYThemeColor } from './colors/PYThemeColor'
 import { LLThemeColor } from "./colors/LLThemeCololr";
 import { BZHThemeColor } from './colors/BZHThemeColor';
+import {HJThemeColor} from "./colors/HJThemeColor";
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -35,9 +36,9 @@ export default class UGSkinManagers extends UGThemeColor {
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
     ...WNZThemeColor, // 威尼斯
-    ...PYThemeColor,
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor,// 利来
+    ...HJThemeColor, //黑金
   }
 
   // 更新皮肤
@@ -69,6 +70,8 @@ export default class UGSkinManagers extends UGThemeColor {
       23: `威尼斯`,
       25: '天空蓝',
       26: `白曜`,
+      27: `摩登红`,
+      28: `黑金`,
     };
     console.log('pi fu =', mobileTemplateCategory);
     let key = dict[mobileTemplateCategory];

@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import React from "react";
-import {HomeGamesModel, Icon} from "../../../public/network/Model/HomeGamesModel";
+import {HomeGamesModel, Icon, List} from "../../../public/network/Model/HomeGamesModel";
 import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import FastImage from "react-native-fast-image";
@@ -12,7 +12,22 @@ interface GameRowProps {
 
 const GameRowItem = ({iconsItem}) => {
   const iconsLength = anyLength(iconsItem?.list);
-  let datas = iconsItem?.list?.slice(0, iconsLength > 3 ? 3 : iconsLength);
+  let datas = [];
+  if (iconsLength > 0) {
+    datas = [...iconsItem?.list?.slice(0, iconsLength > 3 ? 3 : iconsLength)]
+    if (iconsLength < 3) {//小于3就补齐3位，render这里执行会有点影响绘制效率
+      let count = 3 - iconsLength;
+      while (count > 0) {
+        datas = [
+          ...datas,
+          {}
+        ];
+
+        count--;
+      }
+    }
+  }
+
   return (
     <View style={_styles.itemContainer}>
       {
