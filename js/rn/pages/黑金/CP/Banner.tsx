@@ -52,7 +52,7 @@ const Banner = ({
                 }}>
                   <FastImage onLoad={(e) => {
                     if (!size.height) {
-                      setHeight(e.nativeEvent.height * ((size.width) / e.nativeEvent.width))
+                      setHeight(size.width/5)
                     }
 
 

@@ -1,14 +1,16 @@
 import {StyleSheet, Text, View} from "react-native";
-import React from "react";
+import React, {useState} from "react";
 import {HomeGamesModel, Icon} from "../../../public/network/Model/HomeGamesModel";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import FastImage from "react-native-fast-image";
 import PushHelper from "../../../public/define/PushHelper";
 import TouchableImage from "../../../public/views/tars/TouchableImage";
+import {ugLog} from "../../../public/tools/UgLog";
 
 interface GameRowProps {
   games?: HomeGamesModel,
+  selectGameIndex?: number,
 }
 
 /**
@@ -16,8 +18,9 @@ interface GameRowProps {
  * @param games
  * @constructor
  */
-const GameColumn = ({games}: GameRowProps) => {
+const GameColumn = ({games, selectGameIndex}: GameRowProps) => {
   const icons = games?.data?.icons;
+
   return (
     <View>
       {
@@ -28,7 +31,9 @@ const GameColumn = ({games}: GameRowProps) => {
             <TouchableImage
               containerStyle={_styles.item}
               key={index}
-              pic={'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden.png'}
+              pic={ index == selectGameIndex
+                ? 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden_active.png'
+                  : 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden.png'}
               resizeMode={'contain'}
               onPress={() => {
                 // PushHelper.pushCategory(linkCategory, linkPosition)
@@ -41,15 +46,17 @@ const GameColumn = ({games}: GameRowProps) => {
   );
 }
 
+export const gameLeftColumnHeight = scale(154);//游戏左侧条目高度
 
 const _styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: scale(6),
   },
   item: {
-    width: scale(70),
-    height: scale(172),
+    width: scale(60),
+    height: gameLeftColumnHeight,
   },
   itemTitleText: {
     width: scale(47),

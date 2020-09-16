@@ -56,7 +56,7 @@ import {anyEmpty} from "../../public/tools/Ext";
 import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
 import GameRow from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
-import GameColumn from "./view/GameColumn";
+import GameColumn, {gameLeftColumnHeight} from "./view/GameColumn";
 
 /**
  *
@@ -74,6 +74,7 @@ const HJHomePage = ({navigation, setProps}) => {
   const userStore = UGStore.globalProps.userInfo;
   const {uid = ""} = userStore
   const systemStore = UGStore.globalProps.sysConf;
+  const [selectGameIndex, setSelectGameIndex] = useState(0)
   const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
   const {banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh, onlineSwitch} = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -165,7 +166,7 @@ const HJHomePage = ({navigation, setProps}) => {
                         tintColor={'white'}
                         refreshing={loading}
                         onRefresh={onRefresh}/>
-      } style={{flex: 1, paddingHorizontal: 0, backgroundColor: 'black'}}>
+      } style={{flex: 1}}>
         <Banner style={{marginBottom: 0}}
                 size={{width: width, height: 0}}
                 onlineNum={onlineNum} bannerData={banner}
@@ -189,21 +190,18 @@ const HJHomePage = ({navigation, setProps}) => {
         </View>
 
         <View style={_styles.gameContainer}>
-          <GameColumn games={homeGames}/>
-          <GameRow games={homeGames}/>
+          <GameColumn games={homeGames}
+                      selectGameIndex={selectGameIndex}/>
+          <GameRow games={homeGames}
+                   onScroll={(e) => {
+                     let index = Math.floor(e.nativeEvent.contentOffset.y / gameLeftColumnHeight);
+                     setSelectGameIndex(index);
+                   }}/>
         </View>
 
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10}}>
-          <View style={{flexDirection: 'row'}}>
-            <Image style={{width: 13, height: 13, tintColor: 'white', marginRight: 5}} source={{uri: "礼品-(1)"}}/>
-            <Text style={{color: 'white', fontWeight: "bold"}}>优惠活动</Text>
-          </View>
-          <TouchableWithoutFeedback onPress={() => {
-            push(PageName.JDPromotionListPage)
-          }}>
-            <Text style={{color: 'white', fontWeight: "bold"}}>{"查看更多>>"}</Text>
-          </TouchableWithoutFeedback>
-        </View>
+        {
+          _couponTitleItem()
+        }
 
         <FlatList style={{marginTop: 10}} data={couponListData?.data?.list?.filter((res, index) => index < 5)}
                   renderItem={({item, index}) => {
@@ -261,7 +259,8 @@ const HJHomePage = ({navigation, setProps}) => {
           }}>🎁优惠活动</Text>
         </View>
         <Text style={{color: 'white', textAlign: 'center'}}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
-        <View style={{height: 100}}></View>
+        <View style={{height: 100}}/>
+
       </ScrollView>
 
       <AcctountDetail/>
@@ -275,6 +274,20 @@ const HJHomePage = ({navigation, setProps}) => {
       }}/>
     </View>
   )
+}
+
+const _couponTitleItem = () => {
+  return <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10}}>
+    <View style={{flexDirection: 'row'}}>
+      <Image style={{width: 13, height: 13, tintColor: 'white', marginRight: 5}} source={{uri: "礼品-(1)"}}/>
+      <Text style={{color: 'white', fontWeight: "bold"}}>优惠活动</Text>
+    </View>
+    <TouchableWithoutFeedback onPress={() => {
+      push(PageName.JDPromotionListPage)
+    }}>
+      <Text style={{color: 'white', fontWeight: "bold"}}>{"查看更多>>"}</Text>
+    </TouchableWithoutFeedback>
+  </View>
 }
 
 const TurntableListItem = () => {
