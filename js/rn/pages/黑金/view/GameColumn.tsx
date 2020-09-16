@@ -11,6 +11,7 @@ import {ugLog} from "../../../public/tools/UgLog";
 interface GameRowProps {
   games?: HomeGamesModel,
   selectGameIndex?: number,
+  clickListener: (index: number) => any,
 }
 
 /**
@@ -18,14 +19,14 @@ interface GameRowProps {
  * @param games
  * @constructor
  */
-const GameColumn = ({games, selectGameIndex}: GameRowProps) => {
+const GameColumn = ({games, selectGameIndex, clickListener}: GameRowProps) => {
   const icons = games?.data?.icons;
 
   return (
     <View>
       {
         icons?.map((item: Icon, index) => {
-          let topStyle = index > 0 ? {marginTop: scale(-16)} : {};
+          let topStyle = index > 0 ? {marginTop: scale(-gameLeftColumnTopPadding)} : {};
 
           return <View style={[_styles.itemContainer, topStyle]}>
             <TouchableImage
@@ -36,9 +37,10 @@ const GameColumn = ({games, selectGameIndex}: GameRowProps) => {
                   : 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/tab_golden.png'}
               resizeMode={'contain'}
               onPress={() => {
-                // PushHelper.pushCategory(linkCategory, linkPosition)
+                ugLog('click=', index)
+                clickListener(index)
               }} />
-            <Text style={_styles.itemTitleText}>{item.name}</Text>
+
           </View>
         })
       }
@@ -47,6 +49,7 @@ const GameColumn = ({games, selectGameIndex}: GameRowProps) => {
 }
 
 export const gameLeftColumnHeight = scale(154);//游戏左侧条目高度
+export const gameLeftColumnTopPadding = scale(32);//游戏左侧条目交叉高度
 
 const _styles = StyleSheet.create({
   itemContainer: {

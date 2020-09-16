@@ -6,12 +6,13 @@ import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import FastImage from "react-native-fast-image";
-import {gameLeftColumnHeight} from "./GameColumn";
+import {gameLeftColumnHeight, gameLeftColumnTopPadding} from "./GameColumn";
 import {ugLog} from "../../../public/tools/UgLog";
 
 interface GameRowProps {
   games?: HomeGamesModel,
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void,
+  listRef: any,
 }
 
 const _rightText = '查看全部 >';
@@ -21,14 +22,18 @@ const _rightText = '查看全部 >';
  * @param games
  * @constructor
  */
-const GameRow = ({games, onScroll}: GameRowProps) => {
+const GameRow = ({games, onScroll, listRef}: GameRowProps) => {
   const icons = games?.data?.icons
   const iconsLength = anyLength(icons);
-  const scrollHeight = iconsLength * gameLeftColumnHeight;
+  const scrollHeight = iconsLength * gameLeftColumnHeight
+    - (iconsLength - 3) * gameLeftColumnTopPadding;
 
   const _renderItem = ({ item, index }) => {
 
-    let bottomStyle = index == iconsLength - 1 ? { marginBottom: 2 * gameLeftColumnHeight } : {}
+    //底部偏移距离
+    let bottomStyle = index == iconsLength - 1
+      ? { marginBottom: (iconsLength - 2) * gameLeftColumnHeight + 1 }
+      : {}
 
     return <View style={[_styles.itemContainer, bottomStyle]}>
       <View style={_styles.itemTitleContainer}>
@@ -65,17 +70,19 @@ const GameRow = ({games, onScroll}: GameRowProps) => {
     // </ScrollView>
     <FlatList style={[_styles.flex, { height: scrollHeight }]}
               data={icons}
+              ref={listRef}
               onScroll={onScroll}
               nestedScrollEnabled={true}
               renderItem={_renderItem}/>
   );
 }
 
+export const gameRowContentHeight = scale(240) //条目一行的高度
 
 const _styles = StyleSheet.create({
   itemContainer: {
-    marginBottom: scale(32),
     marginRight: scale(24),
+    height: gameRowContentHeight
   },
   itemTitleContainer: {
     flexDirection: 'row',

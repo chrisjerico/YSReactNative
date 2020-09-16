@@ -54,7 +54,7 @@ import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {anyEmpty, anyLength} from "../../public/tools/Ext";
 import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
-import GameRow from "./view/GameRow";
+import GameRow, {gameRowContentHeight} from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import GameColumn, {gameLeftColumnHeight} from "./view/GameColumn";
 
@@ -82,6 +82,7 @@ const HJHomePage = ({navigation, setProps}) => {
   const [selectId, setSelectedId] = useState(-1)
   const [show, setShow] = useState(false)
   const [content, setContent] = useState("")
+  const gameListRef = useRef()//游戏条目列表
   const onPromotionItemPress = (data: List, type: 'page' | 'popup' | 'slide', onPress?: () => void) => {
     if (data?.linkUrl != "") {
       Linking.openURL(data?.linkUrl)
@@ -191,14 +192,18 @@ const HJHomePage = ({navigation, setProps}) => {
 
         <View style={_styles.gameContainer}>
           <GameColumn games={homeGames}
-                      selectGameIndex={selectGameIndex}/>
+                      selectGameIndex={selectGameIndex}
+                      clickListener={(index =>
+                        gameListRef?.current?.scrollToIndex({index: index, animated: true}))}/>
           <GameRow games={homeGames}
                    onScroll={(e) => {
-                     let index = Math.floor(e.nativeEvent.contentOffset.y / gameLeftColumnHeight);
+                     let index = Math.floor(e.nativeEvent.contentOffset.y / gameRowContentHeight);
                      const iconsLength = anyLength(homeGames.data.icons) - 1;
                      index = index > iconsLength ? iconsLength : index;
+                     index = index < 0 ? 0 : index;
                      setSelectGameIndex(index);
-                   }}/>
+                   }}
+                   listRef={gameListRef}/>
         </View>
 
         {
