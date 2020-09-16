@@ -8,6 +8,7 @@ import {scale} from "../../../public/tools/Scale";
 import FastImage from "react-native-fast-image";
 import {gameLeftColumnHeight, gameLeftColumnTopPadding} from "./GameColumn";
 import {ugLog} from "../../../public/tools/UgLog";
+import CommStyles from "../../base/CommStyles";
 
 interface GameRowProps {
   games?: HomeGamesModel,
@@ -42,7 +43,7 @@ const GameRow = ({games, onScroll, listRef}: GameRowProps) => {
           style={_styles.itemTitleFlag}
           source={{uri: 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/icon_live.png'}}/>
         <Text style={_styles.itemTitleText}>{item.name}</Text>
-        <View style={_styles.flex}/>
+        <View style={CommStyles.flex}/>
         <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
       </View>
       <GameRowItem iconsItem={item}/>
@@ -89,9 +90,6 @@ const _styles = StyleSheet.create({
     height: scale(60),
     alignItems: 'center',
     marginBottom: scale(8),
-  },
-  flex: {
-    flex: 1,
   },
   itemTitleDivider: {
     flexDirection: 'row',

@@ -270,7 +270,6 @@ const _styles = {
     height: '100%',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
-    marginTop: scale(15),
     position: 'absolute'
   },
   feature_bt: {
@@ -280,7 +279,7 @@ const _styles = {
   },
   server: {
     width: '25%',
-    marginBottom: 40,
+    marginBottom: scale(140),
   },
   log_out: {
     height: 50,

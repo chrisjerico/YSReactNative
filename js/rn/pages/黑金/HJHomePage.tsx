@@ -58,6 +58,9 @@ import GameRow, {gameRowContentHeight} from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import GameColumn, {gameLeftColumnHeight} from "./view/GameColumn";
 import {scale} from "../../public/tools/Scale";
+import GameButton from "../../public/views/tars/GameButton";
+import TouchableImage from "../../public/views/tars/TouchableImage";
+import CommStyles from "../base/CommStyles";
 
 /**
  *
@@ -161,7 +164,8 @@ const HJHomePage = ({navigation, setProps}) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: 'black'}}>
+    <View style={{flex: 1,
+      backgroundColor: HJThemeColor.黑金.tabNoSelectColor,}}>
       <ZLHeader/>
       <ScrollView refreshControl={
         <RefreshControl style={{backgroundColor: 'black'}}
@@ -271,7 +275,7 @@ const HJHomePage = ({navigation, setProps}) => {
 
       </ScrollView>
 
-      <AcctountDetail/>
+      <AccountDetail/>
 
       <RedBagItem loginPage={PageName.HJLoginPage} redBag={redBag}/>
       <TurntableListItem/>
@@ -280,6 +284,25 @@ const HJHomePage = ({navigation, setProps}) => {
       }} content={content} show={show} onDismiss={() => {
         setShow(false)
       }}/>
+
+      <View style={_styles.server_container}>
+        <GameButton
+          showSubTitle={false}
+          showSecondLevelIcon={false}
+          containerStyle={_styles.server}
+          imageContainerStyle={{width: '100%'}}
+          circleColor={'transparent'}
+          logo={'https://cdn01.bimwill.com/views/mobileTemplate/28/images/icon_support.png'}
+          titleStyle={{
+            fontSize: scale(20),
+            fontWeight: '300',
+            paddingTop: scale(5),
+          }}
+          titleContainerStyle={{aspectRatio: 5}}
+          onPress={() => {
+            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+          }}/>
+      </View>
     </View>
   )
 }
@@ -382,7 +405,7 @@ const ZLHeader = () => {
   return (
     <View style={{
       width,
-      height: 68 + topDistance,
+      height: scale(80) + topDistance,
       paddingTop: topDistance,
       backgroundColor: colorEnum.mainColor,
       justifyContent: 'space-between',
@@ -392,23 +415,25 @@ const ZLHeader = () => {
       alignItems: 'center',
       borderColor: "#444"
     }}>
-      <FastImageAutoWidth style={{width: 210, height: 50}} source={{uri: mobile_logo}}/>
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={() => {
-          if (!_checkLogin(false)) {
-            PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
-          }
-        }} style={{flexDirection: 'column', marginRight: 20}}>
-          <FastImage style={{width: 27, height: 24}}
-                     source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/service1.png"}}/>
-        </TouchableOpacity>
+      <FastImageAutoWidth style={{width: 210, height: scale(80)}} source={{uri: mobile_logo}}/>
+      <View style={{flexDirection: 'row', flex: 1}}>
+        <View style={CommStyles.flex}/>
+        <TouchableImage
+          containerStyle={_styles.top_icon}
+          pic={'https://cdn01.bimwill.com/views/mobileTemplate/28/images/icon_user.png'}
+          resizeMode={'contain'}
+          onPress={() => {
+            if (!_checkLogin(false)) {
+              PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+            }
+          }}/>
       </View>
     </View>
   )
 }
 
 
-const AcctountDetail = () => {
+const AccountDetail = () => {
   const userStore = UGStore.globalProps.userInfo
   const {uid = "", balance = 0, isTest} = userStore
 
@@ -416,89 +441,102 @@ const AcctountDetail = () => {
     try {
       showLoading({type: UGLoadingType.Loading, text: '正在刷新金额...'});
 
-      // switch (Platform.OS) {
-      //   case 'ios':
-      //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
-      //     break;
-      //   case 'android':
-      //         //TODO
-      //     break;
-      // }
-
       //@ts-ignore
       const {data, status} = await APIRouter.user_balance_token()
       UGStore.dispatch({type: 'merge', userInfo: {balance: data.data.balance}})
-      // switch (Platform.OS) {
-      //   case 'ios':
-      //       OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
-      //     break;
-      //   case 'android':
-      //     //TODO
-      //     break;
-      // }
       Toast('刷新成功！')
 
     } catch (error) {
       ugLog(error)
       Toast('刷新失败请稍后再试！')
-      // switch (Platform.OS) {
-      //   case 'ios':
-      //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
-      //     break;
-      //   case 'android':
-      //     //TODO
-      //     break;
-      // }
     }
 
     hideLoading();
   }
-  if (uid != "") {
+
+  if (false) {
+    // if (!anyEmpty(uid)) {
     return (
       <LinearGradient start={{x: 0, y: 0}} colors={colorEnum.gradientColor}
                       style={_styles.bottom_layout}>
 
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={_styles.bottom_info}>
-            <TouchableOpacity onPress={() => {
-              if (!_checkLogin()) {
-                PushHelper.pushUserCenterType(UGUserCenterType.存款)
-              }
-
-            }} style={_styles.bottom_center}>
-              <FastImage style={_styles.bottom_icon}
-                         source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
-              <Text style={_styles.bottom_font}>充值</Text>
-            </TouchableOpacity>
-            <Text style={_styles.bottom_money}> ¥ {balance}</Text>
-          </View>
-
+        <View style={_styles.bottom_info}>
           <TouchableOpacity onPress={() => {
             if (!_checkLogin()) {
-              PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+              PushHelper.pushUserCenterType(UGUserCenterType.存款)
             }
 
-          }} style={[_styles.bottom_center, {padding: 16}]}>
+          }} style={CommStyles.center}>
             <FastImage style={_styles.bottom_icon}
-                       source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
-            <Text style={_styles.bottom_font}>转账</Text>
-
+                       source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
+            <Text style={_styles.bottom_font}>充值</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            if (!_checkLogin()) {
-              PushHelper.pushUserCenterType(UGUserCenterType.取款)
-            }
-
-          }} style={[_styles.bottom_center, {padding: 16}]}>
-            <FastImage style={_styles.bottom_icon}
-                       source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
-            <Text style={_styles.bottom_font}>提现</Text>
-          </TouchableOpacity>
+          <Text style={_styles.bottom_money}> ¥ {balance}</Text>
         </View>
+
+        <TouchableOpacity onPress={() => {
+          if (!_checkLogin()) {
+            PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+          }
+
+        }} style={[CommStyles.center, {padding: 16}]}>
+          <FastImage style={_styles.bottom_icon}
+                     source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
+          <Text style={_styles.bottom_font}>转账</Text>
+
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          if (!_checkLogin()) {
+            PushHelper.pushUserCenterType(UGUserCenterType.取款)
+          }
+
+        }} style={[CommStyles.center, {padding: 16}]}>
+          <FastImage style={_styles.bottom_icon}
+                     source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
+          <Text style={_styles.bottom_font}>提现</Text>
+        </TouchableOpacity>
+
       </LinearGradient>
     )
   } else {
-    return null
+    return <FastImage style={_styles.bottom_layout}
+                      resizeMode={FastImage.resizeMode.stretch}
+                      source={{
+                        priority: FastImage.priority.high,
+                        uri: 'http://test29f.fhptcdn.com/views/mobileTemplate/28/images/icon_navbg.png'
+                      }}>
+
+      <View style={CommStyles.flex}>
+        <TouchableOpacity onPress={() => {
+          if (!_checkLogin()) {
+            PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
+          }
+
+        }} style={[CommStyles.center, {padding: 16}]}>
+          <FastImage style={_styles.bottom_icon}
+                     source={{uri: "http://test29f.fhptcdn.com/views/mobileTemplate/28/images/icon_login.png"}}/>
+          <Text style={_styles.bottom_font}>登录</Text>
+
+        </TouchableOpacity>
+      </View>
+
+      <View style={[CommStyles.line_v, {height: scale(50)}]}/>
+
+      <View style={CommStyles.flex}>
+
+        <TouchableOpacity onPress={() => {
+          if (!_checkLogin()) {
+            PushHelper.pushUserCenterType(UGUserCenterType.取款)
+          }
+
+        }} style={[CommStyles.center, {padding: 16}]}>
+          <FastImage style={_styles.bottom_icon}
+                     source={{uri: "http://test29f.fhptcdn.com/views/mobileTemplate/28/images/icon_reg.png"}}/>
+          <Text style={_styles.bottom_font}>注册</Text>
+        </TouchableOpacity>
+      </View>
+
+    </FastImage>
   }
 
 }
@@ -628,12 +666,18 @@ const _styles = StyleSheet.create({
     marginRight: 5,
   },
   gameContainer: {
-    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
   bottomInfo: {
     flex: 1,
     marginRight: 5,
+  },
+  top_icon: {
+    flex: 0,
+    width: scale(80),
+    height: scale(54),
+    paddingHorizontal: scale(16)
   },
   bottom_icon: {
     width: scale(36),
@@ -641,10 +685,9 @@ const _styles = StyleSheet.create({
   },
   bottom_layout: {
     height: 70,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: 0,
   },
   bottom_info: {
     justifyContent: 'flex-start',
@@ -652,10 +695,6 @@ const _styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 40,
     flexDirection: 'row'
-  },
-  bottom_center: {
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   bottom_font: {
     color: 'white',
@@ -665,6 +704,17 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: 'white',
     marginLeft: scale(12)
+  },
+  server_container: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    position: 'absolute'
+  },
+  server: {
+    width: '25%',
+    marginBottom: scale(140),
   },
 })
 export default HJHomePage
