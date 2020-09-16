@@ -247,7 +247,7 @@ const TurntableListItem = () => {
             getTurntableList()
         }
     }, [uid])
-    if (turntableListVisiable) {
+    if (turntableListVisiable && uid &&  uid != "") {
         return (
             <TouchableWithoutFeedback onPress={() => {
                 if (uid == "") {

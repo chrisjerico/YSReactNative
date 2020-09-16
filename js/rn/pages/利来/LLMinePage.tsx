@@ -29,6 +29,7 @@ import useMinePage from "../../public/hooks/tars/useMinePage";
 import config from "../BZH/config";
 import {useHtml5Image} from "../../public/tools/tars";
 import {LLThemeColor} from "../../public/theme/colors/LLThemeCololr";
+import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel";
 
 const LLMinePage = ({navigation, setProps}) => {
     const {
@@ -54,7 +55,7 @@ const LLMinePage = ({navigation, setProps}) => {
     } = value
     const {getHtml5Image} = useHtml5Image()
     const {UGUserCenterItem} = useMemberItems()
-    const [levelWidth, setLevelWidth] = useState(193)
+    const [levelWidth, setLevelWidth] = useState(0)
     const [depositItem, setDepositItem] = useState<any>()
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
@@ -110,8 +111,10 @@ const LLMinePage = ({navigation, setProps}) => {
             <SafeAreaView style={{backgroundColor: "#39150D"}}>
                 <ScrollView bounces={false} style={{backgroundColor: "#ffffff"}}>
                     <SafeAreaView style={{backgroundColor: "#39150D", height: 172}}>
-                        <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
-                               source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png"}}/>
+                        <TouchableWithoutFeedback onPress={() => {PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}}>
+                            <Image style={{alignSelf: "flex-end", width: 28, height: 28, marginRight: 8}}
+                                   source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png"}}/>
+                        </TouchableWithoutFeedback>
                         <View style={{
                             backgroundColor: "#F3745B",
                             marginHorizontal: 8,
@@ -148,7 +151,7 @@ const LLMinePage = ({navigation, setProps}) => {
                                     </View>
                                     <View style={{flexDirection: "row", alignItems: 'center'}}>
                                         <View style={{
-                                            backgroundColor: "#FFFFFF",
+                                            backgroundColor: "#ddf",
                                             width: 193,
                                             height: 8,
                                             borderRadius: 4
@@ -160,6 +163,14 @@ const LLMinePage = ({navigation, setProps}) => {
                                             height: 8,
                                             borderRadius: 4
                                         }}/>
+                                        <Text
+                                            style={{
+                                                position: "absolute",
+                                                left: 91.5,
+                                                color: "#ffffff",
+                                                lineHeight: 20,
+                                                fontSize: 8
+                                            }}>{parseInt(curLevelInt)/parseInt(nextLevelInt) + "%"}</Text>
                                         <Text
                                             style={{
                                                 color: "#ffffff",
@@ -185,7 +196,7 @@ const LLMinePage = ({navigation, setProps}) => {
                                         color: "#ffffff",
                                         alignSelf: "center",
                                         textAlign: "center"
-                                    }}>{isNaN(parseInt(balance)) ? `¥0` : `¥` + parseInt(balance).toFixed(0)}</Text>
+                                    }}>{balance ? `¥0` : `¥` + balance}</Text>
                                     <View style={{flex: 1}}/>
                                     <Animated.View
                                         style={[{transform: [{rotateZ: spinDeg}]}]}
@@ -208,19 +219,20 @@ const LLMinePage = ({navigation, setProps}) => {
                         </View>
                     </SafeAreaView>
                     <View style={{
-                        marginTop: 100,
+                        marginTop: 56,
                         flexDirection: "row",
                         width: Dimensions.get("screen").width - 16,
                         marginHorizontal: 8
                     }}>
-                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(depositItem.code)}>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 21)}>
                             <View style={{alignItems: "center", flex: 1}}>
                                 <Image style={{width: 36, height: 28}}
                                        source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png"}}/>
                                 <Text style={{color: "#666666", fontSize: 14, marginTop: 4}}>充值</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(withdrawItem.code)}>
+                        <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 22)
+                        }>
                             <View style={{alignItems: "center", flex: 1}}>
                                 <Image style={{width: 36, height: 28}}
                                        source={{uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png"}}/>
@@ -288,6 +300,18 @@ const LLMinePage = ({navigation, setProps}) => {
                                         <View style={{marginRight: 20}}>
                                             <Icon size={20} name={'angle-right'}/>
                                         </View>
+                                        {item.name === "站内信" && unreadMsg > 0 && (
+                                            <View style={{
+                                                position: "absolute",
+                                                left: 80,
+                                                backgroundColor: "red",
+                                                borderRadius: 30,
+                                                justifyContent: "center",
+                                                width: 20,
+                                                height: 20
+                                            }}>
+                                                <Text style={{alignSelf: "center", color: "white"}}>1</Text>
+                                            </View>)}
                                     </TouchableOpacity>
                                 </View>
                             )}/>

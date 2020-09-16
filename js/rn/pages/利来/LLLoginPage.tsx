@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {Image, Platform, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
+import {Image, Platform, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from "react-native";
 import {BaseScreen} from "../乐橙/component/BaseScreen";
 import {CheckBox} from "./component/CheckBox";
 import useLoginIn from "../../public/hooks/useLoginIn";
@@ -33,7 +33,6 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
     const [GGmodalShow, setGGModalShow] = useState(false)
 
     const init = async () => {
-
         switch (Platform.OS) {
             case "ios":
                 let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
@@ -166,6 +165,13 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
                 break;
             }
 
+            UGStore.dispatch({
+                type: 'merge', sign: {
+                    remember: isRemember,
+                    account: acc ? acc : null,
+                    password: pwd ? pwd : null
+                }
+            });
             setGGModalShow(false)
             await loginSuccessHandle(data, {account, pwd, isRemember})
             setProps()
@@ -189,6 +195,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
 
     return (
         <BaseScreen screenName={"登录"} style={{backgroundColor: "#f5f5f9", alignItems: "center", paddingHorizontal: 28}}>
+            <StatusBar barStyle="dark-content" translucent={true}/>
             <View style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -214,6 +221,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
                 <Image style={{height: 18, width: 18, marginRight: 8, resizeMode: "stretch"}}
                        source={{uri: "https://test10.6yc.com/images/moban9_icon/icon-pwd.png"}}/>
                 <TextInput
+                    secureTextEntry={true}
                     onChangeText={(text) => setPwd(text)}
                     style={{fontSize: 14, paddingVertical: 20, flex: 1}}
                     placeholderTextColor={"#333"}

@@ -588,7 +588,7 @@ export default class PushHelper {
                   var btns: Array<AlertButton> = qqs.map(
                     (qq: string, idx: number): AlertButton => {
                       return {
-                        text: `QQ客服${idx + 1}：${parseInt(qq)}`,
+                        text: `QQ客服${idx + 1}：${qq}`,
                         onPress: () => {
                           OCHelper.call('CMCommon.goQQ:', [qq])
                         },
