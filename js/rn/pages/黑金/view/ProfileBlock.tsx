@@ -55,13 +55,13 @@ const ProfileBlock = ({
         <LinearBadge
           containerStyle={_styles.fl}
           textStyle={{paddingHorizontal: scale(10), color: 'white', fontWeight: 'bold'}}
-          title={' 领取俸禄 '}
+          title={'领取俸禄'}
           colors={['#85a9ff', '#9d69fd']}
           showIcon={false}
           onPress={() => {
             switch (Platform.OS) {
               case 'ios':
-                
+
                 break;
               case 'android':
                 ANHelper.callAsync(CMD.ASK_SALARY)

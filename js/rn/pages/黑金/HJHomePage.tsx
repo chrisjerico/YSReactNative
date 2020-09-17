@@ -164,8 +164,7 @@ const HJHomePage = ({navigation, setProps}) => {
   }
 
   return (
-    <View style={{flex: 1,
-      backgroundColor: HJThemeColor.黑金.tabNoSelectColor,}}>
+    <View style={_styles.page_container}>
       <ZLHeader/>
       <ScrollView refreshControl={
         <RefreshControl style={{backgroundColor: 'black'}}
@@ -195,7 +194,7 @@ const HJHomePage = ({navigation, setProps}) => {
                              textList={noticeFormat}/>
         </View>
 
-        <View style={_styles.gameContainer}>
+        <View style={_styles.game_container}>
           <GameColumn games={homeGames}
                       selectGameIndex={selectGameIndex}
                       clickListener={(index =>
@@ -424,7 +423,7 @@ const ZLHeader = () => {
           resizeMode={'contain'}
           onPress={() => {
             if (!_checkLogin(false)) {
-              PushHelper.pushUserCenterType(UGUserCenterType.个人信息)
+              navigate(PageName.HJMinePage, {})
             }
           }}/>
       </View>
@@ -432,7 +431,10 @@ const ZLHeader = () => {
   )
 }
 
-
+/**
+ * 信息栏
+ * @constructor
+ */
 const AccountDetail = () => {
   const userStore = UGStore.globalProps.userInfo
   const {uid = "", balance = 0, isTest} = userStore
@@ -508,9 +510,7 @@ const AccountDetail = () => {
 
       <View style={CommStyles.flex}>
         <TouchableOpacity onPress={() => {
-          if (!_checkLogin()) {
-            PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
-          }
+          navigate(PageName.HJLoginPage, {})
 
         }} style={[CommStyles.center, {padding: 16}]}>
           <FastImage style={_styles.bottom_icon}
@@ -525,9 +525,7 @@ const AccountDetail = () => {
       <View style={CommStyles.flex}>
 
         <TouchableOpacity onPress={() => {
-          if (!_checkLogin()) {
-            PushHelper.pushUserCenterType(UGUserCenterType.取款)
-          }
+          navigate(PageName.HJRegisterPage, {})
 
         }} style={[CommStyles.center, {padding: 16}]}>
           <FastImage style={_styles.bottom_icon}
@@ -661,17 +659,14 @@ const FastImageAutoWidth = (props: FastImageProperties) => {
   )
 }
 const _styles = StyleSheet.create({
-  buttonContainer: {
+  page_container: {
     flex: 1,
-    marginRight: 5,
+    backgroundColor: HJThemeColor.黑金.tabNoSelectColor,
+    justifyContent: 'flex-end',
   },
-  gameContainer: {
+  game_container: {
     flexDirection: 'row',
     backgroundColor: 'white',
-  },
-  bottomInfo: {
-    flex: 1,
-    marginRight: 5,
   },
   top_icon: {
     flex: 0,
@@ -685,9 +680,10 @@ const _styles = StyleSheet.create({
   },
   bottom_layout: {
     height: 70,
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    position: "absolute",
   },
   bottom_info: {
     justifyContent: 'flex-start',

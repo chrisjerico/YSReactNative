@@ -97,7 +97,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />
-        <Router.TabScreen name={PageName.HJMinePage} component={UGPage(HJMinePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
@@ -133,6 +132,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJRegisterPage} component={UGPage(HJRegisterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJMinePage} component={UGPage(HJMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={UGPage(GDLoginPage)} />

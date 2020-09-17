@@ -40,6 +40,7 @@ import PickAvatarComponent from "../../public/components/tars/PickAvatarComponen
 import ProfileBlock from "./view/ProfileBlock";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import CommStyles from "../base/CommStyles";
 
 const HJMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
@@ -50,7 +51,7 @@ const HJMinePage = () => {
     value,
     sign,
   } = useMinePage({
-    homePage: PageName.BZHHomePage,
+    homePage: PageName.HJHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
@@ -108,7 +109,7 @@ const HJMinePage = () => {
             return (
               <Button
                 key={index}
-                containerStyle={ [_styles.feature_bt, featureDivider] }
+                containerStyle={[_styles.feature_bt, featureDivider]}
                 titleStyle={{
                   fontSize: scale(22),
                   fontWeight: '300',
@@ -138,7 +139,7 @@ const HJMinePage = () => {
                     fontSize: scale(22),
                     color: HJThemeColor.黑金.textColor3
                   }}
-                  title={name}//必须要有空格
+                  title={name}
                   logo={logo}
                   unreadMsg={unreadMsg || 0}
                   showUnreadMsg={code == 9}
@@ -159,7 +160,8 @@ const HJMinePage = () => {
             containerStyle={{
               height: '100%',
             }}
-            titleStyle={{color: '#db6372', fontSize: scale(21)}}
+            titleStyle={{color: '#db6372',
+              fontSize: scale(26)}}
             onPress={signOut}/>
         </LinearGradient>
 
@@ -195,8 +197,8 @@ const HJMinePage = () => {
 }
 
 const ZLHeader = () => {
-  const {width, height} = useDimensions().window
-  const insets = useSafeArea();
+  // const {width, height} = useDimensions().window
+  // const insets = useSafeArea();
   const {uid = "", unreadMsg} = UGStore.globalProps.userInfo;
   // const [showBackBtn, setShowBackBtn] = useState(false);
   //
@@ -217,34 +219,29 @@ const ZLHeader = () => {
   return (
     <View style={{
       // width,
-      height: 50,
+      height: scale(76),
       backgroundColor: '#1a1a1e',
       flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
-      paddingHorizontal: 20
+      paddingHorizontal: scale(20)
     }}>
-      <View style={{width: '10%', alignItems: 'flex-start'}}>
+      <View style={_styles.top_bt}>
         <AntDesign
           name={'left'}
           color={'#ffffff'}
           size={scale(25)}
         />
       </View>
-      <View style={{flex: 1}}/>
+      <View style={CommStyles.flex}/>
       <Text style={_styles.title}> 个人中心 </Text>
-      <View style={{flex: 1}}/>
+      <View style={CommStyles.flex}/>
       <TouchableOpacity onPress={() => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)
-      }} style={{width: '10%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-        <FastImage style={{width: 27, height: 24}}
+      }} >
+        <FastImage style={_styles.top_bt}
                    source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
         {
-          unreadMsg > 0 ? <View style={{
-              position: 'absolute', right: 0, top: -5, backgroundColor: 'red',
-              height: 15, width: 15,
-              borderRadius: 7.5, justifyContent: 'center', alignItems: 'center'
-            }
-            }>
-              <Text style={{color: 'white', fontSize: 10}}>{unreadMsg}</Text>
+          unreadMsg > 0 ? <View style={_styles.read_flag}>
+              <Text style={{color: 'white', fontSize: scale(16)}}>{unreadMsg}</Text>
             </View>
             : null
         }
@@ -254,16 +251,31 @@ const ZLHeader = () => {
   )
 }
 
-const _styles = {
+const _styles = StyleSheet.create({
+  top_bt: {
+    width: scale(36),
+    height: scale(36)
+  },
   title: {
     color: 'white',
-    fontSize: 16,
+    fontSize: scale(24),
+  },
+  read_flag: {
+    position: 'absolute',
+    top: -scale(8),
+    right: -scale(8),
+    backgroundColor: 'red',
+    height: scale(24),
+    width: scale(24),
+    borderRadius: scale(99),
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   featureBlock: {
-    marginHorizontal: 9,
-    paddingVertical: 8,
-    paddingHorizontal: 32,
-    borderRadius: 8,
+    marginHorizontal: scale(16),
+    paddingVertical: scale(16),
+    paddingHorizontal: scale(50),
+    borderRadius: scale(16),
   },
   server_container: {
     width: '100%',
@@ -282,12 +294,12 @@ const _styles = {
     marginBottom: scale(140),
   },
   log_out: {
-    height: 50,
-    marginTop: 16,
-    marginHorizontal: 9,
-    borderRadius: 8,
+    height: scale(74),
+    marginTop: scale(26),
+    marginHorizontal: scale(16),
+    borderRadius: scale(12),
   },
-}
+})
 
 
 export default HJMinePage
