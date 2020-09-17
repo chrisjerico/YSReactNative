@@ -1,11 +1,22 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert, Platform } from "react-native"
+import {
+    View,
+    Text,
+    ScrollView,
+    TextInput,
+    TouchableOpacity,
+    TextInputProps,
+    Image,
+    Alert,
+    Platform,
+    StyleSheet
+} from "react-native"
 import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import { PageName } from "../../public/navigation/Navigation"
 import { OCHelper } from "../../public/define/OCHelper/OCHelper"
 import { Icon } from "react-native-elements"
-import { navigate, popToRoot, pop } from "../../public/navigation/RootNavigation"
+import {navigate, popToRoot, pop, push} from "../../public/navigation/RootNavigation"
 import { Controller, useForm, Control } from "react-hook-form"
 import APIRouter from "../../public/network/APIRouter"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
@@ -19,6 +30,12 @@ import { ugLog } from "../../public/tools/UgLog";
 import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGLoadingCP";
 import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import {scale} from "../../public/tools/Scale";
+import CommStyles from "../base/CommStyles";
+import FastImage from "react-native-fast-image";
+import PushHelper from "../../public/define/PushHelper";
+import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel";
+import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 enum FormName {
     inviter = "inviter",
     usr = "usr",
@@ -327,17 +344,16 @@ const HJRegisterPage = () => {
                 <ZLRegInput iconName={"user"} message={"请输入推荐人ID"} placeholder={"请输入推荐人ID"} regConfig={hide_reco} control={control} name={FormName.inviter} />
                 <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
                     <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                        <Icon name="user" type="font-awesome" color="black" size={24} />
+                        <Icon name="user" type="font-awesome" color={HJThemeColor.黑金.themeColor} size={24} />
                     </View>
-                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
                     <Controller
                         maxLength={15}
+                        placeholderTextColor={'white'}
                         onChange={args => {
                             ugLog('sliding view args=', args)
                             return args[0].nativeEvent.text
                         }}
                         style={{ flex: 1 }}
-                        placeholderTextColor={'black'}
                         as={TextInput}
                         rules={{
                             required: {
@@ -362,12 +378,11 @@ const HJRegisterPage = () => {
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
                     <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                        <Icon name="lock" type="font-awesome" color="black" size={24} />
+                        <Icon name="lock" type="font-awesome" color={HJThemeColor.黑金.themeColor} size={24} />
                     </View>
-                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
                     <Controller
                         maxLength={15}
-                        placeholderTextColor={'black'}
+                        placeholderTextColor={'white'}
                         onChange={args => {
                             return args[0].nativeEvent.text
                         }}
@@ -416,17 +431,18 @@ const HJRegisterPage = () => {
                         onPress={() => {
                             setSecureTextEntry(secureTextEntry => !secureTextEntry)
                         }}>
-                        <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+                        <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'}
+                              type="ionicon" size={22} color={HJThemeColor.黑金.themeColor}
+                              containerStyle={{ marginLeft: 15, marginRight: 4 }} />
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', height: 50, backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10 }}>
                     <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                        <Icon name="lock" type="font-awesome" color="black" size={24} />
+                        <Icon name="lock" type="font-awesome" color={HJThemeColor.黑金.themeColor} size={24} />
                     </View>
-                    <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
                     <Controller
                         secureTextEntry={repwdSecureTextEntry}
-                        placeholderTextColor={'black'}
+                        placeholderTextColor={'white'}
                         onChange={args => {
                             triggerValidation(FormName.repwd)
                             return args[0].nativeEvent.text
@@ -457,7 +473,9 @@ const HJRegisterPage = () => {
                         onPress={() => {
                             setRepwdSecureTextEntry(secureTextEntry => !secureTextEntry)
                         }}>
-                        <Icon name={repwdSecureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+                        <Icon name={repwdSecureTextEntry ? 'md-eye-off' : 'md-eye'}
+                              type="ionicon" size={22} color={HJThemeColor.黑金.themeColor}
+                              containerStyle={{ marginLeft: 15, marginRight: 4 }} />
                     </TouchableOpacity>
                 </View>
                 <ZLRegInput iconName={"user"} message={"请输入真实姓名"} placeholder={"请输入真实姓名"} regConfig={reg_name} control={control} name={FormName.fullName} />
@@ -473,28 +491,68 @@ const HJRegisterPage = () => {
                 {agentRegbutton == "1" ? <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => {
                         setRegType('user')
-                    }} style={{ backgroundColor: regType == 'user' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
+                    }} style={{ backgroundColor: regType == 'user' ? '#39a2d0' : 'black',
+                        justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
                         <Text style={{ color: 'white' }}>普通用户</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
                         setRegType('agent')
-                    }} style={{ backgroundColor: regType == 'agent' ? 'blue' : 'black', justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
+                    }} style={{ backgroundColor: regType == 'agent' ? '#39a2d0' : 'black',
+                        justifyContent: 'center', alignItems: 'center', padding: 5, borderRadius: 4 }}>
                         <Text style={{ color: 'white' }}>注册代理</Text>
                     </TouchableOpacity>
                 </View> : null}
 
-
                 <TouchableWithoutFeedback onPress={handleSubmit(onSubmit)}>
-                    <View style={{
-                        flex: 1,
-                        height: 50, backgroundColor: "#b67866",
-                        borderRadius: 8,
-                        marginTop: 20, justifyContent: 'center', alignItems: 'center'
-                    }}>
-                        <Text style={{ color: "white", fontSize: 20 }}>注册</Text>
+                    <View style={[_styles.log_bt, {marginTop: scale(60)}]}>
+                        <Text style={{color: "white", fontSize: scale(28)}}>注册</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={{ height: 100 }}></View>
+
+                <View style={CommStyles.center}>
+                    <View style={{
+                        width: '50%',
+                        marginTop: scale(50),
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <View style={{flexDirection: 'row'}}>
+                            <FastImage style={_styles.text_icon}
+                                       resizeMode={'contain'}
+                                       source={{uri: "http://test61a.fhptcdn.com/views/mobileTemplate/28/images/login_ptsy.png"}}/>
+                            <Text onPress={() => {
+                                push(PageName.HJHomePage)
+                            }} style={{color: '#8e8e93', fontSize: scale(20)}}>平台首页</Text>
+                        </View>
+
+                        <View style={[CommStyles.line_v, {height: scale(20), marginHorizontal: scale(32)}]}/>
+
+                        <View style={{flexDirection: 'row'}}>
+                            <FastImage style={_styles.text_icon}
+                                       resizeMode={'contain'}
+                                       source={{uri: "http://test61a.fhptcdn.com/views/mobileTemplate/28/images/login_lxkf.png"}}/>
+                            <Text onPress={() => {
+                                PushHelper.pushUserCenterType(UGUserCenterType.在线客服);
+                            }} style={{color: '#8e8e93', fontSize: scale(20)}}>联系客服</Text>
+                        </View>
+
+                    </View>
+                </View>
+
+                <TouchableWithoutFeedback onPress={() => {
+                    push(PageName.HJLoginPage)
+                }}>
+                    <View style={[CommStyles.center, {padding: scale(16)}]}>
+                        <Text style={{
+                            color: "#8e8e93",
+                            fontSize: scale(22),
+                            marginTop: scale(30),
+                        }}>马上登录</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+
+                <View style={{ height: scale(150) }}></View>
             </ScrollView>
         </View>
     )
@@ -567,14 +625,13 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
     } else {
         return <View style={{
             flexDirection: 'row', alignItems: 'center', height: 50,
-            backgroundColor: 'gray', borderRadius: 4, borderColor: 'white', borderWidth: 1, marginBottom: 10, paddingHorizontal: 10
+            backgroundColor: 'gray', marginBottom: 10, paddingHorizontal: 10
         }}>
             <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
-                <Icon name={iconName} type={iconType} color="black" size={24} />
+                <Icon name={iconName} type={iconType} color={HJThemeColor.黑金.themeColor} size={24} />
             </View>
-            <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
             <Controller
-                placeholderTextColor={'black'}
+                placeholderTextColor={'white'}
                 onChange={args => {
                     return args[0].nativeEvent.text
                 }}
@@ -583,8 +640,8 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
                 as={TextInput}
                 rules={{
                     required: {
-                        value: regConfig == 2 || regConfig == '2', message
-                            : message
+                        value: regConfig == 2 || regConfig == '2',
+                        message : message,
                     }
                 }}
                 name={name}
@@ -600,7 +657,9 @@ const ZLRegInput = ({ regConfig, name, control, placeholder, message = "", isPas
                 onPress={() => {
                     setSecureTextEntry(secureTextEntry => !secureTextEntry)
                 }}>
-                <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'} type="ionicon" size={22} color={"rgba(255, 255, 255, 0.3)"} containerStyle={{ marginLeft: 15, marginRight: 4 }} />
+                <Icon name={secureTextEntry ? 'md-eye-off' : 'md-eye'}
+                      type="ionicon" size={22} color={HJThemeColor.黑金.themeColor}
+                      containerStyle={{ marginLeft: 15, marginRight: 4 }} />
             </TouchableOpacity> : null}
 
         </View>
@@ -616,7 +675,6 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
             <View style={{ width: 40, justifyContent: 'center', alignItems: 'center' }}>
                 <Icon name={"Safety"} type={"antdesign"} color="black" size={24} />
             </View>
-            <View style={{ height: "90%", width: 0.5, backgroundColor: 'black', marginHorizontal: 5 }}></View>
             <Controller
                 placeholderTextColor={'black'}
                 onChange={args => {
@@ -650,4 +708,43 @@ const LetterVerificationCode = ({ control, code, onPress, reg_vcode }: { code: s
 
     )
 }
+
+const _styles = StyleSheet.create({
+    input: {
+        backgroundColor: 'transparent',
+        height: 50,
+        borderRadius: 4,
+        borderColor: '#34393c',
+        borderBottomWidth: scale(1),
+        borderBottomColor: 'grey',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    input_icon: {
+        width: scale(36),
+        height: scale(36),
+        marginHorizontal: scale(24)
+    },
+    text_icon: {
+        width: scale(32),
+        height: scale(32),
+        marginRight: scale(12),
+    },
+    logo: {
+        width: '100%',
+        height: scale(64),
+        marginBottom: scale(64)
+    },
+    log_bt: {
+        flex: 1,
+        height: 50,
+        backgroundColor: "#00000099",
+        borderRadius: 999,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: HJThemeColor.黑金.themeColor,
+        borderWidth: scale(1),
+    },
+})
+
 export default HJRegisterPage

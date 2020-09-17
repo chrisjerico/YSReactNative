@@ -266,7 +266,7 @@ const HJLoginPage = ({route, navigation}) => {
             onChange={args => {
               return args[0].nativeEvent.text
             }}
-            style={{flex: 1, color: !accountFocus ? 'white' : 'black'}}
+            style={{flex: 1, color: 'white'}}
 
             as={<TextInput
               placeholderTextColor={accountFocus ? '#8e8e93' : "white"}
@@ -295,7 +295,7 @@ const HJLoginPage = ({route, navigation}) => {
             onChange={args => {
               return args[0].nativeEvent.text
             }}
-            style={{flex: 1, color: !pwdFocus ? 'white' : 'black'}}
+            style={{flex: 1, color: 'white'}}
             as={<TextInput secureTextEntry={secureTextEntry}
                            placeholderTextColor={pwdFocus ? '#8e8e93' : "white"}
                            onFocus={() => {
@@ -333,7 +333,7 @@ const HJLoginPage = ({route, navigation}) => {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View style={{
                 borderWidth: 1,
-                borderColor: 'white',
+                borderColor: '#39a2d0',
                 width: scale(28),
                 height: scale(28),
                 borderRadius: scale(8),
@@ -341,7 +341,7 @@ const HJLoginPage = ({route, navigation}) => {
                 {isRemember ? (
                   <Icon name='check'
                         type='foundation'
-                        color="white"
+                        color="#39a2d0"
                         size={13}/>
                 ) : null}
               </View>
@@ -376,7 +376,7 @@ const HJLoginPage = ({route, navigation}) => {
                          resizeMode={'contain'}
                          source={{uri: "http://test61a.fhptcdn.com/views/mobileTemplate/28/images/login_ptsy.png"}}/>
               <Text onPress={() => {
-                pop();
+                push(PageName.HJHomePage)
               }} style={{color: '#8e8e93', fontSize: scale(20)}}>平台首页</Text>
             </View>
 
@@ -395,7 +395,7 @@ const HJLoginPage = ({route, navigation}) => {
         </View>
 
         <TouchableWithoutFeedback onPress={() => {
-          push(PageName.ZLRegisterPage)
+          push(PageName.HJRegisterPage)
         }}>
           <View style={[CommStyles.center, {padding: scale(16)}]}>
             <Text style={{
@@ -490,4 +490,5 @@ const _styles = StyleSheet.create({
     borderWidth: scale(1),
   },
 })
+
 export default HJLoginPage

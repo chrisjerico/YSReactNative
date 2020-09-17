@@ -526,7 +526,7 @@ const AccountDetail = () => {
       <View style={CommStyles.flex}>
 
         <TouchableOpacity onPress={() => {
-          navigate(PageName.HJRegisterPage, {})
+          navigate(PageName.WNZSignUpPage, {})
 
         }} style={[CommStyles.center, {padding: 16}]}>
           <FastImage style={_styles.bottom_icon}
