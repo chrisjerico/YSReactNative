@@ -52,8 +52,33 @@ const useLogIn = (options: Options = {}) => {
           // 登录失敗
           onError && onError(user_login_msg)
         }
+        const user_info_data = await updateUserInfo()
+
+        switch (Platform.OS) {
+          case "ios":
+            await OCHelper.call('UGUserModel.setCurrentUser:', [
+              { ...user_info_data, ...UGUserModel.getYS(user_login_data) },
+            ])
+            break;
+          case "android":
+            await ANHelper.callAsync(CMD.SAVE_DATA,
+              {
+                key: NA_DATA.USER_INFO,
+                ...user_info_data
+              })
+            break;
+        }
+
+        onSuccess && onSuccess()
+      } else {
+        // 登录失敗
+        onError && onError(user_login_msg)
       }
+
+      hideLoading()
     } catch (error) {
+      hideLoading()
+
       onError && onError(error)
     }
   }

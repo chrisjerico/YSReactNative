@@ -39,7 +39,7 @@ const ReloadSlidingVerification = (
       console.log("-------e?.nativeEvent?.data", e?.nativeEvent)
       setHeight(parseInt(e?.nativeEvent?.data))
     } else {
-      onChange(e?.nativeEvent?.data)
+      onChange(eData)
     }
   }
   const webViewRef = useRef<WebView>()

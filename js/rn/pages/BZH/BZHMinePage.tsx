@@ -17,6 +17,7 @@ import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
+import {ugLog} from "../../public/tools/UgLog";
 
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -45,6 +46,11 @@ const BZHMinePage = () => {
   // data handle
   const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
   const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+
+  // ugLog('features=',features)
+  // ugLog('fetchAvatarList=',fetchAvatarList)
+  // ugLog('featureList=',featureList)
+  // ugLog('usr=',usr)
 
   return (
     <>
@@ -80,6 +86,8 @@ const BZHMinePage = () => {
           features={profileUserCenterItems}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
+
+            ugLog('features item=',item)
             return (
               <GameButton
                 key={index}

@@ -19,6 +19,7 @@ import { NA_DATA } from './ANHelper/hp/DataDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
+import {ugLog} from "../tools/UgLog";
 import { OCHelper } from './OCHelper/OCHelper'
 
 export default class PushHelper {
@@ -276,6 +277,8 @@ export default class PushHelper {
   }
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
+    ugLog('pushUserCenterType code=', code)
+
     switch (Platform.OS) {
       case 'ios':
         switch (code) {
@@ -585,7 +588,7 @@ export default class PushHelper {
                   var btns: Array<AlertButton> = qqs.map(
                     (qq: string, idx: number): AlertButton => {
                       return {
-                        text: `QQ客服${idx + 1}：${parseInt(qq)}`,
+                        text: `QQ客服${idx + 1}：${qq}`,
                         onPress: () => {
                           OCHelper.call('CMCommon.goQQ:', [qq])
                         },
@@ -792,7 +795,7 @@ export default class PushHelper {
             })
             break
           }
-          case UGUserCenterType.开奖走势: {
+          case UGUserCenterType.开奖走势.toString(): {
             Toast('敬请期待')
             break
           }

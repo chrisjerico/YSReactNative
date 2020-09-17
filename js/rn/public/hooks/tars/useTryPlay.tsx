@@ -31,7 +31,9 @@ const useTryPlay = (options: Options = {}) => {
           onError && onError(user_guestLogin_msg)
         }
       }
+
     } catch (error) {
+      hideLoading()
       onError && onError(error)
     }
   }

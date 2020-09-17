@@ -179,6 +179,43 @@ export function setRnPageInfo() {
     ])
   }
 
+  // 利来页面
+  if (Skin1.skitType.indexOf('利来') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LLHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LLMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
+      {
+        // 登录
+        vcName: 'UGLoginViewController',
+        rnName: PageName.LLLoginPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 注册
+        vcName: 'UGRegisterViewController',
+        rnName: PageName.LLRegisterPage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+    ])
+  }
   //宝石红页面
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat([
@@ -216,6 +253,28 @@ export function setRnPageInfo() {
         允许游客访问: true,
         允许未登录访问: false,
       }
+    ])
+  }
+
+  // 六合厅页面
+  if (Skin1.skitType.indexOf('六合厅') != -1) {
+    pages = pages.concat([
+      {
+        // 首页
+        tabbarItemPath: '/home',
+        rnName: PageName.LHTHomePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      },
+      {
+        // 我的页
+        tabbarItemPath: '/user',
+        rnName: PageName.LHTMinePage,
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: false,
+      },
     ])
   }
 
@@ -370,11 +429,13 @@ export function setRnPageInfo() {
   // }
 
   RnPageModel.pages = pages;
-  // if (Platform.OS == 'ios') {
-  OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
 
-  // } else if (Platform.OS == 'android') {
-  //
-  //
-  // }
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
+      break;
+    case 'android':
+
+      break;
+  }
 }
