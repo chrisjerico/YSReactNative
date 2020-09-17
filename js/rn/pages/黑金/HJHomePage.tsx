@@ -61,6 +61,7 @@ import {scale} from "../../public/tools/Scale";
 import GameButton from "../../public/views/tars/GameButton";
 import TouchableImage from "../../public/views/tars/TouchableImage";
 import CommStyles from "../base/CommStyles";
+import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 
 /**
  *
@@ -414,7 +415,7 @@ const ZLHeader = () => {
       alignItems: 'center',
       borderColor: "#444"
     }}>
-      <FastImageAutoWidth style={{width: 210, height: scale(80)}} source={{uri: mobile_logo}}/>
+      <FastImageAutoWidth style={{height: scale(80)}} source={{uri: mobile_logo}}/>
       <View style={{flexDirection: 'row', flex: 1}}>
         <View style={CommStyles.flex}/>
         <TouchableImage
@@ -640,24 +641,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
   }
 
 }
-const FastImageAutoHeight = (props: FastImageProperties) => {
-  const [picHeight, setPicHeight] = useState(100)
-  const {cardMargin, marginHorizontal} = usePopUpView()
-  return (
-    <FastImage {...props} style={[props.style, {height: picHeight}]} onLoad={(e) => {
-      setPicHeight(((AppDefine.width - (cardMargin + marginHorizontal) * 2) / e.nativeEvent.width) * e.nativeEvent.height)
-    }}/>
-  )
-}
-const FastImageAutoWidth = (props: FastImageProperties) => {
-  const [picWidth, setPicWidth] = useState(210)
-  return (
-    <FastImage {...props} style={[props.style, {width: picWidth}]} onLoad={(e) => {
-      console.log(props.style?.height / e.nativeEvent.height * e.nativeEvent.width, e.nativeEvent.width)
-      setPicWidth(props.style?.height / e.nativeEvent.height * e.nativeEvent.width)
-    }}/>
-  )
-}
+
 const _styles = StyleSheet.create({
   page_container: {
     flex: 1,
