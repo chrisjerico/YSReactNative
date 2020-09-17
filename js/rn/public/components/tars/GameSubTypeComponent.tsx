@@ -48,9 +48,10 @@ const GameSubTypeComponent = ({
       setCutRow(null)
       setSubType([])
     } else {
+      const subType = games[index]?.subType ?? []
       setIndexHistory(index)
       setCutRow(cutRow)
-      setSubType(games[index]?.subType ?? [])
+      setSubType(subType)
     }
   }
 
@@ -72,15 +73,18 @@ const GameSubTypeComponent = ({
           return renderGame({ item, index, showGameSubType })
         }}
       />
-      <List
-        uniqueKey={uniqueKey + 'subType'}
-        legacyImplementation
-        removeClippedSubviews={true}
-        numColumns={subTypeNumColumns}
-        style={subTypeContainerStyle}
-        data={subType}
-        renderItem={renderSubType}
-      />
+      {
+        subType?.length > 0 &&
+        <List
+          uniqueKey={uniqueKey + 'subType'}
+          legacyImplementation
+          removeClippedSubviews={true}
+          numColumns={subTypeNumColumns}
+          style={subTypeContainerStyle}
+          data={subType}
+          renderItem={renderSubType}
+        />
+      }
       <List
         uniqueKey={uniqueKey + 'subGames'}
         contentContainerStyle={contentContainerStyle}
