@@ -243,6 +243,7 @@ export const LLRegisterPage = () => {
                 Alert.alert(error?.message, "")
                 switch (Platform.OS) {
                     case 'ios':
+                        console.log("")
                         OCHelper.call('SVProgressHUD.showErrorWithStatus:', [""]);
                         break;
                     case 'android':
