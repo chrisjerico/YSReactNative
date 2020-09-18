@@ -1,16 +1,17 @@
 import React from 'react'
 import {
+  StyleProp,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
 
 interface GameBlockProps {
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   renderGameContent: () => any;
   title: string;
   onPressTotal: () => any;
