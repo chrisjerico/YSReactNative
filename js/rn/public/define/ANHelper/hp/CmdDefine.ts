@@ -21,7 +21,7 @@ export enum CMD {
   APP_THEME_COLOR = 'UGSkinManagers.currentSkin.navBarBgColor.hexString', //设置主题色
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
   CURRENT_PAGE = 'CURRENT_PAGE', //当前的界面
-  VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab
+  VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab, 0 = VISIBLE, 4 = INVISIBLE, 8 = GONE
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
   APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密

@@ -47,7 +47,7 @@ import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
 import {List} from "../../public/network/Model/PromotionsModel"
-import {ugLog} from "../../public/tools/UgLog";
+import {ugError, ugLog} from "../../public/tools/UgLog";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
@@ -62,6 +62,7 @@ import GameButton from "../../public/views/tars/GameButton";
 import TouchableImage from "../../public/views/tars/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
+import {Skin1} from "../../public/theme/UGSkinManagers";
 
 /**
  *
@@ -128,14 +129,17 @@ const HJHomePage = ({navigation, setProps}) => {
   }
   const init = async () => {
     try {
+
+      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 });
       // const {data } = await APIRouter.system_config()
       // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
     } catch (error) {
-
+      ugError(error)
     }
   }
   useEffect(() => {
     setProps({
+      backgroundColor: HJThemeColor.黑金.bgColor,
       didFocus: async () => {
         const {data: userInfo} = await APIRouter.user_info()
         UGStore.dispatch({type: 'merge', userInfo: userInfo?.data});
@@ -645,7 +649,7 @@ const MarqueePopupView = ({content, show, onPress, onDismiss}) => {
 const _styles = StyleSheet.create({
   page_container: {
     flex: 1,
-    backgroundColor: HJThemeColor.黑金.tabNoSelectColor,
+    backgroundColor: 'black',
     justifyContent: 'flex-end',
   },
   game_container: {
