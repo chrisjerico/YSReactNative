@@ -39,9 +39,8 @@ const HJLoginPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={'#1a1a1e'}>
+      <SafeAreaHeader headerColor={HJThemeColor.黑金.bgColor[0]}>
         <MineHeader
-          title={'登录'}
           showBackBtn={true}
           onPressBackBtn={pop}
           showCustomerService={false}
@@ -56,7 +55,7 @@ const HJLoginPage = () => {
 
           <SignInFormList
             slideCodeRef={slideCodeRef}
-            slideCodeColor={'#1a1a1e'}
+            slideCodeColor={HJThemeColor.黑金.bgColor[0]}
             show={show}
             onChange={onChange}
             value={value}
@@ -103,17 +102,14 @@ const HJLoginPage = () => {
             </View>
           </View>
 
-          <TouchableWithoutFeedback onPress={() => {
-            push(PageName.HJRegisterPage)
-          }}>
-            <View style={[CommStyles.center, {padding: scale(16)}]}>
-              <Text style={{
-                color: "#8e8e93",
-                fontSize: scale(22),
-                marginTop: scale(30),
-              }}>马上注册</Text>
-            </View>
-          </TouchableWithoutFeedback>
+          <Button
+            containerStyle={[CommStyles.center,
+              {padding: scale(16), marginTop: scale(30)}]}
+            title={'马上注册'}
+            titleStyle={{color: '#8e8e93', fontSize: scale(22)}}
+            onPress={()=> push(PageName.HJRegisterPage)}
+          />
+
         </View>
       </ScrollView>
     </>
@@ -124,14 +120,14 @@ const SignInForm = (props: FormComponentProps) => (
   <FormComponent
     {...props}
     containerStyle={{marginBottom: scale(20)}}
-    inputContainerStyle={{borderColor: '#d9d9d9'}}
+    inputContainerStyle={{borderColor: 'grey'}}
   />
 )
 
 const _styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1e',
+    backgroundColor: HJThemeColor.黑金.bgColor[0],
   },
   formContainer: {
     margin: scale(32),
@@ -155,6 +151,7 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: HJThemeColor.黑金.themeColor,
     borderWidth: scale(1),
+    marginTop: scale(16)
   },
 })
 

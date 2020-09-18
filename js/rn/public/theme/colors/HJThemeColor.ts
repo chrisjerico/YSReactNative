@@ -8,7 +8,7 @@ export const HJThemeColor: { [x: string]: UGThemeColor } = {
     tabBarBgColor: '#ffffff',
     tabNoSelectColor: '#9D9D9D',
     homeContentSubColor: '#f2f2f2', // 額度轉換Tab
-    bgColor: ['#000000', '#000000'],
+    bgColor: ['#1a1a1e', '#000000'],
     navBarBgColor: ['#000000', '#000000'],
     get tabSelectedColor() { return this.themeColor },
     get progressBgColor() { return ['#4e4e4e', '#030303', '#4e4e4e'] },

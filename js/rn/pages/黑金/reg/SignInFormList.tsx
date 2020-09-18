@@ -72,7 +72,7 @@ const SignInFormList = ({
         leftIconTitle={'密码'}
         rightIconStyle={{
           highColor: HJThemeColor.黑金.themeColor,
-          color: 'white',
+          color: '#d9d9d9',
         }}
       />
       <CheckBox
