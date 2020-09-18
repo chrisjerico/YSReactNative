@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import {
+  Platform,
   StyleSheet,
   View,
   ViewStyle
@@ -21,12 +22,21 @@ const SafeAreaHeader = ({
 
   const safeArea = useSafeArea()
 
+  let safeTop = 0;
+  switch (Platform.OS) {
+    case 'ios':
+      safeTop = safeArea?.top;
+      break;
+  }
+
   return (
     <View style={{ backgroundColor: headerColor }}>
-      <View style={[styles.container, containerStyle, {
-        marginTop: safeArea?.top,
-        backgroundColor: headerColor
-      }]}>
+      <View style={[styles.container,
+        {
+          marginTop: safeTop,
+          backgroundColor: headerColor
+        },
+        containerStyle,]}>
         {
           children
         }

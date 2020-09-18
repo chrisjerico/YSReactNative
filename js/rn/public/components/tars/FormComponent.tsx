@@ -14,6 +14,7 @@ import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
+import {anyEmpty} from "../../tools/Ext";
 
 export interface FormComponentProps {
   onChangeText?: any;
@@ -39,6 +40,12 @@ export interface FormComponentProps {
   leftIconName?: string;
   leftIcon?: LeftIcon;
   placeholderTextColor?: string;
+  rightIconStyle?: RightIconStyle;
+}
+
+interface RightIconStyle {
+  highColor?: string; //高亮颜色
+  color?: string; //非高亮颜色
 }
 
 interface LeftIcon {
@@ -69,18 +76,22 @@ const RightIcon = ({
   onPressImgCaptcha,
   correctImageCode,
   onPressSms,
+  rightIconStyle,
 }) => {
   if (showRightIcon) {
     if (renderRightIcon) {
       return renderRightIcon()
     } else {
+      //高亮颜色
+      let highColor = anyEmpty(rightIconStyle?.highColor) ? '#84C1FF' : rightIconStyle?.highColor;
+      let color = anyEmpty(rightIconStyle?.highColor) ? '#d9d9d9' : rightIconStyle?.color;
       switch (rightIconType) {
         case 'eye':
           return (
             <Ionicons
               name={showContent ? 'ios-eye' : 'ios-eye-off'}
               size={scale(40)}
-              color={showContent ? '#84C1FF' : '#d9d9d9'}
+              color={showContent ? highColor : color}
               onPress={onPressEye}
             />
           )
@@ -158,6 +169,7 @@ const FormComponent = ({
   rightIconContainerStyle,
   leftIcon,
   placeholderTextColor = '#000000',
+  rightIconStyle,
 }: FormComponentProps) => {
   const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
@@ -230,6 +242,7 @@ const FormComponent = ({
               onPressSms={fetchSms}
               renderRightIcon={renderRightIcon}
               correctImageCode={correctImageCode}
+              rightIconStyle={rightIconStyle}
             />
           }
           leftIconContainerStyle={[

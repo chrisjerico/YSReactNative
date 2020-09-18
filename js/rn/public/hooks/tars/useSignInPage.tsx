@@ -43,6 +43,9 @@ const useSignInPage = ({
     nc_token: undefined,
     nc_sig: undefined,
   })
+
+  const {mobile_logo = ""} = UGStore.globalProps.sysConf;
+
   // refs
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
@@ -167,6 +170,7 @@ const useSignInPage = ({
     navigateTo,
     onChange,
     value,
+    mobile_logo,
     valid,
     show,
     sign: {

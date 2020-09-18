@@ -259,7 +259,7 @@ const HJHomePage = ({navigation, setProps}) => {
                   }}/>
 
 
-        <RankListCP timing={10000} backgroundColor={'black'} textColor={'white'} width={width - 24} ranks={rankList}/>
+        <RankListCP timing={10000} backgroundColor={'white'} textColor={'black'} width={width - 24} ranks={rankList}/>
 
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <Text onPress={() => {
