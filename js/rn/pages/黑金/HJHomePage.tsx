@@ -18,7 +18,6 @@ import {
 import React, {useEffect, useState, useCallback, useRef} from 'react'
 import {useSafeArea} from 'react-native-safe-area-context'
 import FastImage, {FastImageProperties} from "react-native-fast-image"
-import {colorEnum,} from "./enum/colorEnum"
 import LinearGradient from "react-native-linear-gradient"
 import PushHelper from "../../public/define/PushHelper"
 import {MarqueeHorizontal} from 'react-native-marquee-ab';
@@ -130,7 +129,7 @@ const HJHomePage = ({navigation, setProps}) => {
   const init = async () => {
     try {
 
-      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 });
+      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
       // const {data } = await APIRouter.system_config()
       // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
     } catch (error) {
@@ -182,10 +181,10 @@ const HJHomePage = ({navigation, setProps}) => {
                 onlineNum={onlineNum} bannerData={banner}
                 onlineSwitch={onlineSwitch}/>
         <View
-          style={{flexDirection: 'row', alignItems: 'center', backgroundColor: colorEnum.marqueeBg, paddingLeft: 5}}>
+          style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 5}}>
           <Icon name="ios-volume-high" type="ionicon" color="white" size={24}/>
           <MarqueeHorizontal textStyle={{color: "white", fontSize: 13.2}}
-                             bgContainerStyle={{backgroundColor: colorEnum.marqueeBg}}
+                             bgContainerStyle={{backgroundColor: 'black'}}
                              width={width - 60}
                              height={34}
 
@@ -411,13 +410,11 @@ const ZLHeader = () => {
       width,
       height: scale(80) + topDistance,
       paddingTop: topDistance,
-      backgroundColor: colorEnum.mainColor,
       justifyContent: 'space-between',
       flexDirection: 'row',
-      shadowColor: "#444",
       borderBottomWidth: 0.5,
       alignItems: 'center',
-      borderColor: "#444"
+      borderColor: "grey"
     }}>
       <FastImageAutoWidth style={{height: scale(80)}} source={{uri: mobile_logo}}/>
       <View style={{flexDirection: 'row', flex: 1}}>
@@ -461,11 +458,12 @@ const AccountDetail = () => {
     hideLoading();
   }
 
-  if (false) {
+  if (true) {
     // if (!anyEmpty(uid)) {
     return (
-      <LinearGradient start={{x: 0, y: 0}} colors={colorEnum.gradientColor}
-                      style={_styles.bottom_layout}>
+      <FastImage style={_styles.bottom_layout}
+                 resizeMode={'stretch'}
+                 source={{uri: "http://t126f.fhptcdn.com/views/mobileTemplate/28/images/fooernav_bg.png"}}>
 
         <View style={_styles.bottom_info}>
           <TouchableOpacity onPress={() => {
@@ -473,7 +471,7 @@ const AccountDetail = () => {
               PushHelper.pushUserCenterType(UGUserCenterType.存款)
             }
 
-          }} style={CommStyles.center}>
+          }} style={[CommStyles.center, {padding: scale(20)}]}>
             <FastImage style={_styles.bottom_icon}
                        source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png"}}/>
             <Text style={_styles.bottom_font}>充值</Text>
@@ -486,7 +484,7 @@ const AccountDetail = () => {
             PushHelper.pushUserCenterType(UGUserCenterType.额度转换)
           }
 
-        }} style={[CommStyles.center, {padding: 16}]}>
+        }} style={[CommStyles.center, {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/xima.png"}}/>
           <Text style={_styles.bottom_font}>转账</Text>
@@ -497,13 +495,14 @@ const AccountDetail = () => {
             PushHelper.pushUserCenterType(UGUserCenterType.取款)
           }
 
-        }} style={[CommStyles.center, {padding: 16}]}>
+        }} style={[CommStyles.center,
+          {padding: scale(20)}]}>
           <FastImage style={_styles.bottom_icon}
                      source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/withdrawlogo.png"}}/>
           <Text style={_styles.bottom_font}>提现</Text>
         </TouchableOpacity>
 
-      </LinearGradient>
+      </FastImage>
     )
   } else {
     return <FastImage style={_styles.bottom_layout}
@@ -667,27 +666,26 @@ const _styles = StyleSheet.create({
     height: scale(36)
   },
   bottom_layout: {
-    height: 70,
+    height: scale(130),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     position: "absolute",
+    paddingTop: scale(20)
   },
   bottom_info: {
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
-    paddingLeft: 40,
     flexDirection: 'row'
   },
   bottom_font: {
     color: 'white',
-    fontSize: scale(24)
+    fontSize: scale(20)
   },
   bottom_money: {
     fontSize: scale(22),
     color: 'white',
-    marginLeft: scale(12)
   },
   server_container: {
     width: '100%',

@@ -1,36 +1,15 @@
-import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform, StyleSheet} from "react-native"
-import React, {useCallback, useEffect, useState} from 'react'
-import {useSafeArea} from "react-native-safe-area-context"
-import {IGlobalState, UGStore} from "../../redux/store/UGStore"
+import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native"
+import React from 'react'
+import {UGStore} from "../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
-import {colorEnum} from "./enum/colorEnum"
-import {Icon} from "react-native-elements"
 import PushHelper from "../../public/define/PushHelper"
-import UGSysConfModel, {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel"
+import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel"
 import LinearGradient from "react-native-linear-gradient"
-import {TouchableWithoutFeedback} from "react-native-gesture-handler"
-import APIRouter from "../../public/network/APIRouter"
-import UGUserModel from "../../redux/model/全局/UGUserModel"
-import useMemberItems from "../../public/hooks/useMemberItems"
-import useLoginOut from "../../public/hooks/useLoginOut"
-import {useDimensions} from "@react-native-community/hooks"
 import {PageName} from "../../public/navigation/Navigation"
-import {OCHelper} from "../../public/define/OCHelper/OCHelper"
-import {IGlobalStateHelper} from "../../redux/store/IGlobalStateHelper"
-import Axios from "axios"
-import {httpClient} from "../../public/network/httpClient"
-import {YueBaoStatModel} from "../../public/network/Model/YueBaoStatModel"
-import {navigationRef, pop} from "../../public/navigation/RootNavigation"
-import {UGBasePageProps} from "../base/UGPage"
-import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
-import {Toast} from "../../public/tools/ToastUtils";
 import {useHtml5Image} from "../../public/tools/tars";
 import useMinePage from "../../public/hooks/tars/useMinePage";
 import config from "../BZH/config";
 import SafeAreaHeader from "../../public/views/tars/SafeAreaHeader";
-import {BZHThemeColor} from "../../public/theme/colors/BZHThemeColor";
-import MineHeaderComponent from "../../public/components/tars/MineHeaderComponent";
-import {ugLog} from "../../public/tools/UgLog";
 import GameButton from "../../public/views/tars/GameButton";
 import {scale} from "../../public/tools/Scale";
 import UserCenterItem from "../../public/views/tars/UserCenterItem";
