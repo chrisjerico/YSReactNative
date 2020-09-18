@@ -21,6 +21,7 @@ export const HomeTabView = () => {
 
     useEffect(() => {
         homeGames?.data?.icons && setGames(homeGames.data.icons)
+        calculateHeight(1)
     }, [homeGames])
 
     const thirdPartGamePress = (id: string, gameID?: string) => {
