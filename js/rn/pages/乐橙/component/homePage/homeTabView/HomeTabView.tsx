@@ -15,13 +15,13 @@ import AppDefine from "../../../../../public/define/AppDefine";
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
-    const [height, setHeight] = useState(70)
+    const [height, setHeight] = useState(75)
     const userStore = UGStore.globalProps.userInfo;
     const {uid = ""} = userStore
 
     useEffect(() => {
         homeGames?.data?.icons && setGames(homeGames.data.icons)
-        calculateHeight(1)
+        homeGames?.data?.icons && calculateHeight(0)
     }, [homeGames])
 
     const thirdPartGamePress = (id: string, gameID?: string) => {
@@ -82,7 +82,7 @@ export const HomeTabView = () => {
     }
 
 
-    return (
+    return homeGames?.data?.icons ? (
         <ScrollableTabView
             onChangeTab={({i}) => calculateHeight(i)}
             tabBarUnderlineStyle={{height: 2, backgroundColor: "#3c3c3c"}}
@@ -125,5 +125,5 @@ export const HomeTabView = () => {
             }) : <View/>
             }
         </ScrollableTabView>
-    )
+    ) : null
 }
