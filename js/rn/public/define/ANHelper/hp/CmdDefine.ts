@@ -27,6 +27,7 @@ export enum CMD {
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数
+  ASK_SALARY = 'ASK_SALARY', //领取封路
   ASK_MINE_ITEMS = 'ASK_MINE_ITEMS', //个人信息item
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token
   ASK_FOR_TOKEN_AND_RSA = 'ASK_FOR_TOKEN_AND_RSA', //得到 token和rsa
