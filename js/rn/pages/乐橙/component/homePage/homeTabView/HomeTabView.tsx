@@ -86,7 +86,7 @@ export const HomeTabView = () => {
             onChangeTab={({i}) => calculateHeight(i)}
             tabBarUnderlineStyle={{height: 2, backgroundColor: "#3c3c3c"}}
             tabBarTextStyle={{color: "#3c3c3c"}}
-            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height: 500}]}
+            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height}]}
             renderTabBar={(props) => (
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false} style={{flexDirection: 'row'}}>
                     {props.tabs.map((name, page) => {
