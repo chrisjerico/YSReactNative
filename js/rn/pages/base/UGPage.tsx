@@ -57,11 +57,12 @@ export default (Page: Function) => {
 
       console.log('页面初始化', route.name)
 
+
       // 配置导航
-      {
-        navigation.setOptions({ header: () => { return null; } })
-        navigation.jumpTo && navigation.setOptions(tabbarOpetions)
-      }
+      // {
+      //   navigation.setOptions({ header: () => { return null; } })
+      //   navigation.jumpTo && navigation.setOptions(tabbarOpetions)
+      // }
 
       {
         // 监听焦点
@@ -108,6 +109,10 @@ export default (Page: Function) => {
       this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
     }
 
+    componentDidMount() {
+      this.props.navigation.setOptions({ header: () => { return null; } })
+      this.props.navigation.jumpTo && this.props.navigation.setOptions(this.props.tabbarOpetions)
+    }
     // 取消监听
     componentWillUnmount() {
       this.unsubscribe && this.unsubscribe();

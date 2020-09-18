@@ -72,7 +72,11 @@ class TabBarController extends Component<{
   constructor(props: any) {
     super(props)
     const { navigation } = this.props
-    navigation.setOptions({ headerStyle: { height: 0 } })
+    // navigation.setOptions({ headerStyle: { height: 0 } })
+  }
+
+  componentDidMount() {
+    this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
   render() {

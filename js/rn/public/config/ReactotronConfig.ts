@@ -1,5 +1,5 @@
 import Reactotron from 'reactotron-react-native'
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { reactotronRedux } from 'reactotron-redux'
 const middleware = (tron) => { /* plugin definition */ };
 

@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Action, Unsubscribe } from 'redux';
 import { UGBasePageProps } from '../../pages/base/UGPage';
 import { PageName } from '../../public/navigation/Navigation';
@@ -27,7 +27,7 @@ export interface IGlobalState {
 
 // 更新Props到全局数据
 function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
-    const state: IGlobalState = Object.assign({}, prevState);
+  const state: IGlobalState = Object.assign({}, prevState);
 
   if (act.type == 'reset') {
     act.sysConf && (state.sysConf = act.sysConf);
@@ -70,42 +70,42 @@ export class UGStore {
   // Store
   static globalProps: IGlobalState = { userInfo: {} as any, sysConf: {} as any, sign: {} as any, gameLobby: [], sys: {} as any };
 
-    // 发送通知
-    private static callbacks: { page: PageName, callback: () => void }[] = [];
+  // 发送通知
+  private static callbacks: { page: PageName, callback: () => void }[] = [];
 
-    static dispatch<P>(act: UGAction<P>) {
-        this.globalProps = RootReducer(this.globalProps, act);
-        if (act.page) {
-            for (const cb of this.callbacks) {
-                cb.page == act.page && cb.callback();
-            }
-        }
+  static dispatch<P>(act: UGAction<P>) {
+    this.globalProps = RootReducer(this.globalProps, act);
+    if (act.page) {
+      for (const cb of this.callbacks) {
+        cb.page == act.page && cb.callback();
+      }
     }
+  }
 
-    // 添加监听
-    static subscribe(page: PageName, callback: () => void): Unsubscribe {
-        const cb = {page: page, callback: callback};
-        this.callbacks.push(cb);
-        return () => {
-            UGStore.callbacks.remove(cb);
-        };
-    }
+  // 添加监听
+  static subscribe(page: PageName, callback: () => void): Unsubscribe {
+    const cb = { page: page, callback: callback };
+    this.callbacks.push(cb);
+    return () => {
+      UGStore.callbacks.remove(cb);
+    };
+  }
 
   // 获取当前页面Props
   static getPageProps<P extends UGBasePageProps>(page: PageName): P {
     return this.globalProps[page] ?? {};
   }
 
-    // 从本地获取所有数据，并刷新UI
-    static refreshFromLocalData() {
-        AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
-            const gs: IGlobalState = JSON.parse(value)
-            UGStore.dispatch({type: 'reset', sysConf: gs.sysConf, userInfo: gs.userInfo});
-        });
-    }
+  // 从本地获取所有数据，并刷新UI
+  static refreshFromLocalData() {
+    AsyncStorage.getItem(AsyncStorageKey.IGlobalState).then(value => {
+      const gs: IGlobalState = JSON.parse(value)
+      gs && UGStore.dispatch({ type: 'reset', sysConf: gs?.sysConf, userInfo: gs?.userInfo });
+    });
+  }
 
-    // 存储到本地
-    static save() {
-        AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.globalProps));
-    }
+  // 存储到本地
+  static save() {
+    AsyncStorage.setItem(AsyncStorageKey.IGlobalState, JSON.stringify(this.globalProps));
+  }
 }
