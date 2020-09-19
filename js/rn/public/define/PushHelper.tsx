@@ -3,7 +3,7 @@ import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import {
   UGAgentApplyInfo,
   UGTabbarItem,
-  UGUserCenterType
+  UGUserCenterType,
 } from '../../redux/model/全局/UGSysConfModel'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
@@ -20,7 +20,7 @@ import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
-import { ugLog } from "../tools/UgLog";
+import { ugLog } from '../tools/UgLog'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -39,27 +39,34 @@ export default class PushHelper {
           [data]
         )
 
-        break;
+        break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_POP_NOTICE, { popup: data })
-        break;
+        break
     }
-
-
   }
 
   // 右側選單
   static pushRightMenu(from: '1' | '2') {
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show', [NSValue.CGRectMake(AppDefine.width / 2, 0, AppDefine.width / 2, AppDefine.height)], [from]);
-        break;
+        OCHelper.call(
+          'UGYYRightMenuView.alloc.initWithFrame:[setTitleType:].show',
+          [
+            NSValue.CGRectMake(
+              AppDefine.width / 2,
+              0,
+              AppDefine.width / 2,
+              AppDefine.height
+            ),
+          ],
+          [from]
+        )
+        break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_RIGHT_MENU)
-        break;
+        break
     }
-
-
   }
 
   // 輪盤
@@ -261,12 +268,11 @@ export default class PushHelper {
           ],
           [notice]
         )
-        break;
+        break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_NOTICE, { rnString: notice })
-        break;
+        break
     }
-
   }
   static openWebView(url: string) {
     switch (Platform.OS) {
@@ -308,7 +314,8 @@ export default class PushHelper {
               'UGNavigationController.current.pushViewController:animated:',
               [
                 {
-                  selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
+                  selectors:
+                    'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
                   args1: ['UGFundsViewController'],
                   args2: [2],
                 },
@@ -322,7 +329,8 @@ export default class PushHelper {
               'UGNavigationController.current.pushViewController:animated:',
               [
                 {
-                  selectors: 'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
+                  selectors:
+                    'AppDefine.viewControllerWithStoryboardID:[setSelectIndex:]',
                   args1: ['UGFundsViewController'],
                   args2: [3],
                 },
@@ -655,116 +663,115 @@ export default class PushHelper {
 
         break
       case 'android':
-        let subId = "";
+        let subId = ''
         switch (code.toString()) {
           case UGUserCenterType.存款.toString(): {
-            subId = MenuType.CZ;
-            break;
+            subId = MenuType.CZ
+            break
           }
           case UGUserCenterType.每日签到.toString(): {
-            subId = MenuType.QD;
+            subId = MenuType.QD
             break
           }
           case UGUserCenterType.取款.toString(): {
-            subId = MenuType.TX;
-            break;
+            subId = MenuType.TX
+            break
           }
           case UGUserCenterType.银行卡管理.toString(): {
-            subId = MenuType.YHK;
-            break;
+            subId = MenuType.YHK
+            break
           }
           case UGUserCenterType.利息宝.toString(): {
-            subId = MenuType.LXB;
-            break;
+            subId = MenuType.LXB
+            break
           }
           case UGUserCenterType.推荐收益.toString(): {
-            subId = MenuType.SYTJ;
-            break;
+            subId = MenuType.SYTJ
+            break
           }
           case UGUserCenterType.彩票注单记录.toString(): {
-            subId = MenuType.TZJL;
-            break;
+            subId = MenuType.TZJL
+            break
           }
           case UGUserCenterType.其他注单记录.toString(): {
-            subId = MenuType.QTZD;
-            break;
+            subId = MenuType.QTZD
+            break
           }
           case UGUserCenterType.额度转换.toString(): {
-            subId = MenuType.EDZH;
-            break;
+            subId = MenuType.EDZH
+            break
           }
           case UGUserCenterType.站内信.toString(): {
-            subId = MenuType.ZLX;
-            break;
+            subId = MenuType.ZLX
+            break
           }
           case UGUserCenterType.安全中心.toString(): {
-            subId = MenuType.AQZX;
-            break;
+            subId = MenuType.AQZX
+            break
           }
           case UGUserCenterType.任务中心.toString(): {
-            subId = MenuType.RWZX;
-            break;
+            subId = MenuType.RWZX
+            break
           }
           case UGUserCenterType.个人信息.toString(): {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.HYZX
+            break
           }
           case UGUserCenterType.建议反馈.toString(): {
-            subId = MenuType.TSZX;
-            break;
+            subId = MenuType.TSZX
+            break
           }
           case UGUserCenterType.在线客服.toString(): {
-            subId = MenuType.KF;
-            break;
+            subId = MenuType.KF
+            break
           }
           case UGUserCenterType.活动彩金.toString(): {
-            subId = MenuType.SQCJ;
-            break;
+            subId = MenuType.SQCJ
+            break
           }
           case UGUserCenterType.长龙助手.toString(): {
-            subId = MenuType.CLZS;
-            break;
+            subId = MenuType.CLZS
+            break
           }
           case UGUserCenterType.全民竞猜.toString(): {
-            subId = MenuType.QMJC;
-            break;
+            subId = MenuType.QMJC
+            break
           }
           case UGUserCenterType.开奖走势.toString(): {
             Toast('敬请期待')
-            return;
+            return
           }
           case UGUserCenterType.QQ客服.toString(): {
-            subId = MenuType.QQ;
-            break;
+            subId = MenuType.QQ
+            break
           }
           case UGUserCenterType.资金明细.toString(): {
-            subId = MenuType.ZHGL;
-            break;
+            subId = MenuType.ZHGL
+            break
           }
           case UGUserCenterType.六合彩.toString(): {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
           }
           case UGUserCenterType.聊天室.toString(): {
-            subId = MenuType.LTS;
-            break;
+            subId = MenuType.LTS
+            break
           }
           case UGUserCenterType.游戏大厅.toString(): {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
           }
           case UGUserCenterType.我的页.toString(): {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.HYZX
+            break
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
-          {
-            seriesId: '7',
-            subId: subId,
-          })
-        break;
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+          seriesId: '7',
+          subId: subId,
+        })
+        break
     }
   }
 }
