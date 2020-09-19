@@ -105,8 +105,7 @@ const TabComponent = ({
 
 
   useEffect(() => {
-    setHeight(getSceneHeight(initialTabIndex))
-    setIndex(initialTabIndex)
+    changeIndex(initialTabIndex)
   }, [initialTabIndex])
 
   const getTabCount = () => {
