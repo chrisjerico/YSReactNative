@@ -49,45 +49,45 @@ const WNZMinePage = () => {
 
   const usuallyTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.额度转换.toString(),
-      UGUserCenterType.全民竞猜.toString(),
-      UGUserCenterType.利息宝.toString(),
-      UGUserCenterType.开奖走势.toString(),
-      UGUserCenterType.建议反馈.toString(),
-      UGUserCenterType.存款.toString(),
-      UGUserCenterType.取款.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.额度转换,
+      UGUserCenterType.全民竞猜,
+      UGUserCenterType.利息宝,
+      UGUserCenterType.开奖走势,
+      UGUserCenterType.建议反馈,
+      UGUserCenterType.存款,
+      UGUserCenterType.取款,
+    ].includes(ele?.code)
   )
 
   const userTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.个人信息.toString(),
-      UGUserCenterType.安全中心.toString(),
-      UGUserCenterType.银行卡管理.toString(),
-      UGUserCenterType.资金明细.toString(),
-      UGUserCenterType.站内信.toString(),
-      UGUserCenterType.聊天室.toString(),
-      UGUserCenterType.在线客服.toString(),
-      UGUserCenterType.QQ客服.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.个人信息,
+      UGUserCenterType.安全中心,
+      UGUserCenterType.银行卡管理,
+      UGUserCenterType.资金明细,
+      UGUserCenterType.站内信,
+      UGUserCenterType.聊天室,
+      UGUserCenterType.在线客服,
+      UGUserCenterType.QQ客服,
+    ].includes(ele?.code)
   )
 
   const recordTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.开奖网.toString(),
-      UGUserCenterType.其他注单记录.toString(),
-      UGUserCenterType.活动彩金.toString(),
-      UGUserCenterType.彩票注单记录.toString(),
-      UGUserCenterType.长龙助手.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.开奖网,
+      UGUserCenterType.其他注单记录,
+      UGUserCenterType.活动彩金,
+      UGUserCenterType.彩票注单记录,
+      UGUserCenterType.长龙助手,
+    ].includes(ele?.code)
   )
 
   const activityTools = otherTools?.filter((ele) =>
     [
-      UGUserCenterType.任务中心.toString(),
-      UGUserCenterType.游戏大厅.toString(),
-      UGUserCenterType.推荐收益.toString(),
-    ].includes(ele.code.toString())
+      UGUserCenterType.任务中心,
+      UGUserCenterType.游戏大厅,
+      UGUserCenterType.推荐收益,
+    ].includes(ele?.code)
   )
   return (
     <>

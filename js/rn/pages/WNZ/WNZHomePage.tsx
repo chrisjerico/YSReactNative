@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import {
+  LogBox,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -40,9 +41,8 @@ import TabLabel from './views/TabLabel'
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
 const WNZHomePage = () => {
-  // yellowBox
-  console.disableYellowBox = true
 
+  LogBox.ignoreAllLogs()
   const menu = useRef(null)
   const { rerender } = useRerender()
 

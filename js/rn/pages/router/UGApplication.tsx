@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { Component, useMemo } from 'react';
+import React, { Component } from 'react';
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider';
 import { PageName } from '../../public/navigation/Navigation';
 import { navigationRef } from '../../public/navigation/RootNavigation';
@@ -14,15 +14,20 @@ import UGPage from '../base/UGPage';
 import BZHGameLobbyPage from '../BZH/BZHGameLobbyPage';
 import BZHHomePage from "../BZH/BZHHomePage";
 import BZHMinePage from "../BZH/BZHMinePage";
-import BZHSignUpPage from '../BZH/BZHSignUpPage';
 import BZHSignInPage from '../BZH/BZHSignInPage';
+import BZHSignUpPage from '../BZH/BZHSignUpPage';
 import LottoBetting from '../common/LottoBetting';
 import PromotionListPage from '../common/PromotionListPage';
 import LHTHomePage from "../LHT/LHTHomePage";
 import LHTMinePage from "../LHT/LHTMinePage";
 import LHTPreferencePage from '../LHT/LHTPreferencePage';
+import LHTSignInPage from '../LHT/LHTSignInPage';
+import LHTSignUpPage from '../LHT/LHTSignUpPage';
+import WNZGameLobbyPage from '../WNZ/WNZGameLobbyPage';
 import WNZHomePage from '../WNZ/WNZHomePage';
 import WNZMinePage from '../WNZ/WNZMinePage';
+import WNZSignInPage from '../WNZ/WNZSignInPage';
+import WNZSignUpPage from '../WNZ/WNZSignUpPage';
 import LXBView from "../乐橙/component/minePage/LXBView";
 import LCHomePage from "../乐橙/LCHomePage";
 import LCMinePage from "../乐橙/LCMinePage";
@@ -30,6 +35,10 @@ import KSHomePage from '../凯时/KSHomePage';
 import KSLogin from '../凯时/KSLoginPage';
 import KSMine from '../凯时/KSMinePage';
 import KSRegister from '../凯时/KSRegisterPage';
+import LLHomePage from "../利来/LLHomePage";
+import { LLLoginPage } from "../利来/LLLoginPage";
+import LLMinePage from "../利来/LLMinePage";
+import { LLRegisterPage } from "../利来/LLRegisterPage";
 import ZLHomePage from '../尊龙/ZLHomePage';
 import ZLLoginPage from '../尊龙/ZLLoginPage';
 import ZLMinePage from '../尊龙/ZLMinePage';
@@ -49,15 +58,7 @@ import { XBJLoginPage } from '../香槟金/XBJLoginPage';
 import { XBJMinePage } from '../香槟金/XBJMinePage';
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage';
 import { UpdateVersionPage } from './UpdateVersionPage';
-import WNZSignInPage from '../WNZ/WNZSignInPage';
-import WNZSignUpPage from '../WNZ/WNZSignUpPage';
-import LHTSignInPage from '../LHT/LHTSignInPage';
-import LHTSignUpPage from '../LHT/LHTSignUpPage';
-import WNZGameLobbyPage from '../WNZ/WNZGameLobbyPage';
-import { LLLoginPage } from "../利来/LLLoginPage";
-import { LLRegisterPage } from "../利来/LLRegisterPage";
-import LLHomePage from "../利来/LLHomePage";
-import LLMinePage from "../利来/LLMinePage";
+
 
 // TabbarController
 class TabBarController extends Component<{

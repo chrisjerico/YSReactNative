@@ -31,8 +31,6 @@ import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
 
 const LHTHomePage = () => {
-  // yellowBox
-  console.disableYellowBox = true
   // states
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions

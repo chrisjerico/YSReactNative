@@ -20,7 +20,6 @@ import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignInPage = () => {
-  console.disableYellowBox = true
 
   const {
     sign,

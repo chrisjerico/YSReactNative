@@ -1,14 +1,14 @@
 import React from 'react'
+import { ScrollView } from 'react-native'
 import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
-import { RefreshControl, ScrollView } from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
-import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
+import { ugLog } from "../../public/tools/UgLog"
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -17,7 +17,6 @@ import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
-import { ugLog } from "../../public/tools/UgLog";
 
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
