@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View, ViewStyle } from 'react-native';
+import {Platform, View, ViewStyle} from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -42,11 +42,18 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       showTopBar: false,
     });
 
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
-      if (cnt == 1 && getStackLength() == 1) {
-        setProps({ navbarOpstions: { back: false } });
-      }
-    });
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
+          if (cnt == 1 && getStackLength() == 1) {
+            setProps({ navbarOpstions: { back: false } });
+          }
+        });
+        break;
+      case 'android':
+
+        break;
+    }
 
     NetworkRequest1.systeam_promotions().then(data => {
       if (data.showCategory) {

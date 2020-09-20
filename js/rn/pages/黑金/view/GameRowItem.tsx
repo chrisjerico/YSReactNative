@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import React from "react";
 import {HomeGamesModel, Icon, List} from "../../../public/network/Model/HomeGamesModel";
 import {anyLength} from "../../../public/tools/Ext";
@@ -6,6 +6,7 @@ import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
 import TouchableImage from "../../../public/views/tars/TouchableImage";
+import {ugLog} from "../../../public/tools/UgLog";
 
 interface GameRowProps {
   iconsItem: Icon,
@@ -42,14 +43,14 @@ const GameRowItem = ({
     <View style={_styles.itemContainer}>
       {
         datas?.map(
-          (item, index) => <TouchableImage
-            containerStyle={_styles.item}
-            pic={item.icon}
-            resizeMode={'contain'}
-            onPress={() => clickItem(item)}>
-            <Text style={_styles.itemText}
-                  numberOfLines={1}>{item.title}</Text>
-          </TouchableImage>
+          (item, index) => <TouchableWithoutFeedback onPress={() => clickItem(item)}>
+            <FastImage
+              style={_styles.item}
+              source={{uri: item.icon}}>
+              <Text style={_styles.itemText}
+                    numberOfLines={1} >{item.name}</Text>
+            </FastImage>
+          </TouchableWithoutFeedback>
         )
       }
 
@@ -67,14 +68,13 @@ const _styles = StyleSheet.create({
     marginHorizontal: scale(4),
     aspectRatio: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'red',
     borderRadius: scale(12),
   },
   itemText: {
     width: '100%',
     marginLeft: scale(4),
     marginBottom: scale(4),
-    fontSize: scale(24),
+    fontSize: scale(20),
     color: 'white',
     backgroundColor: '#00000022',
   },
