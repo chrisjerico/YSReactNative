@@ -375,7 +375,6 @@ const Header = () => {
     <View style={{ height: 68 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
       <TouchableWithoutFeedback onPress={() => {
         pop();
-        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
       }}>
         <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
       </TouchableWithoutFeedback>

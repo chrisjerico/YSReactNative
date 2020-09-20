@@ -248,7 +248,7 @@ const ZLHeader = () => {
             paddingHorizontal: 20
         }}>
             {showBackBtn && (<TouchableOpacity onPress={() => {
-                !pop() && OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                pop();
             }} style={{ paddingRight: 5 }}>
                 <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
             </TouchableOpacity>)}

@@ -227,7 +227,6 @@ const Header = () => {
       <View style={{ height: 45, backgroundColor: "white", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
         <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
           pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="rgba(142, 142, 147,1)" size={30} />
         </TouchableOpacity >

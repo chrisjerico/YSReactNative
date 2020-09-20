@@ -23,7 +23,12 @@ export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
     count < 3 && OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
-    return count > 1;
+    if (count > 1) {
+        return true;
+    } else {
+        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        return false;
+    }
 }
 
 export function popToRoot() {

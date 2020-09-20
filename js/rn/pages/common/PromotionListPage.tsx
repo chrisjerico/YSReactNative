@@ -62,8 +62,7 @@ const PromotionListPage = ({ navigation }) => {
               icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }}
               buttonStyle={[{ backgroundColor: 'transparent', left: 0, top: 0, alignSelf: 'flex-start' },]}
               onPress={() => {
-                popToRoot()
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                pop()
               }}
             />
           </View> : null}
