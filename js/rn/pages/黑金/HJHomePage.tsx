@@ -128,7 +128,6 @@ const HJHomePage = ({navigation, setProps}) => {
   }
   const init = async () => {
     try {
-
       ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
       // const {data } = await APIRouter.system_config()
       // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
@@ -140,10 +139,12 @@ const HJHomePage = ({navigation, setProps}) => {
     setProps({
       backgroundColor: HJThemeColor.黑金.bgColor,
       didFocus: async () => {
+        ugLog('home focus')
         const {data: userInfo} = await APIRouter.user_info()
         UGStore.dispatch({type: 'merge', userInfo: userInfo?.data});
         setProps();
         UGStore.save();
+
       }
     })
 
@@ -205,13 +206,19 @@ const HJHomePage = ({navigation, setProps}) => {
                         gameListRef?.current?.scrollToIndex({index: index, animated: true}))}/>
           <GameRow games={homeGames}
                    onScroll={(e) => {
+                     //滚动的时候选择左边的栏目
                      let index = Math.floor(e.nativeEvent.contentOffset.y / gameRowContentHeight);
                      const iconsLength = anyLength(homeGames.data.icons) - 1;
                      index = index > iconsLength ? iconsLength : index;
                      index = index < 0 ? 0 : index;
                      setSelectGameIndex(index);
                    }}
-                   listRef={gameListRef}/>
+                   listRef={gameListRef}
+                   clickItem={(item) => {
+                     ugLog('item=', JSON.stringify(item))
+                     PushHelper.pushHomeGame(item)
+
+                   }}/>
         </View>
 
         {
@@ -458,8 +465,8 @@ const AccountDetail = () => {
     hideLoading();
   }
 
-  if (true) {
-    // if (!anyEmpty(uid)) {
+  // if (true) {
+  if (!anyEmpty(uid)) {
     return (
       <FastImage style={_styles.bottom_layout}
                  resizeMode={'stretch'}

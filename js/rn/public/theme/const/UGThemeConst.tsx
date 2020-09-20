@@ -1,6 +1,6 @@
 /**
  * 模板的值
  */
-export enum UGThemeType {
+export enum UGThemeConst {
   黑金 = "28",
 }

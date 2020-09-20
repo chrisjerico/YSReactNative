@@ -1,6 +1,6 @@
 import {FlatList, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, View} from "react-native";
 import React, {useState} from "react";
-import {HomeGamesModel, Icon} from "../../../public/network/Model/HomeGamesModel";
+import {HomeGamesModel, Icon, List} from "../../../public/network/Model/HomeGamesModel";
 import GameRowItem from "./GameRowItem";
 import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
@@ -14,6 +14,7 @@ interface GameRowProps {
   games?: HomeGamesModel,
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void,
   listRef: any,
+  clickItem?: (item: List) => void,
 }
 
 const _rightText = '查看全部 >';
@@ -23,15 +24,19 @@ const _rightText = '查看全部 >';
  * @param games
  * @constructor
  */
-const GameRow = ({games, onScroll, listRef}: GameRowProps) => {
+const GameRow = ({games,
+                   onScroll,
+                   listRef,
+                   clickItem }: GameRowProps) => {
   const icons = games?.data?.icons
   const iconsLength = anyLength(icons);
   const scrollHeight = iconsLength * gameLeftColumnHeight
     - (iconsLength - 3) * gameLeftColumnTopPadding;
 
+  //绘制每一个条目
   const _renderItem = ({ item, index }) => {
 
-    //底部偏移距离
+    //底部偏移距离，为了让左侧栏更美观
     let bottomStyle = index == iconsLength - 1
       ? { marginBottom: (iconsLength - 2) * gameLeftColumnHeight + 1 }
       : {}
@@ -46,7 +51,7 @@ const GameRow = ({games, onScroll, listRef}: GameRowProps) => {
         <View style={CommStyles.flex}/>
         <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
       </View>
-      <GameRowItem iconsItem={item}/>
+      <GameRowItem iconsItem={item} clickItem={clickItem}/>
     </View>
   };
 
@@ -69,7 +74,7 @@ const GameRow = ({games, onScroll, listRef}: GameRowProps) => {
     //     </View>)
     //   }
     // </ScrollView>
-    <FlatList style={[_styles.flex, { height: scrollHeight }]}
+    <FlatList style={[CommStyles.flex, { height: scrollHeight }]}
               data={icons}
               ref={listRef}
               onScroll={onScroll}

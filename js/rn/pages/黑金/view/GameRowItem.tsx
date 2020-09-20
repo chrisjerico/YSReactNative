@@ -5,9 +5,11 @@ import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
+import TouchableImage from "../../../public/views/tars/TouchableImage";
 
 interface GameRowProps {
   iconsItem: Icon,
+  clickItem?: (item: List) => void,
 }
 
 /**
@@ -15,7 +17,10 @@ interface GameRowProps {
  * @param iconsItem
  * @constructor
  */
-const GameRowItem = ({iconsItem}: GameRowProps) => {
+const GameRowItem = ({
+                       iconsItem,
+                       clickItem
+                     }: GameRowProps) => {
   const iconsLength = anyLength(iconsItem?.list);
   let datas = [];
   if (iconsLength > 0) {
@@ -37,12 +42,14 @@ const GameRowItem = ({iconsItem}: GameRowProps) => {
     <View style={_styles.itemContainer}>
       {
         datas?.map(
-          (item, index) => <FastImage
-            style={_styles.item}
-            source={{uri: item.icon}}>
+          (item, index) => <TouchableImage
+            containerStyle={_styles.item}
+            pic={item.icon}
+            resizeMode={'contain'}
+            onPress={() => clickItem(item)}>
             <Text style={_styles.itemText}
-                  numberOfLines={1} >{item.title}</Text>
-          </FastImage>
+                  numberOfLines={1}>{item.title}</Text>
+          </TouchableImage>
         )
       }
 
