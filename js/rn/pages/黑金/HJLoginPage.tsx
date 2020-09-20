@@ -66,8 +66,8 @@ const HJLoginPage = () => {
             title={'立即登录'}
             disabled={!valid}
             containerStyle={_styles.log_bt}
-            disabledContainerStyle={_styles.log_bt}
-            titleStyle={{color: '#ffffff', fontSize: scale(23)}}
+            disabledContainerStyle={[_styles.log_bt, _styles.log_bt_unavailable]}
+            titleStyle={{color: valid ? '#ffffff' : 'grey', fontSize: scale(23)}}
             onPress={signIn}
           />
 
@@ -141,6 +141,9 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: scale(64),
     marginBottom: scale(64)
+  },
+  log_bt_unavailable: {
+    borderColor: 'grey',
   },
   log_bt: {
     flex: 1,

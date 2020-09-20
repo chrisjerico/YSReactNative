@@ -358,9 +358,9 @@ const TurntableListItem = () => {
     return (
       <TouchableWithoutFeedback onPress={() => {
         if (!_checkLogin()) {
-          const turntableListModel = Object.assign({clsName: 'DZPModel'}, turntableList?.[0]);
           switch (Platform.OS) {
             case 'ios':
+              const turntableListModel = Object.assign({clsName: 'DZPModel'}, turntableList?.[0]);
               OCHelper.call(({vc}) => ({
                 vc: {
                   selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
@@ -374,7 +374,7 @@ const TurntableListItem = () => {
               }));
               break;
             case 'android':
-              //TODO
+              ANHelper.callAsync(CMD.OPEN_ROULETTE, {data: turntableList})
               break;
           }
         }

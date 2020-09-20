@@ -80,7 +80,7 @@ export default (Page: Function) => {
         })
         navigation.addListener('transitionEnd', (e) => {
           if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-            _showMainTab();
+            this._showMainTab();
           }
         })
         // 监听dispatch

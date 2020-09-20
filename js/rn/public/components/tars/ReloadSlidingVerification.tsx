@@ -9,6 +9,7 @@ import { Platform, ViewStyle } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
 import { stringToNumber } from '../../tools/tars'
+import {ugLog} from "../../tools/UgLog";
 
 interface ReloadSlidingVerificationProps {
   onChange: (data: any) => void;
@@ -47,6 +48,8 @@ const ReloadSlidingVerification = (
         }
         break
       case 'android':
+        ugLog('hadnleMessage e=', e)
+
         if (data?.startsWith('{')
           && data?.endsWith('}')) {
           onChange(JSON.parse(data))

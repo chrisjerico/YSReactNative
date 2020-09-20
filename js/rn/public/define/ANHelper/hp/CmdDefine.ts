@@ -11,6 +11,7 @@ export enum CMD {
   OPEN_WEB = 'OPEN_WEB', //打开web
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   OPEN_RED_BAD = 'OPEN_RED_BAD', //打开红包
+  OPEN_ROULETTE = 'OPEN_ROULETTE', //打开大转盘界面
   OPEN_NOTICE = 'OPEN_NOTICE', //打开通知界面
   OPEN_POP_NOTICE = 'OPEN_POP_NOTICE', //打开弹窗口通知界面
   OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
