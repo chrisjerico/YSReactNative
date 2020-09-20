@@ -90,6 +90,7 @@ export default class PushHelper {
         }))
         break
       case 'android':
+        ANHelper.callAsync(CMD.OPEN_ROULETTE, {data: turntableList})
         break
     }
   }

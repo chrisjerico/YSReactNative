@@ -126,12 +126,25 @@ class APIRouter {
 
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail&" + tokenParams)
   }
-  static activity_turntableList = () => {
+  static activity_turntableList = async () => {
     if (UGStore.globalProps.userInfo?.isTest) {
       return {};
     }
-    return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          { blGet: true, });
+        break;
+    }
+
+    return httpClient.get<TurntableListModel>("c=activity&a=turntableList&" + tokenParams)
   }
+
   static system_floatAds = async () => {
     return httpClient.get<FloatADModel>("c=system&a=floatAds")
   }

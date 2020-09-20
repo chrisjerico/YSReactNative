@@ -1,47 +1,35 @@
 import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  Image,
-  FlatList,
-  StyleSheet,
-  Dimensions,
   Alert,
-  ImageBackground,
+  FlatList,
+  Image,
+  Linking,
   Platform,
   RefreshControl,
-  AppState,
-  Linking
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
 } from "react-native"
-import React, {useEffect, useState, useCallback, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useSafeArea} from 'react-native-safe-area-context'
-import FastImage, {FastImageProperties} from "react-native-fast-image"
-import LinearGradient from "react-native-linear-gradient"
+import FastImage from "react-native-fast-image"
 import PushHelper from "../../public/define/PushHelper"
 import {MarqueeHorizontal} from 'react-native-marquee-ab';
 import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel"
 import {PageName} from '../../public/navigation/Navigation';
-import {IGlobalState, UGStore} from "../../redux/store/UGStore";
+import {UGStore} from "../../redux/store/UGStore";
 import APIRouter from '../../public/network/APIRouter';
-import {BannerModel} from "../../public/network/Model/BannerModel"
-import {Icon, Button} from 'react-native-elements';
+import {Icon} from 'react-native-elements';
 import {httpClient} from "../../public/network/httpClient"
-import Carousel from 'react-native-banner-carousel';
 import usePopUpView from "../../public/hooks/usePopUpView"
-import UGUserModel from "../../redux/model/全局/UGUserModel"
-import {push, navigate} from "../../public/navigation/RootNavigation"
+import {navigate, push} from "../../public/navigation/RootNavigation"
 import AppDefine from "../../public/define/AppDefine"
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo"
 import {useDimensions} from '@react-native-community/hooks'
-import useAutoRenewUserInfo from "../../public/hooks/useAutoReNewUserInfo"
-import {RedBagDetailActivityModel} from "../../public/network/Model/RedBagDetailActivityModel"
 import {OCHelper} from "../../public/define/OCHelper/OCHelper"
 import {NSValue} from "../../public/define/OCHelper/OCBridge/OCCall"
-import {TurntableListModel} from "../../public/network/Model/TurntableListModel"
-import RedBagItem from "../../public/components/RedBagItem"
-import {useNavigationState} from "@react-navigation/native"
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import RankListCP from "../../public/widget/RankList";
 import Banner from "./CP/Banner"
@@ -52,16 +40,16 @@ import {Toast} from "../../public/tools/ToastUtils";
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {anyEmpty, anyLength} from "../../public/tools/Ext";
-import {HomeGamesModel} from "../../public/network/Model/HomeGamesModel";
 import GameRow, {gameRowContentHeight} from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
-import GameColumn, {gameLeftColumnHeight} from "./view/GameColumn";
+import GameColumn from "./view/GameColumn";
 import {scale} from "../../public/tools/Scale";
 import GameButton from "../../public/views/tars/GameButton";
 import TouchableImage from "../../public/views/tars/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
-import {Skin1} from "../../public/theme/UGSkinManagers";
+import ActivityComponent from "../../public/components/tars/ActivityComponent";
+import {getActivityPosition} from "../../public/tools/tars";
 
 /**
  *
@@ -76,12 +64,11 @@ const HJHomePage = ({navigation, setProps}) => {
 
   const {width,} = useDimensions().window
   const {onPopViewPress} = usePopUpView()
-  const userStore = UGStore.globalProps.userInfo;
-  const {uid = ""} = userStore
+  const {uid = "", balance = 0, isTest} = UGStore.globalProps.userInfo
   const systemStore = UGStore.globalProps.sysConf;
   const [selectGameIndex, setSelectGameIndex] = useState(0)
   const [randomString, setRandomString] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-  const {banner, notice, homeGames, couponListData, rankList, redBag, floatAds, onlineNum, loading, onRefresh, onlineSwitch} = useGetHomeInfo()
+  const {banner, notice, homeGames, couponListData, rankList, redBag, floatAds, turntableList, onlineNum, loading, onRefresh, onlineSwitch} = useGetHomeInfo()
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setnoticeFormat] = useState<{ label: string, value: string }[]>()
   const [selectId, setSelectedId] = useState(-1)
@@ -105,6 +92,8 @@ const HJHomePage = ({navigation, setProps}) => {
       string += res.content
       return {label: res.id, value: res.title}
     }) ?? []
+
+    ugLog('notice = ', JSON.stringify(notice?.data?.popup))
     if (notice?.data?.popup) {
       openPopup(notice)
     }
@@ -139,7 +128,9 @@ const HJHomePage = ({navigation, setProps}) => {
     setProps({
       backgroundColor: HJThemeColor.黑金.bgColor,
       didFocus: async () => {
-        ugLog('home focus')
+        //ugLog('home focus')
+        _requestBalance()
+
         const {data: userInfo} = await APIRouter.user_info()
         UGStore.dispatch({type: 'merge', userInfo: userInfo?.data});
         setProps();
@@ -150,23 +141,24 @@ const HJHomePage = ({navigation, setProps}) => {
 
     init()
 
-    const timer = setInterval(() => {
-      getRandomString()
-    }, 500)
-    return (() => clearInterval(timer))
+    // const timer = setInterval(() => {
+    //   getRandomString()
+    // }, 500)
+    // return (() => clearInterval(timer))
   }, [])
-  const getRandomString = () => {
-    const num = ((2 + Math.random()) * 100000).toFixed(2)
-    setRandomString("¥ " + num)
-  }
-  const thirdPartGamePress = (index: number) => {
-    if (anyEmpty(uid)) {
-      navigate(PageName.HJLoginPage, {})
-    } else {
-      PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[index])
-    }
 
-  }
+  // const getRandomString = () => {
+  //   const num = ((2 + Math.random()) * 100000).toFixed(2)
+  //   setRandomString("¥ " + num)
+  // }
+  // const thirdPartGamePress = (index: number) => {
+  //   if (anyEmpty(uid)) {
+  //     navigate(PageName.HJLoginPage, {})
+  //   } else {
+  //     PushHelper.pushHomeGame(homeGames?.data?.icons?.[0]?.list?.[index])
+  //   }
+  //
+  // }
 
   return (
     <View style={_styles.page_container}>
@@ -287,8 +279,42 @@ const HJHomePage = ({navigation, setProps}) => {
 
       <AccountDetail/>
 
-      <RedBagItem loginPage={PageName.HJLoginPage} redBag={redBag}/>
-      <TurntableListItem/>
+      <ActivityComponent
+        refreshing={false}
+        containerStyle={{ top: scale(250), right: 0 }}
+        show={uid && redBag?.data && !isTest}
+        logo={redBag?.data?.redBagLogo}
+        onPress={() => {
+          PushHelper.pushRedBag(redBag)
+        }}
+      />
+      <ActivityComponent
+        refreshing={false}
+        containerStyle={{ top: scale(400), right: 0 }}
+        enableFastImage={false}
+        show={uid && turntableList?.data && !isTest}
+        logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
+        onPress={() => {
+          PushHelper.pushWheel(turntableList?.data)
+        }}
+      />
+      {floatAds?.data?.map((item: any, index) => {
+        const { image, position, linkCategory, linkPosition } = item
+        return (
+          <ActivityComponent
+            key={index}
+            refreshing={false}
+            containerStyle={getActivityPosition(position)}
+            enableFastImage={true}
+            show={uid && !isTest}
+            logo={image}
+            onPress={() => {
+              PushHelper.pushCategory(linkCategory, linkPosition)
+            }}
+          />
+        )
+      })}
+
       <MarqueePopupView onPress={() => {
         setShow(false)
       }} content={content} show={show} onDismiss={() => {
@@ -331,74 +357,9 @@ const _couponTitleItem = () => {
   </View>
 }
 
-const TurntableListItem = () => {
-  const {width, height} = useDimensions().screen
-  const {isTest = false, uid = ""} = UGStore.globalProps.userInfo;
-  const [turntableListVisiable, setTurntableListVisiable] = useState(false)
-  const [turntableList, setTurntableList] = useState<TurntableListModel>()
-  useEffect(() => {
-    if (turntableList && turntableList != null) {
-      setTurntableListVisiable(true)
-    }
-  }, [turntableList])
-  const getTurntableList = async () => {
-    try {
-      const {data, status} = await APIRouter.activity_turntableList()
-      setTurntableList(data.data)
-    } catch (error) {
-
-    }
-  }
-  useEffect(() => {
-    if (uid != "") {
-      getTurntableList()
-    }
-  }, [uid])
-  if (turntableListVisiable) {
-    return (
-      <TouchableWithoutFeedback onPress={() => {
-        if (!_checkLogin()) {
-          switch (Platform.OS) {
-            case 'ios':
-              const turntableListModel = Object.assign({clsName: 'DZPModel'}, turntableList?.[0]);
-              OCHelper.call(({vc}) => ({
-                vc: {
-                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-                  args2: [turntableListModel]
-                },
-                ret: {
-                  selectors: 'SGBrowserView.showMoveView:yDistance:',
-                  args1: [vc, 100],
-                },
-              }));
-              break;
-            case 'android':
-              ANHelper.callAsync(CMD.OPEN_ROULETTE, {data: turntableList})
-              break;
-          }
-        }
-      }}>
-        <ImageBackground style={{width: 70, height: 70, position: 'absolute', top: height * 0.4 + 95, right: 20}}
-                         source={{uri: "dzp_btn"}}>
-          <TouchableWithoutFeedback onPress={() => {
-            setTurntableListVisiable(false)
-          }}>
-            <Image style={{width: 20, height: 20, right: 0, top: 0, position: 'absolute'}}
-                   source={{uri: "dialog_close"}}/>
-          </TouchableWithoutFeedback>
-        </ImageBackground>
-      </TouchableWithoutFeedback>)
-  } else {
-    return null
-  }
-
-}
 const ZLHeader = () => {
   const {width, height} = useDimensions().window
   const insets = useSafeArea();
-  const userStore = UGStore.globalProps.userInfo;
-  const {uid = "", unreadMsg} = userStore
   const sysStore = UGStore.globalProps.sysConf;
   const {mobile_logo = ""} = sysStore
 
@@ -441,30 +402,32 @@ const ZLHeader = () => {
 }
 
 /**
+ * 刷新余额
+ */
+const _requestBalance = async () => {
+  try {
+    // showLoading({type: UGLoadingType.Loading, text: '正在刷新金额...'});
+
+    //@ts-ignore
+    const {data, status} = await APIRouter.user_balance_token()
+    UGStore.dispatch({type: 'merge', userInfo: {balance: data.data.balance}})
+    // Toast('刷新成功！')
+
+  } catch (error) {
+    ugLog(error)
+    // Toast('刷新失败请稍后再试！')
+  }
+
+  // hideLoading();
+}
+
+/**
  * 信息栏
  * @constructor
  */
 const AccountDetail = () => {
-  const userStore = UGStore.globalProps.userInfo
-  const {uid = "", balance = 0, isTest} = userStore
 
-  const requestBalance = async () => {
-    try {
-      showLoading({type: UGLoadingType.Loading, text: '正在刷新金额...'});
-
-      //@ts-ignore
-      const {data, status} = await APIRouter.user_balance_token()
-      UGStore.dispatch({type: 'merge', userInfo: {balance: data.data.balance}})
-      Toast('刷新成功！')
-
-    } catch (error) {
-      ugLog(error)
-      Toast('刷新失败请稍后再试！')
-    }
-
-    hideLoading();
-  }
-
+  const {uid = "", balance = 0, isTest} = UGStore.globalProps.userInfo
   // if (true) {
   if (!anyEmpty(uid)) {
     return (
