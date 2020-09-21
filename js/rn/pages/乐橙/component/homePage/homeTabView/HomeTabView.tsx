@@ -1,4 +1,4 @@
-import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-view";
+import ScrollableTabView from "react-native-scrollable-tab-view";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {RecommendTabView} from "./recommendTab/RecommendTabView";
@@ -6,16 +6,15 @@ import {LotteryTabView} from "./lotteyTab/LotteryTabView";
 import {GameListView} from "./lotteyTab/GameListView";
 import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {Icon, List} from "../../../../../public/network/Model/HomeGamesModel";
-import {TouchableWithoutFeedback, View, Text, ScrollView} from "react-native";
-import {IGlobalState, UGStore} from "../../../../../redux/store/UGStore";
+import {ScrollView, Text, TouchableWithoutFeedback, View} from "react-native";
+import {UGStore} from "../../../../../redux/store/UGStore";
 import PushHelper from "../../../../../public/define/PushHelper";
-import {CustomTabBar} from "../../../../../public/components/CustomTabBar";
 import AppDefine from "../../../../../public/define/AppDefine";
 
 export const HomeTabView = () => {
     const {homeGames} = useGetHomeInfo()
     const [games, setGames] = useState<Icon[]>([])
-    const [height, setHeight] = useState(75)
+    const [height, setHeight] = useState(77)
     const userStore = UGStore.globalProps.userInfo;
     const {uid = ""} = userStore
 
@@ -42,9 +41,10 @@ export const HomeTabView = () => {
     }
 
     const calculateHeight = (index: number) => {
-        let h = 50
+        let h = 0
         const list: List[] = games[index]?.list ? games[index]?.list : []
         if (index == 0) {
+            h = 0
             if (list[0]) {
                 h = h + 153
             }
@@ -54,14 +54,14 @@ export const HomeTabView = () => {
             if (list[2]) {
                 h = h + 117
             }
-            h = h + Math.ceil((list.length - 3) / 2) * 110 + 70
+            h = h + Math.ceil((list.length - 3) / 2) * 110 + 75
         } else if (index == 1) {
             if (list.length > 1) {
                 h += 108
             }
             h = h + Math.ceil((list.length - 2) / 3) * 100
         } else {
-            h = Math.ceil((list.length) / 2) * 125 + 70
+            h = list.length > 2 ? Math.ceil((list.length) / 2) * 125 + 75 : 180
         }
         setHeight(h)
     }
@@ -87,9 +87,10 @@ export const HomeTabView = () => {
             onChangeTab={({i}) => calculateHeight(i)}
             tabBarUnderlineStyle={{height: 2, backgroundColor: "#3c3c3c"}}
             tabBarTextStyle={{color: "#3c3c3c"}}
-            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, flex: 1, height}]}
+            style={[{marginHorizontal: 10, backgroundColor: "#ffffff", borderRadius: 10, height}]}
             renderTabBar={(props) => (
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false} style={{flexDirection: 'row'}}>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} bounces={false}
+                            style={{flexDirection: 'row', paddingBottom: 10}}>
                     {props.tabs.map((name, page) => {
                         const isTabActive = props.activeTab === page
                         const textColor = isTabActive ? '#000000' : '#555'

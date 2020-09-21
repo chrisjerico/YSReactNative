@@ -152,7 +152,7 @@ const LCHomePage = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}
                         refreshControl={<RefreshControl style={{backgroundColor: "#ffffff"}} refreshing={loading}
                                                         onRefresh={onRefresh}/>}
-                        style={{flex: 1}}>
+                       >
                 <Banner onlineNum={onlineNum} bannerData={banner}/>
                 <View style={{
                     flexDirection: 'row',

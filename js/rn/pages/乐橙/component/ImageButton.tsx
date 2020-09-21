@@ -13,7 +13,8 @@ interface ImageButtonProps {
 const defaultImgStyle: StyleProp<ImageStyle> = {
     height: "100%",
     width: "100%",
-    resizeMode: "stretch",
+    resizeMode: "contain",
+    alignSelf: "center"
 }
 const defaultViewStyle: StyleProp<ViewStyle> = {
     alignItems: "center",
