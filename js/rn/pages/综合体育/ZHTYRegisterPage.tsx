@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, ScrollView, TouchableOpacity, Text} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Text, Platform} from 'react-native';
 import UGBasePage from '../base/UGBasePage';
 import {ZHTYRegisterProps, ZHTYRegisterStateToProps} from './ZHTYRegisterProps';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
@@ -15,6 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {Button} from 'react-native-elements';
 import {Res} from '../../Res/icon/Resources';
 import {UGColor} from '../../public/theme/UGThemeColor';
+import {Toast} from "../../public/tools/ToastUtils";
 
 class ZHTYRegisterPage extends UGBasePage<ZHTYRegisterProps> {
   referrerId: string = ''; // 推荐人ID
@@ -99,7 +100,14 @@ class ZHTYRegisterPage extends UGBasePage<ZHTYRegisterProps> {
       err = '请输入短信验证码';
     }
     if (err) {
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call('HUDHelper.showMsg:', [err]);
+          break;
+        case 'android':
+          Toast(err)
+          break;
+      }
       return;
     }
 
@@ -123,7 +131,14 @@ class ZHTYRegisterPage extends UGBasePage<ZHTYRegisterProps> {
         console.log(data);
       })
       .catch((err: Error) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+            break;
+          case 'android':
+            Toast(err.message)
+            break;
+        }
       });
   }
 
@@ -294,7 +309,14 @@ class ZHTYRegisterPage extends UGBasePage<ZHTYRegisterProps> {
                   startCountdown();
                 })
                 .catch(err => {
-                  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                  switch (Platform.OS) {
+                    case 'ios':
+                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+                      break;
+                    case 'android':
+                      Toast(err.message)
+                      break;
+                  }
                 });
             }}
             onChangeText={text => {

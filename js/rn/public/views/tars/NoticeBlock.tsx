@@ -1,36 +1,40 @@
 import React from 'react'
-import { StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
 import { scale } from '../../tools/Scale'
+import AppDefine from '../../define/AppDefine'
 
 interface NoticeBlockProps {
   logo?: string;
-  logoText?: string
+  logoText?: string;
   notices: INoticeScroll[];
-  containerStyle?: ViewStyle;
+  containerStyle?: ViewStyle | ViewStyle[];
   onPressNotice: (item: any) => any;
-  iconContainerStyle?: ViewStyle
-  logoTextStyle?: TextStyle
+  iconContainerStyle?: ViewStyle | ViewStyle[];
+  logoTextStyle?: TextStyle | TextStyle[];
+  textStyle?: TextStyle | TextStyle[];
 }
 
 const NoticeBlock = ({
   logo,
-  logoText = '公告',
+  logoText = '公 告',
   notices,
   containerStyle,
   onPressNotice,
   iconContainerStyle,
-  logoTextStyle
+  logoTextStyle,
+  textStyle
 }: NoticeBlockProps) => {
   const cleanContents = notices.map((notice, index) => ({
     label: index.toString(),
-    value: notice?.title
+    value: notice?.title,
+    content: notice?.content
   }))
 
   return (
-    <TouchableOpacity style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle]}>
       <View style={[styles.iconContainer, iconContainerStyle]}>
         {logo ? <FastImage
           resizeMode={'stretch'}
@@ -42,15 +46,15 @@ const NoticeBlock = ({
       </View>
       <View style={styles.noticContainer}>
         <MarqueeHorizontal
-          width={scale(430)}
-          height={'70%'}
-          textStyle={styles.textStyle}
+          width={AppDefine.width * 0.85}
+          height={null}
+          textStyle={textStyle}
           textList={cleanContents}
           speed={60}
           onTextClick={onPressNotice}
         />
       </View>
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -64,17 +68,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    flex: 70,
     alignItems: 'center',
   },
   iconImage: {
-    width: '30%',
+    width: '100%',
     aspectRatio: 1,
   },
   noticContainer: {
-    flex: 450,
+    flex: 1,
     height: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textStyle: {
     color: '#999999',

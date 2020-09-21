@@ -18,6 +18,16 @@ export interface Info {
 export interface FloatADModel {
     code: number;
     msg: string;
-    data?: any;
+    data?: Data[];
     info: Info;
+}
+
+export interface Data {
+    image: string;
+    linkCategory: string;
+    linkPosition: string;
+    lotteryGameType: string;
+    position: number;
+    realIsPopup: number;
+    realSupportTrial: number;
 }

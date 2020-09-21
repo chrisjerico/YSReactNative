@@ -33,6 +33,8 @@ import HomeBase from "../../../public/components/HomeBase"
 import Account from "./Account"
 import QuickStart from "./QuickStart"
 import RankListCP from "../../../public/widget/RankList"
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
 
 
 const KSHomePage = ({ navigation }) => {
@@ -67,8 +69,14 @@ const KSHomePage = ({ navigation }) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
 
     })
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+    switch (Platform.OS) {
+      case "ios":
+          OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
+        break;
+      case "android":
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
+        break;
+    }
   }
   const init = async () => {
     try {
@@ -323,19 +331,25 @@ const TurntableListItem = () => {
             }
           ])
         } else {
-          if (Platform.OS != 'ios') return;
           const turntableListModel = Object.assign({ clsName: 'DZPModel' }, turntableList?.[0]);
-          OCHelper.call(({ vc }) => ({
-            vc: {
-              selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-              args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
-              args2: [turntableListModel]
-            },
-            ret: {
-              selectors: 'SGBrowserView.showMoveView:yDistance:',
-              args1: [vc, 100],
-            },
-          }));
+          switch (Platform.OS) {
+            case "ios":
+              OCHelper.call(({ vc }) => ({
+                vc: {
+                  selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
+                  args1: [NSValue.CGRectMake(100, 100, AppDefine.width - 60, AppDefine.height - 60),],
+                  args2: [turntableListModel]
+                },
+                ret: {
+                  selectors: 'SGBrowserView.showMoveView:yDistance:',
+                  args1: [vc, 100],
+                },
+              }));
+              break;
+            case "android":
+
+              break;
+          }
         }
       }}>
         <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }} >

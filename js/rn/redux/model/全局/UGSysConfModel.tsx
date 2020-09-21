@@ -18,7 +18,8 @@ export class UGTabbarItem {
   status: boolean;//1=显示建设中页面；0=正常显示
   isHot: boolean;
   icon_hot: string;//热门图片路径
- }
+}
+
 
 export enum UGUserCenterType {
   存款 = 1,
@@ -40,15 +41,17 @@ export enum UGUserCenterType {
   全民竞猜 = 17,
   开奖走势 = 18,
   QQ客服 = 19,
-
+  开奖网 = 20,
   // 自定义（从100+开始写，前面的都是后台定制的）
-  资金明细 = 999,
   六合彩 = 100,
   聊天室 = 101,
   每日签到 = 102,
   登出 = 103,
   游戏大厅 = 104,
-  我的页 = 105
+  我的页 = 105,
+  存款纪录 = 106,
+  取款纪录 = 107,
+  资金明细 = 108
 }
 
 // 我的页功能按钮
@@ -162,4 +165,23 @@ export default class UGSysConfModel {
 
   mobileMenu?: Array<UGTabbarItem>; // 底部Tab按钮
   userCenter?: Array<UGUserCenterItem>; // 我的页功能按钮
+
+  // 登陸頁
+  loginVCode?: boolean;
+  login_to?: "0" | "1";
+  adSliderTimer?: number;
+  appDownloadUrl?: string;
+  // 我的頁
+  userCenterItems?: Array<userCenterItems>;
+}
+
+interface userCenterItems {
+  bmImgName: string;
+  code: number;
+  defaultImgName: string;
+  isDefaultLogo: boolean;
+  isLoading: boolean;
+  lhImgName: string;
+  logo: string;
+  name: string;
 }

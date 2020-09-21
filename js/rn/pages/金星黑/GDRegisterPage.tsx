@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert } from "react-native"
+import {View, Text, ScrollView, TextInput, TouchableOpacity, TextInputProps, Image, Alert, Platform} from "react-native"
 import React, { useEffect, useState, useRef, useMemo, memo } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
@@ -141,11 +141,22 @@ const GDRegisterPage = () => {
           true;`;
     const [webviewHeight, setWebViewHeight] = useState(0)
     const hadnleMessage = (e: WebViewMessageEvent) => {
-      if (typeof e?.nativeEvent?.data == 'string') {
-        setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+      // if (typeof e?.nativeEvent?.data == 'string') {
+      //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+      // } else {
+      //   console.log("response" + JSON.stringify(e.nativeEvent.data))
+      //   onChange(e?.nativeEvent?.data)
+      // }
+      let eData = e?.nativeEvent?.data;
+      console.log("sliding response: " + eData)
+
+      if (eData?.startsWith('{')
+        && eData?.endsWith('}')) {
+        onChange(JSON.parse(eData))
+      } else if (typeof eData == 'string') {
+        setWebViewHeight(parseInt(eData) * 1.5)
       } else {
-        console.log("response" + JSON.stringify(e.nativeEvent.data))
-        onChange(e?.nativeEvent?.data)
+        onChange(eData)
       }
     }
     const webViewRef = useRef<WebView>()
@@ -377,6 +388,15 @@ const Header = () => {
     <View style={{ height: 44 + top, paddingTop: top, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
       <TouchableWithoutFeedback onPress={() => {
         pop();
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            break;
+          case 'android':
+
+            break;
+        }
+
       }}>
         <Icon name="keyboard-arrow-left" type="materialIcon" color="rgba(142, 142, 147,1)" size={30} />
       </TouchableWithoutFeedback>

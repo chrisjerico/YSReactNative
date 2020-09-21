@@ -1,14 +1,10 @@
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Router, RouterType } from './Router';
-import { UGBasePageProps } from '../../pages/base/UGPage';
 
 export enum PageName {
   TransitionPage = 'TransitionPage',
   XBJLoginPage = 'XBJLoginPage',
   XBJRegisterPage = 'XBJRegisterPage',
   XBJMinePage = 'XBJMinePage',
-  JDPromotionListPage = 'JDPromotionListPage',
+  JDPromotionListPage = 'JDPromotionListPage', //优惠券列表
   XBJHomePage = 'XBJHomePage',
   LCHomePage = 'LCHomePage',
   LCMinePage = 'LCMinePage',
@@ -22,21 +18,31 @@ export enum PageName {
   ZHTYMinePage = 'ZHTYMinePage',
   LHTHomePage = 'LHTHomePage',
   LHTMinePage = 'LHTMinePage',
-  ZLHomePage = 'ZLHomePage',
-  ZLLoginPage = 'ZLLoginPage',
-  ZLMinePage = 'ZLMinePage',
-  ZLRegisterPage = 'ZLRegisterPage',
+  LHTSignInPage = "LHTSignInPage",
+  LHTSignUpPage = "LHTSignUpPage",
+  ZLHomePage = 'ZLHomePage', //尊龙主页
+  ZLLoginPage = 'ZLLoginPage',//尊龙登录
+  ZLMinePage = 'ZLMinePage',//尊龙我的
+  ZLRegisterPage = 'ZLRegisterPage',//尊龙注册
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
   BZHSignInPage = 'BZHSignInPage',
-  BZHRegisterPage = 'BZHRegisterPage',
+  BZHSignUpPage = 'BZHSignUpPage',
+  BZHGameLobbyPage = 'BZHGameLobbyPage',
   GDBHomePage = 'GDBHomePage',
   GDBMinePage = "GDBMinePage",
+  GDRegisterPage = "GDRegisterPage",
   GDLoginPage = "GDLoginPage",
   WNZHomePage = 'WNZHomePage',
   WNZMinePage = 'WNZMinePage',
-  GDRegisterPage = "GDRegisterPage",
+  WNZSignUpPage = 'WNZSignUpPage',
+  WNZSignInPage = 'WNZSignInPage',
+  WNZGameLobbyPage = 'WNZGameLobbyPage',
   PromotionListPage = "PromotionListPage",
+  LLHomePage = "LLHomePage",
+  LLMinePage = "LLMinePage",
+  LLLoginPage = "LLLoginPage",
+  LLRegisterPage = "LLRegisterPage",
   KSHomePage = "KSHomePage",
   KSLogin = "KSLogin",
   KSRegister = "KSRegister",
@@ -48,6 +54,7 @@ export enum PageName {
   VietnamRegister = "VietnamRegister",
   VietnamMine = "VietnamMine",
   VietnamGameList = "VietnamGameList",
+  LHTPreferencePage = "LHTPreferencePage",
   TrendView = "TrendView",
 }
 

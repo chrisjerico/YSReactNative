@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Header, HeaderProps, Button } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { deepMergeProps } from '../tools/FUtils';
-import { View, ViewProps } from 'react-native';
+import {Platform, View, ViewProps} from 'react-native';
 import {  } from '../navigation/Navigation';
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { pop } from '../navigation/RootNavigation';
@@ -33,6 +33,11 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
         buttonStyle={[{ backgroundColor: 'transparent', marginLeft: -8 }, style]}
         onPress={() => {
           pop();
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+          }
         }}
       />
     );

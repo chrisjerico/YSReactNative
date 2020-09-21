@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, ViewStyle } from 'react-native';
+import { ViewStyle } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import AppDefine from '../define/AppDefine';
@@ -10,6 +10,8 @@ interface SlidingVerificationProps {
 }
 
 const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationProps) => {
+
+  //const host = 'http://test60f.fhptcdn.com'
   const webViewScript = `setTimeout(function() { 
       document.getElementById('app').style.background = 'transparent'
       window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight); 
@@ -17,11 +19,22 @@ const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationPr
     true;`;
   const [webviewHeight, setWebViewHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
-    if (typeof e?.nativeEvent?.data == 'string') {
-      setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+    // if (typeof e?.nativeEvent?.data == 'string') {
+    //   setWebViewHeight(parseInt(e?.nativeEvent?.data) * 1.5)
+    // } else {
+    //   console.log("response" + JSON.stringify(e.nativeEvent.data))
+    //   onChange(e?.nativeEvent?.data)
+    // }
+    let eData = e?.nativeEvent?.data;
+    console.log("sliding response: " + eData)
+
+    if (eData?.startsWith('{')
+      && eData?.endsWith('}')) {
+      onChange(JSON.parse(eData))
+    } else if (typeof eData == 'string') {
+      setWebViewHeight(parseInt(eData) * 1.5)
     } else {
-      console.log("response" + JSON.stringify(e.nativeEvent.data))
-      onChange(e?.nativeEvent?.data)
+      onChange(eData)
     }
   }
   const webViewRef = useRef<WebView>()
@@ -43,8 +56,5 @@ const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationPr
     />
   );
 }
-
-const styles = StyleSheet.create({
-})
 
 export default SlidingVerification

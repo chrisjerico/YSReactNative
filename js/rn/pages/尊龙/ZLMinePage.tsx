@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
+import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform} from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import { IGlobalState, UGStore } from "../../redux/store/UGStore"
@@ -22,6 +22,8 @@ import { httpClient } from "../../public/network/httpClient"
 import { YueBaoStatModel } from "../../public/network/Model/YueBaoStatModel"
 import { navigationRef, pop } from "../../public/navigation/RootNavigation"
 import { UGBasePageProps } from "../base/UGPage"
+import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {Toast} from "../../public/tools/ToastUtils";
 
 const ZLMinePage = (props: UGBasePageProps) => {
     const { setProps } = props;
@@ -33,14 +35,44 @@ const ZLMinePage = (props: UGBasePageProps) => {
     const { UGUserCenterItem } = useMemberItems()
     const requestBalance = async () => {
         try {
-            OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+
+            showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+            //     break;
+            //   case 'android':
+            //       //TODO
+            //     break;
+            // }
+
             const { data, status } = await APIRouter.user_balance_token()
             UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } })
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+
+            // switch (Platform.OS) {
+            //     case 'ios':
+            //         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+            //         break;
+            //     case 'android':
+            //         //TODO
+            //         break;
+            // }
+            Toast('刷新成功！')
         } catch (error) {
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            Toast('刷新失败请稍后再试！')
+            // switch (Platform.OS) {
+            //   case 'ios':
+            //       OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+            //     break;
+            //   case 'android':
+            //     //TODO
+            //     break;
+            // }
             console.log(error)
         }
+
+        hideLoading()
     }
     const init = async () => {
         try {
@@ -237,18 +269,37 @@ const ZLHeader = () => {
     const { uid = "", unreadMsg } = UGStore.globalProps.userInfo;
     const [showBackBtn, setShowBackBtn] = useState(false);
 
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
-        const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
-        show != showBackBtn && setShowBackBtn(show);
-    })
+    let topDistance = 0;
+    switch (Platform.OS) {
+      case 'ios':
+        topDistance = insets.top;
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+          const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
+          show != showBackBtn && setShowBackBtn(show);
+        })
+        break;
+      case 'android':
+
+        break;
+    }
+
     return (
         <View style={{
-            width, height: 68 + insets.top, paddingTop: insets.top, backgroundColor: '#1a1a1e',
+            width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
             flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
             paddingHorizontal: 20
         }}>
             {showBackBtn && (<TouchableOpacity onPress={() => {
-                pop();
+                if (!pop()) {
+                    switch (Platform.OS) {
+                      case 'ios':
+                          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                        break;
+                      case 'android':
+
+                        break;
+                    }
+                }
             }} style={{ paddingRight: 5 }}>
                 <Image style={{ width: 25, height: 25, }} source={{ uri: "back_icon" }} />
             </TouchableOpacity>)}

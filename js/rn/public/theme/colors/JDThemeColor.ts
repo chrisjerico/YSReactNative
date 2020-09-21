@@ -1,6 +1,6 @@
-import {UGThemeColor} from '../UGThemeColor';
+import { UGThemeColor } from '../UGThemeColor';
 // 经典
-export const JDThemeColor: {[x: string]: UGThemeColor} = {
+export const JDThemeColor: { [x: string]: UGThemeColor } = {
   //经典 1蓝色
   经典1: {
     skitType: '经典1',

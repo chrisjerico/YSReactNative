@@ -4,6 +4,10 @@ import { StackActions, NavigationContainerRef, TabActions } from '@react-navigat
 import { OCHelper } from '../define/OCHelper/OCHelper';
 import { PageName } from './Navigation';
 import { Router, RouterType } from './Router';
+import {Platform} from "react-native";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {ugLog} from "../tools/UgLog";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
@@ -21,7 +25,17 @@ export function jumpTo<P extends object>(page: PageName, props?: P): boolean {
 
 export function pop(): boolean {
     const count = navigationRef?.current?.getRootState().routes.length;
-    count < 3 && OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+    if (count < 3) {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+            case "ios":
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+                break;
+            case "android":
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+                break;
+        }
+    }
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
     if (count > 1) {
         return true;
@@ -34,7 +48,19 @@ export function pop(): boolean {
 export function popToRoot() {
     const canPop = navigationRef?.current?.getRootState().routes.length > 1;
     canPop && navigationRef?.current?.dispatch(StackActions.popToTop());
-    OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+    //检查一下Native主页下面的tab是显示还是隐藏
+    switch (Platform.OS) {
+        case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            break;
+        case "android":
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+            break;
+    }
+}
+
+export function getStackLength() {
+    return navigationRef?.current?.getRootState().routes.length;
 }
 
 // 获取当前页面
@@ -78,14 +104,27 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
             }
         } else {
             console.log('跳转到过渡页');
+
+            //检查一下Native主页下面的tab是显示还是隐藏
             if (action == RouterType.Stack) {
-                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+                switch (Platform.OS) {
+                  case "ios":
+                      OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+                    break;
+                  case "android":
+                      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+                    break;
+                }
+
                 navigationRef?.current?.dispatch(StackActions.push(page, props));
             } else {
                 popToRoot();
                 navigationRef?.current?.dispatch(TabActions.jumpTo(PageName.TransitionPage, { jumpTo: page, props: props }));
             }
         }
-    } catch (e) { }
+    } catch (e) {
+        ugLog("error=", e)
+    }
+
     return true;
 }

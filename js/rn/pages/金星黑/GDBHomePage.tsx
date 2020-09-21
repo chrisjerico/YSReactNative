@@ -32,6 +32,8 @@ import RankListCP from "../../public/widget/RankList"
 import AutoHeightWebView from "react-native-autoheight-webview"
 import { NSValue } from "../../public/define/OCHelper/OCBridge/OCCall"
 import Banner from "../尊龙/CP/Banner"
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 const GDBHomePage = ({ navigation }) => {
   const { width, height } = useDimensions().window
   const { onPopViewPress } = usePopUpView()
@@ -48,8 +50,15 @@ const GDBHomePage = ({ navigation }) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
 
     })
-    if (Platform.OS != 'ios') return;
-    OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data);
+        break;
+    }
+
   }
   useEffect(() => {
     let string = ""
@@ -418,7 +427,7 @@ const AcctountDetail = () => {
         <TouchableOpacity onPress={() => {
           navigate(PageName.GDLoginPage, {})
         }} style={{ backgroundColor: '#cfa461', width: 115, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-          <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录</Text>
+          <Text style={{ color: 'white', fontSize: 16.5, marginLeft: 3 }}>登录A</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
           navigate(PageName.GDRegisterPage, {})

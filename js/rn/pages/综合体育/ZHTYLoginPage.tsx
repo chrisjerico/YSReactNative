@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {View, TouchableOpacity, Text, Platform} from 'react-native';
+import {View, TouchableOpacity, Text, Platform, PlatformAndroidStatic, PlatformIOSStatic} from 'react-native';
 import UGBasePage from '../base/UGBasePage';
 import {ZHTYLoginProps, ZHTYLoginStateToProps} from './ZHTYLoginProps';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
@@ -17,6 +17,11 @@ import {Navigation, PageName} from '../../public/navigation/Navigation';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import {Icon, Button} from 'react-native-elements';
 import {Res} from '../../Res/icon/Resources';
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {Toast} from "../../public/tools/ToastUtils";
+import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
 class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   account: string = null; // 账号
@@ -28,16 +33,32 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   constructor(props) {
     super(props);
     async function getLocalPwd(this: ZHTYLoginPage) {
-      let isRemember: boolean = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
-      if (isRemember) {
-        this.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
-        this.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
-      }
-      if (this.props.rememberPassword == isRemember) {
+        let isRemember = false;
+
+        switch (Platform.OS) {
+            case 'ios':
+                isRemember = await OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd']);
+                if (isRemember) {
+                    this.account = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName']);
+                    this.pwd = await OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw']);
+                }
+                break;
+            case 'android':
+              let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.LOGIN_INFO})
+              let loginInfo = JSON.parse(result);
+              isRemember = loginInfo?.isRemember;
+              if (loginInfo?.isRemember) {
+                this.account = loginInfo?.account;
+                this.pwd = loginInfo?.pwd;
+              }
+                break;
+        }
+
+        if (this.props.rememberPassword == isRemember) {
         this.setState({});
-      } else {
+        } else {
         this.setProps({rememberPassword: isRemember});
-      }
+        }
     }
     getLocalPwd.bind(this)();
   }
@@ -59,49 +80,85 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
       err = '请完成滑动验证';
     }
     if (err) {
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      switch (Platform.OS) {
+        case "ios":
+          OCHelper.call('HUDHelper.showMsg:', [err]);
+          break;
+        case "android":
+          Toast('你的密码过于简单，可能存在风险，请把密码修改成复杂密码')
+          break;
+      }
       return;
     }
-    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+
+    showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
+    // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+
     NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
       .then(data => {
         console.log('登录成功');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        Toast('登录成功！')
 
         async function didLogin(this: ZHTYLoginPage) {
-          // 退出旧账号（试玩账号）
-          var user = await OCHelper.call('UGUserModel.currentUser');
-          if (user) {
-            console.log('退出旧账号');
-            console.log(user);
-            var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
-            await OCHelper.call('UGUserModel.setCurrentUser:');
-          }
+          switch (Platform.OS) {
+            case 'ios':
+              // 退出旧账号（试玩账号）
+              var user = await OCHelper.call('UGUserModel.currentUser');
+              if (user) {
+                console.log('退出旧账号');
+                console.log(user);
+                var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+                await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{token: sessid}]);
+                await OCHelper.call('UGUserModel.setCurrentUser:');
+              }
 
-          // 保存数据
-          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+              // 保存数据
+              await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [this.props.rememberPassword, 'isRememberPsd']);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.account : '', 'userName']);
+              await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [this.props.rememberPassword ? this.pwd : '', 'userPsw']);
+              await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
 
-          // 去下一页
-          var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
-          if (simplePwds.indexOf(this.pwd) > -1) {
-            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController']},
-              true,
-            ]);
-          } else {
-            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              // 去下一页
+              var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+              if (simplePwds.indexOf(this.pwd) > -1) {
+                await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+                await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+                  {selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController']},
+                  true,
+                ]);
+              } else {
+                await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              }
+              break;
+            case 'android':
+              const accountData = {
+                account: this.account,
+                pwd: this.pwd,
+                isRemember: this.props.rememberPassword,
+              };
+
+              await ANHelper.callAsync(CMD.SAVE_DATA,
+                {
+                  key: NA_DATA.LOGIN_INFO,
+                  ...accountData,
+                  ...data
+                });
+              break;
           }
         }
         didLogin.bind(this)();
       })
       .catch((err: Error) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+            break;
+          case 'android':
+            Toast(err?.message)
+            break;
+        }
         if ((this.errorTimes += 1) > 3) {
           this.setState({});
         }
@@ -208,8 +265,13 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
             titleStyle={{fontSize: 16}}
             onPress={() => {
               Navigation.pop();
-              if (Platform.OS == 'ios') {
-                OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+              switch (Platform.OS) {
+                case 'ios':
+                  OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+                  break;
+                case 'android':
+
+                  break;
               }
             }}
           />

@@ -12,6 +12,11 @@ import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { navigationRef } from '../../public/navigation/RootNavigation'
+import { ugLog } from "../../public/tools/UgLog";
+import StringUtils from "../../public/tools/StringUtils";
+import { Platform } from "react-native";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 
 
 // Props
@@ -25,7 +30,7 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   vars?: V;// 获取成员变量
 
   // —————————— 配置UI ——————————
-  didFocus: (p: UGBasePageProps) => void;// 成为焦点时回调
+  didFocus?: (p: UGBasePageProps) => void;// 成为焦点时回调
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps;
@@ -64,7 +69,7 @@ export default (Page: Function) => {
         navigation.removeListener('focus', null)
         navigation.addListener('focus', () => {
           const { name, params } = this.props.route
-          console.log('成为焦点', name, params)
+          ugLog('成为焦点', name, params)
           if (lastParams !== params) {
             // 跳转时参数设置到props
             lastParams = params;
@@ -74,19 +79,29 @@ export default (Page: Function) => {
         })
         navigation.addListener('transitionEnd', (e) => {
           if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            //检查一下Native主页下面的tab是显示还是隐藏
+            switch (Platform.OS) {
+              case "ios":
+                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+                break;
+              case "android":
+                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
+                break;
+            }
           }
         })
         // 监听dispatch
         this.unsubscribe = UGStore.subscribe(route.name, (() => {
           this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
+          console.log('渲染', this.props.route.name);
           this.setState({});
         }).bind(this));
       }
 
       // 设置props
       const defaultProps: UGBasePageProps = {
-        backgroundColor: [UGColor.BackgroundColor1],
+        //Android渐变色数量必须 >= 2
+        backgroundColor: [UGColor.BackgroundColor1, UGColor.BackgroundColor1],
         navbarOpstions: { hidden: true, gradientColor: Skin1.navBarBgColor },
       };
       this.newProps = deepMergeProps(defaultProps, this.props)
@@ -104,17 +119,17 @@ export default (Page: Function) => {
     }
 
     render() {
-      console.log('渲染', this.props.route.name);
-      let { backgroundColor = [], backgroundImage = '', navbarOpstions = {} } = this.newProps;
+      // console.log('渲染', this.props.route.name);
+      let { backgroundColor = [UGColor.BackgroundColor1, UGColor.BackgroundColor1], backgroundImage = '', navbarOpstions = {} } = this.newProps;
 
       return (
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
+            <Page  {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
         </LinearGradient>
-      )
+      ); // navigation={this.props.navigation}
     }
   }
 }

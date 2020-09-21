@@ -17,6 +17,11 @@ import { Toast } from '../../public/tools/ToastUtils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AppDefine from '../../public/define/AppDefine';
 import { Res } from '../../Res/icon/Resources';
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
+import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
+import {logoutAndroid} from "../../public/define/ANHelper/InfoHelper";
 
 class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
   // 成为焦点页面
@@ -24,10 +29,23 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
 
   requestData() {
     // 获取功能按钮列表
-    OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
-      let dataArray = list.map(item => new UGUserCenterItem(item));
-      this.setProps({ dataArray: dataArray });
-    });
+    //TODO Android
+
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
+          let dataArray = list.map(item => new UGUserCenterItem(item));
+          this.setProps({ dataArray: dataArray });
+        });
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
+          .then((data) => {
+            const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
+            this.setProps({ dataArray: userCenterItems });
+          })
+        break;
+    }
   }
 
   renderContent(): React.ReactNode {
@@ -149,14 +167,18 @@ class ZHTYMinePage extends UGBasePage<ZHTYMineProps> {
                   onPress: async () => {
                     NetworkRequest1.user_logout();
 
-                    if (Platform.OS == 'ios') {
-                      await OCHelper.call('UGUserModel.setCurrentUser:', []);
-                      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-                      await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-                      Toast('退出成功');
-                    } else {
-                      // TODO 安卓
+                    switch (Platform.OS) {
+                      case 'ios':
+                        await OCHelper.call('UGUserModel.setCurrentUser:', []);
+                        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
+                        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+                        break;
+                      case 'android':
+                        await ANHelper.callAsync(CMD.LOG_OUT)
+                        break;
                     }
+
+                    Toast('退出成功');
                   },
                 },
               ]);

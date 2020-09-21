@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, Text, ScrollView, FlatList, Image } from "react-native"
+import {View, TouchableOpacity, Text, ScrollView, FlatList, Image, Platform} from "react-native"
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSafeArea } from "react-native-safe-area-context"
 import FastImage from "react-native-fast-image"
@@ -18,6 +18,8 @@ import APIRouter from "../../../public/network/APIRouter"
 import { UGUserCenterType } from "../../../redux/model/全局/UGSysConfModel"
 import PushHelper from "../../../public/define/PushHelper"
 import { pop } from "../../../public/navigation/RootNavigation"
+import {hideLoading, showLoading, UGLoadingType} from "../../../public/widget/UGLoadingCP";
+import {Toast} from "../../../public/tools/ToastUtils";
 const KSMine = ({ navigation }) => {
   const userStore = UGStore.globalProps.userInfo;
   const { width, } = useDimensions().window
@@ -27,14 +29,21 @@ const KSMine = ({ navigation }) => {
   const { UGUserCenterItem } = useMemberItems()
   const requestBalance = async () => {
     try {
-      OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+      showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+      // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在刷新金额...']);
+
       const { data, status } = await APIRouter.user_balance_token()
       UGStore.dispatch({ type: 'merge', userInfo: { balance: data.data.balance } });
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+
+      // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['刷新成功！']);
+      Toast('刷新成功！')
     } catch (error) {
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
+      Toast('刷新失败请稍后再试！')
+      // OCHelper.call('SVProgressHUD.showErrorWithStatus:', [error?.message ?? '刷新失败请稍后再试']);
       console.log(error)
     }
+
+    hideLoading()
   }
   const init = async () => {
     try {
@@ -182,7 +191,14 @@ const Header = () => {
       <View style={{ height: 45, backgroundColor: "#1a1a1e", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 15 }}>
         <TouchableOpacity style={{ position: 'absolute', left: 15 }} onPress={() => {
           pop();
-          OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+          switch (Platform.OS) {
+            case "ios":
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case "android":
+              //TODO
+              break;
+          }
         }}>
           <Icon name='ios-arrow-back' type="ionicon" color="white" size={30} />
         </TouchableOpacity >
