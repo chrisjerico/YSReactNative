@@ -187,7 +187,6 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      ugLog('fetchSms extra', extra)
       showLoading({ type: UGLoadingType.Loading });
       const { data } = await APIRouter.secure_smsCaptcha(extra)
       const { code, msg } = data ?? {}

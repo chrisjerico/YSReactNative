@@ -198,7 +198,7 @@ const HJHomePage = ({navigation, setProps}) => {
           <GameRow games={homeGames}
                    onScroll={(e) => {
                      //滚动的时候选择左边的栏目
-                     let index = Math.floor(e.nativeEvent.contentOffset.y / gameRowContentHeight);
+                     let index = Math.round(e.nativeEvent.contentOffset.y / gameRowContentHeight);
                      const iconsLength = anyLength(homeGames.data.icons) - 1;
                      index = index > iconsLength ? iconsLength : index;
                      index = index < 0 ? 0 : index;
