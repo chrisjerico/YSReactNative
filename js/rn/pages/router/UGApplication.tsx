@@ -62,7 +62,7 @@ import HJHomePage from "../黑金/HJHomePage";
 import HJMinePage from "../黑金/HJMinePage";
 import HJRegisterPage from "../黑金/HJRegisterPage";
 import HJLoginPage from "../黑金/HJLoginPage";
-import HJAllCategoryPage from "../黑金/cate/HJAllCategoryPage";
+import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -137,7 +137,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJRegisterPage} component={UGPage(HJRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJMinePage} component={UGPage(HJMinePage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJAllCategoryPage} component={UGPage(HJAllCategoryPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJGameCategoryPage} component={UGPage(HJGameCategoryPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={UGPage(GDLoginPage)} />

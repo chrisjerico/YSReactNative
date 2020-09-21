@@ -15,7 +15,7 @@ import {pop} from "../../../public/navigation/RootNavigation";
  * 所有分类
  * @constructor
  */
-const HJAllCategoryPage = () => {
+const HJGameCategoryPage = () => {
 
   return (
     <>
@@ -156,4 +156,4 @@ const _styles = StyleSheet.create({
 })
 
 
-export default HJAllCategoryPage
+export default HJGameCategoryPage
