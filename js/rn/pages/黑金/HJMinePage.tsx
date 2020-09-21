@@ -218,7 +218,7 @@ const ZLHeader = () => {
         </View>
       </TouchableWithoutFeedback>
       <View style={CommStyles.flex}/>
-      <Text style={_styles.title}> 个人中心 </Text>
+      <Text style={_styles.title}>个人中心</Text>
       <View style={CommStyles.flex}/>
       <TouchableOpacity onPress={() => {
         PushHelper.pushUserCenterType(UGUserCenterType.站内信)

@@ -1,4 +1,13 @@
-import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native"
+import {
+  FlatList,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from "react-native"
 import React from 'react'
 import SafeAreaHeader from "../../../public/views/tars/SafeAreaHeader";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
@@ -9,13 +18,36 @@ import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
 import FastImage from "react-native-fast-image";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import {UGStore} from "../../../redux/store/UGStore";
-import {pop} from "../../../public/navigation/RootNavigation";
+import {navigate, pop} from "../../../public/navigation/RootNavigation";
+import {Icon, List} from "../../../public/network/Model/HomeGamesModel";
+import {gameLeftColumnHeight} from "../view/GameColumn";
+import {PageName} from "../../../public/navigation/Navigation";
+import GameRowItem from "../view/GameRowItem";
+import {ugLog} from "../../../public/tools/UgLog";
 
 /**
  * 所有分类
  * @constructor
  */
-const HJGameCategoryPage = () => {
+const HJGameCategoryPage = (props: any) => {
+
+  const {route: {params: {gameItem}}} = props
+
+  //绘制每一个条目
+  const _renderItem = ({item, index}) => {
+
+    return <TouchableWithoutFeedback onPress={() => {
+      //ugLog('item=', JSON.stringify(item))
+      PushHelper.pushHomeGame(item)
+    }}>
+      <FastImage
+        style={_styles.item}
+        source={{uri: item.icon}}>
+        <Text style={_styles.itemText}
+              numberOfLines={1} >{item.name}</Text>
+      </FastImage>
+    </TouchableWithoutFeedback>
+  };
 
   return (
     <>
@@ -33,15 +65,11 @@ const HJGameCategoryPage = () => {
       }
 
       <ZLHeader/>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          backgroundColor: HJThemeColor.黑金.homeContentSubColor,
-        }} >
 
-      <Text>AFJKDSLJFDLSKAJ</Text>
-
-      </ScrollView>
+      <FlatList style={_styles.list}
+                data={gameItem.list}
+                numColumns={4}
+                renderItem={_renderItem}/>
 
     </>
   )
@@ -49,24 +77,6 @@ const HJGameCategoryPage = () => {
 }
 
 const ZLHeader = () => {
-  // const {width, height} = useDimensions().window
-  // const insets = useSafeArea();
-  const {uid = "", unreadMsg} = UGStore.globalProps.userInfo;
-  // const [showBackBtn, setShowBackBtn] = useState(false);
-  //
-  // let topDistance = 0;
-  // switch (Platform.OS) {
-  //   case 'ios':
-  //     topDistance = insets.top;
-  //     OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
-  //       const show = ocCount > 1 || navigationRef?.current?.getRootState().routes.length > 1;
-  //       show != showBackBtn && setShowBackBtn(show);
-  //     })
-  //     break;
-  //   case 'android':
-  //
-  //     break;
-  // }
 
   return (
     <View style={{
@@ -86,21 +96,9 @@ const ZLHeader = () => {
         </View>
       </TouchableWithoutFeedback>
       <View style={CommStyles.flex}/>
-      <Text style={_styles.title}> 个人中心 </Text>
+      <Text style={_styles.title}>游戏中心</Text>
       <View style={CommStyles.flex}/>
-      <TouchableOpacity onPress={() => {
-        PushHelper.pushUserCenterType(UGUserCenterType.站内信)
-      }} >
-        <FastImage style={_styles.top_bt}
-                   source={{uri: "http://test10.6yc.com/views/mobileTemplate/16/images/notice.png"}}/>
-        {
-          unreadMsg > 0 ? <View style={_styles.read_flag}>
-              <Text style={{color: 'white', fontSize: scale(16)}}>{unreadMsg}</Text>
-            </View>
-            : null
-        }
 
-      </TouchableOpacity>
     </View>
   )
 }
@@ -114,44 +112,24 @@ const _styles = StyleSheet.create({
     color: 'white',
     fontSize: scale(24),
   },
-  read_flag: {
-    position: 'absolute',
-    top: -scale(8),
-    right: -scale(8),
-    backgroundColor: 'red',
-    height: scale(24),
-    width: scale(24),
-    borderRadius: scale(99),
-    justifyContent: 'center',
-    alignItems: 'center'
+  list: {
+    flex: 1,
+    backgroundColor: HJThemeColor.黑金.homeContentSubColor,
   },
-  featureBlock: {
-    marginHorizontal: scale(16),
-    paddingVertical: scale(16),
-    paddingHorizontal: scale(50),
-    borderRadius: scale(16),
-  },
-  server_container: {
-    width: '100%',
-    height: '100%',
+  item: {
+    flex: 1,
+    margin: scale(12),
+    aspectRatio: 1,
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    position: 'absolute'
-  },
-  feature_bt: {
-    width: '25%',
-    borderLeftColor: HJThemeColor.黑金.textColor3,
-    borderLeftWidth: 1
-  },
-  server: {
-    width: '25%',
-    marginBottom: scale(140),
-  },
-  log_out: {
-    height: scale(74),
-    marginTop: scale(26),
-    marginHorizontal: scale(16),
     borderRadius: scale(12),
+  },
+  itemText: {
+    width: '100%',
+    marginLeft: scale(4),
+    marginBottom: scale(4),
+    fontSize: scale(20),
+    color: 'white',
+    backgroundColor: '#00000022',
   },
 })
 

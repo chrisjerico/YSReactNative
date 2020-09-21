@@ -203,7 +203,7 @@ const HJHomePage = ({navigation, setProps}) => {
                    }}
                    listRef={gameListRef}
                    clickItem={(item) => {
-                     ugLog('item=', JSON.stringify(item))
+                     //ugLog('item=', JSON.stringify(item))
                      PushHelper.pushHomeGame(item)
 
                    }}/>
@@ -277,7 +277,7 @@ const HJHomePage = ({navigation, setProps}) => {
 
       <ActivityComponent
         refreshing={false}
-        containerStyle={{ top: scale(250), right: 0 }}
+        containerStyle={{top: scale(250), right: 0}}
         show={uid && redBag?.data && !isTest}
         logo={redBag?.data?.redBagLogo}
         onPress={() => {
@@ -286,7 +286,7 @@ const HJHomePage = ({navigation, setProps}) => {
       />
       <ActivityComponent
         refreshing={false}
-        containerStyle={{ top: scale(400), right: 0 }}
+        containerStyle={{top: scale(400), right: 0}}
         enableFastImage={false}
         show={uid && turntableList?.data && !isTest}
         logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
@@ -295,7 +295,7 @@ const HJHomePage = ({navigation, setProps}) => {
         }}
       />
       {floatAds?.data?.map((item: any, index) => {
-        const { image, position, linkCategory, linkPosition } = item
+        const {image, position, linkCategory, linkPosition} = item
         return (
           <ActivityComponent
             key={index}

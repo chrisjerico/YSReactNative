@@ -54,7 +54,7 @@ const GameRow = ({
         <Text style={_styles.itemTitleText}>{item.name}</Text>
         <View style={CommStyles.flex}/>
         <Text style={_styles.itemTitleRightText}
-              onPress={() => navigate(PageName.HJGameCategoryPage, {})}>
+              onPress={() => navigate(PageName.HJGameCategoryPage, {gameItem: item})}>
           {_rightText}
         </Text>
       </View>
