@@ -9,6 +9,8 @@ import FastImage from "react-native-fast-image";
 import {gameLeftColumnHeight, gameLeftColumnTopPadding} from "./GameColumn";
 import {ugLog} from "../../../public/tools/UgLog";
 import CommStyles from "../../base/CommStyles";
+import {navigate} from "../../../public/navigation/RootNavigation";
+import {PageName} from "../../../public/navigation/Navigation";
 
 interface GameRowProps {
   games?: HomeGamesModel,
@@ -24,21 +26,23 @@ const _rightText = '查看全部 >';
  * @param games
  * @constructor
  */
-const GameRow = ({games,
+const GameRow = ({
+                   games,
                    onScroll,
                    listRef,
-                   clickItem }: GameRowProps) => {
+                   clickItem
+                 }: GameRowProps) => {
   const icons = games?.data?.icons
   const iconsLength = anyLength(icons);
   const scrollHeight = iconsLength * gameLeftColumnHeight
     - (iconsLength - 3) * gameLeftColumnTopPadding;
 
   //绘制每一个条目
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({item, index}) => {
 
     //底部偏移距离，为了让左侧栏更美观
     let bottomStyle = index == iconsLength - 1
-      ? { marginBottom: (iconsLength - 2) * gameLeftColumnHeight + 1 }
+      ? {marginBottom: (iconsLength - 2) * gameLeftColumnHeight + 1}
       : {}
 
     return <View style={[_styles.itemContainer, bottomStyle]}>
@@ -49,7 +53,10 @@ const GameRow = ({games,
           source={{uri: 'http://voezv001isqzvyxl.playgame58.com/views/mobileTemplate/28/images/icon_live.png'}}/>
         <Text style={_styles.itemTitleText}>{item.name}</Text>
         <View style={CommStyles.flex}/>
-        <Text style={_styles.itemTitleRightText}>{_rightText}</Text>
+        <Text style={_styles.itemTitleRightText}
+              onPress={() => navigate(PageName.HJAllCategoryPage, {})}>
+          {_rightText}
+        </Text>
       </View>
       <GameRowItem iconsItem={item} clickItem={clickItem}/>
     </View>
@@ -74,7 +81,7 @@ const GameRow = ({games,
     //     </View>)
     //   }
     // </ScrollView>
-    <FlatList style={[CommStyles.flex, { height: scrollHeight }]}
+    <FlatList style={[CommStyles.flex, {height: scrollHeight}]}
               data={icons}
               ref={listRef}
               onScroll={onScroll}

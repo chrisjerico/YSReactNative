@@ -1,4 +1,4 @@
-import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native"
+import {Platform, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native"
 import React from 'react'
 import {UGStore} from "../../redux/store/UGStore"
 import FastImage from "react-native-fast-image"
@@ -20,7 +20,12 @@ import ProfileBlock from "./view/ProfileBlock";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import CommStyles from "../base/CommStyles";
+import {pop} from "../../public/navigation/RootNavigation";
 
+/**
+ * 个人中心
+ * @constructor
+ */
 const HJMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
   const {
@@ -203,13 +208,15 @@ const ZLHeader = () => {
       flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
       paddingHorizontal: scale(20)
     }}>
-      <View style={_styles.top_bt}>
-        <AntDesign
-          name={'left'}
-          color={'#ffffff'}
-          size={scale(25)}
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={() => pop()}>
+        <View style={_styles.top_bt} >
+          <AntDesign
+            name={'left'}
+            color={'#ffffff'}
+            size={scale(25)}
+          />
+        </View>
+      </TouchableWithoutFeedback>
       <View style={CommStyles.flex}/>
       <Text style={_styles.title}> 个人中心 </Text>
       <View style={CommStyles.flex}/>

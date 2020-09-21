@@ -53,7 +53,7 @@ const GameColumn = ({games, selectGameIndex, clickListener}: GameRowProps) => {
   );
 }
 
-export const gameLeftColumnHeight = scale(154);//游戏左侧条目高度
+export const gameLeftColumnHeight = scale(144);//游戏左侧条目高度
 export const gameLeftColumnTopPadding = scale(32);//游戏左侧条目交叉高度
 
 const _styles = StyleSheet.create({
@@ -63,7 +63,7 @@ const _styles = StyleSheet.create({
     marginRight: scale(6),
   },
   item: {
-    width: scale(60),
+    width: scale(54),
     height: gameLeftColumnHeight,
   },
   itemTitleText: {

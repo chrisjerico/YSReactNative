@@ -27,6 +27,7 @@ export enum PageName {
   HJHomePage = 'HJHomePage', //黑金主页
   HJLoginPage = 'HJLoginPage',//黑金登录
   HJMinePage = 'HJMinePage',//黑金我的
+  HJAllCategoryPage = 'HJAllCategoryPage',//黑金分类条目
   HJRegisterPage = 'HJRegisterPage',//黑金注册
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',

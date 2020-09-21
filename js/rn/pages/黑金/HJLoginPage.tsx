@@ -16,6 +16,10 @@ import FastImage from "react-native-fast-image";
 import {UGStore} from "../../redux/store/UGStore";
 import SignInFormList from "./reg/SignInFormList";
 
+/**
+ * 登录
+ * @constructor
+ */
 const HJLoginPage = () => {
   console.disableYellowBox = true
 

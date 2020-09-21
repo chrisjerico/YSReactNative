@@ -21,6 +21,10 @@ import SignUpFormList from "./reg/SignUpFormList";
 import FastImage from "react-native-fast-image";
 import CommStyles from "../base/CommStyles";
 
+/**
+ * 注册
+ * @constructor
+ */
 const HJRegisterPage = () => {
   const {
     show,

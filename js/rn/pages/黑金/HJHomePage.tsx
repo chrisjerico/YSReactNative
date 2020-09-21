@@ -52,13 +52,10 @@ import ActivityComponent from "../../public/components/tars/ActivityComponent";
 import {getActivityPosition} from "../../public/tools/tars";
 
 /**
- *
- * @param param0     UGLotterySelectController * vc = [UGLotterySelectController new];
- vc.didSelectedItemBlock = ^(UGNextIssueModel *nextModel) {
-        [NavController1 pushViewControllerWithNextIssueModel:nextModel];
-    };
- UGNavigationController * nav = [[UGNavigationController alloc] initWithRootViewController:vc];
- [self presentViewController:nav animated:true completion:nil];
+ * 主页
+ * @param navigation
+ * @param setProps
+ * @constructor
  */
 const HJHomePage = ({navigation, setProps}) => {
 
