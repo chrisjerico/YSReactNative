@@ -13,6 +13,7 @@ import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 import {UGStore} from "../../../redux/store/UGStore";
+import {ugLog} from "../../tools/UgLog";
 
 interface UseRegisterPage {
   homePage?: PageName;
@@ -78,7 +79,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onSuccess: () => {
       hideLoading()
       ToastSuccess('注册成功')
-      navigateToHomePage()
+      navigateToSignInPage()
     },
     onError: (error) => {
       hideLoading()
@@ -107,7 +108,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     password?.length >= minLength &&
     password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
-  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) || 
+  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
   const wx_valid = weChat || necessity?.wx != Necessity.必填
@@ -262,6 +263,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   return {
     slideCodeRef,
+    phoneNumber,
     show,
     valid,
     label,
