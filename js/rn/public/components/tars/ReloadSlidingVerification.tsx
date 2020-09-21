@@ -48,7 +48,6 @@ const ReloadSlidingVerification = (
         }
         break
       case 'android':
-        ugLog('hadnleMessage e=', e)
 
         if (data?.startsWith('{')
           && data?.endsWith('}')) {

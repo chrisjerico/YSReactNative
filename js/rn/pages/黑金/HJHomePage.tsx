@@ -93,7 +93,6 @@ const HJHomePage = ({navigation, setProps}) => {
       return {label: res.id, value: res.title}
     }) ?? []
 
-    ugLog('notice = ', JSON.stringify(notice?.data?.popup))
     if (notice?.data?.popup) {
       openPopup(notice)
     }
