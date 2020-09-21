@@ -53,7 +53,7 @@ export const ToastError = (msg: any) => {
       ])
       break;
     case 'android':
-      Toast(m === 'string' ? m : '');
+      Toast(m);
       break;
   }
 }
