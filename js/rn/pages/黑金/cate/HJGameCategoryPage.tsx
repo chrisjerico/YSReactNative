@@ -1,29 +1,13 @@
-import {
-  FlatList,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
-} from "react-native"
+import {FlatList, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native"
 import React from 'react'
 import SafeAreaHeader from "../../../public/views/tars/SafeAreaHeader";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import CommStyles from "../../base/CommStyles";
 import PushHelper from "../../../public/define/PushHelper";
-import {UGUserCenterType} from "../../../redux/model/全局/UGSysConfModel";
 import FastImage from "react-native-fast-image";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {UGStore} from "../../../redux/store/UGStore";
-import {navigate, pop} from "../../../public/navigation/RootNavigation";
-import {Icon, List} from "../../../public/network/Model/HomeGamesModel";
-import {gameLeftColumnHeight} from "../view/GameColumn";
-import {PageName} from "../../../public/navigation/Navigation";
-import GameRowItem from "../view/GameRowItem";
-import {ugLog} from "../../../public/tools/UgLog";
+import {pop} from "../../../public/navigation/RootNavigation";
 
 /**
  * 所有分类
@@ -114,6 +98,7 @@ const _styles = StyleSheet.create({
   },
   list: {
     flex: 1,
+    paddingHorizontal: scale(12),
     backgroundColor: HJThemeColor.黑金.homeContentSubColor,
   },
   item: {
