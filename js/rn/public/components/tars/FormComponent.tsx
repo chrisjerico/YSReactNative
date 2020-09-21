@@ -15,11 +15,14 @@ import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
 import {anyEmpty} from "../../tools/Ext";
+import {ugLog} from "../../tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 
 export interface FormComponentProps {
   onChangeText?: any;
   value?: string;
   placeholder: string;
+  extra?: string;//某些时候需要一个额外的值
   showRightIcon?: boolean;
   label?: string;
   show: boolean;
@@ -149,6 +152,7 @@ const FormComponent = ({
   value,
   onChangeText,
   placeholder,
+  extra,
   showRightIcon = false,
   label,
   show,
@@ -173,7 +177,7 @@ const FormComponent = ({
 }: FormComponentProps) => {
   const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
-  const phoneNumber = useRef('')
+  // const phoneNumber = useRef('')
 
   useEffect(() => {
     if ((rightIconType = 'imgCaptcha')) {
@@ -183,14 +187,19 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber.current)
+      ugLog('fetchSms extra', extra)
+      showLoading({ type: UGLoadingType.Loading });
+      const { data } = await APIRouter.secure_smsCaptcha(extra)
       const { code, msg } = data ?? {}
+
+      hideLoading()
       if (code != 0) {
         throw { message: msg }
       } else {
         ToastSuccess(msg)
       }
     } catch (error) {
+      hideLoading()
       ToastError(error?.message)
     }
   }
@@ -252,10 +261,10 @@ const FormComponent = ({
           rightIconContainerStyle={rightIconContainerStyle}
           value={value}
           onChangeText={
+
             rightIconType == 'sms'
               ? (value) => {
-                phoneNumber.current = value
-                onChangeText && onChangeText()
+                onChangeText && onChangeText(value)
               }
               : onChangeText
           }
