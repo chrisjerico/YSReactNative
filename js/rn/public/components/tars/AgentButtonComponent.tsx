@@ -1,26 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
+import { AgentType } from '../../models/Enum'
 
-interface AgentRedButtonComponentProps {
-  onChangeAgent: (toggle: boolean) => any;
+interface AgentButtonComponentProps {
+  onChangeAgent: (toggle: AgentType) => any;
   show: boolean;
   containerStyle?: ViewStyle | ViewStyle[];
 }
 
-const AgentRedButtonComponent = ({
+const AgentButtonComponent = ({
   onChangeAgent,
   show,
   containerStyle
-}: AgentRedButtonComponentProps) => {
-  const [toggle, setToggle] = useState(true)
+}: AgentButtonComponentProps) => {
+  const [toggle, setToggle] = useState(AgentType.用户注册)
+
+  useEffect(() => {
+    onChangeAgent && onChangeAgent(toggle)
+  }, [])
+
   if (show) {
     return (
       <View style={[styles.container, containerStyle]}>
         <TouchableWithoutFeedback
           onPress={() => {
-            setToggle(false)
-            onChangeAgent && onChangeAgent(false)
+            setToggle(AgentType.用户注册)
+            onChangeAgent && onChangeAgent(AgentType.用户注册)
           }}
         >
           <View
@@ -37,8 +43,8 @@ const AgentRedButtonComponent = ({
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
-            setToggle(true)
-            onChangeAgent && onChangeAgent(true)
+            setToggle(AgentType.代理注册)
+            onChangeAgent && onChangeAgent(AgentType.代理注册)
           }}
         >
           <View
@@ -93,4 +99,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AgentRedButtonComponent
+export default AgentButtonComponent

@@ -18,11 +18,10 @@ const MineHeader = ({
   title,
   renderHeader,
   showBackBtn = false,
-  onPressBackBtn
+  onPressBackBtn,
 }: MineHeaderProps) => {
-
   return (
-    <View style={{ flex: 1, flexDirection: 'row' }}>
+    <View style={styles.container}>
       {showBackBtn ? (
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
           <AntDesign
@@ -79,6 +78,11 @@ const styles = StyleSheet.create({
   rightTextStyle: {
     color: '#ffffff',
     fontSize: scale(22),
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
 })
 

@@ -8,7 +8,7 @@ const BottomGap = () => {
   const safeArea = useSafeArea()
 
   return (
-    <View style={{ height: scaleHeight(25) + safeArea.top }}></View>
+    <View style={{ height: scaleHeight(25) + safeArea.top, backgroundColor: 'transparent' }}></View>
   )
 }
 

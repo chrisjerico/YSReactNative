@@ -26,7 +26,7 @@ const BZHSignInPage = () => {
     sign,
     value,
     onChange,
-    goTo,
+    navigateTo,
     show,
     slideCodeRef,
     valid,
@@ -35,7 +35,7 @@ const BZHSignInPage = () => {
     signUpPage: PageName.BZHSignUpPage,
   })
 
-  const { goToRegisterPage } = goTo
+  const { navigateToSignUpPage } = navigateTo
 
   const { signIn, tryPlay } = sign
 
@@ -79,7 +79,7 @@ const BZHSignInPage = () => {
             title={'快速注册'}
             containerStyle={styles.signUpButton}
             titleStyle={{ color: 'red', fontSize: scale(23) }}
-            onPress={goToRegisterPage}
+            onPress={navigateToSignUpPage}
           />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>

@@ -11,10 +11,10 @@ import { scale } from '../../../public/tools/Scale'
 interface SignHeaderProps {
   onPressLeftTool: () => any;
   onPressMenu: () => any;
-  onPressRegister: () => any;
+  onPressSign: () => any;
 }
 
-const SignHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignHeaderProps) => {
+const SignHeader = ({ onPressLeftTool, onPressMenu, onPressSign }: SignHeaderProps) => {
   return (
     <View
       style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
@@ -31,7 +31,7 @@ const SignHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignHeade
         </Text>
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableWithoutFeedback onPress={onPressRegister}>
+        <TouchableWithoutFeedback onPress={onPressSign}>
           <Text style={{ color: '#ffffff', paddingRight: scale(10), fontSize: scale(20) }}>{'登录/注册'}</Text>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={onPressMenu}>
@@ -42,7 +42,7 @@ const SignHeader = ({ onPressLeftTool, onPressMenu, onPressRegister }: SignHeade
               style={{ marginRight: scale(5) }}
               color={'#ffffff'}
             />
-            <Text style={{ fontSize: scale(25), color: '#ffffff' }}>
+            <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
               {'菜单'}
             </Text>
           </View>

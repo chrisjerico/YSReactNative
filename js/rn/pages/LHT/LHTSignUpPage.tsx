@@ -2,17 +2,13 @@ import React from 'react'
 import {
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
-import FormComponent, {
-  FormComponentProps,
-} from '../../public/components/tars/FormComponent'
+import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot, push } from '../../public/navigation/RootNavigation'
+import { popToRoot, push } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -29,7 +25,7 @@ const LHTSignUpPage = () => {
     onChange,
     sign,
     valid,
-    limit,
+    passwordLimit,
   } = useSignUpPage({
     homePage: PageName.LHTHomePage,
     signInPage: PageName.LHTSignInPage,
@@ -43,7 +39,7 @@ const LHTSignUpPage = () => {
         <MineHeader
           title={'注册'}
           showBackBtn={true}
-          onPressBackBtn={pop}
+          onPressBackBtn={popToRoot}
           showCustomerService={true}
           onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
@@ -57,7 +53,7 @@ const LHTSignUpPage = () => {
             slideCodeColor={'#ffffff'}
             show={show}
             label={label}
-            limit={limit}
+            passwordLimit={passwordLimit}
             onChange={onChange}
             Form={SignUpForm}
           />
@@ -76,7 +72,7 @@ const LHTSignUpPage = () => {
             containerStyle={styles.button}
             titleStyle={styles.buttonTitleStyle}
             onPress={() => {
-              push(PageName.BZHSignInPage, {})
+              push(PageName.LHTSignInPage, {})
             }}
           />
           <Button

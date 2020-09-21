@@ -5,20 +5,24 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
-import { Input, Icon } from 'react-native-elements'
+import { Icon, Input } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
+import {anyEmpty} from "../../tools/Ext";
+import {ugLog} from "../../tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 
 export interface FormComponentProps {
   onChangeText?: any;
   value?: string;
   placeholder: string;
+  extra?: string;//某些时候需要一个额外的值
   showRightIcon?: boolean;
   label?: string;
   show: boolean;
@@ -38,8 +42,13 @@ export interface FormComponentProps {
   rightIconContainerStyle?: ViewStyle | ViewStyle[];
   leftIconName?: string;
   leftIcon?: LeftIcon;
-  leftIconTitle?: string;
   placeholderTextColor?: string;
+  rightIconStyle?: RightIconStyle;
+}
+
+interface RightIconStyle {
+  highColor?: string; //高亮颜色
+  color?: string; //非高亮颜色
 }
 
 interface LeftIcon {
@@ -70,18 +79,22 @@ const RightIcon = ({
   onPressImgCaptcha,
   correctImageCode,
   onPressSms,
+  rightIconStyle,
 }) => {
   if (showRightIcon) {
     if (renderRightIcon) {
       return renderRightIcon()
     } else {
+      //高亮颜色
+      let highColor = anyEmpty(rightIconStyle?.highColor) ? '#84C1FF' : rightIconStyle?.highColor;
+      let color = anyEmpty(rightIconStyle?.highColor) ? '#d9d9d9' : rightIconStyle?.color;
       switch (rightIconType) {
         case 'eye':
           return (
             <Ionicons
               name={showContent ? 'ios-eye' : 'ios-eye-off'}
               size={scale(40)}
-              color={showContent ? '#84C1FF' : '#d9d9d9'}
+              color={showContent ? highColor : color}
               onPress={onPressEye}
             />
           )
@@ -115,7 +128,7 @@ const RightIcon = ({
   }
 }
 
-const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName, leftIconTitle }) => {
+const LeftIcon = ({ leftIcon, showLeftIcon, renderLeftIcon, leftIconName }) => {
   if (showLeftIcon) {
     if (renderLeftIcon) {
       return renderLeftIcon()
@@ -139,6 +152,7 @@ const FormComponent = ({
   value,
   onChangeText,
   placeholder,
+  extra,
   showRightIcon = false,
   label,
   show,
@@ -159,11 +173,11 @@ const FormComponent = ({
   rightIconContainerStyle,
   leftIcon,
   placeholderTextColor = '#000000',
-  leftIconTitle
+  rightIconStyle,
 }: FormComponentProps) => {
   const [showContent, setShowContent] = useState(false)
   const [correctImageCode, setCorrectImageCode] = useState('')
-  const phoneNumber = useRef('')
+  // const phoneNumber = useRef('')
 
   useEffect(() => {
     if ((rightIconType = 'imgCaptcha')) {
@@ -173,14 +187,18 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber.current)
+      showLoading({ type: UGLoadingType.Loading });
+      const { data } = await APIRouter.secure_smsCaptcha(extra)
       const { code, msg } = data ?? {}
+
+      hideLoading()
       if (code != 0) {
         throw { message: msg }
       } else {
         ToastSuccess(msg)
       }
     } catch (error) {
+      hideLoading()
       ToastError(error?.message)
     }
   }
@@ -218,7 +236,6 @@ const FormComponent = ({
             <LeftIcon
               leftIcon={leftIcon}
               leftIconName={leftIconName}
-              leftIconTitle={leftIconTitle}
               renderLeftIcon={renderLeftIcon}
               showLeftIcon={showLeftIcon}
             />
@@ -233,6 +250,7 @@ const FormComponent = ({
               onPressSms={fetchSms}
               renderRightIcon={renderRightIcon}
               correctImageCode={correctImageCode}
+              rightIconStyle={rightIconStyle}
             />
           }
           leftIconContainerStyle={[
@@ -242,10 +260,10 @@ const FormComponent = ({
           rightIconContainerStyle={rightIconContainerStyle}
           value={value}
           onChangeText={
+
             rightIconType == 'sms'
               ? (value) => {
-                phoneNumber.current = value
-                onChangeText && onChangeText()
+                onChangeText && onChangeText(value)
               }
               : onChangeText
           }

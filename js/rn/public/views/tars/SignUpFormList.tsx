@@ -1,7 +1,9 @@
-import React from 'react'
-import AgentRedButtonComponent from '../../components/tars/AgentRedButtonComponent'
+import React, { RefObject } from 'react'
+import AgentButtonComponent from '../../components/tars/AgentButtonComponent'
 import { FormComponentProps } from '../../components/tars/FormComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
+import { AgentType, PasswordStrength } from '../../models/Enum'
+import { SlideCode } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 
 interface Show {
@@ -32,12 +34,34 @@ interface Label {
 
 interface SignUpFormListProps {
   slideCodeColor: string;
-  slideCodeRef: any;
+  slideCodeRef: RefObject<any>;
   show: Show;
-  onChange: any;
+  onChange: OnChange;
   label: Label;
-  limit: any;
-  Form?: (props: FormComponentProps) => any;
+  passwordLimit: PasswordLimit;
+  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any;
+}
+
+interface PasswordLimit {
+  strength: PasswordStrength,
+  maxLength: number,
+  minLength: number,
+}
+
+interface OnChange {
+  onChangeRecommendGuy: (value: string) => any;
+  obChangeAccount: (value: string) => any;
+  obChangePassword: (value: string) => any;
+  onChangeConfirmPassword: (value: string) => any;
+  onChaneRealName: (value: string) => any;
+  onChaneFundPassword: (value: string) => any;
+  onChaneQQ: (value: string) => any;
+  onChaneWeChat: (value: string) => any;
+  onChanePhone: (value: string) => any;
+  onChangeEmail: (value: string) => any;
+  onChaneSms: (value: string) => any;
+  onChangeSlideCode: (value: SlideCode) => any;
+  onChangeAgent: (value: AgentType) => any;
 }
 
 const SignUpFormList = ({
@@ -46,7 +70,7 @@ const SignUpFormList = ({
   onChange,
   label,
   slideCodeRef,
-  limit,
+  passwordLimit,
   Form = () => {
     return null
   },
@@ -91,7 +115,7 @@ const SignUpFormList = ({
     qqLabel,
   } = label
 
-  const { pass_length_max } = limit
+  const { maxLength } = passwordLimit
 
   return (
     <>
@@ -107,7 +131,7 @@ const SignUpFormList = ({
         onChangeText={obChangeAccount}
         label={'*请使用6-15位英文或数字的组合'}
         placeholder={'帐号'}
-        show={showName}
+        show={true}
         leftIconName={'users'}
         leftIconTitle={'用户帐号'}
       />
@@ -118,7 +142,7 @@ const SignUpFormList = ({
         placeholder={'密码'}
         showRightIcon
         show={true}
-        maxLength={pass_length_max}
+        maxLength={maxLength}
         rightIconType={'eye'}
         leftIconTitle={'登录密码'}
       />
@@ -199,8 +223,9 @@ const SignUpFormList = ({
         show={showSms}
         showRightIcon={true}
         rightIconType={'sms'}
+        leftIconTitle={'验证码'}
       />
-      <AgentRedButtonComponent
+      <AgentButtonComponent
         show={showAgentButton}
         onChangeAgent={onChangeAgent}
         containerStyle={{ marginTop: scale(20) }}

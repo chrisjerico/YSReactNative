@@ -32,7 +32,7 @@ const HomeHeader = ({
   onPressLogo,
 }: HomeHeaderProps) => {
   return (
-    <>
+    <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={styles.leftContainer}>
         <FastImage
           resizeMode={'stretch'}
@@ -90,7 +90,7 @@ const HomeHeader = ({
             </>
           )}
       </View>
-    </>
+    </View>
   )
 }
 

@@ -1,27 +1,43 @@
 import { Alert, Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 import { ToastStatus } from '../../tools/tars'
 
 interface Options {
+  onStart?: () => any;
   onSuccess?: () => any;
   onError?: (error: any) => any;
 }
 
 const useLogOut = (options: Options = {}) => {
-  const { onSuccess, onError } = options
+  const { onStart, onSuccess, onError } = options
   const requestLogOut = async () => {
     try {
-      if (Platform.OS == 'ios') {
-        ToastStatus('正在退出...')
-        await APIRouter.user_logout()
-        await OCHelper.call('UGUserModel.setCurrentUser:', [])
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        UGStore.dispatch({ type: 'reset', userInfo: {} })
-        UGStore.save()
-        onSuccess && onSuccess()
+      onStart && onStart()
+      await APIRouter.user_logout()
+      switch (Platform.OS) {
+        case 'ios':
+          await OCHelper.call('UGUserModel.setCurrentUser:', [])
+          await OCHelper.call(
+            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+            ['UGNotificationUserLogout']
+          )
+          break
       }
+      UGStore.dispatch({ type: 'reset', userInfo: {} })
+      UGStore.save()
+
+      //安卓需要放在这里执行
+      switch (Platform.OS) {
+        case 'android':
+          await ANHelper.callAsync(CMD.LOG_OUT)
+          break;
+      }
+
+      onSuccess && onSuccess()
     } catch (error) {
       onError && onError(error)
     }

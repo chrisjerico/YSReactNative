@@ -96,7 +96,7 @@ const LHTHomePage = () => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
+        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} >
           <HomeHeader
             avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}
@@ -299,6 +299,10 @@ const LHTHomePage = () => {
                       marginTop: scale(5),
                       aspectRatio: 3,
                     }}
+                    flagContainer={{
+                      right: scale(15),
+                      top: scale(-5)
+                    }}
                     titleStyle={{ fontSize: scale(23) }}
                     subTitleStyle={{ fontSize: scale(23) }}
                     onPress={() => PushHelper.pushHomeGame(item)}
@@ -345,10 +349,6 @@ const LHTHomePage = () => {
               containerStyle={{ marginVertical: scale(10) }}
               iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
               rankLists={rankLists}
-              initialAnimatedHeight={scale(0)}
-              finalAnimatedHeight={
-                scale(195) + scale((rankLists?.length ?? 0) * 50)
-              }
             />
             <BottomLogo
               containerStyle={{ marginBottom: scale(30) }}

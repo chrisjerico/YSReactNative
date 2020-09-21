@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View, ViewStyle } from 'react-native';
+import {Platform, View, ViewStyle} from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -42,11 +42,18 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       showTopBar: false,
     });
 
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
-      if (cnt == 1 && getStackLength() == 1) {
-        setProps({ navbarOpstions: { back: false } });
-      }
-    });
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
+          if (cnt == 1 && getStackLength() == 1) {
+            setProps({ navbarOpstions: { back: false } });
+          }
+        });
+        break;
+      case 'android':
+
+        break;
+    }
 
     NetworkRequest1.systeam_promotions().then(data => {
       if (data.showCategory) {
@@ -94,8 +101,8 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   if (dataArray.length == 0) {
     return null;
   }
-  var contentViews = dataArray.map(plm => {
-    return <JDPromotionListCP list={plm.list} style2={props.style} />;
+  var contentViews = dataArray.map((plm, index) => {
+    return <JDPromotionListCP key={index} list={plm.list} style2={props.style} />;
   });
   return (
     <ScrollableTabView
@@ -130,7 +137,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         <View style={{ position: 'absolute', left: 0, top: 42, width: AppDefine.width, height: 1, backgroundColor: '#ccc' }} />
         {titles.map((title, idx) => {
           return (
-            <View>
+            <View key={idx}>
               <Text
                 onPress={() => {
                   props.goToPage(idx);
@@ -160,6 +167,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
       {titles.map((title, idx) => {
         return (
           <Text
+            key={idx}
             onPress={() => {
               props.goToPage(idx);
             }}

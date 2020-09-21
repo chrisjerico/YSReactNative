@@ -5,6 +5,11 @@ import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { ToastError, ToastSuccess } from '../../tools/tars'
+import {
+  hideLoading,
+  showLoading,
+  UGLoadingType
+} from '../../widget/UGLoadingCP'
 import useTryPlay from '../useTryPlay'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
@@ -56,8 +61,16 @@ const useHomePage = ({
   })
 
   const { logOut } = useLogOut({
-    onSuccess: onSuccessSignOut,
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+
+    },
+    onSuccess: () => {
+      hideLoading()
+      onSuccessSignOut()
+    },
     onError: (error) => {
+      hideLoading()
       ToastError(error || '登出失败')
       console.log('--------登出失败--------', error)
     },

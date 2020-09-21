@@ -205,7 +205,7 @@ const BZHHomePage = () => {
                       let index = 0
                       if (name == '视讯') {
                         index = recommendGameTabs?.findIndex(
-                          (item) => item == '真人'
+                          (item) => item == '真人' || item == '视讯'
                         )
                       } else {
                         index = recommendGameTabs?.findIndex(
@@ -284,14 +284,14 @@ const BZHHomePage = () => {
                                 marginRight: index % 3 == 1 ? '5%' : 0,
                               },
                             ]}
-                            imageContainerStyle={{ width: '60%' }}
+                            imageContainerStyle={{ width: '50%' }}
                             enableCircle={false}
                             logo={icon || logo}
                             title={name || title}
                             subTitle={subtitle}
                             showSubTitle
                             titleStyle={{
-                              fontSize: scale(25),
+                              fontSize: scale(21),
                             }}
                             subTitleStyle={{
                               fontSize: scale(20),
@@ -304,6 +304,7 @@ const BZHHomePage = () => {
                               if (subType) {
                                 showGameSubType(index)
                               } else {
+                                //@ts-ignore
                                 PushHelper.pushHomeGame(item)
                               }
                             }}
@@ -370,7 +371,7 @@ const BZHHomePage = () => {
               borderBottomColor: '#d9d9d9',
               borderBottomWidth: scale(1),
             }}
-            rankContainerStyle={{
+            contentContainerStyle={{
               width: '95%',
               borderWidth: scale(1),
               borderColor: '#d9d9d9',
@@ -378,10 +379,6 @@ const BZHHomePage = () => {
               marginBottom: scale(20),
             }}
             rankLists={rankLists}
-            initialAnimatedHeight={scale(0)}
-            finalAnimatedHeight={
-              scale(195) + scale((rankLists?.length ?? 0) * 50)
-            }
           />
           <BottomLogo
             webName={webName}

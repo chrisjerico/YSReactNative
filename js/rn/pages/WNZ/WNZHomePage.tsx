@@ -249,7 +249,7 @@ const WNZHomePage = () => {
             }}
           />
           <GameSubTypeComponent
-            listKey={'WNZHomePage'}
+            uniqueKey={'WNZHomePage_GameSubTypeComponent'}
             containerStyle={{ paddingVertical: scale(5) }}
             numColumns={4}
             games={homeGamesConcat}
@@ -305,6 +305,7 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
+                        //@ts-ignore
                         PushHelper.pushHomeGame(item)
                       }
                     }}
@@ -389,11 +390,7 @@ const WNZHomePage = () => {
           <AnimatedRankComponent
             type={rankingListType}
             rankLists={rankLists}
-            rankContainerStyle={{ borderRadius: 0 }}
-            initialAnimatedHeight={scale(0)}
-            finalAnimatedHeight={
-              scale(195) + scale((rankLists?.length ?? 0) * 50)
-            }
+            contentContainerStyle={{ borderRadius: 0 }}
           />
           <BottomLogo
             webName={webName}
@@ -404,7 +401,6 @@ const WNZHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={false}
-            version={'zora'}
           />
           <BottomGap />
         </ScrollView>

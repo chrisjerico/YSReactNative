@@ -6,9 +6,15 @@ import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
+import {
+  hideLoading,
+  showLoading,
+  UGLoadingType
+} from '../../widget/UGLoadingCP'
 import useLogIn from './useLogIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
+import {ugLog} from "../../tools/UgLog";
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -38,49 +44,56 @@ const useSignInPage = ({
     nc_token: undefined,
     nc_sig: undefined,
   })
+
+  const {mobile_logo = ""} = UGStore.globalProps.sysConf;
+
   // refs
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
-  const goToRegisterPage = () => {
+  const navigateToSignUpPage = () => {
     homePage && navigate(signUpPage, {})
   }
 
-  const goToHomePage = () => {
+  const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
   }
 
   const { logIn } = useLogIn({
     onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
       ToastStatus('正在登录...')
     },
     onSuccess: () => {
       if (loginTo == LoginTo.首页) {
-        goToHomePage()
+        navigateToHomePage()
       } else {
+        navigateToHomePage()
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
+      hideLoading()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
+      hideLoading()
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error || '登录失败')
+      ToastError(error ?? '登录失败')
       console.log("--------登录失败--------", error)
     },
   })
 
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      goToHomePage()
+      navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败')
+      ToastError(error ?? '登录失败')
       console.log("--------試玩失败--------", error)
     },
   })
@@ -144,28 +157,27 @@ const useSignInPage = ({
     onChangeSlideCode,
   }
 
-  const goTo = {
-    goToHomePage,
-    goToRegisterPage,
+  const navigateTo = {
+    navigateToHomePage,
+    navigateToSignUpPage,
   }
 
   const show = {
     loginVCode
   }
 
-  const _sign = {
-    signIn,
-    tryPlay,
-  }
-
   return {
     slideCodeRef,
-    goTo,
+    navigateTo,
     onChange,
     value,
+    mobile_logo,
     valid,
     show,
-    sign: _sign
+    sign: {
+      signIn,
+      tryPlay,
+    }
   }
 }
 

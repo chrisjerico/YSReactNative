@@ -1,14 +1,15 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
   Text,
   TextStyle,
   View,
-  ViewStyle,
+  ViewStyle
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import AppDefine from '../../define/AppDefine'
+import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 import StringUtils from '../../tools/StringUtils'
 
@@ -41,96 +42,20 @@ interface RenderLabel {
 }
 
 interface TabGame {
-  name?: string;
+  category?: string;
   categoryName?: string;
+  name?: string;
   logo?: string;
-  list?: List[];
+  list?: Game[];
   games?: Game[];
 }
 
 interface RenderScene {
-  item: List[] | Game[];
+  item: Game[];
   index: number;
   tab: string;
 }
 
-interface Game {
-  gameType: string;
-  gameTypeName: string;
-  id: string;
-  isClose: string;
-  isHot: string;
-  isInstant: string;
-  isSeal: string;
-  name: string;
-  pic: string;
-  title: string;
-}
-
-interface List {
-  id: string;
-  icon: string;
-  name: string;
-  url: string;
-  category: string;
-  levelType: string;
-  sort: string;
-  seriesId: string;
-  subId: any;
-  tipFlag: string;
-  openWay: string;
-  hotIcon: string;
-  gameCode: string;
-  subtitle: string;
-  subType: SubType[];
-  gameId: any;
-  realName: string;
-  title: string;
-  type: string;
-  admin_uid: string;
-  enable: string;
-  headadd: string;
-  footadd: string;
-  domain: string;
-  docType?: number;
-  gameType: string;
-  logo: string;
-  isInstant: string;
-  isSeal: string;
-  isClose: string;
-  supportTrial?: number;
-  isPopup?: number;
-}
-
-interface SubType {
-  id: string;
-  levelType: string;
-  name: string;
-  openWay: string;
-  tipFlag: string;
-  sort: string;
-  seriesId: string;
-  subId: string;
-  parentId: string;
-  isDelete: string;
-  icon: string;
-  url: string;
-  category: string;
-  hot_icon?: any;
-  game_code: string;
-  is_plus: string;
-  site_ids: string;
-  site_id: string;
-  subtitle: string;
-  gameId: string;
-  realName: string;
-  title: string;
-  isInstant: string;
-  isSeal: string;
-  isClose: string;
-  gameType: string;
-  logo: string;
-}
 
 interface SceneProps {
   data: any;
@@ -178,6 +103,12 @@ const TabComponent = ({
   const [index, setIndex] = useState(initialTabIndex)
   const scroll = useRef(null)
 
+
+  useEffect(() => {
+    setHeight(getSceneHeight(initialTabIndex))
+    setIndex(initialTabIndex)
+  }, [initialTabIndex])
+
   const getTabCount = () => {
     return tabGames?.length ?? 0
   }
@@ -196,7 +127,7 @@ const TabComponent = ({
   }
 
   let scenes = {}
-  tabGames?.forEach((ele: any, index: number) => {
+  tabGames?.forEach((ele: TabGame, index: number) => {
     scenes[index] = () => {
       const tab = ele?.name ?? ele?.categoryName ?? ''
       const item = ele?.list ?? ele?.games ?? []
@@ -295,6 +226,7 @@ const TabComponent = ({
                             tabTextStyle,
                             focused ? { color: focusTabColor } : styles.text,
                           ]}
+                          numberOfLines={1}
                         >
                           {route?.title}
                         </Text>

@@ -1,9 +1,14 @@
+import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError } from '../../tools/tars'
+import {
+  hideLoading,
+  showLoading,
+  UGLoadingType
+} from '../../widget/UGLoadingCP'
 import useLogOut from './useLogOut'
-import { useRef } from 'react'
 import useRerender from './useRerender'
 import useSys from './useSys'
 
@@ -34,8 +39,6 @@ interface UseMinePage {
 }
 
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
-  // yellowBox
-  console.disableYellowBox = true
   // states
   const pickAvatarComponentRef = useRef(null)
   const { rerender } = useRerender()
@@ -59,19 +62,18 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     nextLevelTitle,
   } = UGStore.globalProps.userInfo
   const { mobile_logo, userCenterItems, showSign } = sys
-  // const userCenterItems = userCenter?.map((ele) => {
-  //   const { logo, code } = ele
-  //   const newLogo =
-  //     logo?.length == 0 || !logo ? defaultUserCenterLogos?.[code] : logo
-  //   return Object.assign({}, ele, { logo: newLogo })
-  // })
-  // functions
+
   const { logOut } = useLogOut({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
+      hideLoading()
       navigate(homePage, {})
     },
     onError: (error) => {
-      ToastError(error || '登出失败')
+      hideLoading()
+      ToastError(error ?? '登出失败')
       console.log('--------登出失败--------', error)
     },
   })

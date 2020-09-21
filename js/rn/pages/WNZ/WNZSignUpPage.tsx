@@ -26,8 +26,8 @@ const WNZSignUpPage = () => {
     onChange,
     sign,
     valid,
-    limit,
-    goTo,
+    passwordLimit,
+    navigateTo
   } = useSignUpPage({
     homePage: PageName.WNZHomePage,
     signInPage: PageName.WNZSignInPage,
@@ -35,7 +35,7 @@ const WNZSignUpPage = () => {
 
   const { signUp, tryPlay } = sign
 
-  const { goToSignInPage } = goTo
+  const { navigateToSignInPage } = navigateTo
 
   return (
     <>
@@ -45,7 +45,7 @@ const WNZSignUpPage = () => {
           onPressMenu={() => {
             menu?.current?.open()
           }}
-          onPressRegister={goToSignInPage}
+          onPressSign={navigateToSignInPage}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -55,7 +55,7 @@ const WNZSignUpPage = () => {
             slideCodeColor={'#f2f2f2'}
             show={show}
             label={label}
-            limit={limit}
+            passwordLimit={passwordLimit}
             onChange={onChange}
             Form={SignUpForm}
           />
@@ -124,7 +124,7 @@ const WNZSignUpPage = () => {
     </>
   )
 }
-const SignUpForm = (props: FormComponentProps & { title: string }) => (
+const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
   <FormComponent
     {...props}
     containerStyle={{ marginBottom: scale(15) }}

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
+import { popToRoot } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -16,22 +16,22 @@ const LHTSignInPage = () => {
     sign,
     value,
     onChange,
-    goTo,
+    navigateTo,
     show,
     slideCodeRef,
     valid,
   } = useSignInPage({
     homePage: PageName.LHTHomePage,
-    signUpPage: PageName.LHTSignInPage,
+    signUpPage: PageName.LHTSignUpPage,
   })
 
-  const { goToRegisterPage } = goTo
+  const { navigateToSignUpPage } = navigateTo
 
   const { signIn, tryPlay } = sign
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'登录'} />
+        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} title={'登录'} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
@@ -50,9 +50,12 @@ const LHTSignInPage = () => {
               styles.button,
               {
                 backgroundColor: LHThemeColor.六合厅.themeColor,
+                marginTop: scale(20)
               },
             ]}
-            disabledContainerStyle={styles.button}
+            disabledContainerStyle={[styles.button, {
+              marginTop: scale(20)
+            }]}
             titleStyle={[styles.buttonTitleStyle, { color: '#ffffff' }]}
             onPress={signIn}
           />
@@ -60,7 +63,7 @@ const LHTSignInPage = () => {
             title={'马上注册'}
             containerStyle={styles.button}
             titleStyle={styles.buttonTitleStyle}
-            onPress={goToRegisterPage}
+            onPress={navigateToSignUpPage}
           />
           <Button
             title={'免费试玩'}

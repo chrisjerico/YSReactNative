@@ -23,7 +23,7 @@ const WNZSignInPage = () => {
     sign,
     value,
     onChange,
-    goTo,
+    navigateTo,
     show,
     slideCodeRef,
     valid,
@@ -32,7 +32,7 @@ const WNZSignInPage = () => {
     signUpPage: PageName.WNZSignUpPage,
   })
 
-  const { goToRegisterPage } = goTo
+  const { navigateToSignUpPage } = navigateTo
 
   const { signIn, tryPlay } = sign
 
@@ -44,7 +44,7 @@ const WNZSignInPage = () => {
           onPressMenu={() => {
             menu?.current?.open()
           }}
-          onPressRegister={goToRegisterPage}
+          onPressSign={navigateToSignUpPage}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -72,7 +72,7 @@ const WNZSignInPage = () => {
             title={'立即注册'}
             containerStyle={styles.whiteButton}
             titleStyle={styles.whitwButtonTitle}
-            onPress={goToRegisterPage}
+            onPress={navigateToSignUpPage}
           />
           <Button
             title={'在线客服'}
@@ -120,7 +120,7 @@ const WNZSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
+const SignInForm = (props: FormComponentProps & { leftIconTitle: string }) => (
   <FormComponent
     {...props}
     containerStyle={{ marginBottom: scale(10) }}
