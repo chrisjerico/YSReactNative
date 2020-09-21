@@ -409,7 +409,7 @@ const _requestBalance = async () => {
 
     //@ts-ignore
     const {data, status} = await APIRouter.user_balance_token()
-    UGStore.dispatch({type: 'merge', userInfo: {balance: data.data.balance}})
+    UGStore.dispatch({type: 'merge', userInfo: {balance: data?.data?.balance}})
     // Toast('刷新成功！')
 
   } catch (error) {
