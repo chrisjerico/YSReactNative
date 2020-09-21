@@ -38,7 +38,6 @@ export enum PageName {
   WNZSignUpPage = 'WNZSignUpPage',
   WNZSignInPage = 'WNZSignInPage',
   WNZGameLobbyPage = 'WNZGameLobbyPage',
-  GDRegisterPage = "GDRegisterPage",
   PromotionListPage = "PromotionListPage",
   LLHomePage = "LLHomePage",
   LLMinePage = "LLMinePage",
@@ -56,6 +55,7 @@ export enum PageName {
   VietnamMine = "VietnamMine",
   VietnamGameList = "VietnamGameList",
   LHTPreferencePage = "LHTPreferencePage",
+  TrendView = "TrendView",
 }
 
 // export class  {

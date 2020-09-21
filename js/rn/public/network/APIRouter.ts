@@ -184,6 +184,14 @@ class APIRouter {
 
     return httpClient.post<any>("c=user&a=logout", tokenParams)
   }
+  static  getTrendData = async (id: string) => {
+    return httpClient.get(`c=game&a=lotteryHistory`, {
+      params:{
+        id: id,
+        rows: "200"
+      }
+    })
+  }
   static secure_imgCaptcha = async () => {
     let accessToken = "";
     switch (Platform.OS) {

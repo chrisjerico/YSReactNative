@@ -8,7 +8,7 @@ import {
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
-import { popToRoot, push } from '../navigation/RootNavigation'
+import {navigate, popToRoot, push} from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import NetworkRequest1 from '../network/NetworkRequest1'
@@ -576,7 +576,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.开奖走势: {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待'])
+            navigate(PageName.TrendView, {})
             break
           }
           case UGUserCenterType.QQ客服: {
@@ -793,10 +793,6 @@ export default class PushHelper {
               seriesId: '7',
               subId: MenuType.QMJC,
             })
-            break
-          }
-          case UGUserCenterType.开奖走势.toString(): {
-            Toast('敬请期待')
             break
           }
           case UGUserCenterType.QQ客服: {

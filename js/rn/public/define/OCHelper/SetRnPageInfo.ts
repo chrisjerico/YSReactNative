@@ -61,6 +61,14 @@ export function setRnPageInfo() {
   });
 
   let skitType = Skin1.skitType;
+  // 开奖走势页
+  pages.push({
+    rnName: PageName.TrendView,
+    userCenterItemCode:18,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  });
   // skitType = '尊龙'; // 測試開發
   console.log("------------------skitType------------------", skitType)
   // if (skitType.indexOf('白曜') != -1) {

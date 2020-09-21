@@ -58,6 +58,7 @@ import LLHomePage from "../利来/LLHomePage";
 import LLMinePage from "../利来/LLMinePage";
 import {LLLoginPage} from "../利来/LLLoginPage";
 import {LLRegisterPage} from "../利来/LLRegisterPage";
+import TrendView from "../../public/components/TrendView";
 
 
 // TabbarController
@@ -105,6 +106,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
+        {/*<Router.TabScreen name={PageName.TrendView} component={UGPage(TrendView)} />*/}
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
         <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
           <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
@@ -122,6 +124,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+        <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)}/>
         <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)}/>
         <Router.StackScreen options={{headerShown: false}} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
