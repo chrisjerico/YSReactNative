@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
 import { Data } from '../../network/Model/HomeADModel'
@@ -13,8 +13,8 @@ interface BannerBlockProps {
   showOnlineNum?: boolean;
   autoplayTimeout: number;
   visible?: boolean;
-  containerStyle?: ViewStyle | ViewStyle[];
-  badgeStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
+  badgeStyle?: StyleProp<ViewStyle>;
   showsPagination?: boolean;
 }
 

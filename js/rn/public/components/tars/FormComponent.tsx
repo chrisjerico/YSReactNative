@@ -5,7 +5,8 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -22,20 +23,20 @@ export interface FormComponentProps {
   showRightIcon?: boolean;
   label?: string;
   show: boolean;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   enableLabel?: boolean;
   renderRightIcon?: () => any;
   renderLeftIcon?: () => any;
   maxLength?: number;
-  labelTextStyle?: TextStyle | TextStyle[];
+  labelTextStyle?: StyleProp<TextStyle>;
   showLeftIcon?: boolean;
-  inputContainerStyle?: ViewStyle | ViewStyle[];
-  inputStyle?: ViewStyle | ViewStyle[];
-  formStyle?: ViewStyle | ViewStyle[];
+  inputContainerStyle?: StyleProp<ViewStyle>;
+  inputStyle?: StyleProp<ViewStyle>;
+  formStyle?: StyleProp<ViewStyle>;
   defaultValue?: string;
   rightIconType?: 'eye' | 'imgCaptcha' | 'touchImgCaptcha' | 'sms';
-  leftIconContainerStyle?: ViewStyle | ViewStyle[];
-  rightIconContainerStyle?: ViewStyle | ViewStyle[];
+  leftIconContainerStyle?: StyleProp<ViewStyle>;
+  rightIconContainerStyle?: StyleProp<ViewStyle>;
   leftIconName?: string;
   leftIcon?: LeftIcon;
   placeholderTextColor?: string;
@@ -45,7 +46,7 @@ interface LeftIcon {
   type?: string;
   name?: string;
   reverse?: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   reverseColor?: string;
   color?: string;
 }

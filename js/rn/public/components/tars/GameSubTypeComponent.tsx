@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, ViewStyle } from 'react-native'
+import { View, ViewStyle, StyleProp } from 'react-native'
 import { Game, SubType } from '../../models/Interface'
 import List from '../../views/tars/List'
 
@@ -10,15 +10,15 @@ interface RenderGame {
 }
 
 interface GameSubTypeComponentProps {
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   games: Game[];
   renderGame: (params: RenderGame) => any;
   renderSubType?: ({ item, index }: RenderSubType) => any;
-  subTypeContainerStyle?: ViewStyle | ViewStyle[];
+  subTypeContainerStyle?: StyleProp<ViewStyle>;
   numColumns: number;
   subTypeNumColumns: number;
   uniqueKey: string;
-  contentContainerStyle?: ViewStyle | ViewStyle[];
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
 interface RenderSubType {

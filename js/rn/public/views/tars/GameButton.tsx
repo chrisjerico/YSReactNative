@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   ViewStyle,
+  StyleProp
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -20,31 +21,31 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageContainerStyle?: ViewStyle[] | ViewStyle;
+  imageContainerStyle?: StyleProp<ViewStyle>;
   circleColor?: string;
-  containerStyle?: ViewStyle[] | ViewStyle;
-  titleStyle?: TextStyle;
-  subTitleStyle?: TextStyle;
-  titleContainerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  subTitleStyle?: StyleProp<TextStyle>;
+  titleContainerStyle?: StyleProp<ViewStyle>;
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
   showRightTopFlag?: boolean;
   showCenterFlag?: boolean;
   flagIcon?: string;
   showSecondLevelIcon?: boolean;
-  secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
+  secondLevelIconContainerStyle?: StyleProp<ViewStyle>;
   showUnReadMsg?: boolean;
   unreadMsg?: number;
   localLogo?: any;
   useLocalLogo?: boolean;
-  flagContainer?: ViewStyle | ViewStyle[];
-  circleContainerStyle?: ViewStyle | ViewStyle[];
+  flagContainer?: StyleProp<ViewStyle>;
+  circleContainerStyle?: StyleProp<ViewStyle>;
 
 }
 
 interface DefaultFlag {
   center: boolean;
-  flagContainer?: ViewStyle | ViewStyle[];
+  flagContainer?: StyleProp<ViewStyle>;
 }
 
 const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {

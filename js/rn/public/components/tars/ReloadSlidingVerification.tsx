@@ -5,14 +5,14 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Platform, ViewStyle } from 'react-native'
+import { Platform, ViewStyle, StyleProp } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
 import { stringToNumber } from '../../tools/tars'
 
 interface ReloadSlidingVerificationProps {
   onChange: (data: any) => void;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   backgroundColor?: string;
   show?: boolean;
 }

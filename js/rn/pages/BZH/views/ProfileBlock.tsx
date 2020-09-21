@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native'
 import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -11,7 +11,7 @@ interface ProfileBlockProps {
   features: any[];
   renderFeature: (item: any, index: number) => any;
   avatar: string;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   name: string;
   level: string;
   onPressAvatar: () => any;

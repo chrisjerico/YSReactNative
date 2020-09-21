@@ -8,6 +8,7 @@ import {
   View,
   Text,
   TextStyle,
+  StyleProp
 } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../tools/Scale'
@@ -16,13 +17,13 @@ import { UGStore } from '../../../redux/store/UGStore'
 
 interface ReLoadComponentProps {
   color?: string;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   size?: number;
   balance: number | string;
   title?: string;
-  balanceStyle?: TextStyle | TextStyle[];
-  titleStyle?: TextStyle | TextStyle[];
-  animatedContainerStyle?: ViewStyle | ViewStyle[];
+  balanceStyle?: StyleProp<TextStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  animatedContainerStyle?: StyleProp<ViewStyle>;
 }
 const ReLoadBalanceComponent = ({
   color,

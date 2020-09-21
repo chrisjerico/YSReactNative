@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, StyleProp } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -26,7 +26,7 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   showTopBar?: boolean; // 是否显示顶部栏
-  containerStyle?: ViewStyle | ViewStyle[]
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 // 优惠活动页

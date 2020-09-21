@@ -3,7 +3,8 @@ import {
   StyleSheet, Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
@@ -17,7 +18,7 @@ interface NavBlockProps {
   advertisement: string;
   navs: any[];
   lotterys: Lottery[];
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   date: string;
   onPressSavePoint: () => any;
   onPressGetPoint: () => any;

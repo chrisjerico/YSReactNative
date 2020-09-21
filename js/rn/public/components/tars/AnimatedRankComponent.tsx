@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
@@ -12,10 +12,10 @@ interface RankList {
 }
 
 interface AnimatedRankComponentProps {
-  containerStyle?: ViewStyle | ViewStyle[];
-  iconTitleContainerStyle?: ViewStyle | ViewStyle[];
-  contentContainerStyle?: ViewStyle | ViewStyle[];
-  titleConatinerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
+  iconTitleContainerStyle?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  titleConatinerStyle?: StyleProp<ViewStyle>;
   rankLists: RankList[];
   duration?: number;
   type: RankingListType;

@@ -1,12 +1,12 @@
 import React from 'react'
-import { Text, View, StyleSheet, ViewStyle } from 'react-native'
+import { Text, View, StyleSheet, ViewStyle, StyleProp } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface ToolBlockProps {
   tools: any[];
   renderTool: (item: any, index: number) => any;
   title: string;
-  contentContainer?: ViewStyle | ViewStyle[];
+  contentContainer?: StyleProp<ViewStyle>;
 }
 
 const ToolBlock = ({ tools, renderTool, title, contentContainer }: ToolBlockProps) => {

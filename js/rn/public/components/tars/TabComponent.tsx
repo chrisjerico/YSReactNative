@@ -5,7 +5,8 @@ import {
   Text,
   TextStyle,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -20,11 +21,11 @@ interface TabComponentProps {
   focusTabColor?: string;
   baseHeight?: number;
   initialTabIndex: number;
-  tabTextStyle?: TextStyle | TextStyle;
-  containerStyle?: ViewStyle | ViewStyle;
+  tabTextStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   tabWidth?: number;
   renderLabel?: ({ route, focused }: RenderLabel) => any;
-  tabStyle?: ViewStyle | ViewStyle[];
+  tabStyle?: StyleProp<ViewStyle>;
   contentOffset?: ContentOffset;
   enableAutoScrollTab?: boolean;
   tabScrollEnabled?: boolean;
@@ -60,7 +61,7 @@ interface RenderScene {
 interface SceneProps {
   data: any;
   renderItem: (item: any, index: number) => any;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {

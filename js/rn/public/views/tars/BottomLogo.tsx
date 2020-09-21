@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
   ViewStyle,
+  StyleProp
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -12,7 +13,7 @@ interface BottomLogo {
   webName: string;
   onPressPromotion: () => any;
   onPressComputer: () => any;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   version?: string;
   debug?: boolean;
 }

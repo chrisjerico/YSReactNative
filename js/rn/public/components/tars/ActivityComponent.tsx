@@ -15,7 +15,7 @@ interface ActivityComponentProps {
   onPress: () => any;
   show?: any;
   enableFastImage?: boolean;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   refreshing?: boolean;
 }
 

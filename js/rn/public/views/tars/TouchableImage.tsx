@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet, View, ViewStyle, TouchableWithoutFeedback } from 'react-native';
+import { Image, StyleSheet, View, ViewStyle, TouchableWithoutFeedback, StyleProp } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface TouchableImageProps {
   pic: string;
   onPress: () => any;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   resizeMode?: 'cover' | 'contain' | 'stretch';
   enableFastImage?: boolean;
   onLoad?: (event: any) => any;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
 
 interface AgentButtonComponentProps {
   onChangeAgent: (toggle: AgentType) => any;
   show: boolean;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const AgentButtonComponent = ({

@@ -5,6 +5,7 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
   ViewStyle,
+  StyleProp
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
@@ -15,7 +16,7 @@ interface LinearBadgeProps {
   colors: any[];
   onPress?: () => any;
   showIcon?: boolean;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   textStyle?: TextStyle;
   size?: number;
 }

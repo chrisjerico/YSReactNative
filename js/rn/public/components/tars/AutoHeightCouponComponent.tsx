@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native'
+import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle, StyleProp } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -11,8 +11,8 @@ interface AutoHeightCouponAutoHeightCouponComponentProps {
   pic: string;
   onPress: (setShowPop: (showPop: boolean) => any) => any;
   content: string;
-  containerStyle?: ViewStyle | ViewStyle[];
-  titleStyle?: TextStyle | TextStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 const AutoHeightCouponComponent = ({

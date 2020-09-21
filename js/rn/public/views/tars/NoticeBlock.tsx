@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, TextStyle, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import { INoticeScroll } from '../../../redux/model/home/INoticeBean'
@@ -10,11 +10,11 @@ interface NoticeBlockProps {
   logo?: string;
   logoText?: string;
   notices: INoticeScroll[];
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   onPressNotice: (item: any) => any;
-  iconContainerStyle?: ViewStyle | ViewStyle[];
-  logoTextStyle?: TextStyle | TextStyle[];
-  textStyle?: TextStyle | TextStyle[];
+  iconContainerStyle?: StyleProp<ViewStyle>;
+  logoTextStyle?: StyleProp<TextStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const NoticeBlock = ({

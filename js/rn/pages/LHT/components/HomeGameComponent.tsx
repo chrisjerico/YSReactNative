@@ -4,7 +4,8 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TabComponent from '../../../public/components/tars/TabComponent'
@@ -32,7 +33,7 @@ interface LeftGame {
 }
 
 interface HomeGameComponentProps {
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   leftGames: LeftGame[];
   rightGames: RightGame[];
   renderLeftGame: ({ item: LeftGame, index: number }) => any;

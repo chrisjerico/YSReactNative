@@ -2,14 +2,15 @@ import React, { ReactNode } from 'react'
 import {
   StyleSheet,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
-import { useSafeArea } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scale } from '../../tools/Scale'
 
 interface SafeAreaHeaderProps {
   headerColor: string;
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   children?: ReactNode
 }
 
@@ -19,7 +20,7 @@ const SafeAreaHeader = ({
   children
 }: SafeAreaHeaderProps) => {
 
-  const safeArea = useSafeArea()
+  const safeArea = useSafeAreaInsets()
 
   return (
     <View style={{ backgroundColor: headerColor }}>

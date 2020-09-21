@@ -4,19 +4,20 @@ import {
   Text,
   TouchableWithoutFeedback,
   View,
-  ViewStyle
+  ViewStyle,
+  StyleProp
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
 
 interface CouponBlock {
-  containerStyle?: ViewStyle | ViewStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
   coupons: any[];
   renderCoupon: ({ item: any, index: number }) => any;
   onPressMore: () => any;
   visible: boolean;
-  listContainerStyle?: ViewStyle | ViewStyle[];
-  titleContainerStyle?: ViewStyle | ViewStyle[];
+  listContainerStyle?: StyleProp<ViewStyle>;
+  titleContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const CouponBlock = ({
