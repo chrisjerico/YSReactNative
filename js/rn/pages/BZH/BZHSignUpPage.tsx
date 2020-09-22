@@ -23,6 +23,7 @@ const BZHSignUpPage = () => {
   const {
     show,
     slideCodeRef,
+    phoneNumber,
     label,
     onChange,
     sign,
@@ -52,6 +53,7 @@ const BZHSignUpPage = () => {
         <View style={styles.formContainer}>
           <SignUpFormList
             slideCodeRef={slideCodeRef}
+            phoneNumber={phoneNumber}
             slideCodeColor={'#ffffff'}
             show={show}
             label={label}
