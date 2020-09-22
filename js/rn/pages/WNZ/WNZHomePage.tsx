@@ -1,5 +1,6 @@
-import React, { useRef } from 'react'
+import React, {useEffect, useRef} from 'react'
 import {
+  Platform,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -36,10 +37,16 @@ import HomeHeader from './views/HomeHeader'
 import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
 import TabLabel from './views/TabLabel'
+import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
+import APIRouter from "../../public/network/APIRouter";
+import {UGStore} from "../../redux/store/UGStore";
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {ugLog} from "../../public/tools/UgLog";
 
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
-const WNZHomePage = () => {
+const WNZHomePage = ({navigation, setProps}) => {
   // yellowBox
   console.disableYellowBox = true
 
@@ -52,6 +59,19 @@ const WNZHomePage = () => {
       rerender()
     },
   })
+
+  useEffect(() => {
+    setProps({
+      didFocus: async () => {
+        switch (Platform.OS) {
+          case 'android':
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+            break;
+        }
+
+      }
+    })
+  }, [])
 
   const { goToJDPromotionListPage } = goTo
 

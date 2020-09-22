@@ -113,7 +113,11 @@ const HJHomePage = ({navigation, setProps}) => {
   }
   const init = async () => {
     try {
-      ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+      switch (Platform.OS) {
+        case 'android':
+          ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+          break;
+      }
       // const {data } = await APIRouter.system_config()
       // OCHelper.call("NSNotificationCenter.defaultCenter.postNotificationName:[object:]", ["UGNotificationGetSystemConfigComplete", "nil"])
     } catch (error) {
