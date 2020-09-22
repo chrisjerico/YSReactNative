@@ -23,7 +23,7 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#e53333',
+    themeColor: '#3880e5',
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,

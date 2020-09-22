@@ -18,6 +18,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
 
 const BYSignInPage = () => {
   console.disableYellowBox = true
@@ -41,7 +42,7 @@ const BYSignInPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+      <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
         <MineHeader
           title={'登录'}
           showBackBtn={true}
@@ -68,7 +69,7 @@ const BYSignInPage = () => {
             containerStyle={[
               styles.button,
               {
-                backgroundColor: BZHThemeColor.宝石红.themeColor,
+                backgroundColor: BYThemeColor.白曜.themeColor,
               },
             ]}
             disabledContainerStyle={styles.button}
@@ -106,7 +107,7 @@ const SignInForm = (props: FormComponentProps) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: BYThemeColor.白曜.homeContentSubColor,
   },
   formContainer: {
     backgroundColor: '#ffffff',

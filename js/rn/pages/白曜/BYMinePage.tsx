@@ -18,6 +18,7 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import { ugLog } from "../../public/tools/UgLog";
+import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
 
 const BYMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -51,7 +52,7 @@ const BYMinePage = () => {
   return (
     <>
       <SafeAreaHeader
-        headerColor={BZHThemeColor.宝石红.themeColor}
+        headerColor={BYThemeColor.白曜.themeColor}
       >
         <MineHeaderComponent
           title={'会员中心'}
@@ -64,7 +65,7 @@ const BYMinePage = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+          backgroundColor: BYThemeColor.白曜.homeContentSubColor,
         }}
       // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
@@ -132,7 +133,7 @@ const BYMinePage = () => {
       </ScrollView>
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
-        color={BZHThemeColor.宝石红.themeColor}
+        color={BYThemeColor.白曜.themeColor}
         initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />

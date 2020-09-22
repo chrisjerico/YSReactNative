@@ -29,6 +29,7 @@ import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
 
 const BYHomePage = ({navigation, setProps}) => {
 
@@ -83,14 +84,14 @@ const BYHomePage = ({navigation, setProps}) => {
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor} />
+        <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor} />
         <ProgressCircle />
       </>
     )
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+        <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}
@@ -257,7 +258,7 @@ const BYHomePage = ({navigation, setProps}) => {
                               marginRight: index % 3 == 1 ? '9.5%' : 0,
                               marginBottom: scale(20),
                               backgroundColor:
-                                BZHThemeColor.宝石红.themeLightColor,
+                                BYThemeColor.白曜.themeLightColor,
                               paddingVertical: scale(20),
                               borderRadius: scale(5),
                             }}
@@ -451,7 +452,7 @@ const BYHomePage = ({navigation, setProps}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: BYThemeColor.白曜.homeContentSubColor,
   },
   subComponent: {
     marginTop: scale(10),

@@ -14,6 +14,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
+import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
 
 const BYGameLobbyPage = ({ route }) => {
   const gameLobby = UGStore.globalProps.gameLobby
@@ -35,7 +36,7 @@ const BYGameLobbyPage = ({ route }) => {
           baseHeight={scale(130)}
           itemHeight={scale(130)}
           tabGames={gameLobby}
-          focusTabColor={BZHThemeColor.宝石红.themeColor}
+          focusTabColor={BYThemeColor.白曜.themeColor}
           tabTextStyle={{ fontSize: scale(20) }}
           renderScene={({ item, tab, index }) => {
             return (
@@ -95,7 +96,7 @@ const BYGameLobbyPage = ({ route }) => {
 }
 
 const GameLobbyPageHeader = () => (
-  <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+  <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
     <MineHeader
       showBackBtn={true}
       onPressBackBtn={() => {
@@ -112,7 +113,7 @@ const GameLobbyPageHeader = () => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: BYThemeColor.白曜.homeContentSubColor,
     // marginBottom: scale(20),
   },
   gameContainer: {

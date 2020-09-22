@@ -11,7 +11,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot, push } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { BYThemeColor } from '../../public/theme/colors/BYThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -38,7 +38,7 @@ const BYSignUpPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
+      <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
         <MineHeader
           title={'注册'}
           showBackBtn={true}
@@ -67,7 +67,7 @@ const BYSignUpPage = () => {
             containerStyle={[
               styles.button,
               {
-                backgroundColor: BZHThemeColor.宝石红.themeColor,
+                backgroundColor: BYThemeColor.白曜.themeColor,
               },
             ]}
             disabledContainerStyle={styles.button}
@@ -105,7 +105,7 @@ const SignUpForm = (props: FormComponentProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
+    backgroundColor: BYThemeColor.白曜.homeContentSubColor,
   },
   formContainer: {
     backgroundColor: '#ffffff',
