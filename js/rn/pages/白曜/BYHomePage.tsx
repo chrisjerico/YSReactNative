@@ -110,7 +110,7 @@ const BYHomePage = ({navigation, setProps}) => {
           />
         </SafeAreaHeader>
         <ScrollView
-          style={styles.container}
+          style={_styles.container}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
@@ -158,186 +158,9 @@ const BYHomePage = ({navigation, setProps}) => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
+
           <HomeTabView/>
-          <NavBlock
-            visible={navs?.length > 0}
-            navs={navs}
-            renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
-              return (
-                <GameButton
-                  showSubTitle={false}
-                  showSecondLevelIcon={false}
-                  key={index}
-                  containerStyle={{ width: '25%', marginTop: scale(15) }}
-                  imageContainerStyle={{ width: '30%' }}
-                  enableCircle={false}
-                  logo={icon || logo}
-                  title={name}
-                  titleStyle={{
-                    fontSize: scale(20),
-                    fontWeight: '300',
-                    paddingTop: scale(5),
-                  }}
-                  titleContainerStyle={{ aspectRatio: 5 }}
-                  onPress={() => {
-                    if (gameId == 9) {
-                      goToJDPromotionListPage()
-                    } else {
-                      PushHelper.pushHomeGame(item)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
-          <BannerBlock
-            visible={midBanners?.length > 0}
-            autoplayTimeout={midBannerTimer}
-            showOnlineNum={false}
-            banners={midBanners}
-            renderBanner={(item, index) => {
-              const { linkCategory, linkPosition, image } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={image}
-                  resizeMode={'stretch'}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
-                  }}
-                />
-              )
-            }}
-          />
-          <List
-            uniqueKey={'BZHHomePage_GameBlock'}
-            style={{ paddingHorizontal: '1%' }}
-            removeClippedSubviews={true}
-            data={homeGames}
-            renderItem={({ item, index }) => {
-              const { name, list } = item
-              return (
-                <GameBlock
-                  containerStyle={styles.subComponent}
-                  title={name}
-                  onPressTotal={() => {
-                    if (uid) {
-                      let index = 0
-                      if (name == '视讯') {
-                        index = recommendGameTabs?.findIndex(
-                          (item) => item == '真人' || item == '视讯'
-                        )
-                      } else {
-                        index = recommendGameTabs?.findIndex(
-                          (item) => item == name
-                        )
-                      }
-                      const initialTabIndex = index < 0 ? 0 : index
-                      push(PageName.BZHGameLobbyPage, {
-                        initialTabIndex,
-                      })
-                    } else {
-                      push(PageName.BYSignInPage)
-                    }
-                  }}
-                  renderGameContent={() => (
-                    <GameSubTypeComponent
-                      uniqueKey={index.toString()}
-                      containerStyle={{ paddingTop: scale(20) }}
-                      subTypeContainerStyle={{
-                        marginBottom: scale(20),
-                        paddingHorizontal: scale(20),
-                      }}
-                      games={list}
-                      numColumns={3}
-                      subTypeNumColumns={3}
-                      renderSubType={({ item, index }) => {
-                        const { title } = item
-                        return (
-                          <Button
-                            key={index}
-                            containerStyle={{
-                              width: '27%',
-                              marginLeft: index % 3 == 1 ? '9.5%' : 0,
-                              marginRight: index % 3 == 1 ? '9.5%' : 0,
-                              marginBottom: scale(20),
-                              backgroundColor:
-                                BYThemeColor.白曜.themeLightColor,
-                              paddingVertical: scale(20),
-                              borderRadius: scale(5),
-                            }}
-                            titleStyle={{
-                              color: '#000000',
-                              fontSize: scale(15),
-                            }}
-                            title={title}
-                            onPress={() => {
-                              PushHelper.pushHomeGame(item)
-                            }}
-                          />
-                        )
-                      }}
-                      renderGame={({ item, index, showGameSubType }) => {
-                        const {
-                          title,
-                          logo,
-                          icon,
-                          name,
-                          subtitle,
-                          tipFlag,
-                          hotIcon,
-                          subType,
-                        } = item
-                        const showFlag = parseInt(tipFlag)
-                        return (
-                          <GameButton
-                            key={index}
-                            showRightTopFlag={showFlag > 0 && showFlag < 4}
-                            showCenterFlag={showFlag == 4}
-                            showSecondLevelIcon={subType ? true : false}
-                            flagIcon={hotIcon}
-                            resizeMode={'contain'}
-                            containerStyle={[
-                              styles.gameContainer,
-                              {
-                                marginLeft: index % 3 == 1 ? '5%' : 0,
-                                marginRight: index % 3 == 1 ? '5%' : 0,
-                              },
-                            ]}
-                            imageContainerStyle={{ width: '50%' }}
-                            enableCircle={false}
-                            logo={icon || logo}
-                            title={name || title}
-                            subTitle={subtitle}
-                            showSubTitle
-                            titleStyle={{
-                              fontSize: scale(21),
-                            }}
-                            subTitleStyle={{
-                              fontSize: scale(20),
-                            }}
-                            titleContainerStyle={{
-                              marginTop: scale(5),
-                              aspectRatio: 2.5,
-                            }}
-                            onPress={() => {
-                              if (subType) {
-                                showGameSubType(index)
-                              } else {
-                                //@ts-ignore
-                                PushHelper.pushHomeGame(item)
-                              }
-                            }}
-                          />
-                        )
-                      }}
-                    />
-                  )}
-                />
-              )
-            }}
-          />
+
           <CouponBlock
             visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
@@ -386,7 +209,7 @@ const BYHomePage = ({navigation, setProps}) => {
           />
           <AnimatedRankComponent
             type={rankingListType}
-            containerStyle={styles.subComponent}
+            containerStyle={_styles.subComponent}
             iconTitleContainerStyle={{
               backgroundColor: '#ffffff',
               borderBottomColor: '#d9d9d9',
@@ -455,7 +278,7 @@ const BYHomePage = ({navigation, setProps}) => {
   }
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     backgroundColor: BYThemeColor.白曜.homeContentSubColor,
   },
