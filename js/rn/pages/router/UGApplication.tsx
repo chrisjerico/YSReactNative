@@ -65,8 +65,8 @@ import HJLoginPage from "../黑金/HJLoginPage";
 import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
 import BYHomePage from "../白耀/BYHomePage";
 import BYMinePage from "../白耀/BYMinePage";
-import {BYLoginPage} from "../白耀/BYLoginPage";
-import {BYRegisterPage} from "../白耀/BYRegisterPage";
+import BYSignInPage from "../白耀/BYSignInPage";
+import BYSignUpPage from "../白耀/BYSignUpPage";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -138,8 +138,8 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={UGPage(BYLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={UGPage(BYRegisterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={UGPage(BYSignInPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={UGPage(BYSignUpPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />
