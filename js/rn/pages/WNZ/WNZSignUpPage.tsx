@@ -21,6 +21,7 @@ const WNZSignUpPage = () => {
 
   const {
     slideCodeRef,
+    phoneNumber,
     show,
     label,
     onChange,
@@ -52,6 +53,7 @@ const WNZSignUpPage = () => {
         <View style={styles.formContainer}>
           <SignUpFormList
             slideCodeRef={slideCodeRef}
+            phoneNumber={phoneNumber}
             slideCodeColor={'#f2f2f2'}
             show={show}
             label={label}

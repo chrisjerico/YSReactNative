@@ -34,6 +34,7 @@ interface Label {
 
 interface SignUpFormListProps {
   slideCodeColor: string;
+  phoneNumber: string;
   slideCodeRef: RefObject<any>;
   show: Show;
   onChange: OnChange;
@@ -66,6 +67,7 @@ interface OnChange {
 
 const SignUpFormList = ({
   slideCodeColor,
+  phoneNumber,
   show,
   onChange,
   label,
@@ -218,6 +220,7 @@ const SignUpFormList = ({
       />
       <Form
         leftIconName={'lock'}
+        extra={phoneNumber}
         onChangeText={onChaneSms}
         placeholder={'短信验证码'}
         show={showSms}
