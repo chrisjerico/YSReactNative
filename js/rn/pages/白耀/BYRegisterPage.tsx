@@ -32,10 +32,10 @@ import {ugLog} from "../../public/tools/UgLog";
 import {Icon} from "react-native-elements";
 import {TouchableWithoutFeedback} from "react-native-gesture-handler";
 import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
-import {LLRegisterInput} from "./component/registerPage/LLRegisterInput";
+import {BYRegisterInput} from "./component/registerPage/BYRegisterInput";
 import {httpClient} from "../../public/network/httpClient";
 
-export const LLRegisterPage = () => {
+export const BYRegisterPage = () => {
     const [acc, setAcc] = useState("")
     const [pwd, setPwd] = useState("")
     const [code, setCode] = useState("")
@@ -234,7 +234,7 @@ export const LLRegisterPage = () => {
 
                 hideLoading();
                 popToRoot();
-                navigate(PageName.LLLoginPage, {usr: acc, pwd: pwd})
+                navigate(PageName.BYLoginPage, {usr: acc, pwd: pwd})
             }
         } catch (error) {
             hideLoading();
@@ -274,7 +274,7 @@ export const LLRegisterPage = () => {
             </View>
                 <ScrollView showsVerticalScrollIndicator={false} bounces={false}
                             style={{marginHorizontal: 36, marginTop: 28, marginBottom: 30}}>
-                    <LLRegisterInput visible={hide_reco != 0} onChangeText={(text) => setInviter(text)}
+                    <BYRegisterInput visible={hide_reco != 0} onChangeText={(text) => setInviter(text)}
                                      placeholder={"推荐人或上级代理"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-reco.png"}/>
                     {inviter == "" && <View style={{flexDirection: "row"}}>
@@ -286,7 +286,7 @@ export const LLRegisterPage = () => {
                             paddingVertical: 4
                         }}>*请填写推荐人ID</Text>
                     </View>}
-                    <LLRegisterInput onChangeText={(text) => setAcc(text)} placeholder={"请输入会员账号（6-15位字母或数字)"}
+                    <BYRegisterInput onChangeText={(text) => setAcc(text)} placeholder={"请输入会员账号（6-15位字母或数字)"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/>
                     {!regex.test(acc) && <View style={{flexDirection: "row"}}>
                         <Text style={{
@@ -297,11 +297,11 @@ export const LLRegisterPage = () => {
                             paddingVertical: 4
                         }}>*请使用6-15位英文或数字的组合</Text>
                     </View>}
-                    <LLRegisterInput isPwd={true} onChangeText={(text) => setPwd(text)} placeholder={"请输入密码（长度不能低于6位)"}
+                    <BYRegisterInput isPwd={true} onChangeText={(text) => setPwd(text)} placeholder={"请输入密码（长度不能低于6位)"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/>
-                    <LLRegisterInput isPwd={true} onChangeText={(text) => setConfirmPwd(text)} placeholder={"请确认密码"}
+                    <BYRegisterInput isPwd={true} onChangeText={(text) => setConfirmPwd(text)} placeholder={"请确认密码"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/>
-                    <LLRegisterInput visible={reg_email != 0} onChangeText={(text) => setEmail(text)} placeholder={"请输入电子邮件"}
+                    <BYRegisterInput visible={reg_email != 0} onChangeText={(text) => setEmail(text)} placeholder={"请输入电子邮件"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-email.png"}/>
                     {getVcode}
                     <View style={{flexDirection: "row"}}>
@@ -322,7 +322,7 @@ export const LLRegisterPage = () => {
                         <View style={{flexDirection: "row", marginTop: 16}}>
                             <Text style={{color: "#3c3c3c", fontSize: 14}}>已有账号？</Text>
                             <Text style={{color: "#387ef5", fontSize: 14}} onPress={() => {
-                                navigate(PageName.LLLoginPage, "")
+                                navigate(PageName.BYLoginPage, "")
                             }}>马上登录</Text>
                         </View>
                         <Text style={{color: "#666", marginTop: 16, fontSize: 14}}>Copyright ©2012-2020 All Right

@@ -25,7 +25,7 @@ import {Toast} from "../../public/tools/ToastUtils";
 import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 
 let errorTimes = 0
-export const LLLoginPage = ({ route, navigation, setProps }) => {
+export const BYLoginPage = ({ route, navigation, setProps }) => {
     const [acc, setAcc] = useState("")
     const [pwd, setPwd] = useState("")
     const {loginSuccessHandle} = useLoginIn()
@@ -256,7 +256,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
             <Text style={{fontSize: 16, paddingVertical: 24, color: "#3c3c3c"}}>其他</Text>
             <View style={{flexDirection: "row", marginHorizontal: 12}}>
                 <TouchableOpacity style={{alignItems: "center"}} onPress={() => {
-                    push(PageName.LLRegisterPage)
+                    push(PageName.BYRegisterPage)
                 }}>
                     <Image style={{height: 64, width: 64}}
                            source={{uri: "https://test10.6yc.com/views/mobileTemplate/20/images/register.png"}}/>

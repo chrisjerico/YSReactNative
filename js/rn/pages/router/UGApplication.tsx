@@ -63,6 +63,10 @@ import HJMinePage from "../黑金/HJMinePage";
 import HJRegisterPage from "../黑金/HJRegisterPage";
 import HJLoginPage from "../黑金/HJLoginPage";
 import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
+import BYHomePage from "../白耀/BYHomePage";
+import BYMinePage from "../白耀/BYMinePage";
+import {BYLoginPage} from "../白耀/BYLoginPage";
+import {BYRegisterPage} from "../白耀/BYRegisterPage";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -114,6 +118,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
+        <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
+        <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={UGPage(BZHGameLobbyPage)} />
         <Router.TabScreen name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
 
@@ -132,6 +138,8 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYLoginPage} component={UGPage(BYLoginPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYRegisterPage} component={UGPage(BYRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />

@@ -48,6 +48,8 @@ export default class ExtUGApplication {
     PageName.KSMine,
     PageName.LLHomePage,
     PageName.LLMinePage,
+    PageName.BYHomePage,
+    PageName.BYMinePage,
     PageName.UpdateVersionPage,
     PageName.JDPromotionListPage,
   ];
@@ -69,6 +71,8 @@ export default class ExtUGApplication {
     PageName.KSRegister,
     PageName.LLRegisterPage,
     PageName.LLLoginPage,
+    PageName.BYRegisterPage,
+    PageName.BYLoginPage,
     PageName.VietnamLogin,
     PageName.VietnamRegister,
     PageName.VietnamGameList,

@@ -31,14 +31,14 @@ import {useHtml5Image} from "../../public/tools/tars";
 import {LLThemeColor} from "../../public/theme/colors/LLThemeCololr";
 import {UGUserCenterType} from "../../redux/model/全局/UGSysConfModel";
 
-const LLMinePage = ({navigation, setProps}) => {
+const BYMinePage = ({navigation, setProps}) => {
     const {
         pickAvatarComponentRef,
         onSaveAvatarSuccess,
         onPressAvatar,
         value
     } = useMinePage({
-        homePage: PageName.LLHomePage,
+        homePage: PageName.BYHomePage,
         defaultUserCenterLogos: config.defaultUserCenterLogos,
     })
 
@@ -60,7 +60,7 @@ const LLMinePage = ({navigation, setProps}) => {
     const [withdrawItem, setWithdrawItem] = useState<any>()
     const [transferItem, setTransferItem] = useState<any>()
     const [missionItem, setMissionItem] = useState<any>()
-    const {loginOut} = useLoginOut(PageName.LLHomePage)
+    const {loginOut} = useLoginOut(PageName.BYHomePage)
     const [spinValue, setSpinValue] = useState(new Animated.Value(0))
     const reload = useRef(false)
     const spinDeg = spinValue.interpolate({
@@ -328,4 +328,4 @@ const LLMinePage = ({navigation, setProps}) => {
     )
 }
 
-export default LLMinePage
+export default BYMinePage

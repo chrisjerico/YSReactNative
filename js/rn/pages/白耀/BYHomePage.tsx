@@ -44,7 +44,7 @@ import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import UGSysConfModel from "../../redux/model/全局/UGSysConfModel";
 
-const LLHomePage = ({setProps, navigation}) => {
+const BYHomePage = ({setProps, navigation}) => {
     let {rankList, redBag, onRefresh, loading, floatAds} = useGetHomeInfo()
     const userStore = UGStore.globalProps.userInfo;
     const {uid = ""}: UGUserModel = userStore
@@ -116,7 +116,7 @@ const LLHomePage = ({setProps, navigation}) => {
                             <Icon size={16} name={"gift"}/>
                             <Text style={{fontSize: 16, color: "#333333", padding: 10}}>优惠活动</Text>
                             <View style={{flex: 1}}/>
-                            <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>查看更多>></Text>
+                            <Text style={{fontSize: 16, color: "#333333", textAlign: "center"}}>{'查看更多>>'}</Text>
                         </TouchableOpacity>
                         <View style={{backgroundColor: "#ffffff"}}>
                             <PromotionsBlock horizontal={true} titleVisible={false}/>
@@ -187,12 +187,12 @@ const LLHomePage = ({setProps, navigation}) => {
                 <LinearGradient colors={["#df4133", "#fe695b"]} style={{borderRadius: 40}}>
                     <View style={{flexDirection: "row", justifyContent: "center", padding: 8}}>
                         <TouchableOpacity style={{height: 40, justifyContent: "center", paddingHorizontal: 30}}
-                                          onPress={() => navigate(PageName.LLLoginPage, {})}>
+                                          onPress={() => navigate(PageName.BYLoginPage, {})}>
                             <Text style={{fontSize: 20, color: "#ffffff"}}>登录</Text>
                         </TouchableOpacity>
                         <View style={{width: 1, backgroundColor: "#ffffff", height: 40}}/>
                         <TouchableOpacity style={{height: 40, justifyContent: "center", paddingHorizontal: 30}}
-                                          onPress={() => push(PageName.LLRegisterPage)}>
+                                          onPress={() => push(PageName.BYRegisterPage)}>
                             <Text style={{fontSize: 20, color: "#ffffff"}}>注册</Text>
                         </TouchableOpacity>
                     </View>
@@ -220,7 +220,7 @@ const LLHomePage = ({setProps, navigation}) => {
 
 }
 
-export default LLHomePage
+export default BYHomePage
 
 const TurntableListItem = () => {
     const {width, height} = useDimensions().screen
@@ -258,7 +258,7 @@ const TurntableListItem = () => {
                         },
                         {
                             text: "马上登录", onPress: () => {
-                                navigate(PageName.LLLoginPage, {})
+                                navigate(PageName.BYLoginPage, {})
                             },
                         }
                     ])
@@ -269,7 +269,7 @@ const TurntableListItem = () => {
                             }, style: "cancel"
                         },
                         {
-                            text: "马上登录", onPress: () => navigate(PageName.LLLoginPage, {})
+                            text: "马上登录", onPress: () => navigate(PageName.BYLoginPage, {})
                         }
                     ])
                 } else {

@@ -3,7 +3,7 @@ import * as React from "react";
 import {httpClient} from "../../../../public/network/httpClient";
 import {useState} from "react";
 
-export const LLRegisterInput = ({onChangeText, placeholder, img, visible = true, isPwd = false}: { onChangeText: (text) => void, placeholder: string, img: string, visible?: boolean, isPwd?: boolean }) => {
+export const BYRegisterInput = ({onChangeText, placeholder, img, visible = true, isPwd = false}: { onChangeText: (text) => void, placeholder: string, img: string, visible?: boolean, isPwd?: boolean }) => {
     const [showPwd, setShowPwd] = useState(false)
     return visible ? (<View style={{
             flexDirection: "row",
