@@ -16,7 +16,7 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
     get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
-    textColor1: '#111111',
+    textColor1: '#333333',
     textColor2: '#FFA726',
     textColor3: '#C1C1C1',
     textColor4: '#ffffff',
