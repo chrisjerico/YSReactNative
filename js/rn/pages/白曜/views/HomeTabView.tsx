@@ -56,19 +56,20 @@ export const HomeTabView = () => {
 
   return (
     <>
-      {games?.length > 0 &&
-      <ScrollableTabView
-        onChangeTab={({i}) => calculateHeight(i)}
-        tabBarUnderlineStyle={_styles.tab_bar_underline}
-        tabBarTextStyle={_styles.tab_bar_text}
-        style={[{flex: 1, height}]}
-        renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
-        {
-          games.length > 0
-            ? games.map((item, index) => getTab(item, index))
-            : <View/>
-        }
-      </ScrollableTabView>
+      {
+        games?.length > 0 &&
+        <ScrollableTabView
+          onChangeTab={({i}) => calculateHeight(i)}
+          tabBarUnderlineStyle={_styles.tab_bar_underline}
+          tabBarTextStyle={_styles.tab_bar_text}
+          style={[{flex: 1, height}]}
+          renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
+          {
+            games.length > 0
+              ? games.map((item, index) => getTab(item, index))
+              : <View/>
+          }
+        </ScrollableTabView>
       }
     </>
   )

@@ -43,4 +43,28 @@ const _styles = StyleSheet.create({
     margin: scale(16),
     flex: 1,
   },
+  icon: {
+    width: scale(80),
+    aspectRatio: 1,
+    borderRadius: 999,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: scale(28),
+    color: 'black',
+  },
+  hint: {
+    fontSize: scale(18),
+    color: 'grey',
+  },
+  hint_content: {
+    fontSize: scale(18),
+    color: BYThemeColor.白曜.textColor2
+  },
+  bt: {
+    width: scale(120),
+    fontSize: scale(18),
+    color: 'white',
+    borderRadius: 999,
+  },
 })

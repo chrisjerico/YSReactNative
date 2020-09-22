@@ -168,7 +168,7 @@ const BYHomePage = ({navigation, setProps}) => {
               paddingHorizontal: '1%',
               marginTop: scale(10),
             }}
-            titleContainerStyle={{ backgroundColor: '#ffffff' }}
+            titleContainerStyle={_styles.coupon_title}
             coupons={coupons}
             renderCoupon={({ item, index }) => {
               const {
@@ -284,12 +284,10 @@ const _styles = StyleSheet.create({
   },
   subComponent: {
     marginTop: scale(10),
-    backgroundColor: '#ffffff',
+    backgroundColor: 'white',
   },
-  gameContainer: {
-    width: '30%',
-    height: null,
-    marginBottom: scale(20),
+  coupon_title: {
+    backgroundColor: 'white',
   },
 })
 
