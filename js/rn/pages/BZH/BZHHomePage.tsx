@@ -1,5 +1,5 @@
-import React from 'react'
-import { RefreshControl, ScrollView, StyleSheet } from 'react-native'
+import React, {useEffect} from 'react'
+import {Platform, RefreshControl, ScrollView, StyleSheet} from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
@@ -27,8 +27,10 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
+import {ANHelper} from "../../public/define/ANHelper/ANHelper";
+import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
-const BZHHomePage = () => {
+const BZHHomePage = ({navigation, setProps}) => {
 
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
@@ -62,6 +64,19 @@ const BZHHomePage = () => {
     rankingListType,
     midBannerTimer
   } = sys
+
+  useEffect(() => {
+    setProps({
+      didFocus: async () => {
+        switch (Platform.OS) {
+          case 'android':
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
+            break;
+        }
+
+      }
+    })
+  }, [])
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
