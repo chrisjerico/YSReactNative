@@ -63,10 +63,10 @@ import HJMinePage from "../黑金/HJMinePage";
 import HJRegisterPage from "../黑金/HJRegisterPage";
 import HJLoginPage from "../黑金/HJLoginPage";
 import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
-import BYHomePage from "../白耀/BYHomePage";
-import BYMinePage from "../白耀/BYMinePage";
-import BYSignInPage from "../白耀/BYSignInPage";
-import BYSignUpPage from "../白耀/BYSignUpPage";
+import BYHomePage from "../白曜/BYHomePage";
+import BYMinePage from "../白曜/BYMinePage";
+import BYSignInPage from "../白曜/BYSignInPage";
+import BYSignUpPage from "../白曜/BYSignUpPage";
 
 // TabbarController
 class TabBarController extends Component<{

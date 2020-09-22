@@ -22,6 +22,7 @@ import { PYThemeColor } from './colors/PYThemeColor'
 import { LLThemeColor } from "./colors/LLThemeCololr";
 import { BZHThemeColor } from './colors/BZHThemeColor';
 import {HJThemeColor} from "./colors/HJThemeColor";
+import {BYThemeColor} from "./colors/BYThemeColor";
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -39,6 +40,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor,// 利来
     ...HJThemeColor, //黑金
+    ...BYThemeColor, //白曜
   }
 
   // 更新皮肤
