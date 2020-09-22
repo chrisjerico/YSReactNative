@@ -30,6 +30,8 @@ import HomeHeader from './views/HomeHeader'
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
+import {ugLog} from "../../public/tools/UgLog";
+import {HomeTabView} from "./views/HomeTabView";
 
 const BYHomePage = ({navigation, setProps}) => {
 
@@ -56,6 +58,8 @@ const BYHomePage = ({navigation, setProps}) => {
     redBagLogo,
     roulette,
   } = value
+
+  //ugLog('gameLobby= ', JSON.stringify(gameLobby))
 
   const { uid, usr, balance, isTest } = userInfo
   const {
@@ -154,6 +158,7 @@ const BYHomePage = ({navigation, setProps}) => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
+          <HomeTabView/>
           <NavBlock
             visible={navs?.length > 0}
             navs={navs}
