@@ -15,7 +15,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
 
-const BZHGameLobbyPage = ({ route }) => {
+const BYGameLobbyPage = ({ route }) => {
   const gameLobby = UGStore.globalProps.gameLobby
   const { initialTabIndex } = route?.params ?? {}
 
@@ -40,7 +40,7 @@ const BZHGameLobbyPage = ({ route }) => {
           renderScene={({ item, tab, index }) => {
             return (
               <List
-                uniqueKey={'BZHGameLobbyPage' + index.toString()}
+                uniqueKey={'BYGameLobbyPage' + index.toString()}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),
@@ -100,7 +100,7 @@ const GameLobbyPageHeader = () => (
       showBackBtn={true}
       onPressBackBtn={() => {
         OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
-          navigate(PageName.BZHHomePage, {})
+          navigate(PageName.BYHomePage, {})
         })
       }}
       showCustomerService={false}
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BZHGameLobbyPage
+export default BYGameLobbyPage

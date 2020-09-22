@@ -19,7 +19,7 @@ import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import { ugLog } from "../../public/tools/UgLog";
 
-const BZHMinePage = () => {
+const BYMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
   const {
     pickAvatarComponentRef,
@@ -28,7 +28,7 @@ const BZHMinePage = () => {
     value,
     sign,
   } = useMinePage({
-    homePage: PageName.BZHHomePage,
+    homePage: PageName.BYHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
@@ -140,4 +140,4 @@ const BZHMinePage = () => {
   )
 }
 
-export default BZHMinePage
+export default BYMinePage

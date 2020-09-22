@@ -138,8 +138,8 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYLoginPage} component={UGPage(BYLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYRegisterPage} component={UGPage(BYRegisterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={UGPage(BYLoginPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={UGPage(BYRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />

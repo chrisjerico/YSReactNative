@@ -19,7 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
-const BZHSignUpPage = () => {
+const BYSignUpPage = () => {
   const {
     show,
     slideCodeRef,
@@ -30,8 +30,8 @@ const BZHSignUpPage = () => {
     valid,
     passwordLimit,
   } = useSignUpPage({
-    homePage: PageName.BZHHomePage,
-    signInPage: PageName.BZHSignInPage,
+    homePage: PageName.BYHomePage,
+    signInPage: PageName.BYSignInPage,
   })
 
   const { signUp } = sign
@@ -77,7 +77,7 @@ const BZHSignUpPage = () => {
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback
               onPress={() => {
-                push(PageName.BZHSignInPage, {})
+                push(PageName.BYSignInPage, {})
               }}
             >
               <Text style={{ fontWeight: '300' }}>{'返回登录'}</Text>
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BZHSignUpPage
+export default BYSignUpPage

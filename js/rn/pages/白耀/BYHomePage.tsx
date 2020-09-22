@@ -30,7 +30,7 @@ import HomeHeader from './views/HomeHeader'
 import {ANHelper} from "../../public/define/ANHelper/ANHelper";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 
-const BZHHomePage = ({navigation, setProps}) => {
+const BYHomePage = ({navigation, setProps}) => {
 
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
@@ -97,8 +97,8 @@ const BZHHomePage = ({navigation, setProps}) => {
             uid={uid}
             name={usr}
             balance={balance}
-            onPressSignIn={() => push(PageName.BZHSignInPage)}
-            onPressSignUp={() => push(PageName.BZHSignUpPage)}
+            onPressSignIn={() => push(PageName.BYSignInPage)}
+            onPressSignUp={() => push(PageName.BYSignUpPage)}
             onPressUser={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.我的页)
             }}
@@ -232,7 +232,7 @@ const BZHHomePage = ({navigation, setProps}) => {
                         initialTabIndex,
                       })
                     } else {
-                      push(PageName.BZHSignInPage)
+                      push(PageName.BYSignInPage)
                     }
                   }}
                   renderGameContent={() => (
@@ -464,4 +464,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BZHHomePage
+export default BYHomePage

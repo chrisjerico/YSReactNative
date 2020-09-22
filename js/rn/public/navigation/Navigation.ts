@@ -48,10 +48,10 @@ export enum PageName {
   LLMinePage = "LLMinePage",
   LLLoginPage = "LLLoginPage",
   LLRegisterPage = "LLRegisterPage",
-  BYHomePage = "BYHomePage",
+  BYHomePage = "BYHomePage",//白耀
   BYMinePage = "BYMinePage",
-  BYLoginPage = "BYLoginPage",
-  BYRegisterPage = "BYRegisterPage",
+  BYSignInPage = "BYSignInPage",
+  BYSignUpPage = "BYSignUpPage",
   KSHomePage = "KSHomePage",
   KSLogin = "KSLogin",
   KSRegister = "KSRegister",

@@ -19,7 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
-const BZHSignInPage = () => {
+const BYSignInPage = () => {
   console.disableYellowBox = true
 
   const {
@@ -31,8 +31,8 @@ const BZHSignInPage = () => {
     slideCodeRef,
     valid,
   } = useSignInPage({
-    homePage: PageName.BZHHomePage,
-    signUpPage: PageName.BZHSignUpPage,
+    homePage: PageName.BYHomePage,
+    signUpPage: PageName.BYSignUpPage,
   })
 
   const { navigateToSignUpPage } = navigateTo
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BZHSignInPage
+export default BYSignInPage
