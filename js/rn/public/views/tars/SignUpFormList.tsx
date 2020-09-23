@@ -128,6 +128,7 @@ const SignUpFormList = ({
         placeholder={'推荐人ID'}
         leftIconTitle={'推荐人'}
         show={showRecommendGuy}
+
       />
       <Form
         onChangeText={obChangeAccount}

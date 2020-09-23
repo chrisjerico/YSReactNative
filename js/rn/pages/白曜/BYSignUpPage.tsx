@@ -18,6 +18,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 
 const BYSignUpPage = () => {
   const {
@@ -75,18 +76,15 @@ const BYSignUpPage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
-          <View style={styles.bottomButtonContainer}>
-            <TouchableWithoutFeedback
-              onPress={() => {
-                push(PageName.BYSignInPage, {})
-              }}
-            >
-              <Text style={{ fontWeight: '300' }}>{'返回登录'}</Text>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text style={{ fontWeight: '300' }}>{'返回首页'}</Text>
-            </TouchableWithoutFeedback>
-          </View>
+          <Button
+            title={'已有账号，点击登录'}
+            containerStyle={styles.signUpButton}
+            titleStyle={styles.signUpText}
+            onPress={() => {
+              push(PageName.BYSignInPage, {})
+            }}
+          />
+
         </View>
       </ScrollView>
     </>
@@ -99,6 +97,10 @@ const SignUpForm = (props: FormComponentProps) => {
       {...props}
       containerStyle={{ marginBottom: scale(10) }}
       inputContainerStyle={{ borderColor: '#d9d9d9' }}
+      leftIcon={{
+        ...props.leftIcon,
+        color: BYThemeColor.白曜.themeColor,
+      }}
     />
   )
 }
@@ -129,7 +131,20 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: scale(20),
     aspectRatio: 8,
-    borderRadius: scale(5),
+    borderRadius: scale(22),
+  },
+  signUpButton: {
+    backgroundColor: 'white',
+    borderColor: BYThemeColor.白曜.themeColor,
+    borderWidth: scale(1),
+    width: '100%',
+    aspectRatio: 8,
+    borderRadius: scale(22),
+    marginBottom: scale(44),
+  },
+  signUpText: {
+    color: BYThemeColor.白曜.themeColor,
+    fontSize: scale(23)
   },
 })
 

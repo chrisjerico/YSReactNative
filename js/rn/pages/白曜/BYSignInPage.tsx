@@ -100,6 +100,10 @@ const SignInForm = (props: FormComponentProps) => (
     {...props}
     containerStyle={{ marginBottom: scale(20) }}
     inputContainerStyle={{ borderColor: '#d9d9d9' }}
+    leftIcon={{
+      ...props.leftIcon,
+      color: BYThemeColor.白曜.themeColor,
+    }}
   />
 )
 
