@@ -38,9 +38,10 @@ const BYSignUpPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
+      <SafeAreaHeader headerColor={BYThemeColor.白曜.tabBarBgColor}>
         <MineHeader
           title={'注册'}
+          titleColor={BYThemeColor.白曜.themeColor}
           showBackBtn={true}
           onPressBackBtn={pop}
           showCustomerService={true}

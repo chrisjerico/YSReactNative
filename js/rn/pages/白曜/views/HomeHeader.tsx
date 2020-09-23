@@ -83,7 +83,7 @@ const HomeHeader = ({
                 title={'登录/注册/试玩'}
                 containerStyle={_styles.button}
                 titleStyle={_styles.buttonTitle}
-                onPress={onPressSignUp}
+                onPress={onPressSignIn}
               />
             </View>
           </View>

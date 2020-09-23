@@ -95,7 +95,7 @@ const BYHomePage = ({navigation, setProps}) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={BYThemeColor.白曜.themeColor}>
+        <SafeAreaHeader headerColor={BYThemeColor.白曜.tabBarBgColor}>
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}

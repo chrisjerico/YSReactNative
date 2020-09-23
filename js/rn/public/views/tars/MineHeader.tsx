@@ -2,11 +2,13 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
+import {anyEmpty} from "../../tools/Ext";
 
 interface MineHeaderProps {
   showCustomerService?: boolean;
   onPressCustomerService?: () => any;
   title?: string;
+  titleColor?: string;
   renderHeader?: () => any;
   onPressBackBtn?: () => any;
   showBackBtn?: boolean;
@@ -16,6 +18,7 @@ const MineHeader = ({
   showCustomerService = false,
   onPressCustomerService,
   title,
+  titleColor,
   renderHeader,
   showBackBtn = false,
   onPressBackBtn,
@@ -26,7 +29,7 @@ const MineHeader = ({
         <View style={{ flex: 1, alignItems: 'flex-start' }}>
           <AntDesign
             name={'left'}
-            color={'#ffffff'}
+            color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
             size={scale(25)}
             onPress={onPressBackBtn}
           />
@@ -39,6 +42,7 @@ const MineHeader = ({
       ) : (
           <DefaultHeader
             title={title}
+            titleColor={titleColor}
             showCustomerService={showCustomerService}
             onPressCustomerService={onPressCustomerService}
           />
@@ -49,18 +53,23 @@ const MineHeader = ({
 
 const DefaultHeader = ({
   title,
+  titleColor,
   showCustomerService,
   onPressCustomerService,
 }) => {
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={anyEmpty(titleColor)
+          ? styles.headerTitle
+          : [styles.headerTitle, {color: titleColor}]}>{title}</Text>
       </View>
       {showCustomerService ? (
         <TouchableWithoutFeedback onPress={onPressCustomerService}>
           <View style={{ flex: 1, alignItems: 'flex-end' }}>
-            <Text style={styles.rightTextStyle}>{'客服'}</Text>
+            <Text style={anyEmpty(titleColor)
+              ? styles.rightTextStyle
+              : [styles.rightTextStyle, {color: titleColor}]}>{'客服'}</Text>
           </View>
         </TouchableWithoutFeedback>
       ) : (
