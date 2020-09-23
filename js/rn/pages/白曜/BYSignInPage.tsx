@@ -78,19 +78,17 @@ const BYSignInPage = () => {
             onPress={signIn}
           />
           <Button
-            title={'快速注册'}
+            title={'马上注册'}
             containerStyle={styles.signUpButton}
-            titleStyle={{ color: 'red', fontSize: scale(23) }}
+            titleStyle={styles.signUpText}
             onPress={navigateToSignUpPage}
           />
-          <View style={styles.bottomButtonContainer}>
-            <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text style={{ color: '#666' }}>{'免费试玩'}</Text>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={popToRoot}>
-              <Text style={{ color: '#666' }}>{'返回首页'}</Text>
-            </TouchableWithoutFeedback>
-          </View>
+          <Button
+            title={'免费试玩'}
+            containerStyle={styles.tryButton}
+            titleStyle={{ color: BYThemeColor.白曜.themeColor, fontSize: scale(23) }}
+            onPress={tryPlay}
+          />
         </View>
       </ScrollView>
     </>
@@ -118,6 +116,7 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
+    paddingBottom: scale(44),
     marginBottom: scaleHeight(70),
   },
   bottomButtonContainer: {
@@ -130,18 +129,31 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    marginTop: scale(20),
-    marginBottom: scale(25),
+    marginTop: scale(16),
     aspectRatio: 8,
-    borderRadius: scale(5),
+    borderRadius: scale(22),
   },
   signUpButton: {
-    backgroundColor: '#ffffff',
-    borderColor: '#F0F0F0',
+    backgroundColor: 'white',
+    borderColor: BYThemeColor.白曜.themeColor,
     borderWidth: scale(1),
     width: '100%',
     aspectRatio: 8,
-    borderRadius: scale(5),
+    borderRadius: scale(22),
+    marginTop: scale(20),
+  },
+  tryButton: {
+    backgroundColor: 'white',
+    borderColor: BYThemeColor.白曜.themeColor,
+    borderWidth: scale(1),
+    width: '100%',
+    aspectRatio: 8,
+    borderRadius: scale(22),
+    marginTop: scale(20),
+  },
+  signUpText: {
+    color: BYThemeColor.白曜.themeColor,
+    fontSize: scale(23)
   },
 })
 
