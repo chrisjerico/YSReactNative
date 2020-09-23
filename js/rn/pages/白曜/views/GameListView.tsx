@@ -9,6 +9,7 @@ import {BYThemeColor} from "../../../public/theme/colors/BYThemeColor";
 import CommStyles from "../../base/CommStyles";
 import FastImage from "react-native-fast-image";
 import {ugLog} from "../../../public/tools/UgLog";
+import Button from "../../../public/views/tars/Button";
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";
@@ -34,14 +35,22 @@ export const GameListView = ({list}: { list: List[] }) => {
       <FastImage style={_styles.icon}
                  resizeMode={'contain'}
                  source={{uri: item.icon}}/>
-      <View>
+      <View style={CommStyles.flex}>
         <Text style={_styles.title}>
           {item.title}
         </Text>
-        <Text style={_styles.hint}>
-          {item.name}
-        </Text>
+        <View style={_styles.hint_content_layout}>
+          <Text style={_styles.hint}>
+            {item.name}
+          </Text>
+          <Text style={_styles.hint_content}>
+            {Math.round(Math.random() * 10000) + '人在玩'}
+          </Text>
+        </View>
       </View>
+      <Button title={'进入游戏'}
+              containerStyle={_styles.bt_layout}
+              titleStyle={_styles.bt_text}/>
     </View>
   }
 
@@ -65,7 +74,6 @@ const _styles = StyleSheet.create({
   icon: {
     width: scale(80),
     aspectRatio: 1,
-    borderRadius: 999,
     marginRight: scale(16),
   },
   title: {
@@ -77,14 +85,24 @@ const _styles = StyleSheet.create({
     fontSize: scale(18),
     color: 'grey',
   },
+  hint_content_layout: {
+    flexDirection: "row",
+  },
   hint_content: {
+    marginLeft: scale(12),
     fontSize: scale(18),
     color: BYThemeColor.白曜.textColor2
   },
-  bt: {
-    width: scale(120),
+  bt_layout: {
+    marginLeft: scale(16),
+    paddingHorizontal: scale(26),
+    paddingVertical: scale(6),
     fontSize: scale(18),
-    color: 'white',
     borderRadius: 999,
+    backgroundColor: BYThemeColor.白曜.themeColor
+  },
+  bt_text: {
+    color: 'white',
+    fontSize: scale(22),
   },
 })
