@@ -1,14 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
-import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
-import { scale } from '../../../public/tools/Scale'
+import {StyleSheet, Text, View, ViewStyle} from 'react-native'
+import {BZHThemeColor} from '../../../public/theme/colors/BZHThemeColor'
+import {scale} from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import {BYThemeColor} from "../../../public/theme/colors/BYThemeColor";
+import CommStyles from "../../base/CommStyles";
 
 interface ProfileBlockProps {
   balance: string | number;
+  taskRewardTotal: string;
   features: any[];
   renderFeature: (item: any, index: number) => any;
   avatar: string;
@@ -19,42 +21,65 @@ interface ProfileBlockProps {
 }
 
 const ProfileBlock = ({
-  avatar,
-  balance,
-  features,
-  renderFeature,
-  containerStyle,
-  name,
-  level,
-  onPressAvatar
-}: ProfileBlockProps) => {
+                        avatar,
+                        balance,
+                        taskRewardTotal,
+                        features,
+                        renderFeature,
+                        containerStyle,
+                        name,
+                        level,
+                        onPressAvatar
+                      }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
       <View style={styles.whiteBlock}>
         <View style={styles.profileContainer}>
-          <Avatar uri={avatar} onPress={onPressAvatar} />
-          <View style={styles.moneyContainer}>
-            <View style={{ flexDirection: 'row' }}>
+          <View style={styles.avatarContainer}>
+            <Avatar uri={avatar} onPress={onPressAvatar}/>
+            <View style={styles.infoContainer}>
               <Text style={styles.text}>{name}</Text>
               <LinearBadge
-                containerStyle={{ borderRadius: scale(5), width: null }}
-                textStyle={{ paddingHorizontal: scale(10) }}
+                containerStyle={{borderRadius: scale(5), width: scale(80)}}
+                textStyle={{paddingHorizontal: scale(10)}}
                 title={level}
                 colors={['#0080FF', '#97CBFF']}
                 showIcon={false}
               />
+
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
-              <ReLoadBalanceComponent
-                animatedContainerStyle={{ marginTop: scale(3) }}
-                title={'余额 ¥ '}
-                titleStyle={{ fontSize: scale(22) }}
-                balance={balance}
-                balanceStyle={{ color: '#000000', fontSize: scale(22) }}
-                color={'#000000'}
-                size={20}
-              />
+          </View>
+          <View style={styles.possessions}>
+            <View style={styles.possessions_left_item}>
+              <Text style={styles.possessions_left_title}>{'余额 >'}</Text>
+              <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: scale(10)
+              }}>
+                <ReLoadBalanceComponent
+                  animatedContainerStyle={{marginTop: scale(3)}}
+                  titleStyle={{fontSize: scale(26)}}
+                  balance={balance}
+                  balanceStyle={{
+                    color: BYThemeColor.白曜.textColor2,
+                    fontSize: scale(22)
+                  }}
+                  color={BYThemeColor.白曜.themeColor}
+                  size={24}
+                />
+              </View>
+            </View>
+            <View style={styles.possessions_right_item}>
+              <Text style={styles.possessions_left_title}>{'积分 >'}</Text>
+              <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: scale(10)
+              }}>
+                <Text style={styles.possessions_right_text}>{taskRewardTotal}</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -69,14 +94,12 @@ const ProfileBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 500 / 250,
+    aspectRatio: 1,
     backgroundColor: BYThemeColor.白曜.homeContentSubColor,
     paddingBottom: scale(30)
   },
   whiteBlock: {
     height: '100%',
-    backgroundColor: '#ffffff',
-    borderRadius: scale(10),
     position: 'absolute',
     marginHorizontal: scale(15),
     top: scale(10),
@@ -85,17 +108,58 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   profileContainer: {
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: scale(35),
+    backgroundColor: '#ffffff',
+    borderRadius: scale(10),
+  },
+  avatarContainer: {
+    flex: 1,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: scale(35),
+    alignItems: 'center',
   },
   featureContainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: scale(35),
+    backgroundColor: '#ffffff',
+    borderRadius: scale(10),
+    marginTop: scale(16),
+    paddingVertical: scale(16),
+  },
+  possessions: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    borderTopColor: '#E0E0E0',
+    borderTopWidth: scale(1),
+  },
+  possessions_left_item: {
+    flex: 1,
+    borderRightColor: '#E0E0E0',
+    borderRightWidth: scale(1),
+    marginRight: scale(8),
+  },
+  possessions_right_item: {
+    flex: 1,
+    marginLeft: scale(8),
+  },
+  possessions_left_title: {
+    fontSize: scale(22),
+    color: 'grey',
+  },
+  possessions_left_text: {
+    fontSize: scale(22),
+    color: BYThemeColor.白曜.textColor2,
+  },
+  possessions_right_text: {
+    fontSize: scale(22),
+    color: BYThemeColor.白曜.themeColor,
   },
   redBlock: {
     width: '100%',
@@ -107,12 +171,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(25),
     fontWeight: '400',
+    color: BYThemeColor.白曜.textColor1,
     paddingRight: scale(10)
   },
-  moneyContainer: {
+  infoContainer: {
     flex: 1,
     paddingLeft: scale(30),
-    justifyContent: 'flex-end',
     paddingBottom: scale(10),
   },
 })

@@ -252,7 +252,7 @@ const BYHomePage = ({navigation, setProps}) => {
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
+          logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
           onPress={() => {
             PushHelper.pushWheel(roulette)
           }}

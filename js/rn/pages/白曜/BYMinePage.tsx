@@ -35,6 +35,7 @@ const BYMinePage = () => {
 
   const {
     balance,
+    taskRewardTotal,
     userCenterItems,
     curLevelGrade,
     usr,
@@ -71,6 +72,7 @@ const BYMinePage = () => {
       >
         <ProfileBlock
           balance={balance}
+          taskRewardTotal={taskRewardTotal}
           onPressAvatar={onPressAvatar}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}

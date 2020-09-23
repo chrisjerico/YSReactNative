@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#ffffff',
+    fontSize: scale(20)
   },
 })
 
