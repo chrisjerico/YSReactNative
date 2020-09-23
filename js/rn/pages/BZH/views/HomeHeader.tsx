@@ -32,7 +32,7 @@ const HomeHeader = ({
           <View style={styles.left}>
             {isTest ? (
               <Button
-                title={'注 册'}
+                title={'注册'}
                 containerStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignUp}
@@ -69,7 +69,7 @@ const HomeHeader = ({
           <View style={styles.row}>
             <View style={styles.left}>
               <Button
-                title={'登 录'}
+                title={'登录'}
                 containerStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignIn}
@@ -86,7 +86,7 @@ const HomeHeader = ({
             </View>
             <View style={styles.right}>
               <Button
-                title={'注 册'}
+                title={'注册'}
                 containerStyle={styles.button}
                 titleStyle={styles.buttonTitle}
                 onPress={onPressSignUp}

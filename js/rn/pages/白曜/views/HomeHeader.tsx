@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
+import {BYThemeColor} from "../../../public/theme/colors/BYThemeColor";
 
 interface HomeHeaderProps {
   name: string;
@@ -28,28 +29,28 @@ const HomeHeader = ({
   return (
     <>
       {uid ? (
-        <View style={styles.row}>
-          <View style={styles.left}>
+        <View style={_styles.row}>
+          <View style={_styles.left}>
             {isTest ? (
               <Button
-                title={'注 册'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
+                title={'注册'}
+                containerStyle={_styles.button}
+                titleStyle={_styles.buttonTitle}
                 onPress={onPressSignUp}
               />
             ) : null}
           </View>
-          <View style={styles.imageContainer}>
+          <View style={_styles.imageContainer}>
             <FastImage
               source={{
                 uri: logo,
               }}
-              style={styles.logo}
+              style={_styles.logo}
               resizeMode={'contain'}
             />
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
-            <View style={styles.right}>
+            <View style={_styles.right}>
               <Text
                 numberOfLines={1}
                 style={{ color: '#ffffff', fontSize: scale(18) }}
@@ -66,29 +67,22 @@ const HomeHeader = ({
           </TouchableWithoutFeedback>
         </View>
       ) : (
-          <View style={styles.row}>
-            <View style={styles.left}>
-              <Button
-                title={'登 录'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignIn}
-              />
-            </View>
-            <View style={styles.imageContainer}>
+          <View style={_styles.row}>
+            <View style={_styles.left}/>
+            <View style={_styles.imageContainer}>
               <FastImage
                 source={{
                   uri: logo,
                 }}
-                style={styles.logo}
+                style={_styles.logo}
                 resizeMode={'contain'}
               />
             </View>
-            <View style={styles.right}>
+            <View style={_styles.right}>
               <Button
-                title={'注 册'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
+                title={'登录/注册/试玩'}
+                containerStyle={_styles.button}
+                titleStyle={_styles.buttonTitle}
                 onPress={onPressSignUp}
               />
             </View>
@@ -98,22 +92,21 @@ const HomeHeader = ({
   )
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   text: {
     fontSize: scale(20),
     color: '#ffffff',
   },
   button: {
-    width: scale(65),
-    backgroundColor: '#d82e2f',
-    borderColor: '#fefefe',
+    paddingHorizontal: scale(4),
+    borderColor: BYThemeColor.白曜.textColor1,
     borderWidth: scale(1.5),
     paddingVertical: scale(5),
     borderRadius: scale(5),
   },
   buttonTitle: {
     fontSize: scale(18),
-    color: '#ffffff',
+    color: BYThemeColor.白曜.textColor1,
   },
   logo: {
     width: '100%',
@@ -126,7 +119,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    flex: 2,
+    flex: 1.5,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
