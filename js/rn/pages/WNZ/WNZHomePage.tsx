@@ -36,7 +36,7 @@ import config from './config'
 import HomeHeader from './views/HomeHeader'
 import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
-import TabLabel from './views/TabLabel'
+import TabBar from './views/TabBar'
 
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
@@ -320,10 +320,9 @@ const WNZHomePage = () => {
             enableAutoScrollTab={false}
             tabScrollEnabled={false}
             initialTabIndex={0}
-            baseHeight={scale(100)}
+            baseHeight={scale(82)}
             itemHeight={scale(100)}
-            tabStyle={{ height: scale(100) }}
-            renderLabel={TabLabel}
+            renderTabBar={TabBar}
             renderScene={({ item, tab }) => {
               return (
                 <List
@@ -333,7 +332,7 @@ const WNZHomePage = () => {
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
-                  initialNumToRender={0}
+                  initialNumToRender={200}
                   data={item}
                   renderItem={({ item, index }) => {
                     //@ts-ignore

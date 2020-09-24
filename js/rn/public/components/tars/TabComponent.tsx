@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
   TextStyle,
   View,
-  ViewStyle,
-  StyleProp
+  ViewStyle
 } from 'react-native'
-import { SceneMap, TabBar, TabView } from 'react-native-tab-view'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
 import { Game } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
@@ -24,22 +25,22 @@ interface TabComponentProps {
   tabTextStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   tabWidth?: number;
-  renderLabel?: ({ route, focused }: RenderLabel) => any;
   tabStyle?: StyleProp<ViewStyle>;
   contentOffset?: ContentOffset;
   enableAutoScrollTab?: boolean;
   tabScrollEnabled?: boolean;
   numColumns: number;
+  renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any;
+}
+
+interface RenderTabBar {
+  activeTab: number;
+  goToPage: (pageNumber: number) => any;
 }
 
 interface ContentOffset {
   x: number;
   y: number;
-}
-
-interface RenderLabel {
-  route: any;
-  focused: boolean;
 }
 
 interface TabGame {
@@ -56,7 +57,6 @@ interface RenderScene {
   index: number;
   tab: string;
 }
-
 
 interface SceneProps {
   data: any;
@@ -75,28 +75,27 @@ const minTabWidth = scale(100)
 const TabComponent = ({
   tabGames = [],
   focusTabColor,
-  baseHeight = scale(60),
+  baseHeight,
   initialTabIndex = 0,
   renderScene,
   tabTextStyle,
   itemHeight,
   containerStyle,
   tabWidth,
-  renderLabel,
   tabStyle,
   contentOffset,
   enableAutoScrollTab = true,
   tabScrollEnabled = true,
   numColumns,
+  renderTabBar
 }: TabComponentProps) => {
 
-  console.log("--------tabGames-------", tabGames)
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
       const gameCount = games?.length ?? 0
       const gameRow = Math.ceil(gameCount / numColumns)
-      return itemHeight * gameRow + baseHeight
+      return (itemHeight * gameRow) + baseHeight
     } else {
       return 0
     }
@@ -106,9 +105,8 @@ const TabComponent = ({
   const [index, setIndex] = useState(initialTabIndex)
   const scroll = useRef(null)
 
-
   useEffect(() => {
-    changeIndex(initialTabIndex)
+    changeIndex({ i: initialTabIndex })
   }, [initialTabIndex])
 
   const getTabCount = () => {
@@ -128,18 +126,9 @@ const TabComponent = ({
     }
   }
 
-  let scenes = {}
-  tabGames?.forEach((ele: TabGame, index: number) => {
-    scenes[index] = () => {
-      const tab = ele?.name ?? ele?.categoryName ?? ''
-      const item = ele?.list ?? ele?.games ?? []
-      return renderScene ? renderScene({ item, index, tab }) : null
-    }
-  })
-
-  const changeIndex = (index: number) => {
-    const height = getSceneHeight(index)
-    const x = getTabXPosition(index)
+  const changeIndex = ({ i }) => {
+    const height = getSceneHeight(i)
+    const x = getTabXPosition(i)
     setHeight(height)
     enableAutoScrollTab && scrollTabTo(x)
     setIndex(index)
@@ -173,24 +162,15 @@ const TabComponent = ({
     })
   }
 
-  const routes =
-    tabGames?.map((item, index) => {
-      return {
-        key: index.toString(),
-        title: StringUtils.getInstance().deleteHtml(
-          item?.name ?? item?.categoryName ?? ''
-        ),
-        logo: item?.logo,
-      }
-    }) ?? []
-
+  const Scene = (props) => renderScene && renderScene(props)
   return (
-    <TabView
-      initialLayout={{ width: AppDefine.width }}
+    <ScrollableTabView
+      tabBarBackgroundColor={"#ffffff"}
       style={[containerStyle, { height }]}
-      navigationState={{ index, routes }}
-      renderTabBar={(props: any) => {
-        return (
+      onChangeTab={changeIndex}
+      renderTabBar={(props) => {
+        const { activeTab, goToPage } = props
+        return renderTabBar ? renderTabBar({ activeTab, goToPage }) :
           <ScrollView
             scrollEnabled={tabScrollEnabled}
             ref={scroll}
@@ -198,61 +178,71 @@ const TabComponent = ({
             removeClippedSubviews={true}
             style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
             showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             contentOffset={
               contentOffset
                 ? contentOffset
                 : { x: getTabXPosition(initialTabIndex), y: 0 }
             }
             scrollEventThrottle={5000}
+            disableScrollViewPanResponder={true}
           >
-            <TabBar
-              {...props}
-              lazy={false}
-              pressOpacity={1}
-              contentContainerStyle={{ backgroundColor: '#ffffff' }}
-              tabStyle={[styles.tabStyle, tabStyle]}
-              renderLabel={
-                renderLabel
-                  ? renderLabel
-                  : ({ route, focused }) => {
-                    return (
+            <View style={[{ height: scale(60), flexDirection: 'row' }, tabStyle]}>
+              {
+                tabGames?.map((item, index) => {
+                  const title = StringUtils.getInstance().deleteHtml(
+                    item?.name ?? item?.categoryName ?? ''
+                  )
+                  return (
+                    <TouchableWithoutFeedback key={index} onPress={() => { goToPage(index) }}>
                       <View
                         style={{
                           width: getTabWidth(),
+                          justifyContent: 'center',
                           alignItems: 'center',
+                          height: '100%'
                         }}
                       >
-                        <Text
-                          style={[
-                            styles.tabText,
-                            tabTextStyle,
-                            focused ? { color: focusTabColor } : styles.text,
-                          ]}
-                          numberOfLines={1}
-                        >
-                          {route?.title}
+                        <Text style={[styles.tabText, tabTextStyle, {
+                          color: activeTab == index ? focusTabColor : '#000000'
+                        }]}>
+                          {title}
                         </Text>
-                        {focused && (
-                          <View
-                            style={[
-                              styles.focusBar,
-                              {
-                                backgroundColor: focusTabColor,
-                              },
-                            ]}
-                          />
-                        )}
+                        <View
+                          style={[
+                            styles.focusBar,
+                            {
+                              width: '50%',
+                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                            },
+                          ]}
+                        />
+
                       </View>
-                    )
-                  }
+                    </TouchableWithoutFeedback>
+                  )
+                })
               }
-            />
+            </View>
           </ScrollView>
-        )
+
       }}
-      renderScene={SceneMap(scenes)}
-      onIndexChange={changeIndex}
-    />
+    >
+      {
+        tabGames?.map((ele: TabGame, index) => {
+          const tab = ele?.name ?? ele?.categoryName ?? ''
+          const item = ele?.list ?? ele?.games ?? []
+          return (
+            <Scene
+              tabLabel={tab}
+              item={item}
+              index={index}
+              tab={tab}
+            />
+          )
+        })
+      }
+    </ScrollableTabView>
   )
 }
 
@@ -280,9 +270,9 @@ const styles = StyleSheet.create({
   },
   focusBar: {
     height: scale(2),
-    width: '100%',
     borderRadius: scale(100),
     marginTop: scale(5),
+    backgroundColor: '#ffffff',
   },
   tabText: {
     alignSelf: 'auto',
