@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import {
-  LogBox,
+  // LogBox,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -42,7 +42,7 @@ const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
 const WNZHomePage = () => {
 
-  LogBox.ignoreAllLogs()
+  // LogBox.ignoreAllLogs()
   const menu = useRef(null)
   const { rerender } = useRerender()
 

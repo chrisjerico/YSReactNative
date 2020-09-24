@@ -5,7 +5,7 @@ import {
   ViewStyle,
   StyleProp
 } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { scale } from '../../tools/Scale'
 
 interface SafeAreaHeaderProps {
@@ -20,7 +20,7 @@ const SafeAreaHeader = ({
   children
 }: SafeAreaHeaderProps) => {
 
-  const safeArea = useSafeAreaInsets()
+  const safeArea = useSafeArea()
 
   return (
     <View style={{ backgroundColor: headerColor }}>
