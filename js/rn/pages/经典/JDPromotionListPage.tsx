@@ -108,7 +108,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
               return plm.title;
             })}
             hidden={!showTopBar}
-            style={v.style1}
+            style={v?.style1}
           />
         );
       }}>

@@ -333,6 +333,7 @@ const WNZHomePage = () => {
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
+                  initialNumToRender={0}
                   data={item}
                   renderItem={({ item, index }) => {
                     //@ts-ignore

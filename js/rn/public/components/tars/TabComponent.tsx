@@ -89,6 +89,8 @@ const TabComponent = ({
   tabScrollEnabled = true,
   numColumns,
 }: TabComponentProps) => {
+
+  console.log("--------tabGames-------", tabGames)
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
     if (games) {
