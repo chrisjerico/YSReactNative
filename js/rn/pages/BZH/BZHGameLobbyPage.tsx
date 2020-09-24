@@ -66,7 +66,7 @@ const BZHGameLobbyPage = ({ route }) => {
                       title={title}
                       showSubTitle={false}
                       titleStyle={{
-                        fontSize: scale(16),
+                        fontSize: scale(18),
                       }}
                       titleContainerStyle={{
                         aspectRatio: 2.8,

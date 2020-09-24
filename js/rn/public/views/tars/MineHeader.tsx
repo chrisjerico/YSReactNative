@@ -23,14 +23,15 @@ const MineHeader = ({
   return (
     <View style={styles.container}>
       {showBackBtn ? (
-        <View style={{ flex: 1, alignItems: 'flex-start' }}>
-          <AntDesign
-            name={'left'}
-            color={'#ffffff'}
-            size={scale(25)}
-            onPress={onPressBackBtn}
-          />
-        </View>
+        <TouchableWithoutFeedback onPress={onPressBackBtn}>
+          <View style={{ flex: 1, alignItems: 'flex-start', height: '100%', justifyContent: 'center' }}>
+            <AntDesign
+              name={'left'}
+              color={'#ffffff'}
+              size={scale(25)}
+            />
+          </View>
+        </TouchableWithoutFeedback>
       ) : (
           <View style={{ flex: 1 }} />
         )}
@@ -59,7 +60,7 @@ const DefaultHeader = ({
       </View>
       {showCustomerService ? (
         <TouchableWithoutFeedback onPress={onPressCustomerService}>
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+          <View style={{ flex: 1, alignItems: 'flex-end', height: '100%', justifyContent: 'center' }}>
             <Text style={styles.rightTextStyle}>{'客服'}</Text>
           </View>
         </TouchableWithoutFeedback>
