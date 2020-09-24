@@ -1,5 +1,5 @@
-import { Image, Text, View } from "react-native";
-import AsyncStorage from '@react-native-community/async-storage';
+import { Image, Text, View, AsyncStorage } from "react-native";
+// import AsyncStorage from '@react-native-community/async-storage';
 import * as React from "react";
 import NumberFormat from "react-number-format";
 import { useEffect, useState } from "react";

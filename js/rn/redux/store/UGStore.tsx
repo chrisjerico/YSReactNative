@@ -1,4 +1,5 @@
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native'
 import { Action, Unsubscribe } from 'redux';
 import { UGBasePageProps } from '../../pages/base/UGPage';
 import { PageName } from '../../public/navigation/Navigation';
