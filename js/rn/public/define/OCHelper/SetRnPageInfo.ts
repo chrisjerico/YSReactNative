@@ -26,6 +26,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
     }
+    if (skitType.indexOf('凯时') != -1) {
+      pages = pages.concat(KSPages)
+    }
   }
 
   // 测试环境（未上线的内容）
