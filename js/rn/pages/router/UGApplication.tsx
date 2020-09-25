@@ -2,6 +2,7 @@ import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Component } from 'react'
+import TrendView from '../../public/components/TrendView'
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
@@ -107,6 +108,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
+        {/*<Router.TabScreen name={PageName.TrendView} component={UGPage(TrendView)} />*/}
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
         <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
@@ -125,6 +127,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />

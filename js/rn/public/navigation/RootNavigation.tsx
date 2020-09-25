@@ -37,7 +37,12 @@ export function pop(): boolean {
         }
     }
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
-    return count > 1;
+    if (count > 1) {
+        return true;
+    } else {
+        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        return false;
+    }
 }
 
 export function popToRoot() {
