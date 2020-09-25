@@ -16,11 +16,13 @@ export function setRnPageInfo() {
 
   // 本地编译
   if (__DEV__) {
-    skitType = '凯时'; // 測試開發
+    
   }
 
   // 测试环境（未上线的内容）
   if (AppDefine.isTest()) {
+    skitType = '凯时'; // 測試開發
+    
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
