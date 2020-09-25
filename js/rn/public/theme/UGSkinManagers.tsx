@@ -73,7 +73,7 @@ export default class UGSkinManagers extends UGThemeColor {
         console.log('pi fu =', mobileTemplateCategory);
         let key = dict[mobileTemplateCategory];
         if (B_DEBUG) {
-            key = '尊龙'
+            key = '凯时'
         }
         let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};
         theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex();
@@ -95,15 +95,22 @@ export default class UGSkinManagers extends UGThemeColor {
     static async updateOcSkin() {
         const skin = Skin1
         if (Platform.OS != 'ios') return
-        if (
+
+        // 未上线模板
+        const devSkin = __DEV__ &&
             skin.skitType.indexOf('香槟金') == -1 &&
             skin.skitType.indexOf('综合体育') == -1 &&
-            skin.skitType.indexOf('尊龙') == -1 &&
             skin.skitType.indexOf('金星黑') == -1 &&
-            skin.skitType.indexOf('宝石红') == -1 &&
             skin.skitType.indexOf('六合厅') == -1 &&
+            skin.skitType.indexOf('凯时') == -1 &&
+            skin.skitType.indexOf(`利来`) == -1;
+        
+        // 已上线模板
+        if (
+            skin.skitType.indexOf('尊龙') == -1 &&
+            skin.skitType.indexOf('宝石红') == -1 &&
             skin.skitType.indexOf('威尼斯') == -1 &&
-            skin.skitString.indexOf(`利来`) == -1
+            devSkin
         )
             return
 
