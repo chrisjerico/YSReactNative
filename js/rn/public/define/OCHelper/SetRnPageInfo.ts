@@ -16,7 +16,7 @@ export function setRnPageInfo() {
 
   // 本地编译
   if (__DEV__) {
-    skitType = '凯时'; // 測試開發
+    // skitType = '凯时'; // 測試開發
   }
 
   // 测试环境（未上线的内容）

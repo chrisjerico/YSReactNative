@@ -32,7 +32,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
 
     if ('c190'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '贴边';
-    } else if ('c199,c200,c213,c018'.indexOf(AppDefine.siteId) != -1) {
+    } else if ('c199,c200,c213,c018,c206'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '行边框';
     } else if ('c012'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '外边框';
