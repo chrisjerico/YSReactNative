@@ -25,11 +25,7 @@ const Tab = ({ logo, name, focused, onPress }) => {
       <>
         <View style={styles.tabContainer}>
           <View style={styles.titleContainer}>
-            <FastImage
-              source={{ uri: logo }}
-              style={{ width: scale(55), aspectRatio: 1 }}
-              resizeMode={'contain'}
-            />
+            <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
             <Text style={styles.titleText}>{name}</Text>
           </View>
           {name == '官方玩法' && <View style={styles.grayLineContainer} />}
@@ -38,7 +34,7 @@ const Tab = ({ logo, name, focused, onPress }) => {
           style={[
             styles.bottomLineContainer,
             {
-              backgroundColor: focused ? name == '官方玩法' ? '#80c025' : '#f44600' : 'transparent',
+              backgroundColor: focused ? (name == '官方玩法' ? '#80c025' : '#f44600') : 'transparent',
             },
           ]}
         />
@@ -50,12 +46,10 @@ const Tab = ({ logo, name, focused, onPress }) => {
 const TabBar = ({ activeTab, goToPage }) => {
   return (
     <View style={{ flexDirection: 'row' }}>
-      {
-        tabs?.map((item, index) => {
-          const { logo, name } = item
-          return <Tab key={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
-        })
-      }
+      {tabs?.map((item, index) => {
+        const { logo, name } = item
+        return <Tab key={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
+      })}
     </View>
   )
 }
@@ -64,7 +58,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     width: AppDefine.width / 2,
     flexDirection: 'row',
-    height: scale(80)
+    height: scale(80),
   },
   titleText: {
     paddingLeft: scale(10),

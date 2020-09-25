@@ -4,16 +4,12 @@ import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
 
 interface AgentButtonComponentProps {
-  onChangeAgent: (toggle: AgentType) => any;
-  show: boolean;
-  containerStyle?: StyleProp<ViewStyle>;
+  onChangeAgent: (toggle: AgentType) => any
+  show: boolean
+  containerStyle?: StyleProp<ViewStyle>
 }
 
-const AgentButtonComponent = ({
-  onChangeAgent,
-  show,
-  containerStyle
-}: AgentButtonComponentProps) => {
+const AgentButtonComponent = ({ onChangeAgent, show, containerStyle }: AgentButtonComponentProps) => {
   const [toggle, setToggle] = useState(AgentType.用户注册)
 
   useEffect(() => {
@@ -27,36 +23,18 @@ const AgentButtonComponent = ({
           onPress={() => {
             setToggle(AgentType.用户注册)
             onChangeAgent && onChangeAgent(AgentType.用户注册)
-          }}
-        >
-          <View
-            style={[
-              styles.textContainer,
-              styles.leftButton,
-              toggle ? {} : styles.enableTextContainer,
-            ]}
-          >
-            <Text style={[styles.text, toggle ? {} : styles.enableText]}>
-              {'普通用戶'}
-            </Text>
+          }}>
+          <View style={[styles.textContainer, styles.leftButton, toggle ? {} : styles.enableTextContainer]}>
+            <Text style={[styles.text, toggle ? {} : styles.enableText]}>{'普通用戶'}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
           onPress={() => {
             setToggle(AgentType.代理注册)
             onChangeAgent && onChangeAgent(AgentType.代理注册)
-          }}
-        >
-          <View
-            style={[
-              styles.textContainer,
-              styles.rightButton,
-              toggle ? styles.enableTextContainer : {},
-            ]}
-          >
-            <Text style={[styles.text, toggle ? styles.enableText : {}]}>
-              {'注册代理'}
-            </Text>
+          }}>
+          <View style={[styles.textContainer, styles.rightButton, toggle ? styles.enableTextContainer : {}]}>
+            <Text style={[styles.text, toggle ? styles.enableText : {}]}>{'注册代理'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>

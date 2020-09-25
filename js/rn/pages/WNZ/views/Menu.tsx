@@ -4,9 +4,9 @@ import Dash from 'react-native-dash'
 import { scale } from '../../../public/tools/Scale'
 
 interface MenuProps {
-  color: string;
-  title: string;
-  onPress?: () => any;
+  color: string
+  title: string
+  onPress?: () => any
 }
 const Menu = ({ color, title, onPress }: MenuProps) => {
   return (
@@ -17,18 +17,11 @@ const Menu = ({ color, title, onPress }: MenuProps) => {
             style={{
               fontSize: scale(23),
               color,
-            }}
-          >
+            }}>
             {title}
           </Text>
         </View>
-        <Dash
-          style={{ width: '100%', height: scale(1) }}
-          dashGap={2}
-          dashLength={4}
-          dashThickness={1}
-          dashColor={'#d9d9d9'}
-        />
+        <Dash style={{ width: '100%', height: scale(1) }} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
       </View>
     </TouchableWithoutFeedback>
   )

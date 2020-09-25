@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet, Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-  StyleProp
-} from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import { LHThemeColor } from '../../../public/theme/colors/LHThemeColor'
@@ -13,29 +7,29 @@ import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
 
 interface NavBlockProps {
-  customerServiceLogo: string;
-  lotteryLogo: string;
-  advertisement: string;
-  navs: any[];
-  lotterys: Lottery[];
-  containerStyle?: StyleProp<ViewStyle>;
-  date: string;
-  onPressSavePoint: () => any;
-  onPressGetPoint: () => any;
-  onPressAd: () => any;
-  onPressSmileLogo: () => any;
-  renderNav: (item: any, index: number) => any;
-  renderLottery: (item: Lottery, index: number) => any;
-  balance: string;
-  renderAd?: () => any;
-  balanceLogo: string;
+  customerServiceLogo: string
+  lotteryLogo: string
+  advertisement: string
+  navs: any[]
+  lotterys: Lottery[]
+  containerStyle?: StyleProp<ViewStyle>
+  date: string
+  onPressSavePoint: () => any
+  onPressGetPoint: () => any
+  onPressAd: () => any
+  onPressSmileLogo: () => any
+  renderNav: (item: any, index: number) => any
+  renderLottery: (item: Lottery, index: number) => any
+  balance: string
+  renderAd?: () => any
+  balanceLogo: string
 }
 
 interface Lottery {
-  number?: string;
-  color?: string;
-  sx?: string;
-  showMore?: boolean;
+  number?: string
+  color?: string
+  sx?: string
+  showMore?: boolean
 }
 
 const NavBlock = ({
@@ -61,25 +55,12 @@ const NavBlock = ({
       <View style={styles.topContainer}>
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
-          <FastImage
-            style={styles.balanceLogo}
-            source={{ uri: balanceLogo }}
-          />
+          <FastImage style={styles.balanceLogo} source={{ uri: balanceLogo }} />
           <ReLoadBalanceComponent color={'#ff861b'} balance={balance} />
         </View>
         <View style={styles.topRightContainer}>
-          <Button
-            title={'充值'}
-            containerStyle={[styles.button, { backgroundColor: '#ff8610' }]}
-            titleStyle={styles.title}
-            onPress={onPressSavePoint}
-          />
-          <Button
-            title={'提现'}
-            containerStyle={[styles.button, { backgroundColor: LHThemeColor.六合厅.themeColor }]}
-            titleStyle={styles.title}
-            onPress={onPressGetPoint}
-          />
+          <Button title={'充值'} containerStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />
+          <Button title={'提现'} containerStyle={[styles.button, { backgroundColor: LHThemeColor.六合厅.themeColor }]} titleStyle={styles.title} onPress={onPressGetPoint} />
           <TouchableWithoutFeedback onPress={onPressSmileLogo}>
             <View style={styles.smileImageContainer}>
               <FastImage
@@ -94,10 +75,7 @@ const NavBlock = ({
       </View>
       <View style={styles.titleContainer}>
         <View style={styles.titleLeftContainer}>
-          <FastImage
-            style={styles.lotteryLogo}
-            source={{ uri: lotteryLogo }}
-          />
+          <FastImage style={styles.lotteryLogo} source={{ uri: lotteryLogo }} />
           <Text style={{ paddingLeft: scale(5) }}>{'六合彩推荐资讯'}</Text>
         </View>
         <View style={styles.awardsContainer}>
@@ -106,20 +84,16 @@ const NavBlock = ({
           <Text style={styles.awardsText}>{' 期开奖结果'}</Text>
         </View>
       </View>
-      <View style={styles.lotterysCintainer}>
-        {lotterys.map(renderLottery)}
-      </View>
-      {
-        renderAd ? renderAd() : <TouchableWithoutFeedback onPress={onPressAd}>
+      <View style={styles.lotterysCintainer}>{lotterys.map(renderLottery)}</View>
+      {renderAd ? (
+        renderAd()
+      ) : (
+        <TouchableWithoutFeedback onPress={onPressAd}>
           <View style={{ flex: 90, alignItems: 'center' }}>
-            <FastImage
-              resizeMode={'contain'}
-              style={styles.adImage}
-              source={{ uri: advertisement }}
-            />
+            <FastImage resizeMode={'contain'} style={styles.adImage} source={{ uri: advertisement }} />
           </View>
         </TouchableWithoutFeedback>
-      }
+      )}
       <View style={styles.navsContainer}>{navs?.map(renderNav)}</View>
     </View>
   )
@@ -164,7 +138,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: scale(20),
-    color: '#ffffff'
+    color: '#ffffff',
   },
   titleContainer: {
     flexDirection: 'row',
@@ -189,7 +163,7 @@ const styles = StyleSheet.create({
   lotteryLogo: {
     width: '10%',
     aspectRatio: 1,
-    marginHorizontal: scale(5)
+    marginHorizontal: scale(5),
   },
   adImage: {
     width: '95%',
@@ -206,13 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   awardsText: {
-    fontWeight: '600'
+    fontWeight: '600',
   },
   balanceLogo: {
     width: scale(22),
     aspectRatio: 1,
-    marginHorizontal: scale(5)
-  }
+    marginHorizontal: scale(5),
+  },
 })
 
 export default NavBlock

@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
@@ -18,15 +14,7 @@ import SignUpFormList from '../../public/views/tars/SignUpFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const LHTSignUpPage = () => {
-  const {
-    show,
-    slideCodeRef,
-    label,
-    onChange,
-    sign,
-    valid,
-    passwordLimit,
-  } = useSignUpPage({
+  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
     homePage: PageName.LHTHomePage,
     signInPage: PageName.LHTSignInPage,
   })
@@ -48,21 +36,16 @@ const LHTSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'#ffffff'}
-            show={show}
-            label={label}
-            passwordLimit={passwordLimit}
-            onChange={onChange}
-            Form={SignUpForm}
-          />
+          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
             disabled={!valid}
             title={'注册'}
-            containerStyle={[styles.button, {
-              backgroundColor: LHThemeColor.六合厅.themeColor
-            }]}
+            containerStyle={[
+              styles.button,
+              {
+                backgroundColor: LHThemeColor.六合厅.themeColor,
+              },
+            ]}
             disabledContainerStyle={styles.button}
             titleStyle={[styles.buttonTitleStyle, { color: '#ffffff' }]}
             onPress={signUp}
@@ -75,12 +58,7 @@ const LHTSignUpPage = () => {
               push(PageName.LHTSignInPage, {})
             }}
           />
-          <Button
-            title={'返回首页'}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitleStyle}
-            onPress={popToRoot}
-          />
+          <Button title={'返回首页'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={popToRoot} />
         </View>
       </ScrollView>
     </>
@@ -88,13 +66,7 @@ const LHTSignUpPage = () => {
 }
 
 const SignUpForm = (props: FormComponentProps) => {
-  return (
-    <FormComponent
-      {...props}
-      containerStyle={{ marginBottom: scale(10) }}
-      inputContainerStyle={{ borderColor: '#d9d9d9' }}
-    />
-  )
+  return <FormComponent {...props} containerStyle={{ marginBottom: scale(10) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 }
 
 const styles = StyleSheet.create({
@@ -117,12 +89,12 @@ const styles = StyleSheet.create({
     marginVertical: scale(5),
     aspectRatio: 8,
     borderRadius: scale(5),
-    backgroundColor: '#dedede'
+    backgroundColor: '#dedede',
   },
   buttonTitleStyle: {
     color: LHThemeColor.六合厅.themeColor,
-    fontSize: scale(23)
-  }
+    fontSize: scale(23),
+  },
 })
 
 export default LHTSignUpPage

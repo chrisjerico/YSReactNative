@@ -19,15 +19,7 @@ import SignHeader from './views/SignHeader'
 const WNZSignInPage = () => {
   const menu = useRef(null)
 
-  const {
-    sign,
-    value,
-    onChange,
-    navigateTo,
-    show,
-    slideCodeRef,
-    valid,
-  } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
     homePage: PageName.WNZHomePage,
     signUpPage: PageName.WNZSignUpPage,
   })
@@ -49,31 +41,16 @@ const WNZSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'#f2f2f2'}
-            show={show}
-            onChange={onChange}
-            value={value}
-            Form={SignInForm}
-          />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#f2f2f2'} show={show} onChange={onChange} value={value} Form={SignInForm} />
           <Button
             disabled={!valid}
             title={'登陆'}
-            containerStyle={[
-              styles.loginButton,
-              { backgroundColor: '#dd524d' },
-            ]}
+            containerStyle={[styles.loginButton, { backgroundColor: '#dd524d' }]}
             disabledContainerStyle={styles.loginButton}
             titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
             onPress={signIn}
           />
-          <Button
-            title={'立即注册'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={navigateToSignUpPage}
-          />
+          <Button title={'立即注册'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={navigateToSignUpPage} />
           <Button
             title={'在线客服'}
             containerStyle={styles.whiteButton}
@@ -82,18 +59,8 @@ const WNZSignInPage = () => {
               PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
             }}
           />
-          <Button
-            title={'免费试玩'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={tryPlay}
-          />
-          <Button
-            title={'返回首页'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={popToRoot}
-          />
+          <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
+          <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent
             ref={menu}
             menus={
@@ -127,9 +94,7 @@ const SignInForm = (props: FormComponentProps & { leftIconTitle: string }) => (
     inputContainerStyle={styles.inputContainerStyle}
     leftIconContainerStyle={styles.leftIconContainerStyle}
     rightIconContainerStyle={{ marginRight: scale(10) }}
-    renderLeftIcon={() => (
-      <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>
-    )}
+    renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
     placeholderTextColor={'#9D9D9D'}
   />
 )

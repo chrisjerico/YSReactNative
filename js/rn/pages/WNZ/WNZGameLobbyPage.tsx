@@ -24,9 +24,7 @@ const WNZGameLobbyPage = ({ route }) => {
   const banner = UGStore.globalProps.banner
   const bannersInterval = stringToNumber(banner?.interval)
   const banners = banner?.list ?? []
-  const item = gameLobby?.find((item: any) =>
-    title.includes(item?.categoryName)
-  )
+  const item = gameLobby?.find((item: any) => title.includes(item?.categoryName))
   const { games, categoryName } = item ?? {}
 
   return (
@@ -35,9 +33,7 @@ const WNZGameLobbyPage = ({ route }) => {
         <MineHeader
           showBackBtn={true}
           onPressBackBtn={() => {
-            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [
-              0,
-            ]).then(() => {
+            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
               navigate(PageName.WNZHomePage, {})
             })
           }}

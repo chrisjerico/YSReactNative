@@ -65,17 +65,11 @@ const LHTHomePage = () => {
     redBag,
     redBagLogo,
     roulette,
-    sys
+    sys,
   } = value
   const { uid, usr, balance, isTest, avatar } = userInfo
 
-  const {
-    mobile_logo,
-    webName,
-    showCoupon,
-    rankingListType,
-    appDownloadUrl
-  } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl } = sys
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -85,16 +79,14 @@ const LHTHomePage = () => {
     ...lotterys.slice(6),
   ]
 
-  const chooseGames = preferenceGames
-    ?.concat(config?.moreLottery)
-    ?.filter((item) => item.selected)
+  const chooseGames = preferenceGames?.concat(config?.moreLottery)?.filter((item) => item.selected)
 
   if (loading) {
     return <ProgressCircle />
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} >
+        <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
           <HomeHeader
             avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             name={usr}
@@ -123,8 +115,7 @@ const LHTHomePage = () => {
                 }
               }}
             />
-          }
-        >
+          }>
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 230 }}
             autoplayTimeout={bannersInterval}
@@ -146,10 +137,7 @@ const LHTHomePage = () => {
           />
           <View style={styles.contentContainer}>
             <NoticeBlock
-              containerStyle={[
-                styles.subComponent,
-                { borderRadius: scale(100) },
-              ]}
+              containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
               iconContainerStyle={{
                 width: scale(20),
                 marginHorizontal: scale(15),
@@ -161,10 +149,7 @@ const LHTHomePage = () => {
               }}
             />
             <NavBlock
-              containerStyle={[
-                styles.subComponent,
-                { borderRadius: scale(20) },
-              ]}
+              containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
               navs={navs}
               lotterys={plusLotterys}
               date={lotteryDate}
@@ -173,16 +158,10 @@ const LHTHomePage = () => {
               balanceLogo={getHtml5Image(14, 'yue')}
               balance={balance}
               customerServiceLogo={getHtml5Image(14, 'zxkf')}
-              onPressSavePoint={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.存款)
-              }
-              onPressGetPoint={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.取款)
-              }
+              onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
+              onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
               onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
-              onPressSmileLogo={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-              }
+              onPressSmileLogo={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}
               renderNav={(item, index) => {
                 const { icon, name, logo, gameId } = item
                 return (
@@ -206,18 +185,7 @@ const LHTHomePage = () => {
               }}
               renderLottery={(item, index) => {
                 const { number, color, sx, showMore } = item
-                return (
-                  <LotteryBall
-                    key={index}
-                    score={number}
-                    color={color}
-                    text={sx}
-                    showMore={showMore}
-                    onPress={() =>
-                      PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
-                    }
-                  />
-                )
+                return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)} />
               }}
             />
             <HomeGameComponent
@@ -299,7 +267,7 @@ const LHTHomePage = () => {
                     }}
                     flagContainer={{
                       right: scale(15),
-                      top: scale(-5)
+                      top: scale(-5),
                     }}
                     titleStyle={{ fontSize: scale(23) }}
                     subTitleStyle={{ fontSize: scale(23) }}
@@ -315,14 +283,7 @@ const LHTHomePage = () => {
               listContainerStyle={{ borderRadius: scale(15) }}
               coupons={coupons}
               renderCoupon={({ item, index }) => {
-                const {
-                  pic,
-                  linkCategory,
-                  linkPosition,
-                  title,
-                  content,
-                  linkUrl,
-                } = item
+                const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
                 return (
                   <AutoHeightCouponComponent
                     key={index}
@@ -342,19 +303,12 @@ const LHTHomePage = () => {
                 )
               }}
             />
-            <AnimatedRankComponent
-              type={rankingListType}
-              containerStyle={{ marginVertical: scale(10) }}
-              iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
-              rankLists={rankLists}
-            />
+            <AnimatedRankComponent type={rankingListType} containerStyle={{ marginVertical: scale(10) }} iconTitleContainerStyle={styles.rankBlockIconContainerStyle} rankLists={rankLists} />
             <BottomLogo
               containerStyle={{ marginBottom: scale(30) }}
               webName={webName}
               onPressComputer={() => {
-                PushHelper.openWebView(
-                  httpClient.defaults.baseURL + '/index2.php'
-                )
+                PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={false}

@@ -5,32 +5,23 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { scale } from '../../../public/tools/Scale'
 
 interface SignHeaderProps {
-  onPressLeftTool: () => any;
-  onPressMenu: () => any;
-  onPressSign: () => any;
+  onPressLeftTool: () => any
+  onPressMenu: () => any
+  onPressSign: () => any
 }
 
-const SignHeader = ({
-  onPressLeftTool,
-  onPressMenu,
-  onPressSign,
-}: SignHeaderProps) => {
+const SignHeader = ({ onPressLeftTool, onPressMenu, onPressSign }: SignHeaderProps) => {
   return (
-    <View
-      style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}
-    >
+    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
       <TouchableWithoutFeedback onPress={onPressLeftTool}>
-        <View
-          style={{ flexDirection: 'row', alignItems: 'center', height: '100%' }}
-        >
+        <View style={{ flexDirection: 'row', alignItems: 'center', height: '100%' }}>
           <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
           <Text
             style={{
               color: '#ffffff',
               paddingLeft: scale(10),
               fontSize: scale(20),
-            }}
-          >
+            }}>
             {'返回'}
           </Text>
         </View>
@@ -42,11 +33,8 @@ const SignHeader = ({
               paddingRight: scale(10),
               height: '100%',
               justifyContent: 'center',
-            }}
-          >
-            <Text style={{ color: '#ffffff', fontSize: scale(20) }}>
-              {'登录/注册'}
-            </Text>
+            }}>
+            <Text style={{ color: '#ffffff', fontSize: scale(20) }}>{'登录/注册'}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={onPressMenu}>
@@ -55,17 +43,9 @@ const SignHeader = ({
               flexDirection: 'row',
               alignItems: 'center',
               height: '100%',
-            }}
-          >
-            <MaterialCommunityIcons
-              name={'settings-outline'}
-              size={scale(20)}
-              style={{ marginRight: scale(5) }}
-              color={'#ffffff'}
-            />
-            <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
-              {'菜单'}
-            </Text>
+            }}>
+            <MaterialCommunityIcons name={'settings-outline'} size={scale(20)} style={{ marginRight: scale(5) }} color={'#ffffff'} />
+            <Text style={{ fontSize: scale(20), color: '#ffffff' }}>{'菜单'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>

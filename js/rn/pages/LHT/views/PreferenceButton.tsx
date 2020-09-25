@@ -7,15 +7,11 @@ import { useHtml5Image } from '../../../public/tools/tars'
 const { getHtml5Image } = useHtml5Image()
 
 interface PreferenceButtonProps {
-  title: string;
-  selected?: boolean;
-  onPress?: () => any;
+  title: string
+  selected?: boolean
+  onPress?: () => any
 }
-const PreferenceButton = ({
-  title,
-  selected = false,
-  onPress,
-}: PreferenceButtonProps) => {
+const PreferenceButton = ({ title, selected = false, onPress }: PreferenceButtonProps) => {
   return (
     <View style={{ width: '30%', marginBottom: scale(31) }}>
       <TouchableWithoutFeedback onPress={onPress}>
@@ -25,14 +21,12 @@ const PreferenceButton = ({
             {
               backgroundColor: selected ? '#c21632' : '#D0D0D0',
             },
-          ]}
-        >
+          ]}>
           <Text
             style={{
               fontSize: scale(20),
               color: selected ? '#ffffff' : '#7B7B7B',
-            }}
-          >
+            }}>
             {title}
           </Text>
         </View>

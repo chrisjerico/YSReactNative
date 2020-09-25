@@ -7,38 +7,23 @@ import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 
 interface HomeHeaderProps {
-  name: string;
-  avatar: string;
-  leftLogo: string;
-  rightLogo: string;
-  showLogout: boolean;
-  onPressSignOut: () => any;
-  onPressSignIn: () => any;
-  onPressSignUp: () => any;
-  onPressTryPlay: () => any;
-  onPressLogo: () => any;
+  name: string
+  avatar: string
+  leftLogo: string
+  rightLogo: string
+  showLogout: boolean
+  onPressSignOut: () => any
+  onPressSignIn: () => any
+  onPressSignUp: () => any
+  onPressTryPlay: () => any
+  onPressLogo: () => any
 }
 
-const HomeHeader = ({
-  avatar = '',
-  name = '',
-  leftLogo = '',
-  rightLogo = '',
-  showLogout = false,
-  onPressSignOut,
-  onPressSignIn,
-  onPressSignUp,
-  onPressTryPlay,
-  onPressLogo,
-}: HomeHeaderProps) => {
+const HomeHeader = ({ avatar = '', name = '', leftLogo = '', rightLogo = '', showLogout = false, onPressSignOut, onPressSignIn, onPressSignUp, onPressTryPlay, onPressLogo }: HomeHeaderProps) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={styles.leftContainer}>
-        <FastImage
-          resizeMode={'stretch'}
-          style={styles.image}
-          source={{ uri: leftLogo }}
-        />
+        <FastImage resizeMode={'stretch'} style={styles.image} source={{ uri: leftLogo }} />
       </View>
       <View style={styles.rightContainer}>
         {showLogout ? (
@@ -59,36 +44,28 @@ const HomeHeader = ({
             />
             <Text style={styles.text}>{' | '}</Text>
             <TouchableWithoutFeedback onPress={onPressLogo}>
-              <FastImage
-                style={{ width: scale(40), aspectRatio: 1 }}
-                resizeMode={'contain'}
-                source={{ uri: rightLogo }}
-              />
+              <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
             </TouchableWithoutFeedback>
           </>
         ) : (
-            <>
-              <TouchableWithoutFeedback onPress={onPressLogo}>
-                <FastImage
-                  style={{ width: scale(40), aspectRatio: 1 }}
-                  resizeMode={'contain'}
-                  source={{ uri: rightLogo }}
-                />
-              </TouchableWithoutFeedback>
-              <Text style={styles.text}>{' | '}</Text>
-              <TouchableWithoutFeedback onPress={onPressSignIn}>
-                <Text style={styles.text}>{'登录'}</Text>
-              </TouchableWithoutFeedback>
-              <Text style={styles.text}>{' | '}</Text>
-              <TouchableWithoutFeedback onPress={onPressSignUp}>
-                <Text style={styles.text}>{'注册'}</Text>
-              </TouchableWithoutFeedback>
-              <Text style={styles.text}>{' | '}</Text>
-              <TouchableWithoutFeedback onPress={onPressTryPlay}>
-                <Text style={styles.text}>{'试玩'}</Text>
-              </TouchableWithoutFeedback>
-            </>
-          )}
+          <>
+            <TouchableWithoutFeedback onPress={onPressLogo}>
+              <FastImage style={{ width: scale(40), aspectRatio: 1 }} resizeMode={'contain'} source={{ uri: rightLogo }} />
+            </TouchableWithoutFeedback>
+            <Text style={styles.text}>{' | '}</Text>
+            <TouchableWithoutFeedback onPress={onPressSignIn}>
+              <Text style={styles.text}>{'登录'}</Text>
+            </TouchableWithoutFeedback>
+            <Text style={styles.text}>{' | '}</Text>
+            <TouchableWithoutFeedback onPress={onPressSignUp}>
+              <Text style={styles.text}>{'注册'}</Text>
+            </TouchableWithoutFeedback>
+            <Text style={styles.text}>{' | '}</Text>
+            <TouchableWithoutFeedback onPress={onPressTryPlay}>
+              <Text style={styles.text}>{'试玩'}</Text>
+            </TouchableWithoutFeedback>
+          </>
+        )}
       </View>
     </View>
   )

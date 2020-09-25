@@ -5,31 +5,23 @@ import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
 
 interface RankList {
-  username: string;
-  coin: string;
-  type: string;
-  actionTime: string;
+  username: string
+  coin: string
+  type: string
+  actionTime: string
 }
 
 interface AnimatedRankComponentProps {
-  containerStyle?: StyleProp<ViewStyle>;
-  iconTitleContainerStyle?: StyleProp<ViewStyle>;
-  contentContainerStyle?: StyleProp<ViewStyle>;
-  titleConatinerStyle?: StyleProp<ViewStyle>;
-  rankLists: RankList[];
-  duration?: number;
-  type: RankingListType;
+  containerStyle?: StyleProp<ViewStyle>
+  iconTitleContainerStyle?: StyleProp<ViewStyle>
+  contentContainerStyle?: StyleProp<ViewStyle>
+  titleConatinerStyle?: StyleProp<ViewStyle>
+  rankLists: RankList[]
+  duration?: number
+  type: RankingListType
 }
 
-const AnimatedRankComponent = ({
-  containerStyle,
-  iconTitleContainerStyle,
-  contentContainerStyle,
-  titleConatinerStyle,
-  rankLists,
-  duration = 1000,
-  type,
-}: AnimatedRankComponentProps) => {
+const AnimatedRankComponent = ({ containerStyle, iconTitleContainerStyle, contentContainerStyle, titleConatinerStyle, rankLists, duration = 1000, type }: AnimatedRankComponentProps) => {
   const listHeight = 180
   const itemHeight = 40
   const count = rankLists?.length
@@ -61,9 +53,7 @@ const AnimatedRankComponent = ({
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
           <FontAwesome name={'bar-chart'} size={scale(20)} />
-          <Text style={styles.iconText}>
-            {type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}
-          </Text>
+          <Text style={styles.iconText}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</Text>
         </View>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
@@ -74,9 +64,7 @@ const AnimatedRankComponent = ({
               <Text style={styles.title}>{'游戏'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>
-                {type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}
-              </Text>
+              <Text style={styles.title}>{type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}</Text>
             </View>
           </View>
           <View style={[styles.listContainer, { height: listHeight }]}>
@@ -88,8 +76,7 @@ const AnimatedRankComponent = ({
                     translateY: height,
                   },
                 ],
-              }}
-            >
+              }}>
               {rankLists?.map((item, index) => {
                 const { coin, type, username } = item
                 return (

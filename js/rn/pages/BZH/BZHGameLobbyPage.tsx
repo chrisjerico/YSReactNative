@@ -22,10 +22,7 @@ const BZHGameLobbyPage = ({ route }) => {
   return (
     <>
       <GameLobbyPageHeader />
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <TabComponent
           containerStyle={{
             marginVertical: scale(10),

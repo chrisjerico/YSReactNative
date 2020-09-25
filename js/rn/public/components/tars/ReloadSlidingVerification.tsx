@@ -1,31 +1,17 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Platform, ViewStyle, StyleProp } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
 import { stringToNumber } from '../../tools/tars'
 
 interface ReloadSlidingVerificationProps {
-  onChange: (data: any) => void;
-  containerStyle?: StyleProp<ViewStyle>;
-  backgroundColor?: string;
-  show?: boolean;
+  onChange: (data: any) => void
+  containerStyle?: StyleProp<ViewStyle>
+  backgroundColor?: string
+  show?: boolean
 }
 
-const ReloadSlidingVerification = (
-  {
-    onChange,
-    containerStyle,
-    backgroundColor = 'transparent',
-    show,
-  }: ReloadSlidingVerificationProps,
-  ref: any
-) => {
+const ReloadSlidingVerification = ({ onChange, containerStyle, backgroundColor = 'transparent', show }: ReloadSlidingVerificationProps, ref: any) => {
   const webViewScript =
     `setTimeout(function() { 
     document.getElementById('app').style.background = '` +
@@ -47,8 +33,7 @@ const ReloadSlidingVerification = (
         }
         break
       case 'android':
-        if (data?.startsWith('{')
-          && data?.endsWith('}')) {
+        if (data?.startsWith('{') && data?.endsWith('}')) {
           onChange(JSON.parse(data))
         } else if (typeof data == 'string') {
           setHeight(stringToNumber(data) * 1.5)

@@ -4,7 +4,7 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  View
+  View,
 } from 'react-native'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
@@ -41,7 +41,6 @@ import TabBar from './views/TabBar'
 const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 
 const WNZHomePage = () => {
-
   // LogBox.ignoreAllLogs()
   const menu = useRef(null)
   const { rerender } = useRerender()
@@ -75,25 +74,17 @@ const WNZHomePage = () => {
     redBagLogo,
     roulette,
     officialGames,
-    customiseGames
+    customiseGames,
   } = value
 
   const { signOut } = sign
 
   const { uid, usr, balance, isTest } = userInfo
 
-  const {
-    mobile_logo,
-    webName,
-    showCoupon,
-    rankingListType,
-    midBannerTimer
-  } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
 
   let homeGamesConcat = []
-  homeGames.forEach(
-    (item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? [])
-  )
+  homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
 
   const tabGames = [
     {
@@ -151,8 +142,7 @@ const WNZHomePage = () => {
                 }
               }}
             />
-          }
-        >
+          }>
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 240 }}
             badgeStyle={{ top: scale(-230) }}
@@ -360,14 +350,7 @@ const WNZHomePage = () => {
             containerStyle={styles.subComponent}
             coupons={coupons}
             renderCoupon={({ item, index }) => {
-              const {
-                pic,
-                linkCategory,
-                linkPosition,
-                title,
-                content,
-                linkUrl,
-              } = item
+              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
               return (
                 <AutoHeightCouponComponent
                   key={index}
@@ -387,17 +370,11 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <AnimatedRankComponent
-            type={rankingListType}
-            rankLists={rankLists}
-            contentContainerStyle={{ borderRadius: 0 }}
-          />
+          <AnimatedRankComponent type={rankingListType} rankLists={rankLists} contentContainerStyle={{ borderRadius: 0 }} />
           <BottomLogo
             webName={webName}
             onPressComputer={() => {
-              PushHelper.openWebView(
-                httpClient.defaults.baseURL + '/index2.php'
-              )
+              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={false}
@@ -445,7 +422,7 @@ const WNZHomePage = () => {
             uid
               ? config?.menus?.concat(config?.menuSignOut)
               : // @ts-ignore
-              config?.menuSignIn?.concat(config?.menus)
+                config?.menuSignIn?.concat(config?.menus)
           }
           renderMenu={({ item }) => {
             const { title, onPress } = item

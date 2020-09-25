@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
@@ -20,16 +14,7 @@ import SignInFormList from '../../public/views/tars/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignInPage = () => {
-
-  const {
-    sign,
-    value,
-    onChange,
-    navigateTo,
-    show,
-    slideCodeRef,
-    valid,
-  } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
     homePage: PageName.BZHHomePage,
     signUpPage: PageName.BZHSignUpPage,
   })
@@ -53,14 +38,7 @@ const BZHSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'#ffffff'}
-            show={show}
-            onChange={onChange}
-            value={value}
-            Form={SignInForm}
-          />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} />
           <Button
             title={'立即登录'}
             disabled={!valid}
@@ -74,12 +52,7 @@ const BZHSignInPage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signIn}
           />
-          <Button
-            title={'快速注册'}
-            containerStyle={styles.signUpButton}
-            titleStyle={{ color: 'red', fontSize: scale(23) }}
-            onPress={navigateToSignUpPage}
-          />
+          <Button title={'快速注册'} containerStyle={styles.signUpButton} titleStyle={{ color: 'red', fontSize: scale(23) }} onPress={navigateToSignUpPage} />
           <View style={styles.bottomButtonContainer}>
             <TouchableWithoutFeedback onPress={tryPlay}>
               <Text style={{ color: '#666' }}>{'免费试玩'}</Text>
@@ -94,13 +67,7 @@ const BZHSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
-  <FormComponent
-    {...props}
-    containerStyle={{ marginBottom: scale(20) }}
-    inputContainerStyle={{ borderColor: '#d9d9d9' }}
-  />
-)
+const SignInForm = (props: FormComponentProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 
 const styles = StyleSheet.create({
   container: {

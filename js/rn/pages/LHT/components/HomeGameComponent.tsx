@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-  StyleProp
-} from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TabComponent from '../../../public/components/tars/TabComponent'
 import { Game } from '../../../public/models/Interface'
@@ -16,33 +9,33 @@ import List from '../../../public/views/tars/List'
 import { LotteryType } from '../../../redux/model/全局/UGLotteryModel'
 
 interface RightGame {
-  id?: string;
-  name: string;
-  style?: string;
-  logo?: string;
-  list: Game[];
+  id?: string
+  name: string
+  style?: string
+  logo?: string
+  list: Game[]
 }
 
 interface LeftGame {
-  gameId: LotteryType;
-  title: string;
-  selected: boolean;
-  logo: string;
-  gameType: string;
-  des: string;
+  gameId: LotteryType
+  title: string
+  selected: boolean
+  logo: string
+  gameType: string
+  des: string
 }
 
 interface HomeGameComponentProps {
-  containerStyle?: StyleProp<ViewStyle>;
-  leftGames: LeftGame[];
-  rightGames: RightGame[];
-  renderLeftGame: ({ item: LeftGame, index: number }) => any;
-  renderRightGame: ({ item: RightGame, index: number }) => any;
-  unActiveTabColor: string;
-  activeTabColor: string;
-  itemHeight: number;
-  leftIcon: string;
-  rightIcon: string;
+  containerStyle?: StyleProp<ViewStyle>
+  leftGames: LeftGame[]
+  rightGames: RightGame[]
+  renderLeftGame: ({ item: LeftGame, index: number }) => any
+  renderRightGame: ({ item: RightGame, index: number }) => any
+  unActiveTabColor: string
+  activeTabColor: string
+  itemHeight: number
+  leftIcon: string
+  rightIcon: string
 }
 
 const HomeGameComponent = ({
@@ -69,8 +62,7 @@ const HomeGameComponent = ({
               {
                 backgroundColor: index ? unActiveTabColor : activeTabColor,
               },
-            ]}
-          >
+            ]}>
             <FastImage style={styles.image} source={{ uri: leftIcon }} />
             <Text style={styles.tabText}>{'热门资讯'}</Text>
           </View>
@@ -82,8 +74,7 @@ const HomeGameComponent = ({
               {
                 backgroundColor: index ? activeTabColor : unActiveTabColor,
               },
-            ]}
-          >
+            ]}>
             <FastImage style={styles.image} source={{ uri: rightIcon }} />
             <Text style={styles.tabText}>{'购彩大厅'}</Text>
           </View>
@@ -97,26 +88,12 @@ const HomeGameComponent = ({
           tabGames={rightGames}
           itemHeight={itemHeight}
           renderScene={({ item }) => {
-            return (
-              <List
-                uniqueKey={'HomeGameComponentRight'}
-                style={styles.list}
-                data={item}
-                renderItem={renderRightGame}
-                numColumns={3}
-              />
-            )
+            return <List uniqueKey={'HomeGameComponentRight'} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
           }}
         />
       ) : (
-          <List
-            uniqueKey={'HomeGameComponentLeft'}
-            style={styles.list}
-            data={leftGames}
-            renderItem={renderLeftGame}
-            numColumns={3}
-          />
-        )}
+        <List uniqueKey={'HomeGameComponentLeft'} style={styles.list} data={leftGames} renderItem={renderLeftGame} numColumns={3} />
+      )}
     </View>
   )
 }

@@ -54,13 +54,7 @@ const BZHHomePage = () => {
   } = value
 
   const { uid, usr, balance, isTest } = userInfo
-  const {
-    mobile_logo,
-    webName,
-    showCoupon,
-    rankingListType,
-    midBannerTimer,
-  } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
@@ -204,13 +198,9 @@ const BZHHomePage = () => {
                   if (uid) {
                     let index = 0
                     if (name == '视讯') {
-                      index = recommendGameTabs?.findIndex(
-                        (item) => item == '真人' || item == '视讯'
-                      )
+                      index = recommendGameTabs?.findIndex((item) => item == '真人' || item == '视讯')
                     } else {
-                      index = recommendGameTabs?.findIndex(
-                        (item) => item == name
-                      )
+                      index = recommendGameTabs?.findIndex((item) => item == name)
                     }
                     const initialTabIndex = index < 0 ? 0 : index
                     push(PageName.BZHGameLobbyPage, {
@@ -241,8 +231,7 @@ const BZHHomePage = () => {
                             marginLeft: index % 3 == 1 ? '9.5%' : 0,
                             marginRight: index % 3 == 1 ? '9.5%' : 0,
                             marginBottom: scale(20),
-                            backgroundColor:
-                              BZHThemeColor.宝石红.themeLightColor,
+                            backgroundColor: BZHThemeColor.宝石红.themeLightColor,
                             paddingVertical: scale(20),
                             borderRadius: scale(5),
                           }}
@@ -258,16 +247,7 @@ const BZHHomePage = () => {
                       )
                     }}
                     renderGame={({ item, index, showGameSubType }) => {
-                      const {
-                        title,
-                        logo,
-                        icon,
-                        name,
-                        subtitle,
-                        tipFlag,
-                        hotIcon,
-                        subType,
-                      } = item
+                      const { title, logo, icon, name, subtitle, tipFlag, hotIcon, subType } = item
                       const showFlag = parseInt(tipFlag)
                       return (
                         <GameButton
@@ -328,14 +308,7 @@ const BZHHomePage = () => {
                 titleContainerStyle={{ backgroundColor: '#ffffff' }}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
-                  const {
-                    pic,
-                    linkCategory,
-                    linkPosition,
-                    title,
-                    content,
-                    linkUrl,
-                  } = item
+                  const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
                   return (
                     <AutoHeightCouponComponent
                       titleStyle={{ alignSelf: 'center' }}
@@ -385,9 +358,7 @@ const BZHHomePage = () => {
                 webName={webName}
                 containerStyle={{ marginBottom: scale(5) }}
                 onPressComputer={() => {
-                  PushHelper.openWebView(
-                    httpClient.defaults.baseURL + '/index2.php'
-                  )
+                  PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                 }}
                 onPressPromotion={goToJDPromotionListPage}
                 debug={false}

@@ -4,26 +4,26 @@ import { Game, SubType } from '../../models/Interface'
 import List from '../../views/tars/List'
 
 interface RenderGame {
-  item: Game;
-  index: number;
-  showGameSubType: (index: number) => any;
+  item: Game
+  index: number
+  showGameSubType: (index: number) => any
 }
 
 interface GameSubTypeComponentProps {
-  containerStyle?: StyleProp<ViewStyle>;
-  games: Game[];
-  renderGame: (params: RenderGame) => any;
-  renderSubType?: ({ item, index }: RenderSubType) => any;
-  subTypeContainerStyle?: StyleProp<ViewStyle>;
-  numColumns: number;
-  subTypeNumColumns: number;
-  uniqueKey: string;
-  contentContainerStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>
+  games: Game[]
+  renderGame: (params: RenderGame) => any
+  renderSubType?: ({ item, index }: RenderSubType) => any
+  subTypeContainerStyle?: StyleProp<ViewStyle>
+  numColumns: number
+  subTypeNumColumns: number
+  uniqueKey: string
+  contentContainerStyle?: StyleProp<ViewStyle>
 }
 
 interface RenderSubType {
-  item: SubType;
-  index: number;
+  item: SubType
+  index: number
 }
 
 const GameSubTypeComponent = ({
@@ -57,8 +57,7 @@ const GameSubTypeComponent = ({
 
   const sliceCount = cutRow > 0 ? cutRow * numColumns : -1
   const mainGames = sliceCount == -1 ? games : games?.slice(0, sliceCount) ?? []
-  const subGames =
-    sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
+  const subGames = sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
 
   return (
     <View style={containerStyle}>
@@ -73,8 +72,7 @@ const GameSubTypeComponent = ({
           return renderGame({ item, index, showGameSubType })
         }}
       />
-      {
-        subType?.length > 0 &&
+      {subType?.length > 0 && (
         <List
           uniqueKey={uniqueKey + 'subType'}
           legacyImplementation
@@ -84,7 +82,7 @@ const GameSubTypeComponent = ({
           data={subType}
           renderItem={renderSubType}
         />
-      }
+      )}
       <List
         uniqueKey={uniqueKey + 'subGames'}
         contentContainerStyle={contentContainerStyle}

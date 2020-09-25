@@ -1,40 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react'
-import {
-  Animated,
-  Easing,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  ViewStyle,
-  View,
-  Text,
-  TextStyle,
-  StyleProp
-} from 'react-native'
+import { Animated, Easing, StyleSheet, TouchableWithoutFeedback, ViewStyle, View, Text, TextStyle, StyleProp } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
 
 interface ReLoadComponentProps {
-  color?: string;
-  containerStyle?: StyleProp<ViewStyle>;
-  size?: number;
-  balance: number | string;
-  title?: string;
-  balanceStyle?: StyleProp<TextStyle>;
-  titleStyle?: StyleProp<TextStyle>;
-  animatedContainerStyle?: StyleProp<ViewStyle>;
+  color?: string
+  containerStyle?: StyleProp<ViewStyle>
+  size?: number
+  balance: number | string
+  title?: string
+  balanceStyle?: StyleProp<TextStyle>
+  titleStyle?: StyleProp<TextStyle>
+  animatedContainerStyle?: StyleProp<ViewStyle>
 }
-const ReLoadBalanceComponent = ({
-  color,
-  containerStyle,
-  size = 25,
-  balance,
-  title,
-  balanceStyle,
-  titleStyle,
-  animatedContainerStyle
-}: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -48,11 +29,11 @@ const ReLoadBalanceComponent = ({
     try {
       const { data } = await APIRouter.user_balance_token()
       const balance = data?.data?.balance
-      console.log("-------balance-----", balance)
+      console.log('-------balance-----', balance)
       setMoney(balance)
       UGStore.dispatch({ type: 'merge', userInfo: { balance } })
     } catch (error) {
-      console.log("-------error------", error)
+      console.log('-------error------', error)
     }
   }
 
@@ -82,16 +63,8 @@ const ReLoadBalanceComponent = ({
               reload.current = false
             })
           }
-        }}
-      >
-        <Animated.View
-          style={[
-            styles.animatedContainer,
-            animatedContainerStyle,
-            { width: scale(size) },
-            { transform: [{ rotateZ: spinDeg }] },
-          ]}
-        >
+        }}>
+        <Animated.View style={[styles.animatedContainer, animatedContainerStyle, { width: scale(size) }, { transform: [{ rotateZ: spinDeg }] }]}>
           <FontAwesome name={'refresh'} size={scale(size)} color={color} />
         </Animated.View>
       </TouchableWithoutFeedback>
@@ -111,7 +84,7 @@ const styles = StyleSheet.create({
   balance: {
     color: '#ff861b',
     fontSize: scale(19),
-    marginRight: scale(10)
+    marginRight: scale(10),
   },
 })
 

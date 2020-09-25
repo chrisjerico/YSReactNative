@@ -8,7 +8,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
-import { ugLog } from "../../public/tools/UgLog"
+import { ugLog } from '../../public/tools/UgLog'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -20,26 +20,12 @@ import ProfileBlock from './views/ProfileBlock'
 
 const BZHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
-  const {
-    pickAvatarComponentRef,
-    onPressAvatar,
-    onSaveAvatarSuccess,
-    value,
-    sign,
-  } = useMinePage({
+  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.BZHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const {
-    balance,
-    userCenterItems,
-    curLevelGrade,
-    usr,
-    isTest,
-    avatar,
-    unreadMsg,
-  } = value
+  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = value
 
   const { signOut } = sign
 
@@ -49,9 +35,7 @@ const BZHMinePage = () => {
 
   return (
     <>
-      <SafeAreaHeader
-        headerColor={BZHThemeColor.宝石红.themeColor}
-      >
+      <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
         <MineHeaderComponent
           title={'会员中心'}
           showCustomerService={false}

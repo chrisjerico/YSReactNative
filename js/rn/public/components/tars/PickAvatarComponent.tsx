@@ -10,16 +10,12 @@ import Avatar from '../../views/tars/Avatar'
 import ProgressCircle from '../../views/tars/ProgressCircle'
 
 interface PickAvatarComponentProps {
-  onSaveAvatarSuccess?: () => any;
-  initAvatar: string;
-  color: string;
+  onSaveAvatarSuccess?: () => any
+  initAvatar: string
+  color: string
 }
 
-const PickAvatarComponent = ({
-  initAvatar,
-  color,
-  onSaveAvatarSuccess
-}: PickAvatarComponentProps, ref: any) => {
+const PickAvatarComponent = ({ initAvatar, color, onSaveAvatarSuccess }: PickAvatarComponentProps, ref: any) => {
   const [avatar, setAvatar] = useState(initAvatar)
   const [avatarList, setAvatarList] = useState([])
   const [fileName, setfileName] = useState('')
@@ -69,7 +65,7 @@ const PickAvatarComponent = ({
     close: () => {
       setVisible(false)
     },
-    fetchAvatarList: fetchAvatarList
+    fetchAvatarList: fetchAvatarList,
   }))
 
   return (
@@ -83,50 +79,28 @@ const PickAvatarComponent = ({
           {loading ? (
             <ProgressCircle />
           ) : (
-              <View
-                style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-              >
-                <AntDesign
-                  name={'left'}
-                  color={'#9D9D9D'}
-                  size={scale(30)}
-                  style={{ paddingHorizontal: scale(10) }}
-                  onPress={() =>
-                    scrollView.current.scrollTo({ x: 0, y: 0, animated: true })
-                  }
-                />
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  ref={scrollView}
-                >
-                  {avatarList?.map((item, index) => {
-                    const { url, filename } = item
-                    return (
-                      <Avatar
-                        key={index}
-                        uri={url}
-                        size={100}
-                        containerStyle={{ marginHorizontal: scale(10) }}
-                        onPress={() => {
-                          setAvatar(url)
-                          setfileName(filename)
-                        }}
-                      />
-                    )
-                  })}
-                </ScrollView>
-                <AntDesign
-                  name={'right'}
-                  color={'#9D9D9D'}
-                  size={scale(30)}
-                  style={{ paddingHorizontal: scale(10) }}
-                  onPress={() =>
-                    scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })
-                  }
-                />
-              </View>
-            )}
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <AntDesign name={'left'} color={'#9D9D9D'} size={scale(30)} style={{ paddingHorizontal: scale(10) }} onPress={() => scrollView.current.scrollTo({ x: 0, y: 0, animated: true })} />
+              <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} ref={scrollView}>
+                {avatarList?.map((item, index) => {
+                  const { url, filename } = item
+                  return (
+                    <Avatar
+                      key={index}
+                      uri={url}
+                      size={100}
+                      containerStyle={{ marginHorizontal: scale(10) }}
+                      onPress={() => {
+                        setAvatar(url)
+                        setfileName(filename)
+                      }}
+                    />
+                  )
+                })}
+              </ScrollView>
+              <AntDesign name={'right'} color={'#9D9D9D'} size={scale(30)} style={{ paddingHorizontal: scale(10) }} onPress={() => scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })} />
+            </View>
+          )}
           <View style={styles.buttonContainer}>
             <Button
               activeOpacity={1}
@@ -136,9 +110,7 @@ const PickAvatarComponent = ({
                 width: scale(200),
               }}
               titleStyle={{ color: '#ffffff' }}
-              onPress={() =>
-                saveAvatar({ url: avatar, filename: fileName })
-              }
+              onPress={() => saveAvatar({ url: avatar, filename: fileName })}
             />
             <Button
               activeOpacity={1}

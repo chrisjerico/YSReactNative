@@ -12,15 +12,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
 
 const LHTSignInPage = () => {
-  const {
-    sign,
-    value,
-    onChange,
-    navigateTo,
-    show,
-    slideCodeRef,
-    valid,
-  } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
     homePage: PageName.LHTHomePage,
     signUpPage: PageName.LHTSignUpPage,
   })
@@ -35,14 +27,7 @@ const LHTSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'#ffffff'}
-            show={show}
-            onChange={onChange}
-            value={value}
-            Form={SignInForm}
-          />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} />
           <Button
             disabled={!valid}
             title={'登录'}
@@ -50,46 +35,28 @@ const LHTSignInPage = () => {
               styles.button,
               {
                 backgroundColor: LHThemeColor.六合厅.themeColor,
-                marginTop: scale(20)
+                marginTop: scale(20),
               },
             ]}
-            disabledContainerStyle={[styles.button, {
-              marginTop: scale(20)
-            }]}
+            disabledContainerStyle={[
+              styles.button,
+              {
+                marginTop: scale(20),
+              },
+            ]}
             titleStyle={[styles.buttonTitleStyle, { color: '#ffffff' }]}
             onPress={signIn}
           />
-          <Button
-            title={'马上注册'}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitleStyle}
-            onPress={navigateToSignUpPage}
-          />
-          <Button
-            title={'免费试玩'}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitleStyle}
-            onPress={tryPlay}
-          />
-          <Button
-            title={'返回首页'}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitleStyle}
-            onPress={popToRoot}
-          />
+          <Button title={'马上注册'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={navigateToSignUpPage} />
+          <Button title={'免费试玩'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={tryPlay} />
+          <Button title={'返回首页'} containerStyle={styles.button} titleStyle={styles.buttonTitleStyle} onPress={popToRoot} />
         </View>
       </ScrollView>
     </>
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
-  <FormComponent
-    {...props}
-    containerStyle={{ marginBottom: scale(20) }}
-    inputContainerStyle={{ borderColor: '#d9d9d9' }}
-  />
-)
+const SignInForm = (props: FormComponentProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 
 const styles = StyleSheet.create({
   container: {
