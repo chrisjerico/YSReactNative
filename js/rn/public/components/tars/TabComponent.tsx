@@ -54,11 +54,12 @@ export const Scene = ({ data, renderItem, containerStyle }: SceneProps) => {
 }
 
 const minTabWidth = scale(100)
+const defaultTabHeight = scale(60)
 
 const TabComponent = ({
   tabGames = [],
   focusTabColor,
-  baseHeight,
+  baseHeight = defaultTabHeight,
   initialTabIndex = 0,
   renderScene,
   tabTextStyle,
@@ -163,7 +164,7 @@ const TabComponent = ({
             contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
             scrollEventThrottle={5000}
             disableScrollViewPanResponder={true}>
-            <View style={[{ height: scale(60), flexDirection: 'row' }, tabStyle]}>
+            <View style={[{ height: defaultTabHeight, flexDirection: 'row' }, tabStyle]}>
               {tabGames?.map((item, index) => {
                 const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
                 return (
