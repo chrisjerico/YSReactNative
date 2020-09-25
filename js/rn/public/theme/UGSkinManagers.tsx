@@ -72,7 +72,7 @@ export default class UGSkinManagers extends UGThemeColor {
         };
         console.log('pi fu =', mobileTemplateCategory);
         let key = dict[mobileTemplateCategory];
-        if (AppDefine.isTest()) {
+        if (__DEV__) {
             key = '凯时'
         }
         let theme = {...new UGThemeColor(), ...this.allThemeColor[key]};

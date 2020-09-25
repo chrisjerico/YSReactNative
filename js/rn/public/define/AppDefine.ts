@@ -13,8 +13,7 @@ export default class AppDefine {
   
   static isTest() {
     if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
-      && OCHelper.CodePushKey != 'ynI3JzBw7aJyQ6YfabwwTY3FhAVd4ksvOXqog';
+      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog';
     }
     return false;
   }
