@@ -3,8 +3,7 @@ import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from './../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
 import { Platform } from "react-native";
-import { ANHelper } from "../ANHelper/ANHelper";
-import { CMD } from "../ANHelper/hp/CmdDefine";
+import AppDefine from '../AppDefine';
 
 
 // 配置需要被替换的oc页面（替换成rn）
@@ -15,10 +14,13 @@ export function setRnPageInfo() {
 
   console.log("------------------skitType------------------", skitType)
 
-  // 未上线内容
+  // 本地编译
   if (__DEV__) {
     skitType = '凯时'; // 測試開發
+  }
 
+  // 测试环境（未上线的内容）
+  if (AppDefine.isTest()) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
@@ -49,7 +51,7 @@ export function setRnPageInfo() {
   // 开奖走势页
   pages.push({
     rnName: PageName.TrendView,
-    userCenterItemCode:18,
+    userCenterItemCode: 18,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -75,52 +77,6 @@ export function setRnPageInfo() {
       break;
   }
 }
-
-
-
-export class RnPageModel {
-  static pages: RnPageModel[] = [];
-  static getPageName(vcName: PageName) {
-    if (Router.getPageRouterType(vcName) != RouterType.None) {
-      return vcName;
-    }
-    for (const rpm of this.pages) {
-      if (rpm.vcName == vcName) {
-        return rpm.rnName;
-      }
-    }
-    return null;
-  }
-
-  // 替换oc页面
-  vcName?: string; // 要被替换的oc页面类名
-  vcName2?: string; // 要替换的oc页面类型
-  rnName?: PageName; // rn页面类名
-  fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
-  fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
-  允许游客访问?: boolean;
-  允许未登录访问?: boolean;
-
-  // 新增彩种
-  gameType?: string; // 彩种类型
-
-  // 新增我的页Item跳转
-  userCenterItemCode?: number; // 页面标识
-  userCenterItemIcon?: string; // 默认图标URL
-  userCenterItemTitle?: string; // 默认标题
-
-  // 新增TabbarItem跳转
-  tabbarItemPath?: string; // 页面标识
-  tabbarItemIcon?: string; // 默认图标URL
-  tabbarItemTitle?: string; // 默认标题
-
-  // 新增linkCategory跳转
-  linkCategory?: number; // linkCategory ： 1=彩票游戏；2=真人视讯；3=捕鱼游戏；4=电子游戏；5=棋牌游戏；6=体育赛事；7=导航链接；8=电竞游戏；9=聊天室；10=手机资料栏目
-  linkPosition?: number;
-}
-
-
-
 
 // 尊龙模板页面
 const ZLPages = [
@@ -416,3 +372,47 @@ const JXHPages = [
     允许未登录访问: true,
   }
 ];
+
+
+
+
+export class RnPageModel {
+  static pages: RnPageModel[] = [];
+  static getPageName(vcName: PageName) {
+    if (Router.getPageRouterType(vcName) != RouterType.None) {
+      return vcName;
+    }
+    for (const rpm of this.pages) {
+      if (rpm.vcName == vcName) {
+        return rpm.rnName;
+      }
+    }
+    return null;
+  }
+
+  // 替换oc页面
+  vcName?: string; // 要被替换的oc页面类名
+  vcName2?: string; // 要替换的oc页面类型
+  rnName?: PageName; // rn页面类名
+  fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
+  fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
+  允许游客访问?: boolean;
+  允许未登录访问?: boolean;
+
+  // 新增彩种
+  gameType?: string; // 彩种类型
+
+  // 新增我的页Item跳转
+  userCenterItemCode?: number; // 页面标识
+  userCenterItemIcon?: string; // 默认图标URL
+  userCenterItemTitle?: string; // 默认标题
+
+  // 新增TabbarItem跳转
+  tabbarItemPath?: string; // 页面标识
+  tabbarItemIcon?: string; // 默认图标URL
+  tabbarItemTitle?: string; // 默认标题
+
+  // 新增linkCategory跳转
+  linkCategory?: number; // linkCategory ： 1=彩票游戏；2=真人视讯；3=捕鱼游戏；4=电子游戏；5=棋牌游戏；6=体育赛事；7=导航链接；8=电竞游戏；9=聊天室；10=手机资料栏目
+  linkPosition?: number;
+}

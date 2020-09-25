@@ -96,8 +96,8 @@ export default class UGSkinManagers extends UGThemeColor {
         const skin = Skin1
         if (Platform.OS != 'ios') return
 
-        // 未上线模板
-        const devSkin = __DEV__ &&
+        // 测试环境（未上线的内容）
+        const devSkin = AppDefine.isTest() &&
             skin.skitType.indexOf('香槟金') == -1 &&
             skin.skitType.indexOf('综合体育') == -1 &&
             skin.skitType.indexOf('金星黑') == -1 &&
