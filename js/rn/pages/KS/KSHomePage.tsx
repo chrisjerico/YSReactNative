@@ -9,7 +9,7 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -22,6 +22,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
+import MoreGameButton from './views/MoreGameButton'
 
 const buttonHeight = scale(82)
 
@@ -258,6 +259,14 @@ const KSHomePage = () => {
               titleStyle={{ fontSize: scale(25) }}
             />
           </View>
+          <View style={[styles.toolBlock, { backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(5), flexDirection: 'column', width: null, height: null, alignItems: 'center' }]}>
+            <View style={{ width: '90%' }}>
+              <Text style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</Text>
+            </View>
+            <MoreGameButton />
+            <MoreGameButton />
+            <MoreGameButton />
+          </View>
           <CouponBlock
             visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
@@ -381,7 +390,6 @@ const styles = StyleSheet.create({
   },
   toolButton: {
     width: '32%',
-    backgroundColor: '#3a3a41',
     borderRadius: scale(5),
     height: '100%',
     marginHorizontal: '0.5%',
