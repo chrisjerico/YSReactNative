@@ -361,7 +361,7 @@ const BZHHomePage = () => {
                   PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                 }}
                 onPressPromotion={goToJDPromotionListPage}
-                debug={true}
+                debug={false}
                 version={'測試dev設定'}
               />
               <BottomGap />

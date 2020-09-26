@@ -1,62 +1,47 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  ViewStyle,
-  StyleProp
-} from 'react-native'
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, ViewStyle, StyleProp, View } from 'react-native'
 import { Icon } from 'react-native-elements'
+import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import { scale } from '../../tools/Scale'
 
 interface LinearBadgeProps {
-  title: string;
-  colors: any[];
-  onPress?: () => any;
-  showIcon?: boolean;
-  containerStyle?: StyleProp<ViewStyle>;
-  textStyle?: TextStyle;
-  size?: number;
+  title: string
+  colors: any[]
+  onPress?: () => any
+  showIcon?: boolean
+  containerStyle?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
+  size?: number
+  showLogo?: boolean
+  logoStyle?: StyleProp<ViewStyle>
+  logo?: string
 }
 
-const LinearBadge = ({
-  title,
-  colors,
-  onPress,
-  showIcon = true,
-  containerStyle,
-  textStyle,
-  size = 1,
-}: LinearBadgeProps) => (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={colors} // ['#9393FF', 'rgb(91, 91, 220)']
-        style={[
-          styles.container,
-          {
-            width: scale(125 * size),
-            borderRadius: scale(50 * size),
-          },
-          containerStyle,
-        ]}
-      >
-        <Text style={[styles.text, textStyle]}>{title}</Text>
-        {showIcon ? (
-          <Icon
-            style={{ marginLeft: scale(5) }}
-            type={'AntDesign'}
-            name={'link'}
-            size={scale(20)}
-            color={'#ffffff'}
-          />
-        ) : null}
-      </LinearGradient>
-    </TouchableWithoutFeedback>
-  )
+const LinearBadge = ({ title, colors, onPress, showIcon = true, containerStyle, textStyle, size = 1, showLogo, logoStyle, logo }: LinearBadgeProps) => (
+  <TouchableWithoutFeedback onPress={onPress}>
+    <LinearGradient
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 0 }}
+      colors={colors} // ['#9393FF', 'rgb(91, 91, 220)']
+      style={[
+        styles.container,
+        {
+          width: scale(125 * size),
+          borderRadius: scale(50 * size),
+        },
+        containerStyle,
+      ]}>
+      {showLogo && (
+        <View style={[styles.logo, logoStyle]}>
+          <FastImage style={{ width: '100%', height: '100%' }} resizeMode={'contain'} source={{ uri: logo }} />
+        </View>
+      )}
+      <Text style={[styles.text, textStyle]}>{title}</Text>
+      {showIcon && <Icon style={{ marginLeft: scale(5) }} type={'AntDesign'} name={'link'} size={scale(20)} color={'#ffffff'} />}
+    </LinearGradient>
+  </TouchableWithoutFeedback>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -67,6 +52,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#ffffff',
+  },
+  logo: {
+    width: scale(30),
+    height: scale(30),
+    marginRight: scale(10),
   },
 })
 
