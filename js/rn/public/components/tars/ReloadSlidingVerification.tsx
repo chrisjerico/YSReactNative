@@ -1,30 +1,17 @@
-import React, {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState
-} from 'react'
-import { ViewStyle } from 'react-native'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { Platform, ViewStyle, StyleProp } from 'react-native'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import AppDefine from '../../define/AppDefine'
+import { stringToNumber } from '../../tools/tars'
 
 interface ReloadSlidingVerificationProps {
-  onChange: (data: any) => void;
-  containerStyle?: ViewStyle;
-  backgroundColor?: string;
-  show?: boolean;
+  onChange: (data: any) => void
+  containerStyle?: StyleProp<ViewStyle>
+  backgroundColor?: string
+  show?: boolean
 }
 
-const ReloadSlidingVerification = (
-  {
-    onChange,
-    containerStyle,
-    backgroundColor = 'transparent',
-    show,
-  }: ReloadSlidingVerificationProps,
-  ref: any
-) => {
+const ReloadSlidingVerification = ({ onChange, containerStyle, backgroundColor = 'transparent', show }: ReloadSlidingVerificationProps, ref: any) => {
   const webViewScript =
     `setTimeout(function() { 
     document.getElementById('app').style.background = '` +
@@ -34,14 +21,28 @@ const ReloadSlidingVerification = (
   }, 500);
   true;`
   const [height, setHeight] = useState(0)
+
   const hadnleMessage = (e: WebViewMessageEvent) => {
-    if (typeof e?.nativeEvent?.data == 'string') {
-      console.log("-------e?.nativeEvent?.data", e?.nativeEvent)
-      setHeight(parseInt(e?.nativeEvent?.data))
-    } else {
-      onChange(eData)
+    const data = e?.nativeEvent?.data
+    switch (Platform.OS) {
+      case 'ios':
+        if (typeof data == 'string') {
+          setHeight(stringToNumber(data))
+        } else {
+          onChange(data)
+        }
+        break
+      case 'android':
+        if (data?.startsWith('{') && data?.endsWith('}')) {
+          onChange(JSON.parse(data))
+        } else if (typeof data == 'string') {
+          setHeight(stringToNumber(data) * 1.5)
+        } else {
+          onChange(data)
+        }
     }
   }
+
   const webViewRef = useRef<WebView>()
 
   useImperativeHandle(ref, () => ({

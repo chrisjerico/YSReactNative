@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import {Platform, View} from 'react-native';
+import { Platform, View } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
@@ -9,8 +9,8 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import AppDefine from '../../../public/define/AppDefine';
 import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall';
-import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
-import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
+import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 
 interface IProps {
   list: Array<UGPromoteModel>;
@@ -166,12 +166,12 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     if (this.style1 == '外边框') {
       return (
         <View style={{ margin: 7, paddingTop: 11, borderColor: 'white', borderWidth: 1, borderRadius: 7, backgroundColor: Skin1.homeContentColor }} >
-          <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
+          <FlatList showsVerticalScrollIndicator={false} data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         </View>
       )
     }
     return (
-      <FlatList data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
+      <FlatList showsVerticalScrollIndicator={false} data={this.list} renderItem={(data) => this.renderCell(data.item, data.index)} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
     );
   }
 }

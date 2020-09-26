@@ -20,27 +20,12 @@ import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
-  const {
-    pickAvatarComponentRef,
-    onPressAvatar,
-    onSaveAvatarSuccess,
-    value,
-    sign,
-  } = useMinePage({
+  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.LHTHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const {
-    balance,
-    userCenterItems,
-    curLevelGrade,
-    usr,
-    isTest,
-    avatar,
-    unreadMsg,
-    showSign
-  } = value
+  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg, showSign } = value
 
   const { signOut } = sign
   return (
@@ -54,11 +39,7 @@ const LHTMinePage = () => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollView
-        style={styles.container}
-        refreshControl={<RefreshControlComponent onRefresh={() => { }} />}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => { }} />} showsVerticalScrollIndicator={false}>
         <ProfileBlock
           showSignBadge={showSign}
           onPressAvatar={onPressAvatar}
@@ -105,12 +86,7 @@ const LHTMinePage = () => {
             />
           )
         })}
-        <Button
-          title={'退出登录'}
-          containerStyle={styles.logOutButton}
-          titleStyle={{ color: '#ffffff' }}
-          onPress={signOut}
-        />
+        <Button title={'退出登录'} containerStyle={styles.logOutButton} titleStyle={{ color: '#ffffff' }} onPress={signOut} />
         <BottomGap />
       </ScrollView>
       <PickAvatarComponent
@@ -133,7 +109,7 @@ const styles = StyleSheet.create({
     marginVertical: scale(25),
     height: scale(70),
     borderRadius: scale(5),
-  }
+  },
 })
 
 export default LHTMinePage

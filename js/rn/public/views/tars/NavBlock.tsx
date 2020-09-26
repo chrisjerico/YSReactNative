@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 
 interface NavBlockProps {
   navs: any[];
-  containerStyle?: ViewStyle | ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   renderNav: (item: any, index: number) => any;
   visible?: boolean;
 }
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     aspectRatio: 540 / 105,
     backgroundColor: '#ffffff',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start'
   }
 })

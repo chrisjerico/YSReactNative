@@ -1,6 +1,7 @@
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
+import { PasswordStrength } from '../../models/Enum'
 import {Platform} from "react-native";
 import {Toast} from "../ToastUtils";
 import {ANHelper} from "../../define/ANHelper/ANHelper";
@@ -9,18 +10,18 @@ import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
 import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
 import {ugLog} from "../UgLog";
 
-export const validPassword = (password: string, pass_limit: string) => {
+export const validPassword = (password: string, pass_limit: PasswordStrength) => {
   if (password) {
-    if (pass_limit) {
-      if (pass_limit == '1') {
+    if (pass_limit == PasswordStrength.不限制) {
+      return true
+    } else {
+      if (pass_limit == PasswordStrength.数字字母) {
         return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
-      } else if ([pass_limit == '2']) {
+      } else if ([pass_limit == PasswordStrength.数字字母字符]) {
         return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
       } else {
         return false
       }
-    } else {
-      return true
     }
   } else {
     return false

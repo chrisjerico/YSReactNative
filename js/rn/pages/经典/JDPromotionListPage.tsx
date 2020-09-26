@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, StyleProp } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -26,7 +26,7 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   showTopBar?: boolean; // 是否显示顶部栏
-  containerStyle?: ViewStyle | ViewStyle[]
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 // 优惠活动页
@@ -94,8 +94,8 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   if (dataArray.length == 0) {
     return null;
   }
-  var contentViews = dataArray.map(plm => {
-    return <JDPromotionListCP list={plm.list} style2={props.style} />;
+  var contentViews = dataArray.map((plm, index) => {
+    return <JDPromotionListCP key={index} list={plm.list} style2={props.style} />;
   });
   return (
     <ScrollableTabView
@@ -108,7 +108,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
               return plm.title;
             })}
             hidden={!showTopBar}
-            style={v.style1}
+            style={v?.style1}
           />
         );
       }}>
@@ -130,7 +130,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
         <View style={{ position: 'absolute', left: 0, top: 42, width: AppDefine.width, height: 1, backgroundColor: '#ccc' }} />
         {titles.map((title, idx) => {
           return (
-            <View>
+            <View key={idx}>
               <Text
                 onPress={() => {
                   props.goToPage(idx);
@@ -160,6 +160,7 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
       {titles.map((title, idx) => {
         return (
           <Text
+            key={idx}
             onPress={() => {
               props.goToPage(idx);
             }}

@@ -1,12 +1,15 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
-import { pop } from '../../public/navigation/RootNavigation'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomGap from '../../public/views/tars/BottomGap'
 import GameButton from '../../public/views/tars/GameButton'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -27,7 +30,15 @@ const WNZGameLobbyPage = ({ route }) => {
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <MineHeader showBackBtn={true} onPressBackBtn={pop} title={title} />
+        <MineHeader
+          showBackBtn={true}
+          onPressBackBtn={() => {
+            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
+              navigate(PageName.WNZHomePage, {})
+            })
+          }}
+          title={title}
+        />
       </SafeAreaHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <BannerBlock
@@ -81,6 +92,7 @@ const WNZGameLobbyPage = ({ route }) => {
             )
           }}
         />
+        <BottomGap />
       </ScrollView>
     </>
   )

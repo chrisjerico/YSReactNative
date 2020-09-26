@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle } from 'react-native'
+import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle, StyleProp } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -7,31 +7,22 @@ import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
-  title: string;
-  pic: string;
-  onPress: (setShowPop: (showPop: boolean) => any) => any;
-  content: string;
-  containerStyle?: ViewStyle | ViewStyle[];
-  titleStyle?: TextStyle | TextStyle[];
+  title: string
+  pic: string
+  onPress: (setShowPop: (showPop: boolean) => any) => any
+  content: string
+  containerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
 }
 
-const AutoHeightCouponComponent = ({
-  title,
-  pic,
-  onPress,
-  content,
-  containerStyle,
-  titleStyle
-}: AutoHeightCouponAutoHeightCouponComponentProps) => {
+const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
   const [show, setShow] = useState(true)
   if (show) {
     return (
       <View style={[{ width: '100%' }, containerStyle]}>
-        <Text style={[styles.title, titleStyle]}>
-          {title}
-        </Text>
+        <Text style={[styles.title, titleStyle]}>{title}</Text>
         <TouchableImage
           pic={pic}
           containerStyle={{ width: '100%', aspectRatio }}
@@ -55,16 +46,14 @@ const AutoHeightCouponComponent = ({
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: 'rgba(0,0,0,0.5)',
-            }}
-          >
+            }}>
             <View
               style={{
                 width: '90%',
                 height: '80%',
                 backgroundColor: '#ffffff',
                 borderRadius: scale(10),
-              }}
-            >
+              }}>
               <View
                 style={{
                   flex: 0.8,
@@ -73,8 +62,7 @@ const AutoHeightCouponComponent = ({
                   backgroundColor: '#E0E0E0',
                   borderTopRightRadius: scale(10),
                   borderTopLeftRadius: scale(10),
-                }}
-              >
+                }}>
                 <Text style={{ fontSize: scale(20) }}>{title}</Text>
               </View>
               <View style={{ flex: 8 }}>
@@ -151,8 +139,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: scale(25),
-    marginVertical: scale(10)
-  }
+    marginVertical: scale(10),
+  },
 })
 
 export default AutoHeightCouponComponent

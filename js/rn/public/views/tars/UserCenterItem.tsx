@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TouchableWithoutFeedback,
   TextStyle,
+  StyleProp
 } from 'react-native'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -15,10 +16,10 @@ interface UserCenterItemProps {
   logo: string;
   title: string;
   onPress: () => any;
-  containerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
   showUnreadMsg?: boolean;
   unreadMsg?: number;
-  titleStyle?: TextStyle | TextStyle[];
+  titleStyle?: StyleProp<TextStyle>;
   arrowColor?: string;
 }
 

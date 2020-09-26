@@ -4,26 +4,18 @@ import { Icon } from 'react-native-elements'
 import { scale } from '../../../public/tools/Scale'
 
 interface LotteryBallProps {
-  score?: number | string;
-  size?: number;
-  color?: string;
-  text?: string;
-  showMore?: boolean;
-  onPress: () => any;
-  square?: boolean;
+  score?: number | string
+  size?: number
+  color?: string
+  text?: string
+  showMore?: boolean
+  onPress: () => any
+  square?: boolean
 }
 
 const factor = 1.3
 
-const LotteryBall = ({
-  score = null,
-  size = 35,
-  color = '#ff0000',
-  text = '',
-  showMore = false,
-  onPress,
-  square = false,
-}: LotteryBallProps) => {
+const LotteryBall = ({ score = null, size = 35, color = '#ff0000', text = '', showMore = false, onPress, square = false }: LotteryBallProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={showMore ? styles.showMoreContainer : styles.container}>
@@ -33,8 +25,7 @@ const LotteryBall = ({
             {
               height: scale(30 + size),
             },
-          ]}
-        >
+          ]}>
           {showMore ? (
             <Icon type={'antdesign'} name={'plus'} color={'#9D9D9D'} />
           ) : square ? (
@@ -45,38 +36,33 @@ const LotteryBall = ({
                   width: size,
                   backgroundColor: color,
                 },
-              ]}
-            >
-              <Text style={{ fontSize: scale(size * 0.6), color: '#ffffff' }}>
-                {score}
-              </Text>
+              ]}>
+              <Text style={{ fontSize: scale(size * 0.6), color: '#ffffff' }}>{score}</Text>
             </View>
           ) : (
-                <View
-                  style={[
-                    styles.circle,
-                    {
-                      backgroundColor: color,
-                      width: scale(size * factor),
-                      aspectRatio: 1,
-                      borderRadius: scale(size * factor),
-                    },
-                  ]}
-                >
-                  <View
-                    style={[
-                      styles.scoreContainer,
-                      {
-                        width: scale(size),
-                        aspectRatio: 1,
-                        borderRadius: scale(size),
-                      },
-                    ]}
-                  >
-                    <Text style={{ fontSize: scale(size * 0.6) }}>{score}</Text>
-                  </View>
-                </View>
-              )}
+            <View
+              style={[
+                styles.circle,
+                {
+                  backgroundColor: color,
+                  width: scale(size * factor),
+                  aspectRatio: 1,
+                  borderRadius: scale(size * factor),
+                },
+              ]}>
+              <View
+                style={[
+                  styles.scoreContainer,
+                  {
+                    width: scale(size),
+                    aspectRatio: 1,
+                    borderRadius: scale(size),
+                  },
+                ]}>
+                <Text style={{ fontSize: scale(size * 0.6) }}>{score}</Text>
+              </View>
+            </View>
+          )}
         </View>
         <View style={styles.textContainer}>
           <Text>{text}</Text>

@@ -5,19 +5,16 @@ import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
 
 interface MenuModalComponentProps {
-  menus: any[];
-  renderMenu: (params: RenderMenu) => any;
+  menus: any[]
+  renderMenu: (params: RenderMenu) => any
 }
 
 interface RenderMenu {
-  item: any;
-  index: number;
+  item: any
+  index: number
 }
 
-const MenuModalComponent = (
-  { menus, renderMenu }: MenuModalComponentProps,
-  ref: any
-) => {
+const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref: any) => {
   const [visible, setVisible] = useState(false)
 
   useImperativeHandle(ref, () => ({
@@ -26,7 +23,7 @@ const MenuModalComponent = (
     },
     close: () => {
       setVisible(false)
-    }
+    },
   }))
 
   return (
@@ -38,14 +35,12 @@ const MenuModalComponent = (
       animationInTiming={700}
       animationOutTiming={700}
       useNativeDriver={true}
-      hideModalContentWhileAnimating={true}
-    >
+      hideModalContentWhileAnimating={true}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <TouchableWithoutFeedback
           onPress={() => {
             setVisible(false)
-          }}
-        >
+          }}>
           <View style={{ flex: 1 }} />
         </TouchableWithoutFeedback>
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>

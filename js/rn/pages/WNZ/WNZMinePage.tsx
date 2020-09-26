@@ -26,19 +26,7 @@ const WNZMinePage = () => {
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const {
-    uid,
-    usr,
-    mobile_logo,
-    curLevelInt,
-    nextLevelInt,
-    taskRewardTotal,
-    curLevelTitle,
-    nextLevelTitle,
-    userCenterItems,
-    unreadMsg,
-    balance,
-  } = value
+  const { uid, usr, mobile_logo, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, userCenterItems, unreadMsg, balance } = value
 
   const { signOut } = sign
 
@@ -48,15 +36,9 @@ const WNZMinePage = () => {
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
   const usuallyTools = otherTools?.filter((ele) =>
-    [
-      UGUserCenterType.额度转换,
-      UGUserCenterType.全民竞猜,
-      UGUserCenterType.利息宝,
-      UGUserCenterType.开奖走势,
-      UGUserCenterType.建议反馈,
-      UGUserCenterType.存款,
-      UGUserCenterType.取款,
-    ].includes(ele?.code)
+    [UGUserCenterType.额度转换, UGUserCenterType.全民竞猜, UGUserCenterType.利息宝, UGUserCenterType.开奖走势, UGUserCenterType.建议反馈, UGUserCenterType.存款, UGUserCenterType.取款].includes(
+      ele?.code
+    )
   )
 
   const userTools = otherTools?.filter((ele) =>
@@ -73,22 +55,10 @@ const WNZMinePage = () => {
   )
 
   const recordTools = otherTools?.filter((ele) =>
-    [
-      UGUserCenterType.开奖网,
-      UGUserCenterType.其他注单记录,
-      UGUserCenterType.活动彩金,
-      UGUserCenterType.彩票注单记录,
-      UGUserCenterType.长龙助手,
-    ].includes(ele?.code)
+    [UGUserCenterType.开奖网, UGUserCenterType.其他注单记录, UGUserCenterType.活动彩金, UGUserCenterType.彩票注单记录, UGUserCenterType.长龙助手].includes(ele?.code)
   )
 
-  const activityTools = otherTools?.filter((ele) =>
-    [
-      UGUserCenterType.任务中心,
-      UGUserCenterType.游戏大厅,
-      UGUserCenterType.推荐收益,
-    ].includes(ele?.code)
-  )
+  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -126,12 +96,8 @@ const WNZMinePage = () => {
           rightLogo={headrTools[1]?.logo}
           leftTitle={headrTools[0]?.name}
           rightTitle={headrTools[1]?.name}
-          onPressLeftButton={() =>
-            PushHelper.pushUserCenterType(headrTools[0]?.code)
-          }
-          onPressRightButton={() =>
-            PushHelper.pushUserCenterType(headrTools[1]?.code)
-          }
+          onPressLeftButton={() => PushHelper.pushUserCenterType(headrTools[0]?.code)}
+          onPressRightButton={() => PushHelper.pushUserCenterType(headrTools[1]?.code)}
         />
         {[
           {
@@ -187,7 +153,7 @@ const WNZMinePage = () => {
           uid
             ? config?.menus?.concat(config?.menuSignOut)
             : // @ts-ignore
-            config?.menuSignIn?.concat(config?.menus)
+              config?.menuSignIn?.concat(config?.menus)
         }
         renderMenu={({ item }) => {
           const { title, onPress } = item

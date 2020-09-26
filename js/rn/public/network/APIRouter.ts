@@ -91,13 +91,14 @@ class APIRouter {
           { blGet: true, });
         break;
     }
-
     if (token) {
       const tokenParams = Platform.OS == "ios" ? 'token=' + token : token
       return httpClient.get<UserInfoModel>("c=user&a=info&" + tokenParams)
     } else {
+      UGStore.dispatch({ type: 'reset', userInfo: {} })
+      UGStore.save()
       return Promise.reject({
-        msg: 'no token'
+        msg: '登入失败'
       })
     }
 

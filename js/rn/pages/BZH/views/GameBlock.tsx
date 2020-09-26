@@ -1,27 +1,16 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
 
 interface GameBlockProps {
-  containerStyle?: ViewStyle;
-  renderGameContent: () => any;
-  title: string;
-  onPressTotal: () => any;
+  containerStyle?: StyleProp<ViewStyle>
+  renderGameContent: () => any
+  title: string
+  onPressTotal: () => any
 }
 
-const GameBlock = ({
-  title = '',
-  containerStyle,
-  onPressTotal,
-  renderGameContent,
-}: GameBlockProps) => {
+const GameBlock = ({ title = '', containerStyle, onPressTotal, renderGameContent }: GameBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.headerConatiner}>
@@ -32,12 +21,7 @@ const GameBlock = ({
         <TouchableWithoutFeedback onPress={onPressTotal}>
           <View style={styles.titleContainer}>
             <Text style={[styles.title, { color: '#e53333' }]}>{'全部 '}</Text>
-            <Ionicons
-              name={'ios-arrow-forward'}
-              size={scale(18)}
-              color={'#e53333'}
-              style={{ marginTop: scale(3) }}
-            />
+            <Ionicons name={'ios-arrow-forward'} size={scale(18)} color={'#e53333'} style={{ marginTop: scale(3) }} />
           </View>
         </TouchableWithoutFeedback>
       </View>

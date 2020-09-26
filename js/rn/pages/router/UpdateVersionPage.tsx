@@ -25,7 +25,6 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props;
 
-
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
 
@@ -71,7 +70,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
 
     CodePush.sync(
-        options,
+      options,
       status => {
         let isNewest = false;
         switch (status) {
@@ -115,7 +114,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               });
               break;
             case 'android':
-              ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG})
+              ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.CONFIG })
                 .then((config) => {
                   initConfig(JSON.parse(config))
                 });
@@ -164,7 +163,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
               let pics: [] = JSON.parse(picStr);
               if (!arrayEmpty(pics)) {
 
-                setProps({backgroundImage: pics.shift()});
+                setProps({ backgroundImage: pics.shift() });
                 //暂时不轮播，直接清空
                 pics = [];
 
@@ -172,13 +171,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 let tempInterval = setInterval(() => {
                   if (arrayEmpty(pics)) {
                     clearInterval(tempInterval)
-                    setProps({bBanner: true});
+                    setProps({ bBanner: true });
                   } else {
-                    setProps({backgroundImage: pics.shift()});
+                    setProps({ backgroundImage: pics.shift() });
                   }
                 }, 2500);
               } else {
-                setProps({ bBanner: true});
+                setProps({ bBanner: true });
               }
             }
           });
@@ -216,7 +215,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         OCHelper.launchFinish();
         break;
       case 'android':
-        setProps({ bCodePush: true});
+        setProps({ bCodePush: true });
         break;
     }
     UGStore.save()

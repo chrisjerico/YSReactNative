@@ -1,5 +1,5 @@
 import { useHtml5Image, getIbbImage } from '../../public/tools/tars'
-const { getHtml5Image } = useHtml5Image('http://test05.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://test10.6yc.com/')
 
 const config = {
   defaultUserCenterLogos: {
@@ -22,8 +22,8 @@ const config = {
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
     19: getIbbImage('pw7LqkR/qq'), // QQ客服
-    20: getIbbImage('qRBq508/kjw') // 開獎網
-  }
+    20: getIbbImage('qRBq508/kjw'), // 開獎網
+  },
 }
 
 export default config

@@ -1,4 +1,5 @@
 export enum RankingListType {
+  不顯示 = 0,
   中奖排行榜 = 1,
   投注排行榜 = 2
 }
@@ -38,4 +39,15 @@ export enum SeriesIdEn {
   导航链接 = 7,
   // ["lottery", "game", "fish", "real", "card", "esport", "sport"]
   // ["彩票", "电子", "捕鱼", "真人", "棋牌", "电竞", "体育"]
+}
+
+export enum PasswordStrength {
+  不限制 = '0',
+  数字字母 = '1',
+  数字字母字符 = '2'
+}
+
+export enum AgentType {
+  用户注册 = 'user',
+  代理注册 = 'agent'
 }

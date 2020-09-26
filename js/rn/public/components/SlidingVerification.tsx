@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, StyleProp } from 'react-native';
 import { EventRegister } from 'react-native-event-listeners';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import AppDefine from '../define/AppDefine';
 
 interface SlidingVerificationProps {
   onChange: (data: any) => void;
-  containerStyle?: ViewStyle
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 const SlidingVerification = ({ onChange, containerStyle }: SlidingVerificationProps) => {

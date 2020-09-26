@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, View, TouchableWithoutFeedback, StyleSheet, Platform} from 'react-native'
+import { Text, View, TouchableWithoutFeedback, StyleSheet, Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,26 +9,17 @@ import { pop } from '../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 
 export interface HomeHeaderProps {
-  name: string;
-  logo: string;
-  balance: string;
-  onPressMenu: () => any;
-  onPressComment: () => any;
-  onPressUser: () => any;
-  showBackBtn?: boolean;
-  uid: string;
+  name: string
+  logo: string
+  balance: string
+  onPressMenu: () => any
+  onPressComment: () => any
+  onPressUser: () => any
+  showBackBtn?: boolean
+  uid: string
 }
 
-const HomeHeader = ({
-  name,
-  logo,
-  balance,
-  onPressMenu,
-  onPressComment,
-  onPressUser,
-  showBackBtn = false,
-  uid,
-}: HomeHeaderProps) => {
+const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, showBackBtn = false, uid }: HomeHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -40,14 +31,10 @@ const HomeHeader = ({
             if (!pop()) {
               switch (Platform.OS) {
                 case 'ios':
-                  OCHelper.call(
-                    'UGNavigationController.current.popViewControllerAnimated:',
-                    [true]
-                  )
-                  break;
+                  OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
+                  break
                 case 'android':
-
-                  break;
+                  break
               }
             }
           }}
@@ -61,8 +48,8 @@ const HomeHeader = ({
           resizeMode={'contain'}
         />
       ) : (
-            <View style={{ flex: 1 }} />
-          )}
+        <View style={{ flex: 1 }} />
+      )}
       {!uid && !showBackBtn && (
         <FastImage
           source={{
@@ -75,42 +62,43 @@ const HomeHeader = ({
       {!showBackBtn && (
         <View style={styles.rightContainer}>
           {uid && (
-            <>
-              <TouchableWithoutFeedback onPress={onPressUser}>
+            <TouchableWithoutFeedback onPress={onPressUser}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                }}>
                 <Text style={styles.nameText} numberOfLines={1}>
                   {name}
                 </Text>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={onPressUser}>
                 <View style={styles.balanceContainer}>
                   <Text style={styles.balanceText}>{balance}</Text>
-                  <AntDesign
-                    name={'pluscircle'}
-                    color={'#ffffff'}
-                    style={{ margin: 0, padding: 0, marginLeft: scale(5) }}
-                  />
+                  <AntDesign name={'pluscircle'} color={'#ffffff'} style={{ margin: 0, padding: 0, marginLeft: scale(5) }} />
                 </View>
-              </TouchableWithoutFeedback>
-            </>
+              </View>
+            </TouchableWithoutFeedback>
           )}
-          <FontAwesome
-            name={'commenting'}
-            size={scale(20)}
-            style={{ marginRight: scale(5) }}
-            color={'#ffffff'}
-            onPress={onPressComment}
-          />
+          <TouchableWithoutFeedback onPress={onPressComment}>
+            <View
+              style={{
+                marginRight: scale(5),
+                height: '100%',
+                justifyContent: 'center',
+              }}>
+              <FontAwesome name={'commenting'} size={scale(20)} color={'#ffffff'} />
+            </View>
+          </TouchableWithoutFeedback>
           <TouchableWithoutFeedback onPress={onPressMenu}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialCommunityIcons
-                name={'settings-outline'}
-                size={scale(20)}
-                style={{ marginRight: scale(5) }}
-                color={'#ffffff'}
-              />
-              <Text style={{ fontSize: scale(20), color: '#ffffff' }}>
-                {'菜单'}
-              </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                height: '100%',
+              }}>
+              <MaterialCommunityIcons name={'settings-outline'} size={scale(20)} style={{ marginRight: scale(5) }} color={'#ffffff'} />
+              <Text style={{ fontSize: scale(20), color: '#ffffff' }}>{'菜单'}</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
