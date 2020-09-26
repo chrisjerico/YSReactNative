@@ -5,6 +5,7 @@
  * @date 2020/8/6
  */
 export enum CMD {
+  INIT_DOMAIN = 'INIT_DOMAIN', //初始化 Domain
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_RIGHT_MENU = 'OPEN_RIGHT_MENU', //打开右侧界面
   LAUNCH_GO = 'LAUNCH_GO', //启动页功能

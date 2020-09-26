@@ -67,6 +67,7 @@ import BYHomePage from "../白曜/BYHomePage";
 import BYMinePage from "../白曜/BYMinePage";
 import BYSignInPage from "../白曜/BYSignInPage";
 import BYSignUpPage from "../白曜/BYSignUpPage";
+import {initDomain} from "../../public/config/DomainUrls";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -82,6 +83,8 @@ class TabBarController extends Component<{
     super(props)
     const { navigation } = this.props
     navigation.setOptions({ headerStyle: { height: 0 } })
+
+    initDomain()
   }
 
   render() {
