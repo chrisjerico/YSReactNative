@@ -1,12 +1,11 @@
 import React from 'react'
-import { ScrollView, StyleSheet, View, Text, ImageBackground } from 'react-native'
-import FastImage from 'react-native-fast-image'
+import { ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RandomText from '../../public/components/tars/RandomText'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useRandomString from '../../public/hooks/useRandomString'
 import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
@@ -51,6 +50,8 @@ const KSHomePage = () => {
     redBagLogo,
     roulette,
   } = value
+
+  const { uid, usr, balance, isTest } = userInfo
   const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
 
   const lotterys = homeGames[0]?.list
@@ -66,7 +67,23 @@ const KSHomePage = () => {
     return (
       <>
         <SafeAreaHeader headerColor={KSThemeColor.凯时.themeColor}></SafeAreaHeader>
-        <ScrollView style={{ backgroundColor: KSThemeColor.凯时.themeColor }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={{ backgroundColor: KSThemeColor.凯时.themeColor }}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              tintColor={'#ffffff'}
+              refreshing={refreshing}
+              onRefresh={async () => {
+                try {
+                  await refresh()
+                  PushHelper.pushAnnouncement(announcements)
+                } catch (error) {
+                  console.log('-------error------', error)
+                }
+              }}
+            />
+          }>
           <NoticeBlock
             containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor, borderRadius: 0 }}
             bgContainerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
@@ -257,7 +274,7 @@ const KSHomePage = () => {
               const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
               return (
                 <AutoHeightCouponComponent
-                  titleStyle={{ alignSelf: 'center' }}
+                  titleStyle={{ alignSelf: 'center', color: '#ffffff' }}
                   containerStyle={{
                     borderColor: '#d9d9d9',
                     borderWidth: scale(1),
@@ -315,6 +332,41 @@ const KSHomePage = () => {
           />
           <BottomGap />
         </ScrollView>
+        <ActivityComponent
+          refreshing={refreshing}
+          containerStyle={{ top: scale(250), right: 0 }}
+          show={uid && redBagLogo && !isTest}
+          logo={redBagLogo}
+          onPress={() => {
+            PushHelper.pushRedBag(redBag)
+          }}
+        />
+        <ActivityComponent
+          refreshing={refreshing}
+          containerStyle={{ top: scale(400), right: 0 }}
+          enableFastImage={false}
+          show={uid && roulette && !isTest}
+          logo={'dzp_btn'}
+          onPress={() => {
+            PushHelper.pushWheel(roulette)
+          }}
+        />
+        {floatAds?.map((item: any, index) => {
+          const { image, position, linkCategory, linkPosition } = item
+          return (
+            <ActivityComponent
+              key={index}
+              refreshing={refreshing}
+              containerStyle={getActivityPosition(position)}
+              enableFastImage={true}
+              show={uid && !isTest}
+              logo={image}
+              onPress={() => {
+                PushHelper.pushCategory(linkCategory, linkPosition)
+              }}
+            />
+          )
+        })}
       </>
     )
   }
