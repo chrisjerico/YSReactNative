@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native'
+import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
@@ -19,9 +19,23 @@ interface AnimatedRankComponentProps {
   rankLists: RankList[]
   duration?: number
   type: RankingListType
+  iconTitleStyle?: StyleProp<TextStyle>
+  iconColor?: string
+  contentTitleStyle?: StyleProp<TextStyle>
 }
 
-const AnimatedRankComponent = ({ containerStyle, iconTitleContainerStyle, contentContainerStyle, titleConatinerStyle, rankLists, duration = 1000, type }: AnimatedRankComponentProps) => {
+const AnimatedRankComponent = ({
+  containerStyle,
+  iconTitleContainerStyle,
+  contentContainerStyle,
+  titleConatinerStyle,
+  rankLists,
+  duration = 1000,
+  type,
+  iconTitleStyle,
+  iconColor,
+  contentTitleStyle,
+}: AnimatedRankComponentProps) => {
   const listHeight = 180
   const itemHeight = 40
   const count = rankLists?.length
@@ -52,19 +66,19 @@ const AnimatedRankComponent = ({ containerStyle, iconTitleContainerStyle, conten
     return (
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
-          <FontAwesome name={'bar-chart'} size={scale(20)} />
-          <Text style={styles.iconText}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</Text>
+          <FontAwesome name={'bar-chart'} size={scale(20)} color={iconColor} />
+          <Text style={[styles.iconText, iconTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</Text>
         </View>
         <View style={[styles.contentContainer, contentContainerStyle]}>
           <View style={[styles.titleConatiner, titleConatinerStyle]}>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'玩家'}</Text>
+              <Text style={[styles.title, contentTitleStyle]}>{'玩家'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{'游戏'}</Text>
+              <Text style={[styles.title, contentTitleStyle]}>{'游戏'}</Text>
             </View>
             <View style={styles.textContainer}>
-              <Text style={styles.title}>{type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}</Text>
+              <Text style={[styles.title, contentTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖金额' : '投注金额'}</Text>
             </View>
           </View>
           <View style={[styles.listContainer, { height: listHeight }]}>

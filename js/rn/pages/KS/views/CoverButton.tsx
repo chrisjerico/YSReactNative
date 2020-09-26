@@ -16,7 +16,9 @@ const CoverButton = ({ logo, title, containerStyle, titleStyle, onPress }: Cover
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[containerStyle]}>
         <FastImage source={{ uri: logo }} style={{ width: '100%', height: '100%' }} resizeMode={'contain'} />
-        <Text style={[styles.title, titleStyle]}>{title}</Text>
+        <Text style={[styles.title, titleStyle]} numberOfLines={1}>
+          {title}
+        </Text>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: scale(15),
     top: scale(15),
+    width: '90%',
   },
 })
 

@@ -1,14 +1,21 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View, Text, ImageBackground } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
+import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RandomText from '../../public/components/tars/RandomText'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import useRandomString from '../../public/hooks/useRandomString'
+import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
+import BottomGap from '../../public/views/tars/BottomGap'
+import BottomLogo from '../../public/views/tars/BottomLogo'
+import CouponBlock from '../../public/views/tars/CouponBlock'
+import GameButton from '../../public/views/tars/GameButton'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
@@ -45,8 +52,9 @@ const KSHomePage = () => {
     roulette,
   } = value
   const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
-  // const value = useRandomString('200000000', 2000000000, 2999999999)
 
+  const lotterys = homeGames[0]?.list
+  const smallLotterys = lotterys?.slice(4, 8) ?? []
   if (loading) {
     return (
       <>
@@ -169,22 +177,22 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { height: scale(212) }]}>
             <CoverButton
-              logo={homeGames[0]?.logo}
-              title={homeGames[0]?.name}
+              logo={lotterys[0]?.logo}
+              title={lotterys[0]?.name}
               containerStyle={{ marginLeft: '1%', width: '60%', marginRight: '0.5%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
             />
             <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
               <CoverButton
-                logo={homeGames[1]?.logo}
-                title={homeGames[1]?.name}
+                logo={lotterys[1]?.logo}
+                title={lotterys[1]?.name}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
               />
 
               <CoverButton
-                logo={homeGames[2]?.logo}
-                title={homeGames[2]?.name}
+                logo={lotterys[2]?.logo}
+                title={lotterys[2]?.name}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
               />
@@ -205,31 +213,107 @@ const KSHomePage = () => {
                   </View>
                 </ImageBackground>
               </View>
-              <View style={{ flex: 1.5 }}></View>
+              <View style={{ flex: 1.5, flexDirection: 'row' }}>
+                {smallLotterys?.map((item) => {
+                  const { logo, name } = item
+                  return (
+                    <GameButton
+                      containerStyle={{ width: '25%', height: '100%', marginTop: scale(5) }}
+                      imageContainerStyle={{ width: '70%', aspectRatio: 1 }}
+                      titleStyle={{ color: '#97989d' }}
+                      enableCircle={false}
+                      logo={logo}
+                      title={name}
+                      showSecondLevelIcon={false}
+                      showSubTitle={false}
+                      showUnReadMsg={false}
+                      showCenterFlag={false}
+                      showRightTopFlag={false}
+                    />
+                  )
+                })}
+              </View>
             </View>
-
             <CoverButton
-              logo={homeGames[2]?.logo}
-              title={homeGames[2]?.name}
+              logo={lotterys[3]?.logo}
+              title={lotterys[3]?.name}
               containerStyle={{ marginRight: '1%', marginLeft: '0.5%', width: '20%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
             />
-            {/* <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
-              <CoverButton
-                logo={homeGames[1]?.logo}
-                title={homeGames[1]?.name}
-                containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
-                titleStyle={{ fontSize: scale(25) }}
-              />
-
-              <CoverButton
-                logo={homeGames[2]?.logo}
-                title={homeGames[2]?.name}
-                containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
-                titleStyle={{ fontSize: scale(25) }}
-              />
-            </View> */}
           </View>
+          <CouponBlock
+            visible={showCoupon}
+            onPressMore={goToJDPromotionListPage}
+            containerStyle={{
+              marginHorizontal: '1%',
+              marginTop: scale(10),
+              width: null,
+            }}
+            titleContainerStyle={{ backgroundColor: '#3a3a41', borderTopLeftRadius: scale(10), borderTopRightRadius: scale(10) }}
+            listContainerStyle={{ backgroundColor: '#3a3a41', borderBottomLeftRadius: scale(10), borderBottomRightRadius: scale(10) }}
+            titleStyle={{ color: '#ffffff' }}
+            coupons={coupons}
+            renderCoupon={({ item, index }) => {
+              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+              return (
+                <AutoHeightCouponComponent
+                  titleStyle={{ alignSelf: 'center' }}
+                  containerStyle={{
+                    borderColor: '#d9d9d9',
+                    borderWidth: scale(1),
+                    marginBottom: scale(20),
+                    padding: scale(5),
+                    borderRadius: scale(5),
+                    paddingBottom: scale(20),
+                  }}
+                  key={index}
+                  title={title}
+                  pic={pic}
+                  content={content}
+                  onPress={(setShowPop) => {
+                    if (linkUrl) {
+                      PushHelper.openWebView(linkUrl)
+                    } else if (!linkCategory && !linkPosition) {
+                      setShowPop(true)
+                    } else {
+                      PushHelper.pushCategory(linkCategory, linkPosition)
+                    }
+                  }}
+                />
+              )
+            }}
+          />
+          <AnimatedRankComponent
+            type={rankingListType}
+            iconColor={'#ffffff'}
+            iconTitleStyle={{ color: '#ffffff' }}
+            containerStyle={{ marginTop: scale(10), backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(10) }}
+            contentTitleStyle={{ color: '#ffffff' }}
+            iconTitleContainerStyle={{
+              backgroundColor: '#3a3a41',
+              borderTopLeftRadius: scale(10),
+              borderTopRightRadius: scale(10),
+            }}
+            contentContainerStyle={{
+              width: '95%',
+              alignSelf: 'center',
+              marginBottom: scale(20),
+              backgroundColor: '#3a3a41',
+            }}
+            rankLists={rankLists}
+          />
+          <BottomLogo
+            webName={webName}
+            containerStyle={{ marginBottom: scale(5) }}
+            titleStyle={{ color: '#ffffff' }}
+            subTitleStyle={{ color: '#97989d' }}
+            onPressComputer={() => {
+              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+            }}
+            onPressPromotion={goToJDPromotionListPage}
+            debug={false}
+          />
+          <BottomGap />
         </ScrollView>
       </>
     )
