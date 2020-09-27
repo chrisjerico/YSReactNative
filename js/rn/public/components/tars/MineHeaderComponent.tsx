@@ -3,8 +3,8 @@ import useMindeHeader from '../../hooks/tars/useMineHeader'
 import MineHeader from '../../views/tars/MineHeader'
 
 interface MineHeaderComponentProps {
-  showCustomerService?: boolean
-  onPressCustomerService?: () => any
+  showRightTitle?: boolean
+  onPressRightTitle?: () => any
   title?: string
   renderHeader?: () => any
 }

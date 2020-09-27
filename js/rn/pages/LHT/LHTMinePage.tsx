@@ -33,13 +33,13 @@ const LHTMinePage = () => {
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
         <MineHeaderComponent
           title={'会员中心'}
-          showCustomerService={true}
-          onPressCustomerService={() => {
+          showRightTitle={true}
+          onPressRightTitle={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
       </SafeAreaHeader>
-      <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => { }} />} showsVerticalScrollIndicator={false}>
+      <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => {}} />} showsVerticalScrollIndicator={false}>
         <ProfileBlock
           showSignBadge={showSign}
           onPressAvatar={onPressAvatar}

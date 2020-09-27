@@ -4,8 +4,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 
 interface MineHeaderProps {
-  showCustomerService?: boolean
-  onPressCustomerService?: () => any
+  showRightTitle?: boolean
+  onPressRightTitle?: () => any
   title?: string
   renderHeader?: () => any
   onPressBackBtn?: () => any
@@ -13,7 +13,7 @@ interface MineHeaderProps {
   rightTitle?: string
 }
 
-const MineHeader = ({ showCustomerService = false, onPressCustomerService, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle }: MineHeaderProps) => {
+const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -25,19 +25,19 @@ const MineHeader = ({ showCustomerService = false, onPressCustomerService, title
       ) : (
         <View style={{ flex: 1 }} />
       )}
-      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showCustomerService={showCustomerService} onPressCustomerService={onPressCustomerService} />}
+      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showRightTitle={showRightTitle} onPressRightTitle={onPressRightTitle} />}
     </View>
   )
 }
 
-const DefaultHeader = ({ title, showCustomerService, onPressCustomerService, rightTitle }) => {
+const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle }) => {
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
         <Text style={styles.headerTitle}>{title}</Text>
       </View>
-      {showCustomerService ? (
-        <TouchableWithoutFeedback onPress={onPressCustomerService}>
+      {showRightTitle ? (
+        <TouchableWithoutFeedback onPress={onPressRightTitle}>
           <View style={{ flex: 1, alignItems: 'flex-end', height: '100%', justifyContent: 'center' }}>
             <Text style={styles.rightTextStyle}>{rightTitle ?? '客服'}</Text>
           </View>

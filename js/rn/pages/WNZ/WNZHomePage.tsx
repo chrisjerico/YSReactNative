@@ -99,6 +99,11 @@ const WNZHomePage = () => {
     },
   ]
 
+  const menus = uid
+    ? config?.menus?.concat(config?.menuSignOut)
+    : // @ts-ignore
+      config?.menuSignIn?.concat(config?.menus)
+
   if (loading) {
     return (
       <>
@@ -322,7 +327,6 @@ const WNZHomePage = () => {
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
-                  initialNumToRender={200}
                   data={item}
                   renderItem={({ item, index }) => {
                     //@ts-ignore
@@ -418,12 +422,7 @@ const WNZHomePage = () => {
         })}
         <MenuModalComponent
           ref={menu}
-          menus={
-            uid
-              ? config?.menus?.concat(config?.menuSignOut)
-              : // @ts-ignore
-                config?.menuSignIn?.concat(config?.menus)
-          }
+          menus={menus}
           renderMenu={({ item }) => {
             const { title, onPress } = item
             return (

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop } from '../../public/navigation/RootNavigation'
+import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
@@ -12,12 +11,11 @@ import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const KSSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
-    homePage: PageName.BZHHomePage,
-    signUpPage: PageName.BZHSignUpPage,
+    homePage: PageName.KSHomePage,
+    signUpPage: PageName.KSSignUpPage,
   })
 
   const { navigateToSignUpPage } = navigateTo
@@ -30,16 +28,7 @@ const KSSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'}>
-        <MineHeader
-          // title={'登录'}
-          showBackBtn={true}
-          rightTitle={'注册'}
-          onPressBackBtn={pop}
-          showCustomerService={true}
-          onPressCustomerService={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
-        />
+        <MineHeader showBackBtn={true} rightTitle={'注册'} onPressBackBtn={popToRoot} showRightTitle={true} onPressRightTitle={navigateToSignUpPage} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>

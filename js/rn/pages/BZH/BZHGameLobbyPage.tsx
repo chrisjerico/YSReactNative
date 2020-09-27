@@ -100,7 +100,7 @@ const GameLobbyPageHeader = () => (
           navigate(PageName.BZHHomePage, {})
         })
       }}
-      showCustomerService={false}
+      showRightTitle={false}
       title={'游戏大厅'}
     />
   </SafeAreaHeader>

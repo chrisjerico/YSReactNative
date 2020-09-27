@@ -28,8 +28,8 @@ const LHTSignUpPage = () => {
           title={'注册'}
           showBackBtn={true}
           onPressBackBtn={popToRoot}
-          showCustomerService={true}
-          onPressCustomerService={() => {
+          showRightTitle={true}
+          onPressRightTitle={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />

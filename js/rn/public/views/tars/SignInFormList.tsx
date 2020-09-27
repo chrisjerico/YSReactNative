@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { RefObject } from 'react'
 import { FormComponentProps } from '../../components/tars/FormComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
@@ -6,10 +6,10 @@ import CheckBox from './CheckBox'
 
 interface SignInFormListProps {
   slideCodeColor?: string
-  slideCodeRef: any
-  value: any
-  onChange: any
-  show: any
+  slideCodeRef: RefObject<any>
+  value: { [key: string]: any }
+  onChange: { [key: string]: any }
+  show: { [key: string]: any }
   Form?: (props: FormComponentProps & { leftIconTitle: string }) => any
   showCheckBox?: boolean
 }
@@ -24,7 +24,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
   return (
     <>
       <Form
-        show={true}
+        visible={true}
         placeholder={'请输入会员帐号'}
         onChangeText={onChangeAccount}
         leftIconProps={{
@@ -32,12 +32,12 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
           type: 'font-awesome',
         }}
         defaultValue={account}
-        enableLabel={false}
+        showLabel={false}
         leftIconTitle={'帐号'}
       />
       <Form
-        enableLabel={false}
-        show={true}
+        showLabel={false}
+        visible={true}
         placeholder={'请输入密码'}
         leftIconProps={{
           name: 'unlock-alt',

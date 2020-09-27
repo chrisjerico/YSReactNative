@@ -30,8 +30,8 @@ const BZHSignInPage = () => {
           title={'登录'}
           showBackBtn={true}
           onPressBackBtn={pop}
-          showCustomerService={true}
-          onPressCustomerService={() => {
+          showRightTitle={true}
+          onPressRightTitle={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />

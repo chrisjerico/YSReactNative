@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     width: '100%',
     backgroundColor: '#dd524d',
-    marginTop: scale(32),
+    marginTop: scale(12),
     aspectRatio: 10,
     borderRadius: scale(5),
   },

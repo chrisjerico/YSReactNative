@@ -13,9 +13,9 @@ export interface FormComponentProps {
   placeholder: string
   showRightIcon?: boolean
   label?: string
-  show: boolean
+  visible: boolean
   containerStyle?: StyleProp<ViewStyle>
-  enableLabel?: boolean
+  showLabel?: boolean
   renderRightIcon?: () => any
   renderLeftIcon?: () => any
   maxLength?: number
@@ -96,9 +96,9 @@ const FormComponent = ({
   placeholder,
   showRightIcon = false,
   label,
-  show,
+  visible,
   containerStyle,
-  enableLabel = true,
+  showLabel = true,
   renderRightIcon,
   renderLeftIcon,
   maxLength,
@@ -137,7 +137,7 @@ const FormComponent = ({
     }
   }
 
-  if (show) {
+  if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <Input
@@ -185,7 +185,7 @@ const FormComponent = ({
           onFocus={onFocus}
           onBlur={onBlur}
         />
-        {enableLabel ? <Text style={[styles.labelText, labelTextStyle]}>{label}</Text> : null}
+        {showLabel ? <Text style={[styles.labelText, labelTextStyle]}>{label}</Text> : null}
       </View>
     )
   } else {
