@@ -26,7 +26,7 @@ const AgentButtonComponent = ({ onChangeAgent, visible, containerStyle, enableTo
             setToggle(AgentType.用户注册)
             onChangeAgent && onChangeAgent(AgentType.用户注册)
           }}>
-          <View style={[styles.textContainer, styles.leftButton, toggle == AgentType.用户注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+          <View style={[styles.toggleContainer, styles.leftButton, toggle == AgentType.用户注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : [styles.disableToggleContainer]]}>
             <Text style={[styles.text, toggle == AgentType.用户注册 ? [styles.enableText, enableTextStyle] : {}]}>{'普通用戶'}</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -35,7 +35,7 @@ const AgentButtonComponent = ({ onChangeAgent, visible, containerStyle, enableTo
             setToggle(AgentType.代理注册)
             onChangeAgent && onChangeAgent(AgentType.代理注册)
           }}>
-          <View style={[styles.textContainer, styles.rightButton, toggle == AgentType.代理注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+          <View style={[styles.toggleContainer, styles.rightButton, toggle == AgentType.代理注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : [styles.disableToggleContainer]]}>
             <Text style={[styles.text, toggle == AgentType.代理注册 ? [styles.enableText, enableTextStyle] : {}]}>{'注册代理'}</Text>
           </View>
         </TouchableWithoutFeedback>
@@ -51,11 +51,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: scale(150),
     aspectRatio: 5,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)',
-    borderRadius: scale(5),
+    // borderRadius: scale(5),
     alignSelf: 'center',
   },
-  textContainer: {
+  toggleContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -72,10 +71,19 @@ const styles = StyleSheet.create({
   leftButton: {
     borderTopLeftRadius: scale(5),
     borderBottomLeftRadius: scale(5),
+    borderColor: '#d9d9d9',
+    borderWidth: scale(0.5),
+    borderRightWidth: 0,
   },
   rightButton: {
     borderTopRightRadius: scale(5),
     borderBottomRightRadius: scale(5),
+    borderColor: '#d9d9d9',
+    borderWidth: scale(0.5),
+    borderLeftWidth: 0,
+  },
+  disableToggleContainer: {
+    backgroundColor: '#ffffff',
   },
 })
 
