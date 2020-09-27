@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "tslint 'js/**/*/*.tsx'"
+    "lint": "tslint 'js/**/*/*.tsx'",
+    "precommit": "git update-index --skip-worktree dev.json"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
@@ -98,6 +99,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "husky": "^4.3.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.58.0",
     "prettier": "^2.1.2",
