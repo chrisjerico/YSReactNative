@@ -317,7 +317,7 @@ const KSPages = [
   {
     // 登录
     vcName: 'UGLoginViewController',
-    rnName: PageName.KSLogin,
+    rnName: PageName.KSSignInPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
