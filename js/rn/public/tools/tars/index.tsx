@@ -2,13 +2,13 @@ import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
 import { PasswordStrength } from '../../models/Enum'
-import {Platform} from "react-native";
-import {Toast} from "../ToastUtils";
-import {ANHelper} from "../../define/ANHelper/ANHelper";
-import {CMD} from "../../define/ANHelper/hp/CmdDefine";
-import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
-import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
-import {ugLog} from "../UgLog";
+import { Platform } from 'react-native'
+import { Toast } from '../ToastUtils'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { NA_DATA } from '../../define/ANHelper/hp/DataDefine'
+import { logoutAndroid } from '../../define/ANHelper/InfoHelper'
+import { ugLog } from '../UgLog'
 
 export const validPassword = (password: string, pass_limit: PasswordStrength) => {
   if (password) {
@@ -33,13 +33,11 @@ export const ToastSuccess = (msg: any) => {
   const m = msg?.toString()
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-        typeof m === 'string' ? m : '',
-      ])
-      break;
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [typeof m === 'string' ? m : ''])
+      break
     case 'android':
-      Toast(m === 'string' ? m : '');
-      break;
+      Toast(m === 'string' ? m : '')
+      break
   }
 }
 
@@ -48,13 +46,11 @@ export const ToastError = (msg: any) => {
   const m = msg?.toString()
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-        typeof m === 'string' ? m : '',
-      ])
-      break;
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [typeof m === 'string' ? m : ''])
+      break
     case 'android':
-      Toast(m === 'string' ? m : '');
-      break;
+      Toast(m === 'string' ? m : '')
+      break
   }
 }
 
@@ -63,38 +59,21 @@ export const ToastStatus = (msg: any) => {
   const m = msg?.toString()
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showWithStatus:', [
-        typeof m === 'string' ? m : '',
-      ])
-      break;
+      OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
+      break
     case 'android':
-      Toast(m === 'string' ? m : '');
-      break;
+      Toast(m === 'string' ? m : '')
+      break
   }
 }
 
 export const useHtml5Image = (host: string = AppDefine.host) => {
-  const getHtml5Image = (
-    id: number,
-    path: string,
-    type: 'png' | 'jpg' | 'gif' = 'png',
-  ) => {
+  const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
     if (id) {
-      return (host +
-        '/views/mobileTemplate/' +
-        id?.toString() +
-        '/images/' +
-        path +
-        '.' +
-        type)
+      return host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
     } else {
-      return (host +
-        '/images/' +
-        path +
-        '.' +
-        type)
+      return host + '/images/' + path + '.' + type
     }
-
   }
   return { getHtml5Image }
 }
@@ -102,7 +81,6 @@ export const useHtml5Image = (host: string = AppDefine.host) => {
 export const getIbbImage = (path: string) => {
   return 'https://i.ibb.co/' + path + '.png'
 }
-
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
@@ -119,8 +97,9 @@ export const getActivityPosition = (position: number) => {
 }
 
 export const stringToNumber = (x: string) => {
-  const parsed = parseInt(x);
-  if (isNaN(parsed)) { return 0; }
+  const parsed = parseInt(x)
+  if (isNaN(parsed)) {
+    return 0
+  }
   return parsed
 }
-
