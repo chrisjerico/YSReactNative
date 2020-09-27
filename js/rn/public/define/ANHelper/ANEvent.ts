@@ -1,12 +1,12 @@
-import {UGBridge} from './UGBridge';
-import {PageName, } from '../../navigation/Navigation';
-import {RnPageModel} from '../OCHelper/SetRnPageInfo';
-import { navigate, pop, push, getCurrentPage } from '../../navigation/RootNavigation';
+import { PageName } from '../../navigation/Navigation';
+import { getCurrentPage, navigate, pop } from '../../navigation/RootNavigation';
+import { RnPageModel } from '../OCHelper/SetRnPageInfo';
+import { UGBridge } from './UGBridge';
 
-export enum ANEventType {}
+export enum ANEventType { }
 
 export class ANEvent extends UGBridge {
-  protected static events: {type: ANEventType; event: Function}[] = [];
+  protected static events: { type: ANEventType; event: Function }[] = [];
 
   protected static setup() {
     super.setup();
@@ -19,7 +19,7 @@ export class ANEvent extends UGBridge {
     // });
 
     // 监听原生发过来的事件通知
-    this.emitter.addListener('EventReminder', (params: {_EventName: ANEventType; params: any}) => {
+    this.emitter.addListener('EventReminder', (params: { _EventName: ANEventType; params: any }) => {
       console.log('rn收到oc通知：', params);
       this.events
         .filter(v => {
@@ -31,7 +31,7 @@ export class ANEvent extends UGBridge {
     });
 
     // 跳转到指定页面
-    this.emitter.addListener('SelectVC', (params: {vcName: PageName}) => {
+    this.emitter.addListener('SelectVC', (params: { vcName: PageName }) => {
       console.log('跳转到rn页面：', JSON.stringify(params));
       if (params.vcName) {
         navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
@@ -39,7 +39,7 @@ export class ANEvent extends UGBridge {
     });
 
     // 移除页面
-    this.emitter.addListener('RemoveVC', (params: {vcName: PageName}) => {
+    this.emitter.addListener('RemoveVC', (params: { vcName: PageName }) => {
       console.log('退出页面', params.vcName);
       if (params.vcName == getCurrentPage()) {
         pop();
@@ -48,7 +48,7 @@ export class ANEvent extends UGBridge {
   }
 
   protected static addEvent(type: ANEventType, event: Function) {
-    this.events.push({type: type, event: event});
+    this.events.push({ type: type, event: event });
   }
 
   protected static removeEvents(type: ANEventType) {

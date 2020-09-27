@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
 
 interface AgentButtonComponentProps {
   onChangeAgent: (toggle: AgentType) => any
-  show: boolean
+  visible: boolean
   containerStyle?: StyleProp<ViewStyle>
+  enableToggleContainerStyle?: StyleProp<ViewStyle>
+  enableTextStyle?: StyleProp<TextStyle>
 }
 
-const AgentButtonComponent = ({ onChangeAgent, show, containerStyle }: AgentButtonComponentProps) => {
+const AgentButtonComponent = ({ onChangeAgent, visible, containerStyle, enableToggleContainerStyle, enableTextStyle }: AgentButtonComponentProps) => {
   const [toggle, setToggle] = useState(AgentType.用户注册)
 
   useEffect(() => {
     onChangeAgent && onChangeAgent(toggle)
   }, [])
 
-  if (show) {
+  if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
         <TouchableWithoutFeedback
@@ -24,8 +26,8 @@ const AgentButtonComponent = ({ onChangeAgent, show, containerStyle }: AgentButt
             setToggle(AgentType.用户注册)
             onChangeAgent && onChangeAgent(AgentType.用户注册)
           }}>
-          <View style={[styles.textContainer, styles.leftButton, toggle ? {} : styles.enableTextContainer]}>
-            <Text style={[styles.text, toggle ? {} : styles.enableText]}>{'普通用戶'}</Text>
+          <View style={[styles.textContainer, styles.leftButton, toggle == AgentType.用户注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+            <Text style={[styles.text, toggle == AgentType.用户注册 ? [styles.enableText, enableTextStyle] : {}]}>{'普通用戶'}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback
@@ -33,8 +35,8 @@ const AgentButtonComponent = ({ onChangeAgent, show, containerStyle }: AgentButt
             setToggle(AgentType.代理注册)
             onChangeAgent && onChangeAgent(AgentType.代理注册)
           }}>
-          <View style={[styles.textContainer, styles.rightButton, toggle ? styles.enableTextContainer : {}]}>
-            <Text style={[styles.text, toggle ? styles.enableText : {}]}>{'注册代理'}</Text>
+          <View style={[styles.textContainer, styles.rightButton, toggle == AgentType.代理注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+            <Text style={[styles.text, toggle == AgentType.代理注册 ? [styles.enableText, enableTextStyle] : {}]}>{'注册代理'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
   enableText: {
     color: '#ffffff',
   },
-  enableTextContainer: {
+  enableToggleContainer: {
     backgroundColor: '#007aff',
   },
   leftButton: {

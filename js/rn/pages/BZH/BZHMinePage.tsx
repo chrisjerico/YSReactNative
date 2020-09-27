@@ -38,8 +38,8 @@ const BZHMinePage = () => {
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
         <MineHeaderComponent
           title={'会员中心'}
-          showCustomerService={false}
-          onPressCustomerService={() => {
+          showRightTitle={false}
+          onPressRightTitle={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
           }}
         />
@@ -49,7 +49,7 @@ const BZHMinePage = () => {
         style={{
           backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
         }}
-      // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
+        // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
         <ProfileBlock
           balance={balance}

@@ -1,14 +1,11 @@
-import { PageName } from '../../public/navigation/Navigation'
-import { push, navigate } from '../../public/navigation/RootNavigation'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import PushHelper from '../../public/define/PushHelper'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../../public/models/Enum'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
-
-const gameLobby = UGStore.globalProps.gameLobby
 
 const config = {
   defaultUserCenterLogos: {

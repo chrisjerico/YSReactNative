@@ -20,7 +20,7 @@ const LHTPreferencePage = ({ route }) => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
-        <MineHeader title={'偏好设置'} onPressBackBtn={pop} showCustomerService={false} showBackBtn={true} />
+        <MineHeader title={'偏好设置'} onPressBackBtn={pop} showRightTitle={false} showBackBtn={true} />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
         <Text style={styles.title}>{'选择您感兴趣的彩种'}</Text>

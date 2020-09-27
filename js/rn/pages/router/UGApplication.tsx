@@ -19,6 +19,10 @@ import BZHSignInPage from '../BZH/BZHSignInPage'
 import BZHSignUpPage from '../BZH/BZHSignUpPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
+import KSHomePage from '../KS/KSHomePage'
+import KSMine from '../KS/KSMinePage'
+import KSSignInPage from '../KS/KSSignInPage'
+import KSSignUpPage from '../KS/KSSignUpPage'
 import LHTHomePage from '../LHT/LHTHomePage'
 import LHTMinePage from '../LHT/LHTMinePage'
 import LHTPreferencePage from '../LHT/LHTPreferencePage'
@@ -32,10 +36,6 @@ import WNZSignUpPage from '../WNZ/WNZSignUpPage'
 import LXBView from '../乐橙/component/minePage/LXBView'
 import LCHomePage from '../乐橙/LCHomePage'
 import LCMinePage from '../乐橙/LCMinePage'
-import KSHomePage from '../KS/KSHomePage'
-import KSLogin from '../KS/KSLoginPage'
-import KSMine from '../KS/KSMinePage'
-import KSRegister from '../KS/KSRegisterPage'
 import LLHomePage from '../利来/LLHomePage'
 import { LLLoginPage } from '../利来/LLLoginPage'
 import LLMinePage from '../利来/LLMinePage'
@@ -147,8 +147,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={UGPage(VietnamRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={UGPage(GameList)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSLogin} component={UGPage(KSLogin)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSRegister} component={UGPage(KSRegister)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSMine} component={UGPage(KSMine)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
     </Router.StackNavigator>
