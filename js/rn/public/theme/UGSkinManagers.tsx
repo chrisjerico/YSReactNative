@@ -21,6 +21,7 @@ import { WNZThemeColor } from './colors/WNZThemeColor'
 import { PYThemeColor } from './colors/PYThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
 import { BZHThemeColor } from './colors/BZHThemeColor'
+import dev from '../../../../dev.json'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -41,7 +42,7 @@ export default class UGSkinManagers extends UGThemeColor {
   }
 
   // 更新皮肤
-  static updateSkin(sysConf: UGSysConfModel) {
+  static async updateSkin(sysConf: UGSysConfModel) {
     const {
       mobileTemplateCategory, // 模版分类ID
       mobileTemplateBackground, // 模板ID（经典）
@@ -73,7 +74,7 @@ export default class UGSkinManagers extends UGThemeColor {
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
     if (B_DEBUG) {
-      key = '凯时'
+      key = dev?.site ?? '经典'
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -87,7 +88,7 @@ export default class UGSkinManagers extends UGThemeColor {
       Skin1 = skin
       console.log('当前为皮肤：' + skin.skitString, skin)
     }
-    this.updateOcSkin()
+    await this.updateOcSkin()
   }
 
   // 应用主题色到iOS原生代码

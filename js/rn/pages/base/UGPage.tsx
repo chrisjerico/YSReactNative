@@ -75,7 +75,7 @@ export default (Page: Function) => {
     })
     // 监听dispatch
     const unsubscribe = UGStore.subscribe(route.name, () => {
-      console.log('渲染' + route.name, newProps.current)
+      // console.log('渲染' + route.name, newProps.current)
     })
 
     // 设置props

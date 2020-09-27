@@ -7,29 +7,18 @@ import { scale } from '../../tools/Scale'
 import UGSwiper from '../../widget/swp/UGSwiper'
 
 interface BannerBlockProps {
-  onlineNum?: number;
-  banners: (List | Data)[];
-  renderBanner: (item: List & Data, index: number) => any;
-  showOnlineNum?: boolean;
-  autoplayTimeout: number;
-  visible?: boolean;
-  containerStyle?: StyleProp<ViewStyle>;
-  badgeStyle?: StyleProp<ViewStyle>;
-  showsPagination?: boolean;
+  onlineNum?: number
+  banners: (List | Data)[]
+  renderBanner: (item: List & Data, index: number) => any
+  showOnlineNum?: boolean
+  autoplayTimeout: number
+  visible?: boolean
+  containerStyle?: StyleProp<ViewStyle>
+  badgeStyle?: StyleProp<ViewStyle>
+  showsPagination?: boolean
 }
 
-const BannerBlock = ({
-  onlineNum = 0,
-  banners = [],
-  renderBanner,
-  showOnlineNum = true,
-  autoplayTimeout,
-  visible = true,
-  containerStyle,
-  badgeStyle,
-  showsPagination = true
-}: BannerBlockProps) => {
-
+const BannerBlock = ({ onlineNum = 0, banners = [], renderBanner, showOnlineNum = true, autoplayTimeout, visible = true, containerStyle, badgeStyle, showsPagination = true }: BannerBlockProps) => {
   if (visible) {
     return (
       <View style={[styles.container, containerStyle]}>
@@ -43,8 +32,7 @@ const BannerBlock = ({
             right: 10,
           }}
           dotColor={'#ffffff'}
-          activeDotColor={'#fff000'}
-        >
+          activeDotColor={'#fff000'}>
           {banners?.map(renderBanner)}
         </UGSwiper>
         {showOnlineNum && (
@@ -56,7 +44,7 @@ const BannerBlock = ({
                 top: scale(-200),
                 right: scale(10),
               },
-              badgeStyle
+              badgeStyle,
             ]}
             value={'当前在线:' + onlineNum}
           />
@@ -71,14 +59,7 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 128 //540 / 310,
-  },
-  bannerContainer: {
-    flex: 1,
-  },
-  bannerImage: {
-    width: '100%',
-    height: '100%',
+    aspectRatio: 540 / 128, //540 / 310,
   },
   badge: {
     position: 'absolute',

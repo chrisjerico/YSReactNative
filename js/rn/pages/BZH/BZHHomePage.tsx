@@ -362,7 +362,7 @@ const BZHHomePage = () => {
                 }}
                 onPressPromotion={goToJDPromotionListPage}
                 debug={false}
-                version={'5000ms'}
+                version={'測試dev設定'}
               />
               <BottomGap />
             </>
