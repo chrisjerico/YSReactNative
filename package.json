@@ -7,8 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "tslint 'js/**/*/*.tsx'",
-    "precommit": "git update-index --skip-worktree dev.json"
+    "lint": "tslint 'js/**/*/*.tsx'"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
@@ -109,5 +108,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git update-index --skip-worktree dev.json"
+    }
   }
 }
