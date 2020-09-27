@@ -88,7 +88,6 @@ const KSMinePage = () => {
         </View>
         <View style={{ width: '100%', aspectRatio: 6, paddingLeft: scale(20) }}>
           <ReLoadBalanceComponent
-            // animatedContainerStyle={{ marginTop: scale(3) }}
             title={'¥ '}
             titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             balance={balance}

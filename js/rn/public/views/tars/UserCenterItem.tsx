@@ -27,13 +27,7 @@ const UserCenterItem = ({ logo = '', title, onPress, containerStyle, showUnReadM
             <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         ) : (
-          <AntDesign
-            name={'right'}
-            color={arrowColor}
-            size={scale(20)}
-            // onPress={onPressLeftTool}
-          />
-          // <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
+          <AntDesign name={'right'} color={arrowColor} size={scale(20)} />
         )}
       </View>
     </TouchableWithoutFeedback>

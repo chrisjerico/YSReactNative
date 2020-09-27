@@ -43,12 +43,10 @@ const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 const WNZHomePage = () => {
   // LogBox.ignoreAllLogs()
   const menu = useRef(null)
-  const { rerender } = useRerender()
 
   const { goTo, refresh, value, sign } = useHomePage({
     onSuccessSignOut: () => {
       menu?.current?.close()
-      rerender()
     },
   })
 

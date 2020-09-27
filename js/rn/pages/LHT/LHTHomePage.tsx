@@ -5,7 +5,6 @@ import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComp
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useRerender from '../../public/hooks/tars/useRerender'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
@@ -36,11 +35,7 @@ const LHTHomePage = () => {
   // functions
   const { getHtml5Image } = useHtml5Image()
 
-  const { rerender } = useRerender()
-  const { goTo, value, sign, refresh } = useHomePage({
-    onSuccessTryPlay: rerender,
-    onSuccessSignOut: rerender,
-  })
+  const { goTo, value, sign, refresh } = useHomePage({})
 
   const { signOut, tryPlay } = sign
   const { goToJDPromotionListPage } = goTo
