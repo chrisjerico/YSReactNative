@@ -92,7 +92,7 @@ const BZHMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnreadMsg={code == 9}
+              showUnReadMsg={code == 9}
               onPress={() => {
                 PushHelper.pushUserCenterType(code)
               }}

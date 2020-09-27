@@ -1,24 +1,25 @@
 import React from 'react'
-import { ScrollView, View, Text } from 'react-native'
+import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
-import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
-import PushHelper from '../../public/define/PushHelper'
+import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import BottomGap from '../../public/views/tars/BottomGap'
+import Button from '../../public/views/tars/Button'
+import GameButton from '../../public/views/tars/GameButton'
 import LinearBadge from '../../public/views/tars/LinearBadge'
+import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
 const KSMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
-  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
-    homePage: PageName.BZHHomePage,
+  const { value, sign } = useMinePage({
+    homePage: PageName.KSHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
@@ -27,8 +28,8 @@ const KSMinePage = () => {
   const { signOut } = sign
 
   // data handle
-  const profileUserCenterItems = userCenterItems?.slice(0, 4) ?? []
-  const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const topUserCenterItems = userCenterItems?.slice(0, 3) ?? []
+  const listUserCenterItems = userCenterItems?.slice(3, userCenterItems?.length) ?? []
 
   const badges = [
     {
@@ -66,8 +67,13 @@ const KSMinePage = () => {
               <FastImage source={{ uri: getHtml5Image(22, 'touxiang') }} style={{ height: '50%', aspectRatio: 1 }} />
               <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <FastImage source={{ uri: 'http://t132f.fhptcdn.com/images/task.svg' }} style={{ height: '50%', aspectRatio: 1 }} />
+            <View style={{ flex: 1, alignItems: 'flex-end' }}>
+              <TouchableWithoutFeedback>
+                <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
+              </TouchableWithoutFeedback>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -77,13 +83,68 @@ const KSMinePage = () => {
             })}
           </View>
         </LinearGradient>
+        <View style={{ width: '100%', aspectRatio: 6, justifyContent: 'center', paddingLeft: scale(20) }}>
+          <Text style={{ color: '#ffffff', fontSize: scale(22), fontWeight: '500' }}>{'总资产'}</Text>
+        </View>
+        <View style={{ width: '100%', aspectRatio: 6, paddingLeft: scale(20) }}>
+          <ReLoadBalanceComponent
+            // animatedContainerStyle={{ marginTop: scale(3) }}
+            title={'¥ '}
+            titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
+            balance={balance}
+            balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
+            color={'#ffffff'}
+            size={30}
+          />
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          {topUserCenterItems.map((item, index) => {
+            const { logo, name } = item
+            return (
+              <LinearBadge
+                key={index}
+                colors={index ? ['#3a3a41', '#3a3a41'] : ['#eb5d4d', '#fb7a24']}
+                containerStyle={{ width: '31%', aspectRatio: 2, borderRadius: scale(10), alignItems: 'center', height: null }}
+                title={name}
+                textStyle={{ color: '#ffffff', fontSize: scale(20), maxWidth: '60%' }}
+                showIcon={false}
+                showLogo={true}
+                logo={logo}
+              />
+            )
+          })}
+        </View>
+        <List
+          uniqueKey={'KSMinePage'}
+          numColumns={3}
+          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingTop: scale(5) }}
+          data={listUserCenterItems}
+          renderItem={({ item }) => {
+            const { name, logo, code } = item
+            return (
+              <GameButton
+                title={name}
+                logo={logo}
+                enableCircle={false}
+                titleStyle={{ color: '#ffffff' }}
+                containerStyle={{ width: '33%', marginBottom: scale(40), marginTop: scale(30) }}
+                imageContainerStyle={{ width: '50%' }}
+                titleContainerStyle={{ aspectRatio: 5 }}
+                unreadMsg={unreadMsg || 0}
+                showUnReadMsg={code == 9}
+                showSubTitle={false}
+              />
+            )
+          }}
+        />
+        <Button
+          title={'退出登录'}
+          titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
+          containerStyle={{ width: '100%', aspectRatio: 7, backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(5), marginBottom: scale(20) }}
+          onPress={signOut}
+        />
+        <BottomGap />
       </ScrollView>
-      <PickAvatarComponent
-        ref={pickAvatarComponentRef}
-        color={BZHThemeColor.宝石红.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        onSaveAvatarSuccess={onSaveAvatarSuccess}
-      />
     </>
   )
 }
