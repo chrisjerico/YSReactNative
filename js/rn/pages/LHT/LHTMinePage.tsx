@@ -25,7 +25,8 @@ const LHTMinePage = () => {
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg, showSign } = value
+  const { sysInfo } = value
+  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg, showSign } = sysInfo
 
   const { signOut } = sign
   return (

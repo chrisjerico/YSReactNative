@@ -107,9 +107,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     signOut,
   }
 
-  const value = {
-    loading,
-    refreshing,
+  const homeInfo = {
     lotteryDate,
     onlineNum,
     bannersInterval,
@@ -129,8 +127,14 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     redBagLogo,
     roulette,
     floatAds,
+  }
+
+  const value = {
+    loading,
+    refreshing,
+    homeInfo,
     userInfo,
-    sys,
+    sysInfo: sys,
   }
 
   return {

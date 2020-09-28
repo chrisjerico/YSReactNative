@@ -13,11 +13,10 @@ import GameSubTypeComponent from '../../public/components/tars/GameSubTypeCompon
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useRerender from '../../public/hooks/tars/useRerender'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image, stringToNumber } from '../../public/tools/tars'
+import { getActivityPosition, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -52,11 +51,11 @@ const WNZHomePage = () => {
 
   const { goToJDPromotionListPage } = goTo
 
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+
+  const { signOut } = sign
+
   const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
     bannersInterval,
     onlineNum,
     banners,
@@ -73,13 +72,11 @@ const WNZHomePage = () => {
     roulette,
     officialGames,
     customiseGames,
-  } = value
-
-  const { signOut } = sign
+  } = homeInfo
 
   const { uid, usr, balance, isTest } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
 
   let homeGamesConcat = []
   homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))

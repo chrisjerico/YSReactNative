@@ -31,30 +31,11 @@ import HomeHeader from './views/HomeHeader'
 const BZHHomePage = () => {
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    gameLobby,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-  } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
+  const { bannersInterval, onlineNum, banners, notices, midBanners, announcements, navs, homeGames, gameLobby, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 

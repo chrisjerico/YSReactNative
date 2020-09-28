@@ -40,31 +40,12 @@ const LHTHomePage = () => {
   const { signOut, tryPlay } = sign
   const { goToJDPromotionListPage } = goTo
 
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    lotteryDate,
-    bannersInterval,
-    onlineNum,
-    lotterys,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-    sys,
-  } = value
+  const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
+
+  const { lotteryDate, bannersInterval, onlineNum, lotterys, banners, notices, midBanners, announcements, navs, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl } = sysInfo
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -180,7 +161,7 @@ const LHTHomePage = () => {
               }}
               renderLottery={(item, index) => {
                 const { number, color, sx, showMore } = item
-                return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.六合彩)} />
+                return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)} />
               }}
             />
             <HomeGameComponent

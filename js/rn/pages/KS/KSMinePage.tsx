@@ -23,7 +23,9 @@ const KSMinePage = () => {
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = value
+  const { sysInfo } = value
+
+  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = sysInfo
 
   const { signOut } = sign
 

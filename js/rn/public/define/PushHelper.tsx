@@ -447,7 +447,7 @@ export default class PushHelper {
             )
             break
           }
-          case UGUserCenterType.六合彩: {
+          case UGUserCenterType.彩票大厅: {
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true])
             break
           }
@@ -566,7 +566,7 @@ export default class PushHelper {
             subId = MenuType.ZHGL
             break
           }
-          case UGUserCenterType.六合彩.toString(): {
+          case UGUserCenterType.彩票大厅.toString(): {
             subId = MenuType.GCDT
             break
           }

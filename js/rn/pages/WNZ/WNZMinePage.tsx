@@ -26,7 +26,9 @@ const WNZMinePage = () => {
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { uid, usr, mobile_logo, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, userCenterItems, unreadMsg, balance } = value
+  const { sysInfo } = value
+
+  const { uid, usr, mobile_logo, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, userCenterItems, unreadMsg, balance } = sysInfo
 
   const { signOut } = sign
 

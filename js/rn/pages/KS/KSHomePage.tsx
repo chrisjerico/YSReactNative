@@ -26,6 +26,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
@@ -38,34 +39,16 @@ const KSHomePage = () => {
   const { goTo, refresh, value, sign } = useHomePage({})
 
   const { goToJDPromotionListPage } = goTo
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    gameLobby,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-  } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
+  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest, curLevelTitle, unreadMsg } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
 
   const lotterys = homeGames[0]?.list
   const smallLotterys = lotterys?.slice(4, 8) ?? []
-  const { signOut, tryPlay } = sign
+  const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
+  const { tryPlay } = sign
 
   if (loading) {
     return (
@@ -203,6 +186,7 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'depositlogo')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
@@ -212,15 +196,17 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'xima')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.额度转换)}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
               containerStyle={[styles.toolButton, { marginRight: '1%' }]}
-              title={'存款'}
+              title={'取款'}
               textStyle={{ color: '#ffffff', fontSize: scale(20) }}
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'withdrawlogo')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
             />
           </View>
           <View style={[styles.toolBlock, { height: scale(158) }]}>
@@ -233,6 +219,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'lxb')}
+                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.利息宝)}
               />
               <LinearBadge
                 colors={['#3a3a41', '#3a3a41']}
@@ -242,6 +229,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'yxdt')}
+                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)}
               />
             </View>
             <BannerBlock
@@ -269,24 +257,26 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { height: scale(212) }]}>
             <CoverButton
-              logo={lotterys[0]?.logo}
-              title={lotterys[0]?.name}
+              logo={lotterys[0]?.logo || lotterys[0]?.icon}
+              title={lotterys[0]?.name || lotterys[0]?.title}
               containerStyle={{ marginLeft: '1%', width: '60%', marginRight: '0.5%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
+              onPress={() => PushHelper.pushHomeGame(lotterys[0])}
             />
             <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
               <CoverButton
-                logo={lotterys[1]?.logo}
-                title={lotterys[1]?.name}
+                logo={lotterys[1]?.logo || lotterys[1]?.icon}
+                title={lotterys[1]?.name || lotterys[1]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
+                onPress={() => PushHelper.pushHomeGame(lotterys[1])}
               />
-
               <CoverButton
-                logo={lotterys[2]?.logo}
-                title={lotterys[2]?.name}
+                logo={lotterys[2]?.logo || lotterys[2]?.icon}
+                title={lotterys[2]?.name || lotterys[2]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
+                onPress={() => PushHelper.pushHomeGame(lotterys[2])}
               />
             </View>
           </View>
@@ -307,15 +297,15 @@ const KSHomePage = () => {
               </View>
               <View style={{ flex: 1.5, flexDirection: 'row' }}>
                 {smallLotterys?.map((item) => {
-                  const { logo, name } = item
+                  const { logo, name, icon, title } = item
                   return (
                     <GameButton
                       containerStyle={{ width: '25%', height: '100%', marginTop: scale(5) }}
                       imageContainerStyle={{ width: '70%', aspectRatio: 1 }}
                       titleStyle={{ color: '#97989d' }}
                       enableCircle={false}
-                      logo={logo}
-                      title={name}
+                      logo={logo || icon}
+                      title={name || title}
                       showSecondLevelIcon={false}
                       showSubTitle={false}
                       showUnReadMsg={false}
@@ -327,19 +317,30 @@ const KSHomePage = () => {
               </View>
             </View>
             <CoverButton
-              logo={lotterys[3]?.logo}
-              title={lotterys[3]?.name}
+              logo={lotterys[3]?.logo || lotterys[3]?.icon}
+              title={lotterys[3]?.name || lotterys[3]?.title}
               containerStyle={{ marginRight: '1%', marginLeft: '0.5%', width: '20%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
+              onPress={() => PushHelper.pushHomeGame(lotterys[3])}
             />
           </View>
           <View style={[styles.toolBlock, { backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(5), flexDirection: 'column', width: null, height: null, alignItems: 'center' }]}>
             <View style={{ width: '90%' }}>
               <Text style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</Text>
             </View>
-            <MoreGameButton onPress={() => {}} />
-            <MoreGameButton onPress={() => {}} />
-            <MoreGameButton onPress={() => {}} />
+            {moreGames?.map((item, index) => {
+              const { name, logo, title, icon } = item
+              return (
+                <MoreGameButton
+                  key={index}
+                  title={name || title}
+                  logo={logo || icon}
+                  onPress={() => {
+                    PushHelper.pushHomeGame(item)
+                  }}
+                />
+              )
+            })}
           </View>
           <CouponBlock
             visible={showCoupon}
