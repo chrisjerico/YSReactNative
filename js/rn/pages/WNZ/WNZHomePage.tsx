@@ -376,7 +376,7 @@ const WNZHomePage = () => {
               PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
             }}
             onPressPromotion={goToJDPromotionListPage}
-            debug={true}
+            debug={false}
             version={'tars'}
           />
           <BottomGap />
