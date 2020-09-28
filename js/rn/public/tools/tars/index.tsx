@@ -1,14 +1,9 @@
+import { Platform } from 'react-native'
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
-import { scale } from '../Scale'
 import { PasswordStrength } from '../../models/Enum'
-import { Platform } from 'react-native'
+import { scale } from '../Scale'
 import { Toast } from '../ToastUtils'
-import { ANHelper } from '../../define/ANHelper/ANHelper'
-import { CMD } from '../../define/ANHelper/hp/CmdDefine'
-import { NA_DATA } from '../../define/ANHelper/hp/DataDefine'
-import { logoutAndroid } from '../../define/ANHelper/InfoHelper'
-import { ugLog } from '../UgLog'
 
 export const validPassword = (password: string, pass_limit: PasswordStrength) => {
   if (password) {
@@ -29,40 +24,37 @@ export const validPassword = (password: string, pass_limit: PasswordStrength) =>
 }
 
 export const ToastSuccess = (msg: any) => {
-  console.log('--------ToastSuccess--------', msg)
-  const m = msg?.toString()
+  const msgString = JSON.stringify(msg).slice(1, -1)
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [typeof m === 'string' ? m : ''])
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [msgString])
       break
     case 'android':
-      Toast(m === 'string' ? m : '')
+      Toast(msgString)
       break
   }
 }
 
 export const ToastError = (msg: any) => {
-  console.log('--------ToastError--------', msg)
-  const m = msg?.toString()
+  const msgString = JSON.stringify(msg).slice(1, -1)
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [typeof m === 'string' ? m : ''])
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [msgString])
       break
     case 'android':
-      Toast(m === 'string' ? m : '')
+      Toast(msgString)
       break
   }
 }
 
 export const ToastStatus = (msg: any) => {
-  console.log('--------ToastStatus--------', msg)
-  const m = msg?.toString()
+  const msgString = JSON.stringify(msg).slice(1, -1)
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
+      OCHelper.call('SVProgressHUD.showWithStatus:', [msgString])
       break
     case 'android':
-      Toast(m === 'string' ? m : '')
+      Toast(msgString)
       break
   }
 }
