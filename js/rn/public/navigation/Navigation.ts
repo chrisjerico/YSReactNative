@@ -46,7 +46,7 @@ export enum PageName {
   KSHomePage = "KSHomePage",
   KSSignInPage = "KSSignInPage",
   KSSignUpPage = "KSSignUpPage",
-  KSMine = "KSMine",
+  KSMinePage = "KSMinePage",
   LottoSelector = "LottoSelector",
   LottoBetting = "LottoBetting",
   VietnamHome = "VietnamHome",

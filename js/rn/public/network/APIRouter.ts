@@ -97,9 +97,7 @@ class APIRouter {
     } else {
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
-      return Promise.reject({
-        msg: '登入失败'
-      })
+      return Promise.reject('使用者未登入，拒絕更新使用者資料')
     }
 
   }
@@ -185,9 +183,9 @@ class APIRouter {
 
     return httpClient.post<any>("c=user&a=logout", tokenParams)
   }
-  static  getTrendData = async (id: string) => {
+  static getTrendData = async (id: string) => {
     return httpClient.get(`c=game&a=lotteryHistory`, {
-      params:{
+      params: {
         id: id,
         rows: "200"
       }

@@ -20,7 +20,7 @@ import BZHSignUpPage from '../BZH/BZHSignUpPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
 import KSHomePage from '../KS/KSHomePage'
-import KSMine from '../KS/KSMinePage'
+import KSMinePage from '../KS/KSMinePage'
 import KSSignInPage from '../KS/KSSignInPage'
 import KSSignUpPage from '../KS/KSSignUpPage'
 import LHTHomePage from '../LHT/LHTHomePage'
@@ -101,16 +101,15 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
         <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
-        <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
-        <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />
         <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
+        <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
+        <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-        {/*<Router.TabScreen name={PageName.TrendView} component={UGPage(TrendView)} />*/}
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
-        <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
@@ -136,20 +135,19 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={UGPage(GDLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={UGPage(GDRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignUpPage} component={BZHSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignInPage} component={LHTSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignUpPage} component={BZHSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamRegister} component={UGPage(VietnamRegister)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamGameList} component={UGPage(GameList)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSMine} component={UGPage(KSMine)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
     </Router.StackNavigator>
   )

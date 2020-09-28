@@ -313,7 +313,15 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.KSMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
   {
     // 登录
     vcName: 'UGLoginViewController',
@@ -321,23 +329,6 @@ const KSPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.KSRegister,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.KSMine,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
   },
 ];
 

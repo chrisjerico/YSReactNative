@@ -6,7 +6,7 @@ import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useTryPlay from '../useTryPlay'
+import useTryPlay from './useTryPlay'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
 import useRerender from './useRerender'
@@ -31,12 +31,17 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   }
 
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
+      hideLoading()
       ToastSuccess('登录成功！')
       rerender()
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
+      hideLoading()
       ToastError(error ?? '試玩失败')
     },
   })
@@ -53,7 +58,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     onError: (error) => {
       hideLoading()
       ToastError(error || '登出失败')
-      console.log('--------登出失败--------', error)
     },
   })
   const signOut = logOut

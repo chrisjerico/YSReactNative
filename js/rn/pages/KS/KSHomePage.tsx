@@ -45,7 +45,7 @@ const KSHomePage = () => {
   const { uid, usr, balance, isTest, curLevelTitle, unreadMsg } = userInfo
   const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
 
-  const lotterys = homeGames[0]?.list
+  const lotterys = homeGames[0]?.list ?? []
   const smallLotterys = lotterys?.slice(4, 8) ?? []
   const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
   const { tryPlay } = sign
@@ -296,10 +296,11 @@ const KSHomePage = () => {
                 </ImageBackground>
               </View>
               <View style={{ flex: 1.5, flexDirection: 'row' }}>
-                {smallLotterys?.map((item) => {
+                {smallLotterys?.map((item, index) => {
                   const { logo, name, icon, title } = item
                   return (
                     <GameButton
+                      key={index}
                       containerStyle={{ width: '25%', height: '100%', marginTop: scale(5) }}
                       imageContainerStyle={{ width: '70%', aspectRatio: 1 }}
                       titleStyle={{ color: '#97989d' }}
