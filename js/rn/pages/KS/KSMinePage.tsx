@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
+import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
@@ -14,6 +15,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
 const KSMinePage = () => {
@@ -25,7 +27,7 @@ const KSMinePage = () => {
 
   const { sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = sysInfo
+  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg } = sysInfo
 
   const { signOut } = sign
 
@@ -37,14 +39,17 @@ const KSMinePage = () => {
     {
       title: '实名认证',
       logo: getHtml5Image(22, 'smrz'),
+      code: UGUserCenterType.个人信息,
     },
     {
       title: '帐户安全',
       logo: getHtml5Image(22, 'qkzh'),
+      code: UGUserCenterType.安全中心,
     },
     {
       title: '取款帐户',
       logo: getHtml5Image(22, 'qkzh'),
+      code: UGUserCenterType.存款纪录,
     },
   ]
   return (
@@ -70,18 +75,34 @@ const KSMinePage = () => {
               <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.任务中心)}>
                 <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+                }}>
                 <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             </View>
           </View>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             {badges?.map((item, index) => {
-              const { title, logo } = item
-              return <LinearBadge key={index} colors={['transparent', 'transparent']} title={title} containerStyle={{ borderRadius: 0 }} showIcon={false} logo={logo} showLogo={true} />
+              const { title, logo, code } = item
+              return (
+                <LinearBadge
+                  key={index}
+                  colors={['transparent', 'transparent']}
+                  title={title}
+                  containerStyle={{ borderRadius: 0 }}
+                  showIcon={false}
+                  logo={logo}
+                  showLogo={true}
+                  onPress={() => {
+                    PushHelper.pushUserCenterType(code)
+                  }}
+                />
+              )
             })}
           </View>
         </LinearGradient>
@@ -100,7 +121,7 @@ const KSMinePage = () => {
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           {topUserCenterItems.map((item, index) => {
-            const { logo, name } = item
+            const { logo, name, code } = item
             return (
               <LinearBadge
                 key={index}
@@ -111,6 +132,9 @@ const KSMinePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={logo}
+                onPress={() => {
+                  PushHelper.pushUserCenterType(code)
+                }}
               />
             )
           })}
@@ -134,6 +158,9 @@ const KSMinePage = () => {
                 unreadMsg={unreadMsg || 0}
                 showUnReadMsg={code == 9}
                 showSubTitle={false}
+                onPress={() => {
+                  PushHelper.pushUserCenterType(code)
+                }}
               />
             )
           }}

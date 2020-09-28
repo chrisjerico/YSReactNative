@@ -22,7 +22,8 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     intoViewColor: '#444',
     moneyCellColor: '#444',
-    themeColor: '#000000'
+    themeColor: '#000000',
+    isBlack: true
   }
 };
 
