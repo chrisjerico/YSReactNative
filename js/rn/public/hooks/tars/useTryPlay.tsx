@@ -21,7 +21,7 @@ const useTryPlay = (options: Options = {}) => {
       const user_guestLogin_response = await APIRouter.user_guestLogin()
       const user_guestLogin_data = user_guestLogin_response?.data?.data
       const user_guestLogin_msg = user_guestLogin_response?.data?.msg
-      if (user_guestLogin_data && user_guestLogin_data.hasOwnProperty('API-SID') && user_guestLogin_data.hasOwnProperty('API-TOKEN')) {
+      if (user_guestLogin_data && user_guestLogin_data?.['API-SID'] && user_guestLogin_data?.['API-TOKEN']) {
         switch (Platform.OS) {
           case 'ios':
             await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(user_guestLogin_data)])

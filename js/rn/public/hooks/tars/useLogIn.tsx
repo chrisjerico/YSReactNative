@@ -27,7 +27,7 @@ const useLogIn = (options: Options = {}) => {
       const user_login_response = await APIRouter.user_login(account, password, undefined, slideCode)
       const user_login_data = user_login_response?.data?.data
       const user_login_msg = user_login_response?.data?.msg
-      if (user_login_data && user_login_data.hasOwnProperty('API-SID') && user_login_data.hasOwnProperty('API-TOKEN')) {
+      if (user_login_data && user_login_data?.['API-SID'] && user_login_data?.['API-TOKEN']) {
         // 登录成功
         switch (Platform.OS) {
           case 'ios':
