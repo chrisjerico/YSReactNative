@@ -5,14 +5,10 @@ import {List} from "../../../../../public/network/Model/HomeGamesModel";
 import {MarqueeView} from "../MarqueeView";
 import {ImageButton} from "../../ImageButton";
 import PushHelper from "../../../../../public/define/PushHelper";
-import {UGStore} from "../../../../../redux/store/UGStore";
 import {BannerModel} from "../../../../../public/network/Model/BannerModel";
 import {useDimensions} from "@react-native-community/hooks";
 import Carousel from "react-native-banner-carousel";
 import FastImage from "react-native-fast-image";
-import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
-import {push} from "../../../../../public/navigation/RootNavigation";
-import {PageName} from "../../../../../public/navigation/Navigation";
 
 export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number }) => {
     const onPress = (list: List) => {
@@ -55,6 +51,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
     const BannerRef = React.useRef<Carousel>()
     const [height, setHeight] = useState(100)
     useEffect(() => {
+        console.log("bannerData", bannerData?.data?.list)
         const timer = setInterval(() => {
             //@ts-ignore
             BannerRef?.current?.gotoNextPage()
@@ -94,7 +91,7 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
         )
 
     } else {
-        return <View style={{height: (Dimensions.get("screen").width) / 2,}}/>
+        return <View />
     }
 
 }

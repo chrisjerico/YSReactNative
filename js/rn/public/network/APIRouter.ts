@@ -255,9 +255,12 @@ class APIRouter {
     });
   }
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
-    return httpClient.get("c=game&a=playOdds&id=" + id, {
+    return httpClient.get("c=game&a=playOdds", {
       //@ts-ignore
-      isEncrypt: false
+      isEncrypt: true,
+      params:{
+        id: id,
+      },
     })
   }
 

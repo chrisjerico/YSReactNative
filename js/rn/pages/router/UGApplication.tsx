@@ -108,7 +108,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-        {/*<Router.TabScreen name={PageName.TrendView} component={UGPage(TrendView)} />*/}
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
         <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
