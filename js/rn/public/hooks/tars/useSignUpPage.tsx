@@ -166,6 +166,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const imageCodeLabel = '*请输入验证码'
 
   const signUp = () => {
+    console.log('------name-----', name)
     if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID

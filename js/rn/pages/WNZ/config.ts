@@ -92,7 +92,7 @@ const config = {
     },
     {
       title: '开奖结果',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖网) },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖走势) }, // 這裡到底要跳到哪
     },
     {
       title: '长龙排行',
