@@ -15,6 +15,8 @@ import LMContainer from './PlayVIew/LHT/LM'
 import ZMContainer from './PlayVIew/LHT/ZM'
 import TMPlayView from './PlayVIew/LHT/TM'
 import ZMContainer16 from './PlayVIew/LHT/ZM16'
+import GFWFContainer from "./PlayVIew/LHT/GFWF";
+import YZDWContainer from "./PlayVIew/LHT/YZDW";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
@@ -24,18 +26,18 @@ const LottoContent = ({setProps}) => {
     const getPlayView = () => {
         console.log("currentPlayOdd?.code", currentPlayOdd?.code)
         switch (currentPlayOdd?.code) {
-            case 'TM':
+            case 'TM'://特码
                 return <TMPlayView setProps={setProps}/>
-            case 'LM':
+            case 'LM'://连码
             case 'ZOX':
                 return <LMContainer setProps={setProps}/>
             case 'SB':
                 return <SBContainer setProps={setProps}/>
-            case 'ZM':
+            case 'ZM'://郑码
                 return <ZMContainer setProps={setProps}/>
             case 'ZM1-6':
                 return <ZMContainer16 setProps={setProps}/>
-            case 'ZT':
+            case 'ZT'://郑特
                 return <ZTContainer setProps={setProps}/>
             case 'LMA':
                 return <LMAContainer setProps={setProps}/>
@@ -49,6 +51,10 @@ const LottoContent = ({setProps}) => {
                 return <TWSContainer setProps={setProps}/>
             case 'WX':
                 return <WXSContainer setProps={setProps}/>
+            case 'GFWF'://官方玩法
+                return <GFWFContainer setProps={setProps}/>
+            case 'YZDW'://一字定位玩法
+                return <YZDWContainer setProps={setProps}/>
             default:
                 break;
         }
