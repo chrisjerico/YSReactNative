@@ -8,5 +8,5 @@
   "trailingComma": "es5",
   "printWidth": 200,
   "jsxBracketSameLine": true,
-  "parser": "typescript",
+  "parser": "typescript"
 }

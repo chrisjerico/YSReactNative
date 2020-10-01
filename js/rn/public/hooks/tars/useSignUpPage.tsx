@@ -4,18 +4,14 @@ import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
-import {
-  hideLoading,
-  showLoading,
-  UGLoadingType
-} from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 
 interface UseRegisterPage {
-  homePage?: PageName;
-  signInPage?: PageName;
+  homePage?: PageName
+  signInPage?: PageName
 }
 
 const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
@@ -59,7 +55,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onError: (error) => {
       hideLoading()
       ToastError(error ?? '登录失败')
-      console.log("--------試玩失败--------", error)
+      console.log('--------試玩失败--------', error)
     },
   })
 
@@ -98,12 +94,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // valid
   const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
   const account_valid = account?.length >= 6
-  const password_valid =
-    validPassword(password, strength) &&
-    password?.length >= minLength &&
-    password?.length <= maxLength
+  const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
-  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) || 
+  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
   const wx_valid = weChat || necessity?.wx != Necessity.必填
@@ -112,22 +105,22 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid =
-    account_valid &&
-    password_valid &&
-    confirmPassword_valid &&
-    recommendGuy_valid &&
-    name_valid &&
-    fundPassword_valid &&
-    qq_valid &&
-    wx_valid &&
-    email_valid &&
-    phoneNumber_valid &&
-    slideCode_valid &&
-    sms_valid
+  const valid = true
+  // account_valid &&
+  // password_valid &&
+  // confirmPassword_valid &&
+  // recommendGuy_valid &&
+  // name_valid &&
+  // fundPassword_valid &&
+  // qq_valid &&
+  // wx_valid &&
+  // email_valid &&
+  // phoneNumber_valid &&
+  // slideCode_valid &&
+  // sms_valid
 
   // onChange
-  const onChangeAgent = (value: AgentType) => agentRef.current = value
+  const onChangeAgent = (value: AgentType) => (agentRef.current = value)
   const onChangeRecommendGuy = (value: string) => setRecommendGuy(value)
   const obChangeAccount = (value: string) => setAccount(value)
   const obChangePassword = (value: string) => setPassword(value)
@@ -167,18 +160,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const emailLabel = getLabel(necessity?.email, '请输入合法的电子邮箱')
   const recommendGuyLabel = getLabel(necessity?.recommendGuy, '请填写推荐人ID，只能包含数字')
   const fundPasswordLabel = getLabel(necessity?.fundPassword, '请输入4数字取款密码')
-  const nameLabel = getLabel(
-    necessity?.name,
-    '必须与您的银行账户名称相同，以免未能到账'
-  )
-  const passwordLebel =
-    '*请使用至少' +
-    minLength +
-    '位至' +
-    maxLength +
-    '位英文或数字的组合' +
-    getPasswordLimitString()
-  const confirmPasswordLabel = (password == confirmPassword) && confirmPassword ? '' : '密码不一致'
+  const nameLabel = getLabel(necessity?.name, '必须与您的银行账户名称相同，以免未能到账')
+  const passwordLebel = '*请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
+  const confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
   const signUp = () => {
@@ -248,12 +232,12 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const navigateTo = {
     navigateToHomePage,
-    navigateToSignInPage
+    navigateToSignInPage,
   }
 
   const sign = {
     signUp,
-    tryPlay
+    tryPlay,
   }
 
   return {
@@ -264,9 +248,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onChange,
     navigateTo,
     sign,
-    passwordLimit
+    passwordLimit,
   }
-
 }
 
 export default useSignUpPage

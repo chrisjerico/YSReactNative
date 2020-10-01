@@ -1,6 +1,5 @@
 import React from 'react'
 import { ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Badge } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
