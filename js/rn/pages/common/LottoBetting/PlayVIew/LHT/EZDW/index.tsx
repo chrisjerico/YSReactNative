@@ -1,4 +1,4 @@
-import {FlatList, ScrollView, Text, TouchableWithoutFeedback, View} from "react-native"
+import {FlatList, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native"
 import * as React from 'react'
 import {UGStore} from "../../../../../../redux/store/UGStore"
 import HKWXItemView from "../HKWXItemView"
@@ -7,10 +7,11 @@ import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {BettingReducerActions} from "../../../../../../redux/reducer/BettingReducer";
 import {getHKballColor} from "../../lottoSetting";
+import {scale} from "../../../../../../public/tools/Scale";
 
 export const EZDW_DATA = JSON.parse('{ "code": "EZDW", "name": "二字定位", "playGroups": [ { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万千", "plays": [ { "id": "144001", "name": "万千", "alias": null, "rebate": "0.0000", "code": "WQDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万百", "plays": [ { "id": "144002", "name": "万百", "alias": null, "rebate": "0.0000", "code": "WBDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万十", "plays": [ { "id": "144003", "name": "万十", "alias": null, "rebate": "0.0000", "code": "WSDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万个", "plays": [ { "id": "144004", "name": "万个", "alias": null, "rebate": "0.0000", "code": "WGDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "千百", "plays": [ { "id": "144005", "name": "千百", "alias": null, "rebate": "0.0000", "code": "QBDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "千十", "plays": [ { "id": "144006", "name": "千十", "alias": null, "rebate": "0.0000", "code": "QSDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "千个", "plays": [ { "id": "144007", "name": "千个", "alias": null, "rebate": "0.0000", "code": "QGDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "百十", "plays": [ { "id": "144008", "name": "百十", "alias": null, "rebate": "0.0000", "code": "BSDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "百个", "plays": [ { "id": "144009", "name": "百个", "alias": null, "rebate": "0.0000", "code": "BGDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "44", "name": "二字定位", "code": "EZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "十个", "plays": [ { "id": "144010", "name": "十个", "alias": null, "rebate": "0.0000", "code": "SGDW", "played_groupid": "44", "odds": "83.0000", "offlineOdds": "83.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
 
-const itemSize = 40
+const itemSize = scale(60)
 const EZDWContainer = ({setProps}) => {
   // const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   //Todo arc
@@ -35,6 +36,7 @@ const EZDWContainer = ({setProps}) => {
     }
     UGStore.dispatch({type: BettingReducerActions.cleanBetGroupResult})
   }, [currentFilter])
+
   //玩法列表
   return (
     <ScrollView style={{flex: 1}}>
@@ -45,65 +47,95 @@ const EZDWContainer = ({setProps}) => {
                     return <TouchableWithoutFeedback onPress={() => {
                       setCurrentFilter(item)
                     }}>
-                      <Text style={{
-                        paddingHorizontal: 12,
-                        paddingTop: 20,
-                        paddingBottom: 10,
-                        fontSize: 14,
+                      <Text style={[_styles.tab, {
                         backgroundColor: currentFilter == item ? "#e6e6e6" : "#dbdbdb",
-                      }}>{item}</Text>
+                      }]}>{item}</Text>
                     </TouchableWithoutFeedback>
                   }}/>
       </View>
-      <Text style={{
-        textAlign: 'center',
-        paddingVertical: 10,
-        color: "#c8222f",
-        backgroundColor: "#eee"
-      }}>{currentFilter}</Text>
-      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-        {Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
-          return (
-            <TouchableWithoutFeedback onPress={() => {
-              UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
-              setProps && setProps()
-            }}>
-              <View key={index} style={{
-                width: ((width / 4 * 3) - 5) / 3,
-                borderWidth: 1,
-                borderColor: '#444',
-                height: itemSize
+      <Text style={_styles.ball_title}>{currentFilter.slice(0, 1) + '定位'}</Text>
+      <View style={_styles.ball_grid}>
+        {
+          Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
+            return (
+              <TouchableWithoutFeedback onPress={() => {
+                UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
+                setProps && setProps()
               }}>
-                <View style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  borderColor: '#444',
-                  justifyContent: 'flex-start',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                  backgroundColor: "#00000000"
-                }}>
-                  <View style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: 15,
-                    borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),
-                    borderWidth: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginHorizontal: 5
-                  }}>
+                <View key={index} style={[_styles.grid_item,
+                  {width: ((width / 4 * 3) - 1) / 3}]}>
+                  <View style={[_styles.grid_ball,
+                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
                     <Text>{res < 10 ? "0" + res : res.toString()}</Text>
                   </View>
                   <Text>{currentOdd}</Text>
                 </View>
-              </View>
-            </TouchableWithoutFeedback>
-          )
-        })
+              </TouchableWithoutFeedback>
+            )
+          })
+        }
+      </View>
+      <Text style={_styles.ball_title}>{currentFilter.slice(1) + '定位'}</Text>
+      <View style={_styles.ball_grid}>
+        {
+          Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
+            return (
+              <TouchableWithoutFeedback onPress={() => {
+                UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
+                setProps && setProps()
+              }}>
+                <View key={index} style={[_styles.grid_item,
+                  {width: ((width / 4 * 3) - 1) / 3}]}>
+                  <View style={[_styles.grid_ball,
+                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
+                    <Text>{res < 10 ? "0" + res : res.toString()}</Text>
+                  </View>
+                  <Text>{currentOdd}</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )
+          })
         }
       </View>
     </ScrollView>
   )
 }
+
+const _styles = StyleSheet.create({
+    tab: {
+      paddingHorizontal: scale(18),
+      paddingTop: scale(30),
+      paddingBottom: scale(15),
+      fontSize: scale(22),
+    },
+    ball_title: {
+      textAlign: 'center',
+      paddingVertical: scale(15),
+      color: "#c8222f",
+      backgroundColor: "#eee"
+    },
+    ball_grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    grid_item: {
+      borderBottomWidth: scale(1),
+      borderRightWidth: scale(1),
+      borderColor: '#444',
+      height: itemSize,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    grid_ball: {
+      width: scale(45),
+      height: scale(45),
+      borderRadius: 999,
+      borderWidth: scale(2),
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 5
+    }
+  }
+)
 export default EZDWContainer
