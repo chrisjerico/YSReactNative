@@ -19,6 +19,10 @@ import BZHSignInPage from '../BZH/BZHSignInPage'
 import BZHSignUpPage from '../BZH/BZHSignUpPage'
 import LottoBetting from '../common/LottoBetting'
 import PromotionListPage from '../common/PromotionListPage'
+import JXHHomePage from '../JXH/JXHHomePage'
+import JXHMinePage from '../JXH/JXHMinePage'
+import JXHSignInPage from '../JXH/JXHSignInPage'
+import JXHSignUpPage from '../JXH/JXHSignUpPage'
 import KSHomePage from '../KS/KSHomePage'
 import KSMinePage from '../KS/KSMinePage'
 import KSSignInPage from '../KS/KSSignInPage'
@@ -50,10 +54,6 @@ import VietnamHomePage from '../越南/HomePage'
 import VietnamLogin from '../越南/LoginPage'
 import MinePage from '../越南/MinePage'
 import VietnamRegister from '../越南/RegisterPage'
-import GDBHomePage from '../金星黑/GDBHomePage'
-import GDBMinePage from '../金星黑/GDBMinePage'
-import GDLoginPage from '../金星黑/GDLoginPage'
-import GDRegisterPage from '../金星黑/GDRegisterPage'
 import { XBJHomePage } from '../香槟金/XBJHomePage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
@@ -105,8 +105,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
-        <Router.TabScreen name={PageName.GDBHomePage} component={GDBHomePage} />
-        <Router.TabScreen name={PageName.GDBMinePage} component={UGPage(GDBMinePage)} />
+        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
+        <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
@@ -133,8 +133,6 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.GDLoginPage} component={UGPage(GDLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.GDRegisterPage} component={UGPage(GDRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignInPage} component={LHTSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignUpPage} component={BZHSignUpPage} />
@@ -143,6 +141,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignInPage} component={JXHSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignUpPage} component={JXHSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />

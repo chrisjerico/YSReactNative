@@ -29,6 +29,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
+    if (skitType.indexOf('金星黑') != -1) {
+      pages = pages.concat(JXHPages);
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -337,23 +340,7 @@ const JXHPages = [
   {
     // 首页
     tabbarItemPath: '/home',
-    rnName: PageName.GDBHomePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.GDLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.GDRegisterPage,
+    rnName: PageName.JXHHomePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -362,10 +349,18 @@ const JXHPages = [
     // 我的页
     tabbarItemPath: '/user',
     vcName: 'UGMineSkinViewController',
-    rnName: PageName.GDBMinePage,
+    rnName: PageName.JXHMinePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.JXHSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
   },
   {
     vcName: 'UGPromotionsController',
