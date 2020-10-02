@@ -16,12 +16,14 @@ import ZMContainer from './PlayVIew/LHT/ZM'
 import TMPlayView from './PlayVIew/LHT/TM'
 import ZMContainer16 from './PlayVIew/LHT/ZM16'
 import GFWFContainer from "./PlayVIew/LHT/GFWF";
-import YZDWContainer from "./PlayVIew/LHT/YZDW";
+import YZDWContainer, {YZDW_DATA} from "./PlayVIew/LHT/YZDW";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
     const borderColor = "red"
-    const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
+    // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
+  //Todo arc
+  const currentPlayOdd = YZDW_DATA
 
     const getPlayView = () => {
         console.log("currentPlayOdd?.code", currentPlayOdd?.code)
