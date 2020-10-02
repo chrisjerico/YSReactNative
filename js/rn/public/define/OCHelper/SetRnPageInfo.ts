@@ -32,6 +32,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
     }
+    if (skitType.indexOf('越南') != -1) {
+      pages = pages.concat(VietnamPages);
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -371,6 +374,41 @@ const JXHPages = [
   }
 ];
 
+// 越南
+const VietnamPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.VietnamHome,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.VietnamMine,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.VietnamLogin,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.JDPromotionListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }
+];
 
 
 

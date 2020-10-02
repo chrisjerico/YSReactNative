@@ -1,27 +1,28 @@
-import { UGThemeColor } from './UGThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
+import chroma from 'chroma-js'
+import { Platform } from 'react-native'
+import dev from '../../../../dev.json'
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
+import AppDefine from '../define/AppDefine'
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
+import { OCHelper } from '../define/OCHelper/OCHelper'
+import FUtils from '../tools/FUtils'
+import { B_DEBUG } from '../tools/UgLog'
+import { BZHThemeColor } from './colors/BZHThemeColor'
+import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
 import { JYThemeColor } from './colors/JYThemeColor'
-import { LHThemeColor } from './colors/LHThemeColor'
-import { XNHThemeColor } from './colors/XNHThemeColor'
-import { OtherThemeColor } from './colors/OtherThemeColor'
-import { GDBThemeColor } from './colors/GDBThemeColor'
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
-import chroma from 'chroma-js'
-import FUtils from '../tools/FUtils'
-import { Platform } from 'react-native'
-import AppDefine from '../define/AppDefine'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import { B_DEBUG } from '../tools/UgLog'
-import { ZLThemeColor } from './colors/ZLThemeColor'
-import { LCThemeColor } from './colors/LCThemeColor'
 import { KSThemeColor } from './colors/KSThemeColor'
-import { WNZThemeColor } from './colors/WNZThemeColor'
-import { PYThemeColor } from './colors/PYThemeColor'
+import { LCThemeColor } from './colors/LCThemeColor'
+import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
-import { BZHThemeColor } from './colors/BZHThemeColor'
-import dev from '../../../../dev.json'
+import { OtherThemeColor } from './colors/OtherThemeColor'
+import { PYThemeColor } from './colors/PYThemeColor'
+import { VietnamThemeColors } from './colors/VietnamThemeColors'
+import { WNZThemeColor } from './colors/WNZThemeColor'
+import { XBJThemeColor } from './colors/XBJThemeColor'
+import { XNHThemeColor } from './colors/XNHThemeColor'
+import { ZLThemeColor } from './colors/ZLThemeColor'
+import { UGThemeColor } from './UGThemeColor'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -39,6 +40,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...PYThemeColor,
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
+    ...VietnamThemeColors, // 越南
   }
 
   // 更新皮肤
@@ -70,6 +72,7 @@ export default class UGSkinManagers extends UGThemeColor {
       23: `威尼斯`,
       25: '天空蓝',
       26: `白曜`,
+      27: `越南`,
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
@@ -103,7 +106,8 @@ export default class UGSkinManagers extends UGThemeColor {
       skin.skitType.indexOf('金星黑') == -1 &&
       skin.skitType.indexOf('六合厅') == -1 &&
       skin.skitType.indexOf('凯时') == -1 &&
-      skin.skitType.indexOf(`利来`) == -1
+      skin.skitType.indexOf(`利来`) == -1 &&
+      skin.skitType.indexOf(`越南`) == -1
     // 已上线模板
     if (skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('宝石红') == -1 && skin.skitType.indexOf('威尼斯') == -1 && devSkin) return
     //
