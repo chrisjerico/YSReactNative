@@ -9,6 +9,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import HomeHeader from './views/HomeHeader'
 import MenuModalComponent from './components/MenuModalComponent'
 import MineHeaderComponent from './components/MineHeaderComponent'
 import config from './config'
@@ -64,7 +65,8 @@ const WNZMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <MineHeaderComponent
+        <HomeHeader
+          showBackBtn={true}
           uid={uid}
           name={usr}
           logo={mobile_logo}
