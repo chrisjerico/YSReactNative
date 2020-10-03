@@ -11,7 +11,7 @@ import {BALL_STYLES, TAG_COLOR} from "../../comm/LotteryStyles";
 import {BALL_NUMBERS_0_9} from "../../comm/LotteryElements";
 import {scale} from "../../../../../../public/tools/Scale";
 import {Toast} from "../../../../../../public/tools/ToastUtils";
-import {renderChoiceItem} from "../widget/SSCViews";
+import {renderChoiceItem} from "../widget/SSCWidgets";
 import {ugLog} from "../../../../../../public/tools/UgLog";
 
 export const DWD_DATA = JSON.parse('{ "code": "DWD", "name": "定位胆", "playGroups": [ { "id": "48", "name": "定位胆", "code": "DWD", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万", "plays": [ { "id": "148001", "name": "万", "alias": "", "rebate": "0.0000", "code": "DWDW", "played_groupid": "48", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "1000000", "maxTurnMoney": "50000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "48", "name": "定位胆", "code": "DWD", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "千", "plays": [ { "id": "148002", "name": "千", "alias": "", "rebate": "0.0000", "code": "DWDQ", "played_groupid": "48", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "1000000", "maxTurnMoney": "50000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "48", "name": "定位胆", "code": "DWD", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "百", "plays": [ { "id": "148003", "name": "百", "alias": "", "rebate": "0.0000", "code": "DWDB", "played_groupid": "48", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "1000000", "maxTurnMoney": "50000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "48", "name": "定位胆", "code": "DWD", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "十", "plays": [ { "id": "148004", "name": "十", "alias": "", "rebate": "0.0000", "code": "DWDS", "played_groupid": "48", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "1000000", "maxTurnMoney": "50000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "48", "name": "定位胆", "code": "DWD", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "个", "plays": [ { "id": "148005", "name": "个", "alias": "", "rebate": "0.0000", "code": "DWDG", "played_groupid": "48", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "1000000", "maxTurnMoney": "50000000", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
@@ -40,6 +40,7 @@ const DWDContainer = ({setProps}) => {
     setPlays(playsStringArray.filter((res, index) => playsStringArray.indexOf(res) === index))
     setCurrentFilter(playsStringArray[0])
   }, [currentPlayOdd])
+
   useEffect(() => {
     const result = currentPlayOdd.playGroups.filter((res) => res.alias.slice(0, 3) == currentFilter)
     if (result.length > 0) {
