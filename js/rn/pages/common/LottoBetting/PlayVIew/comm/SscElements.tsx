@@ -11,6 +11,10 @@ const TAG_COLOR = (cur, item) => cur == item ? "#e6e6e6" : "#dbdbdb"
 const BALL_NUMBERS = Array.from({length: 10}).map((res, index) => index + 1)
 
 const BALL_STYLES = StyleSheet.create({
+    tab_container: {
+      justifyContent: 'center',
+      alignItems: 'flex-start'
+    },
     tab: {//TAB，如万定位，千定位
       paddingHorizontal: scale(18),
       paddingTop: scale(30),
@@ -44,7 +48,7 @@ const BALL_STYLES = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginHorizontal: 5
-    }
+    },
   }
 )
 

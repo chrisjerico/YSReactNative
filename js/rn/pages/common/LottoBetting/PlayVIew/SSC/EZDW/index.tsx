@@ -40,7 +40,7 @@ const EZDWContainer = ({setProps}) => {
   //玩法列表
   return (
     <ScrollView style={{flex: 1}}>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={BALL_STYLES.tab_container}>
         <FlatList showsHorizontalScrollIndicator={false}
                   horizontal={true}
                   style={{}}

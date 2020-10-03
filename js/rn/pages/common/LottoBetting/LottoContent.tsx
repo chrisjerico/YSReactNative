@@ -20,13 +20,14 @@ import YZDWContainer, {YZDW_DATA} from "./PlayVIew/SSC/YZDW";
 import EZDWContainer, {EZDW_DATA} from "./PlayVIew/SSC/EZDW";
 import SZDWContainer, {SZDW_DATA} from "./PlayVIew/SSC/SZDW";
 import {ugLog} from "../../../public/tools/UgLog";
+import BDWContainer, {BDW_DATA} from "./PlayVIew/SSC/BDW";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
     const borderColor = "red"
     // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
   //Todo arc
-  const currentPlayOdd = SZDW_DATA
+  const currentPlayOdd = BDW_DATA
 
     const getPlayView = () => {
         ugLog("currentPlayOdd?.code", currentPlayOdd?.code)
@@ -64,6 +65,8 @@ const LottoContent = ({setProps}) => {
                 return <EZDWContainer setProps={setProps}/>
             case 'SZDW'://三字定位玩法
                 return <SZDWContainer setProps={setProps}/>
+            case 'BDW'://不定位玩法
+                return <BDWContainer setProps={setProps}/>
             default:
                 break;
         }
