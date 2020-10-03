@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import React from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import Button from '../../public/views/tars/Button'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -12,8 +14,8 @@ import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const JXHSignUpPage = () => {
   const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
-    homePage: PageName.KSHomePage,
-    signInPage: PageName.KSSignInPage,
+    homePage: PageName.JXHHomePage,
+    signInPage: PageName.JXHSignInPage,
   })
 
   const { signUp } = sign
@@ -23,13 +25,20 @@ const JXHSignUpPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'}>
-        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} rightTitle={'登录'} showRightTitle={true} onPressRightTitle={navigateToSignInPage} />
+        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} showRightTitle={false} backBtnColor={'#cfa461'} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
+          <Text style={{ color: '#ffffff', fontSize: scale(40), fontWeight: '500' }}>{'欢迎注冊'}</Text>
+          <View style={{ flexDirection: 'row', marginVertical: scale(20) }}>
+            <Text style={{ color: '#ffffff' }}>{'我已有帐号，立即'}</Text>
+            <TouchableWithoutFeedback onPress={navigateToSignInPage}>
+              <Text style={{ color: '#cfa461' }}>{'登陆'}</Text>
+            </TouchableWithoutFeedback>
+          </View>
           <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <LinearBadge
-            colors={['#eb5d4d', '#fb2464']}
+            colors={['#cfa461', '#cfa461']}
             containerStyle={[styles.button, { height: null }]}
             title={'注册'}
             textStyle={{ color: '#ffffff', fontSize: scale(23) }}
@@ -37,6 +46,7 @@ const JXHSignUpPage = () => {
             showLogo={false}
             onPress={signUp}
           />
+          <Button title={'返回首页'} containerStyle={styles.popButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={popToRoot} />
         </View>
       </ScrollView>
     </>
@@ -44,19 +54,18 @@ const JXHSignUpPage = () => {
 }
 
 const SignUpForm = (props: FormComponentProps) => {
-  const [focus, setFocuse] = useState(false)
   return (
     <FormComponent
       {...props}
       containerStyle={{ marginBottom: scale(10) }}
-      inputContainerStyle={{ borderColor: '#d9d9d9', borderWidth: scale(1), borderRadius: scale(10), backgroundColor: focus ? '#ffffff' : '#949494', height: scale(63) }}
+      inputContainerStyle={{ borderRadius: scale(10), backgroundColor: '#333333', height: scale(63), borderBottomWidth: 0 }}
       leftIconContainerStyle={{ marginLeft: scale(10) }}
       rightIconContainerStyle={{ marginRight: scale(10) }}
-      closeEyeColor={'#000000'}
-      showLabel={false}
-      onFocus={() => setFocuse(true)}
-      onBlur={() => setFocuse(false)}
-      leftIconProps={{ color: '#000000', ...props?.leftIconProps }}
+      closeEyeColor={'#cfa461'}
+      leftIconProps={{ color: '#cfa461', ...props?.leftIconProps }}
+      inputStyle={{ color: '#ffffff' }}
+      placeholderTextColor={'#ffffff'}
+      labelTextStyle={{ fontWeight: 'normal' }}
     />
   )
 }
@@ -78,6 +87,12 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
     marginVertical: scale(20),
+    aspectRatio: 8,
+    borderRadius: scale(5),
+  },
+  popButton: {
+    backgroundColor: '#a09e9d',
+    width: '100%',
     aspectRatio: 8,
     borderRadius: scale(5),
   },

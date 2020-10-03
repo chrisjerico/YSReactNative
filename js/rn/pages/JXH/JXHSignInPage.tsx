@@ -14,8 +14,8 @@ import SignInFormList from '../../public/views/tars/SignInFormList'
 
 const JXHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
-    homePage: PageName.KSHomePage,
-    signUpPage: PageName.KSSignUpPage,
+    homePage: PageName.JXHHomePage,
+    signUpPage: PageName.JXHSignUpPage,
   })
 
   const { navigateToSignUpPage } = navigateTo
@@ -28,20 +28,23 @@ const JXHSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'}>
-        <MineHeader showBackBtn={true} rightTitle={'注册'} onPressBackBtn={popToRoot} showRightTitle={true} onPressRightTitle={navigateToSignUpPage} />
+        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} showRightTitle={false} backBtnColor={'#cfa461'} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</Text>
+          <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'欢迎您'}</Text>
+          <View style={{ flexDirection: 'row', marginBottom: scale(20) }}>
+            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'没有账号,立即'}</Text>
+            <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'注册'}</Text>
+            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'或'}</Text>
+            <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
+          </View>
           <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <TouchableWithoutFeedback onPress={() => {}}>
-              <Text style={{ color: '#8e8e93' }}>{'忘记密码'}</Text>
-            </TouchableWithoutFeedback>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>
           <LinearBadge
-            colors={['#eb5d4d', '#fb2464']}
+            colors={['#cfa461', '#cfa461']}
             containerStyle={[styles.button, { height: null }]}
             title={'登录'}
             textStyle={{ color: '#ffffff', fontSize: scale(23) }}
@@ -49,7 +52,7 @@ const JXHSignInPage = () => {
             showLogo={false}
             onPress={signIn}
           />
-          <Button title={'免费试玩'} containerStyle={styles.signUpButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={navigateToSignUpPage} />
+          <Button title={'返回首页'} containerStyle={styles.popButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={popToRoot} />
         </View>
       </ScrollView>
     </>
@@ -57,18 +60,17 @@ const JXHSignInPage = () => {
 }
 
 const SignInForm = (props: FormComponentProps) => {
-  const [focus, setFocuse] = useState(false)
   return (
     <FormComponent
       {...props}
       containerStyle={{ marginBottom: scale(10) }}
-      inputContainerStyle={{ borderColor: '#d9d9d9', borderWidth: scale(1), borderRadius: scale(10), backgroundColor: focus ? '#ffffff' : '#949494', height: scale(63) }}
+      inputContainerStyle={{ borderRadius: scale(10), backgroundColor: '#333333', height: scale(63), borderBottomWidth: 0 }}
       leftIconContainerStyle={{ marginLeft: scale(10) }}
       rightIconContainerStyle={{ marginRight: scale(10) }}
-      closeEyeColor={'#000000'}
-      onFocus={() => setFocuse(true)}
-      onBlur={() => setFocuse(false)}
-      leftIconProps={{ color: '#000000', ...props?.leftIconProps }}
+      closeEyeColor={'#cfa461'}
+      leftIconProps={{ color: '#cfa461', ...props?.leftIconProps }}
+      inputStyle={{ color: '#ffffff' }}
+      placeholderTextColor={'#ffffff'}
     />
   )
 }
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     aspectRatio: 8,
     borderRadius: scale(5),
   },
-  signUpButton: {
+  popButton: {
     backgroundColor: '#a09e9d',
     width: '100%',
     aspectRatio: 8,

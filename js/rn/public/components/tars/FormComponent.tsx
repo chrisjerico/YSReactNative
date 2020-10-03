@@ -22,7 +22,7 @@ export interface FormComponentProps {
   labelTextStyle?: StyleProp<TextStyle>
   showLeftIcon?: boolean
   inputContainerStyle?: StyleProp<ViewStyle>
-  inputStyle?: StyleProp<ViewStyle>
+  inputStyle?: StyleProp<TextStyle>
   formStyle?: StyleProp<ViewStyle>
   defaultValue?: string
   rightIconType?: 'eye' | 'imgCaptcha' | 'touchImgCaptcha' | 'sms'

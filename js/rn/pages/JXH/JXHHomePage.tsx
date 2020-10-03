@@ -1,12 +1,7 @@
 import React from 'react'
-import { ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
-import FastImage from 'react-native-fast-image'
-import LinearGradient from 'react-native-linear-gradient'
-import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RandomText from '../../public/components/tars/RandomText'
-import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -14,22 +9,19 @@ import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
+import Activitys from '../../public/views/tars/Activitys'
 import Avatar from '../../public/views/tars/Avatar'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
-import GameButton from '../../public/views/tars/GameButton'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-
-const buttonHeight = scale(82)
 
 const JXHHomePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -77,7 +69,7 @@ const JXHHomePage = () => {
             />
           }>
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 130 }}
+            containerStyle={{ aspectRatio: 540 / 218 }}
             badgeStyle={{ top: scale(-210) }}
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
@@ -101,7 +93,7 @@ const JXHHomePage = () => {
             bgContainerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
             logoTextStyle={{
               color: '#95979f',
-              fontSize: scale(20),
+              fontSize: scale(18),
               paddingHorizontal: scale(5),
             }}
             textStyle={{
@@ -135,21 +127,31 @@ const JXHHomePage = () => {
               ) : (
                 <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                   <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-                  <Text style={{ color: '#c7c7c7', fontSize: scale(25), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
+                  <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
                 </View>
               )}
             </View>
 
             <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-              <Button title={'登录'} containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]} titleStyle={{ color: '#ffffff', fontSize: scale(20) }} />
+              <Button
+                title={'登录'}
+                containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]}
+                titleStyle={{ color: '#ffffff', fontSize: scale(20) }}
+                onPress={() => {
+                  navigate(PageName.JXHSignInPage)
+                }}
+              />
               <Button
                 title={'注册'}
                 containerStyle={[styles.signButton, { backgroundColor: '#000000', borderColor: '#cfa461', borderWidth: scale(1) }]}
                 titleStyle={{ color: '#cfa461', fontSize: scale(20) }}
+                onPress={() => {
+                  navigate(PageName.JXHSignUpPage)
+                }}
               />
             </View>
             <View style={{ flex: 1, backgroundColor: '#333333', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-              <Text style={{ color: '#ffffff' }}>{'忘记密码'}</Text>
+              <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
               <Text style={{ color: '#cfa461' }}>{'免费试玩'}</Text>
             </View>
           </View>
@@ -227,41 +229,7 @@ const JXHHomePage = () => {
           />
           <BottomGap />
         </ScrollView>
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
       </>
     )
   }

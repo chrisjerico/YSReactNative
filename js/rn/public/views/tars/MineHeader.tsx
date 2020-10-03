@@ -11,15 +11,16 @@ interface MineHeaderProps {
   onPressBackBtn?: () => any
   showBackBtn?: boolean
   rightTitle?: string
+  backBtnColor?: string
 }
 
-const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle }: MineHeaderProps) => {
+const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, backBtnColor = '#ffffff' }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
         <TouchableWithoutFeedback onPress={onPressBackBtn}>
           <View style={{ flex: 1, alignItems: 'flex-start', height: '100%', justifyContent: 'center' }}>
-            <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} />
+            <AntDesign name={'left'} color={backBtnColor} size={scale(25)} />
           </View>
         </TouchableWithoutFeedback>
       ) : (
