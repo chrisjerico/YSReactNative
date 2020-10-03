@@ -477,7 +477,14 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.开奖结果: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+              {
+                selectors: 'AppDefine.viewControllerWithStoryboardID:',
+                args1: ['UGLotteryRecordController'],
+              },
+              true,
+            ])
+            // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
         }
