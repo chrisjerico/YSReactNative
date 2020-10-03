@@ -143,10 +143,10 @@ export default class PushHelper {
     })
   }
 
-  // 去彩票大廳
-  static pushLotteryLobby() {
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
-  }
+  // 去彩票大廳 userCenter裡有
+  // static pushLotteryLobby() {
+  //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
+  // }
   /**
    * 打开红包
    * @param redBag
@@ -474,6 +474,10 @@ export default class PushHelper {
                 push(PageName.ZLMinePage)
               }
             })
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
         }

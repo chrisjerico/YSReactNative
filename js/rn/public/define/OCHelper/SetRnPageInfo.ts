@@ -299,9 +299,9 @@ const WNSPages = [
     允许未登录访问: true,
   },
   {
-    // 游戏大厅
-    tabbarItemPath: '/lotteryList',
-    vcName: 'UGYYLotteryHomeViewController',
+    // 棋牌
+    tabbarItemPath: '/chess',
+    vcName: 'UGYYLotterySecondHomeViewController',
     rnName: PageName.WNZGameLobbyPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
