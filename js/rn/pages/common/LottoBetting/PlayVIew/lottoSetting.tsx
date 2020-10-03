@@ -38,43 +38,21 @@ export const getShengXiaoString = (num: number): ShengXiaoType => {
   return ShengXiaoValue[((absNumber % 12))]
 }
 
-// export const getHKballColor = (BallName: string) => {
-//   if(anyLength(BallName) < 2) {
-//     BallName = '0' + BallName
-//   }
-//
-//   const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
-//   const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
-//   const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
-//   if (redSet.includes(BallName)) {
-//     return '#e23'
-//   } else if (blueSet.includes(BallName)) {
-//     return '#4bf'
-//   } else {
-//     return '#3b6'
-//   }
-// }
-
-const BALL_COLOR_RECT = {
-  '00': '#E1D463',
-  '01': '#E1D463',
-  '02': '#008BF9',
-  '03': '#4C4D51',
-  '04': '#F47A00',
-  '05': '#63D2D2',
-  '06': '#420AFF',
-  '07': '#AEA6A6',
-  '08': '#FF0400',
-  '09': '#770100',
-  '10': '#2BC610',
-}
-
 export const getHKballColor = (BallName: string) => {
   if(anyLength(BallName) < 2) {
     BallName = '0' + BallName
   }
 
-  return BALL_COLOR_RECT[BallName]
+  const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
+  const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
+  const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
+  if (redSet.includes(BallName)) {
+    return '#e23'
+  } else if (blueSet.includes(BallName)) {
+    return '#4bf'
+  } else {
+    return '#3b6'
+  }
 }
 
 export function factorial(m, n) {

@@ -11,8 +11,6 @@ import {BALL_STYLES, TAG_COLOR} from "../../comm/LotteryStyles";
 import {BALL_NUMBERS_0_9} from "../../comm/LotteryElements";
 import {scale} from "../../../../../../public/tools/Scale";
 import {Toast} from "../../../../../../public/tools/ToastUtils";
-import {renderChoiceItem} from "../../comm/widgets/PlayWidgets";
-import {ugLog} from "../../../../../../public/tools/UgLog";
 import {anyEmpty} from "../../../../../../public/tools/Ext";
 import HKBallsView from "../../LHT/HKBallsView";
 import PlayChoiceItem from "../../comm/widgets/PlayChoiceItem";
@@ -51,9 +49,8 @@ const DWDContainer = ({setProps}) => {
                     }}>
                       <View key={index} style={[BALL_STYLES.grid_item,
                         {width: BALL_GRID_WIDTH / NUMBER_OF_COLUMNS}]}>
-                        <View style={[BALL_STYLES.grid_ball_rect,
+                        <View style={[BALL_STYLES.grid_ball,
                           {borderColor: getHKballColor(res.toString()),
-                            backgroundColor: getHKballColor(res.toString()),
                           }]}>
                           <Text>{res.toString()}</Text>
                         </View>
