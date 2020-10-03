@@ -11,13 +11,13 @@ import {scale} from "../../../../../../public/tools/Scale";
 
 export const SZDW_DATA = JSON.parse('{ "code": "SZDW", "name": "三字定位", "playGroups": [ { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "前三", "plays": [ { "id": "145001", "name": "前三", "alias": null, "rebate": "0.0000", "code": "QSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "中三", "plays": [ { "id": "145002", "name": "中三", "alias": null, "rebate": "0.0000", "code": "ZSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "45", "name": "三字定位", "code": "SZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "后三", "plays": [ { "id": "145003", "name": "后三", "alias": null, "rebate": "0.0000", "code": "HSDW", "played_groupid": "45", "odds": "700.0000", "offlineOdds": "700.0000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
 
-const itemSize = scale(60)
 const SZDWContainer = ({setProps}) => {
   // const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   //Todo arc
   const currentPlayOdd = SZDW_DATA;
   const [plays, setPlays] = useState([])
   const [currentFilter, setCurrentFilter] = useState("")
+  const [tabIndex, setTabIndex] = useState(0)
   const {width} = useDimensions().screen
   const [currentOdd, setCurrentOdd] = useState("")
   useEffect(() => {
@@ -43,9 +43,10 @@ const SZDWContainer = ({setProps}) => {
       <View style={{justifyContent: 'center', alignItems: 'flex-start'}}>
         <FlatList showsHorizontalScrollIndicator={false} horizontal={true} style={{}}
                   keyExtractor={item => item} data={plays ?? []}
-                  renderItem={({item}) => {
+                  renderItem={({item, index}) => {
                     return <TouchableWithoutFeedback onPress={() => {
                       setCurrentFilter(item)
+                      setTabIndex(index)
                     }}>
                       <Text style={[_styles.tab, {
                         backgroundColor: currentFilter == item ? "#e6e6e6" : "#dbdbdb",
@@ -53,75 +54,43 @@ const SZDWContainer = ({setProps}) => {
                     </TouchableWithoutFeedback>
                   }}/>
       </View>
-      <Text style={_styles.ball_title}>{'万定位'}</Text>
-      <View style={_styles.ball_grid}>
-        {
-          Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
-                setProps && setProps()
-              }}>
-                <View key={index} style={[_styles.grid_item,
-                  {width: ((width / 4 * 3) - 1) / 3}]}>
-                  <View style={[_styles.grid_ball,
-                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
-                    <Text>{res < 10 ? "0" + res : res.toString()}</Text>
-                  </View>
-                  <Text>{currentOdd}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )
-          })
-        }
-      </View>
-      <Text style={_styles.ball_title}>{'千定位'}</Text>
-      <View style={_styles.ball_grid}>
-        {
-          Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
-                setProps && setProps()
-              }}>
-                <View key={index} style={[_styles.grid_item,
-                  {width: (((width * 3) / 4) - 1) / 3}]}>
-                  <View style={[_styles.grid_ball,
-                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
-                    <Text>{res < 10 ? "0" + res : res.toString()}</Text>
-                  </View>
-                  <Text>{currentOdd}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )
-          })
-        }
-      </View>
-      <Text style={_styles.ball_title}>{'百定位'}</Text>
-      <View style={_styles.ball_grid}>
-        {
-          Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
-            return (
-              <TouchableWithoutFeedback onPress={() => {
-                UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
-                setProps && setProps()
-              }}>
-                <View key={index} style={[_styles.grid_item,
-                  {width: ((width / 4 * 3) - 1) / 3}]}>
-                  <View style={[_styles.grid_ball,
-                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
-                    <Text>{res < 10 ? "0" + res : res.toString()}</Text>
-                  </View>
-                  <Text>{currentOdd}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            )
-          })
-        }
-      </View>
+      {
+        BALL_TITLE[tabIndex].map(((value, index) => {
+          return <View>
+            <Text style={_styles.ball_title}>{value}</Text>
+            <View style={_styles.ball_grid}>
+              {
+                Array.from({length: 10}).map((res, index) => index + 1).map((res, index) => {
+                  return (
+                    <TouchableWithoutFeedback onPress={() => {
+                      UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
+                      setProps && setProps()
+                    }}>
+                      <View key={index} style={[_styles.grid_item,
+                        {width: ((width / 4 * 3) - 1) / 3}]}>
+                        <View style={[_styles.grid_ball,
+                          {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
+                          <Text>{res < 10 ? "0" + res : res.toString()}</Text>
+                        </View>
+                        <Text>{currentOdd}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  )
+                })
+              }
+            </View>
+          </View>
+        }))
+      }
     </ScrollView>
-  )
+  );
 }
+
+const BALL_TITLE = [['万定位', '千定位', '百定位'],
+  ['千定位', '百定位', '十定位'],
+  ['百定位', '十定位', '个定位']
+];
+const itemSize = scale(60)
 
 const _styles = StyleSheet.create({
     tab: {
