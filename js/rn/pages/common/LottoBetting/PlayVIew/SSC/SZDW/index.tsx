@@ -72,7 +72,7 @@ const SZDWContainer = ({setProps}) => {
                       setProps && setProps()
                     }}>
                       <View key={index} style={[BALL_STYLES.grid_item,
-                        {width: ((width / 4 * 3) - 1) / 3}]}>
+                        {width: ((width * 3 / 4) - 1) / 3}]}>
                         <View style={[BALL_STYLES.grid_ball,
                           {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
                           <Text>{res < 10 ? "0" + res : res.toString()}</Text>
