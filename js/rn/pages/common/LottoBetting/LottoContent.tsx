@@ -19,16 +19,17 @@ import GFWFContainer from "./PlayVIew/LHT/GFWF";
 import YZDWContainer, {YZDW_DATA} from "./PlayVIew/SSC/YZDW";
 import EZDWContainer, {EZDW_DATA} from "./PlayVIew/SSC/EZDW";
 import SZDWContainer, {SZDW_DATA} from "./PlayVIew/SSC/SZDW";
+import {ugLog} from "../../../public/tools/UgLog";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
     const borderColor = "red"
     // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
   //Todo arc
-  const currentPlayOdd = YZDW_DATA
+  const currentPlayOdd = SZDW_DATA
 
     const getPlayView = () => {
-        console.log("currentPlayOdd?.code", currentPlayOdd?.code)
+        ugLog("currentPlayOdd?.code", currentPlayOdd?.code)
         switch (currentPlayOdd?.code) {
             case 'TM'://特码
                 return <TMPlayView setProps={setProps}/>
