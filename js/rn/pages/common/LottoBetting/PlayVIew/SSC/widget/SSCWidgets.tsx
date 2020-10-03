@@ -34,6 +34,8 @@ const _styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      borderBottomWidth: scale(1),
+      borderBottomColor: 'grey',
     },
     choice_button_container: {
       paddingVertical: scale(8),

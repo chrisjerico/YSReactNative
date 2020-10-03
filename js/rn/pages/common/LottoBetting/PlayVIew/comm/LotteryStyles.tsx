@@ -18,6 +18,14 @@ const BALL_STYLES = StyleSheet.create({
       paddingBottom: scale(15),
       fontSize: scale(22),
     },
+    ball_title_odds: {//球的标题赔率
+      textAlign: 'center',
+      paddingVertical: scale(15),
+      color: "#c8222f",
+      backgroundColor: "#eee",
+      borderBottomWidth: scale(1),
+      borderBottomColor: 'grey',
+    },
     ball_title: {//球的标题颜色，如万定位
       textAlign: 'center',
       paddingVertical: scale(15),

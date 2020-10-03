@@ -23,44 +23,25 @@ const DWDContainer = ({setProps}) => {
   // const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   //Todo arc
   const currentPlayOdd = DWD_DATA;
-  const [plays, setPlays] = useState([])
-  const [currentFilter, setCurrentFilter] = useState("")
   const {width} = useDimensions().screen
   const [currentOdd, setCurrentOdd] = useState("")
 
   //球格区域大小
   const BALL_GRID_WIDTH = (width * 3 / 4) - 1
 
-  useEffect(() => {
-    const playsStringArray = []
-    currentPlayOdd.playGroups.map((res) => {
-      playsStringArray.push(res.alias.slice(0, 3))
-    })
-
-    setPlays(playsStringArray.filter((res, index) => playsStringArray.indexOf(res) === index))
-    setCurrentFilter(playsStringArray[0])
-  }, [currentPlayOdd])
-
-  useEffect(() => {
-    const result = currentPlayOdd.playGroups.filter((res) => res.alias.slice(0, 3) == currentFilter)
-    if (result.length > 0) {
-      setCurrentOdd(result[0]?.plays?.[0]?.odds.replace("00", "").replace(".00", "") ?? "")
-    }
-    UGStore.dispatch({type: BettingReducerActions.cleanBetGroupResult})
-  }, [currentFilter])
   //玩法列表
   return (
     <ScrollView style={{flex: 1}}>
       {
-        plays.map((item, index) => {
+        currentPlayOdd.playGroups.map((item, index) => {
           return <View>
-            <Text style={BALL_STYLES.ball_title}>{item}</Text>
+            <Text style={BALL_STYLES.ball_title_odds}>{item.plays[0].odds}</Text>
+            <Text style={BALL_STYLES.ball_title}>{item.alias}</Text>
             <View style={BALL_STYLES.ball_grid}>
               {
                 BALL_NUMBERS_0_9.map((res, index) => {
                   return (
                     <TouchableWithoutFeedback onPress={() => {
-                      ugLog('selected', res)
                       UGStore.dispatch({type: BettingReducerActions.itemPress, value: res})
                       setProps && setProps()
                     }}>
@@ -68,9 +49,8 @@ const DWDContainer = ({setProps}) => {
                         {width: BALL_GRID_WIDTH / NUMBER_OF_COLUMNS}]}>
                         <View style={[BALL_STYLES.grid_ball,
                           {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
-                          <Text>{res < 10 ? "0" + res : res.toString()}</Text>
+                          <Text>{res.toString()}</Text>
                         </View>
-                        <Text>{currentOdd}</Text>
                       </View>
                     </TouchableWithoutFeedback>
                   )
@@ -91,7 +71,5 @@ const DWDContainer = ({setProps}) => {
     </ScrollView>
   )
 }
-
-
 
 export default DWDContainer
