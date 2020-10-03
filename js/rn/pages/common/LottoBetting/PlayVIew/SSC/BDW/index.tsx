@@ -30,7 +30,7 @@ const BDWContainer = ({setProps}) => {
     setPlays(playsStringArray.filter((res, index) => playsStringArray.indexOf(res) === index))
     setCurrentFilter(playsStringArray[0])
   }, [currentPlayOdd])
-  
+
   useEffect(() => {
     const result = currentPlayOdd.playGroups.filter((res) => res.alias == currentFilter)
     if (result.length > 0) {
@@ -38,6 +38,9 @@ const BDWContainer = ({setProps}) => {
     }
     UGStore.dispatch({type: BettingReducerActions.cleanBetGroupResult})
   }, [currentFilter])
+
+  //球格区域大小
+  const BALL_GRID_WIDTH = (width * 3 / 4) - 1
 
   //玩法列表
   return (
@@ -69,10 +72,10 @@ const BDWContainer = ({setProps}) => {
                 setProps && setProps()
               }}>
                 <View key={index} style={[BALL_STYLES.grid_item,
-                  {width: ((width / 4 * 3) - 1) / 3}]}>
+                  {width: BALL_GRID_WIDTH / 3}]}>
                   <View style={[BALL_STYLES.grid_ball,
-                    {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
-                    <Text>{res < 10 ? "0" + res : res.toString()}</Text>
+                    {borderColor: getHKballColor(res.toString()),}]}>
+                    <Text>{res.toString()}</Text>
                   </View>
                 </View>
               </TouchableWithoutFeedback>

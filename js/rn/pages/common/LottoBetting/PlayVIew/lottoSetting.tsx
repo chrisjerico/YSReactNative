@@ -1,4 +1,6 @@
 import { number } from "prop-types";
+import {anyLength} from "../../../../public/tools/Ext";
+import {ugLog} from "../../../../public/tools/UgLog";
 
 export type ShengXiaoType = "鼠" | "牛" | "虎" | "兔" | "龙" | "蛇" | "马" | "羊" | "猴" | "鸡" | "狗" | "猪"
 export interface ShengXiaoValueProps {
@@ -36,6 +38,10 @@ export const getShengXiaoString = (num: number): ShengXiaoType => {
   return ShengXiaoValue[((absNumber % 12))]
 }
 export const getHKballColor = (BallName: string) => {
+  if(anyLength(BallName) < 2) {
+    BallName = '0' + BallName
+  }
+
   const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
   const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
   const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
