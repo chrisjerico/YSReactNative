@@ -7,8 +7,11 @@ const BALL_ITEM_HEIGHT = scale(60) //格子的高度
 //TAB 的颜色
 const TAG_COLOR = (cur, item) => cur == item ? "#e6e6e6" : "#dbdbdb"
 
-//球球 0到10
-const BALL_NUMBERS = Array.from({length: 10}).map((res, index) => index + 1)
+//球球 0到9
+const BALL_NUMBERS_0_9 = Array.from({length: 10}, (item, index) => index)
+
+//球球 1到10
+const BALL_NUMBERS_1_10 = Array.from({length: 10}, (item, index) => index + 1)
 
 const BALL_STYLES = StyleSheet.create({
     tab_container: {
@@ -52,4 +55,4 @@ const BALL_STYLES = StyleSheet.create({
   }
 )
 
-export {BALL_STYLES, TAG_COLOR, BALL_NUMBERS}
+export {BALL_STYLES, TAG_COLOR, BALL_NUMBERS_0_9, BALL_NUMBERS_1_10}
