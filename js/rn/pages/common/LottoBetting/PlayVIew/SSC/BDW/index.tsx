@@ -24,16 +24,17 @@ const BDWContainer = ({setProps}) => {
   useEffect(() => {
     const playsStringArray = []
     currentPlayOdd.playGroups.map((res) => {
-      playsStringArray.push(res.alias.slice(0, 3))
+      playsStringArray.push(res.alias)
     })
 
     setPlays(playsStringArray.filter((res, index) => playsStringArray.indexOf(res) === index))
     setCurrentFilter(playsStringArray[0])
   }, [currentPlayOdd])
+  
   useEffect(() => {
-    const result = currentPlayOdd.playGroups.filter((res) => res.alias.slice(0, 3) == currentFilter)
+    const result = currentPlayOdd.playGroups.filter((res) => res.alias == currentFilter)
     if (result.length > 0) {
-      setCurrentOdd(result[0]?.plays?.[0]?.odds.replace("00", "").replace(".00", "") ?? "")
+      setCurrentOdd(result[0]?.plays?.[0]?.odds ?? "")
     }
     UGStore.dispatch({type: BettingReducerActions.cleanBetGroupResult})
   }, [currentFilter])
@@ -57,7 +58,8 @@ const BDWContainer = ({setProps}) => {
                     </TouchableWithoutFeedback>
                   }}/>
       </View>
-      <Text style={BALL_STYLES.ball_title}>{currentFilter}</Text>
+      <Text style={BALL_STYLES.ball_title_odds}>{'赔率: ' + currentOdd}</Text>
+      <Text style={BALL_STYLES.ball_title}>{'玩法提示: 从0~9中任选1个号码为1注'}</Text>
       <View style={BALL_STYLES.ball_grid}>
         {
           BALL_NUMBERS_0_9.map((res, index) => {
@@ -72,7 +74,6 @@ const BDWContainer = ({setProps}) => {
                     {borderColor: getHKballColor(res < 10 ? "0" + res : res.toString()),}]}>
                     <Text>{res < 10 ? "0" + res : res.toString()}</Text>
                   </View>
-                  <Text>{currentOdd}</Text>
                 </View>
               </TouchableWithoutFeedback>
             )
