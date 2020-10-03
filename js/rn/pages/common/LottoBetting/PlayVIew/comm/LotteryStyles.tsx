@@ -52,7 +52,14 @@ const BALL_STYLES = StyleSheet.create({
       borderWidth: scale(2),
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: 5
+    },
+    grid_ball_rect: {//格子里面的球，方格
+      width: scale(45),
+      height: scale(45),
+      borderRadius: scale(8),
+      borderWidth: scale(2),
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   }
 )
