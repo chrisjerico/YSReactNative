@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, TouchableWithoutFeedback, StyleSheet, Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -7,6 +7,7 @@ import { scale } from '../../../public/tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { pop } from '../../../public/navigation/RootNavigation'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
+import AppDefine from '../../../public/define/AppDefine'
 
 export interface HomeHeaderProps {
   name: string
@@ -19,7 +20,11 @@ export interface HomeHeaderProps {
   uid: string
 }
 
-const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, showBackBtn = false, uid }: HomeHeaderProps) => {
+const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid }: HomeHeaderProps) => {
+  const [showBackBtn, setShowBackBtn] = useState(false);
+  AppDefine.checkHeaderShowBackButton((show) => {
+    show != showBackBtn && setShowBackBtn(show);
+  })
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -59,7 +64,7 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
           resizeMode={'contain'}
         />
       )}
-      {!showBackBtn && (
+      {(
         <View style={styles.rightContainer}>
           {uid && (
             <TouchableWithoutFeedback onPress={onPressUser}>

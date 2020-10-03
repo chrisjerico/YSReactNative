@@ -16,6 +16,7 @@ import { MenuType } from './ANHelper/hp/GotoDefine'
 import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
+import { RnPageModel } from './OCHelper/SetRnPageInfo'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -471,7 +472,20 @@ export default class PushHelper {
                 }
               })
               if (!isOcPush) {
-                push(PageName.ZLMinePage)
+                const rpm = RnPageModel.pages.filter((p) => {
+                  return p.tabbarItemPath == '/user';
+                })[0];
+                if (rpm) {
+                  push(rpm.rnName);
+                } else {
+                  OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+                    {
+                      selectors: 'AppDefine.viewControllerWithStoryboardID:',
+                      args1: ['UGMineSkinViewController'],
+                    },
+                    true,
+                  ])
+                }
               }
             })
             break
