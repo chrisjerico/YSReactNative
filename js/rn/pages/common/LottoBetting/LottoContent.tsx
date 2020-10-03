@@ -16,9 +16,9 @@ import ZMContainer from './PlayVIew/LHT/ZM'
 import TMPlayView from './PlayVIew/LHT/TM'
 import ZMContainer16 from './PlayVIew/LHT/ZM16'
 import GFWFContainer from "./PlayVIew/LHT/GFWF";
-import YZDWContainer, {YZDW_DATA} from "./PlayVIew/LHT/YZDW";
-import EZDWContainer, {EZDW_DATA} from "./PlayVIew/LHT/EZDW";
-import SZDWContainer, {SZDW_DATA} from "./PlayVIew/LHT/SZDW";
+import YZDWContainer, {YZDW_DATA} from "./PlayVIew/SSC/YZDW";
+import EZDWContainer, {EZDW_DATA} from "./PlayVIew/SSC/EZDW";
+import SZDWContainer, {SZDW_DATA} from "./PlayVIew/SSC/SZDW";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()

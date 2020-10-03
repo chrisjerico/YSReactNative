@@ -1,8 +1,8 @@
 import {FlatList, ScrollView, Text, TouchableWithoutFeedback, View} from "react-native"
 import * as React from 'react'
 import {UGStore} from "../../../../../../redux/store/UGStore"
-import HKWXItemView from "../HKWXItemView"
-import HKNormalItemView from "../HKNormalItemView";
+import HKWXItemView from "../../LHT/HKWXItemView"
+import HKNormalItemView from "../../LHT/HKNormalItemView";
 import {useEffect, useState} from "react";
 import {useDimensions} from "@react-native-community/hooks";
 import {BettingReducerActions} from "../../../../../../redux/reducer/BettingReducer";
