@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
-import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
+import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -11,8 +11,9 @@ import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
-import UserCenterItem from '../../public/views/tars/UserCenterItem'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
@@ -32,12 +33,17 @@ const LHTMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <MineHeaderComponent
-          title={'会员中心'}
-          showRightTitle={true}
-          onPressRightTitle={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
+        <BackBtnComponent
+          homePage={PageName.LHTMinePage}
+          renderHeader={(props) => (
+            <MineHeader
+              {...props}
+              title={'会员中心'}
+              onPressRightTitle={() => {
+                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+              }}
+            />
+          )}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => {}} />} showsVerticalScrollIndicator={false}>

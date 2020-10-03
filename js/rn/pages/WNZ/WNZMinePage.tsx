@@ -1,7 +1,9 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
+import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
+import { PageName } from '../../public/navigation/Navigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
@@ -9,11 +11,10 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import HomeHeader from './views/HomeHeader'
 import MenuModalComponent from './components/MenuModalComponent'
-import MineHeaderComponent from './components/MineHeaderComponent'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
+import HomeHeader from './views/HomeHeader'
 import Menu from './views/Menu'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
@@ -22,7 +23,6 @@ const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
   const menu = useRef(null)
-
   const { value, sign } = useMinePage({
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
@@ -62,23 +62,31 @@ const WNZMinePage = () => {
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
+
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <HomeHeader
-          showBackBtn={true}
-          uid={uid}
-          name={usr}
-          logo={mobile_logo}
-          balance={balance}
-          onPressMenu={() => {
-            menu?.current?.open()
-          }}
-          onPressComment={() => {
-            PushHelper.pushLottery(LotteryType.香港六合彩)
-          }}
-          onPressUser={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+        <BackBtnComponent
+          homePage={PageName.WNZHomePage}
+          renderHeader={(props) => {
+            return (
+              <HomeHeader
+                {...props}
+                uid={uid}
+                name={usr}
+                logo={mobile_logo}
+                balance={balance}
+                onPressMenu={() => {
+                  menu?.current?.open()
+                }}
+                onPressComment={() => {
+                  PushHelper.pushLottery(LotteryType.香港六合彩)
+                }}
+                onPressUser={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+                }}
+              />
+            )
           }}
         />
       </SafeAreaHeader>

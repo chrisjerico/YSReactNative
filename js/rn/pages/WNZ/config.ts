@@ -34,7 +34,7 @@ const config = {
   menus: [
     {
       title: '会员中心',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.我的页) },
+      onPress: () => { navigate(PageName.WNZMinePage) }, // PushHelper.pushUserCenterType(UGUserCenterType.我的页)
     },
     {
       title: '额度转换',

@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
-import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
+import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
@@ -14,6 +14,7 @@ import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import List from '../../public/views/tars/List'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
@@ -55,7 +56,7 @@ const KSMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'}>
-        <MineHeaderComponent title={'会员中心'} showRightTitle={false} />
+        <BackBtnComponent homePage={PageName.KSHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} />} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}

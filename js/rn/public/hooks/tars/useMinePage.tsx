@@ -44,7 +44,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     defaultUserCenterLogos,
   })
   const { avatar, usr, balance, unreadMsg, isTest, curLevelGrade, uid, nextLevelInt, curLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle } = UGStore.globalProps.userInfo
-  const { mobile_logo, userCenterItems, showSign } = sys
+  const { mobile_logo, userCenterItems, showSign, mobileMenu } = sys
 
   const { logOut } = useLogOut({
     onStart: () => {
@@ -83,6 +83,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     curLevelTitle,
     nextLevelTitle,
     showSign,
+    mobileMenu,
   }
 
   const sign = {
