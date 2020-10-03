@@ -65,14 +65,14 @@ const _roundBall = (text: string) => {
 const BallItem = ({text, style}: IBallItem) => {
   switch (style) {
     case BALL_TYPE.ROUND_LINE:
-      return <View style={[BALL_STYLES.grid_ball,
+      return <View style={[BALL_STYLES.grid_ball_round,
         {
           borderColor: _squareBall(text),
         }]}>
         <Text>{text}</Text>
       </View>
     case BALL_TYPE.ROUND_FILLED:
-      return <View style={[BALL_STYLES.grid_ball,
+      return <View style={[BALL_STYLES.grid_ball_round,
         {
           borderColor: _squareBall(text),
           backgroundColor: _squareBall(text)
@@ -80,7 +80,7 @@ const BallItem = ({text, style}: IBallItem) => {
         <Text>{text}</Text>
       </View>
     case BALL_TYPE.SQUARE:
-      return <View style={[BALL_STYLES.grid_ball,
+      return <View style={[BALL_STYLES.grid_ball_round,
         {
           borderColor: _squareBall(text),
         }]}>

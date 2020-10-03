@@ -49,7 +49,7 @@ const DWDContainer = ({setProps}) => {
                     }}>
                       <View key={index} style={[BALL_STYLES.grid_item,
                         {width: BALL_GRID_WIDTH / NUMBER_OF_COLUMNS}]}>
-                        <View style={[BALL_STYLES.grid_ball,
+                        <View style={[BALL_STYLES.grid_ball_round,
                           {borderColor: getHKballColor(res.toString()),
                           }]}>
                           <Text>{res.toString()}</Text>

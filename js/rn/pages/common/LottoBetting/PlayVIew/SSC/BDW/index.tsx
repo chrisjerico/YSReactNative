@@ -73,7 +73,7 @@ const BDWContainer = ({setProps}) => {
               }}>
                 <View key={index} style={[BALL_STYLES.grid_item,
                   {width: BALL_GRID_WIDTH / 3}]}>
-                  <View style={[BALL_STYLES.grid_ball,
+                  <View style={[BALL_STYLES.grid_ball_round,
                     {borderColor: getHKballColor(res.toString()),}]}>
                     <Text>{res.toString()}</Text>
                   </View>

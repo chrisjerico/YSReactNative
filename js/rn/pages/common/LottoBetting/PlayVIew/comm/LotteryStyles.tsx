@@ -45,7 +45,7 @@ const BALL_STYLES = StyleSheet.create({
       alignItems: 'center',
       flexDirection: 'row',
     },
-    grid_ball: {//格子里面的球
+    grid_ball_round: {//格子里面的球
       width: scale(45),
       height: scale(45),
       borderRadius: 999,
