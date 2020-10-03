@@ -20,7 +20,7 @@ export class UGThemeColor {
   conversionCellColor?= '#7BA2C2'; // 内容Cell
   intoViewColor?= '#7BA2C2'; // 转入View
   moneyCellColor?= '#9BB8CB'; // 金额Cell
-  navBarTitleColor?= '#000';
+  navBarTitleColor?= '#fff';
 
   // 根据主题色自动生成色值
   themeColor?: string; // 主题色
