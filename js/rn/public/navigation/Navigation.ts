@@ -57,7 +57,6 @@ export enum PageName {
   VietnamGameList = "VietnamGameList",
   LHTPreferencePage = "LHTPreferencePage",
   TrendView = "TrendView",
-  LHTPreferencePage = "LHTPreferencePage",
   LCLoginPage = "LCLoginPage",
   LCRegisterPage = "LCRegisterPage",
 }

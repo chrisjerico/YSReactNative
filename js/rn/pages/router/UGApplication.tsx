@@ -1,7 +1,8 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { Component, PureComponent } from 'react'
+import * as React from 'react'
+import { Component, PureComponent } from 'react'
 import TrendView from '../../public/components/TrendView'
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider'
 import { PageName } from '../../public/navigation/Navigation'
@@ -59,6 +60,8 @@ import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import LCLoginPage from "../乐橙/LCLoginPage";
+import LCRegisterPage from "../乐橙/LCRegisterPage";
 
 // TabbarController
 class TabBarController extends Component<{

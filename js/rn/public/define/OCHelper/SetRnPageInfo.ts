@@ -162,6 +162,22 @@ const LCPages = [
     允许游客访问: true,
     允许未登录访问: false,
   },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LCRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
 ];
 
 // 六合厅

@@ -78,7 +78,8 @@
     "redux-immer": "^1.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typescript": "^4.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -91,7 +92,7 @@
     "@types/react-native-scrollable-tab-view": "^0.10.1",
     "@types/react-redux": "^7.1.7",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
-    "@typescript-eslint/parser": "^4.0.1",
+    "@typescript-eslint/parser": "^4.3.0",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
     "eslint": "^7.8.1",
