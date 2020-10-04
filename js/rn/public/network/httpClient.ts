@@ -1,14 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Platform } from 'react-native';
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import {ANHelper} from '../define/ANHelper/ANHelper';
+import { ANHelper } from '../define/ANHelper/ANHelper';
+import { CMD } from "../define/ANHelper/hp/CmdDefine";
 import AppDefine from '../define/AppDefine';
 import { OCHelper } from '../define/OCHelper/OCHelper';
-import { Toast } from '../tools/ToastUtils';
-import {ugLog} from "../tools/UgLog";
-import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
-import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import { anyEmpty } from "../tools/Ext";
+import { ugLog } from "../tools/UgLog";
+
 interface Dictionary {
   [x: string]: any;
 }
@@ -25,7 +24,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
-  timeout: 15000,
+  timeout: 3000, // 0 no limit
   headers: { 'Content-Type': 'application/json', }
 });
 const publicParams = {
@@ -33,22 +32,25 @@ const publicParams = {
   // able: "123"
 };
 const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary> => {
-  if (!isEncrypt) {
-    return params;
+  // for (let key in params ) {
+  //   if (anyEmpty(params[key])) {
+  //     params[key] = null
+  //   }
+  // }
+  let temp = {};
+  //过滤掉 null 或 "",
+  for (let paramsKey in params) {
+    if (!anyEmpty(params[paramsKey])) {
+      temp[paramsKey] = params[paramsKey]
+    }
   }
-  let temp = Object.assign({}, params);
+
+  if (!isEncrypt) {
+    return temp;
+  }
 
   try {
     temp['checkSign'] = 1;
-
-    switch (Platform.OS) {
-      case 'ios':
-
-        break;
-      case 'android':
-        // ugLog("encryptParams=", JSON.stringify(temp))
-        break;
-    }
 
     switch (Platform.OS) {
       case "ios":
@@ -96,12 +98,12 @@ httpClient.interceptors.response.use(
       ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
         case 401://请登录后再访问, 帐号已被登出
+          console.log("-----------401---------")
           switch (Platform.OS) {
             case "ios":
               OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
                 OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
                   OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                    updateUserInfo()
                     UGStore.dispatch({ type: 'reset', userInfo: {} })
                     // Toast('帐号已被登出');
                   })
@@ -109,15 +111,7 @@ httpClient.interceptors.response.use(
               })
               break;
             case "android":
-              // ANHelper.callAsync(CMD.SAVE_DATA,
-              //     {
-              //       key: NA_DATA.USER_INFO,
-              //     }).then(((any?: any) => {
-              //       updateUserInfo()
-              //       UGStore.dispatch({type: 'reset', userInfo: {}})
-              //       // Toast('帐号已被登出');
-              //
-              // }))
+              ANHelper.callAsync(CMD.LOG_OUT)
               break;
 
           }
@@ -135,7 +129,7 @@ httpClient.interceptors.response.use(
       // console.warn('連接到服務器失敗', err);
     }
     if (err?.toString()?.indexOf('timeout') != -1) {
-      return Promise.reject(err?.response ?? err)
+      return Promise.reject('伺服器回应超时')
     } else {
       return Promise.reject(err?.response ?? err)
     }
@@ -147,52 +141,71 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
-  const { isEncrypt = true } = config;
+  let { isEncrypt = true } = config;
+
+  switch (Platform.OS) {
+    case 'ios':
+
+      break;
+    case 'android':
+      isEncrypt = eval(ANHelper.callSync(CMD.SITE_ENCRYPTION))
+      // ugLog('http isEncrypt=', isEncrypt)
+      break;
+  }
+
   let encryptData = await encryptParams(params, isEncrypt);
-  //開始請求
-  //ugLog('http url=', config.baseURL, config.url)
-  if (isEncrypt) {
-    if (Platform.OS == 'ios') {
-      if (config.method == 'get' || config.method == 'GET') {
-        config.url += '&checkSign=1';
-        Object.keys(encryptData).map(res => {
-          if (!config.params) {
-            config.params = {};
-          }
-          config.params[res] = encryptData[res];
-        });
-      } else if (config.method == 'post' || config.method == 'POST') {
-        config.url += '&checkSign=1';
 
-        if (!config.params) config.params = {};
-        if (!config.data) config.data = {};
-        if (encryptData["slideCode[nc_sid]"]) {
-          config.data.slideCode = {}
-          config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
-          config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
-          config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
-          delete encryptData["slideCode[nc_sid]"]
-          delete encryptData["slideCode[nc_sig]"]
-          delete encryptData["slideCode[nc_token]"]
-          delete config.data["slideCode[nc_token]"]
-          delete config.data["slideCode[nc_sig]"]
-          delete config.data["slideCode[nc_sid]"]
-        }
-        if (config.noToken == true) {
-          delete encryptData?.token
-        }
-        debugger
-        for (let paramsKey in encryptData) {
-          // if (paramsKey.includes("slideCode")) {
-          //   config.data[paramsKey] = config.data[paramsKey];
-          // } else {
+  // ugLog('http isEncrypt=', isEncrypt)
 
-          config.data[paramsKey] = `${encryptData[paramsKey]}`;
-          // }
+  if (config?.method?.toLowerCase() == 'get') {
+    if (isEncrypt) {
+      config.url += '&checkSign=1';
+    }
 
-        }
+    Object.keys(encryptData).map(res => {
+      if (!config.params) {
+        config.params = {};
       }
+      config.params[res] = encryptData[res];
+    });
+  } else if (config?.method?.toLowerCase() == 'post') {
+    if (isEncrypt) {
+      config.url += '&checkSign=1';
+    }
+
+    if (!config.params) config.params = {};
+    if (!config.data) config.data = {};
+    if (encryptData["slideCode[nc_sid]"]) {
+      config.data.slideCode = {}
+      config.data.slideCode.nc_sid = `${encryptData["slideCode[nc_sid]"]}`;
+      config.data.slideCode.nc_sig = `${encryptData["slideCode[nc_sig]"]}`;
+      config.data.slideCode.nc_token = `${encryptData["slideCode[nc_token]"]}`;
+      delete encryptData["slideCode[nc_sid]"]
+      delete encryptData["slideCode[nc_sig]"]
+      delete encryptData["slideCode[nc_token]"]
+      delete config.data["slideCode[nc_token]"]
+      delete config.data["slideCode[nc_sig]"]
+      delete config.data["slideCode[nc_sid]"]
+    }
+    if (config.noToken == true) {
+      delete encryptData?.token
+    }
+    debugger
+    for (let paramsKey in encryptData) {
+      // if (paramsKey.includes("slideCode")) {
+      //   config.data[paramsKey] = config.data[paramsKey];
+      // } else {
+
+      config.data[paramsKey] = `${encryptData[paramsKey]}`;
+      // }
+
     }
   }
+
+  // ugLog('http url=', config.method, config.baseURL, config.url)
+  // ugLog('http params=', params)
+  // ugLog('http encryptData=', encryptData)
+  // ugLog('http config.data=', config.data)
+
   return config;
 });

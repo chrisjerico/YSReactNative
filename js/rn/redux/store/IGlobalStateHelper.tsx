@@ -1,6 +1,10 @@
 import APIRouter from '../../public/network/APIRouter'
 import NetworkRequest1 from '../../public/network/NetworkRequest1'
 import { UGStore } from './UGStore'
+import { Platform } from "react-native";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
@@ -17,31 +21,29 @@ export class IGlobalStateHelper {
 
 export async function updateUserInfo() {
   try {
-    const { data } = await APIRouter.user_info()
-    if (data?.data) {
-      UGStore.dispatch({ type: 'merge', userInfo: data?.data });
+    const response = await APIRouter.user_info()
+    const data = response?.data?.data
+    const msg = response?.data?.msg
+    if (data) {
+
+      switch (Platform.OS) {
+        case "android":
+          await ANHelper.callAsync(CMD.SAVE_DATA,
+            {
+              key: NA_DATA.USER_INFO,
+              ...data
+            })
+          break;
+      }
+
+      UGStore.dispatch({ type: 'merge', userInfo: data });
       UGStore.save();
+      return data
     } else {
-      throw { message: data?.msg ?? '更新使用者失败' }
+      throw { message: msg ?? '更新使用者失败' }
     }
   } catch (error) {
     console.log("-------------updateUserInfo error-------------", error)
-    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
-  }
-}
-
-export async function updateSysConf() {
-  try {
-    const { data } = await APIRouter.system_config()
-    if (data?.data) {
-      UGStore.dispatch({ type: 'merge', props: data?.data })
-      UGStore.save()
-    } else {
-      throw { message: data?.msg }
-    }
-  } catch (error) {
-
+    throw error
   }
 }

@@ -18,56 +18,56 @@ import {useDimensions} from '@react-native-community/hooks'
  * @constructor
  */
 const RedBagItem = ({style, redBag, loginPage}: { style?: StyleProp<ViewStyle>, redBag: RedBagDetailActivityModel, loginPage?: PageName }) => {
-  const {isTest = false, uid = ""} = UGStore.globalProps.userInfo
-  const [redBagVisiable, setRedBagVisiable] = useState(false)
-  useEffect(() => {
-    if (redBag?.data != null) {
-      setRedBagVisiable(true)
-    }
-  }, [redBag])
-  return (
-      redBagVisiable ?
-          <TouchableWithoutFeedback onPress={() => {
-            if (uid == "") {
-              Alert.alert("温馨提示", "您还未登录", [
-                {
-                  text: "取消", onPress: () => {
-                  }, style: "cancel"
-                },
-                {
-                  text: "马上登录", onPress: () => {
-                    loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
-                  },
+    const {isTest = false, uid = ""} = UGStore.globalProps.userInfo
+    const [redBagVisiable, setRedBagVisiable] = useState(false)
+    useEffect(() => {
+        if (redBag?.data != null) {
+            setRedBagVisiable(true)
+        }
+    }, [redBag])
+    return (
+        redBagVisiable ?
+            <TouchableWithoutFeedback onPress={() => {
+                if (uid == "") {
+                    Alert.alert("温馨提示", "您还未登录", [
+                        {
+                            text: "取消", onPress: () => {
+                            }, style: "cancel"
+                        },
+                        {
+                            text: "马上登录", onPress: () => {
+                                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
+                            },
+                        }
+                    ])
+                } else if (isTest) {
+                    Alert.alert("温馨提示", "请登录正式账号", [
+                        {
+                            text: "取消", onPress: () => {
+                            }, style: "cancel"
+                        },
+                        {
+                            text: "马上登录", onPress: () => {
+                                loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
+                            },
+                        }
+                    ])
+                } else {
+                    PushHelper.pushRedBag(redBag)
                 }
-              ])
-            } else if (isTest) {
-              Alert.alert("温馨提示", "请登录正式账号", [
-                {
-                  text: "取消", onPress: () => {
-                  }, style: "cancel"
-                },
-                {
-                  text: "马上登录", onPress: () => {
-                    loginPage ? navigate(loginPage, {}) : PushHelper.pushLogin()
-                  },
-                }
-              ])
-            } else {
-              PushHelper.pushRedBag(redBag)
-            }
-          }}>
-            <View style={[{width: 120, right: 20, top: 80, position: "absolute", flexDirection: "row"}, style]}>
-              <FastImage
-                  style={[{width: 95, height: 95, zIndex: 100}]}
-                  source={{uri: redBag?.data?.redBagLogo}}>
-              </FastImage>
-              <TouchableWithoutFeedback onPress={() => {
-                setRedBagVisiable(false)
-              }}>
-                <Image style={{width: 25, height: 25, marginLeft: 10}}
-                       source={{uri: "dialog_close"}}/>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback> : <></>)
+            }}>
+                <View style={[{width: 120, right: 20, top: 80, position: "absolute", flexDirection: "row"}, style]}>
+                    <FastImage
+                        style={[{width: 95, height: 95, zIndex: 100}]}
+                        source={{uri: redBag?.data?.redBagLogo}}>
+                    </FastImage>
+                    <TouchableWithoutFeedback onPress={() => {
+                        setRedBagVisiable(false)
+                    }}>
+                        <Image style={{width: 25, height: 25, marginLeft: 10}}
+                               source={{uri: "dialog_close"}}/>
+                    </TouchableWithoutFeedback>
+                </View>
+            </TouchableWithoutFeedback> : <></>)
 }
 export default RedBagItem

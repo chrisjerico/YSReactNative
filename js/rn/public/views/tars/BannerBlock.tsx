@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
 import { Data } from '../../network/Model/HomeADModel'
@@ -7,43 +7,32 @@ import { scale } from '../../tools/Scale'
 import UGSwiper from '../../widget/swp/UGSwiper'
 
 interface BannerBlockProps {
-  onlineNum?: number;
-  banners: (List | Data)[];
-  renderBanner: (item: List & Data, index: number) => any;
-  showOnlineNum?: boolean;
-  autoplayTimeout: number;
-  visible?: boolean;
-  containerStyle?: ViewStyle | ViewStyle[];
-  isMidAd?: boolean;
+  onlineNum?: number
+  banners: (List | Data)[]
+  renderBanner: (item: List & Data, index: number) => any
+  showOnlineNum?: boolean
+  autoplayTimeout: number
+  visible?: boolean
+  containerStyle?: StyleProp<ViewStyle>
+  badgeStyle?: StyleProp<ViewStyle>
+  showsPagination?: boolean
 }
 
-interface BadgePosition {
-  top: number;
-  right: number;
-}
-
-const BannerBlock = ({
-  onlineNum = 0,
-  banners = [],
-  renderBanner,
-  showOnlineNum = true,
-  autoplayTimeout,
-  visible = true,
-  containerStyle,
-  isMidAd
-}: BannerBlockProps) => {
+const BannerBlock = ({ onlineNum = 0, banners = [], renderBanner, showOnlineNum = true, autoplayTimeout, visible = true, containerStyle, badgeStyle, showsPagination = true }: BannerBlockProps) => {
   if (visible) {
     return (
-      <View style={[isMidAd ? styles.midAdContainer : styles.container, containerStyle]}>
+      <View style={[styles.container, containerStyle]}>
         <UGSwiper
+          autoplay={autoplayTimeout > 0}
           autoplayTimeout={autoplayTimeout}
-          showsPagination={true}
+          showsPagination={showsPagination}
           paginationStyle={{
             bottom: 10,
             left: null,
             right: 10,
           }}
-        >
+          dotColor={'#ffffff'}
+          activeDotColor={'#fff000'}>
           {banners?.map(renderBanner)}
         </UGSwiper>
         {showOnlineNum && (
@@ -52,9 +41,10 @@ const BannerBlock = ({
             badgeStyle={[
               styles.badge,
               {
-                top: scale(-300),
+                top: scale(-200),
                 right: scale(10),
               },
+              badgeStyle,
             ]}
             value={'当前在线:' + onlineNum}
           />
@@ -69,18 +59,7 @@ const BannerBlock = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    aspectRatio: 540 / 310,
-  },
-  midAdContainer: {
-    width: '100%',
-    aspectRatio: 540 / 217,
-  },
-  bannerContainer: {
-    flex: 1,
-  },
-  bannerImage: {
-    width: '100%',
-    height: '100%',
+    aspectRatio: 540 / 128, //540 / 310,
   },
   badge: {
     position: 'absolute',

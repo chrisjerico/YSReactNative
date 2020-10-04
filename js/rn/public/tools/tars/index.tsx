@@ -1,114 +1,108 @@
-import APIRouter from '../../network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import { OCHelper } from '../../define/OCHelper/OCHelper'
 import AppDefine from '../../define/AppDefine'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 import { scale } from '../Scale'
+import { PasswordStrength } from '../../models/Enum'
+import {Platform} from "react-native";
+import {Toast} from "../ToastUtils";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../../define/ANHelper/hp/DataDefine";
+import {logoutAndroid} from "../../define/ANHelper/InfoHelper";
+import {ugLog} from "../UgLog";
 
-interface SaveNativeUser {
-  currentUser: any[];
-  isRememberPsd?: boolean;
-  userName: string;
-  userPsw: string;
-  notification?: string;
-}
-
-export const updateUserInfo = async () => {
-  try {
-    const user_info_response = await APIRouter.user_info()
-    const user_info_data = user_info_response?.data?.data
-    const user_info_msg = user_info_response?.data?.msg
-    if (user_info_data) {
-      console.log("---------user_info_data---------", user_info_data)
-      UGStore.dispatch({ type: 'merge', userInfo: user_info_data })
-      UGStore.save()
-      return user_info_response
+export const validPassword = (password: string, pass_limit: PasswordStrength) => {
+  if (password) {
+    if (pass_limit == PasswordStrength.不限制) {
+      return true
     } else {
-      throw user_info_msg ?? '更新使用者失败'
+      if (pass_limit == PasswordStrength.数字字母) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])/.test(password)
+      } else if ([pass_limit == PasswordStrength.数字字母字符]) {
+        return /^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W)/.test(password)
+      } else {
+        return false
+      }
     }
-  } catch (error) {
-    console.log('-------------updateUserInfo error-------------', error)
-    throw error
-    // await OCHelper.call('UGUserModel.setCurrentUser:', []);
-    // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']);
-    // await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]);
+  } else {
+    return false
   }
 }
-
-export const saveNativeUser = async ({
-  currentUser,
-  isRememberPsd = false,
-  userName,
-  userPsw,
-  notification = 'UGNotificationLoginComplete',
-}: SaveNativeUser) => {
-  try {
-    await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-      isRememberPsd,
-      'isRememberPsd',
-    ])
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userName, 'userName']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [userPsw, 'userPsw']
-    )
-    // await OCHelper.call(
-    //   'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-    //   [notification]
-    // )
-    // await OCHelper.call(
-    //   'UGNavigationController.current.popToRootViewControllerAnimated:',
-    //   [true]
-    // )
-  } catch (error) {
-    throw error ?? 'SaveNativeUser Error'
-  }
-}
-
-
-export const cleanNativeUser = async () => {
-  try {
-    const user = await OCHelper.call('UGUserModel.currentUser')
-    if (user) {
-      const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }])
-      await OCHelper.call('UGUserModel.setCurrentUser:')
-      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-      UGStore.dispatch({ type: 'reset', userInfo: {} });
-    }
-  } catch (error) {
-    throw error ?? '清除旧使用者失败'
-  }
-}
-
 
 export const ToastSuccess = (msg: any) => {
-  console.log("--------ToastSuccess--------", msg)
+  console.log('--------ToastSuccess--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [typeof m === 'string' ? m : ''])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
 
 export const ToastError = (msg: any) => {
-  console.log("--------ToastError--------", msg)
+  console.log('--------ToastError--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showErrorWithStatus:', [typeof m === 'string' ? m : ''])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
-
 
 export const ToastStatus = (msg: any) => {
-  console.log("--------ToastStatus--------", msg)
+  console.log('--------ToastStatus--------', msg)
   const m = msg?.toString()
-  OCHelper.call('SVProgressHUD.showWithStatus:', [typeof m === 'string' ? m : ''])
+  switch (Platform.OS) {
+    case 'ios':
+      OCHelper.call('SVProgressHUD.showWithStatus:', [
+        typeof m === 'string' ? m : '',
+      ])
+      break;
+    case 'android':
+      Toast(m === 'string' ? m : '');
+      break;
+  }
 }
 
+export const useHtml5Image = (host: string = AppDefine.host) => {
+  const getHtml5Image = (
+    id: number,
+    path: string,
+    type: 'png' | 'jpg' | 'gif' = 'png',
+  ) => {
+    if (id) {
+      return (host +
+        '/views/mobileTemplate/' +
+        id?.toString() +
+        '/images/' +
+        path +
+        '.' +
+        type)
+    } else {
+      return (host +
+        '/images/' +
+        path +
+        '.' +
+        type)
+    }
 
-export const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' = 'png') => {
-  return AppDefine.host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
-  // return 'http://test05.6yc.com/views/mobileTemplate/18/images/money-2.png'
+  }
+  return { getHtml5Image }
 }
+
+export const getIbbImage = (path: string) => {
+  return 'https://i.ibb.co/' + path + '.png'
+}
+
 
 export const getActivityPosition = (position: number) => {
   if (position == 1) {
@@ -123,3 +117,10 @@ export const getActivityPosition = (position: number) => {
     return {}
   }
 }
+
+export const stringToNumber = (x: string) => {
+  const parsed = parseInt(x);
+  if (isNaN(parsed)) { return 0; }
+  return parsed
+}
+

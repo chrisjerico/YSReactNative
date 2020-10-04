@@ -93,12 +93,12 @@ const LCHomePage = ({navigation}) => {
 
         })
         switch (Platform.OS) {
-            case "ios":
-                OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
-                break;
-            case "android":
-                //TODO
-                break;
+          case "ios":
+              OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel]);
+            break;
+          case "android":
+              ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
+            break;
         }
     }
     const reloadData = async () => {

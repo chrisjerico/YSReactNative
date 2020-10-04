@@ -6,7 +6,6 @@ interface ImageButtonProps {
     uri?: string
     source?: ImageSource
     onPress: () => void
-    style?: StyleProp<ViewStyle>
     imgStyle?: StyleProp<ImageStyle>
 }
 
@@ -16,11 +15,7 @@ const defaultImgStyle: StyleProp<ImageStyle> = {
     resizeMode: "contain",
     alignSelf: "center"
 }
-const defaultViewStyle: StyleProp<ViewStyle> = {
-    alignItems: "center",
-    justifyContent: "center"
-}
-export const ImageButton = ({uri, imgStyle, style, source, onPress}: ImageButtonProps) => {
+export const ImageButton = ({uri, imgStyle, source, onPress}: ImageButtonProps) => {
     return (
         <TouchableWithoutFeedback onPress={() => onPress()}>
             <Image style={[defaultImgStyle, imgStyle]} source={source || {uri}}/>

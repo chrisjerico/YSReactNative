@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   View,
   ViewStyle,
+  StyleProp
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
@@ -20,26 +21,34 @@ interface GameButtonProps {
   category?: string;
   gameId?: string;
   show?: boolean;
-  imageContainerStyle?: ViewStyle[] | ViewStyle;
+  imageContainerStyle?: StyleProp<ViewStyle>;
   circleColor?: string;
-  containerStyle?: ViewStyle[] | ViewStyle;
-  titleStyle?: TextStyle;
-  subTitleStyle?: TextStyle;
-  titleContainerStyle?: ViewStyle;
+  containerStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  subTitleStyle?: StyleProp<TextStyle>;
+  titleContainerStyle?: StyleProp<ViewStyle>;
   resizeMode?: 'cover' | 'contain';
   enableCircle?: boolean;
   showRightTopFlag?: boolean;
   showCenterFlag?: boolean;
   flagIcon?: string;
   showSecondLevelIcon?: boolean;
-  secondLevelIconContainerStyle?: ViewStyle | ViewStyle;
+  secondLevelIconContainerStyle?: StyleProp<ViewStyle>;
+  showUnReadMsg?: boolean;
+  unreadMsg?: number;
+  localLogo?: any;
+  useLocalLogo?: boolean;
+  flagContainer?: StyleProp<ViewStyle>;
+  circleContainerStyle?: StyleProp<ViewStyle>;
+
 }
 
 interface DefaultFlag {
   center: boolean;
+  flagContainer?: StyleProp<ViewStyle>;
 }
 
-const DefaultFlag = ({ center }: DefaultFlag) => {
+const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
   if (center) {
     return (
       <View style={styles.centerFlagContainer}>
@@ -58,6 +67,7 @@ const DefaultFlag = ({ center }: DefaultFlag) => {
             right: 0,
             top: scale(5),
           },
+          flagContainer
         ]}
       >
         <Text style={styles.flagText}>{'热门'}</Text>
@@ -70,7 +80,7 @@ const GameButton = (props: GameButtonProps) => {
   const {
     circleColor,
     imageContainerStyle,
-    logo = 'https://i.ibb.co/W2tbj1Q/entry-login-toggle-btn.png',//FastImage.source 不能为空
+    logo,
     title = '',
     subTitle = '',
     showSubTitle = false,
@@ -85,7 +95,13 @@ const GameButton = (props: GameButtonProps) => {
     showCenterFlag,
     flagIcon,
     showSecondLevelIcon,
-    secondLevelIconContainerStyle
+    secondLevelIconContainerStyle,
+    showUnReadMsg = false,
+    unreadMsg,
+    localLogo,
+    useLocalLogo = false,
+    flagContainer,
+    circleContainerStyle
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -97,12 +113,13 @@ const GameButton = (props: GameButtonProps) => {
               {
                 backgroundColor: circleColor ? circleColor : '#ACD6FF',
               },
+              circleContainerStyle
             ]}
           >
             <View style={[styles.imageContainer, imageContainerStyle]}>
               <FastImage
                 style={styles.image}
-                source={{ uri: logo }}
+                source={useLocalLogo ? localLogo : { uri: logo }}
                 resizeMode={resizeMode}
               />
               {showCenterFlag &&
@@ -127,7 +144,7 @@ const GameButton = (props: GameButtonProps) => {
             <View style={[styles.imageContainer, imageContainerStyle]}>
               <FastImage
                 style={styles.image}
-                source={{ uri: logo }}
+                source={useLocalLogo ? localLogo : { uri: logo }}
                 resizeMode={resizeMode}
               />
               {showCenterFlag &&
@@ -148,6 +165,7 @@ const GameButton = (props: GameButtonProps) => {
               )}
             </View>
           )}
+
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
             <Text style={titleStyle} numberOfLines={1}>
@@ -162,15 +180,23 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
+        {
+          showUnReadMsg && <View style={styles.unReadMsgContainer}>
+            <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+          </View>
+        }
         {showRightTopFlag &&
           (flagIcon ? (
-            <FastImage
-              source={{ uri: flagIcon }}
-              style={styles.rightTopFlag}
-              resizeMode={'contain'}
-            />
+            <View style={[styles.rightTopFlag, flagContainer]}
+            >
+              <FastImage
+                style={{ width: '100%', height: '100%' }}
+                source={{ uri: flagIcon }}
+                resizeMode={'contain'}
+              />
+            </View>
           ) : (
-              <DefaultFlag center={false} />
+              <DefaultFlag center={false} flagContainer={flagContainer} />
             ))}
       </View>
     </TouchableWithoutFeedback>
@@ -184,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   circleContainer: {
-    width: '70%',
+    width: '50%',
     aspectRatio: 1,
     borderRadius: scale(150),
     justifyContent: 'center',
@@ -214,10 +240,13 @@ const styles = StyleSheet.create({
     borderRadius: scale(5),
     justifyContent: 'center',
     alignItems: 'center',
+    padding: scale(5)
   },
   flagText: {
     color: '#ffffff',
-    padding: scale(5),
+    fontSize: scale(18)
+    // padding: scale(5),
+
   },
   image: {
     width: '100%',
@@ -241,7 +270,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -scale(30),
     top: '50%'
-  }
+  },
+  unReadMsgContainer: {
+    width: scale(25),
+    aspectRatio: 1,
+    borderRadius: scale(200),
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: scale(30),
+    top: -scale(10),
+  },
+  unReadMsgText: { color: '#ffffff', fontSize: scale(15), textAlign: 'center' },
 })
 
 export default GameButton

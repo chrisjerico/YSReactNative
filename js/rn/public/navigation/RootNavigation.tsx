@@ -37,7 +37,12 @@ export function pop(): boolean {
         }
     }
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
-    return count > 1;
+    if (count > 1) {
+        return true;
+    } else {
+        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        return false;
+    }
 }
 
 export function popToRoot() {
@@ -52,6 +57,10 @@ export function popToRoot() {
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
             break;
     }
+}
+
+export function getStackLength() {
+    return navigationRef?.current?.getRootState().routes.length;
 }
 
 // 获取当前页面
@@ -85,6 +94,13 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
     }
 
     try {
+        if (action == RouterType.Stack) {
+            navigationRef?.current?.dispatch(StackActions.replace(page, props));
+        } else {
+            popToRoot();
+            navigationRef?.current?.dispatch(TabActions.jumpTo(page, props));
+        }
+        return;
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == RouterType.Stack) {

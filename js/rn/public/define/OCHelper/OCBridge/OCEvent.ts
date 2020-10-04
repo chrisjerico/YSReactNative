@@ -24,10 +24,11 @@ export class OCEvent extends OCCall {
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
-      console.log('OCEvent rn收到oc通知：', params);
+      // console.log('OCEvent rn收到oc通知：', params);
 
       if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
-        const { didFocus } = UGStore.getPageProps(getCurrentPage());
+        const currentPage = getCurrentPage()
+        const { didFocus } = UGStore.getPageProps(currentPage);
         didFocus && didFocus();
       }
 
@@ -65,10 +66,6 @@ export class OCEvent extends OCCall {
       UGSkinManagers.updateOcSkin();
     });
   }
-
-  // public static addLoginCompleteListener(onEvent: (params: any) => {}) {
-  //   this.addEvent(OCEventType.UGNotificationLoginComplete, onEvent)
-  // }
 
   public static addEvent(type: OCEventType, event: Function) {
     this.events.push({ type: type, event: event });

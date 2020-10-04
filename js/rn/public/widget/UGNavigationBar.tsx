@@ -37,9 +37,6 @@ export default class UGNavigationBar extends Component<UGNavigationBarProps> {
             case 'ios':
               OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
               break;
-            case 'android':
-
-              break;
           }
         }}
       />

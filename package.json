@@ -7,11 +7,12 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "tslint 'js/**/*/*.tsx'"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
-    "@react-native-community/checkbox": "^0.5.0",
+    "@react-native-community/async-storage": "^1.12.0",
+    "@react-native-community/checkbox": "^0.4.2",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/image-editor": "^2.3.0",
     "@react-native-community/masked-view": "^0.1.6",
@@ -23,20 +24,22 @@
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
     "axios": "0.19.2",
-    "blueimp-md5": "^2.12.0",
+    "blueimp-md5": "^2.17.0",
     "chroma-js": "^2.1.0",
+    "global": "^4.4.0",
     "immer": "6.0.9",
     "lodash": "^4.17.15",
     "moment": "^2.27.0",
     "object-path": "^0.11.4",
     "react": "16.9.0",
     "react-hook-form": "^5.7.2",
-    "react-native": "0.61.5",
+    "react-native": "0.63.2",
     "react-native-android-fragment": "^1.1.1",
     "react-native-auto-scrolling": "^2.0.0",
     "react-native-autoheight-webview": "^1.5.1",
     "react-native-banner-carousel": "^1.0.3",
     "react-native-code-push": "^6.1.0",
+    "react-native-dash": "^0.0.11",
     "react-native-dialog-input": "^1.0.8",
     "react-native-elements": "^1.2.7",
     "react-native-event-listeners": "^1.0.7",
@@ -46,6 +49,7 @@
     "react-native-lahk-marquee-label": "^1.1.4",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-marquee-ab": "^1.2.6",
+    "react-native-md5": "^1.0.0",
     "react-native-modal": "^11.5.6",
     "react-native-modal-dropdown": "^0.7.0",
     "react-native-modal-patch": "https://github.com/HarvestProfit/react-native-modal-patch.git",
@@ -79,24 +83,37 @@
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "@babel/runtime": "^7.10.2",
-    "@react-native-community/eslint-config": "^0.0.7",
+    "@react-native-community/eslint-config": "^2.0.0",
     "@types/blueimp-md5": "^2.7.0",
     "@types/chroma-js": "^2.0.0",
     "@types/object-path": "^0.11.0",
     "@types/prop-types": "^15.7.3",
     "@types/react-native-scrollable-tab-view": "^0.10.1",
     "@types/react-redux": "^7.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
-    "eslint": "^6.8.0",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
+    "husky": "^4.3.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.58.0",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.2",
     "react-dom": "16.9.0",
     "react-test-renderer": "16.9.0",
     "redux-devtools": "^3.5.0"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "git restore --staged dev.json && git update-index --assume-unchanged dev.json"
+    }
   }
 }

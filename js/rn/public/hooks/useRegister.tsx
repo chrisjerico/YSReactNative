@@ -4,7 +4,11 @@ import { UGStore } from '../../redux/store/UGStore'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { popToRoot } from '../navigation/RootNavigation'
 import APIRouter, { UserReg } from '../network/APIRouter'
-import { ToastError, ToastStatus, ToastSuccess } from '../tools/ToastUtils'
+import { ToastSuccess, ToastError, ToastStatus } from '../tools/tars'
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import {NA_DATA} from "../define/ANHelper/hp/DataDefine";
+import {logoutAndroid} from "../define/ANHelper/InfoHelper";
 
 interface Options {
   onSuccess?: () => any;
@@ -13,19 +17,30 @@ interface Options {
 
 const cleanOldUser = async () => {
   try {
-    const user = await OCHelper.call('UGUserModel.currentUser')
-    if (user) {
-      const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
-      await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
-        { token: sessid },
-      ])
-      await OCHelper.call('UGUserModel.setCurrentUser:')
-      await OCHelper.call(
-        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-        ['UGNotificationUserLogout']
-      )
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        if (user) {
+          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid')
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [
+            { token: sessid },
+          ])
+          await OCHelper.call('UGUserModel.setCurrentUser:')
+          await OCHelper.call(
+            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+            ['UGNotificationUserLogout']
+          )
+        }
+        break;
     }
+    UGStore.dispatch({ type: 'reset', userInfo: {} })
+
+    switch (Platform.OS) {
+      case 'android':
+        await ANHelper.callAsync(CMD.LOG_OUT)
+        break;
+    }
+
   } catch (error) {
     throw error
   }
@@ -35,34 +50,65 @@ const login = async ({ usr, pwd }) => {
   try {
     const user_login_response = await APIRouter.user_login(usr, pwd)
     const data = user_login_response?.data?.data
-    await OCHelper.call('UGUserModel.setCurrentUser:', [
-      UGUserModel.getYS(data),
-    ])
-    await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
-      true,
-      'isRememberPsd',
-    ])
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [usr, 'userName']
-    )
-    await OCHelper.call(
-      'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-      [pwd, 'userPsw']
-    )
-    await OCHelper.call(
-      'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-      ['UGNotificationLoginComplete']
-    )
-    await OCHelper.call(
-      'UGNavigationController.current.popToRootViewControllerAnimated:',
-      [true]
-    )
+    switch (Platform.OS) {
+      case 'ios':
+        await OCHelper.call('UGUserModel.setCurrentUser:', [
+          UGUserModel.getYS(data),
+        ])
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [
+          true,
+          'isRememberPsd',
+        ])
+        await OCHelper.call(
+          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+          [usr, 'userName']
+        )
+        await OCHelper.call(
+          'NSUserDefaults.standardUserDefaults.setObject:forKey:',
+          [pwd, 'userPsw']
+        )
+        await OCHelper.call(
+          'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+          ['UGNotificationLoginComplete']
+        )
+        await OCHelper.call(
+          'UGNavigationController.current.popToRootViewControllerAnimated:',
+          [true]
+        )
+
+        break;
+      case 'android':
+        const accountData = {
+          account: usr,
+          pwd: pwd,
+        };
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.LOGIN_INFO,
+            ...accountData,
+            ...data
+          });
+        break;
+    }
+
     const user_info_response = await APIRouter.user_info()
-    await OCHelper.call('UGUserModel.setCurrentUser:', [
-      { ...user_info_response?.data, ...UGUserModel.getYS(data) },
-    ])
-    UGStore.dispatch({ type: 'merge', userInfo: user_info_response?.data })
+
+    switch (Platform.OS) {
+      case "ios":
+        await OCHelper.call('UGUserModel.setCurrentUser:', [
+          { ...user_info_response?.data?.data, ...UGUserModel.getYS(data) },
+        ])
+        break;
+      case "android":
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.USER_INFO,
+            ...data
+          })
+        break;
+    }
+
+    UGStore.dispatch({ type: 'merge', userInfo: user_info_response?.data?.data })
     UGStore.save()
   } catch (error) {
     throw '自动登录失败'

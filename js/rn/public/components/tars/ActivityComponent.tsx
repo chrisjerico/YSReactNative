@@ -1,52 +1,35 @@
-import React, { useState } from 'react'
-import {
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface ActivityComponentProps {
-  logo: string;
-  onPress: () => any;
-  show?: any;
-  enableFastImage?: boolean;
-  containerStyle?: ViewStyle;
+  logo: string
+  onPress: () => any
+  show?: any
+  enableFastImage?: boolean
+  containerStyle?: StyleProp<ViewStyle>
+  refreshing?: boolean
 }
 
-const ActivityComponent = ({
-  logo,
-  onPress,
-  show,
-  enableFastImage = true,
-  containerStyle,
-}: ActivityComponentProps) => {
+const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, containerStyle, refreshing }: ActivityComponentProps) => {
   const [hide, setHide] = useState(false)
+
+  useEffect(() => {
+    setHide(false)
+  }, [refreshing])
 
   if (show && !hide) {
     return (
       <View style={[styles.container, containerStyle]}>
-        <TouchableImage
-          containerStyle={{ padding: scale(20) }}
-          enableFastImage={enableFastImage}
-          pic={logo}
-          onPress={onPress}
-          resizeMode={'contain'}
-        />
+        <TouchableImage containerStyle={{ padding: scale(20) }} enableFastImage={enableFastImage} pic={logo} onPress={onPress} resizeMode={'contain'} />
         <TouchableWithoutFeedback
           onPress={() => {
             setHide(true)
-          }}
-        >
+          }}>
           <View style={styles.iconContainer}>
-            <AntDesign
-              name={'closecircleo'}
-              size={scale(35)}
-              color={'red'}
-            />
+            <AntDesign name={'closecircleo'} size={scale(35)} color={'red'} />
           </View>
         </TouchableWithoutFeedback>
       </View>

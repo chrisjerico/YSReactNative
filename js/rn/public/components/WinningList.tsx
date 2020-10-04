@@ -66,6 +66,8 @@ export const WinningList = memo(({data, style = {}, contentContainerStyle = {}}:
     const {data: wrappedData} = getWrappedData();
     return data.length > 0 ? (
         <FlatList
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
             contentContainerStyle={contentContainerStyle}
             ListHeaderComponent={() => <View
                 style={{backgroundColor: "white", flexDirection: "row", paddingHorizontal: 5, paddingVertical: 2}}>

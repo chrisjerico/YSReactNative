@@ -2,12 +2,10 @@ import React, { useState } from 'react'
 import { RefreshControl } from 'react-native'
 
 interface RefreshControlComponentProps {
-  onRefresh?: () => any;
+  onRefresh?: () => any
 }
 
-const RefreshControlComponent = ({
-  onRefresh,
-}: RefreshControlComponentProps) => {
+const RefreshControlComponent = ({ onRefresh }: RefreshControlComponentProps) => {
   const [refreshing, setRefreshing] = useState(false)
   return (
     <RefreshControl

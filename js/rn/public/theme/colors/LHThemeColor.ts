@@ -7,7 +7,7 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     skitString: '六合厅',
     tabBarBgColor: '#ffffff',
     tabNoSelectColor: '#9D9D9D',
-    homeContentSubColor: '#D0D0D0', // 額度轉換Tab
+    homeContentSubColor: '#f2f2f2', // 額度轉換Tab
     get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
     get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
     get tabSelectedColor() { return this.themeColor },
@@ -23,11 +23,11 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#2894FF',
+    themeColor: '#4285f4', // #2894FF
     themeLightColor: '#ACD6FF',
     isBlack: false,
     is23: false,
-    get yubaoBgColor() { return this.homeContentSubColor }
+    yubaoBgColor: "#8E8E8E"
   },
   //六合资料
   六合资料0: {

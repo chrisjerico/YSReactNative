@@ -1,40 +1,34 @@
-import CodePush from 'react-native-code-push';
-import React, {useEffect, useState} from 'react';
-import {View, Text, Platform, TouchableHighlight} from 'react-native';
-import * as Progress from 'react-native-progress';
-import LinearGradient from 'react-native-linear-gradient';
-import AppDefine from '../../public/define/AppDefine';
-import { OCHelper } from '../../public/define/OCHelper/OCHelper';
-import { UGBasePageProps } from '../base/UGPage';
-import UGSkinManagers, { Skin1 } from '../../public/theme/UGSkinManagers';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
-import { UGStore } from '../../redux/store/UGStore';
-import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo';
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
-import {CMD, OPEN_PAGE_PMS} from "../../public/define/ANHelper/hp/CmdDefine";
-import {navigate} from "../../public/navigation/RootNavigation";
-import {UGColor} from "../../public/theme/UGThemeColor";
-import {anyEmpty, arrayEmpty} from "../../public/tools/Ext";
-import {ugLog} from "../../public/tools/UgLog";
+import React, { useEffect } from 'react'
+import { Platform, Text, View } from 'react-native'
+import CodePush from 'react-native-code-push'
+import * as Progress from 'react-native-progress'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
+import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine'
+import AppDefine from '../../public/define/AppDefine'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
+import UGSkinManagers from '../../public/theme/UGSkinManagers'
+import { anyEmpty, arrayEmpty } from '../../public/tools/Ext'
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
+import { UGStore } from '../../redux/store/UGStore'
+import { UGBasePageProps } from '../base/UGPage'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
-  progress?: number;
-  text?: string;
-  bCodePush?: boolean;//codepush是否OK
-  bBanner?: boolean;//banner是否播放完
+  progress?: number
+  text?: string
+  bCodePush?: boolean //codepush是否OK
+  bBanner?: boolean //banner是否播放完
 }
 
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props;
-
+  const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
 
   useEffect(() => {
-    console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey);
+    console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
 
-    let options = {};
+    let options = {}
     switch (Platform.OS) {
       case 'ios':
         options = {
@@ -54,7 +48,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
          * */
           installMode: CodePush.InstallMode.IMMEDIATE,
         }
-        break;
+        break
       case 'android':
         options = {
           /*
@@ -72,68 +66,67 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
          * */
           installMode: CodePush.InstallMode.IMMEDIATE,
         }
-        break;
+        break
     }
 
     CodePush.sync(
-        options,
-      status => {
-        let isNewest = false;
+      options,
+      (status) => {
+        let isNewest = false
         switch (status) {
           case CodePush.SyncStatus.SYNC_IN_PROGRESS:
-            console.log('当前已经在更新了，无须重复执行');
-            break;
+            console.log('当前已经在更新了，无须重复执行')
+            break
           case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
-            console.log('rn正在查找可用的更新');
-            break;
+            console.log('rn正在查找可用的更新')
+            break
           case CodePush.SyncStatus.AWAITING_USER_ACTION:
-            console.log('rn弹了框让用户自己选择是否要更新');
-            break;
+            console.log('rn弹了框让用户自己选择是否要更新')
+            break
           case CodePush.SyncStatus.UPDATE_IGNORED:
-            console.log('rn忽略此热更新');
-            isNewest = true;
-            break;
+            console.log('rn忽略此热更新')
+            isNewest = true
+            break
           case CodePush.SyncStatus.UP_TO_DATE:
-            console.log('rn已是最新版本');
-            isNewest = true;
-            break;
+            console.log('rn已是最新版本')
+            isNewest = true
+            break
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
-            console.log('rn正在下载热更新');
-            break;
+            console.log('rn正在下载热更新')
+            break
           case CodePush.SyncStatus.INSTALLING_UPDATE:
-            console.log('rn正在安装热更新');
-            break;
+            console.log('rn正在安装热更新')
+            break
           case CodePush.SyncStatus.UNKNOWN_ERROR:
-            console.log('rn热更新出错❌');
-            break;
+            console.log('rn热更新出错❌')
+            break
           case CodePush.SyncStatus.UPDATE_INSTALLED:
-            console.log('rn热更新安装成功，正在重启RN');
-            return;
+            console.log('rn热更新安装成功，正在重启RN')
+            return
         }
 
         if (isNewest) {
-          setProps({ progress: 1, text: '正在进入主页...' });
+          setProps({ progress: 1, text: '正在进入主页...' })
           switch (Platform.OS) {
             case 'ios':
               OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
                 initConfig(sysConf)
-              });
-              break;
+              })
+              break
             case 'android':
-              ANHelper.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG})
-                .then((config) => {
-                  initConfig(JSON.parse(config))
-                });
-              break;
+              ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.CONFIG }).then((config) => {
+                initConfig(JSON.parse(config))
+              })
+              break
           }
         }
       },
-      progress => {
-        let p = progress.receivedBytes / progress.totalBytes;
-        setProps({ progress: p });
-        console.log('rn热更新包下载进度：' + p);
-      },
-    );
+      (progress) => {
+        let p = progress.receivedBytes / progress.totalBytes
+        setProps({ progress: p })
+        console.log('rn热更新包下载进度：' + p)
+      }
+    )
 
     // 超时时间20秒
     const timer = setTimeout(() => {
@@ -141,13 +134,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
       switch (Platform.OS) {
         case 'ios':
-          OCHelper.launchFinish();
-          break;
+          OCHelper.launchFinish()
+          break
         case 'android':
-          ANHelper.callAsync(CMD.LAUNCH_GO);
-          break;
+          ANHelper.callAsync(CMD.LAUNCH_GO)
+          break
       }
-    }, 20000);
+    }, 20000)
 
     setProps({
       navbarOpstions: { hidden: true },
@@ -155,36 +148,36 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     })
 
     switch (Platform.OS) {
-      case "ios":
+      case 'ios':
         OCHelper.call('NSUserDefaults.standardUserDefaults.arrayForKey:', ['LaunchPics']).then((pics: string[]) => {
           if (pics && pics.length) {
-            setProps({ backgroundImage: pics[0] });
+            setProps({ backgroundImage: pics[0] })
           }
-        });
-        break;
-      case "android":
-        ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS })
-          .then((picStr) => {
-            if (!anyEmpty(picStr)) {
-              let pics: [] = JSON.parse(picStr);
-              if (!arrayEmpty(pics)) {
+        })
+        break
+      case 'android':
+        ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS }).then((picStr) => {
+          if (!anyEmpty(picStr)) {
+            let pics: [] = JSON.parse(picStr)
+            if (!arrayEmpty(pics)) {
+              setProps({ backgroundImage: pics.shift() })
+              //暂时不轮播，直接清空
+              pics = []
 
-                setProps({ backgroundImage: pics.shift()});
-                //暂时不轮播，直接清空
-                pics = [];
-
-                //定时器显示图片
-                let tempInterval = setInterval(() => {
-                  if (arrayEmpty(pics)) {
-                    clearInterval(tempInterval)
-                    setProps({ bBanner: true});
-                  } else {
-                    setProps({ backgroundImage: pics.shift()});
-                  }
-                }, 4000)
-              }
+              //定时器显示图片
+              let tempInterval = setInterval(() => {
+                if (arrayEmpty(pics)) {
+                  clearInterval(tempInterval)
+                  setProps({ bBanner: true })
+                } else {
+                  setProps({ backgroundImage: pics.shift() })
+                }
+              }, 2500)
+            } else {
+              setProps({ bBanner: true })
             }
-          });
+          }
+        })
     }
 
     return () => {
@@ -193,53 +186,44 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   }, [])
 
   useEffect(() => {
+    // ugLog('bCodePush=', bCodePush, ', bBanner=', bBanner)
     switch (Platform.OS) {
-      case "ios":
-        break;
-      case "android":
-        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO);
-        break;
+      case 'ios':
+        break
+      case 'android':
+        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO)
+        break
     }
   }, [bCodePush, bBanner])
 
-  const initConfig = (sysConf: UGSysConfModel) => {
-    UGStore.dispatch({ type: 'merge', sysConf: sysConf });
-    sysConf = UGStore.globalProps.sysConf;
+  const initConfig = async (sysConf: UGSysConfModel) => {
+    UGStore.dispatch({ type: 'merge', sysConf: sysConf })
+    sysConf = UGStore.globalProps.sysConf
 
     switch (Platform.OS) {
       case 'ios':
-        console.log('初始化RN模板', '替换原生页面');
+        console.log('初始化RN模板', '替换原生页面')
         // 设置皮肤
-        UGSkinManagers.updateSkin(sysConf)
+        await UGSkinManagers.updateSkin(sysConf)
         // 配置替换rn的页面
         setRnPageInfo()
         // 通知iOS进入首页
-        OCHelper.call('ReactNativeVC.showLastRnPage');
-        OCHelper.launchFinish();
-        break;
+        await OCHelper.call('ReactNativeVC.showLastRnPage')
+        OCHelper.launchFinish()
+        break
       case 'android':
-        setProps({ bCodePush: true});
-        break;
+        setProps({ bCodePush: true })
+        break
     }
     UGStore.save()
   }
 
   return (
     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-      <View style={{ marginHorizontal: 15, paddingHorizontal: 15, backgroundColor: '#0000003f', height: 70, marginBottom: 300, borderRadius: 20 }} >
+      <View style={{ marginHorizontal: 15, paddingHorizontal: 15, backgroundColor: '#0000003f', height: 70, marginBottom: 300, borderRadius: 20 }}>
         <Text style={{ marginTop: 24, color: '#fff', fontWeight: '500' }}>{text}</Text>
-        <Progress.Bar
-          progress={progress}
-          borderWidth={0}
-          borderRadius={2}
-          unfilledColor="#aaa"
-          color="white"
-          height={4}
-          width={AppDefine.width - 60}
-          style={{ marginTop: 10 }}
-        />
+        <Progress.Bar progress={progress} borderWidth={0} borderRadius={2} unfilledColor="#aaa" color="white" height={4} width={AppDefine.width - 60} style={{ marginTop: 10 }} />
       </View>
-
     </View>
-  );
+  )
 }
