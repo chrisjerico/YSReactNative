@@ -144,7 +144,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
     setProps({
       navbarOpstions: { hidden: true },
-      tabbarOpetions: { unmountOnBlur: false },
     })
 
     switch (Platform.OS) {

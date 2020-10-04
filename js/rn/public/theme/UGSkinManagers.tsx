@@ -100,7 +100,7 @@ export default class UGSkinManagers extends UGThemeColor {
     if (Platform.OS != 'ios') return
     // 测试环境（未上线的内容）
     const devSkin =
-      AppDefine.isTest() &&
+      !AppDefine.isTest() &&
       skin.skitType.indexOf('香槟金') == -1 &&
       skin.skitType.indexOf('综合体育') == -1 &&
       skin.skitType.indexOf('金星黑') == -1 &&
@@ -109,11 +109,13 @@ export default class UGSkinManagers extends UGThemeColor {
       skin.skitType.indexOf(`利来`) == -1 &&
       skin.skitType.indexOf('威尼斯') == -1 &&
       skin.skitType.indexOf(`越南`) == -1
+
     // 已上线模板
     if (
       skin.skitType.indexOf('尊龙') == -1 &&
       skin.skitType.indexOf('宝石红') == -1 &&
       devSkin) return
+
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
     for (const k in skin) {

@@ -37,9 +37,6 @@ export function setRnPageInfo() {
     if (skitType.indexOf('越南') != -1) {
       pages = pages.concat(VietnamPages);
     }
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
-    }
   }
 
   // 测试环境（未上线的内容）
