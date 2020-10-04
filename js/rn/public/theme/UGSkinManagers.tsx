@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { Platform } from 'react-native'
-import dev from '../../../../dev.json'
+import { devConfig, releaseConfig } from '../../../../config'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
@@ -76,8 +76,9 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    if (B_DEBUG) {
-      dev?.site && (key = dev?.site);
+    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key;
+    if (devConfig.isDebug) {
+      devConfig?.skinKey && (key = devConfig?.skinKey);
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -99,11 +100,12 @@ export default class UGSkinManagers extends UGThemeColor {
     const skin = Skin1
     if (Platform.OS != 'ios') return
     // 已上线模板
-    const online = (
+    const isOnlineSkin = (
       skin.skitType.indexOf('尊龙') != -1 ||
       skin.skitType.indexOf('宝石红') != -1
     );
-    if (!AppDefine.isTest() && !online) return;
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
+    if (!ok) return;
 
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
