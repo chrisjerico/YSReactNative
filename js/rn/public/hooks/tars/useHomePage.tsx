@@ -5,42 +5,22 @@ import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { ToastError, ToastSuccess } from '../../tools/tars'
-import {
-  hideLoading,
-  showLoading,
-  UGLoadingType
-} from '../../widget/UGLoadingCP'
-import useTryPlay from '../useTryPlay'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useTryPlay from './useTryPlay'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
+import useRerender from './useRerender'
 import useSys from './useSys'
 
 interface UseHomePage {
-  onSuccessSignOut?: () => any;
-  onSuccessTryPlay?: () => any;
+  onSuccessSignOut?: () => any
+  onSuccessTryPlay?: () => any
 }
 
-const useHomePage = ({
-  onSuccessSignOut,
-  onSuccessTryPlay
-}: UseHomePage) => {
+const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
+  const { loading, refreshing, rankList, homeGame, notice, onlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
 
-  const {
-    loading,
-    refreshing,
-    rankList,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    homeAd,
-    turntableList,
-    redBag,
-    floatAd,
-    lotteryGame,
-    lotteryNumber,
-    refresh,
-  } = useHome()
+  const { rerender } = useRerender()
 
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
@@ -51,11 +31,17 @@ const useHomePage = ({
   }
 
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
+      hideLoading()
       ToastSuccess('登录成功！')
+      rerender()
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
+      hideLoading()
       ToastError(error ?? '試玩失败')
     },
   })
@@ -63,16 +49,15 @@ const useHomePage = ({
   const { logOut } = useLogOut({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading })
-
     },
     onSuccess: () => {
       hideLoading()
-      onSuccessSignOut()
+      rerender()
+      onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
       hideLoading()
       ToastError(error || '登出失败')
-      console.log('--------登出失败--------', error)
     },
   })
   const signOut = logOut
@@ -88,15 +73,9 @@ const useHomePage = ({
   const notices = notice?.data?.scroll ?? []
   const announcements =
     notice?.data?.popup?.map((item: any) => {
-      return Object.assign(
-        { clsName: 'UGNoticeModel', hiddenBottomLine: 'No' },
-        item
-      )
+      return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
-  const navs =
-    homeGame?.data?.navs
-      ?.sort((a: any, b: any) => a.sort - b.sort)
-      ?.slice(0, 4) ?? []
+  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4) ?? []
   const homeGames = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
@@ -108,13 +87,14 @@ const useHomePage = ({
   const lotteryNumbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
   const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
-  const lotterys = lotteryNumbers?.map((item, index) => { return ({ number: item, color: numColors[index], sx: numSxs[index] }) })
+  const lotterys = lotteryNumbers?.map((item, index) => {
+    return { number: item, color: numColors[index], sx: numSxs[index] }
+  })
   // 官 信
   let official_customise_games = []
   lotteryGame?.data?.forEach((ele) => (official_customise_games = official_customise_games?.concat(ele?.list)))
   const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
   const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
-
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -123,17 +103,15 @@ const useHomePage = ({
   }, [notice])
 
   const goTo = {
-    goToJDPromotionListPage
+    goToJDPromotionListPage,
   }
 
   const sign = {
     tryPlay,
-    signOut
+    signOut,
   }
 
-  const value = {
-    loading,
-    refreshing,
+  const homeInfo = {
     lotteryDate,
     onlineNum,
     bannersInterval,
@@ -153,15 +131,21 @@ const useHomePage = ({
     redBagLogo,
     roulette,
     floatAds,
+  }
+
+  const value = {
+    loading,
+    refreshing,
+    homeInfo,
     userInfo,
-    sys
+    sysInfo: sys,
   }
 
   return {
     goTo,
     sign,
     value,
-    refresh
+    refresh,
   }
 }
 

@@ -1,15 +1,20 @@
 import React from 'react'
 import { ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
-import ActivityComponent from '../../public/components/tars/ActivityComponent'
+import FastImage from 'react-native-fast-image'
+import LinearGradient from 'react-native-linear-gradient'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RandomText from '../../public/components/tars/RandomText'
+import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
+import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -20,6 +25,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
@@ -28,35 +34,21 @@ const buttonHeight = scale(82)
 
 const KSHomePage = () => {
   const { getHtml5Image } = useHtml5Image()
-  const { goTo, refresh, value } = useHomePage({})
+
+  const { goTo, refresh, value, sign } = useHomePage({})
+
   const { goToJDPromotionListPage } = goTo
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    gameLobby,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-  } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { uid, usr, balance, isTest } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
+  const { uid, usr, balance, isTest, curLevelTitle, unreadMsg } = userInfo
+  const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
 
-  const lotterys = homeGames[0]?.list
+  const lotterys = homeGames[0]?.list ?? []
   const smallLotterys = lotterys?.slice(4, 8) ?? []
+  const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
+  const { tryPlay } = sign
+
   if (loading) {
     return (
       <>
@@ -104,21 +96,85 @@ const KSHomePage = () => {
           />
           <HomeHeader logo={mobile_logo} />
           <View style={[styles.toolBlock, { marginTop: scale(5) }]}>
-            <LinearBadge
-              colors={['#3a3a41', '#3a3a41']}
-              containerStyle={[styles.toolButton, { marginLeft: '1%' }]}
-              title={'登录'}
-              textStyle={{ color: '#ffffff', fontSize: scale(22) }}
-              showIcon={false}
-            />
-            <LinearBadge colors={['#eb5d4d', '#fb7a24']} containerStyle={styles.toolButton} title={'注册'} textStyle={{ color: '#ffffff', fontSize: scale(22) }} showIcon={false} />
-            <LinearBadge
-              colors={['#eb5d4d', '#fb2464']}
-              containerStyle={[styles.toolButton, { marginRight: '1%' }]}
-              title={'试玩'}
-              textStyle={{ color: '#ffffff', fontSize: scale(22) }}
-              showIcon={false}
-            />
+            {uid ? (
+              <LinearGradient
+                colors={['#eb5d4d', '#fb2464']}
+                style={{ flex: 1, borderRadius: scale(5), marginHorizontal: '1%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: scale(35) }}>
+                <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
+                  <FastImage source={{ uri: getHtml5Image(22, 'touxiang') }} style={{ height: '50%', aspectRatio: 1 }} />
+                  <View style={{ marginLeft: scale(20), height: '100%' }}>
+                    <View style={{ flexDirection: 'row', flex: 1, alignItems: 'flex-end', marginBottom: scale(1) }}>
+                      <Text style={{ color: '#ffffff', fontWeight: '600' }}>{usr}</Text>
+                      <LinearBadge
+                        title={curLevelTitle}
+                        colors={['#ffffff', '#ffffff']}
+                        textStyle={{ color: '#f83060', padding: scale(3), fontSize: scale(18) }}
+                        containerStyle={{ borderRadius: scale(5), width: null, marginLeft: scale(5), height: null, aspectRatio: null }}
+                        showIcon={false}
+                      />
+                    </View>
+                    <View style={{ flexDirection: 'row', flex: 1, marginTop: scale(1) }}>
+                      <ReLoadBalanceComponent
+                        title={'总金额¥ '}
+                        titleStyle={{ color: '#ffffff', fontSize: scale(20), fontWeight: '500' }}
+                        balance={balance}
+                        balanceStyle={{ color: '#ffffff', fontSize: scale(20), fontWeight: '500' }}
+                        color={'#ffffff'}
+                        size={20}
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View style={{ aspectRatio: 1, height: '50%' }}>
+                  <FastImage source={{ uri: getHtml5Image(22, 'xiaoxi') }} style={{ width: '100%', height: '100%' }} resizeMode={'contain'} />
+                  <View
+                    style={{
+                      width: scale(30),
+                      aspectRatio: 1,
+                      borderRadius: scale(30),
+                      position: 'absolute',
+                      backgroundColor: '#ffffff',
+                      right: -scale(10),
+                      top: -scale(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text style={{ fontSize: scale(20), color: '#fe3333' }}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+            ) : (
+              <>
+                <LinearBadge
+                  colors={['#3a3a41', '#3a3a41']}
+                  containerStyle={[styles.toolButton, { marginLeft: '1%' }]}
+                  title={'登录'}
+                  textStyle={{ color: '#ffffff', fontSize: scale(22) }}
+                  showIcon={false}
+                  onPress={() => {
+                    navigate(PageName.KSSignInPage)
+                  }}
+                />
+                <LinearBadge
+                  colors={['#eb5d4d', '#fb7a24']}
+                  containerStyle={styles.toolButton}
+                  title={'注册'}
+                  textStyle={{ color: '#ffffff', fontSize: scale(22) }}
+                  showIcon={false}
+                  onPress={() => {
+                    navigate(PageName.KSSignUpPage)
+                  }}
+                />
+                <LinearBadge
+                  colors={['#eb5d4d', '#fb2464']}
+                  containerStyle={[styles.toolButton, { marginRight: '1%' }]}
+                  title={'试玩'}
+                  textStyle={{ color: '#ffffff', fontSize: scale(22) }}
+                  showIcon={false}
+                  onPress={tryPlay}
+                />
+              </>
+            )}
           </View>
           <View style={styles.toolBlock}>
             <LinearBadge
@@ -129,6 +185,7 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'depositlogo')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
@@ -138,15 +195,17 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'xima')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.额度转换)}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
               containerStyle={[styles.toolButton, { marginRight: '1%' }]}
-              title={'存款'}
+              title={'取款'}
               textStyle={{ color: '#ffffff', fontSize: scale(20) }}
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'withdrawlogo')}
+              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
             />
           </View>
           <View style={[styles.toolBlock, { height: scale(158) }]}>
@@ -159,6 +218,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'lxb')}
+                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.利息宝)}
               />
               <LinearBadge
                 colors={['#3a3a41', '#3a3a41']}
@@ -168,6 +228,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'yxdt')}
+                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)}
               />
             </View>
             <BannerBlock
@@ -195,24 +256,26 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { height: scale(212) }]}>
             <CoverButton
-              logo={lotterys[0]?.logo}
-              title={lotterys[0]?.name}
+              logo={lotterys[0]?.logo || lotterys[0]?.icon}
+              title={lotterys[0]?.name || lotterys[0]?.title}
               containerStyle={{ marginLeft: '1%', width: '60%', marginRight: '0.5%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
+              onPress={() => PushHelper.pushHomeGame(lotterys[0])}
             />
             <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
               <CoverButton
-                logo={lotterys[1]?.logo}
-                title={lotterys[1]?.name}
+                logo={lotterys[1]?.logo || lotterys[1]?.icon}
+                title={lotterys[1]?.name || lotterys[1]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
+                onPress={() => PushHelper.pushHomeGame(lotterys[1])}
               />
-
               <CoverButton
-                logo={lotterys[2]?.logo}
-                title={lotterys[2]?.name}
+                logo={lotterys[2]?.logo || lotterys[2]?.icon}
+                title={lotterys[2]?.name || lotterys[2]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
+                onPress={() => PushHelper.pushHomeGame(lotterys[2])}
               />
             </View>
           </View>
@@ -232,16 +295,17 @@ const KSHomePage = () => {
                 </ImageBackground>
               </View>
               <View style={{ flex: 1.5, flexDirection: 'row' }}>
-                {smallLotterys?.map((item) => {
-                  const { logo, name } = item
+                {smallLotterys?.map((item, index) => {
+                  const { logo, name, icon, title } = item
                   return (
                     <GameButton
+                      key={index}
                       containerStyle={{ width: '25%', height: '100%', marginTop: scale(5) }}
                       imageContainerStyle={{ width: '70%', aspectRatio: 1 }}
                       titleStyle={{ color: '#97989d' }}
                       enableCircle={false}
-                      logo={logo}
-                      title={name}
+                      logo={logo || icon}
+                      title={name || title}
                       showSecondLevelIcon={false}
                       showSubTitle={false}
                       showUnReadMsg={false}
@@ -253,19 +317,30 @@ const KSHomePage = () => {
               </View>
             </View>
             <CoverButton
-              logo={lotterys[3]?.logo}
-              title={lotterys[3]?.name}
+              logo={lotterys[3]?.logo || lotterys[3]?.icon}
+              title={lotterys[3]?.name || lotterys[3]?.title}
               containerStyle={{ marginRight: '1%', marginLeft: '0.5%', width: '20%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
+              onPress={() => PushHelper.pushHomeGame(lotterys[3])}
             />
           </View>
           <View style={[styles.toolBlock, { backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(5), flexDirection: 'column', width: null, height: null, alignItems: 'center' }]}>
             <View style={{ width: '90%' }}>
               <Text style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</Text>
             </View>
-            <MoreGameButton />
-            <MoreGameButton />
-            <MoreGameButton />
+            {moreGames?.map((item, index) => {
+              const { name, logo, title, icon } = item
+              return (
+                <MoreGameButton
+                  key={index}
+                  title={name || title}
+                  logo={logo || icon}
+                  onPress={() => {
+                    PushHelper.pushHomeGame(item)
+                  }}
+                />
+              )
+            })}
           </View>
           <CouponBlock
             visible={showCoupon}
@@ -341,41 +416,7 @@ const KSHomePage = () => {
           />
           <BottomGap />
         </ScrollView>
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
       </>
     )
   }

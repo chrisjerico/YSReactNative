@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
@@ -11,7 +10,7 @@ import { push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition } from '../../public/tools/tars'
+import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -31,30 +30,11 @@ import HomeHeader from './views/HomeHeader'
 const BZHHomePage = () => {
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    gameLobby,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-  } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
+  const { bannersInterval, onlineNum, banners, notices, midBanners, announcements, navs, homeGames, gameLobby, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
@@ -368,41 +348,7 @@ const BZHHomePage = () => {
             </>
           )}
         />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
       </>
     )
   }

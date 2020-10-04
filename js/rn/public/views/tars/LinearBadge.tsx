@@ -37,7 +37,9 @@ const LinearBadge = ({ title, colors, onPress, showIcon = true, containerStyle, 
           <FastImage style={{ width: '100%', height: '100%' }} resizeMode={'contain'} source={{ uri: logo }} />
         </View>
       )}
-      <Text style={[styles.text, textStyle]}>{title}</Text>
+      <Text style={[styles.text, textStyle]} numberOfLines={1}>
+        {title}
+      </Text>
       {showIcon && <Icon style={{ marginLeft: scale(5) }} type={'AntDesign'} name={'link'} size={scale(20)} color={'#ffffff'} />}
     </LinearGradient>
   </TouchableWithoutFeedback>

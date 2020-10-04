@@ -31,6 +31,12 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
+    if (skitType.indexOf('金星黑') != -1) {
+      pages = pages.concat(JXHPages);
+    }
+    if (skitType.indexOf('越南') != -1) {
+      pages = pages.concat(VietnamPages);
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -295,9 +301,9 @@ const WNSPages = [
     允许未登录访问: true,
   },
   {
-    // 游戏大厅
-    tabbarItemPath: '/lotteryList',
-    vcName: 'UGYYLotteryHomeViewController',
+    // 棋牌
+    tabbarItemPath: '/chess',
+    vcName: 'UGYYLotterySecondHomeViewController',
     rnName: PageName.WNZGameLobbyPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
@@ -315,7 +321,15 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.KSMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
   {
     // 登录
     vcName: 'UGLoginViewController',
@@ -324,23 +338,6 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.KSRegister,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.KSMine,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
 ];
 
 // 金星黑
@@ -348,23 +345,7 @@ const JXHPages = [
   {
     // 首页
     tabbarItemPath: '/home',
-    rnName: PageName.GDBHomePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.GDLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.GDRegisterPage,
+    rnName: PageName.JXHHomePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -373,10 +354,18 @@ const JXHPages = [
     // 我的页
     tabbarItemPath: '/user',
     vcName: 'UGMineSkinViewController',
-    rnName: PageName.GDBMinePage,
+    rnName: PageName.JXHMinePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.JXHSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
   },
   {
     vcName: 'UGPromotionsController',
@@ -387,6 +376,41 @@ const JXHPages = [
   }
 ];
 
+// 越南
+const VietnamPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.VietnamHome,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.VietnamMine,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.VietnamLogin,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.JDPromotionListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }
+];
 
 
 

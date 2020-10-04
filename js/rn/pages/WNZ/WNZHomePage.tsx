@@ -6,18 +6,17 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
-import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useRerender from '../../public/hooks/tars/useRerender'
 import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image, stringToNumber } from '../../public/tools/tars'
+import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -43,22 +42,20 @@ const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
 const WNZHomePage = () => {
   // LogBox.ignoreAllLogs()
   const menu = useRef(null)
-  const { rerender } = useRerender()
 
   const { goTo, refresh, value, sign } = useHomePage({
     onSuccessSignOut: () => {
       menu?.current?.close()
-      rerender()
     },
   })
 
   const { goToJDPromotionListPage } = goTo
 
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+
+  const { signOut } = sign
+
   const {
-    loading,
-    refreshing,
-    userInfo,
-    sys,
     bannersInterval,
     onlineNum,
     banners,
@@ -75,13 +72,11 @@ const WNZHomePage = () => {
     roulette,
     officialGames,
     customiseGames,
-  } = value
-
-  const { signOut } = sign
+  } = homeInfo
 
   const { uid, usr, balance, isTest } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
 
   let homeGamesConcat = []
   homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
@@ -382,44 +377,11 @@ const WNZHomePage = () => {
             }}
             onPressPromotion={goToJDPromotionListPage}
             debug={false}
+            version={'tars'}
           />
           <BottomGap />
         </ScrollView>
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
         <MenuModalComponent
           ref={menu}
           menus={menus}
