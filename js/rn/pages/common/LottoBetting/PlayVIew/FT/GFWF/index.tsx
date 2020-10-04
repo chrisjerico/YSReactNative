@@ -9,14 +9,14 @@ import {BettingReducerActions} from "../../../../../../redux/reducer/BettingRedu
 import {getHKballColor} from "../../lottoSetting";
 import {BALL_NUMBERS_0_9} from "../../comm/LotteryElements";
 import {BALL_STYLES, TAG_COLOR} from "../../comm/LotteryStyles";
-import BallItem from "../../comm/widgets/BallItem";
+import BallItem, {BALL_TYPE} from "../../comm/widgets/BallItem";
 
-export const YZDW_DATA = JSON.parse('{ "code": "YZDW", "name": "一字定位", "playGroups": [ { "id": "43", "name": "一字定位", "code": "YZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "万定位", "plays": [ { "id": "143001", "name": "万定位", "alias": null, "rebate": "0.0000", "code": "WDW", "played_groupid": "43", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "43", "name": "一字定位", "code": "YZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "千定位", "plays": [ { "id": "143002", "name": "千定位", "alias": null, "rebate": "0.0000", "code": "QDW", "played_groupid": "43", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "43", "name": "一字定位", "code": "YZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "百定位", "plays": [ { "id": "143003", "name": "百定位", "alias": null, "rebate": "0.0000", "code": "BDW", "played_groupid": "43", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "43", "name": "一字定位", "code": "YZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "十定位", "plays": [ { "id": "143004", "name": "十定位", "alias": null, "rebate": "0.0000", "code": "SDW", "played_groupid": "43", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "43", "name": "一字定位", "code": "YZDW", "isShow": "1", "enable": "1", "isBan": "0", "from_id": "0", "alias": "个定位", "plays": [ { "id": "143005", "name": "个定位", "alias": null, "rebate": "0.0000", "code": "GDW", "played_groupid": "43", "odds": "9.8000", "offlineOdds": "9.8000", "minMoney": "1", "maxMoney": "500000", "maxTurnMoney": "1000000", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
+export const GFWF_DATA = JSON.parse('{ "code": "GFWF", "name": "官方玩法", "playGroups": [ { "id": "42", "name": "官方玩法", "code": "GFWF", "isShow": "0", "enable": "1", "isBan": "0", "from_id": "0", "alias": "猜冠军", "plays": [ { "id": "5504201", "name": "猜冠军", "alias": "", "rebate": "0.0000", "code": "CGJ", "played_groupid": "42", "odds": "9.9500", "offlineOdds": "9.9500", "minMoney": "1", "maxMoney": "100000", "maxTurnMoney": "5000000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "42", "name": "官方玩法", "code": "GFWF", "isShow": "0", "enable": "1", "isBan": "0", "from_id": "0", "alias": "猜前二", "plays": [ { "id": "5504202", "name": "猜前二", "alias": "", "rebate": "0.0000", "code": "CQE", "played_groupid": "42", "odds": "89.9500", "offlineOdds": "89.9500", "minMoney": "1", "maxMoney": "10000", "maxTurnMoney": "500000", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "42", "name": "官方玩法", "code": "GFWF", "isShow": "0", "enable": "1", "isBan": "0", "from_id": "0", "alias": "猜前三", "plays": [ { "id": "5504203", "name": "猜前三", "alias": "", "rebate": "0.0000", "code": "CQS", "played_groupid": "42", "odds": "710.9500", "offlineOdds": "710.9500", "minMoney": "1", "maxMoney": "100", "maxTurnMoney": "500", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "42", "name": "官方玩法", "code": "GFWF", "isShow": "0", "enable": "1", "isBan": "0", "from_id": "0", "alias": "猜前四", "plays": [ { "id": "5504204", "name": "猜前四", "alias": "", "rebate": "0.0000", "code": "CQSI", "played_groupid": "42", "odds": "4958.9500", "offlineOdds": "4958.9500", "minMoney": "1", "maxMoney": "10", "maxTurnMoney": "50", "isBan": "0", "enable": "1", "from_id": "0" } ] }, { "id": "42", "name": "官方玩法", "code": "GFWF", "isShow": "0", "enable": "1", "isBan": "0", "from_id": "0", "alias": "猜前五", "plays": [ { "id": "5504205", "name": "猜前五", "alias": "", "rebate": "0.0000", "code": "CQW", "played_groupid": "42", "odds": "29708.9500", "offlineOdds": "29708.9500", "minMoney": "1", "maxMoney": "1", "maxTurnMoney": "5", "isBan": "0", "enable": "1", "from_id": "0" } ] } ] }')
 
-const YZDWContainer = ({setProps}) => {
+const GFWFContainer = ({setProps}) => {
   // const { currentPlayOdd, } = UGStore.globalProps.BettingReducer;
   //Todo arc
-  const currentPlayOdd = YZDW_DATA;
+  const currentPlayOdd = GFWF_DATA;
   const [plays, setPlays] = useState([])
   const [currentFilter, setCurrentFilter] = useState("")
   const {width} = useDimensions().screen
@@ -61,6 +61,7 @@ const YZDWContainer = ({setProps}) => {
                   }}/>
       </View>
       <Text style={BALL_STYLES.ball_title_odds}>{currentOdd}</Text>
+      <Text style={BALL_STYLES.ball_title}>{currentFilter}</Text>
       <View style={BALL_STYLES.ball_grid}>
         {
           BALL_NUMBERS_0_9.map((res, index) => {
@@ -71,7 +72,8 @@ const YZDWContainer = ({setProps}) => {
               }}>
                 <View key={index} style={[BALL_STYLES.grid_item,
                   {width: BALL_GRID_WIDTH / 3}]}>
-                  <BallItem text={res.toString()}/>
+                  <BallItem text={res.toString()}
+                            ballStyle={BALL_TYPE.SQUARE_FILLED}/>
                 </View>
               </TouchableWithoutFeedback>
             )
@@ -82,4 +84,4 @@ const YZDWContainer = ({setProps}) => {
     </ScrollView>
   )
 }
-export default YZDWContainer
+export default GFWFContainer

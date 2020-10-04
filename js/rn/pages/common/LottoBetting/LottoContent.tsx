@@ -15,20 +15,20 @@ import LMContainer from './PlayVIew/LHT/LM'
 import ZMContainer from './PlayVIew/LHT/ZM'
 import TMPlayView from './PlayVIew/LHT/TM'
 import ZMContainer16 from './PlayVIew/LHT/ZM16'
-import GFWFContainer from "./PlayVIew/LHT/GFWF";
 import YZDWContainer, {YZDW_DATA} from "./PlayVIew/SSC/YZDW";
 import EZDWContainer, {EZDW_DATA} from "./PlayVIew/SSC/EZDW";
 import SZDWContainer, {SZDW_DATA} from "./PlayVIew/SSC/SZDW";
 import {ugLog} from "../../../public/tools/UgLog";
 import BDWContainer, {BDW_DATA} from "./PlayVIew/SSC/BDW";
 import DWDContainer, {DWD_DATA} from "./PlayVIew/SSC/DWD";
+import GFWFContainer, {GFWF_DATA} from "./PlayVIew/FT/GFWF";
 
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
     const borderColor = "red"
     // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
   //Todo arc
-  const currentPlayOdd = SZDW_DATA
+  const currentPlayOdd = GFWF_DATA
 
     const getPlayView = () => {
         ugLog("currentPlayOdd?.code", currentPlayOdd?.code)

@@ -5,17 +5,18 @@ import {scale} from "../../../../../../public/tools/Scale";
 import {BALL_STYLES} from "../LotteryStyles";
 import {getHKballColor} from "../../lottoSetting";
 import {anyLength} from "../../../../../../public/tools/Ext";
+import FastImage from "react-native-fast-image";
 
 const BALL_TYPE = {
   ROUND_LINE: '圆形边框',
   ROUND_FILLED: '圆形实心',
   ROUND_COLORFUL: '圆形彩色',
-  SQUARE: '方形',
+  SQUARE_FILLED: '方形',
 }
 
 interface IBallItem {
   text?: string,
-  style?: string
+  ballStyle?: string
 }
 
 const _BALL_COLOR_RECT = {
@@ -50,6 +51,7 @@ const _roundBall = (text: string) => {
   const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
   const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
   const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
+
   if (redSet.includes(text)) {
     return '#e23'
   } else if (blueSet.includes(text)) {
@@ -59,18 +61,38 @@ const _roundBall = (text: string) => {
   }
 }
 
+//圆形球图
+const _roundBallPic = (text: string) => {
+  if (anyLength(text) < 2) {
+    text = '0' + text
+  }
+
+  const redSet = ["01", "02", "07", "08", "12", "13", "18", "19", "23", "24", "30", "34", "35", "40", "45", "46"]
+  const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36", "37", "41", "42", "47", "48"]
+  const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
+
+  if (redSet.includes(text)) {
+    return 'https://i.ibb.co/1rYQP0C/ball-red.png'
+  } else if (blueSet.includes(text)) {
+    return 'https://i.ibb.co/vhd8GjJ/ball-blue.png'
+  } else {
+    return 'https://i.ibb.co/kS0DGvT/ball-green.png'
+  }
+}
+
 /**
  * 绘制选择框
  * @param onPress
  */
-const BallItem = ({text, style = BALL_TYPE.ROUND_FILLED}: IBallItem) => {
-  switch (style) {
+const BallItem = ({text, ballStyle}: IBallItem) => {
+  switch (ballStyle) {
     case BALL_TYPE.ROUND_LINE:
       return <View style={[BALL_STYLES.grid_ball_round,
         {
           borderColor: _roundBall(text),
         }]}>
-        <Text style={_styles.ball_text}>{text}</Text>
+        <Text style={[_styles.ball_text,
+          {color: _roundBall(text)}]}>{text}</Text>
       </View>
     case BALL_TYPE.ROUND_FILLED:
       return <View style={[BALL_STYLES.grid_ball_round,
@@ -80,13 +102,20 @@ const BallItem = ({text, style = BALL_TYPE.ROUND_FILLED}: IBallItem) => {
         }]}>
         <Text style={_styles.ball_text}>{text}</Text>
       </View>
-    case BALL_TYPE.SQUARE:
-      return <View style={[BALL_STYLES.grid_ball_round,
+    case BALL_TYPE.SQUARE_FILLED:
+      return <View style={[BALL_STYLES.grid_ball_rect,
         {
           borderColor: _squareBall(text),
+          backgroundColor: _squareBall(text),
         }]}>
         <Text style={_styles.ball_text}>{text}</Text>
       </View>
+    default:
+      return <FastImage style={[BALL_STYLES.grid_ball_round, { borderWidth: 0 }]}
+                        source={{uri: _roundBallPic(text)}}>
+        <Text style={[_styles.ball_text,
+          {color: 'black'}]}>{text}</Text>
+      </FastImage>
 
   }
 }
@@ -94,9 +123,11 @@ const BallItem = ({text, style = BALL_TYPE.ROUND_FILLED}: IBallItem) => {
 const _styles = StyleSheet.create({
     ball_text: {
       color: 'white',
-      fontSize: scale(22),
+      fontSize: scale(28),
+      fontWeight: 'bold'
     },
   }
 )
 
+export {BALL_TYPE}
 export default BallItem

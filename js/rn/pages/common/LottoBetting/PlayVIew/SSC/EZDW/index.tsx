@@ -25,14 +25,14 @@ const EZDWContainer = ({setProps}) => {
   useEffect(() => {
     const playsStringArray = []
     currentPlayOdd.playGroups.map((res) => {
-      playsStringArray.push(res.alias.slice(0, 3))
+      playsStringArray.push(res.alias)
     })
 
     setPlays(playsStringArray.filter((res, index) => playsStringArray.indexOf(res) === index))
     setCurrentFilter(playsStringArray[0])
   }, [currentPlayOdd])
   useEffect(() => {
-    const result = currentPlayOdd.playGroups.filter((res) => res.alias.slice(0, 3) == currentFilter)
+    const result = currentPlayOdd.playGroups.filter((res) => res.alias == currentFilter)
     if (result.length > 0) {
       setCurrentOdd(result[0]?.plays?.[0]?.odds ?? "")
     }
