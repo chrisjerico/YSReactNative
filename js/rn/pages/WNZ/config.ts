@@ -46,7 +46,7 @@ const config = {
     },
     {
       title: '彩票游戏',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅) },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
     },
     {
       title: 'AG视讯',
@@ -84,7 +84,7 @@ const config = {
     },
     {
       title: '更多彩种',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.游戏大厅) },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
     },
     {
       title: '投注记录',

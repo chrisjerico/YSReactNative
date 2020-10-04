@@ -299,15 +299,6 @@ const WNSPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  },
-  {
-    // 棋牌
-    tabbarItemPath: '/chess',
-    vcName: 'UGYYLotterySecondHomeViewController',
-    rnName: PageName.WNZGameLobbyPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
   }
 ];
 
