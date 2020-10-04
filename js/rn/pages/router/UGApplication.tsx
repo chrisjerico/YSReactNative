@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import TrendView from '../../public/components/TrendView'
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider'
 import { PageName } from '../../public/navigation/Navigation'
@@ -76,6 +76,10 @@ class TabBarController extends Component<{
     // navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentDidMount() {
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
@@ -108,7 +112,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-        {/*<Router.TabScreen name={PageName.TrendView} component={UGPage(TrendView)} />*/}
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
         <Router.TabScreen name={PageName.KSMine} component={UGPage(KSMine)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />

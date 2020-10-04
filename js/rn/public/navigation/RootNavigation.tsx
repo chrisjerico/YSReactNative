@@ -94,6 +94,13 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
     }
 
     try {
+        if (action == RouterType.Stack) {
+            navigationRef?.current?.dispatch(StackActions.replace(page, props));
+        } else {
+            popToRoot();
+            navigationRef?.current?.dispatch(TabActions.jumpTo(page, props));
+        }
+        return;
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == RouterType.Stack) {
