@@ -28,7 +28,7 @@ const LottoContent = ({setProps}) => {
     const borderColor = "red"
     // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
   //Todo arc
-  const currentPlayOdd = DWD_DATA
+  const currentPlayOdd = SZDW_DATA
 
     const getPlayView = () => {
         ugLog("currentPlayOdd?.code", currentPlayOdd?.code)

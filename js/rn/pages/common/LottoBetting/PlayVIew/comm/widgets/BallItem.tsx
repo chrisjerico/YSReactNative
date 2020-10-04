@@ -9,6 +9,7 @@ import {anyLength} from "../../../../../../public/tools/Ext";
 const BALL_TYPE = {
   ROUND_LINE: '圆形边框',
   ROUND_FILLED: '圆形实心',
+  ROUND_COLORFUL: '圆形彩色',
   SQUARE: '方形',
 }
 
@@ -33,7 +34,7 @@ const _BALL_COLOR_RECT = {
 
 //方形球
 const _squareBall = (text: string) => {
-  if(anyLength(text) < 2) {
+  if (anyLength(text) < 2) {
     text = '0' + text
   }
 
@@ -42,7 +43,7 @@ const _squareBall = (text: string) => {
 
 //圆形球
 const _roundBall = (text: string) => {
-  if(anyLength(text) < 2) {
+  if (anyLength(text) < 2) {
     text = '0' + text
   }
 
@@ -62,36 +63,39 @@ const _roundBall = (text: string) => {
  * 绘制选择框
  * @param onPress
  */
-const BallItem = ({text, style}: IBallItem) => {
+const BallItem = ({text, style = BALL_TYPE.ROUND_FILLED}: IBallItem) => {
   switch (style) {
     case BALL_TYPE.ROUND_LINE:
       return <View style={[BALL_STYLES.grid_ball_round,
         {
-          borderColor: _squareBall(text),
+          borderColor: _roundBall(text),
         }]}>
-        <Text>{text}</Text>
+        <Text style={_styles.ball_text}>{text}</Text>
       </View>
     case BALL_TYPE.ROUND_FILLED:
       return <View style={[BALL_STYLES.grid_ball_round,
         {
-          borderColor: _squareBall(text),
-          backgroundColor: _squareBall(text)
+          borderColor: _roundBall(text),
+          backgroundColor: _roundBall(text)
         }]}>
-        <Text>{text}</Text>
+        <Text style={_styles.ball_text}>{text}</Text>
       </View>
     case BALL_TYPE.SQUARE:
       return <View style={[BALL_STYLES.grid_ball_round,
         {
           borderColor: _squareBall(text),
         }]}>
-        <Text>{text}</Text>
+        <Text style={_styles.ball_text}>{text}</Text>
       </View>
 
   }
 }
 
 const _styles = StyleSheet.create({
-
+    ball_text: {
+      color: 'white',
+      fontSize: scale(22),
+    },
   }
 )
 
