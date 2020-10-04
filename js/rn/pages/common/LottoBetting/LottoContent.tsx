@@ -31,7 +31,6 @@ const LottoContent = ({setProps}) => {
   const currentPlayOdd = GFWF_DATA
 
     const getPlayView = () => {
-        ugLog("currentPlayOdd?.code", currentPlayOdd?.code)
         switch (currentPlayOdd?.code) {
             case 'TM'://特码
                 return <TMPlayView setProps={setProps}/>
