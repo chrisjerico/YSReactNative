@@ -107,9 +107,13 @@ export default class UGSkinManagers extends UGThemeColor {
       skin.skitType.indexOf('六合厅') == -1 &&
       skin.skitType.indexOf('凯时') == -1 &&
       skin.skitType.indexOf(`利来`) == -1 &&
+      skin.skitType.indexOf('威尼斯') == -1 &&
       skin.skitType.indexOf(`越南`) == -1
     // 已上线模板
-    if (skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('宝石红') == -1 && skin.skitType.indexOf('威尼斯') == -1 && devSkin) return
+    if (
+      skin.skitType.indexOf('尊龙') == -1 &&
+      skin.skitType.indexOf('宝石红') == -1 &&
+      devSkin) return
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
     for (const k in skin) {

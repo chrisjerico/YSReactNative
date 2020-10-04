@@ -37,6 +37,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('越南') != -1) {
       pages = pages.concat(VietnamPages);
     }
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat(WNSPages)
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -55,6 +58,9 @@ export function setRnPageInfo() {
     }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
+    }
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat(WNSPages)
     }
   }
 
@@ -79,9 +85,6 @@ export function setRnPageInfo() {
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages);
-  }
-  if (skitType.indexOf('威尼斯') != -1) {
-    pages = pages.concat(WNSPages)
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
