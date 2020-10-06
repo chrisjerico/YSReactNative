@@ -1,34 +1,19 @@
 import React from 'react'
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface ProfileBlockProps {
-  curLevelInt: string;
-  nextLevelInt: string;
-  curLevelTitle: string;
-  nextLevelTitle: string;
-  taskRewardTotal: string;
-  backgroundImage: string;
-  signImage: string;
-  onPressSign: () => any;
+  curLevelInt: string
+  nextLevelInt: string
+  curLevelTitle: string
+  nextLevelTitle: string
+  taskRewardTotal: string
+  backgroundImage: string
+  signImage: string
+  onPressSign: () => any
 }
 
-const ProfileBlock = ({
-  curLevelInt,
-  nextLevelInt,
-  curLevelTitle,
-  nextLevelTitle,
-  taskRewardTotal,
-  backgroundImage,
-  signImage,
-  onPressSign
-}: ProfileBlockProps) => {
+const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign }: ProfileBlockProps) => {
   const curLevelInt_f = parseFloat(curLevelInt) || 0
   const nextLevelInt_f = parseFloat(nextLevelInt) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
@@ -40,11 +25,9 @@ const ProfileBlock = ({
       <ImageBackground style={styles.image} source={{ uri: backgroundImage }} resizeMode={'stretch'}>
         <View style={{ flexDirection: 'row', flex: 1 }}>
           <View style={{ flex: 8 }}>
-            <View style={styles.taskRewardTitleContainer}>
-              {/* <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
+            <View style={styles.taskRewardTitleContainer}>{/* <Text style={{ fontSize: scale(25), color: '#f8f8d6' }}>
                 {nextLevelTitle}
-              </Text> */}
-            </View>
+              </Text> */}</View>
             <View style={{ flex: 2, paddingHorizontal: scale(20) }}>
               <View style={styles.experienceContainer}>
                 <Text style={styles.experience}>{taskRewardTotal_f}</Text>
@@ -64,23 +47,15 @@ const ProfileBlock = ({
                   paddingTop: scale(10),
                   // width: scale(400),
                   justifyContent: 'space-between',
-                }}
-              >
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
-                  {curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}
-                </Text>
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>
-                  {taskRewardTotal_f + '/' + nextLevelInt_f}
-                </Text>
+                }}>
+                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}</Text>
+                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f + '/' + nextLevelInt_f}</Text>
               </View>
             </View>
           </View>
           <TouchableWithoutFeedback onPress={onPressSign}>
             <View style={styles.signContainer}>
-              <ImageBackground
-                style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }}
-                source={{ uri: signImage }}
-              >
+              <ImageBackground style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }} source={{ uri: signImage }}>
                 <Text style={{ fontSize: scale(23), color: '#f86764' }}>{'签到'}</Text>
               </ImageBackground>
             </View>

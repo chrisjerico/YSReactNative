@@ -7,31 +7,19 @@ import Avatar from '../../../public/views/tars/Avatar'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 
 interface ProfileBlockProps {
-  profileButtons: any[];
-  avatar: string;
-  name: string;
-  balance: string;
-  level: string;
-  renderProfileButton: (item: any, index: number) => any;
-  onPressDaySign: () => any;
-  onPressTaskCenter: () => any;
-  onPressAvatar: () => any;
-  showSignBadge: boolean;
+  profileButtons: any[]
+  avatar: string
+  name: string
+  balance: string
+  level: string
+  renderProfileButton: (item: any, index: number) => any
+  onPressDaySign: () => any
+  onPressTaskCenter: () => any
+  onPressAvatar: () => any
+  showSignBadge: boolean
 }
 
-const ProfileBlock = ({
-  avatar,
-  name = '',
-  balance = '',
-  level,
-  profileButtons = [],
-  renderProfileButton,
-  onPressDaySign,
-  onPressTaskCenter,
-  onPressAvatar,
-  showSignBadge,
-}: ProfileBlockProps) => {
-
+const ProfileBlock = ({ avatar, name = '', balance = '', level, profileButtons = [], renderProfileButton, onPressDaySign, onPressTaskCenter, onPressAvatar, showSignBadge }: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
@@ -52,19 +40,13 @@ const ProfileBlock = ({
                 containerStyle={{
                   height: scale(25),
                   marginBottom: scale(5),
-                  width: null
+                  width: null,
                 }}
                 textStyle={{ paddingHorizontal: scale(10) }}
               />
             </View>
             <View style={{ flexDirection: 'row', flex: 0.9 }}>
-              <ReLoadBalanceComponent
-                title={'余额 : '}
-                color={'#ff861b'}
-                containerStyle={{ justifyContent: 'flex-start' }}
-                size={20}
-                balance={balance}
-              />
+              <ReLoadBalanceComponent title={'余额 : '} color={'#ff861b'} containerStyle={{ justifyContent: 'flex-start' }} size={20} balance={balance} />
             </View>
           </View>
         </View>
@@ -74,13 +56,11 @@ const ProfileBlock = ({
               flex: 1,
               justifyContent: 'flex-end',
               alignItems: 'flex-end',
-            }}
-          >
+            }}>
             <TouchableWithoutFeedback onPress={onPressTaskCenter}>
               <FastImage
                 source={{
-                  uri:
-                    'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
+                  uri: 'http://test05.6yc.com/static/vuePublic/images/my/userInfo/missionhall.png',
                 }}
                 style={{
                   width: '100%',
@@ -96,8 +76,7 @@ const ProfileBlock = ({
               <TouchableWithoutFeedback onPress={onPressDaySign}>
                 <FastImage
                   source={{
-                    uri:
-                      'http://test05.6yc.com/static/vuePublic/images/my/userInfo/dailysign.png',
+                    uri: 'http://test05.6yc.com/static/vuePublic/images/my/userInfo/dailysign.png',
                   }}
                   style={{
                     width: '100%',
@@ -111,9 +90,7 @@ const ProfileBlock = ({
           </View>
         </View>
       </View>
-      <View style={styles.profileButtonsContainer}>
-        {profileButtons.map(renderProfileButton)}
-      </View>
+      <View style={styles.profileButtonsContainer}>{profileButtons.map(renderProfileButton)}</View>
     </View>
   )
 }

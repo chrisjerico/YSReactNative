@@ -1,54 +1,31 @@
 import React from 'react'
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { scale } from '../../../public/tools/Scale'
 
 interface ButtonGroupProps {
-  leftLogo: string;
-  rightLogo: string;
-  leftTitle: string;
-  rightTitle: string;
-  onPressLeftButton: () => any;
-  onPressRightButton: () => any;
+  leftLogo: string
+  rightLogo: string
+  leftTitle: string
+  rightTitle: string
+  onPressLeftButton: () => any
+  onPressRightButton: () => any
 }
 
-const ButtonGroup = ({
-  leftLogo,
-  rightLogo,
-  leftTitle,
-  rightTitle,
-  onPressLeftButton,
-  onPressRightButton,
-}: ButtonGroupProps) => {
+const ButtonGroup = ({ leftLogo, rightLogo, leftTitle, rightTitle, onPressLeftButton, onPressRightButton }: ButtonGroupProps) => {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={onPressLeftButton}>
         <View style={styles.leftButtonContainer}>
           <View style={styles.leftButton}>
-            <Image
-              source={{ uri: leftLogo }}
-              style={{ width: scale(34), aspectRatio: 34 / 27 }}
-            />
-            <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>
-              {leftTitle}
-            </Text>
+            <Image source={{ uri: leftLogo }} style={{ width: scale(34), aspectRatio: 34 / 27 }} />
+            <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{leftTitle}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={onPressRightButton}>
         <View style={styles.rightButtonContainer}>
-          <Image
-            source={{ uri: rightLogo }}
-            style={{ width: scale(34), aspectRatio: 34 / 27 }}
-          />
-          <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>
-            {rightTitle}
-          </Text>
+          <Image source={{ uri: rightLogo }} style={{ width: scale(34), aspectRatio: 34 / 27 }} />
+          <Text style={{ fontSize: scale(25), paddingLeft: scale(10) }}>{rightTitle}</Text>
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -62,7 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: scale(10),
     marginTop: scale(12),
-    marginBottom: scale(7)
+    marginBottom: scale(7),
   },
   leftButtonContainer: {
     flex: 1,

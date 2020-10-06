@@ -19,23 +19,14 @@ import SignHeader from './views/SignHeader'
 const WNZSignUpPage = () => {
   const menu = useRef(null)
 
-  const {
-    slideCodeRef,
-    show,
-    label,
-    onChange,
-    sign,
-    valid,
-    limit,
-    goTo,
-  } = useSignUpPage({
+  const { slideCodeRef, show, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
     homePage: PageName.WNZHomePage,
     signInPage: PageName.WNZSignInPage,
   })
 
   const { signUp, tryPlay } = sign
 
-  const { goToSignInPage } = goTo
+  const { navigateToSignInPage } = navigateTo
 
   return (
     <>
@@ -45,20 +36,12 @@ const WNZSignUpPage = () => {
           onPressMenu={() => {
             menu?.current?.open()
           }}
-          onPressRegister={goToSignInPage}
+          onPressSign={navigateToSignInPage}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'#f2f2f2'}
-            show={show}
-            label={label}
-            limit={limit}
-            onChange={onChange}
-            Form={SignUpForm}
-          />
+          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#f2f2f2'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
             disabled={!valid}
             title={'立即注册'}
@@ -73,32 +56,10 @@ const WNZSignUpPage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
-          <Button
-            title={'已有帐号，直接登陆'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={pop}
-          />
-          <Button
-            title={'免费试玩'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={tryPlay}
-          />
-          <Button
-            title={'在线客服'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={() =>
-              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }
-          />
-          <Button
-            title={'返回首页'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={popToRoot}
-          />
+          <Button title={'已有帐号，直接登陆'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={pop} />
+          <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
+          <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)} />
+          <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
         </View>
       </ScrollView>
       <MenuModalComponent
@@ -124,7 +85,7 @@ const WNZSignUpPage = () => {
     </>
   )
 }
-const SignUpForm = (props: FormComponentProps & { title: string }) => (
+const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
   <FormComponent
     {...props}
     containerStyle={{ marginBottom: scale(15) }}
@@ -133,7 +94,7 @@ const SignUpForm = (props: FormComponentProps & { title: string }) => (
     rightIconContainerStyle={{ marginRight: scale(10) }}
     renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
     labelTextStyle={{ paddingLeft: scale(20) }}
-    placeholderTextColor={"#9D9D9D"}
+    placeholderTextColor={'#9D9D9D'}
   />
 )
 
@@ -151,7 +112,7 @@ const styles = StyleSheet.create({
   signUpButton: {
     width: '100%',
     backgroundColor: '#dd524d',
-    marginTop: scale(32),
+    marginTop: scale(12),
     aspectRatio: 10,
     borderRadius: scale(5),
   },
@@ -178,7 +139,7 @@ const styles = StyleSheet.create({
   },
   leftIconText: {
     fontSize: scale(23),
-    fontWeight: '400'
+    fontWeight: '400',
   },
   leftIconContainerStyle: {
     width: scale(120),

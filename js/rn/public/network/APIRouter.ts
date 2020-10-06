@@ -91,14 +91,13 @@ class APIRouter {
           { blGet: true, });
         break;
     }
-
     if (token) {
       const tokenParams = Platform.OS == "ios" ? 'token=' + token : token
       return httpClient.get<UserInfoModel>("c=user&a=info&" + tokenParams)
     } else {
-      return Promise.reject({
-        msg: 'no token'
-      })
+      UGStore.dispatch({ type: 'reset', userInfo: {} })
+      UGStore.save()
+      return Promise.reject('使用者未登入，拒絕更新使用者資料')
     }
 
   }
@@ -183,6 +182,14 @@ class APIRouter {
     }
 
     return httpClient.post<any>("c=user&a=logout", tokenParams)
+  }
+  static getTrendData = async (id: string) => {
+    return httpClient.get(`c=game&a=lotteryHistory`, {
+      params: {
+        id: id,
+        rows: "200"
+      }
+    })
   }
   static secure_imgCaptcha = async () => {
     let accessToken = "";

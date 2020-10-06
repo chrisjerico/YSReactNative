@@ -5,40 +5,22 @@ import { scale } from '../../../public/tools/Scale'
 import Button from '../../../public/views/tars/Button'
 
 interface HomeHeaderProps {
-  name: string;
-  balance: string;
-  uid: string;
-  onPressSignIn: () => any;
-  onPressSignUp: () => any;
-  onPressUser: () => any;
-  isTest: boolean;
-  logo: string;
+  name: string
+  balance: string
+  uid: string
+  onPressSignIn: () => any
+  onPressSignUp: () => any
+  onPressUser: () => any
+  isTest: boolean
+  logo: string
 }
 
-const HomeHeader = ({
-  uid,
-  name = '',
-  balance = '',
-  onPressSignIn,
-  onPressSignUp,
-  onPressUser,
-  isTest,
-  logo,
-}: HomeHeaderProps) => {
+const HomeHeader = ({ uid, name = '', balance = '', onPressSignIn, onPressSignUp, onPressUser, isTest, logo }: HomeHeaderProps) => {
   return (
     <>
       {uid ? (
         <View style={styles.row}>
-          <View style={styles.left}>
-            {isTest ? (
-              <Button
-                title={'注册'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignUp}
-              />
-            ) : null}
-          </View>
+          <View style={styles.left}>{isTest ? <Button title={'注 册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} /> : null}</View>
           <View style={styles.imageContainer}>
             <FastImage
               source={{
@@ -50,16 +32,10 @@ const HomeHeader = ({
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
             <View style={styles.right}>
-              <Text
-                numberOfLines={1}
-                style={{ color: '#ffffff', fontSize: scale(18) }}
-              >
+              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
                 {name}
               </Text>
-              <Text
-                numberOfLines={1}
-                style={{ color: '#ffffff', fontSize: scale(18) }}
-              >
+              <Text numberOfLines={1} style={{ color: '#ffffff', fontSize: scale(18) }}>
                 {'￥' + balance}
               </Text>
             </View>
@@ -68,12 +44,7 @@ const HomeHeader = ({
       ) : (
           <View style={styles.row}>
             <View style={styles.left}>
-              <Button
-                title={'登录'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignIn}
-              />
+              <Button title={'登 录'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignIn} />
             </View>
             <View style={styles.imageContainer}>
               <FastImage
@@ -85,12 +56,7 @@ const HomeHeader = ({
               />
             </View>
             <View style={styles.right}>
-              <Button
-                title={'注册'}
-                containerStyle={styles.button}
-                titleStyle={styles.buttonTitle}
-                onPress={onPressSignUp}
-              />
+              <Button title={'注 册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} />
             </View>
           </View>
         )}

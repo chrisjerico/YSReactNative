@@ -21,7 +21,6 @@ export const TransitionPage = (props: TransitionProps) => {
     setProps({
       backgroundColor: ['#ddd', '#ddd'],
       navbarOpstions: { backgroundColor: 'transparent', hideUnderline: true, back: true },
-      tabbarOpetions: { unmountOnBlur: false },
       didFocus: (p: TransitionProps) => {
         if (!p) return;
         const { jumpTo: j, pushTo, props } = p;

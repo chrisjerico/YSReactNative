@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback, StyleProp } from 'react-native'
 
 interface Button {
-  containerStyle?: ViewStyle | ViewStyle[];
-  disabledContainerStyle?: ViewStyle | ViewStyle[];
-  titleStyle?: TextStyle | TextStyle[];
+  containerStyle?: StyleProp<ViewStyle>;
+  disabledContainerStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
   title?: string;
   numberOfLines?: number;
   onPress?: () => any;

@@ -1,21 +1,17 @@
 import { useRef, useState } from 'react'
-import { Necessity } from '../../models/Enum'
+import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
+import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 
-interface SlidingVerification {
-  nc_csessionid?: string;
-  nc_token?: string;
-  nc_sig?: string;
-}
-
 interface UseRegisterPage {
-  homePage?: PageName;
-  signInPage?: PageName;
+  homePage?: PageName
+  signInPage?: PageName
 }
 
 const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
@@ -29,49 +25,62 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const [qq, setQQ] = useState(null)
   const [weChat, setWeChat] = useState(null)
   const [phoneNumber, setPhoneNumber] = useState(null)
-  const [slideCode, setSlideCode] = useState<SlidingVerification>({
+  const [slideCode, setSlideCode] = useState<SlideCode>({
     nc_csessionid: undefined,
     nc_token: undefined,
     nc_sig: undefined,
   })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
-  const [agent, setAgent] = useState(false)
   // refs
   const slideCodeRef = useRef(null)
+  const agentRef = useRef<AgentType>(null)
 
-  const goToHomePage = () => {
+  const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
   }
 
-  const goToSignInPage = () => {
+  const navigateToSignInPage = () => {
     signInPage && navigate(signInPage, {})
   }
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
-      goToHomePage()
+      hideLoading()
+      navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败')
-      console.log("--------試玩失败--------", error)
+      hideLoading()
+      ToastError(error ?? '登录失败')
+      console.log('--------試玩失败--------', error)
     },
   })
 
   const { register } = useRegister({
-    onSuccessWithAutoLogin: goToHomePage,
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
+    onSuccessWithAutoLogin: () => {
+      hideLoading()
+      navigateToHomePage()
+    },
     onSuccess: () => {
+      hideLoading()
       ToastSuccess('注册成功')
-      goToHomePage()
+      navigateToHomePage()
     },
     onError: (error) => {
+      hideLoading()
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError('注册失败')
+      ToastError(error ?? '注册失败')
       console.log('-------注册失败-------', error)
     },
   })
@@ -79,17 +88,15 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // stores
   const { sys } = useSys({})
   // data handle
-  const { necessity, pass_length_max, pass_length_min, pass_limit } = sys
+  const { necessity, passwordLimit } = sys
+  const { strength, maxLength, minLength } = passwordLimit
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
   const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
   const account_valid = account?.length >= 6
-  const password_valid =
-    validPassword(password, pass_limit) &&
-    password?.length >= pass_length_min &&
-    password?.length <= pass_length_max
+  const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
-  const name_valid = /^[\u4E00-\u9FA5]+$/.test(name) || necessity?.name != Necessity.必填
+  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
   const wx_valid = weChat || necessity?.wx != Necessity.必填
@@ -98,39 +105,39 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = false
-  account_valid &&
-    password_valid &&
-    confirmPassword_valid &&
-    recommendGuy_valid &&
-    name_valid &&
-    fundPassword_valid &&
-    qq_valid &&
-    wx_valid &&
-    email_valid &&
-    phoneNumber_valid &&
-    slideCode_valid &&
-    sms_valid
+  const valid = true
+  // account_valid &&
+  // password_valid &&
+  // confirmPassword_valid &&
+  // recommendGuy_valid &&
+  // name_valid &&
+  // fundPassword_valid &&
+  // qq_valid &&
+  // wx_valid &&
+  // email_valid &&
+  // phoneNumber_valid &&
+  // slideCode_valid &&
+  // sms_valid
 
   // onChange
-  const onChangeAgent = (value: any) => setAgent(value)
-  const onChangeRecommendGuy = (value: any) => setRecommendGuy(value)
-  const obChangeAccount = (value: any) => setAccount(value)
-  const obChangePassword = (value: any) => setPassword(value)
-  const onChangeConfirmPassword = (value: any) => setConfirmPassword(value)
-  const onChaneRealName = (value: any) => setName(value)
-  const onChaneFundPassword = (value: any) => setFundPassword(value)
-  const onChaneQQ = (value: any) => setQQ(value)
-  const onChaneWeChat = (value: any) => setWeChat(value)
-  const onChanePhone = (value: any) => setPhoneNumber(value)
-  const onChangeEmail = (value: any) => setEmail(value)
-  const onChaneSms = (value: any) => setSms(value)
+  const onChangeAgent = (value: AgentType) => (agentRef.current = value)
+  const onChangeRecommendGuy = (value: string) => setRecommendGuy(value)
+  const obChangeAccount = (value: string) => setAccount(value)
+  const obChangePassword = (value: string) => setPassword(value)
+  const onChangeConfirmPassword = (value: string) => setConfirmPassword(value)
+  const onChaneRealName = (value: string) => setName(value)
+  const onChaneFundPassword = (value: string) => setFundPassword(value)
+  const onChaneQQ = (value: string) => setQQ(value)
+  const onChaneWeChat = (value: string) => setWeChat(value)
+  const onChanePhone = (value: string) => setPhoneNumber(value)
+  const onChangeEmail = (value: string) => setEmail(value)
+  const onChaneSms = (value: string) => setSms(value)
   const onChangeSlideCode = setSlideCode
 
   const getPasswordLimitString = () => {
-    if (pass_limit == '1') {
+    if (strength == PasswordStrength.数字字母) {
       return '，密码须有数字及字母'
-    } else if (pass_limit == '2') {
+    } else if (strength == PasswordStrength.数字字母字符) {
       return '，密码须有数字及字母及字符'
     } else {
       return ''
@@ -153,21 +160,13 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const emailLabel = getLabel(necessity?.email, '请输入合法的电子邮箱')
   const recommendGuyLabel = getLabel(necessity?.recommendGuy, '请填写推荐人ID，只能包含数字')
   const fundPasswordLabel = getLabel(necessity?.fundPassword, '请输入4数字取款密码')
-  const nameLabel = getLabel(
-    necessity?.name,
-    '必须与您的银行账户名称相同，以免未能到账'
-  )
-  const passwordLebel =
-    '*请使用至少' +
-    pass_length_min +
-    '位至' +
-    pass_length_max +
-    '位英文或数字的组合' +
-    getPasswordLimitString()
-  const confirmPasswordLabel = (password == confirmPassword) && confirmPassword ? '' : '密码不一致'
+  const nameLabel = getLabel(necessity?.name, '必须与您的银行账户名称相同，以免未能到账')
+  const passwordLebel = '*请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
+  const confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
   const signUp = () => {
+    console.log('------name-----', name)
     if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
@@ -183,7 +182,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
         'slideCode[nc_token]': slideCode?.nc_token,
         'slideCode[nc_sig]': slideCode?.nc_sig,
         email: email, // 邮箱
-        regType: agent ? 'agent' : 'user', // 用户注册 或 代理注册,
+        regType: agentRef.current, // 用户注册 或 代理注册,
       }
       // @ts-ignore
       register(params)
@@ -232,20 +231,14 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     wxLabel,
   }
 
-  const goTo = {
-    goToHomePage,
-    goToSignInPage
+  const navigateTo = {
+    navigateToHomePage,
+    navigateToSignInPage,
   }
 
   const sign = {
     signUp,
-    tryPlay
-  }
-
-  const limit = {
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
+    tryPlay,
   }
 
   return {
@@ -254,9 +247,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     valid,
     label,
     onChange,
-    goTo,
+    navigateTo,
     sign,
-    limit
+    passwordLimit,
   }
 }
 

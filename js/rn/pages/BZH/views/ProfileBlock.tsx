@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle, StyleProp } from 'react-native'
 import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../../public/tools/Scale'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -7,26 +7,17 @@ import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 
 interface ProfileBlockProps {
-  balance: string | number;
-  features: any[];
-  renderFeature: (item: any, index: number) => any;
-  avatar: string;
-  containerStyle?: ViewStyle;
-  name: string;
-  level: string;
-  onPressAvatar: () => any;
+  balance: string | number
+  features: any[]
+  renderFeature: (item: any, index: number) => any
+  avatar: string
+  containerStyle?: StyleProp<ViewStyle>
+  name: string
+  level: string
+  onPressAvatar: () => any
 }
 
-const ProfileBlock = ({
-  avatar,
-  balance,
-  features,
-  renderFeature,
-  containerStyle,
-  name,
-  level,
-  onPressAvatar
-}: ProfileBlockProps) => {
+const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle, name, level, onPressAvatar }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
@@ -36,13 +27,7 @@ const ProfileBlock = ({
           <View style={styles.moneyContainer}>
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.text}>{name}</Text>
-              <LinearBadge
-                containerStyle={{ borderRadius: scale(5), width: null }}
-                textStyle={{ paddingHorizontal: scale(10) }}
-                title={level}
-                colors={['#0080FF', '#97CBFF']}
-                showIcon={false}
-              />
+              <LinearBadge containerStyle={{ borderRadius: scale(5), width: null }} textStyle={{ paddingHorizontal: scale(10) }} title={level} colors={['#0080FF', '#97CBFF']} showIcon={false} />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scale(10) }}>
               <ReLoadBalanceComponent
@@ -57,9 +42,7 @@ const ProfileBlock = ({
             </View>
           </View>
         </View>
-        <View style={styles.featureContainer}>
-          {features.map(renderFeature)}
-        </View>
+        <View style={styles.featureContainer}>{features.map(renderFeature)}</View>
       </View>
     </View>
   )
@@ -70,7 +53,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 500 / 250,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-    paddingBottom: scale(30)
+    paddingBottom: scale(30),
   },
   whiteBlock: {
     height: '100%',
@@ -106,7 +89,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: scale(25),
     fontWeight: '400',
-    paddingRight: scale(10)
+    paddingRight: scale(10),
   },
   moneyContainer: {
     flex: 1,

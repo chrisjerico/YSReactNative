@@ -1,14 +1,11 @@
-import { PageName } from '../../public/navigation/Navigation'
-import { push, navigate } from '../../public/navigation/RootNavigation'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import PushHelper from '../../public/define/PushHelper'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../../public/models/Enum'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
-
-const gameLobby = UGStore.globalProps.gameLobby
 
 const config = {
   defaultUserCenterLogos: {
@@ -37,7 +34,7 @@ const config = {
   menus: [
     {
       title: '会员中心',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.我的页) },
+      onPress: () => { navigate(PageName.WNZMinePage) }, // PushHelper.pushUserCenterType(UGUserCenterType.我的页)
     },
     {
       title: '额度转换',
@@ -49,7 +46,7 @@ const config = {
     },
     {
       title: '彩票游戏',
-      onPress: () => { PushHelper.pushLotteryLobby() },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
     },
     {
       title: 'AG视讯',
@@ -87,7 +84,7 @@ const config = {
     },
     {
       title: '更多彩种',
-      onPress: () => { PushHelper.pushLotteryLobby() },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
     },
     {
       title: '投注记录',
@@ -95,7 +92,7 @@ const config = {
     },
     {
       title: '开奖结果',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖网) },
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖结果) }, // 這裡到底要跳到哪
     },
     {
       title: '长龙排行',

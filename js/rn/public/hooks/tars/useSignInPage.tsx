@@ -6,26 +6,23 @@ import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useLogIn from './useLogIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 
 interface SlidingVerification {
-  nc_csessionid: string;
-  nc_token: string;
-  nc_sig: string;
+  nc_csessionid: string
+  nc_token: string
+  nc_sig: string
 }
 
 interface UseSignInPage {
-  homePage: PageName;
-  signUpPage: PageName;
+  homePage: PageName
+  signUpPage: PageName
 }
 
-const useSignInPage = ({
-  homePage,
-  signUpPage,
-}: UseSignInPage) => {
-
+const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   // stores
   const { sys } = useSys({})
   const sign = UGStore?.globalProps.sign
@@ -42,46 +39,50 @@ const useSignInPage = ({
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
-  const goToRegisterPage = () => {
+  const navigateToSignUpPage = () => {
     homePage && navigate(signUpPage, {})
   }
 
-  const goToHomePage = () => {
+  const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
   }
 
   const { logIn } = useLogIn({
     onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
       ToastStatus('正在登录...')
     },
     onSuccess: () => {
       if (loginTo == LoginTo.首页) {
-        goToHomePage()
+        navigateToHomePage()
       } else {
+        navigateToHomePage()
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
+      hideLoading()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
+      hideLoading()
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error || '登录失败')
-      console.log("--------登录失败--------", error)
+      ToastError(error ?? '登录失败')
+      console.log('--------登录失败--------', error)
     },
   })
 
   const { tryPlay } = useTryPlay({
     onSuccess: () => {
-      goToHomePage()
+      navigateToHomePage()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
-      ToastError('登录失败')
-      console.log("--------試玩失败--------", error)
+      ToastError(error ?? '登录失败')
+      console.log('--------試玩失败--------', error)
     },
   })
 
@@ -90,46 +91,49 @@ const useSignInPage = ({
       account: account,
       //@ts-ignore
       password: password?.md5(),
-      slideCode
+      slideCode,
     })
   }
 
   const onChangeAccount = (value: string) => {
     UGStore.dispatch({
-      type: 'merge', sign: {
+      type: 'merge',
+      sign: {
         account: rememberRef.current ? value : null,
-        password: rememberRef.current ? password : null
-      }
-    });
+        password: rememberRef.current ? password : null,
+      },
+    })
     setAccount(value)
   }
 
   const onChangePassword = (value: string) => {
     UGStore.dispatch({
-      type: 'merge', sign: {
+      type: 'merge',
+      sign: {
         account: rememberRef.current ? account : null,
-        password: rememberRef.current ? value : null
-      }
-    });
+        password: rememberRef.current ? value : null,
+      },
+    })
     setPassword(value)
   }
 
   const onChangeRemember = (value: boolean) => {
     rememberRef.current = value
     UGStore.dispatch({
-      type: 'merge', sign: {
+      type: 'merge',
+      sign: {
         remember: value,
         account: value ? account : null,
-        password: value ? password : null
-      }
-    });
+        password: value ? password : null,
+      },
+    })
   }
 
   const onChangeSlideCode = setSlideCode
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
-  const valid = (account && password && loginVCode_valid) ? true : false
+  const valid = account && password && loginVCode_valid ? true : false
 
   const value = {
     account,
@@ -144,28 +148,26 @@ const useSignInPage = ({
     onChangeSlideCode,
   }
 
-  const goTo = {
-    goToHomePage,
-    goToRegisterPage,
+  const navigateTo = {
+    navigateToHomePage,
+    navigateToSignUpPage,
   }
 
   const show = {
-    loginVCode
-  }
-
-  const _sign = {
-    signIn,
-    tryPlay,
+    loginVCode,
   }
 
   return {
     slideCodeRef,
-    goTo,
+    navigateTo,
     onChange,
     value,
     valid,
     show,
-    sign: _sign
+    sign: {
+      signIn,
+      tryPlay,
+    },
   }
 }
 

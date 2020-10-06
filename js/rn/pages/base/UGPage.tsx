@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { PageName } from '../../public/navigation/Navigation'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGColor } from '../../public/theme/UGThemeColor'
@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import FastImage from 'react-native-fast-image'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { navigationRef } from '../../public/navigation/RootNavigation'
+import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
 import { ugLog } from "../../public/tools/UgLog";
 import StringUtils from "../../public/tools/StringUtils";
 import { Platform } from "react-native";
@@ -34,7 +34,6 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps;
-  tabbarOpetions?: BottomTabNavigationOptions; // 底部标签栏Options
 
   // —————————— 安卓独有参数 ——————————
   fromNative?: string; //当前界面是否由原生打开
@@ -42,61 +41,48 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
 
 // HOC
 export default (Page: Function) => {
+
   return class extends React.Component<UGBasePageProps> {
-    private newProps: UGBasePageProps = null
     private unsubscribe: () => void;
+    private newProps: UGBasePageProps = null
     private vars: { [x: string]: any } = {};
 
     constructor(props: UGBasePageProps) {
       super(props)
-      const {
-        navigation,
-        tabbarOpetions = { unmountOnBlur: true },
-        route,
-      } = props
+      const { navigation, route, } = props
 
-      console.log('页面初始化', route.name)
-
-      // 配置导航
-      {
-        navigation.setOptions({ header: () => { return null; } })
-        navigation.jumpTo && navigation.setOptions(tabbarOpetions)
-      }
-
-      {
-        // 监听焦点
-        let lastParams;
-        navigation.removeListener('focus', null)
-        navigation.addListener('focus', () => {
-          const { name, params } = this.props.route
-          ugLog('成为焦点', name, params)
-          if (lastParams !== params) {
-            // 跳转时参数设置到props
-            lastParams = params;
-            this.setProps(params);
+      // 监听焦点
+      let lastParams;
+      navigation.removeListener('focus', null)
+      navigation.addListener('focus', () => {
+        const { name, params } = this.props.route
+        ugLog('成为焦点', name, params)
+        if (lastParams !== params) {
+          // 跳转时参数设置到props
+          lastParams = params;
+          this.setProps(params);
+        }
+        this.newProps.didFocus && this.newProps.didFocus(params);
+      })
+      navigation.removeListener('transitionEnd', null)
+      navigation.addListener('transitionEnd', (e) => {
+        if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
+          //检查一下Native主页下面的tab是显示还是隐藏
+          switch (Platform.OS) {
+            case "ios":
+              OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+              break;
+            case "android":
+              ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
+              break;
           }
-          this.newProps.didFocus && this.newProps.didFocus(params);
-        })
-        navigation.addListener('transitionEnd', (e) => {
-          if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-            //检查一下Native主页下面的tab是显示还是隐藏
-            switch (Platform.OS) {
-              case "ios":
-                OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
-                break;
-              case "android":
-                ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
-                break;
-            }
-          }
-        })
-        // 监听dispatch
-        this.unsubscribe = UGStore.subscribe(route.name, (() => {
-          this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
-          console.log('渲染', this.props.route.name);
-          this.setState({});
-        }).bind(this));
-      }
+        }
+      })
+      // 监听dispatch
+      this.unsubscribe = UGStore.subscribe(route.name, (() => {
+        this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
+        this.setState({});
+      }).bind(this));
 
       // 设置props
       const defaultProps: UGBasePageProps = {
@@ -132,4 +118,9 @@ export default (Page: Function) => {
       ); // navigation={this.props.navigation}
     }
   }
+}
+
+// 全局使用的setProps （刷新当前正在显示的页面）
+export function setProps<P extends UGBasePageProps>(props?: P, willRender?: boolean): void {
+  UGStore.dispatch({ type: 'merge', page: getCurrentPage(), props: props })
 }

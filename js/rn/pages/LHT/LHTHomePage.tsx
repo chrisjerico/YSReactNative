@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
-import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import useRerender from '../../public/hooks/tars/useRerender'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { getActivityPosition, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
+import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
@@ -31,53 +30,22 @@ import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
 
 const LHTHomePage = () => {
-  // yellowBox
-  console.disableYellowBox = true
   // states
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
   const { getHtml5Image } = useHtml5Image()
 
-  const { rerender } = useRerender()
-  const { goTo, value, sign, refresh } = useHomePage({
-    onSuccessTryPlay: rerender,
-    onSuccessSignOut: rerender,
-  })
+  const { goTo, value, sign, refresh } = useHomePage({})
 
   const { signOut, tryPlay } = sign
   const { goToJDPromotionListPage } = goTo
 
-  const {
-    loading,
-    refreshing,
-    userInfo,
-    lotteryDate,
-    bannersInterval,
-    onlineNum,
-    lotterys,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-    sys
-  } = value
+  const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
+
+  const { lotteryDate, bannersInterval, onlineNum, lotterys, banners, notices, midBanners, announcements, navs, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo
 
-  const {
-    mobile_logo,
-    webName,
-    showCoupon,
-    rankingListType,
-    appDownloadUrl
-  } = sys
+  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl } = sysInfo
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -87,9 +55,7 @@ const LHTHomePage = () => {
     ...lotterys.slice(6),
   ]
 
-  const chooseGames = preferenceGames
-    ?.concat(config?.moreLottery)
-    ?.filter((item) => item.selected)
+  const chooseGames = preferenceGames?.concat(config?.moreLottery)?.filter((item) => item.selected)
 
   if (loading) {
     return <ProgressCircle />
@@ -125,8 +91,7 @@ const LHTHomePage = () => {
                 }
               }}
             />
-          }
-        >
+          }>
           <BannerBlock
             containerStyle={{ aspectRatio: 540 / 230 }}
             autoplayTimeout={bannersInterval}
@@ -148,10 +113,7 @@ const LHTHomePage = () => {
           />
           <View style={styles.contentContainer}>
             <NoticeBlock
-              containerStyle={[
-                styles.subComponent,
-                { borderRadius: scale(100) },
-              ]}
+              containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
               iconContainerStyle={{
                 width: scale(20),
                 marginHorizontal: scale(15),
@@ -163,10 +125,7 @@ const LHTHomePage = () => {
               }}
             />
             <NavBlock
-              containerStyle={[
-                styles.subComponent,
-                { borderRadius: scale(20) },
-              ]}
+              containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
               navs={navs}
               lotterys={plusLotterys}
               date={lotteryDate}
@@ -175,16 +134,10 @@ const LHTHomePage = () => {
               balanceLogo={getHtml5Image(14, 'yue')}
               balance={balance}
               customerServiceLogo={getHtml5Image(14, 'zxkf')}
-              onPressSavePoint={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.存款)
-              }
-              onPressGetPoint={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.取款)
-              }
+              onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
+              onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
               onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
-              onPressSmileLogo={() =>
-                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-              }
+              onPressSmileLogo={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}
               renderNav={(item, index) => {
                 const { icon, name, logo, gameId } = item
                 return (
@@ -208,18 +161,7 @@ const LHTHomePage = () => {
               }}
               renderLottery={(item, index) => {
                 const { number, color, sx, showMore } = item
-                return (
-                  <LotteryBall
-                    key={index}
-                    score={number}
-                    color={color}
-                    text={sx}
-                    showMore={showMore}
-                    onPress={() =>
-                      PushHelper.pushUserCenterType(UGUserCenterType.六合彩)
-                    }
-                  />
-                )
+                return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)} />
               }}
             />
             <HomeGameComponent
@@ -299,6 +241,10 @@ const LHTHomePage = () => {
                       marginTop: scale(5),
                       aspectRatio: 3,
                     }}
+                    flagContainer={{
+                      right: scale(15),
+                      top: scale(-5),
+                    }}
                     titleStyle={{ fontSize: scale(23) }}
                     subTitleStyle={{ fontSize: scale(23) }}
                     onPress={() => PushHelper.pushHomeGame(item)}
@@ -313,14 +259,7 @@ const LHTHomePage = () => {
               listContainerStyle={{ borderRadius: scale(15) }}
               coupons={coupons}
               renderCoupon={({ item, index }) => {
-                const {
-                  pic,
-                  linkCategory,
-                  linkPosition,
-                  title,
-                  content,
-                  linkUrl,
-                } = item
+                const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
                 return (
                   <AutoHeightCouponComponent
                     key={index}
@@ -340,23 +279,12 @@ const LHTHomePage = () => {
                 )
               }}
             />
-            <AnimatedRankComponent
-              type={rankingListType}
-              containerStyle={{ marginVertical: scale(10) }}
-              iconTitleContainerStyle={styles.rankBlockIconContainerStyle}
-              rankLists={rankLists}
-              initialAnimatedHeight={scale(0)}
-              finalAnimatedHeight={
-                scale(195) + scale((rankLists?.length ?? 0) * 50)
-              }
-            />
+            <AnimatedRankComponent type={rankingListType} containerStyle={{ marginVertical: scale(10) }} iconTitleContainerStyle={styles.rankBlockIconContainerStyle} rankLists={rankLists} />
             <BottomLogo
               containerStyle={{ marginBottom: scale(30) }}
               webName={webName}
               onPressComputer={() => {
-                PushHelper.openWebView(
-                  httpClient.defaults.baseURL + '/index2.php'
-                )
+                PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
               }}
               onPressPromotion={goToJDPromotionListPage}
               debug={false}
@@ -389,41 +317,7 @@ const LHTHomePage = () => {
             <BottomGap />
           </View>
         </ScrollView>
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={'dzp_btn'}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
       </>
     )
   }
@@ -448,41 +342,3 @@ const styles = StyleSheet.create({
 })
 
 export default LHTHomePage
-
-// {
-//   /* <HeadlineBlock
-//         containerStyle={styles.subComponent}
-//         headlines={headlines}
-//         headLineLogo={defaultHeadLineLogo}
-//         onPressHeadline={({ value }) =>
-//           PushHelper.pushNoticePopUp(value)
-//         }
-//       /> */
-// }
-
-// PushHelper.pushHomeGame(
-//   Object.assign(
-//     {},
-//     {
-//       category: '7',
-//       clsName: 'GameModel',
-//       gameCode: '-1',
-//       gameId: gameId,
-//       gameType: gameType,
-//       isClose: '0',
-//       isInstant: '0',
-//       isSeal: '0',
-//       levelType: '1',
-//       name: title,
-//       openWay: '0',
-//       realName: title,
-//       seriesId: '1',
-//       subId: gameId,
-//       subtitle: des,
-//       tipFlag: '4',
-//       title: title,
-//       url: '',
-//     },
-//     item
-//   )
-// )

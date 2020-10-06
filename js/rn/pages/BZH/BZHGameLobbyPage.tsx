@@ -4,9 +4,11 @@ import TabComponent from '../../public/components/tars/TabComponent'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
-import { pop } from '../../public/navigation/RootNavigation'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
+import BottomGap from '../../public/views/tars/BottomGap'
 import GameButton from '../../public/views/tars/GameButton'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -20,16 +22,10 @@ const BZHGameLobbyPage = ({ route }) => {
   return (
     <>
       <GameLobbyPageHeader />
-      <ScrollView
-        style={styles.container}
-        showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <TabComponent
           containerStyle={{
-            borderBottomRightRadius: scale(10),
-            borderBottomLeftRadius: scale(10),
-            marginTop: scale(10),
+            marginVertical: scale(10),
           }}
           numColumns={3}
           initialTabIndex={initialTabIndex ? initialTabIndex : 0}
@@ -53,10 +49,8 @@ const BZHGameLobbyPage = ({ route }) => {
                   width: '100%',
                 }}
                 numColumns={3}
-                //@ts-ignore
                 data={item}
                 renderItem={({ item }) => {
-                  //@ts-ignore
                   const { title, pic, id } = item
                   return (
                     <GameButton
@@ -69,7 +63,7 @@ const BZHGameLobbyPage = ({ route }) => {
                       title={title}
                       showSubTitle={false}
                       titleStyle={{
-                        fontSize: scale(16),
+                        fontSize: scale(18),
                       }}
                       titleContainerStyle={{
                         aspectRatio: 2.8,
@@ -90,6 +84,7 @@ const BZHGameLobbyPage = ({ route }) => {
             )
           }}
         />
+        <BottomGap />
       </ScrollView>
     </>
   )
@@ -101,9 +96,11 @@ const GameLobbyPageHeader = () => (
     <MineHeader
       showBackBtn={true}
       onPressBackBtn={() => {
-        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(pop)
+        OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
+          navigate(PageName.BZHHomePage, {})
+        })
       }}
-      showCustomerService={false}
+      showRightTitle={false}
       title={'游戏大厅'}
     />
   </SafeAreaHeader>
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: BZHThemeColor.宝石红.homeContentSubColor,
-    marginBottom: scale(20),
+    // marginBottom: scale(20),
   },
   gameContainer: {
     width: '33.3%',

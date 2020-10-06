@@ -37,7 +37,12 @@ export function pop(): boolean {
         }
     }
     count > 1 && navigationRef?.current?.dispatch(StackActions.pop());
-    return count > 1;
+    if (count > 1) {
+        return true;
+    } else {
+        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        return false;
+    }
 }
 
 export function popToRoot() {
@@ -92,14 +97,18 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
         if (getCurrentPage() == PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == RouterType.Stack) {
-                navigationRef?.current?.dispatch(StackActions.replace(page, props));
+                const canPop = navigationRef?.current?.getRootState().routes.length > 1;
+                if (canPop) {
+                    navigationRef?.current?.dispatch(StackActions.replace(page, props));
+                } else {
+                    navigationRef?.current?.dispatch(StackActions.push(page, props));
+                }
             } else {
                 popToRoot();
                 navigationRef?.current?.dispatch(TabActions.jumpTo(page, props));
             }
         } else {
             console.log('跳转到过渡页');
-
             //检查一下Native主页下面的tab是显示还是隐藏
             if (action == RouterType.Stack) {
                 switch (Platform.OS) {
@@ -110,7 +119,6 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType):
                       ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
                     break;
                 }
-
                 navigationRef?.current?.dispatch(StackActions.push(page, props));
             } else {
                 popToRoot();

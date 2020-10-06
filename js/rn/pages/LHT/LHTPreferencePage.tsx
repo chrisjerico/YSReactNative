@@ -10,7 +10,6 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import PreferenceButton from './views/PreferenceButton'
 
 const LHTPreferencePage = ({ route }) => {
-
   const { onPressConfirm, initPreferences } = route?.params ?? {}
   const [preferences, setPreferences] = useState(initPreferences)
 
@@ -20,16 +19,8 @@ const LHTPreferencePage = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaHeader
-        headerColor={LHThemeColor.六合厅.themeColor}
-        containerStyle={{ paddingHorizontal: scale(10) }}
-      >
-        <MineHeader
-          title={'偏好设置'}
-          onPressBackBtn={pop}
-          showCustomerService={false}
-          showBackBtn={true}
-        />
+      <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor} containerStyle={{ paddingHorizontal: scale(10) }}>
+        <MineHeader title={'偏好设置'} onPressBackBtn={pop} showRightTitle={false} showBackBtn={true} />
       </SafeAreaHeader>
       <View style={{ flex: 1, backgroundColor: '#E0E0E0' }}>
         <Text style={styles.title}>{'选择您感兴趣的彩种'}</Text>
@@ -38,8 +29,7 @@ const LHTPreferencePage = ({ route }) => {
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-evenly',
-          }}
-        >
+          }}>
           {preferences?.map((item: any, index: number) => {
             const { title, selected } = item
             return (
@@ -48,20 +38,16 @@ const LHTPreferencePage = ({ route }) => {
                 title={title}
                 selected={selected}
                 onPress={() => {
-                  const newPreferences = preferences?.map(
-                    (ele: any, _index: number) => {
-                      if (index == _index) {
-                        return Object.assign({}, item, {
-                          selected: !ele?.selected,
-                        })
-                      } else {
-                        return ele
-                      }
+                  const newPreferences = preferences?.map((ele: any, _index: number) => {
+                    if (index == _index) {
+                      return Object.assign({}, item, {
+                        selected: !ele?.selected,
+                      })
+                    } else {
+                      return ele
                     }
-                  )
-                  const selectedPreferences = newPreferences.filter(
-                    (ele: any) => ele?.selected
-                  )
+                  })
+                  const selectedPreferences = newPreferences.filter((ele: any) => ele?.selected)
                   if (selectedPreferences?.length > 11) {
                     ToastError('最多设置11个常用资讯')
                   } else if (selectedPreferences?.length < 2) {
@@ -80,11 +66,11 @@ const LHTPreferencePage = ({ route }) => {
             backgroundColor: '#ff8610',
             marginHorizontal: scale(15),
             aspectRatio: 9,
-            borderRadius: scale(5)
+            borderRadius: scale(5),
           }}
           titleStyle={{
             color: '#ffffff',
-            fontSize: scale(25)
+            fontSize: scale(25),
           }}
           onPress={() => {
             pop()
@@ -103,7 +89,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: scale(20),
     marginBottom: scale(32),
-    fontWeight: '900'
+    fontWeight: '900',
   },
 })
 

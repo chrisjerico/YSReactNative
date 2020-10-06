@@ -2,7 +2,7 @@ import { UGStore } from './../../../../redux/store/UGStore';
 import { OCCall } from './OCCall';
 import { PageName, } from '../../../navigation/Navigation';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
-import { getCurrentPage, jumpTo, pop } from '../../../navigation/RootNavigation';
+import { getCurrentPage, jumpTo, pop, push } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { RnPageModel } from '../SetRnPageInfo';
 
@@ -42,11 +42,14 @@ export class OCEvent extends OCCall {
     });
 
     // 跳转到指定页面
-    this.emitter.addListener('SelectVC', (params: { vcName: PageName }) => {
+    this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
       console.log('跳转到rn页面：', params.vcName);
-
       if (params.vcName) {
-        jumpTo(params.vcName) || jumpTo(RnPageModel.getPageName(params.vcName));
+        if (params.rnAction == 'push') {
+          push(params.vcName) || push(RnPageModel.getPageName(params.vcName));
+        } else {
+          jumpTo(params.vcName) || jumpTo(RnPageModel.getPageName(params.vcName));
+        }
       }
     });
 

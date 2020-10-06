@@ -4,16 +4,12 @@ import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 
 interface ProfileButtonProps {
-  title: string;
-  logo: string;
-  onPress: () => any;
+  title: string
+  logo: string
+  onPress: () => any
 }
 
-const ProfileButton = ({
-  title = 'title',
-  logo = '',
-  onPress,
-}: ProfileButtonProps) => {
+const ProfileButton = ({ title = 'title', logo = '', onPress }: ProfileButtonProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
