@@ -8,6 +8,7 @@ import {
 import {Play, PlayOdd} from '../../public/network/Model/PlayOddDataModel';
 import {UGStore} from "../store/UGStore";
 import {PageName} from "../../public/navigation/Navigation";
+import {ugLog} from "../../public/tools/UgLog";
 
 interface bettingResultProps {
   [key: string]: any
@@ -21,6 +22,7 @@ export interface BettingReducerProps {
   betGroupResult: number[]
 }
 export enum BettingReducerActions {
+  ballPress = "ballPress",
   itemPress = "itemPress",
   shengXiaoPress = "shengXiaoPress",
   subPlayPress = "subPlayPress",
@@ -34,6 +36,10 @@ interface SelectedShengXiao {
 interface itemPressAction {
   type: BettingReducerActions.itemPress,
   value: Play
+}
+interface ballPressAction {
+  type: BettingReducerActions.ballPress,
+  value: string
 }
 interface shengXiaoPressAction {
   type: BettingReducerActions.shengXiaoPress,
@@ -55,7 +61,7 @@ interface subPlayPressAction {
   type: BettingReducerActions.subPlayPress,
   value: string
 }
-type Actions = itemPressAction | shengXiaoPressAction | setCurrentPlayOddAction | itemGroupPressAction | cleanBetGroupResultAction | subPlayPressAction
+type Actions = itemPressAction | ballPressAction | shengXiaoPressAction | setCurrentPlayOddAction | itemGroupPressAction | cleanBetGroupResultAction | subPlayPressAction
 const initialState: BettingReducerProps = {
   bettingResult: {},
   shengXiaoValue: getShengXiaoValue(),
@@ -80,6 +86,16 @@ function BettingReducer(state = initialState, action: Actions) {
       } else {
         delete draftState.bettingResult[value.id]
         draftState.selectedShengXiao[shengXiaoString] = state.selectedShengXiao[shengXiaoString] - 1
+      }
+    } else if (action.type == BettingReducerActions.ballPress) {
+      const { value } = action
+      // ugLog('action 2 = $s', action)
+      // ugLog('draftState.bettingResult ', draftState.bettingResult)
+      const fixString = value?.startsWith('0') ? value.slice(0) : value
+      if (!draftState.bettingResult[fixString]) {
+        draftState.bettingResult[fixString] = value
+      } else {
+        delete draftState.bettingResult[fixString]
       }
     } else if (action.type == BettingReducerActions.shengXiaoPress) {
       if (!state.currentPlayOdd)

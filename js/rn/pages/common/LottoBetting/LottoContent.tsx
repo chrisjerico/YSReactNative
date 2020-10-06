@@ -15,6 +15,12 @@ import LMContainer from "./PlayVIew/LHT/LM"
 import ZMContainer from "./PlayVIew/LHT/ZM"
 import TMPlayView from "./PlayVIew/LHT/TM"
 import ZMContainer16 from "./PlayVIew/LHT/ZM16"
+import GFWFContainer from "./PlayVIew/FT/GFWF";
+import YZDWContainer from "./PlayVIew/SSC/YZDW";
+import EZDWContainer from "./PlayVIew/SSC/EZDW";
+import SZDWContainer from "./PlayVIew/SSC/SZDW";
+import BDWContainer from "./PlayVIew/SSC/BDW";
+import DWDContainer from "./PlayVIew/SSC/DWD";
 
 const LottoContent = ({ setProps }) => {
   const value = useLottoContext()
@@ -49,8 +55,20 @@ const LottoContent = ({ setProps }) => {
         return <TWSContainer setProps={setProps}/>
       case "WX":
         return <WXSContainer setProps={setProps}/>
+      case 'GFWF'://官方玩法
+        return <GFWFContainer setProps={setProps}/>
+      case 'YZDW'://一字定位玩法
+        return <YZDWContainer setProps={setProps}/>
+      case 'EZDW'://二字定位玩法
+        return <EZDWContainer setProps={setProps}/>
+      case 'SZDW'://三字定位玩法
+        return <SZDWContainer setProps={setProps}/>
+      case 'BDW'://不定位玩法
+        return <BDWContainer setProps={setProps}/>
+      case 'DWD'://定位胆玩法
+        return <DWDContainer setProps={setProps}/>
       default:
-        break
+        break;
     }
   }
   const onPress = (item: PlayOdd) => {
