@@ -18,6 +18,7 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
+import Avatar from '../../public/views/tars/Avatar'
 
 const JXHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -28,7 +29,7 @@ const JXHMinePage = () => {
 
   const { sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg } = sysInfo
+  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg, avatar } = sysInfo
 
   const { signOut } = sign
 
@@ -55,9 +56,8 @@ const JXHMinePage = () => {
   ]
   return (
     <>
-      <SafeAreaHeader headerColor={'#000000'}>
-        <BackBtnComponent homePage={PageName.JXHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} />} />
-      </SafeAreaHeader>
+      <SafeAreaHeader headerColor={'#000000'} />
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -66,112 +66,19 @@ const JXHMinePage = () => {
         }}
         // refreshControl={<RefreshControlComponent onRefresh={() => { }} />} 暂时注释掉
       >
-        <LinearGradient colors={['#eb5d4d', '#fb2464']} style={{ borderRadius: scale(10), width: '100%', aspectRatio: 2, paddingHorizontal: scale(20) }}>
-          <View style={{ flex: 1, justifyContent: 'center' }}>
-            <Text style={{ color: '#ffffff', fontSize: scale(30) }}>{usr}</Text>
-          </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-              <FastImage source={{ uri: getHtml5Image(22, 'touxiang') }} style={{ height: '50%', aspectRatio: 1 }} />
-              <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.任务中心)}>
-                <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-                }}>
-                <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
-              </TouchableWithoutFeedback>
+        <View style={{ aspectRatio: 4, flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', height: '100%' }}>
+            <Avatar uri={avatar} />
+            <View style={{ height: '100%', justifyContent: 'space-between', paddingVertical: '8%', marginLeft: scale(10) }}>
+              <Text style={{ color: '#a0a0a0', fontSize: scale(20) }}>{usr}</Text>
+              <Text style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</Text>
             </View>
           </View>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            {badges?.map((item, index) => {
-              const { title, logo, code } = item
-              return (
-                <LinearBadge
-                  key={index}
-                  colors={['transparent', 'transparent']}
-                  title={title}
-                  containerStyle={{ borderRadius: 0 }}
-                  showIcon={false}
-                  logo={logo}
-                  showLogo={true}
-                  onPress={() => {
-                    PushHelper.pushUserCenterType(code)
-                  }}
-                />
-              )
-            })}
-          </View>
-        </LinearGradient>
-        <View style={{ width: '100%', aspectRatio: 6, justifyContent: 'center', paddingLeft: scale(20) }}>
-          <Text style={{ color: '#ffffff', fontSize: scale(22), fontWeight: '500' }}>{'总资产'}</Text>
+          <FastImage source={{ uri: 'http://t132f.fhptcdn.com/static/vuePublic/images/my/userInfo/dailysign.png' }} style={{ flex: 1, height: '100%' }} resizeMode={'contain'} />
         </View>
-        <View style={{ width: '100%', aspectRatio: 6, paddingLeft: scale(20) }}>
-          <ReLoadBalanceComponent
-            title={'¥ '}
-            titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
-            balance={balance}
-            balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
-            color={'#ffffff'}
-            size={30}
-          />
+        <View>
+          
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          {topUserCenterItems.map((item, index) => {
-            const { logo, name, code } = item
-            return (
-              <LinearBadge
-                key={index}
-                colors={index ? ['#3a3a41', '#3a3a41'] : ['#eb5d4d', '#fb7a24']}
-                containerStyle={{ width: '31%', aspectRatio: 2, borderRadius: scale(10), alignItems: 'center', height: null }}
-                title={name}
-                textStyle={{ color: '#ffffff', fontSize: scale(20), maxWidth: '60%' }}
-                showIcon={false}
-                showLogo={true}
-                logo={logo}
-                onPress={() => {
-                  PushHelper.pushUserCenterType(code)
-                }}
-              />
-            )
-          })}
-        </View>
-        <List
-          uniqueKey={'KSMinePage'}
-          numColumns={3}
-          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingTop: scale(5) }}
-          data={listUserCenterItems}
-          renderItem={({ item }) => {
-            const { name, logo, code } = item
-            return (
-              <GameButton
-                title={name}
-                logo={logo}
-                enableCircle={false}
-                titleStyle={{ color: '#ffffff' }}
-                containerStyle={{ width: '33%', marginBottom: scale(40), marginTop: scale(30) }}
-                imageContainerStyle={{ width: '50%' }}
-                titleContainerStyle={{ aspectRatio: 5 }}
-                unreadMsg={unreadMsg || 0}
-                showUnReadMsg={code == 9}
-                showSubTitle={false}
-                onPress={() => {
-                  PushHelper.pushUserCenterType(code)
-                }}
-              />
-            )
-          }}
-        />
-        <Button
-          title={'退出登录'}
-          titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
-          containerStyle={{ width: '100%', aspectRatio: 7, backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(5), marginBottom: scale(20) }}
-          onPress={signOut}
-        />
         <BottomGap />
       </ScrollView>
     </>
