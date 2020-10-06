@@ -26,9 +26,9 @@ import GFWFContainer, {GFWF_DATA} from "./PlayVIew/FT/GFWF";
 const LottoContent = ({setProps}) => {
     const value = useLottoContext()
     const borderColor = "red"
-    // const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
-  //Todo arc
-  const currentPlayOdd = GFWF_DATA
+    const {currentPlayOdd} = UGStore.globalProps.BettingReducer;
+  // Todo arc
+  // const currentPlayOdd = GFWF_DATA
 
     const getPlayView = () => {
         switch (currentPlayOdd?.code) {
