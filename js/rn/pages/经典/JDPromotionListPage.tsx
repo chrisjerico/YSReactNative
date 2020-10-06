@@ -41,12 +41,6 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       showTopBar: false,
     });
 
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
-      if (cnt == 1 && getStackLength() == 1) {
-        setProps({ navbarOpstions: { back: false } });
-      }
-    });
-
     NetworkRequest1.systeam_promotions().then(data => {
       if (data.showCategory) {
         const temp: { [x: number]: Array<UGPromoteModel> } = [];
@@ -82,6 +76,10 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
     });
   }, [])
 
+  AppDefine.checkHeaderShowBackButton((show) => {
+    setProps({ navbarOpstions: { back: show } });
+  });
+  
   if ('c217'.indexOf(AppDefine.siteId) != -1) {
     v.style1 = '背景不透明';
   }
