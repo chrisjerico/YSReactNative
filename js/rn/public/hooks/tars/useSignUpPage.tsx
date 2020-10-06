@@ -55,7 +55,6 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onError: (error) => {
       hideLoading()
       ToastError(error ?? '登录失败')
-      console.log('--------試玩失败--------', error)
     },
   })
 
@@ -63,14 +62,19 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading })
     },
-    onSuccessWithAutoLogin: () => {
+    onSuccessAutoLogin: () => {
       hideLoading()
+      ToastSuccess('自动登录成功')
       navigateToHomePage()
+    },
+    onErrorAutoLogin: (error) => {
+      hideLoading()
+      ToastError(error ?? '自动登录失败')
     },
     onSuccess: () => {
       hideLoading()
       ToastSuccess('注册成功')
-      navigateToHomePage()
+      navigateToSignInPage()
     },
     onError: (error) => {
       hideLoading()
@@ -81,7 +85,6 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
       })
       slideCodeRef?.current?.reload()
       ToastError(error ?? '注册失败')
-      console.log('-------注册失败-------', error)
     },
   })
 

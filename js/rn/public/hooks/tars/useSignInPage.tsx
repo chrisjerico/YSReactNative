@@ -5,7 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
+import { ToastError, ToastSuccess } from '../../tools/tars'
 import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useLogIn from './useLogIn'
 import useSys from './useSys'
@@ -50,7 +50,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   const { logIn } = useLogIn({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading })
-      ToastStatus('正在登录...')
+      // ToastStatus('正在登录...')
     },
     onSuccess: () => {
       if (loginTo == LoginTo.首页) {
@@ -71,18 +71,21 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
       })
       slideCodeRef?.current?.reload()
       ToastError(error ?? '登录失败')
-      console.log('--------登录失败--------', error)
     },
   })
 
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading })
+    },
     onSuccess: () => {
       navigateToHomePage()
+      hideLoading()
       ToastSuccess('登录成功')
     },
     onError: (error) => {
+      hideLoading()
       ToastError(error ?? '登录失败')
-      console.log('--------試玩失败--------', error)
     },
   })
 

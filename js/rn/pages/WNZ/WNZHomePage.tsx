@@ -37,7 +37,7 @@ import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const WNZHomePage = () => {
   // LogBox.ignoreAllLogs()

@@ -1,28 +1,28 @@
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
-import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
 import useLogIn from './useLogIn'
 
 interface Options {
-  onSuccessWithAutoLogin?: () => any
+  onSuccessAutoLogin?: () => any
+  onErrorAutoLogin?: (error: any) => any
   onStart?: () => any
   onSuccess?: () => any
   onError?: (error: any) => any
 }
 
 const useRegister = (options: Options = {}) => {
+  const { onSuccessAutoLogin, onErrorAutoLogin, onStart, onSuccess, onError } = options
   const { logIn } = useLogIn({
     onStart: () => {
-      ToastStatus('注册成功，正在登录...')
+      // ToastStatus('注册成功，正在登录...')
     },
     onSuccess: () => {
-      ToastSuccess('登录成功')
+      onSuccessAutoLogin && onSuccessAutoLogin()
     },
     onError: (error) => {
-      ToastError(error ?? '自动登录失败')
+      onErrorAutoLogin && onErrorAutoLogin(error)
     },
   })
-  const { onSuccessWithAutoLogin, onStart, onSuccess, onError } = options
   const register = async (params: UserReg) => {
     try {
       if (Platform?.OS == 'ios') {
@@ -40,7 +40,6 @@ const useRegister = (options: Options = {}) => {
               account: usr,
               password: pwd,
             })
-            onSuccessWithAutoLogin && onSuccessWithAutoLogin()
           } else {
             onSuccess && onSuccess()
           }

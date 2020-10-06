@@ -129,7 +129,7 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
-      seriesId: SeriesId.体育, // 普通彩票
+      seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
     })
@@ -473,10 +473,10 @@ export default class PushHelper {
               })
               if (!isOcPush) {
                 const rpm = RnPageModel.pages.filter((p) => {
-                  return p.tabbarItemPath == '/user';
-                })[0];
+                  return p.tabbarItemPath == '/user'
+                })[0]
                 if (rpm) {
-                  push(rpm.rnName);
+                  push(rpm.rnName)
                 } else {
                   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
                     {

@@ -6,7 +6,7 @@ import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const tabs = [
   {
