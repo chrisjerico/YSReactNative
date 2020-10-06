@@ -21,7 +21,7 @@ export const releaseConfig = {
   skinKeys: {
     c242: '经典1',
     c235: '经典1',
-    h003: '经典1',
+    h003b: '经典1',
   }
 }
 
