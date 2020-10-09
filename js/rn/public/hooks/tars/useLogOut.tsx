@@ -19,8 +19,13 @@ const useLogOut = (options: Options = {}) => {
       await APIRouter.user_logout()
       switch (Platform.OS) {
         case 'ios':
-          await OCHelper.call('UGUserModel.setCurrentUser:', [])
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
+          await Promise.all([
+            OCHelper.call('UGUserModel.setCurrentUser:', []),
+            OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName']),
+            OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId']),
+            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]),
+            // OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]) // 暫時不知道要幹啥的
+          ])
           break
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT)

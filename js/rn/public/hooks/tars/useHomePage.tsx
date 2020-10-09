@@ -45,15 +45,15 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在登出...' })
+      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
     onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '登出成功' })
+      showLoading({ type: UGLoadingType.Success, text: '退出成功' })
       rerender()
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '登出失败' })
+      showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
     },
   })
   const signOut = logOut
