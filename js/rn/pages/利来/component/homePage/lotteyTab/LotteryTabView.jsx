@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LotteryTabView = void 0;
 var React = require("react");
 var react_native_1 = require("react-native");
 var fillArray_1 = require("../../../utils/fillArray");

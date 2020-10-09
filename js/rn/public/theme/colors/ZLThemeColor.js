@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ZLThemeColor = void 0;
 exports.ZLThemeColor = {
     尊龙: {
         skitType: '尊龙',
@@ -26,4 +27,3 @@ exports.ZLThemeColor = {
         isBlack: true,
     },
 };
-//# sourceMappingURL=ZLThemeColor.js.map

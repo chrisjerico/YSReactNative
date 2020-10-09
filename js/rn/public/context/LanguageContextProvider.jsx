@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.useLanguageContext = exports.LanguageContextProvider = void 0;
 var react_1 = require("react");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var react_native_1 = require("react-native");

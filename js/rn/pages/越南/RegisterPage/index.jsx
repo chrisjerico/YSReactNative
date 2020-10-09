@@ -314,7 +314,8 @@ var VietnamRegister = function () {
         return args[0].nativeEvent.text;
     }} style={{ flex: 1 }} as={react_native_1.TextInput} secureTextEntry={secureTextEntry} rules={{
         required: {
-            value: true, message: currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.input.new.pwd"]
+            value: true,
+            message: currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.input.new.pwd"]
         },
         maxLength: {
             value: pass_length_max,
@@ -450,8 +451,8 @@ var Header = function () {
     </react_native_1.View>);
 };
 var ZLRegInput = function (_a) {
-    var regConfig = _a.regConfig, name = _a.name, control = _a.control, placeholder = _a.placeholder, _b = _a.message, message = _b === void 0 ? "" : _b, isPassword = _a.isPassword, _c = _a.iconType, iconType = _c === void 0 ? "font-awesome" : _c, _d = _a.iconName, iconName = _d === void 0 ? "" : _d, _e = _a.tip, tip = _e === void 0 ? "" : _e, iconImage = _a.iconImage;
-    var _f;
+    var _b;
+    var regConfig = _a.regConfig, name = _a.name, control = _a.control, placeholder = _a.placeholder, _c = _a.message, message = _c === void 0 ? "" : _c, isPassword = _a.isPassword, _d = _a.iconType, iconType = _d === void 0 ? "font-awesome" : _d, _e = _a.iconName, iconName = _e === void 0 ? "" : _e, _f = _a.tip, tip = _f === void 0 ? "" : _f, iconImage = _a.iconImage;
     var _g = react_1.useState(true), secureTextEntry = _g[0], setSecureTextEntry = _g[1];
     var currcentLanguagePackage = LanguageContextProvider_1.useLanguageContext().currcentLanguagePackage;
     var requestSms = function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -510,7 +511,7 @@ var ZLRegInput = function (_a) {
         </react_native_1.TouchableOpacity> : null}
 
       </react_native_1.View>
-      <react_native_1.Text style={{ color: "#000000", fontSize: 12, marginLeft: 10 }}>{(_f = ((regConfig == 1 || regConfig == '1') && tip != "" ? "*" : "") + tip) !== null && _f !== void 0 ? _f : ""}</react_native_1.Text>
+      <react_native_1.Text style={{ color: "#000000", fontSize: 12, marginLeft: 10 }}>{(_b = ((regConfig == 1 || regConfig == '1') && tip != "" ? "*" : "") + tip) !== null && _b !== void 0 ? _b : ""}</react_native_1.Text>
     </react_native_1.View>;
     }
 };
@@ -529,7 +530,8 @@ var LetterVerificationCode = function (_a) {
         return args[0].nativeEvent.text;
     }} secureTextEntry={false} style={{ flex: 1 }} as={react_native_1.TextInput} rules={{
         required: {
-            value: true, message: (currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.please.enter"]) + (currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.captcha"])
+            value: true,
+            message: (currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.please.enter"]) + (currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.captcha"])
         }
     }} name={FormName.imgCode} control={control} defaultValue="" placeholder={(currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.please.enter"]) + (currcentLanguagePackage === null || currcentLanguagePackage === void 0 ? void 0 : currcentLanguagePackage["app.captcha"])}/>
       {!hide ? <react_native_gesture_handler_1.TouchableWithoutFeedback onPress={onPress}>

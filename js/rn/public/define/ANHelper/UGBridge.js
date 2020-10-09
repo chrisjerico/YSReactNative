@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UGBridge = void 0;
 var react_native_1 = require("react-native");
 var UGBridge = /** @class */ (function () {
     function UGBridge() {
@@ -10,4 +11,3 @@ var UGBridge = /** @class */ (function () {
     return UGBridge;
 }());
 exports.UGBridge = UGBridge;
-//# sourceMappingURL=UGBridge.js.map

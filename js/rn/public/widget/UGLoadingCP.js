@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -23,15 +23,38 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = require("react");
-var react_native_linear_gradient_1 = require("react-native-linear-gradient");
-var AppDefine_1 = require("../define/AppDefine");
+exports.UGLoadingCP1 = exports.UGLoadingCP = exports.hideLoading = exports.showLoading = exports.UGLoadingProps = exports.UGLoadingType = void 0;
+var react_1 = __importStar(require("react"));
+var react_native_linear_gradient_1 = __importDefault(require("react-native-linear-gradient"));
+var AppDefine_1 = __importDefault(require("../define/AppDefine"));
 var react_native_1 = require("react-native");
-var react_native_fast_image_1 = require("react-native-fast-image");
+var react_native_fast_image_1 = __importDefault(require("react-native-fast-image"));
 var UGSkinManagers_1 = require("../theme/UGSkinManagers");
 var react_native_elements_1 = require("react-native-elements");
-var react_native_reanimated_1 = require("react-native-reanimated");
+var react_native_reanimated_1 = __importStar(require("react-native-reanimated"));
 var Resources_1 = require("../../Res/icon/Resources");
 var react_native_gesture_handler_1 = require("react-native-gesture-handler");
 var UGLoadingType;

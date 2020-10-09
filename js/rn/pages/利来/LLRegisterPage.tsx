@@ -1,44 +1,38 @@
-import * as React from "react";
-import {useEffect, useMemo, useRef, useState} from "react";
-import {
-    Alert,
-    Image,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
-} from "react-native";
-import {BaseScreen} from "../乐橙/component/BaseScreen";
-import AppDefine from "../../public/define/AppDefine";
-import {navigate, popToRoot} from "../../public/navigation/RootNavigation";
-import {PageName} from "../../public/navigation/Navigation";
-import {OCHelper} from "../../public/define/OCHelper/OCHelper";
-import APIRouter from "../../public/network/APIRouter";
-import {UGStore} from "../../redux/store/UGStore";
-import UGUserModel from "../../redux/model/全局/UGUserModel";
-import {EventRegister} from "react-native-event-listeners";
+import * as React from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { Alert, Image, Platform, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native"
+import { BaseScreen } from "../乐橙/component/BaseScreen"
+import AppDefine from "../../public/define/AppDefine"
+import { navigate, popToRoot } from "../../public/navigation/RootNavigation"
+import { PageName } from "../../public/navigation/Navigation"
+import { OCHelper } from "../../public/define/OCHelper/OCHelper"
+import APIRouter from "../../public/network/APIRouter"
+import { UGStore } from "../../redux/store/UGStore"
+import UGUserModel from "../../redux/model/全局/UGUserModel"
+import { EventRegister } from "react-native-event-listeners"
 // @ts-ignore
-import md5 from 'blueimp-md5';
-import {Toast} from "../../public/tools/ToastUtils";
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
-import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
-import WebView, {WebViewMessageEvent} from "react-native-webview";
-import {ugLog} from "../../public/tools/UgLog";
-import {Icon} from "react-native-elements";
-import {TouchableWithoutFeedback} from "react-native-gesture-handler";
-import {hideLoading, showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
-import {LLRegisterInput} from "./component/registerPage/LLRegisterInput";
-import {httpClient} from "../../public/network/httpClient";
+import md5 from "blueimp-md5"
+import { Toast } from "../../public/tools/ToastUtils"
+import { ANHelper } from "../../public/define/ANHelper/ANHelper"
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine"
+import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine"
+import WebView, { WebViewMessageEvent } from "react-native-webview"
+import { ugLog } from "../../public/tools/UgLog"
+import { Icon } from "react-native-elements"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { hideLoading, showLoading, UGLoadingType } from "../../public/widget/UGLoadingCP"
+import { LLRegisterInput } from "./component/registerPage/LLRegisterInput"
+import { httpClient } from "../../public/network/httpClient"
 
 export const LLRegisterPage = () => {
     const [acc, setAcc] = useState("")
     const [pwd, setPwd] = useState("")
     const [code, setCode] = useState("")
+    const [name, setName] = useState("")
+    const [fundPwd, setFundPwd] = useState("")
+    const [phone, setPhone] = useState("")
+    const [QQ, setQQ] = useState("")
+    const [wx, setWx] = useState("")
     const [smsCode, setSmsCode] = useState("")
     const [imgCode, setImgCode] = useState("")
     const [email, setEmail] = useState("")
@@ -110,7 +104,6 @@ export const LLRegisterPage = () => {
     const onSubmit = async () => {
         try {
             const password = md5(pwd)
-            const fundPwd = ""
             let smsCode_ = smsCode
             let imgCode_ = imgCode
             showLoading({type: UGLoadingType.Loading, text: '正在注册...'});
@@ -125,7 +118,11 @@ export const LLRegisterPage = () => {
                 await APIRouter.user_reg({
                     usr: acc,
                     pwd: password,
+                    phone,
+                    fullName: name,
                     fundPwd,
+                    qq: QQ,
+                    wx,
                     regType: regType,
                     "slideCode[nc_sid]": slideCode ? slideCode["nc_csessionid"] : "",
                     "slideCode[nc_token]": slideCode ? slideCode["nc_token"] : "",
@@ -303,6 +300,16 @@ export const LLRegisterPage = () => {
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/>
                     <LLRegisterInput visible={reg_email != 0} onChangeText={(text) => setEmail(text)} placeholder={"请输入电子邮件"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-email.png"}/>
+                    {reg_fundpwd ? <LLRegisterInput isPwd={true} onChangeText={(text) => setFundPwd(text)} placeholder={"请输入取款密码"}
+                                                 img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/> : null}
+                    {reg_name ? <LLRegisterInput isPwd={true} onChangeText={(text) => setName(text)} placeholder={"请输入真实姓名"}
+                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_qq ? <LLRegisterInput isPwd={true} onChangeText={(text) => setQQ(text)} placeholder={"请输入QQ号"}
+                                                 img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_wx ? <LLRegisterInput isPwd={true} onChangeText={(text) => setWx(text)} placeholder={"请输入微信号"}
+                                               img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_phone ? <LLRegisterInput isPwd={true} onChangeText={(text) => setPhone(text)} placeholder={"请输入手机"}
+                                               img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
                     {getVcode}
                     <View style={{flexDirection: "row"}}>
                         <TouchableOpacity style={{flex: 1, backgroundColor: "#d19898", borderRadius: 30, marginTop: 12}}

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PageName = void 0;
 var PageName;
 (function (PageName) {
     PageName["TransitionPage"] = "TransitionPage";
@@ -131,4 +132,3 @@ var PageName;
 //     return false;
 //   }
 // }
-//# sourceMappingURL=Navigation.js.map

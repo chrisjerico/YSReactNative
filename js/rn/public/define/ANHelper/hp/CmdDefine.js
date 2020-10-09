@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OPEN_PAGE_PMS = exports.CMD = void 0;
 /**
  * @Description: 交互命令
  *
@@ -57,4 +58,3 @@ exports.OPEN_PAGE_PMS = {
         className: 'RegeditActivity'
     }
 };
-//# sourceMappingURL=CmdDefine.js.map

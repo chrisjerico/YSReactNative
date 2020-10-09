@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UGPromoteModel = void 0;
 var UGPromoteListModel = /** @class */ (function () {
     function UGPromoteListModel() {
     }
@@ -13,4 +14,3 @@ var UGPromoteModel = /** @class */ (function () {
     return UGPromoteModel;
 }());
 exports.UGPromoteModel = UGPromoteModel;
-//# sourceMappingURL=UGPromoteModel.js.map

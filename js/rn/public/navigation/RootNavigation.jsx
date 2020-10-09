@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.replace = exports.getCurrentPage = exports.getStackLength = exports.popToRoot = exports.pop = exports.jumpTo = exports.push = exports.navigate = exports.navigationRef = void 0;
 var React = require("react");
 var native_1 = require("@react-navigation/native");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");

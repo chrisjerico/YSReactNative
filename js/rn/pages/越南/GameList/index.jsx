@@ -13,8 +13,8 @@ var react_native_elements_1 = require("react-native-elements");
 var react_native_fast_image_1 = require("react-native-fast-image");
 var PushHelper_1 = require("../../../public/define/PushHelper");
 var GameList = function (_a) {
-    var route = _a.route, navigation = _a.navigation;
     var _b, _c, _d, _e;
+    var route = _a.route, navigation = _a.navigation;
     var _f = route === null || route === void 0 ? void 0 : route.params, homeGames = _f.homeGames, index = _f.index;
     var width = hooks_1.useDimensions().screen.width;
     var openSideBar = function () {

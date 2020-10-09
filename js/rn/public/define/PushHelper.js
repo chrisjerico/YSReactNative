@@ -35,6 +35,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_native_1 = require("react-native");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
@@ -42,13 +45,13 @@ var Enum_1 = require("../models/Enum");
 var Navigation_1 = require("../navigation/Navigation");
 var RootNavigation_1 = require("../navigation/RootNavigation");
 var httpClient_1 = require("../network/httpClient");
-var NetworkRequest1_1 = require("../network/NetworkRequest1");
+var NetworkRequest1_1 = __importDefault(require("../network/NetworkRequest1"));
 var ToastUtils_1 = require("../tools/ToastUtils");
 var UgLog_1 = require("../tools/UgLog");
 var ANHelper_1 = require("./ANHelper/ANHelper");
 var CmdDefine_1 = require("./ANHelper/hp/CmdDefine");
 var GotoDefine_1 = require("./ANHelper/hp/GotoDefine");
-var AppDefine_1 = require("./AppDefine");
+var AppDefine_1 = __importDefault(require("./AppDefine"));
 var OCCall_1 = require("./OCHelper/OCBridge/OCCall");
 var OCHelper_1 = require("./OCHelper/OCHelper");
 var SetRnPageInfo_1 = require("./OCHelper/SetRnPageInfo");

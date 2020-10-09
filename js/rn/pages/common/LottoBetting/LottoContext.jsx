@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.useBettingResult = exports.useLottoContext = exports.LottoContextProvider = exports.LottoResultContext = exports.LottoContext = void 0;
 var react_1 = require("react");
 var react_2 = require("react");
 var APIRouter_1 = require("../../../public/network/APIRouter");

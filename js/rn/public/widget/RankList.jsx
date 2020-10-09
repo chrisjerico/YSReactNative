@@ -16,8 +16,8 @@ var react_1 = require("react");
 var react_2 = require("react");
 var UGStore_1 = require("../../redux/store/UGStore");
 var RankListCP = function (_a) {
-    var ranks = _a.ranks, width = _a.width, _b = _a.height, height = _b === void 0 ? 200 : _b, _c = _a.titleVisible, titleVisible = _c === void 0 ? true : _c, _d = _a.backgroundColor, backgroundColor = _d === void 0 ? 'white' : _d, _e = _a.textColor, textColor = _e === void 0 ? "black" : _e, _f = _a.timing, timing = _f === void 0 ? 10000 : _f, titleTextStyle = _a.titleTextStyle;
-    var _g, _h, _j, _k;
+    var _b, _c, _d, _e;
+    var ranks = _a.ranks, width = _a.width, _f = _a.height, height = _f === void 0 ? 200 : _f, _g = _a.titleVisible, titleVisible = _g === void 0 ? true : _g, _h = _a.backgroundColor, backgroundColor = _h === void 0 ? 'white' : _h, _j = _a.textColor, textColor = _j === void 0 ? "black" : _j, _k = _a.timing, timing = _k === void 0 ? 10000 : _k, titleTextStyle = _a.titleTextStyle;
     var currentY = react_1.useState(new react_native_1.Animated.Value(height))[0];
     var rankingListSwitch = UGStore_1.UGStore.globalProps.sysConf.rankingListSwitch;
     react_1.useEffect(function () {
@@ -43,7 +43,7 @@ var RankListCP = function (_a) {
           <react_native_1.Text style={__assign({ color: textColor, fontWeight: "bold", fontSize: 16, marginLeft: -7 }, titleTextStyle)}>投注排行榜</react_native_1.Text>
         </react_native_1.View>}
         <react_native_1.View style={{ backgroundColor: backgroundColor, alignSelf: 'center', borderRadius: 8 }}>
-          {((_h = (_g = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _g === void 0 ? void 0 : _g.list) === null || _h === void 0 ? void 0 : _h.length) > 0 ? <react_native_1.View style={{ flexDirection: 'row', width: width, alignSelf: 'center', }}>
+          {((_c = (_b = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0 ? <react_native_1.View style={{ flexDirection: 'row', width: width, alignSelf: 'center', }}>
 
             <react_native_1.Text style={{
         flex: 1,
@@ -74,7 +74,7 @@ var RankListCP = function (_a) {
                 translateY: currentY,
             }]
     }}>
-              {(_k = (_j = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _j === void 0 ? void 0 : _j.list) === null || _k === void 0 ? void 0 : _k.map(function (item, index) {
+              {(_e = (_d = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (item, index) {
         return <react_native_1.View key={item.coin + index} style={{ flexDirection: 'row' }}>
                   <react_native_1.Text style={{
             flex: 1,

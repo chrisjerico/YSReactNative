@@ -7,8 +7,8 @@ var PushHelper_1 = require("../../../public/define/PushHelper");
 var react_native_fast_image_1 = require("react-native-fast-image");
 var HomeConfig_1 = require("./HomeConfig");
 var TabContainer = function (_a) {
-    var data = _a.data, filter = _a.filter, homeGames = _a.homeGames;
     var _b, _c, _d, _e, _f;
+    var data = _a.data, filter = _a.filter, homeGames = _a.homeGames;
     var width = hooks_1.useDimensions().screen.width;
     var people = react_1.useMemo(function () { return (Math.random() * 400 + 200).toFixed(0); }, []);
     return (<react_native_1.FlatList style={{ flex: 1 }} scrollEnabled={false} renderItem={function (_a) {

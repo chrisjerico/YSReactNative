@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HomeHeaderButtonBar = void 0;
 var react_native_1 = require("react-native");
 var LoginButtonBar_1 = require("./LoginButtonBar");
 var React = require("react");

@@ -76,15 +76,19 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key;
+    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key
     if (devConfig.isDebug) {
-      devConfig?.skinKey && (key = devConfig?.skinKey);
+      devConfig?.skinKey && (key = devConfig?.skinKey)
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
-    theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
-    theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
-    theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
-    theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
+    theme.themeColor =
+      theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
+    theme.themeDarkColor =
+      theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
+    theme.themeLightColor =
+      theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
+    theme.bgTextColor =
+      chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
     let skin = new UGSkinManagers()
     Object.assign(skin, Skin1)
     Object.assign(skin, theme)
@@ -100,15 +104,16 @@ export default class UGSkinManagers extends UGThemeColor {
     const skin = Skin1
     if (Platform.OS != 'ios') return
     // 已上线模板
-    const isOnlineSkin = (
+    const isOnlineSkin =
       skin.skitType.indexOf('尊龙') != -1 ||
       skin.skitType.indexOf('宝石红') != -1
-    );
-    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
-    if (!ok) return;
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
+    if (!ok) return
 
     //
-    await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
+    await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [
+      skin,
+    ])
     for (const k in skin) {
       if (k.toLowerCase().indexOf('color') != -1) {
         const v: string | string[] = skin[k]
@@ -124,17 +129,20 @@ export default class UGSkinManagers extends UGThemeColor {
               selectors: 'UIColor.colorWithPatternImage:',
               args1: [
                 {
-                  selectors: 'UIImage.gradientImageWithBounds:andColors:andGradientType:',
+                  selectors:
+                    'UIImage.gradientImageWithBounds:andColors:andGradientType:',
                   args1: [
                     NSValue.CGRectMake(0, 0, AppDefine.width, AppDefine.height),
                     [
                       {
-                        selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:',
+                        selectors:
+                          'UIColor.colorWithHexString:.colorWithAlphaComponent:',
                         args1: [c1],
                         args2: [a1],
                       },
                       {
-                        selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:',
+                        selectors:
+                          'UIColor.colorWithHexString:.colorWithAlphaComponent:',
                         args1: [c2],
                         args2: [a2],
                       },
@@ -159,14 +167,26 @@ export default class UGSkinManagers extends UGThemeColor {
             key,
           ])
         }
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess'])
+        await OCHelper.call(
+          'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+          ['UGNotificationWithSkinSuccess']
+        )
       }
-      await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess'])
+      await OCHelper.call(
+        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
+        ['UGNotificationWithSkinSuccess']
+      )
     }
     // 刷新标签栏、导航条
     await OCHelper.call('UGTabbarController.shared.setTabbarStyle')
     // 刷新状态栏
-    await OCHelper.call('UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:', ['状态栏背景View', { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' }])
+    await OCHelper.call(
+      'UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:',
+      [
+        '状态栏背景View',
+        { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' },
+      ]
+    )
   }
 }
 

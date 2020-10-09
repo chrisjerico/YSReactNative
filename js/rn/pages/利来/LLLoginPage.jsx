@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LLLoginPage = void 0;
 var React = require("react");
 var react_1 = require("react");
 var react_native_1 = require("react-native");
@@ -72,39 +73,49 @@ var ToastUtils_1 = require("../../public/tools/ToastUtils");
 var errorTimes = 0;
 exports.LLLoginPage = function (_a) {
     var route = _a.route, navigation = _a.navigation, setProps = _a.setProps;
-    var _b = react_1.useState(""), acc = _b[0], setAcc = _b[1];
-    var _c = react_1.useState(""), pwd = _c[0], setPwd = _c[1];
+    var _b = react_1.useState(''), acc = _b[0], setAcc = _b[1];
+    var _c = react_1.useState(''), pwd = _c[0], setPwd = _c[1];
     var loginSuccessHandle = useLoginIn_1.default().loginSuccessHandle;
     var _d = react_1.useState(false), isRemember = _d[0], setIsRemember = _d[1];
     var _e = react_1.useState(false), GGmodalShow = _e[0], setGGModalShow = _e[1];
+    react_1.useEffect(function () {
+        isRemember &&
+            UGStore_1.UGStore.dispatch({
+                type: 'merge',
+                sign: {
+                    remember: true,
+                    account: acc ? acc : null,
+                    password: pwd ? pwd : null,
+                },
+            });
+        UGStore_1.UGStore.save();
+    }, [isRemember]);
     var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, isRemember_1, account, pwd_1, result, loginInfo;
+        var _a, remember, account, pwd_1, result, loginInfo;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    console.log(UGStore_1.UGStore.globalProps.sign);
                     _a = react_native_1.Platform.OS;
                     switch (_a) {
-                        case "ios": return [3 /*break*/, 1];
-                        case "android": return [3 /*break*/, 6];
+                        case 'ios': return [3 /*break*/, 1];
+                        case 'android': return [3 /*break*/, 2];
                     }
-                    return [3 /*break*/, 8];
-                case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd'])];
-                case 2:
-                    isRemember_1 = _b.sent();
-                    setIsRemember(isRemember_1);
-                    if (!isRemember_1) return [3 /*break*/, 5];
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName'])];
+                    return [3 /*break*/, 4];
+                case 1:
+                    remember = UGStore_1.UGStore.globalProps.sign.remember;
+                    setIsRemember(remember);
+                    if (remember) {
+                        account = UGStore_1.UGStore.globalProps.sign.account;
+                        setAcc(account);
+                        pwd_1 = UGStore_1.UGStore.globalProps.sign.password;
+                        setPwd(pwd_1);
+                    }
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.LOAD_DATA, {
+                        key: DataDefine_1.NA_DATA.LOGIN_INFO,
+                    })];
                 case 3:
-                    account = _b.sent();
-                    setAcc(account);
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw'])];
-                case 4:
-                    pwd_1 = _b.sent();
-                    setPwd(pwd_1);
-                    _b.label = 5;
-                case 5: return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.LOAD_DATA, { key: DataDefine_1.NA_DATA.LOGIN_INFO })];
-                case 7:
                     result = _b.sent();
                     loginInfo = JSON.parse(result);
                     setIsRemember(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.isRemember);
@@ -112,18 +123,13 @@ exports.LLLoginPage = function (_a) {
                         setAcc(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.account);
                         setPwd(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.pwd);
                     }
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
     react_1.useEffect(function () {
-        var _a, _b, _c, _d;
         init();
-        if (((_a = route === null || route === void 0 ? void 0 : route.params) === null || _a === void 0 ? void 0 : _a.usr) && ((_b = route === null || route === void 0 ? void 0 : route.params) === null || _b === void 0 ? void 0 : _b.pwd)) {
-            setAcc((_c = route === null || route === void 0 ? void 0 : route.params) === null || _c === void 0 ? void 0 : _c.usr);
-            setPwd((_d = route === null || route === void 0 ? void 0 : route.params) === null || _d === void 0 ? void 0 : _d.pwd);
-        }
     }, []);
     var testPlay = function () { return __awaiter(void 0, void 0, void 0, function () {
         var _a, data, status_1, _b, userInfo, _c, error_1;
@@ -136,15 +142,19 @@ exports.LLLoginPage = function (_a) {
                     _a = _d.sent(), data = _a.data, status_1 = _a.status;
                     _b = react_native_1.Platform.OS;
                     switch (_b) {
-                        case "ios": return [3 /*break*/, 2];
-                        case "android": return [3 /*break*/, 10];
+                        case 'ios': return [3 /*break*/, 2];
+                        case 'android': return [3 /*break*/, 10];
                     }
                     return [3 /*break*/, 12];
-                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay'])];
+                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay'])
+                    //@ts-ignore
+                ];
                 case 3:
                     _d.sent();
                     //@ts-ignore
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel_1.default.getYS(data.data)])];
+                    return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [
+                            UGUserModel_1.default.getYS(data.data),
+                        ])];
                 case 4:
                     //@ts-ignore
                     _d.sent();
@@ -201,14 +211,30 @@ exports.LLLoginPage = function (_a) {
         });
     }); };
     var login = function (_a) {
-        var account = _a.account, pwd = _a.pwd, _b = _a.googleCode, googleCode = _b === void 0 ? "" : _b, slideCode = _a.slideCode;
+        var account = _a.account, pwd = _a.pwd, _b = _a.googleCode, googleCode = _b === void 0 ? '' : _b, slideCode = _a.slideCode;
         return __awaiter(void 0, void 0, void 0, function () {
             var simplePwds, _c, _d, data, status_2, error_2;
             var _e, _f;
             return __generator(this, function (_g) {
                 switch (_g.label) {
                     case 0:
-                        simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+                        simplePwds = [
+                            '111111',
+                            '000000',
+                            '222222',
+                            '333333',
+                            '444444',
+                            '555555',
+                            '666666',
+                            '777777',
+                            '888888',
+                            '999999',
+                            '123456',
+                            '654321',
+                            'abcdef',
+                            'aaaaaa',
+                            'qwe123',
+                        ];
                         if (!(simplePwds.indexOf(pwd) > -1)) return [3 /*break*/, 6];
                         _c = react_native_1.Platform.OS;
                         switch (_c) {
@@ -216,11 +242,16 @@ exports.LLLoginPage = function (_a) {
                             case 'android': return [3 /*break*/, 4];
                         }
                         return [3 /*break*/, 5];
-                    case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码'])];
+                    case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('HUDHelper.showMsg:', [
+                            '你的密码过于简单，可能存在风险，请把密码修改成复杂密码',
+                        ])];
                     case 2:
                         _g.sent();
                         return [4 /*yield*/, OCHelper_1.OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                                { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
+                                {
+                                    selectors: 'UGSecurityCenterViewController.new[setFromVC:]',
+                                    args1: ['fromLoginViewController'],
+                                },
                                 true,
                             ])];
                     case 3:
@@ -248,7 +279,9 @@ exports.LLLoginPage = function (_a) {
                         if (((_e = data.data) === null || _e === void 0 ? void 0 : _e.ggCheck) == true) {
                             switch (react_native_1.Platform.OS) {
                                 case 'ios':
-                                    OCHelper_1.OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['请输入谷歌验证码']);
+                                    OCHelper_1.OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+                                        '请输入谷歌验证码',
+                                    ]);
                                     break;
                                 case 'android':
                                     ToastUtils_1.Toast('请输入谷歌验证码');
@@ -267,11 +300,12 @@ exports.LLLoginPage = function (_a) {
                                 break;
                         }
                         UGStore_1.UGStore.dispatch({
-                            type: 'merge', sign: {
+                            type: 'merge',
+                            sign: {
                                 remember: isRemember,
                                 account: acc ? acc : null,
-                                password: pwd ? pwd : null
-                            }
+                                password: pwd ? pwd : null,
+                            },
                         });
                         setGGModalShow(false);
                         return [4 /*yield*/, loginSuccessHandle(data, { account: account, pwd: pwd, isRemember: isRemember })];
@@ -283,13 +317,15 @@ exports.LLLoginPage = function (_a) {
                         error_2 = _g.sent();
                         errorTimes += 1;
                         if (errorTimes >= 3) {
-                            setAcc("");
-                            setPwd("");
+                            setAcc('');
+                            setPwd('');
                             setGGModalShow(false);
                         }
                         switch (react_native_1.Platform.OS) {
                             case 'ios':
-                                OCHelper_1.OCHelper.call('SVProgressHUD.showErrorWithStatus:', [(_f = error_2 === null || error_2 === void 0 ? void 0 : error_2.message) !== null && _f !== void 0 ? _f : '登入失败']);
+                                OCHelper_1.OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                                    (_f = error_2 === null || error_2 === void 0 ? void 0 : error_2.message) !== null && _f !== void 0 ? _f : '登入失败',
+                                ]);
                                 break;
                             case 'android':
                                 ToastUtils_1.Toast('登入失败');
@@ -301,73 +337,100 @@ exports.LLLoginPage = function (_a) {
             });
         });
     };
-    return (<BaseScreen_1.BaseScreen screenName={"登录"} style={{ backgroundColor: "#f5f5f9", alignItems: "center", paddingHorizontal: 28 }}>
-            <react_native_1.StatusBar barStyle="dark-content" translucent={true}/>
-            <react_native_1.View style={{
-        flexDirection: "row",
-        alignItems: "center",
-        borderBottomWidth: 1,
-        borderBottomColor: "rgb(238, 238, 238)",
-        paddingTop: 12
+    return (<BaseScreen_1.BaseScreen screenName={'登录'} style={{
+        backgroundColor: '#f5f5f9',
+        alignItems: 'center',
+        paddingHorizontal: 28,
     }}>
-                <react_native_1.Image style={{ height: 18, width: 18, marginRight: 8 }} source={{ uri: "https://test10.6yc.com/images/moban9_icon/icon-user.png" }}/>
-                <react_native_1.TextInput onChangeText={function (text) { return setAcc(text); }} style={{ fontSize: 14, paddingVertical: 20, flex: 1 }} placeholderTextColor={"#333"} placeholder={"请输入会员账号"}/>
-            </react_native_1.View>
-            <react_native_1.View style={{
-        flexDirection: "row",
-        alignItems: "center",
+      <react_native_1.StatusBar barStyle="dark-content" translucent={true}/>
+      <react_native_1.View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: "rgb(238, 238, 238)",
-        paddingTop: 12
+        borderBottomColor: 'rgb(238, 238, 238)',
+        paddingTop: 12,
     }}>
-                <react_native_1.Image style={{ height: 18, width: 18, marginRight: 8, resizeMode: "stretch" }} source={{ uri: "https://test10.6yc.com/images/moban9_icon/icon-pwd.png" }}/>
-                <react_native_1.TextInput secureTextEntry={true} onChangeText={function (text) { return setPwd(text); }} style={{ fontSize: 14, paddingVertical: 20, flex: 1 }} placeholderTextColor={"#333"} placeholder={"请输入密码"}/>
-            </react_native_1.View>
-            <react_native_1.View style={{ flexDirection: "row" }}>
-                <react_native_1.TouchableHighlight onPress={function () { return login({ account: acc, pwd: pwd }); }} underlayColor={"#007aff"} style={{
-        backgroundColor: acc != "" && pwd != "" ? "#d82e2f" : "#d19898",
+        <react_native_1.Image style={{ height: 18, width: 18, marginRight: 8 }} source={{
+        uri: 'https://test10.6yc.com/images/moban9_icon/icon-user.png',
+    }}/>
+        <react_native_1.TextInput value={acc} onChangeText={function (text) { return setAcc(text); }} style={{ fontSize: 14, paddingVertical: 20, flex: 1 }} placeholderTextColor={'#333'} placeholder={'请输入会员账号'}/>
+      </react_native_1.View>
+      <react_native_1.View style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgb(238, 238, 238)',
+        paddingTop: 12,
+    }}>
+        <react_native_1.Image style={{
+        height: 18,
+        width: 18,
+        marginRight: 8,
+        resizeMode: 'stretch',
+    }} source={{
+        uri: 'https://test10.6yc.com/images/moban9_icon/icon-pwd.png',
+    }}/>
+        <react_native_1.TextInput value={pwd} secureTextEntry={true} onChangeText={function (text) { return setPwd(text); }} style={{ fontSize: 14, paddingVertical: 20, flex: 1 }} placeholderTextColor={'#333'} placeholder={'请输入密码'}/>
+      </react_native_1.View>
+      <react_native_1.View style={{ flexDirection: 'row' }}>
+        <react_native_1.TouchableHighlight onPress={function () { return login({ account: acc, pwd: pwd }); }} underlayColor={'#007aff'} style={{
+        backgroundColor: acc != '' && pwd != '' ? '#d82e2f' : '#d19898',
         height: 47,
-        width: "auto",
+        width: 'auto',
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         marginTop: 12,
-        borderRadius: 4
+        borderRadius: 4,
     }}>
-                    <react_native_1.Text style={{ color: "white", fontSize: 16 }}>登 录</react_native_1.Text>
-                </react_native_1.TouchableHighlight>
-            </react_native_1.View>
-            <react_native_1.View style={{ flexDirection: "row", alignItems: "center", marginTop: 12 }}>
-                <CheckBox_1.CheckBox onCheck={function () { return setIsRemember(!isRemember); }} text={"记住密码"}/>
-                <react_native_1.View style={{ flex: 1 }}/>
-                <react_native_1.TouchableOpacity style={{ flexDirection: "row", alignItems: "center" }} onPress={function () { return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服); }}>
-                    <react_native_1.Image style={{ height: 24, width: 24 }} source={{ uri: "https://test10.6yc.com/views/mobileTemplate/20/images/kf.png" }}/>
-                    <react_native_1.Text style={{ color: "#333333", paddingLeft: 8 }}>在线客服</react_native_1.Text>
-                </react_native_1.TouchableOpacity>
-            </react_native_1.View>
-            <react_native_1.Text style={{ fontSize: 16, paddingVertical: 24, color: "#3c3c3c" }}>其他</react_native_1.Text>
-            <react_native_1.View style={{ flexDirection: "row", marginHorizontal: 12 }}>
-                <react_native_1.TouchableOpacity style={{ alignItems: "center" }} onPress={function () {
+          <react_native_1.Text style={{ color: 'white', fontSize: 16 }}>登 录</react_native_1.Text>
+        </react_native_1.TouchableHighlight>
+      </react_native_1.View>
+      <react_native_1.View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
+        <CheckBox_1.CheckBox isCheck={isRemember} onCheck={function () { return setIsRemember(!isRemember); }} text={'记住密码'}/>
+        <react_native_1.View style={{ flex: 1 }}/>
+        <react_native_1.TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={function () {
+        return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
+    }}>
+          <react_native_1.Image style={{ height: 24, width: 24 }} source={{
+        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/kf.png',
+    }}/>
+          <react_native_1.Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</react_native_1.Text>
+        </react_native_1.TouchableOpacity>
+      </react_native_1.View>
+      <react_native_1.Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>
+        其他
+      </react_native_1.Text>
+      <react_native_1.View style={{ flexDirection: 'row', marginHorizontal: 12 }}>
+        <react_native_1.TouchableOpacity style={{ alignItems: 'center' }} onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.LLRegisterPage);
     }}>
-                    <react_native_1.Image style={{ height: 64, width: 64 }} source={{ uri: "https://test10.6yc.com/views/mobileTemplate/20/images/register.png" }}/>
-                    <react_native_1.Text style={{ marginTop: 8 }}>马上注册</react_native_1.Text>
-                </react_native_1.TouchableOpacity>
-                <react_native_1.View style={{ flex: 1 }}/>
-                <react_native_1.TouchableOpacity style={{ alignItems: "center" }} onPress={function () { return testPlay(); }}>
-                    <react_native_1.Image style={{ height: 64, width: 64 }} source={{ uri: "https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png" }}/>
-                    <react_native_1.Text style={{ marginTop: 8 }}>免费试玩</react_native_1.Text>
-                </react_native_1.TouchableOpacity>
-                <react_native_1.View style={{ flex: 1 }}/>
-                <react_native_1.TouchableOpacity style={{ alignItems: "center" }} onPress={function () {
+          <react_native_1.Image style={{ height: 64, width: 64 }} source={{
+        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+    }}/>
+          <react_native_1.Text style={{ marginTop: 8 }}>马上注册</react_native_1.Text>
+        </react_native_1.TouchableOpacity>
+        <react_native_1.View style={{ flex: 1 }}/>
+        <react_native_1.TouchableOpacity style={{ alignItems: 'center' }} onPress={function () { return testPlay(); }}>
+          <react_native_1.Image style={{ height: 64, width: 64 }} source={{
+        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+    }}/>
+          <react_native_1.Text style={{ marginTop: 8 }}>免费试玩</react_native_1.Text>
+        </react_native_1.TouchableOpacity>
+        <react_native_1.View style={{ flex: 1 }}/>
+        <react_native_1.TouchableOpacity style={{ alignItems: 'center' }} onPress={function () {
         PushHelper_1.default.openWebView(httpClient_1.httpClient.defaults.baseURL + '/index2.php');
     }}>
-                    <react_native_1.Image style={{ height: 64, width: 64 }} source={{ uri: "https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png" }}/>
-                    <react_native_1.Text style={{ marginTop: 8 }}>电脑版</react_native_1.Text>
-                </react_native_1.TouchableOpacity>
-            </react_native_1.View>
-            <react_native_dialog_input_1.default isDialogVisible={GGmodalShow} title={"请输入谷歌验证码"} message={""} cancelText={"取消"} submitText={"確定"} hintInput={"请输入谷歌验证码"} submitInput={function (inputText) { return login({ account: acc, pwd: pwd, googleCode: inputText }); }} closeDialog={function () {
+          <react_native_1.Image style={{ height: 64, width: 64 }} source={{
+        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
+    }}/>
+          <react_native_1.Text style={{ marginTop: 8 }}>电脑版</react_native_1.Text>
+        </react_native_1.TouchableOpacity>
+      </react_native_1.View>
+      <react_native_dialog_input_1.default isDialogVisible={GGmodalShow} title={'请输入谷歌验证码'} message={''} cancelText={'取消'} submitText={'確定'} hintInput={'请输入谷歌验证码'} submitInput={function (inputText) {
+        return login({ account: acc, pwd: pwd, googleCode: inputText });
+    }} closeDialog={function () {
         setGGModalShow(false);
     }}/>
-        </BaseScreen_1.BaseScreen>);
+    </BaseScreen_1.BaseScreen>);
 };

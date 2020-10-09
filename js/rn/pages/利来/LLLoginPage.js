@@ -10,6 +10,25 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,24 +65,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
+exports.LLLoginPage = void 0;
+var React = __importStar(require("react"));
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var BaseScreen_1 = require("../\u4E50\u6A59/component/BaseScreen");
 var CheckBox_1 = require("./component/CheckBox");
-var useLoginIn_1 = require("../../public/hooks/useLoginIn");
+var useLoginIn_1 = __importDefault(require("../../public/hooks/useLoginIn"));
 var OCHelper_1 = require("../../public/define/OCHelper/OCHelper");
-var APIRouter_1 = require("../../public/network/APIRouter");
-var PushHelper_1 = require("../../public/define/PushHelper");
+var APIRouter_1 = __importDefault(require("../../public/network/APIRouter"));
+var PushHelper_1 = __importDefault(require("../../public/define/PushHelper"));
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
 var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 var Navigation_1 = require("../../public/navigation/Navigation");
-var react_native_dialog_input_1 = require("react-native-dialog-input");
+var react_native_dialog_input_1 = __importDefault(require("react-native-dialog-input"));
 // @ts-ignore
-var blueimp_md5_1 = require("blueimp-md5");
+var blueimp_md5_1 = __importDefault(require("blueimp-md5"));
 var httpClient_1 = require("../../public/network/httpClient");
-var UGUserModel_1 = require("../../redux/model/\u5168\u5C40/UGUserModel");
+var UGUserModel_1 = __importDefault(require("../../redux/model/\u5168\u5C40/UGUserModel"));
 var UGStore_1 = require("../../redux/store/UGStore");
 var ANHelper_1 = require("../../public/define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../../public/define/ANHelper/hp/CmdDefine");
@@ -72,39 +95,49 @@ var ToastUtils_1 = require("../../public/tools/ToastUtils");
 var errorTimes = 0;
 exports.LLLoginPage = function (_a) {
     var route = _a.route, navigation = _a.navigation, setProps = _a.setProps;
-    var _b = react_1.useState(""), acc = _b[0], setAcc = _b[1];
-    var _c = react_1.useState(""), pwd = _c[0], setPwd = _c[1];
+    var _b = react_1.useState(''), acc = _b[0], setAcc = _b[1];
+    var _c = react_1.useState(''), pwd = _c[0], setPwd = _c[1];
     var loginSuccessHandle = useLoginIn_1.default().loginSuccessHandle;
     var _d = react_1.useState(false), isRemember = _d[0], setIsRemember = _d[1];
     var _e = react_1.useState(false), GGmodalShow = _e[0], setGGModalShow = _e[1];
+    react_1.useEffect(function () {
+        isRemember &&
+            UGStore_1.UGStore.dispatch({
+                type: 'merge',
+                sign: {
+                    remember: true,
+                    account: acc ? acc : null,
+                    password: pwd ? pwd : null,
+                },
+            });
+        UGStore_1.UGStore.save();
+    }, [isRemember]);
     var init = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, isRemember_1, account, pwd_1, result, loginInfo;
+        var _a, remember, account, pwd_1, result, loginInfo;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    console.log(UGStore_1.UGStore.globalProps.sign);
                     _a = react_native_1.Platform.OS;
                     switch (_a) {
-                        case "ios": return [3 /*break*/, 1];
-                        case "android": return [3 /*break*/, 6];
+                        case 'ios': return [3 /*break*/, 1];
+                        case 'android': return [3 /*break*/, 2];
                     }
-                    return [3 /*break*/, 8];
-                case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.boolForKey:', ['isRememberPsd'])];
-                case 2:
-                    isRemember_1 = _b.sent();
-                    setIsRemember(isRemember_1);
-                    if (!isRemember_1) return [3 /*break*/, 5];
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userName'])];
+                    return [3 /*break*/, 4];
+                case 1:
+                    remember = UGStore_1.UGStore.globalProps.sign.remember;
+                    setIsRemember(remember);
+                    if (remember) {
+                        account = UGStore_1.UGStore.globalProps.sign.account;
+                        setAcc(account);
+                        pwd_1 = UGStore_1.UGStore.globalProps.sign.password;
+                        setPwd(pwd_1);
+                    }
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.LOAD_DATA, {
+                        key: DataDefine_1.NA_DATA.LOGIN_INFO,
+                    })];
                 case 3:
-                    account = _b.sent();
-                    setAcc(account);
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('NSUserDefaults.standardUserDefaults.stringForKey:', ['userPsw'])];
-                case 4:
-                    pwd_1 = _b.sent();
-                    setPwd(pwd_1);
-                    _b.label = 5;
-                case 5: return [3 /*break*/, 8];
-                case 6: return [4 /*yield*/, ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.LOAD_DATA, { key: DataDefine_1.NA_DATA.LOGIN_INFO })];
-                case 7:
                     result = _b.sent();
                     loginInfo = JSON.parse(result);
                     setIsRemember(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.isRemember);
@@ -112,18 +145,13 @@ exports.LLLoginPage = function (_a) {
                         setAcc(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.account);
                         setPwd(loginInfo === null || loginInfo === void 0 ? void 0 : loginInfo.pwd);
                     }
-                    return [3 /*break*/, 8];
-                case 8: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
             }
         });
     }); };
     react_1.useEffect(function () {
-        var _a, _b, _c, _d;
         init();
-        if (((_a = route === null || route === void 0 ? void 0 : route.params) === null || _a === void 0 ? void 0 : _a.usr) && ((_b = route === null || route === void 0 ? void 0 : route.params) === null || _b === void 0 ? void 0 : _b.pwd)) {
-            setAcc((_c = route === null || route === void 0 ? void 0 : route.params) === null || _c === void 0 ? void 0 : _c.usr);
-            setPwd((_d = route === null || route === void 0 ? void 0 : route.params) === null || _d === void 0 ? void 0 : _d.pwd);
-        }
     }, []);
     var testPlay = function () { return __awaiter(void 0, void 0, void 0, function () {
         var _a, data, status, _b, userInfo, _c, error_1;
@@ -136,15 +164,19 @@ exports.LLLoginPage = function (_a) {
                     _a = _d.sent(), data = _a.data, status = _a.status;
                     _b = react_native_1.Platform.OS;
                     switch (_b) {
-                        case "ios": return [3 /*break*/, 2];
-                        case "android": return [3 /*break*/, 10];
+                        case 'ios': return [3 /*break*/, 2];
+                        case 'android': return [3 /*break*/, 10];
                     }
                     return [3 /*break*/, 12];
-                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay'])];
+                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationTryPlay'])
+                    //@ts-ignore
+                ];
                 case 3:
                     _d.sent();
                     //@ts-ignore
-                    return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel_1.default.getYS(data.data)])];
+                    return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [
+                            UGUserModel_1.default.getYS(data.data),
+                        ])];
                 case 4:
                     //@ts-ignore
                     _d.sent();
@@ -201,14 +233,30 @@ exports.LLLoginPage = function (_a) {
         });
     }); };
     var login = function (_a) {
-        var account = _a.account, pwd = _a.pwd, _b = _a.googleCode, googleCode = _b === void 0 ? "" : _b, slideCode = _a.slideCode;
+        var account = _a.account, pwd = _a.pwd, _b = _a.googleCode, googleCode = _b === void 0 ? '' : _b, slideCode = _a.slideCode;
         return __awaiter(void 0, void 0, void 0, function () {
             var simplePwds, _c, _d, data, status, error_2;
             var _e, _f;
             return __generator(this, function (_g) {
                 switch (_g.label) {
                     case 0:
-                        simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+                        simplePwds = [
+                            '111111',
+                            '000000',
+                            '222222',
+                            '333333',
+                            '444444',
+                            '555555',
+                            '666666',
+                            '777777',
+                            '888888',
+                            '999999',
+                            '123456',
+                            '654321',
+                            'abcdef',
+                            'aaaaaa',
+                            'qwe123',
+                        ];
                         if (!(simplePwds.indexOf(pwd) > -1)) return [3 /*break*/, 6];
                         _c = react_native_1.Platform.OS;
                         switch (_c) {
@@ -216,11 +264,16 @@ exports.LLLoginPage = function (_a) {
                             case 'android': return [3 /*break*/, 4];
                         }
                         return [3 /*break*/, 5];
-                    case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码'])];
+                    case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('HUDHelper.showMsg:', [
+                            '你的密码过于简单，可能存在风险，请把密码修改成复杂密码',
+                        ])];
                     case 2:
                         _g.sent();
                         return [4 /*yield*/, OCHelper_1.OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                                { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
+                                {
+                                    selectors: 'UGSecurityCenterViewController.new[setFromVC:]',
+                                    args1: ['fromLoginViewController'],
+                                },
                                 true,
                             ])];
                     case 3:
@@ -248,7 +301,9 @@ exports.LLLoginPage = function (_a) {
                         if (((_e = data.data) === null || _e === void 0 ? void 0 : _e.ggCheck) == true) {
                             switch (react_native_1.Platform.OS) {
                                 case 'ios':
-                                    OCHelper_1.OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['请输入谷歌验证码']);
+                                    OCHelper_1.OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
+                                        '请输入谷歌验证码',
+                                    ]);
                                     break;
                                 case 'android':
                                     ToastUtils_1.Toast('请输入谷歌验证码');
@@ -267,11 +322,12 @@ exports.LLLoginPage = function (_a) {
                                 break;
                         }
                         UGStore_1.UGStore.dispatch({
-                            type: 'merge', sign: {
+                            type: 'merge',
+                            sign: {
                                 remember: isRemember,
                                 account: acc ? acc : null,
-                                password: pwd ? pwd : null
-                            }
+                                password: pwd ? pwd : null,
+                            },
                         });
                         setGGModalShow(false);
                         return [4 /*yield*/, loginSuccessHandle(data, { account: account, pwd: pwd, isRemember: isRemember })];
@@ -283,13 +339,15 @@ exports.LLLoginPage = function (_a) {
                         error_2 = _g.sent();
                         errorTimes += 1;
                         if (errorTimes >= 3) {
-                            setAcc("");
-                            setPwd("");
+                            setAcc('');
+                            setPwd('');
                             setGGModalShow(false);
                         }
                         switch (react_native_1.Platform.OS) {
                             case 'ios':
-                                OCHelper_1.OCHelper.call('SVProgressHUD.showErrorWithStatus:', [(_f = error_2 === null || error_2 === void 0 ? void 0 : error_2.message) !== null && _f !== void 0 ? _f : '登入失败']);
+                                OCHelper_1.OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
+                                    (_f = error_2 === null || error_2 === void 0 ? void 0 : error_2.message) !== null && _f !== void 0 ? _f : '登入失败',
+                                ]);
                                 break;
                             case 'android':
                                 ToastUtils_1.Toast('登入失败');
@@ -301,62 +359,87 @@ exports.LLLoginPage = function (_a) {
             });
         });
     };
-    return (React.createElement(BaseScreen_1.BaseScreen, { screenName: "登录", style: { backgroundColor: "#f5f5f9", alignItems: "center", paddingHorizontal: 28 } },
+    return (React.createElement(BaseScreen_1.BaseScreen, { screenName: '登录', style: {
+            backgroundColor: '#f5f5f9',
+            alignItems: 'center',
+            paddingHorizontal: 28,
+        } },
         React.createElement(react_native_1.StatusBar, { barStyle: "dark-content", translucent: true }),
         React.createElement(react_native_1.View, { style: {
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 borderBottomWidth: 1,
-                borderBottomColor: "rgb(238, 238, 238)",
-                paddingTop: 12
+                borderBottomColor: 'rgb(238, 238, 238)',
+                paddingTop: 12,
             } },
-            React.createElement(react_native_1.Image, { style: { height: 18, width: 18, marginRight: 8 }, source: { uri: "https://test10.6yc.com/images/moban9_icon/icon-user.png" } }),
-            React.createElement(react_native_1.TextInput, { onChangeText: function (text) { return setAcc(text); }, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: "#333", placeholder: "请输入会员账号" })),
+            React.createElement(react_native_1.Image, { style: { height: 18, width: 18, marginRight: 8 }, source: {
+                    uri: 'https://test10.6yc.com/images/moban9_icon/icon-user.png',
+                } }),
+            React.createElement(react_native_1.TextInput, { value: acc, onChangeText: function (text) { return setAcc(text); }, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: '#333', placeholder: '请输入会员账号' })),
         React.createElement(react_native_1.View, { style: {
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 borderBottomWidth: 1,
-                borderBottomColor: "rgb(238, 238, 238)",
-                paddingTop: 12
+                borderBottomColor: 'rgb(238, 238, 238)',
+                paddingTop: 12,
             } },
-            React.createElement(react_native_1.Image, { style: { height: 18, width: 18, marginRight: 8, resizeMode: "stretch" }, source: { uri: "https://test10.6yc.com/images/moban9_icon/icon-pwd.png" } }),
-            React.createElement(react_native_1.TextInput, { secureTextEntry: true, onChangeText: function (text) { return setPwd(text); }, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: "#333", placeholder: "请输入密码" })),
-        React.createElement(react_native_1.View, { style: { flexDirection: "row" } },
-            React.createElement(react_native_1.TouchableHighlight, { onPress: function () { return login({ account: acc, pwd: pwd }); }, underlayColor: "#007aff", style: {
-                    backgroundColor: acc != "" && pwd != "" ? "#d82e2f" : "#d19898",
+            React.createElement(react_native_1.Image, { style: {
+                    height: 18,
+                    width: 18,
+                    marginRight: 8,
+                    resizeMode: 'stretch',
+                }, source: {
+                    uri: 'https://test10.6yc.com/images/moban9_icon/icon-pwd.png',
+                } }),
+            React.createElement(react_native_1.TextInput, { value: pwd, secureTextEntry: true, onChangeText: function (text) { return setPwd(text); }, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: '#333', placeholder: '请输入密码' })),
+        React.createElement(react_native_1.View, { style: { flexDirection: 'row' } },
+            React.createElement(react_native_1.TouchableHighlight, { onPress: function () { return login({ account: acc, pwd: pwd }); }, underlayColor: '#007aff', style: {
+                    backgroundColor: acc != '' && pwd != '' ? '#d82e2f' : '#d19898',
                     height: 47,
-                    width: "auto",
+                    width: 'auto',
                     flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     marginTop: 12,
-                    borderRadius: 4
+                    borderRadius: 4,
                 } },
-                React.createElement(react_native_1.Text, { style: { color: "white", fontSize: 16 } }, "\u767B \u5F55"))),
-        React.createElement(react_native_1.View, { style: { flexDirection: "row", alignItems: "center", marginTop: 12 } },
-            React.createElement(CheckBox_1.CheckBox, { onCheck: function () { return setIsRemember(!isRemember); }, text: "记住密码" }),
+                React.createElement(react_native_1.Text, { style: { color: 'white', fontSize: 16 } }, "\u767B \u5F55"))),
+        React.createElement(react_native_1.View, { style: { flexDirection: 'row', alignItems: 'center', marginTop: 12 } },
+            React.createElement(CheckBox_1.CheckBox, { isCheck: isRemember, onCheck: function () { return setIsRemember(!isRemember); }, text: '记住密码' }),
             React.createElement(react_native_1.View, { style: { flex: 1 } }),
-            React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: "row", alignItems: "center" }, onPress: function () { return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服); } },
-                React.createElement(react_native_1.Image, { style: { height: 24, width: 24 }, source: { uri: "https://test10.6yc.com/views/mobileTemplate/20/images/kf.png" } }),
-                React.createElement(react_native_1.Text, { style: { color: "#333333", paddingLeft: 8 } }, "\u5728\u7EBF\u5BA2\u670D"))),
-        React.createElement(react_native_1.Text, { style: { fontSize: 16, paddingVertical: 24, color: "#3c3c3c" } }, "\u5176\u4ED6"),
-        React.createElement(react_native_1.View, { style: { flexDirection: "row", marginHorizontal: 12 } },
-            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: "center" }, onPress: function () {
+            React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: 'row', alignItems: 'center' }, onPress: function () {
+                    return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
+                } },
+                React.createElement(react_native_1.Image, { style: { height: 24, width: 24 }, source: {
+                        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/kf.png',
+                    } }),
+                React.createElement(react_native_1.Text, { style: { color: '#333333', paddingLeft: 8 } }, "\u5728\u7EBF\u5BA2\u670D"))),
+        React.createElement(react_native_1.Text, { style: { fontSize: 16, paddingVertical: 24, color: '#3c3c3c' } }, "\u5176\u4ED6"),
+        React.createElement(react_native_1.View, { style: { flexDirection: 'row', marginHorizontal: 12 } },
+            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: 'center' }, onPress: function () {
                     RootNavigation_1.push(Navigation_1.PageName.LLRegisterPage);
                 } },
-                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: { uri: "https://test10.6yc.com/views/mobileTemplate/20/images/register.png" } }),
+                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: {
+                        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+                    } }),
                 React.createElement(react_native_1.Text, { style: { marginTop: 8 } }, "\u9A6C\u4E0A\u6CE8\u518C")),
             React.createElement(react_native_1.View, { style: { flex: 1 } }),
-            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: "center" }, onPress: function () { return testPlay(); } },
-                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: { uri: "https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png" } }),
+            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: 'center' }, onPress: function () { return testPlay(); } },
+                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: {
+                        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+                    } }),
                 React.createElement(react_native_1.Text, { style: { marginTop: 8 } }, "\u514D\u8D39\u8BD5\u73A9")),
             React.createElement(react_native_1.View, { style: { flex: 1 } }),
-            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: "center" }, onPress: function () {
+            React.createElement(react_native_1.TouchableOpacity, { style: { alignItems: 'center' }, onPress: function () {
                     PushHelper_1.default.openWebView(httpClient_1.httpClient.defaults.baseURL + '/index2.php');
                 } },
-                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: { uri: "https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png" } }),
+                React.createElement(react_native_1.Image, { style: { height: 64, width: 64 }, source: {
+                        uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
+                    } }),
                 React.createElement(react_native_1.Text, { style: { marginTop: 8 } }, "\u7535\u8111\u7248"))),
-        React.createElement(react_native_dialog_input_1.default, { isDialogVisible: GGmodalShow, title: "请输入谷歌验证码", message: "", cancelText: "取消", submitText: "確定", hintInput: "请输入谷歌验证码", submitInput: function (inputText) { return login({ account: acc, pwd: pwd, googleCode: inputText }); }, closeDialog: function () {
+        React.createElement(react_native_dialog_input_1.default, { isDialogVisible: GGmodalShow, title: '请输入谷歌验证码', message: '', cancelText: '取消', submitText: '確定', hintInput: '请输入谷歌验证码', submitInput: function (inputText) {
+                return login({ account: acc, pwd: pwd, googleCode: inputText });
+            }, closeDialog: function () {
                 setGGModalShow(false);
             } })));
 };

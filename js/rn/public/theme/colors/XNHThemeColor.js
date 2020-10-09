@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.XNHThemeColor = void 0;
 // 新年红
 exports.XNHThemeColor = {
     //新年红
@@ -48,4 +49,3 @@ exports.XNHThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=XNHThemeColor.js.map

@@ -7,6 +7,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WinningList = void 0;
 var React = require("react");
 var react_1 = require("react");
 var react_native_1 = require("react-native");

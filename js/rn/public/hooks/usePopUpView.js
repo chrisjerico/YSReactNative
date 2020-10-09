@@ -10,9 +10,12 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
-var AppDefine_1 = require("../define/AppDefine");
+var AppDefine_1 = __importDefault(require("../define/AppDefine"));
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var OCCall_1 = require("../define/OCHelper/OCBridge/OCCall");
 var react_native_1 = require("react-native");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.releaseConfig = exports.devConfig = void 0;
 var react_native_1 = require("react-native");
 var OCHelper_1 = require("./js/rn/public/define/OCHelper/OCHelper");
 // 调试环境配置

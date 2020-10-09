@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoginButtonBar = void 0;
 var React = require("react");
 var react_native_1 = require("react-native");
 var PushHelper_1 = require("../../../../public/define/PushHelper");

@@ -323,7 +323,8 @@ var ZLHeader = function () {
             break;
     }
     return (<react_native_1.View style={{
-        width: width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
+        width: width,
+        height: 68 + topDistance, paddingTop: topDistance, backgroundColor: '#1a1a1e',
         flexDirection: 'row', shadowColor: "white", borderBottomWidth: 0.5, alignItems: 'center',
         paddingHorizontal: 20
     }}>

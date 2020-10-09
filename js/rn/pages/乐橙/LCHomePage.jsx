@@ -237,8 +237,8 @@ var LCHomePage = function (_a) {
         </react_native_1.View>);
 };
 var PromotionLists = function (_a) {
-    var dataSource = _a.dataSource, filter = _a.filter, promotionData = _a.promotionData;
     var _b;
+    var dataSource = _a.dataSource, filter = _a.filter, promotionData = _a.promotionData;
     var _c = react_1.useState(-1), selectId = _c[0], setSelectedId = _c[1];
     var width = hooks_1.useDimensions().window.width;
     var onPopViewPress = usePopUpView_1.default().onPopViewPress;
@@ -249,8 +249,8 @@ var PromotionLists = function (_a) {
         };
     };
     return (<react_native_1.FlatList style={{ backgroundColor: "#ffffff", borderRadius: 10 }} keyExtractor={function (item, index) { return "LCHome" + item.id + index; }} data={filter != "0" ? dataSource.data.list.filter(function (res, index) { return res.category == filter; }) : (_b = dataSource === null || dataSource === void 0 ? void 0 : dataSource.data) === null || _b === void 0 ? void 0 : _b.list} renderItem={function (_a) {
-        var item = _a.item, index = _a.index;
         var _b, _c;
+        var item = _a.item, index = _a.index;
         return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
                     <react_native_1.TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, (_c = (_b = promotionData === null || promotionData === void 0 ? void 0 : promotionData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
             if (selectId == index) {
@@ -347,11 +347,14 @@ var TurntableListItem = function () {
             if (uid == "") {
                 react_native_1.Alert.alert("温馨提示", "您还未登录", [
                     {
-                        text: "取消", onPress: function () {
-                        }, style: "cancel"
+                        text: "取消",
+                        onPress: function () {
+                        },
+                        style: "cancel"
                     },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -360,11 +363,14 @@ var TurntableListItem = function () {
             else if (isTest) {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     {
-                        text: "取消", onPress: function () {
-                        }, style: "cancel"
+                        text: "取消",
+                        onPress: function () {
+                        },
+                        style: "cancel"
                     },
                     {
-                        text: "马上登录", onPress: function () { return PushHelper_1.default.pushLogin(); }
+                        text: "马上登录",
+                        onPress: function () { return PushHelper_1.default.pushLogin(); }
                     }
                 ]);
             }
@@ -408,8 +414,8 @@ var TurntableListItem = function () {
     }
 };
 var Banner = function (_a) {
-    var bannerData = _a.bannerData, _b = _a.onlineNum, onlineNum = _b === void 0 ? 0 : _b;
-    var _c, _d, _e, _f;
+    var _b, _c, _d, _e;
+    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f;
     var width = hooks_1.useDimensions().window.width;
     var BannerRef = React.useRef();
     var _g = react_1.useState(100), height = _g[0], setHeight = _g[1];
@@ -423,11 +429,11 @@ var Banner = function (_a) {
             clearInterval(timer);
         });
     }, [bannerData]);
-    if (((_d = (_c = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _c === void 0 ? void 0 : _c.list) === null || _d === void 0 ? void 0 : _d.length) > 0) {
+    if (((_c = (_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0) {
         return (<react_native_1.View style={{ marginBottom: 10, }}>
 
                 <react_native_banner_carousel_1.default autoplay index={0} ref={BannerRef} loop pageSize={width}>
-                    {(_f = (_e = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _e === void 0 ? void 0 : _e.list) === null || _f === void 0 ? void 0 : _f.map(function (res, index) {
+                    {(_e = (_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (res, index) {
             return (<react_native_1.TouchableWithoutFeedback onPress={function () {
                 PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
             }}>

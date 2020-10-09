@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTrendData_jsk3 = void 0;
 var react_native_1 = require("react-native");
 exports.getTrendData_jsk3 = function (data, defaultNumber) {
     if (defaultNumber === void 0) { defaultNumber = 0; }

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WNZThemeColor = void 0;
 exports.WNZThemeColor = {
     威尼斯: {
         skitType: '威尼斯',
@@ -29,4 +30,3 @@ exports.WNZThemeColor = {
         yubaoBgColor: "#8E8E8E"
     },
 };
-//# sourceMappingURL=WNZThemeColor.js.map

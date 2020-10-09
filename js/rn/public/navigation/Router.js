@@ -10,12 +10,32 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Router = exports.RouterType = void 0;
 var stack_1 = require("@react-navigation/stack");
 var bottom_tabs_1 = require("@react-navigation/bottom-tabs");
 var drawer_1 = require("@react-navigation/drawer");
 var react_1 = require("react");
-var react_2 = require("react");
+var React = __importStar(require("react"));
 var RootNavigation_1 = require("./RootNavigation");
 var RouterType;
 (function (RouterType) {
@@ -28,8 +48,8 @@ var Router = /** @class */ (function () {
     function Router() {
     }
     Router.getPageRouterType = function (pageName, priorityType) {
-        if (priorityType === void 0) { priorityType = RouterType.None; }
         var _a;
+        if (priorityType === void 0) { priorityType = RouterType.None; }
         var types = this.getPageRouterTypes(pageName);
         switch (types.length) {
             case 0:
@@ -61,7 +81,7 @@ var Router = /** @class */ (function () {
         react_1.Children.forEach(props.children, function (child) {
             Router.PageNameLists.stackList.push(child.props.name);
         });
-        return react_2.default.createElement(Router._Stack.Navigator, __assign({}, props));
+        return React.createElement(Router._Stack.Navigator, __assign({}, props));
     };
     // 底部标签栏
     Router.TabNavigator = function (props) {
@@ -69,7 +89,7 @@ var Router = /** @class */ (function () {
         react_1.Children.forEach(props.children, function (child) {
             Router.PageNameLists.tabList.push(child.props.name);
         });
-        return react_2.default.createElement(Router._Tab.Navigator, __assign({}, props));
+        return React.createElement(Router._Tab.Navigator, __assign({}, props));
     };
     // 侧边栏
     Router.DrawerNavigator = function (props) {
@@ -77,7 +97,7 @@ var Router = /** @class */ (function () {
         react_1.Children.forEach(props.children, function (child) {
             Router.PageNameLists.drawerList.push(child.props.name);
         });
-        return react_2.default.createElement(Router._Drawer.Navigator, __assign({}, props));
+        return React.createElement(Router._Drawer.Navigator, __assign({}, props));
     };
     //
     // —————— 此文件就是为了拿到以下字段，其他代码都是react-navigation抄过来的

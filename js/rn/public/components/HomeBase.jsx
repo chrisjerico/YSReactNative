@@ -120,7 +120,8 @@ var TurntableListItem = function () {
                 react_native_1.Alert.alert("温馨提示", "您还未登录", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -130,7 +131,8 @@ var TurntableListItem = function () {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }

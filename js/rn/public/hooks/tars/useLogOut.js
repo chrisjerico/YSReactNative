@@ -35,13 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_native_1 = require("react-native");
 var UGStore_1 = require("../../../redux/store/UGStore");
 var ANHelper_1 = require("../../define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../../define/ANHelper/hp/CmdDefine");
 var OCHelper_1 = require("../../define/OCHelper/OCHelper");
-var APIRouter_1 = require("../../network/APIRouter");
+var APIRouter_1 = __importDefault(require("../../network/APIRouter"));
 var useLogOut = function (options) {
     if (options === void 0) { options = {}; }
     var onStart = options.onStart, onSuccess = options.onSuccess, onError = options.onError;

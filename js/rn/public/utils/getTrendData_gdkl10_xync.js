@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTrendData_gdkl10_xync = void 0;
 var react_native_1 = require("react-native");
 function getTrendData_gdkl10_xync(data, defaultNumber) {
     if (defaultNumber === void 0) { defaultNumber = 0; }

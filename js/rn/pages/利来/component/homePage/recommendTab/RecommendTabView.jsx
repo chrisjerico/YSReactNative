@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecommendTabView = void 0;
 var React = require("react");
 var react_1 = require("react");
 var react_native_1 = require("react-native");
@@ -10,8 +11,8 @@ var hooks_1 = require("@react-native-community/hooks");
 var react_native_banner_carousel_1 = require("react-native-banner-carousel");
 var react_native_fast_image_1 = require("react-native-fast-image");
 exports.RecommendTabView = function (_a) {
-    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum;
     var _b, _c, _d, _e, _f, _g, _h, _j;
+    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum;
     var onPress = function (list) {
         var _a;
         list.seriesId != '1' ? PushHelper_1.default.pushHomeGame(list) :
@@ -35,8 +36,8 @@ exports.RecommendTabView = function (_a) {
         </react_native_1.View>);
 };
 var Banner = function (_a) {
-    var bannerData = _a.bannerData, _b = _a.onlineNum, onlineNum = _b === void 0 ? 0 : _b;
-    var _c, _d, _e, _f;
+    var _b, _c, _d, _e;
+    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f;
     var width = hooks_1.useDimensions().window.width;
     var BannerRef = React.useRef();
     var _g = react_1.useState(100), height = _g[0], setHeight = _g[1];
@@ -50,10 +51,10 @@ var Banner = function (_a) {
             clearInterval(timer);
         });
     }, [bannerData]);
-    if (((_d = (_c = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _c === void 0 ? void 0 : _c.list) === null || _d === void 0 ? void 0 : _d.length) > 0) {
+    if (((_c = (_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0) {
         return (<react_native_1.View style={{ marginBottom: 10, }}>
                 <react_native_banner_carousel_1.default autoplay index={0} ref={BannerRef} loop pageSize={width}>
-                    {(_f = (_e = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _e === void 0 ? void 0 : _e.list) === null || _f === void 0 ? void 0 : _f.map(function (res, index) {
+                    {(_e = (_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (res, index) {
             return (<react_native_1.TouchableWithoutFeedback onPress={function () {
                 PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
             }}>

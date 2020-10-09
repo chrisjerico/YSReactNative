@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UGStore = void 0;
 // import AsyncStorage from '@react-native-community/async-storage';
 var react_native_1 = require("react-native");
 var BettingReducer_1 = require("../reducer/BettingReducer");

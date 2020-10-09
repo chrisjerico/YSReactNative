@@ -46,9 +46,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var APIRouter_1 = require("../../public/network/APIRouter");
-var NetworkRequest1_1 = require("../../public/network/NetworkRequest1");
+exports.updateUserInfo = exports.IGlobalStateHelper = exports.AsyncStorageKey = void 0;
+var APIRouter_1 = __importDefault(require("../../public/network/APIRouter"));
+var NetworkRequest1_1 = __importDefault(require("../../public/network/NetworkRequest1"));
 var UGStore_1 = require("./UGStore");
 var react_native_1 = require("react-native");
 var ANHelper_1 = require("../../public/define/ANHelper/ANHelper");

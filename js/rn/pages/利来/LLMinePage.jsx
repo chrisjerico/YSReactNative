@@ -52,7 +52,6 @@ var PickAvatarComponent_1 = require("../../public/components/tars/PickAvatarComp
 var useMinePage_1 = require("../../public/hooks/tars/useMinePage");
 var config_1 = require("../BZH/config");
 var tars_1 = require("../../public/tools/tars");
-var LLThemeCololr_1 = require("../../public/theme/colors/LLThemeCololr");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
 var LLMinePage = function (_a) {
     var navigation = _a.navigation, setProps = _a.setProps;
@@ -73,7 +72,7 @@ var LLMinePage = function (_a) {
     var reload = react_1.useRef(false);
     var spinDeg = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ['0deg', '360deg'],
+        outputRange: ["0deg", "360deg"],
     });
     var getLevelWidth = function () {
         setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt));
@@ -85,7 +84,7 @@ var LLMinePage = function (_a) {
                 case 0: return [4 /*yield*/, APIRouter_1.default.user_info()];
                 case 1:
                     userInfo = (_a.sent()).data;
-                    UGStore_1.UGStore.dispatch({ type: 'merge', props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
+                    UGStore_1.UGStore.dispatch({ type: "merge", props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
                     setProps();
                     UGStore_1.UGStore.save();
                     return [2 /*return*/];
@@ -93,14 +92,14 @@ var LLMinePage = function (_a) {
         });
     }); };
     react_1.useEffect(function () {
-        navigation.addListener('focus', function () { return __awaiter(void 0, void 0, void 0, function () {
+        navigation.addListener("focus", function () { return __awaiter(void 0, void 0, void 0, function () {
             var userInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, APIRouter_1.default.user_info()];
                     case 1:
                         userInfo = (_a.sent()).data;
-                        UGStore_1.UGStore.dispatch({ type: 'merge', props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
+                        UGStore_1.UGStore.dispatch({ type: "merge", props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
                         setProps();
                         UGStore_1.UGStore.save();
                         return [2 /*return*/];
@@ -108,107 +107,109 @@ var LLMinePage = function (_a) {
             });
         }); });
         return (function () {
-            navigation.removeListener('focus', null);
+            navigation.removeListener("focus", null);
         });
     }, []);
     react_1.useEffect(function () {
         if (UGUserCenterItem) {
-            setDepositItem(UGUserCenterItem.find(function (item) { return item.name == '存款'; }));
-            setWithdrawItem(UGUserCenterItem.find(function (item) { return item.name == '取款'; }));
-            setTransferItem(UGUserCenterItem.find(function (item) { return item.name == '额度转换'; }));
-            setMissionItem(UGUserCenterItem.find(function (item) { return item.name == '任务中心'; }));
+            setDepositItem(UGUserCenterItem.find(function (item) { return item.name == "存款"; }));
+            setWithdrawItem(UGUserCenterItem.find(function (item) { return item.name == "取款"; }));
+            setTransferItem(UGUserCenterItem.find(function (item) { return item.name == "额度转换"; }));
+            setMissionItem(UGUserCenterItem.find(function (item) { return item.name == "任务中心"; }));
         }
     }, [UGUserCenterItem]);
     react_1.useEffect(function () {
         curLevelInt && nextLevelInt && parseInt(curLevelInt) > 0 && parseInt(nextLevelInt) > 0 && getLevelWidth();
     }, [curLevelInt, nextLevelInt]);
     return (<>
-            <react_native_1.StatusBar barStyle="light-content" translucent={true}/>
-            <react_native_1.SafeAreaView style={{ backgroundColor: "#39150D" }}>
-                <react_native_1.ScrollView bounces={false} style={{ backgroundColor: "#ffffff" }}>
-                    <react_native_1.SafeAreaView style={{ backgroundColor: "#39150D", height: 172 }}>
-                        <react_native_1.TouchableWithoutFeedback onPress={function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服); }}>
-                            <react_native_1.Image style={{ alignSelf: "flex-end", width: 28, height: 28, marginRight: 8 }} source={{ uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png" }}/>
-                        </react_native_1.TouchableWithoutFeedback>
-                        <react_native_1.View style={{
+      <react_native_1.StatusBar barStyle="light-content" translucent={true}/>
+      <react_native_1.SafeAreaView style={{ backgroundColor: "#39150D" }}>
+        <react_native_1.ScrollView bounces={false} style={{ backgroundColor: "#ffffff" }}>
+          <react_native_1.SafeAreaView style={{ backgroundColor: "#39150D", height: 172 }}>
+            <react_native_1.TouchableWithoutFeedback onPress={function () {
+        PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
+    }}>
+              <react_native_1.Image style={{ alignSelf: "flex-end", width: 28, height: 28, marginRight: 8 }} source={{ uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png" }}/>
+            </react_native_1.TouchableWithoutFeedback>
+            <react_native_1.View style={{
         backgroundColor: "#F3745B",
         marginHorizontal: 8,
         marginVertical: 12,
         height: 159,
         borderRadius: 6,
     }}>
-                            <react_native_1.View style={{ flexDirection: "row", marginHorizontal: 8, marginVertical: 16 }}>
-                                <react_native_1.TouchableWithoutFeedback onPress={function () { return onPressAvatar(); }}>
-                                    <react_native_1.Image style={{ width: 50, height: 50 }} source={{ uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar }}/>
-                                </react_native_1.TouchableWithoutFeedback>
-                                <react_native_1.View style={{ marginLeft: 12 }}>
-                                    <react_native_1.View style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <react_native_1.Text style={{ color: "#ffffff", lineHeight: 20, fontSize: 14 }}>{usr}</react_native_1.Text>
-                                        <react_native_linear_gradient_1.default colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{
+              <react_native_1.View style={{ flexDirection: "row", marginHorizontal: 8, marginVertical: 16 }}>
+                <react_native_1.TouchableWithoutFeedback onPress={function () { return onPressAvatar(); }}>
+                  <react_native_1.Image style={{ width: 50, height: 50 }} source={{ uri: isTest || !avatar ? getHtml5Image(18, "money-2") : avatar }}/>
+                </react_native_1.TouchableWithoutFeedback>
+                <react_native_1.View style={{ marginLeft: 12 }}>
+                  <react_native_1.View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <react_native_1.Text style={{ color: "#ffffff", lineHeight: 20, fontSize: 14 }}>{usr}</react_native_1.Text>
+                    <react_native_linear_gradient_1.default colors={["#FFEAC3", "#FFE09A"]} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{
         marginLeft: 8,
         marginTop: 1,
         borderRadius: 3,
         width: 42,
-        height: 17
+        height: 17,
     }}>
-                                            <react_native_1.Text style={{
+                      <react_native_1.Text style={{
         marginTop: 0.5,
-        textAlign: 'center',
-        color: '#8F6832',
-        fontStyle: 'italic',
-        fontWeight: '600',
-        fontSize: 13
+        textAlign: "center",
+        color: "#8F6832",
+        fontStyle: "italic",
+        fontWeight: "600",
+        fontSize: 13,
     }}>{curLevelGrade}</react_native_1.Text>
-                                        </react_native_linear_gradient_1.default>
-                                    </react_native_1.View>
-                                    <react_native_1.View style={{ flexDirection: "row", alignItems: 'center' }}>
-                                        <react_native_1.View style={{
+                    </react_native_linear_gradient_1.default>
+                  </react_native_1.View>
+                  <react_native_1.View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <react_native_1.View style={{
         backgroundColor: "#ddf",
         width: 193,
         height: 8,
-        borderRadius: 4
+        borderRadius: 4,
     }}/>
-                                        <react_native_1.View style={{
+                    <react_native_1.View style={{
         position: "absolute",
         backgroundColor: "#3F64D8",
         width: levelWidth,
         height: 8,
-        borderRadius: 4
+        borderRadius: 4,
     }}/>
-                                        <react_native_1.Text style={{
+                    <react_native_1.Text style={{
         position: "absolute",
         left: 91.5,
         color: "#ffffff",
         lineHeight: 20,
-        fontSize: 8
-    }}>{parseInt(curLevelInt) / parseInt(nextLevelInt) + "%"}</react_native_1.Text>
-                                        <react_native_1.Text style={{
+        fontSize: 8,
+    }}>{isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? "0%" : parseInt(curLevelInt) / parseInt(nextLevelInt) + "%"}</react_native_1.Text>
+                    <react_native_1.Text style={{
         color: "#ffffff",
         lineHeight: 20,
-        fontSize: 14
+        fontSize: 14,
     }}>{curLevelGrade}</react_native_1.Text>
-                                    </react_native_1.View>
-                                    {levelWidth === 193 ?
+                  </react_native_1.View>
+                  {levelWidth === 193 ?
         <react_native_1.Text style={{ color: "#ffffff", fontSize: 14 }}>恭喜您已经是最高等级!</react_native_1.Text> :
         <react_native_1.Text style={{
             color: "#ffffff",
-            fontSize: 14
-        }}>{"\u8DDD\u79BB\u4E0B\u4E00\u7EA7\u8FD8\u5DEE" + (parseInt(nextLevelInt) - parseInt(curLevelInt))}</react_native_1.Text>}
-                                </react_native_1.View>
-                            </react_native_1.View>
-                            <react_native_1.View style={{ marginHorizontal: 16, marginTop: 16 }}>
-                                <react_native_1.Text style={{ fontSize: 13, color: "#ffffff" }}>总余额（元）</react_native_1.Text>
-                                <react_native_1.View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
-                                    <react_native_1.Text style={{
+            fontSize: 14,
+        }}>{"\u8DDD\u79BB\u4E0B\u4E00\u7EA7\u8FD8\u5DEE" + (isNaN(parseInt(nextLevelInt) - parseInt(curLevelInt)) ? 0 : parseInt(nextLevelInt) - parseInt(curLevelInt))}</react_native_1.Text>}
+                </react_native_1.View>
+              </react_native_1.View>
+              <react_native_1.View style={{ marginHorizontal: 16, marginTop: 16 }}>
+                <react_native_1.Text style={{ fontSize: 13, color: "#ffffff" }}>总余额（元）</react_native_1.Text>
+                <react_native_1.View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+                  <react_native_1.Text style={{
         fontSize: 22,
         fontWeight: "bold",
         color: "#ffffff",
         alignSelf: "center",
-        textAlign: "center"
-    }}>{balance ? "\u00A50" : "\u00A5" + balance}</react_native_1.Text>
-                                    <react_native_1.View style={{ flex: 1 }}/>
-                                    <react_native_1.Animated.View style={[{ transform: [{ rotateZ: spinDeg }] }]}>
-                                        <FontAwesome_1.default size={18} style={{ color: "#ffffff" }} name={"refresh"} onPress={function () {
+        textAlign: "center",
+    }}>{balance ? "\u00A50" : isNaN(balance) ? "\u00A50" : "\u00A5" + balance}</react_native_1.Text>
+                  <react_native_1.View style={{ flex: 1 }}/>
+                  <react_native_1.Animated.View style={[{ transform: [{ rotateZ: spinDeg }] }]}>
+                    <FontAwesome_1.default size={18} style={{ color: "#ffffff" }} name={"refresh"} onPress={function () {
         react_native_1.Animated.timing(spinValue, {
             toValue: 1,
             duration: 3000,
@@ -220,60 +221,60 @@ var LLMinePage = function (_a) {
         });
         refresh();
     }}/>
-                                    </react_native_1.Animated.View>
-                                </react_native_1.View>
-                            </react_native_1.View>
-                        </react_native_1.View>
-                    </react_native_1.SafeAreaView>
-                    <react_native_1.View style={{
+                  </react_native_1.Animated.View>
+                </react_native_1.View>
+              </react_native_1.View>
+            </react_native_1.View>
+          </react_native_1.SafeAreaView>
+          <react_native_1.View style={{
         marginTop: 56,
         flexDirection: "row",
         width: react_native_1.Dimensions.get("screen").width - 16,
-        marginHorizontal: 8
+        marginHorizontal: 8,
     }}>
-                        <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushCategory(7, 21); }}>
-                            <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
-                                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png" }}/>
-                                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>充值</react_native_1.Text>
-                            </react_native_1.View>
-                        </react_native_1.TouchableWithoutFeedback>
-                        <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushCategory(7, 22); }}>
-                            <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
-                                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png" }}/>
-                                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>提现</react_native_1.Text>
-                            </react_native_1.View>
-                        </react_native_1.TouchableWithoutFeedback>
-                        <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushUserCenterType(transferItem.code); }}>
-                            <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
-                                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png" }}/>
-                                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>额度转换</react_native_1.Text>
-                            </react_native_1.View>
-                        </react_native_1.TouchableWithoutFeedback>
-                        <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushUserCenterType(missionItem.code); }}>
-                            <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
-                                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png" }}/>
-                                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>任务中心</react_native_1.Text>
-                            </react_native_1.View>
-                        </react_native_1.TouchableWithoutFeedback>
-                    </react_native_1.View>
-                    <react_native_1.SafeAreaView>
-                        <react_native_1.FlatList scrollEnabled={false} style={{ borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90 }} keyExtractor={function (item, index) { return "mine-" + index; }} data={UGUserCenterItem} ListFooterComponent={function () { return (<react_native_1.View style={{
+            <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushCategory(7, 21); }}>
+              <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
+                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png" }}/>
+                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>充值</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+            <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushCategory(7, 22); }}>
+              <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
+                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png" }}/>
+                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>提现</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+            <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushUserCenterType(transferItem.code); }}>
+              <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
+                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png" }}/>
+                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>额度转换</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+            <react_native_1.TouchableWithoutFeedback onPress={function () { return PushHelper_1.default.pushUserCenterType(missionItem.code); }}>
+              <react_native_1.View style={{ alignItems: "center", flex: 1 }}>
+                <react_native_1.Image style={{ width: 36, height: 28 }} source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png" }}/>
+                <react_native_1.Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>任务中心</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+          </react_native_1.View>
+          <react_native_1.SafeAreaView>
+            <react_native_1.FlatList scrollEnabled={false} style={{ borderTopWidth: 1, borderTopColor: "#E0E0E0", marginTop: 20, marginBottom: 90 }} keyExtractor={function (item, index) { return "mine-" + index; }} data={UGUserCenterItem} ListFooterComponent={function () { return (<react_native_1.View style={{
         flexDirection: "row",
         flex: 1,
         marginLeft: 20,
         height: 47,
         alignItems: "center",
         borderBottomWidth: 1,
-        borderBottomColor: '#E0E0E0'
+        borderBottomColor: "#E0E0E0",
     }}>
-                                    <react_native_1.TouchableOpacity style={{ flexDirection: "row", flex: 1, }} onPress={loginOut}>
-                                        <react_native_1.Image style={{ height: 29, width: 29, marginRight: 10 }} source={{ uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/Csignout.png" }}/>
-                                        <react_native_1.Text style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>退出登录</react_native_1.Text>
-                                        <react_native_1.View style={{ marginRight: 20 }}>
-                                            <FontAwesome_1.default size={20} name={'angle-right'}/>
-                                        </react_native_1.View>
-                                    </react_native_1.TouchableOpacity>
-                                </react_native_1.View>); }} renderItem={function (_a) {
+                  <react_native_1.TouchableOpacity style={{ flexDirection: "row", flex: 1 }} onPress={loginOut}>
+                    <react_native_1.Image style={{ height: 29, width: 29, marginRight: 10 }} source={{ uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/Csignout.png" }}/>
+                    <react_native_1.Text style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>退出登录</react_native_1.Text>
+                    <react_native_1.View style={{ marginRight: 20 }}>
+                      <FontAwesome_1.default size={20} name={"angle-right"}/>
+                    </react_native_1.View>
+                  </react_native_1.TouchableOpacity>
+                </react_native_1.View>); }} renderItem={function (_a) {
         var item = _a.item;
         return (<react_native_1.View style={{
             flexDirection: "row",
@@ -282,34 +283,34 @@ var LLMinePage = function (_a) {
             height: 47,
             alignItems: "center",
             borderBottomWidth: 1,
-            borderBottomColor: '#E0E0E0'
+            borderBottomColor: "#E0E0E0",
         }}>
-                                    <react_native_1.TouchableOpacity style={{ flexDirection: "row", flex: 1, }} onPress={function () {
+                  <react_native_1.TouchableOpacity style={{ flexDirection: "row", flex: 1 }} onPress={function () {
             PushHelper_1.default.pushUserCenterType(item.code);
         }}>
-                                        <react_native_1.Image style={{ height: 29, width: 29, marginRight: 10 }} source={{ uri: item.logo }}/>
-                                        <react_native_1.Text style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>{item.name}</react_native_1.Text>
-                                        <react_native_1.View style={{ marginRight: 20 }}>
-                                            <FontAwesome_1.default size={20} name={'angle-right'}/>
-                                        </react_native_1.View>
-                                        {item.name === "站内信" && unreadMsg > 0 && (<react_native_1.View style={{
+                    <react_native_1.Image style={{ height: 29, width: 29, marginRight: 10 }} source={{ uri: item.logo }}/>
+                    <react_native_1.Text style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>{item.name}</react_native_1.Text>
+                    <react_native_1.View style={{ marginRight: 20 }}>
+                      <FontAwesome_1.default size={20} name={"angle-right"}/>
+                    </react_native_1.View>
+                    {item.name === "站内信" && unreadMsg > 0 && (<react_native_1.View style={{
             position: "absolute",
             left: 80,
             backgroundColor: "red",
             borderRadius: 30,
             justifyContent: "center",
             width: 20,
-            height: 20
+            height: 20,
         }}>
-                                                <react_native_1.Text style={{ alignSelf: "center", color: "white" }}>1</react_native_1.Text>
-                                            </react_native_1.View>)}
-                                    </react_native_1.TouchableOpacity>
-                                </react_native_1.View>);
+                        <react_native_1.Text style={{ alignSelf: "center", color: "white" }}>{unreadMsg}</react_native_1.Text>
+                      </react_native_1.View>)}
+                  </react_native_1.TouchableOpacity>
+                </react_native_1.View>);
     }}/>
-                    </react_native_1.SafeAreaView>
-                    <PickAvatarComponent_1.default ref={pickAvatarComponentRef} color={LLThemeCololr_1.LLThemeColor.利来.themeColor} initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} onSaveAvatarSuccess={onSaveAvatarSuccess}/>
-                </react_native_1.ScrollView>
-            </react_native_1.SafeAreaView>
-        </>);
+          </react_native_1.SafeAreaView>
+          <PickAvatarComponent_1.default ref={pickAvatarComponentRef} color={"#fb5959"} initAvatar={isTest || !avatar ? getHtml5Image(18, "money-2") : avatar} onSaveAvatarSuccess={onSaveAvatarSuccess}/>
+        </react_native_1.ScrollView>
+      </react_native_1.SafeAreaView>
+    </>);
 };
 exports.default = LLMinePage;

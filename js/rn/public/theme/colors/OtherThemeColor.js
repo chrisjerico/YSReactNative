@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OtherThemeColor = void 0;
 // 其他
 exports.OtherThemeColor = {
     //乐橙
@@ -131,4 +132,3 @@ exports.OtherThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=OtherThemeColor.js.map

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RnPageModel = exports.setRnPageInfo = void 0;
 var config_1 = require("./../../../../../config");
 var Navigation_1 = require("../../navigation/Navigation");
 var Router_1 = require("../../navigation/Router");
@@ -408,4 +409,3 @@ var RnPageModel = /** @class */ (function () {
     return RnPageModel;
 }());
 exports.RnPageModel = RnPageModel;
-//# sourceMappingURL=SetRnPageInfo.js.map

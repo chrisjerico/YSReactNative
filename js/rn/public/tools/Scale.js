@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.scaleHeight = exports.scale = void 0;
 var AppDefine_1 = require("../../public/define/AppDefine");
 // functions
 exports.scale = function (layout) {
@@ -15,4 +16,3 @@ exports.scaleHeight = function (layout) {
 //     .concat(Array(patch).fill(fillEle))
 //     .map((ele, index) => Object.assign({}, { key: index }, ele))
 // }
-//# sourceMappingURL=Scale.js.map

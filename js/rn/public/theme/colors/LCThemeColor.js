@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LCThemeColor = void 0;
 exports.LCThemeColor = {
     乐橙: {
         skitType: '乐橙',
@@ -24,4 +25,3 @@ exports.LCThemeColor = {
         moneyCellColor: '#444',
     }
 };
-//# sourceMappingURL=LCThemeColor.js.map

@@ -48,6 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LLRegisterPage = void 0;
 var React = require("react");
 var react_1 = require("react");
 var react_native_1 = require("react-native");
@@ -77,16 +78,21 @@ exports.LLRegisterPage = function () {
     var _a = react_1.useState(""), acc = _a[0], setAcc = _a[1];
     var _b = react_1.useState(""), pwd = _b[0], setPwd = _b[1];
     var _c = react_1.useState(""), code = _c[0], setCode = _c[1];
-    var _d = react_1.useState(""), smsCode = _d[0], setSmsCode = _d[1];
-    var _e = react_1.useState(""), imgCode = _e[0], setImgCode = _e[1];
-    var _f = react_1.useState(""), email = _f[0], setEmail = _f[1];
-    var _g = react_1.useState(""), inviter = _g[0], setInviter = _g[1];
-    var _h = react_1.useState(""), confirmPwd = _h[0], setConfirmPwd = _h[1];
-    var _j = react_1.useState("user"), regType = _j[0], setRegType = _j[1];
+    var _d = react_1.useState(""), name = _d[0], setName = _d[1];
+    var _e = react_1.useState(""), fundPwd = _e[0], setFundPwd = _e[1];
+    var _f = react_1.useState(""), phone = _f[0], setPhone = _f[1];
+    var _g = react_1.useState(""), QQ = _g[0], setQQ = _g[1];
+    var _h = react_1.useState(""), wx = _h[0], setWx = _h[1];
+    var _j = react_1.useState(""), smsCode = _j[0], setSmsCode = _j[1];
+    var _k = react_1.useState(""), imgCode = _k[0], setImgCode = _k[1];
+    var _l = react_1.useState(""), email = _l[0], setEmail = _l[1];
+    var _m = react_1.useState(""), inviter = _m[0], setInviter = _m[1];
+    var _o = react_1.useState(""), confirmPwd = _o[0], setConfirmPwd = _o[1];
+    var _p = react_1.useState("user"), regType = _p[0], setRegType = _p[1];
     var regex = RegExp("^[A-Za-z0-9]{6,15}$");
     var SystemStore = UGStore_1.UGStore.globalProps.sysConf;
-    var _k = react_1.useState(), slideCode = _k[0], setSlideCode = _k[1];
-    var _l = SystemStore.mobile_logo, mobile_logo = _l === void 0 ? "" : _l, rankingListSwitch = SystemStore.rankingListSwitch, hide_reco = SystemStore.hide_reco, // 代理人 0不填，1选填，2必填
+    var _q = react_1.useState(), slideCode = _q[0], setSlideCode = _q[1];
+    var _r = SystemStore.mobile_logo, mobile_logo = _r === void 0 ? "" : _r, rankingListSwitch = SystemStore.rankingListSwitch, hide_reco = SystemStore.hide_reco, // 代理人 0不填，1选填，2必填
     reg_name = SystemStore.reg_name, // 真实姓名 0不填，1选填，2必填
     reg_fundpwd = SystemStore.reg_fundpwd, // 取款密码 0不填，1选填，2必填
     reg_qq = SystemStore.reg_qq, // QQ 0不填，1选填，2必填
@@ -149,14 +155,13 @@ exports.LLRegisterPage = function () {
         }
     }, [reg_vcode, code]);
     var onSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var password, fundPwd, smsCode_, imgCode_, _a, data, status_2, user, _b, _c, loginData, status_3, _d, sessid, _e, UserInfo, _f, error_2;
+        var password, smsCode_, imgCode_, _a, data, status_2, user, _b, _c, loginData, status_3, _d, sessid, _e, UserInfo, _f, error_2;
         var _g, _h, _j, _k, _l, _m, _o;
         return __generator(this, function (_p) {
             switch (_p.label) {
                 case 0:
                     _p.trys.push([0, 34, , 35]);
                     password = blueimp_md5_1.default(pwd);
-                    fundPwd = "";
                     smsCode_ = smsCode;
                     imgCode_ = imgCode;
                     UGLoadingCP_1.showLoading({ type: UGLoadingCP_1.UGLoadingType.Loading, text: '正在注册...' });
@@ -168,7 +173,11 @@ exports.LLRegisterPage = function () {
                     return [4 /*yield*/, APIRouter_1.default.user_reg({
                             usr: acc,
                             pwd: password,
+                            phone: phone,
+                            fullName: name,
                             fundPwd: fundPwd,
+                            qq: QQ,
+                            wx: wx,
                             regType: regType,
                             "slideCode[nc_sid]": slideCode ? slideCode["nc_csessionid"] : "",
                             "slideCode[nc_token]": slideCode ? slideCode["nc_token"] : "",
@@ -368,6 +377,11 @@ exports.LLRegisterPage = function () {
                     <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setPwd(text); }} placeholder={"请输入密码（长度不能低于6位)"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/>
                     <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setConfirmPwd(text); }} placeholder={"请确认密码"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/>
                     <LLRegisterInput_1.LLRegisterInput visible={reg_email != 0} onChangeText={function (text) { return setEmail(text); }} placeholder={"请输入电子邮件"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-email.png"}/>
+                    {reg_fundpwd ? <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setFundPwd(text); }} placeholder={"请输入取款密码"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png"}/> : null}
+                    {reg_name ? <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setName(text); }} placeholder={"请输入真实姓名"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_qq ? <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setQQ(text); }} placeholder={"请输入QQ号"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_wx ? <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setWx(text); }} placeholder={"请输入微信号"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
+                    {reg_phone ? <LLRegisterInput_1.LLRegisterInput isPwd={true} onChangeText={function (text) { return setPhone(text); }} placeholder={"请输入手机"} img={httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/> : null}
                     {getVcode}
                     <react_native_1.View style={{ flexDirection: "row" }}>
                         <react_native_1.TouchableOpacity style={{ flex: 1, backgroundColor: "#d19898", borderRadius: 30, marginTop: 12 }} onPress={function () {

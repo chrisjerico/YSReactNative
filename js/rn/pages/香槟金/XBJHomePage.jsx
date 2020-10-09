@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.XBJHomePage = void 0;
 var React = require("react");
 var react_native_1 = require("react-native");
 var HomeMyInfoComponent_1 = require("./cp/HomeMyInfoComponent");

@@ -76,8 +76,8 @@ var CmdDefine_1 = require("../../public/define/ANHelper/hp/CmdDefine");
     [self presentViewController:nav animated:true completion:nil];
  */
 var ZLHomePage = function (_a) {
-    var navigation = _a.navigation, setProps = _a.setProps;
     var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29, _30, _31, _32, _33, _34, _35, _36, _37, _38, _39, _40, _41, _42, _43, _44, _45, _46, _47, _48, _49, _50, _51, _52, _53, _54, _55, _56, _57, _58, _59, _60, _61, _62, _63, _64, _65, _66, _67, _68, _69, _70, _71, _72, _73, _74, _75, _76, _77, _78, _79, _80, _81, _82, _83, _84, _85, _86, _87, _88, _89, _90, _91, _92, _93, _94, _95, _96, _97, _98, _99, _100, _101, _102, _103, _104, _105, _106, _107, _108, _109, _110, _111, _112, _113, _114, _115, _116, _117, _118, _119, _120, _121, _122, _123;
+    var navigation = _a.navigation, setProps = _a.setProps;
     var width = hooks_1.useDimensions().window.width;
     var onPopViewPress = usePopUpView_1.default().onPopViewPress;
     var userStore = UGStore_1.UGStore.globalProps.userInfo;
@@ -312,8 +312,8 @@ var ZLHomePage = function (_a) {
                 </react_native_1.View>
 
                 <react_native_1.FlatList style={{ marginTop: 10 }} data={(_123 = (_122 = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _122 === void 0 ? void 0 : _122.list) === null || _123 === void 0 ? void 0 : _123.filter(function (res, index) { return index < 5; })} renderItem={function (_a) {
-        var item = _a.item, index = _a.index;
         var _b, _c;
+        var item = _a.item, index = _a.index;
         return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                         <react_native_1.TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, (_c = (_b = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
             if (selectId == index) {
@@ -401,7 +401,8 @@ var TurntableListItem = function () {
                 react_native_1.Alert.alert("温馨提示", "您还未登录", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -411,7 +412,8 @@ var TurntableListItem = function () {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -472,7 +474,8 @@ var ZLHeader = function () {
             break;
     }
     return (<react_native_1.View style={{
-        width: width, height: 68 + topDistance, paddingTop: topDistance, backgroundColor: colorEnum_1.colorEnum.mainColor, justifyContent: 'space-between',
+        width: width,
+        height: 68 + topDistance, paddingTop: topDistance, backgroundColor: colorEnum_1.colorEnum.mainColor, justifyContent: 'space-between',
         flexDirection: 'row', shadowColor: "#444", borderBottomWidth: 0.5, alignItems: 'center', borderColor: "#444"
     }}>
             <FastImageAutoWidth style={{ width: 210, height: 50 }} source={{ uri: mobile_logo }}/>
@@ -605,7 +608,8 @@ var AcctountDetail = function () {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -624,7 +628,8 @@ var AcctountDetail = function () {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }
@@ -643,7 +648,8 @@ var AcctountDetail = function () {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     { text: "取消", onPress: function () { }, style: "cancel" },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
                     }

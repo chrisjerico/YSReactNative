@@ -11,8 +11,8 @@ var hooks_1 = require("@react-native-community/hooks");
 var httpClient_1 = require("../network/httpClient");
 var PushHelper_1 = require("../define/PushHelper");
 var PromotionsBlock = function (_a) {
-    var _b = _a.horizontal, horizontal = _b === void 0 ? false : _b, _c = _a.titleVisible, titleVisible = _c === void 0 ? true : _c;
-    var _d, _e;
+    var _b, _c;
+    var _d = _a.horizontal, horizontal = _d === void 0 ? false : _d, _e = _a.titleVisible, titleVisible = _e === void 0 ? true : _e;
     var couponListData = useGetHomeInfo_1.default(['system_promotions']).couponListData;
     var _f = react_1.useState(-1), selectId = _f[0], setSelectedId = _f[1];
     var onPopViewPress = usePopUpView_1.default().onPopViewPress;
@@ -29,9 +29,9 @@ var PromotionsBlock = function (_a) {
             PushHelper_1.default.pushCategory(data.linkCategory, data.linkPosition);
         }
     };
-    return (<react_native_1.FlatList horizontal={horizontal} style={{ marginTop: 10 }} data={(_e = (_d = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.filter(function (res, index) { return index < 5; })} renderItem={function (_a) {
-        var item = _a.item, index = _a.index;
+    return (<react_native_1.FlatList horizontal={horizontal} style={{ marginTop: 10 }} data={(_c = (_b = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.filter(function (res, index) { return index < 5; })} renderItem={function (_a) {
         var _b, _c;
+        var item = _a.item, index = _a.index;
         return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
                 <react_native_1.TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, (_c = (_b = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
             console.log("onpress::", item);

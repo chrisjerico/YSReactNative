@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChooseGameModal = void 0;
 var react_native_1 = require("react-native");
 var react_native_modal_1 = require("react-native-modal");
 var React = require("react");

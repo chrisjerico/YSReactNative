@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.httpClient = exports.CachePolicyEnum = void 0;
 var axios_1 = require("axios");
 var react_native_1 = require("react-native");
 var UGStore_1 = require("../../redux/store/UGStore");
@@ -241,4 +242,3 @@ exports.httpClient.interceptors.request.use(function (config) { return __awaiter
         }
     });
 }); });
-//# sourceMappingURL=httpClient.js.map

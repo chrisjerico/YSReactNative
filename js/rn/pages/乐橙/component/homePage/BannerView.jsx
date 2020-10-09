@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BannerView = void 0;
 var react_native_swiper_1 = require("react-native-swiper");
 var react_native_1 = require("react-native");
 var React = require("react");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GDBThemeColor = void 0;
 exports.GDBThemeColor = {
     金星黑: {
         skitType: '金星黑',
@@ -26,4 +27,3 @@ exports.GDBThemeColor = {
         isBlack: true,
     }
 };
-//# sourceMappingURL=GDBThemeColor.js.map

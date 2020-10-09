@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BettingReducerActions = void 0;
 var immer_1 = require("immer");
 var lottoSetting_1 = require("../../pages/common/LottoBetting/PlayVIew/lottoSetting");
 var BettingReducerActions;
@@ -101,4 +102,3 @@ function BettingReducer(state, action) {
     });
 }
 exports.default = BettingReducer;
-//# sourceMappingURL=BettingReducer.js.map

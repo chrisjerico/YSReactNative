@@ -11,8 +11,8 @@ var MineHeader_1 = require("../../public/views/tars/MineHeader");
 var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
 var PreferenceButton_1 = require("./views/PreferenceButton");
 var LHTPreferencePage = function (_a) {
-    var route = _a.route;
     var _b;
+    var route = _a.route;
     var _c = (_b = route === null || route === void 0 ? void 0 : route.params) !== null && _b !== void 0 ? _b : {}, onPressConfirm = _c.onPressConfirm, initPreferences = _c.initPreferences;
     var _d = react_1.useState(initPreferences), preferences = _d[0], setPreferences = _d[1];
     react_1.useEffect(function () {

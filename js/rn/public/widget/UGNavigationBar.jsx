@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
 var react_1 = require("react");
 var react_native_elements_1 = require("react-native-elements");
 var react_native_linear_gradient_1 = require("react-native-linear-gradient");
@@ -36,7 +37,10 @@ var UGNavigationBar = /** @class */ (function (_super) {
     // 返回按钮
     UGNavigationBar.prototype.BackButton = function (_a) {
         var style = _a.style;
-        return (<react_native_elements_1.Button icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }} buttonStyle={[{ backgroundColor: 'transparent', marginLeft: -8 }, style]} onPress={function () {
+        return (<react_native_elements_1.Button icon={{ name: 'ios-arrow-back', type: 'ionicon', color: 'white' }} buttonStyle={[
+            { backgroundColor: 'transparent', marginLeft: -8 },
+            style,
+        ]} onPress={function () {
             RootNavigation_1.pop();
             switch (react_native_1.Platform.OS) {
                 case 'ios':
@@ -49,7 +53,12 @@ var UGNavigationBar = /** @class */ (function (_super) {
         var props = Object.assign(this.newProps, this.props);
         // 标题
         if (props.title) {
-            Object.assign(props, { centerComponent: { text: props.title, style: { color: 'white', fontSize: 18 } } });
+            Object.assign(props, {
+                centerComponent: {
+                    text: props.title,
+                    style: { color: 'white', fontSize: 18 },
+                },
+            });
         }
         // 左侧按钮
         props.leftComponent = (<react_native_1.View style={{ flexDirection: 'row' }}>
@@ -58,11 +67,20 @@ var UGNavigationBar = /** @class */ (function (_super) {
       </react_native_1.View>);
         // 隐藏下划线
         if (props.hideUnderline) {
-            props = FUtils_1.deepMergeProps(props, { containerStyle: { borderBottomWidth: 0 } });
+            props = FUtils_1.deepMergeProps(props, {
+                containerStyle: { borderBottomWidth: 0 },
+            });
         }
         // 渐变色
         if (props.gradientColor) {
-            props = FUtils_1.deepMergeProps(props, { ViewComponent: react_native_linear_gradient_1.default, linearGradientProps: { colors: props.gradientColor, start: { x: 0, y: 1 }, end: { x: 1, y: 1 } } });
+            props = FUtils_1.deepMergeProps(props, {
+                ViewComponent: react_native_linear_gradient_1.default,
+                linearGradientProps: {
+                    colors: props.gradientColor,
+                    start: { x: 0, y: 1 },
+                    end: { x: 1, y: 1 },
+                },
+            });
         }
         return <react_native_elements_1.Header {...props}/>;
     };

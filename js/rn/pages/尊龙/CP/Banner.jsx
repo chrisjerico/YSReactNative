@@ -18,10 +18,10 @@ var PushHelper_1 = require("../../../public/define/PushHelper");
 var react_native_fast_image_1 = require("react-native-fast-image");
 var react_2 = require("react");
 var Banner = function (_a) {
-    var bannerData = _a.bannerData, _b = _a.onlineNum, onlineNum = _b === void 0 ? 0 : _b, onlineSwitch = _a.onlineSwitch, _c = _a.size, size = _c === void 0 ? {
+    var _b, _c, _d, _e;
+    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f, onlineSwitch = _a.onlineSwitch, _g = _a.size, size = _g === void 0 ? {
         width: 0, height: 0,
-    } : _c, style = _a.style;
-    var _d, _e, _f, _g;
+    } : _g, style = _a.style;
     var BannerRef = react_1.useRef();
     var _h = react_1.useState(100), height = _h[0], setHeight = _h[1];
     react_1.useEffect(function () {
@@ -38,11 +38,11 @@ var Banner = function (_a) {
             clearInterval(timer);
         });
     }, [bannerData,]);
-    if (((_e = (_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.length) > 0) {
+    if (((_c = (_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0) {
         return (<react_native_1.View style={__assign({}, style)}>
 
         <react_native_banner_carousel_1.default autoplay index={0} ref={BannerRef} loop pageSize={size.width}>
-          {(_g = (_f = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _f === void 0 ? void 0 : _f.list) === null || _g === void 0 ? void 0 : _g.map(function (res, index) {
+          {(_e = (_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (res, index) {
             return (<react_native_1.TouchableWithoutFeedback onPress={function () {
                 PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
             }}>

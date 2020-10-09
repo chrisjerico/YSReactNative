@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserInfo = exports.IGlobalStateHelper = exports.AsyncStorageKey = void 0;
 var APIRouter_1 = require("../../public/network/APIRouter");
 var NetworkRequest1_1 = require("../../public/network/NetworkRequest1");
 var UGStore_1 = require("./UGStore");

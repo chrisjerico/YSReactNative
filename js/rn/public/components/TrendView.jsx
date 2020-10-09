@@ -13,8 +13,8 @@ var BaseScreen_1 = require("../../pages/\u4E50\u6A59/component/BaseScreen");
 var AppDefine_1 = require("../define/AppDefine");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var TrendView = function (_a) {
-    var navigation = _a.navigation;
     var _b;
+    var navigation = _a.navigation;
     var _c = react_1.useState(), trendData = _c[0], setTrendData = _c[1];
     var _d = react_1.useState([]), headerArr = _d[0], setHeaderArr = _d[1];
     var screenWidth = react_native_1.Dimensions.get('screen').width;

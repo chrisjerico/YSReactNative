@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -23,10 +23,33 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var React = __importStar(require("react"));
 var react_1 = require("react");
 var react_native_elements_1 = require("react-native-elements");
-var react_native_linear_gradient_1 = require("react-native-linear-gradient");
+var react_native_linear_gradient_1 = __importDefault(require("react-native-linear-gradient"));
 var FUtils_1 = require("../tools/FUtils");
 var react_native_1 = require("react-native");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
@@ -47,7 +70,10 @@ var UGNavigationBar = /** @class */ (function (_super) {
     // 返回按钮
     UGNavigationBar.prototype.BackButton = function (_a) {
         var style = _a.style;
-        return (react_1.default.createElement(react_native_elements_1.Button, { icon: { name: 'ios-arrow-back', type: 'ionicon', color: 'white' }, buttonStyle: [{ backgroundColor: 'transparent', marginLeft: -8 }, style], onPress: function () {
+        return (React.createElement(react_native_elements_1.Button, { icon: { name: 'ios-arrow-back', type: 'ionicon', color: 'white' }, buttonStyle: [
+                { backgroundColor: 'transparent', marginLeft: -8 },
+                style,
+            ], onPress: function () {
                 RootNavigation_1.pop();
                 switch (react_native_1.Platform.OS) {
                     case 'ios':
@@ -60,21 +86,35 @@ var UGNavigationBar = /** @class */ (function (_super) {
         var props = Object.assign(this.newProps, this.props);
         // 标题
         if (props.title) {
-            Object.assign(props, { centerComponent: { text: props.title, style: { color: 'white', fontSize: 18 } } });
+            Object.assign(props, {
+                centerComponent: {
+                    text: props.title,
+                    style: { color: 'white', fontSize: 18 },
+                },
+            });
         }
         // 左侧按钮
-        props.leftComponent = (react_1.default.createElement(react_native_1.View, { style: { flexDirection: 'row' } },
-            react_1.default.createElement(this.BackButton, { style: { height: this.props.back ? 40 : 0 } }),
+        props.leftComponent = (React.createElement(react_native_1.View, { style: { flexDirection: 'row' } },
+            React.createElement(this.BackButton, { style: { height: this.props.back ? 40 : 0 } }),
             this.props.leftComponent));
         // 隐藏下划线
         if (props.hideUnderline) {
-            props = FUtils_1.deepMergeProps(props, { containerStyle: { borderBottomWidth: 0 } });
+            props = FUtils_1.deepMergeProps(props, {
+                containerStyle: { borderBottomWidth: 0 },
+            });
         }
         // 渐变色
         if (props.gradientColor) {
-            props = FUtils_1.deepMergeProps(props, { ViewComponent: react_native_linear_gradient_1.default, linearGradientProps: { colors: props.gradientColor, start: { x: 0, y: 1 }, end: { x: 1, y: 1 } } });
+            props = FUtils_1.deepMergeProps(props, {
+                ViewComponent: react_native_linear_gradient_1.default,
+                linearGradientProps: {
+                    colors: props.gradientColor,
+                    start: { x: 0, y: 1 },
+                    end: { x: 1, y: 1 },
+                },
+            });
         }
-        return react_1.default.createElement(react_native_elements_1.Header, __assign({}, props));
+        return React.createElement(react_native_elements_1.Header, __assign({}, props));
     };
     return UGNavigationBar;
 }(react_1.Component));

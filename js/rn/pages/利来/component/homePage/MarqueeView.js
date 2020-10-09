@@ -1,10 +1,33 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MarqueeView = void 0;
 var react_native_1 = require("react-native");
-var React = require("react");
+var React = __importStar(require("react"));
 var react_native_marquee_ab_1 = require("react-native-marquee-ab");
-var Foundation_1 = require("react-native-vector-icons/Foundation");
-var react_native_modal_1 = require("react-native-modal");
+var Foundation_1 = __importDefault(require("react-native-vector-icons/Foundation"));
+var react_native_modal_1 = __importDefault(require("react-native-modal"));
 var react_1 = require("react");
 var width = react_native_1.Dimensions.get("screen").width;
 exports.MarqueeView = function (_a) {

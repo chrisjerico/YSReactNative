@@ -114,7 +114,7 @@ const LLHomePage = ({ setProps, navigation }) => {
               <Icon size={16} name={"gift"}/>
               <Text style={{ fontSize: 16, color: "#333333", padding: 10 }}>优惠活动</Text>
               <View style={{ flex: 1 }}/>
-              <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></Text>
+              <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>{`查看更多 >>`}</Text>
             </TouchableOpacity>
             <View style={{ backgroundColor: "#ffffff" }}>
               <PromotionsBlock horizontal={true} titleVisible={false}/>

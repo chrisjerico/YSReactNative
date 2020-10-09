@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var UGStore_1 = require("../../redux/store/UGStore");
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var RootNavigation_1 = require("../navigation/RootNavigation");
-var PushHelper_1 = require("../define/PushHelper");
-var react_native_fast_image_1 = require("react-native-fast-image");
-var react_2 = require("react");
+var PushHelper_1 = __importDefault(require("../define/PushHelper"));
+var react_native_fast_image_1 = __importDefault(require("react-native-fast-image"));
+var react_2 = __importDefault(require("react"));
 /**
  * 红包
 
@@ -16,8 +19,8 @@ var react_2 = require("react");
  * @constructor
  */
 var RedBagItem = function (_a) {
-    var style = _a.style, redBag = _a.redBag, loginPage = _a.loginPage;
     var _b;
+    var style = _a.style, redBag = _a.redBag, loginPage = _a.loginPage;
     var _c = UGStore_1.UGStore.globalProps.userInfo, _d = _c.isTest, isTest = _d === void 0 ? false : _d, _e = _c.uid, uid = _e === void 0 ? "" : _e;
     var _f = react_1.useState(false), redBagVisiable = _f[0], setRedBagVisiable = _f[1];
     react_1.useEffect(function () {
@@ -30,11 +33,14 @@ var RedBagItem = function (_a) {
                 if (uid == "") {
                     react_native_1.Alert.alert("温馨提示", "您还未登录", [
                         {
-                            text: "取消", onPress: function () {
-                            }, style: "cancel"
+                            text: "取消",
+                            onPress: function () {
+                            },
+                            style: "cancel"
                         },
                         {
-                            text: "马上登录", onPress: function () {
+                            text: "马上登录",
+                            onPress: function () {
                                 loginPage ? RootNavigation_1.navigate(loginPage, {}) : PushHelper_1.default.pushLogin();
                             },
                         }
@@ -43,11 +49,14 @@ var RedBagItem = function (_a) {
                 else if (isTest) {
                     react_native_1.Alert.alert("温馨提示", "请登录正式账号", [
                         {
-                            text: "取消", onPress: function () {
-                            }, style: "cancel"
+                            text: "取消",
+                            onPress: function () {
+                            },
+                            style: "cancel"
                         },
                         {
-                            text: "马上登录", onPress: function () {
+                            text: "马上登录",
+                            onPress: function () {
                                 loginPage ? RootNavigation_1.navigate(loginPage, {}) : PushHelper_1.default.pushLogin();
                             },
                         }

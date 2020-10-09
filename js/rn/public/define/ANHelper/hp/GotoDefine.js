@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MenuType = void 0;
 /**
  * @Description: 菜单类型
  *
@@ -51,4 +52,3 @@ var MenuType;
     MenuType["HBJL"] = "36";
     MenuType["SLJL"] = "37";
 })(MenuType = exports.MenuType || (exports.MenuType = {}));
-//# sourceMappingURL=GotoDefine.js.map

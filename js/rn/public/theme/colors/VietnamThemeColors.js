@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VietnamThemeColors = void 0;
 exports.VietnamThemeColors = {
     越南: {
         skitType: '越南',
@@ -29,4 +30,3 @@ exports.VietnamThemeColors = {
         yubaoBgColor: "#8E8E8E"
     },
 };
-//# sourceMappingURL=VietnamThemeColors.js.map

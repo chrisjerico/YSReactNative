@@ -70,7 +70,8 @@ var LottoContent = function () {
             <react_native_1.Text style={{
             fontSize: 15,
             fontWeight: (currentPlayOdd === null || currentPlayOdd === void 0 ? void 0 : currentPlayOdd.name) == item.name ? 'bold' : 'normal',
-            textAlign: 'left', color: (currentPlayOdd === null || currentPlayOdd === void 0 ? void 0 : currentPlayOdd.name) == item.name ? "red" : "#403e3e",
+            textAlign: 'left',
+            color: (currentPlayOdd === null || currentPlayOdd === void 0 ? void 0 : currentPlayOdd.name) == item.name ? "red" : "#403e3e",
             marginLeft: 5
         }}>{item.name}</react_native_1.Text>
           </react_native_1.View>

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LHThemeColor = void 0;
 // 六合
 exports.LHThemeColor = {
     六合厅: {
@@ -273,4 +274,3 @@ exports.LHThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=LHThemeColor.js.map

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JDThemeColor = void 0;
 // 经典
 exports.JDThemeColor = {
     //经典 1蓝色
@@ -440,4 +441,3 @@ exports.JDThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=JDThemeColor.js.map

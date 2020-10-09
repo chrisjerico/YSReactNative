@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Router = exports.RouterType = void 0;
 var stack_1 = require("@react-navigation/stack");
 var bottom_tabs_1 = require("@react-navigation/bottom-tabs");
 var drawer_1 = require("@react-navigation/drawer");
 var react_1 = require("react");
-var react_2 = require("react");
+var React = require("react");
 var RootNavigation_1 = require("./RootNavigation");
 var RouterType;
 (function (RouterType) {
@@ -17,8 +18,8 @@ var Router = /** @class */ (function () {
     function Router() {
     }
     Router.getPageRouterType = function (pageName, priorityType) {
-        if (priorityType === void 0) { priorityType = RouterType.None; }
         var _a;
+        if (priorityType === void 0) { priorityType = RouterType.None; }
         var types = this.getPageRouterTypes(pageName);
         switch (types.length) {
             case 0:

@@ -10,10 +10,14 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UGStore = void 0;
 // import AsyncStorage from '@react-native-community/async-storage';
 var react_native_1 = require("react-native");
-var BettingReducer_1 = require("../reducer/BettingReducer");
+var BettingReducer_1 = __importDefault(require("../reducer/BettingReducer"));
 var IGlobalStateHelper_1 = require("./IGlobalStateHelper");
 // 更新Props到全局数据
 function RootReducer(prevState, act) {

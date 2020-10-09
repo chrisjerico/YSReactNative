@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.XBJThemeColor = void 0;
 // 香槟金
 exports.XBJThemeColor = {
     香槟金0: {
@@ -83,4 +84,3 @@ exports.XBJThemeColor = {
         homeContentColor: '#ffffff88',
     },
 };
-//# sourceMappingURL=XBJThemeColor.js.map

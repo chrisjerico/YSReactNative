@@ -10,14 +10,17 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_native_1 = require("react-native");
 var react_1 = require("react");
-var react_2 = require("react");
+var react_2 = __importDefault(require("react"));
 var UGStore_1 = require("../../redux/store/UGStore");
 var RankListCP = function (_a) {
-    var ranks = _a.ranks, width = _a.width, _b = _a.height, height = _b === void 0 ? 200 : _b, _c = _a.titleVisible, titleVisible = _c === void 0 ? true : _c, _d = _a.backgroundColor, backgroundColor = _d === void 0 ? 'white' : _d, _e = _a.textColor, textColor = _e === void 0 ? "black" : _e, _f = _a.timing, timing = _f === void 0 ? 10000 : _f, titleTextStyle = _a.titleTextStyle;
-    var _g, _h, _j, _k;
+    var _b, _c, _d, _e;
+    var ranks = _a.ranks, width = _a.width, _f = _a.height, height = _f === void 0 ? 200 : _f, _g = _a.titleVisible, titleVisible = _g === void 0 ? true : _g, _h = _a.backgroundColor, backgroundColor = _h === void 0 ? 'white' : _h, _j = _a.textColor, textColor = _j === void 0 ? "black" : _j, _k = _a.timing, timing = _k === void 0 ? 10000 : _k, titleTextStyle = _a.titleTextStyle;
     var currentY = react_1.useState(new react_native_1.Animated.Value(height))[0];
     var rankingListSwitch = UGStore_1.UGStore.globalProps.sysConf.rankingListSwitch;
     react_1.useEffect(function () {
@@ -42,7 +45,7 @@ var RankListCP = function (_a) {
                 react_2.default.createElement(react_native_1.Image, { style: { width: 15, height: 15, tintColor: 'white', marginRight: 5 }, source: { uri: "outline_analytics_black_18dp" } }),
                 react_2.default.createElement(react_native_1.Text, { style: __assign({ color: textColor, fontWeight: "bold", fontSize: 16, marginLeft: -7 }, titleTextStyle) }, "\u6295\u6CE8\u6392\u884C\u699C")),
             react_2.default.createElement(react_native_1.View, { style: { backgroundColor: backgroundColor, alignSelf: 'center', borderRadius: 8 } },
-                ((_h = (_g = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _g === void 0 ? void 0 : _g.list) === null || _h === void 0 ? void 0 : _h.length) > 0 ? react_2.default.createElement(react_native_1.View, { style: { flexDirection: 'row', width: width, alignSelf: 'center', } },
+                ((_c = (_b = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0 ? react_2.default.createElement(react_native_1.View, { style: { flexDirection: 'row', width: width, alignSelf: 'center', } },
                     react_2.default.createElement(react_native_1.Text, { style: {
                             flex: 1,
                             color: textColor,
@@ -69,7 +72,7 @@ var RankListCP = function (_a) {
                             transform: [{
                                     translateY: currentY,
                                 }]
-                        } }, (_k = (_j = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _j === void 0 ? void 0 : _j.list) === null || _k === void 0 ? void 0 : _k.map(function (item, index) {
+                        } }, (_e = (_d = ranks === null || ranks === void 0 ? void 0 : ranks.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (item, index) {
                         return react_2.default.createElement(react_native_1.View, { key: item.coin + index, style: { flexDirection: 'row' } },
                             react_2.default.createElement(react_native_1.Text, { style: {
                                     flex: 1,

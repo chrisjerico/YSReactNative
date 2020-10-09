@@ -39,8 +39,8 @@ var getPasswordStrength = function (pass_limit) {
     }
 };
 var useSys = function (_a) {
-    var defaultUserCenterLogos = _a.defaultUserCenterLogos;
     var _b;
+    var defaultUserCenterLogos = _a.defaultUserCenterLogos;
     var sysStore = UGStore_1.UGStore.globalProps.sys;
     var sys = __assign(__assign({}, sysStore), { showCoupon: (sysStore === null || sysStore === void 0 ? void 0 : sysStore.m_promote_pos) == '1' ? true : false, rankingListType: (sysStore === null || sysStore === void 0 ? void 0 : sysStore.rankingListSwitch) ?
             (sysStore === null || sysStore === void 0 ? void 0 : sysStore.rankingListSwitch) == 1

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTrendData = void 0;
 var getTrendData_cqssc_qxc_pcdd_1 = require("./getTrendData_cqssc_qxc_pcdd");
 var getTrendData_pk10_pk10nn_xyft_1 = require("./getTrendData_pk10_pk10nn_xyft");
 var getTrendData_jsk3_1 = require("./getTrendData_jsk3");

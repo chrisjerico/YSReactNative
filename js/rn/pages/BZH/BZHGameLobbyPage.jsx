@@ -17,8 +17,8 @@ var MineHeader_1 = require("../../public/views/tars/MineHeader");
 var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
 var UGStore_1 = require("../../redux/store/UGStore");
 var BZHGameLobbyPage = function (_a) {
-    var route = _a.route;
     var _b;
+    var route = _a.route;
     var gameLobby = UGStore_1.UGStore.globalProps.gameLobby;
     var initialTabIndex = ((_b = route === null || route === void 0 ? void 0 : route.params) !== null && _b !== void 0 ? _b : {}).initialTabIndex;
     return (<>

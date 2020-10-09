@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MarqueeView = void 0;
 var react_native_1 = require("react-native");
 var React = require("react");
 var react_native_marquee_ab_1 = require("react-native-marquee-ab");

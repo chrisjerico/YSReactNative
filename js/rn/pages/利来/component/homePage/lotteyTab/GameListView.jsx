@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameListView = void 0;
 var react_native_1 = require("react-native");
 var React = require("react");
 var ImageButton_1 = require("../../../../\u4E50\u6A59/component/ImageButton");

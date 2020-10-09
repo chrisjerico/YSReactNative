@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,30 +54,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_native_1 = require("react-native");
-var React = require("react");
+var React = __importStar(require("react"));
 var react_1 = require("react");
 var HomeHeaderButtonBar_1 = require("./component/homePage/HomeHeaderButtonBar");
-var useGetHomeInfo_1 = require("../../public/hooks/useGetHomeInfo");
+var useGetHomeInfo_1 = __importDefault(require("../../public/hooks/useGetHomeInfo"));
 var HomeTabView_1 = require("./component/homePage/HomeTabView");
 var ImageButton_1 = require("./component/ImageButton");
-var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
-var PushHelper_1 = require("../../public/define/PushHelper");
+var FontAwesome_1 = __importDefault(require("react-native-vector-icons/FontAwesome"));
+var PushHelper_1 = __importDefault(require("../../public/define/PushHelper"));
 var UGStore_1 = require("../../redux/store/UGStore");
-var APIRouter_1 = require("../../public/network/APIRouter");
+var APIRouter_1 = __importDefault(require("../../public/network/APIRouter"));
 var OCHelper_1 = require("../../public/define/OCHelper/OCHelper");
-var AppDefine_1 = require("../../public/define/AppDefine");
+var AppDefine_1 = __importDefault(require("../../public/define/AppDefine"));
 var IGlobalStateHelper_1 = require("../../redux/store/IGlobalStateHelper");
 var httpClient_1 = require("../../public/network/httpClient");
 var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 var Navigation_1 = require("../../public/navigation/Navigation");
-var RedBagItem_1 = require("../../public/components/RedBagItem");
+var RedBagItem_1 = __importDefault(require("../../public/components/RedBagItem"));
 var hooks_1 = require("@react-native-community/hooks");
-var RankList_1 = require("../../public/widget/RankList");
-var PromotionsBlock_1 = require("../../public/components/PromotionsBlock");
-var react_native_linear_gradient_1 = require("react-native-linear-gradient");
-var ActivityComponent_1 = require("../../public/components/tars/ActivityComponent");
+var RankList_1 = __importDefault(require("../../public/widget/RankList"));
+var PromotionsBlock_1 = __importDefault(require("../../public/components/PromotionsBlock"));
+var react_native_linear_gradient_1 = __importDefault(require("react-native-linear-gradient"));
+var ActivityComponent_1 = __importDefault(require("../../public/components/tars/ActivityComponent"));
 var tars_1 = require("../../public/tools/tars");
 var ANHelper_1 = require("../../public/define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../../public/define/ANHelper/hp/CmdDefine");
@@ -135,7 +157,7 @@ var LLHomePage = function (_a) {
                             React.createElement(FontAwesome_1.default, { size: 16, name: "gift" }),
                             React.createElement(react_native_1.Text, { style: { fontSize: 16, color: "#333333", padding: 10 } }, "\u4F18\u60E0\u6D3B\u52A8"),
                             React.createElement(react_native_1.View, { style: { flex: 1 } }),
-                            React.createElement(react_native_1.Text, { style: { fontSize: 16, color: "#333333", textAlign: "center" } }, "\u67E5\u770B\u66F4\u591A>>")),
+                            React.createElement(react_native_1.Text, { style: { fontSize: 16, color: "#333333", textAlign: "center" } }, "\u67E5\u770B\u66F4\u591A >>")),
                         React.createElement(react_native_1.View, { style: { backgroundColor: "#ffffff" } },
                             React.createElement(PromotionsBlock_1.default, { horizontal: true, titleVisible: false }))),
                 React.createElement(ImageButton_1.ImageButton, { imgStyle: {
@@ -246,11 +268,14 @@ var TurntableListItem = function () {
                 if (uid == "") {
                     react_native_1.Alert.alert("温馨提示", "您还未登录", [
                         {
-                            text: "取消", onPress: function () {
-                            }, style: "cancel",
+                            text: "取消",
+                            onPress: function () {
+                            },
+                            style: "cancel",
                         },
                         {
-                            text: "马上登录", onPress: function () {
+                            text: "马上登录",
+                            onPress: function () {
                                 RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {});
                             },
                         },
@@ -259,11 +284,14 @@ var TurntableListItem = function () {
                 else if (isTest) {
                     react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                         {
-                            text: "取消", onPress: function () {
-                            }, style: "cancel",
+                            text: "取消",
+                            onPress: function () {
+                            },
+                            style: "cancel",
                         },
                         {
-                            text: "马上登录", onPress: function () { return RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {}); },
+                            text: "马上登录",
+                            onPress: function () { return RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {}); },
                         },
                     ]);
                 }

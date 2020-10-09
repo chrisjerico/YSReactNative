@@ -14,8 +14,8 @@ var useLogOut_1 = require("./useLogOut");
 var useRerender_1 = require("./useRerender");
 var useSys_1 = require("./useSys");
 var useHomePage = function (_a) {
-    var onSuccessSignOut = _a.onSuccessSignOut, onSuccessTryPlay = _a.onSuccessTryPlay;
     var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7;
+    var onSuccessSignOut = _a.onSuccessSignOut, onSuccessTryPlay = _a.onSuccessTryPlay;
     var _8 = useHome_1.default(), loading = _8.loading, refreshing = _8.refreshing, rankList = _8.rankList, homeGame = _8.homeGame, notice = _8.notice, onlineNum = _8.onlineNum, couponList = _8.couponList, homeAd = _8.homeAd, turntableList = _8.turntableList, redBag = _8.redBag, floatAd = _8.floatAd, lotteryGame = _8.lotteryGame, lotteryNumber = _8.lotteryNumber, refresh = _8.refresh;
     var rerender = useRerender_1.default().rerender;
     var goToJDPromotionListPage = function () {

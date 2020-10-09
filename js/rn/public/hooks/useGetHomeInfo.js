@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
+var axios_1 = __importDefault(require("axios"));
 var react_1 = require("react");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
-var APIRouter_1 = require("../network/APIRouter");
+var APIRouter_1 = __importDefault(require("../network/APIRouter"));
 var httpClient_1 = require("../network/httpClient");
 var react_native_1 = require("react-native");
-var AppDefine_1 = require("../define/AppDefine");
+var AppDefine_1 = __importDefault(require("../define/AppDefine"));
 var OCCall_1 = require("../define/OCHelper/OCBridge/OCCall");
 var ANHelper_1 = require("../define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../define/ANHelper/hp/CmdDefine");
@@ -87,11 +90,11 @@ var useGetHomeInfo = function (coustomArray) {
             }
             axios_1.default.all(requests)
                 .then(axios_1.default.spread(function () {
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
                 var res = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     res[_i] = arguments[_i];
                 }
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
                 for (var key in coustomArray) {
                     if (coustomArray.hasOwnProperty(key)) {
                         var element = coustomArray[key];
@@ -163,11 +166,11 @@ var useGetHomeInfo = function (coustomArray) {
                 APIRouter_1.default.system_floatAds(),
             ])
                 .then(axios_1.default.spread(function () {
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
                 var res = [];
                 for (var _i = 0; _i < arguments.length; _i++) {
                     res[_i] = arguments[_i];
                 }
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
                 setHomeGames((_a = res === null || res === void 0 ? void 0 : res[0]) === null || _a === void 0 ? void 0 : _a.data);
                 setBanner((_b = res === null || res === void 0 ? void 0 : res[1]) === null || _b === void 0 ? void 0 : _b.data);
                 setCouponListData((_c = res === null || res === void 0 ? void 0 : res[3]) === null || _c === void 0 ? void 0 : _c.data);

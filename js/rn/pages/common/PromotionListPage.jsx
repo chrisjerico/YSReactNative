@@ -43,6 +43,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PromotionLists = void 0;
 var react_native_1 = require("react-native");
 var react_native_elements_1 = require("react-native-elements");
 var UGSkinManagers_1 = require("../../public/theme/UGSkinManagers");
@@ -119,7 +120,7 @@ var PromotionListPage = function (_a) {
         });
     }); };
     return (<react_native_1.View style={{ flex: 1, backgroundColor: 'balck' }}>
-            <react_native_linear_gradient_1.default style={{ height: top, width: width }} colors={UGSkinManagers_1.Skin1.navBarBgColor}></react_native_linear_gradient_1.default>
+            <react_native_linear_gradient_1.default style={{ height: top, width: width }} colors={UGSkinManagers_1.Skin1.navBarBgColor}/>
             <react_native_linear_gradient_1.default style={{ height: 44, width: width, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} colors={UGSkinManagers_1.Skin1.navBarBgColor}>
                 {state.index != 15 || currentNativeSelectedTab == 0 ?
         <react_native_1.View style={{ position: 'absolute', left: 8 }}>
@@ -154,8 +155,8 @@ var PromotionListPage = function (_a) {
         </react_native_1.View>);
 };
 exports.PromotionLists = function (_a) {
-    var dataSource = _a.dataSource, filter = _a.filter, promotionData = _a.promotionData;
     var _b;
+    var dataSource = _a.dataSource, filter = _a.filter, promotionData = _a.promotionData;
     var _c = react_1.useState(-1), selectId = _c[0], setSelectedId = _c[1];
     var width = hooks_1.useDimensions().window.width;
     var onPopViewPress = usePopUpView_1.default().onPopViewPress;
@@ -172,8 +173,8 @@ exports.PromotionLists = function (_a) {
         }
     };
     return (<react_native_1.FlatList keyExtractor={function (item, index) { return item.id + index; }} data={filter != "0" ? dataSource.data.list.filter(function (res) { return res.category == filter; }) : (_b = dataSource === null || dataSource === void 0 ? void 0 : dataSource.data) === null || _b === void 0 ? void 0 : _b.list} renderItem={function (_a) {
-        var item = _a.item, index = _a.index;
         var _b, _c;
+        var item = _a.item, index = _a.index;
         return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
                           <react_native_1.TouchableWithoutFeedback onPress={onPromotionItemPress.bind(null, item, (_c = (_b = promotionData === null || promotionData === void 0 ? void 0 : promotionData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
             if (selectId == index) {

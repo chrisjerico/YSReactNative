@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LotteryType = void 0;
 var LotteryType;
 (function (LotteryType) {
     LotteryType[LotteryType["\u9999\u6E2F\u516D\u5408\u5F69"] = 70] = "\u9999\u6E2F\u516D\u5408\u5F69";

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JYThemeColor = void 0;
 // 简约
 exports.JYThemeColor = {
     //简约
@@ -48,4 +49,3 @@ exports.JYThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=JYThemeColor.js.map

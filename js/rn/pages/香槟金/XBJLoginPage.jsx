@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.XBJLoginPage = void 0;
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var react_native_gesture_handler_1 = require("react-native-gesture-handler");

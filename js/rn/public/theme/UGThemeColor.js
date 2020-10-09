@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UGColor = exports.UGThemeColor = void 0;
 // 主题色
 var UGThemeColor = /** @class */ (function () {
     function UGThemeColor() {
@@ -175,4 +176,3 @@ var UGColor;
 #CCCCCC #DDDDDD
 #EEEEEE #FFFFFF
  */
-//# sourceMappingURL=UGThemeColor.js.map

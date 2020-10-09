@@ -19,8 +19,8 @@ var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
 var TouchableImage_1 = require("../../public/views/tars/TouchableImage");
 var UGStore_1 = require("../../redux/store/UGStore");
 var WNZGameLobbyPage = function (_a) {
-    var route = _a.route;
     var _b, _c;
+    var route = _a.route;
     var title = ((_b = route === null || route === void 0 ? void 0 : route.params) !== null && _b !== void 0 ? _b : { title: '棋牌游戏' }).title;
     var gameLobby = UGStore_1.UGStore.globalProps.gameLobby;
     var banner = UGStore_1.UGStore.globalProps.banner;

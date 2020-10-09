@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.logoutAndroid = void 0;
 var ANHelper_1 = require("./ANHelper");
 var CmdDefine_1 = require("./hp/CmdDefine");
 var DataDefine_1 = require("./hp/DataDefine");
@@ -73,4 +74,3 @@ exports.logoutAndroid = function () { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); };
-//# sourceMappingURL=InfoHelper.js.map

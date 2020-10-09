@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LHPriceModel = exports.UGUserCenterItem = exports.UGUserCenterType = exports.UGTabbarItem = void 0;
 // 底部Tab按钮
 var UGTabbarItem = /** @class */ (function () {
     function UGTabbarItem() {

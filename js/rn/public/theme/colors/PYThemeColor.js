@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PYThemeColor = void 0;
 exports.PYThemeColor = {
     白曜: {
         skitType: '白曜',
@@ -24,4 +25,3 @@ exports.PYThemeColor = {
         moneyCellColor: '#444',
     }
 };
-//# sourceMappingURL=PYThemeColor.js.map

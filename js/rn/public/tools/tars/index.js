@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.stringToNumber = exports.getActivityPosition = exports.getIbbImage = exports.useHtml5Image = exports.ToastStatus = exports.ToastError = exports.ToastSuccess = exports.validPassword = void 0;
 var react_native_1 = require("react-native");
-var AppDefine_1 = require("../../define/AppDefine");
+var AppDefine_1 = __importDefault(require("../../define/AppDefine"));
 var OCHelper_1 = require("../../define/OCHelper/OCHelper");
 var Enum_1 = require("../../models/Enum");
 var Scale_1 = require("../Scale");

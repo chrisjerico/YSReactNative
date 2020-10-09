@@ -15,7 +15,8 @@ var Header = function () {
     return (<react_native_linear_gradient_1.default colors={UGSkinManagers_1.Skin1.navBarBgColor}>
       <react_native_1.View style={{ height: top, width: width }}></react_native_1.View>
       <react_native_1.View style={{
-        height: 44, width: width,
+        height: 44,
+        width: width,
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',

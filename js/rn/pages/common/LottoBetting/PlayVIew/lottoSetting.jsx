@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.combination = exports.factorial = exports.getHKballColor = exports.getShengXiaoString = exports.getShengXiaoValue = exports.ShengXiaoValue = exports.ShengXiaoTitle = void 0;
 exports.ShengXiaoTitle = new Array("鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪");
 exports.ShengXiaoValue = new Array("猪", "狗", "鸡", "猴", "羊", "马", "蛇", "龙", "兔", "虎", "牛", "鼠");
 exports.getShengXiaoValue = function () {

@@ -10,6 +10,25 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,27 +65,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
+exports.LLRegisterPage = void 0;
+var React = __importStar(require("react"));
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var BaseScreen_1 = require("../\u4E50\u6A59/component/BaseScreen");
-var AppDefine_1 = require("../../public/define/AppDefine");
+var AppDefine_1 = __importDefault(require("../../public/define/AppDefine"));
 var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 var Navigation_1 = require("../../public/navigation/Navigation");
 var OCHelper_1 = require("../../public/define/OCHelper/OCHelper");
-var APIRouter_1 = require("../../public/network/APIRouter");
+var APIRouter_1 = __importDefault(require("../../public/network/APIRouter"));
 var UGStore_1 = require("../../redux/store/UGStore");
-var UGUserModel_1 = require("../../redux/model/\u5168\u5C40/UGUserModel");
+var UGUserModel_1 = __importDefault(require("../../redux/model/\u5168\u5C40/UGUserModel"));
 var react_native_event_listeners_1 = require("react-native-event-listeners");
 // @ts-ignore
-var blueimp_md5_1 = require("blueimp-md5");
+var blueimp_md5_1 = __importDefault(require("blueimp-md5"));
 var ToastUtils_1 = require("../../public/tools/ToastUtils");
 var ANHelper_1 = require("../../public/define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../../public/define/ANHelper/hp/CmdDefine");
 var DataDefine_1 = require("../../public/define/ANHelper/hp/DataDefine");
-var react_native_webview_1 = require("react-native-webview");
+var react_native_webview_1 = __importDefault(require("react-native-webview"));
 var UgLog_1 = require("../../public/tools/UgLog");
 var react_native_elements_1 = require("react-native-elements");
 var react_native_gesture_handler_1 = require("react-native-gesture-handler");
@@ -77,16 +100,21 @@ exports.LLRegisterPage = function () {
     var _a = react_1.useState(""), acc = _a[0], setAcc = _a[1];
     var _b = react_1.useState(""), pwd = _b[0], setPwd = _b[1];
     var _c = react_1.useState(""), code = _c[0], setCode = _c[1];
-    var _d = react_1.useState(""), smsCode = _d[0], setSmsCode = _d[1];
-    var _e = react_1.useState(""), imgCode = _e[0], setImgCode = _e[1];
-    var _f = react_1.useState(""), email = _f[0], setEmail = _f[1];
-    var _g = react_1.useState(""), inviter = _g[0], setInviter = _g[1];
-    var _h = react_1.useState(""), confirmPwd = _h[0], setConfirmPwd = _h[1];
-    var _j = react_1.useState("user"), regType = _j[0], setRegType = _j[1];
+    var _d = react_1.useState(""), name = _d[0], setName = _d[1];
+    var _e = react_1.useState(""), fundPwd = _e[0], setFundPwd = _e[1];
+    var _f = react_1.useState(""), phone = _f[0], setPhone = _f[1];
+    var _g = react_1.useState(""), QQ = _g[0], setQQ = _g[1];
+    var _h = react_1.useState(""), wx = _h[0], setWx = _h[1];
+    var _j = react_1.useState(""), smsCode = _j[0], setSmsCode = _j[1];
+    var _k = react_1.useState(""), imgCode = _k[0], setImgCode = _k[1];
+    var _l = react_1.useState(""), email = _l[0], setEmail = _l[1];
+    var _m = react_1.useState(""), inviter = _m[0], setInviter = _m[1];
+    var _o = react_1.useState(""), confirmPwd = _o[0], setConfirmPwd = _o[1];
+    var _p = react_1.useState("user"), regType = _p[0], setRegType = _p[1];
     var regex = RegExp("^[A-Za-z0-9]{6,15}$");
     var SystemStore = UGStore_1.UGStore.globalProps.sysConf;
-    var _k = react_1.useState(), slideCode = _k[0], setSlideCode = _k[1];
-    var _l = SystemStore.mobile_logo, mobile_logo = _l === void 0 ? "" : _l, rankingListSwitch = SystemStore.rankingListSwitch, hide_reco = SystemStore.hide_reco, // 代理人 0不填，1选填，2必填
+    var _q = react_1.useState(), slideCode = _q[0], setSlideCode = _q[1];
+    var _r = SystemStore.mobile_logo, mobile_logo = _r === void 0 ? "" : _r, rankingListSwitch = SystemStore.rankingListSwitch, hide_reco = SystemStore.hide_reco, // 代理人 0不填，1选填，2必填
     reg_name = SystemStore.reg_name, // 真实姓名 0不填，1选填，2必填
     reg_fundpwd = SystemStore.reg_fundpwd, // 取款密码 0不填，1选填，2必填
     reg_qq = SystemStore.reg_qq, // QQ 0不填，1选填，2必填
@@ -149,14 +177,13 @@ exports.LLRegisterPage = function () {
         }
     }, [reg_vcode, code]);
     var onSubmit = function () { return __awaiter(void 0, void 0, void 0, function () {
-        var password, fundPwd, smsCode_, imgCode_, _a, data, status, user, _b, _c, loginData, status_1, _d, sessid, _e, UserInfo, _f, error_2;
+        var password, smsCode_, imgCode_, _a, data, status, user, _b, _c, loginData, status_1, _d, sessid, _e, UserInfo, _f, error_2;
         var _g, _h, _j, _k, _l, _m, _o;
         return __generator(this, function (_p) {
             switch (_p.label) {
                 case 0:
                     _p.trys.push([0, 34, , 35]);
                     password = blueimp_md5_1.default(pwd);
-                    fundPwd = "";
                     smsCode_ = smsCode;
                     imgCode_ = imgCode;
                     UGLoadingCP_1.showLoading({ type: UGLoadingCP_1.UGLoadingType.Loading, text: '正在注册...' });
@@ -168,7 +195,11 @@ exports.LLRegisterPage = function () {
                     return [4 /*yield*/, APIRouter_1.default.user_reg({
                             usr: acc,
                             pwd: password,
+                            phone: phone,
+                            fullName: name,
                             fundPwd: fundPwd,
+                            qq: QQ,
+                            wx: wx,
                             regType: regType,
                             "slideCode[nc_sid]": slideCode ? slideCode["nc_csessionid"] : "",
                             "slideCode[nc_token]": slideCode ? slideCode["nc_token"] : "",
@@ -365,6 +396,11 @@ exports.LLRegisterPage = function () {
             React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setPwd(text); }, placeholder: "请输入密码（长度不能低于6位)", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png" }),
             React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setConfirmPwd(text); }, placeholder: "请确认密码", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png" }),
             React.createElement(LLRegisterInput_1.LLRegisterInput, { visible: reg_email != 0, onChangeText: function (text) { return setEmail(text); }, placeholder: "请输入电子邮件", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-email.png" }),
+            reg_fundpwd ? React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setFundPwd(text); }, placeholder: "请输入取款密码", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-pwd.png" }) : null,
+            reg_name ? React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setName(text); }, placeholder: "请输入真实姓名", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }) : null,
+            reg_qq ? React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setQQ(text); }, placeholder: "请输入QQ号", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }) : null,
+            reg_wx ? React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setWx(text); }, placeholder: "请输入微信号", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }) : null,
+            reg_phone ? React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: true, onChangeText: function (text) { return setPhone(text); }, placeholder: "请输入手机", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }) : null,
             getVcode,
             React.createElement(react_native_1.View, { style: { flexDirection: "row" } },
                 React.createElement(react_native_1.TouchableOpacity, { style: { flex: 1, backgroundColor: "#d19898", borderRadius: 30, marginTop: 12 }, onPress: function () {

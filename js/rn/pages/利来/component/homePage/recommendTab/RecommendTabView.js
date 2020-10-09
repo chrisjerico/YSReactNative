@@ -1,17 +1,40 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
+exports.RecommendTabView = void 0;
+var React = __importStar(require("react"));
 var react_1 = require("react");
 var react_native_1 = require("react-native");
 var MarqueeView_1 = require("../MarqueeView");
 var ImageButton_1 = require("../../ImageButton");
-var PushHelper_1 = require("../../../../../public/define/PushHelper");
+var PushHelper_1 = __importDefault(require("../../../../../public/define/PushHelper"));
 var hooks_1 = require("@react-native-community/hooks");
-var react_native_banner_carousel_1 = require("react-native-banner-carousel");
-var react_native_fast_image_1 = require("react-native-fast-image");
+var react_native_banner_carousel_1 = __importDefault(require("react-native-banner-carousel"));
+var react_native_fast_image_1 = __importDefault(require("react-native-fast-image"));
 exports.RecommendTabView = function (_a) {
-    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum;
     var _b, _c, _d, _e, _f, _g, _h, _j;
+    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum;
     var onPress = function (list) {
         var _a;
         list.seriesId != '1' ? PushHelper_1.default.pushHomeGame(list) :
@@ -32,8 +55,8 @@ exports.RecommendTabView = function (_a) {
                 React.createElement(ImageButton_1.ImageButton, { imgStyle: { flex: 1 / 3, height: 100, width: "auto", marginLeft: 4, resizeMode: "stretch" }, uri: ((_g = list[3]) === null || _g === void 0 ? void 0 : _g.icon) || ((_j = (_h = list[3]) === null || _h === void 0 ? void 0 : _h.subType[0]) === null || _j === void 0 ? void 0 : _j.icon), onPress: function () { return onPress(list[3]); } })))));
 };
 var Banner = function (_a) {
-    var bannerData = _a.bannerData, _b = _a.onlineNum, onlineNum = _b === void 0 ? 0 : _b;
-    var _c, _d, _e, _f;
+    var _b, _c, _d, _e;
+    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f;
     var width = hooks_1.useDimensions().window.width;
     var BannerRef = React.useRef();
     var _g = react_1.useState(100), height = _g[0], setHeight = _g[1];
@@ -47,9 +70,9 @@ var Banner = function (_a) {
             clearInterval(timer);
         });
     }, [bannerData]);
-    if (((_d = (_c = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _c === void 0 ? void 0 : _c.list) === null || _d === void 0 ? void 0 : _d.length) > 0) {
+    if (((_c = (_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0) {
         return (React.createElement(react_native_1.View, { style: { marginBottom: 10, } },
-            React.createElement(react_native_banner_carousel_1.default, { autoplay: true, index: 0, ref: BannerRef, loop: true, pageSize: width }, (_f = (_e = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _e === void 0 ? void 0 : _e.list) === null || _f === void 0 ? void 0 : _f.map(function (res, index) {
+            React.createElement(react_native_banner_carousel_1.default, { autoplay: true, index: 0, ref: BannerRef, loop: true, pageSize: width }, (_e = (_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.map(function (res, index) {
                 return (React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () {
                         PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
                     } },

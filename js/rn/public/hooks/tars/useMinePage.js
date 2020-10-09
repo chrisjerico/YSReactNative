@@ -1,13 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var UGStore_1 = require("../../../redux/store/UGStore");
 var RootNavigation_1 = require("../../navigation/RootNavigation");
 var tars_1 = require("../../tools/tars");
 var UGLoadingCP_1 = require("../../widget/UGLoadingCP");
-var useLogOut_1 = require("./useLogOut");
-var useRerender_1 = require("./useRerender");
-var useSys_1 = require("./useSys");
+var useLogOut_1 = __importDefault(require("./useLogOut"));
+var useRerender_1 = __importDefault(require("./useRerender"));
+var useSys_1 = __importDefault(require("./useSys"));
 var useMinePage = function (_a) {
     var homePage = _a.homePage, defaultUserCenterLogos = _a.defaultUserCenterLogos;
     // states

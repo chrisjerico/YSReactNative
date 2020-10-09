@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var blueimp_md5_1 = require("blueimp-md5");
+var blueimp_md5_1 = __importDefault(require("blueimp-md5"));
 var FPrototypes = /** @class */ (function () {
     function FPrototypes() {
     }

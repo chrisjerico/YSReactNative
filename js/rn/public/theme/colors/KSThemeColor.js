@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KSThemeColor = void 0;
 exports.KSThemeColor = {
     凯时: {
         skitType: '凯时',
@@ -26,4 +27,3 @@ exports.KSThemeColor = {
         isBlack: true
     }
 };
-//# sourceMappingURL=KSThemeColor.js.map

@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -60,6 +60,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ANHelper = void 0;
 var AppDefine_1 = require("../AppDefine");
 var ANEvent_1 = require("./ANEvent");
 var httpClient_1 = require("../../network/httpClient");
@@ -155,8 +156,7 @@ var ANHelper = /** @class */ (function (_super) {
                         userInfo = (_f = (_e = (_d = net_response[0]) === null || _d === void 0 ? void 0 : _d.data) === null || _e === void 0 ? void 0 : _e.data) !== null && _f !== void 0 ? _f : {};
                         sysConf_net = (_j = (_h = (_g = net_response[1]) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.data) !== null && _j !== void 0 ? _j : {};
                         loginVCode = sysConf_net.loginVCode, login_to = sysConf_net.login_to, adSliderTimer = sysConf_net.adSliderTimer, appDownloadUrl = sysConf_net.appDownloadUrl;
-                        sysConf = Object.assign({}, sysConf_android, { loginVCode: loginVCode, login_to: login_to,
-                            adSliderTimer: tars_1.stringToNumber(adSliderTimer), appDownloadUrl: appDownloadUrl, userCenterItems: userCenterItems });
+                        sysConf = Object.assign({}, sysConf_android, { loginVCode: loginVCode, login_to: login_to, adSliderTimer: tars_1.stringToNumber(adSliderTimer), appDownloadUrl: appDownloadUrl, userCenterItems: userCenterItems });
                         gameLobby = (_m = (_l = (_k = net_response[2]) === null || _k === void 0 ? void 0 : _k.data) === null || _l === void 0 ? void 0 : _l.data) !== null && _m !== void 0 ? _m : [];
                         banner = (_q = (_p = (_o = net_response[3]) === null || _o === void 0 ? void 0 : _o.data) === null || _p === void 0 ? void 0 : _p.data) !== null && _q !== void 0 ? _q : {};
                         UGStore_1.UGStore.dispatch({ type: 'merge', userInfo: userInfo, sysConf: sysConf, gameLobby: gameLobby, banner: banner, sys: sysConf_net });
@@ -173,4 +173,3 @@ var ANHelper = /** @class */ (function (_super) {
     return ANHelper;
 }(ANEvent_1.ANEvent));
 exports.ANHelper = ANHelper;
-//# sourceMappingURL=ANHelper.js.map

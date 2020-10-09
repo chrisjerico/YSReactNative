@@ -135,7 +135,7 @@ var LLHomePage = function (_a) {
               <FontAwesome_1.default size={16} name={"gift"}/>
               <react_native_1.Text style={{ fontSize: 16, color: "#333333", padding: 10 }}>优惠活动</react_native_1.Text>
               <react_native_1.View style={{ flex: 1 }}/>
-              <react_native_1.Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></react_native_1.Text>
+              <react_native_1.Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>{"\u67E5\u770B\u66F4\u591A >>"}</react_native_1.Text>
             </react_native_1.TouchableOpacity>
             <react_native_1.View style={{ backgroundColor: "#ffffff" }}>
               <PromotionsBlock_1.default horizontal={true} titleVisible={false}/>
@@ -261,11 +261,14 @@ var TurntableListItem = function () {
             if (uid == "") {
                 react_native_1.Alert.alert("温馨提示", "您还未登录", [
                     {
-                        text: "取消", onPress: function () {
-                        }, style: "cancel",
+                        text: "取消",
+                        onPress: function () {
+                        },
+                        style: "cancel",
                     },
                     {
-                        text: "马上登录", onPress: function () {
+                        text: "马上登录",
+                        onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {});
                         },
                     },
@@ -274,11 +277,14 @@ var TurntableListItem = function () {
             else if (isTest) {
                 react_native_1.Alert.alert("温馨提示", "请先登录您的正式帐号", [
                     {
-                        text: "取消", onPress: function () {
-                        }, style: "cancel",
+                        text: "取消",
+                        onPress: function () {
+                        },
+                        style: "cancel",
                     },
                     {
-                        text: "马上登录", onPress: function () { return RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {}); },
+                        text: "马上登录",
+                        onPress: function () { return RootNavigation_1.navigate(Navigation_1.PageName.LLLoginPage, {}); },
                     },
                 ]);
             }

@@ -43,12 +43,12 @@ var TMPlayView = function () {
 };
 var itemSize = 40;
 var GameGroup = function (_a) {
-    var _b = _a.label, label = _b === void 0 ? "特码A" : _b;
-    var _c, _d;
+    var _b, _c;
+    var _d = _a.label, label = _d === void 0 ? "特码A" : _d;
     var currentPlayOdd = UGStore_1.UGStore.globalProps.BettingReducer.currentPlayOdd;
     var width = hooks_1.useDimensions().screen.width;
     return (<react_native_1.ScrollView style={{ flex: 1, }}>
-      {(_d = (_c = currentPlayOdd === null || currentPlayOdd === void 0 ? void 0 : currentPlayOdd.playGroups) === null || _c === void 0 ? void 0 : _c.filter(function (res) { var _a; return (_a = res === null || res === void 0 ? void 0 : res.alias) === null || _a === void 0 ? void 0 : _a.includes(label); })) === null || _d === void 0 ? void 0 : _d.map(function (res, index) {
+      {(_c = (_b = currentPlayOdd === null || currentPlayOdd === void 0 ? void 0 : currentPlayOdd.playGroups) === null || _b === void 0 ? void 0 : _b.filter(function (res) { var _a; return (_a = res === null || res === void 0 ? void 0 : res.alias) === null || _a === void 0 ? void 0 : _a.includes(label); })) === null || _c === void 0 ? void 0 : _c.map(function (res, index) {
         switch (index) {
             case 0:
                 return (<HKBallsView_1.default key={res.id + index} data={res}/>);

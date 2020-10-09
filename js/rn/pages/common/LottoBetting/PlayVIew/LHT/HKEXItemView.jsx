@@ -12,8 +12,8 @@ var HKEXItemView = function (_a) {
       <react_native_1.FlatList ListHeaderComponent={function () {
         return <react_native_1.Text style={{ marginVertical: 10, width: "100%", textAlign: 'center' }}>{data.alias}</react_native_1.Text>;
     }} data={data.plays} renderItem={function (_a) {
-        var item = _a.item;
         var _b;
+        var item = _a.item;
         return (<react_native_1.TouchableWithoutFeedback onPress={function () {
             if (data.enable != "0")
                 UGStore_1.UGStore.dispatch({ type: BettingReducer_1.BettingReducerActions.itemPress, value: item });

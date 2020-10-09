@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HomeTabView = void 0;
 var react_native_scrollable_tab_view_1 = require("react-native-scrollable-tab-view");
 var React = require("react");
 var react_1 = require("react");

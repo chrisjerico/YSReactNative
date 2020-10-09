@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.seriesId = exports.navBarConfig = exports.NavBtn = void 0;
 exports.NavBtn = [{
         title: "app.electronic.games",
         imageIndex: 3

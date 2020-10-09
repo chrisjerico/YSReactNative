@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
         return extendStatics(d, b);
     };
     return function (d, b) {
@@ -60,6 +60,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Skin1 = void 0;
 var chroma_js_1 = require("chroma-js");
 var react_native_1 = require("react-native");
 var config_1 = require("../../../../config");
@@ -130,7 +131,8 @@ var UGSkinManagers = /** @class */ (function (_super) {
                         theme.themeColor = (_b = theme.themeColor) !== null && _b !== void 0 ? _b : chroma_js_1.default.scale(theme.navBarBgColor)(0.5).hex();
                         theme.themeDarkColor = (_c = theme.themeDarkColor) !== null && _c !== void 0 ? _c : chroma_js_1.default(theme.themeColor).darken().hex();
                         theme.themeLightColor = (_d = theme.themeLightColor) !== null && _d !== void 0 ? _d : chroma_js_1.default(theme.themeColor).brighten().hex();
-                        theme.bgTextColor = chroma_js_1.default(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
+                        theme.bgTextColor =
+                            chroma_js_1.default(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
                         skin = new UGSkinManagers();
                         Object.assign(skin, exports.Skin1);
                         Object.assign(skin, theme);
@@ -156,13 +158,15 @@ var UGSkinManagers = /** @class */ (function (_super) {
                         skin = exports.Skin1;
                         if (react_native_1.Platform.OS != 'ios')
                             return [2 /*return*/];
-                        isOnlineSkin = (skin.skitType.indexOf('尊龙') != -1 ||
-                            skin.skitType.indexOf('宝石红') != -1);
+                        isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 ||
+                            skin.skitType.indexOf('宝石红') != -1;
                         ok = config_1.devConfig.isDebug || config_1.devConfig.isTest() || isOnlineSkin;
                         if (!ok)
                             return [2 /*return*/];
                         //
-                        return [4 /*yield*/, OCHelper_1.OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])];
+                        return [4 /*yield*/, OCHelper_1.OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [
+                                skin,
+                            ])];
                     case 1:
                         //
                         _c.sent();
@@ -246,7 +250,10 @@ var UGSkinManagers = /** @class */ (function (_super) {
                         // 刷新标签栏、导航条
                         _c.sent();
                         // 刷新状态栏
-                        return [4 /*yield*/, OCHelper_1.OCHelper.call('UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:', ['状态栏背景View', { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' }])];
+                        return [4 /*yield*/, OCHelper_1.OCHelper.call('UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:', [
+                                '状态栏背景View',
+                                { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' },
+                            ])];
                     case 13:
                         // 刷新状态栏
                         _c.sent();

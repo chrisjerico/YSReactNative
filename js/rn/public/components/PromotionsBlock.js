@@ -10,20 +10,42 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_native_1 = require("react-native");
-var react_1 = require("react");
-var useGetHomeInfo_1 = require("../hooks/useGetHomeInfo");
-var usePopUpView_1 = require("../hooks/usePopUpView");
-var react_native_fast_image_1 = require("react-native-fast-image");
-var AppDefine_1 = require("../define/AppDefine");
-var react_native_autoheight_webview_1 = require("react-native-autoheight-webview");
+var react_1 = __importStar(require("react"));
+var useGetHomeInfo_1 = __importDefault(require("../hooks/useGetHomeInfo"));
+var usePopUpView_1 = __importDefault(require("../hooks/usePopUpView"));
+var react_native_fast_image_1 = __importDefault(require("react-native-fast-image"));
+var AppDefine_1 = __importDefault(require("../define/AppDefine"));
+var react_native_autoheight_webview_1 = __importDefault(require("react-native-autoheight-webview"));
 var hooks_1 = require("@react-native-community/hooks");
 var httpClient_1 = require("../network/httpClient");
-var PushHelper_1 = require("../define/PushHelper");
+var PushHelper_1 = __importDefault(require("../define/PushHelper"));
 var PromotionsBlock = function (_a) {
-    var _b = _a.horizontal, horizontal = _b === void 0 ? false : _b, _c = _a.titleVisible, titleVisible = _c === void 0 ? true : _c;
-    var _d, _e;
+    var _b, _c;
+    var _d = _a.horizontal, horizontal = _d === void 0 ? false : _d, _e = _a.titleVisible, titleVisible = _e === void 0 ? true : _e;
     var couponListData = useGetHomeInfo_1.default(['system_promotions']).couponListData;
     var _f = react_1.useState(-1), selectId = _f[0], setSelectedId = _f[1];
     var onPopViewPress = usePopUpView_1.default().onPopViewPress;
@@ -40,9 +62,9 @@ var PromotionsBlock = function (_a) {
             PushHelper_1.default.pushCategory(data.linkCategory, data.linkPosition);
         }
     };
-    return (react_1.default.createElement(react_native_1.FlatList, { horizontal: horizontal, style: { marginTop: 10 }, data: (_e = (_d = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _d === void 0 ? void 0 : _d.list) === null || _e === void 0 ? void 0 : _e.filter(function (res, index) { return index < 5; }), renderItem: function (_a) {
-            var item = _a.item, index = _a.index;
+    return (react_1.default.createElement(react_native_1.FlatList, { horizontal: horizontal, style: { marginTop: 10 }, data: (_c = (_b = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.filter(function (res, index) { return index < 5; }), renderItem: function (_a) {
             var _b, _c;
+            var item = _a.item, index = _a.index;
             return react_1.default.createElement(react_native_1.View, { style: { paddingHorizontal: 10, marginBottom: 10 } },
                 react_1.default.createElement(react_native_1.TouchableWithoutFeedback, { onPress: onPromotionItemPress.bind(null, item, (_c = (_b = couponListData === null || couponListData === void 0 ? void 0 : couponListData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
                         console.log("onpress::", item);

@@ -4,6 +4,7 @@
  *
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RIcons = exports.Res = void 0;
 /**
  * 普通资源
  */

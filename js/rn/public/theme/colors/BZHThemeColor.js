@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BZHThemeColor = void 0;
 exports.BZHThemeColor = {
     宝石红: {
         skitType: '宝石红',
@@ -29,4 +30,3 @@ exports.BZHThemeColor = {
         yubaoBgColor: "#8E8E8E"
     },
 };
-//# sourceMappingURL=BZHThemeColor.js.map

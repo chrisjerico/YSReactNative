@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.JDPromotionListPage = void 0;
 var react_1 = require("react");
 var NetworkRequest1_1 = require("../../public/network/NetworkRequest1");
 var JDPromotionListCP_1 = require("./cp/JDPromotionListCP");

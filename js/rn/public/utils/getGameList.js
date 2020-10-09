@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getGameList = void 0;
 var AppDefine_1 = require("../define/AppDefine");
 exports.getGameList = function (data) {
     console.log(AppDefine_1.default.siteId);

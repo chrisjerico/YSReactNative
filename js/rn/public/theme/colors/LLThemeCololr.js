@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LLThemeColor = void 0;
 exports.LLThemeColor = {
     利来: {
         skitType: '利来',
@@ -17,12 +18,13 @@ exports.LLThemeColor = {
         menuHeadViewColor: ['#555555', '#555555'],
         textColor1: '#555555',
         textColor2: '#555555',
-        textColor3: '#999999',
+        textColor3: 'black',
         textColor4: '#ffffff',
         conversionCellColor: '#444',
         intoViewColor: '#444',
         moneyCellColor: '#444',
-        yubaoBgColor: "#444"
+        yubaoBgColor: "#444",
+        isBlack: false
     }
 };
 //# sourceMappingURL=LLThemeCololr.js.map
