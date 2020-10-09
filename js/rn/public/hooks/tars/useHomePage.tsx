@@ -17,7 +17,7 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
-  const { loading, refreshing, rankList, homeGame, notice, onlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
+  const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
 
   const { rerender } = useRerender()
 
@@ -110,6 +110,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const homeInfo = {
     lotteryDate,
     onlineNum,
+    showOnlineNum,
     bannersInterval,
     lotterys,
     banners,

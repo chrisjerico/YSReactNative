@@ -43,6 +43,7 @@ interface Value {
   turntableList?: TurntableListModel
   redBag?: RedBagDetailActivityModel
   floatAd?: FloatADModel
+  showOnlineNum?: boolean
 }
 
 const useHome = () => {
@@ -77,6 +78,7 @@ const useHome = () => {
         homeGame: response[1] ? response[1]?.data : value?.homeGame,
         notice: response[2] ? response[2]?.data : value?.notice,
         onlineNum: response[3] ? response[3]?.data?.data?.onlineUserCount : value?.onlineNum,
+        showOnlineNum: response[3] ? Boolean(response[3]?.data?.data?.onlineSwitch) : Boolean(value?.showOnlineNum),
         couponList: response[4] ? response[4]?.data : value?.couponList,
         homeAd: response[5] ? response[5]?.data : value?.homeAd,
         lotteryNumber: response[6] ? response[6]?.data : value?.lotteryNumber,
@@ -99,7 +101,7 @@ const useHome = () => {
     callApis()
   }, [])
 
-  const { rankList, homeGame, notice, onlineNum, couponList, homeAd, lotteryNumber, lotteryGame, turntableList, redBag, floatAd } = value
+  const { rankList, homeGame, notice, onlineNum, couponList, homeAd, lotteryNumber, lotteryGame, turntableList, redBag, floatAd, showOnlineNum } = value
 
   return {
     loading,
@@ -108,6 +110,7 @@ const useHome = () => {
     homeGame,
     notice,
     onlineNum,
+    showOnlineNum,
     couponList,
     homeAd,
     lotteryNumber,

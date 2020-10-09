@@ -88,7 +88,7 @@ const LHTMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg}
-              showUnreadMsg={code == 9}
+              showUnReadMsg={code == 9 ? true : false}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )

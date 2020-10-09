@@ -42,7 +42,7 @@ const LHTHomePage = () => {
 
   const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
 
-  const { lotteryDate, bannersInterval, onlineNum, lotterys, banners, notices, midBanners, announcements, navs, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
+  const { lotteryDate, bannersInterval, onlineNum, lotterys, banners, notices, announcements, navs, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette, showOnlineNum } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo
 
   const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl } = sysInfo
@@ -97,6 +97,7 @@ const LHTHomePage = () => {
             autoplayTimeout={bannersInterval}
             onlineNum={onlineNum}
             banners={banners}
+            showOnlineNum={showOnlineNum}
             renderBanner={(item, index) => {
               const { linkCategory, linkPosition, pic } = item
               return (

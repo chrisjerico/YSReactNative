@@ -75,14 +75,16 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
       slideCode: sysStore?.reg_vcode == 2 ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
     },
-    userCenterItems: sysStore?.userCenter?.map((item) => {
-      const { code, sorts, logo } = item ?? {}
-      return Object.assign({}, item, {
-        code: stringToNumber(code),
-        sorts: stringToNumber(sorts),
-        logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
+    userCenterItems: sysStore?.userCenter
+      .map((item) => {
+        const { code, sorts, logo } = item ?? {}
+        return Object.assign({}, item, {
+          code: stringToNumber(code),
+          sorts: stringToNumber(sorts),
+          logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
+        })
       })
-    }),
+      .filter((item) => item.code <= 20),
     passwordLimit: {
       strength: getPasswordStrength(sysStore?.pass_limit),
       maxLength: stringToNumber(sysStore?.pass_length_max),
