@@ -19,16 +19,18 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
+const { getHtml5Image } = useHtml5Image()
+
 const KSMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { value, sign } = useMinePage({
     homePage: PageName.KSHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg } = sysInfo
+  const { balance, curLevelGrade, usr, unreadMsg } = userInfo
+  const { userCenterItems } = sysInfo
 
   const { signOut } = sign
 

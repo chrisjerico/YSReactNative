@@ -31,10 +31,9 @@ import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
 
 const buttonHeight = scale(82)
+const { getHtml5Image } = useHtml5Image()
 
 const KSHomePage = () => {
-  const { getHtml5Image } = useHtml5Image()
-
   const { goTo, refresh, value, sign } = useHomePage({})
 
   const { goToJDPromotionListPage } = goTo

@@ -58,7 +58,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   })
   const signOut = logOut
 
-  const { sys } = useSys({})
+  const { sys: sysInfo } = useSys({})
   // stores
   const userInfo = UGStore.globalProps.userInfo
   const gameLobby = UGStore.globalProps.gameLobby
@@ -135,7 +135,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     refreshing,
     homeInfo,
     userInfo,
-    sysInfo: sys,
+    sysInfo,
   }
 
   return {

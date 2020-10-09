@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
+import { stringToNumber } from '../../tools/tars'
 
 interface ReLoadComponentProps {
   color?: string
@@ -14,8 +15,10 @@ interface ReLoadComponentProps {
   balanceStyle?: StyleProp<TextStyle>
   titleStyle?: StyleProp<TextStyle>
   animatedContainerStyle?: StyleProp<ViewStyle>
+  currency: string
+  showK?: boolean
 }
-const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -29,7 +32,6 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     try {
       const { data } = await APIRouter.user_balance_token()
       const balance = data?.data?.balance
-      console.log('-------balance-----', balance)
       setMoney(balance)
       UGStore.dispatch({ type: 'merge', userInfo: { balance } })
     } catch (error) {
@@ -45,7 +47,7 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
       <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
-        {money}
+        {(showK ? stringToNumber(money?.toString()) / 1000 + 'K' : money) + currency}
       </Text>
       <TouchableWithoutFeedback
         onPress={() => {

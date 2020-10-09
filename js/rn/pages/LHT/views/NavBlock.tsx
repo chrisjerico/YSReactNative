@@ -23,6 +23,8 @@ interface NavBlockProps {
   balance: string
   renderAd?: () => any
   balanceLogo: string
+  currency: string
+  showK?: boolean
 }
 
 interface Lottery {
@@ -49,6 +51,8 @@ const NavBlock = ({
   balance,
   renderAd,
   balanceLogo,
+  currency,
+  showK,
 }: NavBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -56,7 +60,7 @@ const NavBlock = ({
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
           <FastImage style={styles.balanceLogo} source={{ uri: balanceLogo }} />
-          <ReLoadBalanceComponent color={'#ff861b'} balance={balance} />
+          <ReLoadBalanceComponent color={'#ff861b'} balance={balance} currency={currency} showK={showK} />
         </View>
         <View style={styles.topRightContainer}>
           <Button title={'充值'} containerStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />

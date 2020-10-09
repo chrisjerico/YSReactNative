@@ -39,13 +39,13 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   const { rerender } = useRerender()
 
   // stores
-  const { sys } = useSys({
+  const { sys: sysInfo } = useSys({
     defaultUserCenterLogos,
   })
-  const { avatar, usr, balance, unreadMsg, isTest, curLevelGrade, uid, nextLevelInt, curLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle } = UGStore.globalProps.userInfo
-  const { mobile_logo, userCenterItems, showSign, mobileMenu } = sys
+  const userInfo = UGStore.globalProps.userInfo
+  // const sysInfo = sys
 
-  const { logOut } = useLogOut({
+  const { logOut: signOut } = useLogOut({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading, text: '正在登出...' })
     },
@@ -58,30 +58,9 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     },
   })
 
-  const signOut = logOut
-
   const onPressAvatar = () => pickAvatarComponentRef?.current?.open()
 
   const onSaveAvatarSuccess = rerender
-
-  const sysInfo = {
-    balance,
-    uid,
-    mobile_logo,
-    userCenterItems,
-    curLevelGrade,
-    usr,
-    isTest,
-    avatar,
-    unreadMsg,
-    curLevelInt,
-    nextLevelInt,
-    taskRewardTotal,
-    curLevelTitle,
-    nextLevelTitle,
-    showSign,
-    mobileMenu,
-  }
 
   const sign = {
     signOut,
@@ -89,6 +68,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
 
   const value = {
     sysInfo,
+    userInfo,
   }
 
   return {

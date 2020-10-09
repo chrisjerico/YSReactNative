@@ -19,16 +19,18 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 
+const { getHtml5Image } = useHtml5Image()
+
 const BZHMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.BZHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = sysInfo
+  const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
+  const { userCenterItems } = sysInfo
 
   const { signOut } = sign
 

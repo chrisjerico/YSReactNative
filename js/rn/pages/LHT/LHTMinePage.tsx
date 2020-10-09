@@ -19,16 +19,17 @@ import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
 
+const { getHtml5Image } = useHtml5Image()
+
 const LHTMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.LHTHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg, showSign } = sysInfo
-
+  const { userInfo, sysInfo } = value
+  const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
+  const { userCenterItems, showSign, currency } = sysInfo
   const { signOut } = sign
   return (
     <>
@@ -52,9 +53,11 @@ const LHTMinePage = () => {
           onPressAvatar={onPressAvatar}
           profileButtons={config?.profileButtons}
           name={usr}
+          showK={currency == 'VND' ? true : false}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           level={curLevelGrade}
           balance={balance}
+          currency={currency}
           onPressDaySign={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
           }}

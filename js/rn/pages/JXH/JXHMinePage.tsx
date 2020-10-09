@@ -1,24 +1,15 @@
 import React from 'react'
-import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import LinearGradient from 'react-native-linear-gradient'
-import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
-import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
-import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
+import Avatar from '../../public/views/tars/Avatar'
 import BottomGap from '../../public/views/tars/BottomGap'
-import Button from '../../public/views/tars/Button'
-import GameButton from '../../public/views/tars/GameButton'
-import LinearBadge from '../../public/views/tars/LinearBadge'
-import List from '../../public/views/tars/List'
-import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
-import Avatar from '../../public/views/tars/Avatar'
 
 const JXHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
@@ -27,9 +18,10 @@ const JXHMinePage = () => {
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg, avatar } = sysInfo
+  const { balance, curLevelGrade, usr, unreadMsg, avatar } = userInfo
+  const { userCenterItems } = sysInfo
 
   const { signOut } = sign
 
@@ -76,9 +68,7 @@ const JXHMinePage = () => {
           </View>
           <FastImage source={{ uri: 'http://t132f.fhptcdn.com/static/vuePublic/images/my/userInfo/dailysign.png' }} style={{ flex: 1, height: '100%' }} resizeMode={'contain'} />
         </View>
-        <View>
-          
-        </View>
+        <View></View>
         <BottomGap />
       </ScrollView>
     </>
