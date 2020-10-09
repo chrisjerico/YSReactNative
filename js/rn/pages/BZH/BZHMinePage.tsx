@@ -8,7 +8,6 @@ import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
-import { ugLog } from '../../public/tools/UgLog'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -30,7 +29,7 @@ const BZHMinePage = () => {
   const { userInfo, sysInfo } = value
 
   const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
-  const { userCenterItems } = sysInfo
+  const { userCenterItems, currency } = sysInfo
 
   const { signOut } = sign
 
@@ -70,11 +69,10 @@ const BZHMinePage = () => {
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
+          currency={currency}
           features={profileUserCenterItems}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
-
-            ugLog('features item=', item)
             return (
               <GameButton
                 key={index}

@@ -15,9 +15,11 @@ interface ProfileBlockProps {
   name: string
   level: string
   onPressAvatar: () => any
+  currency: string
+  showK?: boolean
 }
 
-const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle, name, level, onPressAvatar }: ProfileBlockProps) => {
+const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle, name, level, onPressAvatar, currency, showK }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
@@ -38,6 +40,8 @@ const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle
                 balanceStyle={{ color: '#000000', fontSize: scale(22) }}
                 color={'#000000'}
                 size={20}
+                currency={currency}
+                showK={showK}
               />
             </View>
           </View>

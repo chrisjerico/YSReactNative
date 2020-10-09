@@ -30,7 +30,7 @@ const KSMinePage = () => {
   const { userInfo, sysInfo } = value
 
   const { balance, curLevelGrade, usr, unreadMsg } = userInfo
-  const { userCenterItems } = sysInfo
+  const { userCenterItems, currency } = sysInfo
 
   const { signOut } = sign
 
@@ -120,6 +120,7 @@ const KSMinePage = () => {
             balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             color={'#ffffff'}
             size={30}
+            currency={currency}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

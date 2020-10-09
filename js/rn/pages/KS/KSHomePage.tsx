@@ -41,7 +41,7 @@ const KSHomePage = () => {
 
   const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest, curLevelTitle, unreadMsg } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
+  const { mobile_logo, webName, showCoupon, rankingListType, currency } = sysInfo
 
   const lotterys = homeGames[0]?.list ?? []
   const smallLotterys = lotterys?.slice(4, 8) ?? []
@@ -120,6 +120,7 @@ const KSHomePage = () => {
                         balanceStyle={{ color: '#ffffff', fontSize: scale(20), fontWeight: '500' }}
                         color={'#ffffff'}
                         size={20}
+                        currency={currency}
                       />
                     </View>
                   </View>
