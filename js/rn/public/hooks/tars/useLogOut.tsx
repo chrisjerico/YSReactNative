@@ -20,6 +20,7 @@ const useLogOut = (options: Options = {}) => {
       switch (Platform.OS) {
         case 'ios':
           await OCHelper.call('UGUserModel.setCurrentUser:', [])
+          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
           break
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT)
