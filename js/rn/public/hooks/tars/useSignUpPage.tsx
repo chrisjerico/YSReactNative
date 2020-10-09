@@ -3,8 +3,8 @@ import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { validPassword } from '../../tools/tars'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
@@ -45,46 +45,40 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
       navigateToHomePage()
-      ToastSuccess('登录成功')
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '登录失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
     },
   })
 
   const { register } = useRegister({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在注册...' })
     },
     onSuccessAutoLogin: () => {
-      hideLoading()
-      ToastSuccess('自动登录成功')
+      showLoading({ type: UGLoadingType.Success, text: '自动登录成功' })
       navigateToHomePage()
     },
     onErrorAutoLogin: (error) => {
-      hideLoading()
-      ToastError(error ?? '自动登录失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '自动登录失败' })
     },
     onSuccess: () => {
-      hideLoading()
-      ToastSuccess('注册成功')
+      showLoading({ type: UGLoadingType.Success, text: '注册成功' })
       navigateToSignInPage()
     },
     onError: (error) => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Error, text: error ?? '注册失败' })
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error ?? '注册失败')
     },
   })
 

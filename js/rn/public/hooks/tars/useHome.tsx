@@ -11,7 +11,6 @@ import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
-import { stringToNumber } from '../../tools/tars'
 
 const localRouters = [
   'system_rankingList',
@@ -30,28 +29,23 @@ const localRouters = [
   'system_banners',
 ]
 
-const globalRouters = [
-  'game_homeRecommend',
-  'system_config',
-  'system_banners',
-]
+const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners']
 
 interface Value {
-  rankList?: RankListModel;
-  homeGame?: HomeGamesModel;
-  notice?: NoticeModel;
-  onlineNum?: number;
-  couponList?: CouponListModel;
-  homeAd?: HomeADModel;
-  lotteryNumber?: LotteryNumberModel;
-  lotteryGame?: LotteryGameModel;
-  turntableList?: TurntableListModel;
-  redBag?: RedBagDetailActivityModel;
-  floatAd?: FloatADModel;
+  rankList?: RankListModel
+  homeGame?: HomeGamesModel
+  notice?: NoticeModel
+  onlineNum?: number
+  couponList?: CouponListModel
+  homeAd?: HomeADModel
+  lotteryNumber?: LotteryNumberModel
+  lotteryGame?: LotteryGameModel
+  turntableList?: TurntableListModel
+  redBag?: RedBagDetailActivityModel
+  floatAd?: FloatADModel
 }
 
 const useHome = () => {
-
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [value, setValue] = useState<Value>({})
@@ -59,14 +53,7 @@ const useHome = () => {
   const updateStore = (response: any[]) => {
     const gameLobby = response[11]?.data?.data ?? UGStore.globalProps.gameLobby
     const sys = response[12]?.data?.data ?? UGStore.globalProps.sys
-    // const {
-    //   loginVCode,
-    //   login_to,
-    //   adSliderTimer,
-    //   appDownloadUrl
-    // } = sysConf
     const banner = response[13]?.data?.data ?? UGStore.globalProps.banner
-    // sysConf: { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl },
     UGStore.dispatch({ type: 'merge', gameLobby, banner, sys })
     UGStore.save()
   }
@@ -75,13 +62,15 @@ const useHome = () => {
     try {
       !loading && setRefreshing(true)
       const routers = loading ? localRouters : localRouters.concat(globalRouters)
-      const response = await Promise.all(routers.map(async (router) => {
-        try {
-          return await APIRouter[router]()
-        } catch (error) {
-          // console.log(error)
-        }
-      }))
+      const response = await Promise.all(
+        routers.map(async (router) => {
+          try {
+            return await APIRouter[router]()
+          } catch (error) {
+            // console.log(error)
+          }
+        })
+      )
       !loading && updateStore(response)
       setValue({
         rankList: response[0] ? response[0]?.data : value?.rankList,
@@ -94,10 +83,10 @@ const useHome = () => {
         lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
         turntableList: response[8] ? response[8]?.data : value?.turntableList,
         redBag: response[9] ? response[9]?.data : value?.redBag,
-        floatAd: response[10] ? response[10]?.data : value?.floatAd
+        floatAd: response[10] ? response[10]?.data : value?.floatAd,
       })
     } catch (error) {
-      console.log("--------useHome init error--------", error)
+      console.log('--------useHome init error--------', error)
     } finally {
       setLoading(false)
       setRefreshing(false)
@@ -110,19 +99,7 @@ const useHome = () => {
     callApis()
   }, [])
 
-  const {
-    rankList,
-    homeGame,
-    notice,
-    onlineNum,
-    couponList,
-    homeAd,
-    lotteryNumber,
-    lotteryGame,
-    turntableList,
-    redBag,
-    floatAd,
-  } = value
+  const { rankList, homeGame, notice, onlineNum, couponList, homeAd, lotteryNumber, lotteryGame, turntableList, redBag, floatAd } = value
 
   return {
     loading,
@@ -138,9 +115,8 @@ const useHome = () => {
     turntableList,
     redBag,
     floatAd,
-    refresh
+    refresh,
   }
-
 }
 
 export default useHome

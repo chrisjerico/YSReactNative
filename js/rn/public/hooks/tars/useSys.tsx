@@ -1,36 +1,31 @@
 import { UGStore } from '../../../redux/store/UGStore'
-import {
-  LoginTo,
-  Necessity,
-  RankingListType,
-  PasswordStrength,
-} from '../../models/Enum'
+import { LoginTo, Necessity, PasswordStrength, RankingListType } from '../../models/Enum'
 import { stringToNumber } from '../../tools/tars'
 
 interface UseSys {
-  defaultUserCenterLogos?: DefaultUserCenterLogos;
+  defaultUserCenterLogos?: DefaultUserCenterLogos
 }
 
 interface DefaultUserCenterLogos {
-  1: string; // 存款
-  2: string; // 取款
-  3: string; // 银行卡管理
-  4: string; // 利息宝
-  5: string; // 推荐收益
-  6: string; // 彩票注单记录
-  7: string; // 其他注单记录
-  8: string; // 额度转换
-  9: string; // 站内信
-  10: string; // 安全中心
-  11: string; // 任务中心
-  12: string; // 个人信息
-  13: string; // 建议反馈
-  14: string; // 在线客服
-  15: string; // 活动彩金
-  16: string; // 长龙助手
-  17: string; // 全民竞猜
-  18: string; // 开奖走势
-  19: string; // QQ客服
+  1: string // 存款
+  2: string // 取款
+  3: string // 银行卡管理
+  4: string // 利息宝
+  5: string // 推荐收益
+  6: string // 彩票注单记录
+  7: string // 其他注单记录
+  8: string // 额度转换
+  9: string // 站内信
+  10: string // 安全中心
+  11: string // 任务中心
+  12: string // 个人信息
+  13: string // 建议反馈
+  14: string // 在线客服
+  15: string // 活动彩金
+  16: string // 长龙助手
+  17: string // 全民竞猜
+  18: string // 开奖走势
+  19: string // QQ客服
 }
 
 const getOption = (reg: string) => {
@@ -64,11 +59,7 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
   const sys = {
     ...sysStore,
     showCoupon: sysStore?.m_promote_pos == '1' ? true : false,
-    rankingListType:
-      sysStore?.rankingListSwitch ?
-        sysStore?.rankingListSwitch == 1
-          ? RankingListType.中奖排行榜
-          : RankingListType.投注排行榜 : RankingListType.不顯示,
+    rankingListType: sysStore?.rankingListSwitch ? (sysStore?.rankingListSwitch == 1 ? RankingListType.中奖排行榜 : RankingListType.投注排行榜) : RankingListType.不顯示,
     midBannerTimer: stringToNumber(sysStore?.adSliderTimer),
     loginTo: stringToNumber(sysStore?.login_to) ? LoginTo.首页 : LoginTo.我的页,
     showSign: sysStore.checkinSwitch == '1' ? true : false,
@@ -80,8 +71,7 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
       wx: getOption(sysStore?.reg_wx),
       phoneNumber: getOption(sysStore?.reg_phone),
       email: getOption(sysStore?.reg_email),
-      agentButton:
-        sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
+      agentButton: sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
       slideCode: sysStore?.reg_vcode == 2 ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
     },
@@ -90,10 +80,7 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
       return Object.assign({}, item, {
         code: stringToNumber(code),
         sorts: stringToNumber(sorts),
-        logo:
-          (logo?.length == 0 || !logo
-            ? defaultUserCenterLogos?.[stringToNumber(code)]
-            : logo) ?? '',
+        logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
       })
     }),
     passwordLimit: {

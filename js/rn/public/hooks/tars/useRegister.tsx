@@ -13,9 +13,7 @@ interface Options {
 const useRegister = (options: Options = {}) => {
   const { onSuccessAutoLogin, onErrorAutoLogin, onStart, onSuccess, onError } = options
   const { logIn } = useLogIn({
-    onStart: () => {
-      // ToastStatus('注册成功，正在登录...')
-    },
+    onStart: () => {},
     onSuccess: () => {
       onSuccessAutoLogin && onSuccessAutoLogin()
     },

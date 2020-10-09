@@ -2,8 +2,7 @@ import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useLogOut from './useLogOut'
 import useRerender from './useRerender'
 import useSys from './useSys'
@@ -48,16 +47,14 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登出...' })
     },
     onSuccess: () => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Success, text: '登出成功' })
       navigate(homePage, {})
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '登出失败')
-      console.log('--------登出失败--------', error)
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登出失败' })
     },
   })
 

@@ -24,6 +24,7 @@ const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 const WNZMinePage = () => {
   const menu = useRef(null)
   const { value, sign } = useMinePage({
+    homePage: PageName.WNZHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 

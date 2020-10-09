@@ -6,9 +6,9 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 
 interface Options {
-  onStart?: () => any;
-  onSuccess?: () => any;
-  onError?: (error: any) => any;
+  onStart?: () => any
+  onSuccess?: () => any
+  onError?: (error: any) => any
 }
 
 const useLogOut = (options: Options = {}) => {
@@ -20,14 +20,10 @@ const useLogOut = (options: Options = {}) => {
       switch (Platform.OS) {
         case 'ios':
           await OCHelper.call('UGUserModel.setCurrentUser:', [])
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationUserLogout']
-          )
           break
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT)
-          break;
+          break
       }
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()

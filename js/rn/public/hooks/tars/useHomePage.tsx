@@ -4,13 +4,12 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { ToastError, ToastSuccess } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useTryPlay from './useTryPlay'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useHome from './useHome'
 import useLogOut from './useLogOut'
 import useRerender from './useRerender'
 import useSys from './useSys'
+import useTryPlay from './useTryPlay'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -32,32 +31,29 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
-      hideLoading()
-      ToastSuccess('登录成功！')
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
       rerender()
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '試玩失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
     },
   })
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登出...' })
     },
     onSuccess: () => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Success, text: '登出成功' })
       rerender()
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error || '登出失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登出失败' })
     },
   })
   const signOut = logOut

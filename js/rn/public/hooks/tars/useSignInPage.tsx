@@ -5,8 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastSuccess } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useLogIn from './useLogIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
@@ -49,8 +48,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
 
   const { logIn } = useLogIn({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
-      // ToastStatus('正在登录...')
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
       if (loginTo == LoginTo.首页) {
@@ -59,33 +57,29 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
         navigateToHomePage()
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
-      hideLoading()
-      ToastSuccess('登录成功')
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
     },
     onError: (error) => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error ?? '登录失败')
     },
   })
 
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
       navigateToHomePage()
-      hideLoading()
-      ToastSuccess('登录成功')
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '登录失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
     },
   })
 
