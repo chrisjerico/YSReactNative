@@ -1,6 +1,6 @@
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
-import useLogIn from './useLogIn'
+import useSignIn from './useSignIn'
 
 interface Options {
   onSuccessAutoLogin?: () => any
@@ -10,9 +10,9 @@ interface Options {
   onError?: (error: any) => any
 }
 
-const useRegister = (options: Options = {}) => {
+const useSignUp = (options: Options = {}) => {
   const { onSuccessAutoLogin, onErrorAutoLogin, onStart, onSuccess, onError } = options
-  const { logIn } = useLogIn({
+  const { signIn } = useSignIn({
     onStart: () => {},
     onSuccess: () => {
       onSuccessAutoLogin && onSuccessAutoLogin()
@@ -21,7 +21,7 @@ const useRegister = (options: Options = {}) => {
       onErrorAutoLogin && onErrorAutoLogin(error)
     },
   })
-  const register = async (params: UserReg) => {
+  const signUp = async (params: UserReg) => {
     try {
       if (Platform?.OS == 'ios') {
         onStart && onStart()
@@ -34,7 +34,7 @@ const useRegister = (options: Options = {}) => {
           const { autoLogin } = user_reg_data
           if (autoLogin) {
             //登陸
-            await logIn({
+            await signIn({
               account: usr,
               password: pwd,
             })
@@ -49,7 +49,7 @@ const useRegister = (options: Options = {}) => {
       onError && onError(error)
     }
   }
-  return { register }
+  return { signUp }
 }
 
-export default useRegister
+export default useSignUp

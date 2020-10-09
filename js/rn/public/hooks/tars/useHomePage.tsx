@@ -6,7 +6,7 @@ import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useHome from './useHome'
-import useLogOut from './useLogOut'
+import useSignOut from './useSignOut'
 import useRerender from './useRerender'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
@@ -19,7 +19,7 @@ interface UseHomePage {
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
 
-  const { rerender } = useRerender()
+  const { reRender } = useRerender()
 
   const goToJDPromotionListPage = () => {
     push(PageName.JDPromotionListPage, {
@@ -35,7 +35,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     },
     onSuccess: () => {
       showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-      rerender()
+      reRender()
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
@@ -43,21 +43,19 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     },
   })
 
-  const { logOut } = useLogOut({
+  const { signOut } = useSignOut({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
     onSuccess: () => {
       showLoading({ type: UGLoadingType.Success, text: '退出成功' })
-      rerender()
+      reRender()
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
       showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
     },
   })
-  const signOut = logOut
-
   const { sys: sysInfo } = useSys({})
   // stores
   const userInfo = UGStore.globalProps.userInfo

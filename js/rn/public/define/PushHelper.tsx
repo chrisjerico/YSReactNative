@@ -64,20 +64,6 @@ export default class PushHelper {
         break
     }
   }
-  // 登出
-  static async pushLogout() {
-    switch (Platform.OS) {
-      case 'ios':
-        await OCHelper.call('UGUserModel.setCurrentUser:', [])
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
-        break
-      case 'android':
-        await ANHelper.callAsync(CMD.LOG_OUT)
-        break
-    }
-    Toast('退出成功')
-  }
   // 登入
   static pushLogin() {
     switch (Platform.OS) {

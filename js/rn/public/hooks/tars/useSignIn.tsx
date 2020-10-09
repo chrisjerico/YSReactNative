@@ -7,7 +7,7 @@ import { NA_DATA } from '../../define/ANHelper/hp/DataDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 
-interface LogIn {
+interface SignIn {
   account: string
   password: string
   slideCode?: any
@@ -19,9 +19,9 @@ interface Options {
   onError?: (error: any) => any
 }
 
-const useLogIn = (options: Options = {}) => {
+const useSignIn = (options: Options = {}) => {
   const { onSuccess, onError, onStart } = options
-  const logIn = async ({ account, password, slideCode }: LogIn) => {
+  const signIn = async ({ account, password, slideCode }: SignIn) => {
     try {
       onStart && onStart()
       const user_login_response = await APIRouter.user_login(account, password, undefined, slideCode)
@@ -71,6 +71,6 @@ const useLogIn = (options: Options = {}) => {
       onError && onError(error)
     }
   }
-  return { logIn }
+  return { signIn }
 }
-export default useLogIn
+export default useSignIn

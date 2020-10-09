@@ -3,7 +3,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useLogOut from './useLogOut'
+import useSignOut from './useSignOut'
 import useRerender from './useRerender'
 import useSys from './useSys'
 
@@ -36,16 +36,14 @@ interface UseMinePage {
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   // states
   const pickAvatarComponentRef = useRef(null)
-  const { rerender } = useRerender()
+  const { reRender } = useRerender()
 
   // stores
   const { sys: sysInfo } = useSys({
     defaultUserCenterLogos,
   })
   const userInfo = UGStore.globalProps.userInfo
-  // const sysInfo = sys
-
-  const { logOut: signOut } = useLogOut({
+  const { signOut } = useSignOut({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
@@ -60,7 +58,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
 
   const onPressAvatar = () => pickAvatarComponentRef?.current?.open()
 
-  const onSaveAvatarSuccess = rerender
+  const onSaveAvatarSuccess = reRender
 
   const sign = {
     signOut,

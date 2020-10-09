@@ -6,7 +6,7 @@ import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useLogIn from './useLogIn'
+import useSignIn from './useSignIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 
@@ -46,7 +46,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     homePage && navigate(homePage, {})
   }
 
-  const { logIn } = useLogIn({
+  const { signIn } = useSignIn({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
@@ -82,15 +82,6 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
       showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
     },
   })
-
-  const signIn = () => {
-    logIn({
-      account: account,
-      //@ts-ignore
-      password: password?.md5(),
-      slideCode,
-    })
-  }
 
   const onChangeAccount = (value: string) => {
     UGStore.dispatch({
@@ -154,6 +145,15 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     loginVCode,
   }
 
+  const _signIn = () => {
+    signIn({
+      account: account,
+      //@ts-ignore
+      password: password?.md5(),
+      slideCode,
+    })
+  }
+
   return {
     slideCodeRef,
     navigateTo,
@@ -162,7 +162,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     valid,
     show,
     sign: {
-      signIn,
+      signIn: _signIn,
       tryPlay,
     },
   }
