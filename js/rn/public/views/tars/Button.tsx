@@ -1,21 +1,28 @@
 import React from 'react'
-import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback, StyleProp } from 'react-native'
+import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback, StyleProp, ImageStyle } from 'react-native'
+import FastImage from 'react-native-fast-image'
 
 interface Button {
-  containerStyle?: StyleProp<ViewStyle>;
-  disabledContainerStyle?: StyleProp<ViewStyle>;
-  titleStyle?: StyleProp<TextStyle>;
-  title?: string;
-  numberOfLines?: number;
-  onPress?: () => any;
-  disabled?: boolean;
+  containerStyle?: StyleProp<ViewStyle>
+  disabledContainerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
+  title?: string
+  numberOfLines?: number
+  onPress?: () => any
+  disabled?: boolean
+  logo?: string
+  showLogo?: boolean
+  logoStyle?: StyleProp<unknown>
 }
 
-const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false }: Button) => {
+const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false, logo, showLogo = false, logoStyle }: Button) => {
   return (
     <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
       <View style={disabled ? [styles.disabledContainer, disabledContainerStyle] : [styles.container, containerStyle]}>
-        <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>{title}</Text>
+        {showLogo && <FastImage source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} />}
+        <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>
+          {title}
+        </Text>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -24,16 +31,14 @@ const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, num
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  title: {
-
-  },
+  title: {},
   disabledContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#c6c6c6'
-  }
+    backgroundColor: '#c6c6c6',
+  },
 })
 
 export default Button
