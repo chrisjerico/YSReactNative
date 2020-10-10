@@ -1,11 +1,10 @@
-import React, {RefObject} from 'react'
-import {FormComponentProps} from "../../../public/components/temp/FormComponent";
-import {AgentType, PasswordStrength} from "../../../public/models/Enum";
-import {SlideCode} from "../../../public/models/Interface";
-import AgentButtonComponent from "../../../public/components/temp/AgentButtonComponent";
-import {scale} from "../../../public/tools/Scale";
-import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
+import React, { RefObject } from 'react'
+import AgentButtonComponent from '../../components/tars/AgentButtonComponent'
+import { FormComponentProps } from '../../components/tars/FormComponent'
+import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
+import { AgentType, PasswordStrength } from '../../models/Enum'
+import { SlideCode } from '../../models/Interface'
+import { scale } from '../../tools/Scale'
 
 interface Show {
   showRecommendGuy: boolean;
@@ -67,17 +66,17 @@ interface OnChange {
 }
 
 const SignUpFormList = ({
-                          slideCodeColor,
-                          phoneNumber,
-                          show,
-                          onChange,
-                          label,
-                          slideCodeRef,
-                          passwordLimit,
-                          Form = () => {
-                            return null
-                          },
-                        }: SignUpFormListProps) => {
+  slideCodeColor,
+  phoneNumber,
+  show,
+  onChange,
+  label,
+  slideCodeRef,
+  passwordLimit,
+  Form = () => {
+    return null
+  },
+}: SignUpFormListProps) => {
   const {
     showRecommendGuy,
     showName,
@@ -118,7 +117,7 @@ const SignUpFormList = ({
     qqLabel,
   } = label
 
-  const {maxLength} = passwordLimit
+  const { maxLength } = passwordLimit
 
   return (
     <>
@@ -129,15 +128,7 @@ const SignUpFormList = ({
         placeholder={'推荐人ID'}
         leftIconTitle={'推荐人'}
         show={showRecommendGuy}
-        placeholderTextColor={'#d9d9d9'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
+
       />
       <Form
         onChangeText={obChangeAccount}
@@ -146,15 +137,6 @@ const SignUpFormList = ({
         show={true}
         leftIconName={'users'}
         leftIconTitle={'用户帐号'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
         leftIconName={'lock'}
@@ -166,19 +148,6 @@ const SignUpFormList = ({
         maxLength={maxLength}
         rightIconType={'eye'}
         leftIconTitle={'登录密码'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
-        rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
-          color: '#d9d9d9',
-        }}
       />
       <Form
         leftIconName={'lock'}
@@ -189,19 +158,6 @@ const SignUpFormList = ({
         show={true}
         rightIconType={'eye'}
         leftIconTitle={'确认密码'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
-        rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
-          color: '#d9d9d9',
-        }}
       />
       <Form
         leftIconName={'user'}
@@ -210,15 +166,6 @@ const SignUpFormList = ({
         placeholder={'真实姓名'}
         show={showName}
         leftIconTitle={'真实姓名'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
         leftIconName={'lock'}
@@ -230,55 +177,28 @@ const SignUpFormList = ({
         maxLength={4}
         rightIconType={'eye'}
         leftIconTitle={'取款密码'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
-        rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
-          color: '#d9d9d9',
-        }}
       />
       <Form
+        leftIcon={{
+          name: 'QQ',
+          type: 'antdesign',
+        }}
         onChangeText={onChaneQQ}
         label={qqLabel}
         placeholder={'QQ号'}
         show={showQQ}
         leftIconTitle={'QQ号'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          name: 'QQ',
-          type: 'antdesign',
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
+        leftIcon={{
+          name: 'wechat',
+          type: 'font-awesome',
+        }}
         onChangeText={onChaneWeChat}
         label={wxLabel}
         placeholder={'微信号'}
         leftIconTitle={'微信号'}
         show={showWx}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          name: 'wechat',
-          type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
         leftIconName={'smartphone'}
@@ -287,57 +207,32 @@ const SignUpFormList = ({
         placeholder={'手机号'}
         show={showPhoneNumber}
         leftIconTitle={'手机号码'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
+        leftIcon={{
+          type: 'material-community',
+          name: 'email-outline',
+        }}
         onChangeText={onChangeEmail}
         label={emailLabel}
         placeholder={'电子邮箱'}
         leftIconTitle={'电子邮箱'}
         show={showEmail}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          type: 'material-community',
-          name: 'email-outline',
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <Form
         leftIconName={'lock'}
+        extra={phoneNumber}
         onChangeText={onChaneSms}
         placeholder={'短信验证码'}
         show={showSms}
-        extra={phoneNumber}
         showRightIcon={true}
         rightIconType={'sms'}
         leftIconTitle={'验证码'}
-        placeholderTextColor={'white'}
-        inputStyle={{
-          color: 'white',
-          fontSize: scale(24)
-        }}
-        leftIcon={{
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(36),
-        }}
       />
       <AgentButtonComponent
         show={showAgentButton}
         onChangeAgent={onChangeAgent}
-        containerStyle={{marginTop: scale(20)}}
+        containerStyle={{ marginTop: scale(20) }}
       />
       <ReloadSlidingVerification
         ref={slideCodeRef}

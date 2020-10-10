@@ -5,7 +5,7 @@ import {anyLength} from "../../../public/tools/Ext";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import FastImage from "react-native-fast-image";
 import {scale} from "../../../public/tools/Scale";
-import TouchableImage from "../../../public/views/tars/TouchableImage";
+import TouchableImage from "../../../public/views/temp/TouchableImage";
 import {ugLog} from "../../../public/tools/UgLog";
 
 interface GameRowProps {

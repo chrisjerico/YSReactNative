@@ -6,15 +6,15 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native'
-import FormComponent, {FormComponentProps} from '../../public/components/tars/FormComponent'
+import FormComponent, {FormComponentProps} from '../../public/components/temp/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
+import useSignUpPage from '../../public/hooks/temp/useSignUpPage'
 import {PageName} from '../../public/navigation/Navigation'
 import {pop, popToRoot, push} from '../../public/navigation/RootNavigation'
 import {scale, scaleHeight} from '../../public/tools/Scale'
-import Button from '../../public/views/tars/Button'
-import MineHeader from '../../public/views/tars/MineHeader'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import Button from '../../public/views/temp/Button'
+import MineHeader from '../../public/views/temp/MineHeader'
+import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import SignUpFormList from "./reg/SignUpFormList";

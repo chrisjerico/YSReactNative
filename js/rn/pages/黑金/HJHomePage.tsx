@@ -44,11 +44,11 @@ import GameRow, {gameRowContentHeight} from "./view/GameRow";
 import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 import GameColumn from "./view/GameColumn";
 import {scale} from "../../public/tools/Scale";
-import GameButton from "../../public/views/tars/GameButton";
-import TouchableImage from "../../public/views/tars/TouchableImage";
+import GameButton from "../../public/views/temp/GameButton";
+import TouchableImage from "../../public/views/temp/TouchableImage";
 import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
-import ActivityComponent from "../../public/components/tars/ActivityComponent";
+import ActivityComponent from "../../public/components/temp/ActivityComponent";
 import {getActivityPosition} from "../../public/tools/tars";
 
 /**

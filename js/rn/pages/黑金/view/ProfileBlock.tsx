@@ -11,9 +11,9 @@ import {
 } from 'react-native'
 import {BZHThemeColor} from '../../../public/theme/colors/BZHThemeColor'
 import {scale} from '../../../public/tools/Scale'
-import Avatar from '../../../public/views/tars/Avatar'
-import LinearBadge from '../../../public/views/tars/LinearBadge'
-import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
+import Avatar from '../../../public/views/temp/Avatar'
+import LinearBadge from '../../../public/views/temp/LinearBadge'
+import ReLoadBalanceComponent from '../../../public/components/temp/ReLoadBalanceComponent'
 import LinearGradient from "react-native-linear-gradient";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {colorEnum} from "../../尊龙/enum/colorEnum";

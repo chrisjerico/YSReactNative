@@ -1,9 +1,8 @@
 import React from 'react'
-import {FormComponentProps} from "../../../public/components/temp/FormComponent";
-import CheckBox from "../../../public/views/temp/CheckBox";
-import {scale} from "../../../public/tools/Scale";
-import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
-import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
+import { FormComponentProps } from '../../components/tars/FormComponent'
+import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
+import { scale } from '../../tools/Scale'
+import CheckBox from './CheckBox'
 
 interface SignInFormListProps {
   slideCodeColor?: string;
@@ -15,14 +14,14 @@ interface SignInFormListProps {
 }
 
 const SignInFormList = ({
-                          slideCodeRef,
-                          value,
-                          onChange,
-                          show,
-                          Form,
-                          slideCodeColor
-                        }: SignInFormListProps) => {
-  const {remember, account, password} = value
+  slideCodeRef,
+  value,
+  onChange,
+  show,
+  Form,
+  slideCodeColor
+}: SignInFormListProps) => {
+  const { remember, account, password } = value
 
   const {
     onChangePassword,
@@ -31,7 +30,7 @@ const SignInFormList = ({
     onChangeSlideCode,
   } = onChange
 
-  const {loginVCode} = show
+  const { loginVCode } = show
 
   return (
     <>
@@ -42,12 +41,7 @@ const SignInFormList = ({
         leftIcon={{
           name: 'user-circle',
           type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(40),
         }}
-        placeholderTextColor={'white'}
-        inputStyle={{color: 'white',
-          fontSize: scale(24)}}
         defaultValue={account}
         enableLabel={false}
         leftIconTitle={'帐号'}
@@ -59,30 +53,17 @@ const SignInFormList = ({
         leftIcon={{
           name: 'unlock-alt',
           type: 'font-awesome',
-          color: HJThemeColor.黑金.themeColor,
-          size: scale(40),
         }}
-        placeholderTextColor={'white'}
-        inputStyle={{color: 'white',
-          fontSize: scale(24)}}
         onChangeText={onChangePassword}
         showRightIcon
         defaultValue={password}
         rightIconType={'eye'}
         leftIconTitle={'密码'}
-        rightIconStyle={{
-          highColor: HJThemeColor.黑金.themeColor,
-          color: '#d9d9d9',
-        }}
       />
       <CheckBox
         onPress={onChangeRemember}
         label={'记住密码'}
-        containerStyle={{
-          alignSelf: 'flex-start',
-          marginTop: scale(10),
-        }}
-        labelTextStyle={{color: 'white'}}
+        containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }}
         defaultValue={remember}
       />
       <ReloadSlidingVerification
