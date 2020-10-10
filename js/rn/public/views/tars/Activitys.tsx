@@ -45,7 +45,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
             refreshing={refreshing}
             containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={uid && !isTest}
+            show={true} // uid && !isTest
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)

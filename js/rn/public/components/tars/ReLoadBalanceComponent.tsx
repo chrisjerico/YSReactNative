@@ -43,11 +43,12 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     setMoney(balance)
   }, [balance])
 
+  const moneyNumber = stringToNumber(money?.toString())
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
       <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
-        {(showK ? stringToNumber(money?.toString()) / 1000 + 'K' : money) + currency}
+        {(showK ? moneyNumber / 1000 + 'K' : moneyNumber) + currency}
       </Text>
       <TouchableWithoutFeedback
         onPress={() => {
