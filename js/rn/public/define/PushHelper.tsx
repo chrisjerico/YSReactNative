@@ -655,104 +655,104 @@ export default class PushHelper {
         break
       case 'android':
         let subId = "";
-        switch (code.toString()) {
-          case UGUserCenterType.存款.toString(): {
+        switch (code) {
+          case UGUserCenterType.存款: {
             subId = MenuType.CZ;
             break;
           }
-          case UGUserCenterType.每日签到.toString(): {
+          case UGUserCenterType.每日签到: {
             subId = MenuType.QD;
             break
           }
-          case UGUserCenterType.取款.toString(): {
+          case UGUserCenterType.取款: {
             subId = MenuType.TX;
             break;
           }
-          case UGUserCenterType.银行卡管理.toString(): {
+          case UGUserCenterType.银行卡管理: {
             subId = MenuType.YHK;
             break;
           }
-          case UGUserCenterType.利息宝.toString(): {
+          case UGUserCenterType.利息宝: {
             subId = MenuType.LXB;
             break;
           }
-          case UGUserCenterType.推荐收益.toString(): {
+          case UGUserCenterType.推荐收益: {
             subId = MenuType.SYTJ;
             break;
           }
-          case UGUserCenterType.彩票注单记录.toString(): {
+          case UGUserCenterType.彩票注单记录: {
             subId = MenuType.TZJL;
             break;
           }
-          case UGUserCenterType.其他注单记录.toString(): {
+          case UGUserCenterType.其他注单记录: {
             subId = MenuType.QTZD;
             break;
           }
-          case UGUserCenterType.额度转换.toString(): {
+          case UGUserCenterType.额度转换: {
             subId = MenuType.EDZH;
             break;
           }
-          case UGUserCenterType.站内信.toString(): {
+          case UGUserCenterType.站内信: {
             subId = MenuType.ZLX;
             break;
           }
-          case UGUserCenterType.安全中心.toString(): {
+          case UGUserCenterType.安全中心: {
             subId = MenuType.AQZX;
             break;
           }
-          case UGUserCenterType.任务中心.toString(): {
+          case UGUserCenterType.任务中心: {
             subId = MenuType.RWZX;
             break;
           }
-          case UGUserCenterType.个人信息.toString(): {
+          case UGUserCenterType.个人信息: {
             subId = MenuType.HYZX;
             break;
           }
-          case UGUserCenterType.建议反馈.toString(): {
+          case UGUserCenterType.建议反馈: {
             subId = MenuType.TSZX;
             break;
           }
-          case UGUserCenterType.在线客服.toString(): {
+          case UGUserCenterType.在线客服: {
             subId = MenuType.KF;
             break;
           }
-          case UGUserCenterType.活动彩金.toString(): {
+          case UGUserCenterType.活动彩金: {
             subId = MenuType.SQCJ;
             break;
           }
-          case UGUserCenterType.长龙助手.toString(): {
+          case UGUserCenterType.长龙助手: {
             subId = MenuType.CLZS;
             break;
           }
-          case UGUserCenterType.全民竞猜.toString(): {
+          case UGUserCenterType.全民竞猜: {
             subId = MenuType.QMJC;
             break;
           }
-          case UGUserCenterType.开奖走势.toString(): {
+          case UGUserCenterType.开奖走势: {
             Toast('敬请期待')
             return;
           }
-          case UGUserCenterType.QQ客服.toString(): {
+          case UGUserCenterType.QQ客服: {
             subId = MenuType.QQ;
             break;
           }
-          case UGUserCenterType.资金明细.toString(): {
+          case UGUserCenterType.资金明细: {
             subId = MenuType.ZHGL;
             break;
           }
-          case UGUserCenterType.六合彩.toString(): {
+          case UGUserCenterType.六合彩: {
             subId = MenuType.GCDT;
             break;
           }
-          case UGUserCenterType.聊天室.toString(): {
+          case UGUserCenterType.聊天室: {
             subId = MenuType.LTS;
             break;
           }
-          case UGUserCenterType.游戏大厅.toString(): {
+          case UGUserCenterType.游戏大厅: {
             subId = MenuType.GCDT;
             break;
           }
-          case UGUserCenterType.我的页.toString(): {
+          case UGUserCenterType.我的页: {
             subId = MenuType.HYZX;
             break;
           }
