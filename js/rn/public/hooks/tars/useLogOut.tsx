@@ -26,17 +26,12 @@ const useLogOut = (options: Options = {}) => {
             ['UGNotificationUserLogout']
           )
           break
-      }
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
-      UGStore.save()
-
-      //安卓需要放在这里执行
-      switch (Platform.OS) {
         case 'android':
           await ANHelper.callAsync(CMD.LOG_OUT)
           break;
       }
-
+      UGStore.dispatch({ type: 'reset', userInfo: {} })
+      UGStore.save()
       onSuccess && onSuccess()
     } catch (error) {
       onError && onError(error)

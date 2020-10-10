@@ -130,7 +130,6 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
         <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
         <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
-        <Router.TabScreen name={PageName.BZHGameLobbyPage} component={UGPage(BZHGameLobbyPage)} />
         <Router.TabScreen name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
       </Router.TabNavigator>
     )

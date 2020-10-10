@@ -592,7 +592,7 @@ export default class PushHelper {
             subId = MenuType.ZHGL;
             break;
           }
-          case UGUserCenterType.六合彩: {
+          case UGUserCenterType.彩票大厅: {
             subId = MenuType.GCDT;
             break;
           }
