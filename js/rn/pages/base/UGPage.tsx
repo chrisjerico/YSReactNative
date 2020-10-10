@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { PageName } from '../../public/navigation/Navigation'
 import { UGStore } from '../../redux/store/UGStore'
-import { UGColor } from '../../public/theme/UGThemeColor'
+import {UGColor, UGThemeColor} from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
 import { BottomTabNavigationProp, BottomTabNavigationOptions, } from '@react-navigation/bottom-tabs'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -17,6 +17,7 @@ import StringUtils from "../../public/tools/StringUtils";
 import { Platform } from "react-native";
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import {UGThemeConst} from "../../public/theme/const/UGThemeConst";
 
 
 // Props
@@ -67,15 +68,7 @@ export default (Page: Function) => {
       navigation.removeListener('transitionEnd', null)
       navigation.addListener('transitionEnd', (e) => {
         if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-          //检查一下Native主页下面的tab是显示还是隐藏
-          switch (Platform.OS) {
-            case "ios":
-              OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
-              break;
-            case "android":
-              ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
-              break;
-          }
+          this._showMainTab();
         }
       })
       // 监听dispatch
@@ -92,6 +85,39 @@ export default (Page: Function) => {
       };
       this.newProps = deepMergeProps(defaultProps, this.props)
       this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name));
+    }
+
+    /**
+     * 某些模板不需要显示主页TAB
+     */
+    _showMainTab = () => {
+      const {
+        mobileTemplateCategory, // 模版分类ID
+      } = UGStore.globalProps.sysConf;
+
+      if (mobileTemplateCategory == UGThemeConst.黑金) {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+          case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+            break;
+          case "android":
+            ugLog('ug page menu');
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 });
+            break;
+        }
+      } else {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+          case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            break;
+          case "android":
+            ugLog('ug page menu');
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
+            break;
+        }
+      }
     }
 
     // 取消监听

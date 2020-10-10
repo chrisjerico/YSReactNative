@@ -8,6 +8,8 @@ import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingC
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
+import {UGStore} from "../../../redux/store/UGStore";
+import {ugLog} from "../../tools/UgLog";
 
 interface UseRegisterPage {
   homePage?: PageName
@@ -32,6 +34,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   })
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
+
+  const {mobile_logo = ""} = UGStore.globalProps.sysConf;
+
   // refs
   const slideCodeRef = useRef(null)
   const agentRef = useRef<AgentType>(null)
@@ -70,7 +75,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onSuccess: () => {
       hideLoading()
       ToastSuccess('注册成功')
-      navigateToHomePage()
+      navigateToSignInPage()
     },
     onError: (error) => {
       hideLoading()
@@ -243,6 +248,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   return {
     slideCodeRef,
+    phoneNumber,
     show,
     valid,
     label,

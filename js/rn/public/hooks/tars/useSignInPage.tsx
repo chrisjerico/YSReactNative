@@ -10,6 +10,7 @@ import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingC
 import useLogIn from './useLogIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
+import {ugLog} from "../../tools/UgLog";
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -35,6 +36,9 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     nc_token: undefined,
     nc_sig: undefined,
   })
+
+  const {mobile_logo = ""} = UGStore.globalProps.sysConf;
+
   // refs
   const slideCodeRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
@@ -162,6 +166,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     navigateTo,
     onChange,
     value,
+    mobile_logo,
     valid,
     show,
     sign: {

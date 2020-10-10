@@ -23,6 +23,11 @@ export enum PageName {
   ZLLoginPage = 'ZLLoginPage', //尊龙登录
   ZLMinePage = 'ZLMinePage', //尊龙我的
   ZLRegisterPage = 'ZLRegisterPage', //尊龙注册
+  HJHomePage = 'HJHomePage', //黑金主页
+  HJLoginPage = 'HJLoginPage',//黑金登录
+  HJMinePage = 'HJMinePage',//黑金我的
+  HJGameCategoryPage = 'HJGameCategoryPage',//黑金分类条目
+  HJRegisterPage = 'HJRegisterPage',//黑金注册
   BZHHomePage = 'BZHHomePage',
   BZHMinePage = 'BZHMinePage',
   BZHSignInPage = 'BZHSignInPage',
@@ -44,6 +49,10 @@ export enum PageName {
   LLMinePage = 'LLMinePage',
   LLLoginPage = 'LLLoginPage',
   LLRegisterPage = 'LLRegisterPage',
+  BYHomePage = "BYHomePage",//白曜
+  BYMinePage = "BYMinePage",
+  BYSignInPage = "BYSignInPage",
+  BYSignUpPage = "BYSignUpPage",
   KSHomePage = 'KSHomePage',
   KSSignInPage = 'KSSignInPage',
   KSSignUpPage = 'KSSignUpPage',

@@ -44,7 +44,7 @@ const HomeHeader = ({ uid, name = '', balance = '', onPressSignIn, onPressSignUp
       ) : (
           <View style={styles.row}>
             <View style={styles.left}>
-              <Button title={'登 录'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignIn} />
+              <Button title={'登录'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignIn} />
             </View>
             <View style={styles.imageContainer}>
               <FastImage
@@ -56,7 +56,7 @@ const HomeHeader = ({ uid, name = '', balance = '', onPressSignIn, onPressSignUp
               />
             </View>
             <View style={styles.right}>
-              <Button title={'注 册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} />
+              <Button title={'注册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} />
             </View>
           </View>
         )}

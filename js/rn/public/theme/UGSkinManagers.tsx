@@ -24,6 +24,9 @@ import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
 
+import {HJThemeColor} from "./colors/HJThemeColor";
+import {BYThemeColor} from "./colors/BYThemeColor";
+
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
@@ -37,10 +40,11 @@ export default class UGSkinManagers extends UGThemeColor {
     ...LCThemeColor, //乐橙
     ...KSThemeColor, // 凯时
     ...WNZThemeColor, // 威尼斯
-    ...PYThemeColor,
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
     ...VietnamThemeColors, // 越南
+    ...HJThemeColor, //黑金
+    ...BYThemeColor, //白曜
   }
 
   // 更新皮肤
@@ -72,7 +76,9 @@ export default class UGSkinManagers extends UGThemeColor {
       23: `威尼斯`,
       25: '天空蓝',
       26: `白曜`,
-      27: `越南`,
+      277: `越南`,//这个值 要与 后台站点一致
+      27: `摩登红`,
+      28: `黑金`,
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]

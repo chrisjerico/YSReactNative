@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
+import {anyEmpty} from "../../tools/Ext";
 
 interface MineHeaderProps {
   showRightTitle?: boolean

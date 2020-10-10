@@ -75,14 +75,15 @@ export const getIbbImage = (path: string) => {
 }
 
 export const getActivityPosition = (position: number) => {
+  //浮动广告要挨着一起显示
   if (position == 1) {
-    return { left: 0, top: scale(100) }
+    return { left: 0, top: scale(550) }
   } else if (position == 2) {
-    return { left: 0, bottom: scale(100) }
+    return { left: 0, top: scale(700) }
   } else if (position == 3) {
-    return { right: 0, top: scale(100) }
+    return { right: 0, top: scale(550) }
   } else if (position == 4) {
-    return { right: 0, bottom: scale(100) }
+    return { right: 0, top: scale(700) }
   } else {
     return {}
   }
