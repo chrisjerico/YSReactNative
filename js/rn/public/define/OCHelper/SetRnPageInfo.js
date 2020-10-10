@@ -7,14 +7,11 @@ var Router_1 = require("../../navigation/Router");
 var UGSkinManagers_1 = require("./../../theme/UGSkinManagers");
 var OCHelper_1 = require("./OCHelper");
 var react_native_1 = require("react-native");
-var AppDefine_1 = require("../AppDefine");
-var config_2 = require("../../../../../config");
 // 配置需要被替换的oc页面（替换成rn）
 function setRnPageInfo() {
-    var _a;
     var pages = [];
     var skitType = UGSkinManagers_1.Skin1.skitType;
-    skitType = (_a = config_2.releaseConfig.skinKeys[AppDefine_1.default.siteId]) !== null && _a !== void 0 ? _a : skitType;
+    skitType = '利来';
     console.log("------------------skitType------------------", skitType);
     // 本地编译
     if (config_1.devConfig.isDebug) {
@@ -44,7 +41,7 @@ function setRnPageInfo() {
         if (skitType.indexOf('凯时') != -1) {
             pages = pages.concat(KSPages);
         }
-        if (UGSkinManagers_1.Skin1.skitType.indexOf('利来') != -1) {
+        if (skitType.indexOf('利来') != -1) {
             pages = pages.concat(LLPages);
         }
         if (skitType.indexOf('六合厅') != -1) {
@@ -409,3 +406,4 @@ var RnPageModel = /** @class */ (function () {
     return RnPageModel;
 }());
 exports.RnPageModel = RnPageModel;
+//# sourceMappingURL=SetRnPageInfo.js.map

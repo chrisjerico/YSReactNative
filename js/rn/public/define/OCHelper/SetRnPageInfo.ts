@@ -12,7 +12,7 @@ export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
 
   let skitType = Skin1.skitType;
-  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
+  skitType = '利来';
   console.log("------------------skitType------------------", skitType)
 
   // 本地编译
@@ -45,7 +45,7 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
-    if (Skin1.skitType.indexOf('利来') != -1) {
+    if (skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
     }
     if (skitType.indexOf('六合厅') != -1) {

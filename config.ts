@@ -11,8 +11,8 @@ export const devConfig = {
     }
     return false;
   },
-  
-  skinKey: '威尼斯',
+
+  skinKey: '利来',
 }
 
 
