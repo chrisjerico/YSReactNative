@@ -90,8 +90,8 @@ const LHTMinePage = () => {
               titleStyle={{ fontSize: scale(20) }}
               title={name}
               logo={logo}
-              unreadMsg={unreadMsg}
-              showUnReadMsg={code == 9 ? true : false}
+              unreadMsg={unreadMsg || 0}
+              showUnReadMsg={code == UGUserCenterType.站内信}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )

@@ -1,7 +1,8 @@
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
@@ -57,7 +58,14 @@ const JXHMinePage = () => {
               <Text style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</Text>
             </View>
           </View>
-          <FastImage source={{ uri: 'http://t132f.fhptcdn.com/static/vuePublic/images/my/userInfo/dailysign.png' }} style={{ flex: 1, height: '100%' }} resizeMode={'contain'} />
+          <TouchableWithoutFeedback
+            onPress={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
+            }}>
+            <View style={{ flex: 1, height: '100%' }}>
+              <FastImage source={{ uri: 'http://t132f.fhptcdn.com/static/vuePublic/images/my/userInfo/dailysign.png' }} style={{ height: '100%', width: '100%' }} resizeMode={'contain'} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         <View style={{ backgroundColor: '#333333', aspectRatio: 3, borderRadius: scale(5) }}>
           <View style={{ flex: 1, paddingLeft: scale(20), alignItems: 'center', flexDirection: 'row' }}>
@@ -102,8 +110,8 @@ const JXHMinePage = () => {
                 titleContainerStyle={{ aspectRatio: 5 }}
                 imageContainerStyle={{ width: '50%' }}
                 containerStyle={{ marginVertical: scale(15) }}
-                showUnReadMsg={code == 9 ? true : false}
-                unreadMsg={unreadMsg}
+                showUnReadMsg={code == UGUserCenterType.站内信}
+                unreadMsg={unreadMsg || 0}
                 onPress={code == -1 ? signOut : () => {}}
               />
             )

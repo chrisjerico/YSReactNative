@@ -1,31 +1,24 @@
 import React from 'react'
-import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { RefreshControl, ScrollView } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
 import Activitys from '../../public/views/tars/Activitys'
-import Avatar from '../../public/views/tars/Avatar'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
-import Button from '../../public/views/tars/Button'
 import CouponBlock from '../../public/views/tars/CouponBlock'
-import LinearBadge from '../../public/views/tars/LinearBadge'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import ProfileBlock from './views/ProfileBlock'
 
 const JXHHomePage = () => {
-  const { getHtml5Image } = useHtml5Image()
-
   const { goTo, refresh, value, sign } = useHomePage({})
 
   const { goToJDPromotionListPage } = goTo
@@ -52,7 +45,7 @@ const JXHHomePage = () => {
       <>
         <SafeAreaHeader headerColor={'#000000'} />
         <ScrollView
-          style={{ backgroundColor: '#000000', paddingHorizontal: scale(10) }}
+          style={{ backgroundColor: '#000000', paddingHorizontal: '1%' }}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
@@ -105,61 +98,11 @@ const JXHHomePage = () => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
-          <View style={{ width: '100%', aspectRatio: 2.3, backgroundColor: '#111111', borderRadius: scale(10), overflow: 'hidden' }}>
-            <View style={{ flex: 1, backgroundColor: '#333333', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
-              {uid ? (
-                <>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-                    <Text style={{ color: '#ffffff' }}>{'tars1987'}</Text>
-                    <LinearBadge
-                      title={'VIP0'}
-                      colors={['#cfa461', '#cfa461']}
-                      showIcon={false}
-                      containerStyle={{ borderRadius: scale(5), width: null, height: scale(25), paddingHorizontal: scale(5) }}
-                      textStyle={{ color: '#000000', fontSize: scale(15) }}
-                    />
-                  </View>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: '#ffffff' }}>{'优惠兑换'}</Text>
-                  </View>
-                </>
-              ) : (
-                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                  <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-                  <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
-                </View>
-              )}
-            </View>
-
-            <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
-              <Button
-                title={'登录'}
-                containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]}
-                titleStyle={{ color: '#ffffff', fontSize: scale(20) }}
-                onPress={() => {
-                  navigate(PageName.JXHSignInPage)
-                }}
-              />
-              <Button
-                title={'注册'}
-                containerStyle={[styles.signButton, { backgroundColor: '#000000', borderColor: '#cfa461', borderWidth: scale(1) }]}
-                titleStyle={{ color: '#cfa461', fontSize: scale(20) }}
-                onPress={() => {
-                  navigate(PageName.JXHSignUpPage)
-                }}
-              />
-            </View>
-            <View style={{ flex: 1, backgroundColor: '#333333', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
-              <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
-              <Text style={{ color: '#cfa461' }}>{'免费试玩'}</Text>
-            </View>
-          </View>
+          <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} />
           <CouponBlock
             visible={showCoupon}
             onPressMore={goToJDPromotionListPage}
             containerStyle={{
-              marginHorizontal: '1%',
               marginTop: scale(10),
               width: null,
             }}
@@ -201,7 +144,7 @@ const JXHHomePage = () => {
             type={rankingListType}
             iconColor={'#ffffff'}
             iconTitleStyle={{ color: '#ffffff' }}
-            containerStyle={{ marginTop: scale(10), backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(10) }}
+            containerStyle={{ marginTop: scale(10), backgroundColor: '#3a3a41', borderRadius: scale(10) }}
             contentTitleStyle={{ color: '#ffffff' }}
             iconTitleContainerStyle={{
               backgroundColor: '#3a3a41',
@@ -234,13 +177,5 @@ const JXHHomePage = () => {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  signButton: {
-    width: '30%',
-    aspectRatio: 3,
-    borderRadius: scale(5),
-  },
-})
 
 export default JXHHomePage

@@ -103,7 +103,7 @@ const BZHMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnReadMsg={code == 9}
+              showUnReadMsg={code == UGUserCenterType.站内信}
               onPress={() => {
                 PushHelper.pushUserCenterType(code)
               }}
