@@ -76,7 +76,7 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
     },
     userCenterItems: sysStore?.userCenter
-      .map((item) => {
+      ?.map((item) => {
         const { code, sorts, logo } = item ?? {}
         return Object.assign({}, item, {
           code: stringToNumber(code),
@@ -84,7 +84,7 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
           logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
         })
       })
-      .filter((item) => item.code <= 20),
+      ?.filter((item) => item.code <= 20),
     passwordLimit: {
       strength: getPasswordStrength(sysStore?.pass_limit),
       maxLength: stringToNumber(sysStore?.pass_length_max),
