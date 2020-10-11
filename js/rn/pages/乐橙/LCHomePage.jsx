@@ -116,11 +116,11 @@ var LCHomePage = function (_a) {
     var openPopup = function (data) {
         var _a;
         var dataModel = (_a = data.data) === null || _a === void 0 ? void 0 : _a.popup.map(function (item, index) {
-            return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item);
+            return Object.assign({ clsName: "UGNoticeModel", hiddenBottomLine: "No" }, item);
         });
         switch (react_native_1.Platform.OS) {
             case "ios":
-                OCHelper_1.OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [OCCall_1.NSValue.CGRectMake(20, 60, AppDefine_1.default.width - 40, AppDefine_1.default.height * 0.8)], [dataModel]);
+                OCHelper_1.OCHelper.call("UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show", [OCCall_1.NSValue.CGRectMake(20, 60, AppDefine_1.default.width - 40, AppDefine_1.default.height * 0.8)], [dataModel]);
                 break;
             case "android":
                 ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.OPEN_POP_NOTICE, data.data);
@@ -138,7 +138,7 @@ var LCHomePage = function (_a) {
                         case "android": return [3 /*break*/, 3];
                     }
                     return [3 /*break*/, 5];
-                case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.currentUser')];
+                case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call("UGUserModel.currentUser")];
                 case 2:
                     user = _b.sent();
                     return [3 /*break*/, 5];
@@ -148,7 +148,7 @@ var LCHomePage = function (_a) {
                     return [3 /*break*/, 5];
                 case 5:
                     if (!user) {
-                        UGStore_1.UGStore.dispatch({ type: ActionTypes_1.ActionType.Clear_User, });
+                        UGStore_1.UGStore.dispatch({ type: ActionTypes_1.ActionType.Clear_User });
                         UGStore_1.UGStore.save();
                     }
                     else {
@@ -195,33 +195,33 @@ var LCHomePage = function (_a) {
         });
     }); };
     return (<react_native_1.View style={{ flex: 1 }}>
-            <HomeHeaderButtonBar_1.HomeHeaderButtonBar />
-            <react_native_1.ScrollView showsVerticalScrollIndicator={false} refreshControl={<react_native_1.RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading} onRefresh={onRefresh}/>}>
-                <Banner onlineNum={onlineNum} bannerData={banner}/>
-                <react_native_1.View style={{
-        flexDirection: 'row',
-        alignItems: 'center',
+      <HomeHeaderButtonBar_1.HomeHeaderButtonBar />
+      <react_native_1.ScrollView showsVerticalScrollIndicator={false} refreshControl={<react_native_1.RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading} onRefresh={onRefresh}/>}>
+        <Banner onlineNum={onlineNum} bannerData={banner}/>
+        <react_native_1.View style={{
+        flexDirection: "row",
+        alignItems: "center",
         backgroundColor: "white",
         marginHorizontal: 10,
         marginVertical: 10,
         borderRadius: 16,
-        paddingLeft: 5
+        paddingLeft: 5,
     }}>
-                    <react_native_fast_image_1.default source={{ uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png" }} style={{ width: 12, height: 12, marginRight: 4 }}/>
-                    <react_native_marquee_ab_1.MarqueeHorizontal textStyle={{ color: "black", fontSize: 16 }} bgContainerStyle={{ backgroundColor: "white" }} width={width - 50} height={18} speed={60} onTextClick={function () {
+          <react_native_fast_image_1.default source={{ uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png" }} style={{ width: 12, height: 12, marginRight: 4 }}/>
+          <react_native_marquee_ab_1.MarqueeHorizontal textStyle={{ color: "black", fontSize: 16 }} bgContainerStyle={{ backgroundColor: "white" }} width={width - 50} height={18} speed={60} onTextClick={function () {
         setShow(true);
         setContent(originalNoticeString);
-        // PushHelper.pushNoticePopUp(originalNoticeString)
     }} textList={noticeFormat}/>
-                </react_native_1.View>
-                {(systemHomeAds === null || systemHomeAds === void 0 ? void 0 : systemHomeAds.data) && <Banner onlineNum={onlineNum} bannerData={systemHomeAds} showOnlineCount={false} customHeight={150}/>}
-                {((_c = (_b = homeGames === null || homeGames === void 0 ? void 0 : homeGames.data) === null || _b === void 0 ? void 0 : _b.navs) === null || _c === void 0 ? void 0 : _c.length) > 0 && (<NavBlock_1.default navs={(_f = (_e = (_d = homeGames === null || homeGames === void 0 ? void 0 : homeGames.data) === null || _d === void 0 ? void 0 : _d.navs) === null || _e === void 0 ? void 0 : _e.sort(function (a, b) { return a.sort - b.sort; })) === null || _f === void 0 ? void 0 : _f.slice(0, 4)} containerStyle={{ alignItems: 'center' }} renderNav={function (item, index) {
+        </react_native_1.View>
+        {(systemHomeAds === null || systemHomeAds === void 0 ? void 0 : systemHomeAds.data) &&
+        <Banner onlineNum={onlineNum} bannerData={systemHomeAds} showOnlineCount={false} customHeight={150}/>}
+        {((_c = (_b = homeGames === null || homeGames === void 0 ? void 0 : homeGames.data) === null || _b === void 0 ? void 0 : _b.navs) === null || _c === void 0 ? void 0 : _c.length) > 0 && (<NavBlock_1.default navs={(_f = (_e = (_d = homeGames === null || homeGames === void 0 ? void 0 : homeGames.data) === null || _d === void 0 ? void 0 : _d.navs) === null || _e === void 0 ? void 0 : _e.sort(function (a, b) { return a.sort - b.sort; })) === null || _f === void 0 ? void 0 : _f.slice(0, 4)} containerStyle={{ alignItems: "center" }} renderNav={function (item, index) {
         var icon = item.icon, name = item.name, logo = item.logo, gameId = item.gameId;
-        return (<GameButton_1.default showSecondLevelIcon={false} key={index} containerStyle={{ width: '25%' }} imageContainerStyle={{ width: '45%' }} enableCircle={false} logo={icon ? icon : logo} title={name} titleStyle={{ fontSize: Scale_1.scale(25) }} titleContainerStyle={{ aspectRatio: 3 }} onPress={function () {
+        return (<GameButton_1.default showSecondLevelIcon={false} key={index} containerStyle={{ width: "25%" }} imageContainerStyle={{ width: "45%" }} enableCircle={false} logo={icon ? icon : logo} title={name} titleStyle={{ fontSize: Scale_1.scale(25) }} titleContainerStyle={{ aspectRatio: 3 }} onPress={function () {
             if (gameId == 9) {
                 RootNavigation_1.push(Navigation_1.PageName.JDPromotionListPage, {
                     containerStyle: {
-                        backgroundColor: '#ffffff',
+                        backgroundColor: "#ffffff",
                     },
                 });
             }
@@ -230,63 +230,63 @@ var LCHomePage = function (_a) {
             }
         }}/>);
     }}/>)}
-                <HomeTabView_1.HomeTabView />
-                <react_native_1.View style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
-                    <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={"gift"}/>
-                    <react_native_1.TouchableWithoutFeedback onPress={function () {
+        <HomeTabView_1.HomeTabView />
+        <react_native_1.View style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 10 }}>
+          <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={"gift"}/>
+          <react_native_1.TouchableWithoutFeedback onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.PromotionListPage);
     }}>
-                        <react_native_1.Text style={{ fontSize: 16, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</react_native_1.Text>
-                    </react_native_1.TouchableWithoutFeedback>
-                    <react_native_1.View style={{ flex: 1 }}/>
-                    <react_native_1.TouchableWithoutFeedback onPress={function () {
+            <react_native_1.Text style={{ fontSize: 16, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</react_native_1.Text>
+          </react_native_1.TouchableWithoutFeedback>
+          <react_native_1.View style={{ flex: 1 }}/>
+          <react_native_1.TouchableWithoutFeedback onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.PromotionListPage);
     }}>
-                        <react_native_1.Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></react_native_1.Text>
-                    </react_native_1.TouchableWithoutFeedback>
-                </react_native_1.View>
-                <react_native_1.View>
-                    <PromotionsBlock_1.default />
-                </react_native_1.View>
-                {rankingListSwitch === 1 ? <react_native_1.SafeAreaView style={{ marginHorizontal: 10 }}>
-                        <react_native_1.View style={{ flexDirection: 'row', alignItems: "center" }}>
-                            <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'}/>
-                            <react_native_1.Text style={{ fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10 }}>中奖排行榜</react_native_1.Text>
-                        </react_native_1.View>
-                        <RankList_1.default titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'} width={react_native_1.Dimensions.get("screen").width - 24} ranks={rankList}/>
-                    </react_native_1.SafeAreaView> :
+            <react_native_1.Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></react_native_1.Text>
+          </react_native_1.TouchableWithoutFeedback>
+        </react_native_1.View>
+        <react_native_1.View>
+          <PromotionsBlock_1.default />
+        </react_native_1.View>
+        {rankingListSwitch === 1 ? <react_native_1.SafeAreaView style={{ marginHorizontal: 10 }}>
+            <react_native_1.View style={{ flexDirection: "row", alignItems: "center" }}>
+              <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
+              <react_native_1.Text style={{ fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10 }}>中奖排行榜</react_native_1.Text>
+            </react_native_1.View>
+            <RankList_1.default titleVisible={false} timing={10000} backgroundColor={"white"} textColor={"black"} width={react_native_1.Dimensions.get("screen").width - 24} ranks={rankList}/>
+          </react_native_1.SafeAreaView> :
         <react_native_1.SafeAreaView style={{ marginHorizontal: 10 }}>
-                        <react_native_1.View style={{ flexDirection: 'row', alignItems: "center" }}>
-                            <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'}/>
-                            <react_native_1.Text style={{
+            <react_native_1.View style={{ flexDirection: "row", alignItems: "center" }}>
+              <FontAwesome_1.default style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
+              <react_native_1.Text style={{
             fontSize: 16,
             lineHeight: 22,
             color: "#3c3c3c",
-            marginVertical: 10
+            marginVertical: 10,
         }}>投注排行榜</react_native_1.Text>
-                        </react_native_1.View>
-                        <RankList_1.default titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'} width={react_native_1.Dimensions.get("screen").width - 24} ranks={rankList}/>
-                    </react_native_1.SafeAreaView>}
-                <react_native_1.View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                    <react_native_1.Text onPress={function () {
-        PushHelper_1.default.openWebView(httpClient_1.httpClient.defaults.baseURL + '/index2.php');
-    }} style={{ color: 'black', textAlign: 'center', marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</react_native_1.Text>
-                    <react_native_1.Text style={{ color: 'black', textAlign: 'center' }} onPress={function () {
+            </react_native_1.View>
+            <RankList_1.default titleVisible={false} timing={5000} backgroundColor={"white"} textColor={"black"} width={react_native_1.Dimensions.get("screen").width - 24} ranks={rankList}/>
+          </react_native_1.SafeAreaView>}
+        <react_native_1.View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10 }}>
+          <react_native_1.Text onPress={function () {
+        PushHelper_1.default.openWebView(httpClient_1.httpClient.defaults.baseURL + "/index2.php");
+    }} style={{ color: "black", textAlign: "center", marginRight: 20, marginBottom: 5 }}>💻 电 脑 版</react_native_1.Text>
+          <react_native_1.Text style={{ color: "black", textAlign: "center" }} onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.PromotionListPage);
     }}>🎁优惠活动</react_native_1.Text>
-                </react_native_1.View>
-                <react_native_1.Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</react_native_1.Text>
-                <react_native_1.Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 01'}</react_native_1.Text>
-                <react_native_1.View style={{ height: 100 }}/>
-            </react_native_1.ScrollView>
-            <RedBagItem_1.default redBag={redBag}/>
-            <TurntableListItem />
-            <MarqueePopupView onPress={function () {
+        </react_native_1.View>
+        <react_native_1.Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT © {webName} RESERVED</react_native_1.Text>
+        <react_native_1.Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 02"}</react_native_1.Text>
+        <react_native_1.View style={{ height: 100 }}/>
+      </react_native_1.ScrollView>
+      <RedBagItem_1.default redBag={redBag}/>
+      <TurntableListItem />
+      <MarqueePopupView onPress={function () {
         setShow(false);
     }} content={content} show={show} onDismiss={function () {
         setShow(false);
     }}/>
-        </react_native_1.View>);
+    </react_native_1.View>);
 };
 var PromotionLists = function (_a) {
     var _b;
@@ -297,14 +297,14 @@ var PromotionLists = function (_a) {
     var webViewSource = function (item) {
         return {
             html: "<head>\n            <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>\n            <style>img{width:auto !important;max-width:100%;height:auto !important}</style>\n            <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>\n          </head>" +
-                "<script>\n            window.onload = function () {\n              window.location.hash = 1;\n              document.title = document.body.scrollHeight;\n            }\n          </script>" + item.content
+                "<script>\n            window.onload = function () {\n              window.location.hash = 1;\n              document.title = document.body.scrollHeight;\n            }\n          </script>" + item.content,
         };
     };
     return (<react_native_1.FlatList style={{ backgroundColor: "#ffffff", borderRadius: 10 }} keyExtractor={function (item, index) { return "LCHome" + item.id + index; }} data={filter != "0" ? dataSource.data.list.filter(function (res, index) { return res.category == filter; }) : (_b = dataSource === null || dataSource === void 0 ? void 0 : dataSource.data) === null || _b === void 0 ? void 0 : _b.list} renderItem={function (_a) {
         var _b, _c;
         var item = _a.item, index = _a.index;
         return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-                    <react_native_1.TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, (_c = (_b = promotionData === null || promotionData === void 0 ? void 0 : promotionData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : 'popup', function () {
+          <react_native_1.TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, (_c = (_b = promotionData === null || promotionData === void 0 ? void 0 : promotionData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : "popup", function () {
             if (selectId == index) {
                 setSelectedId(-1);
             }
@@ -312,16 +312,16 @@ var PromotionLists = function (_a) {
                 setSelectedId(index);
             }
         })}>
-                        <react_native_1.View style={{}}>
-                            <react_native_1.Text style={{
+            <react_native_1.View style={{}}>
+              <react_native_1.Text style={{
             fontSize: 16,
             marginBottom: 5,
         }}>{item.title}</react_native_1.Text>
-                            <react_native_fast_image_1.default style={{ width: react_native_1.Dimensions.get("screen").width - 16, height: 350 }} source={{ uri: item.pic }}/>
-                        </react_native_1.View>
-                    </react_native_1.TouchableWithoutFeedback>
-                    {selectId == index ? <react_native_autoheight_webview_1.default style={{ width: width - 20, backgroundColor: 'white' }} viewportContent={'width=device-width, user-scalable=no'} source={webViewSource(item)}/> : null}
-                </react_native_1.View>;
+              <react_native_fast_image_1.default style={{ width: react_native_1.Dimensions.get("screen").width - 16, height: 350 }} source={{ uri: item.pic }}/>
+            </react_native_1.View>
+          </react_native_1.TouchableWithoutFeedback>
+          {selectId == index ? <react_native_autoheight_webview_1.default style={{ width: width - 20, backgroundColor: "white" }} viewportContent={"width=device-width, user-scalable=no"} source={webViewSource(item)}/> : null}
+        </react_native_1.View>;
     }}/>);
 };
 var MarqueePopupView = function (_a) {
@@ -331,53 +331,72 @@ var MarqueePopupView = function (_a) {
         return (<react_native_1.View style={{
             width: width,
             height: height,
-            position: 'absolute',
-            justifyContent: 'center',
-            alignItems: 'center',
+            position: "absolute",
+            justifyContent: "center",
+            alignItems: "center",
             zIndex: 1000,
-            marginBottom: 10
+            marginBottom: 10,
+            backgroundColor: "rgba(153,153,153,0.5)",
         }}>
-                <react_native_1.View style={{ width: '90%', height: '75%', backgroundColor: 'white', borderRadius: 15 }}>
-                    <react_native_1.View style={{
-            width: '100%',
+        <react_native_1.View style={{ width: "90%", height: "45%" }}>
+          <react_native_1.View style={{
+            width: "100%",
             height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderBottomColor: "gray",
-            borderBottomWidth: 0.5
+            justifyContent: "center",
+            alignItems: "center",
+            borderBottomColor: "#cccccc",
+            borderBottomWidth: 0.5,
+            borderTopRightRadius: 15,
+            borderTopLeftRadius: 15,
+            backgroundColor: "rgba(246,246,246, 0.95)"
         }}>
-                        <react_native_1.Text style={{ fontSize: 16, fontWeight: "bold" }}>公告详情</react_native_1.Text>
-                    </react_native_1.View>
-                    <react_native_1.View style={{ flex: 1, paddingHorizontal: 10 }}>
-                        <react_native_autoheight_webview_1.default style={{ width: width * 0.9 - 20 }} source={{ html: content }}></react_native_autoheight_webview_1.default>
-                    </react_native_1.View>
-                    <react_native_1.View style={{
+            <react_native_1.Text style={{ fontSize: 16, fontWeight: "bold" }}>公告</react_native_1.Text>
+          </react_native_1.View>
+          <react_native_1.View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: "white" }}>
+            <react_native_autoheight_webview_1.default style={{ width: width * 0.9 - 20, marginVertical: 8 }} source={{ html: content }}/>
+          </react_native_1.View>
+          <react_native_1.View style={{
             height: 70,
             paddingBottom: 10,
             paddingHorizontal: 5,
-            justifyContent: 'space-between',
+            justifyContent: "space-between",
             width: "100%",
-            flexDirection: 'row'
+            backgroundColor: "white",
+            flexDirection: "row",
+            borderBottomRightRadius: 15,
+            borderBottomLeftRadius: 15,
         }}>
-                        <react_native_1.TouchableWithoutFeedback onPress={onDismiss} style={{
-            justifyContent: 'center', alignItems: 'center',
-            width: "47%", height: 50, backgroundColor: 'white',
-            borderRadius: 5, borderColor: "gray", borderWidth: 0.5
+            <react_native_1.TouchableWithoutFeedback onPress={onDismiss}>
+              <react_native_1.View style={{
+            flex: 1, justifyContent: "center", alignItems: "center",
+            height: 50,
+            backgroundColor: "white",
+            borderRadius: 5,
+            borderColor: "#cccccc",
+            borderWidth: 0.5,
+            marginHorizontal: 10
         }}>
-                            <react_native_1.Text>取消</react_native_1.Text>
-                        </react_native_1.TouchableWithoutFeedback>
-                        <react_native_1.TouchableWithoutFeedback onPress={onPress} style={{
-            justifyContent: 'center',
-            alignItems: 'center', width: "47%", height: 50,
-            backgroundColor: '#46A3FF', borderRadius: 5,
-            borderColor: "gray", borderWidth: 0.5
+                <react_native_1.Text>取消</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+            <react_native_1.TouchableWithoutFeedback onPress={onPress}>
+              <react_native_1.View style={{
+            justifyContent: "center",
+            alignItems: "center",
+            height: 50,
+            backgroundColor: "#FE8A23",
+            borderRadius: 5,
+            borderColor: "gray",
+            flex: 1,
+            marginHorizontal: 10
         }}>
-                            <react_native_1.Text style={{ color: 'white' }}>确定</react_native_1.Text>
-                        </react_native_1.TouchableWithoutFeedback>
-                    </react_native_1.View>
-                </react_native_1.View>
+                <react_native_1.Text style={{ color: "white" }}>确定</react_native_1.Text>
+              </react_native_1.View>
+            </react_native_1.TouchableWithoutFeedback>
+          </react_native_1.View>
+        </react_native_1.View>
 
-            </react_native_1.View>);
+      </react_native_1.View>);
     }
     else {
         return null;
@@ -424,14 +443,14 @@ var TurntableListItem = function () {
                         text: "取消",
                         onPress: function () {
                         },
-                        style: "cancel"
+                        style: "cancel",
                     },
                     {
                         text: "马上登录",
                         onPress: function () {
                             RootNavigation_1.navigate(Navigation_1.PageName.ZLLoginPage, {});
                         },
-                    }
+                    },
                 ]);
             }
             else if (isTest) {
@@ -440,42 +459,42 @@ var TurntableListItem = function () {
                         text: "取消",
                         onPress: function () {
                         },
-                        style: "cancel"
+                        style: "cancel",
                     },
                     {
                         text: "马上登录",
-                        onPress: function () { return PushHelper_1.default.pushLogin(); }
-                    }
+                        onPress: function () { return PushHelper_1.default.pushLogin(); },
+                    },
                 ]);
             }
             else {
-                if (react_native_1.Platform.OS != 'ios')
+                if (react_native_1.Platform.OS != "ios")
                     return;
-                var turntableListModel_1 = Object.assign({ clsName: 'DZPModel' }, turntableList === null || turntableList === void 0 ? void 0 : turntableList[0]);
+                var turntableListModel_1 = Object.assign({ clsName: "DZPModel" }, turntableList === null || turntableList === void 0 ? void 0 : turntableList[0]);
                 OCHelper_1.OCHelper.call(function (_a) {
                     var vc = _a.vc;
                     return ({
                         vc: {
-                            selectors: 'DZPMainView.alloc.initWithFrame:[setItem:]',
-                            args1: [OCCall_1.NSValue.CGRectMake(100, 100, AppDefine_1.default.width - 60, AppDefine_1.default.height - 60),],
-                            args2: [turntableListModel_1]
+                            selectors: "DZPMainView.alloc.initWithFrame:[setItem:]",
+                            args1: [OCCall_1.NSValue.CGRectMake(100, 100, AppDefine_1.default.width - 60, AppDefine_1.default.height - 60)],
+                            args2: [turntableListModel_1],
                         },
                         ret: {
-                            selectors: 'SGBrowserView.showMoveView:yDistance:',
+                            selectors: "SGBrowserView.showMoveView:yDistance:",
                             args1: [vc, 100],
                         },
                     });
                 });
             }
         }}>
-                <react_native_1.ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }}>
-                    <react_native_1.TouchableWithoutFeedback onPress={function () {
+        <react_native_1.ImageBackground style={{ width: 95, height: 95, position: "absolute", top: height / 2, right: 20 }} source={{ uri: "dzp_btn" }}>
+          <react_native_1.TouchableWithoutFeedback onPress={function () {
             setTurntableListVisiable(false);
         }}>
-                        <react_native_1.Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: "dialog_close" }}/>
-                    </react_native_1.TouchableWithoutFeedback>
-                </react_native_1.ImageBackground>
-            </react_native_1.TouchableWithoutFeedback>);
+            <react_native_1.Image style={{ width: 20, height: 20, right: 0, top: 0, position: "absolute" }} source={{ uri: "dialog_close" }}/>
+          </react_native_1.TouchableWithoutFeedback>
+        </react_native_1.ImageBackground>
+      </react_native_1.TouchableWithoutFeedback>);
     }
     else {
         return null;
@@ -503,41 +522,41 @@ var Banner = function (_a) {
         customHeight && setHeight(customHeight);
     }, [customHeight]);
     if (((_c = (_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.list) === null || _c === void 0 ? void 0 : _c.length) > 0 || ((_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _d === void 0 ? void 0 : _d.length) > 0) {
-        return (<react_native_1.View style={{ marginBottom: 10, }}>
-                <react_native_banner_carousel_1.default autoplay index={0} ref={BannerRef} loop pageSize={width}>
-                    {((_e = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _e === void 0 ? void 0 : _e.list) ? (_g = (_f = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _f === void 0 ? void 0 : _f.list) === null || _g === void 0 ? void 0 : _g.map(function (res, index) {
+        return (<react_native_1.View style={{ marginBottom: 10 }}>
+        <react_native_banner_carousel_1.default autoplay index={0} ref={BannerRef} loop pageSize={width}>
+          {((_e = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _e === void 0 ? void 0 : _e.list) ? (_g = (_f = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _f === void 0 ? void 0 : _f.list) === null || _g === void 0 ? void 0 : _g.map(function (res, index) {
             return (<react_native_1.TouchableWithoutFeedback onPress={function () {
                 PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
             }}>
-                                <react_native_fast_image_1.default onLoad={function (e) {
+                <react_native_fast_image_1.default onLoad={function (e) {
                 setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width));
-            }} key={'banner' + index} style={{ width: width, height: height, }} source={{ uri: res.pic }}>
+            }} key={"banner" + index} style={{ width: width, height: height }} source={{ uri: res.pic }}>
 
-                                </react_native_fast_image_1.default>
-                            </react_native_1.TouchableWithoutFeedback>);
+                </react_native_fast_image_1.default>
+              </react_native_1.TouchableWithoutFeedback>);
         }) : (_h = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _h === void 0 ? void 0 : _h.map(function (res, index) {
             return (<react_native_1.TouchableWithoutFeedback onPress={function () {
                 PushHelper_1.default.pushCategory(res.linkCategory, res.linkPosition);
             }}>
-                                <react_native_fast_image_1.default onLoad={function (e) {
+                <react_native_fast_image_1.default onLoad={function (e) {
                 setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width));
-            }} key={'banner' + index} style={{ width: width, height: height, }} source={{ uri: res.image }}>
+            }} key={"banner" + index} style={{ width: width, height: height }} source={{ uri: res.image }}>
 
-                                </react_native_fast_image_1.default>
-                            </react_native_1.TouchableWithoutFeedback>);
+                </react_native_fast_image_1.default>
+              </react_native_1.TouchableWithoutFeedback>);
         })}
-                </react_native_banner_carousel_1.default>
-                {showOnlineCount && <react_native_1.View style={{
-            position: 'absolute',
+        </react_native_banner_carousel_1.default>
+        {showOnlineCount && <react_native_1.View style={{
+            position: "absolute",
             top: 10,
             right: 10,
             backgroundColor: "rgba(0,0,0,0.2)",
             borderRadius: 16,
-            padding: 5
+            padding: 5,
         }}>
-                    <react_native_1.Text style={{ color: 'white' }}>当前在线:{onlineNum}</react_native_1.Text>
-                </react_native_1.View>}
-            </react_native_1.View>);
+          <react_native_1.Text style={{ color: "white" }}>当前在线:{onlineNum}</react_native_1.Text>
+        </react_native_1.View>}
+      </react_native_1.View>);
     }
     else {
         return <react_native_1.View style={{ height: (react_native_1.Dimensions.get("screen").width) / 2 }}/>;

@@ -11,8 +11,8 @@ var dev_json_1 = require("../../../../../dev.json");
 // 配置需要被替换的oc页面（替换成rn）
 function setRnPageInfo() {
     var pages = [];
-    var skitType = UGSkinManagers_1.Skin1.skitType;
-    console.log("------------------skitType------------------", skitType);
+    var skitType = '乐橙';
+    console.log('------------------skitType------------------', skitType);
     // 本地编译
     if (__DEV__) {
         (dev_json_1.default === null || dev_json_1.default === void 0 ? void 0 : dev_json_1.default.site) && (skitType = dev_json_1.default === null || dev_json_1.default === void 0 ? void 0 : dev_json_1.default.site); // 測試開發
@@ -29,6 +29,9 @@ function setRnPageInfo() {
         if (skitType.indexOf('凯时') != -1) {
             pages = pages.concat(KSPages);
         }
+        if (skitType.indexOf('乐橙') != -1) {
+            pages = pages.concat(LCPages);
+        }
     }
     // 测试环境（未上线的内容）
     if (AppDefine_1.default.isTest()) {
@@ -40,9 +43,6 @@ function setRnPageInfo() {
         }
         if (skitType.indexOf('六合厅') != -1) {
             pages = pages.concat(LHTPages);
-        }
-        if (skitType.indexOf('乐橙') != -1) {
-            pages = pages.concat(LCPages);
         }
         if (skitType.indexOf('金星黑') != -1) {
             pages = pages.concat(JXHPages);
@@ -133,7 +133,7 @@ var ZLPages = [
         fd_prefersNavigationBarHidden: true,
         允许游客访问: false,
         允许未登录访问: false,
-    }
+    },
 ];
 // 乐橙模板
 var LCPages = [
@@ -234,7 +234,7 @@ var BSHPages = [
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
-    }
+    },
 ];
 // 利来
 var LLPages = [
@@ -306,7 +306,7 @@ var WNSPages = [
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: false,
-    }
+    },
 ];
 // 凯时
 var KSPages = [
@@ -385,7 +385,7 @@ var JXHPages = [
         fd_prefersNavigationBarHidden: true,
         允许游客访问: true,
         允许未登录访问: true,
-    }
+    },
 ];
 var RnPageModel = /** @class */ (function () {
     function RnPageModel() {
