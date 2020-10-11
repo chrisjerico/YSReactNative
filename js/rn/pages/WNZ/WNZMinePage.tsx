@@ -147,8 +147,8 @@ const WNZMinePage = () => {
                     key={index}
                     logo={logo}
                     title={name}
-                    showUnReadMsg={code == 9 && unreadMsg != 0}
-                    unreadMsg={unreadMsg}
+                    showUnReadMsg={code == UGUserCenterType.站内信}
+                    unreadMsg={unreadMsg || 0}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
                     imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}

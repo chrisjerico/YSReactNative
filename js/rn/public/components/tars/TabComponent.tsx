@@ -21,6 +21,7 @@ interface TabComponentProps {
   tabScrollEnabled?: boolean
   numColumns: number
   renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
+  tabTextColor?: string
 }
 
 interface RenderTabBar {
@@ -71,6 +72,7 @@ const TabComponent = ({
   tabScrollEnabled = true,
   numColumns,
   renderTabBar,
+  tabTextColor = '#000000',
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
@@ -188,7 +190,7 @@ const TabComponent = ({
                           styles.tabText,
                           tabTextStyle,
                           {
-                            color: activeTab == index ? focusTabColor : '#000000',
+                            color: activeTab == index ? focusTabColor : tabTextColor,
                           },
                         ]}>
                         {title}
