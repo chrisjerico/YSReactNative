@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 
 export interface HomeHeaderProps {
@@ -18,7 +19,11 @@ export interface HomeHeaderProps {
   onPressBackBtn?: () => any
 }
 
-const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, showBackBtn, onPressBackBtn }: HomeHeaderProps) => {
+const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, onPressBackBtn }: HomeHeaderProps) => {
+  const [showBackBtn, setShowBackBtn] = useState(false);
+  AppDefine.checkHeaderShowBackButton((show) => {
+    show != showBackBtn && setShowBackBtn(show);
+  })
   return (
     <View style={styles.container}>
       {showBackBtn ? (

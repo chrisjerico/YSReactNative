@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { Component } from 'react'
+import React, { Component, PureComponent } from 'react'
 import TrendView from '../../public/components/TrendView'
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider'
 import { PageName } from '../../public/navigation/Navigation'
@@ -76,6 +76,10 @@ class TabBarController extends Component<{
     // navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
+  shouldComponentUpdate() {
+    return false;
+  }
+
   componentDidMount() {
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
@@ -103,6 +107,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
         <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
+        <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
         <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
@@ -139,6 +144,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignInPage} component={JXHSignInPage} />

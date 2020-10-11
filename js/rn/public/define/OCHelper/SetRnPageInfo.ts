@@ -1,21 +1,24 @@
+import { devConfig } from './../../../../../config';
 import { PageName } from '../../navigation/Navigation';
 import { Router, RouterType } from '../../navigation/Router';
 import { Skin1 } from './../../theme/UGSkinManagers';
 import { OCHelper } from './OCHelper';
 import { Platform } from "react-native";
 import AppDefine from '../AppDefine';
+import { releaseConfig } from '../../../../../config'
 
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
 
   let skitType = Skin1.skitType;
-
+  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
   console.log("------------------skitType------------------", skitType)
 
   // 本地编译
-  if (__DEV__) {
-    // skitType = '凯时'; // 測試開發
+  if (devConfig.isDebug) {
+    devConfig?.skinKey && (skitType = devConfig?.skinKey); // 測試開發
+
     // tars
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
@@ -38,7 +41,7 @@ export function setRnPageInfo() {
   }
 
   // 测试环境（未上线的内容）
-  if (AppDefine.isTest()) {
+  if (devConfig.isTest()) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
@@ -53,6 +56,9 @@ export function setRnPageInfo() {
     }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
+    }
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat(WNSPages)
     }
   }
 
@@ -77,9 +83,6 @@ export function setRnPageInfo() {
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages);
-  }
-  if (skitType.indexOf('威尼斯') != -1) {
-    pages = pages.concat(WNSPages)
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
@@ -297,15 +300,6 @@ const WNSPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  },
-  {
-    // 棋牌
-    tabbarItemPath: '/chess',
-    vcName: 'UGYYLotterySecondHomeViewController',
-    rnName: PageName.WNZGameLobbyPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
   }
 ];
 

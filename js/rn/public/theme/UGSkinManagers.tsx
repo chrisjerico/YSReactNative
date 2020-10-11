@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { Platform } from 'react-native'
-import dev from '../../../../dev.json'
+import { devConfig, releaseConfig } from '../../../../config'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
@@ -52,7 +52,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf
     let dict = {
-      1: `经典${mobileTemplateBackground}`,
+      0: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -76,8 +76,9 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    if (B_DEBUG) {
-      key = dev?.site ?? '经典'
+    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key;
+    if (devConfig.isDebug) {
+      devConfig?.skinKey && (key = devConfig?.skinKey);
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -98,18 +99,14 @@ export default class UGSkinManagers extends UGThemeColor {
   static async updateOcSkin() {
     const skin = Skin1
     if (Platform.OS != 'ios') return
-    // 测试环境（未上线的内容）
-    const devSkin =
-      AppDefine.isTest() &&
-      skin.skitType.indexOf('香槟金') == -1 &&
-      skin.skitType.indexOf('综合体育') == -1 &&
-      skin.skitType.indexOf('金星黑') == -1 &&
-      skin.skitType.indexOf('六合厅') == -1 &&
-      skin.skitType.indexOf('凯时') == -1 &&
-      skin.skitType.indexOf(`利来`) == -1 &&
-      skin.skitType.indexOf(`越南`) == -1
     // 已上线模板
-    if (skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('宝石红') == -1 && skin.skitType.indexOf('威尼斯') == -1 && devSkin) return
+    const isOnlineSkin = (
+      skin.skitType.indexOf('尊龙') != -1 ||
+      skin.skitType.indexOf('宝石红') != -1
+    );
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
+    if (!ok) return;
+
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
     for (const k in skin) {
