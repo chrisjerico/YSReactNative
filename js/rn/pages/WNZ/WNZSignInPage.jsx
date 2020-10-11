@@ -28,7 +28,7 @@ var WNZSignInPage = function () {
     var signIn = sign.signIn, tryPlay = sign.tryPlay;
     return (<>
       <SafeAreaHeader_1.default headerColor={WNZThemeColor_1.WNZThemeColor.威尼斯.themeColor}>
-        <SignHeader_1.default onPressLeftTool={RootNavigation_1.popToRoot} onPressMenu={function () {
+        <SignHeader_1.default onPressLeftTool={RootNavigation_1.pop} onPressMenu={function () {
         var _a;
         (_a = menu === null || menu === void 0 ? void 0 : menu.current) === null || _a === void 0 ? void 0 : _a.open();
     }} onPressSign={navigateToSignUpPage}/>

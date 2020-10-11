@@ -100,18 +100,16 @@ function goFirstTransitionPage(page, props, action) {
         return false;
     }
     try {
-        if (action == Router_1.RouterType.Stack) {
-            (_a = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.dispatch(native_1.StackActions.replace(page, props));
-        }
-        else {
-            popToRoot();
-            (_b = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _b === void 0 ? void 0 : _b.dispatch(native_1.TabActions.jumpTo(page, props));
-        }
-        return;
         if (getCurrentPage() == Navigation_1.PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == Router_1.RouterType.Stack) {
-                (_c = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _c === void 0 ? void 0 : _c.dispatch(native_1.StackActions.replace(page, props));
+                var canPop = ((_a = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _a === void 0 ? void 0 : _a.getRootState().routes.length) > 1;
+                if (canPop) {
+                    (_b = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _b === void 0 ? void 0 : _b.dispatch(native_1.StackActions.replace(page, props));
+                }
+                else {
+                    (_c = exports.navigationRef === null || exports.navigationRef === void 0 ? void 0 : exports.navigationRef.current) === null || _c === void 0 ? void 0 : _c.dispatch(native_1.StackActions.push(page, props));
+                }
             }
             else {
                 popToRoot();

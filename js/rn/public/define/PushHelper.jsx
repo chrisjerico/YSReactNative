@@ -203,10 +203,10 @@ var PushHelper = /** @class */ (function () {
             gameId: code,
         });
     };
-    // 去彩票大廳
-    PushHelper.pushLotteryLobby = function () {
-        OCHelper_1.OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true]);
-    };
+    // 去彩票大廳 userCenter裡有
+    // static pushLotteryLobby() {
+    //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
+    // }
     /**
      * 打开红包
      * @param redBag
@@ -551,7 +551,7 @@ var PushHelper = /** @class */ (function () {
                         httpClient_1.httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1');
                         break;
                     }
-                    case UGSysConfModel_1.UGUserCenterType.六合彩: {
+                    case UGSysConfModel_1.UGUserCenterType.彩票大厅: {
                         OCHelper_1.OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true]);
                         break;
                     }
@@ -592,6 +592,17 @@ var PushHelper = /** @class */ (function () {
                                 }
                             }
                         });
+                        break;
+                    }
+                    case UGSysConfModel_1.UGUserCenterType.开奖结果: {
+                        OCHelper_1.OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+                            {
+                                selectors: 'AppDefine.viewControllerWithStoryboardID:',
+                                args1: ['UGLotteryRecordController'],
+                            },
+                            true,
+                        ]);
+                        // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
                         break;
                     }
                 }
@@ -683,7 +694,7 @@ var PushHelper = /** @class */ (function () {
                         subId = GotoDefine_1.MenuType.ZHGL;
                         break;
                     }
-                    case UGSysConfModel_1.UGUserCenterType.六合彩.toString(): {
+                    case UGSysConfModel_1.UGUserCenterType.彩票大厅.toString(): {
                         subId = GotoDefine_1.MenuType.GCDT;
                         break;
                     }

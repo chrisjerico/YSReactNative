@@ -1,62 +1,34 @@
 import React from 'react'
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  ViewStyle,
-  TouchableWithoutFeedback,
-  TextStyle,
-  StyleProp
-} from 'react-native'
+import { Image, StyleSheet, Text, View, ViewStyle, TouchableWithoutFeedback, TextStyle, StyleProp } from 'react-native'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface UserCenterItemProps {
-  logo: string;
-  title: string;
-  onPress: () => any;
-  containerStyle?: StyleProp<ViewStyle>;
-  showUnreadMsg?: boolean;
-  unreadMsg?: number;
-  titleStyle?: StyleProp<TextStyle>;
-  arrowColor?: string;
+  logo: string
+  title: string
+  onPress: () => any
+  containerStyle?: StyleProp<ViewStyle>
+  showUnReadMsg?: boolean
+  unreadMsg?: number
+  titleStyle?: StyleProp<TextStyle>
+  arrowColor?: string
 }
 
-const UserCenterItem = ({
-  logo = '',
-  title,
-  onPress,
-  containerStyle,
-  showUnreadMsg = false,
-  unreadMsg,
-  arrowColor = '#000000',
-  titleStyle
-}: UserCenterItemProps) => {
+const UserCenterItem = ({ logo = '', title, onPress, containerStyle, showUnReadMsg = false, unreadMsg, arrowColor = '#000000', titleStyle }: UserCenterItemProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.container, containerStyle]}>
         <View style={styles.imageContainer}>
-          <Image
-            resizeMode={'contain'}
-            style={styles.image}
-            source={{ uri: logo }}
-          />
+          <Image resizeMode={'contain'} style={styles.image} source={{ uri: logo }} />
           <Text style={[styles.title, titleStyle]}>{title}</Text>
         </View>
-        {showUnreadMsg ? (
+        {showUnReadMsg ? (
           <View style={styles.unReadContainer}>
             <Text style={styles.unReadText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
         ) : (
-            <AntDesign
-              name={'right'}
-              color={arrowColor}
-              size={scale(20)}
-            // onPress={onPressLeftTool}
-            />
-            // <Text style={[styles.text, arrowTextStyle]}>{'>'}</Text>
-          )}
+          <AntDesign name={'right'} color={arrowColor} size={scale(20)} />
+        )}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -72,11 +44,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: scale(15),
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   imageContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   image: {
     width: scale(35),

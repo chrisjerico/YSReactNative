@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var MineHeaderComponent_1 = require("../../public/components/tars/MineHeaderComponent");
+var BackBtnComponent_1 = require("../../public/components/tars/BackBtnComponent");
 var PickAvatarComponent_1 = require("../../public/components/tars/PickAvatarComponent");
 var PushHelper_1 = require("../../public/define/PushHelper");
 var useMinePage_1 = require("../../public/hooks/tars/useMinePage");
@@ -14,6 +14,7 @@ var UgLog_1 = require("../../public/tools/UgLog");
 var BottomGap_1 = require("../../public/views/tars/BottomGap");
 var Button_1 = require("../../public/views/tars/Button");
 var GameButton_1 = require("../../public/views/tars/GameButton");
+var MineHeader_1 = require("../../public/views/tars/MineHeader");
 var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
 var UserCenterItem_1 = require("../../public/views/tars/UserCenterItem");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
@@ -26,15 +27,18 @@ var BZHMinePage = function () {
         homePage: Navigation_1.PageName.BZHHomePage,
         defaultUserCenterLogos: config_1.default === null || config_1.default === void 0 ? void 0 : config_1.default.defaultUserCenterLogos,
     }), pickAvatarComponentRef = _c.pickAvatarComponentRef, onPressAvatar = _c.onPressAvatar, onSaveAvatarSuccess = _c.onSaveAvatarSuccess, value = _c.value, sign = _c.sign;
-    var balance = value.balance, userCenterItems = value.userCenterItems, curLevelGrade = value.curLevelGrade, usr = value.usr, isTest = value.isTest, avatar = value.avatar, unreadMsg = value.unreadMsg;
+    var sysInfo = value.sysInfo;
+    var balance = sysInfo.balance, userCenterItems = sysInfo.userCenterItems, curLevelGrade = sysInfo.curLevelGrade, usr = sysInfo.usr, isTest = sysInfo.isTest, avatar = sysInfo.avatar, unreadMsg = sysInfo.unreadMsg;
     var signOut = sign.signOut;
     // data handle
     var profileUserCenterItems = (_a = userCenterItems === null || userCenterItems === void 0 ? void 0 : userCenterItems.slice(0, 4)) !== null && _a !== void 0 ? _a : [];
     var listUserCenterItems = (_b = userCenterItems === null || userCenterItems === void 0 ? void 0 : userCenterItems.slice(4, userCenterItems === null || userCenterItems === void 0 ? void 0 : userCenterItems.length)) !== null && _b !== void 0 ? _b : [];
     return (<>
       <SafeAreaHeader_1.default headerColor={BZHThemeColor_1.BZHThemeColor.宝石红.themeColor}>
-        <MineHeaderComponent_1.default title={'会员中心'} showRightTitle={false} onPressRightTitle={function () {
-        PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
+        <BackBtnComponent_1.default homePage={Navigation_1.PageName.BZHHomePage} renderHeader={function (props) {
+        return (<MineHeader_1.default {...props} title={'会员中心'} showRightTitle={false} onPressRightTitle={function () {
+            PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
+        }}/>);
     }}/>
       </SafeAreaHeader_1.default>
       <react_native_1.ScrollView showsVerticalScrollIndicator={false} style={{
@@ -50,7 +54,7 @@ var BZHMinePage = function () {
         return (<UserCenterItem_1.default key={index} containerStyle={{
             backgroundColor: '#ffffff',
             aspectRatio: 490 / 68,
-        }} arrowColor={'#d82e2f'} titleStyle={{ fontSize: Scale_1.scale(22) }} title={name} logo={logo} unreadMsg={unreadMsg || 0} showUnreadMsg={code == 9} onPress={function () {
+        }} arrowColor={'#d82e2f'} titleStyle={{ fontSize: Scale_1.scale(22) }} title={name} logo={logo} unreadMsg={unreadMsg || 0} showUnReadMsg={code == 9} onPress={function () {
             PushHelper_1.default.pushUserCenterType(code);
         }}/>);
     })}

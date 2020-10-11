@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var MineHeaderComponent_1 = require("../../public/components/tars/MineHeaderComponent");
+var BackBtnComponent_1 = require("../../public/components/tars/BackBtnComponent");
 var PickAvatarComponent_1 = require("../../public/components/tars/PickAvatarComponent");
 var RefreshControlComponent_1 = require("../../public/components/tars/RefreshControlComponent");
 var PushHelper_1 = require("../../public/define/PushHelper");
@@ -13,8 +13,9 @@ var Scale_1 = require("../../public/tools/Scale");
 var tars_1 = require("../../public/tools/tars");
 var BottomGap_1 = require("../../public/views/tars/BottomGap");
 var Button_1 = require("../../public/views/tars/Button");
-var UserCenterItem_1 = require("../../public/views/tars/UserCenterItem");
+var MineHeader_1 = require("../../public/views/tars/MineHeader");
 var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
+var UserCenterItem_1 = require("../../public/views/tars/UserCenterItem");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
 var config_1 = require("./config");
 var ProfileBlock_1 = require("./views/ProfileBlock");
@@ -25,13 +26,14 @@ var LHTMinePage = function () {
         homePage: Navigation_1.PageName.LHTHomePage,
         defaultUserCenterLogos: config_1.default.defaultUserCenterLogos,
     }), pickAvatarComponentRef = _a.pickAvatarComponentRef, onPressAvatar = _a.onPressAvatar, onSaveAvatarSuccess = _a.onSaveAvatarSuccess, value = _a.value, sign = _a.sign;
-    var balance = value.balance, userCenterItems = value.userCenterItems, curLevelGrade = value.curLevelGrade, usr = value.usr, isTest = value.isTest, avatar = value.avatar, unreadMsg = value.unreadMsg, showSign = value.showSign;
+    var sysInfo = value.sysInfo;
+    var balance = sysInfo.balance, userCenterItems = sysInfo.userCenterItems, curLevelGrade = sysInfo.curLevelGrade, usr = sysInfo.usr, isTest = sysInfo.isTest, avatar = sysInfo.avatar, unreadMsg = sysInfo.unreadMsg, showSign = sysInfo.showSign;
     var signOut = sign.signOut;
     return (<>
       <SafeAreaHeader_1.default headerColor={LHThemeColor_1.LHThemeColor.六合厅.themeColor}>
-        <MineHeaderComponent_1.default title={'会员中心'} showRightTitle={true} onPressRightTitle={function () {
+        <BackBtnComponent_1.default homePage={Navigation_1.PageName.LHTMinePage} renderHeader={function (props) { return (<MineHeader_1.default {...props} title={'会员中心'} onPressRightTitle={function () {
         PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
-    }}/>
+    }}/>); }}/>
       </SafeAreaHeader_1.default>
       <react_native_1.ScrollView style={styles.container} refreshControl={<RefreshControlComponent_1.default onRefresh={function () { }}/>} showsVerticalScrollIndicator={false}>
         <ProfileBlock_1.default showSignBadge={showSign} onPressAvatar={onPressAvatar} profileButtons={config_1.default === null || config_1.default === void 0 ? void 0 : config_1.default.profileButtons} name={usr} avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} level={curLevelGrade} balance={balance} onPressDaySign={function () {

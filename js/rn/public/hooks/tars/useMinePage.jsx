@@ -15,10 +15,10 @@ var useMinePage = function (_a) {
     var rerender = useRerender_1.default().rerender;
     // stores
     var sys = useSys_1.default({
-        defaultUserCenterLogos: defaultUserCenterLogos
+        defaultUserCenterLogos: defaultUserCenterLogos,
     }).sys;
     var _b = UGStore_1.UGStore.globalProps.userInfo, avatar = _b.avatar, usr = _b.usr, balance = _b.balance, unreadMsg = _b.unreadMsg, isTest = _b.isTest, curLevelGrade = _b.curLevelGrade, uid = _b.uid, nextLevelInt = _b.nextLevelInt, curLevelInt = _b.curLevelInt, taskRewardTotal = _b.taskRewardTotal, curLevelTitle = _b.curLevelTitle, nextLevelTitle = _b.nextLevelTitle;
-    var mobile_logo = sys.mobile_logo, userCenterItems = sys.userCenterItems, showSign = sys.showSign;
+    var mobile_logo = sys.mobile_logo, userCenterItems = sys.userCenterItems, showSign = sys.showSign, mobileMenu = sys.mobileMenu;
     var logOut = useLogOut_1.default({
         onStart: function () {
             UGLoadingCP_1.showLoading({ type: UGLoadingCP_1.UGLoadingType.Loading });
@@ -36,7 +36,7 @@ var useMinePage = function (_a) {
     var signOut = logOut;
     var onPressAvatar = function () { var _a; return (_a = pickAvatarComponentRef === null || pickAvatarComponentRef === void 0 ? void 0 : pickAvatarComponentRef.current) === null || _a === void 0 ? void 0 : _a.open(); };
     var onSaveAvatarSuccess = rerender;
-    var value = {
+    var sysInfo = {
         balance: balance,
         uid: uid,
         mobile_logo: mobile_logo,
@@ -52,9 +52,13 @@ var useMinePage = function (_a) {
         curLevelTitle: curLevelTitle,
         nextLevelTitle: nextLevelTitle,
         showSign: showSign,
+        mobileMenu: mobileMenu,
     };
     var sign = {
         signOut: signOut,
+    };
+    var value = {
+        sysInfo: sysInfo,
     };
     return {
         pickAvatarComponentRef: pickAvatarComponentRef,

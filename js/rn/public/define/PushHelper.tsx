@@ -144,10 +144,10 @@ export default class PushHelper {
     })
   }
 
-  // 去彩票大廳
-  static pushLotteryLobby() {
-    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
-  }
+  // 去彩票大廳 userCenter裡有
+  // static pushLotteryLobby() {
+  //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
+  // }
   /**
    * 打开红包
    * @param redBag
@@ -448,7 +448,7 @@ export default class PushHelper {
             )
             break
           }
-          case UGUserCenterType.六合彩: {
+          case UGUserCenterType.彩票大厅: {
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryHomeController.new' }, true])
             break
           }
@@ -488,6 +488,17 @@ export default class PushHelper {
                 }
               }
             })
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+              {
+                selectors: 'AppDefine.viewControllerWithStoryboardID:',
+                args1: ['UGLotteryRecordController'],
+              },
+              true,
+            ])
+            // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
         }
@@ -580,7 +591,7 @@ export default class PushHelper {
             subId = MenuType.ZHGL
             break
           }
-          case UGUserCenterType.六合彩.toString(): {
+          case UGUserCenterType.彩票大厅.toString(): {
             subId = MenuType.GCDT
             break
           }

@@ -5,11 +5,11 @@ var react_native_1 = require("react-native");
 var AntDesign_1 = require("react-native-vector-icons/AntDesign");
 var Scale_1 = require("../../../public/tools/Scale");
 var MineHeader = function (_a) {
-    var _b = _a.showRightTitle, showRightTitle = _b === void 0 ? false : _b, onPressRightTitle = _a.onPressRightTitle, title = _a.title, renderHeader = _a.renderHeader, _c = _a.showBackBtn, showBackBtn = _c === void 0 ? false : _c, onPressBackBtn = _a.onPressBackBtn, rightTitle = _a.rightTitle;
+    var _b = _a.showRightTitle, showRightTitle = _b === void 0 ? false : _b, onPressRightTitle = _a.onPressRightTitle, title = _a.title, renderHeader = _a.renderHeader, _c = _a.showBackBtn, showBackBtn = _c === void 0 ? false : _c, onPressBackBtn = _a.onPressBackBtn, rightTitle = _a.rightTitle, _d = _a.backBtnColor, backBtnColor = _d === void 0 ? '#ffffff' : _d;
     return (<react_native_1.View style={styles.container}>
       {showBackBtn ? (<react_native_1.TouchableWithoutFeedback onPress={onPressBackBtn}>
           <react_native_1.View style={{ flex: 1, alignItems: 'flex-start', height: '100%', justifyContent: 'center' }}>
-            <AntDesign_1.default name={'left'} color={'#ffffff'} size={Scale_1.scale(25)}/>
+            <AntDesign_1.default name={'left'} color={backBtnColor} size={Scale_1.scale(25)}/>
           </react_native_1.View>
         </react_native_1.TouchableWithoutFeedback>) : (<react_native_1.View style={{ flex: 1 }}/>)}
       {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showRightTitle={showRightTitle} onPressRightTitle={onPressRightTitle}/>}

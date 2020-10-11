@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var ActivityComponent_1 = require("../../public/components/tars/ActivityComponent");
 var AnimatedRankComponent_1 = require("../../public/components/tars/AnimatedRankComponent");
 var AutoHeightCouponComponent_1 = require("../../public/components/tars/AutoHeightCouponComponent");
 var GameSubTypeComponent_1 = require("../../public/components/tars/GameSubTypeComponent");
@@ -49,7 +48,7 @@ var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 var httpClient_1 = require("../../public/network/httpClient");
 var BZHThemeColor_1 = require("../../public/theme/colors/BZHThemeColor");
 var Scale_1 = require("../../public/tools/Scale");
-var tars_1 = require("../../public/tools/tars");
+var Activitys_1 = require("../../public/views/tars/Activitys");
 var BannerBlock_1 = require("../../public/views/tars/BannerBlock");
 var BottomGap_1 = require("../../public/views/tars/BottomGap");
 var BottomLogo_1 = require("../../public/views/tars/BottomLogo");
@@ -69,9 +68,10 @@ var BZHHomePage = function () {
     var _a;
     var _b = useHomePage_1.default({}), goTo = _b.goTo, refresh = _b.refresh, value = _b.value;
     var goToJDPromotionListPage = goTo.goToJDPromotionListPage;
-    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, sys = value.sys, bannersInterval = value.bannersInterval, onlineNum = value.onlineNum, banners = value.banners, notices = value.notices, midBanners = value.midBanners, announcements = value.announcements, navs = value.navs, homeGames = value.homeGames, gameLobby = value.gameLobby, coupons = value.coupons, rankLists = value.rankLists, floatAds = value.floatAds, redBag = value.redBag, redBagLogo = value.redBagLogo, roulette = value.roulette;
+    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, sysInfo = value.sysInfo, homeInfo = value.homeInfo;
+    var bannersInterval = homeInfo.bannersInterval, onlineNum = homeInfo.onlineNum, banners = homeInfo.banners, notices = homeInfo.notices, midBanners = homeInfo.midBanners, announcements = homeInfo.announcements, navs = homeInfo.navs, homeGames = homeInfo.homeGames, gameLobby = homeInfo.gameLobby, coupons = homeInfo.coupons, rankLists = homeInfo.rankLists, floatAds = homeInfo.floatAds, redBag = homeInfo.redBag, redBagLogo = homeInfo.redBagLogo, roulette = homeInfo.roulette;
     var uid = userInfo.uid, usr = userInfo.usr, balance = userInfo.balance, isTest = userInfo.isTest;
-    var mobile_logo = sys.mobile_logo, webName = sys.webName, showCoupon = sys.showCoupon, rankingListType = sys.rankingListType, midBannerTimer = sys.midBannerTimer;
+    var mobile_logo = sysInfo.mobile_logo, webName = sysInfo.webName, showCoupon = sysInfo.showCoupon, rankingListType = sysInfo.rankingListType, midBannerTimer = sysInfo.midBannerTimer;
     var recommendGameTabs = (_a = gameLobby === null || gameLobby === void 0 ? void 0 : gameLobby.map(function (item) { return item === null || item === void 0 ? void 0 : item.categoryName; })) !== null && _a !== void 0 ? _a : [];
     if (loading) {
         return (<>
@@ -253,18 +253,7 @@ var BZHHomePage = function () {
         }} onPressPromotion={goToJDPromotionListPage} debug={false} version={'測試dev設定'}/>
               <BottomGap_1.default />
             </>); }}/>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(250), right: 0 }} show={uid && redBagLogo && !isTest} logo={redBagLogo} onPress={function () {
-            PushHelper_1.default.pushRedBag(redBag);
-        }}/>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(400), right: 0 }} enableFastImage={false} show={uid && roulette && !isTest} logo={'dzp_btn'} onPress={function () {
-            PushHelper_1.default.pushWheel(roulette);
-        }}/>
-        {floatAds === null || floatAds === void 0 ? void 0 : floatAds.map(function (item, index) {
-            var image = item.image, position = item.position, linkCategory = item.linkCategory, linkPosition = item.linkPosition;
-            return (<ActivityComponent_1.default key={index} refreshing={refreshing} containerStyle={tars_1.getActivityPosition(position)} enableFastImage={true} show={uid && !isTest} logo={image} onPress={function () {
-                PushHelper_1.default.pushCategory(linkCategory, linkPosition);
-            }}/>);
-        })}
+        <Activitys_1.default uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds}/>
       </>);
     }
 };

@@ -123,9 +123,7 @@ var APIRouter = /** @class */ (function () {
                     else {
                         UGStore_1.UGStore.dispatch({ type: 'reset', userInfo: {} });
                         UGStore_1.UGStore.save();
-                        return [2 /*return*/, Promise.reject({
-                                msg: '登入失败'
-                            })];
+                        return [2 /*return*/, Promise.reject('使用者未登入，拒絕更新使用者資料')];
                     }
                     return [2 /*return*/];
             }

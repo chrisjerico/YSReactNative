@@ -45,18 +45,17 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var ActivityComponent_1 = require("../../public/components/tars/ActivityComponent");
 var AnimatedRankComponent_1 = require("../../public/components/tars/AnimatedRankComponent");
 var AutoHeightCouponComponent_1 = require("../../public/components/tars/AutoHeightCouponComponent");
 var PushHelper_1 = require("../../public/define/PushHelper");
 var useHomePage_1 = require("../../public/hooks/tars/useHomePage");
-var useRerender_1 = require("../../public/hooks/tars/useRerender");
 var Navigation_1 = require("../../public/navigation/Navigation");
 var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 var httpClient_1 = require("../../public/network/httpClient");
 var LHThemeColor_1 = require("../../public/theme/colors/LHThemeColor");
 var Scale_1 = require("../../public/tools/Scale");
 var tars_1 = require("../../public/tools/tars");
+var Activitys_1 = require("../../public/views/tars/Activitys");
 var BannerBlock_1 = require("../../public/views/tars/BannerBlock");
 var BottomGap_1 = require("../../public/views/tars/BottomGap");
 var BottomLogo_1 = require("../../public/views/tars/BottomLogo");
@@ -80,16 +79,13 @@ var LHTHomePage = function () {
     var _b = react_1.useState(config_1.default === null || config_1.default === void 0 ? void 0 : config_1.default.preferences), preferenceGames = _b[0], setPreferenceGames = _b[1];
     // functions
     var getHtml5Image = tars_1.useHtml5Image().getHtml5Image;
-    var rerender = useRerender_1.default().rerender;
-    var _c = useHomePage_1.default({
-        onSuccessTryPlay: rerender,
-        onSuccessSignOut: rerender,
-    }), goTo = _c.goTo, value = _c.value, sign = _c.sign, refresh = _c.refresh;
+    var _c = useHomePage_1.default({}), goTo = _c.goTo, value = _c.value, sign = _c.sign, refresh = _c.refresh;
     var signOut = sign.signOut, tryPlay = sign.tryPlay;
     var goToJDPromotionListPage = goTo.goToJDPromotionListPage;
-    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, lotteryDate = value.lotteryDate, bannersInterval = value.bannersInterval, onlineNum = value.onlineNum, lotterys = value.lotterys, banners = value.banners, notices = value.notices, midBanners = value.midBanners, announcements = value.announcements, navs = value.navs, homeGames = value.homeGames, coupons = value.coupons, rankLists = value.rankLists, floatAds = value.floatAds, redBag = value.redBag, redBagLogo = value.redBagLogo, roulette = value.roulette, sys = value.sys;
+    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, homeInfo = value.homeInfo, sysInfo = value.sysInfo;
+    var lotteryDate = homeInfo.lotteryDate, bannersInterval = homeInfo.bannersInterval, onlineNum = homeInfo.onlineNum, lotterys = homeInfo.lotterys, banners = homeInfo.banners, notices = homeInfo.notices, midBanners = homeInfo.midBanners, announcements = homeInfo.announcements, navs = homeInfo.navs, homeGames = homeInfo.homeGames, coupons = homeInfo.coupons, rankLists = homeInfo.rankLists, floatAds = homeInfo.floatAds, redBag = homeInfo.redBag, redBagLogo = homeInfo.redBagLogo, roulette = homeInfo.roulette;
     var uid = userInfo.uid, usr = userInfo.usr, balance = userInfo.balance, isTest = userInfo.isTest, avatar = userInfo.avatar;
-    var mobile_logo = sys.mobile_logo, webName = sys.webName, showCoupon = sys.showCoupon, rankingListType = sys.rankingListType, appDownloadUrl = sys.appDownloadUrl;
+    var mobile_logo = sysInfo.mobile_logo, webName = sysInfo.webName, showCoupon = sysInfo.showCoupon, rankingListType = sysInfo.rankingListType, appDownloadUrl = sysInfo.appDownloadUrl;
     var plusLotterys = __spreadArrays(lotterys.slice(0, 6), [
         {
             showMore: true,
@@ -149,7 +145,7 @@ var LHTHomePage = function () {
             }}/>);
         }} renderLottery={function (item, index) {
             var number = item.number, color = item.color, sx = item.sx, showMore = item.showMore;
-            return <LotteryBall_1.default key={index} score={number} color={color} text={sx} showMore={showMore} onPress={function () { return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.六合彩); }}/>;
+            return <LotteryBall_1.default key={index} score={number} color={color} text={sx} showMore={showMore} onPress={function () { return PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.彩票大厅); }}/>;
         }}/>
             <HomeGameComponent_1.default itemHeight={Scale_1.scale(200)} leftIcon={getHtml5Image(14, 'hot_icon')} rightIcon={getHtml5Image(14, 'cai_icon')} activeTabColor={'#ff6b1b'} unActiveTabColor={'#bbbbbb'} containerStyle={styles.subComponent} leftGames={chooseGames} rightGames={homeGames} renderLeftGame={function (_a) {
             var item = _a.item, index = _a.index;
@@ -237,18 +233,7 @@ var LHTHomePage = function () {
             <BottomGap_1.default />
           </react_native_1.View>
         </react_native_1.ScrollView>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(250), right: 0 }} show={uid && redBagLogo && !isTest} logo={redBagLogo} onPress={function () {
-            PushHelper_1.default.pushRedBag(redBag);
-        }}/>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(400), right: 0 }} enableFastImage={false} show={uid && roulette && !isTest} logo={'dzp_btn'} onPress={function () {
-            PushHelper_1.default.pushWheel(roulette);
-        }}/>
-        {floatAds === null || floatAds === void 0 ? void 0 : floatAds.map(function (item, index) {
-            var image = item.image, position = item.position, linkCategory = item.linkCategory, linkPosition = item.linkPosition;
-            return (<ActivityComponent_1.default key={index} refreshing={refreshing} containerStyle={tars_1.getActivityPosition(position)} enableFastImage={true} show={uid && !isTest} logo={image} onPress={function () {
-                PushHelper_1.default.pushCategory(linkCategory, linkPosition);
-            }}/>);
-        })}
+        <Activitys_1.default uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds}/>
       </>);
     }
 };
@@ -270,39 +255,3 @@ var styles = react_native_1.StyleSheet.create({
     },
 });
 exports.default = LHTHomePage;
-// {
-//   /* <HeadlineBlock
-//         containerStyle={styles.subComponent}
-//         headlines={headlines}
-//         headLineLogo={defaultHeadLineLogo}
-//         onPressHeadline={({ value }) =>
-//           PushHelper.pushNoticePopUp(value)
-//         }
-//       /> */
-// }
-// PushHelper.pushHomeGame(
-//   Object.assign(
-//     {},
-//     {
-//       category: '7',
-//       clsName: 'GameModel',
-//       gameCode: '-1',
-//       gameId: gameId,
-//       gameType: gameType,
-//       isClose: '0',
-//       isInstant: '0',
-//       isSeal: '0',
-//       levelType: '1',
-//       name: title,
-//       openWay: '0',
-//       realName: title,
-//       seriesId: '1',
-//       subId: gameId,
-//       subtitle: des,
-//       tipFlag: '4',
-//       title: title,
-//       url: '',
-//     },
-//     item
-//   )
-// )

@@ -60,7 +60,7 @@ var useSignInPage = function (_a) {
             });
             (_a = slideCodeRef === null || slideCodeRef === void 0 ? void 0 : slideCodeRef.current) === null || _a === void 0 ? void 0 : _a.reload();
             tars_1.ToastError(error !== null && error !== void 0 ? error : '登录失败');
-            console.log("--------登录失败--------", error);
+            console.log('--------登录失败--------', error);
         },
     }).logIn;
     var tryPlay = useTryPlay_1.default({
@@ -70,7 +70,7 @@ var useSignInPage = function (_a) {
         },
         onError: function (error) {
             tars_1.ToastError(error !== null && error !== void 0 ? error : '登录失败');
-            console.log("--------試玩失败--------", error);
+            console.log('--------試玩失败--------', error);
         },
     }).tryPlay;
     var signIn = function () {
@@ -78,42 +78,45 @@ var useSignInPage = function (_a) {
             account: account,
             //@ts-ignore
             password: password === null || password === void 0 ? void 0 : password.md5(),
-            slideCode: slideCode
+            slideCode: slideCode,
         });
     };
     var onChangeAccount = function (value) {
         UGStore_1.UGStore.dispatch({
-            type: 'merge', sign: {
+            type: 'merge',
+            sign: {
                 account: rememberRef.current ? value : null,
-                password: rememberRef.current ? password : null
-            }
+                password: rememberRef.current ? password : null,
+            },
         });
         setAccount(value);
     };
     var onChangePassword = function (value) {
         UGStore_1.UGStore.dispatch({
-            type: 'merge', sign: {
+            type: 'merge',
+            sign: {
                 account: rememberRef.current ? account : null,
-                password: rememberRef.current ? value : null
-            }
+                password: rememberRef.current ? value : null,
+            },
         });
         setPassword(value);
     };
     var onChangeRemember = function (value) {
         rememberRef.current = value;
         UGStore_1.UGStore.dispatch({
-            type: 'merge', sign: {
+            type: 'merge',
+            sign: {
                 remember: value,
                 account: value ? account : null,
-                password: value ? password : null
-            }
+                password: value ? password : null,
+            },
         });
     };
     var onChangeSlideCode = setSlideCode;
     // data handle
     var nc_csessionid = slideCode.nc_csessionid, nc_token = slideCode.nc_token, nc_sig = slideCode.nc_sig;
     var loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode;
-    var valid = (account && password && loginVCode_valid) ? true : false;
+    var valid = account && password && loginVCode_valid ? true : false;
     var value = {
         account: account,
         password: password,
@@ -130,7 +133,7 @@ var useSignInPage = function (_a) {
         navigateToSignUpPage: navigateToSignUpPage,
     };
     var show = {
-        loginVCode: loginVCode
+        loginVCode: loginVCode,
     };
     return {
         slideCodeRef: slideCodeRef,
@@ -142,7 +145,7 @@ var useSignInPage = function (_a) {
         sign: {
             signIn: signIn,
             tryPlay: tryPlay,
-        }
+        },
     };
 };
 exports.default = useSignInPage;

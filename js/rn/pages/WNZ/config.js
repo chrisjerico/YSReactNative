@@ -34,7 +34,7 @@ var config = {
     menus: [
         {
             title: '会员中心',
-            onPress: function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.我的页); },
+            onPress: function () { RootNavigation_1.navigate(Navigation_1.PageName.WNZMinePage); },
         },
         {
             title: '额度转换',
@@ -46,7 +46,7 @@ var config = {
         },
         {
             title: '彩票游戏',
-            onPress: function () { PushHelper_1.default.pushLotteryLobby(); },
+            onPress: function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.彩票大厅); },
         },
         {
             title: 'AG视讯',
@@ -84,7 +84,7 @@ var config = {
         },
         {
             title: '更多彩种',
-            onPress: function () { PushHelper_1.default.pushLotteryLobby(); },
+            onPress: function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.彩票大厅); },
         },
         {
             title: '投注记录',
@@ -92,7 +92,7 @@ var config = {
         },
         {
             title: '开奖结果',
-            onPress: function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.开奖网); },
+            onPress: function () { PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.开奖结果); },
         },
         {
             title: '长龙排行',

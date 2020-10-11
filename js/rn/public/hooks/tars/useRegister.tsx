@@ -1,18 +1,13 @@
-import { any } from 'prop-types'
 import { Platform } from 'react-native'
 import APIRouter, { UserReg } from '../../network/APIRouter'
-import {
-  ToastError,
-  ToastStatus,
-  ToastSuccess
-} from '../../tools/tars'
+import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
 import useLogIn from './useLogIn'
 
 interface Options {
-  onSuccessWithAutoLogin?: () => any;
-  onStart?: () => any;
-  onSuccess?: () => any;
-  onError?: (error: any) => any;
+  onSuccessWithAutoLogin?: () => any
+  onStart?: () => any
+  onSuccess?: () => any
+  onError?: (error: any) => any
 }
 
 const useRegister = (options: Options = {}) => {
@@ -25,7 +20,6 @@ const useRegister = (options: Options = {}) => {
     },
     onError: (error) => {
       ToastError(error ?? '自动登录失败')
-      console.log('--------自動登录失败--------', error)
     },
   })
   const { onSuccessWithAutoLogin, onStart, onSuccess, onError } = options

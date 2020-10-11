@@ -13,7 +13,6 @@ exports.TransitionPage = function (props) {
         setProps({
             backgroundColor: ['#ddd', '#ddd'],
             navbarOpstions: { backgroundColor: 'transparent', hideUnderline: true, back: true },
-            tabbarOpetions: { unmountOnBlur: false },
             didFocus: function (p) {
                 if (!p)
                     return;

@@ -21,7 +21,9 @@ var LinearBadge = function (_a) {
       {showLogo && (<react_native_1.View style={[styles.logo, logoStyle]}>
           <react_native_fast_image_1.default style={{ width: '100%', height: '100%' }} resizeMode={'contain'} source={{ uri: logo }}/>
         </react_native_1.View>)}
-      <react_native_1.Text style={[styles.text, textStyle]}>{title}</react_native_1.Text>
+      <react_native_1.Text style={[styles.text, textStyle]} numberOfLines={1}>
+        {title}
+      </react_native_1.Text>
       {showIcon && <react_native_elements_1.Icon style={{ marginLeft: Scale_1.scale(5) }} type={'AntDesign'} name={'link'} size={Scale_1.scale(20)} color={'#ffffff'}/>}
     </react_native_linear_gradient_1.default>
   </react_native_1.TouchableWithoutFeedback>);

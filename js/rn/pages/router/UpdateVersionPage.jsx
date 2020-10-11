@@ -161,7 +161,6 @@ exports.UpdateVersionPage = function (props) {
         }, 20000);
         setProps({
             navbarOpstions: { hidden: true },
-            tabbarOpetions: { unmountOnBlur: false },
         });
         switch (react_native_1.Platform.OS) {
             case 'ios':

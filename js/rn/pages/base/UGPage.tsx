@@ -34,7 +34,6 @@ export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
   backgroundColor?: string[]; // 背景色
   backgroundImage?: string;
   navbarOpstions?: UGNavigationBarProps;
-  tabbarOpetions?: BottomTabNavigationOptions; // 底部标签栏Options
 
   // —————————— 安卓独有参数 ——————————
   fromNative?: string; //当前界面是否由原生打开

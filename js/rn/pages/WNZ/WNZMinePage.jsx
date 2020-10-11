@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
+var BackBtnComponent_1 = require("../../public/components/tars/BackBtnComponent");
 var PushHelper_1 = require("../../public/define/PushHelper");
 var useMinePage_1 = require("../../public/hooks/tars/useMinePage");
+var Navigation_1 = require("../../public/navigation/Navigation");
 var WNZThemeColor_1 = require("../../public/theme/colors/WNZThemeColor");
 var Scale_1 = require("../../public/tools/Scale");
 var tars_1 = require("../../public/tools/tars");
@@ -12,9 +14,9 @@ var SafeAreaHeader_1 = require("../../public/views/tars/SafeAreaHeader");
 var UGLotteryModel_1 = require("../../redux/model/\u5168\u5C40/UGLotteryModel");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
 var MenuModalComponent_1 = require("./components/MenuModalComponent");
-var MineHeaderComponent_1 = require("./components/MineHeaderComponent");
 var config_1 = require("./config");
 var ButtonGroup_1 = require("./views/ButtonGroup");
+var HomeHeader_1 = require("./views/HomeHeader");
 var Menu_1 = require("./views/Menu");
 var ProfileBlock_1 = require("./views/ProfileBlock");
 var ToolBlock_1 = require("./views/ToolBlock");
@@ -25,7 +27,8 @@ var WNZMinePage = function () {
     var _l = useMinePage_1.default({
         defaultUserCenterLogos: config_1.default.defaultUserCenterLogos,
     }), value = _l.value, sign = _l.sign;
-    var uid = value.uid, usr = value.usr, mobile_logo = value.mobile_logo, curLevelInt = value.curLevelInt, nextLevelInt = value.nextLevelInt, taskRewardTotal = value.taskRewardTotal, curLevelTitle = value.curLevelTitle, nextLevelTitle = value.nextLevelTitle, userCenterItems = value.userCenterItems, unreadMsg = value.unreadMsg, balance = value.balance;
+    var sysInfo = value.sysInfo;
+    var uid = sysInfo.uid, usr = sysInfo.usr, mobile_logo = sysInfo.mobile_logo, curLevelInt = sysInfo.curLevelInt, nextLevelInt = sysInfo.nextLevelInt, taskRewardTotal = sysInfo.taskRewardTotal, curLevelTitle = sysInfo.curLevelTitle, nextLevelTitle = sysInfo.nextLevelTitle, userCenterItems = sysInfo.userCenterItems, unreadMsg = sysInfo.unreadMsg, balance = sysInfo.balance;
     var signOut = sign.signOut;
     // data handle
     var tools = (_a = userCenterItems === null || userCenterItems === void 0 ? void 0 : userCenterItems.sort(function (a, b) { return (a === null || a === void 0 ? void 0 : a.sorts) - (b === null || b === void 0 ? void 0 : b.sorts); })) !== null && _a !== void 0 ? _a : [];
@@ -52,13 +55,15 @@ var WNZMinePage = function () {
     var activityTools = otherTools === null || otherTools === void 0 ? void 0 : otherTools.filter(function (ele) { return [UGSysConfModel_1.UGUserCenterType.任务中心, UGSysConfModel_1.UGUserCenterType.游戏大厅, UGSysConfModel_1.UGUserCenterType.推荐收益].includes(ele === null || ele === void 0 ? void 0 : ele.code); });
     return (<>
       <SafeAreaHeader_1.default headerColor={WNZThemeColor_1.WNZThemeColor.威尼斯.themeColor}>
-        <MineHeaderComponent_1.default uid={uid} name={usr} logo={mobile_logo} balance={balance} onPressMenu={function () {
-        var _a;
-        (_a = menu === null || menu === void 0 ? void 0 : menu.current) === null || _a === void 0 ? void 0 : _a.open();
-    }} onPressComment={function () {
-        PushHelper_1.default.pushLottery(UGLotteryModel_1.LotteryType.香港六合彩);
-    }} onPressUser={function () {
-        PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.我的页);
+        <BackBtnComponent_1.default homePage={Navigation_1.PageName.WNZHomePage} renderHeader={function (props) {
+        return (<HomeHeader_1.default {...props} uid={uid} name={usr} logo={mobile_logo} balance={balance} onPressMenu={function () {
+            var _a;
+            (_a = menu === null || menu === void 0 ? void 0 : menu.current) === null || _a === void 0 ? void 0 : _a.open();
+        }} onPressComment={function () {
+            PushHelper_1.default.pushLottery(UGLotteryModel_1.LotteryType.香港六合彩);
+        }} onPressUser={function () {
+            PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.我的页);
+        }}/>);
     }}/>
       </SafeAreaHeader_1.default>
       <react_native_1.ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

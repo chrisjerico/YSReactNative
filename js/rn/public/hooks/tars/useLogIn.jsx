@@ -73,21 +73,16 @@ var useLogIn = function (options) {
                         user_login_response = _h.sent();
                         user_login_data = (_d = user_login_response === null || user_login_response === void 0 ? void 0 : user_login_response.data) === null || _d === void 0 ? void 0 : _d.data;
                         user_login_msg = (_e = user_login_response === null || user_login_response === void 0 ? void 0 : user_login_response.data) === null || _e === void 0 ? void 0 : _e.msg;
-                        if (!user_login_data) return [3 /*break*/, 15];
+                        if (!(user_login_data && (user_login_data === null || user_login_data === void 0 ? void 0 : user_login_data['API-SID']) && (user_login_data === null || user_login_data === void 0 ? void 0 : user_login_data['API-TOKEN']))) return [3 /*break*/, 15];
                         _b = react_native_1.Platform.OS;
                         switch (_b) {
                             case 'ios': return [3 /*break*/, 2];
                             case 'android': return [3 /*break*/, 4];
                         }
                         return [3 /*break*/, 6];
-                    case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [
-                            UGUserModel_1.default.getYS(user_login_data),
-                        ])
-                        // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-                    ];
+                    case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel_1.default.getYS(user_login_data)])];
                     case 3:
                         _h.sent();
-                        // await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
                         return [3 /*break*/, 6];
                     case 4: return [4 /*yield*/, ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.SAVE_DATA, __assign({ key: DataDefine_1.NA_DATA.LOGIN_INFO }, user_login_data))];
                     case 5:
@@ -99,9 +94,7 @@ var useLogIn = function (options) {
                         user_info_data = (_f = response === null || response === void 0 ? void 0 : response.data) === null || _f === void 0 ? void 0 : _f.data;
                         user_info_msg = (_g = response === null || response === void 0 ? void 0 : response.data) === null || _g === void 0 ? void 0 : _g.msg;
                         if (!user_info_data) return [3 /*break*/, 13];
-                        currentUser = [
-                            __assign(__assign({}, user_info_data), UGUserModel_1.default.getYS(user_login_data)),
-                        ];
+                        currentUser = [__assign(__assign({}, user_info_data), UGUserModel_1.default.getYS(user_login_data))];
                         _c = react_native_1.Platform.OS;
                         switch (_c) {
                             case 'ios': return [3 /*break*/, 8];

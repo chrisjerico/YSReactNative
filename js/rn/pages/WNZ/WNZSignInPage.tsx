@@ -4,7 +4,7 @@ import FormComponent, { FormComponentProps } from '../../public/components/tars/
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { popToRoot } from '../../public/navigation/RootNavigation'
+import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -32,7 +32,7 @@ const WNZSignInPage = () => {
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
         <SignHeader
-          onPressLeftTool={popToRoot}
+          onPressLeftTool={pop}
           onPressMenu={() => {
             menu?.current?.open()
           }}

@@ -1,27 +1,28 @@
-import { UGThemeColor } from './UGThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
+import chroma from 'chroma-js'
+import { Platform } from 'react-native'
+import { devConfig, releaseConfig } from '../../../../config'
+import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
+import AppDefine from '../define/AppDefine'
+import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
+import { OCHelper } from '../define/OCHelper/OCHelper'
+import FUtils from '../tools/FUtils'
+import { B_DEBUG } from '../tools/UgLog'
+import { BZHThemeColor } from './colors/BZHThemeColor'
+import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
 import { JYThemeColor } from './colors/JYThemeColor'
-import { LHThemeColor } from './colors/LHThemeColor'
-import { XNHThemeColor } from './colors/XNHThemeColor'
-import { OtherThemeColor } from './colors/OtherThemeColor'
-import { GDBThemeColor } from './colors/GDBThemeColor'
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
-import chroma from 'chroma-js'
-import FUtils from '../tools/FUtils'
-import { Platform } from 'react-native'
-import AppDefine from '../define/AppDefine'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
-import { B_DEBUG } from '../tools/UgLog'
-import { ZLThemeColor } from './colors/ZLThemeColor'
-import { LCThemeColor } from './colors/LCThemeColor'
 import { KSThemeColor } from './colors/KSThemeColor'
-import { WNZThemeColor } from './colors/WNZThemeColor'
-import { PYThemeColor } from './colors/PYThemeColor'
+import { LCThemeColor } from './colors/LCThemeColor'
+import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
-import { BZHThemeColor } from './colors/BZHThemeColor'
-import dev from '../../../../dev.json'
+import { OtherThemeColor } from './colors/OtherThemeColor'
+import { PYThemeColor } from './colors/PYThemeColor'
+import { VietnamThemeColors } from './colors/VietnamThemeColors'
+import { WNZThemeColor } from './colors/WNZThemeColor'
+import { XBJThemeColor } from './colors/XBJThemeColor'
+import { XNHThemeColor } from './colors/XNHThemeColor'
+import { ZLThemeColor } from './colors/ZLThemeColor'
+import { UGThemeColor } from './UGThemeColor'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -39,6 +40,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...PYThemeColor,
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
+    ...VietnamThemeColors, // 越南
   }
 
   // 更新皮肤
@@ -50,7 +52,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf
     let dict = {
-      1: `经典${mobileTemplateBackground}`,
+      0: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -60,21 +62,23 @@ export default class UGSkinManagers extends UGThemeColor {
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
-      14: `六合厅`,
-      16: `尊龙`,
-      18: `金星黑`,
-      19: `乐橙`,
-      20: `利来`,
-      22: `凯时`,
-      21: `宝石红`,
-      23: `威尼斯`,
+      14: '六合厅',
+      16: '尊龙',
+      18: '金星黑',
+      19: '乐橙',
+      20: '利来',
+      22: '凯时',
+      21: '宝石红',
+      23: '威尼斯',
       25: '天空蓝',
-      26: `白曜`,
+      26: '白曜',
+      27: '越南',
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    if (B_DEBUG) {
-      dev?.site && (key = dev?.site);
+    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key;
+    if (devConfig.isDebug) {
+      devConfig?.skinKey && (key = devConfig?.skinKey);
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -94,18 +98,16 @@ export default class UGSkinManagers extends UGThemeColor {
   // 应用主题色到iOS原生代码
   static async updateOcSkin() {
     const skin = Skin1
-    if (Platform.OS != 'ios') return
-    // 测试环境（未上线的内容）
-    const devSkin =
-      AppDefine.isTest() &&
-      skin.skitType.indexOf('香槟金') == -1 &&
-      skin.skitType.indexOf('综合体育') == -1 &&
-      skin.skitType.indexOf('金星黑') == -1 &&
-      skin.skitType.indexOf('六合厅') == -1 &&
-      skin.skitType.indexOf('凯时') == -1 &&
-      skin.skitType.indexOf(`利来`) == -1
+    if (Platform.OS != 'ios') {
+      return
+    }
     // 已上线模板
-    if (skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('宝石红') == -1 && skin.skitType.indexOf('威尼斯') == -1 && devSkin) return
+    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1;
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
+    if (!ok) {
+      return
+    }
+
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
     for (const k in skin) {

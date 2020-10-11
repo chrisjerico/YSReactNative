@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { Text, View, TouchableWithoutFeedback, StyleSheet, Platform } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { scale } from '../../../public/tools/Scale'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import { pop } from '../../../public/navigation/RootNavigation'
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import AppDefine from '../../../public/define/AppDefine'
+import { scale } from '../../../public/tools/Scale'
 
 export interface HomeHeaderProps {
   name: string
@@ -18,9 +16,10 @@ export interface HomeHeaderProps {
   onPressUser: () => any
   showBackBtn?: boolean
   uid: string
+  onPressBackBtn?: () => any
 }
 
-const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid }: HomeHeaderProps) => {
+const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, onPressBackBtn }: HomeHeaderProps) => {
   const [showBackBtn, setShowBackBtn] = useState(false);
   AppDefine.checkHeaderShowBackButton((show) => {
     show != showBackBtn && setShowBackBtn(show);
@@ -28,22 +27,7 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
   return (
     <View style={styles.container}>
       {showBackBtn ? (
-        <AntDesign
-          name={'left'}
-          color={'#ffffff'}
-          size={scale(25)}
-          onPress={() => {
-            if (!pop()) {
-              switch (Platform.OS) {
-                case 'ios':
-                  OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
-                  break
-                case 'android':
-                  break
-              }
-            }
-          }}
-        />
+        <AntDesign name={'left'} color={'#ffffff'} size={scale(25)} onPress={onPressBackBtn} />
       ) : uid ? (
         <FastImage
           source={{
@@ -64,7 +48,7 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
           resizeMode={'contain'}
         />
       )}
-      {(
+      {
         <View style={styles.rightContainer}>
           {uid && (
             <TouchableWithoutFeedback onPress={onPressUser}>
@@ -107,7 +91,7 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
             </View>
           </TouchableWithoutFeedback>
         </View>
-      )}
+      }
     </View>
   )
 }
@@ -118,12 +102,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     height: '100%',
+    alignItems: 'center',
   },
   rightContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
     flex: 1,
+    height: '100%',
   },
   balanceContainer: {
     backgroundColor: '#df2128',

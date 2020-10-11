@@ -58,7 +58,12 @@ var OCEvent = /** @class */ (function (_super) {
         this.emitter.addListener('SelectVC', function (params) {
             console.log('跳转到rn页面：', params.vcName);
             if (params.vcName) {
-                RootNavigation_1.jumpTo(params.vcName) || RootNavigation_1.jumpTo(SetRnPageInfo_1.RnPageModel.getPageName(params.vcName));
+                if (params.rnAction == 'push') {
+                    RootNavigation_1.push(params.vcName) || RootNavigation_1.push(SetRnPageInfo_1.RnPageModel.getPageName(params.vcName));
+                }
+                else {
+                    RootNavigation_1.jumpTo(params.vcName) || RootNavigation_1.jumpTo(SetRnPageInfo_1.RnPageModel.getPageName(params.vcName));
+                }
             }
         });
         // 移除页面

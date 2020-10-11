@@ -31,7 +31,7 @@ var UGUserCenterType;
     UGUserCenterType[UGUserCenterType["QQ\u5BA2\u670D"] = 19] = "QQ\u5BA2\u670D";
     UGUserCenterType[UGUserCenterType["\u5F00\u5956\u7F51"] = 20] = "\u5F00\u5956\u7F51";
     // 自定义（从100+开始写，前面的都是后台定制的）
-    UGUserCenterType[UGUserCenterType["\u516D\u5408\u5F69"] = 100] = "\u516D\u5408\u5F69";
+    UGUserCenterType[UGUserCenterType["\u5F69\u7968\u5927\u5385"] = 100] = "\u5F69\u7968\u5927\u5385";
     UGUserCenterType[UGUserCenterType["\u804A\u5929\u5BA4"] = 101] = "\u804A\u5929\u5BA4";
     UGUserCenterType[UGUserCenterType["\u6BCF\u65E5\u7B7E\u5230"] = 102] = "\u6BCF\u65E5\u7B7E\u5230";
     UGUserCenterType[UGUserCenterType["\u767B\u51FA"] = 103] = "\u767B\u51FA";
@@ -40,6 +40,7 @@ var UGUserCenterType;
     UGUserCenterType[UGUserCenterType["\u5B58\u6B3E\u7EAA\u5F55"] = 106] = "\u5B58\u6B3E\u7EAA\u5F55";
     UGUserCenterType[UGUserCenterType["\u53D6\u6B3E\u7EAA\u5F55"] = 107] = "\u53D6\u6B3E\u7EAA\u5F55";
     UGUserCenterType[UGUserCenterType["\u8D44\u91D1\u660E\u7EC6"] = 108] = "\u8D44\u91D1\u660E\u7EC6";
+    UGUserCenterType[UGUserCenterType["\u5F00\u5956\u7ED3\u679C"] = 109] = "\u5F00\u5956\u7ED3\u679C";
 })(UGUserCenterType = exports.UGUserCenterType || (exports.UGUserCenterType = {}));
 // 我的页功能按钮
 var UGUserCenterItem = /** @class */ (function () {

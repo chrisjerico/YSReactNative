@@ -38,18 +38,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var ActivityComponent_1 = require("../../public/components/tars/ActivityComponent");
 var AnimatedRankComponent_1 = require("../../public/components/tars/AnimatedRankComponent");
 var AutoHeightCouponComponent_1 = require("../../public/components/tars/AutoHeightCouponComponent");
 var GameSubTypeComponent_1 = require("../../public/components/tars/GameSubTypeComponent");
 var TabComponent_1 = require("../../public/components/tars/TabComponent");
 var PushHelper_1 = require("../../public/define/PushHelper");
 var useHomePage_1 = require("../../public/hooks/tars/useHomePage");
-var useRerender_1 = require("../../public/hooks/tars/useRerender");
 var httpClient_1 = require("../../public/network/httpClient");
 var WNZThemeColor_1 = require("../../public/theme/colors/WNZThemeColor");
 var Scale_1 = require("../../public/tools/Scale");
 var tars_1 = require("../../public/tools/tars");
+var Activitys_1 = require("../../public/views/tars/Activitys");
 var BannerBlock_1 = require("../../public/views/tars/BannerBlock");
 var BottomGap_1 = require("../../public/views/tars/BottomGap");
 var BottomLogo_1 = require("../../public/views/tars/BottomLogo");
@@ -74,19 +73,18 @@ var WNZHomePage = function () {
     var _a, _b;
     // LogBox.ignoreAllLogs()
     var menu = react_1.useRef(null);
-    var rerender = useRerender_1.default().rerender;
     var _c = useHomePage_1.default({
         onSuccessSignOut: function () {
             var _a;
             (_a = menu === null || menu === void 0 ? void 0 : menu.current) === null || _a === void 0 ? void 0 : _a.close();
-            rerender();
         },
     }), goTo = _c.goTo, refresh = _c.refresh, value = _c.value, sign = _c.sign;
     var goToJDPromotionListPage = goTo.goToJDPromotionListPage;
-    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, sys = value.sys, bannersInterval = value.bannersInterval, onlineNum = value.onlineNum, banners = value.banners, notices = value.notices, midBanners = value.midBanners, announcements = value.announcements, navs = value.navs, homeGames = value.homeGames, coupons = value.coupons, rankLists = value.rankLists, floatAds = value.floatAds, redBag = value.redBag, redBagLogo = value.redBagLogo, roulette = value.roulette, officialGames = value.officialGames, customiseGames = value.customiseGames;
+    var loading = value.loading, refreshing = value.refreshing, userInfo = value.userInfo, sysInfo = value.sysInfo, homeInfo = value.homeInfo;
     var signOut = sign.signOut;
+    var bannersInterval = homeInfo.bannersInterval, onlineNum = homeInfo.onlineNum, banners = homeInfo.banners, notices = homeInfo.notices, midBanners = homeInfo.midBanners, announcements = homeInfo.announcements, navs = homeInfo.navs, homeGames = homeInfo.homeGames, coupons = homeInfo.coupons, rankLists = homeInfo.rankLists, floatAds = homeInfo.floatAds, redBag = homeInfo.redBag, redBagLogo = homeInfo.redBagLogo, roulette = homeInfo.roulette, officialGames = homeInfo.officialGames, customiseGames = homeInfo.customiseGames;
     var uid = userInfo.uid, usr = userInfo.usr, balance = userInfo.balance, isTest = userInfo.isTest;
-    var mobile_logo = sys.mobile_logo, webName = sys.webName, showCoupon = sys.showCoupon, rankingListType = sys.rankingListType, midBannerTimer = sys.midBannerTimer;
+    var mobile_logo = sysInfo.mobile_logo, webName = sysInfo.webName, showCoupon = sysInfo.showCoupon, rankingListType = sysInfo.rankingListType, midBannerTimer = sysInfo.midBannerTimer;
     var homeGamesConcat = [];
     homeGames.forEach(function (item) { var _a; return (homeGamesConcat = (_a = homeGamesConcat.concat(item === null || item === void 0 ? void 0 : item.list)) !== null && _a !== void 0 ? _a : []); });
     var tabGames = [
@@ -257,21 +255,10 @@ var WNZHomePage = function () {
           <AnimatedRankComponent_1.default type={rankingListType} rankLists={rankLists} contentContainerStyle={{ borderRadius: 0 }}/>
           <BottomLogo_1.default webName={webName} onPressComputer={function () {
             PushHelper_1.default.openWebView(httpClient_1.httpClient.defaults.baseURL + '/index2.php');
-        }} onPressPromotion={goToJDPromotionListPage} debug={false}/>
+        }} onPressPromotion={goToJDPromotionListPage} debug={false} version={'tars'}/>
           <BottomGap_1.default />
         </react_native_1.ScrollView>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(250), right: 0 }} show={uid && redBagLogo && !isTest} logo={redBagLogo} onPress={function () {
-            PushHelper_1.default.pushRedBag(redBag);
-        }}/>
-        <ActivityComponent_1.default refreshing={refreshing} containerStyle={{ top: Scale_1.scale(400), right: 0 }} enableFastImage={false} show={uid && roulette && !isTest} logo={'dzp_btn'} onPress={function () {
-            PushHelper_1.default.pushWheel(roulette);
-        }}/>
-        {floatAds === null || floatAds === void 0 ? void 0 : floatAds.map(function (item, index) {
-            var image = item.image, position = item.position, linkCategory = item.linkCategory, linkPosition = item.linkPosition;
-            return (<ActivityComponent_1.default key={index} refreshing={refreshing} containerStyle={tars_1.getActivityPosition(position)} enableFastImage={true} show={uid && !isTest} logo={image} onPress={function () {
-                PushHelper_1.default.pushCategory(linkCategory, linkPosition);
-            }}/>);
-        })}
+        <Activitys_1.default uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds}/>
         <MenuModalComponent_1.default ref={menu} menus={menus} renderMenu={function (_a) {
             var item = _a.item;
             var title = item.title, onPress = item.onPress;

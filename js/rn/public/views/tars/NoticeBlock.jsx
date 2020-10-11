@@ -7,7 +7,7 @@ var react_native_marquee_ab_1 = require("react-native-marquee-ab");
 var Scale_1 = require("../../tools/Scale");
 var AppDefine_1 = require("../../define/AppDefine");
 var NoticeBlock = function (_a) {
-    var logo = _a.logo, _b = _a.logoText, logoText = _b === void 0 ? '公 告' : _b, notices = _a.notices, containerStyle = _a.containerStyle, onPressNotice = _a.onPressNotice, iconContainerStyle = _a.iconContainerStyle, logoTextStyle = _a.logoTextStyle, textStyle = _a.textStyle, bgContainerStyle = _a.bgContainerStyle;
+    var logo = _a.logo, _b = _a.logoText, logoText = _b === void 0 ? '公告' : _b, notices = _a.notices, containerStyle = _a.containerStyle, onPressNotice = _a.onPressNotice, iconContainerStyle = _a.iconContainerStyle, logoTextStyle = _a.logoTextStyle, textStyle = _a.textStyle, bgContainerStyle = _a.bgContainerStyle;
     var cleanContents = notices.map(function (notice, index) { return ({
         label: index.toString(),
         value: notice === null || notice === void 0 ? void 0 : notice.title,

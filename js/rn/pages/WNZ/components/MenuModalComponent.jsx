@@ -16,7 +16,7 @@ var MenuModalComponent = function (_a, ref) {
             setVisible(false);
         },
     }); });
-    return (<react_native_modal_1.default isVisible={visible} animationIn={'slideInRight'} animationOut={'slideOutRight'} style={{ width: '100%' }} animationInTiming={700} animationOutTiming={700} useNativeDriver={true} hideModalContentWhileAnimating={true}>
+    return (<react_native_modal_1.default isVisible={visible} animationIn={'slideInRight'} animationOut={'slideOutRight'} style={{ width: '100%' }} animationInTiming={600} animationOutTiming={600} useNativeDriver={true} hideModalContentWhileAnimating={true}>
       <react_native_1.View style={{ flex: 1, flexDirection: 'row' }}>
         <react_native_1.TouchableWithoutFeedback onPress={function () {
         setVisible(false);

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
-import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
+import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
@@ -12,6 +12,7 @@ import { ugLog } from '../../public/tools/UgLog'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
+import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -25,7 +26,9 @@ const BZHMinePage = () => {
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = value
+  const { sysInfo } = value
+
+  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = sysInfo
 
   const { signOut } = sign
 
@@ -36,11 +39,19 @@ const BZHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <MineHeaderComponent
-          title={'会员中心'}
-          showRightTitle={false}
-          onPressRightTitle={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+        <BackBtnComponent
+          homePage={PageName.BZHHomePage}
+          renderHeader={(props) => {
+            return (
+              <MineHeader
+                {...props}
+                title={'会员中心'}
+                showRightTitle={false}
+                onPressRightTitle={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+                }}
+              />
+            )
           }}
         />
       </SafeAreaHeader>
@@ -92,7 +103,7 @@ const BZHMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnreadMsg={code == 9}
+              showUnReadMsg={code == 9}
               onPress={() => {
                 PushHelper.pushUserCenterType(code)
               }}

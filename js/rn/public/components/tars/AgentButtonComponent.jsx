@@ -16,7 +16,7 @@ var AgentButtonComponent = function (_a) {
             setToggle(Enum_1.AgentType.用户注册);
             onChangeAgent && onChangeAgent(Enum_1.AgentType.用户注册);
         }}>
-          <react_native_1.View style={[styles.textContainer, styles.leftButton, toggle == Enum_1.AgentType.用户注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+          <react_native_1.View style={[styles.toggleContainer, styles.leftButton, toggle == Enum_1.AgentType.用户注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : [styles.disableToggleContainer]]}>
             <react_native_1.Text style={[styles.text, toggle == Enum_1.AgentType.用户注册 ? [styles.enableText, enableTextStyle] : {}]}>{'普通用戶'}</react_native_1.Text>
           </react_native_1.View>
         </react_native_1.TouchableWithoutFeedback>
@@ -24,7 +24,7 @@ var AgentButtonComponent = function (_a) {
             setToggle(Enum_1.AgentType.代理注册);
             onChangeAgent && onChangeAgent(Enum_1.AgentType.代理注册);
         }}>
-          <react_native_1.View style={[styles.textContainer, styles.rightButton, toggle == Enum_1.AgentType.代理注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : {}]}>
+          <react_native_1.View style={[styles.toggleContainer, styles.rightButton, toggle == Enum_1.AgentType.代理注册 ? [styles.enableToggleContainer, enableToggleContainerStyle] : [styles.disableToggleContainer]]}>
             <react_native_1.Text style={[styles.text, toggle == Enum_1.AgentType.代理注册 ? [styles.enableText, enableTextStyle] : {}]}>{'注册代理'}</react_native_1.Text>
           </react_native_1.View>
         </react_native_1.TouchableWithoutFeedback>
@@ -39,11 +39,10 @@ var styles = react_native_1.StyleSheet.create({
         flexDirection: 'row',
         width: Scale_1.scale(150),
         aspectRatio: 5,
-        backgroundColor: 'rgba(0, 0, 0, 0.45)',
-        borderRadius: Scale_1.scale(5),
+        // borderRadius: scale(5),
         alignSelf: 'center',
     },
-    textContainer: {
+    toggleContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -60,10 +59,19 @@ var styles = react_native_1.StyleSheet.create({
     leftButton: {
         borderTopLeftRadius: Scale_1.scale(5),
         borderBottomLeftRadius: Scale_1.scale(5),
+        borderColor: '#d9d9d9',
+        borderWidth: Scale_1.scale(0.5),
+        borderRightWidth: 0,
     },
     rightButton: {
         borderTopRightRadius: Scale_1.scale(5),
         borderBottomRightRadius: Scale_1.scale(5),
+        borderColor: '#d9d9d9',
+        borderWidth: Scale_1.scale(0.5),
+        borderLeftWidth: 0,
+    },
+    disableToggleContainer: {
+        backgroundColor: '#ffffff',
     },
 });
 exports.default = AgentButtonComponent;

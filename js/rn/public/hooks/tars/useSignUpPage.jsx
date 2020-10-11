@@ -48,7 +48,7 @@ var useSignUpPage = function (_a) {
         onError: function (error) {
             UGLoadingCP_1.hideLoading();
             tars_1.ToastError(error !== null && error !== void 0 ? error : '登录失败');
-            console.log("--------試玩失败--------", error);
+            console.log('--------試玩失败--------', error);
         },
     }).tryPlay;
     var register = useRegister_1.default({
@@ -86,11 +86,9 @@ var useSignUpPage = function (_a) {
     // valid
     var recommendGuy_valid = /^\d+$/.test(recommendGuy) || (necessity === null || necessity === void 0 ? void 0 : necessity.recommendGuy) != Enum_1.Necessity.必填;
     var account_valid = (account === null || account === void 0 ? void 0 : account.length) >= 6;
-    var password_valid = tars_1.validPassword(password, strength) &&
-        (password === null || password === void 0 ? void 0 : password.length) >= minLength &&
-        (password === null || password === void 0 ? void 0 : password.length) <= maxLength;
+    var password_valid = tars_1.validPassword(password, strength) && (password === null || password === void 0 ? void 0 : password.length) >= minLength && (password === null || password === void 0 ? void 0 : password.length) <= maxLength;
     var confirmPassword_valid = confirmPassword == password;
-    var name_valid = (necessity === null || necessity === void 0 ? void 0 : necessity.name) != Enum_1.Necessity.必填; // /^[\u4E00-\u9FA5]+$/.test(name) || 
+    var name_valid = (necessity === null || necessity === void 0 ? void 0 : necessity.name) != Enum_1.Necessity.必填; // /^[\u4E00-\u9FA5]+$/.test(name) ||
     var fundPassword_valid = ((fundPassword === null || fundPassword === void 0 ? void 0 : fundPassword.length) == 4 && /^\d+$/.test(fundPassword)) || (necessity === null || necessity === void 0 ? void 0 : necessity.fundPassword) != Enum_1.Necessity.必填;
     var qq_valid = (qq === null || qq === void 0 ? void 0 : qq.length) >= 5 || (necessity === null || necessity === void 0 ? void 0 : necessity.qq) != Enum_1.Necessity.必填;
     var wx_valid = weChat || (necessity === null || necessity === void 0 ? void 0 : necessity.wx) != Enum_1.Necessity.必填;
@@ -98,20 +96,21 @@ var useSignUpPage = function (_a) {
     var phoneNumber_valid = phoneNumber || (necessity === null || necessity === void 0 ? void 0 : necessity.phoneNumber) != Enum_1.Necessity.必填;
     var slideCode_valid = (nc_csessionid && nc_token && nc_sig) || (necessity === null || necessity === void 0 ? void 0 : necessity.slideCode) != Enum_1.Necessity.必填;
     var sms_valid = (sms === null || sms === void 0 ? void 0 : sms.length) == 6 || (necessity === null || necessity === void 0 ? void 0 : necessity.sms) != Enum_1.Necessity.必填;
-    var valid = account_valid &&
-        password_valid &&
-        confirmPassword_valid &&
-        recommendGuy_valid &&
-        name_valid &&
-        fundPassword_valid &&
-        qq_valid &&
-        wx_valid &&
-        email_valid &&
-        phoneNumber_valid &&
-        slideCode_valid &&
-        sms_valid;
+    var valid = true;
+    // account_valid &&
+    // password_valid &&
+    // confirmPassword_valid &&
+    // recommendGuy_valid &&
+    // name_valid &&
+    // fundPassword_valid &&
+    // qq_valid &&
+    // wx_valid &&
+    // email_valid &&
+    // phoneNumber_valid &&
+    // slideCode_valid &&
+    // sms_valid
     // onChange
-    var onChangeAgent = function (value) { return agentRef.current = value; };
+    var onChangeAgent = function (value) { return (agentRef.current = value); };
     var onChangeRecommendGuy = function (value) { return setRecommendGuy(value); };
     var obChangeAccount = function (value) { return setAccount(value); };
     var obChangePassword = function (value) { return setPassword(value); };
@@ -153,15 +152,11 @@ var useSignUpPage = function (_a) {
     var recommendGuyLabel = getLabel(necessity === null || necessity === void 0 ? void 0 : necessity.recommendGuy, '请填写推荐人ID，只能包含数字');
     var fundPasswordLabel = getLabel(necessity === null || necessity === void 0 ? void 0 : necessity.fundPassword, '请输入4数字取款密码');
     var nameLabel = getLabel(necessity === null || necessity === void 0 ? void 0 : necessity.name, '必须与您的银行账户名称相同，以免未能到账');
-    var passwordLebel = '*请使用至少' +
-        minLength +
-        '位至' +
-        maxLength +
-        '位英文或数字的组合' +
-        getPasswordLimitString();
-    var confirmPasswordLabel = (password == confirmPassword) && confirmPassword ? '' : '密码不一致';
+    var passwordLebel = '*请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString();
+    var confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致';
     var imageCodeLabel = '*请输入验证码';
     var signUp = function () {
+        console.log('------name-----', name);
         if (valid) {
             var params = {
                 inviter: recommendGuy,
@@ -224,11 +219,11 @@ var useSignUpPage = function (_a) {
     };
     var navigateTo = {
         navigateToHomePage: navigateToHomePage,
-        navigateToSignInPage: navigateToSignInPage
+        navigateToSignInPage: navigateToSignInPage,
     };
     var sign = {
         signUp: signUp,
-        tryPlay: tryPlay
+        tryPlay: tryPlay,
     };
     return {
         slideCodeRef: slideCodeRef,
@@ -238,7 +233,7 @@ var useSignUpPage = function (_a) {
         onChange: onChange,
         navigateTo: navigateTo,
         sign: sign,
-        passwordLimit: passwordLimit
+        passwordLimit: passwordLimit,
     };
 };
 exports.default = useSignUpPage;

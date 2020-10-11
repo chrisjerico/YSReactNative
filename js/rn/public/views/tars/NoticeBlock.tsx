@@ -18,7 +18,7 @@ interface NoticeBlockProps {
   bgContainerStyle?: StyleProp<TextStyle>
 }
 
-const NoticeBlock = ({ logo, logoText = '公 告', notices, containerStyle, onPressNotice, iconContainerStyle, logoTextStyle, textStyle, bgContainerStyle }: NoticeBlockProps) => {
+const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPressNotice, iconContainerStyle, logoTextStyle, textStyle, bgContainerStyle }: NoticeBlockProps) => {
   const cleanContents = notices.map((notice, index) => ({
     label: index.toString(),
     value: notice?.title,

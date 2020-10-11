@@ -11,24 +11,21 @@ var react_native_1 = require("react-native");
 var AppDefine_1 = require("../../public/define/AppDefine");
 var chroma_js_1 = require("chroma-js");
 var UGThemeColor_1 = require("../../public/theme/UGThemeColor");
-var OCHelper_1 = require("../../public/define/OCHelper/OCHelper");
-var RootNavigation_1 = require("../../public/navigation/RootNavigation");
 // 优惠活动页
 exports.JDPromotionListPage = function (props) {
     var setProps = props.setProps, _a = props.vars, v = _a === void 0 ? { style1: '背景透明' } : _a, containerStyle = props.containerStyle;
     react_1.useEffect(function () {
         setProps({
             navbarOpstions: { hidden: false, title: '优惠活动', back: true },
-            tabbarOpetions: { unmountOnBlur: false },
-            backgroundColor: UGSkinManagers_1.Skin1.bgColor,
+            backgroundColor: 'c012'.indexOf(AppDefine_1.default.siteId) != -1 ? UGSkinManagers_1.Skin1.navBarBgColor : UGSkinManagers_1.Skin1.bgColor,
             dataArray: [],
             style: 'page',
             showTopBar: false,
-        });
-        OCHelper_1.OCHelper.call('UGNavigationController.current.viewControllers.count').then(function (cnt) {
-            if (cnt == 1 && RootNavigation_1.getStackLength() == 1) {
-                setProps({ navbarOpstions: { back: false } });
-            }
+            didFocus: function () {
+                AppDefine_1.default.checkHeaderShowBackButton(function (show) {
+                    setProps({ navbarOpstions: { back: show } });
+                });
+            },
         });
         NetworkRequest1_1.default.systeam_promotions().then(function (data) {
             if (data.showCategory) {
@@ -70,9 +67,6 @@ exports.JDPromotionListPage = function (props) {
     }, []);
     if ('c217'.indexOf(AppDefine_1.default.siteId) != -1) {
         v.style1 = '背景不透明';
-    }
-    if ('c012'.indexOf(AppDefine_1.default.siteId) != -1) {
-        setProps({ backgroundColor: UGSkinManagers_1.Skin1.navBarBgColor });
     }
     var _b = props.dataArray, dataArray = _b === void 0 ? [] : _b, _c = props.showTopBar, showTopBar = _c === void 0 ? true : _c;
     if (dataArray.length == 0) {

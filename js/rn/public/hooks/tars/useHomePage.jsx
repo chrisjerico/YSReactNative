@@ -8,14 +8,16 @@ var PushHelper_1 = require("../../define/PushHelper");
 var Navigation_1 = require("../../navigation/Navigation");
 var tars_1 = require("../../tools/tars");
 var UGLoadingCP_1 = require("../../widget/UGLoadingCP");
-var useTryPlay_1 = require("../useTryPlay");
+var useTryPlay_1 = require("./useTryPlay");
 var useHome_1 = require("./useHome");
 var useLogOut_1 = require("./useLogOut");
+var useRerender_1 = require("./useRerender");
 var useSys_1 = require("./useSys");
 var useHomePage = function (_a) {
     var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7;
     var onSuccessSignOut = _a.onSuccessSignOut, onSuccessTryPlay = _a.onSuccessTryPlay;
     var _8 = useHome_1.default(), loading = _8.loading, refreshing = _8.refreshing, rankList = _8.rankList, homeGame = _8.homeGame, notice = _8.notice, onlineNum = _8.onlineNum, couponList = _8.couponList, homeAd = _8.homeAd, turntableList = _8.turntableList, redBag = _8.redBag, floatAd = _8.floatAd, lotteryGame = _8.lotteryGame, lotteryNumber = _8.lotteryNumber, refresh = _8.refresh;
+    var rerender = useRerender_1.default().rerender;
     var goToJDPromotionListPage = function () {
         RootNavigation_1.push(Navigation_1.PageName.JDPromotionListPage, {
             containerStyle: {
@@ -24,11 +26,17 @@ var useHomePage = function (_a) {
         });
     };
     var tryPlay = useTryPlay_1.default({
+        onStart: function () {
+            UGLoadingCP_1.showLoading({ type: UGLoadingCP_1.UGLoadingType.Loading });
+        },
         onSuccess: function () {
+            UGLoadingCP_1.hideLoading();
             tars_1.ToastSuccess('登录成功！');
+            rerender();
             onSuccessTryPlay && onSuccessTryPlay();
         },
         onError: function (error) {
+            UGLoadingCP_1.hideLoading();
             tars_1.ToastError(error !== null && error !== void 0 ? error : '試玩失败');
         },
     }).tryPlay;
@@ -38,12 +46,12 @@ var useHomePage = function (_a) {
         },
         onSuccess: function () {
             UGLoadingCP_1.hideLoading();
-            onSuccessSignOut();
+            rerender();
+            onSuccessSignOut && onSuccessSignOut();
         },
         onError: function (error) {
             UGLoadingCP_1.hideLoading();
             tars_1.ToastError(error || '登出失败');
-            console.log('--------登出失败--------', error);
         },
     }).logOut;
     var signOut = logOut;
@@ -71,7 +79,9 @@ var useHomePage = function (_a) {
     var lotteryNumbers = (_0 = (_z = (_y = lotteryNumber === null || lotteryNumber === void 0 ? void 0 : lotteryNumber.data) === null || _y === void 0 ? void 0 : _y.numbers) === null || _z === void 0 ? void 0 : _z.split(',')) !== null && _0 !== void 0 ? _0 : [];
     var numColors = (_3 = (_2 = (_1 = lotteryNumber === null || lotteryNumber === void 0 ? void 0 : lotteryNumber.data) === null || _1 === void 0 ? void 0 : _1.numColor) === null || _2 === void 0 ? void 0 : _2.split(',')) !== null && _3 !== void 0 ? _3 : [];
     var numSxs = (_6 = (_5 = (_4 = lotteryNumber === null || lotteryNumber === void 0 ? void 0 : lotteryNumber.data) === null || _4 === void 0 ? void 0 : _4.numSx) === null || _5 === void 0 ? void 0 : _5.split(',')) !== null && _6 !== void 0 ? _6 : [];
-    var lotterys = lotteryNumbers === null || lotteryNumbers === void 0 ? void 0 : lotteryNumbers.map(function (item, index) { return ({ number: item, color: numColors[index], sx: numSxs[index] }); });
+    var lotterys = lotteryNumbers === null || lotteryNumbers === void 0 ? void 0 : lotteryNumbers.map(function (item, index) {
+        return { number: item, color: numColors[index], sx: numSxs[index] };
+    });
     // 官 信
     var official_customise_games = [];
     (_7 = lotteryGame === null || lotteryGame === void 0 ? void 0 : lotteryGame.data) === null || _7 === void 0 ? void 0 : _7.forEach(function (ele) { return (official_customise_games = official_customise_games === null || official_customise_games === void 0 ? void 0 : official_customise_games.concat(ele === null || ele === void 0 ? void 0 : ele.list)); });
@@ -84,15 +94,13 @@ var useHomePage = function (_a) {
         }
     }, [notice]);
     var goTo = {
-        goToJDPromotionListPage: goToJDPromotionListPage
+        goToJDPromotionListPage: goToJDPromotionListPage,
     };
     var sign = {
         tryPlay: tryPlay,
-        signOut: signOut
+        signOut: signOut,
     };
-    var value = {
-        loading: loading,
-        refreshing: refreshing,
+    var homeInfo = {
         lotteryDate: lotteryDate,
         onlineNum: onlineNum,
         bannersInterval: bannersInterval,
@@ -112,14 +120,19 @@ var useHomePage = function (_a) {
         redBagLogo: redBagLogo,
         roulette: roulette,
         floatAds: floatAds,
+    };
+    var value = {
+        loading: loading,
+        refreshing: refreshing,
+        homeInfo: homeInfo,
         userInfo: userInfo,
-        sys: sys
+        sysInfo: sys,
     };
     return {
         goTo: goTo,
         sign: sign,
         value: value,
-        refresh: refresh
+        refresh: refresh,
     };
 };
 exports.default = useHomePage;

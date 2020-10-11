@@ -71,16 +71,14 @@ var useTryPlay = function (options) {
                     user_guestLogin_response = _d.sent();
                     user_guestLogin_data = (_b = user_guestLogin_response === null || user_guestLogin_response === void 0 ? void 0 : user_guestLogin_response.data) === null || _b === void 0 ? void 0 : _b.data;
                     user_guestLogin_msg = (_c = user_guestLogin_response === null || user_guestLogin_response === void 0 ? void 0 : user_guestLogin_response.data) === null || _c === void 0 ? void 0 : _c.msg;
-                    if (!user_guestLogin_data) return [3 /*break*/, 8];
+                    if (!(user_guestLogin_data && (user_guestLogin_data === null || user_guestLogin_data === void 0 ? void 0 : user_guestLogin_data['API-SID']) && (user_guestLogin_data === null || user_guestLogin_data === void 0 ? void 0 : user_guestLogin_data['API-TOKEN']))) return [3 /*break*/, 8];
                     _a = react_native_1.Platform.OS;
                     switch (_a) {
                         case 'ios': return [3 /*break*/, 2];
                         case 'android': return [3 /*break*/, 4];
                     }
                     return [3 /*break*/, 6];
-                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [
-                        UGUserModel_1.default.getYS(user_guestLogin_data),
-                    ])];
+                case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel_1.default.getYS(user_guestLogin_data)])];
                 case 3:
                     _d.sent();
                     return [3 /*break*/, 6];

@@ -32,20 +32,19 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
 // 优惠活动页
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
   const { setProps, vars: v = { style1: '背景透明' }, containerStyle } = props;
+
   useEffect(() => {
     setProps({
       navbarOpstions: { hidden: false, title: '优惠活动', back: true },
-      tabbarOpetions: { unmountOnBlur: false },
-      backgroundColor: Skin1.bgColor,
+      backgroundColor: 'c012'.indexOf(AppDefine.siteId) != -1 ? Skin1.navBarBgColor : Skin1.bgColor,
       dataArray: [],
       style: 'page',
       showTopBar: false,
-    });
-
-    OCHelper.call('UGNavigationController.current.viewControllers.count').then((cnt) => {
-      if (cnt == 1 && getStackLength() == 1) {
-        setProps({ navbarOpstions: { back: false } });
-      }
+      didFocus: () => {
+        AppDefine.checkHeaderShowBackButton((show) => {
+          setProps({ navbarOpstions: { back: show } });
+        });
+      },
     });
 
     NetworkRequest1.systeam_promotions().then(data => {
@@ -82,12 +81,9 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       }
     });
   }, [])
-
+  
   if ('c217'.indexOf(AppDefine.siteId) != -1) {
     v.style1 = '背景不透明';
-  }
-  if ('c012'.indexOf(AppDefine.siteId) != -1) {
-    setProps({ backgroundColor: Skin1.navBarBgColor });
   }
 
   const { dataArray = [], showTopBar = true } = props;

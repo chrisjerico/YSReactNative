@@ -74,8 +74,8 @@ var useLoginIn = function (params) {
                         _d.trys.push([1, 24, , 25]);
                         _a = react_native_1.Platform.OS;
                         switch (_a) {
-                            case "ios": return [3 /*break*/, 2];
-                            case "android": return [3 /*break*/, 15];
+                            case 'ios': return [3 /*break*/, 2];
+                            case 'android': return [3 /*break*/, 15];
                         }
                         return [3 /*break*/, 17];
                     case 2: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.currentUser')];
@@ -130,8 +130,8 @@ var useLoginIn = function (params) {
                         UserInfo = (_d.sent()).data;
                         _c = react_native_1.Platform.OS;
                         switch (_c) {
-                            case "ios": return [3 /*break*/, 19];
-                            case "android": return [3 /*break*/, 21];
+                            case 'ios': return [3 /*break*/, 19];
+                            case 'android': return [3 /*break*/, 21];
                         }
                         return [3 /*break*/, 23];
                     case 19: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGUserModel.setCurrentUser:', [__assign(__assign({}, UserInfo === null || UserInfo === void 0 ? void 0 : UserInfo.data), UGUserModel_1.default.getYS(data === null || data === void 0 ? void 0 : data.data))])];
@@ -145,7 +145,6 @@ var useLoginIn = function (params) {
                     case 23:
                         UGStore_1.UGStore.dispatch({ type: 'merge', userInfo: UserInfo === null || UserInfo === void 0 ? void 0 : UserInfo.data });
                         UGStore_1.UGStore.save();
-                        onSuccess && onSuccess();
                         onSuccess && onSuccess();
                         return [3 /*break*/, 25];
                     case 24:

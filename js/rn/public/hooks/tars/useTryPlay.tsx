@@ -8,9 +8,9 @@ import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
 
 interface Options {
-  onStart?: () => any;
-  onSuccess?: () => any;
-  onError?: (error: any) => any;
+  onStart?: () => any
+  onSuccess?: () => any
+  onError?: (error: any) => any
 }
 
 const useTryPlay = (options: Options = {}) => {
@@ -21,12 +21,10 @@ const useTryPlay = (options: Options = {}) => {
       const user_guestLogin_response = await APIRouter.user_guestLogin()
       const user_guestLogin_data = user_guestLogin_response?.data?.data
       const user_guestLogin_msg = user_guestLogin_response?.data?.msg
-      if (user_guestLogin_data) {
+      if (user_guestLogin_data && user_guestLogin_data?.['API-SID'] && user_guestLogin_data?.['API-TOKEN']) {
         switch (Platform.OS) {
           case 'ios':
-            await OCHelper.call('UGUserModel.setCurrentUser:', [
-              UGUserModel.getYS(user_guestLogin_data),
-            ])
+            await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(user_guestLogin_data)])
             break
           case 'android':
             await ANHelper.callAsync(CMD.SAVE_DATA, {

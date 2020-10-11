@@ -61,29 +61,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Skin1 = void 0;
-var UGThemeColor_1 = require("./UGThemeColor");
-var XBJThemeColor_1 = require("./colors/XBJThemeColor");
+var chroma_js_1 = require("chroma-js");
+var react_native_1 = require("react-native");
+var config_1 = require("../../../../config");
+var AppDefine_1 = require("../define/AppDefine");
+var OCCall_1 = require("../define/OCHelper/OCBridge/OCCall");
+var OCHelper_1 = require("../define/OCHelper/OCHelper");
+var FUtils_1 = require("../tools/FUtils");
+var BZHThemeColor_1 = require("./colors/BZHThemeColor");
+var GDBThemeColor_1 = require("./colors/GDBThemeColor");
 var JDThemeColor_1 = require("./colors/JDThemeColor");
 var JYThemeColor_1 = require("./colors/JYThemeColor");
-var LHThemeColor_1 = require("./colors/LHThemeColor");
-var XNHThemeColor_1 = require("./colors/XNHThemeColor");
-var OtherThemeColor_1 = require("./colors/OtherThemeColor");
-var GDBThemeColor_1 = require("./colors/GDBThemeColor");
-var chroma_js_1 = require("chroma-js");
-var FUtils_1 = require("../tools/FUtils");
-var react_native_1 = require("react-native");
-var AppDefine_1 = require("../define/AppDefine");
-var OCHelper_1 = require("../define/OCHelper/OCHelper");
-var OCCall_1 = require("../define/OCHelper/OCBridge/OCCall");
-var UgLog_1 = require("../tools/UgLog");
-var ZLThemeColor_1 = require("./colors/ZLThemeColor");
-var LCThemeColor_1 = require("./colors/LCThemeColor");
 var KSThemeColor_1 = require("./colors/KSThemeColor");
-var WNZThemeColor_1 = require("./colors/WNZThemeColor");
-var PYThemeColor_1 = require("./colors/PYThemeColor");
+var LCThemeColor_1 = require("./colors/LCThemeColor");
+var LHThemeColor_1 = require("./colors/LHThemeColor");
 var LLThemeCololr_1 = require("./colors/LLThemeCololr");
-var BZHThemeColor_1 = require("./colors/BZHThemeColor");
-var dev_json_1 = require("../../../../dev.json");
+var OtherThemeColor_1 = require("./colors/OtherThemeColor");
+var PYThemeColor_1 = require("./colors/PYThemeColor");
+var VietnamThemeColors_1 = require("./colors/VietnamThemeColors");
+var WNZThemeColor_1 = require("./colors/WNZThemeColor");
+var XBJThemeColor_1 = require("./colors/XBJThemeColor");
+var XNHThemeColor_1 = require("./colors/XNHThemeColor");
+var ZLThemeColor_1 = require("./colors/ZLThemeColor");
+var UGThemeColor_1 = require("./UGThemeColor");
 var UGSkinManagers = /** @class */ (function (_super) {
     __extends(UGSkinManagers, _super);
     function UGSkinManagers() {
@@ -91,15 +91,15 @@ var UGSkinManagers = /** @class */ (function (_super) {
     }
     // 更新皮肤
     UGSkinManagers.updateSkin = function (sysConf) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function () {
             var mobileTemplateCategory, mobileTemplateBackground, mobileTemplateStyle, mobileTemplateLhcStyle, dict, key, theme, skin;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            return __generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
                         mobileTemplateCategory = sysConf.mobileTemplateCategory, mobileTemplateBackground = sysConf.mobileTemplateBackground, mobileTemplateStyle = sysConf.mobileTemplateStyle, mobileTemplateLhcStyle = sysConf.mobileTemplateLhcStyle;
                         dict = {
-                            1: "\u7ECF\u5178" + mobileTemplateBackground,
+                            0: "\u7ECF\u5178" + mobileTemplateBackground,
                             2: "\u65B0\u5E74\u7EA2" + mobileTemplateStyle,
                             3: '石榴红',
                             4: "\u516D\u5408\u8D44\u6599" + mobileTemplateLhcStyle,
@@ -109,26 +109,28 @@ var UGSkinManagers = /** @class */ (function (_super) {
                             8: "\u9999\u69DF\u91D1" + mobileTemplateStyle,
                             9: "\u7B80\u7EA6\u6A21\u677F" + mobileTemplateStyle,
                             12: '综合体育',
-                            14: "\u516D\u5408\u5385",
-                            16: "\u5C0A\u9F99",
-                            18: "\u91D1\u661F\u9ED1",
-                            19: "\u4E50\u6A59",
-                            20: "\u5229\u6765",
-                            22: "\u51EF\u65F6",
-                            21: "\u5B9D\u77F3\u7EA2",
-                            23: "\u5A01\u5C3C\u65AF",
+                            14: '六合厅',
+                            16: '尊龙',
+                            18: '金星黑',
+                            19: '乐橙',
+                            20: '利来',
+                            22: '凯时',
+                            21: '宝石红',
+                            23: '威尼斯',
                             25: '天空蓝',
-                            26: "\u767D\u66DC",
+                            26: '白曜',
+                            27: '越南',
                         };
                         console.log('pi fu =', mobileTemplateCategory);
                         key = dict[mobileTemplateCategory];
-                        if (UgLog_1.B_DEBUG) {
-                            (dev_json_1.default === null || dev_json_1.default === void 0 ? void 0 : dev_json_1.default.site) && (key = dev_json_1.default === null || dev_json_1.default === void 0 ? void 0 : dev_json_1.default.site);
+                        key = (_a = config_1.releaseConfig.skinKeys[AppDefine_1.default.siteId]) !== null && _a !== void 0 ? _a : key;
+                        if (config_1.devConfig.isDebug) {
+                            (config_1.devConfig === null || config_1.devConfig === void 0 ? void 0 : config_1.devConfig.skinKey) && (key = config_1.devConfig === null || config_1.devConfig === void 0 ? void 0 : config_1.devConfig.skinKey);
                         }
                         theme = __assign(__assign({}, new UGThemeColor_1.UGThemeColor()), this.allThemeColor[key]);
-                        theme.themeColor = (_a = theme.themeColor) !== null && _a !== void 0 ? _a : chroma_js_1.default.scale(theme.navBarBgColor)(0.5).hex();
-                        theme.themeDarkColor = (_b = theme.themeDarkColor) !== null && _b !== void 0 ? _b : chroma_js_1.default(theme.themeColor).darken().hex();
-                        theme.themeLightColor = (_c = theme.themeLightColor) !== null && _c !== void 0 ? _c : chroma_js_1.default(theme.themeColor).brighten().hex();
+                        theme.themeColor = (_b = theme.themeColor) !== null && _b !== void 0 ? _b : chroma_js_1.default.scale(theme.navBarBgColor)(0.5).hex();
+                        theme.themeDarkColor = (_c = theme.themeDarkColor) !== null && _c !== void 0 ? _c : chroma_js_1.default(theme.themeColor).darken().hex();
+                        theme.themeLightColor = (_d = theme.themeLightColor) !== null && _d !== void 0 ? _d : chroma_js_1.default(theme.themeColor).brighten().hex();
                         theme.bgTextColor = chroma_js_1.default(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white';
                         skin = new UGSkinManagers();
                         Object.assign(skin, exports.Skin1);
@@ -139,7 +141,7 @@ var UGSkinManagers = /** @class */ (function (_super) {
                         }
                         return [4 /*yield*/, this.updateOcSkin()];
                     case 1:
-                        _d.sent();
+                        _e.sent();
                         return [2 /*return*/];
                 }
             });
@@ -148,23 +150,19 @@ var UGSkinManagers = /** @class */ (function (_super) {
     // 应用主题色到iOS原生代码
     UGSkinManagers.updateOcSkin = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var skin, devSkin, _a, _b, _i, k, v, key, c1, a1, c2, a2, c, a;
+            var skin, isOnlineSkin, ok, _a, _b, _i, k, v, key, c1, a1, c2, a2, c, a;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
                         skin = exports.Skin1;
-                        if (react_native_1.Platform.OS != 'ios')
+                        if (react_native_1.Platform.OS != 'ios') {
                             return [2 /*return*/];
-                        devSkin = AppDefine_1.default.isTest() &&
-                            skin.skitType.indexOf('香槟金') == -1 &&
-                            skin.skitType.indexOf('综合体育') == -1 &&
-                            skin.skitType.indexOf('金星黑') == -1 &&
-                            skin.skitType.indexOf('六合厅') == -1 &&
-                            skin.skitType.indexOf('凯时') == -1 &&
-                            skin.skitType.indexOf("\u5229\u6765") == -1;
-                        // 已上线模板
-                        if (skin.skitType.indexOf('尊龙') == -1 && skin.skitType.indexOf('宝石红') == -1 && skin.skitType.indexOf('威尼斯') == -1 && devSkin)
+                        }
+                        isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1;
+                        ok = config_1.devConfig.isDebug || config_1.devConfig.isTest() || isOnlineSkin;
+                        if (!ok) {
                             return [2 /*return*/];
+                        }
                         //
                         return [4 /*yield*/, OCHelper_1.OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])];
                     case 1:
@@ -259,7 +257,7 @@ var UGSkinManagers = /** @class */ (function (_super) {
             });
         });
     };
-    UGSkinManagers.allThemeColor = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, JDThemeColor_1.JDThemeColor), JYThemeColor_1.JYThemeColor), LHThemeColor_1.LHThemeColor), XBJThemeColor_1.XBJThemeColor), XNHThemeColor_1.XNHThemeColor), ZLThemeColor_1.ZLThemeColor), GDBThemeColor_1.GDBThemeColor), OtherThemeColor_1.OtherThemeColor), LCThemeColor_1.LCThemeColor), KSThemeColor_1.KSThemeColor), WNZThemeColor_1.WNZThemeColor), PYThemeColor_1.PYThemeColor), BZHThemeColor_1.BZHThemeColor), LLThemeCololr_1.LLThemeColor);
+    UGSkinManagers.allThemeColor = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, JDThemeColor_1.JDThemeColor), JYThemeColor_1.JYThemeColor), LHThemeColor_1.LHThemeColor), XBJThemeColor_1.XBJThemeColor), XNHThemeColor_1.XNHThemeColor), ZLThemeColor_1.ZLThemeColor), GDBThemeColor_1.GDBThemeColor), OtherThemeColor_1.OtherThemeColor), LCThemeColor_1.LCThemeColor), KSThemeColor_1.KSThemeColor), WNZThemeColor_1.WNZThemeColor), PYThemeColor_1.PYThemeColor), BZHThemeColor_1.BZHThemeColor), LLThemeCololr_1.LLThemeColor), VietnamThemeColors_1.VietnamThemeColors);
     return UGSkinManagers;
 }(UGThemeColor_1.UGThemeColor));
 exports.default = UGSkinManagers;

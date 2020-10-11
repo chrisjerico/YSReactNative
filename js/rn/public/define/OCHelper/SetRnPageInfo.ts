@@ -1,22 +1,23 @@
-import { PageName } from '../../navigation/Navigation'
-import { Router, RouterType } from '../../navigation/Router'
-import { Skin1 } from './../../theme/UGSkinManagers'
-import { OCHelper } from './OCHelper'
-import { Platform } from 'react-native'
-import AppDefine from '../AppDefine'
-import dev from '../../../../../dev.json'
+import { devConfig } from './../../../../../config';
+import { PageName } from '../../navigation/Navigation';
+import { Router, RouterType } from '../../navigation/Router';
+import { Skin1 } from './../../theme/UGSkinManagers';
+import { OCHelper } from './OCHelper';
+import { Platform } from "react-native";
+import AppDefine from '../AppDefine';
+import { releaseConfig } from '../../../../../config'
 
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
   let pages: Array<RnPageModel> = []
 
-  let skitType = '乐橙'
-
-  console.log('------------------skitType------------------', skitType)
+  let skitType = Skin1.skitType;
+  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
+  console.log("------------------skitType------------------", skitType)
 
   // 本地编译
-  if (__DEV__) {
-    dev?.site && (skitType = dev?.site) // 測試開發
+  if (devConfig.isDebug) {
+    devConfig?.skinKey && (skitType = devConfig?.skinKey); // 測試開發
 
     // tars
     if (skitType.indexOf('六合厅') != -1) {
@@ -34,10 +35,16 @@ export function setRnPageInfo() {
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
     }
+    if (skitType.indexOf('金星黑') != -1) {
+      pages = pages.concat(JXHPages);
+    }
+    if (skitType.indexOf('越南') != -1) {
+      pages = pages.concat(VietnamPages);
+    }
   }
 
   // 测试环境（未上线的内容）
-  if (AppDefine.isTest()) {
+  if (devConfig.isTest()) {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
@@ -49,6 +56,9 @@ export function setRnPageInfo() {
     }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages)
+    }
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat(WNSPages)
     }
   }
 
@@ -73,9 +83,6 @@ export function setRnPageInfo() {
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
-  }
-  if (skitType.indexOf('威尼斯') != -1) {
-    pages = pages.concat(WNSPages)
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
@@ -309,17 +316,8 @@ const WNSPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  },
-  {
-    // 游戏大厅
-    tabbarItemPath: '/lotteryList',
-    vcName: 'UGYYLotteryHomeViewController',
-    rnName: PageName.WNZGameLobbyPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
-]
+  }
+];
 
 // 凯时
 const KSPages = [
@@ -331,7 +329,15 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.KSMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
   {
     // 登录
     vcName: 'UGLoginViewController',
@@ -340,47 +346,14 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.KSRegister,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.KSMine,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
-]
+];
 
 // 金星黑
 const JXHPages = [
   {
     // 首页
     tabbarItemPath: '/home',
-    rnName: PageName.GDBHomePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.GDLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.GDRegisterPage,
+    rnName: PageName.JXHHomePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -389,10 +362,54 @@ const JXHPages = [
     // 我的页
     tabbarItemPath: '/user',
     vcName: 'UGMineSkinViewController',
-    rnName: PageName.GDBMinePage,
+    rnName: PageName.JXHMinePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.JXHSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.JDPromotionListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }
+];
+
+// 越南
+const VietnamPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.VietnamHome,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.VietnamMine,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.VietnamLogin,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
   },
   {
     vcName: 'UGPromotionsController',
@@ -406,6 +423,9 @@ const JXHPages = [
 export class RnPageModel {
   static pages: RnPageModel[] = []
 
+
+export class RnPageModel {
+  static pages: RnPageModel[] = [];
   static getPageName(vcName: PageName) {
     if (Router.getPageRouterType(vcName) != RouterType.None) {
       return vcName

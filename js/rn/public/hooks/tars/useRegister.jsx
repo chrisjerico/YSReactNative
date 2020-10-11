@@ -51,7 +51,6 @@ var useRegister = function (options) {
         },
         onError: function (error) {
             tars_1.ToastError(error !== null && error !== void 0 ? error : '自动登录失败');
-            console.log('--------自動登录失败--------', error);
         },
     }).logIn;
     var onSuccessWithAutoLogin = options.onSuccessWithAutoLogin, onStart = options.onStart, onSuccess = options.onSuccess, onError = options.onError;
