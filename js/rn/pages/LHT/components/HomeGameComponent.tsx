@@ -85,7 +85,15 @@ const HomeGameComponent = ({
         </TouchableWithoutFeedback>
       </View>
       {index ? (
-        <TabComponent numColumns={3} initialTabIndex={0} focusTabColor={LHThemeColor.六合厅.themeColor} tabGames={rightGames} itemHeight={itemHeight} renderScene={renderScene} />
+        <TabComponent
+          numColumns={3}
+          initialTabIndex={0}
+          focusTabColor={LHThemeColor.六合厅.themeColor}
+          tabGames={rightGames}
+          itemHeight={itemHeight}
+          renderScene={renderScene}
+          tabBarBackgroundColor={'#ffffff'}
+        />
       ) : (
         <List uniqueKey={'HomeGameComponentLeft'} style={styles.list} data={leftGames} renderItem={renderLeftGame} numColumns={3} />
       )}

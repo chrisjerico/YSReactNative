@@ -22,6 +22,7 @@ interface TabComponentProps {
   numColumns: number
   renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
   tabTextColor?: string
+  tabBarBackgroundColor?: string
 }
 
 interface RenderTabBar {
@@ -73,6 +74,7 @@ const TabComponent = ({
   numColumns,
   renderTabBar,
   tabTextColor = '#000000',
+  tabBarBackgroundColor,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
@@ -147,7 +149,7 @@ const TabComponent = ({
   return (
     <ScrollableTabView
       ref={tabRef}
-      tabBarBackgroundColor={'#ffffff'}
+      tabBarBackgroundColor={tabBarBackgroundColor}
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
       renderTabBar={(props) => {
@@ -160,7 +162,7 @@ const TabComponent = ({
             ref={scroll}
             horizontal={true}
             removeClippedSubviews={true}
-            style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
+            style={{ flexGrow: 0 }}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}

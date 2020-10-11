@@ -27,6 +27,7 @@ const BZHGameLobbyPage = ({ route }) => {
           containerStyle={{
             marginVertical: scale(10),
           }}
+          tabBarBackgroundColor={'#ffffff'}
           numColumns={3}
           initialTabIndex={initialTabIndex ? initialTabIndex : 0}
           baseHeight={scale(130)}

@@ -119,7 +119,7 @@ const JXHHomePage = () => {
               />
               <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} />
               <TabComponent
-                tabStyle={{ backgroundColor: '#000000' }}
+                tabBarBackgroundColor={'#000000'}
                 tabTextColor={'#ffffff'}
                 numColumns={2}
                 initialTabIndex={0}
