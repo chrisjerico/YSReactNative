@@ -77,7 +77,7 @@ class TabBarController extends Component<{
   }
 
   shouldComponentUpdate() {
-    return false;
+    return false
   }
 
   componentDidMount() {
@@ -101,16 +101,16 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
+        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
-        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
         <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
-        <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
+        <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
-        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
+        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
