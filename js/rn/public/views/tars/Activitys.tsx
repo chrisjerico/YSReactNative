@@ -3,7 +3,7 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition } from '../../tools/tars'
-import React from 'react'
+import React, { memo } from 'react'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -57,4 +57,4 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
   )
 }
 
-export default Activitys
+export default memo(Activitys)

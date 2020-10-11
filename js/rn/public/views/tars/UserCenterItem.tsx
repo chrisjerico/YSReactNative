@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, StyleSheet, Text, View, ViewStyle, TouchableWithoutFeedback, TextStyle, StyleProp } from 'react-native'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default UserCenterItem
+export default memo(UserCenterItem)

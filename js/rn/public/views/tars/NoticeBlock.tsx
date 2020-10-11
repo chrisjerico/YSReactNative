@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TextStyle, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default NoticeBlock
+export default memo(NoticeBlock)

@@ -4,7 +4,7 @@ import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
-import RandomText from '../../public/components/tars/RandomText'
+import RandomTextComponent from '../../public/components/tars/RandomTextComponent'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
@@ -289,7 +289,7 @@ const KSHomePage = () => {
                       <Text style={{ fontSize: scale(15), color: '#ffffff', marginTop: scale(5) }}>{'总奖金池'}</Text>
                     </View>
                     <View style={{ flex: 7, justifyContent: 'center', alignItems: 'flex-start' }}>
-                      <RandomText style={{ color: '#ffb029', fontSize: scale(25) }} />
+                      <RandomTextComponent style={{ color: '#ffb029', fontSize: scale(25) }} />
                     </View>
                   </View>
                 </ImageBackground>

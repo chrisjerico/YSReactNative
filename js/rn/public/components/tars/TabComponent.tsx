@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -102,9 +102,9 @@ const TabComponent = ({
     const tabCount = getTabCount()
     const width = tabCount ? AppDefine.width / tabCount : 0
     if (width < minTabWidth) {
-      return minTabWidth
+      return minTabWidth + scale(20)
     } else {
-      return width
+      return width + scale(20)
     }
   }
 
@@ -179,8 +179,11 @@ const TabComponent = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: '100%',
+                        paddingHorizontal: scale(10),
                       }}>
                       <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit={true}
                         style={[
                           styles.tabText,
                           tabTextStyle,
@@ -251,4 +254,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default TabComponent
+export default memo(TabComponent)

@@ -1,17 +1,17 @@
-import React from 'react';
-import { Image, StyleSheet, View, ViewStyle, TouchableWithoutFeedback, StyleProp } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import React, { memo } from 'react'
+import { Image, StyleSheet, View, ViewStyle, TouchableWithoutFeedback, StyleProp } from 'react-native'
+import FastImage from 'react-native-fast-image'
 
 interface TouchableImageProps {
-  pic: string;
-  onPress: () => any;
-  containerStyle?: StyleProp<ViewStyle>;
-  resizeMode?: 'cover' | 'contain' | 'stretch';
-  enableFastImage?: boolean;
-  onLoad?: (event: any) => any;
-  onLoadStart?: () => any;
-  onLoadEnd?: () => any;
-  onError?: () => any;
+  pic: string
+  onPress: () => any
+  containerStyle?: StyleProp<ViewStyle>
+  resizeMode?: 'cover' | 'contain' | 'stretch'
+  enableFastImage?: boolean
+  onLoad?: (event: any) => any
+  onLoadStart?: () => any
+  onLoadEnd?: () => any
+  onError?: () => any
 }
 
 const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', enableFastImage = true, onLoad, onLoadStart, onLoadEnd, onError }: TouchableImageProps) => {
@@ -22,17 +22,17 @@ const TouchableImage = ({ onPress, pic, containerStyle, resizeMode = 'cover', en
         <ImageComponent style={styles.image} source={{ uri: pic }} resizeMode={resizeMode} onLoad={onLoad} onLoadStart={onLoadStart} onLoadEnd={onLoadEnd} onError={onError} />
       </View>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   image: {
     width: '100%',
     height: '100%',
   },
-});
+})
 
-export default TouchableImage;
+export default memo(TouchableImage)

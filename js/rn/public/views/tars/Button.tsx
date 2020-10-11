@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback, StyleProp, ImageStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Button
+export default memo(Button)

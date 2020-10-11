@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ActivityComponent
+export default memo(ActivityComponent)

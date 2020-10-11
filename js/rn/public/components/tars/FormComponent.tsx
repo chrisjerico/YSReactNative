@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -230,4 +230,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default FormComponent
+export default memo(FormComponent)

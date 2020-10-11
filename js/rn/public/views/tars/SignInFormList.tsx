@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React, { memo, RefObject } from 'react'
 import { FormComponentProps } from '../../components/tars/FormComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
@@ -63,4 +63,4 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
   )
 }
 
-export default SignInFormList
+export default memo(SignInFormList)

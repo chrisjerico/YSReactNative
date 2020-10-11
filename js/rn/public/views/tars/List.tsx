@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { FlatList, FlatListProps } from 'react-native'
 
 const List = (props: Readonly<FlatListProps<any>> & { uniqueKey: string }) => {
@@ -8,4 +8,4 @@ const List = (props: Readonly<FlatListProps<any>> & { uniqueKey: string }) => {
   )
 }
 
-export default List
+export default memo(List)

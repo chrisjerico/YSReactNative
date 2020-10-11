@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BottomLogo
+export default memo(BottomLogo)

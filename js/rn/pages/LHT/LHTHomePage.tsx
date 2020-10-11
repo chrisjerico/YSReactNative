@@ -9,13 +9,14 @@ import { navigate, push } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import BottomGap from '../../public/views/tars/BottomGap'
 import BottomLogo from '../../public/views/tars/BottomLogo'
 import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import List from '../../public/views/tars/List'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -76,250 +77,252 @@ const LHTHomePage = () => {
             onPressLogo={goToJDPromotionListPage}
           />
         </SafeAreaHeader>
-        <ScrollView
+        <List
+          uniqueKey={'LHTHomePage'}
+          data={[]}
           style={styles.container}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={async () => {
-                try {
-                  await refresh()
-                  PushHelper.pushAnnouncement(announcements)
-                } catch (error) {
-                  console.log('-------error------', error)
-                }
-              }}
-            />
-          }>
-          <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 230 }}
-            autoplayTimeout={bannersInterval}
-            onlineNum={onlineNum}
-            banners={banners}
-            showOnlineNum={showOnlineNum}
-            renderBanner={(item, index) => {
-              const { linkCategory, linkPosition, pic } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={pic}
-                  resizeMode={'stretch'}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
+          scrollEnabled
+          removeClippedSubviews
+          refreshing={refreshing}
+          onRefresh={async () => {
+            try {
+              await refresh()
+              PushHelper.pushAnnouncement(announcements)
+            } catch (error) {}
+          }}
+          ListHeaderComponent={
+            <>
+              <BannerBlock
+                containerStyle={{ aspectRatio: 540 / 230 }}
+                autoplayTimeout={bannersInterval}
+                onlineNum={onlineNum}
+                banners={banners}
+                showOnlineNum={showOnlineNum}
+                renderBanner={(item, index) => {
+                  const { linkCategory, linkPosition, pic } = item
+                  return (
+                    <TouchableImage
+                      key={index}
+                      pic={pic}
+                      resizeMode={'stretch'}
+                      onPress={() => {
+                        PushHelper.pushCategory(linkCategory, linkPosition)
+                      }}
+                    />
+                  )
+                }}
+              />
+              <View style={styles.contentContainer}>
+                <NoticeBlock
+                  containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
+                  iconContainerStyle={{
+                    width: scale(20),
+                    marginHorizontal: scale(15),
+                  }}
+                  notices={notices}
+                  logo={getHtml5Image(14, 'notice')}
+                  onPressNotice={({ content }) => {
+                    PushHelper.pushNoticePopUp(content)
                   }}
                 />
-              )
-            }}
-          />
-          <View style={styles.contentContainer}>
-            <NoticeBlock
-              containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
-              iconContainerStyle={{
-                width: scale(20),
-                marginHorizontal: scale(15),
-              }}
-              notices={notices}
-              logo={getHtml5Image(14, 'notice')}
-              onPressNotice={({ content }) => {
-                PushHelper.pushNoticePopUp(content)
-              }}
-            />
-            <NavBlock
-              containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
-              navs={navs}
-              lotterys={plusLotterys}
-              date={lotteryDate}
-              advertisement={getHtml5Image(14, 'banner', 'gif')}
-              lotteryLogo={getHtml5Image(14, 'tjzx')}
-              balanceLogo={getHtml5Image(14, 'yue')}
-              balance={balance}
-              currency={currency}
-              showK={currency == 'VND' ? true : false}
-              customerServiceLogo={getHtml5Image(14, 'zxkf')}
-              onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
-              onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
-              onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
-              onPressSmileLogo={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}
-              renderNav={(item, index) => {
-                const { icon, name, logo, gameId } = item
-                return (
-                  <GameButton
-                    key={index}
-                    showSecondLevelIcon={false}
-                    containerStyle={{ width: '25%', height: '50%' }}
-                    imageContainerStyle={{ width: '50%' }}
-                    enableCircle={false}
-                    logo={icon ? icon : logo}
-                    title={name}
-                    onPress={() => {
-                      if (gameId == 9) {
-                        goToJDPromotionListPage()
-                      } else {
-                        PushHelper.pushHomeGame(item)
-                      }
-                    }}
-                  />
-                )
-              }}
-              renderLottery={(item, index) => {
-                const { number, color, sx, showMore } = item
-                return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)} />
-              }}
-            />
-            <HomeGameComponent
-              itemHeight={scale(200)}
-              leftIcon={getHtml5Image(14, 'hot_icon')}
-              rightIcon={getHtml5Image(14, 'cai_icon')}
-              activeTabColor={'#ff6b1b'}
-              unActiveTabColor={'#bbbbbb'}
-              containerStyle={styles.subComponent}
-              leftGames={chooseGames}
-              rightGames={homeGames}
-              renderLeftGame={({ item, index }) => {
-                const { title, logo, des, gameType, selected, gameId } = item
-                const logoUrl = getHtml5Image(14, logo)
-                return (
-                  <GameButton
-                    key={index}
-                    showSecondLevelIcon={false}
-                    circleColor={'#b3cde6'}
-                    logo={logoUrl}
-                    title={title}
-                    subTitle={des}
-                    showSubTitle
-                    containerStyle={{
-                      width: '33.3%',
-                      marginBottom: scale(20),
-                    }}
-                    titleContainerStyle={{
-                      marginTop: scale(5),
-                      aspectRatio: 3,
-                    }}
-                    imageContainerStyle={{
-                      width: logo == 'gdcz' ? '50%' : '90%',
-                      alignSelf: 'center',
-                    }}
-                    titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
-                    subTitleStyle={{ fontSize: scale(19) }}
-                    onPress={() => {
-                      if (gameType == 'more') {
-                        navigate(PageName.LHTPreferencePage, {
-                          initPreferences: preferenceGames,
-                          onPressConfirm: (preferences: any) => {
-                            setPreferenceGames(preferences)
-                          },
-                        })
-                      } else if (gameType == 'clzx') {
-                        PushHelper.pushUserCenterType(UGUserCenterType.长龙助手)
-                      } else if (gameType == 'lmzs') {
-                        PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
-                      } else {
-                        PushHelper.pushLottery(gameId)
-                      }
-                    }}
-                  />
-                )
-              }}
-              renderRightGame={({ item, index }) => {
-                const { logo, icon, title, hotIcon, tipFlag, subType } = item
-                const showFlag = parseInt(tipFlag)
-                return (
-                  <GameButton
-                    key={index}
-                    circleColor={'#b3cde6'}
-                    showRightTopFlag={showFlag > 0 && showFlag < 4}
-                    showCenterFlag={showFlag == 4}
-                    showSecondLevelIcon={false} // subType ? true : false
-                    flagIcon={hotIcon}
-                    logo={icon || logo}
-                    title={title}
-                    showSubTitle={false}
-                    containerStyle={{
-                      width: '33.3%',
-                      height: scale(180),
-                      marginBottom: scale(20),
-                    }}
-                    titleContainerStyle={{
-                      marginTop: scale(5),
-                      aspectRatio: 3,
-                    }}
-                    flagContainer={{
-                      right: scale(15),
-                      top: scale(-5),
-                    }}
-                    titleStyle={{ fontSize: scale(23) }}
-                    subTitleStyle={{ fontSize: scale(23) }}
-                    onPress={() => PushHelper.pushHomeGame(item)}
-                  />
-                )
-              }}
-            />
-            <CouponBlock
-              visible={showCoupon}
-              onPressMore={goToJDPromotionListPage}
-              containerStyle={styles.subComponent}
-              listContainerStyle={{ borderRadius: scale(15) }}
-              coupons={coupons}
-              renderCoupon={({ item, index }) => {
-                const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
-                return (
-                  <AutoHeightCouponComponent
-                    key={index}
-                    title={title}
-                    pic={pic}
-                    content={content}
-                    onPress={(setShowPop) => {
-                      if (linkUrl) {
-                        PushHelper.openWebView(linkUrl)
-                      } else if (!linkCategory && !linkPosition) {
-                        setShowPop(true)
-                      } else {
-                        PushHelper.pushCategory(linkCategory, linkPosition)
-                      }
-                    }}
-                  />
-                )
-              }}
-            />
-            <AnimatedRankComponent type={rankingListType} containerStyle={{ marginVertical: scale(10) }} iconTitleContainerStyle={styles.rankBlockIconContainerStyle} rankLists={rankLists} />
-            <BottomLogo
-              containerStyle={{ marginBottom: scale(30) }}
-              webName={webName}
-              onPressComputer={() => {
-                PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-              }}
-              onPressPromotion={goToJDPromotionListPage}
-              debug={false}
-              version={'修正Banner比例'}
-            />
-            <BottomToolBlock
-              tools={config?.bottomTools}
-              renderBottomTool={(item, index) => {
-                const { logo, userCenterType } = item
-                return (
-                  <TouchableImage
-                    key={index}
-                    containerStyle={{
-                      width: '32%',
-                      aspectRatio: 165 / 85,
-                      flex: null,
-                    }}
-                    pic={logo}
-                    onPress={() => {
-                      if (userCenterType) {
-                        PushHelper.pushUserCenterType(userCenterType)
-                      } else {
-                        PushHelper.openWebView(appDownloadUrl)
-                      }
-                    }}
-                  />
-                )
-              }}
-            />
-            <BottomGap />
-          </View>
-        </ScrollView>
+                <NavBlock
+                  containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
+                  navs={navs}
+                  lotterys={plusLotterys}
+                  date={lotteryDate}
+                  advertisement={getHtml5Image(14, 'banner', 'gif')}
+                  lotteryLogo={getHtml5Image(14, 'tjzx')}
+                  balanceLogo={getHtml5Image(14, 'yue')}
+                  balance={balance}
+                  currency={currency}
+                  showK={currency == 'VND' ? true : false}
+                  customerServiceLogo={getHtml5Image(14, 'zxkf')}
+                  onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
+                  onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
+                  onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
+                  onPressSmileLogo={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}
+                  renderNav={(item, index) => {
+                    const { icon, name, logo, gameId } = item
+                    return (
+                      <GameButton
+                        key={index}
+                        showSecondLevelIcon={false}
+                        containerStyle={{ width: '25%', height: '50%' }}
+                        imageContainerStyle={{ width: '50%' }}
+                        enableCircle={false}
+                        logo={icon ? icon : logo}
+                        title={name}
+                        onPress={() => {
+                          if (gameId == 9) {
+                            goToJDPromotionListPage()
+                          } else {
+                            PushHelper.pushHomeGame(item)
+                          }
+                        }}
+                      />
+                    )
+                  }}
+                  renderLottery={(item, index) => {
+                    const { number, color, sx, showMore } = item
+                    return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)} />
+                  }}
+                />
+                <HomeGameComponent
+                  itemHeight={scale(200)}
+                  leftIcon={getHtml5Image(14, 'hot_icon')}
+                  rightIcon={getHtml5Image(14, 'cai_icon')}
+                  activeTabColor={'#ff6b1b'}
+                  unActiveTabColor={'#bbbbbb'}
+                  containerStyle={styles.subComponent}
+                  leftGames={chooseGames}
+                  rightGames={homeGames}
+                  renderLeftGame={({ item, index }) => {
+                    const { title, logo, des, gameType, selected, gameId } = item
+                    const logoUrl = getHtml5Image(14, logo)
+                    return (
+                      <GameButton
+                        key={index}
+                        showSecondLevelIcon={false}
+                        circleColor={'#b3cde6'}
+                        logo={logoUrl}
+                        title={title}
+                        subTitle={des}
+                        showSubTitle
+                        containerStyle={{
+                          width: '33.3%',
+                          marginBottom: scale(20),
+                        }}
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
+                        }}
+                        imageContainerStyle={{
+                          width: logo == 'gdcz' ? '50%' : '90%',
+                          alignSelf: 'center',
+                        }}
+                        titleStyle={{ fontSize: scale(20), fontWeight: '300' }}
+                        subTitleStyle={{ fontSize: scale(19) }}
+                        onPress={() => {
+                          if (gameType == 'more') {
+                            navigate(PageName.LHTPreferencePage, {
+                              initPreferences: preferenceGames,
+                              onPressConfirm: (preferences: any) => {
+                                setPreferenceGames(preferences)
+                              },
+                            })
+                          } else if (gameType == 'clzx') {
+                            PushHelper.pushUserCenterType(UGUserCenterType.长龙助手)
+                          } else if (gameType == 'lmzs') {
+                            PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+                          } else {
+                            PushHelper.pushLottery(gameId)
+                          }
+                        }}
+                      />
+                    )
+                  }}
+                  renderRightGame={({ item, index }) => {
+                    const { logo, icon, title, hotIcon, tipFlag } = item
+                    const showFlag = stringToNumber(tipFlag)
+                    return (
+                      <GameButton
+                        key={index}
+                        circleColor={'#b3cde6'}
+                        showRightTopFlag={showFlag > 0 && showFlag < 4}
+                        showCenterFlag={showFlag == 4}
+                        showSecondLevelIcon={false}
+                        flagIcon={hotIcon}
+                        logo={icon || logo}
+                        title={title}
+                        showSubTitle={false}
+                        containerStyle={{
+                          width: '33.3%',
+                          height: scale(180),
+                          marginBottom: scale(20),
+                        }}
+                        titleContainerStyle={{
+                          marginTop: scale(5),
+                          aspectRatio: 3,
+                        }}
+                        flagContainer={{
+                          right: scale(15),
+                          top: scale(-5),
+                        }}
+                        titleStyle={{ fontSize: scale(23) }}
+                        subTitleStyle={{ fontSize: scale(23) }}
+                        onPress={() => PushHelper.pushHomeGame(item)}
+                      />
+                    )
+                  }}
+                />
+                <CouponBlock
+                  visible={showCoupon}
+                  onPressMore={goToJDPromotionListPage}
+                  containerStyle={styles.subComponent}
+                  listContainerStyle={{ borderRadius: scale(15) }}
+                  coupons={coupons}
+                  renderCoupon={({ item, index }) => {
+                    const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
+                    return (
+                      <AutoHeightCouponComponent
+                        key={index}
+                        title={title}
+                        pic={pic}
+                        content={content}
+                        onPress={(setShowPop) => {
+                          if (linkUrl) {
+                            PushHelper.openWebView(linkUrl)
+                          } else if (!linkCategory && !linkPosition) {
+                            setShowPop(true)
+                          } else {
+                            PushHelper.pushCategory(linkCategory, linkPosition)
+                          }
+                        }}
+                      />
+                    )
+                  }}
+                />
+                <AnimatedRankComponent type={rankingListType} containerStyle={{ marginVertical: scale(10) }} iconTitleContainerStyle={styles.rankBlockIconContainerStyle} rankLists={rankLists} />
+                <BottomLogo
+                  containerStyle={{ marginBottom: scale(30) }}
+                  webName={webName}
+                  onPressComputer={() => {
+                    PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
+                  }}
+                  onPressPromotion={goToJDPromotionListPage}
+                  debug={false}
+                  version={'修正Banner比例'}
+                />
+                <BottomToolBlock
+                  tools={config?.bottomTools}
+                  renderBottomTool={(item, index) => {
+                    const { logo, userCenterType } = item
+                    return (
+                      <TouchableImage
+                        key={index}
+                        containerStyle={{
+                          width: '32%',
+                          aspectRatio: 165 / 85,
+                          flex: null,
+                        }}
+                        pic={logo}
+                        onPress={() => {
+                          if (userCenterType) {
+                            PushHelper.pushUserCenterType(userCenterType)
+                          } else {
+                            PushHelper.openWebView(appDownloadUrl)
+                          }
+                        }}
+                      />
+                    )
+                  }}
+                />
+                <BottomGap />
+              </View>
+            </>
+          }
+          renderItem={() => null}
+        />
         <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
       </>
     )

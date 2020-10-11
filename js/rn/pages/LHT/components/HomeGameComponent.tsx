@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import TabComponent from '../../../public/components/tars/TabComponent'
@@ -52,6 +52,10 @@ const HomeGameComponent = ({
 }: HomeGameComponentProps) => {
   const [index, setIndex] = useState(0)
 
+  const renderScene = useCallback(({ item }) => {
+    return <List uniqueKey={'HomeGameComponentRight'} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
+  }, [])
+
   return (
     <View style={containerStyle}>
       <View style={styles.mainTabContainer}>
@@ -81,16 +85,7 @@ const HomeGameComponent = ({
         </TouchableWithoutFeedback>
       </View>
       {index ? (
-        <TabComponent
-          numColumns={3}
-          initialTabIndex={0}
-          focusTabColor={LHThemeColor.六合厅.themeColor}
-          tabGames={rightGames}
-          itemHeight={itemHeight}
-          renderScene={({ item }) => {
-            return <List uniqueKey={'HomeGameComponentRight'} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
-          }}
-        />
+        <TabComponent numColumns={3} initialTabIndex={0} focusTabColor={LHThemeColor.六合厅.themeColor} tabGames={rightGames} itemHeight={itemHeight} renderScene={renderScene} />
       ) : (
         <List uniqueKey={'HomeGameComponentLeft'} style={styles.list} data={leftGames} renderItem={renderLeftGame} numColumns={3} />
       )}

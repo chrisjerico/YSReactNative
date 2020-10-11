@@ -53,7 +53,7 @@ const LHTMinePage = () => {
           onPressAvatar={onPressAvatar}
           profileButtons={config?.profileButtons}
           name={usr}
-          showK={currency == 'VND' ? true : false}
+          showK={currency == 'VND'}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           level={curLevelGrade}
           balance={balance}

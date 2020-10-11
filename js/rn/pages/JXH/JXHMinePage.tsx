@@ -2,6 +2,7 @@ import React from 'react'
 import { ScrollView, Text, View, TouchableWithoutFeedback } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -18,7 +19,7 @@ import config from './config'
 
 const JXHMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
-  const { value, sign } = useMinePage({
+  const { value, sign, pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess } = useMinePage({
     homePage: PageName.JXHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
@@ -52,7 +53,7 @@ const JXHMinePage = () => {
       >
         <View style={{ aspectRatio: 4, flexDirection: 'row', alignItems: 'center' }}>
           <View style={{ flex: 3, flexDirection: 'row', alignItems: 'center', height: '100%' }}>
-            <Avatar uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
+            <Avatar uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} onPress={onPressAvatar} />
             <View style={{ height: '100%', justifyContent: 'space-between', paddingVertical: '8%', marginLeft: scale(10) }}>
               <Text style={{ color: '#a0a0a0', fontSize: scale(20) }}>{usr}</Text>
               <Text style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</Text>
@@ -67,7 +68,7 @@ const JXHMinePage = () => {
             </View>
           </TouchableWithoutFeedback>
         </View>
-        <View style={{ backgroundColor: '#333333', aspectRatio: 3, borderRadius: scale(5) }}>
+        <View style={{ backgroundColor: '#111111', aspectRatio: 3, borderRadius: scale(5) }}>
           <View style={{ flex: 1, paddingLeft: scale(20), alignItems: 'center', flexDirection: 'row' }}>
             <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
             <AntDesign name={'eye'} color={'#676767'} size={20} />
@@ -78,14 +79,14 @@ const JXHMinePage = () => {
           <View style={{ flexDirection: 'row', width: '100%', flex: 1 }}>
             <Button
               title={'充值'}
-              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row' }}
+              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row', backgroundColor: '#333333' }}
               showLogo={true}
               logo={getHtml5Image(18, 'chong Zhi')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
             />
             <Button
               title={'提现'}
-              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row' }}
+              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row', backgroundColor: '#333333' }}
               showLogo={true}
               logo={getHtml5Image(18, 'tiSian')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
@@ -109,7 +110,7 @@ const JXHMinePage = () => {
                 showSubTitle={false}
                 titleContainerStyle={{ aspectRatio: 5 }}
                 imageContainerStyle={{ width: '50%' }}
-                containerStyle={{ marginVertical: scale(15) }}
+                containerStyle={{ marginVertical: scale(15), width: '33%' }}
                 showUnReadMsg={code == UGUserCenterType.站内信}
                 unreadMsg={unreadMsg || 0}
                 onPress={code == -1 ? signOut : () => {}}
@@ -119,6 +120,7 @@ const JXHMinePage = () => {
         />
         <BottomGap />
       </ScrollView>
+      <PickAvatarComponent ref={pickAvatarComponentRef} color={'#333333'} initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} onSaveAvatarSuccess={onSaveAvatarSuccess} />
     </>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { memo, useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
@@ -45,7 +45,7 @@ const AnimatedRankComponent = ({
     Animated.timing(height, {
       toValue: -(count * itemHeight),
       duration: (count + 4.5) * duration,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start(({ finished }) => {
       if (finished) {
         height?.setValue(listHeight)
@@ -176,4 +176,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AnimatedRankComponent
+export default memo(AnimatedRankComponent)

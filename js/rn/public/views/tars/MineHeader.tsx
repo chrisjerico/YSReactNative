@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MineHeader
+export default memo(MineHeader)

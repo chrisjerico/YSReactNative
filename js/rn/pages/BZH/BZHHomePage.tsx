@@ -72,9 +72,7 @@ const BZHHomePage = () => {
             try {
               await refresh()
               PushHelper.pushAnnouncement(announcements)
-            } catch (error) {
-              console.log('-------error------', error)
-            }
+            } catch (error) {}
           }}
           ListHeaderComponent={() => (
             <>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
@@ -53,4 +53,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default CouponBlock
+export default memo(CouponBlock)
