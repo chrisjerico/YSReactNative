@@ -21,17 +21,19 @@ interface ProfileBlockProps {
   balance: string
   onPressExchange: () => any
   onPressTryPlay: () => any
+  onPressLeftButton: () => any
+  onPressRightButton: () => any
 }
 
-const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPressExchange, onPressTryPlay }: ProfileBlockProps) => {
+const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPressExchange, onPressTryPlay, onPressLeftButton, onPressRightButton }: ProfileBlockProps) => {
   return (
     <View style={{ width: '100%', aspectRatio: 2.3, backgroundColor: '#111111', borderRadius: scale(10), overflow: 'hidden' }}>
-      <View style={{ flex: 1, backgroundColor: '#333333', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
+      <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
         {uid ? (
           <>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
               <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-              <Text style={{ color: '#ffffff', marginHorizontal: scale(10) }}>{usr}</Text>
+              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10) }}>{usr}</Text>
               <LinearBadge
                 title={curLevelTitle}
                 colors={['#cfa461', '#cfa461']}
@@ -83,7 +85,7 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
           </>
         )}
       </View>
-      <View style={{ flex: 1, backgroundColor: '#333333', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+      <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
         {uid ? (
           <>
             <Button
@@ -92,6 +94,8 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
               showLogo={true}
               logo={getHtml5Image(18, 'chong Zhi')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
+              titleStyle={{ color: '#cfa461', marginLeft: scale(10) }}
+              onPress={onPressLeftButton}
             />
             <Button
               title={'提现'}
@@ -99,6 +103,8 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
               showLogo={true}
               logo={getHtml5Image(18, 'tiSian')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
+              titleStyle={{ color: '#ffffff', marginLeft: scale(10) }}
+              onPress={onPressRightButton}
             />
           </>
         ) : (

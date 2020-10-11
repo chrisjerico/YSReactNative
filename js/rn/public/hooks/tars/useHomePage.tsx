@@ -6,8 +6,8 @@ import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useHome from './useHome'
-import useSignOut from './useSignOut'
 import useRerender from './useRerender'
+import useSignOut from './useSignOut'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 
@@ -21,10 +21,11 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { reRender } = useRerender()
 
-  const goToJDPromotionListPage = () => {
+  const goToJDPromotionListPage = (style?: { [key: string]: any }) => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {
         backgroundColor: '#ffffff',
+        ...style,
       },
     })
   }

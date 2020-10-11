@@ -76,20 +76,28 @@ const JXHMinePage = () => {
           <View style={{ flex: 1.5, paddingLeft: scale(20) }}>
             <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{balance}</Text>
           </View>
-          <View style={{ flexDirection: 'row', width: '100%', flex: 1 }}>
+          <View style={{ flexDirection: 'row', width: '100%', flex: 1, backgroundColor: '#282828' }}>
             <Button
               title={'充值'}
-              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row', backgroundColor: '#333333' }}
+              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row' }}
               showLogo={true}
               logo={getHtml5Image(18, 'chong Zhi')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
+              titleStyle={{ color: '#cfa461', marginLeft: scale(10) }}
+              onPress={() => {
+                PushHelper.pushUserCenterType(UGUserCenterType.存款)
+              }}
             />
             <Button
               title={'提现'}
-              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row', backgroundColor: '#333333' }}
+              containerStyle={{ width: '50%', height: '100%', flexDirection: 'row' }}
               showLogo={true}
               logo={getHtml5Image(18, 'tiSian')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
+              titleStyle={{ color: '#ffffff', marginLeft: scale(10) }}
+              onPress={() => {
+                PushHelper.pushUserCenterType(UGUserCenterType.取款)
+              }}
             />
           </View>
         </View>

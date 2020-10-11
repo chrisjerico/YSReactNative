@@ -18,6 +18,7 @@ import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import ProfileBlock from './views/ProfileBlock'
 
 const JXHHomePage = () => {
@@ -31,8 +32,7 @@ const JXHHomePage = () => {
   const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
 
   const lotterys = homeGames[0]?.list ?? []
-  const smallLotterys = lotterys?.slice(4, 8) ?? []
-  const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
+
   const { tryPlay } = sign
 
   const renderGame = useCallback(({ item }) => {
@@ -117,7 +117,21 @@ const JXHHomePage = () => {
                   PushHelper.pushNoticePopUp(content)
                 }}
               />
-              <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} />
+              <ProfileBlock
+                {...(userInfo as any)}
+                onPressTryPlay={tryPlay}
+                onPressLeftButton={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.存款)
+                }}
+                onPressRightButton={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.取款)
+                }}
+                onPressExchange={() =>
+                  goToJDPromotionListPage({
+                    backgroundColor: '#282828',
+                  })
+                }
+              />
               <TabComponent
                 tabBarBackgroundColor={'#000000'}
                 tabTextColor={'#ffffff'}
@@ -173,10 +187,10 @@ const JXHHomePage = () => {
                 type={rankingListType}
                 iconColor={'#ffffff'}
                 iconTitleStyle={{ color: '#ffffff' }}
-                containerStyle={{ marginTop: scale(10), backgroundColor: '#3a3a41', borderRadius: scale(10) }}
+                containerStyle={{ marginTop: scale(10), backgroundColor: '#282828', borderRadius: scale(10) }}
                 contentTitleStyle={{ color: '#ffffff' }}
                 iconTitleContainerStyle={{
-                  backgroundColor: '#3a3a41',
+                  backgroundColor: '#282828',
                   borderTopLeftRadius: scale(10),
                   borderTopRightRadius: scale(10),
                 }}
@@ -184,7 +198,7 @@ const JXHHomePage = () => {
                   width: '95%',
                   alignSelf: 'center',
                   marginBottom: scale(20),
-                  backgroundColor: '#3a3a41',
+                  backgroundColor: '#282828',
                 }}
                 rankLists={rankLists}
               />
