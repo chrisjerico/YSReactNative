@@ -1,5 +1,5 @@
 import React from 'react'
-import useMindeHeader from '../../hooks/tars/useMineHeader'
+import useMindeHeader from '../../hooks/temp/useMineHeader'
 import MineHeader from '../../views/tars/MineHeader'
 
 interface MineHeaderComponentProps {
