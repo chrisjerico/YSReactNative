@@ -46,12 +46,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var CCSessionModel_1 = __importDefault(require("./CCSessionModel"));
-var SlideCodeModel_1 = __importDefault(require("../../redux/model/other/SlideCodeModel"));
+var CCSessionModel_1 = require("./CCSessionModel");
+var SlideCodeModel_1 = require("../../redux/model/other/SlideCodeModel");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var react_native_1 = require("react-native");
 var ANHelper_1 = require("../define/ANHelper/ANHelper");
@@ -238,4 +235,3 @@ var NetworkRequest1 = /** @class */ (function () {
     return NetworkRequest1;
 }());
 exports.default = NetworkRequest1;
-//# sourceMappingURL=NetworkRequest1.js.map

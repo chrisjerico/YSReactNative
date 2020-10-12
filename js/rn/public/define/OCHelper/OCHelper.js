@@ -48,16 +48,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OCHelper = void 0;
 var UGStore_1 = require("../../../redux/store/UGStore");
-var APIRouter_1 = __importDefault(require("../../network/APIRouter"));
+var APIRouter_1 = require("../../network/APIRouter");
 var httpClient_1 = require("../../network/httpClient");
 var UGBridge_1 = require("../ANHelper/UGBridge");
-var AppDefine_1 = __importDefault(require("../AppDefine"));
+var AppDefine_1 = require("../AppDefine");
 var OCCall_1 = require("./OCBridge/OCCall");
 var OCEvent_1 = require("./OCBridge/OCEvent");
 var UGSysConfModel_1 = require("../../../redux/model/\u5168\u5C40/UGSysConfModel");
@@ -158,4 +155,3 @@ var OCHelper = /** @class */ (function (_super) {
     return OCHelper;
 }(OCEvent_1.OCEvent));
 exports.OCHelper = OCHelper;
-//# sourceMappingURL=OCHelper.js.map

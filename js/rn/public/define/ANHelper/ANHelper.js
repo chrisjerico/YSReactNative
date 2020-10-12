@@ -59,17 +59,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ANHelper = void 0;
-var AppDefine_1 = __importDefault(require("../AppDefine"));
+var AppDefine_1 = require("../AppDefine");
 var ANEvent_1 = require("./ANEvent");
 var httpClient_1 = require("../../network/httpClient");
 var CmdDefine_1 = require("./hp/CmdDefine");
 var UGSysConfModel_1 = require("../../../redux/model/\u5168\u5C40/UGSysConfModel");
-var APIRouter_1 = __importDefault(require("../../network/APIRouter"));
+var APIRouter_1 = require("../../network/APIRouter");
 var UGStore_1 = require("../../../redux/store/UGStore");
 var DataDefine_1 = require("./hp/DataDefine");
 var UgLog_1 = require("../../tools/UgLog");
@@ -176,4 +173,3 @@ var ANHelper = /** @class */ (function (_super) {
     return ANHelper;
 }(ANEvent_1.ANEvent));
 exports.ANHelper = ANHelper;
-//# sourceMappingURL=ANHelper.js.map

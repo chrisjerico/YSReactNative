@@ -49,4 +49,3 @@ exports.XNHThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=XNHThemeColor.js.map

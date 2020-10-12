@@ -132,4 +132,3 @@ exports.OtherThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=OtherThemeColor.js.map

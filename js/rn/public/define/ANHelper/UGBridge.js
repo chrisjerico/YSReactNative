@@ -11,4 +11,3 @@ var UGBridge = /** @class */ (function () {
     return UGBridge;
 }());
 exports.UGBridge = UGBridge;
-//# sourceMappingURL=UGBridge.js.map

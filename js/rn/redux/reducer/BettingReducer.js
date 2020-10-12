@@ -102,4 +102,3 @@ function BettingReducer(state, action) {
     });
 }
 exports.default = BettingReducer;
-//# sourceMappingURL=BettingReducer.js.map

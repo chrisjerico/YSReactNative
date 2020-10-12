@@ -49,4 +49,3 @@ exports.JYThemeColor = {
         moneyCellColor: '#9BB8CB',
     },
 };
-//# sourceMappingURL=JYThemeColor.js.map

@@ -25,4 +25,3 @@ exports.LCThemeColor = {
         moneyCellColor: '#444',
     }
 };
-//# sourceMappingURL=LCThemeColor.js.map

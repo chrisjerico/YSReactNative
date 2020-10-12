@@ -30,4 +30,3 @@ exports.BZHThemeColor = {
         yubaoBgColor: "#8E8E8E"
     },
 };
-//# sourceMappingURL=BZHThemeColor.js.map

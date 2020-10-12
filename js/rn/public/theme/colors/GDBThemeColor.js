@@ -27,4 +27,3 @@ exports.GDBThemeColor = {
         isBlack: true,
     }
 };
-//# sourceMappingURL=GDBThemeColor.js.map

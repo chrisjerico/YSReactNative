@@ -14,4 +14,3 @@ var UGPromoteModel = /** @class */ (function () {
     return UGPromoteModel;
 }());
 exports.UGPromoteModel = UGPromoteModel;
-//# sourceMappingURL=UGPromoteModel.js.map

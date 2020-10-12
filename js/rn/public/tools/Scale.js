@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.scaleHeight = exports.scale = void 0;
-var AppDefine_1 = __importDefault(require("../../public/define/AppDefine"));
+var AppDefine_1 = require("../../public/define/AppDefine");
 // functions
 exports.scale = function (layout) {
     return layout * (AppDefine_1.default.width / 540);
@@ -19,4 +16,3 @@ exports.scaleHeight = function (layout) {
 //     .concat(Array(patch).fill(fillEle))
 //     .map((ele, index) => Object.assign({}, { key: index }, ele))
 // }
-//# sourceMappingURL=Scale.js.map

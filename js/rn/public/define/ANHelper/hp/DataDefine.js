@@ -14,4 +14,3 @@ var NA_DATA;
     NA_DATA["USER_INFO"] = "USER_INFO";
     NA_DATA["CONFIG"] = "CONFIG";
 })(NA_DATA = exports.NA_DATA || (exports.NA_DATA = {}));
-//# sourceMappingURL=DataDefine.js.map

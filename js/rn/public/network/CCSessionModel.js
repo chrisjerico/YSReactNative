@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var ANHelper_1 = require("./../define/ANHelper/ANHelper");
 var react_native_1 = require("react-native");
-var AppDefine_1 = __importDefault(require("../define/AppDefine"));
+var AppDefine_1 = require("../define/AppDefine");
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var CmdDefine_1 = require("../define/ANHelper/hp/CmdDefine");
 var CCSessionModel = /** @class */ (function () {
@@ -105,4 +102,3 @@ var CCSessionModel = /** @class */ (function () {
     return CCSessionModel;
 }());
 exports.default = CCSessionModel;
-//# sourceMappingURL=CCSessionModel.js.map

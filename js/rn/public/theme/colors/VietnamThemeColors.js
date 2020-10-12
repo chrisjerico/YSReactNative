@@ -30,4 +30,3 @@ exports.VietnamThemeColors = {
         yubaoBgColor: "#8E8E8E"
     },
 };
-//# sourceMappingURL=VietnamThemeColors.js.map
