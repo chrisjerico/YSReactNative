@@ -41,15 +41,18 @@ function setRnPageInfo() {
         if (skitType.indexOf('越南') != -1) {
             pages = pages.concat(VietnamPages);
         }
+        if (skitType.indexOf('利来') != -1) {
+            pages = pages.concat(LLPages);
+        }
     }
     // 测试环境（未上线的内容）
     if (config_1.devConfig.isTest()) {
         if (skitType.indexOf('凯时') != -1) {
             pages = pages.concat(KSPages);
         }
-        if (skitType.indexOf('利来') != -1) {
-            pages = pages.concat(LLPages);
-        }
+        // if (skitType.indexOf('利来') != -1) {
+        //   pages = pages.concat(LLPages)
+        // }
         if (skitType.indexOf('六合厅') != -1) {
             pages = pages.concat(LHTPages);
         }
