@@ -12,13 +12,16 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OCEvent = exports.OCEventType = void 0;
 var UGStore_1 = require("./../../../../redux/store/UGStore");
 var OCCall_1 = require("./OCCall");
 var Navigation_1 = require("../../../navigation/Navigation");
 var RootNavigation_1 = require("../../../navigation/RootNavigation");
-var UGSkinManagers_1 = require("../../../theme/UGSkinManagers");
+var UGSkinManagers_1 = __importDefault(require("../../../theme/UGSkinManagers"));
 var SetRnPageInfo_1 = require("../SetRnPageInfo");
 var OCEventType;
 (function (OCEventType) {
@@ -92,3 +95,4 @@ var OCEvent = /** @class */ (function (_super) {
     return OCEvent;
 }(OCCall_1.OCCall));
 exports.OCEvent = OCEvent;
+//# sourceMappingURL=OCEvent.js.map

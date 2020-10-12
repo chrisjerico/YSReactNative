@@ -46,14 +46,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.httpClient = exports.CachePolicyEnum = void 0;
-var axios_1 = require("axios");
+var axios_1 = __importDefault(require("axios"));
 var react_native_1 = require("react-native");
 var UGStore_1 = require("../../redux/store/UGStore");
 var ANHelper_1 = require("../define/ANHelper/ANHelper");
 var CmdDefine_1 = require("../define/ANHelper/hp/CmdDefine");
-var AppDefine_1 = require("../define/AppDefine");
+var AppDefine_1 = __importDefault(require("../define/AppDefine"));
 var OCHelper_1 = require("../define/OCHelper/OCHelper");
 var Ext_1 = require("../tools/Ext");
 var UgLog_1 = require("../tools/UgLog");
@@ -242,3 +245,4 @@ exports.httpClient.interceptors.request.use(function (config) { return __awaiter
         }
     });
 }); });
+//# sourceMappingURL=httpClient.js.map

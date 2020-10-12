@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var ANHelper_1 = require("./ANHelper/ANHelper");
 var react_native_1 = require("react-native");
 var OCHelper_1 = require("./OCHelper/OCHelper");
-var FPrototypes_1 = require("../tools/prototype/FPrototypes");
+var FPrototypes_1 = __importDefault(require("../tools/prototype/FPrototypes"));
 var UGStore_1 = require("../../redux/store/UGStore");
 var RootNavigation_1 = require("../navigation/RootNavigation");
 var AppDefine = /** @class */ (function () {
@@ -46,3 +49,4 @@ var AppDefine = /** @class */ (function () {
     return AppDefine;
 }());
 exports.default = AppDefine;
+//# sourceMappingURL=AppDefine.js.map

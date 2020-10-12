@@ -1,4 +1,7 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RnPageModel = exports.setRnPageInfo = void 0;
 var config_1 = require("./../../../../../config");
@@ -7,7 +10,7 @@ var Router_1 = require("../../navigation/Router");
 var UGSkinManagers_1 = require("./../../theme/UGSkinManagers");
 var OCHelper_1 = require("./OCHelper");
 var react_native_1 = require("react-native");
-var AppDefine_1 = require("../AppDefine");
+var AppDefine_1 = __importDefault(require("../AppDefine"));
 var config_2 = require("../../../../../config");
 // 配置需要被替换的oc页面（替换成rn）
 function setRnPageInfo() {
@@ -409,3 +412,4 @@ var RnPageModel = /** @class */ (function () {
     return RnPageModel;
 }());
 exports.RnPageModel = RnPageModel;
+//# sourceMappingURL=SetRnPageInfo.js.map

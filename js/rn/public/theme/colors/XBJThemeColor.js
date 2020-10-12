@@ -84,3 +84,4 @@ exports.XBJThemeColor = {
         homeContentColor: '#ffffff88',
     },
 };
+//# sourceMappingURL=XBJThemeColor.js.map

@@ -27,3 +27,4 @@ exports.KSThemeColor = {
         isBlack: true
     }
 };
+//# sourceMappingURL=KSThemeColor.js.map
