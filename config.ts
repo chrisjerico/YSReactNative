@@ -1,4 +1,4 @@
-import { Alert, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import { OCHelper } from './js/rn/public/define/OCHelper/OCHelper'
 
 // 调试环境配置
@@ -6,13 +6,6 @@ export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
   isTest: () => {
     // 是否测试环境
-    Alert.alert(
-      'isTest?',
-      OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' &&
-        OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
-        ? 'true'
-        : 'false'
-    )
     if (Platform.OS == 'ios') {
       return (
         OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' &&

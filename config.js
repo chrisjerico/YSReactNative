@@ -8,10 +8,6 @@ exports.devConfig = {
     isDebug: __DEV__,
     isTest: function () {
         // 是否测试环境
-        react_native_1.Alert.alert('isTest?', OCHelper_1.OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' &&
-            OCHelper_1.OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
-            ? 'true'
-            : 'false');
         if (react_native_1.Platform.OS == 'ios') {
             return (OCHelper_1.OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' &&
                 OCHelper_1.OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog');
