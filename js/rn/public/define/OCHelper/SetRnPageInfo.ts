@@ -12,7 +12,7 @@ export function setRnPageInfo() {
   let pages: Array<RnPageModel> = [];
 
   let skitType = Skin1.skitType;
-  skitType = '利来';
+  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
   console.log("------------------skitType------------------", skitType)
 
   // 本地编译

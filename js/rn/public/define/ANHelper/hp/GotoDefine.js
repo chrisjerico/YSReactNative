@@ -52,3 +52,4 @@ var MenuType;
     MenuType["HBJL"] = "36";
     MenuType["SLJL"] = "37";
 })(MenuType = exports.MenuType || (exports.MenuType = {}));
+//# sourceMappingURL=GotoDefine.js.map

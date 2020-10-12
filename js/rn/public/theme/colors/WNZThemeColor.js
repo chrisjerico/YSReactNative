@@ -30,3 +30,4 @@ exports.WNZThemeColor = {
         yubaoBgColor: "#8E8E8E"
     },
 };
+//# sourceMappingURL=WNZThemeColor.js.map

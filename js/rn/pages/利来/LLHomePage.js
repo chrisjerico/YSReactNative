@@ -204,7 +204,7 @@ var LLHomePage = function (_a) {
                     " RESERVED"),
                 React.createElement(react_native_1.Text, { style: { color: "black", textAlign: "center" } },
                     "version: ",
-                    20),
+                    21),
                 React.createElement(react_native_1.View, { style: { height: 100 } }))),
         uid === "" && React.createElement(react_native_1.View, { style: {
                 flexDirection: "row",

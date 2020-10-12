@@ -74,3 +74,4 @@ exports.logoutAndroid = function () { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); };
+//# sourceMappingURL=InfoHelper.js.map

@@ -58,3 +58,4 @@ exports.OPEN_PAGE_PMS = {
         className: 'RegeditActivity'
     }
 };
+//# sourceMappingURL=CmdDefine.js.map
