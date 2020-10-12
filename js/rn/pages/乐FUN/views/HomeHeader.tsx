@@ -80,7 +80,7 @@ const HomeHeader = ({
             </View>
             <View style={_styles.right}>
               <Button
-                title={'登录/注册/试玩'}
+                title={'登录 | 试玩'}
                 containerStyle={_styles.button}
                 titleStyle={_styles.buttonTitle}
                 onPress={onPressSignIn}
@@ -99,14 +99,11 @@ const _styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: scale(4),
-    borderColor: LEFThemeColor.乐FUN.textColor1,
-    borderWidth: scale(1.5),
     paddingVertical: scale(5),
-    borderRadius: scale(5),
   },
   buttonTitle: {
-    fontSize: scale(18),
-    color: LEFThemeColor.乐FUN.textColor1,
+    fontSize: scale(26),
+    color: LEFThemeColor.乐FUN.textColor2,
   },
   logo: {
     width: '100%',

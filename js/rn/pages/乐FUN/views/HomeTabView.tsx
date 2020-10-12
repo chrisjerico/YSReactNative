@@ -50,7 +50,7 @@ export const HomeTabView = () => {
   }
 
   const calculateHeight = (i: number) => {
-    setHeight((games[i].list.length + 1) * GAME_ITEM_HEIGHT)
+    setHeight(((games[i].list.length/2 + games[i].list.length%2) + 1) * GAME_ITEM_HEIGHT)
   }
 
 

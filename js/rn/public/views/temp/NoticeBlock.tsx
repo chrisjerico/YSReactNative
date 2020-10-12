@@ -19,7 +19,7 @@ interface NoticeBlockProps {
 
 const NoticeBlock = ({
   logo,
-  logoText = '公 告',
+  logoText = '公告',
   notices,
   containerStyle,
   onPressNotice,
@@ -46,6 +46,7 @@ const NoticeBlock = ({
       </View>
       <View style={styles.noticContainer}>
         <MarqueeHorizontal
+          bgContainerStyle={{backgroundColor: 'transparent'}}
           width={AppDefine.width * 0.85}
           height={null}
           textStyle={textStyle}

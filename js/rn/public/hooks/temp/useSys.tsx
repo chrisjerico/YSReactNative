@@ -60,9 +60,12 @@ const getPasswordStrength = (pass_limit: string) => {
 }
 
 const useSys = ({ defaultUserCenterLogos }: UseSys) => {
+
+  const { mobile_logo } = UGStore.globalProps.sysConf;
   const sysStore = UGStore.globalProps.sys
   const sys = {
     ...sysStore,
+    mobile_logo: mobile_logo,
     showCoupon: sysStore?.m_promote_pos == '1' ? true : false,
     rankingListType:
       sysStore?.rankingListSwitch ?

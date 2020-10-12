@@ -32,6 +32,7 @@ import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
+import {FuncTab} from "./views/FuncTab";
 
 const LEFHomePage = ({navigation, setProps}) => {
 
@@ -95,7 +96,7 @@ const LEFHomePage = ({navigation, setProps}) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.tabBarBgColor}>
+        <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
           <HomeHeader
             logo={mobile_logo}
             isTest={isTest}
@@ -150,15 +151,17 @@ const LEFHomePage = ({navigation, setProps}) => {
             logoTextStyle={{
               fontSize: scale(18),
               paddingHorizontal: scale(10),
+              color: 'white'
             }}
-            textStyle={{ fontSize: scale(18) }}
-            containerStyle={{ borderRadius: 0 }}
+            textStyle={{ fontSize: scale(18), color: 'white' }}
+            containerStyle={_styles.notice}
             notices={notices}
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
 
+          <FuncTab/>
           <HomeTabView/>
 
           <CouponBlock
@@ -281,6 +284,10 @@ const LEFHomePage = ({navigation, setProps}) => {
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+  },
+  notice: {
+    backgroundColor: '#999999',
+    borderRadius: 0,
   },
   subComponent: {
     marginTop: scale(10),

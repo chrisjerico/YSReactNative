@@ -8,7 +8,7 @@ export const LEFThemeColor: { [x: string]: UGThemeColor } = {
     tabBarBgColor: '#E5E5E5',
     tabNoSelectColor: '#F6F6F6',
     homeContentSubColor: '#f2f2f2', // 額度轉換Tab
-    get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
+    get bgColor() { return ['#ffffff', '#ffffff'] },
     get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
     get tabSelectedColor() { return this.themeColor },
     get progressBgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
