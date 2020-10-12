@@ -8,43 +8,40 @@ import {
 } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/temp/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useSignInPage from '../../public/hooks/temp/useSignInPage'
+import useSignUpPage from '../../public/hooks/temp/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
-import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
+import { pop, popToRoot, push } from '../../public/navigation/RootNavigation'
+import { LEFThemeColor } from '../../public/theme/colors/LEFThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/temp/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
 import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
-import SignInFormList from '../../public/views/temp/SignInFormList'
+import SignUpFormList from '../../public/views/temp/SignUpFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
+import {HJThemeColor} from "../../public/theme/colors/HJThemeColor";
 
-const BYSignInPage = () => {
-  console.disableYellowBox = true
-
+const LEFSignUpPage = () => {
   const {
-    sign,
-    value,
-    onChange,
-    navigateTo,
     show,
     slideCodeRef,
+    phoneNumber,
+    label,
+    onChange,
+    sign,
     valid,
-  } = useSignInPage({
-    homePage: PageName.BYHomePage,
-    signUpPage: PageName.BYSignUpPage,
+    passwordLimit,
+  } = useSignUpPage({
+    homePage: PageName.LEFHomePage,
+    signInPage: PageName.LEFSignInPage,
   })
 
-  const { navigateToSignUpPage } = navigateTo
-
-  const { signIn, tryPlay } = sign
+  const { signUp } = sign
 
   return (
     <>
       <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.tabBarBgColor}>
         <MineHeader
-          title={'登录'}
+          title={'注册'}
           titleColor={LEFThemeColor.乐FUN.themeColor}
           showBackBtn={true}
           onPressBackBtn={pop}
@@ -56,16 +53,18 @@ const BYSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList
+          <SignUpFormList
             slideCodeRef={slideCodeRef}
+            phoneNumber={phoneNumber}
             slideCodeColor={'#ffffff'}
             show={show}
+            label={label}
+            passwordLimit={passwordLimit}
             onChange={onChange}
-            value={value}
-            Form={SignInForm}
+            Form={SignUpForm}
           />
           <Button
-            title={'立即登录'}
+            title={'注册'}
             disabled={!valid}
             containerStyle={[
               styles.button,
@@ -75,37 +74,36 @@ const BYSignInPage = () => {
             ]}
             disabledContainerStyle={styles.button}
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
-            onPress={signIn}
+            onPress={signUp}
           />
           <Button
-            title={'马上注册'}
+            title={'已有账号，点击登录'}
             containerStyle={styles.signUpButton}
             titleStyle={styles.signUpText}
-            onPress={navigateToSignUpPage}
+            onPress={() => {
+              push(PageName.LEFSignInPage, {})
+            }}
           />
-          <Button
-            title={'免费试玩'}
-            containerStyle={styles.tryButton}
-            titleStyle={{ color: LEFThemeColor.乐FUN.themeColor, fontSize: scale(23) }}
-            onPress={tryPlay}
-          />
+
         </View>
       </ScrollView>
     </>
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
-  <FormComponent
-    {...props}
-    containerStyle={{ marginBottom: scale(20) }}
-    inputContainerStyle={{ borderColor: '#d9d9d9' }}
-    leftIcon={{
-      ...props.leftIcon,
-      color: LEFThemeColor.乐FUN.themeColor,
-    }}
-  />
-)
+const SignUpForm = (props: FormComponentProps) => {
+  return (
+    <FormComponent
+      {...props}
+      containerStyle={{ marginBottom: scale(10) }}
+      inputContainerStyle={{ borderColor: '#d9d9d9' }}
+      leftIcon={{
+        ...props.leftIcon,
+        color: LEFThemeColor.乐FUN.themeColor,
+      }}
+    />
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +118,6 @@ const styles = StyleSheet.create({
     marginTop: scale(15),
     paddingHorizontal: scale(25),
     paddingTop: scale(25),
-    paddingBottom: scale(44),
     marginBottom: scaleHeight(70),
   },
   bottomButtonContainer: {
@@ -129,11 +126,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     paddingVertical: scale(25),
-    marginTop: scale(10),
   },
   button: {
     width: '100%',
-    marginTop: scale(16),
+    marginVertical: scale(20),
     aspectRatio: 8,
     borderRadius: scale(22),
   },
@@ -144,16 +140,7 @@ const styles = StyleSheet.create({
     width: '100%',
     aspectRatio: 8,
     borderRadius: scale(22),
-    marginTop: scale(20),
-  },
-  tryButton: {
-    backgroundColor: 'white',
-    borderColor: LEFThemeColor.乐FUN.themeColor,
-    borderWidth: scale(1),
-    width: '100%',
-    aspectRatio: 8,
-    borderRadius: scale(22),
-    marginTop: scale(20),
+    marginBottom: scale(44),
   },
   signUpText: {
     color: LEFThemeColor.乐FUN.themeColor,
@@ -161,4 +148,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BYSignInPage
+export default LEFSignUpPage

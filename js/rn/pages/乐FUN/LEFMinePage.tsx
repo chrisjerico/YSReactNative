@@ -20,7 +20,7 @@ import ProfileBlock from './views/ProfileBlock'
 import { ugLog } from "../../public/tools/UgLog";
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 
-const BYMinePage = () => {
+const LEFMinePage = () => {
   const { getHtml5Image } = useHtml5Image()
   const {
     pickAvatarComponentRef,
@@ -29,7 +29,7 @@ const BYMinePage = () => {
     value,
     sign,
   } = useMinePage({
-    homePage: PageName.BYHomePage,
+    homePage: PageName.LEFHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
@@ -143,4 +143,4 @@ const BYMinePage = () => {
   )
 }
 
-export default BYMinePage
+export default LEFMinePage

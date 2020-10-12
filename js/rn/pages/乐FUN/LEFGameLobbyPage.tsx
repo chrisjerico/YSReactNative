@@ -16,7 +16,7 @@ import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 
-const BYGameLobbyPage = ({ route }) => {
+const LEFGameLobbyPage = ({ route }) => {
   const gameLobby = UGStore.globalProps.gameLobby
   const { initialTabIndex } = route?.params ?? {}
 
@@ -41,7 +41,7 @@ const BYGameLobbyPage = ({ route }) => {
           renderScene={({ item, tab, index }) => {
             return (
               <List
-                uniqueKey={'BYGameLobbyPage' + index.toString()}
+                uniqueKey={'LEFGameLobbyPage' + index.toString()}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),
@@ -101,7 +101,7 @@ const GameLobbyPageHeader = () => (
       showBackBtn={true}
       onPressBackBtn={() => {
         OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
-          navigate(PageName.BYHomePage, {})
+          navigate(PageName.LEFHomePage, {})
         })
       }}
       showCustomerService={false}
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BYGameLobbyPage
+export default LEFGameLobbyPage

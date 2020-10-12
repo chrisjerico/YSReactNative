@@ -130,6 +130,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
         <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
         <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
+        <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
+        <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
       </Router.TabNavigator>
     )
@@ -148,6 +150,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={UGPage(BYSignInPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={UGPage(BYSignUpPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignInPage} component={UGPage(LEFSignInPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />

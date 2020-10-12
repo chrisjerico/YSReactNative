@@ -53,6 +53,10 @@ export enum PageName {
   BYMinePage = "BYMinePage",
   BYSignInPage = "BYSignInPage",
   BYSignUpPage = "BYSignUpPage",
+  LEFHomePage = "LEFHomePage",//乐FUN
+  LEFMinePage = "LEFMinePage",
+  LEFSignInPage = "LEFSignInPage",
+  LEFSignUpPage = "LEFSignUpPage",
   KSHomePage = 'KSHomePage',
   KSSignInPage = 'KSSignInPage',
   KSSignUpPage = 'KSSignUpPage',

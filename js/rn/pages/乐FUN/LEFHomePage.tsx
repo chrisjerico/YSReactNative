@@ -33,7 +33,7 @@ import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 
-const BYHomePage = ({navigation, setProps}) => {
+const LEFHomePage = ({navigation, setProps}) => {
 
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
@@ -102,8 +102,8 @@ const BYHomePage = ({navigation, setProps}) => {
             uid={uid}
             name={usr}
             balance={balance}
-            onPressSignIn={() => push(PageName.BYSignInPage)}
-            onPressSignUp={() => push(PageName.BYSignUpPage)}
+            onPressSignIn={() => push(PageName.LEFSignInPage)}
+            onPressSignUp={() => push(PageName.LEFSignUpPage)}
             onPressUser={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.我的页)
             }}
@@ -291,4 +291,4 @@ const _styles = StyleSheet.create({
   },
 })
 
-export default BYHomePage
+export default LEFHomePage
