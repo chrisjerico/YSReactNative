@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../public/define/PushHelper'

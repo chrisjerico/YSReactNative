@@ -1,11 +1,5 @@
 import React, { useRef } from 'react'
-import {
-  // LogBox,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
@@ -40,7 +34,6 @@ import TabBar from './views/TabBar'
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const WNZHomePage = () => {
-  // LogBox.ignoreAllLogs()
   const menu = useRef(null)
 
   const { goTo, refresh, value, sign } = useHomePage({
