@@ -5,6 +5,7 @@ var React = require("react");
 var react_native_1 = require("react-native");
 exports.HotLotteryView = function (_a) {
     var list = _a.list, onPress = _a.onPress;
+    console.log("tetetet", list[0]);
     return (<react_native_1.View style={{ padding: 10 }}>
             <react_native_1.Text style={{ fontSize: 18, color: '#3c3c3c', fontWeight: "bold" }}>热门彩种</react_native_1.Text>
             <react_native_1.FlatList scrollEnabled={false} numColumns={3} keyExtractor={function (item, key) { return "hotLottery-" + key; }} data={list} renderItem={function (_a) {

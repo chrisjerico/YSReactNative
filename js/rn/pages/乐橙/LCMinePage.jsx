@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_1 = require("react");
 var react_native_1 = require("react-native");
-var BaseScreen_1 = require("./component/BaseScreen");
 var CardView_1 = require("./component/minePage/CardView");
 var FontAwesome_1 = require("react-native-vector-icons/FontAwesome");
 var UGStore_1 = require("../../redux/store/UGStore");
@@ -20,7 +19,25 @@ var LCMinePage = function () {
         userStore && uid == "" && PushHelper_1.default.pushLogin();
     });
     var loginOut = useLoginOut_1.default(Navigation_1.PageName.LCHomePage).loginOut;
-    return (<BaseScreen_1.BaseScreen style={{ backgroundColor: "#ffffff", flex: 1 }} screenName={"我的"}>
+    return (<react_native_1.View style={{ backgroundColor: "#ffffff", flex: 1 }}>
+          <react_native_1.SafeAreaView style={{ backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1 }}>
+            <react_native_1.View style={{
+        backgroundColor: "#ffffff",
+        width: react_native_1.Dimensions.get("screen").width,
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: "center",
+    }}>
+              <react_native_1.Text style={{
+        paddingTop: 15,
+        paddingBottom: 15,
+        textAlign: "center",
+        fontSize: 17,
+        width: "100%",
+        alignSelf: "center"
+    }}>{"我的"}</react_native_1.Text>
+            </react_native_1.View>
+          </react_native_1.SafeAreaView>
             <react_native_1.ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                 <CardView_1.CardView />
                 <react_native_1.SafeAreaView>
@@ -48,18 +65,18 @@ var LCMinePage = function () {
                                 </react_native_1.TouchableWithoutFeedback>
                             </react_native_1.View>);
     }}/>
-                    <react_native_linear_gradient_1.default style={{ marginTop: 10, marginBottom: 90, height: 55, borderRadius: 8, marginHorizontal: 20 }} colors={["#df830f", "#ffc200"]}>
+                    <react_native_linear_gradient_1.default style={{ marginTop: 10, marginBottom: 90, height: 55, borderRadius: 8, marginHorizontal: 20, justifyContent: 'center' }} colors={["#df830f", "#ffc200"]}>
                         <react_native_1.TouchableWithoutFeedback onPress={loginOut} style={{
         height: 55,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,
     }}>
-                            <react_native_1.Text style={{ color: 'white', fontSize: 21 }}>退出登录</react_native_1.Text>
+                            <react_native_1.Text style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</react_native_1.Text>
                         </react_native_1.TouchableWithoutFeedback>
                     </react_native_linear_gradient_1.default>
                 </react_native_1.SafeAreaView>
             </react_native_1.ScrollView>
-        </BaseScreen_1.BaseScreen>);
+        </react_native_1.View>);
 };
 exports.default = LCMinePage;

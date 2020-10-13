@@ -45,7 +45,7 @@ var PromotionsBlock = function (_a) {
                     <react_native_1.View>
                         {titleVisible && <react_native_1.Text style={{
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 18,
             marginBottom: 5,
             color: 'black'
         }}>{item.title}</react_native_1.Text>}

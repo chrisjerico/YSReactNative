@@ -5,33 +5,33 @@ import NumberFormat from 'react-number-format'
 import { useEffect, useState } from 'react'
 
 export const MonthlyBonus = () => {
-    const  [bonus, setBonus]  = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
-    useEffect(() => {
-        const timer = setInterval(() => {
-            getRandomString()
-        }, 500)
-        return (() => clearInterval(timer))
-    }, [])
+  const [bonus, setBonus] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      getRandomString()
+    }, 500)
+    return () => clearInterval(timer)
+  }, [])
 
-    const getRandomString = () => {
-        const num = ((2 + Math.random()) * 100000).toFixed(2)
-        setBonus("¥ " + num)
-    }
-    useEffect(() => {
-        AsyncStorage.getItem('LCMonthlyBonus').then((value) => {
-            const currentDate = new Date()
-            if (currentDate.getDate() != 1 && !isNaN(parseInt(value))) {
-                const randomNumber = Math.floor(Math.random() * 10000) + Math.random() * 10000 + 2
-                const newValue = (parseInt(value) + randomNumber).toFixed(0).toString();
-                AsyncStorage.setItem('LCMonthlyBonus', newValue);
-                setBonus(newValue)
-            } else {
-                const newValue = (Math.floor(Math.random() * 10000) + Math.random() * 10 + 2).toFixed(0)
-                AsyncStorage.setItem('LCMonthlyBonus', newValue.toString());
-                setBonus(newValue.toString())
-            }
-        });
-    }, [])
+  const getRandomString = () => {
+    const num = ((2 + Math.random()) * 100000).toFixed(2)
+    setBonus('¥ ' + num)
+  }
+  useEffect(() => {
+    AsyncStorage.getItem('LCMonthlyBonus').then((value) => {
+      const currentDate = new Date()
+      if (currentDate.getDate() != 1 && !isNaN(parseInt(value))) {
+        const randomNumber = Math.floor(Math.random() * 10000) + Math.random() * 10000 + 2
+        const newValue = (parseInt(value) + randomNumber).toFixed(0).toString()
+        AsyncStorage.setItem('LCMonthlyBonus', newValue)
+        setBonus(newValue)
+      } else {
+        const newValue = (Math.floor(Math.random() * 10000) + Math.random() * 10 + 2).toFixed(0)
+        AsyncStorage.setItem('LCMonthlyBonus', newValue.toString())
+        setBonus(newValue.toString())
+      }
+    })
+  }, [])
 
   return (
     <View style={{ height: 54, marginTop: 10, alignItems: 'center' }}>

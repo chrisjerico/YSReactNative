@@ -147,7 +147,7 @@ const LCHomePage = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#f3f3f3" }}>
       <HomeHeaderButtonBar/>
       <ScrollView showsVerticalScrollIndicator={false}
                   refreshControl={<RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading}
@@ -158,8 +158,9 @@ const LCHomePage = ({ navigation }) => {
           flexDirection: "row",
           alignItems: "center",
           backgroundColor: "white",
-          marginHorizontal: 10,
-          marginVertical: 10,
+          marginHorizontal: 8,
+          marginTop: 4,
+          marginBottom: 8,
           borderRadius: 16,
           paddingLeft: 5,
         }}>
@@ -168,7 +169,7 @@ const LCHomePage = ({ navigation }) => {
           <MarqueeHorizontal textStyle={{ color: "black", fontSize: 16 }}
                              bgContainerStyle={{ backgroundColor: "white" }}
                              width={width - 50}
-                             height={18}
+                             height={40}
                              speed={60}
                              onTextClick={() => {
                                setShow(true)
@@ -217,16 +218,16 @@ const LCHomePage = ({ navigation }) => {
           <TouchableWithoutFeedback onPress={() => {
             push(PageName.PromotionListPage)
           }}>
-            <Text style={{ fontSize: 16, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</Text>
+            <Text style={{ fontSize: 18, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</Text>
           </TouchableWithoutFeedback>
           <View style={{ flex: 1 }}/>
           <TouchableWithoutFeedback onPress={() => {
             push(PageName.PromotionListPage)
           }}>
-            <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></Text>
+            <Text style={{ fontSize: 18, color: "#333333", textAlign: "center" }}>查看更多>></Text>
           </TouchableWithoutFeedback>
         </View>
-        <View>
+        <View style={{backgroundColor: "white", marginHorizontal: 10, borderRadius: 16}}>
           <PromotionsBlock/>
         </View>
         {rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
@@ -259,7 +260,7 @@ const LCHomePage = ({ navigation }) => {
           }}>🎁优惠活动</Text>
         </View>
         <Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT © {webName} RESERVED</Text>
-        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 02"}</Text>
+        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 03"}</Text>
         <View style={{ height: 100 }}/>
       </ScrollView>
       <RedBagItem redBag={redBag}/>
@@ -273,58 +274,6 @@ const LCHomePage = ({ navigation }) => {
   )
 }
 
-const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
-  const [selectId, setSelectedId] = useState(-1)
-  const { width } = useDimensions().window
-  const { onPopViewPress } = usePopUpView()
-  const webViewSource = (item: any) => {
-    return {
-      html: `<head>
-            <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-            <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
-            <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
-          </head>` +
-        `<script>
-            window.onload = function () {
-              window.location.hash = 1;
-              document.title = document.body.scrollHeight;
-            }
-          </script>` + item.content,
-    }
-  }
-  return (
-    <FlatList
-      style={{ backgroundColor: "#ffffff", borderRadius: 10 }}
-      keyExtractor={(item, index) => `LCHome` + item.id + index}
-      data={filter != "0" ? dataSource.data.list.filter((res, index) => res.category == filter) : dataSource?.data?.list}
-      renderItem={({ item, index }) => {
-        return <View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-          <TouchableWithoutFeedback
-            onPress={onPopViewPress.bind(null, item, promotionData?.data?.style ?? "popup", () => {
-              if (selectId == index) {
-                setSelectedId(-1)
-              } else {
-                setSelectedId(index)
-              }
-            })}>
-            <View style={{}}>
-              <Text style={{
-                fontSize: 16,
-                marginBottom: 5,
-              }}>{item.title}</Text>
-              <FastImage style={{ width: Dimensions.get("screen").width - 16, height: 350 }}
-                         source={{ uri: item.pic }}/>
-            </View>
-          </TouchableWithoutFeedback>
-          {selectId == index ? <AutoHeightWebView
-            style={{ width: width - 20, backgroundColor: "white" }}
-            viewportContent={"width=device-width, user-scalable=no"}
-            source={webViewSource(item)}/> : null
-          }
-        </View>
-      }}/>
-  )
-}
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen
   if (show) {
@@ -493,7 +442,7 @@ const Banner = ({ bannerData, onlineNum = 0, showOnlineCount = true, customHeigh
         BannerRef?.current?.gotoNextPage()
       },
       bannerData?.data?.interval ?
-        parseInt(bannerData?.data?.interval) : parseInt(bannerData?.info?.runtime) ? parseInt(bannerData?.info?.runtime) : 2000)
+        parseInt(bannerData?.data?.interval) * 1000 : parseInt(bannerData?.info?.runtime) ? parseInt(bannerData?.info?.runtime) * 1000 : 2000)
     return (() => {
       clearInterval(timer)
     })

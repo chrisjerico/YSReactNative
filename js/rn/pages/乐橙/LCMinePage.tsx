@@ -1,15 +1,23 @@
-import * as React from "react";
-import {useEffect} from "react";
-import {FlatList, Image, SafeAreaView, ScrollView, Text, TouchableWithoutFeedback, View} from "react-native";
-import {BaseScreen} from "./component/BaseScreen";
-import {CardView} from "./component/minePage/CardView";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {UGStore} from "../../redux/store/UGStore";
-import useMemberItems from "../../public/hooks/useMemberItems";
-import PushHelper from "../../public/define/PushHelper";
-import useLoginOut from "../../public/hooks/useLoginOut";
-import {PageName} from "../../public/navigation/Navigation";
-import LinearGradient from "react-native-linear-gradient";
+import * as React from 'react'
+import { useEffect } from 'react'
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
+import { CardView } from './component/minePage/CardView'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { UGStore } from '../../redux/store/UGStore'
+import useMemberItems from '../../public/hooks/useMemberItems'
+import PushHelper from '../../public/define/PushHelper'
+import useLoginOut from '../../public/hooks/useLoginOut'
+import { PageName } from '../../public/navigation/Navigation'
+import LinearGradient from 'react-native-linear-gradient'
 
 const LCMinePage = () => {
     const userStore = UGStore.globalProps.userInfo;
@@ -21,7 +29,25 @@ const LCMinePage = () => {
     const {loginOut} = useLoginOut(PageName.LCHomePage)
 
     return (
-        <BaseScreen style={{backgroundColor: "#ffffff", flex: 1}} screenName={"我的"}>
+        <View style={{backgroundColor: "#ffffff", flex: 1}}>
+          <SafeAreaView style={{backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
+            <View style={{
+              backgroundColor: "#ffffff",
+              width: Dimensions.get("screen").width,
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "center",
+            }}>
+              <Text style={{
+                paddingTop: 15,
+                paddingBottom: 15,
+                textAlign: "center",
+                fontSize: 17,
+                width: "100%",
+                alignSelf: "center"
+              }}>{"我的"}</Text>
+            </View>
+          </SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                 <CardView/>
                 <SafeAreaView>
@@ -56,7 +82,7 @@ const LCMinePage = () => {
                             </View>
                         )}/>
                     <LinearGradient
-                        style={{marginTop: 10, marginBottom: 90, height: 55, borderRadius: 8, marginHorizontal: 20}}
+                        style={{marginTop: 10, marginBottom: 90, height: 55, borderRadius: 8, marginHorizontal: 20, justifyContent: 'center'}}
                         colors={["#df830f", "#ffc200"]}>
                         <TouchableWithoutFeedback onPress={loginOut} style={{
                             height: 55,
@@ -64,12 +90,12 @@ const LCMinePage = () => {
                             alignItems: 'center',
                             borderRadius: 8,
                         }}>
-                            <Text style={{color: 'white', fontSize: 21}}>退出登录</Text>
+                            <Text style={{color: 'white', fontSize: 21, alignSelf: 'center'}}>退出登录</Text>
                         </TouchableWithoutFeedback>
                     </LinearGradient>
                 </SafeAreaView>
             </ScrollView>
-        </BaseScreen>
+        </View>
     )
 }
 

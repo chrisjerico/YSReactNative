@@ -55,7 +55,6 @@ var Navigation_1 = require("../../public/navigation/Navigation");
 var hooks_1 = require("@react-native-community/hooks");
 var OCHelper_1 = require("../../public/define/OCHelper/OCHelper");
 var APIRouter_1 = require("../../public/network/APIRouter");
-var usePopUpView_1 = require("../../public/hooks/usePopUpView");
 var react_native_autoheight_webview_1 = require("react-native-autoheight-webview");
 var react_native_fast_image_1 = require("react-native-fast-image");
 var RedBagItem_1 = require("../../public/components/RedBagItem");
@@ -194,7 +193,7 @@ var LCHomePage = function (_a) {
             }
         });
     }); };
-    return (<react_native_1.View style={{ flex: 1 }}>
+    return (<react_native_1.View style={{ flex: 1, backgroundColor: "#f3f3f3" }}>
       <HomeHeaderButtonBar_1.HomeHeaderButtonBar />
       <react_native_1.ScrollView showsVerticalScrollIndicator={false} refreshControl={<react_native_1.RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading} onRefresh={onRefresh}/>}>
         <Banner onlineNum={onlineNum} bannerData={banner}/>
@@ -202,13 +201,14 @@ var LCHomePage = function (_a) {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "white",
-        marginHorizontal: 10,
-        marginVertical: 10,
+        marginHorizontal: 8,
+        marginTop: 4,
+        marginBottom: 8,
         borderRadius: 16,
         paddingLeft: 5,
     }}>
           <react_native_fast_image_1.default source={{ uri: "http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png" }} style={{ width: 12, height: 12, marginRight: 4 }}/>
-          <react_native_marquee_ab_1.MarqueeHorizontal textStyle={{ color: "black", fontSize: 16 }} bgContainerStyle={{ backgroundColor: "white" }} width={width - 50} height={18} speed={60} onTextClick={function () {
+          <react_native_marquee_ab_1.MarqueeHorizontal textStyle={{ color: "black", fontSize: 16 }} bgContainerStyle={{ backgroundColor: "white" }} width={width - 50} height={40} speed={60} onTextClick={function () {
         setShow(true);
         setContent(originalNoticeString);
     }} textList={noticeFormat}/>
@@ -236,16 +236,16 @@ var LCHomePage = function (_a) {
           <react_native_1.TouchableWithoutFeedback onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.PromotionListPage);
     }}>
-            <react_native_1.Text style={{ fontSize: 16, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</react_native_1.Text>
+            <react_native_1.Text style={{ fontSize: 18, color: "#333333", lineHeight: 22, marginVertical: 10 }}>优惠活动</react_native_1.Text>
           </react_native_1.TouchableWithoutFeedback>
           <react_native_1.View style={{ flex: 1 }}/>
           <react_native_1.TouchableWithoutFeedback onPress={function () {
         RootNavigation_1.push(Navigation_1.PageName.PromotionListPage);
     }}>
-            <react_native_1.Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>查看更多>></react_native_1.Text>
+            <react_native_1.Text style={{ fontSize: 18, color: "#333333", textAlign: "center" }}>查看更多>></react_native_1.Text>
           </react_native_1.TouchableWithoutFeedback>
         </react_native_1.View>
-        <react_native_1.View>
+        <react_native_1.View style={{ backgroundColor: "white", marginHorizontal: 10, borderRadius: 16 }}>
           <PromotionsBlock_1.default />
         </react_native_1.View>
         {rankingListSwitch === 1 ? <react_native_1.SafeAreaView style={{ marginHorizontal: 10 }}>
@@ -276,7 +276,7 @@ var LCHomePage = function (_a) {
     }}>🎁优惠活动</react_native_1.Text>
         </react_native_1.View>
         <react_native_1.Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT © {webName} RESERVED</react_native_1.Text>
-        <react_native_1.Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 02"}</react_native_1.Text>
+        <react_native_1.Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 03"}</react_native_1.Text>
         <react_native_1.View style={{ height: 100 }}/>
       </react_native_1.ScrollView>
       <RedBagItem_1.default redBag={redBag}/>
@@ -287,42 +287,6 @@ var LCHomePage = function (_a) {
         setShow(false);
     }}/>
     </react_native_1.View>);
-};
-var PromotionLists = function (_a) {
-    var _b;
-    var dataSource = _a.dataSource, filter = _a.filter, promotionData = _a.promotionData;
-    var _c = react_1.useState(-1), selectId = _c[0], setSelectedId = _c[1];
-    var width = hooks_1.useDimensions().window.width;
-    var onPopViewPress = usePopUpView_1.default().onPopViewPress;
-    var webViewSource = function (item) {
-        return {
-            html: "<head>\n            <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>\n            <style>img{width:auto !important;max-width:100%;height:auto !important}</style>\n            <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>\n          </head>" +
-                "<script>\n            window.onload = function () {\n              window.location.hash = 1;\n              document.title = document.body.scrollHeight;\n            }\n          </script>" + item.content,
-        };
-    };
-    return (<react_native_1.FlatList style={{ backgroundColor: "#ffffff", borderRadius: 10 }} keyExtractor={function (item, index) { return "LCHome" + item.id + index; }} data={filter != "0" ? dataSource.data.list.filter(function (res, index) { return res.category == filter; }) : (_b = dataSource === null || dataSource === void 0 ? void 0 : dataSource.data) === null || _b === void 0 ? void 0 : _b.list} renderItem={function (_a) {
-        var _b, _c;
-        var item = _a.item, index = _a.index;
-        return <react_native_1.View style={{ paddingHorizontal: 10, marginBottom: 20 }}>
-          <react_native_1.TouchableWithoutFeedback onPress={onPopViewPress.bind(null, item, (_c = (_b = promotionData === null || promotionData === void 0 ? void 0 : promotionData.data) === null || _b === void 0 ? void 0 : _b.style) !== null && _c !== void 0 ? _c : "popup", function () {
-            if (selectId == index) {
-                setSelectedId(-1);
-            }
-            else {
-                setSelectedId(index);
-            }
-        })}>
-            <react_native_1.View style={{}}>
-              <react_native_1.Text style={{
-            fontSize: 16,
-            marginBottom: 5,
-        }}>{item.title}</react_native_1.Text>
-              <react_native_fast_image_1.default style={{ width: react_native_1.Dimensions.get("screen").width - 16, height: 350 }} source={{ uri: item.pic }}/>
-            </react_native_1.View>
-          </react_native_1.TouchableWithoutFeedback>
-          {selectId == index ? <react_native_autoheight_webview_1.default style={{ width: width - 20, backgroundColor: "white" }} viewportContent={"width=device-width, user-scalable=no"} source={webViewSource(item)}/> : null}
-        </react_native_1.View>;
-    }}/>);
 };
 var MarqueePopupView = function (_a) {
     var content = _a.content, show = _a.show, onPress = _a.onPress, onDismiss = _a.onDismiss;
@@ -513,7 +477,7 @@ var Banner = function (_a) {
             //@ts-ignore
             (_a = BannerRef === null || BannerRef === void 0 ? void 0 : BannerRef.current) === null || _a === void 0 ? void 0 : _a.gotoNextPage();
         }, ((_a = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _a === void 0 ? void 0 : _a.interval) ?
-            parseInt((_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.interval) : parseInt((_c = bannerData === null || bannerData === void 0 ? void 0 : bannerData.info) === null || _c === void 0 ? void 0 : _c.runtime) ? parseInt((_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.info) === null || _d === void 0 ? void 0 : _d.runtime) : 2000);
+            parseInt((_b = bannerData === null || bannerData === void 0 ? void 0 : bannerData.data) === null || _b === void 0 ? void 0 : _b.interval) * 1000 : parseInt((_c = bannerData === null || bannerData === void 0 ? void 0 : bannerData.info) === null || _c === void 0 ? void 0 : _c.runtime) ? parseInt((_d = bannerData === null || bannerData === void 0 ? void 0 : bannerData.info) === null || _d === void 0 ? void 0 : _d.runtime) * 1000 : 2000);
         return (function () {
             clearInterval(timer);
         });

@@ -12,7 +12,7 @@ export const devConfig = {
     return false
   },
 
-  skinKey: '威尼斯',
+  skinKey: '乐橙',
 }
 
 // 线上环境配置（这几个站点写死经典模板）

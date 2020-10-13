@@ -12,11 +12,11 @@ exports.MonthlyBonus = function () {
         var timer = setInterval(function () {
             getRandomString();
         }, 500);
-        return (function () { return clearInterval(timer); });
+        return function () { return clearInterval(timer); };
     }, []);
     var getRandomString = function () {
         var num = ((2 + Math.random()) * 100000).toFixed(2);
-        setBonus("¥ " + num);
+        setBonus('¥ ' + num);
     };
     react_1.useEffect(function () {
         react_native_1.AsyncStorage.getItem('LCMonthlyBonus').then(function (value) {

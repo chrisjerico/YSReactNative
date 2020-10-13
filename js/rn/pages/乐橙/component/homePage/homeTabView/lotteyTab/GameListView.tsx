@@ -7,7 +7,7 @@ import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 export const GameListView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (
         <FlatList
-            style={{flex: 1}}
+            style={{flex: 1, borderTopColor: '#c7c7c7', borderTopWidth: 1}}
             scrollEnabled={false}
             keyExtractor={(item, index) => `boardGame-${index}`}
             numColumns={2} data={fillArray(list, 2)}
