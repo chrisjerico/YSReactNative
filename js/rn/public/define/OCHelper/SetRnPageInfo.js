@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.RnPageModel = exports.setRnPageInfo = void 0;
 var config_1 = require("./../../../../../config");
 var Navigation_1 = require("../../navigation/Navigation");
@@ -7,12 +7,14 @@ var Router_1 = require("../../navigation/Router");
 var UGSkinManagers_1 = require("./../../theme/UGSkinManagers");
 var OCHelper_1 = require("./OCHelper");
 var react_native_1 = require("react-native");
+var AppDefine_1 = require("../AppDefine");
+var config_2 = require("../../../../../config");
 // 配置需要被替换的oc页面（替换成rn）
 function setRnPageInfo() {
+    var _a;
     var pages = [];
     var skitType = UGSkinManagers_1.Skin1.skitType;
-    // skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
-    skitType = "\u4E50\u6A59";
+    skitType = (_a = config_2.releaseConfig.skinKeys[AppDefine_1.default.siteId]) !== null && _a !== void 0 ? _a : skitType;
     console.log("------------------skitType------------------", skitType);
     // 本地编译
     if (config_1.devConfig.isDebug) {
