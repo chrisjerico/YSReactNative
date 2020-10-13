@@ -12,7 +12,7 @@ export const devConfig = {
     return false;
   },
 
-  skinKey: '白曜',
+  skinKey: '宝石红',
 }
 
 

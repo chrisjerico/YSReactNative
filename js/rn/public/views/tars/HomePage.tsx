@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'
+import React, { memo, ReactElement, useCallback } from 'react'
 import { ListRenderItem } from 'react-native'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
@@ -18,9 +18,10 @@ interface HomePageProps {
   renderItem: ListRenderItem<any>
   ListHeaderComponent: () => ReactElement
   ListFooterComponent: () => ReactElement
-  renderRestComponent: () => ReactElement
-  uid: string
-  isTest: boolean
+  renderRestComponent?: () => ReactElement
+  renderHeader?: () => ReactElement
+  uid?: string
+  isTest?: boolean
   redBagLogo: string
   redBag: RedBagDetailActivityModel
   roulette: Roulette[]
@@ -39,6 +40,7 @@ const HomePage = ({
   ListFooterComponent,
   ListHeaderComponent,
   renderRestComponent,
+  renderHeader,
   uid,
   isTest,
   redBagLogo,
@@ -46,6 +48,13 @@ const HomePage = ({
   roulette,
   floatAds,
 }: HomePageProps) => {
+  const onRefresh = useCallback(async () => {
+    try {
+      await refresh()
+      PushHelper.pushAnnouncement(announcements)
+    } catch (error) {}
+  }, [announcements])
+
   if (loading) {
     return (
       <>
@@ -56,19 +65,14 @@ const HomePage = ({
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={themeColor}></SafeAreaHeader>
+        <SafeAreaHeader headerColor={themeColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
         <List
           uniqueKey={pagekey}
           scrollEnabled={true}
           removeClippedSubviews={true}
           data={items}
           refreshing={refreshing}
-          onRefresh={async () => {
-            try {
-              await refresh()
-              PushHelper.pushAnnouncement(announcements)
-            } catch (error) {}
-          }}
+          onRefresh={onRefresh}
           ListHeaderComponent={ListHeaderComponent}
           renderItem={renderItem}
           ListFooterComponent={ListFooterComponent}
@@ -79,3 +83,5 @@ const HomePage = ({
     )
   }
 }
+
+export default HomePage
