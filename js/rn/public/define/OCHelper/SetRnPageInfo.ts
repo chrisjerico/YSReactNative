@@ -20,14 +20,14 @@ export function setRnPageInfo() {
     devConfig?.skinKey && (skitType = devConfig?.skinKey); // 測試開發
 
     // tars
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
+    if (skitType.indexOf('宝石红') != -1) {
+      pages = pages.concat(BSHPages)
     }
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    if (skitType.indexOf('宝石红') != -1) {
-      pages = pages.concat(BSHPages)
+    if (skitType.indexOf('六合厅') != -1) {
+      pages = pages.concat(LHTPages)
     }
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
@@ -35,30 +35,27 @@ export function setRnPageInfo() {
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
     }
-    if (skitType.indexOf('越南') != -1) {
+    if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(VietnamPages);
     }
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
-    }
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
-    }
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
     }
+    if (skitType.indexOf('六合厅') != -1) {
+      pages = pages.concat(LHTPages)
+    }
+    if (skitType.indexOf('凯时') != -1) {
+      pages = pages.concat(KSPages)
+    }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
-    }
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
     }
   }
 
@@ -86,6 +83,9 @@ export function setRnPageInfo() {
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
+  }
+  if (skitType.indexOf('威尼斯') != -1) {
+    pages = pages.concat(WNSPages)
   }
 
   // 替换原生页面

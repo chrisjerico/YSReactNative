@@ -10,9 +10,24 @@ interface ActivitysProps {
   isTest: boolean
   uid: string | undefined
   redBagLogo: string
-  floatAds: any[]
-  roulette: any[]
+  floatAds: FloatAd[]
+  roulette: Roulette[]
   redBag: RedBagDetailActivityModel
+}
+
+export interface FloatAd {
+  image: string
+  position: number
+  linkCategory: number | string
+  linkPosition: number | string
+}
+
+export interface Roulette {
+  end: string
+  id: string
+  param: any
+  start: string
+  type: string
 }
 
 const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds }: ActivitysProps) => {

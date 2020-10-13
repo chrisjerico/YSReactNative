@@ -76,9 +76,9 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
-    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key;
+    key = releaseConfig.skinKeys[AppDefine.siteId] ?? key
     if (devConfig.isDebug) {
-      devConfig?.skinKey && (key = devConfig?.skinKey);
+      devConfig?.skinKey && (key = devConfig?.skinKey)
     }
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -100,12 +100,9 @@ export default class UGSkinManagers extends UGThemeColor {
     const skin = Skin1
     if (Platform.OS != 'ios') return
     // 已上线模板
-    const isOnlineSkin = (
-      skin.skitType.indexOf('尊龙') != -1 ||
-      skin.skitType.indexOf('宝石红') != -1
-    );
-    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
-    if (!ok) return;
+    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
+    if (!ok) return
 
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
