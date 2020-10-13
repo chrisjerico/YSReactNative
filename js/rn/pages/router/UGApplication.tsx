@@ -12,6 +12,7 @@ import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
+import BYHomePage from '../BY/BYHomePage'
 import BZHGameLobbyPage from '../BZH/BZHGameLobbyPage'
 import BZHHomePage from '../BZH/BZHHomePage'
 import BZHMinePage from '../BZH/BZHMinePage'
@@ -112,6 +113,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
         <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
+        <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
         <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />

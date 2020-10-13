@@ -57,6 +57,10 @@ export enum PageName {
   VietnamGameList = 'VietnamGameList',
   LHTPreferencePage = 'LHTPreferencePage',
   TrendView = 'TrendView',
+  BYHomePage = 'BYHomePage',
+  BYMinePage = 'BYMinePage',
+  BYSignInPage = 'BYSignInPage',
+  BYSignUpPage = 'BYSignUpPage'
 }
 
 // export class  {

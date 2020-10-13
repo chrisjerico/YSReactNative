@@ -36,7 +36,7 @@ export function setRnPageInfo() {
       pages = pages.concat(JXHPages);
     }
     if (skitType.indexOf('白曜') != -1) {
-      pages = pages.concat(VietnamPages);
+      pages = pages.concat(BYPages);
     }
   }
 
@@ -368,6 +368,41 @@ const JXHPages = [
   }
 ];
 
+// 白曜
+const BYPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.BYHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.BYMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.BYSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.JDPromotionListPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }
+]
 // 越南
 const VietnamPages = [
   {
