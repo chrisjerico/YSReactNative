@@ -54,9 +54,9 @@ const getPasswordStrength = (pass_limit: string) => {
   }
 }
 
-const useSys = ({ defaultUserCenterLogos }: UseSys) => {
+const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
   const sysStore = UGStore.globalProps.sys
-  const sys = {
+  const sysInfo = {
     ...sysStore,
     showCoupon: sysStore?.m_promote_pos == '1' ? true : false,
     rankingListType: sysStore?.rankingListSwitch ? (sysStore?.rankingListSwitch == 1 ? RankingListType.中奖排行榜 : RankingListType.投注排行榜) : RankingListType.不顯示,
@@ -91,10 +91,11 @@ const useSys = ({ defaultUserCenterLogos }: UseSys) => {
       maxLength: stringToNumber(sysStore?.pass_length_max),
       minLength: stringToNumber(sysStore?.pass_length_min),
     },
+    currency: sysStore?.currency == 'CNY' ? 'RMB' : sysStore?.currency,
   }
   return {
-    sys,
+    sysInfo,
   }
 }
 
-export default useSys
+export default useSysInfo

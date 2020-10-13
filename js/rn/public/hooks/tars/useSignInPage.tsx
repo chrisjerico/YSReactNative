@@ -7,7 +7,7 @@ import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignIn from './useSignIn'
-import useSys from './useSys'
+import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
 interface SlidingVerification {
@@ -23,9 +23,9 @@ interface UseSignInPage {
 
 const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   // stores
-  const { sys } = useSys({})
+  const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
-  const { loginVCode, loginTo } = sys
+  const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)
   const [password, setPassword] = useState(sign?.password)

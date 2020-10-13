@@ -5,7 +5,7 @@ import { navigate } from '../../navigation/RootNavigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignOut from './useSignOut'
 import useRerender from './useRerender'
-import useSys from './useSys'
+import useSysInfo from './useSysInfo'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -38,11 +38,12 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   const pickAvatarComponentRef = useRef(null)
   const { reRender } = useRerender()
 
-  // stores
-  const { sys: sysInfo } = useSys({
+  // infos
+  const userInfo = UGStore.globalProps.userInfo
+  const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
-  const userInfo = UGStore.globalProps.userInfo
+  // signs
   const { signOut } = useSignOut({
     onStart: () => {
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })

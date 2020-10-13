@@ -5,10 +5,10 @@ import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useHome from './useHome'
+import useHomeInfo from './useHomeInfo'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
-import useSys from './useSys'
+import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
 interface UseHomePage {
@@ -17,7 +17,7 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
-  const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
+  const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHomeInfo()
 
   const { reRender } = useRerender()
 
@@ -57,9 +57,9 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
       showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
     },
   })
-  const { sys: sysInfo } = useSys({})
-  // stores
+  // infos
   const userInfo = UGStore.globalProps.userInfo
+  const { sysInfo } = useSysInfo({})
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   // data handle

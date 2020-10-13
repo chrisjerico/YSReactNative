@@ -6,7 +6,7 @@ import { navigate } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignUp from './useSignUp'
-import useSys from './useSys'
+import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
 interface UseRegisterPage {
@@ -83,9 +83,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   })
 
   // stores
-  const { sys } = useSys({})
+  const { sysInfo } = useSysInfo({})
   // data handle
-  const { necessity, passwordLimit } = sys
+  const { necessity, passwordLimit } = sysInfo
   const { strength, maxLength, minLength } = passwordLimit
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
