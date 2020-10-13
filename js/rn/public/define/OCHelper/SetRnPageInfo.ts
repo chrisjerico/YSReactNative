@@ -32,9 +32,6 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
-    if (skitType.indexOf('乐橙') != -1) {
-      pages = pages.concat(LCPages)
-    }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
     }
@@ -45,6 +42,9 @@ export function setRnPageInfo() {
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
+    if (skitType.indexOf('乐橙') != -1) {
+      pages = pages.concat(LCPages)
+    }
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
