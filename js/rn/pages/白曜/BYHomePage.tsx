@@ -32,6 +32,7 @@ import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
 import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
+import {ROULETTE_LOGO} from "../../public/define/Res";
 
 const BYHomePage = ({navigation, setProps}) => {
 
@@ -252,7 +253,7 @@ const BYHomePage = ({navigation, setProps}) => {
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
-          logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
+          logo={ROULETTE_LOGO}
           onPress={() => {
             PushHelper.pushWheel(roulette)
           }}

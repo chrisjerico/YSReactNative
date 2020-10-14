@@ -33,6 +33,7 @@ import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 import {FuncTab} from "./views/FuncTab";
+import {ROULETTE_LOGO} from "../../public/define/Res";
 
 const LEFHomePage = ({navigation, setProps}) => {
 
@@ -64,6 +65,7 @@ const LEFHomePage = ({navigation, setProps}) => {
 
   const { uid, usr, balance, isTest } = userInfo
   const {
+    easyRememberDomain,
     mobile_logo,
     webName,
     showCoupon,
@@ -98,6 +100,7 @@ const LEFHomePage = ({navigation, setProps}) => {
       <>
         <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
           <HomeHeader
+            easyRememberDomain={easyRememberDomain}
             logo={mobile_logo}
             isTest={isTest}
             uid={uid}
@@ -255,7 +258,7 @@ const LEFHomePage = ({navigation, setProps}) => {
           containerStyle={{ top: scale(400), right: 0 }}
           enableFastImage={false}
           show={uid && roulette && !isTest}
-          logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
+          logo={ROULETTE_LOGO}
           onPress={() => {
             PushHelper.pushWheel(roulette)
           }}

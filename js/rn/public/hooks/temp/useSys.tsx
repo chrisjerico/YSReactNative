@@ -6,6 +6,7 @@ import {
   PasswordStrength,
 } from '../../models/Enum'
 import { stringToNumber } from '../../tools/tars'
+import {ugLog} from "../../tools/UgLog";
 
 interface UseSys {
   defaultUserCenterLogos?: DefaultUserCenterLogos;
@@ -62,10 +63,12 @@ const getPasswordStrength = (pass_limit: string) => {
 const useSys = ({ defaultUserCenterLogos }: UseSys) => {
 
   const { mobile_logo } = UGStore.globalProps.sysConf;
+  const { easyRememberDomain } = UGStore.globalProps.sysConf;
   const sysStore = UGStore.globalProps.sys
   const sys = {
     ...sysStore,
     mobile_logo: mobile_logo,
+    easyRememberDomain: easyRememberDomain,
     showCoupon: sysStore?.m_promote_pos == '1' ? true : false,
     rankingListType:
       sysStore?.rankingListSwitch ?

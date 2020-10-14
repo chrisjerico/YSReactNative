@@ -50,6 +50,7 @@ import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 import ActivityComponent from "../../public/components/temp/ActivityComponent";
 import {getActivityPosition} from "../../public/tools/tars";
+import {ROULETTE_LOGO} from "../../public/define/Res";
 
 /**
  * 主页
@@ -293,7 +294,7 @@ const HJHomePage = ({navigation, setProps}) => {
         containerStyle={{top: scale(400), right: 0}}
         enableFastImage={false}
         show={uid && turntableList?.data && !isTest}
-        logo={'https://cdn01.mlqman.cn/views/home/images/c018dzp.gif'}
+        logo={ROULETTE_LOGO}
         onPress={() => {
           PushHelper.pushWheel(turntableList?.data)
         }}

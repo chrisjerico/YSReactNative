@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import FastImage from 'react-native-fast-image'
-import { scale } from '../../../public/tools/Scale'
+import {scale} from '../../../public/tools/Scale'
 import Button from '../../../public/views/temp/Button'
 import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 
@@ -14,18 +14,20 @@ interface HomeHeaderProps {
   onPressUser: () => any;
   isTest: boolean;
   logo: string;
+  easyRememberDomain: string;
 }
 
 const HomeHeader = ({
-  uid,
-  name = '',
-  balance = '',
-  onPressSignIn,
-  onPressSignUp,
-  onPressUser,
-  isTest,
-  logo,
-}: HomeHeaderProps) => {
+                      uid,
+                      name = '',
+                      balance = '',
+                      onPressSignIn,
+                      onPressSignUp,
+                      onPressUser,
+                      isTest,
+                      logo,
+                      easyRememberDomain,
+                    }: HomeHeaderProps) => {
   return (
     <>
       {uid ? (
@@ -53,41 +55,42 @@ const HomeHeader = ({
             <View style={_styles.right}>
               <Text
                 numberOfLines={1}
-                style={{ color: '#ffffff', fontSize: scale(18) }}
-              >
+                style={{color: '#ffffff', fontSize: scale(18)}}>
                 {name}
               </Text>
               <Text
                 numberOfLines={1}
-                style={{ color: '#ffffff', fontSize: scale(18) }}
-              >
+                style={{color: '#ffffff', fontSize: scale(18)}}>
                 {'￥' + balance}
               </Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
       ) : (
-          <View style={_styles.row}>
-            <View style={_styles.left}/>
-            <View style={_styles.imageContainer}>
-              <FastImage
-                source={{
-                  uri: logo,
-                }}
-                style={_styles.logo}
-                resizeMode={'contain'}
-              />
-            </View>
-            <View style={_styles.right}>
-              <Button
-                title={'登录 | 试玩'}
-                containerStyle={_styles.button}
-                titleStyle={_styles.buttonTitle}
-                onPress={onPressSignIn}
-              />
-            </View>
+        <View style={_styles.row}>
+          <View style={_styles.left}>
+            <Text style={_styles.left_text}>易记网址</Text>
+            <Text style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</Text>
           </View>
-        )}
+          <View style={_styles.imageContainer}>
+            <FastImage
+              source={{
+                uri: logo,
+              }}
+              style={_styles.logo}
+              resizeMode={'contain'}
+            />
+          </View>
+          <View style={_styles.right}>
+            <Button
+              title={'登录 | 试玩'}
+              containerStyle={_styles.button}
+              titleStyle={_styles.buttonTitle}
+              onPress={onPressSignIn}
+            />
+          </View>
+        </View>
+      )}
     </>
   )
 }
@@ -100,6 +103,10 @@ const _styles = StyleSheet.create({
   button: {
     paddingHorizontal: scale(4),
     paddingVertical: scale(5),
+  },
+  left_text: {
+    fontSize: scale(18),
+    color: LEFThemeColor.乐FUN.textColor2,
   },
   buttonTitle: {
     fontSize: scale(26),
@@ -120,8 +127,8 @@ const _styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
-  left: { flex: 1 },
-  right: { flex: 1, alignItems: 'flex-end' },
+  left: {flex: 1},
+  right: {flex: 1, alignItems: 'flex-end'},
 })
 
 export default HomeHeader

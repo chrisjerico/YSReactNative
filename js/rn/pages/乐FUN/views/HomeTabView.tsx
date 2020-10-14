@@ -61,6 +61,8 @@ export const HomeTabView = () => {
         <ScrollableTabView
           onChangeTab={({i}) => calculateHeight(i)}
           tabBarUnderlineStyle={_styles.tab_bar_underline}
+          tabBarActiveTextColor={LEFThemeColor.乐FUN.textColor2}
+          tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
           tabBarTextStyle={_styles.tab_bar_text}
           style={[{flex: 1, height}]}
           renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
@@ -81,10 +83,9 @@ const _styles = StyleSheet.create({
   },
   tab_bar_underline: {
     height: scale(2),
-    backgroundColor: LEFThemeColor.乐FUN.themeColor,
+    backgroundColor: LEFThemeColor.乐FUN.textColor2,
   },
   tab_bar_text: {
-    color: LEFThemeColor.乐FUN.themeColor,
     fontWeight: "bold",
   },
 })

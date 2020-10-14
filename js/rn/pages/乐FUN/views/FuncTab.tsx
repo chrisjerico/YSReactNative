@@ -28,7 +28,7 @@ export const FuncTab = () => {
       <View style={_styles.item}>
         <FastImage style={_styles.icon}
                    resizeMode={'contain'}
-                   source={{uri: icon2}}/>
+                   source={{uri: icon3}}/>
         <Text style={_styles.title}>转换额度</Text>
       </View>
     </View>
@@ -42,6 +42,8 @@ const _styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'row',
     height: scale(70),
+    borderColor: LEFThemeColor.乐FUN.textColor3,
+    borderBottomWidth: scale(1),
   },
   item: {
     flex: 1,

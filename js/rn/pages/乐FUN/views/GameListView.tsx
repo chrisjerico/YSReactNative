@@ -31,12 +31,12 @@ export const GameListView = ({list}: { list: List[] }) => {
   }
 
   const renderItem = ({item, index}) => {
-    ugLog('item=', item)
+    // ugLog('item=', item)
     return <TouchableWithoutFeedback onPress={()=>onPress(item)}>
       <View style={_styles.container}>
         <View style={_styles.item}>
           <FastImage style={_styles.icon}
-                     resizeMode={'contain'}
+                     resizeMode={'stretch'}
                      source={{uri: item.icon}}/>
           <View style={CommStyles.flex}>
             <Text style={_styles.title}>
