@@ -3,6 +3,7 @@ import {FormComponentProps} from "../../../public/components/temp/FormComponent"
 import CheckBox from "../../../public/views/temp/CheckBox";
 import {scale} from "../../../public/tools/Scale";
 import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
+import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 
 interface SignInFormListProps {
   slideCodeColor?: string;
@@ -61,6 +62,11 @@ const SignInFormList = ({
         defaultValue={password}
         rightIconType={'eye'}
         leftIconTitle={'密码'}
+        rightIconStyle={
+          {
+            highColor: LEFThemeColor.乐FUN.textColor2,
+          }
+        }
       />
       {
         hideRemember ? null :

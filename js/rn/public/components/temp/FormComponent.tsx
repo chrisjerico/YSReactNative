@@ -87,7 +87,9 @@ const RightIcon = ({
     } else {
       //高亮颜色
       let highColor = anyEmpty(rightIconStyle?.highColor) ? '#84C1FF' : rightIconStyle?.highColor;
-      let color = anyEmpty(rightIconStyle?.highColor) ? '#d9d9d9' : rightIconStyle?.color;
+      let color = anyEmpty(rightIconStyle?.color) ? '#d9d9d9' : rightIconStyle?.color;
+      // ugLog('rightIconStyle?.highColor=', rightIconStyle?.highColor)
+      // ugLog('rightIconStyle?.color=', rightIconStyle?.color)
       switch (rightIconType) {
         case 'eye':
           return (

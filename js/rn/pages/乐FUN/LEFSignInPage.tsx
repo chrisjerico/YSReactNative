@@ -16,10 +16,12 @@ import {scale, scaleHeight} from '../../public/tools/Scale'
 import Button from '../../public/views/temp/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
 import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
-import SignInFormList from '../../public/views/temp/SignInFormList'
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
+import SignInFormList from "./views/SignInFormList";
+import {httpClient} from "../../public/network/httpClient";
+import AppDefine from "../../public/define/AppDefine";
 
 const LEFSignInPage = () => {
   console.disableYellowBox = true
@@ -91,16 +93,20 @@ const LEFSignInPage = () => {
               onPress={tryPlay}
             />
             <Button
-              title={'免费试玩'}
+              title={'忘记密码'}
               containerStyle={_styles.tryButton}
               titleStyle={_styles.try_text}
-              onPress={tryPlay}
+              onPress={() => {
+                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
+              }}
             />
             <Button
-              title={'免费试玩'}
+              title={'转电脑版'}
               containerStyle={_styles.tryButton}
               titleStyle={_styles.try_text}
-              onPress={tryPlay}
+              onPress={() => {
+                PushHelper.openWebView(AppDefine.host)
+              }}
             />
           </View>
         </View>
@@ -112,11 +118,11 @@ const LEFSignInPage = () => {
 const SignInForm = (props: FormComponentProps) => (
   <FormComponent
     {...props}
-    containerStyle={{marginBottom: scale(20)}}
-    inputContainerStyle={{borderColor: '#d9d9d9'}}
+    containerStyle={_styles.input}
+    inputContainerStyle={{borderColor: 'transparent'}}
     leftIcon={{
       ...props.leftIcon,
-      color: LEFThemeColor.乐FUN.themeColor,
+      color: LEFThemeColor.乐FUN.textColor2,
     }}
   />
 )
@@ -150,6 +156,12 @@ const _styles = StyleSheet.create({
     marginTop: scale(16),
     aspectRatio: 8,
     borderRadius: scale(8),
+  },
+  input: {
+    marginBottom: scale(20),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: '#E4E399'
   },
   signUpButton: {
     backgroundColor: '#E0E1E2',
