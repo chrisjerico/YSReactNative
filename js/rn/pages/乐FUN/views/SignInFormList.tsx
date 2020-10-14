@@ -1,8 +1,8 @@
 import React from 'react'
-import {FormComponentProps} from '../../components/tars/FormComponent'
-import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
-import {scale} from '../../tools/Scale'
-import CheckBox from './CheckBox'
+import {FormComponentProps} from "../../../public/components/temp/FormComponent";
+import CheckBox from "../../../public/views/temp/CheckBox";
+import {scale} from "../../../public/tools/Scale";
+import ReloadSlidingVerification from "../../../public/components/temp/ReloadSlidingVerification";
 
 interface SignInFormListProps {
   slideCodeColor?: string;
