@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import {
   Animated,
   Easing,
@@ -10,9 +10,9 @@ import {
   TextStyle,
 } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { scale } from '../../tools/Scale'
+import {scale} from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
+import {UGStore} from '../../../redux/store/UGStore'
 
 interface ReLoadComponentProps {
   color?: string;
@@ -20,20 +20,25 @@ interface ReLoadComponentProps {
   size?: number;
   balance: number | string;
   title?: string;
+  titleHint?: string;
   balanceStyle?: TextStyle | TextStyle[];
   titleStyle?: TextStyle | TextStyle[];
+  titleHintStyle?: TextStyle | TextStyle[];
   animatedContainerStyle?: ViewStyle | ViewStyle[];
 }
+
 const ReLoadBalanceComponent = ({
-  color,
-  containerStyle,
-  size = 25,
-  balance,
-  title,
-  balanceStyle,
-  titleStyle,
-  animatedContainerStyle
-}: ReLoadComponentProps) => {
+                                  color,
+                                  containerStyle,
+                                  size = 25,
+                                  balance,
+                                  title,
+                                  titleHint,
+                                  balanceStyle,
+                                  titleStyle,
+                                  titleHintStyle,
+                                  animatedContainerStyle
+                                }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -45,13 +50,13 @@ const ReLoadBalanceComponent = ({
 
   const fetchBalance = async () => {
     try {
-      const { data } = await APIRouter.user_balance_token()
+      const {data} = await APIRouter.user_balance_token()
       const balance = data?.data?.balance
-      console.log("-------balance-----", balance)
+      //console.log("-------balance-----", balance)
       setMoney(balance)
-      UGStore.dispatch({ type: 'merge', userInfo: { balance } })
+      UGStore.dispatch({type: 'merge', userInfo: {balance}})
     } catch (error) {
-      console.log("-------error------", error)
+      //console.log("-------error------", error)
     }
   }
 
@@ -65,6 +70,7 @@ const ReLoadBalanceComponent = ({
       <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
         {money}
       </Text>
+      <Text style={[styles.titleHint, titleHintStyle]}>{titleHint}</Text>
       <TouchableWithoutFeedback
         onPress={() => {
           if (!reload.current) {
@@ -87,11 +93,11 @@ const ReLoadBalanceComponent = ({
           style={[
             styles.animatedContainer,
             animatedContainerStyle,
-            { width: scale(size) },
-            { transform: [{ rotateZ: spinDeg }] },
+            {width: scale(size)},
+            {transform: [{rotateZ: spinDeg}]},
           ]}
         >
-          <FontAwesome name={'refresh'} size={scale(size)} color={color} />
+          <FontAwesome name={'refresh'} size={scale(size)} color={color}/>
         </Animated.View>
       </TouchableWithoutFeedback>
     </View>
@@ -99,18 +105,25 @@ const ReLoadBalanceComponent = ({
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row' },
+  container: {flexDirection: 'row'},
   animatedContainer: {
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: scale(2)
   },
-  title: { fontSize: scale(19) },
+  title: {
+    fontSize: scale(19)
+  },
+  titleHint: {
+    color: '#ff861b',
+    fontSize: scale(19),
+    marginLeft: scale(6),
+    marginRight: scale(12)
+  },
   balance: {
     color: '#ff861b',
     fontSize: scale(19),
-    marginRight: scale(10)
   },
 })
 

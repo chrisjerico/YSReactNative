@@ -8,6 +8,7 @@ interface MineHeaderProps {
   showCustomerService?: boolean;
   onPressCustomerService?: () => any;
   customerTitle?: string;
+  customerIcon?: string;
   title?: string;
   titleColor?: string;
   renderHeader?: () => any;
@@ -19,6 +20,7 @@ const MineHeader = ({
                       showCustomerService = false,
                       onPressCustomerService,
                       customerTitle,
+                      customerIcon,
                       title,
                       titleColor,
                       renderHeader,
@@ -27,29 +29,32 @@ const MineHeader = ({
                     }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
-      {showBackBtn ? (
-        <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <AntDesign
-            name={'left'}
-            color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
-            size={scale(25)}
-            onPress={onPressBackBtn}
+      {
+        showBackBtn ? (
+          <View style={{flex: 1, alignItems: 'flex-start'}}>
+            <AntDesign
+              name={'left'}
+              color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
+              size={scale(25)}
+              onPress={onPressBackBtn}
+            />
+          </View>
+        ) : (
+          <View style={{flex: 1}}/>
+        )}
+      {
+        renderHeader ? (
+          renderHeader()
+        ) : (
+          <DefaultHeader
+            customerTitle={customerTitle}
+            customerIcon={customerIcon}
+            title={title}
+            titleColor={titleColor}
+            showCustomerService={showCustomerService}
+            onPressCustomerService={onPressCustomerService}
           />
-        </View>
-      ) : (
-        <View style={{flex: 1}}/>
-      )}
-      {renderHeader ? (
-        renderHeader()
-      ) : (
-        <DefaultHeader
-          customerTitle={customerTitle}
-          title={title}
-          titleColor={titleColor}
-          showCustomerService={showCustomerService}
-          onPressCustomerService={onPressCustomerService}
-        />
-      )}
+        )}
     </View>
   )
 }
@@ -57,6 +62,7 @@ const MineHeader = ({
 const DefaultHeader = ({
                          title,
                          customerTitle,
+                         customerIcon,
                          titleColor,
                          showCustomerService,
                          onPressCustomerService,
@@ -68,19 +74,30 @@ const DefaultHeader = ({
           ? styles.headerTitle
           : [styles.headerTitle, {color: titleColor}]}>{title}</Text>
       </View>
-      {showCustomerService ? (
-        <TouchableWithoutFeedback onPress={onPressCustomerService}>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text style={anyEmpty(titleColor)
-              ? styles.rightTextStyle
-              : [styles.rightTextStyle, {color: titleColor}]}>{
-              anyEmpty(customerTitle) ? '客服' : customerTitle
-            }</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      ) : (
-        <View style={{flex: 1}}/>
-      )}
+      {
+        showCustomerService ?
+          (
+            <TouchableWithoutFeedback onPress={onPressCustomerService}>
+              <View style={{flex: 1, alignItems: 'flex-end'}}>
+                {
+                  !anyEmpty(customerIcon) ?
+                    <AntDesign style={{paddingHorizontal: scale(12)}}
+                               name={customerIcon}
+                               color={titleColor}
+                               size={scale(28)}
+                               onPress={onPressCustomerService}/>
+                    :
+                    <Text style={anyEmpty(titleColor)
+                      ? styles.rightTextStyle
+                      : [styles.rightTextStyle, {color: titleColor}]}>{
+                      customerTitle ?? '客服'
+                    }</Text>
+                }
+              </View>
+            </TouchableWithoutFeedback>
+          ) : (
+            <View style={{flex: 1}}/>
+          )}
     </>
   )
 }
