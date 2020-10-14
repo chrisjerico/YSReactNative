@@ -1,12 +1,13 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { scale } from '../../../public/tools/Scale'
+import {scale} from '../../../public/tools/Scale'
 import {anyEmpty} from "../../tools/Ext";
 
 interface MineHeaderProps {
   showCustomerService?: boolean;
   onPressCustomerService?: () => any;
+  customerTitle?: string;
   title?: string;
   titleColor?: string;
   renderHeader?: () => any;
@@ -15,18 +16,19 @@ interface MineHeaderProps {
 }
 
 const MineHeader = ({
-  showCustomerService = false,
-  onPressCustomerService,
-  title,
-  titleColor,
-  renderHeader,
-  showBackBtn = false,
-  onPressBackBtn,
-}: MineHeaderProps) => {
+                      showCustomerService = false,
+                      onPressCustomerService,
+                      customerTitle,
+                      title,
+                      titleColor,
+                      renderHeader,
+                      showBackBtn = false,
+                      onPressBackBtn,
+                    }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
-        <View style={{ flex: 1, alignItems: 'flex-start' }}>
+        <View style={{flex: 1, alignItems: 'flex-start'}}>
           <AntDesign
             name={'left'}
             color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
@@ -35,46 +37,50 @@ const MineHeader = ({
           />
         </View>
       ) : (
-          <View style={{ flex: 1 }} />
-        )}
+        <View style={{flex: 1}}/>
+      )}
       {renderHeader ? (
         renderHeader()
       ) : (
-          <DefaultHeader
-            title={title}
-            titleColor={titleColor}
-            showCustomerService={showCustomerService}
-            onPressCustomerService={onPressCustomerService}
-          />
-        )}
+        <DefaultHeader
+          customerTitle={customerTitle}
+          title={title}
+          titleColor={titleColor}
+          showCustomerService={showCustomerService}
+          onPressCustomerService={onPressCustomerService}
+        />
+      )}
     </View>
   )
 }
 
 const DefaultHeader = ({
-  title,
-  titleColor,
-  showCustomerService,
-  onPressCustomerService,
-}) => {
+                         title,
+                         customerTitle,
+                         titleColor,
+                         showCustomerService,
+                         onPressCustomerService,
+                       }) => {
   return (
     <>
-      <View style={{ flex: 1, alignItems: 'center' }}>
+      <View style={{flex: 1, alignItems: 'center'}}>
         <Text style={anyEmpty(titleColor)
           ? styles.headerTitle
           : [styles.headerTitle, {color: titleColor}]}>{title}</Text>
       </View>
       {showCustomerService ? (
         <TouchableWithoutFeedback onPress={onPressCustomerService}>
-          <View style={{ flex: 1, alignItems: 'flex-end' }}>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
             <Text style={anyEmpty(titleColor)
               ? styles.rightTextStyle
-              : [styles.rightTextStyle, {color: titleColor}]}>{'客服'}</Text>
+              : [styles.rightTextStyle, {color: titleColor}]}>{
+              anyEmpty(customerTitle) ? '客服' : customerTitle
+            }</Text>
           </View>
         </TouchableWithoutFeedback>
       ) : (
-          <View style={{ flex: 1 }} />
-        )}
+        <View style={{flex: 1}}/>
+      )}
     </>
   )
 }

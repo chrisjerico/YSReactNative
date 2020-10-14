@@ -45,7 +45,11 @@ const LEFSignUpPage = () => {
           titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
           onPressBackBtn={pop}
-          showCustomerService={false}
+          showCustomerService={true}
+          customerTitle={'登录'}
+          onPressCustomerService={()=>{
+            push(PageName.LEFSignInPage)
+          }}
         />
       </SafeAreaHeader>
       <ScrollView style={_styles.container} showsVerticalScrollIndicator={false}>
@@ -66,7 +70,7 @@ const LEFSignUpPage = () => {
             containerStyle={[
               _styles.button,
               {
-                backgroundColor: LEFThemeColor.乐FUN.themeColor,
+                backgroundColor: LEFThemeColor.乐FUN.textColor2,
               },
             ]}
             disabledContainerStyle={_styles.button}
@@ -136,7 +140,7 @@ const _styles = StyleSheet.create({
   input_container: {
     borderWidth: scale(1),
     borderRadius: scale(8),
-    borderColor: '#E4E399',
+    borderColor: '#DDDDDD',
     paddingHorizontal: scale(8),
   },
   signUpButton: {
