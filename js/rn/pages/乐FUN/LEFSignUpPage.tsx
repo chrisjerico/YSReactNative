@@ -39,20 +39,17 @@ const LEFSignUpPage = () => {
 
   return (
     <>
-      <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.tabBarBgColor}>
+      <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
         <MineHeader
           title={'注册'}
-          titleColor={LEFThemeColor.乐FUN.themeColor}
+          titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
           onPressBackBtn={pop}
-          showCustomerService={true}
-          onPressCustomerService={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
+          showCustomerService={false}
         />
       </SafeAreaHeader>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <View style={styles.formContainer}>
+      <ScrollView style={_styles.container} showsVerticalScrollIndicator={false}>
+        <View style={_styles.formContainer}>
           <SignUpFormList
             slideCodeRef={slideCodeRef}
             phoneNumber={phoneNumber}
@@ -67,19 +64,19 @@ const LEFSignUpPage = () => {
             title={'注册'}
             disabled={!valid}
             containerStyle={[
-              styles.button,
+              _styles.button,
               {
                 backgroundColor: LEFThemeColor.乐FUN.themeColor,
               },
             ]}
-            disabledContainerStyle={styles.button}
+            disabledContainerStyle={_styles.button}
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
           <Button
             title={'已有账号，点击登录'}
-            containerStyle={styles.signUpButton}
-            titleStyle={styles.signUpText}
+            containerStyle={_styles.signUpButton}
+            titleStyle={_styles.signUpText}
             onPress={() => {
               push(PageName.LEFSignInPage, {})
             }}
@@ -95,17 +92,17 @@ const SignUpForm = (props: FormComponentProps) => {
   return (
     <FormComponent
       {...props}
-      containerStyle={{ marginBottom: scale(10) }}
-      inputContainerStyle={{ borderColor: '#d9d9d9' }}
+      containerStyle={_styles.input}
+      inputContainerStyle={_styles.input_container}
       leftIcon={{
         ...props.leftIcon,
-        color: LEFThemeColor.乐FUN.themeColor,
+        color: LEFThemeColor.乐FUN.textColor2,
       }}
     />
   )
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
@@ -132,6 +129,15 @@ const styles = StyleSheet.create({
     marginVertical: scale(20),
     aspectRatio: 8,
     borderRadius: scale(22),
+  },
+  input: {
+    marginBottom: scale(20),
+  },
+  input_container: {
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: '#E4E399',
+    paddingHorizontal: scale(8),
   },
   signUpButton: {
     backgroundColor: 'white',
