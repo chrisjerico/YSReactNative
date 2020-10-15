@@ -105,7 +105,7 @@ const LEFSignInPage = () => {
               containerStyle={_styles.tryButton}
               titleStyle={_styles.try_text}
               onPress={() => {
-                PushHelper.openWebView(AppDefine.host)
+                PushHelper.openPC()
               }}
             />
           </View>

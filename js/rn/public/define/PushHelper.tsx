@@ -191,6 +191,7 @@ export default class PushHelper {
         break
     }
   }
+
   static openWebView(url: string) {
     switch (Platform.OS) {
       case 'ios':
@@ -210,6 +211,12 @@ export default class PushHelper {
         break
     }
   }
+
+  //电脑版
+  static openPC() {
+    PushHelper.openWebView(AppDefine.host + '/index2.php')
+  }
+
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
     ugLog('pushUserCenterType code=', code)
