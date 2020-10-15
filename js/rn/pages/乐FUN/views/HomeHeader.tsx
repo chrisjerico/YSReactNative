@@ -17,6 +17,8 @@ interface HomeHeaderProps {
   easyRememberDomain: string;
 }
 
+const USER_ICON = 'http://t126f.fhptcdn.com/views/mobileTemplate/9/images/gezx.png';
+
 const HomeHeader = ({
                       uid,
                       name = '',
@@ -33,14 +35,8 @@ const HomeHeader = ({
       {uid ? (
         <View style={_styles.row}>
           <View style={_styles.left}>
-            {isTest ? (
-              <Button
-                title={'注册'}
-                containerStyle={_styles.button}
-                titleStyle={_styles.buttonTitle}
-                onPress={onPressSignUp}
-              />
-            ) : null}
+            <Text style={_styles.left_text}>易记网址</Text>
+            <Text style={_styles.left_text} numberOfLines={1}>{easyRememberDomain}</Text>
           </View>
           <View style={_styles.imageContainer}>
             <FastImage
@@ -52,16 +48,18 @@ const HomeHeader = ({
             />
           </View>
           <TouchableWithoutFeedback onPress={onPressUser}>
-            <View style={_styles.right}>
+            <View style={_styles.right_login}>
+              <FastImage
+                source={{
+                  uri: USER_ICON,
+                }}
+                style={_styles.user_icon}
+                resizeMode={'contain'}
+              />
               <Text
                 numberOfLines={1}
-                style={{color: '#ffffff', fontSize: scale(18)}}>
+                style={{color: 'white', fontSize: scale(20)}}>
                 {name}
-              </Text>
-              <Text
-                numberOfLines={1}
-                style={{color: '#ffffff', fontSize: scale(18)}}>
-                {'￥' + balance}
               </Text>
             </View>
           </TouchableWithoutFeedback>
@@ -116,6 +114,11 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  user_icon: {
+    height: '50%',
+    aspectRatio: 1,
+    marginRight: scale(8),
+  },
   row: {
     flex: 1,
     flexDirection: 'row',
@@ -128,7 +131,16 @@ const _styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   left: {flex: 1},
-  right: {flex: 1, alignItems: 'flex-end'},
+  right: {
+    flex: 1,
+    alignItems: 'flex-end'
+  },
+  right_login: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
 })
 
 export default HomeHeader

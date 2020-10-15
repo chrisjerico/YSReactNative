@@ -164,7 +164,7 @@ const LEFHomePage = ({navigation, setProps}) => {
             }}
           />
 
-          <FuncTab/>
+          <FuncTab onPress={(code: number)=>{PushHelper.pushUserCenterType(code)}}/>
           <HomeTabView/>
 
           <CouponBlock
