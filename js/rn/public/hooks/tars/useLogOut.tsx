@@ -30,6 +30,7 @@ const useLogOut = (options: Options = {}) => {
           await ANHelper.callAsync(CMD.LOG_OUT)
           break;
       }
+
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
       onSuccess && onSuccess()
