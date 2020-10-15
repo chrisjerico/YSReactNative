@@ -28,6 +28,7 @@ import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
 import { HomeRecommendModel } from "./Model/HomeRecommendModel";
 import { UserInfoModel } from "./Model/UserInfoModel";
+import {ugLog} from "../tools/UgLog";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -189,8 +190,8 @@ class APIRouter {
         }
         break;
       case "android":
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
-        tokenParams = JSON.parse(mapStr)
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        ugLog('tokenParams=', tokenParams)
         break;
     }
 
