@@ -3,7 +3,7 @@ import {ANHelper} from "../define/ANHelper/ANHelper";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
 
 /**
- * 所有站点的域名
+ * 所有站点的域名，key 不能随便动，否则原生那边会找不到对应的域名
  */
 const DomainUrls = {
   'zora': 'http://zhibot071f.fhptcdn.com',

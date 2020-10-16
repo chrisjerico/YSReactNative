@@ -1,7 +1,7 @@
 
 ./rn_make_android_bundle.sh
 
-#发布的渠道是 测试0 还是 正式1
+#发布的渠道: 1正式，其它测试
 type=$1
 
 if [ "$type" == "1" ]; then
