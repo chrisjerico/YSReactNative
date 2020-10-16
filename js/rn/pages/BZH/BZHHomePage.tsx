@@ -29,7 +29,7 @@ const BZHHomePage = () => {
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { bannersInterval, onlineNum, banners, notices, midBanners, navs, homeGames, gameLobby, coupons, rankLists } = homeInfo
+  const { bannersInterval, onlineNum, banners, notices, midBanners, navs, homeGames, gameLobby, coupons, rankLists, showOnlineNum } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
   const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
 
@@ -77,6 +77,7 @@ const BZHHomePage = () => {
       ListHeaderComponent={() => (
         <>
           <BannerBlock
+            showOnlineNum={showOnlineNum}
             containerStyle={styles.bannerContainer}
             badgeStyle={styles.bannerBadge}
             autoplayTimeout={bannersInterval}
