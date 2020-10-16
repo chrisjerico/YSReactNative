@@ -38,6 +38,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages);
     }
+    if (Skin1.skitType.indexOf('利来') != -1) {
+      pages = pages.concat(LLPages)
+    }
   }
 
   // 测试环境（未上线的内容）
