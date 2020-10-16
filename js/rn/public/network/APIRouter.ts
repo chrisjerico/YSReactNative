@@ -88,8 +88,8 @@ class APIRouter {
         token = user?.token;
         break;
       case "android":
-        token = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        token = pms?.token;
         break;
     }
     if (token) {
@@ -118,8 +118,8 @@ class APIRouter {
         tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
         break;
     }
 
@@ -136,8 +136,8 @@ class APIRouter {
         tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
         break;
     }
 
@@ -170,8 +170,8 @@ class APIRouter {
         tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
         break;
     }
 
@@ -288,9 +288,9 @@ class APIRouter {
         }
         break;
       case "android":
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
         tokenParams = {
-          ...JSON.parse(mapStr),
+          ...pms,
           filename
         }
         break;
