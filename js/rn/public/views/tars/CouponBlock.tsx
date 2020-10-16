@@ -4,11 +4,11 @@ import { scale } from '../../tools/Scale'
 import List from './List'
 
 interface CouponBlock {
-  containerStyle?: StyleProp<ViewStyle>
   coupons: any[]
   renderCoupon: ({ item: any, index: number }) => any
   onPressMore: () => any
   visible: boolean
+  containerStyle?: StyleProp<ViewStyle>
   listContainerStyle?: StyleProp<ViewStyle>
   titleContainerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>

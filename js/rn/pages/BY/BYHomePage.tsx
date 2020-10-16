@@ -43,6 +43,7 @@ const BYHomePage = () => {
       {...homeInfo}
       {...userInfo}
       {...sysInfo}
+      {...goTo}
       pagekey={'BYHomePage'}
       themeColor={'#ffffff'}
       loading={loading}
@@ -52,7 +53,6 @@ const BYHomePage = () => {
       renderHeader={() => <HomeHeader logo={mobile_logo} />}
       renderListHeaderComponent={() => <></>}
       renderItem={() => null}
-      ListFooterComponent={null}
     />
   )
 }

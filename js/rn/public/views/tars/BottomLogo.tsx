@@ -6,9 +6,9 @@ interface BottomLogo {
   webName: string
   onPressPromotion: () => any
   onPressComputer: () => any
-  containerStyle?: StyleProp<ViewStyle>
   version?: string
   debug?: boolean
+  containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   subTitleStyle?: StyleProp<TextStyle>
 }

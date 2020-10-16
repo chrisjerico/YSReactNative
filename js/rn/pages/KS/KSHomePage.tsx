@@ -1,29 +1,21 @@
 import React from 'react'
-import { ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
-import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import RandomTextComponent from '../../public/components/tars/RandomTextComponent'
 import ReLoadBalanceComponent from '../../public/components/tars/ReLoadBalanceComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
-import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { useHtml5Image } from '../../public/tools/tars'
-import Activitys from '../../public/views/tars/Activitys'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomGap from '../../public/views/tars/BottomGap'
-import BottomLogo from '../../public/views/tars/BottomLogo'
-import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import HomePage from '../../public/views/tars/HomePage'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
-import ProgressCircle from '../../public/views/tars/ProgressCircle'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import CoverButton from './views/CoverButton'
@@ -36,7 +28,6 @@ const { getHtml5Image } = useHtml5Image()
 const KSHomePage = () => {
   const { goTo, refresh, value, sign } = useHomePage({})
 
-  const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
@@ -48,34 +39,24 @@ const KSHomePage = () => {
   const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
   const { tryPlay } = sign
 
-  if (loading) {
-    return (
-      <>
-        <SafeAreaHeader headerColor={KSThemeColor.凯时.themeColor} />
-        <ProgressCircle />
-      </>
-    )
-  } else {
-    return (
-      <>
-        <SafeAreaHeader headerColor={KSThemeColor.凯时.themeColor}></SafeAreaHeader>
-        <ScrollView
-          style={{ backgroundColor: KSThemeColor.凯时.themeColor }}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              tintColor={'#ffffff'}
-              refreshing={refreshing}
-              onRefresh={async () => {
-                try {
-                  await refresh()
-                  PushHelper.pushAnnouncement(announcements)
-                } catch (error) {
-                  console.log('-------error------', error)
-                }
-              }}
-            />
-          }>
+  return (
+    <HomePage
+      {...homeInfo}
+      {...userInfo}
+      {...sysInfo}
+      {...goTo}
+      loading={loading}
+      refreshing={refreshing}
+      refresh={refresh}
+      pagekey={'KSHomePage'}
+      themeColor={KSThemeColor.凯时.themeColor}
+      couponBlockStyles={couponBlockStyles}
+      couponStyles={couponStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
+      bottomLogoStyles={bottomLogoStyles}
+      renderHeader={() => null}
+      renderListHeaderComponent={() => (
+        <>
           <NoticeBlock
             containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor, borderRadius: 0 }}
             bgContainerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
@@ -343,84 +324,10 @@ const KSHomePage = () => {
               )
             })}
           </View>
-          <CouponBlock
-            visible={showCoupon}
-            onPressMore={goToJDPromotionListPage}
-            containerStyle={{
-              marginHorizontal: '1%',
-              marginTop: scale(10),
-              width: null,
-            }}
-            titleContainerStyle={{ backgroundColor: '#3a3a41', borderTopLeftRadius: scale(10), borderTopRightRadius: scale(10) }}
-            listContainerStyle={{ backgroundColor: '#3a3a41', borderBottomLeftRadius: scale(10), borderBottomRightRadius: scale(10) }}
-            titleStyle={{ color: '#ffffff' }}
-            coupons={coupons}
-            renderCoupon={({ item, index }) => {
-              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
-              return (
-                <AutoHeightCouponComponent
-                  titleStyle={{ alignSelf: 'center', color: '#ffffff' }}
-                  containerStyle={{
-                    borderColor: '#d9d9d9',
-                    borderWidth: scale(1),
-                    marginBottom: scale(20),
-                    padding: scale(5),
-                    borderRadius: scale(5),
-                    paddingBottom: scale(20),
-                  }}
-                  key={index}
-                  title={title}
-                  pic={pic}
-                  content={content}
-                  onPress={(setShowPop) => {
-                    if (linkUrl) {
-                      PushHelper.openWebView(linkUrl)
-                    } else if (!linkCategory && !linkPosition) {
-                      setShowPop(true)
-                    } else {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
-          <AnimatedRankComponent
-            type={rankingListType}
-            iconColor={'#ffffff'}
-            iconTitleStyle={{ color: '#ffffff' }}
-            containerStyle={{ marginTop: scale(10), backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(10) }}
-            contentTitleStyle={{ color: '#ffffff' }}
-            iconTitleContainerStyle={{
-              backgroundColor: '#3a3a41',
-              borderTopLeftRadius: scale(10),
-              borderTopRightRadius: scale(10),
-            }}
-            contentContainerStyle={{
-              width: '95%',
-              alignSelf: 'center',
-              marginBottom: scale(20),
-              backgroundColor: '#3a3a41',
-            }}
-            rankLists={rankLists}
-          />
-          <BottomLogo
-            webName={webName}
-            containerStyle={{ marginBottom: scale(5) }}
-            titleStyle={{ color: '#ffffff' }}
-            subTitleStyle={{ color: '#97989d' }}
-            onPressComputer={() => {
-              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-          />
-          <BottomGap />
-        </ScrollView>
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
-      </>
-    )
-  }
+        </>
+      )}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -436,6 +343,73 @@ const styles = StyleSheet.create({
     height: '100%',
     marginHorizontal: '0.5%',
   },
+})
+
+const couponBlockStyles = StyleSheet.create({
+  containerStyle: {
+    marginHorizontal: '1%',
+    marginTop: scale(10),
+    width: null,
+  },
+  titleContainerStyle: {
+    backgroundColor: '#3a3a41',
+    borderTopLeftRadius: scale(10),
+    borderTopRightRadius: scale(10),
+  },
+  listContainerStyle: {
+    backgroundColor: '#3a3a41',
+    borderBottomLeftRadius: scale(10),
+    borderBottomRightRadius: scale(10),
+  },
+  titleStyle: { color: '#ffffff' },
+})
+
+const couponStyles = StyleSheet.create({
+  titleStyle: {
+    alignSelf: 'center',
+    color: '#ffffff',
+  },
+  containerStyle: {
+    borderColor: '#d9d9d9',
+    borderWidth: scale(1),
+    marginBottom: scale(20),
+    padding: scale(5),
+    borderRadius: scale(5),
+    paddingBottom: scale(20),
+  },
+})
+
+const animatedRankComponentStyles = StyleSheet.create({
+  iconTitleStyle: {
+    color: '#ffffff',
+  },
+  containerStyle: {
+    marginTop: scale(10),
+    backgroundColor: '#3a3a41',
+    marginHorizontal: '1%',
+    borderRadius: scale(10),
+  },
+  contentTitleStyle: { color: '#ffffff' },
+  iconTitleContainerStyle: {
+    backgroundColor: '#3a3a41',
+    borderTopLeftRadius: scale(10),
+    borderTopRightRadius: scale(10),
+  },
+  contentContainerStyle: {
+    width: '95%',
+    alignSelf: 'center',
+    marginBottom: scale(20),
+    backgroundColor: '#3a3a41',
+  },
+  iconStyle: {
+    color: '#ffffff',
+  },
+})
+
+const bottomLogoStyles = StyleSheet.create({
+  containerStyle: { marginBottom: scale(5) },
+  titleStyle: { color: '#ffffff' },
+  subTitleStyle: { color: '#97989d' },
 })
 
 export default KSHomePage

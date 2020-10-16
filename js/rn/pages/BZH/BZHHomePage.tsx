@@ -49,10 +49,10 @@ const BZHHomePage = () => {
       pagekey={'BZHHomePage'}
       themeColor={BZHThemeColor.宝石红.themeColor}
       items={homeGames}
-      couponBlockProps={couponBlockStyles}
-      couponProps={couponStyles}
-      animatedRankComponentProps={animatedRankComponentStyles}
-      bottomLogoProps={bottomLogoStyles}
+      couponBlockStyles={couponBlockStyles}
+      couponStyles={couponStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
+      bottomLogoStyles={bottomLogoStyles}
       renderHeader={() => (
         <HomeHeader
           logo={mobile_logo}

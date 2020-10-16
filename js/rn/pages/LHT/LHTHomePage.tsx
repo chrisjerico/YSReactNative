@@ -57,11 +57,11 @@ const LHTHomePage = () => {
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
-      pagekey={'WNZHomePage'}
+      pagekey={'LHTHomePage'}
       themeColor={LHThemeColor.六合厅.themeColor}
-      couponBlockProps={couponBlockStyles}
-      animatedRankComponentProps={animatedRankComponentStyles}
-      bottomLogoProps={bottomLogoStyles}
+      couponBlockStyles={couponBlockStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
+      bottomLogoStyles={bottomLogoStyles}
       renderHeader={() => (
         <HomeHeader
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}

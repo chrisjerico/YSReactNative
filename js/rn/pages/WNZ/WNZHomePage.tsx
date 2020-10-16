@@ -78,8 +78,8 @@ const WNZHomePage = () => {
       refresh={refresh}
       pagekey={'WNZHomePage'}
       themeColor={WNZThemeColor.威尼斯.themeColor}
-      couponBlockProps={couponBlockStyles}
-      animatedRankComponentProps={animatedRankComponentStyles}
+      couponBlockStyles={couponBlockStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
       renderHeader={() => (
         <HomeHeader
           uid={uid}

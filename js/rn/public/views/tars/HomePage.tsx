@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback } from 'react'
-import { ListRenderItem, StyleSheet } from 'react-native'
+import { ListRenderItem, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../define/PushHelper'
@@ -47,10 +47,38 @@ interface HomePageProps {
   goToJDPromotionListPage: () => any
   rankingListType: RankingListType
   webName: string
-  couponBlockProps?: { [key: string]: any }
-  animatedRankComponentProps?: { [key: string]: any }
-  couponProps?: { [key: string]: any }
-  bottomLogoProps?: { [key: string]: any }
+  couponBlockStyles?: CouponBlockStyles
+  animatedRankComponentStyles?: AnimatedRankComponentStyles
+  couponStyles?: CouponStyles
+  bottomLogoStyles?: BottomLogoStyles
+  containerStyle?: StyleProp<ViewStyle>
+}
+
+interface CouponBlockStyles {
+  containerStyle?: StyleProp<ViewStyle>
+  listContainerStyle?: StyleProp<ViewStyle>
+  titleContainerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
+}
+interface AnimatedRankComponentStyles {
+  containerStyle?: StyleProp<ViewStyle>
+  iconTitleContainerStyle?: StyleProp<ViewStyle>
+  contentContainerStyle?: StyleProp<ViewStyle>
+  titleConatinerStyle?: StyleProp<ViewStyle>
+  iconTitleStyle?: StyleProp<TextStyle>
+  contentTitleStyle?: StyleProp<TextStyle>
+  iconStyle?: StyleProp<TextStyle>
+}
+
+interface CouponStyles {
+  containerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
+}
+
+interface BottomLogoStyles {
+  containerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
+  subTitleStyle?: StyleProp<TextStyle>
 }
 
 const HomePage = ({
@@ -83,10 +111,11 @@ const HomePage = ({
   rankingListType,
   webName,
   rankLists,
-  couponBlockProps,
-  animatedRankComponentProps,
-  couponProps,
-  bottomLogoProps,
+  couponBlockStyles,
+  animatedRankComponentStyles,
+  couponStyles,
+  bottomLogoStyles,
+  containerStyle,
 }: HomePageProps) => {
   const renderBanner = useCallback((item, index) => {
     const { linkCategory, linkPosition, pic } = item
@@ -115,6 +144,7 @@ const HomePage = ({
       <>
         <SafeAreaHeader headerColor={themeColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
         <List
+          style={containerStyle}
           uniqueKey={pagekey}
           scrollEnabled={true}
           removeClippedSubviews={true}
@@ -140,7 +170,7 @@ const HomePage = ({
             <>
               {renderListFooterTopComponent && renderListFooterTopComponent()}
               <CouponBlock
-                {...couponBlockProps}
+                {...couponBlockStyles}
                 visible={showCoupon}
                 onPressMore={goToJDPromotionListPage}
                 coupons={coupons}
@@ -148,7 +178,7 @@ const HomePage = ({
                   const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
                   return (
                     <AutoHeightCouponComponent
-                      {...couponProps}
+                      {...couponStyles}
                       key={index}
                       title={title}
                       pic={pic}
@@ -166,9 +196,9 @@ const HomePage = ({
                   )
                 }}
               />
-              <AnimatedRankComponent {...animatedRankComponentProps} type={rankingListType} rankLists={rankLists} />
+              <AnimatedRankComponent {...animatedRankComponentStyles} type={rankingListType} rankLists={rankLists} />
               <BottomLogo
-                {...bottomLogoProps}
+                {...bottomLogoStyles}
                 webName={webName}
                 onPressComputer={() => {
                   PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
