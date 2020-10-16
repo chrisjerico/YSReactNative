@@ -25,6 +25,9 @@ const WNZMinePage = () => {
   const menu = useRef(null)
   const { value, sign } = useMinePage({
     homePage: PageName.WNZHomePage,
+    onSuccessSignOut: () => {
+      menu?.current?.close()
+    },
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 

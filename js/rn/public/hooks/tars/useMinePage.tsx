@@ -30,10 +30,11 @@ interface DefaultUserCenterLogos {
 }
 interface UseMinePage {
   homePage?: PageName
+  onSuccessSignOut?: () => any
   defaultUserCenterLogos: DefaultUserCenterLogos
 }
 
-const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
+const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: UseMinePage) => {
   // states
   const pickAvatarComponentRef = useRef(null)
   const { reRender } = useRerender()
@@ -51,6 +52,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     onSuccess: () => {
       showLoading({ type: UGLoadingType.Success, text: '退出成功' })
       navigate(homePage, {})
+      onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
       showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })

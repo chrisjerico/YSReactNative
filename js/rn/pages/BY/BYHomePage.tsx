@@ -25,6 +25,7 @@ import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import HomeHeader from './views/HomeHeader'
 
 const BYHomePage = () => {
   const { goTo, refresh, value } = useHomePage({})
@@ -48,8 +49,9 @@ const BYHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       items={homeGames}
+      renderHeader={() => <HomeHeader logo={mobile_logo} />}
+      renderListHeaderComponent={() => <></>}
       renderItem={() => null}
-      ListHeaderComponent={null}
       ListFooterComponent={null}
     />
   )

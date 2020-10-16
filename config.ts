@@ -12,7 +12,7 @@ export const devConfig = {
     return false;
   },
 
-  skinKey: '六合厅',
+  skinKey: '六合厅', // 宝石红 白曜 威尼斯 六合厅
 }
 
 

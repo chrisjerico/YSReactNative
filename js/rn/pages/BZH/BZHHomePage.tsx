@@ -1,20 +1,14 @@
 import React, { useCallback } from 'react'
 import { StyleSheet } from 'react-native'
-import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
-import { httpClient } from '../../public/network/httpClient'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomGap from '../../public/views/tars/BottomGap'
-import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
-import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import NavBlock from '../../public/views/tars/NavBlock'
@@ -29,23 +23,15 @@ const BZHHomePage = () => {
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { bannersInterval, onlineNum, banners, notices, midBanners, navs, homeGames, gameLobby, coupons, rankLists, showOnlineNum } = homeInfo
+  const { notices, midBanners, navs, homeGames, gameLobby } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
+  const { mobile_logo, midBannerTimer } = sysInfo
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
   const memoizedOnPressSignIn = useCallback(() => push(PageName.BZHSignInPage), [])
   const memoizedOnPressSignUp = useCallback(() => push(PageName.BZHSignUpPage), [])
   const memoizedOnPressUser = useCallback(() => PushHelper.pushUserCenterType(UGUserCenterType.我的页), [])
-
-  const memoizedRenderBanner = useCallback((item, index) => {
-    const { linkCategory, linkPosition, pic } = item
-    const memoizedPushCategory = useCallback(() => {
-      PushHelper.pushCategory(linkCategory, linkPosition)
-    }, [])
-    return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={memoizedPushCategory} />
-  }, [])
 
   const memoizedOnPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -56,12 +42,17 @@ const BZHHomePage = () => {
       {...homeInfo}
       {...userInfo}
       {...sysInfo}
-      pagekey={'BZHHomePage'}
-      themeColor={BZHThemeColor.宝石红.themeColor}
+      {...goTo}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
+      pagekey={'BZHHomePage'}
+      themeColor={BZHThemeColor.宝石红.themeColor}
       items={homeGames}
+      couponBlockProps={couponBlockStyles}
+      couponProps={couponStyles}
+      animatedRankComponentProps={animatedRankComponentStyles}
+      bottomLogoProps={bottomLogoStyles}
       renderHeader={() => (
         <HomeHeader
           logo={mobile_logo}
@@ -74,17 +65,8 @@ const BZHHomePage = () => {
           onPressUser={memoizedOnPressUser}
         />
       )}
-      ListHeaderComponent={() => (
+      renderListHeaderComponent={() => (
         <>
-          <BannerBlock
-            showOnlineNum={showOnlineNum}
-            containerStyle={styles.bannerContainer}
-            badgeStyle={styles.bannerBadge}
-            autoplayTimeout={bannersInterval}
-            onlineNum={onlineNum}
-            banners={banners}
-            renderBanner={memoizedRenderBanner}
-          />
           <NoticeBlock logoTextStyle={styles.noticeLogoText} textStyle={styles.noticeText} containerStyle={styles.noticeContainer} notices={notices} onPressNotice={memoizedOnPressNotice} />
           <NavBlock
             visible={navs?.length > 0}
@@ -243,77 +225,6 @@ const BZHHomePage = () => {
           />
         )
       }}
-      ListFooterComponent={() => (
-        <>
-          <CouponBlock
-            visible={showCoupon}
-            onPressMore={goToJDPromotionListPage}
-            containerStyle={{
-              paddingHorizontal: '1%',
-              marginTop: scale(10),
-            }}
-            titleContainerStyle={{ backgroundColor: '#ffffff' }}
-            coupons={coupons}
-            renderCoupon={({ item, index }) => {
-              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
-              return (
-                <AutoHeightCouponComponent
-                  titleStyle={{ alignSelf: 'center' }}
-                  containerStyle={{
-                    borderColor: '#d9d9d9',
-                    borderWidth: scale(1),
-                    marginBottom: scale(20),
-                    padding: scale(5),
-                    borderRadius: scale(5),
-                    paddingBottom: scale(20),
-                  }}
-                  key={index}
-                  title={title}
-                  pic={pic}
-                  content={content}
-                  onPress={(setShowPop) => {
-                    if (linkUrl) {
-                      PushHelper.openWebView(linkUrl)
-                    } else if (!linkCategory && !linkPosition) {
-                      setShowPop(true)
-                    } else {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
-          <AnimatedRankComponent
-            type={rankingListType}
-            containerStyle={styles.subComponent}
-            iconTitleContainerStyle={{
-              backgroundColor: '#ffffff',
-              borderBottomColor: '#d9d9d9',
-              borderBottomWidth: scale(1),
-            }}
-            contentContainerStyle={{
-              width: '95%',
-              borderWidth: scale(1),
-              borderColor: '#d9d9d9',
-              alignSelf: 'center',
-              marginBottom: scale(20),
-            }}
-            rankLists={rankLists}
-          />
-          <BottomLogo
-            webName={webName}
-            containerStyle={{ marginBottom: scale(5) }}
-            onPressComputer={() => {
-              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'測試dev設定'}
-          />
-          <BottomGap />
-        </>
-      )}
     />
   )
 }
@@ -330,12 +241,6 @@ const styles = StyleSheet.create({
     width: '30%',
     height: null,
     marginBottom: scale(20),
-  },
-  bannerContainer: {
-    aspectRatio: 540 / 218,
-  },
-  bannerBadge: {
-    top: scale(-210),
   },
   noticeLogoText: {
     fontSize: scale(18),
@@ -361,6 +266,53 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     aspectRatio: 5,
+  },
+})
+
+const couponBlockStyles = StyleSheet.create({
+  containerStyle: {
+    paddingHorizontal: '1%',
+    marginTop: scale(10),
+  },
+  titleContainerStyle: {
+    backgroundColor: '#ffffff',
+  },
+})
+
+const couponStyles = StyleSheet.create({
+  titleStyle: { alignSelf: 'center' },
+  containerStyle: {
+    borderColor: '#d9d9d9',
+    borderWidth: scale(1),
+    marginBottom: scale(20),
+    padding: scale(5),
+    borderRadius: scale(5),
+    paddingBottom: scale(20),
+  },
+})
+
+const animatedRankComponentStyles = StyleSheet.create({
+  containerStyle: {
+    marginTop: scale(10),
+    backgroundColor: '#ffffff',
+  },
+  iconTitleContainerStyle: {
+    backgroundColor: '#ffffff',
+    borderBottomColor: '#d9d9d9',
+    borderBottomWidth: scale(1),
+  },
+  contentContainerStyle: {
+    width: '95%',
+    borderWidth: scale(1),
+    borderColor: '#d9d9d9',
+    alignSelf: 'center',
+    marginBottom: scale(20),
+  },
+})
+
+const bottomLogoStyles = StyleSheet.create({
+  containerStyle: {
+    marginBottom: scale(5),
   },
 })
 

@@ -106,7 +106,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
         <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
-        <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
+        <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} options={{ unmountOnBlur: true }} />
