@@ -30,7 +30,7 @@ const KSMinePage = () => {
   const { userInfo, sysInfo } = value
 
   const { balance, curLevelGrade, usr, unreadMsg } = userInfo
-  const { userCenterItems, currency } = sysInfo
+  const { userCenterItems, currency, balanceDecimal } = sysInfo
 
   const { signOut } = sign
 
@@ -121,6 +121,7 @@ const KSMinePage = () => {
             color={'#ffffff'}
             size={30}
             currency={currency}
+            balanceDecimal={balanceDecimal}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

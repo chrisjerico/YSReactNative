@@ -95,3 +95,11 @@ export const stringToNumber = (x: string) => {
   }
   return parsed
 }
+
+export const stringToFloat = (x: string) => {
+  const parsed = parseFloat(x)
+  if (isNaN(parsed)) {
+    return 0
+  }
+  return parsed
+}

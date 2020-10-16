@@ -29,7 +29,7 @@ const LHTMinePage = () => {
 
   const { userInfo, sysInfo } = value
   const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
-  const { userCenterItems, showSign, currency } = sysInfo
+  const { userCenterItems, showSign, currency, balanceDecimal } = sysInfo
   const { signOut } = sign
   return (
     <>
@@ -54,6 +54,7 @@ const LHTMinePage = () => {
           profileButtons={config?.profileButtons}
           name={usr}
           showK={currency == 'VND'}
+          balanceDecimal={balanceDecimal}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           level={curLevelGrade}
           balance={balance}

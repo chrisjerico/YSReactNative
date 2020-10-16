@@ -12,7 +12,7 @@ export const devConfig = {
     return false;
   },
 
-  skinKey: '利来',
+  skinKey: '六合厅',
 }
 
 

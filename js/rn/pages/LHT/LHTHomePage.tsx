@@ -46,7 +46,7 @@ const LHTHomePage = () => {
   const { lotteryDate, bannersInterval, onlineNum, lotterys, banners, notices, announcements, navs, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette, showOnlineNum } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl, currency } = sysInfo
+  const { mobile_logo, webName, showCoupon, rankingListType, appDownloadUrl, currency, balanceDecimal } = sysInfo
 
   const plusLotterys = [
     ...lotterys.slice(0, 6),
@@ -136,6 +136,7 @@ const LHTHomePage = () => {
                   balance={balance}
                   currency={currency}
                   showK={currency == 'VND' ? true : false}
+                  balanceDecimal={balanceDecimal}
                   customerServiceLogo={getHtml5Image(14, 'zxkf')}
                   onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
                   onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}

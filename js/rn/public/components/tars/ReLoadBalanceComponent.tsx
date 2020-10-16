@@ -4,21 +4,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
-import { stringToNumber } from '../../tools/tars'
+import { stringToFloat, stringToNumber } from '../../tools/tars'
 
 interface ReLoadComponentProps {
   color?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
-  balance: number | string
+  balance: string
   title?: string
   balanceStyle?: StyleProp<TextStyle>
   titleStyle?: StyleProp<TextStyle>
   animatedContainerStyle?: StyleProp<ViewStyle>
   currency: string
   showK?: boolean
+  balanceDecimal: number
 }
-const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -43,12 +44,12 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     setMoney(balance)
   }, [balance])
 
-  const moneyNumber = stringToNumber(money?.toString())
+  const moneyNumber = stringToFloat(money)
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
       <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
-        {(showK ? moneyNumber / 1000 + 'K' : moneyNumber) + currency}
+        {(showK ? (moneyNumber / 1000).toFixed(balanceDecimal) + 'K' : moneyNumber.toFixed(balanceDecimal)) + currency}
       </Text>
       <TouchableWithoutFeedback
         onPress={() => {

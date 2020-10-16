@@ -29,7 +29,7 @@ const BZHMinePage = () => {
   const { userInfo, sysInfo } = value
 
   const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
-  const { userCenterItems, currency } = sysInfo
+  const { userCenterItems, currency, balanceDecimal } = sysInfo
 
   const { signOut } = sign
 
@@ -71,6 +71,7 @@ const BZHMinePage = () => {
           name={usr}
           currency={currency}
           features={profileUserCenterItems}
+          balanceDecimal={balanceDecimal}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
             return (

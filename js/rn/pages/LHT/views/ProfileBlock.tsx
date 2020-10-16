@@ -19,6 +19,7 @@ interface ProfileBlockProps {
   showSignBadge: boolean
   currency: string
   showK?: boolean
+  balanceDecimal: number
 }
 
 const ProfileBlock = ({
@@ -34,6 +35,7 @@ const ProfileBlock = ({
   showSignBadge,
   currency,
   showK,
+  balanceDecimal,
 }: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
@@ -61,7 +63,16 @@ const ProfileBlock = ({
               />
             </View>
             <View style={{ flexDirection: 'row', flex: 0.9 }}>
-              <ReLoadBalanceComponent title={'余额 : '} color={'#ff861b'} containerStyle={{ justifyContent: 'flex-start' }} size={20} balance={balance} currency={currency} showK={showK} />
+              <ReLoadBalanceComponent
+                title={'余额 : '}
+                color={'#ff861b'}
+                containerStyle={{ justifyContent: 'flex-start' }}
+                size={20}
+                balance={balance}
+                currency={currency}
+                showK={showK}
+                balanceDecimal={balanceDecimal}
+              />
             </View>
           </View>
         </View>
