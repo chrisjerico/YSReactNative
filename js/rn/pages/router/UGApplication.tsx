@@ -72,6 +72,7 @@ import LEFSignUpPage from "../乐FUN/LEFSignUpPage";
 import LEFSignInPage from "../乐FUN/LEFSignInPage";
 import LEFMinePage from "../乐FUN/LEFMinePage";
 import LEFHomePage from "../乐FUN/LEFHomePage";
+import {initDomain} from "../../public/config/DomainUrls";
 
 // TabbarController
 class TabBarController extends Component<{

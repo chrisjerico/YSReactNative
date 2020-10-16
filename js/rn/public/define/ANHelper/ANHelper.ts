@@ -8,6 +8,7 @@ import {UGStore} from "../../../redux/store/UGStore";
 import {NA_DATA} from "./hp/DataDefine";
 import {ugLog} from "../../tools/UgLog";
 import {stringToNumber} from "../../tools/tars";
+import {initDomain} from "../../config/DomainUrls";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
@@ -49,6 +50,8 @@ export class ANHelper extends ANEvent {
 
   static async setup() {
     super.setup();
+
+    initDomain();
 
     // 获取系统配置信息
     const res = await Promise.all([
