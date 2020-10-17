@@ -7,7 +7,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import Avatar from '../../public/views/tars/Avatar'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
@@ -59,10 +59,7 @@ const JXHMinePage = () => {
               <Text style={{ color: '#cfa461', fontSize: scale(20) }}>{curLevelGrade}</Text>
             </View>
           </View>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-            }}>
+          <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
             <View style={{ flex: 1, height: '100%' }}>
               <FastImage source={{ uri: 'http://t132f.fhptcdn.com/static/vuePublic/images/my/userInfo/dailysign.png' }} style={{ height: '100%', width: '100%' }} resizeMode={'contain'} />
             </View>
@@ -84,9 +81,7 @@ const JXHMinePage = () => {
               logo={getHtml5Image(18, 'chong Zhi')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
               titleStyle={{ color: '#cfa461', marginLeft: scale(10) }}
-              onPress={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.存款)
-              }}
+              onPress={goToUserCenterType.存款}
             />
             <Button
               title={'提现'}
@@ -95,9 +90,7 @@ const JXHMinePage = () => {
               logo={getHtml5Image(18, 'tiSian')}
               logoStyle={{ width: scale(30), aspectRatio: 1 }}
               titleStyle={{ color: '#ffffff', marginLeft: scale(10) }}
-              onPress={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.取款)
-              }}
+              onPress={goToUserCenterType.取款}
             />
           </View>
         </View>

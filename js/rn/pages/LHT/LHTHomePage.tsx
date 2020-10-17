@@ -6,10 +6,9 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
@@ -20,11 +19,12 @@ import HomeHeader from './views/HomeHeader'
 import LotteryBall from './views/LotteryBall'
 import NavBlock from './views/NavBlock'
 
+const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
+
 const LHTHomePage = () => {
   // states
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
-  const { getHtml5Image } = useHtml5Image()
 
   const { goTo, value, sign, refresh } = useHomePage({})
 
@@ -33,7 +33,7 @@ const LHTHomePage = () => {
 
   const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
 
-  const { lotteryDate, lotterys, notices, navs, homeGames } = homeInfo
+  const { lotteryDate, lotterys, navs, homeGames } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo
 
   const { mobile_logo, appDownloadUrl, currency, balanceDecimal } = sysInfo
@@ -59,16 +59,18 @@ const LHTHomePage = () => {
       refresh={refresh}
       pagekey={'LHTHomePage'}
       themeColor={LHThemeColor.六合厅.themeColor}
+      noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
       bottomLogoStyles={bottomLogoStyles}
+      noticeLogo={config.noticeLogo}
       renderHeader={() => (
         <HomeHeader
-          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          avatar={isTest || !avatar ? config.defaultAvatar : avatar}
           name={usr}
           showLogout={uid ? true : false}
           leftLogo={mobile_logo}
-          rightLogo={getHtml5Image(14, 'top_yhhd')}
+          rightLogo={config.homeHeaderRightLogo}
           onPressSignOut={signOut}
           onPressSignIn={() => push(PageName.LHTSignInPage)}
           onPressSignUp={() => push(PageName.LHTSignUpPage)}
@@ -78,35 +80,23 @@ const LHTHomePage = () => {
       )}
       renderListHeaderComponent={() => (
         <View style={styles.contentContainer}>
-          <NoticeBlock
-            containerStyle={[styles.subComponent, { borderRadius: scale(100) }]}
-            iconContainerStyle={{
-              width: scale(20),
-              marginHorizontal: scale(15),
-            }}
-            notices={notices}
-            logo={getHtml5Image(14, 'notice')}
-            onPressNotice={({ content }) => {
-              PushHelper.pushNoticePopUp(content)
-            }}
-          />
           <NavBlock
             containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
             navs={navs}
             lotterys={plusLotterys}
             date={lotteryDate}
-            advertisement={getHtml5Image(14, 'banner', 'gif')}
-            lotteryLogo={getHtml5Image(14, 'tjzx')}
-            balanceLogo={getHtml5Image(14, 'yue')}
+            advertisement={config.advertisementLogo}
+            lotteryLogo={config.lotteryLogo}
+            balanceLogo={config.balanceLogo}
             balance={balance}
             currency={currency}
             showK={currency == 'VND' ? true : false}
             balanceDecimal={balanceDecimal}
-            customerServiceLogo={getHtml5Image(14, 'zxkf')}
-            onPressSavePoint={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
-            onPressGetPoint={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
+            customerServiceLogo={config.customerServiceLogo}
+            onPressSavePoint={goToUserCenterType.存款}
+            onPressGetPoint={goToUserCenterType.取款}
             onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
-            onPressSmileLogo={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}
+            onPressSmileLogo={goToUserCenterType.在线客服}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId } = item
               return (
@@ -130,20 +120,20 @@ const LHTHomePage = () => {
             }}
             renderLottery={(item, index) => {
               const { number, color, sx, showMore } = item
-              return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)} />
+              return <LotteryBall key={index} score={number} color={color} text={sx} showMore={showMore} onPress={goToUserCenterType.彩票大厅} />
             }}
           />
           <HomeGameComponent
             itemHeight={scale(200)}
-            leftIcon={getHtml5Image(14, 'hot_icon')}
-            rightIcon={getHtml5Image(14, 'cai_icon')}
+            leftIcon={config.homeGameLeftIcon}
+            rightIcon={config.homeGameRightIcon}
             activeTabColor={'#ff6b1b'}
             unActiveTabColor={'#bbbbbb'}
             containerStyle={styles.subComponent}
             leftGames={chooseGames}
             rightGames={homeGames}
             renderLeftGame={({ item, index }) => {
-              const { title, logo, des, gameType, selected, gameId } = item
+              const { title, logo, des, gameType, gameId } = item
               const logoUrl = getHtml5Image(14, logo)
               return (
                 <GameButton
@@ -177,9 +167,9 @@ const LHTHomePage = () => {
                         },
                       })
                     } else if (gameType == 'clzx') {
-                      PushHelper.pushUserCenterType(UGUserCenterType.长龙助手)
+                      goToUserCenterType.长龙助手()
                     } else if (gameType == 'lmzs') {
-                      PushHelper.pushUserCenterType(UGUserCenterType.开奖网)
+                      goToUserCenterType.开奖网()
                     } else {
                       PushHelper.pushLottery(gameId)
                     }
@@ -259,20 +249,39 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: scale(10),
-    paddingTop: scale(10),
   },
   subComponent: {
     marginBottom: scale(10),
   },
 })
 
+const noticeBlockStyles = StyleSheet.create({
+  containerStyle: {
+    borderRadius: scale(100),
+    marginVertical: scale(10),
+    marginHorizontal: scale(10),
+  },
+  iconContainerStyle: {
+    width: scale(20),
+    marginHorizontal: scale(15),
+  },
+})
+
 const couponBlockStyles = StyleSheet.create({
-  containerStyle: styles.subComponent,
-  listContainerStyle: { borderRadius: scale(15) },
+  containerStyle: {
+    marginBottom: scale(10),
+  },
+  listContainerStyle: {
+    borderRadius: scale(15),
+    marginHorizontal: scale(10),
+  },
 })
 
 const animatedRankComponentStyles = StyleSheet.create({
-  containerStyle: { marginVertical: scale(10) },
+  containerStyle: {
+    marginVertical: scale(10),
+    marginHorizontal: scale(10),
+  },
   iconTitleContainerStyle: {
     paddingLeft: 0,
     paddingVertical: 0,

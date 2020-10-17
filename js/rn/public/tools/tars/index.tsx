@@ -1,6 +1,8 @@
 import { Platform } from 'react-native'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import AppDefine from '../../define/AppDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
+import PushHelper from '../../define/PushHelper'
 import { PasswordStrength } from '../../models/Enum'
 import { scale } from '../Scale'
 import { Toast } from '../ToastUtils'
@@ -103,3 +105,9 @@ export const stringToFloat = (x: string) => {
   }
   return parsed
 }
+
+type UGUserCenterTypeKeys = keyof typeof UGUserCenterType
+
+export const goToUserCenterType: {
+  [key in UGUserCenterTypeKeys]?: () => any
+} = Object.fromEntries(Object.keys(UGUserCenterType).map((key) => [key, () => PushHelper.pushUserCenterType(UGUserCenterType[key])]))

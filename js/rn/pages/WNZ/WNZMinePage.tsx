@@ -6,7 +6,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
@@ -87,9 +87,7 @@ const WNZMinePage = () => {
                 onPressComment={() => {
                   PushHelper.pushLottery(LotteryType.香港六合彩)
                 }}
-                onPressUser={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-                }}
+                onPressUser={goToUserCenterType.我的页}
               />
             )
           }}
@@ -104,9 +102,7 @@ const WNZMinePage = () => {
           nextLevelTitle={nextLevelTitle}
           backgroundImage={getHtml5Image(23, 'userBg')}
           signImage={getHtml5Image(23, 'qiaodao')}
-          onPressSign={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-          }}
+          onPressSign={goToUserCenterType.每日签到}
         />
         <ButtonGroup
           leftLogo={headrTools[0]?.logo}

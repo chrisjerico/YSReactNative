@@ -1,17 +1,16 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
 const BZHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
@@ -26,15 +25,7 @@ const BZHSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <MineHeader
-          title={'登录'}
-          showBackBtn={true}
-          onPressBackBtn={pop}
-          showRightTitle={true}
-          onPressRightTitle={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
-        />
+        <MineHeader title={'登录'} showBackBtn={true} onPressBackBtn={pop} showRightTitle={true} onPressRightTitle={goToUserCenterType.在线客服} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>

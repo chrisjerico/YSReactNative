@@ -7,35 +7,28 @@ import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import NavBlock from '../../public/views/tars/NavBlock'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
 import HomeHeader from './views/HomeHeader'
 
+const onPressSignIn = () => push(PageName.BZHSignInPage)
+const onPressSignUp = () => push(PageName.BZHSignUpPage)
 const BZHHomePage = () => {
   const { goTo, refresh, value } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { notices, midBanners, navs, homeGames, gameLobby } = homeInfo
+  const { midBanners, navs, homeGames, gameLobby } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
   const { mobile_logo, midBannerTimer } = sysInfo
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
-
-  const memoizedOnPressSignIn = useCallback(() => push(PageName.BZHSignInPage), [])
-  const memoizedOnPressSignUp = useCallback(() => push(PageName.BZHSignUpPage), [])
-  const memoizedOnPressUser = useCallback(() => PushHelper.pushUserCenterType(UGUserCenterType.我的页), [])
-
-  const memoizedOnPressNotice = useCallback(({ content }) => {
-    PushHelper.pushNoticePopUp(content)
-  }, [])
 
   return (
     <HomePage
@@ -49,25 +42,16 @@ const BZHHomePage = () => {
       pagekey={'BZHHomePage'}
       themeColor={BZHThemeColor.宝石红.themeColor}
       items={homeGames}
+      noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       couponStyles={couponStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
       bottomLogoStyles={bottomLogoStyles}
       renderHeader={() => (
-        <HomeHeader
-          logo={mobile_logo}
-          isTest={isTest}
-          uid={uid}
-          name={usr}
-          balance={balance}
-          onPressSignIn={memoizedOnPressSignIn}
-          onPressSignUp={memoizedOnPressSignUp}
-          onPressUser={memoizedOnPressUser}
-        />
+        <HomeHeader logo={mobile_logo} isTest={isTest} uid={uid} name={usr} balance={balance} onPressSignIn={onPressSignIn} onPressSignUp={onPressSignUp} onPressUser={goToUserCenterType.我的页} />
       )}
       renderListHeaderComponent={() => (
         <>
-          <NoticeBlock logoTextStyle={styles.noticeLogoText} textStyle={styles.noticeText} containerStyle={styles.noticeContainer} notices={notices} onPressNotice={memoizedOnPressNotice} />
           <NavBlock
             visible={navs?.length > 0}
             navs={navs}
@@ -266,6 +250,19 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     aspectRatio: 5,
+  },
+})
+
+const noticeBlockStyles = StyleSheet.create({
+  logoTextStyle: {
+    fontSize: scale(18),
+    paddingHorizontal: scale(10),
+  },
+  textStyle: {
+    fontSize: scale(18),
+  },
+  containerStyle: {
+    borderRadius: 0,
   },
 })
 

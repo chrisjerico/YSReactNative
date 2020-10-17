@@ -13,6 +13,7 @@ import BottomGap from './BottomGap'
 import BottomLogo from './BottomLogo'
 import CouponBlock from './CouponBlock'
 import List from './List'
+import NoticeBlock from './NoticeBlock'
 import ProgressCircle from './ProgressCircle'
 import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
@@ -43,6 +44,7 @@ interface HomePageProps {
   banners: any[]
   coupons: any[]
   rankLists: any[]
+  notices: any[]
   showCoupon: boolean
   goToJDPromotionListPage: () => any
   rankingListType: RankingListType
@@ -52,6 +54,8 @@ interface HomePageProps {
   couponStyles?: CouponStyles
   bottomLogoStyles?: BottomLogoStyles
   containerStyle?: StyleProp<ViewStyle>
+  noticeBlockStyles?: NoticeBlockStyles
+  noticeLogo?: string
 }
 
 interface CouponBlockStyles {
@@ -81,6 +85,14 @@ interface BottomLogoStyles {
   subTitleStyle?: StyleProp<TextStyle>
 }
 
+interface NoticeBlockStyles {
+  iconContainerStyle?: StyleProp<ViewStyle>
+  logoTextStyle?: StyleProp<TextStyle>
+  textStyle?: StyleProp<TextStyle>
+  bgContainerStyle?: StyleProp<TextStyle>
+  containerStyle?: StyleProp<ViewStyle>
+}
+
 const HomePage = ({
   themeColor,
   loading,
@@ -107,6 +119,7 @@ const HomePage = ({
   banners,
   showCoupon,
   coupons,
+  notices,
   goToJDPromotionListPage,
   rankingListType,
   webName,
@@ -116,7 +129,13 @@ const HomePage = ({
   couponStyles,
   bottomLogoStyles,
   containerStyle,
+  noticeBlockStyles,
+  noticeLogo,
 }: HomePageProps) => {
+  const onPressNotice = useCallback(({ content }) => {
+    PushHelper.pushNoticePopUp(content)
+  }, [])
+
   const renderBanner = useCallback((item, index) => {
     const { linkCategory, linkPosition, pic } = item
     const pushCategory = useCallback(() => {
@@ -162,6 +181,7 @@ const HomePage = ({
                 banners={banners}
                 renderBanner={renderBanner}
               />
+              <NoticeBlock {...noticeBlockStyles} notices={notices} logo={noticeLogo} onPressNotice={onPressNotice} />
               {renderListHeaderComponent && renderListHeaderComponent()}
             </>
           )}

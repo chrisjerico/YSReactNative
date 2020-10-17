@@ -7,6 +7,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/tars/SignInFormList'
@@ -51,14 +52,7 @@ const WNZSignInPage = () => {
             onPress={signIn}
           />
           <Button title={'立即注册'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={navigateToSignUpPage} />
-          <Button
-            title={'在线客服'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }}
-          />
+          <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent

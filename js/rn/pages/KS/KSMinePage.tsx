@@ -8,7 +8,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -78,13 +78,10 @@ const KSMinePage = () => {
               <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.任务中心)}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.任务中心}>
                 <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-                }}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
                 <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             </View>

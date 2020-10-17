@@ -7,6 +7,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
@@ -58,7 +59,7 @@ const WNZSignUpPage = () => {
           />
           <Button title={'已有帐号，直接登陆'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={pop} />
           <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
-          <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)} />
+          <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
         </View>
       </ScrollView>

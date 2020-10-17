@@ -6,16 +6,14 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
@@ -40,7 +38,7 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const { notices, midBanners, navs, homeGames, officialGames, customiseGames } = homeInfo
+  const { midBanners, navs, homeGames, officialGames, customiseGames } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
@@ -78,6 +76,7 @@ const WNZHomePage = () => {
       refresh={refresh}
       pagekey={'WNZHomePage'}
       themeColor={WNZThemeColor.威尼斯.themeColor}
+      noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
       renderHeader={() => (
@@ -90,39 +89,12 @@ const WNZHomePage = () => {
           onPressMenu={() => {
             menu?.current?.open()
           }}
-          onPressComment={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
-          }}
-          onPressUser={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-          }}
+          onPressComment={goToUserCenterType.聊天室}
+          onPressUser={goToUserCenterType.我的页}
         />
       )}
       renderListHeaderComponent={() => (
         <>
-          <NoticeBlock
-            containerStyle={{
-              borderRadius: 0,
-              marginBottom: scale(5),
-              aspectRatio: 540 / 35,
-            }}
-            iconContainerStyle={{
-              borderColor: '#ef473a',
-              borderWidth: scale(1),
-              marginHorizontal: scale(10),
-              borderRadius: scale(2),
-            }}
-            notices={notices}
-            onPressNotice={({ content }) => {
-              PushHelper.pushNoticePopUp(content)
-            }}
-            logoTextStyle={{
-              color: 'red',
-              fontSize: scale(16),
-              padding: scale(5),
-            }}
-            textStyle={{ fontSize: scale(16) }}
-          />
           <NavBlock
             visible={navs?.length > 0}
             navs={navs}
@@ -334,12 +306,35 @@ const styles = StyleSheet.create({
   },
 })
 
+const noticeBlockStyles = StyleSheet.create({
+  containerStyle: {
+    borderRadius: 0,
+    marginBottom: scale(5),
+    aspectRatio: 540 / 35,
+  },
+  iconContainerStyle: {
+    borderColor: '#ef473a',
+    borderWidth: scale(1),
+    marginHorizontal: scale(10),
+    borderRadius: scale(2),
+  },
+  logoTextStyle: {
+    color: 'red',
+    fontSize: scale(16),
+    padding: scale(5),
+  },
+  textStyle: {
+    fontSize: scale(16),
+  },
+})
 const couponBlockStyles = StyleSheet.create({
   containerStyle: styles.subComponent,
 })
 
 const animatedRankComponentStyles = StyleSheet.create({
-  contentContainerStyle: { borderRadius: 0 },
+  contentContainerStyle: {
+    borderRadius: 0,
+  },
 })
 
 export default WNZHomePage

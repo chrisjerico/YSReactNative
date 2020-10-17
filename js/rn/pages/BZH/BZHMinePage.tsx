@@ -7,7 +7,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -43,16 +43,7 @@ const BZHMinePage = () => {
         <BackBtnComponent
           homePage={PageName.BZHHomePage}
           renderHeader={(props) => {
-            return (
-              <MineHeader
-                {...props}
-                title={'会员中心'}
-                showRightTitle={false}
-                onPressRightTitle={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-                }}
-              />
-            )
+            return <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressRightTitle={goToUserCenterType.在线客服} />
           }}
         />
       </SafeAreaHeader>

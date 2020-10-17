@@ -5,11 +5,11 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import ProfileBlock from './views/ProfileBlock'
 
 const JXHHomePage = () => {
@@ -83,12 +83,8 @@ const JXHHomePage = () => {
           <ProfileBlock
             {...(userInfo as any)}
             onPressTryPlay={tryPlay}
-            onPressLeftButton={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.存款)
-            }}
-            onPressRightButton={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.取款)
-            }}
+            onPressLeftButton={goToUserCenterType.存款}
+            onPressRightButton={goToUserCenterType.取款}
             onPressExchange={() =>
               goToJDPromotionListPage({
                 backgroundColor: '#282828',

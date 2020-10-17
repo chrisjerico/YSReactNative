@@ -8,7 +8,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -34,18 +34,7 @@ const LHTMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <BackBtnComponent
-          homePage={PageName.LHTMinePage}
-          renderHeader={(props) => (
-            <MineHeader
-              {...props}
-              title={'会员中心'}
-              onPressRightTitle={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-              }}
-            />
-          )}
-        />
+        <BackBtnComponent homePage={PageName.LHTMinePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} onPressRightTitle={goToUserCenterType.在线客服} />} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => {}} />} showsVerticalScrollIndicator={false}>
         <ProfileBlock
@@ -59,12 +48,8 @@ const LHTMinePage = () => {
           level={curLevelGrade}
           balance={balance}
           currency={currency}
-          onPressDaySign={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-          }}
-          onPressTaskCenter={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
-          }}
+          onPressDaySign={goToUserCenterType.每日签到}
+          onPressTaskCenter={goToUserCenterType.任务中心}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (

@@ -36,11 +36,8 @@ const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPr
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
+  container: {},
   listContainer: {
-    width: '100%',
     backgroundColor: '#ffffff',
     paddingHorizontal: scale(15),
     paddingBottom: scale(20),

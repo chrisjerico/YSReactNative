@@ -10,14 +10,13 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
 import MoreGameButton from './views/MoreGameButton'
@@ -167,7 +166,7 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'depositlogo')}
-              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.存款)}
+              onPress={goToUserCenterType.存款}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
@@ -177,7 +176,7 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'xima')}
-              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.额度转换)}
+              onPress={goToUserCenterType.额度转换}
             />
             <LinearBadge
               colors={['#3a3a41', '#3a3a41']}
@@ -187,7 +186,7 @@ const KSHomePage = () => {
               showIcon={false}
               showLogo={true}
               logo={getHtml5Image(22, 'withdrawlogo')}
-              onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.取款)}
+              onPress={goToUserCenterType.取款}
             />
           </View>
           <View style={[styles.toolBlock, { height: scale(158) }]}>
@@ -200,7 +199,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'lxb')}
-                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.利息宝)}
+                onPress={goToUserCenterType.利息宝}
               />
               <LinearBadge
                 colors={['#3a3a41', '#3a3a41']}
@@ -210,7 +209,7 @@ const KSHomePage = () => {
                 showIcon={false}
                 showLogo={true}
                 logo={getHtml5Image(22, 'yxdt')}
-                onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅)}
+                onPress={goToUserCenterType.彩票大厅}
               />
             </View>
             <BannerBlock
