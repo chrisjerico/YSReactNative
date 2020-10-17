@@ -14,6 +14,7 @@ import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
 import {scale} from "../../public/tools/Scale";
+import {Toast} from "../../public/tools/ToastUtils";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -70,6 +71,24 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         break
     }
 
+    // 超时时间20秒
+    const timer = setTimeout(() => {
+      clearTimeout(timer)
+
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.launchFinish()
+          break
+        case 'android':
+          ANHelper.callAsync(CMD.LAUNCH_GO)
+          break
+      }
+    }, 20000)
+
+    setProps({
+      navbarOpstions: { hidden: true },
+    })
+
     CodePush.sync(
       options,
       (status) => {
@@ -94,9 +113,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
             console.log('rn正在下载热更新')
+            //此时不能强制跳转
+            clearTimeout(timer)
             break
           case CodePush.SyncStatus.INSTALLING_UPDATE:
             console.log('rn正在安装热更新')
+            //此时不能强制跳转
+            clearTimeout(timer)
             break
           case CodePush.SyncStatus.UNKNOWN_ERROR:
             console.log('rn热更新出错❌')
@@ -124,28 +147,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       },
       (progress) => {
         let p = progress.receivedBytes / progress.totalBytes
-        setProps({ progress: p })
+        setProps({ progress: p, text: '正在更新，请稍等...' })
         console.log('rn热更新包下载进度：' + p)
       }
     )
-
-    // 超时时间20秒
-    const timer = setTimeout(() => {
-      clearTimeout(timer)
-
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.launchFinish()
-          break
-        case 'android':
-          ANHelper.callAsync(CMD.LAUNCH_GO)
-          break
-      }
-    }, 20000)
-
-    setProps({
-      navbarOpstions: { hidden: true },
-    })
 
     switch (Platform.OS) {
       case 'ios':
@@ -172,7 +177,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 } else {
                   setProps({ backgroundImage: pics.shift() })
                 }
-              }, 2500)
+              }, 3000)
             } else {
               setProps({ bBanner: true })
             }
