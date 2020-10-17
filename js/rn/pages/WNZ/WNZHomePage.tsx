@@ -228,10 +228,10 @@ const WNZHomePage = () => {
             baseHeight={scale(82)}
             itemHeight={scale(100)}
             renderTabBar={TabBar}
-            renderScene={({ item, tab }) => {
+            renderScene={({ item, tab, index }) => {
               return (
                 <List
-                  uniqueKey={'WNZHomePage' + tab}
+                  uniqueKey={'WNZHomePageTabComponent' + index}
                   legacyImplementation={true}
                   removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}

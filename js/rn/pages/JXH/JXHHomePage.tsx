@@ -40,8 +40,8 @@ const JXHHomePage = () => {
     )
   }, [])
 
-  const renderScene = useCallback(({ item }) => {
-    return <List uniqueKey={'JXHHomePageTabScene'} style={{}} data={item} renderItem={renderGame} numColumns={2} />
+  const renderScene = useCallback(({ item, index }) => {
+    return <List uniqueKey={'JXHHomePageTabComponent' + index} style={{}} data={item} renderItem={renderGame} numColumns={2} />
   }, [])
 
   return (

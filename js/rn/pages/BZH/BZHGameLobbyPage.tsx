@@ -38,7 +38,7 @@ const BZHGameLobbyPage = ({ route }) => {
           renderScene={({ item, tab, index }) => {
             return (
               <List
-                uniqueKey={'BZHGameLobbyPage' + index}
+                uniqueKey={'BZHGameLobbyPageTabComponent' + index}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),

@@ -53,7 +53,7 @@ const HomeGameComponent = ({
   const [index, setIndex] = useState(0)
 
   const renderScene = useCallback(({ item, index }) => {
-    return <List uniqueKey={'HomeGameComponentRight' + index} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
+    return <List uniqueKey={'LHTHomeGameComponentRight' + index} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
   }, [])
 
   return (
@@ -95,7 +95,7 @@ const HomeGameComponent = ({
           tabBarBackgroundColor={'#ffffff'}
         />
       ) : (
-        <List uniqueKey={'HomeGameComponentLeft'} style={styles.list} data={leftGames} renderItem={renderLeftGame} numColumns={3} />
+        <List uniqueKey={'LHTHomeGameComponentLeft'} style={styles.list} data={leftGames} renderItem={renderLeftGame} numColumns={3} />
       )}
     </View>
   )
