@@ -65,6 +65,14 @@ const WNZHomePage = () => {
     : // @ts-ignore
       config?.menuSignIn?.concat(config?.menus)
 
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
   return (
     <HomePage
       {...homeInfo}
@@ -86,9 +94,7 @@ const WNZHomePage = () => {
           name={usr}
           logo={mobile_logo}
           balance={balance}
-          onPressMenu={() => {
-            menu?.current?.open()
-          }}
+          onPressMenu={openMenu}
           onPressComment={goToUserCenterType.聊天室}
           onPressUser={goToUserCenterType.我的页}
         />
@@ -268,7 +274,7 @@ const WNZHomePage = () => {
                   if (title == '安全退出') {
                     signOut()
                   } else {
-                    menu?.current?.close()
+                    closeMenu()
                     onPress && onPress()
                   }
                 }}

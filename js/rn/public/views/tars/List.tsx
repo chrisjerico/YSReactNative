@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { FlatList, FlatListProps } from 'react-native'
 
 const List = (props: Readonly<FlatListProps<any>> & { uniqueKey: string }) => {
   const { uniqueKey } = props
-  return <FlatList scrollEnabled={false} listKey={uniqueKey} keyExtractor={(_, index) => uniqueKey + index.toString()} showsVerticalScrollIndicator={false} {...props} />
+  const keyExtractor = useCallback((item: any, index: number) => uniqueKey + index.toString(), [uniqueKey])
+  return <FlatList scrollEnabled={false} {...props} listKey={uniqueKey} keyExtractor={keyExtractor} showsVerticalScrollIndicator={false} />
 }
 
 export default List
