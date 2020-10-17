@@ -1,7 +1,7 @@
 import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
-import React, { Component, PureComponent } from 'react'
+import React, { Component } from 'react'
 import TrendView from '../../public/components/TrendView'
 import { LanguageContextProvider } from '../../public/context/LanguageContextProvider'
 import { PageName } from '../../public/navigation/Navigation'
@@ -13,6 +13,8 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import BYHomePage from '../BY/BYHomePage'
+import BYSignInPage from '../BY/BYSignInPage'
+import BYSignUpPage from '../BY/BYSignUpPage'
 import BZHGameLobbyPage from '../BZH/BZHGameLobbyPage'
 import BZHHomePage from '../BZH/BZHHomePage'
 import BZHMinePage from '../BZH/BZHMinePage'
@@ -151,6 +153,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignInPage} component={JXHSignInPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignUpPage} component={JXHSignUpPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={BYSignInPage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={BYSignUpPage} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.VietnamLogin} component={UGPage(VietnamLogin)} />

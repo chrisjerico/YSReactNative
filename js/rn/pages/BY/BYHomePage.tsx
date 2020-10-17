@@ -28,14 +28,19 @@ import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import HomeHeader from './views/HomeHeader'
 
+const onPressSignIn = () => push(PageName.BYSignInPage)
+const onPressSignUp = () => push(PageName.BYSignUpPage)
+
 const BYHomePage = () => {
-  const { goTo, refresh, value } = useHomePage({})
+  const { goTo, refresh, value, sign } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { bannersInterval, onlineNum, banners, notices, midBanners, announcements, navs, homeGames, gameLobby, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
   const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
+
+  const { signOut, tryPlay } = sign
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
@@ -52,7 +57,7 @@ const BYHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       items={homeGames}
-      renderHeader={() => <HomeHeader logo={mobile_logo} />}
+      renderHeader={() => <HomeHeader logo={mobile_logo} uid={uid} onPressSignIn={onPressSignIn} onPressSignUp={onPressSignUp} onPressTryPlay={tryPlay} />}
       renderListHeaderComponent={() => (
         <>
           <List
