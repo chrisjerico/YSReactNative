@@ -38,7 +38,7 @@ const BZHGameLobbyPage = ({ route }) => {
           renderScene={({ item, tab, index }) => {
             return (
               <List
-                uniqueKey={'BZHGameLobbyPage' + index.toString()}
+                uniqueKey={'BZHGameLobbyPage' + index}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),
@@ -51,7 +51,7 @@ const BZHGameLobbyPage = ({ route }) => {
                 }}
                 numColumns={3}
                 data={item}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                   const { title, pic, id } = item
                   return (
                     <GameButton

@@ -52,8 +52,8 @@ const HomeGameComponent = ({
 }: HomeGameComponentProps) => {
   const [index, setIndex] = useState(0)
 
-  const renderScene = useCallback(({ item }) => {
-    return <List uniqueKey={'HomeGameComponentRight'} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
+  const renderScene = useCallback(({ item, index }) => {
+    return <List uniqueKey={'HomeGameComponentRight' + index} style={styles.list} data={item} renderItem={renderRightGame} numColumns={3} />
   }, [])
 
   return (

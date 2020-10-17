@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
+import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -38,6 +39,7 @@ const BYHomePage = () => {
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
+  console.log('-------homeGames-----', homeGames)
   return (
     <HomePage
       {...homeInfo}
@@ -51,7 +53,43 @@ const BYHomePage = () => {
       refresh={refresh}
       items={homeGames}
       renderHeader={() => <HomeHeader logo={mobile_logo} />}
-      renderListHeaderComponent={() => <></>}
+      renderListHeaderComponent={() => (
+        <>
+          <List
+            uniqueKey={'BYHomePage_Navs'}
+            horizontal={true}
+            scrollEnabled={true}
+            data={homeGames}
+            style={{ backgroundColor: '#ffffff', borderRadius: scale(10), marginHorizontal: '1%', marginTop: scale(10) }}
+            renderItem={({ item }) => {
+              const { logo, name } = item
+              return (
+                <GameButton
+                  logo={logo}
+                  title={name}
+                  showSubTitle={false}
+                  titleContainerStyle={{ aspectRatio: 5 }}
+                  containerStyle={{
+                    marginBottom: scale(30),
+                    marginTop: scale(10),
+                  }}
+                  onPress={() => {
+                    PushHelper.pushHomeGame(item)
+                  }}
+                />
+              )
+            }}
+          />
+          <TabComponent
+            numColumns={1}
+            tabGames={homeGames}
+            renderScene={() => null}
+            itemHeight={10}
+            focusTabColor={'#387ef5'}
+            containerStyle={{ backgroundColor: '#ffffff', marginHorizontal: '1%', marginTop: scale(10), borderRadius: scale(10) }}
+          />
+        </>
+      )}
       renderItem={() => null}
     />
   )

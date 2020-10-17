@@ -8,11 +8,11 @@ import StringUtils from '../../tools/StringUtils'
 
 interface TabComponentProps {
   tabGames: TabGame[]
-  itemHeight?: number
-  renderScene?: ({ item, index, tab }: RenderScene) => any
+  itemHeight: number
+  renderScene: ({ tabLabel, item, index, tab }: RenderScene) => any
   focusTabColor?: string
   baseHeight?: number
-  initialTabIndex: number
+  initialTabIndex?: number
   tabTextStyle?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
   tabWidth?: number
@@ -43,6 +43,7 @@ interface RenderScene {
   item: Game[]
   index: number
   tab: string
+  tabLabel: string
 }
 
 interface SceneProps {
@@ -144,8 +145,9 @@ const TabComponent = ({
     })
   }
 
-  const Scene = (props) => renderScene && renderScene(props)
+  // const Scene = (props) => renderScene && renderScene(props)
 
+  const Scene = renderScene
   return (
     <ScrollableTabView
       ref={tabRef}
@@ -217,7 +219,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )
