@@ -72,6 +72,17 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
+  // 虚拟币充值教程
+  if (AppDefine.siteId != 'c012') {
+    pages.push({
+      vcName: 'HelpDocViewController',
+      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    });
+  }
+
   // 开奖走势页
   pages.push({
     rnName: PageName.TrendView,

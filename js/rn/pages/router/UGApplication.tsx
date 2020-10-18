@@ -49,6 +49,7 @@ import ZLLoginPage from '../尊龙/ZLLoginPage'
 import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
+import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import GameList from '../越南/GameList'
 import VietnamHomePage from '../越南/HomePage'
 import VietnamLogin from '../越南/LoginPage'
@@ -138,6 +139,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
+        <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
       </Router.TabNavigator>
     )
   }

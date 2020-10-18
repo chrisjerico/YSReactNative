@@ -70,6 +70,7 @@ export enum PageName {
   VietnamGameList = 'VietnamGameList',
   LHTPreferencePage = 'LHTPreferencePage',
   TrendView = 'TrendView',
+  JDVirtualCurrencyTutorialPage = "JDVirtualCurrencyTutorialPage"
 }
 
 // export class  {
