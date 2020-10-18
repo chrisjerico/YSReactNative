@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import List from './List'
 
 interface CouponBlock {
-  containerStyle?: StyleProp<ViewStyle>
   coupons: any[]
   renderCoupon: ({ item: any, index: number }) => any
   onPressMore: () => any
   visible: boolean
+  containerStyle?: StyleProp<ViewStyle>
   listContainerStyle?: StyleProp<ViewStyle>
   titleContainerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
@@ -36,11 +36,8 @@ const CouponBlock = ({ visible, containerStyle, coupons = [], renderCoupon, onPr
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
+  container: {},
   listContainer: {
-    width: '100%',
     backgroundColor: '#ffffff',
     paddingHorizontal: scale(15),
     paddingBottom: scale(20),
@@ -53,4 +50,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default CouponBlock
+export default memo(CouponBlock)

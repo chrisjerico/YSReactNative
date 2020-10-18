@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
+import { popToRoot } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const JXHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
@@ -20,7 +20,7 @@ const JXHSignInPage = () => {
 
   const { navigateToSignUpPage } = navigateTo
 
-  const { signIn } = sign
+  const { signIn, tryPlay } = sign
 
   const { onChangeRemember } = onChange
   const { remember } = value
@@ -35,11 +35,15 @@ const JXHSignInPage = () => {
           <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'欢迎您'}</Text>
           <View style={{ flexDirection: 'row', marginBottom: scale(20) }}>
             <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'没有账号,立即'}</Text>
-            <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'注册'}</Text>
+            <TouchableWithoutFeedback onPress={navigateToSignUpPage}>
+              <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'注册'}</Text>
+            </TouchableWithoutFeedback>
             <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'或'}</Text>
-            <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
+            <TouchableWithoutFeedback onPress={tryPlay}>
+              <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
+            </TouchableWithoutFeedback>
           </View>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>
@@ -59,7 +63,7 @@ const JXHSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => {
+const SignInForm = (props: SignInRenderFormProps) => {
   return (
     <FormComponent
       {...props}

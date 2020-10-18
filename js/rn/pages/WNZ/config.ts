@@ -5,7 +5,7 @@ import { navigate, push } from '../../public/navigation/RootNavigation'
 import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 
-const { getHtml5Image } = useHtml5Image('http://test20.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const config = {
   defaultUserCenterLogos: {
@@ -34,7 +34,7 @@ const config = {
   menus: [
     {
       title: '会员中心',
-      onPress: () => { navigate(PageName.WNZMinePage) }, // PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+      onPress: () => { navigate(PageName.WNZMinePage) }
     },
     {
       title: '额度转换',
@@ -92,7 +92,7 @@ const config = {
     },
     {
       title: '开奖结果',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖结果) }, // 這裡到底要跳到哪
+      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖结果) },
     },
     {
       title: '长龙排行',

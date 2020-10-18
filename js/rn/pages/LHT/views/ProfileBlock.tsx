@@ -17,9 +17,26 @@ interface ProfileBlockProps {
   onPressTaskCenter: () => any
   onPressAvatar: () => any
   showSignBadge: boolean
+  currency: string
+  showK?: boolean
+  balanceDecimal: number
 }
 
-const ProfileBlock = ({ avatar, name = '', balance = '', level, profileButtons = [], renderProfileButton, onPressDaySign, onPressTaskCenter, onPressAvatar, showSignBadge }: ProfileBlockProps) => {
+const ProfileBlock = ({
+  avatar,
+  name = '',
+  balance = '',
+  level,
+  profileButtons = [],
+  renderProfileButton,
+  onPressDaySign,
+  onPressTaskCenter,
+  onPressAvatar,
+  showSignBadge,
+  currency,
+  showK,
+  balanceDecimal,
+}: ProfileBlockProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1.25, flexDirection: 'row' }}>
@@ -46,7 +63,16 @@ const ProfileBlock = ({ avatar, name = '', balance = '', level, profileButtons =
               />
             </View>
             <View style={{ flexDirection: 'row', flex: 0.9 }}>
-              <ReLoadBalanceComponent title={'余额 : '} color={'#ff861b'} containerStyle={{ justifyContent: 'flex-start' }} size={20} balance={balance} />
+              <ReLoadBalanceComponent
+                title={'余额 : '}
+                color={'#ff861b'}
+                containerStyle={{ justifyContent: 'flex-start' }}
+                size={20}
+                balance={balance}
+                currency={currency}
+                showK={showK}
+                balanceDecimal={balanceDecimal}
+              />
             </View>
           </View>
         </View>

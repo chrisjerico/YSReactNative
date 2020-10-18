@@ -4,13 +4,12 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { ToastError, ToastSuccess } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useTryPlay from './useTryPlay'
-import useHome from './useHome'
-import useLogOut from './useLogOut'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useHomeInfo from './useHomeInfo'
 import useRerender from './useRerender'
-import useSys from './useSys'
+import useSignOut from './useSignOut'
+import useSysInfo from './useSysInfo'
+import useTryPlay from './useTryPlay'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -18,53 +17,49 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
-  const { loading, refreshing, rankList, homeGame, notice, onlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
+  const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHomeInfo()
 
-  const { rerender } = useRerender()
+  const { reRender } = useRerender()
 
-  const goToJDPromotionListPage = () => {
+  const goToJDPromotionListPage = (style?: { [key: string]: any }) => {
     push(PageName.JDPromotionListPage, {
       containerStyle: {
         backgroundColor: '#ffffff',
+        ...style,
       },
     })
   }
 
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
-      hideLoading()
-      ToastSuccess('登录成功！')
-      rerender()
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+      reRender()
       onSuccessTryPlay && onSuccessTryPlay()
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '試玩失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
     },
   })
 
-  const { logOut } = useLogOut({
+  const { signOut } = useSignOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
     onSuccess: () => {
-      hideLoading()
-      rerender()
+      showLoading({ type: UGLoadingType.Success, text: '退出成功' })
+      reRender()
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error || '登出失败')
+      showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
     },
   })
-  const signOut = logOut
-
-  const { sys } = useSys({})
-  // stores
+  // infos
   const userInfo = UGStore.globalProps.userInfo
+  const { sysInfo } = useSysInfo({})
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   // data handle
@@ -114,6 +109,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const homeInfo = {
     lotteryDate,
     onlineNum,
+    showOnlineNum,
     bannersInterval,
     lotterys,
     banners,
@@ -138,7 +134,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     refreshing,
     homeInfo,
     userInfo,
-    sysInfo: sys,
+    sysInfo,
   }
 
   return {

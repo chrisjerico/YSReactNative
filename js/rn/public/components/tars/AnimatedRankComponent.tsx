@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { memo, useEffect, useRef } from 'react'
 import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
@@ -12,16 +12,17 @@ interface RankList {
 }
 
 interface AnimatedRankComponentProps {
+  rankLists: RankList[]
+  duration?: number
+  type: RankingListType
+  iconColor?: string
   containerStyle?: StyleProp<ViewStyle>
   iconTitleContainerStyle?: StyleProp<ViewStyle>
   contentContainerStyle?: StyleProp<ViewStyle>
   titleConatinerStyle?: StyleProp<ViewStyle>
-  rankLists: RankList[]
-  duration?: number
-  type: RankingListType
   iconTitleStyle?: StyleProp<TextStyle>
-  iconColor?: string
   contentTitleStyle?: StyleProp<TextStyle>
+  iconStyle?: StyleProp<TextStyle>
 }
 
 const AnimatedRankComponent = ({
@@ -35,6 +36,7 @@ const AnimatedRankComponent = ({
   iconTitleStyle,
   iconColor,
   contentTitleStyle,
+  iconStyle,
 }: AnimatedRankComponentProps) => {
   const listHeight = 180
   const itemHeight = 40
@@ -44,8 +46,9 @@ const AnimatedRankComponent = ({
   const animated = () => {
     Animated.timing(height, {
       toValue: -(count * itemHeight),
+      delay: 1000,
       duration: (count + 4.5) * duration,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start(({ finished }) => {
       if (finished) {
         height?.setValue(listHeight)
@@ -66,7 +69,7 @@ const AnimatedRankComponent = ({
     return (
       <View style={containerStyle}>
         <View style={[styles.iconTitleContainer, iconTitleContainerStyle]}>
-          <FontAwesome name={'bar-chart'} size={scale(20)} color={iconColor} />
+          <FontAwesome name={'bar-chart'} size={scale(20)} color={iconColor} style={iconStyle} />
           <Text style={[styles.iconText, iconTitleStyle]}>{type == RankingListType.中奖排行榜 ? '中奖排行榜' : '投注排行榜'}</Text>
         </View>
         <View style={[styles.contentContainer, contentContainerStyle]}>
@@ -176,4 +179,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AnimatedRankComponent
+export default memo(AnimatedRankComponent)

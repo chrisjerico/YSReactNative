@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import UGProgressCircle from '../../widget/progress/UGProgressCircle'
 
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ProgressCircle
+export default memo(ProgressCircle)

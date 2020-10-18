@@ -3,10 +3,10 @@ import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useRegister from './useRegister'
-import useSys from './useSys'
+import { validPassword } from '../../tools/tars'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useSignUp from './useSignUp'
+import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
 interface UseRegisterPage {
@@ -45,50 +45,47 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
       navigateToHomePage()
-      ToastSuccess('登录成功')
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '登录失败')
-      console.log('--------試玩失败--------', error)
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
     },
   })
 
-  const { register } = useRegister({
+  const { signUp } = useSignUp({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading({ type: UGLoadingType.Loading, text: '正在注册...' })
     },
-    onSuccessWithAutoLogin: () => {
-      hideLoading()
+    onSuccessAutoLogin: () => {
+      showLoading({ type: UGLoadingType.Success, text: '自动登录成功' })
       navigateToHomePage()
+    },
+    onErrorAutoLogin: (error) => {
+      showLoading({ type: UGLoadingType.Error, text: error ?? '自动登录失败' })
     },
     onSuccess: () => {
-      hideLoading()
-      ToastSuccess('注册成功')
-      navigateToHomePage()
+      showLoading({ type: UGLoadingType.Success, text: '注册成功' })
+      navigateToSignInPage()
     },
     onError: (error) => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Error, text: error ?? '注册失败' })
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error ?? '注册失败')
-      console.log('-------注册失败-------', error)
     },
   })
 
   // stores
-  const { sys } = useSys({})
+  const { sysInfo } = useSysInfo({})
   // data handle
-  const { necessity, passwordLimit } = sys
+  const { necessity, passwordLimit } = sysInfo
   const { strength, maxLength, minLength } = passwordLimit
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
@@ -165,30 +162,6 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
-  const signUp = () => {
-    console.log('------name-----', name)
-    if (valid) {
-      const params = {
-        inviter: recommendGuy, // 推荐人ID
-        usr: account, // 账号
-        pwd: password?.md5(), // 密码
-        fundPwd: fundPassword?.md5(), // 取款密码
-        fullName: name, // 真实姓名
-        qq: qq, // QQ号
-        wx: weChat, // 微信号
-        phone: phoneNumber, // 手机号
-        smsCode: sms ?? '', // 短信验证码
-        'slideCode[nc_sid]': slideCode?.nc_csessionid,
-        'slideCode[nc_token]': slideCode?.nc_token,
-        'slideCode[nc_sig]': slideCode?.nc_sig,
-        email: email, // 邮箱
-        regType: agentRef.current, // 用户注册 或 代理注册,
-      }
-      // @ts-ignore
-      register(params)
-    }
-  }
-
   const onChange = {
     onChangeRecommendGuy,
     obChangeAccount,
@@ -236,9 +209,27 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     navigateToSignInPage,
   }
 
-  const sign = {
-    signUp,
-    tryPlay,
+  const _signUp = () => {
+    if (valid) {
+      const params = {
+        inviter: recommendGuy, // 推荐人ID
+        usr: account, // 账号
+        pwd: password?.md5(), // 密码
+        fundPwd: fundPassword?.md5(), // 取款密码
+        fullName: name, // 真实姓名
+        qq: qq, // QQ号
+        wx: weChat, // 微信号
+        phone: phoneNumber, // 手机号
+        smsCode: sms ?? '', // 短信验证码
+        'slideCode[nc_sid]': slideCode?.nc_csessionid,
+        'slideCode[nc_token]': slideCode?.nc_token,
+        'slideCode[nc_sig]': slideCode?.nc_sig,
+        email: email, // 邮箱
+        regType: agentRef.current, // 用户注册 或 代理注册,
+      }
+      // @ts-ignore
+      signUp(params)
+    }
   }
 
   return {
@@ -248,8 +239,11 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     label,
     onChange,
     navigateTo,
-    sign,
     passwordLimit,
+    sign: {
+      signUp: _signUp,
+      tryPlay,
+    },
   }
 }
 

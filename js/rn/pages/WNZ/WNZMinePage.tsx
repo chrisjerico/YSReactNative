@@ -6,7 +6,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
@@ -24,12 +24,17 @@ const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 const WNZMinePage = () => {
   const menu = useRef(null)
   const { value, sign } = useMinePage({
+    homePage: PageName.WNZHomePage,
+    onSuccessSignOut: () => {
+      menu?.current?.close()
+    },
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { uid, usr, mobile_logo, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, userCenterItems, unreadMsg, balance } = sysInfo
+  const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
+  const { mobile_logo, userCenterItems } = sysInfo
 
   const { signOut } = sign
 
@@ -82,9 +87,7 @@ const WNZMinePage = () => {
                 onPressComment={() => {
                   PushHelper.pushLottery(LotteryType.香港六合彩)
                 }}
-                onPressUser={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-                }}
+                onPressUser={goToUserCenterType.我的页}
               />
             )
           }}
@@ -99,9 +102,7 @@ const WNZMinePage = () => {
           nextLevelTitle={nextLevelTitle}
           backgroundImage={getHtml5Image(23, 'userBg')}
           signImage={getHtml5Image(23, 'qiaodao')}
-          onPressSign={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-          }}
+          onPressSign={goToUserCenterType.每日签到}
         />
         <ButtonGroup
           leftLogo={headrTools[0]?.logo}
@@ -145,8 +146,8 @@ const WNZMinePage = () => {
                     key={index}
                     logo={logo}
                     title={name}
-                    showUnReadMsg={code == 9 && unreadMsg != 0}
-                    unreadMsg={unreadMsg}
+                    showUnReadMsg={code == UGUserCenterType.站内信}
+                    unreadMsg={unreadMsg || 0}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
                     imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}

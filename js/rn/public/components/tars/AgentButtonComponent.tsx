@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 import { AgentType } from '../../models/Enum'
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AgentButtonComponent
+export default memo(AgentButtonComponent)

@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 interface AvatarProps {
-  onPress?: () => any;
-  uri: string;
-  size?: number;
-  containerStyle?: StyleProp<ViewStyle>;
+  onPress?: () => any
+  uri: string
+  size?: number
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 const Avatar = ({ onPress, uri, size = 100, containerStyle }: AvatarProps) => {
@@ -30,4 +30,4 @@ const Avatar = ({ onPress, uri, size = 100, containerStyle }: AvatarProps) => {
   )
 }
 
-export default Avatar
+export default memo(Avatar)

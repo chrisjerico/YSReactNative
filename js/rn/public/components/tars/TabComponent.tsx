@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -8,11 +8,11 @@ import StringUtils from '../../tools/StringUtils'
 
 interface TabComponentProps {
   tabGames: TabGame[]
-  itemHeight?: number
-  renderScene?: ({ item, index, tab }: RenderScene) => any
+  itemHeight: number
+  renderScene: ({ tabLabel, item, index, tab }: RenderScene) => any
   focusTabColor?: string
   baseHeight?: number
-  initialTabIndex: number
+  initialTabIndex?: number
   tabTextStyle?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
   tabWidth?: number
@@ -21,6 +21,8 @@ interface TabComponentProps {
   tabScrollEnabled?: boolean
   numColumns: number
   renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
+  tabTextColor?: string
+  tabBarBackgroundColor?: string
 }
 
 interface RenderTabBar {
@@ -41,6 +43,7 @@ interface RenderScene {
   item: Game[]
   index: number
   tab: string
+  tabLabel: string
 }
 
 interface SceneProps {
@@ -71,6 +74,8 @@ const TabComponent = ({
   tabScrollEnabled = true,
   numColumns,
   renderTabBar,
+  tabTextColor = '#000000',
+  tabBarBackgroundColor,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
@@ -102,9 +107,9 @@ const TabComponent = ({
     const tabCount = getTabCount()
     const width = tabCount ? AppDefine.width / tabCount : 0
     if (width < minTabWidth) {
-      return minTabWidth
+      return minTabWidth + scale(20)
     } else {
-      return width
+      return width + scale(20)
     }
   }
 
@@ -140,12 +145,13 @@ const TabComponent = ({
     })
   }
 
-  const Scene = (props) => renderScene && renderScene(props)
+  // const Scene = (props) => renderScene && renderScene(props)
 
+  const Scene = renderScene
   return (
     <ScrollableTabView
       ref={tabRef}
-      tabBarBackgroundColor={'#ffffff'}
+      tabBarBackgroundColor={tabBarBackgroundColor}
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
       renderTabBar={(props) => {
@@ -158,7 +164,7 @@ const TabComponent = ({
             ref={scroll}
             horizontal={true}
             removeClippedSubviews={true}
-            style={{ flexGrow: 0, backgroundColor: '#ffffff' }}
+            style={{ flexGrow: 0 }}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
@@ -179,13 +185,16 @@ const TabComponent = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         height: '100%',
+                        paddingHorizontal: scale(10),
                       }}>
                       <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit={true}
                         style={[
                           styles.tabText,
                           tabTextStyle,
                           {
-                            color: activeTab == index ? focusTabColor : '#000000',
+                            color: activeTab == index ? focusTabColor : tabTextColor,
                           },
                         ]}>
                         {title}
@@ -210,7 +219,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )
@@ -251,4 +260,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default TabComponent
+export default memo(TabComponent)

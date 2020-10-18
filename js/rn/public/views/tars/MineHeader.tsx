@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import React, { memo } from 'react'
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
 
@@ -12,9 +12,10 @@ interface MineHeaderProps {
   showBackBtn?: boolean
   rightTitle?: string
   backBtnColor?: string
+  titleStyle?: StyleProp<TextStyle>
 }
 
-const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, backBtnColor = '#ffffff' }: MineHeaderProps) => {
+const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, backBtnColor = '#ffffff', titleStyle }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -26,16 +27,16 @@ const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHe
       ) : (
         <View style={{ flex: 1 }} />
       )}
-      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showRightTitle={showRightTitle} onPressRightTitle={onPressRightTitle} />}
+      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showRightTitle={showRightTitle} titleStyle={titleStyle} onPressRightTitle={onPressRightTitle} />}
     </View>
   )
 }
 
-const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle }) => {
+const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, titleStyle }) => {
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={styles.headerTitle}>{title}</Text>
+        <Text style={[styles.headerTitle, titleStyle]}>{title}</Text>
       </View>
       {showRightTitle ? (
         <TouchableWithoutFeedback onPress={onPressRightTitle}>
@@ -66,4 +67,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MineHeader
+export default memo(MineHeader)

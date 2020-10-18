@@ -1,13 +1,13 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const useRerender = () => {
   const [state, setState] = useState(false)
 
-  const rerender = () => {
+  const reRender = () => {
     setState(!state)
   }
   return {
-    rerender
+    reRender,
   }
 }
 

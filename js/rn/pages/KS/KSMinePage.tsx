@@ -8,7 +8,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -19,16 +19,18 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
+const { getHtml5Image } = useHtml5Image()
+
 const KSMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { value, sign } = useMinePage({
     homePage: PageName.KSHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg } = sysInfo
+  const { balance, curLevelGrade, usr, unreadMsg } = userInfo
+  const { userCenterItems, currency, balanceDecimal } = sysInfo
 
   const { signOut } = sign
 
@@ -76,13 +78,10 @@ const KSMinePage = () => {
               <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.任务中心)}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.任务中心}>
                 <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-                }}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
                 <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             </View>
@@ -118,6 +117,8 @@ const KSMinePage = () => {
             balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             color={'#ffffff'}
             size={30}
+            currency={currency}
+            balanceDecimal={balanceDecimal}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -157,7 +158,7 @@ const KSMinePage = () => {
                 imageContainerStyle={{ width: '50%' }}
                 titleContainerStyle={{ aspectRatio: 5 }}
                 unreadMsg={unreadMsg || 0}
-                showUnReadMsg={code == 9}
+                showUnReadMsg={code == UGUserCenterType.站内信}
                 showSubTitle={false}
                 onPress={() => {
                   PushHelper.pushUserCenterType(code)

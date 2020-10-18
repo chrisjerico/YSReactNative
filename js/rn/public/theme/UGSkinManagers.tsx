@@ -6,7 +6,6 @@ import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import FUtils from '../tools/FUtils'
-import { B_DEBUG } from '../tools/UgLog'
 import { BZHThemeColor } from './colors/BZHThemeColor'
 import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
@@ -52,7 +51,7 @@ export default class UGSkinManagers extends UGThemeColor {
       mobileTemplateLhcStyle, // 模板ID（六合）
     } = sysConf
     let dict = {
-      1: `经典${mobileTemplateBackground}`,
+      0: `经典${mobileTemplateBackground}`,
       2: `新年红${mobileTemplateStyle}`,
       3: '石榴红',
       4: `六合资料${mobileTemplateLhcStyle}`,
@@ -104,9 +103,7 @@ export default class UGSkinManagers extends UGThemeColor {
     const skin = Skin1
     if (Platform.OS != 'ios') return
     // 已上线模板
-    const isOnlineSkin =
-      skin.skitType.indexOf('尊龙') != -1 ||
-      skin.skitType.indexOf('宝石红') != -1
+    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
     if (!ok) return
 
