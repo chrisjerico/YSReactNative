@@ -66,7 +66,7 @@ const LLHomePage = ({ setProps, navigation }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       reloadData()
-      updateUserInfo()
+      // updateUserInfo()
     }, 2000)
     return (() => {
       clearInterval(timer)
@@ -106,29 +106,29 @@ const LLHomePage = ({ setProps, navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" translucent={true}/>
+      <StatusBar barStyle="dark-content" translucent={true} />
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: "#ffffff" }} refreshing={loading}
-                                                    onRefresh={onRefresh}/>}
-                    style={{ flex: 1 }}>
-          <HomeHeaderButtonBar logoIcon={mobile_logo}/>
-          <HomeTabView/>
+          onRefresh={onRefresh} />}
+          style={{ flex: 1 }}>
+          <HomeHeaderButtonBar logoIcon={mobile_logo} />
+          <HomeTabView />
           {m_promote_pos &&
-          <>
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10 }}
-              onPress={() => {
-                push(PageName.PromotionListPage)
-              }}>
-              <Icon size={16} name={"gift"}/>
-              <Text style={{ fontSize: 16, color: "#333333", padding: 10 }}>优惠活动</Text>
-              <View style={{ flex: 1 }}/>
-              <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>{`查看更多 >>`}</Text>
-            </TouchableOpacity>
-            <View style={{ backgroundColor: "#ffffff" }}>
-              <PromotionsBlock horizontal={true} titleVisible={false}/>
-            </View>
-          </>
+            <>
+              <TouchableOpacity
+                style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 8, marginTop: 10 }}
+                onPress={() => {
+                  push(PageName.PromotionListPage)
+                }}>
+                <Icon size={16} name={"gift"} />
+                <Text style={{ fontSize: 16, color: "#333333", padding: 10 }}>优惠活动</Text>
+                <View style={{ flex: 1 }} />
+                <Text style={{ fontSize: 16, color: "#333333", textAlign: "center" }}>{`查看更多 >>`}</Text>
+              </TouchableOpacity>
+              <View style={{ backgroundColor: "#ffffff" }}>
+                <PromotionsBlock horizontal={true} titleVisible={false} />
+              </View>
+            </>
           }
           <ImageButton
             imgStyle={{
@@ -141,23 +141,23 @@ const LLHomePage = ({ setProps, navigation }) => {
               uid === "" ?
                 PushHelper.pushLogin() :
                 PushHelper.pushUserCenterType(5)
-            }} uri={"http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png"}/>
+            }} uri={"http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png"} />
           {rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
-                <Text style={{
-                  fontSize: 16,
-                  lineHeight: 22,
-                  color: "#3c3c3c",
-                  marginVertical: 10,
-                }}>中奖排行榜</Text>
-              </View>
-              <RankListCP titleVisible={false} timing={10000} backgroundColor={"white"} textColor={"black"}
-                          width={Dimensions.get("screen").width - 24} ranks={rankList}/>
-            </SafeAreaView> :
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"} />
+              <Text style={{
+                fontSize: 16,
+                lineHeight: 22,
+                color: "#3c3c3c",
+                marginVertical: 10,
+              }}>中奖排行榜</Text>
+            </View>
+            <RankListCP titleVisible={false} timing={10000} backgroundColor={"white"} textColor={"black"}
+              width={Dimensions.get("screen").width - 24} ranks={rankList} />
+          </SafeAreaView> :
             <SafeAreaView style={{ marginHorizontal: 10 }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
+                <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"} />
                 <Text style={{
                   fontSize: 16,
                   lineHeight: 22,
@@ -166,8 +166,8 @@ const LLHomePage = ({ setProps, navigation }) => {
                 }}>投注排行榜</Text>
               </View>
               <RankListCP titleVisible={false} timing={10000} backgroundColor={"white"}
-                          textColor={"black"}
-                          width={Dimensions.get("screen").width - 24} ranks={rankList}/>
+                textColor={"black"}
+                width={Dimensions.get("screen").width - 24} ranks={rankList} />
             </SafeAreaView>}
           <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10 }}>
             <Text onPress={() => {
@@ -182,7 +182,7 @@ const LLHomePage = ({ setProps, navigation }) => {
           <Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT
             © {systemStore.webName} RESERVED</Text>
           <Text style={{ color: "black", textAlign: "center" }}>version: {21}</Text>
-          <View style={{ height: 100 }}/>
+          <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
       {uid === "" && <View style={{
@@ -195,12 +195,12 @@ const LLHomePage = ({ setProps, navigation }) => {
         <LinearGradient colors={["#df4133", "#fe695b"]} style={{ borderRadius: 40 }}>
           <View style={{ flexDirection: "row", justifyContent: "center", padding: 8 }}>
             <TouchableOpacity style={{ height: 40, justifyContent: "center", paddingHorizontal: 30 }}
-                              onPress={() => navigate(PageName.LLLoginPage, {})}>
+              onPress={() => navigate(PageName.LLLoginPage, {})}>
               <Text style={{ fontSize: 20, color: "#ffffff" }}>登录</Text>
             </TouchableOpacity>
-            <View style={{ width: 1, backgroundColor: "#ffffff", height: 40 }}/>
+            <View style={{ width: 1, backgroundColor: "#ffffff", height: 40 }} />
             <TouchableOpacity style={{ height: 40, justifyContent: "center", paddingHorizontal: 30 }}
-                              onPress={() => push(PageName.LLRegisterPage)}>
+              onPress={() => push(PageName.LLRegisterPage)}>
               <Text style={{ fontSize: 20, color: "#ffffff" }}>注册</Text>
             </TouchableOpacity>
           </View>
@@ -221,8 +221,8 @@ const LLHomePage = ({ setProps, navigation }) => {
           />
         )
       })}
-      <RedBagItem redBag={redBag} style={{ top: 200 }}/>
-      <TurntableListItem/>
+      <RedBagItem redBag={redBag} style={{ top: 200 }} />
+      <TurntableListItem />
     </View>
   )
 
@@ -285,12 +285,12 @@ const TurntableListItem = () => {
         }
       }}>
         <ImageBackground style={{ width: 95, height: 95, position: "absolute", top: height / 2, right: 20 }}
-                         source={{ uri: "dzp_btn" }}>
+          source={{ uri: "dzp_btn" }}>
           <TouchableWithoutFeedback onPress={() => {
             setTurntableListVisiable(false)
           }}>
             <Image style={{ width: 20, height: 20, right: 0, top: 0, position: "absolute" }}
-                   source={{ uri: "dialog_close" }}/>
+              source={{ uri: "dialog_close" }} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       </TouchableWithoutFeedback>)

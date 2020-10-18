@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList } from 'react-native';
-import APIRouter from '../../../public/network/APIRouter';
-import Header from "./Header";
-import { LottoGamesModel } from '../../../public/network/Model/LottoGamesModel';
-import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import FastImage from 'react-native-fast-image';
 import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
+import APIRouter from '../../../public/network/APIRouter';
+import { LottoGamesModel } from '../../../public/network/Model/LottoGamesModel';
+import Header from "./Header";
 import LottoItem from './LottoItem';
-import { useLottoContext } from '../LottoBetting/LottoContext';
 const LottoSelector = () => {
   const [lottoData, setLottoData] = useState<LottoGamesModel>()
   const [reloadTime, setReloadTime] = useState(0)

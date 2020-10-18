@@ -1,11 +1,10 @@
-import * as React from 'react'
+import React from 'react'
 import { Image, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
 import { CheckBox } from './component/CheckBox'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { PageName } from '../../public/navigation/Navigation'
-// @ts-ignore
 import { httpClient } from '../../public/network/httpClient'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
@@ -15,7 +14,7 @@ import { EventRegister } from "react-native-event-listeners"
 import AppDefine from '../../public/define/AppDefine'
 import { ugLog } from '../../public/tools/UgLog'
 
-export const LLLoginPage = ({setProps}) => {
+export const LLLoginPage = ({ setProps }) => {
   const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
     homePage: PageName.LLHomePage,
     signUpPage: PageName.LLRegisterPage,
@@ -26,7 +25,7 @@ export const LLLoginPage = ({setProps}) => {
   const { remember, account, password } = value
   const { navigateToSignUpPage } = navigateTo
 
-  console.log("loginVCode",loginVCode)
+  console.log("loginVCode", loginVCode)
 
   return (
     <BaseScreen
@@ -111,14 +110,14 @@ export const LLLoginPage = ({setProps}) => {
       <View
         style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}
       >
-        <CheckBox
+        {/* <CheckBox
           isCheck={remember}
           onCheck={() => {
             onChangeRemember(!remember)
             setProps()
           }}
           text={'记住密码'}
-        />
+        /> */}
         <View style={{ flex: 1 }} />
         <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -137,7 +136,7 @@ export const LLLoginPage = ({setProps}) => {
         </TouchableOpacity>
       </View>
       <ReloadSlidingVerification
-        ref={slideCodeRef}
+        // ref={slideCodeRef}
         show={true}
         onChange={onChangeSlideCode}
         backgroundColor={'#ffffff'}
@@ -226,7 +225,7 @@ export const LLLoginPage = ({setProps}) => {
   )
 }
 
-const SlidingVerification = ({onChange}: { onChange: (data: any) => void }) => {
+const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
   const webViewScript = `setTimeout(function() {
             document.getElementById('app').style.background = 'white'
             window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
@@ -255,15 +254,15 @@ const SlidingVerification = ({onChange}: { onChange: (data: any) => void }) => {
   ugLog('slidingUrl=' + slidingUrl)
 
   return (
-    <View style={{height: webviewHeight}}>
+    <View style={{ height: webviewHeight }}>
       <WebView
         ref={webViewRef}
-        style={{minHeight: webviewHeight, backgroundColor: 'white'}}
-        containerStyle={{backgroundColor: 'white', height: 10}}
+        style={{ minHeight: webviewHeight, backgroundColor: 'white' }}
+        containerStyle={{ backgroundColor: 'white', height: 10 }}
         javaScriptEnabled
         injectedJavaScript={webViewScript}
         startInLoadingState
-        source={{uri: slidingUrl}}
+        source={{ uri: slidingUrl }}
         onMessage={hadnleMessage}
       />
     </View>
