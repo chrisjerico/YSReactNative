@@ -4,26 +4,33 @@ import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerifi
 import { scale } from '../../tools/Scale'
 import CheckBox from './CheckBox'
 
+export type SignInRenderFormProps = FormComponentProps & { [key: string]: any }
+
 interface SignInFormListProps {
   slideCodeColor?: string
   slideCodeRef: RefObject<any>
   value: { [key: string]: any }
   onChange: { [key: string]: any }
   show: { [key: string]: any }
-  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any
+  renderForm?: (props: SignInRenderFormProps) => any
   showCheckBox?: boolean
+  accountFormProps?: { [key: string]: any }
+  passwordFormProps?: { [key: string]: any }
 }
 
-const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeColor, showCheckBox = true }: SignInFormListProps) => {
+const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps }: SignInFormListProps) => {
   const { remember, account, password } = value
 
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
 
   const { loginVCode } = show
 
+  const Form = renderForm
+
   return (
     <>
       <Form
+        {...accountFormProps}
         visible={true}
         placeholder={'请输入会员帐号'}
         onChangeText={onChangeAccount}
@@ -36,6 +43,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
         leftIconTitle={'帐号'}
       />
       <Form
+        {...passwordFormProps}
         showLabel={false}
         visible={true}
         placeholder={'请输入密码'}

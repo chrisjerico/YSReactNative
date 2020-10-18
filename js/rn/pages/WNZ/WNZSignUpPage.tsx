@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
@@ -11,7 +10,6 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import Menu from './views/Menu'
@@ -86,18 +84,21 @@ const WNZSignUpPage = () => {
     </>
   )
 }
-const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => (
-  <FormComponent
-    {...props}
-    containerStyle={{ marginBottom: scale(15) }}
-    inputContainerStyle={styles.inputContainerStyle}
-    leftIconContainerStyle={styles.leftIconContainerStyle}
-    rightIconContainerStyle={{ marginRight: scale(10) }}
-    renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
-    labelTextStyle={{ paddingLeft: scale(20) }}
-    placeholderTextColor={'#9D9D9D'}
-  />
-)
+const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => {
+  const { leftIconTitle } = props
+  return (
+    <FormComponent
+      {...props}
+      containerStyle={{ marginBottom: scale(15) }}
+      inputContainerStyle={styles.inputContainerStyle}
+      leftIconContainerStyle={styles.leftIconContainerStyle}
+      rightIconContainerStyle={{ marginRight: scale(10) }}
+      renderLeftIcon={() => <Text style={styles.leftIconText}>{leftIconTitle}</Text>}
+      labelTextStyle={{ paddingLeft: scale(20) }}
+      placeholderTextColor={'#9D9D9D'}
+    />
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot } from '../../public/navigation/RootNavigation'
@@ -10,7 +10,7 @@ import CheckBox from '../../public/views/tars/CheckBox'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const JXHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
@@ -43,7 +43,7 @@ const JXHSignInPage = () => {
               <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
           </View>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>
@@ -63,7 +63,7 @@ const JXHSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => {
+const SignInForm = (props: SignInRenderFormProps) => {
   return (
     <FormComponent
       {...props}

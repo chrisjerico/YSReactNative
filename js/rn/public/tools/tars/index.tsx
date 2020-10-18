@@ -108,6 +108,18 @@ export const stringToFloat = (x: string) => {
 
 type UGUserCenterTypeKeys = keyof typeof UGUserCenterType
 
+function* toEntries(keyMapper: (key: string) => any, valueMapper: (key: string) => any, data: any[]) {
+  for (const item of data) {
+    yield [keyMapper(item), valueMapper(item)]
+  }
+}
+
 export const goToUserCenterType: {
   [key in UGUserCenterTypeKeys]?: () => any
-} = Object.fromEntries(Object.keys(UGUserCenterType).map((key) => [key, () => PushHelper.pushUserCenterType(UGUserCenterType[key])]))
+} = Object.fromEntries(
+  toEntries(
+    (key: string) => key,
+    (key: string) => () => PushHelper.pushUserCenterType(UGUserCenterType[key]),
+    Object.keys(UGUserCenterType)
+  )
+)

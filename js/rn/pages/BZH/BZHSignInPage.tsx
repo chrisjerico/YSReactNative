@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
@@ -10,7 +10,7 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const BZHSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
@@ -29,7 +29,7 @@ const BZHSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             title={'立即登录'}
             disabled={!valid}
@@ -58,7 +58,7 @@ const BZHSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
+const SignInForm = (props: SignInRenderFormProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 
 const styles = StyleSheet.create({
   container: {
