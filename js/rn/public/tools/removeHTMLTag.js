@@ -6,4 +6,3 @@ function removeHTMLTag(data) {
     return data.replace(regex, '');
 }
 exports.removeHTMLTag = removeHTMLTag;
-//# sourceMappingURL=removeHTMLTag.js.map

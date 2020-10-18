@@ -14,7 +14,7 @@ import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 import {push} from "../../../../../public/navigation/RootNavigation";
 import {PageName} from "../../../../../public/navigation/Navigation";
 
-export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number }) => {
+export const RecommendTabView = ({list, marquee, banner, onlineNum, onlineSwitch = 0}: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number, onlineSwitch: number }) => {
     const onPress = (list: List) => {
         list.seriesId != '1' ? PushHelper.pushHomeGame(list) :
             list.gameId ?
@@ -24,7 +24,7 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
 
     return (
         <View style={{paddingTop: 10, flex: 1}}>
-            {banner ? <Banner onlineNum={onlineNum} bannerData={banner} /> :
+            {banner ? <Banner onlineSwitch={onlineSwitch} onlineNum={onlineNum} bannerData={banner} /> :
                 <View style={{height: 150, marginHorizontal: 8, width: Dimensions.get("screen").width - 16}}/>
             }
             <MarqueeView textArr={marquee}/>
@@ -50,10 +50,13 @@ export const RecommendTabView = ({list, marquee, banner, onlineNum}: { list: Lis
 }
 
 
-const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, onlineNum: number }) => {
+const Banner = ({ bannerData, onlineNum = 0, onlineSwitch = 1 }: { bannerData: BannerModel, onlineNum: number, onlineSwitch: number }) => {
     const { width, } = useDimensions().window
     const BannerRef = React.useRef<Carousel>()
     const [height, setHeight] = useState(100)
+  useEffect(() => {
+    console.log("onlineSwitch", onlineSwitch)
+  }, [onlineSwitch])
     useEffect(() => {
         const timer = setInterval(() => {
             //@ts-ignore
@@ -87,9 +90,16 @@ const Banner = ({ bannerData, onlineNum = 0 }: { bannerData: BannerModel, online
                             </TouchableWithoutFeedback>)
                     })}
                 </Carousel>
-                <View style={{ position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 }}>
-                    <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
-                </View>
+              {onlineSwitch != 0 && <View style={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                borderRadius: 16,
+                padding: 5,
+              }}>
+                <Text style={{ color: 'white' }}>当前在线:{onlineNum}</Text>
+              </View>}
             </View>
         )
 

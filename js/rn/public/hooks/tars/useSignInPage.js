@@ -1,16 +1,19 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var UGSysConfModel_1 = require("../../../redux/model/\u5168\u5C40/UGSysConfModel");
 var UGStore_1 = require("../../../redux/store/UGStore");
-var PushHelper_1 = require("../../define/PushHelper");
+var PushHelper_1 = __importDefault(require("../../define/PushHelper"));
 var Enum_1 = require("../../models/Enum");
 var RootNavigation_1 = require("../../navigation/RootNavigation");
 var tars_1 = require("../../tools/tars");
 var UGLoadingCP_1 = require("../../widget/UGLoadingCP");
-var useLogIn_1 = require("./useLogIn");
-var useSys_1 = require("./useSys");
-var useTryPlay_1 = require("./useTryPlay");
+var useLogIn_1 = __importDefault(require("./useLogIn"));
+var useSys_1 = __importDefault(require("./useSys"));
+var useTryPlay_1 = __importDefault(require("./useTryPlay"));
 var useSignInPage = function (_a) {
     var homePage = _a.homePage, signUpPage = _a.signUpPage;
     // stores
@@ -150,3 +153,4 @@ var useSignInPage = function (_a) {
     };
 };
 exports.default = useSignInPage;
+//# sourceMappingURL=useSignInPage.js.map

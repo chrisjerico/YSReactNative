@@ -1,275 +1,32 @@
 import * as React from 'react'
-import { useEffect, useState } from 'react'
-import {
-  Image,
-  Platform,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Image, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
 import { CheckBox } from './component/CheckBox'
-import useLoginIn from '../../public/hooks/useLoginIn'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import APIRouter from '../../public/network/APIRouter'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import { pop, push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
-import DialogInput from 'react-native-dialog-input'
 // @ts-ignore
-import md5 from 'blueimp-md5'
 import { httpClient } from '../../public/network/httpClient'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
-import { UGStore } from '../../redux/store/UGStore'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine'
-import { Toast } from '../../public/tools/ToastUtils'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
+import useSignInPage from '../../public/hooks/tars/useSignInPage'
+import { useEffect, useRef, useState } from 'react'
+import WebView, { WebViewMessageEvent } from 'react-native-webview'
+import { EventRegister } from "react-native-event-listeners"
+import AppDefine from '../../public/define/AppDefine'
+import { ugLog } from '../../public/tools/UgLog'
 
-let errorTimes = 0
-export const LLLoginPage = ({ route, navigation, setProps }) => {
-  const [acc, setAcc] = useState('')
-  const [pwd, setPwd] = useState('')
-  const { loginSuccessHandle } = useLoginIn()
-  const [isRemember, setIsRemember] = useState(false)
-  const [GGmodalShow, setGGModalShow] = useState(false)
+export const LLLoginPage = ({setProps}) => {
+  const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
+    homePage: PageName.LLHomePage,
+    signUpPage: PageName.LLRegisterPage,
+  })
+  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
+  const { signIn, tryPlay } = sign
+  const { loginVCode } = show
+  const { remember, account, password } = value
+  const { navigateToSignUpPage } = navigateTo
 
-  useEffect(() => {
-    isRemember &&
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          remember: true,
-          account: acc ? acc : null,
-          password: pwd ? pwd : null,
-        },
-      })
-    UGStore.save()
-  }, [isRemember])
-
-  const init = async () => {
-    console.log(UGStore.globalProps.sign)
-    switch (Platform.OS) {
-      case 'ios':
-        let remember = UGStore.globalProps.sign.remember
-        setIsRemember(remember)
-        if (remember) {
-          const account = UGStore.globalProps.sign.account
-          setAcc(account)
-          const pwd = UGStore.globalProps.sign.password
-          setPwd(pwd)
-        }
-        break
-      case 'android':
-        let result: string = await ANHelper.callAsync(CMD.LOAD_DATA, {
-          key: NA_DATA.LOGIN_INFO,
-        })
-        let loginInfo = JSON.parse(result)
-        setIsRemember(loginInfo?.isRemember)
-        if (loginInfo?.isRemember) {
-          setAcc(loginInfo?.account)
-          setPwd(loginInfo?.pwd)
-        }
-        break
-    }
-  }
-
-  useEffect(() => {
-    init()
-  }, [])
-
-  const testPlay = async () => {
-    try {
-      const { data, status } = await APIRouter.user_guestLogin()
-
-      switch (Platform.OS) {
-        case 'ios':
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationTryPlay']
-          )
-          //@ts-ignore
-          await OCHelper.call('UGUserModel.setCurrentUser:', [
-            UGUserModel.getYS(data.data),
-          ])
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setBool:forKey:',
-            ['', 'isRememberPsd']
-          )
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userName']
-          )
-          await OCHelper.call(
-            'NSUserDefaults.standardUserDefaults.setObject:forKey:',
-            ['', 'userPsw']
-          )
-          await OCHelper.call(
-            'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-            ['UGNotificationLoginComplete']
-          )
-          await OCHelper.call(
-            'UGNavigationController.current.popToRootViewControllerAnimated:',
-            [true]
-          )
-          break
-        case 'android':
-          await ANHelper.callAsync(CMD.SAVE_DATA, {
-            key: NA_DATA.LOGIN_INFO,
-            ...data?.data,
-          })
-          break
-      }
-
-      const { data: userInfo } = await APIRouter.user_info()
-      await UGStore.dispatch({ type: 'merge', userInfo: userInfo?.data })
-      UGStore.save()
-      setProps()
-
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
-          break
-        case 'android':
-          await ANHelper.callAsync(CMD.SAVE_DATA, {
-            key: NA_DATA.USER_INFO,
-            ...userInfo?.data,
-          })
-          break
-      }
-    } catch (error) {
-      console.log(error)
-    }
-    pop()
-  }
-
-  const login = async ({
-    account,
-    pwd,
-    googleCode = '',
-    slideCode,
-  }: {
-    account: string,
-    pwd: string,
-    googleCode?: string,
-    slideCode?: any,
-  }) => {
-    const simplePwds = [
-      '111111',
-      '000000',
-      '222222',
-      '333333',
-      '444444',
-      '555555',
-      '666666',
-      '777777',
-      '888888',
-      '999999',
-      '123456',
-      '654321',
-      'abcdef',
-      'aaaaaa',
-      'qwe123',
-    ]
-    if (simplePwds.indexOf(pwd) > -1) {
-      switch (Platform.OS) {
-        case 'ios':
-          await OCHelper.call('HUDHelper.showMsg:', [
-            '你的密码过于简单，可能存在风险，请把密码修改成复杂密码',
-          ])
-          await OCHelper.call(
-            'UGNavigationController.current.pushViewController:animated:',
-            [
-              {
-                selectors: 'UGSecurityCenterViewController.new[setFromVC:]',
-                args1: ['fromLoginViewController'],
-              },
-              true,
-            ]
-          )
-          break
-        case 'android':
-          Toast('你的密码过于简单，可能存在风险，请把密码修改成复杂密码')
-          break
-      }
-      return
-    }
-    try {
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...'])
-          break
-        case 'android':
-          Toast('正在登录...')
-          break
-      }
-
-      const { data, status } = await APIRouter.user_login(
-        account,
-        md5(pwd),
-        googleCode,
-        slideCode
-      )
-      if (data.data == null) throw { message: data?.msg }
-      if (data.data?.ggCheck == true) {
-        switch (Platform.OS) {
-          case 'ios':
-            OCHelper.call('SVProgressHUD.showSuccessWithStatus:', [
-              '请输入谷歌验证码',
-            ])
-            break
-          case 'android':
-            Toast('请输入谷歌验证码')
-            break
-        }
-        setGGModalShow(true)
-        return
-        // Alert.alert("")
-      }
-
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！'])
-          break
-        case 'android':
-          Toast('登录成功！')
-          break
-      }
-
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          remember: isRemember,
-          account: acc ? acc : null,
-          password: pwd ? pwd : null,
-        },
-      })
-      setGGModalShow(false)
-      await loginSuccessHandle(data, { account, pwd, isRemember })
-      setProps()
-    } catch (error) {
-      errorTimes += 1
-      if (errorTimes >= 3) {
-        setAcc('')
-        setPwd('')
-        setGGModalShow(false)
-      }
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('SVProgressHUD.showErrorWithStatus:', [
-            error?.message ?? '登入失败',
-          ])
-          break
-        case 'android':
-          Toast('登入失败')
-          break
-      }
-    }
-  }
+  console.log("loginVCode",loginVCode)
 
   return (
     <BaseScreen
@@ -297,8 +54,8 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
           }}
         />
         <TextInput
-          value={acc}
-          onChangeText={(text) => setAcc(text)}
+          value={account}
+          onChangeText={(text) => onChangeAccount(text)}
           style={{ fontSize: 14, paddingVertical: 20, flex: 1 }}
           placeholderTextColor={'#333'}
           placeholder={'请输入会员账号'}
@@ -325,9 +82,9 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
           }}
         />
         <TextInput
-          value={pwd}
+          value={password}
           secureTextEntry={true}
-          onChangeText={(text) => setPwd(text)}
+          onChangeText={(text) => onChangePassword(text)}
           style={{ fontSize: 14, paddingVertical: 20, flex: 1 }}
           placeholderTextColor={'#333'}
           placeholder={'请输入密码'}
@@ -335,10 +92,10 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TouchableHighlight
-          onPress={() => login({ account: acc, pwd })}
+          onPress={() => signIn()}
           underlayColor={'#007aff'}
           style={{
-            backgroundColor: acc != '' && pwd != '' ? '#d82e2f' : '#d19898',
+            backgroundColor: valid ? '#d82e2f' : '#d19898',
             height: 47,
             width: 'auto',
             flex: 1,
@@ -355,8 +112,11 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
         style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}
       >
         <CheckBox
-          isCheck={isRemember}
-          onCheck={() => setIsRemember(!isRemember)}
+          isCheck={remember}
+          onCheck={() => {
+            onChangeRemember(!remember)
+            setProps()
+          }}
           text={'记住密码'}
         />
         <View style={{ flex: 1 }} />
@@ -376,6 +136,19 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
           <Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</Text>
         </TouchableOpacity>
       </View>
+      <ReloadSlidingVerification
+        ref={slideCodeRef}
+        show={true}
+        onChange={onChangeSlideCode}
+        backgroundColor={'#ffffff'}
+        containerStyle={{
+          backgroundColor: '#ffffff',
+        }}
+      />
+      {/*<SlidingVerification onChange={args => {*/}
+      {/*  ugLog('sliding code=', args)*/}
+      {/*  setSlideCode(args)*/}
+      {/*}}/>*/}
       <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>
         其他
       </Text>
@@ -383,7 +156,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
         <TouchableOpacity
           style={{ alignItems: 'center' }}
           onPress={() => {
-            push(PageName.LLRegisterPage)
+            navigateToSignUpPage()
           }}
         >
           <Image
@@ -398,7 +171,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
         <View style={{ flex: 1 }} />
         <TouchableOpacity
           style={{ alignItems: 'center' }}
-          onPress={() => testPlay()}
+          onPress={() => tryPlay()}
         >
           <Image
             style={{ height: 64, width: 64 }}
@@ -426,20 +199,73 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
           <Text style={{ marginTop: 8 }}>电脑版</Text>
         </TouchableOpacity>
       </View>
-      <DialogInput
-        isDialogVisible={GGmodalShow}
-        title={'请输入谷歌验证码'}
-        message={''}
-        cancelText={'取消'}
-        submitText={'確定'}
-        hintInput={'请输入谷歌验证码'}
-        submitInput={(inputText) =>
-          login({ account: acc, pwd: pwd, googleCode: inputText })
-        }
-        closeDialog={() => {
-          setGGModalShow(false)
-        }}
-      />
+      {/*<DialogInput*/}
+      {/*  isDialogVisible={GGmodalShow}*/}
+      {/*  title={'请输入谷歌验证码'}*/}
+      {/*  message={''}*/}
+      {/*  cancelText={'取消'}*/}
+      {/*  submitText={'確定'}*/}
+      {/*  hintInput={'请输入谷歌验证码'}*/}
+      {/*  submitInput={(inputText) =>*/}
+      {/*    login({ account: acc, pwd: pwd, googleCode: inputText })*/}
+      {/*  }*/}
+      {/*  closeDialog={() => {*/}
+      {/*    setGGModalShow(false)*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<ReloadSlidingVerification*/}
+      {/*  ref={slideCodeRef}*/}
+      {/*  show={loginVCode}*/}
+      {/*  onChange={onChangeSlideCode}*/}
+      {/*  backgroundColor={'#ffffff'}*/}
+      {/*  containerStyle={{*/}
+      {/*    backgroundColor: '#ffffff',*/}
+      {/*  }}*/}
+      {/*/>*/}
     </BaseScreen>
   )
+}
+
+const SlidingVerification = ({onChange}: { onChange: (data: any) => void }) => {
+  const webViewScript = `setTimeout(function() {
+            document.getElementById('app').style.background = 'white'
+            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
+          }, 500);
+          true;`;
+  const [webviewHeight, setWebViewHeight] = useState(0)
+  const hadnleMessage = (e: WebViewMessageEvent) => {
+    let eData = e?.nativeEvent?.data;
+    console.log("sliding response: " + eData)
+
+    if (typeof eData == 'string') {
+      setWebViewHeight(parseInt(eData) * 1.5)
+    } else {
+      onChange(eData)
+    }
+  }
+  const webViewRef = useRef<WebView>()
+  useEffect(() => {
+    const listener = EventRegister.addEventListener('reload', (data) => {
+      webViewRef?.current?.reload()
+    })
+    return (() => EventRegister.removeEventListener(this.listener))
+  }, [])
+
+  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`;
+  ugLog('slidingUrl=' + slidingUrl)
+
+  return (
+    <View style={{height: webviewHeight}}>
+      <WebView
+        ref={webViewRef}
+        style={{minHeight: webviewHeight, backgroundColor: 'white'}}
+        containerStyle={{backgroundColor: 'white', height: 10}}
+        javaScriptEnabled
+        injectedJavaScript={webViewScript}
+        startInLoadingState
+        source={{uri: slidingUrl}}
+        onMessage={hadnleMessage}
+      />
+    </View>
+  );
 }

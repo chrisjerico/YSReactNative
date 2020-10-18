@@ -187,6 +187,7 @@ var LLHomePage = function (_a) {
           </react_native_1.View>
           <react_native_1.Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT
             © {systemStore.webName} RESERVED</react_native_1.Text>
+          <react_native_1.Text style={{ color: "black", textAlign: "center" }}>version: {21}</react_native_1.Text>
           <react_native_1.View style={{ height: 100 }}/>
         </react_native_1.ScrollView>
       </react_native_1.SafeAreaView>

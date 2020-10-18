@@ -75,13 +75,13 @@ var useMinePage_1 = __importDefault(require("../../public/hooks/tars/useMinePage
 var config_1 = __importDefault(require("../BZH/config"));
 var tars_1 = require("../../public/tools/tars");
 var UGSysConfModel_1 = require("../../redux/model/\u5168\u5C40/UGSysConfModel");
+var hooks_1 = require("@react-native-community/hooks");
 var LLMinePage = function (_a) {
     var navigation = _a.navigation, setProps = _a.setProps;
     var _b = useMinePage_1.default({
         homePage: Navigation_1.PageName.LLHomePage,
         defaultUserCenterLogos: config_1.default.defaultUserCenterLogos,
     }), pickAvatarComponentRef = _b.pickAvatarComponentRef, onSaveAvatarSuccess = _b.onSaveAvatarSuccess, onPressAvatar = _b.onPressAvatar, value = _b.value;
-    var balance = value.balance, curLevelGrade = value.curLevelGrade, usr = value.usr, isTest = value.isTest, avatar = value.avatar, nextLevelInt = value.nextLevelInt, curLevelInt = value.curLevelInt, userCenterItems = value.userCenterItems, unreadMsg = value.unreadMsg;
     var getHtml5Image = tars_1.useHtml5Image().getHtml5Image;
     var UGUserCenterItem = useMemberItems_1.default().UGUserCenterItem;
     var _c = react_1.useState(0), levelWidth = _c[0], setLevelWidth = _c[1];
@@ -94,8 +94,11 @@ var LLMinePage = function (_a) {
     var reload = react_1.useRef(false);
     var spinDeg = spinValue.interpolate({
         inputRange: [0, 1],
-        outputRange: ["0deg", "360deg"],
+        outputRange: ['0deg', '360deg'],
     });
+    var userStore = UGStore_1.UGStore.globalProps.userInfo;
+    var width = hooks_1.useDimensions().window.width;
+    var _j = userStore.uid, uid = _j === void 0 ? '' : _j, curLevelTitle = userStore.curLevelTitle, curLevelInt = userStore.curLevelInt, nextLevelInt = userStore.nextLevelInt, curLevelGrade = userStore.curLevelGrade, avatar = userStore.avatar, isTest = userStore.isTest, balance = userStore.balance, usr = userStore.usr, unreadMsg = userStore.unreadMsg;
     var getLevelWidth = function () {
         setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt));
     };
@@ -106,7 +109,7 @@ var LLMinePage = function (_a) {
                 case 0: return [4 /*yield*/, APIRouter_1.default.user_info()];
                 case 1:
                     userInfo = (_a.sent()).data;
-                    UGStore_1.UGStore.dispatch({ type: "merge", props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
+                    UGStore_1.UGStore.dispatch({ type: 'merge', props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
                     setProps();
                     UGStore_1.UGStore.save();
                     return [2 /*return*/];
@@ -114,30 +117,30 @@ var LLMinePage = function (_a) {
         });
     }); };
     react_1.useEffect(function () {
-        navigation.addListener("focus", function () { return __awaiter(void 0, void 0, void 0, function () {
+        navigation.addListener('focus', function () { return __awaiter(void 0, void 0, void 0, function () {
             var userInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, APIRouter_1.default.user_info()];
                     case 1:
                         userInfo = (_a.sent()).data;
-                        UGStore_1.UGStore.dispatch({ type: "merge", props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
-                        setProps();
+                        UGStore_1.UGStore.dispatch({ type: 'merge', props: userInfo === null || userInfo === void 0 ? void 0 : userInfo.data });
                         UGStore_1.UGStore.save();
+                        setProps();
                         return [2 /*return*/];
                 }
             });
         }); });
         return (function () {
-            navigation.removeListener("focus", null);
+            navigation.removeListener('focus', null);
         });
     }, []);
     react_1.useEffect(function () {
         if (UGUserCenterItem) {
-            setDepositItem(UGUserCenterItem.find(function (item) { return item.name == "存款"; }));
-            setWithdrawItem(UGUserCenterItem.find(function (item) { return item.name == "取款"; }));
-            setTransferItem(UGUserCenterItem.find(function (item) { return item.name == "额度转换"; }));
-            setMissionItem(UGUserCenterItem.find(function (item) { return item.name == "任务中心"; }));
+            setDepositItem(UGUserCenterItem.find(function (item) { return item.name == '存款'; }));
+            setWithdrawItem(UGUserCenterItem.find(function (item) { return item.name == '取款'; }));
+            setTransferItem(UGUserCenterItem.find(function (item) { return item.name == '额度转换'; }));
+            setMissionItem(UGUserCenterItem.find(function (item) { return item.name == '任务中心'; }));
         }
     }, [UGUserCenterItem]);
     react_1.useEffect(function () {
@@ -145,23 +148,23 @@ var LLMinePage = function (_a) {
     }, [curLevelInt, nextLevelInt]);
     return (React.createElement(React.Fragment, null,
         React.createElement(react_native_1.StatusBar, { barStyle: "light-content", translucent: true }),
-        React.createElement(react_native_1.SafeAreaView, { style: { backgroundColor: "#39150D" } },
-            React.createElement(react_native_1.ScrollView, { bounces: false, style: { backgroundColor: "#ffffff" } },
-                React.createElement(react_native_1.SafeAreaView, { style: { backgroundColor: "#39150D", height: 172 } },
+        React.createElement(react_native_1.SafeAreaView, { style: { backgroundColor: '#39150D' } },
+            React.createElement(react_native_1.ScrollView, { bounces: false, style: { backgroundColor: '#ffffff' } },
+                React.createElement(react_native_1.SafeAreaView, { style: { backgroundColor: '#39150D', height: 172 } },
                     React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () {
                             PushHelper_1.default.pushUserCenterType(UGSysConfModel_1.UGUserCenterType.在线客服);
                         } },
-                        React.createElement(react_native_1.Image, { style: { alignSelf: "flex-end", width: 28, height: 28, marginRight: 8 }, source: { uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png" } })),
+                        React.createElement(react_native_1.Image, { style: { alignSelf: 'flex-end', width: 28, height: 28, marginRight: 8 }, source: { uri: httpClient_1.httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/zxkf.png' } })),
                     React.createElement(react_native_1.View, { style: {
-                            backgroundColor: "#F3745B",
+                            backgroundColor: '#F3745B',
                             marginHorizontal: 8,
                             marginVertical: 12,
                             height: 159,
                             borderRadius: 6,
                         } },
-                        React.createElement(react_native_1.View, { style: { flexDirection: "row", marginHorizontal: 8, marginVertical: 16 } },
+                        React.createElement(react_native_1.View, { style: { flexDirection: 'row', marginHorizontal: 8, marginVertical: 16 } },
                             React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return onPressAvatar(); } },
-                                React.createElement(react_native_1.Image, { style: { width: 50, height: 50 }, source: { uri: isTest || !avatar ? getHtml5Image(18, "money-2") : avatar } })),
+                                React.createElement(react_native_1.Image, { style: { width: 50, height: 50 }, source: { uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar } })),
                             React.createElement(react_native_1.View, { style: { marginLeft: 12 } },
                                 React.createElement(react_native_1.View, { style: { flexDirection: "row", alignItems: "center" } },
                                     React.createElement(react_native_1.Text, { style: { color: "#ffffff", lineHeight: 20, fontSize: 14 } }, usr),
@@ -180,51 +183,51 @@ var LLMinePage = function (_a) {
                                                 fontWeight: "600",
                                                 fontSize: 13,
                                             } }, curLevelGrade))),
-                                React.createElement(react_native_1.View, { style: { flexDirection: "row", alignItems: "center" } },
+                                React.createElement(react_native_1.View, { style: { flexDirection: 'row', alignItems: 'center' } },
                                     React.createElement(react_native_1.View, { style: {
-                                            backgroundColor: "#ddf",
+                                            backgroundColor: '#ddf',
                                             width: 193,
                                             height: 8,
                                             borderRadius: 4,
                                         } }),
                                     React.createElement(react_native_1.View, { style: {
-                                            position: "absolute",
-                                            backgroundColor: "#3F64D8",
+                                            position: 'absolute',
+                                            backgroundColor: '#3F64D8',
                                             width: levelWidth,
                                             height: 8,
                                             borderRadius: 4,
                                         } }),
                                     React.createElement(react_native_1.Text, { style: {
-                                            position: "absolute",
+                                            position: 'absolute',
                                             left: 91.5,
-                                            color: "#ffffff",
+                                            color: '#ffffff',
                                             lineHeight: 20,
                                             fontSize: 8,
-                                        } }, isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? "0%" : parseInt(curLevelInt) / parseInt(nextLevelInt) + "%"),
+                                        } }, isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? '0%' : parseInt(curLevelInt) / parseInt(nextLevelInt) + '%'),
                                     React.createElement(react_native_1.Text, { style: {
-                                            color: "#ffffff",
+                                            color: '#ffffff',
                                             lineHeight: 20,
                                             fontSize: 14,
                                         } }, curLevelGrade)),
                                 levelWidth === 193 ?
-                                    React.createElement(react_native_1.Text, { style: { color: "#ffffff", fontSize: 14 } }, "\u606D\u559C\u60A8\u5DF2\u7ECF\u662F\u6700\u9AD8\u7B49\u7EA7!") :
+                                    React.createElement(react_native_1.Text, { style: { color: '#ffffff', fontSize: 14 } }, "\u606D\u559C\u60A8\u5DF2\u7ECF\u662F\u6700\u9AD8\u7B49\u7EA7!") :
                                     React.createElement(react_native_1.Text, { style: {
-                                            color: "#ffffff",
+                                            color: '#ffffff',
                                             fontSize: 14,
                                         } }, "\u8DDD\u79BB\u4E0B\u4E00\u7EA7\u8FD8\u5DEE" + (isNaN(parseInt(nextLevelInt) - parseInt(curLevelInt)) ? 0 : parseInt(nextLevelInt) - parseInt(curLevelInt))))),
                         React.createElement(react_native_1.View, { style: { marginHorizontal: 16, marginTop: 16 } },
-                            React.createElement(react_native_1.Text, { style: { fontSize: 13, color: "#ffffff" } }, "\u603B\u4F59\u989D\uFF08\u5143\uFF09"),
-                            React.createElement(react_native_1.View, { style: { flexDirection: "row", alignItems: "center", marginTop: 8 } },
+                            React.createElement(react_native_1.Text, { style: { fontSize: 13, color: '#ffffff' } }, "\u603B\u4F59\u989D\uFF08\u5143\uFF09"),
+                            React.createElement(react_native_1.View, { style: { flexDirection: 'row', alignItems: 'center', marginTop: 8 } },
                                 React.createElement(react_native_1.Text, { style: {
                                         fontSize: 22,
-                                        fontWeight: "bold",
-                                        color: "#ffffff",
-                                        alignSelf: "center",
-                                        textAlign: "center",
-                                    } }, balance ? "\u00A50" : isNaN(balance) ? "\u00A50" : "\u00A5" + balance),
+                                        fontWeight: 'bold',
+                                        color: '#ffffff',
+                                        alignSelf: 'center',
+                                        textAlign: 'center',
+                                    } }, balance ? "\u00A50" : isNaN(Number(balance)) ? "\u00A50" : "\u00A5" + balance),
                                 React.createElement(react_native_1.View, { style: { flex: 1 } }),
                                 React.createElement(react_native_1.Animated.View, { style: [{ transform: [{ rotateZ: spinDeg }] }] },
-                                    React.createElement(FontAwesome_1.default, { size: 18, style: { color: "#ffffff" }, name: "refresh", onPress: function () {
+                                    React.createElement(FontAwesome_1.default, { size: 18, style: { color: '#ffffff' }, name: 'refresh', onPress: function () {
                                             react_native_1.Animated.timing(spinValue, {
                                                 toValue: 1,
                                                 duration: 3000,
@@ -238,70 +241,70 @@ var LLMinePage = function (_a) {
                                         } })))))),
                 React.createElement(react_native_1.View, { style: {
                         marginTop: 56,
-                        flexDirection: "row",
-                        width: react_native_1.Dimensions.get("screen").width - 16,
+                        flexDirection: 'row',
+                        width: react_native_1.Dimensions.get('screen').width - 16,
                         marginHorizontal: 8,
                     } },
                     React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return PushHelper_1.default.pushCategory(7, 21); } },
-                        React.createElement(react_native_1.View, { style: { alignItems: "center", flex: 1 } },
-                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png" } }),
-                            React.createElement(react_native_1.Text, { style: { color: "#666666", fontSize: 14, marginTop: 4 } }, "\u5145\u503C"))),
+                        React.createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1 } },
+                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png' } }),
+                            React.createElement(react_native_1.Text, { style: { color: '#666666', fontSize: 14, marginTop: 4 } }, "\u5145\u503C"))),
                     React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return PushHelper_1.default.pushCategory(7, 22); } },
-                        React.createElement(react_native_1.View, { style: { alignItems: "center", flex: 1 } },
-                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png" } }),
-                            React.createElement(react_native_1.Text, { style: { color: "#666666", fontSize: 14, marginTop: 4 } }, "\u63D0\u73B0"))),
+                        React.createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1 } },
+                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png' } }),
+                            React.createElement(react_native_1.Text, { style: { color: '#666666', fontSize: 14, marginTop: 4 } }, "\u63D0\u73B0"))),
                     React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return PushHelper_1.default.pushUserCenterType(transferItem.code); } },
-                        React.createElement(react_native_1.View, { style: { alignItems: "center", flex: 1 } },
-                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png" } }),
-                            React.createElement(react_native_1.Text, { style: { color: "#666666", fontSize: 14, marginTop: 4 } }, "\u989D\u5EA6\u8F6C\u6362"))),
+                        React.createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1 } },
+                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png' } }),
+                            React.createElement(react_native_1.Text, { style: { color: '#666666', fontSize: 14, marginTop: 4 } }, "\u989D\u5EA6\u8F6C\u6362"))),
                     React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return PushHelper_1.default.pushUserCenterType(missionItem.code); } },
-                        React.createElement(react_native_1.View, { style: { alignItems: "center", flex: 1 } },
-                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png" } }),
-                            React.createElement(react_native_1.Text, { style: { color: "#666666", fontSize: 14, marginTop: 4 } }, "\u4EFB\u52A1\u4E2D\u5FC3")))),
+                        React.createElement(react_native_1.View, { style: { alignItems: 'center', flex: 1 } },
+                            React.createElement(react_native_1.Image, { style: { width: 36, height: 28 }, source: { uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png' } }),
+                            React.createElement(react_native_1.Text, { style: { color: '#666666', fontSize: 14, marginTop: 4 } }, "\u4EFB\u52A1\u4E2D\u5FC3")))),
                 React.createElement(react_native_1.SafeAreaView, null,
-                    React.createElement(react_native_1.FlatList, { scrollEnabled: false, style: { borderTopWidth: 1, borderTopColor: "#E0E0E0", marginTop: 20, marginBottom: 90 }, keyExtractor: function (item, index) { return "mine-" + index; }, data: UGUserCenterItem, ListFooterComponent: function () { return (React.createElement(react_native_1.View, { style: {
-                                flexDirection: "row",
+                    React.createElement(react_native_1.FlatList, { scrollEnabled: false, style: { borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90 }, keyExtractor: function (item, index) { return "mine-" + index; }, data: UGUserCenterItem, ListFooterComponent: function () { return (React.createElement(react_native_1.View, { style: {
+                                flexDirection: 'row',
                                 flex: 1,
                                 marginLeft: 20,
                                 height: 47,
-                                alignItems: "center",
+                                alignItems: 'center',
                                 borderBottomWidth: 1,
-                                borderBottomColor: "#E0E0E0",
+                                borderBottomColor: '#E0E0E0',
                             } },
-                            React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: "row", flex: 1 }, onPress: loginOut },
+                            React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: 'row', flex: 1 }, onPress: loginOut },
                                 React.createElement(react_native_1.Image, { style: { height: 29, width: 29, marginRight: 10 }, source: { uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/Csignout.png" } }),
-                                React.createElement(react_native_1.Text, { style: { alignSelf: "center", color: "#47535B", flex: 1 } }, "\u9000\u51FA\u767B\u5F55"),
+                                React.createElement(react_native_1.Text, { style: { alignSelf: 'center', color: '#47535B', flex: 1 } }, "\u9000\u51FA\u767B\u5F55"),
                                 React.createElement(react_native_1.View, { style: { marginRight: 20 } },
-                                    React.createElement(FontAwesome_1.default, { size: 20, name: "angle-right" }))))); }, renderItem: function (_a) {
+                                    React.createElement(FontAwesome_1.default, { size: 20, name: 'angle-right' }))))); }, renderItem: function (_a) {
                             var item = _a.item;
                             return (React.createElement(react_native_1.View, { style: {
-                                    flexDirection: "row",
+                                    flexDirection: 'row',
                                     flex: 1,
                                     marginLeft: 20,
                                     height: 47,
-                                    alignItems: "center",
+                                    alignItems: 'center',
                                     borderBottomWidth: 1,
-                                    borderBottomColor: "#E0E0E0",
+                                    borderBottomColor: '#E0E0E0',
                                 } },
-                                React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: "row", flex: 1 }, onPress: function () {
+                                React.createElement(react_native_1.TouchableOpacity, { style: { flexDirection: 'row', flex: 1 }, onPress: function () {
                                         PushHelper_1.default.pushUserCenterType(item.code);
                                     } },
                                     React.createElement(react_native_1.Image, { style: { height: 29, width: 29, marginRight: 10 }, source: { uri: item.logo } }),
-                                    React.createElement(react_native_1.Text, { style: { alignSelf: "center", color: "#47535B", flex: 1 } }, item.name),
+                                    React.createElement(react_native_1.Text, { style: { alignSelf: 'center', color: '#47535B', flex: 1 } }, item.name),
                                     React.createElement(react_native_1.View, { style: { marginRight: 20 } },
-                                        React.createElement(FontAwesome_1.default, { size: 20, name: "angle-right" })),
-                                    item.name === "站内信" && unreadMsg > 0 && (React.createElement(react_native_1.View, { style: {
-                                            position: "absolute",
+                                        React.createElement(FontAwesome_1.default, { size: 20, name: 'angle-right' })),
+                                    item.name === '站内信' && unreadMsg > 0 && (React.createElement(react_native_1.View, { style: {
+                                            position: 'absolute',
                                             left: 80,
-                                            backgroundColor: "red",
+                                            backgroundColor: 'red',
                                             borderRadius: 30,
-                                            justifyContent: "center",
+                                            justifyContent: 'center',
                                             width: 20,
                                             height: 20,
                                         } },
-                                        React.createElement(react_native_1.Text, { style: { alignSelf: "center", color: "white" } }, unreadMsg))))));
+                                        React.createElement(react_native_1.Text, { style: { alignSelf: 'center', color: 'white' } }, unreadMsg))))));
                         } })),
-                React.createElement(PickAvatarComponent_1.default, { ref: pickAvatarComponentRef, color: "#fb5959", initAvatar: isTest || !avatar ? getHtml5Image(18, "money-2") : avatar, onSaveAvatarSuccess: onSaveAvatarSuccess })))));
+                React.createElement(PickAvatarComponent_1.default, { ref: pickAvatarComponentRef, color: '#fb5959', initAvatar: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar, onSaveAvatarSuccess: onSaveAvatarSuccess })))));
 };
 exports.default = LLMinePage;
 //# sourceMappingURL=LLMinePage.js.map

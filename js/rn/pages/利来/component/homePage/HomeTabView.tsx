@@ -11,7 +11,7 @@ import {RecommendTabView} from "./recommendTab/RecommendTabView";
 import {removeHTMLTag} from "../../../../public/tools/removeHTMLTag";
 
 export const HomeTabView = () => {
-    const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
+    const {homeGames, notice, banner, onlineNum, onlineSwitch} = useGetHomeInfo()
     const [height, setHeight] = useState(775)
     const [games, setGames] = useState<Icon[]>([])
     const [marquee, setMarquee] = useState<string[]>([])
@@ -23,7 +23,7 @@ export const HomeTabView = () => {
     const getMarquee = () => {
         let arr = []
         notice && notice.data && notice.data.scroll.map((item, index) => {
-            arr.push({label: index, value: removeHTMLTag(item.content)})
+            arr.push({label: index, value: removeHTMLTag(item.title), data: removeHTMLTag(item.content)})
         })
         setMarquee(arr)
     }
@@ -47,7 +47,7 @@ export const HomeTabView = () => {
 
     const getTab = (item: Icon, index: number) => {
         return index == 0 ?
-            <RecommendTabView banner={banner} list={item.list} marquee={marquee} onlineNum={onlineNum} tabLabel="精选"/> :
+            <RecommendTabView onlineSwitch={onlineSwitch} banner={banner} list={item.list} marquee={marquee} onlineNum={onlineNum} tabLabel="精选"/> :
             item.name.indexOf("彩票") != -1 ?
                 <LotteryTabView list={item.list} tabLabel="彩票"/> :
                 <GameListView list={item.list} tabLabel={item.name}/>

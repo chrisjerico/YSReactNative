@@ -34,7 +34,7 @@ var react_native_banner_carousel_1 = __importDefault(require("react-native-banne
 var react_native_fast_image_1 = __importDefault(require("react-native-fast-image"));
 exports.RecommendTabView = function (_a) {
     var _b, _c, _d, _e, _f, _g, _h, _j;
-    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum;
+    var list = _a.list, marquee = _a.marquee, banner = _a.banner, onlineNum = _a.onlineNum, _k = _a.onlineSwitch, onlineSwitch = _k === void 0 ? 0 : _k;
     var onPress = function (list) {
         var _a;
         list.seriesId != '1' ? PushHelper_1.default.pushHomeGame(list) :
@@ -43,7 +43,7 @@ exports.RecommendTabView = function (_a) {
                 PushHelper_1.default.pushCategory(list.seriesId, (_a = list.subType[0]) === null || _a === void 0 ? void 0 : _a.gameId);
     };
     return (React.createElement(react_native_1.View, { style: { paddingTop: 10, flex: 1 } },
-        banner ? React.createElement(Banner, { onlineNum: onlineNum, bannerData: banner }) :
+        banner ? React.createElement(Banner, { onlineSwitch: onlineSwitch, onlineNum: onlineNum, bannerData: banner }) :
             React.createElement(react_native_1.View, { style: { height: 150, marginHorizontal: 8, width: react_native_1.Dimensions.get("screen").width - 16 } }),
         React.createElement(MarqueeView_1.MarqueeView, { textArr: marquee }),
         React.createElement(react_native_1.View, { style: { marginHorizontal: 12, flex: 1 } },
@@ -56,10 +56,13 @@ exports.RecommendTabView = function (_a) {
 };
 var Banner = function (_a) {
     var _b, _c, _d, _e;
-    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f;
+    var bannerData = _a.bannerData, _f = _a.onlineNum, onlineNum = _f === void 0 ? 0 : _f, _g = _a.onlineSwitch, onlineSwitch = _g === void 0 ? 1 : _g;
     var width = hooks_1.useDimensions().window.width;
     var BannerRef = React.useRef();
-    var _g = react_1.useState(100), height = _g[0], setHeight = _g[1];
+    var _h = react_1.useState(100), height = _h[0], setHeight = _h[1];
+    react_1.useEffect(function () {
+        console.log("onlineSwitch", onlineSwitch);
+    }, [onlineSwitch]);
     react_1.useEffect(function () {
         var timer = setInterval(function () {
             var _a;
@@ -81,7 +84,14 @@ var Banner = function (_a) {
                             setHeight(e.nativeEvent.height * ((width) / e.nativeEvent.width));
                         }, key: 'banner' + index, style: { width: width, height: height, }, source: { uri: res.pic } })));
             })),
-            React.createElement(react_native_1.View, { style: { position: 'absolute', top: 10, right: 10, backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 5 } },
+            onlineSwitch != 0 && React.createElement(react_native_1.View, { style: {
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    backgroundColor: 'rgba(0,0,0,0.2)',
+                    borderRadius: 16,
+                    padding: 5,
+                } },
                 React.createElement(react_native_1.Text, { style: { color: 'white' } },
                     "\u5F53\u524D\u5728\u7EBF:",
                     onlineNum))));

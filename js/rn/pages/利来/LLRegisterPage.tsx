@@ -59,7 +59,7 @@ export const LLRegisterPage = () => {
         agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
         smsVerify, // 手机短信验证
         allowreg,
-        closeregreason
+        closeregreason,
     } = SystemStore
 
     useEffect(() => {
@@ -271,7 +271,7 @@ export const LLRegisterPage = () => {
             </View>
                 <ScrollView showsVerticalScrollIndicator={false} bounces={false}
                             style={{marginHorizontal: 36, marginTop: 28, marginBottom: 30}}>
-                    <LLRegisterInput visible={hide_reco != 0} onChangeText={(text) => setInviter(text)}
+                    <LLRegisterInput isPwd={false} visible={hide_reco != 0} onChangeText={(text) => setInviter(text)}
                                      placeholder={"推荐人或上级代理"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-reco.png"}/>
                     {inviter == "" && <View style={{flexDirection: "row"}}>
@@ -283,7 +283,7 @@ export const LLRegisterPage = () => {
                             paddingVertical: 4
                         }}>*请填写推荐人ID</Text>
                     </View>}
-                    <LLRegisterInput onChangeText={(text) => setAcc(text)} placeholder={"请输入会员账号（6-15位字母或数字)"}
+                    <LLRegisterInput isPwd={false} onChangeText={(text) => setAcc(text)} placeholder={"请输入会员账号（6-15位字母或数字)"}
                                      img={httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png"}/>
                     {!regex.test(acc) && <View style={{flexDirection: "row"}}>
                         <Text style={{

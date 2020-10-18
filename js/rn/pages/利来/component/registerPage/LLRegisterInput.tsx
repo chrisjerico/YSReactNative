@@ -15,7 +15,7 @@ export const LLRegisterInput = ({onChangeText, placeholder, img, visible = true,
             <Image style={{height: 18, width: 18, marginRight: 8, resizeMode: "stretch"}}
                    source={{uri: img}}/>
             <TextInput
-                secureTextEntry={!showPwd}
+                secureTextEntry={isPwd && !showPwd}
                 maxLength={15}
                 onChangeText={onChangeText}
                 style={{fontSize: 14, paddingVertical: 20, flex: 1}}

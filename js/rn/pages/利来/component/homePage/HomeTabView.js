@@ -33,7 +33,7 @@ var GameListView_1 = require("./lotteyTab/GameListView");
 var RecommendTabView_1 = require("./recommendTab/RecommendTabView");
 var removeHTMLTag_1 = require("../../../../public/tools/removeHTMLTag");
 exports.HomeTabView = function () {
-    var _a = useGetHomeInfo_1.default(), homeGames = _a.homeGames, notice = _a.notice, banner = _a.banner, onlineNum = _a.onlineNum;
+    var _a = useGetHomeInfo_1.default(), homeGames = _a.homeGames, notice = _a.notice, banner = _a.banner, onlineNum = _a.onlineNum, onlineSwitch = _a.onlineSwitch;
     var _b = react_1.useState(775), height = _b[0], setHeight = _b[1];
     var _c = react_1.useState([]), games = _c[0], setGames = _c[1];
     var _d = react_1.useState([]), marquee = _d[0], setMarquee = _d[1];
@@ -44,7 +44,7 @@ exports.HomeTabView = function () {
     var getMarquee = function () {
         var arr = [];
         notice && notice.data && notice.data.scroll.map(function (item, index) {
-            arr.push({ label: index, value: removeHTMLTag_1.removeHTMLTag(item.content) });
+            arr.push({ label: index, value: removeHTMLTag_1.removeHTMLTag(item.title), data: removeHTMLTag_1.removeHTMLTag(item.content) });
         });
         setMarquee(arr);
     };
@@ -64,7 +64,7 @@ exports.HomeTabView = function () {
     }, [homeGames]);
     var getTab = function (item, index) {
         return index == 0 ?
-            React.createElement(RecommendTabView_1.RecommendTabView, { banner: banner, list: item.list, marquee: marquee, onlineNum: onlineNum, tabLabel: "\u7CBE\u9009" }) :
+            React.createElement(RecommendTabView_1.RecommendTabView, { onlineSwitch: onlineSwitch, banner: banner, list: item.list, marquee: marquee, onlineNum: onlineNum, tabLabel: "\u7CBE\u9009" }) :
             item.name.indexOf("彩票") != -1 ?
                 React.createElement(LotteryTabView_1.LotteryTabView, { list: item.list, tabLabel: "\u5F69\u7968" }) :
                 React.createElement(GameListView_1.GameListView, { list: item.list, tabLabel: item.name });

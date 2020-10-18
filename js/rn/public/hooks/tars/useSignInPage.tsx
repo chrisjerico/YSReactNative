@@ -53,6 +53,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
       ToastStatus('正在登录...')
     },
     onSuccess: () => {
+      console.log("loginTo : ", loginTo)
       if (loginTo == LoginTo.首页) {
         navigateToHomePage()
       } else {

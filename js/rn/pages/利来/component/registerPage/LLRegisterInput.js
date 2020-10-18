@@ -35,7 +35,7 @@ exports.LLRegisterInput = function (_a) {
             paddingTop: 12
         } },
         React.createElement(react_native_1.Image, { style: { height: 18, width: 18, marginRight: 8, resizeMode: "stretch" }, source: { uri: img } }),
-        React.createElement(react_native_1.TextInput, { secureTextEntry: !showPwd, maxLength: 15, onChangeText: onChangeText, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: "#333", placeholder: placeholder }),
+        React.createElement(react_native_1.TextInput, { secureTextEntry: isPwd && !showPwd, maxLength: 15, onChangeText: onChangeText, style: { fontSize: 14, paddingVertical: 20, flex: 1 }, placeholderTextColor: "#333", placeholder: placeholder }),
         isPwd &&
             React.createElement(react_native_1.TouchableWithoutFeedback, { onPress: function () { return setShowPwd(!showPwd); } },
                 React.createElement(react_native_1.Image, { style: { height: 15, width: 18, marginRight: 8, resizeMode: "stretch" }, source: { uri: showPwd ? httpClient_1.httpClient.defaults.baseURL + "/images/icon-eyes.png" : httpClient_1.httpClient.defaults.baseURL + "/images/icon-eye.png" } })))) :

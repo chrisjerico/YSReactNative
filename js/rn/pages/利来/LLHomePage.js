@@ -94,6 +94,12 @@ var LLHomePage = function (_a) {
     var _d = react_1.useState([]), ads = _d[0], setAds = _d[1];
     var _e = UGStore_1.UGStore.globalProps.sysConf, mobile_logo = _e.mobile_logo, m_promote_pos = _e.m_promote_pos, rankingListSwitch = _e.rankingListSwitch;
     react_1.useEffect(function () {
+        var unsubscribe = navigation.addListener('focus', function () {
+            setProps();
+        });
+        return unsubscribe;
+    }, [navigation]);
+    react_1.useEffect(function () {
         var timer = setInterval(function () {
             reloadData();
             IGlobalStateHelper_1.updateUserInfo();

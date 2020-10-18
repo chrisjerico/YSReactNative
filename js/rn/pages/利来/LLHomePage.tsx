@@ -55,6 +55,15 @@ const LLHomePage = ({ setProps, navigation }) => {
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setProps()
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+
+  useEffect(() => {
     const timer = setInterval(() => {
       reloadData()
       updateUserInfo()

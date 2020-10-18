@@ -60,7 +60,6 @@ export function setRnPageInfo() {
       pages = pages.concat(WNSPages)
     }
   }
-
   // —————————————————— 以下为已上线内容 ————————————————————————
   // 优惠活动列表页
   pages.push({

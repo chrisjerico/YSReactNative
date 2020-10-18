@@ -1,36 +1,34 @@
-import * as React from "react"
-import { useEffect, useRef, useState } from "react"
+import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
-  ActivityIndicator, Animated,
-  Dimensions, Easing,
+  Animated,
+  Dimensions,
+  Easing,
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView, StatusBar,
+  ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} from "react-native"
-import LinearGradient from "react-native-linear-gradient"
-import { UGStore } from "../../redux/store/UGStore"
-import Icon from "react-native-vector-icons/FontAwesome"
-import PushHelper from "../../public/define/PushHelper"
-import useMemberItems from "../../public/hooks/useMemberItems"
-import useLoginOut from "../../public/hooks/useLoginOut"
-import { PageName } from "../../public/navigation/Navigation"
-import APIRouter from "../../public/network/APIRouter"
-import { httpClient } from "../../public/network/httpClient"
-import UGUserModel from "../../redux/model/全局/UGUserModel"
-import AppDefine from "../../public/define/AppDefine"
-import { BZHThemeColor } from "../../public/theme/colors/BZHThemeColor"
-import PickAvatarComponent from "../../public/components/tars/PickAvatarComponent"
-import useMinePage from "../../public/hooks/tars/useMinePage"
-import config from "../BZH/config"
-import { useHtml5Image } from "../../public/tools/tars"
-import { LLThemeColor } from "../../public/theme/colors/LLThemeCololr"
-import { UGUserCenterType } from "../../redux/model/全局/UGSysConfModel"
-import { isMap } from "immer/dist/utils/common"
+} from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import { UGStore } from '../../redux/store/UGStore'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import PushHelper from '../../public/define/PushHelper'
+import useMemberItems from '../../public/hooks/useMemberItems'
+import useLoginOut from '../../public/hooks/useLoginOut'
+import { PageName } from '../../public/navigation/Navigation'
+import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
+import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
+import useMinePage from '../../public/hooks/tars/useMinePage'
+import config from '../BZH/config'
+import { useHtml5Image } from '../../public/tools/tars'
+import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { useDimensions } from '@react-native-community/hooks'
 
 const LLMinePage = ({ navigation, setProps }) => {
   const {
@@ -42,18 +40,6 @@ const LLMinePage = ({ navigation, setProps }) => {
     homePage: PageName.LLHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
-
-  const {
-    balance,
-    curLevelGrade,
-    usr,
-    isTest,
-    avatar,
-    nextLevelInt,
-    curLevelInt,
-    userCenterItems,
-    unreadMsg,
-  } = value
   const { getHtml5Image } = useHtml5Image()
   const { UGUserCenterItem } = useMemberItems()
   const [levelWidth, setLevelWidth] = useState(0)
@@ -66,8 +52,11 @@ const LLMinePage = ({ navigation, setProps }) => {
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ["0deg", "360deg"],
+    outputRange: ['0deg', '360deg'],
   })
+  const userStore = UGStore.globalProps.userInfo
+  const { width } = useDimensions().window
+  const { uid = '', curLevelTitle, curLevelInt, nextLevelInt, curLevelGrade, avatar, isTest, balance, usr, unreadMsg } = userStore
 
   const getLevelWidth = () => {
     setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt))
@@ -75,30 +64,30 @@ const LLMinePage = ({ navigation, setProps }) => {
 
   const refresh = async () => {
     const { data: userInfo } = await APIRouter.user_info()
-    UGStore.dispatch({ type: "merge", props: userInfo?.data })
+    UGStore.dispatch({ type: 'merge', props: userInfo?.data })
     setProps()
     UGStore.save()
   }
 
   useEffect(() => {
-    navigation.addListener("focus", async () => {
+    navigation.addListener('focus', async () => {
       const { data: userInfo } = await APIRouter.user_info()
-      UGStore.dispatch({ type: "merge", props: userInfo?.data })
-      setProps()
+      UGStore.dispatch({ type: 'merge', props: userInfo?.data })
       UGStore.save()
+      setProps()
     })
 
     return (() => {
-      navigation.removeListener("focus", null)
+      navigation.removeListener('focus', null)
     })
   }, [])
 
   useEffect(() => {
     if (UGUserCenterItem) {
-      setDepositItem(UGUserCenterItem.find((item) => item.name == "存款"))
-      setWithdrawItem(UGUserCenterItem.find((item) => item.name == "取款"))
-      setTransferItem(UGUserCenterItem.find((item) => item.name == "额度转换"))
-      setMissionItem(UGUserCenterItem.find((item) => item.name == "任务中心"))
+      setDepositItem(UGUserCenterItem.find((item) => item.name == '存款'))
+      setWithdrawItem(UGUserCenterItem.find((item) => item.name == '取款'))
+      setTransferItem(UGUserCenterItem.find((item) => item.name == '额度转换'))
+      setMissionItem(UGUserCenterItem.find((item) => item.name == '任务中心'))
     }
   }, [UGUserCenterItem])
 
@@ -108,27 +97,27 @@ const LLMinePage = ({ navigation, setProps }) => {
 
   return (
     <>
-      <StatusBar barStyle="light-content" translucent={true}/>
-      <SafeAreaView style={{ backgroundColor: "#39150D" }}>
-        <ScrollView bounces={false} style={{ backgroundColor: "#ffffff" }}>
-          <SafeAreaView style={{ backgroundColor: "#39150D", height: 172 }}>
+      <StatusBar barStyle="light-content" translucent={true} />
+      <SafeAreaView style={{ backgroundColor: '#39150D' }}>
+        <ScrollView bounces={false} style={{ backgroundColor: '#ffffff' }}>
+          <SafeAreaView style={{ backgroundColor: '#39150D', height: 172 }}>
             <TouchableWithoutFeedback onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
             }}>
-              <Image style={{ alignSelf: "flex-end", width: 28, height: 28, marginRight: 8 }}
-                     source={{ uri: httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/zxkf.png" }}/>
+              <Image style={{ alignSelf: 'flex-end', width: 28, height: 28, marginRight: 8 }}
+                     source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/zxkf.png' }} />
             </TouchableWithoutFeedback>
             <View style={{
-              backgroundColor: "#F3745B",
+              backgroundColor: '#F3745B',
               marginHorizontal: 8,
               marginVertical: 12,
               height: 159,
               borderRadius: 6,
             }}>
-              <View style={{ flexDirection: "row", marginHorizontal: 8, marginVertical: 16 }}>
+              <View style={{ flexDirection: 'row', marginHorizontal: 8, marginVertical: 16 }}>
                 <TouchableWithoutFeedback onPress={() => onPressAvatar()}>
                   <Image style={{ width: 50, height: 50 }}
-                         source={{ uri: isTest || !avatar ? getHtml5Image(18, "money-2") : avatar }}/>
+                         source={{ uri: isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar }} />
                 </TouchableWithoutFeedback>
                 <View style={{ marginLeft: 12 }}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -152,59 +141,59 @@ const LLMinePage = ({ navigation, setProps }) => {
                       }}>{curLevelGrade}</Text>
                     </LinearGradient>
                   </View>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{
-                      backgroundColor: "#ddf",
+                      backgroundColor: '#ddf',
                       width: 193,
                       height: 8,
                       borderRadius: 4,
-                    }}/>
+                    }} />
                     <View style={{
-                      position: "absolute",
-                      backgroundColor: "#3F64D8",
+                      position: 'absolute',
+                      backgroundColor: '#3F64D8',
                       width: levelWidth,
                       height: 8,
                       borderRadius: 4,
-                    }}/>
+                    }} />
                     <Text
                       style={{
-                        position: "absolute",
+                        position: 'absolute',
                         left: 91.5,
-                        color: "#ffffff",
+                        color: '#ffffff',
                         lineHeight: 20,
                         fontSize: 8,
-                      }}>{isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? "0%" : parseInt(curLevelInt) / parseInt(nextLevelInt) + "%"}</Text>
+                      }}>{isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? '0%' : parseInt(curLevelInt) / parseInt(nextLevelInt) + '%'}</Text>
                     <Text
                       style={{
-                        color: "#ffffff",
+                        color: '#ffffff',
                         lineHeight: 20,
                         fontSize: 14,
                       }}>{curLevelGrade}</Text>
                   </View>
                   {levelWidth === 193 ?
-                    <Text style={{ color: "#ffffff", fontSize: 14 }}>恭喜您已经是最高等级!</Text> :
+                    <Text style={{ color: '#ffffff', fontSize: 14 }}>恭喜您已经是最高等级!</Text> :
                     <Text style={{
-                      color: "#ffffff",
+                      color: '#ffffff',
                       fontSize: 14,
                     }}>{`距离下一级还差${isNaN(parseInt(nextLevelInt) - parseInt(curLevelInt)) ? 0 : parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
                   }
                 </View>
               </View>
               <View style={{ marginHorizontal: 16, marginTop: 16 }}>
-                <Text style={{ fontSize: 13, color: "#ffffff" }}>总余额（元）</Text>
-                <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+                <Text style={{ fontSize: 13, color: '#ffffff' }}>总余额（元）</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
                   <Text style={{
                     fontSize: 22,
-                    fontWeight: "bold",
-                    color: "#ffffff",
-                    alignSelf: "center",
-                    textAlign: "center",
-                  }}>{balance ? `¥0` : isNaN(balance) ? `¥0` : `¥` + balance}</Text>
-                  <View style={{ flex: 1 }}/>
+                    fontWeight: 'bold',
+                    color: '#ffffff',
+                    alignSelf: 'center',
+                    textAlign: 'center',
+                  }}>{balance ? `¥0` : isNaN(Number(balance)) ? `¥0` : `¥` + balance}</Text>
+                  <View style={{ flex: 1 }} />
                   <Animated.View
                     style={[{ transform: [{ rotateZ: spinDeg }] }]}
                   >
-                    <Icon size={18} style={{ color: "#ffffff" }} name={"refresh"} onPress={() => {
+                    <Icon size={18} style={{ color: '#ffffff' }} name={'refresh'} onPress={() => {
                       Animated.timing(spinValue, {
                         toValue: 1,
                         duration: 3000,
@@ -215,7 +204,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                         reload.current = false
                       })
                       refresh()
-                    }}/>
+                    }} />
                   </Animated.View>
                 </View>
               </View>
@@ -223,106 +212,106 @@ const LLMinePage = ({ navigation, setProps }) => {
           </SafeAreaView>
           <View style={{
             marginTop: 56,
-            flexDirection: "row",
-            width: Dimensions.get("screen").width - 16,
+            flexDirection: 'row',
+            width: Dimensions.get('screen').width - 16,
             marginHorizontal: 8,
           }}>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 21)}>
-              <View style={{ alignItems: "center", flex: 1 }}>
+              <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png" }}/>
-                <Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>充值</Text>
+                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cdeposit.png' }} />
+                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>充值</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushCategory(7, 22)
             }>
-              <View style={{ alignItems: "center", flex: 1 }}>
+              <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png" }}/>
-                <Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>提现</Text>
+                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cwithdraw.png' }} />
+                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>提现</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(transferItem.code)}>
-              <View style={{ alignItems: "center", flex: 1 }}>
+              <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png" }}/>
-                <Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>额度转换</Text>
+                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Cconversion.png' }} />
+                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>额度转换</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(missionItem.code)}>
-              <View style={{ alignItems: "center", flex: 1 }}>
+              <View style={{ alignItems: 'center', flex: 1 }}>
                 <Image style={{ width: 36, height: 28 }}
-                       source={{ uri: "http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png" }}/>
-                <Text style={{ color: "#666666", fontSize: 14, marginTop: 4 }}>任务中心</Text>
+                       source={{ uri: 'http://test05.6yc.com/views/mobileTemplate/20/images/Ctask.png' }} />
+                <Text style={{ color: '#666666', fontSize: 14, marginTop: 4 }}>任务中心</Text>
               </View>
             </TouchableWithoutFeedback>
           </View>
           <SafeAreaView>
             <FlatList
               scrollEnabled={false}
-              style={{ borderTopWidth: 1, borderTopColor: "#E0E0E0", marginTop: 20, marginBottom: 90 }}
+              style={{ borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20, marginBottom: 90 }}
               keyExtractor={(item, index) => `mine-${index}`}
               data={UGUserCenterItem}
               ListFooterComponent={() => (
                 <View style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   flex: 1,
                   marginLeft: 20,
                   height: 47,
-                  alignItems: "center",
+                  alignItems: 'center',
                   borderBottomWidth: 1,
-                  borderBottomColor: "#E0E0E0",
+                  borderBottomColor: '#E0E0E0',
                 }}>
-                  <TouchableOpacity style={{ flexDirection: "row", flex: 1 }} onPress={loginOut}>
+                  <TouchableOpacity style={{ flexDirection: 'row', flex: 1 }} onPress={loginOut}>
                     <Image style={{ height: 29, width: 29, marginRight: 10 }}
-                           source={{ uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png` }}/>
-                    <Text style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>退出登录</Text>
+                           source={{ uri: httpClient.defaults.baseURL + `/views/mobileTemplate/20/images/Csignout.png` }} />
+                    <Text style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>退出登录</Text>
                     <View style={{ marginRight: 20 }}>
-                      <Icon size={20} name={"angle-right"}/>
+                      <Icon size={20} name={'angle-right'} />
                     </View>
                   </TouchableOpacity>
                 </View>
               )}
               renderItem={({ item }) => (
                 <View style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   flex: 1,
                   marginLeft: 20,
                   height: 47,
-                  alignItems: "center",
+                  alignItems: 'center',
                   borderBottomWidth: 1,
-                  borderBottomColor: "#E0E0E0",
+                  borderBottomColor: '#E0E0E0',
                 }}>
-                  <TouchableOpacity style={{ flexDirection: "row", flex: 1 }} onPress={() => {
+                  <TouchableOpacity style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
                     PushHelper.pushUserCenterType(item.code)
                   }}>
                     <Image style={{ height: 29, width: 29, marginRight: 10 }}
-                           source={{ uri: item.logo }}/>
+                           source={{ uri: item.logo }} />
                     <Text
-                      style={{ alignSelf: "center", color: "#47535B", flex: 1 }}>{item.name}</Text>
+                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
                     <View style={{ marginRight: 20 }}>
-                      <Icon size={20} name={"angle-right"}/>
+                      <Icon size={20} name={'angle-right'} />
                     </View>
-                    {item.name === "站内信" && unreadMsg > 0 && (
+                    {item.name === '站内信' && unreadMsg > 0 && (
                       <View style={{
-                        position: "absolute",
+                        position: 'absolute',
                         left: 80,
-                        backgroundColor: "red",
+                        backgroundColor: 'red',
                         borderRadius: 30,
-                        justifyContent: "center",
+                        justifyContent: 'center',
                         width: 20,
                         height: 20,
                       }}>
-                        <Text style={{ alignSelf: "center", color: "white" }}>{unreadMsg}</Text>
+                        <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
                       </View>)}
                   </TouchableOpacity>
                 </View>
-              )}/>
+              )} />
           </SafeAreaView>
           <PickAvatarComponent
             ref={pickAvatarComponentRef}
-            color={"#fb5959"}
-            initAvatar={isTest || !avatar ? getHtml5Image(18, "money-2") : avatar}
+            color={'#fb5959'}
+            initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
             onSaveAvatarSuccess={onSaveAvatarSuccess}
           />
         </ScrollView>

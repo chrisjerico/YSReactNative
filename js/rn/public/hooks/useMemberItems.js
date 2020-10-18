@@ -58,7 +58,8 @@ var useMemberItems = function () {
                 case 1: return [4 /*yield*/, OCHelper_1.OCHelper.call('UGSystemConfigModel.currentConfig.userCenter')];
                 case 2:
                     dataArray = _b.sent();
-                    setItems(dataArray.map(function (item) { return new UGSysConfModel_1.UGUserCenterItem(item); }));
+                    setItems(dataArray.filter(function (item) { return item.code < 20; }).map(function (item) { return new UGSysConfModel_1.UGUserCenterItem(item); }));
+                    console.log("data", dataArray);
                     return [3 /*break*/, 4];
                 case 3:
                     ANHelper_1.ANHelper.callAsync(CmdDefine_1.CMD.ASK_MINE_ITEMS)

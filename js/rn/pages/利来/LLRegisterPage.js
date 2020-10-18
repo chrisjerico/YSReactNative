@@ -375,7 +375,7 @@ exports.LLRegisterPage = function () {
             React.createElement(react_native_1.Image, { style: { width: AppDefine_1.default.width, height: 182, resizeMode: "stretch", position: "absolute" }, source: { uri: httpClient_1.httpClient.defaults.baseURL + "/views/mobileTemplate/20/images/login-blue-bg.png" } }),
             React.createElement(react_native_1.Image, { style: { width: 150, height: 150, resizeMode: "stretch" }, source: { uri: mobile_logo } })),
         React.createElement(react_native_1.ScrollView, { showsVerticalScrollIndicator: false, bounces: false, style: { marginHorizontal: 36, marginTop: 28, marginBottom: 30 } },
-            React.createElement(LLRegisterInput_1.LLRegisterInput, { visible: hide_reco != 0, onChangeText: function (text) { return setInviter(text); }, placeholder: "推荐人或上级代理", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-reco.png" }),
+            React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: false, visible: hide_reco != 0, onChangeText: function (text) { return setInviter(text); }, placeholder: "推荐人或上级代理", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-reco.png" }),
             inviter == "" && React.createElement(react_native_1.View, { style: { flexDirection: "row" } },
                 React.createElement(react_native_1.Text, { style: {
                         color: "red",
@@ -384,7 +384,7 @@ exports.LLRegisterPage = function () {
                         flex: 1,
                         paddingVertical: 4
                     } }, "*\u8BF7\u586B\u5199\u63A8\u8350\u4EBAID")),
-            React.createElement(LLRegisterInput_1.LLRegisterInput, { onChangeText: function (text) { return setAcc(text); }, placeholder: "请输入会员账号（6-15位字母或数字)", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }),
+            React.createElement(LLRegisterInput_1.LLRegisterInput, { isPwd: false, onChangeText: function (text) { return setAcc(text); }, placeholder: "请输入会员账号（6-15位字母或数字)", img: httpClient_1.httpClient.defaults.baseURL + "/images/moban9_icon/icon-user.png" }),
             !regex.test(acc) && React.createElement(react_native_1.View, { style: { flexDirection: "row" } },
                 React.createElement(react_native_1.Text, { style: {
                         color: "red",
