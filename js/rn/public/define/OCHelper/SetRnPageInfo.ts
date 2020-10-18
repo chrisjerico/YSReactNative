@@ -18,7 +18,10 @@ export function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey); // 測試開發
-
+    // ezer
+    if (Skin1.skitType.indexOf('利来') != -1) {
+      pages = pages.concat(LLPages)
+    }
     // tars
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
@@ -38,19 +41,18 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages);
     }
-    if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
-    }
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
+    // ezer
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
     }
+    // tars
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
     }
@@ -59,6 +61,9 @@ export function setRnPageInfo() {
     }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages);
+    }
+    if (skitType.indexOf('白曜') != -1) {
+      pages = pages.concat(BYPages);
     }
   }
 
