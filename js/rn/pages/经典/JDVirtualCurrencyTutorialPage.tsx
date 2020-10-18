@@ -5,15 +5,16 @@ import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-interface JDVirtualCurrencyTutorialVars {}
+interface JDVirtualCurrencyTutorialVars { }
 export interface JDVirtualCurrencyTutorialProps extends UGBasePageProps<JDVirtualCurrencyTutorialProps, JDVirtualCurrencyTutorialVars> {
   itemArry?: { btnTitle: string, webName: string }[]; // 从原生iOS HelpDocViewController页取过来的字段
+  imgH?: number;
 }
 
 // 虚拟币充值教程
 export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialProps) => {
-  const { setProps, itemArry = [] } = props;
-  
+  const { setProps, itemArry = [], imgH } = props;
+
   useEffect(() => {
     setProps({
       navbarOpstions: { hidden: false, title: '充值教程', back: true },
@@ -34,10 +35,18 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
   }).length > 0;
 
   const imgURL = isRecharge ? 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg' : 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
-  const imgH = isRecharge ? 1750 : 1750;
 
   return (
     <ScrollView>
-      <FastImage style={{ height: imgH }} source={{ uri: imgURL }} />
+      <FastImage
+        style={{ height: imgH ?? 1000 }}
+        source={{ uri: imgURL }}
+        onLoad={(e) => {
+          if (!imgH) {
+            const h = (AppDefine.width / e.nativeEvent.width) * e.nativeEvent.height ?? 100;
+            setProps({ imgH: h });
+          }
+        }}
+      />
     </ScrollView>);
 }
