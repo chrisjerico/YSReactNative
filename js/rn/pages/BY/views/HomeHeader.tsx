@@ -22,7 +22,6 @@ const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay, o
           <TouchableWithoutFeedback onPress={onPressSignUp}>
             <Text style={styles.rightTitletext}>{'注册'}</Text>
           </TouchableWithoutFeedback>
-
           <Text style={styles.bar}>{'/'}</Text>
           <TouchableWithoutFeedback onPress={onPressTryPlay}>
             <Text style={styles.rightTitletext}>{'试玩'}</Text>

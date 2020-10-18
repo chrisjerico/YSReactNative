@@ -5,18 +5,19 @@ import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
 
 interface MenuModalComponentProps {
-  menus: any[]
-  renderMenu: (params: RenderMenu) => any
+  menus?: any[]
+  renderMenuItem?: (params: RenderMenuItem) => any
   direction?: 'right' | 'left'
   listStyle?: StyleProp<ViewStyle>
+  renderMenu?: () => any
 }
 
-interface RenderMenu {
+interface RenderMenuItem {
   item: any
   index: number
 }
 
-const MenuModalComponent = ({ menus, renderMenu, direction = 'right', listStyle }: MenuModalComponentProps, ref: any) => {
+const MenuModalComponent = ({ menus, direction = 'right', listStyle, renderMenu, renderMenuItem }: MenuModalComponentProps, ref: any) => {
   const [visible, setVisible] = useState(false)
 
   useImperativeHandle(ref, () => ({
@@ -48,13 +49,13 @@ const MenuModalComponent = ({ menus, renderMenu, direction = 'right', listStyle 
               <View style={{ flex: 1 }} />
             </TouchableWithoutFeedback>
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
-              <List uniqueKey={'MenuModalComponent'} style={[styles.rightList, listStyle]} data={menus} renderItem={renderMenu} initialNumToRender={menus?.length} />
+              {renderMenu ? renderMenu() : <List uniqueKey={'MenuModalComponent'} style={[styles.rightList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} />}
             </View>
           </>
         ) : (
           <>
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
-              <List uniqueKey={'MenuModalComponent'} style={[styles.leftList, listStyle]} data={menus} renderItem={renderMenu} initialNumToRender={menus?.length} />
+              {renderMenu ? renderMenu() : <List uniqueKey={'MenuModalComponent'} style={[styles.leftList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} />}
             </View>
             <TouchableWithoutFeedback
               onPress={() => {

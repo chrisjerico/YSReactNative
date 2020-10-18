@@ -27,6 +27,7 @@ import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import Menu from './views/Menu'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
 
@@ -36,19 +37,31 @@ const onPressSignUp = () => push(PageName.BYSignUpPage)
 const BYHomePage = () => {
   const menu = useRef(null)
 
-  const { goTo, refresh, value, sign } = useHomePage({})
+  const { goTo, refresh, value, sign } = useHomePage({
+    onSuccessSignOut: () => {
+      menu?.current?.close()
+    },
+  })
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { bannersInterval, onlineNum, banners, notices, midBanners, announcements, navs, homeGames, gameLobby, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
   const { uid, usr, balance, isTest } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
+  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer, balanceDecimal } = sysInfo
 
   const { signOut, tryPlay } = sign
 
   const recommendGameTabs = gameLobby?.map((item) => item?.categoryName) ?? []
 
   console.log('-------homeGames-----', homeGames)
+
+  const menus = config.menus.concat([
+    {
+      title: '退出登录',
+      onPress: signOut,
+    },
+  ])
+
   return (
     <HomePage
       {...homeInfo}
@@ -104,27 +117,8 @@ const BYHomePage = () => {
         <MenuModalComponent
           ref={menu}
           direction={'left'}
-          menus={config?.menus}
-          renderMenu={({ item }) => {
-            const { title, onPress } = item
-            return (
-              <View>
-                <Text>{title}</Text>
-              </View>
-              // <Menu
-              //   color={WNZThemeColor.威尼斯.themeColor}
-              //   title={title}
-              //   onPress={() => {
-              //     if (title == '安全退出') {
-              //       signOut()
-              //     } else {
-              //       closeMenu()
-              //       onPress && onPress()
-              //     }
-              //   }}
-              // />
-            )
-          }}
+          listStyle={{ marginTop: 0, marginBottom: 0 }}
+          renderMenu={() => <Menu menus={menus} balanceDecimal={balanceDecimal} balance={balance} usr={usr} uid={uid} />}
         />
       )}
     />

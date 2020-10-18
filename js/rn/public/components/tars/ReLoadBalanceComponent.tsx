@@ -1,23 +1,23 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { Animated, Easing, StyleSheet, TouchableWithoutFeedback, ViewStyle, View, Text, TextStyle, StyleProp } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Animated, Easing, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { scale } from '../../tools/Scale'
-import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
-import { stringToFloat, stringToNumber } from '../../tools/tars'
+import APIRouter from '../../network/APIRouter'
+import { scale } from '../../tools/Scale'
+import { stringToFloat } from '../../tools/tars'
 
 interface ReLoadComponentProps {
+  balance: string
+  balanceDecimal: number
+  currency: string
   color?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
-  balance: string
   title?: string
   balanceStyle?: StyleProp<TextStyle>
   titleStyle?: StyleProp<TextStyle>
   animatedContainerStyle?: StyleProp<ViewStyle>
-  currency: string
   showK?: boolean
-  balanceDecimal: number
 }
 const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))

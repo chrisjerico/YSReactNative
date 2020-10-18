@@ -9,7 +9,7 @@ interface MenuProps {
   title: string
   onPress?: () => any
 }
-const Menu = ({ title, onPress }: MenuProps) => {
+const MenuButton = ({ title, onPress }: MenuProps) => {
   return (
     <>
       <Button containerStyle={styles.menuConatiner} title={title} titleStyle={styles.menuTitle} onPress={onPress} />
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Menu
+export default MenuButton

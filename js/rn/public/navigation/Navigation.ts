@@ -60,7 +60,7 @@ export enum PageName {
   BYHomePage = 'BYHomePage',
   BYMinePage = 'BYMinePage',
   BYSignInPage = 'BYSignInPage',
-  BYSignUpPage = 'BYSignUpPage'
+  BYSignUpPage = 'BYSignUpPage',
 }
 
 // export class  {

@@ -12,7 +12,7 @@ import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 import config from './config'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
 
 const WNZSignInPage = () => {
@@ -59,10 +59,10 @@ const WNZSignInPage = () => {
               // @ts-ignore
               config?.menuSignIn?.concat(config?.menus)
             }
-            renderMenu={({ item }) => {
+            renderMenuItem={({ item }) => {
               const { title, onPress } = item
               return (
-                <Menu
+                <MenuButton
                   title={title}
                   onPress={() => {
                     menu?.current?.close()

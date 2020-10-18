@@ -15,7 +15,7 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
@@ -168,10 +168,10 @@ const WNZMinePage = () => {
             : // @ts-ignore
               config?.menuSignIn?.concat(config?.menus)
         }
-        renderMenu={({ item }) => {
+        renderMenuItem={({ item }) => {
           const { title, onPress } = item
           return (
-            <Menu
+            <MenuButton
               title={title}
               onPress={() => {
                 if (title == '安全退出') {

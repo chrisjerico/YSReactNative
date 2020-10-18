@@ -17,10 +17,9 @@ import NavBlock from '../../public/views/tars/NavBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import Dash from 'react-native-dash'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -265,10 +264,10 @@ const WNZHomePage = () => {
         <MenuModalComponent
           ref={menu}
           menus={menus}
-          renderMenu={({ item }) => {
+          renderMenuItem={({ item }) => {
             const { title, onPress } = item
             return (
-              <Menu
+              <MenuButton
                 title={title}
                 onPress={() => {
                   if (title == '安全退出') {

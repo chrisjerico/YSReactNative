@@ -7,7 +7,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -40,12 +40,7 @@ const BZHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <BackBtnComponent
-          homePage={PageName.BZHHomePage}
-          renderHeader={(props) => {
-            return <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressRightTitle={goToUserCenterType.在线客服} />
-          }}
-        />
+        <BackBtnComponent homePage={PageName.BZHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} />} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
