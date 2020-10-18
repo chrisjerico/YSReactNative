@@ -24,4 +24,3 @@ exports.releaseConfig = {
         h003: '经典1',
     },
 };
-//# sourceMappingURL=config.js.map

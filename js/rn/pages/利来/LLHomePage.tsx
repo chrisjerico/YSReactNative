@@ -14,7 +14,7 @@ import {
   View,
 } from "react-native"
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from 'react'
 import { HomeHeaderButtonBar } from "./component/homePage/HomeHeaderButtonBar"
 import useGetHomeInfo from "../../public/hooks/useGetHomeInfo"
 import { HomeTabView } from "./component/homePage/HomeTabView"
@@ -41,6 +41,7 @@ import { ANHelper } from "../../public/define/ANHelper/ANHelper"
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine"
 import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine"
 import UGSysConfModel from "../../redux/model/全局/UGSysConfModel"
+import { useFocusEffect } from '@react-navigation/native';
 
 const LLHomePage = ({ setProps, navigation }) => {
   let { rankList, redBag, onRefresh, loading, floatAds } = useGetHomeInfo()
@@ -55,18 +56,9 @@ const LLHomePage = ({ setProps, navigation }) => {
   }: UGSysConfModel = UGStore.globalProps.sysConf
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      setProps()
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-
-  useEffect(() => {
     const timer = setInterval(() => {
       reloadData()
-      updateUserInfo()
+      //updateUserInfo()
     }, 2000)
     return (() => {
       clearInterval(timer)
@@ -98,9 +90,11 @@ const LLHomePage = ({ setProps, navigation }) => {
     if (!user) {
       UGStore.dispatch({ type: "reset", userInfo: {} })
       UGStore.save()
+      setProps()
     } else {
       UGStore.dispatch({ type: "merge", userInfo: user })
       UGStore.save()
+      setProps()
     }
   }
 

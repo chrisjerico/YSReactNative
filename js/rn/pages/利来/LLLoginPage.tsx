@@ -9,13 +9,14 @@ import { PageName } from '../../public/navigation/Navigation'
 import { httpClient } from '../../public/network/httpClient'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import WebView, { WebViewMessageEvent } from 'react-native-webview'
-import { EventRegister } from "react-native-event-listeners"
+import { EventRegister } from 'react-native-event-listeners'
 import AppDefine from '../../public/define/AppDefine'
 import { ugLog } from '../../public/tools/UgLog'
+import APIRouter from '../../public/network/APIRouter'
 
-export const LLLoginPage = ({setProps}) => {
+export const LLLoginPage = ({ setProps }) => {
   const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
     homePage: PageName.LLHomePage,
     signUpPage: PageName.LLRegisterPage,
@@ -25,15 +26,30 @@ export const LLLoginPage = ({setProps}) => {
   const { loginVCode } = show
   const { remember, account, password } = value
   const { navigateToSignUpPage } = navigateTo
+  const [code, setCode] = useState('')
 
-  console.log("loginVCode",loginVCode)
+  const getVCode = useMemo(() => {
+    if (loginVCode) {
+      return <SlidingVerification onChange={onChangeSlideCode} />
+    } else return <View/>
+  }, [loginVCode, code])
+
+  useEffect(() => {
+    reRenderCode()
+  }, [loginVCode])
+  const reRenderCode = async () => {
+    try {
+      const { data, status } = await APIRouter.secure_imgCaptcha()
+      setCode(data)
+    } catch (error) {
+    }
+  }
 
   return (
     <BaseScreen
       screenName={'登录'}
       style={{
         backgroundColor: '#f5f5f9',
-        alignItems: 'center',
         paddingHorizontal: 28,
       }}
     >
@@ -136,106 +152,73 @@ export const LLLoginPage = ({setProps}) => {
           <Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</Text>
         </TouchableOpacity>
       </View>
-      <ReloadSlidingVerification
-        ref={slideCodeRef}
-        show={true}
-        onChange={onChangeSlideCode}
-        backgroundColor={'#ffffff'}
-        containerStyle={{
-          backgroundColor: '#ffffff',
-        }}
-      />
-      {/*<SlidingVerification onChange={args => {*/}
-      {/*  ugLog('sliding code=', args)*/}
-      {/*  setSlideCode(args)*/}
-      {/*}}/>*/}
-      <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>
-        其他
-      </Text>
-      <View style={{ flexDirection: 'row', marginHorizontal: 12 }}>
-        <TouchableOpacity
-          style={{ alignItems: 'center' }}
-          onPress={() => {
-            navigateToSignUpPage()
-          }}
-        >
-          <Image
-            style={{ height: 64, width: 64 }}
-            source={{
-              uri:
-                'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+      {getVCode}
+      <View style={{alignItems: 'center'}}>
+        <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>
+          其他
+        </Text>
+        <View style={{ flexDirection: 'row', marginHorizontal: 12 }}>
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => {
+              navigateToSignUpPage()
             }}
-          />
-          <Text style={{ marginTop: 8 }}>马上注册</Text>
-        </TouchableOpacity>
-        <View style={{ flex: 1 }} />
-        <TouchableOpacity
-          style={{ alignItems: 'center' }}
-          onPress={() => tryPlay()}
-        >
-          <Image
-            style={{ height: 64, width: 64 }}
-            source={{
-              uri:
-                'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+          >
+            <Image
+              style={{ height: 64, width: 64 }}
+              source={{
+                uri:
+                  'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+              }}
+            />
+            <Text style={{ marginTop: 8 }}>马上注册</Text>
+          </TouchableOpacity>
+          <View style={{ flex: 1 }} />
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => tryPlay()}
+          >
+            <Image
+              style={{ height: 64, width: 64 }}
+              source={{
+                uri:
+                  'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+              }}
+            />
+            <Text style={{ marginTop: 8 }}>免费试玩</Text>
+          </TouchableOpacity>
+          <View style={{ flex: 1 }} />
+          <TouchableOpacity
+            style={{ alignItems: 'center' }}
+            onPress={() => {
+              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
             }}
-          />
-          <Text style={{ marginTop: 8 }}>免费试玩</Text>
-        </TouchableOpacity>
-        <View style={{ flex: 1 }} />
-        <TouchableOpacity
-          style={{ alignItems: 'center' }}
-          onPress={() => {
-            PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-          }}
-        >
-          <Image
-            style={{ height: 64, width: 64 }}
-            source={{
-              uri:
-                'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
-            }}
-          />
-          <Text style={{ marginTop: 8 }}>电脑版</Text>
-        </TouchableOpacity>
+          >
+            <Image
+              style={{ height: 64, width: 64 }}
+              source={{
+                uri:
+                  'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
+              }}
+            />
+            <Text style={{ marginTop: 8 }}>电脑版</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      {/*<DialogInput*/}
-      {/*  isDialogVisible={GGmodalShow}*/}
-      {/*  title={'请输入谷歌验证码'}*/}
-      {/*  message={''}*/}
-      {/*  cancelText={'取消'}*/}
-      {/*  submitText={'確定'}*/}
-      {/*  hintInput={'请输入谷歌验证码'}*/}
-      {/*  submitInput={(inputText) =>*/}
-      {/*    login({ account: acc, pwd: pwd, googleCode: inputText })*/}
-      {/*  }*/}
-      {/*  closeDialog={() => {*/}
-      {/*    setGGModalShow(false)*/}
-      {/*  }}*/}
-      {/*/>*/}
-      {/*<ReloadSlidingVerification*/}
-      {/*  ref={slideCodeRef}*/}
-      {/*  show={loginVCode}*/}
-      {/*  onChange={onChangeSlideCode}*/}
-      {/*  backgroundColor={'#ffffff'}*/}
-      {/*  containerStyle={{*/}
-      {/*    backgroundColor: '#ffffff',*/}
-      {/*  }}*/}
-      {/*/>*/}
     </BaseScreen>
   )
 }
 
-const SlidingVerification = ({onChange}: { onChange: (data: any) => void }) => {
+const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
   const webViewScript = `setTimeout(function() {
             document.getElementById('app').style.background = 'white'
             window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
           }, 500);
-          true;`;
+          true;`
   const [webviewHeight, setWebViewHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
-    let eData = e?.nativeEvent?.data;
-    console.log("sliding response: " + eData)
+    let eData = e?.nativeEvent?.data
+    console.log('sliding response: ' + eData)
 
     if (typeof eData == 'string') {
       setWebViewHeight(parseInt(eData) * 1.5)
@@ -251,21 +234,21 @@ const SlidingVerification = ({onChange}: { onChange: (data: any) => void }) => {
     return (() => EventRegister.removeEventListener(this.listener))
   }, [])
 
-  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`;
+  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`
   ugLog('slidingUrl=' + slidingUrl)
 
   return (
-    <View style={{height: webviewHeight}}>
+    <View style={{ height: webviewHeight }}>
       <WebView
         ref={webViewRef}
-        style={{minHeight: webviewHeight, backgroundColor: 'white'}}
-        containerStyle={{backgroundColor: 'white', height: 10}}
+        style={{ minHeight: webviewHeight, backgroundColor: 'white' }}
+        containerStyle={{ backgroundColor: 'white', height: 10 }}
         javaScriptEnabled
         injectedJavaScript={webViewScript}
         startInLoadingState
-        source={{uri: slidingUrl}}
+        source={{ uri: slidingUrl }}
         onMessage={hadnleMessage}
       />
     </View>
-  );
+  )
 }
