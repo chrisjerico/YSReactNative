@@ -3,6 +3,7 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  LogBox,
   Platform,
   RefreshControl,
   SafeAreaView,
@@ -43,6 +44,7 @@ import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine"
 import UGSysConfModel from "../../redux/model/全局/UGSysConfModel"
 
 const LLHomePage = ({ setProps, navigation }) => {
+  LogBox.ignoreLogs(['Animated:'])
   let { rankList, redBag, onRefresh, loading, floatAds } = useGetHomeInfo()
   const userStore = UGStore.globalProps.userInfo
   const { uid = "" }: UGUserModel = userStore
@@ -66,7 +68,7 @@ const LLHomePage = ({ setProps, navigation }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       reloadData()
-      // updateUserInfo()
+      updateUserInfo()
     }, 2000)
     return (() => {
       clearInterval(timer)
