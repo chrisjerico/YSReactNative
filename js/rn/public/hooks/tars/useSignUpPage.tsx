@@ -1,9 +1,8 @@
-import { useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { validPassword } from '../../tools/tars'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
@@ -36,73 +35,82 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const slideCodeRef = useRef(null)
   const agentRef = useRef<AgentType>(null)
 
-  const navigateToHomePage = () => {
+  const navigateToHomePage = useCallback(() => {
     homePage && navigate(homePage, {})
-  }
+  }, [])
 
-  const navigateToSignInPage = () => {
+  const navigateToSignInPage = useCallback(() => {
     signInPage && navigate(signInPage, {})
-  }
-  const { tryPlay } = useTryPlay({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-    },
-    onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-      navigateToHomePage()
-    },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
-    },
-  })
+  }, [])
 
-  const { signUp } = useSignUp({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在注册...' })
-    },
-    onSuccessAutoLogin: () => {
-      showLoading({ type: UGLoadingType.Success, text: '自动登录成功' })
-      navigateToHomePage()
-    },
-    onErrorAutoLogin: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '自动登录失败' })
-    },
-    onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '注册成功' })
-      navigateToSignInPage()
-    },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '注册失败' })
-      setSlideCode({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
-      })
-      slideCodeRef?.current?.reload()
-    },
-  })
+  const { tryPlay } = useMemo(
+    () =>
+      useTryPlay({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+        },
+        onSuccess: () => {
+          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          navigateToHomePage()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+        },
+      }),
+    []
+  )
+
+  const { signUp } = useMemo(
+    () =>
+      useSignUp({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在注册...' })
+        },
+        onSuccessAutoLogin: () => {
+          showLoading({ type: UGLoadingType.Success, text: '自动登录成功' })
+          navigateToHomePage()
+        },
+        onErrorAutoLogin: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '自动登录失败' })
+        },
+        onSuccess: () => {
+          showLoading({ type: UGLoadingType.Success, text: '注册成功' })
+          navigateToSignInPage()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '注册失败' })
+          setSlideCode({
+            nc_csessionid: undefined,
+            nc_token: undefined,
+            nc_sig: undefined,
+          })
+          slideCodeRef?.current?.reload()
+        },
+      }),
+    []
+  )
 
   // stores
   const { sysInfo } = useSysInfo({})
   // data handle
   const { necessity, passwordLimit } = sysInfo
   const { strength, maxLength, minLength } = passwordLimit
-  const { nc_csessionid, nc_token, nc_sig } = slideCode
+  // const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
-  const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
-  const account_valid = account?.length >= 6
-  const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
+  // const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
+  // const account_valid = account?.length >= 6
+  // const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
-  const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
-  const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
-  const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
-  const wx_valid = weChat || necessity?.wx != Necessity.必填
-  const email_valid = email || necessity?.email != Necessity.必填
-  const phoneNumber_valid = phoneNumber || necessity?.phoneNumber != Necessity.必填
-  const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
-  const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
+  // const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
+  // const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
+  // const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
+  // const wx_valid = weChat || necessity?.wx != Necessity.必填
+  // const email_valid = email || necessity?.email != Necessity.必填
+  // const phoneNumber_valid = phoneNumber || necessity?.phoneNumber != Necessity.必填
+  // const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
+  // const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = true
+  const valid = confirmPassword_valid
   // account_valid &&
   // password_valid &&
   // confirmPassword_valid &&
@@ -117,18 +125,18 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // sms_valid
 
   // onChange
-  const onChangeAgent = (value: AgentType) => (agentRef.current = value)
-  const onChangeRecommendGuy = (value: string) => setRecommendGuy(value)
-  const obChangeAccount = (value: string) => setAccount(value)
-  const obChangePassword = (value: string) => setPassword(value)
-  const onChangeConfirmPassword = (value: string) => setConfirmPassword(value)
-  const onChaneRealName = (value: string) => setName(value)
-  const onChaneFundPassword = (value: string) => setFundPassword(value)
-  const onChaneQQ = (value: string) => setQQ(value)
-  const onChaneWeChat = (value: string) => setWeChat(value)
-  const onChanePhone = (value: string) => setPhoneNumber(value)
-  const onChangeEmail = (value: string) => setEmail(value)
-  const onChaneSms = (value: string) => setSms(value)
+  const onChangeAgent = useCallback((value: AgentType) => (agentRef.current = value), [])
+  const onChangeRecommendGuy = useCallback((value: string) => setRecommendGuy(value), [])
+  const onChangeAccount = useCallback((value: string) => setAccount(value), [])
+  const onChangePassword = useCallback((value: string) => setPassword(value), [])
+  const onChangeConfirmPassword = useCallback((value: string) => setConfirmPassword(value), [])
+  const onChaneRealName = useCallback((value: string) => setName(value), [])
+  const onChaneFundPassword = useCallback((value: string) => setFundPassword(value), [])
+  const onChaneQQ = useCallback((value: string) => setQQ(value), [])
+  const onChaneWeChat = useCallback((value: string) => setWeChat(value), [])
+  const onChanePhone = useCallback((value: string) => setPhoneNumber(value), [])
+  const onChangeEmail = useCallback((value: string) => setEmail(value), [])
+  const onChaneSms = useCallback((value: string) => setSms(value), [])
   const onChangeSlideCode = setSlideCode
 
   const getPasswordLimitString = () => {
@@ -164,8 +172,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const onChange = {
     onChangeRecommendGuy,
-    obChangeAccount,
-    obChangePassword,
+    onChangeAccount,
+    onChangePassword,
     onChangeConfirmPassword,
     onChaneRealName,
     onChaneFundPassword,

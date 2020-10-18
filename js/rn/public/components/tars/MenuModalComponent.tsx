@@ -49,6 +49,7 @@ const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref:
             style={{ marginTop: scale(75), backgroundColor: '#ffffff', borderRadius: scale(10), marginRight: scale(35), marginBottom: scale(100) }}
             data={menus}
             renderItem={renderMenu}
+            initialNumToRender={menus?.length}
           />
         </View>
       </View>

@@ -15,7 +15,7 @@ import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/S
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const BYSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
     homePage: PageName.BYHomePage,
     signUpPage: PageName.BYSignUpPage,
   })

@@ -50,8 +50,8 @@ interface PasswordLimit {
 
 interface OnChange {
   onChangeRecommendGuy: (value: string) => any
-  obChangeAccount: (value: string) => any
-  obChangePassword: (value: string) => any
+  onChangeAccount: (value: string) => any
+  onChangePassword: (value: string) => any
   onChangeConfirmPassword: (value: string) => any
   onChaneRealName: (value: string) => any
   onChaneFundPassword: (value: string) => any
@@ -78,8 +78,8 @@ const SignUpFormList = ({
   const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton } = show
   const {
     onChangeRecommendGuy,
-    obChangeAccount,
-    obChangePassword,
+    onChangeAccount,
+    onChangePassword,
     onChangeConfirmPassword,
     onChaneRealName,
     onChaneFundPassword,
@@ -99,10 +99,10 @@ const SignUpFormList = ({
   return (
     <>
       <Form leftIconName={'users'} onChangeText={onChangeRecommendGuy} label={recommendGuyLabel} placeholder={'推荐人ID'} leftIconTitle={'推荐人'} visible={showRecommendGuy} />
-      <Form onChangeText={obChangeAccount} label={'*请使用6-15位英文或数字的组合'} placeholder={'帐号'} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
+      <Form onChangeText={onChangeAccount} label={'*请使用6-15位英文或数字的组合'} placeholder={'帐号'} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
       <Form
         leftIconName={'lock'}
-        onChangeText={obChangePassword}
+        onChangeText={onChangePassword}
         label={passwordLebel}
         placeholder={'密码'}
         showRightIcon
