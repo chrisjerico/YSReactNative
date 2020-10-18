@@ -6,10 +6,10 @@ import { scale } from '../../../public/tools/Scale'
 
 const iconSize = scale(30)
 
-const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay }) => {
+const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay, onPressMenu }) => {
   return (
     <View style={styles.container}>
-      <Entypo name={'menu'} color={'#000000'} size={iconSize} />
+      <Entypo name={'menu'} color={'#000000'} size={iconSize} onPress={onPressMenu} />
       <FastImage source={{ uri: logo }} style={styles.logo} resizeMode={'contain'} />
       {uid ? (
         <Entypo name={'message'} color={'#000000'} size={iconSize} />

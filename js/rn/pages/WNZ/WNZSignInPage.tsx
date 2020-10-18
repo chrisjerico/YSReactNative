@@ -63,7 +63,6 @@ const WNZSignInPage = () => {
               const { title, onPress } = item
               return (
                 <Menu
-                  color={WNZThemeColor.威尼斯.themeColor}
                   title={title}
                   onPress={() => {
                     menu?.current?.close()

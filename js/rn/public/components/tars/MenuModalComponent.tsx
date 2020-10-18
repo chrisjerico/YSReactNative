@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
-import { TouchableWithoutFeedback, View } from 'react-native'
+import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import Modal from 'react-native-modal'
 import { scale } from '../../../public/tools/Scale'
 import List from '../../../public/views/tars/List'
@@ -7,6 +7,8 @@ import List from '../../../public/views/tars/List'
 interface MenuModalComponentProps {
   menus: any[]
   renderMenu: (params: RenderMenu) => any
+  direction?: 'right' | 'left'
+  listStyle?: StyleProp<ViewStyle>
 }
 
 interface RenderMenu {
@@ -14,7 +16,7 @@ interface RenderMenu {
   index: number
 }
 
-const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref: any) => {
+const MenuModalComponent = ({ menus, renderMenu, direction = 'right', listStyle }: MenuModalComponentProps, ref: any) => {
   const [visible, setVisible] = useState(false)
 
   useImperativeHandle(ref, () => ({
@@ -29,32 +31,59 @@ const MenuModalComponent = ({ menus, renderMenu }: MenuModalComponentProps, ref:
   return (
     <Modal
       isVisible={visible}
-      animationIn={'slideInRight'}
-      animationOut={'slideOutRight'}
-      style={{ width: '100%' }}
+      animationIn={direction == 'right' ? 'slideInRight' : 'slideInLeft'}
+      animationOut={direction == 'right' ? 'slideOutRight' : 'slideOutLeft'}
+      style={{ width: '100%', margin: 0 }}
       animationInTiming={600}
       animationOutTiming={600}
       useNativeDriver={true}
       hideModalContentWhileAnimating={true}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setVisible(false)
-          }}>
-          <View style={{ flex: 1 }} />
-        </TouchableWithoutFeedback>
-        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
-          <List
-            uniqueKey={'MenuModalComponent'}
-            style={{ marginTop: scale(75), backgroundColor: '#ffffff', borderRadius: scale(10), marginRight: scale(35), marginBottom: scale(100) }}
-            data={menus}
-            renderItem={renderMenu}
-            initialNumToRender={menus?.length}
-          />
-        </View>
+        {direction == 'right' ? (
+          <>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setVisible(false)
+              }}>
+              <View style={{ flex: 1 }} />
+            </TouchableWithoutFeedback>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
+              <List uniqueKey={'MenuModalComponent'} style={[styles.rightList, listStyle]} data={menus} renderItem={renderMenu} initialNumToRender={menus?.length} />
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
+              <List uniqueKey={'MenuModalComponent'} style={[styles.leftList, listStyle]} data={menus} renderItem={renderMenu} initialNumToRender={menus?.length} />
+            </View>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setVisible(false)
+              }}>
+              <View style={{ flex: 1 }} />
+            </TouchableWithoutFeedback>
+          </>
+        )}
       </View>
     </Modal>
   )
 }
+
+const styles = StyleSheet.create({
+  rightList: {
+    marginTop: scale(75),
+    backgroundColor: '#ffffff',
+    borderRadius: scale(10),
+    marginLeft: scale(35),
+    marginBottom: scale(100),
+  },
+  leftList: {
+    marginTop: scale(75),
+    backgroundColor: '#ffffff',
+    borderRadius: scale(10),
+    marginRight: scale(35),
+    marginBottom: scale(100),
+  },
+})
 
 export default forwardRef(MenuModalComponent)

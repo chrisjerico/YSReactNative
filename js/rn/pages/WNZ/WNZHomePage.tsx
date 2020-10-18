@@ -20,6 +20,7 @@ import HomeHeader from './views/HomeHeader'
 import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
+import Dash from 'react-native-dash'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -268,7 +269,6 @@ const WNZHomePage = () => {
             const { title, onPress } = item
             return (
               <Menu
-                color={WNZThemeColor.威尼斯.themeColor}
                 title={title}
                 onPress={() => {
                   if (title == '安全退出') {

@@ -1,29 +1,20 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import Dash from 'react-native-dash'
+import { WNZThemeColor } from '../../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../../public/tools/Scale'
+import Button from '../../../public/views/tars/Button'
 
 interface MenuProps {
-  color: string
   title: string
   onPress?: () => any
 }
-const Menu = ({ color, title, onPress }: MenuProps) => {
+const Menu = ({ title, onPress }: MenuProps) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View>
-        <View style={styles.menuConatiner}>
-          <Text
-            style={{
-              fontSize: scale(23),
-              color,
-            }}>
-            {title}
-          </Text>
-        </View>
-        <Dash style={{ width: '100%', height: scale(1) }} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-      </View>
-    </TouchableWithoutFeedback>
+    <>
+      <Button containerStyle={styles.menuConatiner} title={title} titleStyle={styles.menuTitle} onPress={onPress} />
+      <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+    </>
   )
 }
 
@@ -33,6 +24,14 @@ const styles = StyleSheet.create({
     aspectRatio: 5,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  menuTitle: {
+    fontSize: scale(23),
+    color: WNZThemeColor.威尼斯.themeColor,
+  },
+  dash: {
+    width: '100%',
+    height: scale(1),
   },
 })
 

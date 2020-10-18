@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
+import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
@@ -26,12 +27,15 @@ import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import config from './config'
 import HomeHeader from './views/HomeHeader'
 
 const onPressSignIn = () => push(PageName.BYSignInPage)
 const onPressSignUp = () => push(PageName.BYSignUpPage)
 
 const BYHomePage = () => {
+  const menu = useRef(null)
+
   const { goTo, refresh, value, sign } = useHomePage({})
   const { goToJDPromotionListPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
@@ -57,7 +61,7 @@ const BYHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       items={homeGames}
-      renderHeader={() => <HomeHeader logo={mobile_logo} uid={uid} onPressSignIn={onPressSignIn} onPressSignUp={onPressSignUp} onPressTryPlay={tryPlay} />}
+      renderHeader={() => <HomeHeader logo={mobile_logo} uid={uid} onPressSignIn={onPressSignIn} onPressSignUp={onPressSignUp} onPressTryPlay={tryPlay} onPressMenu={() => menu?.current?.open()} />}
       renderListHeaderComponent={() => (
         <>
           <List
@@ -96,6 +100,33 @@ const BYHomePage = () => {
         </>
       )}
       renderItem={() => null}
+      renderRestComponent={() => (
+        <MenuModalComponent
+          ref={menu}
+          direction={'left'}
+          menus={config?.menus}
+          renderMenu={({ item }) => {
+            const { title, onPress } = item
+            return (
+              <View>
+                <Text>{title}</Text>
+              </View>
+              // <Menu
+              //   color={WNZThemeColor.威尼斯.themeColor}
+              //   title={title}
+              //   onPress={() => {
+              //     if (title == '安全退出') {
+              //       signOut()
+              //     } else {
+              //       closeMenu()
+              //       onPress && onPress()
+              //     }
+              //   }}
+              // />
+            )
+          }}
+        />
+      )}
     />
   )
 }
