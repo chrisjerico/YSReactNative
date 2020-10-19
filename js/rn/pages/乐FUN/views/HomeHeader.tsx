@@ -81,7 +81,7 @@ const HomeHeader = ({
           </View>
           <View style={_styles.right}>
             <Button
-              title={'登录 | 试玩'}
+              title={'登录 | 注册'}
               containerStyle={_styles.button}
               titleStyle={_styles.buttonTitle}
               onPress={onPressSignIn}
