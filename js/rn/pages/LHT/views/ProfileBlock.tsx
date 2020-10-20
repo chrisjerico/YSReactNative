@@ -65,7 +65,7 @@ const ProfileBlock = ({
             <View style={{ flexDirection: 'row', flex: 0.9 }}>
               <ReLoadBalanceComponent
                 title={'余额 : '}
-                color={'#ff861b'}
+                iconColor={'#ff861b'}
                 containerStyle={{ justifyContent: 'flex-start' }}
                 size={20}
                 balance={balance}

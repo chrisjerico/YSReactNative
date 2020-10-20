@@ -23,7 +23,7 @@ const Menu = ({ menus, balance, balanceDecimal, usr, uid }: MenuProps) => {
         <Text style={styles.titile}>{'UG集團'}</Text>
         {uid && <Text style={styles.titile}>{usr}</Text>}
 
-        <ReLoadBalanceComponent balance={balance} balanceDecimal={balanceDecimal} currency={'RMB'} color={'#ffffff'} balanceStyle={styles.titile} />
+        <ReLoadBalanceComponent balance={balance} balanceDecimal={balanceDecimal} currency={'RMB'} iconColor={'#ffffff'} balanceStyle={styles.titile} />
       </LinearGradient>
       <View style={styles.buttonContainer}>
         <Button containerStyle={{ flex: 1, borderRightWidth: scale(1), borderColor: '#d9d9d9' }} title={'充值'} />

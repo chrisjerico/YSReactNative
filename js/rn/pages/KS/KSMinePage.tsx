@@ -115,7 +115,7 @@ const KSMinePage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             balance={balance}
             balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
-            color={'#ffffff'}
+            iconColor={'#ffffff'}
             size={30}
             currency={currency}
             balanceDecimal={balanceDecimal}

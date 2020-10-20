@@ -10,7 +10,7 @@ interface ReLoadComponentProps {
   balance: string
   balanceDecimal: number
   currency: string
-  color?: string
+  iconColor?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
   title?: string
@@ -19,7 +19,7 @@ interface ReLoadComponentProps {
   animatedContainerStyle?: StyleProp<ViewStyle>
   showK?: boolean
 }
-const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({ iconColor, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -69,7 +69,7 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
           }
         }}>
         <Animated.View style={[styles.animatedContainer, animatedContainerStyle, { width: scale(size) }, { transform: [{ rotateZ: spinDeg }] }]}>
-          <FontAwesome name={'refresh'} size={scale(size)} color={color} />
+          <FontAwesome name={'refresh'} size={scale(size)} color={iconColor} />
         </Animated.View>
       </TouchableWithoutFeedback>
     </View>
