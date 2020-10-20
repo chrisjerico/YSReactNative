@@ -30,6 +30,9 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import Menu from './views/Menu'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
+import FastImage from 'react-native-fast-image'
+import AppDefine from '../../public/define/AppDefine'
+import GameRowButton from './views/GameRowButton'
 
 const onPressSignIn = () => push(PageName.BYSignInPage)
 const onPressSignUp = () => push(PageName.BYSignUpPage)
@@ -90,6 +93,7 @@ const BYHomePage = () => {
                   logo={logo}
                   title={name}
                   showSubTitle={false}
+                  enableCircle={false}
                   titleContainerStyle={{ aspectRatio: 5 }}
                   containerStyle={{
                     marginBottom: scale(30),
@@ -105,8 +109,8 @@ const BYHomePage = () => {
           <TabComponent
             numColumns={1}
             tabGames={homeGames}
-            renderScene={() => null}
-            itemHeight={10}
+            renderScene={({ item, index }) => <List uniqueKey={'BYHomePageTabComponent' + index} data={item} renderItem={({ item }) => <GameRowButton {...item} />} />}
+            itemHeight={scale(150)}
             focusTabColor={'#387ef5'}
             containerStyle={{ backgroundColor: '#ffffff', marginHorizontal: '1%', marginTop: scale(10), borderRadius: scale(10) }}
           />
