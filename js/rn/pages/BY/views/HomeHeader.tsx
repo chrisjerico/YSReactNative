@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { scale } from '../../../public/tools/Scale'

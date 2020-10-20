@@ -1,4 +1,5 @@
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import PushHelper from '../../public/define/PushHelper'
+import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -28,26 +29,30 @@ const config = {
   menus: [
     {
       title: '额度转换',
+      onPress: goToUserCenterType.额度转换,
+    },
+    {
+      title: '投注记录',
+      onPress: goToUserCenterType.彩票注单记录,
+    },
+    {
+      title: '开奖结果',
+      onPress: goToUserCenterType.开奖结果,
+    },
+    {
+      title: '账户管理',
+      onPress: goToUserCenterType.资金明细,
+    },
+    {
+      title: '站内短信',
+      onPress: goToUserCenterType.站内信,
+    },
+    {
+      title: '返回大厅',
       onPress: () => {},
     },
     {
-      title: '幸运棋牌',
-      onPress: () => {},
-    },
-    {
-      title: '彩票游戏',
-      onPress: () => {},
-    },
-    {
-      title: 'AG视讯',
-      onPress: () => {},
-    },
-    {
-      title: '真人视讯',
-      onPress: () => {},
-    },
-    {
-      title: '电子游艺',
+      title: '退出登录',
       onPress: () => {},
     },
   ],
