@@ -1,11 +1,12 @@
 import {Platform} from "react-native";
 import {ANHelper} from "../define/ANHelper/ANHelper";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import { OCHelper } from "../define/OCHelper/OCHelper";
 
 /**
  * 所有站点的域名，key 不能随便动，否则原生那边会找不到对应的域名
  */
-const DomainUrls = {
+const DomainUrls: {[x:string]:string} = {
   'zora': 'http://zhibot071f.fhptcdn.com',
   'txt005': 'http://t005f.fhptcdn.com',
   'tx07': 'http://test07.6yc.com',
@@ -115,9 +116,11 @@ const DomainUrls = {
 /**
  * 初始化域名
  */
-const initDomain = () => {
+const initDomain = (siteId: string) => {
   switch (Platform.OS) {
     case 'ios':
+      const host = DomainUrls[siteId]; 
+      host.length && OCHelper.call('AppDefine.shared.setHost:', [host]);
       break;
     case 'android':
       ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
