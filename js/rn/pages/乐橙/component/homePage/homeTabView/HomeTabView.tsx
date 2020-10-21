@@ -59,7 +59,7 @@ export const HomeTabView = () => {
         h = h + Math.ceil((list.length - 2) / 3) * 100
       }
     } else {
-      h = list.length >= 2 ? Math.ceil(list.length / 2) * 125 + h : h
+      h = list.length >= 2 ? Math.ceil(list.length / 2) * 165 + h : h
     }
     setHeight(h)
   }
@@ -89,7 +89,6 @@ export const HomeTabView = () => {
       tabBarTextStyle={{ color: '#3c3c3c' }}
       style={{
         height,
-        marginTop: 8,
         marginHorizontal: 10,
         backgroundColor: '#ffffff',
         borderRadius: 16,

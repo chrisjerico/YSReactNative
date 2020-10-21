@@ -53,7 +53,7 @@ const LCMinePage = () => {
                 <SafeAreaView>
                     <FlatList
                         scrollEnabled={false}
-                        style={{borderTopWidth: 1, borderTopColor: '#E0E0E0', marginTop: 20}}
+                        style={{borderTopWidth: 1, borderTopColor: '#E0E0E0'}}
                         keyExtractor={(item, index) => `mine-${index}`}
                         data={UGUserCenterItem}
                         renderItem={({item}) => (

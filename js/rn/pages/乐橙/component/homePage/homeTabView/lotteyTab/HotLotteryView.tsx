@@ -5,7 +5,7 @@ import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 export const HotLotteryView = ({list, onPress}: {
     list: List[], onPress: (list: List) => void
 }) => {
-  console.log("tetetet", list[0])
+  console.log("tetete", list.length)
     return (
         <View style={{padding: 10}}>
             <Text style={{fontSize: 18, color: '#3c3c3c', fontWeight: "bold"}}>热门彩种</Text>

@@ -66,7 +66,7 @@ export const LotteryTabView = ({ list, onPress }: { list: List[], onPress: (list
             </TouchableWithoutFeedback>) : <View style={{ flex: 1 }} />}
         </View>
       </View>
-      <HotLotteryView onPress={onPress} list={list.slice(3, list.length - 1)} />
+      <HotLotteryView onPress={onPress} list={list.slice(2, list.length)} />
     </View>
   )
 }

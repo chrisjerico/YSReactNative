@@ -159,7 +159,6 @@ const LCHomePage = ({ navigation }) => {
           alignItems: "center",
           backgroundColor: "white",
           marginHorizontal: 8,
-          marginTop: 4,
           marginBottom: 8,
           borderRadius: 16,
           paddingLeft: 5,
@@ -230,7 +229,7 @@ const LCHomePage = ({ navigation }) => {
         <View style={{backgroundColor: "white", marginHorizontal: 10, borderRadius: 16}}>
           <PromotionsBlock/>
         </View>
-        {rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
+        {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
               <Text style={{ fontSize: 16, lineHeight: 22, color: "#3c3c3c", marginVertical: 10 }}>中奖排行榜</Text>
@@ -238,7 +237,7 @@ const LCHomePage = ({ navigation }) => {
             <RankListCP titleVisible={false} timing={10000} backgroundColor={"white"} textColor={"black"}
                         width={Dimensions.get("screen").width - 24} ranks={rankList}/>
           </SafeAreaView> :
-          <SafeAreaView style={{ marginHorizontal: 10 }}>
+          rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={"bar-chart-o"}/>
               <Text style={{
@@ -250,7 +249,7 @@ const LCHomePage = ({ navigation }) => {
             </View>
             <RankListCP titleVisible={false} timing={5000} backgroundColor={"white"} textColor={"black"}
                         width={Dimensions.get("screen").width - 24} ranks={rankList}/>
-          </SafeAreaView>}
+          </SafeAreaView> : <></>}
         <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 10 }}>
           <Text onPress={() => {
             PushHelper.openWebView(httpClient.defaults.baseURL + "/index2.php")
@@ -260,7 +259,7 @@ const LCHomePage = ({ navigation }) => {
           }}>🎁优惠活动</Text>
         </View>
         <Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT © {webName} RESERVED</Text>
-        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 03"}</Text>
+        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 04"}</Text>
         <View style={{ height: 100 }}/>
       </ScrollView>
       <RedBagItem redBag={redBag}/>
