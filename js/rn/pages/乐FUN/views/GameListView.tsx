@@ -11,6 +11,7 @@ import FastImage from "react-native-fast-image";
 import {ugLog} from "../../../public/tools/UgLog";
 import Button from "../../../public/views/temp/Button";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import {anyEmpty} from "../../../public/tools/Ext";
 // import {ImageButton} from "../../../../乐橙/component/ImageButton";
 // import {fillArray} from "../../../utils/fillArray";
 // import {List} from "../../../../../public/network/Model/HomeGamesModel";
@@ -40,7 +41,7 @@ export const GameListView = ({list}: { list: List[] }) => {
                      source={{uri: item.icon}}/>
           <View style={CommStyles.flex}>
             <Text style={_styles.title}>
-              {item.title}
+              {anyEmpty(item.name) ? item.title : item.name}
             </Text>
           </View>
           <AntDesign
@@ -69,14 +70,15 @@ const _styles = StyleSheet.create({
   // },
   list: {
     backgroundColor: 'white',
+    padding: scale(4),
   },
   container: {
     flex: 1,
+    height: GAME_ITEM_HEIGHT,
     maxWidth: '50%',
   },
   item: {
-    height: GAME_ITEM_HEIGHT,
-    margin: scale(8),
+    margin: scale(4),
     flex: 1,
     paddingHorizontal: scale(4),
     flexDirection: "row",

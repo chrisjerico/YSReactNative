@@ -48,6 +48,7 @@ const LEFSignInPage = () => {
       <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
         <MineHeader
           title={'登录'}
+          backTitle={'首页'}
           titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
           onPressBackBtn={pop}

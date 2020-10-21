@@ -4,7 +4,7 @@ import FormComponent, { FormComponentProps } from '../../public/components/tars/
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
+import {pop, popToRoot, push} from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
@@ -16,6 +16,7 @@ import config from './config'
 import Menu from './views/Menu'
 import SignHeader from './views/SignHeader'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
+import MineHeader from "../../public/views/temp/MineHeader";
 
 const LEFSignUpPage = () => {
   const menu = useRef(null)
@@ -32,12 +33,17 @@ const LEFSignUpPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
-        <SignHeader
-          onPressLeftTool={pop}
-          onPressMenu={() => {
-            menu?.current?.open()
+        <MineHeader
+          title={'注册'}
+          backTitle={'首页'}
+          titleColor={LEFThemeColor.乐FUN.textColor2}
+          showBackBtn={true}
+          onPressBackBtn={() => popToRoot()}
+          showCustomerService={true}
+          customerTitle={'登录'}
+          onPressCustomerService={()=>{
+            push(PageName.LEFSignInPage)
           }}
-          onPressSign={navigateToSignInPage}
         />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

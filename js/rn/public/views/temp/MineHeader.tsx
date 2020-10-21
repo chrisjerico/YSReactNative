@@ -14,6 +14,7 @@ interface MineHeaderProps {
   renderHeader?: () => any;
   onPressBackBtn?: () => any;
   showBackBtn?: boolean;
+  backTitle?: string;
 }
 
 const MineHeader = ({
@@ -26,19 +27,24 @@ const MineHeader = ({
                       renderHeader,
                       showBackBtn = false,
                       onPressBackBtn,
+                      backTitle,
                     }: MineHeaderProps) => {
   return (
-    <View style={styles.container}>
+    <View style={_styles.container}>
       {
         showBackBtn ? (
-          <View style={{flex: 1, alignItems: 'flex-start'}}>
-            <AntDesign
-              name={'left'}
-              color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
-              size={scale(25)}
-              onPress={onPressBackBtn}
-            />
-          </View>
+          <TouchableWithoutFeedback onPress={onPressBackBtn}>
+            <View style={{flex: 1, alignItems: 'center', flexDirection: 'row'}}>
+              <AntDesign
+                name={'left'}
+                color={anyEmpty(titleColor) ? '#ffffff' : titleColor}
+                size={scale(25)}
+              />
+              <Text style={anyEmpty(titleColor)
+                ? _styles.backTitle
+                : [_styles.backTitle, {color: titleColor}]}>{backTitle}</Text>
+            </View>
+          </TouchableWithoutFeedback>
         ) : (
           <View style={{flex: 1}}/>
         )}
@@ -71,8 +77,8 @@ const DefaultHeader = ({
     <>
       <View style={{flex: 1, alignItems: 'center'}}>
         <Text style={anyEmpty(titleColor)
-          ? styles.headerTitle
-          : [styles.headerTitle, {color: titleColor}]}>{title}</Text>
+          ? _styles.headerTitle
+          : [_styles.headerTitle, {color: titleColor}]}>{title}</Text>
       </View>
       {
         showCustomerService ?
@@ -88,8 +94,8 @@ const DefaultHeader = ({
                                onPress={onPressCustomerService}/>
                     :
                     <Text style={anyEmpty(titleColor)
-                      ? styles.rightTextStyle
-                      : [styles.rightTextStyle, {color: titleColor}]}>{
+                      ? _styles.rightTextStyle
+                      : [_styles.rightTextStyle, {color: titleColor}]}>{
                       customerTitle ?? '客服'
                     }</Text>
                 }
@@ -101,7 +107,13 @@ const DefaultHeader = ({
     </>
   )
 }
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
+  backTitle: {
+    color: '#ffffff',
+    fontSize: scale(23),
+    fontWeight: '500',
+    marginLeft: scale(8),
+  },
   headerTitle: {
     color: '#ffffff',
     fontSize: scale(25),
@@ -109,7 +121,8 @@ const styles = StyleSheet.create({
   },
   rightTextStyle: {
     color: '#ffffff',
-    fontSize: scale(22),
+    fontWeight: '500',
+    fontSize: scale(23),
   },
   container: {
     flex: 1,

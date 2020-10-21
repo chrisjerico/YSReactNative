@@ -230,18 +230,6 @@ const LEFHomePage = ({navigation, setProps}) => {
             }}
             rankLists={rankLists}
           />
-          <BottomLogo
-            webName={webName}
-            containerStyle={{ marginBottom: scale(5) }}
-            onPressComputer={() => {
-              PushHelper.openWebView(
-                httpClient.defaults.baseURL + '/index2.php'
-              )
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'5000ms'}
-          />
           <BottomGap />
         </ScrollView>
         <ActivityComponent
