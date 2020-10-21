@@ -136,7 +136,7 @@ export default (Page: Function) => {
 
       return (
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
-          <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }}>
+          <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
             <Page  {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
