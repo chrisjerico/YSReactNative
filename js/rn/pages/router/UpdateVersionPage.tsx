@@ -83,7 +83,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           ANHelper.callAsync(CMD.LAUNCH_GO)
           break
       }
-    }, 20000)
+    }, 10000)
 
     setProps({
       navbarOpstions: { hidden: true },

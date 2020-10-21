@@ -1,14 +1,14 @@
 
 ./rn_make_android_bundle.sh
 
-#发布的渠道: 1正式，其它测试
-type=$1
+#发布的渠道: 正式 Production，测试 Staging
+pub_type=$1
 
-if [ "$type" == "1" ]; then
-    pub_type="Production"
-else
-    pub_type="Staging"
-fi
+# if [ "$type" == "1" ]; then
+#     pub_type="Production"
+# else
+#     pub_type="Staging"
+# fi
 
 pub_message="修复问题"
 pub_version="1.0.0"
