@@ -74,6 +74,7 @@ import LEFSignInPage from "../乐FUN/LEFSignInPage";
 import LEFMinePage from "../乐FUN/LEFMinePage";
 import LEFHomePage from "../乐FUN/LEFHomePage";
 import {initDomain} from "../../public/config/DomainUrls";
+import LEFSignUpPage2 from "../乐FUN/LEFSignUpPage2";
 
 // TabbarController
 class TabBarController extends Component<{
@@ -158,7 +159,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={UGPage(BYSignInPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={UGPage(BYSignUpPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignInPage} component={UGPage(LEFSignInPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage2)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />
