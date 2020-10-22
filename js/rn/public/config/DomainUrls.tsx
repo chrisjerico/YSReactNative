@@ -12,6 +12,7 @@ const DomainUrls: {[x:string]:string} = {
   'tx07': 'http://test07.6yc.com',
   'tx08': 'http://test08.6yc.com',
   'tx10': 'https://test10.6yc.com',
+  'tx11': 'http://test11.6yc.com',
   'tx12': 'http://test12.6yc.com',
   'tx19': 'http://test19.6yc.com',
   'txt20': 'http://test20.6yc.com',
@@ -119,7 +120,7 @@ const DomainUrls: {[x:string]:string} = {
 const initDomain = (siteId: string) => {
   switch (Platform.OS) {
     case 'ios':
-      const host = DomainUrls[siteId]; 
+      const host = DomainUrls[siteId];
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host]);
       break;
     case 'android':
