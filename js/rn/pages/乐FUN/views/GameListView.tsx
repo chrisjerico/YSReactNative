@@ -21,7 +21,7 @@ import {anyEmpty} from "../../../public/tools/Ext";
 // import {UGStore} from "../../../../../redux/store/UGStore";
 // import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 
-export const GAME_ITEM_HEIGHT = scale(130)
+export const GAME_ITEM_HEIGHT = scale(130) //游戏条目高度
 
 export const GameListView = ({list}: { list: List[] }) => {
   const onPress = (list: List) => {

@@ -55,6 +55,8 @@ export const HomeTabView = () => {
     setHeight(((games[i].list.length/2 + games[i].list.length%2) + 1) * GAME_ITEM_HEIGHT)
   }
 
+  const calculateTabWidth = games?.length * TAB_ITEM_WIDTH
+
   return (
     <>
       {
@@ -62,20 +64,23 @@ export const HomeTabView = () => {
         <ScrollableTabView
           onChangeTab={({i}) => calculateHeight(i)}
           tabBarUnderlineStyle={_styles.tab_bar_underline}
-          tabBarActiveTextColor={LEFThemeColor.乐FUN.textColor2}
-          tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
-          tabBarTextStyle={_styles.tab_bar_text}
+          // tabBarActiveTextColor={LEFThemeColor.乐FUN.textColor2}
+          // tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
+          // tabBarTextStyle={_styles.tab_bar_text}
           style={[{flex: 1, height}]}
           renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}
+                                                tabsContainerStyle={{width: calculateTabWidth}}
                                                 renderTab={(name, pageIndex, isTabActive, onPressHandler, onLayoutHandler)=> {
                                                   return <TouchableWithoutFeedback onPress={()=>onPressHandler(pageIndex)}>
-                                                    <View style={_styles.tab_bar_item}>
+                                                    <View style={[_styles.tab_bar_item,
+                                                      isTabActive ? {backgroundColor: 'white'} : {}]}>
                                                       <FastImage style={_styles.tab_bar_img}
                                                                  source={{ uri: games[pageIndex].logo }} />
-                                                      <Text>{name}</Text>
+                                                      <Text style={[_styles.tab_bar_text,
+                                                        isTabActive ? {color: LEFThemeColor.乐FUN.textColor2} : {}]}>{name}</Text>
                                                     </View>
                                                   </TouchableWithoutFeedback>
-                                                }}/>}>
+                                                }} />}>
           {
             games.length > 0
               ? games.map((item, index) => getTab(item, index))
@@ -87,23 +92,29 @@ export const HomeTabView = () => {
   )
 }
 
+export const TAB_ITEM_WIDTH = scale(96) //tab宽度
+
 const _styles = StyleSheet.create({
   tab_bar: {
-    backgroundColor: "white"
+    backgroundColor: '#f4f4f4'
   },
   tab_bar_underline: {
-    height: scale(2),
+    height: scale(0),
     backgroundColor: LEFThemeColor.乐FUN.textColor2,
   },
-  tab_bar_text: {
-    fontWeight: "bold",
-  },
   tab_bar_item: {
+    width: TAB_ITEM_WIDTH,
+    flex:1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   tab_bar_img: {
     width: scale(34),
     height: scale(34),
+  },
+  tab_bar_text: {
+    fontWeight: '300',
+    fontSize: scale(22),
+    color: LEFThemeColor.乐FUN.textColor1,
   },
 })
