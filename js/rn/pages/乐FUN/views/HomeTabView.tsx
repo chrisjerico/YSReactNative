@@ -2,7 +2,7 @@ import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-v
 import * as React from "react";
 import {useEffect, useState} from "react";
 
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import useGetHomeInfo from "../../../public/hooks/useGetHomeInfo";
 import {Icon} from "../../../public/network/Model/HomeGamesModel";
 import {removeHTMLTag} from "../../../public/tools/removeHTMLTag";
@@ -10,6 +10,7 @@ import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import {GAME_ITEM_HEIGHT, GameListView} from "./GameListView";
 import FastImage from "react-native-fast-image";
+import {ugLog} from "../../../public/tools/UgLog";
 
 export const HomeTabView = () => {
   const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
@@ -54,7 +55,6 @@ export const HomeTabView = () => {
     setHeight(((games[i].list.length/2 + games[i].list.length%2) + 1) * GAME_ITEM_HEIGHT)
   }
 
-
   return (
     <>
       {
@@ -67,11 +67,14 @@ export const HomeTabView = () => {
           tabBarTextStyle={_styles.tab_bar_text}
           style={[{flex: 1, height}]}
           renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}
-                                                renderTab={()=> {
-                                                  return <View style={_styles.tab_bar_item}>
-                                                    <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
-                                                    <Text>AA</Text>
-                                                  </View>
+                                                renderTab={(name, pageIndex, isTabActive, onPressHandler, onLayoutHandler)=> {
+                                                  return <TouchableWithoutFeedback onPress={()=>onPressHandler(pageIndex)}>
+                                                    <View style={_styles.tab_bar_item}>
+                                                      <FastImage style={_styles.tab_bar_img}
+                                                                 source={{ uri: games[pageIndex].logo }} />
+                                                      <Text>{name}</Text>
+                                                    </View>
+                                                  </TouchableWithoutFeedback>
                                                 }}/>}>
           {
             games.length > 0
@@ -96,5 +99,11 @@ const _styles = StyleSheet.create({
     fontWeight: "bold",
   },
   tab_bar_item: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tab_bar_img: {
+    width: scale(34),
+    height: scale(34),
   },
 })
