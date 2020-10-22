@@ -2,13 +2,14 @@ import ScrollableTabView, {ScrollableTabBar} from "react-native-scrollable-tab-v
 import * as React from "react";
 import {useEffect, useState} from "react";
 
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import useGetHomeInfo from "../../../public/hooks/useGetHomeInfo";
 import {Icon} from "../../../public/network/Model/HomeGamesModel";
 import {removeHTMLTag} from "../../../public/tools/removeHTMLTag";
 import {LEFThemeColor} from "../../../public/theme/colors/LEFThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import {GAME_ITEM_HEIGHT, GameListView} from "./GameListView";
+import FastImage from "react-native-fast-image";
 
 export const HomeTabView = () => {
   const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
@@ -65,7 +66,13 @@ export const HomeTabView = () => {
           tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
           tabBarTextStyle={_styles.tab_bar_text}
           style={[{flex: 1, height}]}
-          renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
+          renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}
+                                                renderTab={()=> {
+                                                  return <View style={_styles.tab_bar_item}>
+                                                    <FastImage style={{ width: 34, height: 34 }} source={{ uri: "http://test10.6yc.com/views/mobileTemplate/16/images/depositlogo.png" }} />
+                                                    <Text>AA</Text>
+                                                  </View>
+                                                }}/>}>
           {
             games.length > 0
               ? games.map((item, index) => getTab(item, index))
@@ -87,5 +94,7 @@ const _styles = StyleSheet.create({
   },
   tab_bar_text: {
     fontWeight: "bold",
+  },
+  tab_bar_item: {
   },
 })
