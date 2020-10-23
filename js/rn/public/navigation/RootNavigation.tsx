@@ -40,7 +40,14 @@ export function pop(): boolean {
     if (count > 1) {
         return true;
     } else {
-        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+        switch (Platform.OS) {
+          case 'ios':
+            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            break;
+          case 'android':
+            ANHelper.callAsync(CMD.FINISH_ACTIVITY)
+            break;
+        }
         return false;
     }
 }
