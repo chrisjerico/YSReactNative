@@ -1,11 +1,10 @@
-import * as React from 'react'
+import React from 'react'
 import { Image, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from '../乐橙/component/BaseScreen'
 import { CheckBox } from './component/CheckBox'
 import PushHelper from '../../public/define/PushHelper'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { PageName } from '../../public/navigation/Navigation'
-// @ts-ignore
 import { httpClient } from '../../public/network/httpClient'
 import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
@@ -31,7 +30,7 @@ export const LLLoginPage = ({ setProps }) => {
   const getVCode = useMemo(() => {
     if (loginVCode) {
       return <SlidingVerification onChange={onChangeSlideCode} />
-    } else return <View/>
+    } else return <View />
   }, [loginVCode, code])
 
   useEffect(() => {
@@ -41,8 +40,7 @@ export const LLLoginPage = ({ setProps }) => {
     try {
       const { data, status } = await APIRouter.secure_imgCaptcha()
       setCode(data)
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return (
@@ -51,8 +49,7 @@ export const LLLoginPage = ({ setProps }) => {
       style={{
         backgroundColor: '#f5f5f9',
         paddingHorizontal: 28,
-      }}
-    >
+      }}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <View
         style={{
@@ -61,21 +58,14 @@ export const LLLoginPage = ({ setProps }) => {
           borderBottomWidth: 1,
           borderBottomColor: 'rgb(238, 238, 238)',
           paddingTop: 12,
-        }}
-      >
+        }}>
         <Image
           style={{ height: 18, width: 18, marginRight: 8 }}
           source={{
             uri: 'https://test10.6yc.com/images/moban9_icon/icon-user.png',
           }}
         />
-        <TextInput
-          value={account}
-          onChangeText={(text) => onChangeAccount(text)}
-          style={{ fontSize: 14, paddingVertical: 20, flex: 1 }}
-          placeholderTextColor={'#333'}
-          placeholder={'请输入会员账号'}
-        />
+        <TextInput value={account} onChangeText={(text) => onChangeAccount(text)} style={{ fontSize: 14, paddingVertical: 20, flex: 1 }} placeholderTextColor={'#333'} placeholder={'请输入会员账号'} />
       </View>
       <View
         style={{
@@ -84,8 +74,7 @@ export const LLLoginPage = ({ setProps }) => {
           borderBottomWidth: 1,
           borderBottomColor: 'rgb(238, 238, 238)',
           paddingTop: 12,
-        }}
-      >
+        }}>
         <Image
           style={{
             height: 18,
@@ -119,70 +108,53 @@ export const LLLoginPage = ({ setProps }) => {
             justifyContent: 'center',
             marginTop: 12,
             borderRadius: 4,
-          }}
-        >
+          }}>
           <Text style={{ color: 'white', fontSize: 16 }}>登 录</Text>
         </TouchableHighlight>
       </View>
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}
-      >
-        <CheckBox
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
+        {/* <CheckBox
           isCheck={remember}
           onCheck={() => {
             onChangeRemember(!remember)
             setProps()
           }}
           text={'记住密码'}
-        />
+        /> */}
         <View style={{ flex: 1 }} />
-        <TouchableOpacity
-          style={{ flexDirection: 'row', alignItems: 'center' }}
-          onPress={() =>
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }
-        >
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}>
           <Image
             style={{ height: 24, width: 24 }}
             source={{
-              uri:
-                'https://test10.6yc.com/views/mobileTemplate/20/images/kf.png',
+              uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/kf.png',
             }}
           />
           <Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</Text>
         </TouchableOpacity>
       </View>
       {getVCode}
-      <View style={{alignItems: 'center'}}>
-        <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>
-          其他
-        </Text>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={{ fontSize: 16, paddingVertical: 24, color: '#3c3c3c' }}>其他</Text>
         <View style={{ flexDirection: 'row', marginHorizontal: 12 }}>
           <TouchableOpacity
             style={{ alignItems: 'center' }}
             onPress={() => {
               navigateToSignUpPage()
-            }}
-          >
+            }}>
             <Image
               style={{ height: 64, width: 64 }}
               source={{
-                uri:
-                  'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+                uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
               }}
             />
             <Text style={{ marginTop: 8 }}>马上注册</Text>
           </TouchableOpacity>
           <View style={{ flex: 1 }} />
-          <TouchableOpacity
-            style={{ alignItems: 'center' }}
-            onPress={() => tryPlay()}
-          >
+          <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => tryPlay()}>
             <Image
               style={{ height: 64, width: 64 }}
               source={{
-                uri:
-                  'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+                uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
               }}
             />
             <Text style={{ marginTop: 8 }}>免费试玩</Text>
@@ -192,13 +164,11 @@ export const LLLoginPage = ({ setProps }) => {
             style={{ alignItems: 'center' }}
             onPress={() => {
               PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-            }}
-          >
+            }}>
             <Image
               style={{ height: 64, width: 64 }}
               source={{
-                uri:
-                  'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
+                uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
               }}
             />
             <Text style={{ marginTop: 8 }}>电脑版</Text>
@@ -231,7 +201,7 @@ const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) =>
     const listener = EventRegister.addEventListener('reload', (data) => {
       webViewRef?.current?.reload()
     })
-    return (() => EventRegister.removeEventListener(this.listener))
+    return () => EventRegister.removeEventListener(this.listener)
   }, [])
 
   let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`

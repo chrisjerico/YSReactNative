@@ -1,35 +1,19 @@
 import React, { useRef } from 'react'
-import {
-  // LogBox,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native'
-import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import { StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
-import Activitys from '../../public/views/tars/Activitys'
+import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomGap from '../../public/views/tars/BottomGap'
-import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
-import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
-import ProgressCircle from '../../public/views/tars/ProgressCircle'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
@@ -37,10 +21,9 @@ import Menu from './views/Menu'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const WNZHomePage = () => {
-  // LogBox.ignoreAllLogs()
   const menu = useRef(null)
 
   const { goTo, refresh, value, sign } = useHomePage({
@@ -55,28 +38,11 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const {
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-    officialGames,
-    customiseGames,
-  } = homeInfo
+  const { midBanners, navs, homeGames, officialGames, customiseGames } = homeInfo
 
-  const { uid, usr, balance, isTest } = userInfo
+  const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
+  const { mobile_logo, midBannerTimer } = sysInfo
 
   let homeGamesConcat = []
   homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
@@ -99,93 +65,42 @@ const WNZHomePage = () => {
     : // @ts-ignore
       config?.menuSignIn?.concat(config?.menus)
 
-  if (loading) {
-    return (
-      <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} />
-        <ProgressCircle />
-      </>
-    )
-  } else {
-    return (
-      <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-          <HomeHeader
-            uid={uid}
-            showBackBtn={false}
-            name={usr}
-            logo={mobile_logo}
-            balance={balance}
-            onPressMenu={() => {
-              menu?.current?.open()
-            }}
-            onPressComment={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
-            }}
-            onPressUser={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-            }}
-          />
-        </SafeAreaHeader>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.container}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={async () => {
-                try {
-                  await refresh()
-                  PushHelper.pushAnnouncement(announcements)
-                } catch (error) {
-                  console.log('-------error------', error)
-                }
-              }}
-            />
-          }>
-          <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 240 }}
-            badgeStyle={{ top: scale(-230) }}
-            autoplayTimeout={bannersInterval}
-            onlineNum={onlineNum}
-            banners={banners}
-            renderBanner={(item, index) => {
-              const { linkCategory, linkPosition, pic } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={pic}
-                  resizeMode={'stretch'}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
-                  }}
-                />
-              )
-            }}
-          />
-          <NoticeBlock
-            containerStyle={{
-              borderRadius: 0,
-              marginBottom: scale(5),
-              aspectRatio: 540 / 35,
-            }}
-            iconContainerStyle={{
-              borderColor: '#ef473a',
-              borderWidth: scale(1),
-              marginHorizontal: scale(10),
-              borderRadius: scale(2),
-            }}
-            notices={notices}
-            onPressNotice={({ content }) => {
-              PushHelper.pushNoticePopUp(content)
-            }}
-            logoTextStyle={{
-              color: 'red',
-              fontSize: scale(16),
-              padding: scale(5),
-            }}
-            textStyle={{ fontSize: scale(16) }}
-          />
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
+  return (
+    <HomePage
+      {...homeInfo}
+      {...userInfo}
+      {...sysInfo}
+      {...goTo}
+      loading={loading}
+      refreshing={refreshing}
+      refresh={refresh}
+      pagekey={'WNZHomePage'}
+      themeColor={WNZThemeColor.威尼斯.themeColor}
+      noticeBlockStyles={noticeBlockStyles}
+      couponBlockStyles={couponBlockStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
+      renderHeader={() => (
+        <HomeHeader
+          uid={uid}
+          showBackBtn={false}
+          name={usr}
+          logo={mobile_logo}
+          balance={balance}
+          onPressMenu={openMenu}
+          onPressComment={goToUserCenterType.聊天室}
+          onPressUser={goToUserCenterType.我的页}
+        />
+      )}
+      renderListHeaderComponent={() => (
+        <>
           <NavBlock
             visible={navs?.length > 0}
             navs={navs}
@@ -313,10 +228,10 @@ const WNZHomePage = () => {
             baseHeight={scale(82)}
             itemHeight={scale(100)}
             renderTabBar={TabBar}
-            renderScene={({ item, tab }) => {
+            renderScene={({ item, tab, index }) => {
               return (
                 <List
-                  uniqueKey={'WNZHomePage' + tab}
+                  uniqueKey={'WNZHomePageTabComponent' + index}
                   legacyImplementation={true}
                   removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
@@ -343,45 +258,9 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <CouponBlock
-            visible={showCoupon}
-            onPressMore={goToJDPromotionListPage}
-            containerStyle={styles.subComponent}
-            coupons={coupons}
-            renderCoupon={({ item, index }) => {
-              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
-              return (
-                <AutoHeightCouponComponent
-                  key={index}
-                  title={title}
-                  pic={pic}
-                  content={content}
-                  onPress={(setShowPop) => {
-                    if (linkUrl) {
-                      PushHelper.openWebView(linkUrl)
-                    } else if (!linkCategory && !linkPosition) {
-                      setShowPop(true)
-                    } else {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
-          <AnimatedRankComponent type={rankingListType} rankLists={rankLists} contentContainerStyle={{ borderRadius: 0 }} />
-          <BottomLogo
-            webName={webName}
-            onPressComputer={() => {
-              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'tars'}
-          />
-          <BottomGap />
-        </ScrollView>
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
+        </>
+      )}
+      renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
           menus={menus}
@@ -395,7 +274,7 @@ const WNZHomePage = () => {
                   if (title == '安全退出') {
                     signOut()
                   } else {
-                    menu?.current?.close()
+                    closeMenu()
                     onPress && onPress()
                   }
                 }}
@@ -403,9 +282,9 @@ const WNZHomePage = () => {
             )
           }}
         />
-      </>
-    )
-  }
+      )}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -430,6 +309,37 @@ const styles = StyleSheet.create({
     backgroundColor: WNZThemeColor.威尼斯.themeColor,
     paddingVertical: scale(20),
     borderRadius: scale(5),
+  },
+})
+
+const noticeBlockStyles = StyleSheet.create({
+  containerStyle: {
+    borderRadius: 0,
+    marginBottom: scale(5),
+    aspectRatio: 540 / 35,
+  },
+  iconContainerStyle: {
+    borderColor: '#ef473a',
+    borderWidth: scale(1),
+    marginHorizontal: scale(10),
+    borderRadius: scale(2),
+  },
+  logoTextStyle: {
+    color: 'red',
+    fontSize: scale(16),
+    padding: scale(5),
+  },
+  textStyle: {
+    fontSize: scale(16),
+  },
+})
+const couponBlockStyles = StyleSheet.create({
+  containerStyle: styles.subComponent,
+})
+
+const animatedRankComponentStyles = StyleSheet.create({
+  contentContainerStyle: {
+    borderRadius: 0,
   },
 })
 

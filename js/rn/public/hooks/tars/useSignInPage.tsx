@@ -5,10 +5,9 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError, ToastStatus, ToastSuccess } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useLogIn from './useLogIn'
-import useSys from './useSys'
+import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useSignIn from './useSignIn'
+import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
 interface SlidingVerification {
@@ -24,9 +23,9 @@ interface UseSignInPage {
 
 const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   // stores
-  const { sys } = useSys({})
+  const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
-  const { loginVCode, loginTo } = sys
+  const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)
   const [password, setPassword] = useState(sign?.password)
@@ -47,10 +46,9 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     homePage && navigate(homePage, {})
   }
 
-  const { logIn } = useLogIn({
+  const { signIn } = useSignIn({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
-      ToastStatus('正在登录...')
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
     },
     onSuccess: () => {
       console.log("loginTo : ", loginTo)
@@ -60,41 +58,31 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
         navigateToHomePage()
         PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
-      hideLoading()
-      ToastSuccess('登录成功')
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
     },
     onError: (error) => {
-      hideLoading()
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
       setSlideCode({
         nc_csessionid: undefined,
         nc_token: undefined,
         nc_sig: undefined,
       })
       slideCodeRef?.current?.reload()
-      ToastError(error ?? '登录失败')
-      console.log('--------登录失败--------', error)
     },
   })
 
   const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+    },
     onSuccess: () => {
       navigateToHomePage()
-      ToastSuccess('登录成功')
+      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
     },
     onError: (error) => {
-      ToastError(error ?? '登录失败')
-      console.log('--------試玩失败--------', error)
+      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
     },
   })
-
-  const signIn = () => {
-    logIn({
-      account: account,
-      //@ts-ignore
-      password: password?.md5(),
-      slideCode,
-    })
-  }
 
   const onChangeAccount = (value: string) => {
     UGStore.dispatch({
@@ -158,6 +146,15 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     loginVCode,
   }
 
+  const _signIn = () => {
+    signIn({
+      account: account,
+      //@ts-ignore
+      password: password?.md5(),
+      slideCode,
+    })
+  }
+
   return {
     slideCodeRef,
     navigateTo,
@@ -166,7 +163,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     valid,
     show,
     sign: {
-      signIn,
+      signIn: _signIn,
       tryPlay,
     },
   }

@@ -98,16 +98,18 @@ httpClient.interceptors.response.use(
       ugLog("http error res = ", JSON.stringify(err.response))
       switch (err.response.status) {
         case 401://请登录后再访问, 帐号已被登出
-          console.log("-----------401---------")
           switch (Platform.OS) {
             case "ios":
-              OCHelper.call('UGUserModel.setCurrentUser:', []).then((res) => {
-                OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']).then((res) => {
-                  OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then((res) => {
-                    UGStore.dispatch({ type: 'reset', userInfo: {} })
-                    // Toast('帐号已被登出');
-                  })
-                })
+              Promise.all([
+                OCHelper.call('UGUserModel.setCurrentUser:', []),
+                OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName']),
+                OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId']),
+                OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]),
+              ]).then(() => {
+                UGStore.dispatch({ type: 'reset', userInfo: {} })
+                UGStore.save()
+              }).catch(() => {
+
               })
               break;
             case "android":

@@ -1,51 +1,42 @@
-import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableWithoutFeedback,
-  View,
-  ViewStyle,
-  StyleProp
-} from 'react-native'
+import React, { memo } from 'react'
+import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../tools/Scale'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface GameButtonProps {
-  logo?: string;
-  title?: string;
-  subTitle?: string;
-  showSubTitle?: boolean;
-  onPress?: () => any;
-  category?: string;
-  gameId?: string;
-  show?: boolean;
-  imageContainerStyle?: StyleProp<ViewStyle>;
-  circleColor?: string;
-  containerStyle?: StyleProp<ViewStyle>;
-  titleStyle?: StyleProp<TextStyle>;
-  subTitleStyle?: StyleProp<TextStyle>;
-  titleContainerStyle?: StyleProp<ViewStyle>;
-  resizeMode?: 'cover' | 'contain';
-  enableCircle?: boolean;
-  showRightTopFlag?: boolean;
-  showCenterFlag?: boolean;
-  flagIcon?: string;
-  showSecondLevelIcon?: boolean;
-  secondLevelIconContainerStyle?: StyleProp<ViewStyle>;
-  showUnReadMsg?: boolean;
-  unreadMsg?: number;
-  localLogo?: any;
-  useLocalLogo?: boolean;
-  flagContainer?: StyleProp<ViewStyle>;
-  circleContainerStyle?: StyleProp<ViewStyle>;
-
+  logo?: string
+  title?: string
+  subTitle?: string
+  showSubTitle?: boolean
+  onPress?: () => any
+  category?: string
+  gameId?: string
+  show?: boolean
+  imageContainerStyle?: StyleProp<ViewStyle>
+  circleColor?: string
+  containerStyle?: StyleProp<ViewStyle>
+  titleStyle?: StyleProp<TextStyle>
+  subTitleStyle?: StyleProp<TextStyle>
+  titleContainerStyle?: StyleProp<ViewStyle>
+  resizeMode?: 'cover' | 'contain'
+  enableCircle?: boolean
+  showRightTopFlag?: boolean
+  showCenterFlag?: boolean
+  flagIcon?: string
+  showSecondLevelIcon?: boolean
+  secondLevelIconContainerStyle?: StyleProp<ViewStyle>
+  showUnReadMsg?: boolean
+  unreadMsg?: number
+  localLogo?: any
+  useLocalLogo?: boolean
+  flagContainer?: StyleProp<ViewStyle>
+  circleContainerStyle?: StyleProp<ViewStyle>
 }
 
 interface DefaultFlag {
-  center: boolean;
-  flagContainer?: StyleProp<ViewStyle>;
+  center: boolean
+  flagContainer?: StyleProp<ViewStyle>
 }
 
 const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
@@ -67,9 +58,8 @@ const DefaultFlag = ({ center, flagContainer }: DefaultFlag) => {
             right: 0,
             top: scale(5),
           },
-          flagContainer
-        ]}
-      >
+          flagContainer,
+        ]}>
         <Text style={styles.flagText}>{'热门'}</Text>
       </View>
     )
@@ -101,7 +91,7 @@ const GameButton = (props: GameButtonProps) => {
     localLogo,
     useLocalLogo = false,
     flagContainer,
-    circleContainerStyle
+    circleContainerStyle,
   } = props
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -113,58 +103,21 @@ const GameButton = (props: GameButtonProps) => {
               {
                 backgroundColor: circleColor ? circleColor : '#ACD6FF',
               },
-              circleContainerStyle
-            ]}
-          >
+              circleContainerStyle,
+            ]}>
             <View style={[styles.imageContainer, imageContainerStyle]}>
-              <FastImage
-                style={styles.image}
-                source={useLocalLogo ? localLogo : { uri: logo }}
-                resizeMode={resizeMode}
-              />
-              {showCenterFlag &&
-                (flagIcon ? (
-                  <FastImage
-                    source={{ uri: flagIcon }}
-                    style={[styles.image, { position: 'absolute' }]}
-                  />
-                ) : (
-                    <DefaultFlag center={true} />
-                  ))}
-              {showSecondLevelIcon && (
-                <AntDesign
-                  name={'appstore1'}
-                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
-                  size={scale(25)}
-                />
-              )}
+              <FastImage style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
+              {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
+              {showSecondLevelIcon && <AntDesign name={'appstore1'} style={[styles.secondLevelIcon, secondLevelIconContainerStyle]} size={scale(25)} />}
             </View>
           </View>
         ) : (
-            <View style={[styles.imageContainer, imageContainerStyle]}>
-              <FastImage
-                style={styles.image}
-                source={useLocalLogo ? localLogo : { uri: logo }}
-                resizeMode={resizeMode}
-              />
-              {showCenterFlag &&
-                (flagIcon ? (
-                  <FastImage
-                    source={{ uri: flagIcon }}
-                    style={[styles.image, { position: 'absolute' }]}
-                  />
-                ) : (
-                    <DefaultFlag center={true} />
-                  ))}
-              {showSecondLevelIcon && (
-                <AntDesign
-                  name={'appstore1'}
-                  style={[styles.secondLevelIcon, secondLevelIconContainerStyle]}
-                  size={scale(25)}
-                />
-              )}
-            </View>
-          )}
+          <View style={[styles.imageContainer, imageContainerStyle]}>
+            <FastImage style={styles.image} source={useLocalLogo ? localLogo : { uri: logo }} resizeMode={resizeMode} />
+            {showCenterFlag && (flagIcon ? <FastImage source={{ uri: flagIcon }} style={[styles.image, { position: 'absolute' }]} /> : <DefaultFlag center={true} />)}
+            {showSecondLevelIcon && <AntDesign name={'appstore1'} style={[styles.secondLevelIcon, secondLevelIconContainerStyle]} size={scale(25)} />}
+          </View>
+        )}
 
         <View style={[styles.titleContainer, titleContainerStyle]}>
           <View style={styles.textContainer}>
@@ -180,24 +133,19 @@ const GameButton = (props: GameButtonProps) => {
             </View>
           )}
         </View>
-        {
-          showUnReadMsg && <View style={styles.unReadMsgContainer}>
+        {showUnReadMsg && (
+          <View style={styles.unReadMsgContainer}>
             <Text style={styles.unReadMsgText}>{unreadMsg > 99 ? 99 : unreadMsg}</Text>
           </View>
-        }
+        )}
         {showRightTopFlag &&
           (flagIcon ? (
-            <View style={[styles.rightTopFlag, flagContainer]}
-            >
-              <FastImage
-                style={{ width: '100%', height: '100%' }}
-                source={{ uri: flagIcon }}
-                resizeMode={'contain'}
-              />
+            <View style={[styles.rightTopFlag, flagContainer]}>
+              <FastImage style={{ width: '100%', height: '100%' }} source={{ uri: flagIcon }} resizeMode={'contain'} />
             </View>
           ) : (
-              <DefaultFlag center={false} flagContainer={flagContainer} />
-            ))}
+            <DefaultFlag center={false} flagContainer={flagContainer} />
+          ))}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -240,13 +188,12 @@ const styles = StyleSheet.create({
     borderRadius: scale(5),
     justifyContent: 'center',
     alignItems: 'center',
-    padding: scale(5)
+    padding: scale(5),
   },
   flagText: {
     color: '#ffffff',
-    fontSize: scale(18)
+    fontSize: scale(18),
     // padding: scale(5),
-
   },
   image: {
     width: '100%',
@@ -269,7 +216,7 @@ const styles = StyleSheet.create({
   secondLevelIcon: {
     position: 'absolute',
     right: -scale(30),
-    top: '50%'
+    top: '50%',
   },
   unReadMsgContainer: {
     width: scale(25),
@@ -285,4 +232,4 @@ const styles = StyleSheet.create({
   unReadMsgText: { color: '#ffffff', fontSize: scale(15), textAlign: 'center' },
 })
 
-export default GameButton
+export default memo(GameButton)

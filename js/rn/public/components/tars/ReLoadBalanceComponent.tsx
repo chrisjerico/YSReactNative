@@ -4,18 +4,22 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { scale } from '../../tools/Scale'
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
+import { stringToFloat, stringToNumber } from '../../tools/tars'
 
 interface ReLoadComponentProps {
   color?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
-  balance: number | string
+  balance: string
   title?: string
   balanceStyle?: StyleProp<TextStyle>
   titleStyle?: StyleProp<TextStyle>
   animatedContainerStyle?: StyleProp<ViewStyle>
+  currency: string
+  showK?: boolean
+  balanceDecimal: number
 }
-const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -29,7 +33,6 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     try {
       const { data } = await APIRouter.user_balance_token()
       const balance = data?.data?.balance
-      console.log('-------balance-----', balance)
       setMoney(balance)
       UGStore.dispatch({ type: 'merge', userInfo: { balance } })
     } catch (error) {
@@ -41,11 +44,12 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
     setMoney(balance)
   }, [balance])
 
+  const moneyNumber = stringToFloat(money)
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
       <Text style={[styles.balance, balanceStyle]} numberOfLines={1}>
-        {money}
+        {(showK ? (moneyNumber / 1000).toFixed(balanceDecimal) + 'K' : moneyNumber.toFixed(balanceDecimal)) + currency}
       </Text>
       <TouchableWithoutFeedback
         onPress={() => {

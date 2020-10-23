@@ -7,8 +7,7 @@ import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
-import { ugLog } from '../../public/tools/UgLog'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -19,16 +18,18 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 
+const { getHtml5Image } = useHtml5Image()
+
 const BZHMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.BZHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg } = sysInfo
+  const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
+  const { userCenterItems, currency, balanceDecimal } = sysInfo
 
   const { signOut } = sign
 
@@ -42,16 +43,7 @@ const BZHMinePage = () => {
         <BackBtnComponent
           homePage={PageName.BZHHomePage}
           renderHeader={(props) => {
-            return (
-              <MineHeader
-                {...props}
-                title={'会员中心'}
-                showRightTitle={false}
-                onPressRightTitle={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-                }}
-              />
-            )
+            return <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressRightTitle={goToUserCenterType.在线客服} />
           }}
         />
       </SafeAreaHeader>
@@ -68,11 +60,11 @@ const BZHMinePage = () => {
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
+          currency={currency}
           features={profileUserCenterItems}
+          balanceDecimal={balanceDecimal}
           renderFeature={(item, index) => {
             const { logo, name, code } = item
-
-            ugLog('features item=', item)
             return (
               <GameButton
                 key={index}
@@ -103,7 +95,7 @@ const BZHMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnReadMsg={code == 9}
+              showUnReadMsg={code == UGUserCenterType.站内信}
               onPress={() => {
                 PushHelper.pushUserCenterType(code)
               }}

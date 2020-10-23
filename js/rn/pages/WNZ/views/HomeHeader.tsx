@@ -20,9 +20,9 @@ export interface HomeHeaderProps {
 }
 
 const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, onPressBackBtn }: HomeHeaderProps) => {
-  const [showBackBtn, setShowBackBtn] = useState(false);
+  const [showBackBtn, setShowBackBtn] = useState(false)
   AppDefine.checkHeaderShowBackButton((show) => {
-    show != showBackBtn && setShowBackBtn(show);
+    show != showBackBtn && setShowBackBtn(show)
   })
   return (
     <View style={styles.container}>

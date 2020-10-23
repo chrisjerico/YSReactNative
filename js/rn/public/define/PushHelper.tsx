@@ -64,20 +64,6 @@ export default class PushHelper {
         break
     }
   }
-  // 登出
-  static async pushLogout() {
-    switch (Platform.OS) {
-      case 'ios':
-        await OCHelper.call('UGUserModel.setCurrentUser:', [])
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
-        break
-      case 'android':
-        await ANHelper.callAsync(CMD.LOG_OUT)
-        break
-    }
-    Toast('退出成功')
-  }
   // 登入
   static pushLogin() {
     switch (Platform.OS) {
@@ -129,7 +115,7 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
-      seriesId: SeriesId.体育, // 普通彩票
+      seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
     })
@@ -473,10 +459,10 @@ export default class PushHelper {
               })
               if (!isOcPush) {
                 const rpm = RnPageModel.pages.filter((p) => {
-                  return p.tabbarItemPath == '/user';
-                })[0];
+                  return p.tabbarItemPath == '/user'
+                })[0]
                 if (rpm) {
-                  push(rpm.rnName);
+                  push(rpm.rnName)
                 } else {
                   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
                     {

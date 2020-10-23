@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BannerBlock
+export default memo(BannerBlock)

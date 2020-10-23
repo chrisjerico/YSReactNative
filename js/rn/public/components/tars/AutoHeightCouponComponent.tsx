@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { Modal, StyleSheet, Text, View, ViewStyle, TextStyle, StyleProp } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import { Button } from 'react-native-elements'
@@ -143,4 +143,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AutoHeightCouponComponent
+export default memo(AutoHeightCouponComponent)

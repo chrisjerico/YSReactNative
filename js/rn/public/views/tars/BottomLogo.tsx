@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
 import { scale } from '../../tools/Scale'
 
@@ -6,9 +6,9 @@ interface BottomLogo {
   webName: string
   onPressPromotion: () => any
   onPressComputer: () => any
-  containerStyle?: StyleProp<ViewStyle>
   version?: string
   debug?: boolean
+  containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   subTitleStyle?: StyleProp<TextStyle>
 }
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BottomLogo
+export default memo(BottomLogo)

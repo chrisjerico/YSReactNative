@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { pop, popToRoot } from '../../public/navigation/RootNavigation'
+import { popToRoot } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const KSSignInPage = () => {
   const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
@@ -33,7 +33,7 @@ const KSSignInPage = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
           <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</Text>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <TouchableWithoutFeedback onPress={() => {}}>
               <Text style={{ color: '#8e8e93' }}>{'忘记密码'}</Text>
@@ -56,7 +56,7 @@ const KSSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => {
+const SignInForm = (props: SignInRenderFormProps) => {
   const [focus, setFocuse] = useState(false)
   return (
     <FormComponent

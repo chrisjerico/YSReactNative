@@ -3,16 +3,31 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition } from '../../tools/tars'
-import React from 'react'
+import React, { memo } from 'react'
 
 interface ActivitysProps {
   refreshing: boolean
   isTest: boolean
   uid: string | undefined
   redBagLogo: string
-  floatAds: any[]
-  roulette: any[]
+  floatAds: FloatAd[]
+  roulette: Roulette[]
   redBag: RedBagDetailActivityModel
+}
+
+export interface FloatAd {
+  image: string
+  position: number
+  linkCategory: number | string
+  linkPosition: number | string
+}
+
+export interface Roulette {
+  end: string
+  id: string
+  param: any
+  start: string
+  type: string
 }
 
 const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds }: ActivitysProps) => {
@@ -45,7 +60,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
             refreshing={refreshing}
             containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={uid && !isTest}
+            show={true} // uid && !isTest
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)
@@ -57,4 +72,4 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
   )
 }
 
-export default Activitys
+export default memo(Activitys)

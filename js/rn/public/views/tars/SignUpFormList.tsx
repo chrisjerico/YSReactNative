@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React, { memo, RefObject } from 'react'
 import AgentButtonComponent from '../../components/tars/AgentButtonComponent'
 import { FormComponentProps } from '../../components/tars/FormComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
@@ -182,4 +182,4 @@ const SignUpFormList = ({
   )
 }
 
-export default SignUpFormList
+export default memo(SignUpFormList)
