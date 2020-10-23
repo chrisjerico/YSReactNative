@@ -96,7 +96,8 @@ export const TAB_ITEM_WIDTH = scale(96) //tab宽度
 
 const _styles = StyleSheet.create({
   tab_bar: {
-    backgroundColor: '#f4f4f4'
+    backgroundColor: '#f4f4f4',
+    height: scale(86),
   },
   tab_bar_underline: {
     height: scale(0),

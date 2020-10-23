@@ -7,6 +7,8 @@ import {
 } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { scale } from '../../tools/Scale'
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 
 interface SafeAreaHeaderProps {
   headerColor: string;
@@ -26,6 +28,10 @@ const SafeAreaHeader = ({
   switch (Platform.OS) {
     case 'ios':
       safeTop = safeArea?.top;
+      break;
+    case 'android':
+      ANHelper.callAsync(CMD.STATUS_BAR_SHOW)
+        .then((show) => safeTop = show ? safeArea?.top : 0);
       break;
   }
 

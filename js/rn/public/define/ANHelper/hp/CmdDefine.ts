@@ -17,6 +17,7 @@ export enum CMD {
   OPEN_POP_NOTICE = 'OPEN_POP_NOTICE', //打开弹窗口通知界面
   OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   LOG_OUT = 'LOG_OUT', //退出登录
+  STATUS_BAR_SHOW = 'STATUS_BAR_SHOW', //显示RN StatusBar
   UNIVERSAL = 'UNIVERSAL', //万能函数
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
   FINISH_ACTIVITY = 'FINISH_ACTIVITY',        //关闭activity
