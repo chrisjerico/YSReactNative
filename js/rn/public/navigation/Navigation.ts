@@ -61,6 +61,7 @@ export enum PageName {
   BYMinePage = 'BYMinePage',
   BYSignInPage = 'BYSignInPage',
   BYSignUpPage = 'BYSignUpPage',
+  PromotionPage = 'PromotionPage',
 }
 
 // export class  {

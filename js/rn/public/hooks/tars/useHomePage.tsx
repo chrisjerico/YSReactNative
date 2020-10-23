@@ -22,7 +22,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const { reRender } = useRerender()
 
   const goToJDPromotionListPage = (style?: { [key: string]: any }) => {
-    push(PageName.JDPromotionListPage, {
+    push(PageName.PromotionPage, {
       containerStyle: {
         backgroundColor: '#ffffff',
         ...style,
