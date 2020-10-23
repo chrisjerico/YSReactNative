@@ -23,10 +23,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const goToJDPromotionListPage = (style?: { [key: string]: any }) => {
     push(PageName.PromotionPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-        ...style,
-      },
+      // containerStyle: {
+      //   backgroundColor: '#ffffff',
+      //   ...style,
+      // },
     })
   }
 

@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Text, View, ScrollView } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { scale } from '../../public/tools/Scale'
+import { stringToNumber } from '../../public/tools/tars'
+import BottomGap from '../../public/views/tars/BottomGap'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import TabComponent from '../../public/components/tars/TabComponent'
-import { scale } from '../../public/tools/Scale'
 
 const PromotionPage = () => {
   const [loading, setLoading] = useState(true)
@@ -16,67 +20,147 @@ const PromotionPage = () => {
   const [style, setStyle] = useState<'slide' | 'popup' | 'page'>('popup')
   const [list, setList] = useState([])
   const [categories, setCategories] = useState({})
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+  const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
+  const totalList = useRef([])
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
-      const { showCategory, style, list } = value
+      const { showCategory, style, list, categories } = value
+      totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
       setLoading(false)
       // @ts-ignore
       setStyle(style)
-      setList(list)
+      setList(totalList.current)
       setShowCategory(showCategory)
-      setCategories(categories)
-      console.log('-------showCategory-----', showCategory)
+      setCategories(Object.assign({}, categories, { '0': '全部' }))
     })
   }, [])
+
+  const categoriesKey = Object.keys(categories)
+
+  const onPress = ({ setShowPop, item, index }) => {
+    const { linkCategory, linkPosition } = item ?? {}
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, linkPosition]).then((ret) => {
+          if (ret) return
+          switch (style) {
+            // 内页
+            case 'page': {
+              OCHelper.call(({ vc }) => ({
+                vc: {
+                  selectors: 'UGPromoteDetailController.new[setItem:]',
+                  args1: [item],
+                },
+                ret: {
+                  selectors: 'UGNavigationController.current.pushViewController:animated:',
+                  args1: [vc, true],
+                },
+              }))
+              break
+            }
+            // 弹框
+            case 'popup': {
+              setShowPop(true)
+              break
+            }
+            case 'slide': {
+              if (index == selectedItemIndex) {
+                setSelectedItemIndex(-1)
+              } else {
+                setSelectedItemIndex(index)
+              }
+              break
+            }
+          }
+        })
+        break
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_COUPON, {
+          ...item,
+          style,
+        })
+        break
+    }
+  }
+
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={'red'} />
+        <SafeAreaHeader headerColor={'#ffffff'}>
+          <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: '#000000' }} backBtnColor={'#000000'} />
+        </SafeAreaHeader>
         <ProgressCircle />
       </>
     )
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={'red'}>
-          <MineHeader showBackBtn={true} onPressBackBtn={pop} />
+        <SafeAreaHeader headerColor={'#ffffff'}>
+          <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: '#000000' }} backBtnColor={'#000000'} />
         </SafeAreaHeader>
         {showCategory ? (
-          <ScrollView horizontal={true}>
-            {Object.values(categories).map((item, index) => {
-              return (
-                <Text key={index} style={{ marginHorizontal: scale(10), color: '#000000' }}>
-                  {item}
-                </Text>
-              )
-            })}
-          </ScrollView>
+          <>
+            <List
+              uniqueKey={'PromotionPage_Tab'}
+              style={{ flexGrow: 0 }}
+              horizontal={true}
+              scrollEnabled={true}
+              data={categoriesKey}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      const filterList = totalList.current?.filter((ele) => ele?.category == item)
+                      setSelectedTabIndex(stringToNumber(item))
+                      setSelectedItemIndex(-1)
+                      setList(item == '0' ? totalList.current : filterList)
+                    }}>
+                    <View style={selectedTabIndex == item ? { backgroundColor: 'red' } : {}}>
+                      <Text style={{ margin: scale(20), color: '#000000' }}>{categories[item]}</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                )
+              }}
+            />
+            <List
+              uniqueKey={'PromotionPage_true'}
+              scrollEnabled={true}
+              style={styles.list}
+              data={list}
+              ListFooterComponent={<BottomGap />}
+              renderItem={({ item, index }) => {
+                const { title, pic, content } = item
+                return (
+                  <AutoHeightCouponComponent
+                    title={title}
+                    pic={pic}
+                    content={content}
+                    onPress={(setShowPop) => onPress({ item, setShowPop, index })}
+                    slide={style == 'slide' && selectedItemIndex == index}
+                  />
+                )
+              }}
+            />
+          </>
         ) : (
-          // <PromotionItem list={list} style2={style} />
           <List
-            uniqueKey={'PromotionPage'}
+            uniqueKey={'PromotionPage_false'}
             scrollEnabled={true}
+            style={styles.list}
             data={list}
-            renderItem={({ item }) => {
+            ListFooterComponent={<BottomGap />}
+            renderItem={({ item, index }) => {
               const { title, pic, content } = item
-              console.log('--------item----', item)
               return (
                 <AutoHeightCouponComponent
                   title={title}
                   pic={pic}
                   content={content}
-                  onPress={() => {}}
-                  // onPress={(setShowPop) => {
-                  //   if (linkUrl) {
-                  //     PushHelper.openWebView(linkUrl)
-                  //   } else if (!linkCategory && !linkPosition) {
-                  //     setShowPop(true)
-                  //   } else {
-                  //     PushHelper.pushCategory(linkCategory, linkPosition)
-                  //   }
-                  // }}
+                  onPress={(setShowPop) => onPress({ item, setShowPop, index })}
+                  slide={style == 'slide' && selectedItemIndex == index}
                 />
               )
             }}
@@ -87,4 +171,14 @@ const PromotionPage = () => {
   }
 }
 
+const styles = StyleSheet.create({
+  list: {
+    backgroundColor: '#ffffff',
+    flex: 1,
+    paddingHorizontal: scale(10),
+  },
+})
+
 export default PromotionPage
+
+//OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [item])

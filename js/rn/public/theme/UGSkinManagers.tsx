@@ -6,6 +6,7 @@ import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import FUtils from '../tools/FUtils'
+import { BYThemeColor } from './colors/BYThemeColor'
 import { BZHThemeColor } from './colors/BZHThemeColor'
 import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
@@ -40,6 +41,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
     ...VietnamThemeColors, // 越南
+    ...BYThemeColor, // 白曜
   }
 
   // 更新皮肤

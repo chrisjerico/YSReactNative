@@ -13,9 +13,10 @@ interface AutoHeightCouponAutoHeightCouponComponentProps {
   content: string
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
+  slide?: boolean
 }
 
-const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle }: AutoHeightCouponAutoHeightCouponComponentProps) => {
+const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyle, titleStyle, slide = false }: AutoHeightCouponAutoHeightCouponComponentProps) => {
   const [aspectRatio, setAspectRatio] = useState(undefined)
   const [showPop, setShowPop] = useState(false)
   const [show, setShow] = useState(true)
@@ -39,6 +40,29 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
             setShow(false)
           }}
         />
+        {slide && (
+          <AutoHeightWebView
+            style={{ width: '100%' }}
+            scalesPageToFit={true}
+            // onSizeUpdated={size => setHeight(size?.height)}
+            viewportContent={'width=device-width, user-scalable=no'}
+            source={{
+              html:
+                `<head>
+  <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+  <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+  <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+  </head>` +
+                `<script>
+  window.onload = function () {
+    window.location.hash = 1;
+    document.title = document.body.scrollHeight;
+  }
+  </script>` +
+                content,
+            }}
+          />
+        )}
         <Modal visible={showPop} transparent={true}>
           <View
             style={{
@@ -66,7 +90,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                 <Text style={{ fontSize: scale(20) }}>{title}</Text>
               </View>
               <View style={{ flex: 8 }}>
-                <ScrollView showsVerticalScrollIndicator={true}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                   <AutoHeightWebView
                     style={{ width: '100%' }}
                     scalesPageToFit={true}
