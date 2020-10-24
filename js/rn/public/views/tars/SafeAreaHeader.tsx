@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, {ReactNode, useState} from 'react'
 import {
   Platform,
   StyleSheet,
@@ -8,6 +8,9 @@ import {
 } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { scale } from '../../tools/Scale'
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {ugLog} from "../../tools/UgLog";
 
 interface SafeAreaHeaderProps {
   headerColor: string;
@@ -22,13 +25,21 @@ const SafeAreaHeader = ({
 }: SafeAreaHeaderProps) => {
 
   const safeArea = useSafeArea()
+  const [safeTop, setSafeTop] = useState<number>(0)
 
-  let safeTop = 0;
   switch (Platform.OS) {
     case 'ios':
-      safeTop = safeArea?.top;
+      setSafeTop(safeArea?.top)
+      break;
+    case 'android':
+      ANHelper.callAsync(CMD.STATUS_BAR_SHOW)
+        .then((show) => {
+          setSafeTop(show ? safeArea?.top : 0)
+        });
       break;
   }
+
+  ugLog('safeTop=', safeTop)
 
   return (
     <View style={{ backgroundColor: headerColor }}>

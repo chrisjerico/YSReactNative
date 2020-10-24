@@ -38,7 +38,11 @@ const LEFSignUpPage = () => {
           backTitle={'首页'}
           titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
-          onPressBackBtn={() => popToRoot()}
+          onPressBackBtn={() => {
+            //执行2次保证退回到主页
+            popToRoot()
+            pop()
+          }}
           showCustomerService={true}
           customerTitle={'登录'}
           onPressCustomerService={()=>{
