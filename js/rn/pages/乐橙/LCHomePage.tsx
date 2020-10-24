@@ -260,7 +260,7 @@ const LCHomePage = ({ navigation }) => {
           }}>🎁优惠活动</Text>
         </View>
         <Text style={{ color: "black", textAlign: "center" }}>COPYRIGHT © {webName} RESERVED</Text>
-        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 04"}</Text>
+        <Text style={{ color: "#000000", textAlign: "center" }}>{"VERSION : 05"}</Text>
         <View style={{ height: 100 }}/>
       </ScrollView>
       <RedBagItem redBag={redBag}/>
