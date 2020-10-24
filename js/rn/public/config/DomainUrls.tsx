@@ -117,14 +117,14 @@ const DomainUrls: {[x:string]:string} = {
 /**
  * 初始化域名
  */
-const initDomain = (siteId: string) => {
+const initDomain = async (siteId?: string) => {
   switch (Platform.OS) {
     case 'ios':
       const host = DomainUrls[siteId];
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host]);
       break;
     case 'android':
-      ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
+      await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
       break;
   }
 }
