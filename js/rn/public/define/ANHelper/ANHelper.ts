@@ -53,10 +53,10 @@ export class ANHelper extends ANEvent {
 
     await initDomain();
 
-    await this.callAsync(CMD.INIT_PAGES, {
-      'com.phoenix.lotterys.my.activity.LoginActivity': "ZLLoginPage",
-
-    })
+    // await this.callAsync(CMD.INIT_PAGES, {
+    //   'com.phoenix.lotterys.my.activity.LoginActivity': "LEFSignInPage",
+    //
+    // })
 
     // 获取系统配置信息
     const res = await Promise.all([
