@@ -62,10 +62,6 @@ export function setRnPageInfo() {
     }
   }
 
-  if (skitType.indexOf('乐橙') != -1) {
-    pages = pages.concat(LCPages)
-  }
-
   // —————————————————— 以下为已上线内容 ————————————————————————
   // 优惠活动列表页
   pages.push({
