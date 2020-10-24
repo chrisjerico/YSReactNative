@@ -67,7 +67,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
-  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4) ?? []
+  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
   const homeGames = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo

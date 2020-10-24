@@ -43,7 +43,7 @@ const WNZSignInPage = () => {
           <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#f2f2f2'} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             disabled={!valid}
-            title={'登陆'}
+            title={'登录'}
             containerStyle={[styles.loginButton, { backgroundColor: '#dd524d' }]}
             disabledContainerStyle={styles.loginButton}
             titleStyle={{ color: '#ffffff', fontSize: scale(25) }}

@@ -126,7 +126,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
                 />
                 <Button
                   activeOpacity={1}
-                  title={'確認'}
+                  title={'确认'}
                   onPress={() => {
                     setShowPop(false)
                   }}

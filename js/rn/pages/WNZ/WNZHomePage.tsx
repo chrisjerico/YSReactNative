@@ -103,6 +103,8 @@ const WNZHomePage = () => {
         <>
           <NavBlock
             visible={navs?.length > 0}
+            navCounts={5}
+            containerStyle={{ alignItems: 'center' }}
             navs={navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId } = item
@@ -116,7 +118,7 @@ const WNZHomePage = () => {
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
                   }}
-                  titleContainerStyle={{ aspectRatio: 5 }}
+                  titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: config?.navColors[index],
                     fontSize: scale(23),
