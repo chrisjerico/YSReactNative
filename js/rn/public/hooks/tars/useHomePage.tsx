@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { navigate, push } from '../../../public/navigation/RootNavigation'
+import { useEffect, useMemo } from 'react'
+import { push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
@@ -54,6 +54,9 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
       showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
     },
   })
+  const getNavs = () => {
+    return homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
+  }
   // infos
   const userInfo = UGStore.globalProps.userInfo
   const { sysInfo } = useSysInfo({})
@@ -67,7 +70,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
-  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
+  const navs = useMemo(getNavs, [homeGame?.data?.navs])
   const homeGames = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo

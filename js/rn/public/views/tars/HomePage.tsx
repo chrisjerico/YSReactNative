@@ -137,9 +137,13 @@ const HomePage = ({
   }, [])
 
   const renderBanner = useCallback((item, index) => {
-    const { linkCategory, linkPosition, pic } = item
+    const { linkCategory, linkPosition, pic, url } = item
     const pushCategory = useCallback(() => {
-      PushHelper.pushCategory(linkCategory, linkPosition)
+      if (url?.length) {
+        PushHelper.pushCategory(linkCategory, linkPosition)
+      } else {
+        PushHelper.openWebView(url)
+      }
     }, [])
     return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={pushCategory} />
   }, [])
