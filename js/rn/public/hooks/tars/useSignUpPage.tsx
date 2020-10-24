@@ -8,6 +8,8 @@ import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingC
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
+import {UGStore} from "../../../redux/store/UGStore";
+import {ugLog} from "../../tools/UgLog";
 
 interface UseRegisterPage {
   homePage?: PageName

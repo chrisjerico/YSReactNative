@@ -21,6 +21,7 @@ import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import {ANHelper} from "../define/ANHelper/ANHelper";
 import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import {ugLog} from "../tools/UgLog";
 
 type APIListType =
   | 'game_homeGames'
@@ -185,10 +186,12 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
         APIRouter.system_onlineCount(),
         APIRouter.activity_redBagDetail(),
         APIRouter.system_floatAds(),
-        APIRouter.system_homeAds(),
+        APIRouter.activity_turntableList(),
       ])
         .then(
           Axios.spread((...res) => {
+            // ugLog('res?.[7]?.data?.data = ', res?.[7]?.data?.data)
+            // ugLog('res?.[8]?.data = ', JSON.stringify(res?.[8]?.data))
             setHomeGames(res?.[0]?.data)
             setBanner(res?.[1]?.data)
             setNotice(res?.[2]?.data)
@@ -198,7 +201,10 @@ const useGetHomeInfo = (coustomArray?: APIListType[]) => {
             setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
             setRedBag(res?.[6]?.data)
             setFloatAds(res?.[7]?.data)
-            setSystemHomeAds(res?.[8].data)
+            setNotice(res?.[2]?.data)
+            setTurntableList(res?.[8]?.data)
+            setOnlineNum(res?.[5]?.data?.data?.onlineUserCount)
+            setOnlineSwitch(res[5]?.data?.data?.onlineSwitch)
             setLoading(false)
           })
         )

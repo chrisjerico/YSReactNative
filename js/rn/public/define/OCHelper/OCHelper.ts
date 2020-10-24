@@ -7,6 +7,7 @@ import { OCCall } from './OCBridge/OCCall';
 import { OCEvent } from './OCBridge/OCEvent';
 import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
 import { stringToNumber } from '../../tools/tars';
+import DomainUrls, { initDomain } from '../../config/DomainUrls';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;
@@ -45,8 +46,8 @@ export class OCHelper extends OCEvent {
           console.log(error)
         })
       ])
-      const host = ios_response[0]
       const siteId = ios_response[1]
+      const host = DomainUrls[siteId] ?? ios_response[0];
       const sysConf_ios = ios_response[2] ?? {}
       const userCenterItems = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
@@ -72,10 +73,9 @@ export class OCHelper extends OCEvent {
       const banner = net_response[3]?.data?.data ?? {}
       UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net });
       UGStore.save();
-      // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
-      OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then(ver => {
-        OCHelper.call('AppDefine.shared.setVersion:', [ver]);
-      });
+
+      // 配置iOS的域名
+      initDomain(siteId);
     } catch (error) {
       console.log("-----error-----", error)
     }

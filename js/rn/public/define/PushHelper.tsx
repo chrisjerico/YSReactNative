@@ -61,6 +61,7 @@ export default class PushHelper {
         }))
         break
       case 'android':
+        ANHelper.callAsync(CMD.OPEN_ROULETTE, {data: turntableList})
         break
     }
   }
@@ -190,6 +191,7 @@ export default class PushHelper {
         break
     }
   }
+
   static openWebView(url: string) {
     switch (Platform.OS) {
       case 'ios':
@@ -209,6 +211,12 @@ export default class PushHelper {
         break
     }
   }
+
+  //电脑版
+  static openPC() {
+    PushHelper.openWebView(AppDefine.host + '/index2.php')
+  }
+
   // 我的页按钮跳转
   static pushUserCenterType(code: UGUserCenterType) {
     ugLog('pushUserCenterType code=', code)
@@ -505,115 +513,116 @@ export default class PushHelper {
 
         break
       case 'android':
-        let subId = ''
-        switch (code.toString()) {
-          case UGUserCenterType.存款.toString(): {
-            subId = MenuType.CZ
+        let subId = "";
+        switch (code) {
+          case UGUserCenterType.存款: {
+            subId = MenuType.CZ;
+            break;
+          }
+          case UGUserCenterType.每日签到: {
+            subId = MenuType.QD;
             break
           }
-          case UGUserCenterType.每日签到.toString(): {
-            subId = MenuType.QD
-            break
+          case UGUserCenterType.取款: {
+            subId = MenuType.TX;
+            break;
           }
-          case UGUserCenterType.取款.toString(): {
-            subId = MenuType.TX
-            break
+          case UGUserCenterType.银行卡管理: {
+            subId = MenuType.YHK;
+            break;
           }
-          case UGUserCenterType.银行卡管理.toString(): {
-            subId = MenuType.YHK
-            break
+          case UGUserCenterType.利息宝: {
+            subId = MenuType.LXB;
+            break;
           }
-          case UGUserCenterType.利息宝.toString(): {
-            subId = MenuType.LXB
-            break
+          case UGUserCenterType.推荐收益: {
+            subId = MenuType.SYTJ;
+            break;
           }
-          case UGUserCenterType.推荐收益.toString(): {
-            subId = MenuType.SYTJ
-            break
+          case UGUserCenterType.彩票注单记录: {
+            subId = MenuType.TZJL;
+            break;
           }
-          case UGUserCenterType.彩票注单记录.toString(): {
-            subId = MenuType.TZJL
-            break
+          case UGUserCenterType.其他注单记录: {
+            subId = MenuType.QTZD;
+            break;
           }
-          case UGUserCenterType.其他注单记录.toString(): {
-            subId = MenuType.QTZD
-            break
+          case UGUserCenterType.额度转换: {
+            subId = MenuType.EDZH;
+            break;
           }
-          case UGUserCenterType.额度转换.toString(): {
-            subId = MenuType.EDZH
-            break
+          case UGUserCenterType.站内信: {
+            subId = MenuType.ZLX;
+            break;
           }
-          case UGUserCenterType.站内信.toString(): {
-            subId = MenuType.ZLX
-            break
+          case UGUserCenterType.安全中心: {
+            subId = MenuType.AQZX;
+            break;
           }
-          case UGUserCenterType.安全中心.toString(): {
-            subId = MenuType.AQZX
-            break
+          case UGUserCenterType.任务中心: {
+            subId = MenuType.RWZX;
+            break;
           }
-          case UGUserCenterType.任务中心.toString(): {
-            subId = MenuType.RWZX
-            break
+          case UGUserCenterType.个人信息: {
+            subId = MenuType.HYZX;
+            break;
           }
-          case UGUserCenterType.个人信息.toString(): {
-            subId = MenuType.HYZX
-            break
+          case UGUserCenterType.建议反馈: {
+            subId = MenuType.TSZX;
+            break;
           }
-          case UGUserCenterType.建议反馈.toString(): {
-            subId = MenuType.TSZX
-            break
+          case UGUserCenterType.在线客服: {
+            subId = MenuType.KF;
+            break;
           }
-          case UGUserCenterType.在线客服.toString(): {
-            subId = MenuType.KF
-            break
+          case UGUserCenterType.活动彩金: {
+            subId = MenuType.SQCJ;
+            break;
           }
-          case UGUserCenterType.活动彩金.toString(): {
-            subId = MenuType.SQCJ
-            break
+          case UGUserCenterType.长龙助手: {
+            subId = MenuType.CLZS;
+            break;
           }
-          case UGUserCenterType.长龙助手.toString(): {
-            subId = MenuType.CLZS
-            break
+          case UGUserCenterType.全民竞猜: {
+            subId = MenuType.QMJC;
+            break;
           }
-          case UGUserCenterType.全民竞猜.toString(): {
-            subId = MenuType.QMJC
-            break
-          }
-          case UGUserCenterType.开奖走势.toString(): {
+          case UGUserCenterType.开奖走势: {
             Toast('敬请期待')
             return
           }
-          case UGUserCenterType.QQ客服.toString(): {
-            subId = MenuType.QQ
-            break
+          case UGUserCenterType.QQ客服: {
+            subId = MenuType.QQ;
+            break;
           }
-          case UGUserCenterType.资金明细.toString(): {
-            subId = MenuType.ZHGL
-            break
+          case UGUserCenterType.资金明细: {
+            subId = MenuType.ZHGL;
+            break;
           }
-          case UGUserCenterType.彩票大厅.toString(): {
-            subId = MenuType.GCDT
-            break
+          case UGUserCenterType.彩票大厅: {
+            subId = MenuType.GCDT;
+            break;
           }
-          case UGUserCenterType.聊天室.toString(): {
-            subId = MenuType.LTS
-            break
+          case UGUserCenterType.聊天室: {
+            subId = MenuType.LTS;
+            break;
           }
-          case UGUserCenterType.游戏大厅.toString(): {
-            subId = MenuType.GCDT
-            break
+          case UGUserCenterType.游戏大厅: {
+            subId = MenuType.GCDT;
+            break;
           }
-          case UGUserCenterType.我的页.toString(): {
-            subId = MenuType.HYZX
-            break
+          case UGUserCenterType.我的页: {
+            subId = MenuType.HYZX;
+            break;
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
-          seriesId: '7',
-          subId: subId,
-        })
-        break
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
+          {
+            seriesId: '7',
+            subId: subId,
+          })
+        break;
     }
   }
 }

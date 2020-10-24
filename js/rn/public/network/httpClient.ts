@@ -50,7 +50,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   }
 
   try {
-    temp['checkSign'] = 1;
+    // temp['checkSign'] = 1; 多余的
 
     switch (Platform.OS) {
       case "ios":
@@ -68,14 +68,6 @@ httpClient.interceptors.response.use(
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
 
-    switch (Platform.OS) {
-      case 'ios':
-
-        break;
-      case 'android':
-        // ugLog('http success res = ', JSON.stringify(response.request))
-        break;
-    }
     // ugLog("http ful filled res = ", JSON.stringify(response))
 
     // if (config.method == 'GET' || 'get') {
@@ -143,19 +135,9 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data });
   let { isEncrypt = true } = config;
 
-  switch (Platform.OS) {
-    case 'ios':
-
-      break;
-    case 'android':
-      isEncrypt = eval(ANHelper.callSync(CMD.SITE_ENCRYPTION))
-      // ugLog('http isEncrypt=', isEncrypt)
-      break;
-  }
-
   let encryptData = await encryptParams(params, isEncrypt);
 
-  // ugLog('http isEncrypt=', isEncrypt)
+  //ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)
 
   if (config?.method?.toLowerCase() == 'get') {
     if (isEncrypt) {
@@ -202,10 +184,10 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
     }
   }
 
-  // ugLog('http url=', config.method, config.baseURL, config.url)
-  // ugLog('http params=', params)
-  // ugLog('http encryptData=', encryptData)
-  // ugLog('http config.data=', config.data)
+  // ugLog('http url 1 =', config.method, config.baseURL, config.url)
+  // ugLog('http params 1 =', params)
+  // ugLog('http encryptData 1 =', encryptData)
+  // ugLog('http config.data 1 =', config.data)
 
   return config;
 });

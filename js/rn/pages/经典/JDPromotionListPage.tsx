@@ -5,7 +5,7 @@ import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import { View, ViewStyle, StyleProp } from 'react-native';
+import {Platform, View, ViewStyle, StyleProp} from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
@@ -81,7 +81,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       }
     });
   }, [])
-  
+
   if ('c217'.indexOf(AppDefine.siteId) != -1) {
     v.style1 = '背景不透明';
   }

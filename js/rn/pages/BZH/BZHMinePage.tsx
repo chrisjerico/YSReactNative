@@ -1,6 +1,7 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
+import MineHeaderComponent from '../../public/components/tars/MineHeaderComponent'
+import { RefreshControl, ScrollView } from 'react-native'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
@@ -72,7 +73,7 @@ const BZHMinePage = () => {
           renderFeature={(item, index) => {
             const { logo, name, code } = item
 
-            ugLog('features item=', item)
+            //ugLog('features item=',item)
             return (
               <GameButton
                 key={index}

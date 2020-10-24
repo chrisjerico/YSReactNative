@@ -28,6 +28,7 @@ import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
 import { HomeRecommendModel } from "./Model/HomeRecommendModel";
 import { UserInfoModel } from "./Model/UserInfoModel";
+import {ugLog} from "../tools/UgLog";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -87,8 +88,8 @@ class APIRouter {
         token = user?.token;
         break;
       case "android":
-        token = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        token = pms?.token;
         break;
     }
     if (token) {
@@ -117,19 +118,32 @@ class APIRouter {
         tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
         break;
     }
 
     return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail&" + tokenParams)
   }
-  static activity_turntableList = () => {
+  static activity_turntableList = async () => {
     if (UGStore.globalProps.userInfo?.isTest) {
       return {};
     }
-    return httpClient.get<TurntableListModel>("c=activity&a=turntableList")
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
+        break;
+    }
+
+    return httpClient.get<TurntableListModel>("c=activity&a=turntableList&" + tokenParams)
   }
+
   static system_floatAds = async () => {
     return httpClient.get<FloatADModel>("c=system&a=floatAds")
   }
@@ -156,8 +170,8 @@ class APIRouter {
         tokenParams = 'token=' + user?.token;
         break;
       case "android":
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          { blGet: true, });
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
         break;
     }
 
@@ -176,8 +190,8 @@ class APIRouter {
         }
         break;
       case "android":
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
-        tokenParams = JSON.parse(mapStr)
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        ugLog('tokenParams=', tokenParams)
         break;
     }
 
@@ -274,9 +288,9 @@ class APIRouter {
         }
         break;
       case "android":
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
         tokenParams = {
-          ...JSON.parse(mapStr),
+          ...pms,
           filename
         }
         break;

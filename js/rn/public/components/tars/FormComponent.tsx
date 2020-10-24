@@ -6,6 +6,9 @@ import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
+import {anyEmpty} from "../../tools/Ext";
+import {ugLog} from "../../tools/UgLog";
+import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
 
 export interface FormComponentProps {
   onChangeText?: any
@@ -125,14 +128,18 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber.current)
+      showLoading({ type: UGLoadingType.Loading });
+      const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       const { code, msg } = data ?? {}
+
+      hideLoading()
       if (code != 0) {
         throw { message: msg }
       } else {
         ToastSuccess(msg)
       }
     } catch (error) {
+      hideLoading()
       ToastError(error?.message)
     }
   }
@@ -174,6 +181,7 @@ const FormComponent = ({
           rightIconContainerStyle={rightIconContainerStyle}
           value={value}
           onChangeText={
+
             rightIconType == 'sms'
               ? (value) => {
                   phoneNumber.current = value
