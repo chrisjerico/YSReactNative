@@ -48,7 +48,7 @@ const KSHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'KSHomePage'}
-      themeColor={KSThemeColor.凯时.themeColor}
+      headerColor={KSThemeColor.凯时.themeColor}
       couponBlockStyles={couponBlockStyles}
       couponStyles={couponStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}

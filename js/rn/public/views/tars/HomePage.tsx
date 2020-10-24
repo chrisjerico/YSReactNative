@@ -19,7 +19,7 @@ import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
 
 interface HomePageProps {
-  themeColor: string
+  headerColor: string
   loading: boolean
   pagekey: string
   refreshing: boolean
@@ -46,7 +46,7 @@ interface HomePageProps {
   rankLists: any[]
   notices: any[]
   showCoupon: boolean
-  goToJDPromotionListPage: () => any
+  goToPromotionPage: () => any
   rankingListType: RankingListType
   webName: string
   couponBlockStyles?: CouponBlockStyles
@@ -94,7 +94,7 @@ interface NoticeBlockStyles {
 }
 
 const HomePage = ({
-  themeColor,
+  headerColor,
   loading,
   pagekey,
   refreshing,
@@ -120,7 +120,7 @@ const HomePage = ({
   showCoupon,
   coupons,
   notices,
-  goToJDPromotionListPage,
+  goToPromotionPage,
   rankingListType,
   webName,
   rankLists,
@@ -154,14 +154,14 @@ const HomePage = ({
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={themeColor} />
+        <SafeAreaHeader headerColor={headerColor} />
         <ProgressCircle />
       </>
     )
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={themeColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
+        <SafeAreaHeader headerColor={headerColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
         <List
           style={containerStyle}
           uniqueKey={pagekey}
@@ -192,7 +192,7 @@ const HomePage = ({
               <CouponBlock
                 {...couponBlockStyles}
                 visible={showCoupon}
-                onPressMore={goToJDPromotionListPage}
+                onPressMore={goToPromotionPage}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
                   const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
@@ -223,7 +223,7 @@ const HomePage = ({
                 onPressComputer={() => {
                   PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                 }}
-                onPressPromotion={goToJDPromotionListPage}
+                onPressPromotion={goToPromotionPage}
                 debug={false}
               />
               {renderListFooterBottomComponent && renderListFooterBottomComponent()}

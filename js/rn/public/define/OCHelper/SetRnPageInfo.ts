@@ -53,6 +53,9 @@ export function setRnPageInfo() {
       pages = pages.concat(LCPages)
     }
     // tars
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat(WNSPages)
+    }
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
     }
@@ -91,9 +94,6 @@ export function setRnPageInfo() {
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
-  }
-  if (skitType.indexOf('威尼斯') != -1) {
-    pages = pages.concat(WNSPages)
   }
 
   // 替换原生页面
@@ -179,6 +179,42 @@ const LCPages = [
   },
 ]
 
+// 利来
+const LLPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.LLHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    rnName: PageName.LLMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LLLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LLRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
+
 // 六合厅
 const LHTPages = [
   {
@@ -202,6 +238,13 @@ const LHTPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LHTSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -244,44 +287,14 @@ const BSHPages = [
     允许游客访问: true,
     允许未登录访问: false,
   },
-]
-
-// 利来
-const LLPages = [
   {
-    // 首页
-    tabbarItemPath: '/home',
-    rnName: PageName.LLHomePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    rnName: PageName.LLMinePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.LLLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.LLRegisterPage,
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
   },
 ]
-
 // 威尼斯
 const WNSPages = [
   {
@@ -305,6 +318,13 @@ const WNSPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.WNZSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -334,6 +354,13 @@ const KSPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.KSSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -369,7 +396,7 @@ const JXHPages = [
   },
   {
     vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -405,42 +432,7 @@ const BYPages = [
   },
   {
     vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-]
-// 越南
-const VietnamPages = [
-  {
-    // 首页
-    tabbarItemPath: '/home',
-    rnName: PageName.VietnamHome,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.VietnamMine,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.VietnamLogin,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

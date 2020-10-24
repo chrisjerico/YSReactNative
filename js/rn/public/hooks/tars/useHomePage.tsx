@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { push } from '../../../public/navigation/RootNavigation'
+import { navigate, push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
@@ -21,12 +21,9 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { reRender } = useRerender()
 
-  const goToJDPromotionListPage = (style?: { [key: string]: any }) => {
+  const goToPromotionPage = () => {
     push(PageName.PromotionPage, {
-      // containerStyle: {
-      //   backgroundColor: '#ffffff',
-      //   ...style,
-      // },
+      showBackBtn: true,
     })
   }
 
@@ -98,7 +95,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   }, [notice])
 
   const goTo = {
-    goToJDPromotionListPage,
+    goToPromotionPage,
   }
 
   const sign = {

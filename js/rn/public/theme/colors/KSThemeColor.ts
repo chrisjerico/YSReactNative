@@ -1,4 +1,4 @@
-import { UGThemeColor } from '../UGThemeColor';
+import { UGThemeColor } from '../UGThemeColor'
 
 export const KSThemeColor: { [x: string]: UGThemeColor } = {
   凯时: {
@@ -23,8 +23,7 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
     intoViewColor: '#444',
     moneyCellColor: '#444',
     themeColor: '#000000',
-    isBlack: true
-  }
-};
-
-
+    isBlack: true,
+    headerTintColor: '#ffffff',
+  },
+}

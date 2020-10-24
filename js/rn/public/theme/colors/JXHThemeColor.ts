@@ -1,7 +1,6 @@
-import { UGThemeColor } from '../UGThemeColor';
+import { UGThemeColor } from '../UGThemeColor'
 
-export const GDBThemeColor: { [x: string]: UGThemeColor } = {
-
+export const JXHThemeColor: { [x: string]: UGThemeColor } = {
   金星黑: {
     skitType: '金星黑',
     skitString: '金星黑',
@@ -25,5 +24,6 @@ export const GDBThemeColor: { [x: string]: UGThemeColor } = {
     moneyCellColor: '#444',
     navBarTitleColor: '#fff',
     isBlack: true,
-  }
-};
+    headerTintColor: '#ffffff',
+  },
+}

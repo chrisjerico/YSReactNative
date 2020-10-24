@@ -34,10 +34,11 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#000000',
+    themeColor: '#ffffff',
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
     yubaoBgColor: '#8E8E8E',
+    headerTintColor: '#000000'
   },
 }

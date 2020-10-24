@@ -6,6 +6,7 @@ import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
@@ -14,7 +15,8 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import ProgressCircle from '../../public/views/tars/ProgressCircle'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 
-const PromotionPage = () => {
+const PromotionPage = (props: any) => {
+  const { showBackBtn } = props?.route?.params ?? {}
   const [loading, setLoading] = useState(true)
   const [showCategory, setShowCategory] = useState(false)
   const [style, setStyle] = useState<'slide' | 'popup' | 'page'>('popup')
@@ -89,8 +91,8 @@ const PromotionPage = () => {
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={'#ffffff'}>
-          <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: '#000000' }} backBtnColor={'#000000'} />
+        <SafeAreaHeader headerColor={Skin1.themeColor}>
+          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1.headerTintColor }} backBtnColor={Skin1.headerTintColor} />
         </SafeAreaHeader>
         <ProgressCircle />
       </>
@@ -98,8 +100,8 @@ const PromotionPage = () => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={'#ffffff'}>
-          <MineHeader showBackBtn={true} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: '#000000' }} backBtnColor={'#000000'} />
+        <SafeAreaHeader headerColor={Skin1.themeColor}>
+          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1.headerTintColor }} backBtnColor={Skin1.headerTintColor} />
         </SafeAreaHeader>
         {showCategory ? (
           <>
@@ -118,8 +120,8 @@ const PromotionPage = () => {
                       setSelectedItemIndex(-1)
                       setList(item == '0' ? totalList.current : filterList)
                     }}>
-                    <View style={selectedTabIndex == item ? { backgroundColor: 'red' } : {}}>
-                      <Text style={{ margin: scale(20), color: '#000000' }}>{categories[item]}</Text>
+                    <View style={selectedTabIndex == item ? { backgroundColor: '#d9d9d9' } : {}}>
+                      <Text style={styles.tabText}>{categories[item]}</Text>
                     </View>
                   </TouchableWithoutFeedback>
                 )
@@ -176,6 +178,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flex: 1,
     paddingHorizontal: scale(10),
+  },
+  tabText: {
+    margin: scale(20),
   },
 })
 

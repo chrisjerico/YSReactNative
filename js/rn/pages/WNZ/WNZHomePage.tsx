@@ -32,7 +32,7 @@ const WNZHomePage = () => {
     },
   })
 
-  const { goToJDPromotionListPage } = goTo
+  const { goToPromotionPage } = goTo
 
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
@@ -83,7 +83,7 @@ const WNZHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'WNZHomePage'}
-      themeColor={WNZThemeColor.威尼斯.themeColor}
+      headerColor={WNZThemeColor.威尼斯.themeColor}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -124,7 +124,7 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToJDPromotionListPage()
+                      goToPromotionPage()
                     } else {
                       PushHelper.pushHomeGame(item)
                     }

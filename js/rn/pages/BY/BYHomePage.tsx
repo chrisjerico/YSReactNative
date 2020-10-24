@@ -20,7 +20,7 @@ const onPressSignUp = () => push(PageName.BYSignUpPage)
 const BYHomePage = () => {
   const menu = useRef(null)
 
-  const { goTo, refresh, value, sign } = useHomePage({
+  const { refresh, value, sign, goTo } = useHomePage({
     onSuccessSignOut: () => {
       menu?.current?.close()
     },
@@ -54,7 +54,7 @@ const BYHomePage = () => {
       {...sysInfo}
       {...goTo}
       pagekey={'BYHomePage'}
-      themeColor={'#ffffff'}
+      headerColor={'#ffffff'}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}

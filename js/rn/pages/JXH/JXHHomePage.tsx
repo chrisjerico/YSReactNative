@@ -15,7 +15,7 @@ import ProfileBlock from './views/ProfileBlock'
 const JXHHomePage = () => {
   const { goTo, refresh, value, sign } = useHomePage({})
 
-  const { goToJDPromotionListPage } = goTo
+  const { goToPromotionPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
@@ -54,7 +54,7 @@ const JXHHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'JXHHomePage'}
-      themeColor={''}
+      headerColor={''}
       containerStyle={styles.container}
       couponBlockStyles={couponBlockStyles}
       couponStyles={couponStyles}
@@ -80,17 +80,7 @@ const JXHHomePage = () => {
               PushHelper.pushNoticePopUp(content)
             }}
           />
-          <ProfileBlock
-            {...(userInfo as any)}
-            onPressTryPlay={tryPlay}
-            onPressLeftButton={goToUserCenterType.存款}
-            onPressRightButton={goToUserCenterType.取款}
-            onPressExchange={() =>
-              goToJDPromotionListPage({
-                backgroundColor: '#282828',
-              })
-            }
-          />
+          <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} onPressLeftButton={goToUserCenterType.存款} onPressRightButton={goToUserCenterType.取款} onPressExchange={goToPromotionPage} />
           <TabComponent
             tabBarBackgroundColor={'#000000'}
             tabTextColor={'#ffffff'}

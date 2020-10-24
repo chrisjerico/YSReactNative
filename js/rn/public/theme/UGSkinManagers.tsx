@@ -8,18 +8,15 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import FUtils from '../tools/FUtils'
 import { BYThemeColor } from './colors/BYThemeColor'
 import { BZHThemeColor } from './colors/BZHThemeColor'
-import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
+import { JXHThemeColor } from './colors/JXHThemeColor'
 import { JYThemeColor } from './colors/JYThemeColor'
 import { KSThemeColor } from './colors/KSThemeColor'
 import { LCThemeColor } from './colors/LCThemeColor'
 import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
 import { OtherThemeColor } from './colors/OtherThemeColor'
-import { PYThemeColor } from './colors/PYThemeColor'
-import { VietnamThemeColors } from './colors/VietnamThemeColors'
 import { WNZThemeColor } from './colors/WNZThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
 import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
@@ -28,20 +25,17 @@ export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
     ...JYThemeColor, // 简约
-    ...LHThemeColor, // 六合
-    ...XBJThemeColor, // 香槟金
     ...XNHThemeColor, // 新年红
     ...ZLThemeColor, //尊龙
-    ...GDBThemeColor,
-    ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
-    ...KSThemeColor, // 凯时
-    ...WNZThemeColor, // 威尼斯
-    ...PYThemeColor,
-    ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
-    ...VietnamThemeColors, // 越南
+    ...BZHThemeColor, // 宝石红
+    ...WNZThemeColor, // 威尼斯
+    ...LHThemeColor, // 六合
+    ...JXHThemeColor, // 金星黑
+    ...KSThemeColor, // 凯时
     ...BYThemeColor, // 白曜
+    ...OtherThemeColor, // 其他
   }
 
   // 更新皮肤

@@ -1,10 +1,6 @@
 export enum PageName {
   TransitionPage = 'TransitionPage',
-  XBJLoginPage = 'XBJLoginPage',
-  XBJRegisterPage = 'XBJRegisterPage',
-  XBJMinePage = 'XBJMinePage',
   JDPromotionListPage = 'JDPromotionListPage', //优惠券列表
-  XBJHomePage = 'XBJHomePage',
   LCHomePage = 'LCHomePage',
   LCMinePage = 'LCMinePage',
   LCTransferPage = 'LCTransferPage',
