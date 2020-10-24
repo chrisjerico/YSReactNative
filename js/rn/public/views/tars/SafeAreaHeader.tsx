@@ -39,8 +39,6 @@ const SafeAreaHeader = ({
       break;
   }
 
-  ugLog('safeTop=', safeTop)
-
   return (
     <View style={{ backgroundColor: headerColor }}>
       <View style={[styles.container,
