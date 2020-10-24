@@ -50,6 +50,7 @@ import GameButton from "../../public/views/tars/GameButton"
 import { scale } from "../../public/tools/Scale"
 import NavBlock from "./component/homePage/NavBlock"
 
+
 const LCHomePage = ({ navigation }) => {
   const { banner, notice, rankList, redBag, onlineNum, onRefresh, loading, systemHomeAds, homeGames } = useGetHomeInfo()
   const [categories, setCategories] = useState<string[]>()

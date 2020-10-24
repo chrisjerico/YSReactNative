@@ -62,6 +62,10 @@ export function setRnPageInfo() {
     }
   }
 
+  if (skitType.indexOf('乐橙') != -1) {
+    pages = pages.concat(LCPages)
+  }
+
   // —————————————————— 以下为已上线内容 ————————————————————————
   // 优惠活动列表页
   pages.push({
@@ -419,10 +423,6 @@ const VietnamPages = [
     允许未登录访问: true,
   },
 ]
-
-export class RnPageModel {
-  static pages: RnPageModel[] = []
-
 
 export class RnPageModel {
   static pages: RnPageModel[] = [];
