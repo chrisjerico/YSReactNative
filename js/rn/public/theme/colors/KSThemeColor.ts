@@ -25,5 +25,8 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
     themeColor: '#000000',
     isBlack: true,
     headerTintColor: '#ffffff',
+    get progressColor() {
+      return this.themeColor
+    },
   },
 }

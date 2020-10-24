@@ -40,5 +40,8 @@ export const BZHThemeColor: { [x: string]: UGThemeColor } = {
     is23: false,
     yubaoBgColor: '#8E8E8E',
     headerTintColor: '#ffffff',
+    get progressColor() {
+      return this.themeColor
+    },
   },
 }

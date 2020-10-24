@@ -1,10 +1,11 @@
 import React, { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
-import UGProgressCircle from '../../widget/progress/UGProgressCircle'
+import * as Progress from 'react-native-progress';
+import {Skin1} from '../../theme/UGSkinManagers';
 
 const ProgressCircle = () => (
   <View style={styles.container}>
-    <UGProgressCircle />
+     <Progress.Circle borderWidth={4} size={45} indeterminate={true} borderColor={Skin1.progressColor}/>
   </View>
 )
 

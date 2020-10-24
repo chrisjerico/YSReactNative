@@ -39,6 +39,9 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     isBlack: false,
     is23: false,
     yubaoBgColor: '#8E8E8E',
-    headerTintColor: '#000000'
+    headerTintColor: '#000000',
+    get progressColor() {
+      return this.headerTintColor
+    },
   },
 }

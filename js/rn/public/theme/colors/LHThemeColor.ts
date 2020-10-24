@@ -41,6 +41,9 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     is23: false,
     yubaoBgColor: '#8E8E8E',
     headerTintColor: '#ffffff',
+    get progressColor() {
+      return this.themeColor
+    },
   },
   //六合资料
   六合资料0: {

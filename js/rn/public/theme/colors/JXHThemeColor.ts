@@ -25,5 +25,8 @@ export const JXHThemeColor: { [x: string]: UGThemeColor } = {
     navBarTitleColor: '#fff',
     isBlack: true,
     headerTintColor: '#ffffff',
+    get progressColor() {
+      return this.themeColor
+    },
   },
 }

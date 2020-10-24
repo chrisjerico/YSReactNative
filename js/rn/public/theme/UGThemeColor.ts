@@ -33,6 +33,7 @@ export class UGThemeColor {
   // 自定義
   yubaoBgColor?: string
   headerTintColor?: string
+  progressColor?: string
 }
 
 /**
