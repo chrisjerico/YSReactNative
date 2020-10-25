@@ -34,8 +34,9 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
       tabTextColor: '#ffffff',
       selectedTabTextColor: 'red',
     },
-    get progressColor() {
-      return this.themeColor
+    progress: {
+      tintColor: '#ffffff',
+      bgColor: '#000000',
     },
   },
 }

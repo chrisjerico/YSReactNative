@@ -1,5 +1,6 @@
 import { UGThemeColor } from '../UGThemeColor'
 
+const themeColor = '#ffffff'
 export const BYThemeColor: { [x: string]: UGThemeColor } = {
   白曜: {
     skitType: '白曜',
@@ -34,14 +35,21 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#ffffff',
+    themeColor: themeColor,
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
     yubaoBgColor: '#8E8E8E',
     promotion: {
+      headerBgColor: themeColor,
       headerTintColor: '#000000',
+      listBgColor: themeColor,
+      tabBgColor: themeColor,
+      selectedTabBgColor: '#d9d9d9',
     },
-    progressColor: '#000000',
+    progress: {
+      tintColor: '#000000',
+      bgColor: themeColor,
+    },
   },
 }

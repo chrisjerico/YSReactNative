@@ -1,5 +1,7 @@
 import { UGThemeColor } from '../UGThemeColor'
 
+const themeColor = '#BF242A'
+
 export const WNZThemeColor: { [x: string]: UGThemeColor } = {
   威尼斯: {
     skitType: '威尼斯',
@@ -10,12 +12,8 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     get bgColor() {
       return [this.tabBarBgColor, this.tabBarBgColor]
     },
-    get navBarBgColor() {
-      return [this.themeColor, this.themeColor]
-    }, // 跳頁面最上面的Header顏色
-    get tabSelectedColor() {
-      return this.themeColor
-    },
+    navBarBgColor: [themeColor, themeColor], // 跳頁面最上面的Header顏色
+    tabSelectedColor: themeColor,
     get progressBgColor() {
       return [this.tabBarBgColor, this.tabBarBgColor]
     },
@@ -24,9 +22,7 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     }, // 真人大廳小方塊背景
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
-    get menuHeadViewColor() {
-      return [this.themeColor, this.themeColor]
-    },
+    menuHeadViewColor: [themeColor, themeColor],
     textColor1: '#111111',
     textColor2: '#555555',
     textColor3: '#C1C1C1',
@@ -34,16 +30,19 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     conversionCellColor: '#444',
     // intoViewColor: '#444',
     //moneyCellColor: '#444',
-    themeColor: '#BF242A',
+    themeColor: themeColor,
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
     yubaoBgColor: '#8E8E8E',
     promotion: {
+      headerBgColor: themeColor,
       headerTintColor: '#ffffff',
+      selectedTabTextColor: themeColor,
     },
-    get progressColor() {
-      return this.themeColor
+    progress: {
+      tintColor: themeColor,
+      bgColor: '#ffffff',
     },
   },
 }

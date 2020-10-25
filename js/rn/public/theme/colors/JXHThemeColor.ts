@@ -28,8 +28,9 @@ export const JXHThemeColor: { [x: string]: UGThemeColor } = {
       headerTintColor: '#ffffff',
       headerBgColor: '#000000',
     },
-    get progressColor() {
-      return this.themeColor
+    progress: {
+      tintColor: '#ffffff',
+      bgColor: '#000000',
     },
     themeColor: '#000000',
   },

@@ -81,7 +81,7 @@ const LHTHomePage = () => {
         <View style={styles.contentContainer}>
           <NavBlock
             containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
-            navs={navs}
+            navs={navs?.slice(0, 8)}
             lotterys={plusLotterys}
             date={lotteryDate}
             advertisement={config.advertisementLogo}

@@ -32,9 +32,15 @@ export class UGThemeColor {
   is23?: boolean
   // 自定義
   yubaoBgColor?: string
-  progressColor?: string
+  // progress
+  progress?: Progress
   // promition
   promotion?: Promotion
+}
+
+interface Progress {
+  tintColor?: string
+  bgColor: string
 }
 
 interface Promotion {
