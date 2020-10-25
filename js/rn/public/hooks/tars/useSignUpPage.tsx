@@ -67,12 +67,13 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     },
     onSuccessWithAutoLogin: () => {
       hideLoading()
-      navigateToHomePage()
+      ToastSuccess('注册成功')
+      navigateToSignInPage()
     },
     onSuccess: () => {
       hideLoading()
       ToastSuccess('注册成功')
-      navigateToHomePage()
+      navigateToSignInPage()
     },
     onError: (error) => {
       hideLoading()

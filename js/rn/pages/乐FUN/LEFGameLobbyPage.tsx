@@ -12,7 +12,7 @@ import BottomGap from '../../public/views/temp/BottomGap'
 import GameButton from '../../public/views/temp/GameButton'
 import List from '../../public/views/temp/List'
 import MineHeader from '../../public/views/temp/MineHeader'
-import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGStore } from '../../redux/store/UGStore'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 
