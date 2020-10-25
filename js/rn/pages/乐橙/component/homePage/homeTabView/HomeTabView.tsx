@@ -11,21 +11,18 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import PushHelper from '../../../../../public/define/PushHelper'
 import AppDefine from '../../../../../public/define/AppDefine'
 
-export const HomeTabView = () => {
-  const { homeGames } = useGetHomeInfo()
-  const [games, setGames] = useState<Icon[]>([])
+export const HomeTabView = ({homeGames}) => {
   const [height, setHeight] = useState(77)
   const userStore = UGStore.globalProps.userInfo
   const { uid = '' } = userStore
 
   useEffect(() => {
-    homeGames?.data?.icons && setGames(homeGames.data.icons)
-    homeGames?.data?.icons && calculateHeight(0)
+    homeGames && calculateHeight(0)
   }, [homeGames])
 
   const thirdPartGamePress = (id: string, gameID?: string) => {
     if (uid != '') {
-      const result = homeGames.data.icons.filter((res) => res.id == id)
+      const result = homeGames.filter((res) => res.id == id)
       if (gameID && result.length > 0) {
         const gameData = result[0].list.filter((res) => res.id == gameID)
         //@ts-ignore
@@ -40,7 +37,7 @@ export const HomeTabView = () => {
 
   const calculateHeight = (index: number) => {
     let h = 56
-    const list: List[] = games[index]?.list ? games[index]?.list : []
+    const list: List[] = homeGames[index]?.list ? homeGames[index]?.list : []
     if (index == 0) {
       h = h + 135
       if (list[0]) {
@@ -82,7 +79,7 @@ export const HomeTabView = () => {
     )
   }
 
-  return homeGames?.data?.icons ? (
+  return homeGames ? (
     <ScrollableTabView
       onChangeTab={({ i }) => calculateHeight(i)}
       tabBarUnderlineStyle={{ height: 2, backgroundColor: '#3c3c3c' }}
@@ -130,8 +127,8 @@ export const HomeTabView = () => {
           })}
         </ScrollView>
       )}>
-      {games.length > 0 ? (
-        games.map((item, index) => {
+      {homeGames.length > 0 ? (
+        homeGames.map((item, index) => {
           return getTab(item, index)
         })
       ) : (

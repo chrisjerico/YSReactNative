@@ -1,5 +1,6 @@
 import {StyleSheet, View, ViewStyle} from "react-native";
-import React from "react";
+import React, { useEffect } from 'react'
+import useHomePage from '../../../../public/hooks/tars/useHomePage'
 
 interface NavBlockProps {
     navs: any[];
@@ -7,7 +8,10 @@ interface NavBlockProps {
     renderNav: (item: any, index: number) => any;
 }
 
-const NavBlock = ({renderNav, navs = [], containerStyle}: NavBlockProps) => {
+const NavBlock = ({renderNav, containerStyle}: NavBlockProps) => {
+    const { value } = useHomePage({})
+    const { homeInfo } = value
+    const { navs} = homeInfo
     return (
         <View style={[styles.container, containerStyle]}>
             {navs.map(renderNav)}

@@ -50,7 +50,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   }
 
   try {
-    // temp['checkSign'] = 1; 多余的
+    temp['checkSign'] = 1;
 
     switch (Platform.OS) {
       case "ios":

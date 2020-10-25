@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
@@ -63,6 +63,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const signOut = logOut
 
   const { sys } = useSys({})
+
+  const getNavs = () => {
+    return homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
+  }
   // stores
   const userInfo = UGStore.globalProps.userInfo
   const gameLobby = UGStore.globalProps.gameLobby
@@ -75,7 +79,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
-  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4) ?? []
+  const navs = useMemo(getNavs, homeGames?.data?.navs)
   const homeGames = homeGame?.data?.icons ?? []
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
