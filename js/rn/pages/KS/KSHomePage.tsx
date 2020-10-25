@@ -44,6 +44,7 @@ const KSHomePage = () => {
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
+      refreshTintColor={'#ffffff'}
       pagekey={'KSHomePage'}
       containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
       headerColor={KSThemeColor.凯时.themeColor}

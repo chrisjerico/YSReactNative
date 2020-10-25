@@ -33,7 +33,7 @@ const KSSignInPage = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
           <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</Text>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#000000'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <TouchableWithoutFeedback onPress={() => {}}>
               <Text style={{ color: '#8e8e93' }}>{'忘记密码'}</Text>

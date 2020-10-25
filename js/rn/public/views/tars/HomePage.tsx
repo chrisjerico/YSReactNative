@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback } from 'react'
-import { ListRenderItem, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
+import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../define/PushHelper'
@@ -57,6 +57,7 @@ interface HomePageProps {
   noticeBlockStyles?: NoticeBlockStyles
   noticeLogo?: string
   showBannerBlock?: boolean
+  refreshTintColor?: string
 }
 
 interface CouponBlockStyles {
@@ -133,6 +134,7 @@ const HomePage = ({
   noticeBlockStyles,
   noticeLogo,
   showBannerBlock = true,
+  refreshTintColor = '#000000',
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -174,8 +176,7 @@ const HomePage = ({
           scrollEnabled={true}
           removeClippedSubviews={true}
           data={items ?? []}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={refreshTintColor} />}
           ListHeaderComponent={() => (
             <>
               {showBannerBlock && (
