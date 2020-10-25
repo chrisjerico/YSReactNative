@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import RandomTextComponent from '../../public/components/tars/RandomTextComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -12,6 +12,7 @@ import BannerBlock from '../../public/views/tars/BannerBlock'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import LinearBadge from '../../public/views/tars/LinearBadge'
+import List from '../../public/views/tars/List'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import CoverButton from './views/CoverButton'
 import HomeHeader from './views/HomeHeader'
@@ -19,22 +20,20 @@ import MoreGameButton from './views/MoreGameButton'
 import ProfileBlock from './views/ProfileBlock'
 
 const buttonHeight = scale(82)
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const KSHomePage = () => {
   const { goTo, refresh, value, sign } = useHomePage({})
 
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
+  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette, homeGamesConcat } = homeInfo
   const { mobile_logo } = sysInfo
 
-  const lotterys = homeGames[0]?.list ?? []
-  const smallLotterys = lotterys?.slice(4, 8) ?? []
-  const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
+  const smallGames = homeGamesConcat?.slice(4, 8) ?? []
+  const moreGames = homeGamesConcat?.slice(8, homeGamesConcat?.length) ?? []
   const { tryPlay } = sign
 
-  console.log('------homeGames-----', homeGames)
   return (
     <HomePage
       {...homeInfo}
@@ -139,26 +138,26 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { height: scale(212) }]}>
             <CoverButton
-              logo={lotterys[0]?.logo || lotterys[0]?.icon}
-              title={lotterys[0]?.name || lotterys[0]?.title}
+              logo={homeGamesConcat[0]?.logo || homeGamesConcat[0]?.icon}
+              title={homeGamesConcat[0]?.name || homeGamesConcat[0]?.title}
               containerStyle={{ marginLeft: '1%', width: '60%', marginRight: '0.5%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
-              onPress={() => PushHelper.pushHomeGame(lotterys[0])}
+              onPress={() => PushHelper.pushHomeGame(homeGamesConcat[0])}
             />
             <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
               <CoverButton
-                logo={lotterys[1]?.logo || lotterys[1]?.icon}
-                title={lotterys[1]?.name || lotterys[1]?.title}
+                logo={homeGamesConcat[1]?.logo || homeGamesConcat[1]?.icon}
+                title={homeGamesConcat[1]?.name || homeGamesConcat[1]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
-                onPress={() => PushHelper.pushHomeGame(lotterys[1])}
+                onPress={() => PushHelper.pushHomeGame(homeGamesConcat[1])}
               />
               <CoverButton
-                logo={lotterys[2]?.logo || lotterys[2]?.icon}
-                title={lotterys[2]?.name || lotterys[2]?.title}
+                logo={homeGamesConcat[2]?.logo || homeGamesConcat[2]?.icon}
+                title={homeGamesConcat[2]?.name || homeGamesConcat[2]?.title}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
-                onPress={() => PushHelper.pushHomeGame(lotterys[2])}
+                onPress={() => PushHelper.pushHomeGame(homeGamesConcat[2])}
               />
             </View>
           </View>
@@ -178,7 +177,7 @@ const KSHomePage = () => {
                 </ImageBackground>
               </View>
               <View style={{ flex: 1.5, flexDirection: 'row' }}>
-                {smallLotterys?.map((item, index) => {
+                {smallGames?.map((item, index) => {
                   const { logo, name, icon, title } = item
                   return (
                     <GameButton
@@ -200,30 +199,33 @@ const KSHomePage = () => {
               </View>
             </View>
             <CoverButton
-              logo={lotterys[3]?.logo || lotterys[3]?.icon}
-              title={lotterys[3]?.name || lotterys[3]?.title}
+              logo={homeGamesConcat[3]?.logo || homeGamesConcat[3]?.icon}
+              title={homeGamesConcat[3]?.name || homeGamesConcat[3]?.title}
               containerStyle={{ marginRight: '1%', marginLeft: '0.5%', width: '20%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
-              onPress={() => PushHelper.pushHomeGame(lotterys[3])}
+              onPress={() => PushHelper.pushHomeGame(homeGamesConcat[3])}
             />
           </View>
           <View style={[styles.toolBlock, { backgroundColor: '#3a3a41', marginHorizontal: '1%', borderRadius: scale(5), flexDirection: 'column', width: null, height: null, alignItems: 'center' }]}>
             <View style={{ width: '90%' }}>
               <Text style={{ color: '#ffffff', fontSize: scale(22), marginVertical: scale(20), fontWeight: '500' }}>{'更多游戏'}</Text>
             </View>
-            {moreGames?.map((item, index) => {
-              const { name, logo, title, icon } = item
-              return (
-                <MoreGameButton
-                  key={index}
-                  title={name || title}
-                  logo={logo || icon}
-                  onPress={() => {
-                    PushHelper.pushHomeGame(item)
-                  }}
-                />
-              )
-            })}
+            <List
+              uniqueKey={'KSHomePage_MoreGames'}
+              data={moreGames}
+              renderItem={({ item }) => {
+                const { name, logo, title, icon } = item
+                return (
+                  <MoreGameButton
+                    title={name || title}
+                    logo={logo || icon}
+                    onPress={() => {
+                      PushHelper.pushHomeGame(item)
+                    }}
+                  />
+                )
+              }}
+            />
           </View>
         </>
       )}

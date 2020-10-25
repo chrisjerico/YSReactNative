@@ -23,7 +23,7 @@ const useSignOut = (options: Options = {}) => {
             OCHelper.call('UGUserModel.setCurrentUser:', []),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName']),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId']),
-            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']),
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']), // 這裡會跳Toast很煩
             OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]),
           ])
           break
