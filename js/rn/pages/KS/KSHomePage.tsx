@@ -167,11 +167,11 @@ const KSHomePage = () => {
                 <ImageBackground source={{ uri: 'https://a06frontweb.cathayfund.com/cdn/A06FM/img/pmd.57681c5.gif' }} style={{ width: '100%', height: '100%' }} resizeMode={'stretch'}>
                   <View style={{ flex: 1, flexDirection: 'row' }}>
                     <View style={{ flex: 3, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ fontSize: scale(15), color: '#ffffff', marginBottom: scale(5) }}>{'电子游戏'}</Text>
+                      <Text style={{ fontSize: scale(15), color: '#ffffff', marginBottom: scale(5) }}>{'电子娱乐'}</Text>
                       <Text style={{ fontSize: scale(15), color: '#ffffff', marginTop: scale(5) }}>{'总奖金池'}</Text>
                     </View>
                     <View style={{ flex: 7, justifyContent: 'center', alignItems: 'flex-start' }}>
-                      <RandomTextComponent style={{ color: '#ffb029', fontSize: scale(25) }} />
+                      <RandomTextComponent style={{ color: '#ffb029', fontSize: scale(30) }} />
                     </View>
                   </View>
                 </ImageBackground>
@@ -214,10 +214,11 @@ const KSHomePage = () => {
               uniqueKey={'KSHomePage_MoreGames'}
               data={moreGames}
               renderItem={({ item }) => {
-                const { name, logo, title, icon } = item
+                const { name, logo, title, icon, subtitle } = item
                 return (
                   <MoreGameButton
                     title={name || title}
+                    subtitle={subtitle}
                     logo={logo || icon}
                     onPress={() => {
                       PushHelper.pushHomeGame(item)

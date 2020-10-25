@@ -7,14 +7,15 @@ interface MoreGameButtonProps {
   title: string
   onPress?: () => any
   logo: string
+  subtitle: string
 }
 
-const MoreGameButton = ({ onPress, title, logo }: MoreGameButtonProps) => {
+const MoreGameButton = ({ onPress, title, logo, subtitle }: MoreGameButtonProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View
         style={{
-          width: '90%',
+          width: '95%',
           flexDirection: 'row',
           aspectRatio: 4.5,
           alignItems: 'center',
@@ -28,7 +29,7 @@ const MoreGameButton = ({ onPress, title, logo }: MoreGameButtonProps) => {
           <FastImage source={{ uri: logo }} style={{ height: '100%', aspectRatio: 1 }} resizeMode={'contain'} />
           <View style={{ justifyContent: 'center', paddingLeft: scale(10) }}>
             <Text style={{ color: '#ffffff' }}>{title}</Text>
-            {/* <Text style={{ color: '#95979f' }}>{'玩法多样 坐地发财'}</Text> */}
+            <Text style={{ color: '#95979f', marginTop: scale(10) }}>{subtitle}</Text>
           </View>
         </View>
         <View style={{ flex: 1, borderColor: '#fb5858', justifyContent: 'center', alignItems: 'center', borderWidth: scale(1), height: '50%', borderRadius: scale(5) }}>

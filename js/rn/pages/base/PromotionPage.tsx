@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
@@ -87,13 +87,11 @@ const PromotionPage = (props: any) => {
         break
     }
   }
-
-  // console.log('------list-----', list)
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={Skin1.themeColor}>
-          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1.headerTintColor }} backBtnColor={Skin1.headerTintColor} />
+        <SafeAreaHeader headerColor={Skin1?.promotion?.headerBgColor}>
+          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1?.promotion?.headerTintColor }} backBtnColor={Skin1?.promotion?.headerTintColor} />
         </SafeAreaHeader>
         <ProgressCircle />
       </>
@@ -101,8 +99,8 @@ const PromotionPage = (props: any) => {
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={Skin1.themeColor}>
-          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1.headerTintColor }} backBtnColor={Skin1.headerTintColor} />
+        <SafeAreaHeader headerColor={Skin1?.promotion?.headerBgColor}>
+          <MineHeader showBackBtn={showBackBtn} onPressBackBtn={pop} title={'优惠活动'} titleStyle={{ color: Skin1?.promotion?.headerTintColor }} backBtnColor={Skin1?.promotion?.headerTintColor} />
         </SafeAreaHeader>
         {showCategory ? (
           <>
@@ -121,8 +119,10 @@ const PromotionPage = (props: any) => {
                       setSelectedItemIndex(-1)
                       setList(item == '0' ? totalList.current : filterList)
                     }}>
-                    <View style={selectedTabIndex == item ? { backgroundColor: '#d9d9d9' } : {}}>
-                      <Text style={styles.tabText}>{categories[item]}</Text>
+                    <View style={selectedTabIndex == item ? { backgroundColor: Skin1?.promotion?.selectedTabBgColor } : { backgroundColor: Skin1?.promotion?.tabBgColor }}>
+                      <Text style={selectedTabIndex == item ? [styles.tabText, { color: Skin1?.promotion?.selectedTabTextColor }] : [styles.tabText, { color: Skin1?.promotion?.tabTextColor }]}>
+                        {categories[item]}
+                      </Text>
                     </View>
                   </TouchableWithoutFeedback>
                 )
@@ -131,13 +131,22 @@ const PromotionPage = (props: any) => {
             <List
               uniqueKey={'PromotionPage_true'}
               scrollEnabled={true}
-              style={styles.list}
+              style={[styles.list, { backgroundColor: Skin1?.promotion?.listBgColor }]}
               data={list}
               ListFooterComponent={<BottomGap />}
               renderItem={({ item, index }) => {
                 const { title, pic, content } = item
                 const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
-                return <AutoHeightCouponComponent title={title} pic={pic} content={content} onPress={onPress} slide={style == 'slide' && selectedItemIndex == index} />
+                return (
+                  <AutoHeightCouponComponent
+                    title={title}
+                    pic={pic}
+                    content={content}
+                    onPress={onPress}
+                    slide={style == 'slide' && selectedItemIndex == index}
+                    titleStyle={{ color: Skin1?.promotion?.couponTitleColor }}
+                  />
+                )
               }}
             />
           </>
@@ -145,13 +154,22 @@ const PromotionPage = (props: any) => {
           <List
             uniqueKey={'PromotionPage_false'}
             scrollEnabled={true}
-            style={styles.list}
+            style={[styles.list, { backgroundColor: Skin1?.promotion?.listBgColor }]}
             data={list}
             ListFooterComponent={<BottomGap />}
             renderItem={({ item, index }) => {
               const { title, pic, content } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
-              return <AutoHeightCouponComponent title={title} pic={pic} content={content} onPress={onPress} slide={style == 'slide' && selectedItemIndex == index} />
+              return (
+                <AutoHeightCouponComponent
+                  title={title}
+                  pic={pic}
+                  content={content}
+                  onPress={onPress}
+                  slide={style == 'slide' && selectedItemIndex == index}
+                  titleStyle={{ color: Skin1?.promotion?.couponTitleColor }}
+                />
+              )
             }}
           />
         )}
@@ -162,7 +180,6 @@ const PromotionPage = (props: any) => {
 
 const styles = StyleSheet.create({
   list: {
-    backgroundColor: '#ffffff',
     flex: 1,
     paddingHorizontal: scale(10),
   },

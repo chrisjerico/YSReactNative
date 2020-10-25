@@ -40,7 +40,9 @@ export const LHThemeColor: { [x: string]: UGThemeColor } = {
     isBlack: false,
     is23: false,
     yubaoBgColor: '#8E8E8E',
-    headerTintColor: '#ffffff',
+    promotion: {
+      headerTintColor: '#ffffff',
+    },
     get progressColor() {
       return this.themeColor
     },

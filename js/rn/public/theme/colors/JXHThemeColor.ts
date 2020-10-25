@@ -4,7 +4,7 @@ export const JXHThemeColor: { [x: string]: UGThemeColor } = {
   金星黑: {
     skitType: '金星黑',
     skitString: '金星黑',
-    bgColor: ['black', 'black'],
+    bgColor: ['#000000', '#000000'],
     navBarBgColor: ['#2C2E36', '#2C2E36'],
     tabBarBgColor: '#2C2E36',
     tabNoSelectColor: '#FFFFFF',
@@ -24,7 +24,10 @@ export const JXHThemeColor: { [x: string]: UGThemeColor } = {
     moneyCellColor: '#444',
     navBarTitleColor: '#fff',
     isBlack: true,
-    headerTintColor: '#ffffff',
+    promotion: {
+      headerTintColor: '#ffffff',
+      headerBgColor: '#000000',
+    },
     get progressColor() {
       return this.themeColor
     },

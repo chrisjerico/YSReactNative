@@ -32,8 +32,20 @@ export class UGThemeColor {
   is23?: boolean
   // 自定義
   yubaoBgColor?: string
-  headerTintColor?: string
   progressColor?: string
+  // promition
+  promotion?: Promotion
+}
+
+interface Promotion {
+  headerTintColor?: string
+  headerBgColor?: string
+  listBgColor?: string
+  couponTitleColor?: string
+  selectedTabBgColor?: string
+  tabBgColor?: string
+  tabTextColor?: string
+  selectedTabTextColor?: string
 }
 
 /**

@@ -24,7 +24,16 @@ export const KSThemeColor: { [x: string]: UGThemeColor } = {
     moneyCellColor: '#444',
     themeColor: '#000000',
     isBlack: true,
-    headerTintColor: '#ffffff',
+    promotion: {
+      headerTintColor: '#ffffff',
+      headerBgColor: '#000000',
+      listBgColor: '#000000',
+      couponTitleColor: '#ffffff',
+      selectedTabBgColor: '#000000',
+      tabBgColor: '#000000',
+      tabTextColor: '#ffffff',
+      selectedTabTextColor: 'red',
+    },
     get progressColor() {
       return this.themeColor
     },
