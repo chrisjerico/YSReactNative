@@ -36,7 +36,7 @@ const ZLMinePage = (props: UGBasePageProps) => {
     const requestBalance = async () => {
         try {
 
-            showLoading({ type: UGLoadingType.Loading, text: '正在刷新金额...' });
+            showLoading('正在刷新金额...');
 
             // switch (Platform.OS) {
             //   case 'ios':

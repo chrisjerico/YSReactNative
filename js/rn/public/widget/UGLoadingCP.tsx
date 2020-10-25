@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import LinearGradient from "react-native-linear-gradient"
 import AppDefine from "../define/AppDefine"
-import {View, Text, StyleSheet, Platform} from "react-native"
+import { View, Text, StyleSheet, Platform } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Skin1 } from "../theme/UGSkinManagers"
 import { Button, Icon } from "react-native-elements"
@@ -31,7 +31,22 @@ export class UGLoadingProps {
 let hideLoadingFunc = undefined;
 
 // 在当前页面显示Loading
-export function showLoading(props: UGLoadingProps) {
+export function showMessage(text?: string) {
+  showHUD({ type: UGLoadingType.Message, text: text });
+}
+export function showLoading(text?: string, backgroundColor?: string[]) {
+  showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor });
+}
+export function showSuccess(text?: string) {
+  showHUD({ type: UGLoadingType.Success, text: text });
+}
+export function showError(text?: string) {
+  showHUD({ type: UGLoadingType.Error, text: text });
+}
+export function showReload(text?: string, backgroundColor?: string[], reloadClick?: () => void) {
+  showHUD({ type: UGLoadingType.Reload, text: text, backgroundColor: backgroundColor, reloadClick: reloadClick });
+}
+export function showHUD(props: UGLoadingProps) {
   UGLoadingProps.shared = { ...props, setHideLoading: (func) => { hideLoadingFunc = func; } }
   refreshLoadingFunc();
 }

@@ -91,7 +91,7 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
       return;
     }
 
-    showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
+    showLoading('正在登录...');
     // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
 
     NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)

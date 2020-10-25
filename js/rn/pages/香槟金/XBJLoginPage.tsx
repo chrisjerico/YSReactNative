@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Ref, useEffect, useRef } from 'react';
 import { View, Text, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
@@ -20,6 +20,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { XBJRegisterProps } from './XBJRegisterPage';
 import { navigate } from '../../public/navigation/RootNavigation';
 import { ErrorObject } from '../../public/network/CCSessionModel';
+import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 
 
 // 声明成员变量
@@ -29,6 +30,7 @@ interface XJBLoginVars {
   errorTimes: number; // 失败次数大于3时需要滑动验证
   slideCode: SlideCodeModel; // 滑动验证码
   googleCode: string; // 谷歌验证码
+  reloadSlide: () => void; // 刷新滑块
 }
 
 // 声明Props
@@ -39,10 +41,15 @@ export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, XJBLoginVa
 }
 
 // 滑动验证
-export function SlidingVerification(props: { hidden: boolean, didVerified: (slideCode: SlideCodeModel) => void }) {
+export function SlidingVerification(props: { hidden: boolean, setReload: (reload: () => void) => void, didVerified: (slideCode: SlideCodeModel) => void }) {
+  const webviewRef = useRef<WebView>();
+  props.setReload && props.setReload(() => {
+    webviewRef?.current?.reload();
+  });
   return (
     <View style={{ marginTop: 13, height: props.hidden ? 0 : 52, borderRadius: 26, overflow: 'hidden' }}>
       <WebView
+        ref={webviewRef}
         style={{ marginLeft: -15, marginRight: -14, marginTop: -22, flex: 1 }}
         javaScriptEnabled
         startInLoadingState
@@ -89,7 +96,10 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps({
           navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
-          rememberPassword: isRemember
+          rememberPassword: isRemember,
+          didFocus: () => {
+            v.reloadSlide();
+          }
         })
       }
     }
@@ -102,18 +112,21 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       err = '请输入用户名';
     } else if (!v.pwd?.trim()?.length) {
       err = '请输入密码';
-    } else if (v.errorTimes > 3 && !v.slideCode) {
+    } else if (!v.slideCode && (loginVCode || v.errorTimes > 3)) {
       err = '请完成滑动验证';
     }
     if (err) {
+      showLoading()
       OCHelper.call('HUDHelper.showMsg:', [err]);
       return;
     }
-    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
+
+    v.reloadSlide();
+    showLoading('正在登录...' );
     NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode))
       .then(({ data }) => {
         console.log('登录成功');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        showSuccess('登录成功！');
 
         async function didLogin() {
           // 退出旧账号（试玩账号）
@@ -148,7 +161,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         didLogin();
       })
       .catch((err: ErrorObject) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
+        showError(err.message);
         if (loginVCode || (v.errorTimes += 1) > 3) {
           setProps();
         }
@@ -177,7 +190,9 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
               v.pwd = text;
             }}
           />
-          <SlidingVerification hidden={!loginVCode || v.errorTimes < 4} didVerified={(slideCode) => {
+          <SlidingVerification hidden={!loginVCode || v.errorTimes < 4} setReload={reload => {
+            v.reloadSlide = reload;
+          }} didVerified={(slideCode) => {
             v.slideCode = slideCode;
             console.log('滑动成功', slideCode);
           }} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, Platform } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
@@ -19,7 +19,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { navigate, popToRoot } from '../../public/navigation/RootNavigation';
 import { Toast } from "../../public/tools/ToastUtils";
 import { SlidingVerification } from './XBJLoginPage';
-import { showLoading, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { ANHelper } from '../../public/define/ANHelper/ANHelper';
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine';
 import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
@@ -41,6 +41,7 @@ interface XBJRegisterVars {
   qq: string;// QQ
   wechat: string;// 微信
   email: string;// 邮箱
+  reloadSlide: () => void; // 刷新滑块
 }
 
 // 定义Props
@@ -55,6 +56,9 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     setProps({
       backgroundColor: Skin1.bgColor,
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
+      didFocus: () => {
+        v.reloadSlide();
+      }
     })
   }, []);
 
@@ -130,11 +134,10 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       return;
     }
 
-    console.log('slideCode = ', v.slideCode);
-
-    showLoading({ type: UGLoadingType.Loading })
+    v.reloadSlide();
 
     // 注册
+    showLoading()
     NetworkRequest1.user_reg({
       inviter: v.referrerId,
       usr: v.account,
@@ -151,18 +154,16 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       regType: props.isAgent ? 'agent' : 'user',
     })
       .then(({ data: { autoLogin } }) => {
-        showLoading({ type: UGLoadingType.Success, text: '注册成功' });
+        showSuccess('注册成功');
         didRegisterSuccess(v.account, v.pwd1?.md5(), autoLogin);
       })
       .catch((err: Error) => {
-        showLoading({ type: UGLoadingType.Error, text: err.message });
+        showError(err.message);
       });
   }
 
   const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify } = UGStore.globalProps.sysConf;
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
-
-  console.log('qq = ', reg_qq == 0);
 
   return (
     <ScrollView style={{ paddingTop: 65, paddingBottom: 100 }}>
@@ -320,7 +321,9 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.fundPwd = text;
             }}
           />
-          <SlidingVerification hidden={reg_vcode == 0} didVerified={slideCode => {
+          <SlidingVerification hidden={reg_vcode == 0} setReload={(reload) => {
+            v.reloadSlide = reload;
+          }} didVerified={slideCode => {
             v.slideCode = slideCode
           }} />
           <Button

@@ -21,7 +21,7 @@ import IUserBean from '../../redux/model/user/IUserBean';
 import IRedBagBean from '../../redux/model/home/IRedBagBean';
 import IFloatAdBean from '../../redux/model/home/IFloatAdBean';
 import ILotteryNumberBean from '../../redux/model/home/ILotteryNumberBean';
-import { UGLoadingType, showLoading, hideLoading } from '../../public/widget/UGLoadingCP';
+import { UGLoadingType, showLoading, hideLoading, showReload } from '../../public/widget/UGLoadingCP';
 
 
 export interface IHomeBeanMovies {
@@ -61,7 +61,7 @@ export interface IHomePageState {
 
 export const XBJHomePage = (props: XBJHomeProps) => {
   const { setProps } = props;
-  showLoading({ type: UGLoadingType.Loading });
+  showLoading();
   const [scrollEnable, setScrollEnable] = React.useState<boolean>(true)
 
 
@@ -73,7 +73,7 @@ export const XBJHomePage = (props: XBJHomeProps) => {
         setProps({ ...value });
       })
       .catch(error => {
-        showLoading({ type: UGLoadingType.Reload, text: error });
+        showReload(error);
       });
   }
 

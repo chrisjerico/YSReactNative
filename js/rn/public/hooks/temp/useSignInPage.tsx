@@ -61,7 +61,7 @@ const useSignInPage = ({
 
   const { logIn } = useLogIn({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
       ToastStatus('正在登录...')
     },
     onSuccess: () => {

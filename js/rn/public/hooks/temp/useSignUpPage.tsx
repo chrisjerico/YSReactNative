@@ -54,7 +54,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()
@@ -70,7 +70,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const { register } = useRegister({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccessWithAutoLogin: () => {
       hideLoading()

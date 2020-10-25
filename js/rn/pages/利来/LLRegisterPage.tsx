@@ -113,7 +113,7 @@ export const LLRegisterPage = () => {
             const fundPwd = ""
             let smsCode_ = smsCode
             let imgCode_ = imgCode
-            showLoading({type: UGLoadingType.Loading, text: '正在注册...'});
+            showLoading('正在注册...');
 
             if (slideCode) {
                 smsCode_ = ""
