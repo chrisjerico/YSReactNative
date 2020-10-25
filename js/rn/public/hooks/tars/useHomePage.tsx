@@ -85,11 +85,15 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const lotterys = lotteryNumbers?.map((item, index) => {
     return { number: item, color: numColors[index], sx: numSxs[index] }
   })
+  // let homeGamesConcat = []
+  // homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
   // 官 信
-  let official_customise_games = []
-  lotteryGame?.data?.forEach((ele) => (official_customise_games = official_customise_games?.concat(ele?.list)))
+  // let official_customise_games = []
+  // lotteryGame?.data?.forEach((ele) => (official_customise_games = official_customise_games?.concat(ele?.list)))
+  const official_customise_games = lotteryGame?.data?.flatMap((ele) => ele?.list)
   const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
   const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
+  const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -127,6 +131,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     redBagLogo,
     roulette,
     floatAds,
+    homeGamesConcat,
   }
 
   const value = {

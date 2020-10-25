@@ -38,14 +38,11 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const { midBanners, navs, homeGames, officialGames, customiseGames } = homeInfo
+  const { midBanners, navs, homeGames, officialGames, customiseGames, homeGamesConcat } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
   const { mobile_logo, midBannerTimer } = sysInfo
-
-  let homeGamesConcat = []
-  homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
 
   const tabGames = [
     {

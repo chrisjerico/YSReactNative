@@ -23,6 +23,7 @@ const useSignOut = (options: Options = {}) => {
             OCHelper.call('UGUserModel.setCurrentUser:', []),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName']),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId']),
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']),
             OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]),
           ])
           break
@@ -49,8 +50,3 @@ const useSignOut = (options: Options = {}) => {
   return { signOut }
 }
 export default useSignOut
-
-// await OCHelper.call('UGUserModel.setCurrentUser:', [])
-// await  OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName'])
-// await  OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId'])
-// await  OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])

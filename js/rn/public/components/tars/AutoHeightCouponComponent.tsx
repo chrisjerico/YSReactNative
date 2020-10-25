@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Modal, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import { Button } from 'react-native-elements'
 import { ScrollView } from 'react-native-gesture-handler'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
+import Button from '../../../public/views/tars/Button'
+import AppDefine from '../../define/AppDefine'
 
 interface AutoHeightCouponAutoHeightCouponComponentProps {
   title: string
@@ -117,21 +118,19 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                activeOpacity={1}
                 title={'取消'}
                 onPress={() => {
                   setShowPop(false)
                 }}
                 titleStyle={{ color: '#000000' }}
-                buttonStyle={styles.cancelButton}
+                containerStyle={styles.cancelButton}
               />
               <Button
-                activeOpacity={1}
                 title={'确认'}
                 onPress={() => {
                   setShowPop(false)
                 }}
-                buttonStyle={styles.confirmButton}
+                containerStyle={styles.confirmButton}
               />
             </View>
           </View>
@@ -152,15 +151,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   cancelButton: {
-    backgroundColor: '#FCFCFC',
+    backgroundColor: '#0080FF',
     borderColor: '#8E8E8E',
-    borderWidth: scale(1),
+    borderWidth: AppDefine.onePx,
     width: scale(220),
+    aspectRatio: 3,
+    borderRadius: scale(5),
   },
   confirmButton: {
-    borderWidth: scale(1),
+    borderWidth: AppDefine.onePx,
     borderColor: '#8E8E8E',
     width: scale(220),
+    aspectRatio: 3,
+    borderRadius: scale(5),
   },
   title: {
     fontSize: scale(25),

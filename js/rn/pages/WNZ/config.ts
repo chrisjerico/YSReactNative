@@ -2,8 +2,7 @@ import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -34,23 +33,27 @@ const config = {
   menus: [
     {
       title: '会员中心',
-      onPress: () => { navigate(PageName.WNZMinePage) }
+      onPress: goToUserCenterType.我的页, // navigate(PageName.WNZMinePage)
     },
     {
       title: '额度转换',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.额度转换) },
+      onPress: goToUserCenterType.额度转换,
     },
     {
       title: '幸运棋牌',
-      onPress: () => { PushHelper.pushHomeGame({ seriesId: SeriesId.棋牌, gameId: 51, subId: 51 }) },
+      onPress: () => {
+        PushHelper.pushHomeGame({ seriesId: SeriesId.棋牌, gameId: 51, subId: 51 })
+      },
     },
     {
       title: '彩票游戏',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
+      onPress: goToUserCenterType.彩票大厅,
     },
     {
       title: 'AG视讯',
-      onPress: () => { PushHelper.pushHomeGame({ "gameId": 59, "seriesId": SeriesId.真人, "subId": 59, }) },
+      onPress: () => {
+        PushHelper.pushHomeGame({ gameId: 59, seriesId: SeriesId.真人, subId: 59 })
+      },
     },
     {
       title: '真人视讯',
@@ -84,19 +87,19 @@ const config = {
     },
     {
       title: '更多彩种',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票大厅) },
+      onPress: goToUserCenterType.彩票大厅,
     },
     {
       title: '投注记录',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录) },
+      onPress: goToUserCenterType.彩票注单记录,
     },
     {
       title: '开奖结果',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.开奖结果) },
+      onPress: goToUserCenterType.开奖结果,
     },
     {
       title: '长龙排行',
-      onPress: () => { PushHelper.pushUserCenterType(UGUserCenterType.长龙助手) },
+      onPress: goToUserCenterType.长龙助手,
     },
   ],
   menuSignIn: [
@@ -108,7 +111,7 @@ const config = {
   menuSignOut: [
     {
       title: '安全退出',
-      onPress: () => { },
+      onPress: () => {},
     },
   ],
 }

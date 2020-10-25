@@ -34,6 +34,7 @@ const KSHomePage = () => {
   const moreGames = lotterys?.slice(8, lotterys?.length) ?? []
   const { tryPlay } = sign
 
+  console.log('------homeGames-----', homeGames)
   return (
     <HomePage
       {...homeInfo}
@@ -56,7 +57,7 @@ const KSHomePage = () => {
       renderListHeaderComponent={() => (
         <>
           <HomeHeader logo={mobile_logo} />
-          <ProfileBlock {...userInfo} {...sysInfo} onPressSignUpButton={() => navigate(PageName.KSSignUpPage)} onPressTryPlay={tryPlay} />
+          <ProfileBlock {...userInfo} {...sysInfo} onPressSignUpButton={() => navigate(PageName.KSSignUpPage)} onPressTryPlay={tryPlay} onPressUnReadMsg={goToUserCenterType.站内信} />
           <View style={styles.toolBlock}>
             <LinearBadge
               colors={['#eb5d4d', '#fb7a24']}
@@ -120,6 +121,7 @@ const KSHomePage = () => {
               showOnlineNum={true}
               banners={banners}
               renderBanner={(item, index) => {
+                //@ts-ignore
                 const { linkCategory, linkPosition, pic } = item
                 return (
                   <TouchableImage

@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import { PageName } from '../../../public/navigation/Navigation'
@@ -8,6 +9,7 @@ import { navigate } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
+import TouchableImage from '../../../public/views/tars/TouchableImage'
 
 const { getHtml5Image } = useHtml5Image()
 
@@ -23,9 +25,10 @@ interface ProfileBlockProps {
   unreadMsg?: number
   onPressSignUpButton: () => any
   onPressTryPlay: () => any
+  onPressUnReadMsg: () => any
 }
 
-const ProfileBlock = ({ usr, curLevelTitle, balance, currency, balanceDecimal, unreadMsg, uid, onPressSignUpButton, onPressTryPlay }: ProfileBlockProps) => {
+const ProfileBlock = ({ usr, curLevelTitle, balance, currency, balanceDecimal, unreadMsg, uid, onPressSignUpButton, onPressTryPlay, onPressUnReadMsg }: ProfileBlockProps) => {
   return (
     <View style={[styles.toolBlock, { marginTop: scale(5) }]}>
       {uid ? (
@@ -60,7 +63,7 @@ const ProfileBlock = ({ usr, curLevelTitle, balance, currency, balanceDecimal, u
             </View>
           </View>
           <View style={{ aspectRatio: 1, height: '50%' }}>
-            <FastImage source={{ uri: getHtml5Image(22, 'xiaoxi') }} style={{ width: '100%', height: '100%' }} resizeMode={'contain'} />
+            <TouchableImage pic={getHtml5Image(22, 'xiaoxi')} containerStyle={{ width: '100%', height: '100%' }} resizeMode={'contain'} onPress={onPressUnReadMsg} />
             <View
               style={{
                 width: scale(30),
