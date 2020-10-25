@@ -56,6 +56,7 @@ interface HomePageProps {
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles
   noticeLogo?: string
+  showBannerBlock?: boolean
 }
 
 interface CouponBlockStyles {
@@ -131,6 +132,7 @@ const HomePage = ({
   containerStyle,
   noticeBlockStyles,
   noticeLogo,
+  showBannerBlock = true,
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
@@ -176,15 +178,17 @@ const HomePage = ({
           onRefresh={onRefresh}
           ListHeaderComponent={() => (
             <>
-              <BannerBlock
-                showOnlineNum={showOnlineNum}
-                containerStyle={styles.bannerContainer}
-                badgeStyle={styles.bannerBadge}
-                autoplayTimeout={bannersInterval}
-                onlineNum={onlineNum}
-                banners={banners}
-                renderBanner={renderBanner}
-              />
+              {showBannerBlock && (
+                <BannerBlock
+                  showOnlineNum={showOnlineNum}
+                  containerStyle={styles.bannerContainer}
+                  badgeStyle={styles.bannerBadge}
+                  autoplayTimeout={bannersInterval}
+                  onlineNum={onlineNum}
+                  banners={banners}
+                  renderBanner={renderBanner}
+                />
+              )}
               <NoticeBlock {...noticeBlockStyles} notices={notices} logo={noticeLogo} onPressNotice={onPressNotice} />
               {renderListHeaderComponent && renderListHeaderComponent()}
             </>
