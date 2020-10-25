@@ -1,5 +1,5 @@
-import React, { memo } from 'react'
-import { Image, StyleSheet, View, ViewStyle, TouchableWithoutFeedback, StyleProp } from 'react-native'
+import React from 'react'
+import { Image, StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 
 interface TouchableImageProps {
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default memo(TouchableImage)
+export default TouchableImage

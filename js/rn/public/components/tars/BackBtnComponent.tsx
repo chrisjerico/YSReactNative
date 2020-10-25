@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import useShowBackBtn from '../../hooks/tars/useShowBackBtn'
 import { PageName } from '../../navigation/Navigation'
 import { navigate, pop } from '../../navigation/RootNavigation'
@@ -19,4 +18,4 @@ const BackBtnComponent = ({ renderHeader, homePage }: MineHeaderComponentProps) 
   return renderHeader && renderHeader({ showBackBtn, onPressBackBtn })
 }
 
-export default memo(BackBtnComponent)
+export default BackBtnComponent

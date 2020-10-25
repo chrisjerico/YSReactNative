@@ -10,6 +10,7 @@ interface TabComponentProps {
   tabGames: TabGame[]
   itemHeight: number
   renderScene: ({ tabLabel, item, index, tab }: RenderScene) => any
+  renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
   focusTabColor?: string
   baseHeight?: number
   initialTabIndex?: number
@@ -20,7 +21,6 @@ interface TabComponentProps {
   enableAutoScrollTab?: boolean
   tabScrollEnabled?: boolean
   numColumns: number
-  renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
   tabTextColor?: string
   tabBarBackgroundColor?: string
 }
@@ -144,8 +144,6 @@ const TabComponent = ({
       animated: true,
     })
   }
-
-  // const Scene = (props) => renderScene && renderScene(props)
 
   const Scene = renderScene
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
@@ -42,7 +42,7 @@ const PromotionPage = (props: any) => {
 
   const categoriesKey = Object.keys(categories)
 
-  const onPress = ({ setShowPop, item, index }) => {
+  const handleOnPress = ({ setShowPop, item, index }) => {
     const { linkCategory, linkPosition } = item ?? {}
     switch (Platform.OS) {
       case 'ios':
@@ -88,6 +88,7 @@ const PromotionPage = (props: any) => {
     }
   }
 
+  // console.log('------list-----', list)
   if (loading) {
     return (
       <>
@@ -135,15 +136,8 @@ const PromotionPage = (props: any) => {
               ListFooterComponent={<BottomGap />}
               renderItem={({ item, index }) => {
                 const { title, pic, content } = item
-                return (
-                  <AutoHeightCouponComponent
-                    title={title}
-                    pic={pic}
-                    content={content}
-                    onPress={(setShowPop) => onPress({ item, setShowPop, index })}
-                    slide={style == 'slide' && selectedItemIndex == index}
-                  />
-                )
+                const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
+                return <AutoHeightCouponComponent title={title} pic={pic} content={content} onPress={onPress} slide={style == 'slide' && selectedItemIndex == index} />
               }}
             />
           </>
@@ -156,15 +150,8 @@ const PromotionPage = (props: any) => {
             ListFooterComponent={<BottomGap />}
             renderItem={({ item, index }) => {
               const { title, pic, content } = item
-              return (
-                <AutoHeightCouponComponent
-                  title={title}
-                  pic={pic}
-                  content={content}
-                  onPress={(setShowPop) => onPress({ item, setShowPop, index })}
-                  slide={style == 'slide' && selectedItemIndex == index}
-                />
-              )
+              const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
+              return <AutoHeightCouponComponent title={title} pic={pic} content={content} onPress={onPress} slide={style == 'slide' && selectedItemIndex == index} />
             }}
           />
         )}

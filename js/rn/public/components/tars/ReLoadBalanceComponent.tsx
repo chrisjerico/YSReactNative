@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { Animated, Easing, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { UGStore } from '../../../redux/store/UGStore'
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: scale(2)
   },
   title: { fontSize: scale(19) },
   balance: {
@@ -92,4 +91,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ReLoadBalanceComponent
+export default memo(ReLoadBalanceComponent)
