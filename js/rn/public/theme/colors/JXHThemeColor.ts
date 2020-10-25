@@ -28,5 +28,6 @@ export const JXHThemeColor: { [x: string]: UGThemeColor } = {
     get progressColor() {
       return this.themeColor
     },
+    themeColor: '#000000',
   },
 }

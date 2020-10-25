@@ -142,6 +142,7 @@ const WNZHomePage = () => {
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
+              //@ts-ignore
               const { linkCategory, linkPosition, image } = item
               return (
                 <TouchableImage

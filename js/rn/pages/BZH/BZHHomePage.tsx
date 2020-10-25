@@ -20,9 +20,7 @@ import HomeHeader from './views/HomeHeader'
 const onPressSignIn = () => push(PageName.BZHSignInPage)
 const onPressSignUp = () => push(PageName.BZHSignUpPage)
 const BZHHomePage = () => {
-  const { goTo, refresh, value } = useHomePage({
-
-  })
+  const { goTo, refresh, value } = useHomePage({})
   const { goToPromotionPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
@@ -89,6 +87,7 @@ const BZHHomePage = () => {
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
+              // @ts-ignore
               const { linkCategory, linkPosition, image } = item
               const memoizedPushCategory = useCallback(() => {
                 PushHelper.pushCategory(linkCategory, linkPosition)
