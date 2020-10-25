@@ -11,16 +11,16 @@ import {CMD} from "../define/ANHelper/hp/CmdDefine";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
-export function navigate<P>(page: PageName, props?: P): boolean {
-    return goFirstTransitionPage(page, props);
+export function navigate<P>(page: PageName, props?: P, willTransition?: boolean): boolean {
+    return goFirstTransitionPage(page, props, undefined, willTransition);
 }
 
-export function push<P extends object>(page: PageName, props?: P): boolean {
-    return goFirstTransitionPage(page, props, RouterType.Stack);
+export function push<P extends object>(page: PageName, props?: P, willTransition?: boolean): boolean {
+    return goFirstTransitionPage(page, props, RouterType.Stack, willTransition);
 }
 
-export function jumpTo<P extends object>(page: PageName, props?: P): boolean {
-    return goFirstTransitionPage(page, props, RouterType.Tab);
+export function jumpTo<P extends object>(page: PageName, props?: P, willTransition?: boolean): boolean {
+    return goFirstTransitionPage(page, props, RouterType.Tab, willTransition);
 }
 
 export function pop(): boolean {
@@ -81,24 +81,25 @@ export function replace(name: string, params?: any) {
     }
 }
 // 复杂页面第一次初始化会卡顿，先去过渡页再切换（优化用户体验）
-function goFirstTransitionPage(page: PageName, props: any, action?: RouterType): boolean {
+function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, willTransition?: boolean): boolean {
     action = Router.getPageRouterType(page, action);
 
     if (action === RouterType.None) {
         console.log('查无此页面', page);
         return false;
     }
-    if (getCurrentPage() === page) {
+    const currentPage = getCurrentPage();
+    if (currentPage === page) {
         console.log('页面已存在', page);
         return false;
     }
 
     try {
-        if (getCurrentPage() == PageName.TransitionPage) {
+        if (!willTransition || currentPage == PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == RouterType.Stack) {
                 const canPop = navigationRef?.current?.getRootState().routes.length > 1;
-                if (canPop) {
+                if (canPop && currentPage == PageName.TransitionPage) {
                     navigationRef?.current?.dispatch(StackActions.replace(page, props));
                 } else {
                     navigationRef?.current?.dispatch(StackActions.push(page, props));

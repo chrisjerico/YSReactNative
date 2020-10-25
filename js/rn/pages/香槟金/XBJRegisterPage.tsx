@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {View, Text, Platform} from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,14 +10,21 @@ import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import AppDefine from '../../public/define/AppDefine';
 import UGTextField from '../../public/widget/UGTextField';
 import { connect } from 'react-redux';
-import {  PageName } from '../../public/navigation/Navigation';
+import { PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import { UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { navigate } from '../../public/navigation/RootNavigation';
-import {Toast} from "../../public/tools/ToastUtils";
+import { navigate, popToRoot } from '../../public/navigation/RootNavigation';
+import { Toast } from "../../public/tools/ToastUtils";
+import { SlidingVerification } from './XBJLoginPage';
+import { showLoading, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { ANHelper } from '../../public/define/ANHelper/ANHelper';
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine';
+import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
+import APIRouter from '../../public/network/APIRouter';
+import UGUserModel from '../../redux/model/全局/UGUserModel';
 
 
 interface XBJRegisterVars {
@@ -39,26 +46,6 @@ interface XBJRegisterVars {
 // 定义Props
 export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps, XBJRegisterVars> {
   isAgent?: boolean; // 是否代理注册
-  accountErr?: string; // 用户名错误信息
-  sysConf?: UGSysConfModel;
-}
-
-// 滑动验证
-function SlidingVerification(props: { hidden: boolean }) {
-  return (
-    <View style={{ marginTop: 13, height: props.hidden ? 0 : 52, borderRadius: 26, overflow: 'hidden' }}>
-      <WebView
-        style={{ marginLeft: -15, marginRight: -14, marginTop: -22, flex: 1 }}
-        javaScriptEnabled
-        startInLoadingState
-        source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
-        onMessage={e => {
-          console.log('e=');
-          console.log(e);
-        }}
-      />
-    </View>
-  );
 }
 
 export const XBJRegisterPage = (props: XBJRegisterProps) => {
@@ -68,7 +55,6 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     setProps({
       backgroundColor: Skin1.bgColor,
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
-      accountErr: '',
     })
   }, []);
 
@@ -86,7 +72,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       smsVerify, // 是否需要短信验证码
       pass_length_min,
       pass_length_max,
-    } = props.sysConf;
+    } = UGStore.globalProps?.sysConf;
     let err: string;
     const pwdWrongLength: boolean = v.pwd1?.length < pass_length_min || v.pwd1?.length > pass_length_max;
     if (hide_reco == 2) {
@@ -144,43 +130,42 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       return;
     }
 
+    console.log('slideCode = ', v.slideCode);
+
+    showLoading({ type: UGLoadingType.Loading })
+
     // 注册
     NetworkRequest1.user_reg({
       inviter: v.referrerId,
       usr: v.account,
-      pwd: v.pwd1.md5(),
-      fundPwd: v.fundPwd.md5(),
+      pwd: v.pwd1?.md5(),
+      fundPwd: v.fundPwd?.md5(),
       fullName: v.realname,
       qq: v.qq,
       wx: v.wechat,
       phone: v.phone,
       smsCode: v.smsCode,
       imgCode: v.letterCode,
-      slideCode: v.slideCode,
+      slideCode: new SlideCodeModel(v.slideCode),
       email: v.email,
       regType: props.isAgent ? 'agent' : 'user',
     })
-      .then(data => {
-
-        console.log(data);
+      .then(({ data: { autoLogin } }) => {
+        showLoading({ type: UGLoadingType.Success, text: '注册成功' });
+        didRegisterSuccess(v.account, v.pwd1?.md5(), autoLogin);
       })
       .catch((err: Error) => {
-        switch (Platform.OS) {
-          case 'ios':
-            OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
-            break;
-          case 'android':
-            Toast(err.message)
-            break;
-        }
+        showLoading({ type: UGLoadingType.Error, text: err.message });
       });
   }
 
-  const { agentRegbutton = '1', hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify } = UGStore.globalProps.sysConf;
+  const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify } = UGStore.globalProps.sysConf;
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
 
+  console.log('qq = ', reg_qq == 0);
+
   return (
-    <ScrollView style={{ paddingTop: 50, paddingBottom: 100 }}>
+    <ScrollView style={{ paddingTop: 65, paddingBottom: 100 }}>
       <FastImage source={{ uri: 'https://i.ibb.co/PrsPnxF/m-logo.png' }} style={{ marginLeft: AppDefine.width * 0.5 - 50, width: 100, height: 36 }} />
       <View style={{ marginLeft: 24, marginTop: 56, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <TouchableOpacity
@@ -227,6 +212,8 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           <UGTextField
             type="推荐人ID"
             placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
+            value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}
+            editable={parseInt(domainBindAgentId) <= 0}
             hidden={!hide_reco}
             onChangeText={text => {
               v.referrerId = text;
@@ -236,29 +223,10 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             type="账号"
             placeholder="账号长度为6-15位"
             errorMessage="用户名: 为 6-15 位字母与数字组成"
-            onEndEditing={() => {
-              if (v.account.length) {
-                var tmpAccount = v.account;
-                NetworkRequest1.user_exists(tmpAccount)
-                  .then(() => {
-                    setProps({ accountErr: null })
-                  })
-                  .catch((err: Error) => {
-                    if (v.account === tmpAccount) {
-                      setProps({ accountErr: err.message });
-                    }
-                  });
-              } else {
-                setProps({ accountErr: null });
-              }
-            }}
             onChangeText={text => {
               v.account = text;
             }}
           />
-          <Text style={{ marginRight: 5, marginTop: props.accountErr ? 5 : 0, height: props.accountErr ? 18 : 0, color: 'red', textAlign: 'right', fontSize: 12 }}>
-            {props.accountErr}
-          </Text>
           <UGTextField
             type="密码"
             onChangeText={text => {
@@ -352,7 +320,9 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.fundPwd = text;
             }}
           />
-          <SlidingVerification hidden={reg_vcode != 2} />
+          <SlidingVerification hidden={reg_vcode == 0} didVerified={slideCode => {
+            v.slideCode = slideCode
+          }} />
           <Button
             style={{ marginTop: 24 }}
             buttonStyle={{ borderRadius: 20, height: 40, borderWidth: 0.5, borderColor: '#B0937D' }}
@@ -367,4 +337,77 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       <View style={{ height: 200 }} />
     </ScrollView>
   );
+}
+
+async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean) {
+  if (autoLogin) {
+    let user
+    switch (Platform.OS) {
+      case 'ios':
+        user = await OCHelper.call('UGUserModel.currentUser');
+        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
+        break;
+      case 'android':
+        user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+        Toast('注册成功')
+        break;
+    }
+
+    const { data: loginData, status } = await APIRouter.user_login(acct, pwd)
+
+    if (user) {
+      console.log('退出旧账号: ', user)
+      switch (Platform.OS) {
+        case 'ios':
+          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+          await OCHelper.call('UGUserModel.setCurrentUser:');
+          break;
+        case 'android':
+          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
+          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
+          break;
+      }
+      UGStore.dispatch({ type: 'reset' })
+    }
+
+    switch (Platform.OS) {
+      case 'ios':
+        await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [true, 'isRememberPsd']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [acct, 'userName']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [pwd, 'userPsw']);
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+        await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+        break;
+      case 'android':
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.LOGIN_INFO,
+            ...loginData?.data
+          });
+        break;
+    }
+    const { data: UserInfo, } = await APIRouter.user_info()
+
+    switch (Platform.OS) {
+      case 'ios':
+        await OCHelper.call('UGUserModel.setCurrentUser:', [{ ...UserInfo.data, ...UGUserModel.getYS(loginData?.data) }]);
+        break;
+      case 'android':
+        await ANHelper.callAsync(CMD.SAVE_DATA,
+          {
+            key: NA_DATA.USER_INFO,
+            ...UserInfo?.data
+          })
+        break;
+    }
+
+    UGStore.dispatch({ type: 'merge', props: UserInfo?.data });
+    UGStore.save();
+    popToRoot();
+  } else {
+    popToRoot();
+    navigate(PageName.XBJLoginPage, { usr: acct, pwd: pwd })
+  }
 }

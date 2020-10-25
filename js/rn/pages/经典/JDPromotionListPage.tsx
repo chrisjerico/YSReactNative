@@ -47,7 +47,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       },
     });
 
-    NetworkRequest1.systeam_promotions().then(data => {
+    NetworkRequest1.systeam_promotions().then(({data}) => {
       if (data.showCategory) {
         const temp: { [x: number]: Array<UGPromoteModel> } = [];
         data.list.map(pm => {

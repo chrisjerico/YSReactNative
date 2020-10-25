@@ -95,7 +95,7 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
     // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
 
     NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
-      .then(data => {
+      .then(({data}) => {
         console.log('登录成功');
         // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
         Toast('登录成功！')

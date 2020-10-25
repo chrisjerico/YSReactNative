@@ -1,17 +1,27 @@
-import {ANHelper} from './../define/ANHelper/ANHelper';
-import {Platform} from 'react-native';
+import { ANHelper } from './../define/ANHelper/ANHelper';
+import { Platform } from 'react-native';
 import AppDefine from '../define/AppDefine';
-import {OCHelper} from '../define/OCHelper/OCHelper';
-import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { CMD } from "../define/ANHelper/hp/CmdDefine";
+import { string } from 'prop-types';
 
 interface Dictionary {
   [x: string]: any;
 }
 
-interface ResponseObject {
+export class ErrorObject extends Error {
+  resObject: ResponseObject;
+
+  constructor(msg: string, resObject?: ResponseObject) {
+    super(msg);
+    this.resObject = resObject;
+  }
+}
+
+export interface ResponseObject<T = {} | [] | string> {
   code: number;
   msg: string;
-  data: any;
+  data: T;
 }
 
 export default class CCSessionModel {
@@ -33,17 +43,17 @@ export default class CCSessionModel {
     if (Platform.OS == 'ios') {
       return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp]);
     } else {
-      return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {params: params});
+      return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: params });
     }
   }
 
   // 发起请求
-  static req(path: string, params: object = {}, isPost: boolean = false): Promise<any> {
+  static req<T>(path: string, params: object = {}, isPost: boolean = false): Promise<ResponseObject<T>> {
     var url = `${AppDefine.host}/wjapp/api.php?${path}`;
     return this.request(url, params, isPost);
   }
 
-  static request(url: string, params: object = {}, isPost: boolean = false): Promise<any> {
+  static request<T>(url: string, params: object = {}, isPost: boolean = false): Promise<ResponseObject<T>> {
     // 添加公共参数
     params = Object.assign({}, this.publicParams, params);
 
@@ -84,7 +94,7 @@ export default class CCSessionModel {
             'Content-Type': 'application/json',
           }),
         })
-          .then(function(response) {
+          .then(function (response) {
             // 检查是否正常返回
             if (response.ok) {
               // 返回的是一个promise对象, 值就是后端返回的数据, 调用then()可以接收
@@ -93,17 +103,17 @@ export default class CCSessionModel {
             }
             return Promise.reject(new Error('请求失败：' + response.statusText));
           })
-          .then((responseObject: ResponseObject) => {
-            if (responseObject.code != 0) {
-              return Promise.reject(new Error(responseObject.msg));
+          .then((resObject: ResponseObject<T>) => {
+            if (resObject.code != 0) {
+              return Promise.reject(new ErrorObject(resObject?.msg, resObject));
             }
-            return Promise.resolve(responseObject.data);
+            return Promise.resolve(resObject);
           });
       })
       .catch(err => {
         console.log('请求失败， err = ');
         console.log(err);
-        return Promise.reject(err);
+        return Promise.reject(new ErrorObject(err.message));
       });
     return promise;
   }

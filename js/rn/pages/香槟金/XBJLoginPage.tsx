@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {View, Text, Platform, PlatformIOSStatic, PlatformAndroidStatic} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,16 +12,14 @@ import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import UGTextField from '../../public/widget/UGTextField';
 import PushHelper from '../../public/define/PushHelper';
-import { connect } from 'react-redux';
-import {  PageName } from '../../public/navigation/Navigation';
+import { PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
-import { number } from 'prop-types';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { UGLoadingType, showLoading } from '../../public/widget/UGLoadingCP';
 import { XBJRegisterProps } from './XBJRegisterPage';
 import { navigate } from '../../public/navigation/RootNavigation';
+import { ErrorObject } from '../../public/network/CCSessionModel';
 
 
 // 声明成员变量
@@ -36,10 +34,12 @@ interface XJBLoginVars {
 // 声明Props
 export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, XJBLoginVars> {
   rememberPassword?: boolean; // 是否记住密码
+  usr?: string;
+  pwd?: string;
 }
 
 // 滑动验证
-function SlidingVerification(props: { hidden: boolean }) {
+export function SlidingVerification(props: { hidden: boolean, didVerified: (slideCode: SlideCodeModel) => void }) {
   return (
     <View style={{ marginTop: 13, height: props.hidden ? 0 : 52, borderRadius: 26, overflow: 'hidden' }}>
       <WebView
@@ -48,8 +48,13 @@ function SlidingVerification(props: { hidden: boolean }) {
         startInLoadingState
         source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
         onMessage={(e) => {
-          console.log('e=');
-          console.log(e);
+          const temp: any = e?.nativeEvent?.data;
+          const slideCode: SlideCodeModel = temp;
+          if (slideCode?.nc_sig) {
+            console.log('滑动成功2', slideCode);
+            props.didVerified(slideCode)
+          }
+          // console.log('e=', e?.nativeEvent?.data);
         }}
       />
     </View>
@@ -57,7 +62,8 @@ function SlidingVerification(props: { hidden: boolean }) {
 }
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
-  let { setProps, vars: v } = props;
+  const { setProps, vars: v } = props;
+  const { loginVCode } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
     async function getLocalPwd() {
@@ -81,7 +87,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps();
       } else {
         setProps({
-          navbarOpstions: { hidden:false, backgroundColor: 'transparent', hideUnderline: true, back: true },
+          navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
           rememberPassword: isRemember
         })
@@ -104,8 +110,8 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       return;
     }
     OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, v.slideCode)
-      .then((data) => {
+    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode))
+      .then(({ data }) => {
         console.log('登录成功');
         OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
 
@@ -141,9 +147,9 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         }
         didLogin();
       })
-      .catch((err: Error) => {
+      .catch((err: ErrorObject) => {
         OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
-        if ((v.errorTimes += 1) > 3) {
+        if (loginVCode || (v.errorTimes += 1) > 3) {
           setProps();
         }
       });
@@ -159,19 +165,22 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             type="账号"
             placeholder="请输入账号"
             containerStyle={{ marginTop: 24 }}
-            defaultValue={v.account}
+            defaultValue={props.usr ?? v.account}
             onChangeText={(text) => {
               v.account = text;
             }}
           />
           <UGTextField
             type="密码"
-            defaultValue={v.pwd}
+            defaultValue={props.pwd ?? v.pwd}
             onChangeText={(text) => {
               v.pwd = text;
             }}
           />
-          <SlidingVerification hidden={v.errorTimes < 4} />
+          <SlidingVerification hidden={!loginVCode || v.errorTimes < 4} didVerified={(slideCode) => {
+            v.slideCode = slideCode;
+            console.log('滑动成功', slideCode);
+          }} />
           <View style={{ marginTop: 18, flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
               style={{ flexDirection: 'row' }}
