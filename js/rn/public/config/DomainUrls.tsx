@@ -95,7 +95,7 @@ const DomainUrls = {
   'c228': 'https://app77787.co',
   'c225': 'https://8393483.com',
   'c230': 'https://www.jdapp588.com',
-  'c235': 'https://p36005.com',
+  'c235': 'https://www.hilliot.com',
   'c237': 'http://app13478.com',
   'c239b': 'https://5566569.com',
   'c242': 'https://460889.com',
