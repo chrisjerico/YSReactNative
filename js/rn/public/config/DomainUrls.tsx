@@ -82,7 +82,7 @@ const DomainUrls = {
   'c190': 'https://306565.com',
   'c193': 'https://4906app.app',
   'c198': 'https://2909tycjt.com',
-  'c200': 'https://20191995.com',
+  'c200': 'https://20181995.com',
   'c201': 'https://dkcp520.com',
   'c203': 'https://xpjcpapp.com',
   'c205': 'https://494.cyou',
