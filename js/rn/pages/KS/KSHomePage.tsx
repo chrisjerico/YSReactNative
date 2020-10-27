@@ -27,13 +27,14 @@ const KSHomePage = () => {
 
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette, homeGamesConcat } = homeInfo
+  const { bannersInterval, onlineNum, banners, homeGamesConcat } = homeInfo
   const { mobile_logo } = sysInfo
 
   const smallGames = homeGamesConcat?.slice(4, 8) ?? []
   const moreGames = homeGamesConcat?.slice(8, homeGamesConcat?.length) ?? []
   const { tryPlay } = sign
 
+  console.log('----homeGamesConcat[0]----', homeGamesConcat[0])
   return (
     <HomePage
       {...homeInfo}
@@ -139,23 +140,20 @@ const KSHomePage = () => {
           </View>
           <View style={[styles.toolBlock, { height: scale(212) }]}>
             <CoverButton
-              logo={homeGamesConcat[0]?.logo || homeGamesConcat[0]?.icon}
-              title={homeGamesConcat[0]?.name || homeGamesConcat[0]?.title}
+              logo={homeGamesConcat[0]?.icon || homeGamesConcat[0]?.logo}
               containerStyle={{ marginLeft: '1%', width: '60%', marginRight: '0.5%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
               onPress={() => PushHelper.pushHomeGame(homeGamesConcat[0])}
             />
             <View style={{ alignItems: 'center', marginRight: '1%', marginLeft: '0.5%', width: '37%', justifyContent: 'space-between' }}>
               <CoverButton
-                logo={homeGamesConcat[1]?.logo || homeGamesConcat[1]?.icon}
-                title={homeGamesConcat[1]?.name || homeGamesConcat[1]?.title}
+                logo={homeGamesConcat[1]?.icon || homeGamesConcat[1]?.logo}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
                 onPress={() => PushHelper.pushHomeGame(homeGamesConcat[1])}
               />
               <CoverButton
-                logo={homeGamesConcat[2]?.logo || homeGamesConcat[2]?.icon}
-                title={homeGamesConcat[2]?.name || homeGamesConcat[2]?.title}
+                logo={homeGamesConcat[2]?.icon || homeGamesConcat[2]?.logo}
                 containerStyle={{ width: '100%', height: scale(102), backgroundColor: '#3a3a41', borderRadius: scale(5) }}
                 titleStyle={{ fontSize: scale(25) }}
                 onPress={() => PushHelper.pushHomeGame(homeGamesConcat[2])}
@@ -187,7 +185,7 @@ const KSHomePage = () => {
                       imageContainerStyle={{ width: '70%', aspectRatio: 1 }}
                       titleStyle={{ color: '#97989d' }}
                       enableCircle={false}
-                      logo={logo || icon}
+                      logo={icon || logo}
                       title={name || title}
                       showSecondLevelIcon={false}
                       showSubTitle={false}
@@ -200,8 +198,7 @@ const KSHomePage = () => {
               </View>
             </View>
             <CoverButton
-              logo={homeGamesConcat[3]?.logo || homeGamesConcat[3]?.icon}
-              title={homeGamesConcat[3]?.name || homeGamesConcat[3]?.title}
+              logo={homeGamesConcat[3]?.icon || homeGamesConcat[3]?.logo}
               containerStyle={{ marginRight: '1%', marginLeft: '0.5%', width: '20%', height: '100%', backgroundColor: '#3a3a41', borderRadius: scale(5) }}
               titleStyle={{ fontSize: scale(25) }}
               onPress={() => PushHelper.pushHomeGame(homeGamesConcat[3])}
@@ -220,7 +217,7 @@ const KSHomePage = () => {
                   <MoreGameButton
                     title={name || title}
                     subtitle={subtitle}
-                    logo={logo || icon}
+                    logo={icon || logo}
                     onPress={() => {
                       PushHelper.pushHomeGame(item)
                     }}

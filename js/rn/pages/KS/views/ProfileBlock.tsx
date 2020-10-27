@@ -11,7 +11,7 @@ import { useHtml5Image } from '../../../public/tools/tars'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 import TouchableImage from '../../../public/views/tars/TouchableImage'
 
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const buttonHeight = scale(82)
 

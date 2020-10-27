@@ -5,7 +5,7 @@ import { scale } from '../../../public/tools/Scale'
 
 interface CoverButtonProps {
   logo: string
-  title: string
+  title?: string
   containerStyle?: StyleProp<ViewStyle>
   titleStyle?: StyleProp<TextStyle>
   onPress?: () => any
