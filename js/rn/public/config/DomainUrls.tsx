@@ -48,7 +48,7 @@ const DomainUrls = {
   'c018': 'https://204421.com',
   'c035': 'https://5504707.com',
   'c048': 'https://dsjf43-43-f14-345-36-g54t-gfh54.com',
-  'c052': 'http://2075app.com',
+  'c052': 'https://4924920.com',
   'c053': 'https://988c53.com',
   'c073': 'https://c732.vip',
   'c083': 'http://t111f.fhptcdn.com',
