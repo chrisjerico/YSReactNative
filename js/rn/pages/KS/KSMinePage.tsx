@@ -19,7 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const KSMinePage = () => {
   const { value, sign } = useMinePage({
