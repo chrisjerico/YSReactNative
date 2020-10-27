@@ -31,6 +31,7 @@ const DomainUrls = {
   'txt07': 'http://test07.6yc.com',
   'txt126': 'http://t126f.fhptcdn.com',
   'txt128': 'http://t128f.fhptcdn.com',
+  'txt131': 'http://test131.fhptcdn.com',
   'txt500': 'http://t500f.fhptcdn.com',
   'txt501': 'http://t501f.fhptcdn.com',
   'txt502': 'http://t502f.fhptcdn.com',
