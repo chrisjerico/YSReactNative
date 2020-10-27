@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import AppDefine from '../../../public/define/AppDefine'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -29,7 +28,6 @@ interface ProfileBlockProps {
 const ProfileBlock = ({
   uid,
   curLevelTitle,
-  isTest,
   avatar,
   usr,
   balance,
@@ -40,13 +38,14 @@ const ProfileBlock = ({
   onPressSignUpButton,
   onPressSignInButton,
 }: ProfileBlockProps) => {
+  const [hideBalance, setHideBalance] = useState(false)
   return (
     <View style={{ width: '100%', aspectRatio: 2.3, backgroundColor: '#111111', borderRadius: scale(10), overflow: 'hidden' }}>
       <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
         {uid ? (
           <>
             <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
-              <Avatar size={30} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} />
+              <Avatar size={30} uri={avatar} />
               <Text style={{ color: '#2a2a2a', marginHorizontal: scale(10) }}>{usr}</Text>
               <LinearBadge
                 title={curLevelTitle}
@@ -64,7 +63,7 @@ const ProfileBlock = ({
           </>
         ) : (
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Avatar size={30} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} />
+            <Avatar size={30} uri={avatar} />
             <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
           </View>
         )}
@@ -72,11 +71,18 @@ const ProfileBlock = ({
       <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
         {uid ? (
           <View style={{ flex: 1, marginLeft: scale(20) }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
-              <AntDesign name={'eye'} color={'#676767'} size={20} />
+              <Ionicons
+                name={hideBalance ? 'ios-eye-off' : 'ios-eye'}
+                color={'#676767'}
+                size={25}
+                onPress={() => {
+                  setHideBalance(!hideBalance)
+                }}
+              />
             </View>
-            <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{balance}</Text>
+            <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</Text>
           </View>
         ) : (
           <>

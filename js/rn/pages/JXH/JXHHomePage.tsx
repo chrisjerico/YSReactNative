@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import { ImageBackground, StyleSheet } from 'react-native'
 import TabComponent from '../../public/components/tars/TabComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -50,7 +51,7 @@ const JXHHomePage = () => {
       source={{
         uri: getIbbImage('XkRNwyM/1602669892140124'),
       }}
-      style={{ flex: 1, paddingHorizontal: '1%' }}>
+      style={{ flex: 1 }}>
       <HomePage
         {...homeInfo}
         {...userInfo}
@@ -72,6 +73,7 @@ const JXHHomePage = () => {
           <>
             <ProfileBlock
               {...(userInfo as any)}
+              avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
               onPressTryPlay={tryPlay}
               onPressLeftButton={goToUserCenterType.存款}
               onPressRightButton={goToUserCenterType.取款}
@@ -103,6 +105,7 @@ const JXHHomePage = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
+    paddingHorizontal: '1%',
   },
 })
 
@@ -129,14 +132,15 @@ const couponBlockStyles = StyleSheet.create({
   containerStyle: {
     marginTop: scale(10),
     width: null,
+    backgroundColor: '#2a2a2a',
   },
   titleContainerStyle: {
-    backgroundColor: '#3a3a41',
+    backgroundColor: '#2a2a2a',
     borderTopLeftRadius: scale(10),
     borderTopRightRadius: scale(10),
   },
   listContainerStyle: {
-    backgroundColor: '#3a3a41',
+    backgroundColor: '#2a2a2a',
     borderBottomLeftRadius: scale(10),
     borderBottomRightRadius: scale(10),
   },
@@ -157,6 +161,7 @@ const couponStyles = StyleSheet.create({
     padding: scale(5),
     borderRadius: scale(5),
     paddingBottom: scale(20),
+    backgroundColor: '#2a2a2a',
   },
 })
 
@@ -166,14 +171,14 @@ const animatedRankComponentStyles = StyleSheet.create({
   },
   containerStyle: {
     marginTop: scale(10),
-    backgroundColor: '#282828',
+    backgroundColor: '#2a2a2a',
     borderRadius: scale(10),
   },
   contentTitleStyle: {
     color: '#ffffff',
   },
   iconTitleContainerStyle: {
-    backgroundColor: '#282828',
+    backgroundColor: '#2a2a2a',
     borderTopLeftRadius: scale(10),
     borderTopRightRadius: scale(10),
   },
@@ -181,7 +186,7 @@ const animatedRankComponentStyles = StyleSheet.create({
     width: '95%',
     alignSelf: 'center',
     marginBottom: scale(20),
-    backgroundColor: '#282828',
+    backgroundColor: '#2a2a2a',
   },
   iconStyle: {
     color: '#ffffff',
