@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
@@ -114,7 +114,13 @@ const JXHMinePage = () => {
                 containerStyle={{ marginVertical: scale(15), width: '33%' }}
                 showUnReadMsg={code == UGUserCenterType.站内信}
                 unreadMsg={unreadMsg || 0}
-                onPress={code == -1 ? signOut : () => {}}
+                onPress={
+                  code == -1
+                    ? signOut
+                    : () => {
+                        PushHelper.pushUserCenterType(code)
+                      }
+                }
               />
             )
           }}

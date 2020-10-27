@@ -1,9 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import { PageName } from '../../../public/navigation/Navigation'
-import { navigate } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -23,9 +21,24 @@ interface ProfileBlockProps {
   onPressTryPlay: () => any
   onPressLeftButton: () => any
   onPressRightButton: () => any
+  onPressSignUpButton: () => any
+  onPressSignInButton: () => any
 }
 
-const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPressExchange, onPressTryPlay, onPressLeftButton, onPressRightButton }: ProfileBlockProps) => {
+const ProfileBlock = ({
+  uid,
+  curLevelTitle,
+  isTest,
+  avatar,
+  usr,
+  balance,
+  onPressExchange,
+  onPressTryPlay,
+  onPressLeftButton,
+  onPressRightButton,
+  onPressSignUpButton,
+  onPressSignInButton,
+}: ProfileBlockProps) => {
   return (
     <View style={{ width: '100%', aspectRatio: 2.3, backgroundColor: '#111111', borderRadius: scale(10), overflow: 'hidden' }}>
       <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
@@ -66,21 +79,12 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
           </View>
         ) : (
           <>
-            <Button
-              title={'登录'}
-              containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]}
-              titleStyle={{ color: '#ffffff', fontSize: scale(20) }}
-              onPress={() => {
-                navigate(PageName.JXHSignInPage)
-              }}
-            />
+            <Button title={'登录'} containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]} titleStyle={{ color: '#ffffff', fontSize: scale(20) }} onPress={onPressSignUpButton} />
             <Button
               title={'注册'}
               containerStyle={[styles.signButton, { backgroundColor: '#000000', borderColor: '#cfa461', borderWidth: scale(1) }]}
               titleStyle={{ color: '#cfa461', fontSize: scale(20) }}
-              onPress={() => {
-                navigate(PageName.JXHSignUpPage)
-              }}
+              onPress={onPressSignInButton}
             />
           </>
         )}

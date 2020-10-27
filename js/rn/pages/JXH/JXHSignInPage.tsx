@@ -43,7 +43,7 @@ const JXHSignInPage = () => {
               <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
           </View>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#000000'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>

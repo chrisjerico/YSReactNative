@@ -3,12 +3,13 @@ import { StyleSheet } from 'react-native'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import ProfileBlock from './views/ProfileBlock'
 
@@ -64,24 +65,19 @@ const JXHHomePage = () => {
       renderHeader={() => null}
       renderListHeaderComponent={() => (
         <>
-          {/* <NoticeBlock
-            containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor, borderRadius: 0 }}
-            bgContainerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
-            logoTextStyle={{
-              color: '#95979f',
-              fontSize: scale(18),
-              paddingHorizontal: scale(5),
+          <ProfileBlock
+            {...(userInfo as any)}
+            onPressTryPlay={tryPlay}
+            onPressLeftButton={goToUserCenterType.存款}
+            onPressRightButton={goToUserCenterType.取款}
+            onPressExchange={goToPromotionPage}
+            onPressSignInButton={() => {
+              navigate(PageName.JXHSignInPage)
             }}
-            textStyle={{
-              color: '#95979f',
-              fontSize: scale(18),
+            onPressSignUpButton={() => {
+              navigate(PageName.JXHSignUpPage)
             }}
-            notices={notices}
-            onPressNotice={({ content }) => {
-              PushHelper.pushNoticePopUp(content)
-            }}
-          /> */}
-          <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} onPressLeftButton={goToUserCenterType.存款} onPressRightButton={goToUserCenterType.取款} onPressExchange={goToPromotionPage} />
+          />
           <TabComponent
             tabBarBackgroundColor={'#000000'}
             tabTextColor={'#ffffff'}
