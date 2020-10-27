@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, TextStyle 
 import Feather from 'react-native-vector-icons/Feather'
 import { scale } from '../../../public/tools/Scale'
 
-interface CheckBoxProps {
+export interface CheckBoxProps {
   onPress: (check: boolean) => any
   label: string
   containerStyle?: ViewStyle | ViewStyle

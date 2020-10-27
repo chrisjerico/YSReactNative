@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -45,8 +46,8 @@ const ProfileBlock = ({
         {uid ? (
           <>
             <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
-              <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10) }}>{usr}</Text>
+              <Avatar size={30} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} />
+              <Text style={{ color: '#2a2a2a', marginHorizontal: scale(10) }}>{usr}</Text>
               <LinearBadge
                 title={curLevelTitle}
                 colors={['#cfa461', '#cfa461']}
@@ -63,7 +64,7 @@ const ProfileBlock = ({
           </>
         ) : (
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
+            <Avatar size={30} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} />
             <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
           </View>
         )}
@@ -79,17 +80,17 @@ const ProfileBlock = ({
           </View>
         ) : (
           <>
-            <Button title={'登录'} containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]} titleStyle={{ color: '#ffffff', fontSize: scale(20) }} onPress={onPressSignUpButton} />
+            <Button title={'登录'} containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]} titleStyle={{ color: '#ffffff', fontSize: scale(20) }} onPress={onPressSignInButton} />
             <Button
               title={'注册'}
               containerStyle={[styles.signButton, { backgroundColor: '#000000', borderColor: '#cfa461', borderWidth: scale(1) }]}
               titleStyle={{ color: '#cfa461', fontSize: scale(20) }}
-              onPress={onPressSignInButton}
+              onPress={onPressSignUpButton}
             />
           </>
         )}
       </View>
-      <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+      <View style={{ flex: 1, backgroundColor: '#2a2a2a', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
         {uid ? (
           <>
             <Button

@@ -4,7 +4,7 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useHomeInfo from './useHomeInfo'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
@@ -46,7 +46,8 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
     onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '退出成功' })
+      hideLoading()
+      // showLoading({ type: UGLoadingType.Success, text: '退出成功' })
       reRender()
       onSuccessSignOut && onSuccessSignOut()
     },

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { StyleSheet } from 'react-native'
+import { ImageBackground, StyleSheet } from 'react-native'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
@@ -7,7 +7,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType } from '../../public/tools/tars'
+import { getIbbImage, goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import TouchableImage from '../../public/views/tars/TouchableImage'
@@ -46,68 +46,73 @@ const JXHHomePage = () => {
   }, [])
 
   return (
-    <HomePage
-      {...homeInfo}
-      {...userInfo}
-      {...sysInfo}
-      {...goTo}
-      loading={loading}
-      refreshing={refreshing}
-      refresh={refresh}
-      pagekey={'JXHHomePage'}
-      headerColor={'#000000'}
-      containerStyle={styles.container}
-      noticeBlockStyles={noticeBlockStyles}
-      couponBlockStyles={couponBlockStyles}
-      couponStyles={couponStyles}
-      animatedRankComponentStyles={animatedRankComponentStyles}
-      bottomLogoStyles={bottomLogoStyles}
-      renderHeader={() => null}
-      renderListHeaderComponent={() => (
-        <>
-          <ProfileBlock
-            {...(userInfo as any)}
-            onPressTryPlay={tryPlay}
-            onPressLeftButton={goToUserCenterType.存款}
-            onPressRightButton={goToUserCenterType.取款}
-            onPressExchange={goToPromotionPage}
-            onPressSignInButton={() => {
-              navigate(PageName.JXHSignInPage)
-            }}
-            onPressSignUpButton={() => {
-              navigate(PageName.JXHSignUpPage)
-            }}
-          />
-          <TabComponent
-            tabBarBackgroundColor={'#000000'}
-            tabTextColor={'#ffffff'}
-            numColumns={2}
-            initialTabIndex={0}
-            focusTabColor={'#cfa461'}
-            tabGames={homeGames}
-            itemHeight={scale(200)}
-            renderScene={renderScene}
-          />
-        </>
-      )}
-    />
+    <ImageBackground
+      source={{
+        uri: getIbbImage('XkRNwyM/1602669892140124'),
+      }}
+      style={{ flex: 1, paddingHorizontal: '1%' }}>
+      <HomePage
+        {...homeInfo}
+        {...userInfo}
+        {...sysInfo}
+        {...goTo}
+        loading={loading}
+        refreshing={refreshing}
+        refresh={refresh}
+        pagekey={'JXHHomePage'}
+        headerColor={'#000000'}
+        containerStyle={styles.container}
+        noticeBlockStyles={noticeBlockStyles}
+        couponBlockStyles={couponBlockStyles}
+        couponStyles={couponStyles}
+        animatedRankComponentStyles={animatedRankComponentStyles}
+        bottomLogoStyles={bottomLogoStyles}
+        renderHeader={() => null}
+        renderListHeaderComponent={() => (
+          <>
+            <ProfileBlock
+              {...(userInfo as any)}
+              onPressTryPlay={tryPlay}
+              onPressLeftButton={goToUserCenterType.存款}
+              onPressRightButton={goToUserCenterType.取款}
+              onPressExchange={goToPromotionPage}
+              onPressSignInButton={() => {
+                navigate(PageName.JXHSignInPage)
+              }}
+              onPressSignUpButton={() => {
+                navigate(PageName.JXHSignUpPage)
+              }}
+            />
+            <TabComponent
+              tabBarBackgroundColor={'#000000'}
+              tabTextColor={'#ffffff'}
+              numColumns={2}
+              initialTabIndex={0}
+              focusTabColor={'#cfa461'}
+              tabGames={homeGames}
+              itemHeight={scale(200)}
+              renderScene={renderScene}
+            />
+          </>
+        )}
+      />
+    </ImageBackground>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000000',
-    paddingHorizontal: '1%',
+    backgroundColor: 'transparent',
   },
 })
 
 const noticeBlockStyles = StyleSheet.create({
   containerStyle: {
-    backgroundColor: KSThemeColor.凯时.themeColor,
+    backgroundColor: 'transparent',
     borderRadius: 0,
   },
   bgContainerStyle: {
-    backgroundColor: KSThemeColor.凯时.themeColor,
+    backgroundColor: 'transparent',
   },
   logoTextStyle: {
     color: '#95979f',
@@ -115,7 +120,7 @@ const noticeBlockStyles = StyleSheet.create({
     paddingHorizontal: scale(5),
   },
   textStyle: {
-    color: '#95979f',
+    color: '#ffffff',
     fontSize: scale(18),
   },
 })

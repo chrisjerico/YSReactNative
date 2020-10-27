@@ -50,7 +50,7 @@ const BYMinePage = () => {
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ flex: 1, backgroundColor: '#E0E0E0' }} showsVerticalScrollIndicator={false}>
         <View style={{ aspectRatio: 2, backgroundColor: '#ffffff', marginVertical: scale(10), width: '98%' }}>
           <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: AppDefine.onePx, borderColor: '#d9d9d9', alignItems: 'center', paddingLeft: scale(20) }}>
-            <Avatar size={100} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} onPress={onPressAvatar} />
+            <Avatar size={100} uri={isTest || !avatar ? AppDefine.defaultAvatar : avatar} onPress={onPressAvatar} />
             <View style={{ marginLeft: scale(20) }}>
               <Text style={{ fontSize: scale(25) }}>{usr}</Text>
               <Text style={{ fontSize: scale(25) }}>{curLevelGrade}</Text>
@@ -112,7 +112,7 @@ const BYMinePage = () => {
         />
         <BottomGap />
       </ScrollView>
-      <PickAvatarComponent ref={pickAvatarComponentRef} color={'red'} initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} onSaveAvatarSuccess={onSaveAvatarSuccess} />
+      <PickAvatarComponent ref={pickAvatarComponentRef} color={'red'} initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar} onSaveAvatarSuccess={onSaveAvatarSuccess} />
     </>
   )
 }

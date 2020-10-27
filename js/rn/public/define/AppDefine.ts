@@ -12,6 +12,7 @@ export default class AppDefine {
   static height = Dimensions.get('window').height
   static iOS = Platform.OS == 'ios'
   static onePx = 1 / PixelRatio.get()
+  static defaultAvatar = 'https://i.ibb.co/mNnwnh7/money-2.png'
 
   static isTest() {
     if (Platform.OS == 'ios') {

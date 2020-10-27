@@ -2,7 +2,7 @@ import React, { memo, RefObject } from 'react'
 import { FormComponentProps } from '../../components/tars/FormComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
-import CheckBox from './CheckBox'
+import CheckBox, { CheckBoxProps } from './CheckBox'
 
 export type SignInRenderFormProps = FormComponentProps & { [key: string]: any }
 
@@ -16,9 +16,10 @@ interface SignInFormListProps {
   showCheckBox?: boolean
   accountFormProps?: { [key: string]: any }
   passwordFormProps?: { [key: string]: any }
+  checkBoxProps?: CheckBoxProps
 }
 
-const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps }: SignInFormListProps) => {
+const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps, checkBoxProps }: SignInFormListProps) => {
   const { remember, account, password } = value
 
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
@@ -57,7 +58,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slide
         rightIconType={'eye'}
         leftIconTitle={'密码'}
       />
-      {showCheckBox && <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} />}
+      {showCheckBox && <CheckBox {...checkBoxProps} onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} />}
       <ReloadSlidingVerification
         ref={slideCodeRef}
         show={loginVCode}

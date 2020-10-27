@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -65,7 +66,7 @@ const LHTHomePage = () => {
       noticeLogo={config.noticeLogo}
       renderHeader={() => (
         <HomeHeader
-          avatar={isTest || !avatar ? config.defaultAvatar : avatar}
+          avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
           name={usr}
           showLogout={uid ? true : false}
           leftLogo={mobile_logo}
