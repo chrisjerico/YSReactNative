@@ -168,7 +168,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const fundPasswordLabel = getLabel(necessity?.fundPassword, '请输入4数字取款密码')
   const nameLabel = getLabel(necessity?.name, '必须与您的银行账户名称相同，以免未能到账')
   const passwordLebel = '*请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
-  const confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致'
+  const confirmPasswordLabel = password == confirmPassword || (!password?.length && !confirmPassword?.length) ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
   const onChange = {
