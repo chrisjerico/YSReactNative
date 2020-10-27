@@ -46,7 +46,7 @@ const ProfileBlock = ({
           <>
             <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
               <Avatar size={30} uri={avatar} />
-              <Text style={{ color: '#2a2a2a', marginHorizontal: scale(10) }}>{usr}</Text>
+              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10), fontSize: scale(20) }}>{usr}</Text>
               <LinearBadge
                 title={curLevelTitle}
                 colors={['#cfa461', '#cfa461']}
@@ -64,7 +64,7 @@ const ProfileBlock = ({
         ) : (
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Avatar size={30} uri={avatar} />
-            <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
+            <Text style={{ color: '#a0a0a0', fontSize: scale(20), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
           </View>
         )}
       </View>
