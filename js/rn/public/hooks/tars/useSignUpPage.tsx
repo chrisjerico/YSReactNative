@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Alert } from 'react-native'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
@@ -93,14 +94,14 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // stores
   const { sysInfo } = useSysInfo({})
   // data handle
-  const { necessity, passwordLimit } = sysInfo
+  const { necessity, passwordLimit, allowReg, closeregreason } = sysInfo
   const { strength, maxLength, minLength } = passwordLimit
   // const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
   // const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
   // const account_valid = account?.length >= 6
   // const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
-  const confirmPassword_valid = confirmPassword == password
+  // const confirmPassword_valid = confirmPassword == password
   // const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   // const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   // const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
@@ -110,7 +111,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   // const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = confirmPassword_valid
+  const valid = true //confirmPassword_valid
   // account_valid &&
   // password_valid &&
   // confirmPassword_valid &&
@@ -218,7 +219,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
 
   const _signUp = () => {
-    if (valid) {
+    if (allowReg) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
         usr: account, // 账号
@@ -237,6 +238,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
       }
       // @ts-ignore
       signUp(params)
+    } else {
+      Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
     }
   }
 

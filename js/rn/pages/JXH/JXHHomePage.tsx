@@ -54,8 +54,9 @@ const JXHHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'JXHHomePage'}
-      headerColor={''}
+      headerColor={'#000000'}
       containerStyle={styles.container}
+      noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       couponStyles={couponStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -63,7 +64,7 @@ const JXHHomePage = () => {
       renderHeader={() => null}
       renderListHeaderComponent={() => (
         <>
-          <NoticeBlock
+          {/* <NoticeBlock
             containerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor, borderRadius: 0 }}
             bgContainerStyle={{ backgroundColor: KSThemeColor.凯时.themeColor }}
             logoTextStyle={{
@@ -79,7 +80,7 @@ const JXHHomePage = () => {
             onPressNotice={({ content }) => {
               PushHelper.pushNoticePopUp(content)
             }}
-          />
+          /> */}
           <ProfileBlock {...(userInfo as any)} onPressTryPlay={tryPlay} onPressLeftButton={goToUserCenterType.存款} onPressRightButton={goToUserCenterType.取款} onPressExchange={goToPromotionPage} />
           <TabComponent
             tabBarBackgroundColor={'#000000'}
@@ -101,6 +102,25 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000000',
     paddingHorizontal: '1%',
+  },
+})
+
+const noticeBlockStyles = StyleSheet.create({
+  containerStyle: {
+    backgroundColor: KSThemeColor.凯时.themeColor,
+    borderRadius: 0,
+  },
+  bgContainerStyle: {
+    backgroundColor: KSThemeColor.凯时.themeColor,
+  },
+  logoTextStyle: {
+    color: '#95979f',
+    fontSize: scale(18),
+    paddingHorizontal: scale(5),
+  },
+  textStyle: {
+    color: '#95979f',
+    fontSize: scale(18),
   },
 })
 

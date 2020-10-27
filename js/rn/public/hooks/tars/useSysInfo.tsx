@@ -92,6 +92,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       minLength: stringToNumber(sysStore?.pass_length_min),
     },
     currency: sysStore?.currency == 'CNY' ? 'RMB' : sysStore?.currency,
+    allowReg: sysStore?.allowreg == '1' ? true : false,
   }
   return {
     sysInfo,

@@ -36,7 +36,7 @@ const JXHSignUpPage = () => {
               <Text style={{ color: '#cfa461' }}>{'登陆'}</Text>
             </TouchableWithoutFeedback>
           </View>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#000000'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <LinearBadge
             colors={['#cfa461', '#cfa461']}
             containerStyle={[styles.button, { height: null }]}
