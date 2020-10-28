@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, memo } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -152,66 +152,65 @@ const TabComponent = ({
       tabBarBackgroundColor={tabBarBackgroundColor}
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
+      locked={true}
       renderTabBar={(props) => {
         const { activeTab, goToPage } = props
         return renderTabBar ? (
           renderTabBar({ activeTab, goToPage })
         ) : (
-          <ScrollView
-            scrollEnabled={tabScrollEnabled}
-            ref={scroll}
-            horizontal={true}
-            removeClippedSubviews={true}
-            style={{ flexGrow: 0 }}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
-            scrollEventThrottle={5000}
-            disableScrollViewPanResponder={true}>
-            <View style={[{ height: defaultTabHeight, flexDirection: 'row' }, tabStyle]}>
-              {tabGames?.map((item, index) => {
-                const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
-                return (
-                  <TouchableWithoutFeedback
-                    key={index}
-                    onPress={() => {
-                      goToPage(index)
-                    }}>
-                    <View
-                      style={{
-                        width: getTabWidth(),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100%',
-                        paddingHorizontal: scale(10),
+          <View style={{ height: defaultTabHeight }}>
+            <ScrollView
+              scrollEnabled={tabScrollEnabled}
+              ref={scroll}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
+              scrollEventThrottle={5000}>
+              <View style={[tabStyle, { height: defaultTabHeight, flexDirection: 'row' }]}>
+                {tabGames?.map((item, index) => {
+                  const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
+                  return (
+                    <TouchableWithoutFeedback
+                      key={index}
+                      onPress={() => {
+                        goToPage(index)
                       }}>
-                      <Text
-                        numberOfLines={1}
-                        adjustsFontSizeToFit={true}
-                        style={[
-                          styles.tabText,
-                          tabTextStyle,
-                          {
-                            color: activeTab == index ? focusTabColor : tabTextColor,
-                          },
-                        ]}>
-                        {title}
-                      </Text>
                       <View
                         style={[
-                          styles.focusBar,
                           {
-                            width: '50%',
-                            backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                            width: getTabWidth(),
                           },
-                        ]}
-                      />
-                    </View>
-                  </TouchableWithoutFeedback>
-                )
-              })}
-            </View>
-          </ScrollView>
+                          styles.tabTextContainer,
+                        ]}>
+                        <Text
+                          numberOfLines={1}
+                          adjustsFontSizeToFit={true}
+                          style={[
+                            styles.tabText,
+                            tabTextStyle,
+                            {
+                              color: activeTab == index ? focusTabColor : tabTextColor,
+                            },
+                          ]}>
+                          {title}
+                        </Text>
+                        <View
+                          style={[
+                            styles.focusBar,
+                            {
+                              width: '50%',
+                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                            },
+                          ]}
+                        />
+                      </View>
+                    </TouchableWithoutFeedback>
+                  )
+                })}
+              </View>
+            </ScrollView>
+          </View>
         )
       }}>
       {tabGames?.map((ele: TabGame, index) => {
@@ -255,6 +254,12 @@ const styles = StyleSheet.create({
     alignSelf: 'auto',
     fontSize: scale(25),
     marginBottom: scale(5),
+  },
+  tabTextContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    paddingHorizontal: scale(10),
   },
 })
 
