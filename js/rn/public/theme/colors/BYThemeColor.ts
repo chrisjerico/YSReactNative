@@ -1,30 +1,21 @@
 import { UGThemeColor } from '../UGThemeColor'
 
 const themeColor = '#ffffff'
+const tabBarBgColor = '#ffffff'
+const themeLightColor = '#FFECEC'
+
 export const BYThemeColor: { [x: string]: UGThemeColor } = {
   白曜: {
     skitType: '白曜',
     skitString: '白曜',
-    tabBarBgColor: '#ffffff',
+    tabBarBgColor: tabBarBgColor,
     tabNoSelectColor: '#9D9D9D',
     homeContentSubColor: '#f2f2f2', // 額度轉換Tab
-    get bgColor() {
-      return [this.tabBarBgColor, this.tabBarBgColor]
-    },
-    get navBarBgColor() {
-      return [this.themeColor, this.themeColor]
-    }, // 跳頁面最上面的Header顏色
-    get tabSelectedColor() {
-      return this.themeColor
-    },
-    get progressBgColor() {
-      return [this.tabBarBgColor, this.tabBarBgColor]
-    },
-    get homeContentColor() {
-      return this.themeLightColor
-    }, // 真人大廳小方塊背景
-    // cellBgColor: '#444',
-    // CLBgColor: '#E6E6E6', // 推薦收益區塊
+    bgColor: [tabBarBgColor, tabBarBgColor],
+    navBarBgColor: ['#000000', '#000000'],
+    tabSelectedColor: '#000000',
+    progressBgColor: [tabBarBgColor, tabBarBgColor],
+    homeContentColor: themeLightColor,
     get menuHeadViewColor() {
       return [this.themeColor, this.themeColor]
     },
@@ -33,12 +24,10 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     textColor3: '#C1C1C1',
     textColor4: '#ffffff',
     conversionCellColor: '#444',
-    // intoViewColor: '#444',
-    //moneyCellColor: '#444',
     themeColor: themeColor,
-    themeLightColor: '#FFECEC',
+    themeLightColor: themeLightColor,
     isBlack: false,
-    is23: false,
+    is23: true,
     yubaoBgColor: '#8E8E8E',
     promotion: {
       headerBgColor: themeColor,
