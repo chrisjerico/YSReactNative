@@ -6,6 +6,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
+import { httpClient } from '../../public/network/httpClient'
 import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getIbbImage, goToUserCenterType } from '../../public/tools/tars'
@@ -83,6 +84,9 @@ const JXHHomePage = () => {
               }}
               onPressSignUpButton={() => {
                 navigate(PageName.JXHSignUpPage)
+              }}
+              onPressForgetPassword={() => {
+                PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
               }}
             />
             <TabComponent

@@ -23,6 +23,7 @@ interface ProfileBlockProps {
   onPressRightButton: () => any
   onPressSignUpButton: () => any
   onPressSignInButton: () => any
+  onPressForgetPassword: () => any
 }
 
 const ProfileBlock = ({
@@ -37,6 +38,7 @@ const ProfileBlock = ({
   onPressRightButton,
   onPressSignUpButton,
   onPressSignInButton,
+  onPressForgetPassword,
 }: ProfileBlockProps) => {
   const [hideBalance, setHideBalance] = useState(false)
   return (
@@ -120,7 +122,9 @@ const ProfileBlock = ({
           </>
         ) : (
           <>
-            <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
+            <TouchableWithoutFeedback onPress={onPressForgetPassword}>
+              <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
+            </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPressTryPlay}>
               <Text style={{ color: '#cfa461' }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>

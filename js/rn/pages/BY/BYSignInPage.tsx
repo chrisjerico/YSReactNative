@@ -15,7 +15,7 @@ import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/S
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const BYSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({
     homePage: PageName.BYHomePage,
     signUpPage: PageName.BYSignUpPage,
   })
@@ -32,8 +32,8 @@ const BYSignInPage = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
           <SignInFormList
-            slideCodeRef={slideCodeRef}
             slideCodeColor={'#ffffff'}
+            reference={reference}
             show={show}
             onChange={onChange}
             value={value}

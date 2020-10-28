@@ -5,7 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignIn from './useSignIn'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
@@ -36,6 +36,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   })
   // refs
   const slideCodeRef = useRef(null)
+  const needNameInputRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
   const navigateToSignUpPage = useCallback(() => {
@@ -69,6 +70,10 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
             nc_sig: undefined,
           })
           slideCodeRef?.current?.reload()
+        },
+        onNeedFullName: () => {
+          needNameInputRef?.current?.reload()
+          hideLoading()
         },
       }),
     []
@@ -134,6 +139,17 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     [account, password]
   )
 
+  const onChangeFullName = (fullName: string) => {
+    const params = {
+      account: account,
+      //@ts-ignore
+      password: password?.md5(),
+      slideCode,
+      fullName,
+    }
+    signIn(params)
+  }
+
   const onChangeSlideCode = setSlideCode
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slideCode
@@ -151,6 +167,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     onChangePassword,
     onChangeRemember,
     onChangeSlideCode,
+    onChangeFullName,
   }
 
   const navigateTo = {
@@ -163,20 +180,26 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   }
 
   const _signIn = () => {
-    signIn({
+    const params = {
       account: account,
       //@ts-ignore
       password: password?.md5(),
       slideCode,
-    })
+    }
+    signIn(params)
+  }
+
+  const reference = {
+    slideCodeRef,
+    needNameInputRef,
   }
 
   return {
-    slideCodeRef,
+    valid,
+    reference,
     navigateTo,
     onChange,
     value,
-    valid,
     show,
     sign: {
       signIn: _signIn,

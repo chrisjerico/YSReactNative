@@ -1,5 +1,6 @@
 import React, { memo, RefObject } from 'react'
 import { FormComponentProps } from '../../components/tars/FormComponent'
+import NeedNameInputComponent from '../../components/tars/NeedNameInputComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
 import CheckBox, { CheckBoxProps } from './CheckBox'
@@ -8,23 +9,42 @@ export type SignInRenderFormProps = FormComponentProps & { [key: string]: any }
 
 interface SignInFormListProps {
   slideCodeColor?: string
-  slideCodeRef: RefObject<any>
   value: { [key: string]: any }
-  onChange: { [key: string]: any }
-  show: { [key: string]: any }
+  onChange: OnChange
+  show: Show
   renderForm?: (props: SignInRenderFormProps) => any
   showCheckBox?: boolean
   accountFormProps?: { [key: string]: any }
   passwordFormProps?: { [key: string]: any }
   checkBoxProps?: CheckBoxProps
+  reference?: Reference
 }
 
-const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps, checkBoxProps }: SignInFormListProps) => {
+interface Reference {
+  slideCodeRef?: RefObject<any>
+  needNameInputRef?: RefObject<any>
+}
+
+interface Show {
+  loginVCode?: boolean
+}
+
+interface OnChange {
+  onChangePassword?: (text: string) => any
+  onChangeAccount?: (text: string) => any
+  onChangeRemember?: (remember: boolean) => any
+  onChangeSlideCode?: (data: any) => any
+  onChangeFullName?: (text: string) => any
+}
+
+const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps, checkBoxProps, reference }: SignInFormListProps) => {
   const { remember, account, password } = value
 
-  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
+  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onChangeFullName } = onChange
 
   const { loginVCode } = show
+
+  const { slideCodeRef, needNameInputRef } = reference
 
   const Form = renderForm
 
@@ -68,6 +88,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, renderForm, slide
           backgroundColor: slideCodeColor,
         }}
       />
+      <NeedNameInputComponent ref={needNameInputRef} onChangeFullName={onChangeFullName} />
     </>
   )
 }
