@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { View, Alert, Platform } from 'react-native';
 import { Button, Text, Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,63 +17,82 @@ import { Toast } from '../../public/tools/ToastUtils';
 import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
-import {ANHelper} from "../../public/define/ANHelper/ANHelper";
-import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
-import {ugLog} from "../../public/tools/UgLog";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
   dataArray?: Array<UGUserCenterItem>;
-  userInfo?: UGUserModel;
+  avatarURL?: string;
 }
 
-// 设置默认Props
-// UGStore.defaultGlobalProps.XBJMineProps = {
-//   tabbarOpetions: { unmountOnBlur: false },
-//   navbarOpstions: {
-//     title: '我的',
-//     backgroundColor: 'transparent',
-//     hideUnderline: true,
-//     rightComponent: (
-//       <TouchableOpacity
-//         onPress={() => {
-//           PushHelper.pushUserCenterType(UGUserCenterType.站内信);
-//         }}>
-//         <FastImage source={{ uri: 'https://i.ibb.co/q0Pgt4B/2x.png' }} style={{ marginRight: 16, width: 20, height: 20 }} />
-//       </TouchableOpacity>
-//     ),
-//   },
-//   dataArray: [],
-// };
-
 export const XBJMinePage = (props: XBJMineProps) => {
-  const { setProps } = props;
+  const { setProps, avatarURL = 'https://cdn01.guolaow.com/images/face/memberFace2.jpg' } = props;
   // 获取功能按钮列表
 
-  switch (Platform.OS) {
-    case 'ios':
-      OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
-        let dataArray = list.map(item => new UGUserCenterItem(item));
-        setProps({ dataArray: dataArray });
-      });
-      break;
-    case 'android':
-      ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
-        .then((data) => {
-          const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
-          setProps({ dataArray: userCenterItems });
-        })
-      break;
-  }
+  useEffect(() => {
+    setProps({
+      navbarOpstions: {
+        hidden: false,
+        title: '我的',
+        gradientColor: Skin1.bgColor,
+        hideUnderline: true,
+        rightComponent: (
+          <TouchableOpacity
+            onPress={() => {
+              PushHelper.pushUserCenterType(UGUserCenterType.站内信);
+            }}>
+            <FastImage source={{ uri: 'https://i.ibb.co/q0Pgt4B/2x.png' }} style={{ marginRight: 16, width: 20, height: 20 }} />
+          </TouchableOpacity>
+        ),
+      },
+      backgroundColor: Skin1.bgColor,
+      dataArray: [],
+      didFocus: () => {
+        AppDefine.checkHeaderShowBackButton((show) => {
+          setProps({ navbarOpstions: { back: show } });
+        });
 
-  console.log('获取用户信息');
-  // 获取用户信息
-  IGlobalStateHelper.updateUserInfo();
+        console.log('获取用户信息');
+        // 获取用户信息
+        IGlobalStateHelper.updateUserInfo();
+      },
+    })
 
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
+          let dataArray = list.map(item => new UGUserCenterItem(item));
+          setProps({ dataArray: dataArray });
+        });
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
+          .then((data) => {
+            const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
+            setProps({ dataArray: userCenterItems });
+          })
+        break;
+    }
 
-  let UserI = props.userInfo;
-  let cells = props.dataArray.map(item => {
+    // 头像列表
+    NetworkRequest1.system_avatarList().then(({ data: list }) => {
+      const filter = list?.filter((ele) => {
+        if (ele.filename == UserI.avatar) {
+          return ele;
+        }
+      })
+      if (filter?.length) {
+        setProps({ avatarURL: filter[0].url })
+      } else if (list?.length) {
+        setProps({ avatarURL: list[0].url })
+      }
+    });
+  }, []);
+
+  let UserI = UGStore.globalProps?.userInfo;
+  let cells = props?.dataArray?.map(item => {
     return [
       <TouchableOpacity
         key={item.code}
@@ -92,17 +111,21 @@ export const XBJMinePage = (props: XBJMineProps) => {
     <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
       <View style={{ padding: 16, borderRadius: 4, backgroundColor: Skin1.homeContentColor }}>
         <View style={{ flexDirection: 'row' }}>
-          <Avatar source={{ uri: UserI.avatar }} rounded showEditButton size={56} onPress={() => { }} />
+          <TouchableOpacity onPress={() => {
+            console.log('点击');
+          }} >
+            <FastImage source={{ uri: avatarURL }} style={{ width: 56, height: 56, borderRadius: 28 }} />
+          </TouchableOpacity>
           <View style={{ marginLeft: 16 }}>
             <View style={{ marginTop: 4, flexDirection: 'row' }}>
-              <Text style={{ fontWeight: '500', fontSize: 16 }}>{UserI.usr}</Text>
+              <Text style={{ fontWeight: '500', fontSize: 16 }}>{UserI?.usr}</Text>
               <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ marginLeft: 8, marginTop: 1, borderRadius: 3, width: 42, height: 17 }}>
-                <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{UserI.curLevelGrade}</Text>
+                <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{UserI?.curLevelGrade}</Text>
               </LinearGradient>
             </View>
             <View style={{ marginTop: 10, flexDirection: 'row' }}>
               <Text style={{ fontSize: 12 }}>头衔：</Text>
-              <Text style={{ fontSize: 12, color: UGColor.RedColor2 }}>{UserI.curLevelTitle}</Text>
+              <Text style={{ fontSize: 12, color: UGColor.RedColor2 }}>{UserI?.curLevelTitle}</Text>
             </View>
           </View>
         </View>
@@ -140,7 +163,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             <Text style={{ marginTop: 11, fontSize: 12 }}>资金管理</Text>
           </TouchableOpacity>
           <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }}>
-            <Text style={{ marginTop: 4, fontWeight: '500', color: UGColor.RedColor2 }}>{'¥' + (UserI.balance ? UserI.balance : '0.00')}</Text>
+            <Text style={{ marginTop: 4, fontWeight: '500', color: UGColor.RedColor2 }}>{'¥' + (UserI?.balance ?? '0.00')}</Text>
             <Text style={{ marginTop: 11, fontSize: 12 }}>中心钱包</Text>
           </TouchableOpacity>
         </View>

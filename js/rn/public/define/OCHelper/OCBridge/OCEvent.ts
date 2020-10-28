@@ -43,12 +43,12 @@ export class OCEvent extends OCCall {
 
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
-      console.log('跳转到rn页面：', params.vcName);
+      console.log('跳转到rn页面：', params.vcName, params);
       if (params.vcName) {
         if (params.rnAction == 'push') {
-          push(params.vcName) || push(RnPageModel.getPageName(params.vcName));
+          push(params.vcName, params, true) || push(RnPageModel.getPageName(params.vcName), params, true);
         } else {
-          jumpTo(params.vcName) || jumpTo(RnPageModel.getPageName(params.vcName));
+          jumpTo(params.vcName, params, true) || jumpTo(RnPageModel.getPageName(params.vcName), params, true);
         }
       }
     });

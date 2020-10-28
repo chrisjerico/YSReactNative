@@ -22,7 +22,7 @@ import List from '../../public/views/temp/List'
 import NavBlock from '../../public/views/temp/NavBlock'
 import NoticeBlock from '../../public/views/temp/NoticeBlock'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
-import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/temp/TouchableImage'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import GameBlock from './views/GameBlock'
@@ -229,18 +229,6 @@ const LEFHomePage = ({navigation, setProps}) => {
               marginBottom: scale(20),
             }}
             rankLists={rankLists}
-          />
-          <BottomLogo
-            webName={webName}
-            containerStyle={{ marginBottom: scale(5) }}
-            onPressComputer={() => {
-              PushHelper.openWebView(
-                httpClient.defaults.baseURL + '/index2.php'
-              )
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'5000ms'}
           />
           <BottomGap />
         </ScrollView>

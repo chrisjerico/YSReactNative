@@ -15,7 +15,7 @@ import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/temp/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
-import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList from '../../public/views/temp/SignInFormList'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import {BYThemeColor} from "../../public/theme/colors/BYThemeColor";

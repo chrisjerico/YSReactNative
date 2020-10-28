@@ -32,7 +32,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()
@@ -48,7 +48,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()

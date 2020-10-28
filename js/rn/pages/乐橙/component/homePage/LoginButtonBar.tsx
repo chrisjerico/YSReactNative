@@ -17,7 +17,7 @@ export const LoginButtonBar = () => {
     const testPlay = async () => {
       try {
 
-        showLoading({type: UGLoadingType.Loading, text: '正在登录...'});
+        showLoading('正在登录...');
 
         // switch (Platform.OS) {
         //   case 'ios':

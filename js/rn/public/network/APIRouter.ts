@@ -28,7 +28,7 @@ import { TurntableListModel } from './Model/TurntableListModel';
 import { YueBaoStatModel } from './Model/YueBaoStatModel';
 import { HomeRecommendModel } from "./Model/HomeRecommendModel";
 import { UserInfoModel } from "./Model/UserInfoModel";
-import {ugLog} from "../tools/UgLog";
+import { ugLog } from "../tools/UgLog";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -153,7 +153,11 @@ class APIRouter {
   static user_login = async (uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) => {
     try {
       if (slideCode) {
-        slideCode = SlideCodeModel?.get(slideCode);
+        slideCode = {
+          nc_sid: slideCode.nc_csessionid,
+          nc_token: slideCode.nc_token,
+          nc_sig: slideCode.nc_sig,
+        }
       }
       return httpClient.post<LoginModel>('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, {
         noToken: true

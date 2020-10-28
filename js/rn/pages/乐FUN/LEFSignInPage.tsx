@@ -15,7 +15,7 @@ import {BZHThemeColor} from '../../public/theme/colors/BZHThemeColor'
 import {scale, scaleHeight} from '../../public/tools/Scale'
 import Button from '../../public/views/temp/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
-import SafeAreaHeader from '../../public/views/temp/SafeAreaHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
@@ -48,6 +48,7 @@ const LEFSignInPage = () => {
       <SafeAreaHeader headerColor={LEFThemeColor.乐FUN.themeColor}>
         <MineHeader
           title={'登录'}
+          backTitle={'首页'}
           titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
           onPressBackBtn={pop}

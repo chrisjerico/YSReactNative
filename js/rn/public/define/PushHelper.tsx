@@ -295,7 +295,7 @@ export default class PushHelper {
                 // ShowLoading
                 OCHelper.call('SVProgressHUD.showWithStatus:')
 
-                var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo()
+                let {data:info} = await NetworkRequest1.team_agentApplyInfo()
 
                 if (info.reviewStatus === 2) {
                   // 去推荐收益页

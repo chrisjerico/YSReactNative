@@ -6,6 +6,8 @@
  */
 export enum CMD {
   INIT_DOMAIN = 'INIT_DOMAIN', //初始化 Domain
+  INIT_PAGES = 'INIT_PAGES', //初始化哪些界面需要替换
+  PAGE_PARAMS = 'PAGE_PARAMS', //得到这个界面的参数
   OPEN_PAGE = 'OPEN_PAGE', //打开界面
   OPEN_RIGHT_MENU = 'OPEN_RIGHT_MENU', //打开右侧界面
   LAUNCH_GO = 'LAUNCH_GO', //启动页功能
@@ -17,6 +19,7 @@ export enum CMD {
   OPEN_POP_NOTICE = 'OPEN_POP_NOTICE', //打开弹窗口通知界面
   OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
   LOG_OUT = 'LOG_OUT', //退出登录
+  STATUS_BAR_SHOW = 'STATUS_BAR_SHOW', //显示RN StatusBar
   UNIVERSAL = 'UNIVERSAL', //万能函数
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
   FINISH_ACTIVITY = 'FINISH_ACTIVITY',        //关闭activity

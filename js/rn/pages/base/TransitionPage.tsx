@@ -25,9 +25,9 @@ export const TransitionPage = (props: TransitionProps) => {
         if (!p) return;
         const { jumpTo: j, pushTo, props } = p;
         if (j) {
-          jumpTo(j, props);
+          jumpTo(j, props, true);
         } else if (pushTo) {
-          push(pushTo, props);
+          push(pushTo, props, true);
         }
       }
     })

@@ -38,6 +38,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('越南') != -1) {
       pages = pages.concat(VietnamPages);
     }
+    if (skitType.indexOf('香槟金') != -1) {
+      pages = pages.concat(XBJPages);
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -72,6 +75,17 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   });
 
+  // 虚拟币充值教程
+  if (AppDefine.siteId != 'c012') {
+    pages.push({
+      vcName: 'HelpDocViewController',
+      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    });
+  }
+
   // 开奖走势页
   pages.push({
     rnName: PageName.TrendView,
@@ -98,6 +112,35 @@ export function setRnPageInfo() {
       break;
   }
 }
+
+// 香槟金
+const XBJPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.XBJLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.XBJRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.XBJMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  }
+];
 
 // 尊龙模板页面
 const ZLPages = [
@@ -133,13 +176,6 @@ const ZLPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
-  },
-  {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
   },
   {
     vcName: 'UGBalanceConversionController',
@@ -355,13 +391,6 @@ const JXHPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.JXHSignInPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

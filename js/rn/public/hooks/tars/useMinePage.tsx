@@ -48,7 +48,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()
