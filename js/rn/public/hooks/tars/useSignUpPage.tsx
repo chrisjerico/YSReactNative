@@ -4,6 +4,7 @@ import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
+import { validPassword } from '../../tools/tars'
 import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
@@ -100,8 +101,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // valid
   // const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
   // const account_valid = account?.length >= 6
-  // const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
-  // const confirmPassword_valid = confirmPassword == password
+  const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
+  const confirmPassword_valid = confirmPassword == password
   // const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   // const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
   // const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
@@ -111,9 +112,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   // const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = true //confirmPassword_valid
+  const valid = confirmPassword_valid && password_valid
   // account_valid &&
-  // password_valid &&
   // confirmPassword_valid &&
   // recommendGuy_valid &&
   // name_valid &&
@@ -220,24 +220,28 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const _signUp = () => {
     if (allowReg) {
-      const params = {
-        inviter: recommendGuy, // 推荐人ID
-        usr: account, // 账号
-        pwd: password?.md5(), // 密码
-        fundPwd: fundPassword?.md5(), // 取款密码
-        fullName: name, // 真实姓名
-        qq: qq, // QQ号
-        wx: weChat, // 微信号
-        phone: phoneNumber, // 手机号
-        smsCode: sms ?? '', // 短信验证码
-        'slideCode[nc_sid]': slideCode?.nc_csessionid,
-        'slideCode[nc_token]': slideCode?.nc_token,
-        'slideCode[nc_sig]': slideCode?.nc_sig,
-        email: email, // 邮箱
-        regType: agentRef.current, // 用户注册 或 代理注册,
+      if (valid) {
+        const params = {
+          inviter: recommendGuy, // 推荐人ID
+          usr: account, // 账号
+          pwd: password?.md5(), // 密码
+          fundPwd: fundPassword?.md5(), // 取款密码
+          fullName: name, // 真实姓名
+          qq: qq, // QQ号
+          wx: weChat, // 微信号
+          phone: phoneNumber, // 手机号
+          smsCode: sms ?? '', // 短信验证码
+          'slideCode[nc_sid]': slideCode?.nc_csessionid,
+          'slideCode[nc_token]': slideCode?.nc_token,
+          'slideCode[nc_sig]': slideCode?.nc_sig,
+          email: email, // 邮箱
+          regType: agentRef.current, // 用户注册 或 代理注册,
+        }
+        // @ts-ignore
+        signUp(params)
+      } else {
+        showLoading({ type: UGLoadingType.Error, text: passwordLebel })
       }
-      // @ts-ignore
-      signUp(params)
     } else {
       Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
     }

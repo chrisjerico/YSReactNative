@@ -13,7 +13,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const LHTSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
+  const { show, slideCodeRef, label, onChange, sign, passwordLimit } = useSignUpPage({
     homePage: PageName.LHTHomePage,
     signInPage: PageName.LHTSignInPage,
   })
@@ -29,7 +29,6 @@ const LHTSignUpPage = () => {
         <View style={styles.formContainer}>
           <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
-            disabled={!valid}
             title={'注册'}
             containerStyle={[
               styles.button,

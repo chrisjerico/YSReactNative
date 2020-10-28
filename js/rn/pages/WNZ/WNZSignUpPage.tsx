@@ -18,7 +18,7 @@ import SignHeader from './views/SignHeader'
 const WNZSignUpPage = () => {
   const menu = useRef(null)
 
-  const { slideCodeRef, show, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
+  const { slideCodeRef, show, label, onChange, sign, passwordLimit, navigateTo } = useSignUpPage({
     homePage: PageName.WNZHomePage,
     signInPage: PageName.WNZSignInPage,
   })
@@ -42,7 +42,6 @@ const WNZSignUpPage = () => {
         <View style={styles.formContainer}>
           <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#f2f2f2'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
-            disabled={!valid}
             title={'立即注册'}
             containerStyle={styles.signUpButton}
             disabledContainerStyle={[

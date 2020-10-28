@@ -11,14 +11,12 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const BYSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, navigateTo, passwordLimit } = useSignUpPage({
+  const { show, slideCodeRef, label, onChange, sign, passwordLimit } = useSignUpPage({
     homePage: PageName.BYHomePage,
     signInPage: PageName.BYSignInPage,
   })
 
   const { signUp } = sign
-
-  const { navigateToHomePage } = navigateTo
 
   return (
     <>
@@ -40,7 +38,6 @@ const BYSignUpPage = () => {
           <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
             title={'注册'}
-            disabled={false}
             containerStyle={[
               styles.button,
               {

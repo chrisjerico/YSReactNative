@@ -13,7 +13,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const BZHSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
+  const { show, slideCodeRef, label, onChange, sign, passwordLimit } = useSignUpPage({
     homePage: PageName.BZHHomePage,
     signInPage: PageName.BZHSignInPage,
   })
@@ -30,7 +30,6 @@ const BZHSignUpPage = () => {
           <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
           <Button
             title={'注册'}
-            disabled={!valid}
             containerStyle={[
               styles.button,
               {
