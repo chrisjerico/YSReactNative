@@ -23,6 +23,9 @@ interface TabComponentProps {
   numColumns: number
   tabTextColor?: string
   tabBarBackgroundColor?: string
+  fixedHeight?: number
+  fixedHeightIndex?: number[]
+  enableFixedHeight?: boolean
 }
 
 interface RenderTabBar {
@@ -76,15 +79,22 @@ const TabComponent = ({
   renderTabBar,
   tabTextColor = '#000000',
   tabBarBackgroundColor,
+  fixedHeight,
+  fixedHeightIndex,
+  enableFixedHeight,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
-    const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
-    if (games) {
-      const gameCount = games?.length ?? 0
-      const gameRow = Math.ceil(gameCount / numColumns)
-      return itemHeight * gameRow + baseHeight
+    if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
+      return fixedHeight
     } else {
-      return 0
+      const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
+      if (games) {
+        const gameCount = games?.length ?? 0
+        const gameRow = Math.ceil(gameCount / numColumns)
+        return itemHeight * gameRow + baseHeight
+      } else {
+        return 0
+      }
     }
   }
 

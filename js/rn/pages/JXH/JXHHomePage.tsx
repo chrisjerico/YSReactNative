@@ -7,12 +7,12 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
-import { KSThemeColor } from '../../public/theme/colors/KSThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { getIbbImage, goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import TouchableImage from '../../public/views/tars/TouchableImage'
+import PopularGameTabPage from './views/PopularGameTabPage'
 import ProfileBlock from './views/ProfileBlock'
 
 const JXHHomePage = () => {
@@ -21,11 +21,8 @@ const JXHHomePage = () => {
   const { goToPromotionPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
-  const { bannersInterval, onlineNum, banners, notices, announcements, homeGames, coupons, rankLists, floatAds, redBag, redBagLogo, roulette } = homeInfo
-  const { uid, usr, balance, isTest, curLevelTitle, unreadMsg, avatar } = userInfo
-  const { mobile_logo, webName, showCoupon, rankingListType } = sysInfo
-
-  const lotterys = homeGames[0]?.list ?? []
+  const { homeGames } = homeInfo
+  const { isTest, avatar } = userInfo
 
   const { tryPlay } = sign
 
@@ -43,9 +40,13 @@ const JXHHomePage = () => {
     )
   }, [])
 
-  const renderScene = useCallback(({ item, index }) => {
-    return <List uniqueKey={'JXHHomePageTabComponent' + index} style={{}} data={item} renderItem={renderGame} numColumns={2} />
-  }, [])
+  const renderScene = ({ item, index }) => {
+    if (index) {
+      return <List uniqueKey={'JXHHomePageTabComponent' + index} style={{}} data={item} renderItem={renderGame} numColumns={2} />
+    } else {
+      return <PopularGameTabPage homeGames={homeGames} />
+    }
+  }
 
   return (
     <ImageBackground
@@ -98,6 +99,9 @@ const JXHHomePage = () => {
               tabGames={homeGames}
               itemHeight={scale(200)}
               renderScene={renderScene}
+              fixedHeight={scale(900)}
+              fixedHeightIndex={[0]}
+              enableFixedHeight
             />
           </>
         )}
