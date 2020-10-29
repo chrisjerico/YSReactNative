@@ -152,7 +152,7 @@ const LCRegisterPage = ({navigation, setProps}) => {
                 bottom: 30
             }}>
                 <SafeAreaView>
-                    <ScrollView style={{marginHorizontal: 12, marginVertical: 20, maxHeight: 550}}>
+                    <ScrollView showsVerticalScrollIndicator={false} style={{marginHorizontal: 12, marginVertical: 20, maxHeight: 550}}>
                         <Text style={{color: "red", fontSize: 14}}>为了您的资金安全，请使用真实资料!</Text>
                         <View style={{
                             flexDirection: "row",
