@@ -1,17 +1,15 @@
-import ScrollableTabView from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RecommendTabView } from './recommendTab/RecommendTabView'
 import { LotteryTabView } from './lotteyTab/LotteryTabView'
 import { GameListView } from './lotteyTab/GameListView'
-import useGetHomeInfo from '../../../../../public/hooks/useGetHomeInfo'
 import { Icon, List } from '../../../../../public/network/Model/HomeGamesModel'
-import { ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { View } from 'react-native'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import PushHelper from '../../../../../public/define/PushHelper'
-import AppDefine from '../../../../../public/define/AppDefine'
 
-export const HomeTabView = ({homeGames}) => {
+export const HomeTabView = ({ homeGames }) => {
   const [height, setHeight] = useState(77)
   const userStore = UGStore.globalProps.userInfo
   const { uid = '' } = userStore
@@ -82,7 +80,7 @@ export const HomeTabView = ({homeGames}) => {
   return homeGames ? (
     <ScrollableTabView
       onChangeTab={({ i }) => calculateHeight(i)}
-      tabBarUnderlineStyle={{ height: 2, backgroundColor: '#3c3c3c' }}
+      tabBarUnderlineStyle={{ height: 2, backgroundColor: '#3c3c3c', marginBottom: 10, width: 36, marginLeft: 16 }}
       tabBarTextStyle={{ color: '#3c3c3c' }}
       style={{
         height,
@@ -90,43 +88,8 @@ export const HomeTabView = ({homeGames}) => {
         backgroundColor: '#ffffff',
         borderRadius: 16,
       }}
-      renderTabBar={(props) => (
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          bounces={false}
-          style={{
-            height: 56,
-            flexDirection: 'row',
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-          }}>
-          {props.tabs.map((name, page) => {
-            const isTabActive = props.activeTab === page
-            const textColor = isTabActive ? '#000000' : '#555'
-            const backgroundColor = '#fff'
-            return (
-              <TouchableWithoutFeedback key={page} onPress={() => props.goToPage(page)}>
-                <View
-                  style={{
-                    backgroundColor,
-                    width: AppDefine.width / 5,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <View
-                    style={{
-                      borderBottomWidth: 2,
-                      borderBottomColor: isTabActive ? '#000000' : '#fff',
-                    }}>
-                    <Text style={[{ color: textColor, marginVertical: 8, fontSize: 16 }]}>{name}</Text>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            )
-          })}
-        </ScrollView>
-      )}>
+      renderTabBar={() => <ScrollableTabBar />}
+    >
       {homeGames.length > 0 ? (
         homeGames.map((item, index) => {
           return getTab(item, index)

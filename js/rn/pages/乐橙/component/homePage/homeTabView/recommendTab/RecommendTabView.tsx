@@ -7,7 +7,7 @@ import { List } from '../../../../../../public/network/Model/HomeGamesModel'
 
 export const RecommendTabView = ({ list, onPress }: { list: List[]; onPress: (list: List) => void }) => {
   return (
-    <View style={{ paddingHorizontal: 8, borderTopColor: '#c7c7c7', borderTopWidth: 1 }}>
+    <View style={{ paddingHorizontal: 8}}>
       <View style={{ paddingTop: 8 }}>
         <RecommendMustPlayView onPress={onPress} list={list.slice(0, 3)} />
       </View>

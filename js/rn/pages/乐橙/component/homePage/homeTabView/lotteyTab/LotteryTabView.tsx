@@ -6,7 +6,7 @@ import PushHelper from '../../../../../../public/define/PushHelper'
 
 export const LotteryTabView = ({ list, onPress }: { list: List[], onPress: (list: List) => void }) => {
   return (
-    <View style={{borderTopColor: '#c7c7c7', borderTopWidth: 1}}>
+    <View>
       <View>
         <Image style={{ width: '100%', height: '100%', flex: 1, resizeMode: 'cover', position: 'absolute' }}
                source={{ uri: 'http://test30.6yc.com/views/mobileTemplate/19/images/cpbg.png' }} />
