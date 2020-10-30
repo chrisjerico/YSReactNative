@@ -1,9 +1,9 @@
+import React, { memo } from 'react'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition } from '../../tools/tars'
-import React, { memo } from 'react'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -13,6 +13,7 @@ interface ActivitysProps {
   floatAds: FloatAd[]
   roulette: Roulette[]
   redBag: RedBagDetailActivityModel
+  goldenEggs: GoldenEgg[]
 }
 
 export interface FloatAd {
@@ -30,7 +31,16 @@ export interface Roulette {
   type: string
 }
 
-const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds }: ActivitysProps) => {
+export interface GoldenEgg {
+  end: string
+  id: string
+  integral: number
+  param: any
+  start: string
+  type: string
+}
+
+const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs }: ActivitysProps) => {
   return (
     <>
       <ActivityComponent
@@ -52,6 +62,16 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
           PushHelper.pushWheel(roulette)
         }}
       />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(400), right: 0 }}
+        enableFastImage={false}
+        show={uid && goldenEggs && !isTest}
+        logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
+        onPress={() => {
+          PushHelper.pushGoldenEggs(goldenEggs)
+        }}
+      />
       {floatAds?.map((item: any, index) => {
         const { image, position, linkCategory, linkPosition } = item
         return (
@@ -60,7 +80,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
             refreshing={refreshing}
             containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={true} // uid && !isTest
+            show={true}
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)

@@ -17,7 +17,24 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
-  const { loading, refreshing, rankList, homeGame, notice, onlineNum, showOnlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHomeInfo()
+  const {
+    loading,
+    refreshing,
+    rankList,
+    homeGame,
+    notice,
+    onlineNum,
+    showOnlineNum,
+    couponList,
+    homeAd,
+    turntableList,
+    redBag,
+    floatAd,
+    goldenEggList,
+    lotteryGame,
+    lotteryNumber,
+    refresh,
+  } = useHomeInfo()
 
   const { reRender } = useRerender()
 
@@ -108,6 +125,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const midBanners = homeAd?.data ?? []
   const floatAds = floatAd?.data ?? []
   const roulette = turntableList?.data
+  const goldenEggs = goldenEggList?.data ?? []
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -139,6 +157,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     redBagLogo,
     roulette,
     floatAds,
+    goldenEggs,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,

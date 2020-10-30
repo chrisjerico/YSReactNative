@@ -29,6 +29,7 @@ import { YueBaoStatModel } from './Model/YueBaoStatModel'
 import { HomeRecommendModel } from './Model/HomeRecommendModel'
 import { UserInfoModel } from './Model/UserInfoModel'
 import { ugLog } from '../tools/UgLog'
+import { GoldenEggListModel } from './Model/GoldenEggListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -142,7 +143,6 @@ class APIRouter {
     return httpClient.get<TurntableListModel>('c=activity&a=turntableList&' + tokenParams)
   }
 
-  // GoldenEggList
   static activity_goldenEggList = async () => {
     if (UGStore.globalProps.userInfo?.isTest) {
       return {}
@@ -158,7 +158,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<any>('c=activity&a=goldenEggList&' + tokenParams)
+    return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList&' + tokenParams)
   }
 
   static system_floatAds = async () => {

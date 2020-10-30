@@ -7,7 +7,7 @@ import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import Activitys, { FloatAd, Roulette } from './Activitys'
+import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
 import BottomGap from './BottomGap'
 import BottomLogo from './BottomLogo'
@@ -38,6 +38,7 @@ interface HomePageProps {
   redBag: RedBagDetailActivityModel
   roulette: Roulette[]
   floatAds: FloatAd[]
+  goldenEggs: GoldenEgg[]
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
@@ -115,6 +116,7 @@ const HomePage = ({
   redBag,
   roulette,
   floatAds,
+  goldenEggs,
   showOnlineNum,
   bannersInterval,
   onlineNum,
@@ -240,7 +242,7 @@ const HomePage = ({
             </>
           )}
         />
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} />
         {renderRestComponent && renderRestComponent()}
       </>
     )

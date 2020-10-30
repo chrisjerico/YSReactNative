@@ -3,6 +3,7 @@ import { UGStore } from '../../../redux/store/UGStore'
 import APIRouter from '../../network/APIRouter'
 import { CouponListModel } from '../../network/Model/CouponListModel'
 import { FloatADModel } from '../../network/Model/FloatADModel'
+import { GoldenEggListModel } from '../../network/Model/GoldenEggListModel'
 import { HomeADModel } from '../../network/Model/HomeADModel'
 import { HomeGamesModel } from '../../network/Model/HomeGamesModel'
 import { LotteryGameModel } from '../../network/Model/LotteryGameModel'
@@ -23,6 +24,7 @@ const localRouters = [
   'game_lotteryGames',
   'activity_turntableList',
   'activity_redBagDetail',
+  'activity_goldenEggList',
   'system_floatAds',
   'game_homeRecommend',
   'system_config',
@@ -44,6 +46,7 @@ interface Value {
   redBag?: RedBagDetailActivityModel
   floatAd?: FloatADModel
   showOnlineNum?: boolean
+  goldenEggList?: GoldenEggListModel
 }
 
 const useHome = () => {
@@ -52,9 +55,9 @@ const useHome = () => {
   const [value, setValue] = useState<Value>({})
 
   const updateStore = (response: any[]) => {
-    const gameLobby = response[11]?.data?.data ?? UGStore.globalProps.gameLobby
-    const sys = response[12]?.data?.data ?? UGStore.globalProps.sys
-    const banner = response[13]?.data?.data ?? UGStore.globalProps.banner
+    const gameLobby = response[12]?.data?.data ?? UGStore.globalProps.gameLobby
+    const sys = response[13]?.data?.data ?? UGStore.globalProps.sys
+    const banner = response[14]?.data?.data ?? UGStore.globalProps.banner
     UGStore.dispatch({ type: 'merge', gameLobby, banner, sys })
     UGStore.save()
   }
@@ -85,7 +88,8 @@ const useHome = () => {
         lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
         turntableList: response[8] ? response[8]?.data : value?.turntableList,
         redBag: response[9] ? response[9]?.data : value?.redBag,
-        floatAd: response[10] ? response[10]?.data : value?.floatAd,
+        goldenEggList: response[10] ? response[10]?.data : value?.goldenEggList,
+        floatAd: response[11] ? response[11]?.data : value?.floatAd,
       })
     } catch (error) {
       console.log('--------useHome init error--------', error)
@@ -101,23 +105,10 @@ const useHome = () => {
     callApis()
   }, [])
 
-  const { rankList, homeGame, notice, onlineNum, couponList, homeAd, lotteryNumber, lotteryGame, turntableList, redBag, floatAd, showOnlineNum } = value
-
   return {
+    ...value,
     loading,
     refreshing,
-    rankList,
-    homeGame,
-    notice,
-    onlineNum,
-    showOnlineNum,
-    couponList,
-    homeAd,
-    lotteryNumber,
-    lotteryGame,
-    turntableList,
-    redBag,
-    floatAd,
     refresh,
   }
 }
