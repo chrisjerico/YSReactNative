@@ -22,6 +22,9 @@ export function setRnPageInfo() {
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
     }
+    if (skitType.indexOf('乐橙') != -1) {
+      pages = pages.concat(LCPages)
+    }
     // tars
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
@@ -45,7 +48,6 @@ export function setRnPageInfo() {
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
-    // ezer
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
     }
@@ -59,14 +61,14 @@ export function setRnPageInfo() {
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
     }
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
-    }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages)
     }
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages)
+    }
+    if (skitType.indexOf('凯时') != -1) {
+      pages = pages.concat(KSPages)
     }
   }
 
@@ -79,6 +81,17 @@ export function setRnPageInfo() {
     允许游客访问: true,
     允许未登录访问: true,
   })
+
+  // 虚拟币充值教程
+  if (AppDefine.siteId != 'c012') {
+    pages.push({
+      vcName: 'HelpDocViewController',
+      rnName: PageName.JDVirtualCurrencyTutorialPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    });
+  }
 
   // 开奖走势页
   pages.push({
@@ -177,6 +190,14 @@ const LCPages = [
     允许游客访问: true,
     允许未登录访问: false,
   },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
 ]
 
 // 利来
@@ -201,14 +222,6 @@ const LLPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LLLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.LLRegisterPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -247,7 +260,7 @@ const LHTPages = [
     rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
-    允许未登录访问: true,
+    允许未登录访问: false,
   },
 ]
 

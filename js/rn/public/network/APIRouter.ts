@@ -1,33 +1,34 @@
-import { AxiosResponse } from 'axios'
-import { Platform } from 'react-native'
-import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
-import { ANHelper } from '../define/ANHelper/ANHelper'
-import { CMD } from '../define/ANHelper/hp/CmdDefine'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import { UGStore } from './../../redux/store/UGStore'
-import { CachePolicyEnum, httpClient } from './httpClient'
-import { BalanceModel } from './Model/BalanceModel'
-import { BannerModel } from './Model/BannerModel'
-import { FloatADModel } from './Model/FloatADModel'
-import { HomeADModel } from './Model/HomeADModel'
-import { HomeGamesModel } from './Model/HomeGamesModel'
-import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
-import { LoginModel } from './Model/LoginModel'
-import { LottoGamesModel } from './Model/LottoGamesModel'
-import { NoticeModel } from './Model/NoticeModel'
-import { OnlineModel } from './Model/OnlineModel'
-import { PlayOddDataModel } from './Model/PlayOddDataModel'
-import { PromotionsModel } from './Model/PromotionsModel'
-import { RankListModel } from './Model/RankListModel'
-import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
-import { RegisterModel } from './Model/RegisterModel'
-import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
-import { SystemConfigModel } from './Model/SystemConfigModel'
-import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
-import { TurntableListModel } from './Model/TurntableListModel'
-import { YueBaoStatModel } from './Model/YueBaoStatModel'
-import { HomeRecommendModel } from './Model/HomeRecommendModel'
-import { UserInfoModel } from './Model/UserInfoModel'
+import { AxiosResponse } from "axios";
+import { Platform } from "react-native";
+import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
+import { ANHelper } from "../define/ANHelper/ANHelper";
+import { CMD } from "../define/ANHelper/hp/CmdDefine";
+import { OCHelper } from '../define/OCHelper/OCHelper';
+import { UGStore } from './../../redux/store/UGStore';
+import { CachePolicyEnum, httpClient } from './httpClient';
+import { BalanceModel } from './Model/BalanceModel';
+import { BannerModel } from './Model/BannerModel';
+import { FloatADModel } from './Model/FloatADModel';
+import { HomeADModel } from './Model/HomeADModel';
+import { HomeGamesModel } from './Model/HomeGamesModel';
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel';
+import { LoginModel } from './Model/LoginModel';
+import { LottoGamesModel } from './Model/LottoGamesModel';
+import { NoticeModel } from './Model/NoticeModel';
+import { OnlineModel } from './Model/OnlineModel';
+import { PlayOddDataModel } from './Model/PlayOddDataModel';
+import { PromotionsModel } from './Model/PromotionsModel';
+import { RankListModel } from './Model/RankListModel';
+import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
+import { RegisterModel } from './Model/RegisterModel';
+import { SystemAvatarListModel } from './Model/SystemAvatarListModel';
+import { SystemConfigModel } from './Model/SystemConfigModel';
+import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
+import { TurntableListModel } from './Model/TurntableListModel';
+import { YueBaoStatModel } from './Model/YueBaoStatModel';
+import { HomeRecommendModel } from "./Model/HomeRecommendModel";
+import { UserInfoModel } from "./Model/UserInfoModel";
+import {ugLog} from "../tools/UgLog";
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -82,13 +83,14 @@ class APIRouter {
   static user_info = async () => {
     let token = null
     switch (Platform.OS) {
-      case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
-        token = user?.token
-        break
-      case 'android':
-        token = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { blGet: true })
-        break
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        token = user?.token;
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        token = pms?.token;
+        break;
     }
     if (token) {
       const tokenParams = Platform.OS == 'ios' ? 'token=' + token : token
@@ -110,23 +112,37 @@ class APIRouter {
     // return httpClient.get<RedBagDetailActivityModel>("c=activity&a=redBagDetail")
     let tokenParams = ''
     switch (Platform.OS) {
-      case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams = 'token=' + user?.token
-        break
-      case 'android':
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { blGet: true })
-        break
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
+        break;
     }
 
     return httpClient.get<RedBagDetailActivityModel>('c=activity&a=redBagDetail&' + tokenParams)
   }
-  static activity_turntableList = () => {
+  static activity_turntableList = async () => {
     if (UGStore.globalProps.userInfo?.isTest) {
       return {}
     }
-    return httpClient.get<TurntableListModel>('c=activity&a=turntableList')
+    let tokenParams = "";
+    switch (Platform.OS) {
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
+        break;
+    }
+
+    return httpClient.get<TurntableListModel>("c=activity&a=turntableList&" + tokenParams)
   }
+
   static system_floatAds = async () => {
     return httpClient.get<FloatADModel>('c=system&a=floatAds')
   }
@@ -149,13 +165,14 @@ class APIRouter {
   static user_balance_token = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
-      case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams = 'token=' + user?.token
-        break
-      case 'android':
-        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { blGet: true })
-        break
+      case "ios":
+        let user = await OCHelper.call('UGUserModel.currentUser');
+        tokenParams = 'token=' + user?.token;
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        tokenParams = 'token=' + pms?.token;
+        break;
     }
 
     return httpClient.get<BalanceModel>('c=user&a=balance&' + tokenParams)
@@ -171,11 +188,11 @@ class APIRouter {
         tokenParams = {
           token: user?.token,
         }
-        break
-      case 'android':
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams = JSON.parse(mapStr)
-        break
+        break;
+      case "android":
+        tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
+        ugLog('tokenParams=', tokenParams)
+        break;
     }
 
     return httpClient.post<any>('c=user&a=logout', tokenParams)
@@ -275,12 +292,12 @@ class APIRouter {
           token: user?.token,
           filename,
         }
-        break
-      case 'android':
-        let mapStr = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        break;
+      case "android":
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS);
         tokenParams = {
-          ...JSON.parse(mapStr),
-          filename,
+          ...pms,
+          filename
         }
         break
     }

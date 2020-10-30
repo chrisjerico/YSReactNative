@@ -4,6 +4,7 @@ import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
+import { ToastStatus } from '../../tools/tars'
 
 interface Options {
   onStart?: () => any
@@ -31,6 +32,7 @@ const useSignOut = (options: Options = {}) => {
           await ANHelper.callAsync(CMD.LOG_OUT)
           break
       }
+
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
       onSuccess && onSuccess()

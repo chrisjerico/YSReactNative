@@ -3,7 +3,7 @@ import {ImageButton} from "../../../ImageButton";
 import * as React from "react";
 import {List} from "../../../../../../public/network/Model/HomeGamesModel";
 
-export const RecommendMustPlayView = ({list, thirdPartGamePress}: { list: List[], thirdPartGamePress: (id: string, gameID?: string) => void }) => {
+export const RecommendMustPlayView = ({list, onPress}: { list: List[], onPress: (list: List) => void }) => {
     return (
         <>
             <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -11,14 +11,14 @@ export const RecommendMustPlayView = ({list, thirdPartGamePress}: { list: List[]
                 <Text style={{fontSize: 15, marginHorizontal: 10}}>|</Text>
                 <Text style={{fontSize: 16, color: '#333'}}>全民来玩</Text>
             </View>
-            <ImageButton onPress={() => thirdPartGamePress(list[0].id, list[0].gameId)}
+            <ImageButton onPress={() => onPress(list[0])}
                          imgStyle={{height: 153, width: "100%"}}
                          uri={list[0].icon}/>
             <View style={{flexDirection: 'row', paddingTop: 10}}>
-                <ImageButton imgStyle={{width: 186, height: 117, flex: 1, marginRight: 10}}
-                             uri={list[1].icon} onPress={() => thirdPartGamePress(list[1].id, list[1].gameId)}/>
-                <ImageButton imgStyle={{width: 186, height: 117, flex: 1}}
-                             uri={list[2].icon} onPress={() => thirdPartGamePress(list[2].id, list[2].gameId)}/>
+                {list[1] && <ImageButton imgStyle={{width: 186, height: 117, flex: 1, marginRight: 10}}
+                              uri={list[1].icon} onPress={() => onPress(list[1])}/>}
+                {list[2] && <ImageButton imgStyle={{width: 186, height: 117, flex: 1}}
+                              uri={list[2].icon} onPress={() => onPress(list[2])}/>}
             </View>
         </>
     )

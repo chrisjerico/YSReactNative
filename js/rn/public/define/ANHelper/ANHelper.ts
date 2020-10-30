@@ -1,13 +1,14 @@
-import AppDefine from '../AppDefine'
-import { ANEvent } from './ANEvent'
-import { httpClient } from '../../network/httpClient'
-import { CMD } from './hp/CmdDefine'
-import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
-import APIRouter from '../../network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import { NA_DATA } from './hp/DataDefine'
-import { ugLog } from '../../tools/UgLog'
-import { stringToNumber } from '../../tools/tars'
+import AppDefine from '../AppDefine';
+import {ANEvent} from './ANEvent';
+import {httpClient} from "../../network/httpClient";
+import {CMD} from "./hp/CmdDefine";
+import {UGUserCenterItem} from "../../../redux/model/全局/UGSysConfModel";
+import APIRouter from "../../network/APIRouter";
+import {UGStore} from "../../../redux/store/UGStore";
+import {NA_DATA} from "./hp/DataDefine";
+import {ugLog} from "../../tools/UgLog";
+import {stringToNumber} from "../../tools/tars";
+import {initDomain} from "../../config/DomainUrls";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
@@ -50,6 +51,8 @@ export class ANHelper extends ANEvent {
   static async setup() {
     super.setup()
 
+    initDomain();
+
     // 获取系统配置信息
     const res = await Promise.all([
       // 设置接口域名
@@ -78,9 +81,7 @@ export class ANHelper extends ANEvent {
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
-    //ugLog('ANHelper userCenterItems=', userCenterItems)
-
-    AppDefine.host = host
+    AppDefine.host = host;
     httpClient.defaults.baseURL = host
     AppDefine.siteId = siteId
 
@@ -99,7 +100,12 @@ export class ANHelper extends ANEvent {
 
     const sysConf_net = net_response[1]?.data?.data ?? {}
     const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-    const sysConf = Object.assign({}, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
+    const sysConf = Object.assign({}, sysConf_android,
+      { loginVCode, login_to,
+        adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
+
+    // ugLog('ANHelper sysConf=', sysConf)
+
     const gameLobby = net_response[2]?.data?.data ?? []
     const banner = net_response[3]?.data?.data ?? {}
 

@@ -1,12 +1,13 @@
-import { UGStore } from '../../../redux/store/UGStore'
-import APIRouter from '../../network/APIRouter'
-import { httpClient } from '../../network/httpClient'
-import { UGBridge } from '../ANHelper/UGBridge'
-import AppDefine from '../AppDefine'
-import { OCCall } from './OCBridge/OCCall'
-import { OCEvent } from './OCBridge/OCEvent'
-import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
-import { stringToNumber } from '../../tools/tars'
+import { UGStore } from '../../../redux/store/UGStore';
+import APIRouter from '../../network/APIRouter';
+import { httpClient } from '../../network/httpClient';
+import { UGBridge } from '../ANHelper/UGBridge';
+import AppDefine from '../AppDefine';
+import { OCCall } from './OCBridge/OCCall';
+import { OCEvent } from './OCBridge/OCEvent';
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
+import { stringToNumber } from '../../tools/tars';
+import DomainUrls, { initDomain } from '../../config/DomainUrls';
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey
@@ -45,8 +46,8 @@ export class OCHelper extends OCEvent {
           console.log(error)
         }),
       ])
-      const host = ios_response[0]
       const siteId = ios_response[1]
+      const host = DomainUrls[siteId] ?? ios_response[0];
       const sysConf_ios = ios_response[2] ?? {}
       const userCenterItems = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
@@ -76,6 +77,9 @@ export class OCHelper extends OCEvent {
       OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then((ver) => {
         OCHelper.call('AppDefine.shared.setVersion:', [ver])
       })
+
+      // 配置iOS的域名
+      initDomain(siteId);
     } catch (error) {
       console.log('-----error-----', error)
     }

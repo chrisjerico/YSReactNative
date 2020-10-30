@@ -240,7 +240,7 @@ export const LLLoginPage = ({ route, navigation, setProps }) => {
                     marginTop: 12,
                     borderRadius: 4
                 }}>
-                    <Text style={{color: "white", fontSize: 16}}>登 录</Text>
+                    <Text style={{color: "white", fontSize: 16}}>登录</Text>
                 </TouchableHighlight>
             </View>
             <View style={{flexDirection: "row", alignItems: "center", marginTop: 12}}>

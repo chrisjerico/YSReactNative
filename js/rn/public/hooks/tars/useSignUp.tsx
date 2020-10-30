@@ -42,9 +42,9 @@ const useSignUp = (options: Options = {}) => {
             onSuccess && onSuccess()
           }
         } else {
-          onError && onError(msg_reg_msg)
+          onSuccess && onSuccess()
         }
-      }
+      } 
     } catch (error) {
       onError && onError(error)
     }

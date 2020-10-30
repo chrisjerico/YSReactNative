@@ -32,14 +32,11 @@ const cleanOldUser = async () => {
           )
         }
         break;
-    }
-    UGStore.dispatch({ type: 'reset', userInfo: {} })
-
-    switch (Platform.OS) {
       case 'android':
         await ANHelper.callAsync(CMD.LOG_OUT)
         break;
     }
+    UGStore.dispatch({ type: 'reset', userInfo: {} })
 
   } catch (error) {
     throw error

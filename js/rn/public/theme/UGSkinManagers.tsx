@@ -57,17 +57,19 @@ export default class UGSkinManagers extends UGThemeColor {
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
-      14: `六合厅`,
-      16: `尊龙`,
-      18: `金星黑`,
-      19: `乐橙`,
-      20: `利来`,
-      22: `凯时`,
-      21: `宝石红`,
-      23: `威尼斯`,
+      14: '六合厅',
+      16: '尊龙',
+      18: '金星黑',
+      19: '乐橙',
+      20: '利来',
+      22: '凯时',
+      21: '宝石红',
+      23: '威尼斯',
       25: '天空蓝',
       26: `白曜`,
-      27: `越南`,
+      277: `越南`,//这个值 要与 后台站点一致
+      27: `摩登红`,
+      28: `黑金`,
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
@@ -93,7 +95,9 @@ export default class UGSkinManagers extends UGThemeColor {
   // 应用主题色到iOS原生代码
   static async updateOcSkin() {
     const skin = Skin1
-    if (Platform.OS != 'ios') return
+    if (Platform.OS != 'ios') {
+      return
+    }
     // 已上线模板
     const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin

@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#ffffff',
+    fontSize: scale(20)
   },
   logo: {
     width: scale(30),

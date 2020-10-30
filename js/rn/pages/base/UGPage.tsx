@@ -10,12 +10,14 @@ import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { PageName } from '../../public/navigation/Navigation'
 import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { UGThemeConst } from "../../public/theme/const/UGThemeConst"
 import { UGColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
-import { ugLog } from '../../public/tools/UgLog'
+import { ugLog } from "../../public/tools/UgLog"
 import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+
 
 // Props
 export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
@@ -64,15 +66,7 @@ export default (Page: Function) => {
       navigation.removeListener('transitionEnd', null)
       navigation.addListener('transitionEnd', (e) => {
         if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-          //检查一下Native主页下面的tab是显示还是隐藏
-          switch (Platform.OS) {
-            case 'ios':
-              OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true])
-              break
-            case 'android':
-              ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 })
-              break
-          }
+          this._showMainTab();
         }
       })
       // 监听dispatch
@@ -94,6 +88,39 @@ export default (Page: Function) => {
       this.newProps = deepMergeProps(this.newProps, UGStore.getPageProps(route.name))
     }
 
+    /**
+     * 某些模板不需要显示主页TAB
+     */
+    _showMainTab = () => {
+      const {
+        mobileTemplateCategory, // 模版分类ID
+      } = UGStore.globalProps.sysConf;
+
+      if (mobileTemplateCategory == UGThemeConst.黑金) {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+          case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+            break;
+          case "android":
+            ugLog('ug page menu');
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 });
+            break;
+        }
+      } else {
+        //检查一下Native主页下面的tab是显示还是隐藏
+        switch (Platform.OS) {
+          case "ios":
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
+            break;
+          case "android":
+            ugLog('ug page menu');
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
+            break;
+        }
+      }
+    }
+
     // 取消监听
     componentWillUnmount() {
       this.unsubscribe && this.unsubscribe()
@@ -110,7 +137,7 @@ export default (Page: Function) => {
 
       return (
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
-          <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }}>
+          <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
             <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
           </FastImage>
