@@ -16,6 +16,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { LLRegisterInput } from './component/registerPage/LLRegisterInput'
 import { httpClient } from '../../public/network/httpClient'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
+import { AgentType } from '../../public/models/Enum'
 
 export const LLRegisterPage = () => {
   const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
@@ -43,6 +44,7 @@ export const LLRegisterPage = () => {
   const [pwd, setPwd] = useState('')
   const [code, setCode] = useState('')
   const [inviter, setInviter] = useState('')
+  const [agentType, setAgentType] = useState<any>(AgentType.用户注册)
   const regex = RegExp('^[A-Za-z0-9]{6,15}$')
   const SystemStore = UGStore.globalProps.sysConf
   const {
@@ -93,11 +95,11 @@ export const LLRegisterPage = () => {
   const getVcode = useMemo(() => {
     ugLog('sliding reg_vcode=', reg_vcode)
     if (reg_vcode == 0) {
-        return null
+      return null
     } else if (reg_vcode == 3 || reg_vcode == 1) {
-        return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} code={code}/>
+      return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} code={code} />
     } else {
-        return <SlidingVerification onChange={onChangeSlideCode}/>
+      return <SlidingVerification onChange={onChangeSlideCode} />
     }
   }, [reg_vcode, code])
 
@@ -116,8 +118,8 @@ export const LLRegisterPage = () => {
           setInviter(text)
           onChangeRecommendGuy(text)
         }}
-                          placeholder={'推荐人或上级代理'}
-                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
+                         placeholder={'推荐人或上级代理'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
         {showRecommendGuy && inviter == '' && <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',
@@ -146,7 +148,8 @@ export const LLRegisterPage = () => {
           obChangePassword(text)
         }} placeholder={'请输入密码（长度不能低于6位)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
-        {pass_length_min && pass_length_max && pwd.length < pass_length_min && pwd.length > pass_length_max && <View style={{ flexDirection: 'row' }}>
+        {pass_length_min && pass_length_max && pwd.length < pass_length_min && pwd.length > pass_length_max &&
+        <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',
             fontSize: 12,
@@ -159,8 +162,9 @@ export const LLRegisterPage = () => {
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
         <LLRegisterInput isPwd={false} visible={reg_email != 0} onChangeText={onChangeEmail} placeholder={'请输入电子邮件'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-email.png'} />
-        {reg_fundpwd ? <LLRegisterInput maxLength={4} isPwd={true} onChangeText={onChaneFundPassword} placeholder={'请输入取款密码'}
-                                        img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} /> : null}
+        {reg_fundpwd ?
+          <LLRegisterInput maxLength={4} isPwd={true} onChangeText={onChaneFundPassword} placeholder={'请输入取款密码'}
+                           img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} /> : null}
         {reg_name ? <LLRegisterInput isPwd={false} onChangeText={onChaneRealName} placeholder={'请输入真实姓名'}
                                      img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
         {reg_qq ? <LLRegisterInput isPwd={false} onChangeText={onChaneQQ} placeholder={'请输入QQ号'}
@@ -170,6 +174,42 @@ export const LLRegisterPage = () => {
         {reg_phone ? <LLRegisterInput isPwd={false} onChangeText={onChanePhone} placeholder={'请输入手机'}
                                       img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} /> : null}
         {getVcode}
+        {agentRegbutton ? <View style={{
+          backgroundColor: '#b6b6b6',
+          flexDirection: 'row',
+          width: 152,
+          alignSelf: 'center',
+          marginTop: 8,
+          paddingVertical: 2,
+          justifyContent: 'center',
+        }}>
+          <TouchableWithoutFeedback onPress={() => {
+            setAgentType(AgentType.用户注册)
+            onChangeAgent(AgentType.用户注册)
+          }}>
+            <View style={{ backgroundColor: agentType == AgentType.用户注册 ? '#3ba2d0' : '#b6b6b6' }}>
+              <Text style={{
+                paddingVertical: 4,
+                paddingHorizontal: 8,
+                width: 74,
+                color: agentType == AgentType.用户注册 ? '#ffffff' : '#000000',
+              }}>普通用户</Text>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => {
+            setAgentType(AgentType.代理注册)
+            onChangeAgent(AgentType.代理注册)
+          }}>
+            <View style={{ backgroundColor: agentType == AgentType.代理注册 ? '#3ba2d0' : '#b6b6b6' }}>
+              <Text style={{
+                paddingVertical: 4,
+                paddingHorizontal: 8,
+                width: 74,
+                color: agentType == AgentType.代理注册 ? '#ffffff' : '#000000',
+              }}>注册代理</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View> : null}
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity style={{ flex: 1, backgroundColor: '#d19898', borderRadius: 30, marginTop: 12 }}
                             onPress={signUp}>
