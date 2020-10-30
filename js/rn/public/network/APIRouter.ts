@@ -161,6 +161,24 @@ class APIRouter {
     return httpClient.get<GoldenEggListModel>('c=activity&a=goldenEggList&' + tokenParams)
   }
 
+  static activity_scratchList = async () => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      return {}
+    }
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        let user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<any>('c=activity&a=scratchList&' + tokenParams)
+  }
+
   static system_floatAds = async () => {
     return httpClient.get<FloatADModel>('c=system&a=floatAds')
   }

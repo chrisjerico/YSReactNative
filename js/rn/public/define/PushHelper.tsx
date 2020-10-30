@@ -152,6 +152,8 @@ export default class PushHelper {
         break
     }
   }
+
+  static pushCratchs() {}
   // 去彩票大廳 userCenter裡有
   // static pushLotteryLobby() {
   //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
