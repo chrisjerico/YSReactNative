@@ -4,11 +4,9 @@ import { BaseScreen } from './component/BaseScreen'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import CheckBox from '@react-native-community/checkbox'
 import { navigate } from '../../public/navigation/RootNavigation'
-// @ts-ignore
 import { PageName } from '../../public/navigation/Navigation'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 
-let errorTimes = 0
 const LCLoginPage = () => {
     const { sign, value, onChange, navigateTo, show, slideCodeRef, valid  } = useSignInPage({
         homePage: PageName.LCHomePage,
@@ -30,7 +28,7 @@ const LCLoginPage = () => {
                     borderColor: "#dddddd"
                 }}>
                     <Icon style={{marginRight: 12}} size={25} color={"gold"} name={"user-o"}/>
-                    <TextInput style={{flex: 1}} defaultValue={account} onChangeText={(text) => onChangeAccount(text)} placeholder={'请输入账号'}/>
+                    <TextInput style={{flex: 1}} defaultValue={account || ""} onChangeText={(text) => onChangeAccount(text)} placeholder={'请输入账号'}/>
                 </View>
                 <View style={{
                     marginTop: 8,
@@ -41,63 +39,63 @@ const LCLoginPage = () => {
                     borderColor: "#dddddd"
                 }}>
                     <Icon style={{marginRight: 12}} size={25} color={"gold"} name={"unlock-alt"}/>
-                    <TextInput style={{flex: 1}} defaultValue={password} onChangeText={(text) => onChangePassword(text)} placeholder={'请输入密码'}/>
+                    <TextInput style={{flex: 1}} defaultValue={password || ""} onChangeText={(text) => onChangePassword(text)} placeholder={'请输入密码'}/>
                 </View>
-                <View style={{flexDirection: "row", alignItems: "center", paddingTop: 24}}>
-                    <CheckBox
-                        boxType={'square'}
-                        style={{height: 20, width: 20, borderColor: "black"}}
-                        value={remember}
-                        onValueChange={() => onChangeRemember(!remember)}
-                    />
-                    <Text style={{paddingLeft: 8}}>记住密码</Text>
-                </View>
-                <View style={{paddingTop: 16}}>
-                    {valid ? <TouchableOpacity style={{
-                        marginTop: 8,
-                        backgroundColor: "gold",
-                        borderRadius: 4,
-                        borderBottomWidth: 1,
-                        borderColor: "#dddddd"
-                    }} onPress={signIn} >
-                        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>登录</Text>
-                    </TouchableOpacity> : <TouchableOpacity disabled={true} style={{
-                        marginTop: 8,
-                        backgroundColor: "#ffefae",
-                        borderRadius: 4,
-                        borderBottomWidth: 1,
-                        borderColor: "#dddddd"
-                    }} onPress={signIn}>
-                        <Text style={{alignSelf: "center", paddingVertical: 20, color: "#ddd"}}>登录</Text>
-                    </TouchableOpacity>}
-                    <TouchableOpacity style={{
-                        marginTop: 8,
-                        backgroundColor: "#dedede",
-                        borderRadius: 4,
-                        borderBottomWidth: 1,
-                        borderColor: "#dddddd"
-                    }} onPress={navigateToSignUpPage}>
-                        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>马上注册</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{
-                        marginTop: 8,
-                        backgroundColor: "#dedede",
-                        borderRadius: 4,
-                        borderBottomWidth: 1,
-                        borderColor: "#dddddd"
-                    }} onPress={tryPlay}>
-                        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>免费试玩</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{
-                        marginTop: 8,
-                        backgroundColor: "#dedede",
-                        borderRadius: 4,
-                        borderBottomWidth: 1,
-                        borderColor: "#dddddd"
-                    }} onPress={() => navigate(PageName.LCHomePage)}>
-                        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>返回首页</Text>
-                    </TouchableOpacity>
-                </View>
+                {/*<View style={{flexDirection: "row", alignItems: "center", paddingTop: 24}}>*/}
+                {/*    <CheckBox*/}
+                {/*        boxType={'square'}*/}
+                {/*        style={{height: 20, width: 20, borderColor: "black"}}*/}
+                {/*        value={remember}*/}
+                {/*        onValueChange={() => onChangeRemember(!remember)}*/}
+                {/*    />*/}
+                {/*    <Text style={{paddingLeft: 8}}>记住密码</Text>*/}
+                {/*</View>*/}
+                {/*<View style={{paddingTop: 16}}>*/}
+                {/*    {valid ? <TouchableOpacity style={{*/}
+                {/*        marginTop: 8,*/}
+                {/*        backgroundColor: "gold",*/}
+                {/*        borderRadius: 4,*/}
+                {/*        borderBottomWidth: 1,*/}
+                {/*        borderColor: "#dddddd"*/}
+                {/*    }} onPress={signIn} >*/}
+                {/*        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>登录</Text>*/}
+                {/*    </TouchableOpacity> : <TouchableOpacity disabled={true} style={{*/}
+                {/*        marginTop: 8,*/}
+                {/*        backgroundColor: "#ffefae",*/}
+                {/*        borderRadius: 4,*/}
+                {/*        borderBottomWidth: 1,*/}
+                {/*        borderColor: "#dddddd"*/}
+                {/*    }} onPress={signIn}>*/}
+                {/*        <Text style={{alignSelf: "center", paddingVertical: 20, color: "#ddd"}}>登录</Text>*/}
+                {/*    </TouchableOpacity>}*/}
+                {/*    <TouchableOpacity style={{*/}
+                {/*        marginTop: 8,*/}
+                {/*        backgroundColor: "#dedede",*/}
+                {/*        borderRadius: 4,*/}
+                {/*        borderBottomWidth: 1,*/}
+                {/*        borderColor: "#dddddd"*/}
+                {/*    }} onPress={navigateToSignUpPage}>*/}
+                {/*        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>马上注册</Text>*/}
+                {/*    </TouchableOpacity>*/}
+                {/*    <TouchableOpacity style={{*/}
+                {/*        marginTop: 8,*/}
+                {/*        backgroundColor: "#dedede",*/}
+                {/*        borderRadius: 4,*/}
+                {/*        borderBottomWidth: 1,*/}
+                {/*        borderColor: "#dddddd"*/}
+                {/*    }} onPress={tryPlay}>*/}
+                {/*        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>免费试玩</Text>*/}
+                {/*    </TouchableOpacity>*/}
+                {/*    <TouchableOpacity style={{*/}
+                {/*        marginTop: 8,*/}
+                {/*        backgroundColor: "#dedede",*/}
+                {/*        borderRadius: 4,*/}
+                {/*        borderBottomWidth: 1,*/}
+                {/*        borderColor: "#dddddd"*/}
+                {/*    }} onPress={() => navigate(PageName.LCHomePage)}>*/}
+                {/*        <Text style={{alignSelf: "center", paddingVertical: 20, color: "black"}}>返回首页</Text>*/}
+                {/*    </TouchableOpacity>*/}
+                {/*</View>*/}
             </View>
         </BaseScreen>
     )
