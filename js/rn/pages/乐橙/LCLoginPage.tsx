@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from './component/BaseScreen'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -10,10 +9,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 
 let errorTimes = 0
-const LCLoginPage = ({route, navigation, setProps}) => {
-    const [acc, setAcc] = useState("")
-    const [pwd, setPwd] = useState("")
-    const [GGmodalShow, setGGModalShow] = useState(false)
+const LCLoginPage = () => {
     const { sign, value, onChange, navigateTo, show, slideCodeRef, valid  } = useSignInPage({
         homePage: PageName.LCHomePage,
         signUpPage: PageName.LCRegisterPage,
@@ -47,7 +43,6 @@ const LCLoginPage = ({route, navigation, setProps}) => {
                     <Icon style={{marginRight: 12}} size={25} color={"gold"} name={"unlock-alt"}/>
                     <TextInput style={{flex: 1}} defaultValue={password} onChangeText={(text) => onChangePassword(text)} placeholder={'请输入密码'}/>
                 </View>
-                {/*<TouchableOpacity onPress={() => setIsRemember(!isRemember)}>*/}
                 <View style={{flexDirection: "row", alignItems: "center", paddingTop: 24}}>
                     <CheckBox
                         boxType={'square'}
@@ -104,16 +99,6 @@ const LCLoginPage = ({route, navigation, setProps}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {/*<DialogInput isDialogVisible={GGmodalShow}*/}
-            {/*             title={"请输入谷歌验证码"}*/}
-            {/*             message={""}*/}
-            {/*             cancelText={"取消"}*/}
-            {/*             submitText={"確定"}*/}
-            {/*             hintInput={"请输入谷歌验证码"}*/}
-            {/*             submitInput={(inputText) => login({account: acc, pwd: pwd, googleCode: inputText})}*/}
-            {/*             closeDialog={() => {*/}
-            {/*                 setGGModalShow(false)*/}
-            {/*             }}/>*/}
         </BaseScreen>
     )
 }
