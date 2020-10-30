@@ -2,10 +2,10 @@ import * as React from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { BaseScreen } from './component/BaseScreen'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import CheckBox from '@react-native-community/checkbox'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
+import CheckBox from '../../public/views/tars/CheckBox'
 
 const LCLoginPage = () => {
     const { sign, value, onChange, navigateTo, show, slideCodeRef, valid  } = useSignInPage({
@@ -42,13 +42,7 @@ const LCLoginPage = () => {
                     <TextInput style={{flex: 1}} defaultValue={password || ""} onChangeText={(text) => onChangePassword(text)} placeholder={'请输入密码'}/>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", paddingTop: 24}}>
-                    {/*<CheckBox*/}
-                    {/*    boxType={'square'}*/}
-                    {/*    style={{height: 20, width: 20, borderColor: "black"}}*/}
-                    {/*    value={remember}*/}
-                    {/*    onValueChange={() => onChangeRemember(!remember)}*/}
-                    {/*/>*/}
-                    {/*<Text style={{paddingLeft: 8}}>记住密码</Text>*/}
+                    <CheckBox onPress={() => onChangeRemember(!remember)} label={"记住密码"} defaultValue={remember} />
                 </View>
                 <View style={{paddingTop: 16}}>
                     {valid ? <TouchableOpacity style={{
