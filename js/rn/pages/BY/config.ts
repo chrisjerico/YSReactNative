@@ -1,4 +1,3 @@
-import PushHelper from '../../public/define/PushHelper'
 import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
@@ -28,31 +27,50 @@ const config = {
   },
   menus: [
     {
+      title: '充值',
+      logo: getIbbImage('C177sfz/savemoney'),
+      onPress: goToUserCenterType.存款,
+    },
+    {
+      title: '提现',
+      logo: getIbbImage('s5WZc3p/takemoney'),
+      onPress: goToUserCenterType.取款,
+    },
+    {
       title: '额度转换',
+      logo: getIbbImage('s5WZc3p/takemoney'),
+
       onPress: goToUserCenterType.额度转换,
     },
     {
       title: '投注记录',
+      logo: getIbbImage('RBr7sMH/playhistroy'),
       onPress: goToUserCenterType.彩票注单记录,
     },
     {
       title: '开奖结果',
+      logo: getIbbImage('JsrjgjJ/rewardresult'),
+
       onPress: goToUserCenterType.开奖结果,
     },
     {
       title: '账户管理',
+      logo: getIbbImage('tsLSDZC/account'),
       onPress: goToUserCenterType.资金明细,
     },
     {
       title: '站内短信',
+      logo: getIbbImage('hRbQ3xF/message'),
       onPress: goToUserCenterType.站内信,
     },
     {
       title: '返回大厅',
+      logo: getIbbImage('dM51dH6/gobacklobby'),
       onPress: () => {},
     },
     {
       title: '退出登录',
+      logo: getIbbImage('pWfZ2L6/logout'),
       onPress: () => {},
     },
   ],

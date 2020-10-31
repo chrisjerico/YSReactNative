@@ -1,11 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import { useSafeArea } from 'react-native-safe-area-context'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
-import Button from '../../../public/views/tars/Button'
 import List from '../../../public/views/tars/List'
 
 interface MenuProps {
@@ -14,6 +14,24 @@ interface MenuProps {
   balanceDecimal: number
   usr: string
   uid: string
+}
+
+interface MenuButtonProps {
+  title: string
+  logo: string
+  containerStyle?: StyleProp<ViewStyle>
+  onPress?: () => any
+}
+
+const MenuButton = ({ title, logo, containerStyle, onPress }: MenuButtonProps) => {
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[containerStyle, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
+        <FastImage source={{ uri: logo }} style={{ width: scale(30), aspectRatio: 1, marginRight: scale(10) }} resizeMode={'contain'} />
+        <Text>{title}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+  )
 }
 
 const Menu = ({ menus, balance, balanceDecimal, usr, uid }: MenuProps) => {
@@ -27,14 +45,15 @@ const Menu = ({ menus, balance, balanceDecimal, usr, uid }: MenuProps) => {
         <ReLoadBalanceComponent balance={balance} balanceDecimal={balanceDecimal} currency={'RMB'} iconColor={'#ffffff'} balanceStyle={styles.titile} />
       </LinearGradient>
       <View style={styles.buttonContainer}>
-        <Button containerStyle={{ flex: 1, borderRightWidth: AppDefine.onePx, borderColor: '#d9d9d9' }} title={'充值'} />
-        <Button containerStyle={{ flex: 1 }} title={'提现'} />
+        {menus?.slice(0, 2).map((item, index) => {
+          return <MenuButton key={index} containerStyle={index ? { flex: 1 } : { flex: 1, borderRightWidth: AppDefine.onePx, borderColor: '#d9d9d9' }} {...item} />
+        })}
       </View>
       <List
         uniqueKey={'ByHomePageMenuList'}
-        data={menus}
+        data={menus?.slice(2, 9)}
         renderItem={({ item }) => {
-          return <Button {...item} containerStyle={styles.button} />
+          return <MenuButton {...item} containerStyle={styles.button} />
         }}
       />
     </View>
