@@ -11,6 +11,7 @@ import { LotteryNumberModel } from '../../network/Model/LotteryNumberModel'
 import { NoticeModel } from '../../network/Model/NoticeModel'
 import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
+import { ScratchListModel } from '../../network/Model/ScratchListModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
 
 const localRouters = [
@@ -48,7 +49,7 @@ interface Value {
   floatAd?: FloatADModel
   showOnlineNum?: boolean
   goldenEggList?: GoldenEggListModel
-  scratchList?: any
+  scratchList?: ScratchListModel
 }
 
 const useHome = () => {
@@ -78,7 +79,6 @@ const useHome = () => {
         })
       )
       !loading && updateStore(response)
-      console.log('--------value[11]------', response[11])
 
       setValue({
         rankList: response[0] ? response[0]?.data : value?.rankList,

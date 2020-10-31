@@ -30,6 +30,7 @@ import { HomeRecommendModel } from './Model/HomeRecommendModel'
 import { UserInfoModel } from './Model/UserInfoModel'
 import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
+import { ScratchListModel } from './Model/ScratchListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -176,7 +177,7 @@ class APIRouter {
         tokenParams = 'token=' + pms?.token
         break
     }
-    return httpClient.get<any>('c=activity&a=scratchList&' + tokenParams)
+    return httpClient.get<ScratchListModel>('c=activity&a=scratchList&' + tokenParams)
   }
 
   static system_floatAds = async () => {

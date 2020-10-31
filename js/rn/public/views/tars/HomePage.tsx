@@ -39,6 +39,7 @@ interface HomePageProps {
   roulette: Roulette[]
   floatAds: FloatAd[]
   goldenEggs: GoldenEgg[]
+  scratchs: unknown
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
@@ -117,6 +118,7 @@ const HomePage = ({
   roulette,
   floatAds,
   goldenEggs,
+  scratchs,
   showOnlineNum,
   bannersInterval,
   onlineNum,
@@ -242,7 +244,7 @@ const HomePage = ({
             </>
           )}
         />
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} />
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>
     )

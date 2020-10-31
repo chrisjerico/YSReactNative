@@ -14,6 +14,7 @@ interface ActivitysProps {
   roulette: Roulette[]
   redBag: RedBagDetailActivityModel
   goldenEggs: GoldenEgg[]
+  scratchs: unknown
 }
 
 export interface FloatAd {
@@ -40,7 +41,7 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs }: ActivitysProps) => {
+const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   return (
     <>
       <ActivityComponent
@@ -70,6 +71,16 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
         onPress={() => {
           PushHelper.pushGoldenEggs(goldenEggs)
+        }}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(400), right: 0 }}
+        enableFastImage={false}
+        show={uid && scratchs && !isTest}
+        logo={'https://i.ibb.co/0J51pH9/scratch.png'}
+        onPress={() => {
+          PushHelper.pushCratchs(scratchs)
         }}
       />
       {floatAds?.map((item: any, index) => {
