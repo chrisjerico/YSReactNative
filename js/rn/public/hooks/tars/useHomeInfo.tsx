@@ -74,7 +74,7 @@ const useHome = () => {
           try {
             return await APIRouter[router]()
           } catch (error) {
-            // console.log(error)
+            console.log(router + ' : ' + error)
           }
         })
       )

@@ -34,7 +34,7 @@ const KSHomePage = () => {
   const moreGames = homeGamesConcat?.slice(8, homeGamesConcat?.length) ?? []
   const { tryPlay } = sign
 
-  console.log('----homeGamesConcat[0]----', homeGamesConcat[0])
+  // console.log('----homeGames----', homeGames)
   return (
     <HomePage
       {...homeInfo}

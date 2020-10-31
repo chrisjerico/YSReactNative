@@ -20,7 +20,7 @@ const KSSignInPage = () => {
 
   const { navigateToSignUpPage } = navigateTo
 
-  const { signIn } = sign
+  const { signIn, tryPlay } = sign
 
   const { onChangeRemember } = onChange
   const { remember } = value
@@ -49,7 +49,7 @@ const KSSignInPage = () => {
             showLogo={false}
             onPress={signIn}
           />
-          <Button title={'免费试玩'} containerStyle={styles.signUpButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={navigateToSignUpPage} />
+          <Button title={'免费试玩'} containerStyle={styles.signUpButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={tryPlay} />
         </View>
       </ScrollView>
     </>
