@@ -134,7 +134,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const onChangePassword = useCallback((value: string) => setPassword(value), [])
   const onChangeConfirmPassword = useCallback((value: string) => setConfirmPassword(value), [])
   const onChaneRealName = useCallback((value: string) => setName(value), [])
-  const onChaneFundPassword = useCallback((value: string) => setFundPassword(value), [])
+  const onChaneFundPassword = useCallback((value: string) => setFundPassword(value?.replace(/[^0-9]/g, '')), [])
   const onChaneQQ = useCallback((value: string) => setQQ(value), [])
   const onChaneWeChat = useCallback((value: string) => setWeChat(value), [])
   const onChanePhone = useCallback((value: string) => setPhoneNumber(value), [])
@@ -261,8 +261,17 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     }
   }
 
-  return {
+  const value = {
+    fundPassword,
+  }
+
+  const reference = {
     slideCodeRef,
+  }
+
+  return {
+    reference,
+    value,
     show,
     valid,
     label,

@@ -13,7 +13,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const BZHSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, passwordLimit } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, value } = useSignUpPage({
     homePage: PageName.BZHHomePage,
     signInPage: PageName.BZHSignInPage,
   })
@@ -27,7 +27,7 @@ const BZHSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList slideCodeColor={'#ffffff'} reference={reference} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} value={value} Form={SignUpForm} />
           <Button
             title={'注册'}
             containerStyle={[

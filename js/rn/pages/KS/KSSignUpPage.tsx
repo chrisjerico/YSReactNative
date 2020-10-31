@@ -11,7 +11,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const KSSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, navigateTo, value } = useSignUpPage({
     homePage: PageName.KSHomePage,
     signInPage: PageName.KSSignInPage,
   })
@@ -27,7 +27,7 @@ const KSSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList slideCodeColor={'#ffffff'} reference={reference} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} value={value} Form={SignUpForm} />
           <LinearBadge
             colors={['#eb5d4d', '#fb2464']}
             containerStyle={[styles.button, { height: null }]}

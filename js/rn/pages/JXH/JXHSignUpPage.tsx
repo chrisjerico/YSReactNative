@@ -13,7 +13,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList from '../../public/views/tars/SignUpFormList'
 
 const JXHSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, navigateTo ,value } = useSignUpPage({
     homePage: PageName.JXHHomePage,
     signInPage: PageName.JXHSignInPage,
   })
@@ -36,7 +36,7 @@ const JXHSignUpPage = () => {
               <Text style={{ color: '#cfa461' }}>{'登陆'}</Text>
             </TouchableWithoutFeedback>
           </View>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#000000'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList slideCodeColor={'#000000'} reference={reference} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} value={value} Form={SignUpForm} />
           <LinearBadge
             colors={['#cfa461', '#cfa461']}
             containerStyle={[styles.button, { height: null }]}

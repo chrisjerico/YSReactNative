@@ -34,18 +34,27 @@ interface Label {
 
 interface SignUpFormListProps {
   slideCodeColor: string
-  slideCodeRef: RefObject<any>
   show: Show
   onChange: OnChange
   label: Label
   passwordLimit: PasswordLimit
   Form?: (props: FormComponentProps & { leftIconTitle: string }) => any
+  reference?: Reference
+  value: Value
 }
 
 interface PasswordLimit {
   strength: PasswordStrength
   maxLength: number
   minLength: number
+}
+
+interface Reference {
+  slideCodeRef?: RefObject<any>
+}
+
+interface Value {
+  fundPassword: string
 }
 
 interface OnChange {
@@ -69,12 +78,14 @@ const SignUpFormList = ({
   show,
   onChange,
   label,
-  slideCodeRef,
+  reference,
   passwordLimit,
+  value,
   Form = () => {
     return null
   },
 }: SignUpFormListProps) => {
+  const { fundPassword } = value
   const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton } = show
   const {
     onChangeRecommendGuy,
@@ -95,6 +106,8 @@ const SignUpFormList = ({
   const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel } = label
 
   const { maxLength } = passwordLimit
+
+  const { slideCodeRef } = reference
 
   return (
     <>
@@ -132,6 +145,7 @@ const SignUpFormList = ({
         maxLength={4}
         rightIconType={'eye'}
         leftIconTitle={'取款密码'}
+        value={fundPassword}
       />
       <Form
         leftIconProps={{
