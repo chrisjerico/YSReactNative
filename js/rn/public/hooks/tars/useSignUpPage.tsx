@@ -9,8 +9,8 @@ import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import {UGStore} from "../../../redux/store/UGStore";
-import {ugLog} from "../../tools/UgLog";
+import { UGStore } from '../../../redux/store/UGStore'
+import { ugLog } from '../../tools/UgLog'
 
 interface UseRegisterPage {
   homePage?: PageName
@@ -156,7 +156,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     if (necessity == Necessity.选填) {
       return label + '(选填)'
     } else if (necessity == Necessity.必填) {
-      return '*' + label
+      return label + '(必填)'
     } else {
       return label
     }

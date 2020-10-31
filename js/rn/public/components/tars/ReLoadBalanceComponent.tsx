@@ -9,7 +9,7 @@ import { stringToFloat } from '../../tools/tars'
 interface ReLoadComponentProps {
   balance: string
   balanceDecimal: number
-  currency: string
+  currency?: string
   iconColor?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
@@ -19,7 +19,19 @@ interface ReLoadComponentProps {
   animatedContainerStyle?: StyleProp<ViewStyle>
   showK?: boolean
 }
-const ReLoadBalanceComponent = ({ iconColor, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({
+  iconColor,
+  containerStyle,
+  size = 25,
+  balance,
+  title,
+  balanceStyle,
+  titleStyle,
+  animatedContainerStyle,
+  currency = '',
+  showK,
+  balanceDecimal,
+}: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
