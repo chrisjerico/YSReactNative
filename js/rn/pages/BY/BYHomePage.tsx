@@ -6,6 +6,7 @@ import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { push } from '../../public/navigation/RootNavigation'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
@@ -59,7 +60,17 @@ const BYHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       items={homeGames}
-      renderHeader={() => <HomeHeader logo={mobile_logo} uid={uid} onPressSignIn={onPressSignIn} onPressSignUp={onPressSignUp} onPressTryPlay={tryPlay} onPressMenu={() => menu?.current?.open()} />}
+      renderHeader={() => (
+        <HomeHeader
+          logo={mobile_logo}
+          uid={uid}
+          onPressSignIn={onPressSignIn}
+          onPressSignUp={onPressSignUp}
+          onPressTryPlay={tryPlay}
+          onPressMenu={() => menu?.current?.open()}
+          onPressMessege={goToUserCenterType.站内信}
+        />
+      )}
       renderListHeaderComponent={() => (
         <>
           <List

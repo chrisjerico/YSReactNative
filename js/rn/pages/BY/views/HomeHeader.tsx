@@ -4,15 +4,15 @@ import FastImage from 'react-native-fast-image'
 import Entypo from 'react-native-vector-icons/Entypo'
 import { scale } from '../../../public/tools/Scale'
 
-const iconSize = scale(30)
+const iconSize = scale(35)
 
-const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay, onPressMenu }) => {
+const HomeHeader = ({ logo, uid, onPressSignIn, onPressSignUp, onPressTryPlay, onPressMenu, onPressMessege }) => {
   return (
     <View style={styles.container}>
       <Entypo name={'menu'} color={'#000000'} size={iconSize} onPress={onPressMenu} />
       <FastImage source={{ uri: logo }} style={styles.logo} resizeMode={'contain'} />
       {uid ? (
-        <Entypo name={'message'} color={'#000000'} size={iconSize} />
+        <Entypo name={'message'} color={'#000000'} size={iconSize} onPress={onPressMessege} />
       ) : (
         <View style={{ flexDirection: 'row' }}>
           <TouchableWithoutFeedback onPress={onPressSignIn}>

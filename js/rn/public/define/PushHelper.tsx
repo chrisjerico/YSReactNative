@@ -133,18 +133,23 @@ export default class PushHelper {
   }
 
   static pushGoldenEggs(goldenEggs: GoldenEgg[]) {
+    // const _goldenEggs = Object.assign({ clsName: 'DZPModel' }, goldenEggs?.[0])
+
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call(({ vc }) => ({
-          vc: {
-            selectors: 'EggFrenzyViewController.new[setItem:]',
-            args1: [goldenEggs],
-          },
-          ret: {
-            selectors: 'UGNavigationController.current.presentViewController:animated:',
-            args1: [vc, true],
-          },
-        }))
+        OCHelper.call(({ vc }) => {
+          return {
+            vc: {
+              selectors: 'EggFrenzyViewController.new',
+              modalPresentationStyle: 5,
+              // args1: [5],
+            },
+            ret: {
+              selectors: 'UGNavigationController.current.presentViewController:animated:',
+              args1: [vc, true],
+            },
+          }
+        })
         // OCHelper.call('UGNavigationController.current.presentViewController:animated:', [{ selectors: 'EggFrenzyViewController.new', args1: [goldenEggs] }, true])
         console.log('-------去砸Ｇ蛋')
         break
