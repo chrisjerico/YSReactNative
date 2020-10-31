@@ -156,7 +156,7 @@ const KSMinePage = () => {
                 imageContainerStyle={{ width: '50%' }}
                 titleContainerStyle={{ aspectRatio: 5 }}
                 unreadMsg={unreadMsg || 0}
-                showUnReadMsg={code == UGUserCenterType.站内信}
+                showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
                 showSubTitle={false}
                 onPress={() => {
                   PushHelper.pushUserCenterType(code)

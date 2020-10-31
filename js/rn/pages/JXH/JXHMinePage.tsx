@@ -116,7 +116,7 @@ const JXHMinePage = () => {
                 titleContainerStyle={{ aspectRatio: 5 }}
                 imageContainerStyle={{ width: '50%' }}
                 containerStyle={{ marginVertical: scale(15), width: '33%' }}
-                showUnReadMsg={code == UGUserCenterType.站内信}
+                showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
                 unreadMsg={unreadMsg || 0}
                 onPress={
                   code == -1
