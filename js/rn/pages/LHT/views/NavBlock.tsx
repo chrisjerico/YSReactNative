@@ -42,7 +42,7 @@ const NavBlock = ({
   onPressAd,
   onPressSavePoint,
   onPressGetPoint,
-  date = 'date',
+  date = '',
   navs = [],
   lotterys = [],
   advertisement = '',

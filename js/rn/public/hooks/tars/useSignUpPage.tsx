@@ -107,14 +107,14 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const confirmPassword_valid = confirmPassword == password
   // const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   // const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
-  // const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
-  // const wx_valid = weChat || necessity?.wx != Necessity.必填
+  const qq_valid = qq?.length >= 5 || necessity?.qq != Necessity.必填
+  const wx_valid = weChat || necessity?.wx != Necessity.必填
   // const email_valid = email || necessity?.email != Necessity.必填
   // const phoneNumber_valid = phoneNumber || necessity?.phoneNumber != Necessity.必填
   // const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   // const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = confirmPassword_valid && password_valid
+  const valid = confirmPassword_valid && password_valid && qq_valid && wx_valid
   // account_valid &&
   // confirmPassword_valid &&
   // recommendGuy_valid &&
@@ -220,6 +220,18 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     navigateToSignInPage,
   }
 
+  const getValidErrorMessage = () => {
+    if (!password_valid) {
+      return passwordLebel
+    } else if (!qq_valid) {
+      return qqLabel
+    } else if (!wx_valid) {
+      return wxLabel
+    } else {
+      return '不明错误'
+    }
+  }
+
   const _signUp = () => {
     if (allowReg) {
       if (valid) {
@@ -242,7 +254,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
         // @ts-ignore
         signUp(params)
       } else {
-        showLoading({ type: UGLoadingType.Error, text: passwordLebel })
+        showLoading({ type: UGLoadingType.Error, text: getValidErrorMessage() })
       }
     } else {
       Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
