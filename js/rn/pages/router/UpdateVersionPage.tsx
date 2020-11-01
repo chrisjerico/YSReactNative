@@ -215,6 +215,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 通知iOS进入首页
         await OCHelper.call('ReactNativeVC.showLastRnPage')
         OCHelper.launchFinish()
+        // 告诉原生RN版本
+        CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((p) => {
+          OCHelper.call('AppDefine.shared.setRnVersion:', ['(' + p.appVersion + ')' + p.description]);
+        });
         break
       case 'android':
         setProps({ bCodePush: true })
