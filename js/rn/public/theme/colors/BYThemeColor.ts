@@ -10,24 +10,22 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     skitString: '白曜',
     tabBarBgColor: tabBarBgColor,
     tabNoSelectColor: '#9D9D9D',
-    homeContentSubColor: '#f2f2f2', // 額度轉換Tab
+    homeContentSubColor: '#6C6C6C', // 額度轉換Tab
     bgColor: [tabBarBgColor, tabBarBgColor],
-    navBarBgColor: ['#000000', '#000000'],
+    navBarBgColor: ['#6C6C6C', '#6C6C6C'],
     tabSelectedColor: '#000000',
     progressBgColor: [tabBarBgColor, tabBarBgColor],
     homeContentColor: themeLightColor,
-    get menuHeadViewColor() {
-      return [this.themeColor, this.themeColor]
-    },
+    menuHeadViewColor: [themeColor, themeColor],
     textColor1: '#111111',
-    textColor2: '#555555',
+    textColor2: '#000000',
     textColor3: '#C1C1C1',
     textColor4: '#ffffff',
     conversionCellColor: '#444',
     themeColor: themeColor,
     themeLightColor: themeLightColor,
     isBlack: false,
-    is23: true,
+    is23: false,
     yubaoBgColor: '#8E8E8E',
     promotion: {
       headerBgColor: themeColor,
@@ -40,5 +38,7 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
       tintColor: '#000000',
       bgColor: themeColor,
     },
+    // navBarTitleColor: 'red',
+    // bgTextColor: 'red',
   },
 }
