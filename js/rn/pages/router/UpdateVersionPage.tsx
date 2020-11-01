@@ -17,6 +17,7 @@ import {scale} from "../../public/tools/Scale";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
 import {DefaultMenu} from "../../Res/DefaultMenu";
+import {UGThemeColor} from "../../public/theme/UGThemeColor";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -264,12 +265,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       </View>
       <View style={_styles.container_timer}>
         <Progress.Circle progress={circleProgress/10}
-                         size={scale(64)}
+                         size={scale(56)}
+                         thickness={scale(2)}
                          allowFontScaling={true}
                          indeterminate={false}
                          showsText={false}
                          direction={'counter-clockwise'}
-                         color="#5f9bc6"/>
+                         color={'#b2cde0'}/>
         <View style={_styles.counter_container}>
           <Text style={_styles.title_counter}>{circleProgress + "秒"}</Text>
         </View>
@@ -312,15 +314,15 @@ const _styles = StyleSheet.create({
   },
   counter_container: {
     position: "absolute",
-    width: scale(64),
-    height: scale(64),
+    width: scale(56),
+    height: scale(56),
     justifyContent: "center",
     alignItems: "center",
   },
   title_counter: {
-    color: '#5f9bc6',
+    color: '#b2cde0',
     fontWeight: '500',
-    fontSize: scale(18),
+    fontSize: scale(16),
   },
 
 
