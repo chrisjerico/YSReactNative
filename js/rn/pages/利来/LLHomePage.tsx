@@ -1,8 +1,22 @@
-import { Alert, Dimensions, Image, ImageBackground, LogBox, Platform, RefreshControl, SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  Alert,
+  Dimensions,
+  Image,
+  ImageBackground,
+  LogBox,
+  Platform,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import * as React from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
-import useGetHomeInfo from '../../public/hooks/useGetHomeInfo'
 import { HomeTabView } from './component/homePage/HomeTabView'
 import { ImageButton } from './component/ImageButton'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -11,7 +25,6 @@ import { UGStore } from '../../redux/store/UGStore'
 import APIRouter from '../../public/network/APIRouter'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import AppDefine from '../../public/define/AppDefine'
-import { updateUserInfo } from '../../redux/store/IGlobalStateHelper'
 import { httpClient } from '../../public/network/httpClient'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { PageName } from '../../public/navigation/Navigation'
@@ -20,27 +33,23 @@ import { useDimensions } from '@react-native-community/hooks'
 import RankListCP from '../../public/widget/RankList'
 import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import { getActivityPosition } from '../../public/tools/tars'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine'
-import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
-import { useFocusEffect } from '@react-navigation/native'
+import useHomePage from '../../public/hooks/tars/useHomePage'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
-  let { rankList, redBag, onRefresh, loading, floatAds } = useGetHomeInfo()
-  const userStore = UGStore.globalProps.userInfo
-  const { uid = '' }: UGUserModel = userStore
-  const systemStore = UGStore.globalProps.sysConf
-  const [ads, setAds] = useState([])
-  const { mobile_logo, m_promote_pos, rankingListSwitch }: UGSysConfModel = UGStore.globalProps.sysConf
+  const { value, refresh } = useHomePage({})
+  const { rankList, redBag, loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos } = value
+  const { uid } = userInfo
+  const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
   useEffect(() => {
     const timer = setInterval(() => {
-      reloadData()
+      refresh()
       //updateUserInfo()
     }, 2000)
     return () => {
@@ -55,31 +64,6 @@ const LLHomePage = ({ setProps, navigation }) => {
 
     return unsubscribe
   }, [navigation])
-
-  useEffect(() => {
-    floatAds?.data && setAds(floatAds.data)
-  }, [floatAds, uid])
-
-  const reloadData = async () => {
-    let user
-    switch (Platform.OS) {
-      case 'ios':
-        user = await OCHelper.call('UGUserModel.currentUser')
-        break
-      case 'android':
-        user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO })
-        break
-    }
-    if (!user) {
-      UGStore.dispatch({ type: 'reset', userInfo: {} })
-      UGStore.save()
-      setProps()
-    } else {
-      UGStore.dispatch({ type: 'merge', userInfo: user })
-      UGStore.save()
-      setProps()
-    }
-  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -167,8 +151,8 @@ const LLHomePage = ({ setProps, navigation }) => {
               🎁优惠活动
             </Text>
           </View>
-          <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {systemStore.webName} RESERVED</Text>
-          <Text style={{ color: 'black', textAlign: 'center' }}>version: {23}</Text>
+          <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
+          <Text style={{ color: 'black', textAlign: 'center' }}>version: {24}</Text>
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
@@ -194,14 +178,15 @@ const LLHomePage = ({ setProps, navigation }) => {
           </LinearGradient>
         </View>
       )}
-      {ads.map((item: any, index) => {
+      {floatAds?.map((item: any, index) => {
         const { image, position, linkCategory, linkPosition } = item
         return (
           <ActivityComponent
             key={index}
-            containerStyle={[getActivityPosition(position), position % 2 != 0 ? { top: 260 } : { bottom: 260 }]}
+            refreshing={refreshing}
+            containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={true}
+            show={true} // uid && !isTest
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)
@@ -231,7 +216,6 @@ const TurntableListItem = () => {
   const getTurntableList = async () => {
     try {
       const res = await APIRouter.activity_turntableList()
-      console.log('res111', res?.data?.data)
       res?.data != null && setTurntableList(res?.data)
     } catch (error) {}
   }

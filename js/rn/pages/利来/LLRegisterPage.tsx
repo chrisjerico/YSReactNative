@@ -19,12 +19,12 @@ import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { AgentType } from '../../public/models/Enum'
 
 export const LLRegisterPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
+  const { show, onChange, sign  } = useSignUpPage({
     homePage: PageName.LLHomePage,
     signInPage: PageName.LLLoginPage,
   })
   const { signUp } = sign
-  const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton } = show
+  const { showRecommendGuy, } = show
   const {
     onChangeRecommendGuy,
     obChangeAccount,
@@ -129,7 +129,7 @@ export const LLRegisterPage = () => {
             paddingVertical: 4,
           }}>*请填写推荐人ID</Text>
         </View>}
-        <LLRegisterInput isPwd={false} onChangeText={(text) => {
+        <LLRegisterInput maxLength={15} isPwd={false} onChangeText={(text) => {
           setAcc(text)
           obChangeAccount(text)
         }} placeholder={'请输入会员账号（6-15位字母或数字)'}
@@ -143,12 +143,12 @@ export const LLRegisterPage = () => {
             paddingVertical: 4,
           }}>*请使用6-15位英文或数字的组合</Text>
         </View>}
-        <LLRegisterInput isPwd={true} onChangeText={(text) => {
+        <LLRegisterInput maxLength={15} isPwd={true} onChangeText={(text) => {
           setPwd(text)
           obChangePassword(text)
         }} placeholder={'请输入密码（长度不能低于6位)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
-        {pass_length_min && pass_length_max && pwd.length < pass_length_min && pwd.length > pass_length_max &&
+        {pass_length_min && pass_length_max && (pwd.length < pass_length_min || pwd.length > pass_length_max) &&
         <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',

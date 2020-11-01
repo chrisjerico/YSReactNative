@@ -40,6 +40,8 @@ const LLMinePage = ({ navigation, setProps }) => {
     homePage: PageName.LLHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
+  const {sysInfo} = value
+  const {balanceDecimal} = sysInfo
   const { getHtml5Image } = useHtml5Image()
   const { UGUserCenterItem } = useMemberItems()
   const [levelWidth, setLevelWidth] = useState(0)
@@ -59,7 +61,7 @@ const LLMinePage = ({ navigation, setProps }) => {
   const { uid = '', curLevelTitle, curLevelInt, nextLevelInt, curLevelGrade, avatar, isTest, balance, usr, unreadMsg } = userStore
 
   const getLevelWidth = () => {
-    setLevelWidth(193 * parseInt(curLevelInt) / parseInt(nextLevelInt))
+    setLevelWidth(193 * parseFloat(curLevelInt).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2))
   }
 
   const refresh = async () => {
@@ -92,7 +94,7 @@ const LLMinePage = ({ navigation, setProps }) => {
   }, [UGUserCenterItem])
 
   useEffect(() => {
-    curLevelInt && nextLevelInt && parseInt(curLevelInt) > 0 && parseInt(nextLevelInt) > 0 && getLevelWidth()
+    curLevelInt && nextLevelInt && parseFloat(curLevelInt) > 0 && parseFloat(nextLevelInt) > 0 && getLevelWidth()
   }, [curLevelInt, nextLevelInt])
 
   return (
@@ -162,7 +164,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                         color: '#ffffff',
                         lineHeight: 20,
                         fontSize: 8,
-                      }}>{isNaN(parseInt(curLevelInt) / parseInt(nextLevelInt)) ? '0%' : parseInt(curLevelInt) / parseInt(nextLevelInt) + '%'}</Text>
+                      }}>{isNaN(parseFloat(curLevelInt) / parseFloat(nextLevelInt)) ? '0%' : parseFloat(curLevelInt) / parseFloat(nextLevelInt)+ '%'}</Text>
                     <Text
                       style={{
                         color: '#ffffff',
@@ -175,7 +177,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                     <Text style={{
                       color: '#ffffff',
                       fontSize: 14,
-                    }}>{`距离下一级还差${isNaN(parseInt(nextLevelInt) - parseInt(curLevelInt)) ? 0 : parseInt(nextLevelInt) - parseInt(curLevelInt)}`}</Text>
+                    }}>{`距离下一级还差${isNaN(parseFloat(nextLevelInt) - parseFloat(curLevelInt)) ? 0.00 : (parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) - parseFloat(curLevelInt).toFixed(balanceDecimal || 2)).toFixed(balanceDecimal || 2)}`}</Text>
                   }
                 </View>
               </View>
@@ -188,7 +190,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                     color: '#ffffff',
                     alignSelf: 'center',
                     textAlign: 'center',
-                  }}>{balance ? `¥0` : isNaN(Number(balance)) ? `¥0` : `¥` + balance}</Text>
+                  }}>{balance ? isNaN(Number(balance)) ? `¥0.00` : `¥` + parseFloat(balance).toFixed(balanceDecimal || 2): `¥0.00`}</Text>
                   <View style={{ flex: 1 }} />
                   <Animated.View
                     style={[{ transform: [{ rotateZ: spinDeg }] }]}
