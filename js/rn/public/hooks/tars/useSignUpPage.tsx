@@ -114,7 +114,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // const slideCode_valid = (nc_csessionid && nc_token && nc_sig) || necessity?.slideCode != Necessity.必填
   // const sms_valid = sms?.length == 6 || necessity?.sms != Necessity.必填
 
-  const valid = confirmPassword_valid && password_valid && qq_valid && wx_valid
+  const valid = confirmPassword_valid && password_valid && qq_valid && wx_valid ? true : false
   // account_valid &&
   // confirmPassword_valid &&
   // recommendGuy_valid &&

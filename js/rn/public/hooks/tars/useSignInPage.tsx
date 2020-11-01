@@ -9,7 +9,7 @@ import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingC
 import useSignIn from './useSignIn'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import {ugLog} from "../../tools/UgLog";
+import { ugLog } from '../../tools/UgLog'
 
 interface SlidingVerification {
   nc_csessionid: string
