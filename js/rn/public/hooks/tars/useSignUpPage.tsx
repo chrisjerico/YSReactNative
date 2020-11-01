@@ -15,18 +15,6 @@ interface UseRegisterPage {
   signInPage?: PageName
 }
 
-const placeholder = {
-  recommendGuyPlaceholder: '推荐人ID',
-  accountPlaceholder: '帐号',
-  passwordPlaceholder: '密码',
-  confirmPasswordPlaceholder: '确认密码',
-  fundPasswordPlaceholder: '取款密码',
-  qqPlaceholder: 'QQ号',
-  wxPlaceholder: '微信号',
-  emailPlaceholder: '电子邮箱',
-  smsPlaceholder: '短信验证码',
-}
-
 const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -48,6 +36,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // refs
   const slideCodeRef = useRef(null)
   const agentRef = useRef<AgentType>(null)
+  const inviteCodeRef = useRef<string>()
 
   const navigateToHomePage = useCallback(() => {
     homePage && navigate(homePage, {})
@@ -107,7 +96,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // stores
   const { sysInfo } = useSysInfo({})
   // data handle
-  const { necessity, passwordLimit, allowReg, closeregreason } = sysInfo
+  const { necessity, passwordLimit, allowReg, closeregreason, inviteWord } = sysInfo
   const { strength, maxLength, minLength } = passwordLimit
   // const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
@@ -150,6 +139,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const onChanePhone = useCallback((value: string) => setPhoneNumber(value), [])
   const onChangeEmail = useCallback((value: string) => setEmail(value), [])
   const onChaneSms = useCallback((value: string) => setSms(value), [])
+  const onChangeInviteCode = useCallback((value: string) => (inviteCodeRef.current = value), [])
   const onChangeSlideCode = setSlideCode
 
   const getPasswordLimitString = () => {
@@ -182,6 +172,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const passwordLebel = '请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
   const confirmPasswordLabel = password == confirmPassword || (!password?.length && !confirmPassword?.length) ? '' : '密码不一致'
   const accountLabel = '请使用6-15位英文或数字的组合'
+  const inviteCodeLabel = '邀请码，如没有可不填'
 
   const onChange = {
     onChangeRecommendGuy,
@@ -197,6 +188,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onChaneSms,
     onChangeSlideCode,
     onChangeAgent,
+    onChangeInviteCode,
   }
 
   const show = {
@@ -210,6 +202,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     showSlideCode: necessity?.slideCode != Necessity.隱藏,
     showAgentButton: necessity?.agentButton != Necessity.隱藏,
     showSms: necessity?.sms != Necessity.隱藏,
+    showInviteCode: necessity?.inviteCode != Necessity.隱藏,
   }
 
   const label = {
@@ -223,11 +216,25 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     phoneNumberLabel,
     qqLabel,
     wxLabel,
+    inviteCodeLabel,
   }
 
   const navigateTo = {
     navigateToHomePage,
     navigateToSignInPage,
+  }
+
+  const placeholder = {
+    recommendGuyPlaceholder: '推荐人ID',
+    accountPlaceholder: '帐号',
+    passwordPlaceholder: '密码',
+    confirmPasswordPlaceholder: '确认密码',
+    fundPasswordPlaceholder: '取款密码',
+    qqPlaceholder: 'QQ号',
+    wxPlaceholder: '微信号',
+    emailPlaceholder: '电子邮箱',
+    smsPlaceholder: '短信验证码',
+    inviteCodePlaceholder: inviteWord,
   }
 
   const getValidErrorMessage = () => {
@@ -258,6 +265,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
           'slideCode[nc_sig]': slideCode?.nc_sig,
           email: email, // 邮箱
           regType: agentRef.current, // 用户注册 或 代理注册,
+          inviteCode: inviteCodeRef.current, // 邀請碼
         }
         console.log('-------params------', params)
         // @ts-ignore

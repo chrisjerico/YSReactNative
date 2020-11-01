@@ -19,6 +19,7 @@ interface Show {
   showSlideCode: boolean
   showAgentButton: boolean
   showSms: boolean
+  showInviteCode: boolean
 }
 
 interface Label {
@@ -32,6 +33,7 @@ interface Label {
   qqLabel: string
   wxLabel: string
   accountLabel: string
+  inviteCodeLabel: string
 }
 
 interface SignUpFormListProps {
@@ -70,6 +72,7 @@ interface Placeholder {
   wxPlaceholder: string
   emailPlaceholder: string
   smsPlaceholder: string
+  inviteCodePlaceholder: string
 }
 
 interface OnChange {
@@ -86,6 +89,7 @@ interface OnChange {
   onChaneSms: (value: string) => any
   onChangeSlideCode: (value: SlideCode) => any
   onChangeAgent: (value: AgentType) => any
+  onChangeInviteCode: (value: string) => any
 }
 
 const SignUpFormList = ({ slideCodeColor, show, onChange, label, reference, passwordLimit, value, placeholder, renderForm }: SignUpFormListProps) => {
@@ -100,8 +104,9 @@ const SignUpFormList = ({ slideCodeColor, show, onChange, label, reference, pass
     wxPlaceholder,
     emailPlaceholder,
     smsPlaceholder,
+    inviteCodePlaceholder,
   } = placeholder
-  const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton } = show
+  const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton, showInviteCode } = show
   const {
     onChangeRecommendGuy,
     onChangeAccount,
@@ -116,9 +121,10 @@ const SignUpFormList = ({ slideCodeColor, show, onChange, label, reference, pass
     onChaneSms,
     onChangeSlideCode,
     onChangeAgent,
+    onChangeInviteCode,
   } = onChange
 
-  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel, accountLabel } = label
+  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel, accountLabel, inviteCodeLabel } = label
 
   const { maxLength } = passwordLimit
 
@@ -128,6 +134,7 @@ const SignUpFormList = ({ slideCodeColor, show, onChange, label, reference, pass
 
   return (
     <>
+      <Form leftIconName={'users'} onChangeText={onChangeInviteCode} label={inviteCodeLabel} placeholder={inviteCodePlaceholder} leftIconTitle={'邀请码'} visible={showInviteCode} />
       <Form leftIconName={'users'} onChangeText={onChangeRecommendGuy} label={recommendGuyLabel} placeholder={recommendGuyPlaceholder} leftIconTitle={'推荐人'} visible={showRecommendGuy} />
       <Form onChangeText={onChangeAccount} label={accountLabel} placeholder={accountPlaceholder} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
       <Form
