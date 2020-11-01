@@ -223,6 +223,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const getValidErrorMessage = () => {
     if (!password_valid) {
       return passwordLebel
+    } else if (!confirmPassword_valid) {
+      return confirmPasswordLabel
     } else if (!qq_valid) {
       return qqLabel
     } else if (!wx_valid) {
