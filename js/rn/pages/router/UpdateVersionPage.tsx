@@ -16,6 +16,7 @@ import { UGBasePageProps } from '../base/UGPage'
 import {scale} from "../../public/tools/Scale";
 import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
+import {DefaultMenu} from "../../Res/DefaultMenu";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -167,6 +168,9 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         })
         break
       case 'android':
+        //初始化默认菜单
+        ANHelper.callAsync(CMD.INIT_MENU, {value: DefaultMenu}).then()
+        //初始化启动图
         ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS }).then((picStr) => {
           if (!anyEmpty(picStr)) {
             let pics: [] = JSON.parse(picStr)
