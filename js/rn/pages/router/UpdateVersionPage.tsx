@@ -192,6 +192,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
 
     return () => {
+      // ugLog("clear timer")
       clearTimeout(timer)
     }
   }, [])
@@ -214,6 +215,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       setProps({ counter: (counter + 1) })
     }, 1000)
     return () => {
+      ugLog('clear interval')
       clearInterval(interval)
     }
   }, [counter])
