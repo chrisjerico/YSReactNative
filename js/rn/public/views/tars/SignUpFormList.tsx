@@ -25,11 +25,11 @@ interface Label {
   confirmPasswordLabel: string
   fundPasswordLabel: string
   nameLabel: string
-  imageCodeLabel: string
   emailLabel: string
   phoneNumberLabel: string
   qqLabel: string
   wxLabel: string
+  accountLabel: string
 }
 
 interface SignUpFormListProps {
@@ -103,7 +103,7 @@ const SignUpFormList = ({
     onChangeAgent,
   } = onChange
 
-  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel } = label
+  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel, accountLabel } = label
 
   const { maxLength } = passwordLimit
 
@@ -112,7 +112,7 @@ const SignUpFormList = ({
   return (
     <>
       <Form leftIconName={'users'} onChangeText={onChangeRecommendGuy} label={recommendGuyLabel} placeholder={'推荐人ID'} leftIconTitle={'推荐人'} visible={showRecommendGuy} />
-      <Form onChangeText={onChangeAccount} label={'*请使用6-15位英文或数字的组合'} placeholder={'帐号'} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
+      <Form onChangeText={onChangeAccount} label={accountLabel} placeholder={'帐号'} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
       <Form
         leftIconName={'lock'}
         onChangeText={onChangePassword}

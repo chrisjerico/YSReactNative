@@ -9,8 +9,6 @@ import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import { UGStore } from '../../../redux/store/UGStore'
-import { ugLog } from '../../tools/UgLog'
 
 interface UseRegisterPage {
   homePage?: PageName
@@ -171,6 +169,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const nameLabel = getLabel(necessity?.name, '必须与您的银行账户名称相同，以免未能到账')
   const passwordLebel = '请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
   const confirmPasswordLabel = password == confirmPassword || (!password?.length && !confirmPassword?.length) ? '' : '密码不一致'
+  const accountLabel = '请使用6-15位英文或数字的组合'
 
   const onChange = {
     onChangeRecommendGuy,
@@ -202,6 +201,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
 
   const label = {
+    accountLabel,
     passwordLebel,
     recommendGuyLabel,
     confirmPasswordLabel,
