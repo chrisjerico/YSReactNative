@@ -57,7 +57,7 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
                             style={{width: width - 20, backgroundColor: 'white'}}
                             viewportContent={'width=device-width, user-scalable=no'}
                             source={{
-                                html: `<head><meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>img{width:auto !important;max-width:100%;height:auto !important}</style><style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style></head>` + `<script>window.onload = function () {window.location.hash = 1;document.title = document.body.scrollHeight;}</script>` + `${item.content}`
+                                html: `<head><meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>table{border-collapse: collapse};img{width:auto !important;max-width:100%;height:auto !important}</style><style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style></head>` + `<script>window.onload = function () {window.location.hash = 1;document.title = document.body.scrollHeight;}</script>` + `${item.content}`
                             }}
                         />
                         {item.linkUrl && item.linkUrl !== "" ?
