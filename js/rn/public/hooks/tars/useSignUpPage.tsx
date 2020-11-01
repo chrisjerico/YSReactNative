@@ -232,7 +232,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const getValidErrorMessage = () => {
     if (!password_valid) {
-      return passwordLebel
+      return '密码' + passwordLebel
     } else if (!confirmPassword_valid) {
       return confirmPasswordLabel
     } else if (!qq_valid) {
