@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -18,7 +18,7 @@ import SignHeader from './views/SignHeader'
 const WNZSignUpPage = () => {
   const menu = useRef(null)
 
-  const { reference, show, label, onChange, sign, passwordLimit, navigateTo, value } = useSignUpPage({
+  const { reference, show, label, onChange, sign, passwordLimit, navigateTo, value, placeholder } = useSignUpPage({
     homePage: PageName.WNZHomePage,
     signInPage: PageName.WNZSignInPage,
   })
@@ -40,7 +40,17 @@ const WNZSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeColor={'#f2f2f2'} reference={reference} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} value={value} Form={SignUpForm} />
+          <SignUpFormList
+            slideCodeColor={'#f2f2f2'}
+            reference={reference}
+            show={show}
+            label={label}
+            placeholder={placeholder}
+            passwordLimit={passwordLimit}
+            onChange={onChange}
+            value={value}
+            renderForm={SignUpForm}
+          />
           <Button
             title={'立即注册'}
             containerStyle={styles.signUpButton}
@@ -82,7 +92,7 @@ const WNZSignUpPage = () => {
     </>
   )
 }
-const SignUpForm = (props: FormComponentProps & { leftIconTitle: string }) => {
+const SignUpForm = (props: SignUpRenderFormProps) => {
   const { leftIconTitle } = props
   return (
     <FormComponent

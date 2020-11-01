@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
@@ -8,10 +8,10 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SignUpFormList'
+import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
 
 const BYSignUpPage = () => {
-  const { show, reference, label, onChange, sign, passwordLimit, value } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, value, placeholder } = useSignUpPage({
     homePage: PageName.BYHomePage,
     signInPage: PageName.BYSignInPage,
   })
@@ -35,7 +35,17 @@ const BYSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeColor={'#ffffff'} reference={reference} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} value={value} Form={SignUpForm} />
+          <SignUpFormList
+            slideCodeColor={'#ffffff'}
+            reference={reference}
+            show={show}
+            label={label}
+            placeholder={placeholder}
+            passwordLimit={passwordLimit}
+            onChange={onChange}
+            value={value}
+            renderForm={SignUpForm}
+          />
           <Button
             title={'注册'}
             containerStyle={[
@@ -68,7 +78,7 @@ const BYSignUpPage = () => {
   )
 }
 
-const SignUpForm = (props: FormComponentProps) => {
+const SignUpForm = (props: SignUpRenderFormProps) => {
   return (
     <FormComponent
       {...props}

@@ -15,6 +15,18 @@ interface UseRegisterPage {
   signInPage?: PageName
 }
 
+const placeholder = {
+  recommendGuyPlaceholder: '推荐人ID',
+  accountPlaceholder: '帐号',
+  passwordPlaceholder: '密码',
+  confirmPasswordPlaceholder: '确认密码',
+  fundPasswordPlaceholder: '取款密码',
+  qqPlaceholder: 'QQ号',
+  wxPlaceholder: '微信号',
+  emailPlaceholder: '电子邮箱',
+  smsPlaceholder: '短信验证码',
+}
+
 const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -270,6 +282,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
 
   return {
+    placeholder,
     reference,
     value,
     show,

@@ -12,7 +12,7 @@ interface SignInFormListProps {
   value: { [key: string]: any }
   onChange: OnChange
   show: Show
-  renderForm?: (props: SignInRenderFormProps) => any
+  renderForm: (props: SignInRenderFormProps) => any
   showCheckBox?: boolean
   accountFormProps?: { [key: string]: any }
   passwordFormProps?: { [key: string]: any }
