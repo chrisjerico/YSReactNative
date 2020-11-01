@@ -79,12 +79,13 @@ const BYSignUpPage = () => {
 }
 
 const SignUpForm = (props: SignUpRenderFormProps) => {
+  const { leftIconProps } = props
   return (
     <FormComponent
       {...props}
       containerStyle={{ marginBottom: scale(10) }}
       inputContainerStyle={{ borderColor: '#d9d9d9' }}
-      leftIconProps={{ color: '#298dff' }}
+      leftIconProps={{ color: '#298dff', ...leftIconProps }}
       labelTextStyle={{ fontSize: scale(17) }}
     />
   )
