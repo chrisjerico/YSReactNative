@@ -8,7 +8,7 @@ export const devConfig = {
   isTest: () => { // 是否测试环境
     if (__DEV__) return true;
     if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog';
+      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'iwDsp1YB7bcBov7KIaxDP9tLbuUQ4ksvOXqog';
     }
     return false;
   },

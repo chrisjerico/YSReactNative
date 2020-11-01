@@ -215,15 +215,24 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 通知iOS进入首页
         await OCHelper.call('ReactNativeVC.showLastRnPage')
         OCHelper.launchFinish()
-        // 告诉原生RN版本
-        CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((p) => {
-          OCHelper.call('AppDefine.shared.setRnVersion:', ['(' + p.appVersion + ')' + p.description]);
-        });
         break
       case 'android':
         setProps({ bCodePush: true })
         break
     }
+
+    // 告诉原生RN版本
+    CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((p) => {
+      const verInfo = '(' + p.appVersion + ') ' + p.description;
+      console.log('当前RN Key：', OCHelper.CodePushKey);
+      console.log('当前RN版本信息：', verInfo);
+      Platform.OS == 'ios' && OCHelper.call('AppDefine.shared.setRnVersion:', [verInfo]);
+    });
+    CodePush.getUpdateMetadata(CodePush.UpdateState.LATEST).then((p) => {
+      const verInfo = '(' + p.appVersion + ') ' + p.description;
+      console.log('最新RN版本信息：', verInfo);
+    });
+
     UGStore.save()
   }
 

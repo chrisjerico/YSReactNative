@@ -12,12 +12,6 @@ export default class AppDefine {
   static height = Dimensions.get('window').height;
   static iOS = Platform.OS == 'ios';
   
-  static isTest() {
-    if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog';
-    }
-    return false;
-  }
 
   static checkHeaderShowBackButton(callback: (show: boolean) => void) {
     if (Platform.OS != 'ios') return;
