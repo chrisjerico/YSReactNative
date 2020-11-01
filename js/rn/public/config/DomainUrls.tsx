@@ -58,7 +58,7 @@ const DomainUrls: {[x:string]:string} = {
   'c085': 'https://x558.cc',
   'c085yw': 'https://x558.cc',
   'c091': 'https://83f9.com',
-  'c092': 'https://2013kkk.com',
+  'c092': 'https://2013ddd.com',
   'c105_b': 'https://390qp8.com',
   'c108': 'https://823653.com',
   'c114': 'https://c432019.com',
