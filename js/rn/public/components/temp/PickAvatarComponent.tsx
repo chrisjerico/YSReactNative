@@ -84,101 +84,108 @@ const PickAvatarComponent = ({
   }))
 
   return (
-    <TouchableWithoutFeedback onPress={() => setVisible(false)}>
-      <View style={[styles.container, visible ? {} : {height: 0}]}>
-        <View style={styles.pickerBlock}>
-          <View style={styles.avatarContainer}>
-            <Avatar uri={avatar} size={200} />
-            <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
-          </View>
-          {loading ? (
-            <ProgressCircle />
-          ) : (
-            <View
-              style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-            >
-              <AntDesign
-                name={'left'}
-                color={'#9D9D9D'}
-                size={scale(30)}
-                style={{ paddingHorizontal: scale(10) }}
-                onPress={() =>
-                  scrollView.current.scrollTo({ x: 0, y: 0, animated: true })
-                }
-              />
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                ref={scrollView}
-              >
-                {avatarList?.map((item, index) => {
-                  const { url, filename } = item
-                  // ugLog("avatar url2 ", url, filename)
-                  return (
-                    <TouchableNativeFeedback onPress={(event)=>{
-                      ugLog('url = ')
-                    }}>
-                      <Avatar
-                        key={index}
-                        uri={url}
-                        size={100}
-                        containerStyle={{ marginHorizontal: scale(10) }}
-                        onPress={() => {
-                          setAvatar(url)
-                          setfileName(filename)
-                        }}
-                      />
-                    </TouchableNativeFeedback>
-                  )
-                })}
-              </ScrollView>
-              <AntDesign
-                name={'right'}
-                color={'#9D9D9D'}
-                size={scale(30)}
-                style={{ paddingHorizontal: scale(10) }}
-                onPress={() =>
-                  scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })
-                }
-              />
-            </View>
-          )}
-          <View style={styles.buttonContainer}>
-            <Button
-              activeOpacity={1}
-              title={'保存头像'}
-              buttonStyle={{
-                backgroundColor: color,
-                width: scale(200),
-              }}
-              titleStyle={{ color: '#ffffff' }}
+    <View style={[_styles.container, visible ? {} : {height: 0}]}>
+      <TouchableWithoutFeedback onPress={()=>setVisible(false)}>
+        <View style={_styles.container_touch}>
+        </View>
+      </TouchableWithoutFeedback>
+      <View style={_styles.pickerBlock}>
+        <View style={_styles.avatarContainer}>
+          <Avatar uri={avatar} size={200} />
+          <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
+        </View>
+        {loading ? (
+          <ProgressCircle />
+        ) : (
+          <View
+            style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+          >
+            <AntDesign
+              name={'left'}
+              color={'#9D9D9D'}
+              size={scale(30)}
+              style={{ paddingHorizontal: scale(10) }}
               onPress={() =>
-                saveAvatar({ url: avatar, filename: fileName })
+                scrollView.current.scrollTo({ x: 0, y: 0, animated: true })
               }
             />
-            <Button
-              activeOpacity={1}
-              title={'取消'}
-              buttonStyle={{ backgroundColor: '#D0D0D0', width: scale(200) }}
-              titleStyle={{ color: '#ffffff' }}
-              onPress={() => {
-                setVisible(false)
-              }}
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              ref={scrollView}
+            >
+              {avatarList?.map((item, index) => {
+                const { url, filename } = item
+                // ugLog("avatar url2 ", url, filename)
+                return (
+                  <TouchableNativeFeedback onPress={(event)=>{
+                    ugLog('url = ')
+                  }}>
+                    <Avatar
+                      key={index}
+                      uri={url}
+                      size={100}
+                      containerStyle={{ marginHorizontal: scale(10) }}
+                      onPress={() => {
+                        setAvatar(url)
+                        setfileName(filename)
+                      }}
+                    />
+                  </TouchableNativeFeedback>
+                )
+              })}
+            </ScrollView>
+            <AntDesign
+              name={'right'}
+              color={'#9D9D9D'}
+              size={scale(30)}
+              style={{ paddingHorizontal: scale(10) }}
+              onPress={() =>
+                scrollView.current.scrollToEnd({ x: 0, y: 0, animated: true })
+              }
             />
           </View>
+        )}
+        <View style={_styles.buttonContainer}>
+          <Button
+            activeOpacity={1}
+            title={'保存头像'}
+            buttonStyle={{
+              backgroundColor: color,
+              width: scale(200),
+            }}
+            titleStyle={{ color: '#ffffff' }}
+            onPress={() =>
+              saveAvatar({ url: avatar, filename: fileName })
+            }
+          />
+          <Button
+            activeOpacity={1}
+            title={'取消'}
+            buttonStyle={{ backgroundColor: '#D0D0D0', width: scale(200) }}
+            titleStyle={{ color: '#ffffff' }}
+            onPress={() => {
+              setVisible(false)
+            }}
+          />
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   )
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     position: 'absolute',
     flex: 1,
     height: '100%',
     justifyContent: 'flex-end',
     backgroundColor: '#00000033',
+  },
+  container_touch: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: 'red',
   },
   pickerBlock: {
     width: '100%',
