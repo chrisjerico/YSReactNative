@@ -15,6 +15,9 @@ import useLogIn from './useLogIn'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
 import {ugLog} from "../../tools/UgLog";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {Platform} from "react-native";
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -57,6 +60,13 @@ const useSignInPage = ({
 
   const navigateToHomePage = () => {
     homePage && navigate(homePage, {})
+    switch (Platform.OS) {
+      case 'ios':
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.RELOAD, {key: 'home_page'}).then()
+        break;
+    }
   }
 
   const { logIn } = useLogIn({
@@ -69,7 +79,7 @@ const useSignInPage = ({
         navigateToHomePage()
       } else {
         navigateToHomePage()
-        PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+        //PushHelper.pushUserCenterType(UGUserCenterType.我的页)
       }
       hideLoading()
       ToastSuccess('登录成功')

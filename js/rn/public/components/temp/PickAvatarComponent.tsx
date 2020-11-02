@@ -185,7 +185,7 @@ const _styles = StyleSheet.create({
   container_touch: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'red',
+    backgroundColor: '#00000033',
   },
   pickerBlock: {
     width: '100%',

@@ -220,7 +220,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       setProps({ counter: (counter + 1) })
     }, 1000)
     return () => {
-      ugLog('clear interval')
+      // ugLog('clear interval')
       clearInterval(interval)
     }
   }, [counter])
