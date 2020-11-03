@@ -34,6 +34,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     scratchList,
     lotteryGame,
     lotteryNumber,
+    mobileRight,
     refresh,
   } = useHomeInfo()
 
@@ -128,6 +129,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const roulette = turntableList?.data
   const goldenEggs = goldenEggList?.data ?? []
   const scratchs = scratchList?.data ?? []
+  const rightMenus = mobileRight?.data ?? []
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -161,6 +163,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     floatAds,
     goldenEggs,
     scratchs,
+    rightMenus,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,

@@ -6,6 +6,7 @@ import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingC
 import useSignOut from './useSignOut'
 import useRerender from './useRerender'
 import useSysInfo from './useSysInfo'
+import useHomeInfo from './useHomeInfo'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -41,6 +42,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
+  const { mobileRight } = useHomeInfo()
   const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
@@ -64,13 +66,20 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   const onSaveAvatarSuccess = reRender
 
+  const rightMenus = mobileRight?.data ?? []
+
   const sign = {
     signOut,
+  }
+
+  const homeInfo = {
+    rightMenus,
   }
 
   const value = {
     sysInfo,
     userInfo,
+    homeInfo,
   }
 
   return {

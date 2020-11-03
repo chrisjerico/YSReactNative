@@ -26,10 +26,16 @@ const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 const WNZHomePage = () => {
   const menu = useRef(null)
 
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
   const { goTo, refresh, value, sign } = useHomePage({
-    onSuccessSignOut: () => {
-      menu?.current?.close()
-    },
+    onSuccessSignOut: closeMenu,
   })
 
   const { goToPromotionPage } = goTo
@@ -38,7 +44,7 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const { midBanners, navs, homeGames, officialGames, customiseGames, homeGamesConcat } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, rightMenus } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
@@ -56,19 +62,6 @@ const WNZHomePage = () => {
       games: customiseGames,
     },
   ]
-
-  const menus = uid
-    ? config?.menus?.concat(config?.menuSignOut)
-    : // @ts-ignore
-      config?.menuSignIn?.concat(config?.menus)
-
-  const openMenu = () => {
-    menu?.current?.open()
-  }
-
-  const closeMenu = () => {
-    menu?.current?.close()
-  }
 
   return (
     <HomePage
@@ -263,18 +256,18 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={menus}
+          menus={rightMenus}
           renderMenuItem={({ item }) => {
-            const { title, onPress } = item
+            const { name, gameId } = item
             return (
               <MenuButton
-                title={title}
+                title={name}
                 onPress={() => {
-                  if (title == '安全退出') {
+                  if (gameId == 31) {
                     signOut()
                   } else {
                     closeMenu()
-                    onPress && onPress()
+                    PushHelper.pushHomeGame(item)
                   }
                 }}
               />

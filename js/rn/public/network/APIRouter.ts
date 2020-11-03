@@ -180,6 +180,10 @@ class APIRouter {
     return httpClient.get<ScratchListModel>('c=activity&a=scratchList&' + tokenParams)
   }
 
+  static system_mobileRight = async () => {
+    return httpClient.get<any>('c=system&a=mobileRight')
+  }
+
   static system_floatAds = async () => {
     return httpClient.get<FloatADModel>('c=system&a=floatAds')
   }

@@ -23,16 +23,24 @@ const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
   const menu = useRef(null)
+
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
   const { value, sign } = useMinePage({
     homePage: PageName.WNZHomePage,
-    onSuccessSignOut: () => {
-      menu?.current?.close()
-    },
+    onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo, homeInfo } = value
 
+  const { rightMenus } = homeInfo
   const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
   const { mobile_logo, userCenterItems } = sysInfo
 
@@ -81,9 +89,7 @@ const WNZMinePage = () => {
                 name={usr}
                 logo={mobile_logo}
                 balance={balance}
-                onPressMenu={() => {
-                  menu?.current?.open()
-                }}
+                onPressMenu={openMenu}
                 onPressComment={() => {
                   PushHelper.pushLottery(LotteryType.香港六合彩)
                 }}
@@ -162,23 +168,18 @@ const WNZMinePage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={
-          uid
-            ? config?.menus?.concat(config?.menuSignOut)
-            : // @ts-ignore
-              config?.menuSignIn?.concat(config?.menus)
-        }
+        menus={rightMenus}
         renderMenuItem={({ item }) => {
-          const { title, onPress } = item
+          const { name, gameId } = item
           return (
             <MenuButton
-              title={title}
+              title={name}
               onPress={() => {
-                if (title == '安全退出') {
+                if (gameId == 31) {
                   signOut()
                 } else {
-                  menu?.current?.close()
-                  onPress && onPress()
+                  closeMenu()
+                  PushHelper.pushHomeGame(item)
                 }
               }}
             />
