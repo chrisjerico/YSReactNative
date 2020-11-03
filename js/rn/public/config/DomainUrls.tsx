@@ -46,7 +46,7 @@ const DomainUrls: {[x:string]:string} = {
   'c005': 'http://nxmdbybnbc005ojrz.playzone88.com',
   'c006': 'http://370311.com',
   'c011': 'https://www.hx627.com',
-  'c012': 'https://08492039.com',
+  'c012': 'https://08492035.com',
   'c018': 'https://204421.com',
   'c035': 'https://5504707.com',
   'c048': 'https://dsjf43-43-f14-345-36-g54t-gfh54.com',
