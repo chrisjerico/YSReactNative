@@ -12,7 +12,7 @@ export const devConfig = {
     return false
   },
 
-  skinKey: '白曜', // 宝石红 白曜 威尼斯 六合厅 凯时 利来 金星黑 乐橙 经典
+  skinKey: '威尼斯', // 宝石红 白曜 威尼斯 六合厅 凯时 利来 金星黑 乐橙 经典
 }
 
 // 线上环境配置（这几个站点写死经典模板）

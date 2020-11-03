@@ -10,7 +10,7 @@ import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SignUpFormList'
+import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
 import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
@@ -64,7 +64,7 @@ const WNZSignUpPage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(23) }}
             onPress={signUp}
           />
-          <Button title={'已有帐号，直接登陆'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={pop} />
+          <Button title={'已有帐号，直接登录'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={pop} />
           <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
           <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />

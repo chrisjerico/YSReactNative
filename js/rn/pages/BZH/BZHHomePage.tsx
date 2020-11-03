@@ -20,7 +20,6 @@ import HomeHeader from './views/HomeHeader'
 const onPressSignIn = () => push(PageName.BZHSignInPage)
 const onPressSignUp = () => push(PageName.BZHSignUpPage)
 const BZHHomePage = () => {
-
   const { goTo, refresh, value } = useHomePage({})
   const { goToPromotionPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
