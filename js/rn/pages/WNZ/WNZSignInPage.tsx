@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import FormComponent from '../../public/components/tars/FormComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
+import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
@@ -11,32 +12,34 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
-import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
 
 const WNZSignInPage = () => {
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
   const menu = useRef(null)
 
-  const { sign, value, onChange, navigateTo, show, reference, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid, rightMenus } = useSignInPage({
     homePage: PageName.WNZHomePage,
     signUpPage: PageName.WNZSignUpPage,
+    onSuccessSignOut: closeMenu,
   })
 
   const { navigateToSignUpPage } = navigateTo
 
-  const { signIn, tryPlay } = sign
+  const { signIn, tryPlay, signOut } = sign
 
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <SignHeader
-          onPressLeftTool={pop}
-          onPressMenu={() => {
-            menu?.current?.open()
-          }}
-          onPressSign={navigateToSignUpPage}
-        />
+        <SignHeader onPressLeftTool={pop} onPressMenu={openMenu} onPressSign={navigateToSignUpPage} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
@@ -55,18 +58,19 @@ const WNZSignInPage = () => {
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent
             ref={menu}
-            menus={
-              // @ts-ignore
-              config?.menuSignIn?.concat(config?.menus)
-            }
+            menus={rightMenus}
             renderMenuItem={({ item }) => {
-              const { title, onPress } = item
+              const { name, gameId } = item
               return (
                 <MenuButton
-                  title={title}
+                  title={name}
                   onPress={() => {
-                    menu?.current?.close()
-                    onPress && onPress()
+                    if (gameId == 31) {
+                      signOut()
+                    } else {
+                      closeMenu()
+                      PushHelper.pushHomeGame(item)
+                    }
                   }}
                 />
               )

@@ -42,7 +42,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
-  const { mobileRight } = useHomeInfo()
+  const rightMenus = UGStore.globalProps.rightMenu
   const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
@@ -66,20 +66,13 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   const onSaveAvatarSuccess = reRender
 
-  const rightMenus = mobileRight?.data ?? []
-
   const sign = {
     signOut,
-  }
-
-  const homeInfo = {
-    rightMenus,
   }
 
   const value = {
     sysInfo,
     userInfo,
-    homeInfo,
   }
 
   return {
@@ -88,6 +81,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     onSaveAvatarSuccess,
     value,
     sign,
+    rightMenus,
   }
 }
 

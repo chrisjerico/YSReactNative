@@ -6,10 +6,11 @@ import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useRerender from './useRerender'
 import useSignIn from './useSignIn'
+import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import { ugLog } from '../../tools/UgLog'
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -20,12 +21,16 @@ interface SlidingVerification {
 interface UseSignInPage {
   homePage: PageName
   signUpPage: PageName
+  onSuccessSignOut?: () => any
 }
 
-const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
+const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage) => {
   // stores
+  const { reRender } = useRerender()
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
+  const rightMenus = UGStore.globalProps.rightMenu
+
   const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)
@@ -92,6 +97,24 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
         },
         onError: (error) => {
           showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+        },
+      }),
+    []
+  )
+
+  const { signOut } = useMemo(
+    () =>
+      useSignOut({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+        },
+        onSuccess: () => {
+          hideLoading()
+          reRender()
+          onSuccessSignOut && onSuccessSignOut()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
         },
       }),
     []
@@ -205,7 +228,9 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     sign: {
       signIn: _signIn,
       tryPlay,
+      signOut,
     },
+    rightMenus,
   }
 }
 

@@ -34,7 +34,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     scratchList,
     lotteryGame,
     lotteryNumber,
-    mobileRight,
     refresh,
   } = useHomeInfo()
 
@@ -46,40 +45,48 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     })
   }
 
-  const { tryPlay } = useTryPlay({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-    },
-    onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-      reRender()
-      onSuccessTryPlay && onSuccessTryPlay()
-    },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
-    },
-  })
+  const { tryPlay } = useMemo(
+    () =>
+      useTryPlay({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+        },
+        onSuccess: () => {
+          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          reRender()
+          onSuccessTryPlay && onSuccessTryPlay()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
+        },
+      }),
+    []
+  )
 
-  const { signOut } = useSignOut({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
-    },
-    onSuccess: () => {
-      hideLoading()
-      // showLoading({ type: UGLoadingType.Success, text: '退出成功' })
-      reRender()
-      onSuccessSignOut && onSuccessSignOut()
-    },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
-    },
-  })
+  const { signOut } = useMemo(
+    () =>
+      useSignOut({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+        },
+        onSuccess: () => {
+          hideLoading()
+          reRender()
+          onSuccessSignOut && onSuccessSignOut()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+        },
+      }),
+    []
+  )
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
   const { sysInfo } = useSysInfo({})
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
+  const rightMenus = UGStore.globalProps.rightMenu
   // data handle
   const bannersInterval = parseInt(banner?.interval)
   const banners = banner?.list ?? []
@@ -129,7 +136,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const roulette = turntableList?.data
   const goldenEggs = goldenEggList?.data ?? []
   const scratchs = scratchList?.data ?? []
-  const rightMenus = mobileRight?.data ?? []
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -163,7 +169,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     floatAds,
     goldenEggs,
     scratchs,
-    rightMenus,
     ...homeGameData,
     ...lotteryData,
     ...official_customise_Games,
@@ -182,6 +187,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     sign,
     value,
     refresh,
+    rightMenus,
   }
 }
 

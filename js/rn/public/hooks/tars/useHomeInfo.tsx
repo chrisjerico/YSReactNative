@@ -28,10 +28,9 @@ const localRouters = [
   'activity_goldenEggList',
   'activity_scratchList',
   'system_floatAds',
-  'system_mobileRight',
 ]
 
-const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners']
+const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners', 'system_mobileRight']
 
 interface Value {
   rankList?: RankListModel
@@ -48,7 +47,6 @@ interface Value {
   showOnlineNum?: boolean
   goldenEggList?: GoldenEggListModel
   scratchList?: ScratchListModel
-  mobileRight?: any
 }
 
 const useHome = () => {
@@ -57,10 +55,11 @@ const useHome = () => {
   const [value, setValue] = useState<Value>({})
 
   const updateStore = (response: any[]) => {
-    const gameLobby = response[14]?.data?.data ?? UGStore.globalProps.gameLobby
-    const sys = response[15]?.data?.data ?? UGStore.globalProps.sys
-    const banner = response[16]?.data?.data ?? UGStore.globalProps.banner
-    UGStore.dispatch({ type: 'merge', gameLobby, banner, sys })
+    const gameLobby = response[13]?.data?.data ?? UGStore.globalProps.gameLobby
+    const sys = response[14]?.data?.data ?? UGStore.globalProps.sys
+    const banner = response[15]?.data?.data ?? UGStore.globalProps.banner
+    const rightMenu = response[16]?.data?.data ?? UGStore.globalProps.rightMenu
+    UGStore.dispatch({ type: 'merge', gameLobby, banner, sys, rightMenu })
     UGStore.save()
   }
 
@@ -93,7 +92,6 @@ const useHome = () => {
         goldenEggList: response[10] ? response[10]?.data : value?.goldenEggList,
         scratchList: response[11] ? response[11]?.data : value?.scratchList,
         floatAd: response[12] ? response[12]?.data : value?.floatAd,
-        mobileRight: response[13] ? response[13]?.data : value?.mobileRight,
       })
     } catch (error) {
       console.log('--------useHome init error--------', error)

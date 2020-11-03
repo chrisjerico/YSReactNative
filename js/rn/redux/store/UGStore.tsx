@@ -11,6 +11,7 @@ import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../r
 import { AsyncStorageKey } from './IGlobalStateHelper'
 import UGSysConfModel from '../model/全局/UGSysConfModel'
 import { UGSysModel } from '../model/全局/UGSysModel'
+import UGRightMenuModel from '../model/全局/UGRightMenuModel'
 
 // 整个State的树结构
 
@@ -20,7 +21,8 @@ export interface IGlobalState {
   userInfo?: UGUserModel
   sysConf?: UGSysConfModel
   sign?: UGSignModel
-  gameLobby?: UGGameLobbyModel[] // 遊戲大廳
+  gameLobby?: UGGameLobbyModel[] // 遊戲大廳 陣列
+  rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
   sys?: UGSysModel
   // value?: any;
@@ -34,18 +36,22 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.sysConf && (state.sysConf = act.sysConf)
     act.userInfo && (state.userInfo = act.userInfo)
     act.sign && (state.sign = act.sign)
-    act.gameLobby && (state.gameLobby = act.gameLobby)
     act.banner && (state.banner = act.banner)
     act.sys && (state.sys = act.sys)
     act.page && (state[act.page] = act.props)
+    // 陣列
+    act.gameLobby && (state.gameLobby = act.gameLobby)
+    act.rightMenu && (state.rightMenu = act.rightMenu)
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }
     state.sign = { ...state.sign, ...act.sign }
-    act.gameLobby && (state.gameLobby = act.gameLobby)
     state.banner = { ...state.banner, ...act.banner }
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
+    // 陣列
+    act.gameLobby && (state.gameLobby = act.gameLobby)
+    act.rightMenu && (state.rightMenu = act.rightMenu)
   } else {
     // 自定义Reducer写在这里。。。
     state.BettingReducer = BettingReducer(state.BettingReducer, act as any)
@@ -64,6 +70,7 @@ export interface UGAction<P = {}> extends Action {
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
   sys?: UGSysModel
+  rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example
 }
 

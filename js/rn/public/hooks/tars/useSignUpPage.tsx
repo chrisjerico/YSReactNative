@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-native'
+import { UGStore } from '../../../redux/store/UGStore'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
-import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useRerender from './useRerender'
+import useSignOut from './useSignOut'
 import useSignUp from './useSignUp'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
@@ -13,9 +16,14 @@ import useTryPlay from './useTryPlay'
 interface UseRegisterPage {
   homePage?: PageName
   signInPage?: PageName
+  onSuccessSignOut?: () => any
 }
 
-const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
+const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPage) => {
+  const { reRender } = useRerender()
+
+  const rightMenus = UGStore.globalProps.rightMenu
+
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
   const [account, setAccount] = useState(null)
@@ -88,6 +96,24 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
             nc_sig: undefined,
           })
           slideCodeRef?.current?.reload()
+        },
+      }),
+    []
+  )
+
+  const { signOut } = useMemo(
+    () =>
+      useSignOut({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+        },
+        onSuccess: () => {
+          hideLoading()
+          reRender()
+          onSuccessSignOut && onSuccessSignOut()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
         },
       }),
     []
@@ -299,7 +325,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     sign: {
       signUp: _signUp,
       tryPlay,
+      signOut,
     },
+    rightMenus,
   }
 }
 

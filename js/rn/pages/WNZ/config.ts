@@ -26,6 +26,13 @@ const config = {
     20: getIbbImage('4gLtWb1/kjw'), // 開獎網 X
   },
   navColors: ['#edb93f', '#77674d', '#e62e25', '#52b653', '#007aff'],
+  moreGame: [
+    {
+      title: '更多游戏',
+      pic: getHtml5Image(23, 'home/moregame'),
+      openCycle: '更多游戏玩法',
+    },
+  ],
   // menus: [
   //   {
   //     title: '会员中心',

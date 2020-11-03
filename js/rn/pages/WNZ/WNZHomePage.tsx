@@ -34,7 +34,7 @@ const WNZHomePage = () => {
     menu?.current?.close()
   }
 
-  const { goTo, refresh, value, sign } = useHomePage({
+  const { goTo, refresh, value, sign, rightMenus } = useHomePage({
     onSuccessSignOut: closeMenu,
   })
 
@@ -44,7 +44,7 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, rightMenus } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
@@ -54,12 +54,14 @@ const WNZHomePage = () => {
     {
       name: '官方玩法',
       logo: getHtml5Image(23, 'home/gfwf'),
-      games: officialGames,
+      // @ts-ignore
+      games: officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
       name: '信用玩法',
       logo: getHtml5Image(23, 'home/xywf'),
-      games: customiseGames,
+      // @ts-ignore
+      games: customiseGames?.slice(0, 9).concat(config?.moreGame),
     },
   ]
 
@@ -237,13 +239,18 @@ const WNZHomePage = () => {
                     return (
                       <RowGameButtom
                         showRightBorder={index % 2 == 0}
+                        showLogoBall={title == '更多游戏' ? false : true}
                         logo={pic}
                         name={title}
                         desc={openCycle}
                         logoBallText={tab == '官方玩法' ? '官' : '信'}
-                        onPress={() => {
-                          PushHelper.pushLottery(stringToNumber(id))
-                        }}
+                        onPress={
+                          title == '更多游戏'
+                            ? goToUserCenterType.游戏大厅
+                            : () => {
+                                PushHelper.pushLottery(stringToNumber(id))
+                              }
+                        }
                       />
                     )
                   }}

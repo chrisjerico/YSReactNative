@@ -32,15 +32,14 @@ const WNZMinePage = () => {
     menu?.current?.close()
   }
 
-  const { value, sign } = useMinePage({
+  const { value, sign, rightMenus } = useMinePage({
     homePage: PageName.WNZHomePage,
     onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo, homeInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { rightMenus } = homeInfo
   const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
   const { mobile_logo, userCenterItems } = sysInfo
 
