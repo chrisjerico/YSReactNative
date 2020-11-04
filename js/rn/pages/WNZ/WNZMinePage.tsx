@@ -32,7 +32,7 @@ const WNZMinePage = () => {
     menu?.current?.close()
   }
 
-  const { value, sign, rightMenus } = useMinePage({
+  const { value, sign, rightMenus, show } = useMinePage({
     homePage: PageName.WNZHomePage,
     onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
@@ -42,7 +42,7 @@ const WNZMinePage = () => {
 
   const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
   const { mobile_logo, userCenterItems } = sysInfo
-
+  const { showBons } = show
   const { signOut } = sign
 
   // data handle
@@ -100,6 +100,7 @@ const WNZMinePage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <ProfileBlock
+          showBonsTag={showBons}
           curLevelInt={curLevelInt}
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}

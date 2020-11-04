@@ -7,6 +7,7 @@ import useSignOut from './useSignOut'
 import useRerender from './useRerender'
 import useSysInfo from './useSysInfo'
 import useHomeInfo from './useHomeInfo'
+import { Necessity } from '../../models/Enum'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -46,6 +47,10 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
   const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
+
+  const { necessity } = sysInfo
+
+  const { bons } = necessity
   // signs
   const { signOut } = useSignOut({
     onStart: () => {
@@ -70,6 +75,10 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     signOut,
   }
 
+  const show = {
+    showBons: bons == Necessity.必填 ? true : false,
+  }
+
   const value = {
     sysInfo,
     userInfo,
@@ -82,6 +91,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     value,
     sign,
     rightMenus,
+    show,
   }
 }
 

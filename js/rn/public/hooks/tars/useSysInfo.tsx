@@ -75,7 +75,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       agentButton: sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
       slideCode: sysStore?.reg_vcode == '1' ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
-      bons: sysStore?.mBonsSwitch == '0' ? Necessity.必填 : Necessity.隱藏,
+      bons: sysStore?.mBonsSwitch ? Necessity.必填 : Necessity.隱藏,
     },
     userCenterItems:
       sysStore?.userCenter
