@@ -27,6 +27,7 @@ const BZHGameLobbyPage = ({ route }) => {
           containerStyle={{
             marginVertical: scale(10),
           }}
+          tabBarBackgroundColor={'#ffffff'}
           numColumns={3}
           initialTabIndex={initialTabIndex ? initialTabIndex : 0}
           baseHeight={scale(130)}
@@ -37,7 +38,7 @@ const BZHGameLobbyPage = ({ route }) => {
           renderScene={({ item, tab, index }) => {
             return (
               <List
-                uniqueKey={'BZHGameLobbyPage' + index.toString()}
+                uniqueKey={'BZHGameLobbyPageTabComponent' + index}
                 style={{
                   backgroundColor: '#ffffff',
                   marginTop: scale(10),
@@ -50,7 +51,7 @@ const BZHGameLobbyPage = ({ route }) => {
                 }}
                 numColumns={3}
                 data={item}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
                   const { title, pic, id } = item
                   return (
                     <GameButton

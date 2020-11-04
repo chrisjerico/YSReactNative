@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -57,7 +57,7 @@ const RightIcon = ({ openEyeColor, closeEyeColor, showRightIcon, rightIconType, 
     } else {
       switch (rightIconType) {
         case 'eye':
-          return <Ionicons name={showContent ? 'ios-eye' : 'ios-eye-off'} size={scale(40)} color={showContent ? openEyeColor : closeEyeColor} onPress={onPressEye} {...rightIconProps} />
+          return <Ionicons size={scale(40)} {...rightIconProps} name={showContent ? 'ios-eye' : 'ios-eye-off'} color={showContent ? openEyeColor : closeEyeColor} onPress={onPressEye} />
         case 'sms':
           return (
             <Button
@@ -128,7 +128,7 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      showLoading({ type: UGLoadingType.Loading });
+      showLoading();
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       const { code, msg } = data ?? {}
 
@@ -178,7 +178,7 @@ const FormComponent = ({
             />
           }
           leftIconContainerStyle={[styles.leftIconContainerStyle, leftIconContainerStyle]}
-          rightIconContainerStyle={rightIconContainerStyle}
+          rightIconContainerStyle={[styles.rightIconContainerStyle, rightIconContainerStyle]}
           value={value}
           onChangeText={
 
@@ -211,9 +211,12 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     marginTop: scale(10),
   },
+  rightIconContainerStyle: {
+    marginRight: scale(10),
+  },
   leftIconContainerStyle: {
     marginLeft: 0,
-    marginRight: 5,
+    marginRight: scale(10),
     alignItems: 'center',
     width: scale(40),
   },
@@ -238,4 +241,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default FormComponent
+export default memo(FormComponent)

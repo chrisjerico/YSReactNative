@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TextStyle, TouchableWithoutFeedback, ViewStyle, StyleProp, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import FastImage from 'react-native-fast-image'
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LinearBadge
+export default memo(LinearBadge)

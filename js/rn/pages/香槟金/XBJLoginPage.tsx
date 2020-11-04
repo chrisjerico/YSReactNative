@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {View, Text, Platform, PlatformIOSStatic, PlatformAndroidStatic} from 'react-native';
+import React, { Ref, useEffect, useRef } from 'react';
+import { View, Text, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,16 +12,15 @@ import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import UGTextField from '../../public/widget/UGTextField';
 import PushHelper from '../../public/define/PushHelper';
-import { connect } from 'react-redux';
-import {  PageName } from '../../public/navigation/Navigation';
+import { PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
-import { number } from 'prop-types';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { UGLoadingType, showLoading } from '../../public/widget/UGLoadingCP';
 import { XBJRegisterProps } from './XBJRegisterPage';
 import { navigate } from '../../public/navigation/RootNavigation';
+import { ErrorObject } from '../../public/network/CCSessionModel';
+import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 
 
 // 声明成员变量
@@ -31,25 +30,38 @@ interface XJBLoginVars {
   errorTimes: number; // 失败次数大于3时需要滑动验证
   slideCode: SlideCodeModel; // 滑动验证码
   googleCode: string; // 谷歌验证码
+  reloadSlide: () => void; // 刷新滑块
 }
 
 // 声明Props
 export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, XJBLoginVars> {
   rememberPassword?: boolean; // 是否记住密码
+  usr?: string;
+  pwd?: string;
 }
 
 // 滑动验证
-function SlidingVerification(props: { hidden: boolean }) {
+export function SlidingVerification(props: { hidden: boolean, setReload: (reload: () => void) => void, didVerified: (slideCode: SlideCodeModel) => void }) {
+  const webviewRef = useRef<WebView>();
+  props.setReload && props.setReload(() => {
+    webviewRef?.current?.reload();
+  });
   return (
     <View style={{ marginTop: 13, height: props.hidden ? 0 : 52, borderRadius: 26, overflow: 'hidden' }}>
       <WebView
+        ref={webviewRef}
         style={{ marginLeft: -15, marginRight: -14, marginTop: -22, flex: 1 }}
         javaScriptEnabled
         startInLoadingState
         source={{ uri: `${AppDefine.host}/dist/index.html#/swiperverify?platform=native` }}
         onMessage={(e) => {
-          console.log('e=');
-          console.log(e);
+          const temp: any = e?.nativeEvent?.data;
+          const slideCode: SlideCodeModel = temp;
+          if (slideCode?.nc_sig) {
+            console.log('滑动成功2', slideCode);
+            props.didVerified(slideCode)
+          }
+          // console.log('e=', e?.nativeEvent?.data);
         }}
       />
     </View>
@@ -57,7 +69,8 @@ function SlidingVerification(props: { hidden: boolean }) {
 }
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
-  let { setProps, vars: v } = props;
+  const { setProps, vars: v } = props;
+  const { loginVCode } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
     async function getLocalPwd() {
@@ -81,9 +94,12 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps();
       } else {
         setProps({
-          navbarOpstions: { hidden:false, backgroundColor: 'transparent', hideUnderline: true, back: true },
+          navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
-          rememberPassword: isRemember
+          rememberPassword: isRemember,
+          didFocus: () => {
+            v.reloadSlide();
+          }
         })
       }
     }
@@ -96,18 +112,21 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       err = '请输入用户名';
     } else if (!v.pwd?.trim()?.length) {
       err = '请输入密码';
-    } else if (v.errorTimes > 3 && !v.slideCode) {
+    } else if (!v.slideCode && (loginVCode || v.errorTimes > 3)) {
       err = '请完成滑动验证';
     }
     if (err) {
+      showLoading()
       OCHelper.call('HUDHelper.showMsg:', [err]);
       return;
     }
-    OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
-    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, v.slideCode)
-      .then((data) => {
+
+    v.reloadSlide();
+    showLoading('正在登录...' );
+    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode))
+      .then(({ data }) => {
         console.log('登录成功');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
+        showSuccess('登录成功！');
 
         async function didLogin() {
           // 退出旧账号（试玩账号）
@@ -141,9 +160,9 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         }
         didLogin();
       })
-      .catch((err: Error) => {
-        OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
-        if ((v.errorTimes += 1) > 3) {
+      .catch((err: ErrorObject) => {
+        showError(err.message);
+        if (loginVCode || (v.errorTimes += 1) > 3) {
           setProps();
         }
       });
@@ -159,19 +178,24 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             type="账号"
             placeholder="请输入账号"
             containerStyle={{ marginTop: 24 }}
-            defaultValue={v.account}
+            defaultValue={props.usr ?? v.account}
             onChangeText={(text) => {
               v.account = text;
             }}
           />
           <UGTextField
             type="密码"
-            defaultValue={v.pwd}
+            defaultValue={props.pwd ?? v.pwd}
             onChangeText={(text) => {
               v.pwd = text;
             }}
           />
-          <SlidingVerification hidden={v.errorTimes < 4} />
+          <SlidingVerification hidden={!loginVCode || v.errorTimes < 4} setReload={reload => {
+            v.reloadSlide = reload;
+          }} didVerified={(slideCode) => {
+            v.slideCode = slideCode;
+            console.log('滑动成功', slideCode);
+          }} />
           <View style={{ marginTop: 18, flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
               style={{ flexDirection: 'row' }}

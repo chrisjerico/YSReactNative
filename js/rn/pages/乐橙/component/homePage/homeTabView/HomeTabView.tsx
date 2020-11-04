@@ -69,11 +69,11 @@ export const HomeTabView = ({ homeGames }) => {
 
   const getTab = (item: Icon, index: number) => {
     return index == 0 ? (
-      <RecommendTabView onPress={onPress} list={item.list} tabLabel={item.name} />
+      <RecommendTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
     ) : index == 1 ? (
-      <LotteryTabView onPress={onPress} list={item.list} tabLabel={item.name} />
+      <LotteryTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
     ) : (
-      <GameListView list={item.list} onPress={onPress} tabLabel={item.name} />
+      <GameListView list={item.list} key={index} onPress={onPress} tabLabel={item.name} />
     )
   }
 
@@ -88,8 +88,7 @@ export const HomeTabView = ({ homeGames }) => {
         backgroundColor: '#ffffff',
         borderRadius: 16,
       }}
-      renderTabBar={() => <ScrollableTabBar />}
-    >
+      renderTabBar={() => <ScrollableTabBar />}>
       {homeGames.length > 0 ? (
         homeGames.map((item, index) => {
           return getTab(item, index)

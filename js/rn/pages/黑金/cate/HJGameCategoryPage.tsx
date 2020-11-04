@@ -1,6 +1,6 @@
 import {FlatList, Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native"
 import React from 'react'
-import SafeAreaHeader from "../../../public/views/temp/SafeAreaHeader";
+import SafeAreaHeader from "../../../public/views/tars/SafeAreaHeader";
 import {HJThemeColor} from "../../../public/theme/colors/HJThemeColor";
 import {scale} from "../../../public/tools/Scale";
 import CommStyles from "../../base/CommStyles";

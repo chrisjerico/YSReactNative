@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot } from '../../public/navigation/RootNavigation'
@@ -9,10 +9,10 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const LHTSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid } = useSignInPage({
     homePage: PageName.LHTHomePage,
     signUpPage: PageName.LHTSignUpPage,
   })
@@ -27,7 +27,7 @@ const LHTSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} />
+          <SignInFormList slideCodeColor={'#ffffff'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             disabled={!valid}
             title={'登录'}
@@ -56,7 +56,7 @@ const LHTSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
+const SignInForm = (props: SignInRenderFormProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 
 const styles = StyleSheet.create({
   container: {

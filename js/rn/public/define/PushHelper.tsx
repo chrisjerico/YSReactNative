@@ -10,6 +10,7 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import NetworkRequest1 from '../network/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
+import { GoldenEgg } from '../views/tars/Activitys'
 import { ANHelper } from './ANHelper/ANHelper'
 import { CMD, OPEN_PAGE_PMS } from './ANHelper/hp/CmdDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
@@ -61,23 +62,9 @@ export default class PushHelper {
         }))
         break
       case 'android':
-        ANHelper.callAsync(CMD.OPEN_ROULETTE, {data: turntableList})
+        ANHelper.callAsync(CMD.OPEN_ROULETTE, { data: turntableList })
         break
     }
-  }
-  // 登出
-  static async pushLogout() {
-    switch (Platform.OS) {
-      case 'ios':
-        await OCHelper.call('UGUserModel.setCurrentUser:', [])
-        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
-        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
-        break
-      case 'android':
-        await ANHelper.callAsync(CMD.LOG_OUT)
-        break
-    }
-    Toast('退出成功')
   }
   // 登入
   static pushLogin() {
@@ -130,7 +117,7 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
-      seriesId: SeriesId.体育, // 普通彩票
+      seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
     })
@@ -145,6 +132,33 @@ export default class PushHelper {
     })
   }
 
+  static pushGoldenEggs(goldenEggs: GoldenEgg[]) {
+    // const _goldenEggs = Object.assign({ clsName: 'DZPModel' }, goldenEggs?.[0])
+
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => {
+          return {
+            vc: {
+              selectors: 'EggFrenzyViewController.new',
+              modalPresentationStyle: 5,
+              // args1: [5],
+            },
+            ret: {
+              selectors: 'UGNavigationController.current.presentViewController:animated:',
+              args1: [vc, true],
+            },
+          }
+        })
+        // OCHelper.call('UGNavigationController.current.presentViewController:animated:', [{ selectors: 'EggFrenzyViewController.new', args1: [goldenEggs] }, true])
+        console.log('-------去砸Ｇ蛋')
+        break
+      case 'android':
+        break
+    }
+  }
+
+  static pushCratchs(scratchs: any) {}
   // 去彩票大廳 userCenter裡有
   // static pushLotteryLobby() {
   //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
@@ -295,7 +309,7 @@ export default class PushHelper {
                 // ShowLoading
                 OCHelper.call('SVProgressHUD.showWithStatus:')
 
-                var info: UGAgentApplyInfo = await NetworkRequest1.team_agentApplyInfo()
+                let {data:info} = await NetworkRequest1.team_agentApplyInfo()
 
                 if (info.reviewStatus === 2) {
                   // 去推荐收益页
@@ -481,10 +495,10 @@ export default class PushHelper {
               })
               if (!isOcPush) {
                 const rpm = RnPageModel.pages.filter((p) => {
-                  return p.tabbarItemPath == '/user';
-                })[0];
+                  return p.tabbarItemPath == '/user'
+                })[0]
                 if (rpm) {
-                  push(rpm.rnName);
+                  push(rpm.rnName)
                 } else {
                   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
                     {
@@ -513,116 +527,115 @@ export default class PushHelper {
 
         break
       case 'android':
-        let subId = "";
+        let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
-            subId = MenuType.CZ;
-            break;
+            subId = MenuType.CZ
+            break
           }
           case UGUserCenterType.每日签到: {
-            subId = MenuType.QD;
+            subId = MenuType.QD
             break
           }
           case UGUserCenterType.取款: {
-            subId = MenuType.TX;
-            break;
+            subId = MenuType.TX
+            break
           }
           case UGUserCenterType.银行卡管理: {
-            subId = MenuType.YHK;
-            break;
+            subId = MenuType.YHK
+            break
           }
           case UGUserCenterType.利息宝: {
-            subId = MenuType.LXB;
-            break;
+            subId = MenuType.LXB
+            break
           }
           case UGUserCenterType.推荐收益: {
-            subId = MenuType.SYTJ;
-            break;
+            subId = MenuType.SYTJ
+            break
           }
           case UGUserCenterType.彩票注单记录: {
-            subId = MenuType.TZJL;
-            break;
+            subId = MenuType.TZJL
+            break
           }
           case UGUserCenterType.其他注单记录: {
-            subId = MenuType.QTZD;
-            break;
+            subId = MenuType.QTZD
+            break
           }
           case UGUserCenterType.额度转换: {
-            subId = MenuType.EDZH;
-            break;
+            subId = MenuType.EDZH
+            break
           }
           case UGUserCenterType.站内信: {
-            subId = MenuType.ZLX;
-            break;
+            subId = MenuType.ZLX
+            break
           }
           case UGUserCenterType.安全中心: {
-            subId = MenuType.AQZX;
-            break;
+            subId = MenuType.AQZX
+            break
           }
           case UGUserCenterType.任务中心: {
-            subId = MenuType.RWZX;
-            break;
+            subId = MenuType.RWZX
+            break
           }
           case UGUserCenterType.个人信息: {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.HYZX
+            break
           }
           case UGUserCenterType.建议反馈: {
-            subId = MenuType.TSZX;
-            break;
+            subId = MenuType.TSZX
+            break
           }
           case UGUserCenterType.在线客服: {
-            subId = MenuType.KF;
-            break;
+            subId = MenuType.KF
+            break
           }
           case UGUserCenterType.活动彩金: {
-            subId = MenuType.SQCJ;
-            break;
+            subId = MenuType.SQCJ
+            break
           }
           case UGUserCenterType.长龙助手: {
-            subId = MenuType.CLZS;
-            break;
+            subId = MenuType.CLZS
+            break
           }
           case UGUserCenterType.全民竞猜: {
-            subId = MenuType.QMJC;
-            break;
+            subId = MenuType.QMJC
+            break
           }
           case UGUserCenterType.开奖走势: {
             Toast('敬请期待')
             return
           }
           case UGUserCenterType.QQ客服: {
-            subId = MenuType.QQ;
-            break;
+            subId = MenuType.QQ
+            break
           }
           case UGUserCenterType.资金明细: {
-            subId = MenuType.ZHGL;
-            break;
+            subId = MenuType.ZHGL
+            break
           }
           case UGUserCenterType.彩票大厅: {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
           }
           case UGUserCenterType.聊天室: {
-            subId = MenuType.LTS;
-            break;
+            subId = MenuType.LTS
+            break
           }
           case UGUserCenterType.游戏大厅: {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
           }
           case UGUserCenterType.我的页: {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.HYZX
+            break
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
-          {
-            seriesId: '7',
-            subId: subId,
-          })
-        break;
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+          seriesId: '7',
+          subId: subId,
+        })
+        break
     }
   }
 }

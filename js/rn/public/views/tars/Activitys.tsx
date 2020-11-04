@@ -1,21 +1,47 @@
+import React, { memo } from 'react'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition } from '../../tools/tars'
-import React from 'react'
 
 interface ActivitysProps {
   refreshing: boolean
   isTest: boolean
   uid: string | undefined
   redBagLogo: string
-  floatAds: any[]
-  roulette: any[]
+  floatAds: FloatAd[]
+  roulette: Roulette[]
   redBag: RedBagDetailActivityModel
+  goldenEggs: GoldenEgg[]
+  scratchs: unknown
 }
 
-const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds }: ActivitysProps) => {
+export interface FloatAd {
+  image: string
+  position: number
+  linkCategory: number | string
+  linkPosition: number | string
+}
+
+export interface Roulette {
+  end: string
+  id: string
+  param: any
+  start: string
+  type: string
+}
+
+export interface GoldenEgg {
+  end: string
+  id: string
+  integral: number
+  param: any
+  start: string
+  type: string
+}
+
+const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   return (
     <>
       <ActivityComponent
@@ -37,6 +63,26 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
           PushHelper.pushWheel(roulette)
         }}
       />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(500), right: 0 }}
+        enableFastImage={false}
+        show={uid && goldenEggs && !isTest}
+        logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
+        onPress={() => {
+          PushHelper.pushGoldenEggs(goldenEggs)
+        }}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(600), right: 0 }}
+        enableFastImage={false}
+        show={uid && scratchs && !isTest}
+        logo={'https://i.ibb.co/0J51pH9/scratch.png'}
+        onPress={() => {
+          PushHelper.pushCratchs(scratchs)
+        }}
+      />
       {floatAds?.map((item: any, index) => {
         const { image, position, linkCategory, linkPosition } = item
         return (
@@ -45,7 +91,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
             refreshing={refreshing}
             containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={uid && !isTest}
+            show={true}
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)
@@ -57,4 +103,4 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
   )
 }
 
-export default Activitys
+export default memo(Activitys)

@@ -1,20 +1,19 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import PushHelper from '../../public/define/PushHelper'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot, push } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SignUpFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
 
 const BZHSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, value, placeholder } = useSignUpPage({
     homePage: PageName.BZHHomePage,
     signInPage: PageName.BZHSignInPage,
   })
@@ -24,22 +23,23 @@ const BZHSignUpPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <MineHeader
-          title={'注册'}
-          showBackBtn={true}
-          onPressBackBtn={pop}
-          showRightTitle={true}
-          onPressRightTitle={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
-        />
+        <MineHeader title={'注册'} showBackBtn={true} onPressBackBtn={pop} showRightTitle={true} onPressRightTitle={goToUserCenterType.在线客服} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList
+            slideCodeColor={'#ffffff'}
+            reference={reference}
+            show={show}
+            label={label}
+            placeholder={placeholder}
+            passwordLimit={passwordLimit}
+            onChange={onChange}
+            value={value}
+            renderForm={SignUpForm}
+          />
           <Button
             title={'注册'}
-            disabled={!valid}
             containerStyle={[
               styles.button,
               {
@@ -67,7 +67,7 @@ const BZHSignUpPage = () => {
   )
 }
 
-const SignUpForm = (props: FormComponentProps) => {
+const SignUpForm = (props: SignUpRenderFormProps) => {
   return <FormComponent {...props} containerStyle={{ marginBottom: scale(10) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 }
 

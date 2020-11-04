@@ -1,16 +1,16 @@
-// import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Action, Unsubscribe } from 'redux'
-import { UGBasePageProps } from '../../pages/base/UGPage'
+import { setProps, UGBasePageProps } from '../../pages/base/UGPage'
 import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
+import UGRightMenuModel from '../model/全局/UGRightMenuModel'
 import UGSignModel from '../model/全局/UGSignModel'
+import UGSysConfModel from '../model/全局/UGSysConfModel'
+import UGSysNetModel from '../model/全局/UGSysNetModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
-import UGSysConfModel from '../model/全局/UGSysConfModel'
-import { UGSysModel } from '../model/全局/UGSysModel'
 
 // 整个State的树结构
 
@@ -20,9 +20,10 @@ export interface IGlobalState {
   userInfo?: UGUserModel
   sysConf?: UGSysConfModel
   sign?: UGSignModel
-  gameLobby?: UGGameLobbyModel[] // 遊戲大廳
+  gameLobby?: UGGameLobbyModel[] // 遊戲大廳 陣列
+  rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
-  sys?: UGSysModel
+  sys?: UGSysNetModel
   // value?: any;
 }
 
@@ -34,18 +35,22 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.sysConf && (state.sysConf = act.sysConf)
     act.userInfo && (state.userInfo = act.userInfo)
     act.sign && (state.sign = act.sign)
-    act.gameLobby && (state.gameLobby = act.gameLobby)
     act.banner && (state.banner = act.banner)
     act.sys && (state.sys = act.sys)
     act.page && (state[act.page] = act.props)
+    // 陣列
+    act.gameLobby && (state.gameLobby = act.gameLobby)
+    act.rightMenu && (state.rightMenu = act.rightMenu)
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }
     state.sign = { ...state.sign, ...act.sign }
-    act.gameLobby && (state.gameLobby = act.gameLobby)
     state.banner = { ...state.banner, ...act.banner }
     state.sys = { ...state.sys, ...act.sys }
     act.page && (state[act.page] = { ...state[act.page], ...act.props })
+    // 陣列
+    act.gameLobby && (state.gameLobby = act.gameLobby)
+    act.rightMenu && (state.rightMenu = act.rightMenu)
   } else {
     // 自定义Reducer写在这里。。。
     state.BettingReducer = BettingReducer(state.BettingReducer, act as any)
@@ -63,7 +68,8 @@ export interface UGAction<P = {}> extends Action {
   sign?: UGSignModel // 登入註冊訊息
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
-  sys?: UGSysModel
+  sys?: UGSysNetModel
+  rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example
 }
 
@@ -80,6 +86,8 @@ export class UGStore {
       for (const cb of this.callbacks) {
         cb.page == act.page && cb.callback()
       }
+    } else {
+      setProps();
     }
   }
 

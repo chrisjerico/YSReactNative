@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { View, ViewStyle, StyleProp } from 'react-native'
 import { Game, SubType } from '../../models/Interface'
 import List from '../../views/tars/List'
@@ -102,4 +102,4 @@ const GameSubTypeComponent = ({
   )
 }
 
-export default GameSubTypeComponent
+export default memo(GameSubTypeComponent)

@@ -1,32 +1,44 @@
 import { UGThemeColor } from '../UGThemeColor'
 
+const themeColor = '#ffffff'
+const tabBarBgColor = '#ffffff'
+const themeLightColor = '#FFECEC'
 
 export const BYThemeColor: { [x: string]: UGThemeColor } = {
   白曜: {
     skitType: '白曜',
     skitString: '白曜',
-    tabBarBgColor: '#ffffff',
+    tabBarBgColor: tabBarBgColor,
     tabNoSelectColor: '#9D9D9D',
-    homeContentSubColor: '#f2f2f2', // 額度轉換Tab
-    get bgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
-    get navBarBgColor() { return [this.themeColor, this.themeColor] }, // 跳頁面最上面的Header顏色
-    get tabSelectedColor() { return this.themeColor },
-    get progressBgColor() { return [this.tabBarBgColor, this.tabBarBgColor] },
-    get homeContentColor() { return this.themeLightColor }, // 真人大廳小方塊背景
-    // cellBgColor: '#444',
-    // CLBgColor: '#E6E6E6', // 推薦收益區塊
-    get menuHeadViewColor() { return [this.themeColor, this.themeColor] },
-    textColor1: '#333333',
-    textColor2: '#FFA726',
+    homeContentSubColor: '#6C6C6C', // 額度轉換Tab
+    bgColor: [tabBarBgColor, tabBarBgColor],
+    navBarBgColor: ['#6C6C6C', '#6C6C6C'],
+    tabSelectedColor: '#000000',
+    progressBgColor: [tabBarBgColor, tabBarBgColor],
+    homeContentColor: themeLightColor,
+    menuHeadViewColor: [themeColor, themeColor],
+    textColor1: '#111111',
+    textColor2: '#000000',
     textColor3: '#C1C1C1',
     textColor4: '#ffffff',
     conversionCellColor: '#444',
-    // intoViewColor: '#444',
-    //moneyCellColor: '#444',
-    themeColor: '#69A5FF',
-    themeLightColor: '#FFECEC',
+    themeColor: themeColor,
+    themeLightColor: themeLightColor,
     isBlack: false,
     is23: false,
-    yubaoBgColor: "#8E8E8E"
+    yubaoBgColor: '#8E8E8E',
+    promotion: {
+      headerBgColor: themeColor,
+      headerTintColor: '#000000',
+      listBgColor: themeColor,
+      tabBgColor: themeColor,
+      selectedTabBgColor: '#d9d9d9',
+    },
+    progress: {
+      tintColor: '#000000',
+      bgColor: themeColor,
+    },
+    // navBarTitleColor: 'red',
+    // bgTextColor: 'red',
   },
 }

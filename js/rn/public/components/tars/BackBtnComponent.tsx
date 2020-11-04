@@ -3,7 +3,7 @@ import { PageName } from '../../navigation/Navigation'
 import { navigate, pop } from '../../navigation/RootNavigation'
 
 interface MineHeaderComponentProps {
-  homePage: PageName
+  homePage?: PageName
   renderHeader: ({ showBackBtn, onPressBackBtn }: { showBackBtn: boolean; onPressBackBtn: () => any }) => any
 }
 

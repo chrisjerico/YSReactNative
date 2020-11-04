@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
-import { scale } from '../../tools/Scale'
+import React, { useEffect, useState } from 'react'
+import { StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import { AgentType } from '../../models/Enum'
+import { scale } from '../../tools/Scale'
 
 interface AgentButtonComponentProps {
   onChangeAgent: (toggle: AgentType) => any
@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(15),
+    color: 'grey',
   },
   enableText: {
     color: '#ffffff',

@@ -1,5 +1,6 @@
-import { Platform } from 'react-native'
-import { OCHelper } from './js/rn/public/define/OCHelper/OCHelper'
+import { Platform } from "react-native";
+import { OCHelper } from "./js/rn/public/define/OCHelper/OCHelper";
+
 
 // 调试环境配置
 export const devConfig = {
@@ -7,13 +8,14 @@ export const devConfig = {
   isTest: () => { // 是否测试环境
     if (__DEV__) return true;
     if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
+      return 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog,67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog,iwDsp1YB7bcBov7KIaxDP9tLbuUQ4ksvOXqog'.indexOf(OCHelper.CodePushKey) == -1;
     }
-    return false
+    return false;
   },
 
-  skinKey: '乐橙',
+  skinKey: '利来',
 }
+
 
 // 线上环境配置（这几个站点写死经典模板）
 export const releaseConfig = {
@@ -21,5 +23,8 @@ export const releaseConfig = {
     c242: '经典1',
     c235: '经典1',
     h003b: '经典1',
-  },
+  }
 }
+
+
+

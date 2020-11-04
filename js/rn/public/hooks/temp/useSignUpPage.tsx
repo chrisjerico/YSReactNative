@@ -1,23 +1,18 @@
 import { useRef, useState } from 'react'
+import { UGStore } from '../../../redux/store/UGStore'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { ToastError, ToastSuccess, validPassword } from '../../tools/tars'
-import {
-  hideLoading,
-  showLoading,
-  UGLoadingType
-} from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useRegister from './useRegister'
 import useSys from './useSys'
 import useTryPlay from './useTryPlay'
-import {UGStore} from "../../../redux/store/UGStore";
-import {ugLog} from "../../tools/UgLog";
 
 interface UseRegisterPage {
-  homePage?: PageName;
-  signInPage?: PageName;
+  homePage?: PageName
+  signInPage?: PageName
 }
 
 const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
@@ -39,7 +34,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const [email, setEmail] = useState(null)
   const [sms, setSms] = useState(null)
 
-  const {mobile_logo = ""} = UGStore.globalProps.sysConf;
+  const { mobile_logo = '' } = UGStore.globalProps.sysConf
 
   // refs
   const slideCodeRef = useRef(null)
@@ -54,7 +49,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   }
   const { tryPlay } = useTryPlay({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()
@@ -64,13 +59,13 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     onError: (error) => {
       hideLoading()
       ToastError(error ?? '登录失败')
-      console.log("--------試玩失败--------", error)
+      console.log('--------試玩失败--------', error)
     },
   })
 
   const { register } = useRegister({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
     },
     onSuccessWithAutoLogin: () => {
       hideLoading()
@@ -103,10 +98,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   // valid
   const recommendGuy_valid = /^\d+$/.test(recommendGuy) || necessity?.recommendGuy != Necessity.必填
   const account_valid = account?.length >= 6
-  const password_valid =
-    validPassword(password, strength) &&
-    password?.length >= minLength &&
-    password?.length <= maxLength
+  const password_valid = validPassword(password, strength) && password?.length >= minLength && password?.length <= maxLength
   const confirmPassword_valid = confirmPassword == password
   const name_valid = necessity?.name != Necessity.必填 // /^[\u4E00-\u9FA5]+$/.test(name) ||
   const fundPassword_valid = (fundPassword?.length == 4 && /^\d+$/.test(fundPassword)) || necessity?.fundPassword != Necessity.必填
@@ -132,7 +124,7 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     sms_valid
 
   // onChange
-  const onChangeAgent = (value: AgentType) => agentRef.current = value
+  const onChangeAgent = (value: AgentType) => (agentRef.current = value)
   const onChangeRecommendGuy = (value: string) => setRecommendGuy(value)
   const obChangeAccount = (value: string) => setAccount(value)
   const obChangePassword = (value: string) => setPassword(value)
@@ -172,18 +164,9 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
   const emailLabel = getLabel(necessity?.email, '请输入合法的电子邮箱')
   const recommendGuyLabel = getLabel(necessity?.recommendGuy, '请填写推荐人ID，只能包含数字')
   const fundPasswordLabel = getLabel(necessity?.fundPassword, '请输入4数字取款密码')
-  const nameLabel = getLabel(
-    necessity?.name,
-    '必须与您的银行账户名称相同，以免未能到账'
-  )
-  const passwordLebel =
-    '*请使用至少' +
-    minLength +
-    '位至' +
-    maxLength +
-    '位英文或数字的组合' +
-    getPasswordLimitString()
-  const confirmPasswordLabel = (password == confirmPassword) && confirmPassword ? '' : '密码不一致'
+  const nameLabel = getLabel(necessity?.name, '必须与您的银行账户名称相同，以免未能到账')
+  const passwordLebel = '*请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
+  const confirmPasswordLabel = password == confirmPassword && confirmPassword ? '' : '密码不一致'
   const imageCodeLabel = '*请输入验证码'
 
   const signUp = () => {
@@ -253,12 +236,12 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
 
   const navigateTo = {
     navigateToHomePage,
-    navigateToSignInPage
+    navigateToSignInPage,
   }
 
   const sign = {
     signUp,
-    tryPlay
+    tryPlay,
   }
 
   return {
@@ -271,9 +254,8 @@ const useSignUpPage = ({ homePage, signInPage }: UseRegisterPage) => {
     navigateTo,
     sign,
     mobile_logo,
-    passwordLimit
+    passwordLimit,
   }
-
 }
 
 export default useSignUpPage

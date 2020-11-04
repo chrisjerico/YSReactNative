@@ -19,10 +19,6 @@ export default class ExtUGApplication {
     PageName.LCMinePage,
     PageName.LCHomePage,
     PageName.TransitionPage,
-    PageName.XBJLoginPage,
-    PageName.XBJRegisterPage,
-    PageName.XBJMinePage,
-    PageName.XBJHomePage,
     PageName.ZLHomePage,
     PageName.ZLMinePage,
     PageName.ZLLoginPage,
@@ -36,8 +32,8 @@ export default class ExtUGApplication {
     PageName.LHTMinePage,
     PageName.BZHHomePage,
     PageName.BZHMinePage,
-    // PageName.GDBHomePage,
-    // PageName.GDBMinePage,
+    PageName.JXHHomePage,
+    PageName.JXHMinePage,
     PageName.WNZHomePage,
     PageName.WNZMinePage,
     PageName.KSHomePage,
@@ -55,7 +51,6 @@ export default class ExtUGApplication {
   //在Application初始化之前使用，只能手动初始化 stack列表
   //Router.PageNameLists.stackList
   static STACK_LIST = [
-    PageName.ZLLoginPage,
     PageName.ZLRegisterPage,
     PageName.JDPromotionListPage,
     PageName.PromotionListPage,

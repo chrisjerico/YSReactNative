@@ -1,12 +1,7 @@
-import LCLoginPage from "../../pages/乐橙/LCLoginPage";
 
 export enum PageName {
   TransitionPage = 'TransitionPage',
-  XBJLoginPage = 'XBJLoginPage',
-  XBJRegisterPage = 'XBJRegisterPage',
-  XBJMinePage = 'XBJMinePage',
   JDPromotionListPage = 'JDPromotionListPage', //优惠券列表
-  XBJHomePage = 'XBJHomePage',
   LCHomePage = 'LCHomePage',
   LCMinePage = 'LCMinePage',
   LCTransferPage = 'LCTransferPage',
@@ -75,6 +70,7 @@ export enum PageName {
   JDVirtualCurrencyTutorialPage = "JDVirtualCurrencyTutorialPage",
   LCLoginPage = "LCLoginPage",
   LCRegisterPage = "LCRegisterPage",
+  PromotionPage = 'PromotionPage'
 }
 
 // export class  {

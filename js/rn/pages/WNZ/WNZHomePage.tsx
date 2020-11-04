@@ -1,194 +1,102 @@
-import React, {useEffect, useRef} from 'react'
-import {
-  // LogBox,
-  Platform,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native'
-import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
-import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
+import React, { useRef } from 'react'
+import { StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
+import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { httpClient } from '../../public/network/httpClient'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { stringToNumber, useHtml5Image } from '../../public/tools/tars'
-import Activitys from '../../public/views/tars/Activitys'
+import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
-import BottomGap from '../../public/views/tars/BottomGap'
-import BottomLogo from '../../public/views/tars/BottomLogo'
 import Button from '../../public/views/tars/Button'
-import CouponBlock from '../../public/views/tars/CouponBlock'
 import GameButton from '../../public/views/tars/GameButton'
+import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
-import NoticeBlock from '../../public/views/tars/NoticeBlock'
-import ProgressCircle from '../../public/views/tars/ProgressCircle'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const WNZHomePage = () => {
-  // LogBox.ignoreAllLogs()
   const menu = useRef(null)
 
-  const { goTo, refresh, value, sign } = useHomePage({
-    onSuccessSignOut: () => {
-      menu?.current?.close()
-    },
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
+  const { goTo, refresh, value, sign, rightMenus } = useHomePage({
+    onSuccessSignOut: closeMenu,
   })
 
-  const { goToJDPromotionListPage } = goTo
+  const { goToPromotionPage } = goTo
 
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { signOut } = sign
 
-  const {
-    bannersInterval,
-    onlineNum,
-    banners,
-    notices,
-    midBanners,
-    announcements,
-    navs,
-    homeGames,
-    coupons,
-    rankLists,
-    floatAds,
-    redBag,
-    redBagLogo,
-    roulette,
-    officialGames,
-    customiseGames,
-  } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
 
-  const { uid, usr, balance, isTest } = userInfo
+  const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, webName, showCoupon, rankingListType, midBannerTimer } = sysInfo
-
-  let homeGamesConcat = []
-  homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
+  const { mobile_logo, midBannerTimer } = sysInfo
 
   const tabGames = [
     {
       name: '官方玩法',
       logo: getHtml5Image(23, 'home/gfwf'),
-      games: officialGames,
+      // @ts-ignore
+      games: officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
       name: '信用玩法',
       logo: getHtml5Image(23, 'home/xywf'),
-      games: customiseGames,
+      // @ts-ignore
+      games: customiseGames?.slice(0, 9).concat(config?.moreGame),
     },
   ]
 
-  const menus = uid
-    ? config?.menus?.concat(config?.menuSignOut)
-    : // @ts-ignore
-      config?.menuSignIn?.concat(config?.menus)
-
-  if (loading) {
-    return (
-      <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor} />
-        <ProgressCircle />
-      </>
-    )
-  } else {
-    return (
-      <>
-        <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-          <HomeHeader
-            uid={uid}
-            showBackBtn={false}
-            name={usr}
-            logo={mobile_logo}
-            balance={balance}
-            onPressMenu={() => {
-              menu?.current?.open()
-            }}
-            onPressComment={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.聊天室)
-            }}
-            onPressUser={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-            }}
-          />
-        </SafeAreaHeader>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.container}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={async () => {
-                try {
-                  await refresh()
-                  PushHelper.pushAnnouncement(announcements)
-                } catch (error) {
-                  console.log('-------error------', error)
-                }
-              }}
-            />
-          }>
-          <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 240 }}
-            badgeStyle={{ top: scale(-230) }}
-            autoplayTimeout={bannersInterval}
-            onlineNum={onlineNum}
-            banners={banners}
-            renderBanner={(item, index) => {
-              const { linkCategory, linkPosition, pic } = item
-              return (
-                <TouchableImage
-                  key={index}
-                  pic={pic}
-                  resizeMode={'stretch'}
-                  onPress={() => {
-                    PushHelper.pushCategory(linkCategory, linkPosition)
-                  }}
-                />
-              )
-            }}
-          />
-          <NoticeBlock
-            containerStyle={{
-              borderRadius: 0,
-              marginBottom: scale(5),
-              aspectRatio: 540 / 35,
-            }}
-            iconContainerStyle={{
-              borderColor: '#ef473a',
-              borderWidth: scale(1),
-              marginHorizontal: scale(10),
-              borderRadius: scale(2),
-            }}
-            notices={notices}
-            onPressNotice={({ content }) => {
-              PushHelper.pushNoticePopUp(content)
-            }}
-            logoTextStyle={{
-              color: 'red',
-              fontSize: scale(16),
-              padding: scale(5),
-            }}
-            textStyle={{ fontSize: scale(16) }}
-          />
+  return (
+    <HomePage
+      {...homeInfo}
+      {...userInfo}
+      {...sysInfo}
+      {...goTo}
+      loading={loading}
+      refreshing={refreshing}
+      refresh={refresh}
+      pagekey={'WNZHomePage'}
+      headerColor={WNZThemeColor.威尼斯.themeColor}
+      noticeBlockStyles={noticeBlockStyles}
+      couponBlockStyles={couponBlockStyles}
+      animatedRankComponentStyles={animatedRankComponentStyles}
+      renderHeader={() => (
+        <HomeHeader
+          uid={uid}
+          showBackBtn={false}
+          name={usr}
+          logo={mobile_logo}
+          balance={balance}
+          onPressMenu={openMenu}
+          onPressComment={goToUserCenterType.聊天室}
+          onPressUser={goToUserCenterType.我的页}
+        />
+      )}
+      renderListHeaderComponent={() => (
+        <>
           <NavBlock
             visible={navs?.length > 0}
+            navCounts={5}
+            containerStyle={{ alignItems: 'center' }}
             navs={navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId } = item
@@ -202,7 +110,7 @@ const WNZHomePage = () => {
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
                   }}
-                  titleContainerStyle={{ aspectRatio: 5 }}
+                  titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: config?.navColors[index],
                     fontSize: scale(23),
@@ -210,7 +118,7 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToJDPromotionListPage()
+                      goToPromotionPage()
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -226,6 +134,7 @@ const WNZHomePage = () => {
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
+              //@ts-ignore
               const { linkCategory, linkPosition, image } = item
               return (
                 <TouchableImage
@@ -314,10 +223,10 @@ const WNZHomePage = () => {
             baseHeight={scale(82)}
             itemHeight={scale(100)}
             renderTabBar={TabBar}
-            renderScene={({ item, tab }) => {
+            renderScene={({ item, tab, index }) => {
               return (
                 <List
-                  uniqueKey={'WNZHomePage' + tab}
+                  uniqueKey={'WNZHomePageTabComponent' + index}
                   legacyImplementation={true}
                   removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
@@ -330,13 +239,18 @@ const WNZHomePage = () => {
                     return (
                       <RowGameButtom
                         showRightBorder={index % 2 == 0}
+                        showLogoBall={title == '更多游戏' ? false : true}
                         logo={pic}
                         name={title}
                         desc={openCycle}
                         logoBallText={tab == '官方玩法' ? '官' : '信'}
-                        onPress={() => {
-                          PushHelper.pushLottery(stringToNumber(id))
-                        }}
+                        onPress={
+                          title == '更多游戏'
+                            ? goToUserCenterType.游戏大厅
+                            : () => {
+                                PushHelper.pushLottery(stringToNumber(id))
+                              }
+                        }
                       />
                     )
                   }}
@@ -344,69 +258,32 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <CouponBlock
-            visible={showCoupon}
-            onPressMore={goToJDPromotionListPage}
-            containerStyle={styles.subComponent}
-            coupons={coupons}
-            renderCoupon={({ item, index }) => {
-              const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
-              return (
-                <AutoHeightCouponComponent
-                  key={index}
-                  title={title}
-                  pic={pic}
-                  content={content}
-                  onPress={(setShowPop) => {
-                    if (linkUrl) {
-                      PushHelper.openWebView(linkUrl)
-                    } else if (!linkCategory && !linkPosition) {
-                      setShowPop(true)
-                    } else {
-                      PushHelper.pushCategory(linkCategory, linkPosition)
-                    }
-                  }}
-                />
-              )
-            }}
-          />
-          <AnimatedRankComponent type={rankingListType} rankLists={rankLists} contentContainerStyle={{ borderRadius: 0 }} />
-          <BottomLogo
-            webName={webName}
-            onPressComputer={() => {
-              PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-            }}
-            onPressPromotion={goToJDPromotionListPage}
-            debug={false}
-            version={'tars'}
-          />
-          <BottomGap />
-        </ScrollView>
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
+        </>
+      )}
+      renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={menus}
-          renderMenu={({ item }) => {
-            const { title, onPress } = item
+          menus={rightMenus}
+          renderMenuItem={({ item }) => {
+            const { name, gameId } = item
             return (
-              <Menu
-                color={WNZThemeColor.威尼斯.themeColor}
-                title={title}
+              <MenuButton
+                title={name}
                 onPress={() => {
-                  if (title == '安全退出') {
+                  if (gameId == 31) {
                     signOut()
                   } else {
-                    menu?.current?.close()
-                    onPress && onPress()
+                    closeMenu()
+                    PushHelper.pushHomeGame(item)
                   }
                 }}
               />
             )
           }}
         />
-      </>
-    )
-  }
+      )}
+    />
+  )
 }
 
 const styles = StyleSheet.create({
@@ -431,6 +308,37 @@ const styles = StyleSheet.create({
     backgroundColor: WNZThemeColor.威尼斯.themeColor,
     paddingVertical: scale(20),
     borderRadius: scale(5),
+  },
+})
+
+const noticeBlockStyles = StyleSheet.create({
+  containerStyle: {
+    borderRadius: 0,
+    marginBottom: scale(5),
+    aspectRatio: 540 / 35,
+  },
+  iconContainerStyle: {
+    borderColor: '#ef473a',
+    borderWidth: scale(1),
+    marginHorizontal: scale(10),
+    borderRadius: scale(2),
+  },
+  logoTextStyle: {
+    color: 'red',
+    fontSize: scale(16),
+    padding: scale(5),
+  },
+  textStyle: {
+    fontSize: scale(16),
+  },
+})
+const couponBlockStyles = StyleSheet.create({
+  containerStyle: styles.subComponent,
+})
+
+const animatedRankComponentStyles = StyleSheet.create({
+  contentContainerStyle: {
+    borderRadius: 0,
   },
 })
 

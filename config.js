@@ -9,17 +9,18 @@ exports.devConfig = {
     isTest: function () {
         // 是否测试环境
         if (react_native_1.Platform.OS == 'ios') {
-            return OCHelper_1.OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper_1.OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog';
+            return (OCHelper_1.OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' &&
+                OCHelper_1.OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog');
         }
         return false;
     },
-    skinKey: '乐橙',
+    skinKey: '利来',
 };
 // 线上环境配置（这几个站点写死经典模板）
 exports.releaseConfig = {
     skinKeys: {
         c242: '经典1',
         c235: '经典1',
-        h003b: '经典1',
+        h003: '经典1',
     },
 };

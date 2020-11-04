@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TextStyle, View, ViewStyle, StyleProp } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
@@ -10,12 +10,12 @@ interface NoticeBlockProps {
   logo?: string
   logoText?: string
   notices: INoticeScroll[]
-  containerStyle?: StyleProp<ViewStyle>
   onPressNotice: (item: any) => any
   iconContainerStyle?: StyleProp<ViewStyle>
   logoTextStyle?: StyleProp<TextStyle>
   textStyle?: StyleProp<TextStyle>
   bgContainerStyle?: StyleProp<TextStyle>
+  containerStyle?: StyleProp<ViewStyle>
 }
 
 const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPressNotice, iconContainerStyle, logoTextStyle, textStyle, bgContainerStyle }: NoticeBlockProps) => {
@@ -39,8 +39,8 @@ const NoticeBlock = ({ logo, logoText = '公告', notices, containerStyle, onPre
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    aspectRatio: 540 / 50,
+    flex: 1,
+    height: scale(50),
     backgroundColor: '#ffffff',
     borderRadius: scale(15),
     flexDirection: 'row',
@@ -67,4 +67,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default NoticeBlock
+export default memo(NoticeBlock)

@@ -9,7 +9,7 @@ const useShowBackBtn = () => {
 
   const { mobileMenu } = UGStore.globalProps.sysConf
 
-  const userTab = mobileMenu?.find((item) => item?.path == '/user')
+  const userTab = mobileMenu?.findIndex((item) => item?.path == '/user') > -1 ? true : false
 
   useEffect(() => {
     if (userTab) {

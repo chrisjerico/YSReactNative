@@ -4,6 +4,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 
 interface CheckBoxProps {
+    isCheck: boolean
     onCheck: () => void
     style?: StyleProp<ViewStyle>
     iconColor?: string
@@ -12,18 +13,16 @@ interface CheckBoxProps {
     text?: string
 }
 
-export const CheckBox = ({onCheck, style, iconColor, activeColor, unActiveColor, text}: CheckBoxProps) => {
-    const [active, setActive] = useState(false)
-    useEffect(() => {
-        active && onCheck()
-    }, [active])
+export const CheckBox = ({isCheck, onCheck, style, iconColor, activeColor, unActiveColor, text}: CheckBoxProps) => {
 
     return (
         <TouchableOpacity style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-        }} onPress={() => setActive(!active)}>
+        }} onPress={() => {
+            onCheck()
+        }}>
             <View style={[{
                 width: 18,
                 height: 18,
@@ -31,7 +30,7 @@ export const CheckBox = ({onCheck, style, iconColor, activeColor, unActiveColor,
                 borderWidth: 1,
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: active ? activeColor || "#0175fe" : unActiveColor || "#ffffff"
+                backgroundColor: isCheck ? activeColor || "#0175fe" : unActiveColor || "#ffffff"
             }, style]}>
                 <Icon color={iconColor || "white"} name={"check"}/>
             </View>

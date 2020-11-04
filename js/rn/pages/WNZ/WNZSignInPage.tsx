@@ -1,81 +1,76 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
+import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import MenuModalComponent from './components/MenuModalComponent'
-import config from './config'
-import Menu from './views/Menu'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
 
 const WNZSignInPage = () => {
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
   const menu = useRef(null)
 
-  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid, rightMenus } = useSignInPage({
     homePage: PageName.WNZHomePage,
     signUpPage: PageName.WNZSignUpPage,
+    onSuccessSignOut: closeMenu,
   })
 
   const { navigateToSignUpPage } = navigateTo
 
-  const { signIn, tryPlay } = sign
+  const { signIn, tryPlay, signOut } = sign
 
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
-        <SignHeader
-          onPressLeftTool={pop}
-          onPressMenu={() => {
-            menu?.current?.open()
-          }}
-          onPressSign={navigateToSignUpPage}
-        />
+        <SignHeader onPressLeftTool={pop} onPressMenu={openMenu} onPressSign={navigateToSignUpPage} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#f2f2f2'} show={show} onChange={onChange} value={value} Form={SignInForm} />
+          <SignInFormList slideCodeColor={'#f2f2f2'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             disabled={!valid}
-            title={'登陆'}
+            title={'登录'}
             containerStyle={[styles.loginButton, { backgroundColor: '#dd524d' }]}
             disabledContainerStyle={styles.loginButton}
             titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
             onPress={signIn}
           />
           <Button title={'立即注册'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={navigateToSignUpPage} />
-          <Button
-            title={'在线客服'}
-            containerStyle={styles.whiteButton}
-            titleStyle={styles.whitwButtonTitle}
-            onPress={() => {
-              PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-            }}
-          />
+          <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent
             ref={menu}
-            menus={
-              // @ts-ignore
-              config?.menuSignIn?.concat(config?.menus)
-            }
-            renderMenu={({ item }) => {
-              const { title, onPress } = item
+            menus={rightMenus}
+            renderMenuItem={({ item }) => {
+              const { name, gameId } = item
               return (
-                <Menu
-                  color={WNZThemeColor.威尼斯.themeColor}
-                  title={title}
+                <MenuButton
+                  title={name}
                   onPress={() => {
-                    menu?.current?.close()
-                    onPress && onPress()
+                    if (gameId == 31) {
+                      signOut()
+                    } else {
+                      closeMenu()
+                      PushHelper.pushHomeGame(item)
+                    }
                   }}
                 />
               )
@@ -87,17 +82,19 @@ const WNZSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps & { leftIconTitle: string }) => (
-  <FormComponent
-    {...props}
-    containerStyle={{ marginBottom: scale(10) }}
-    inputContainerStyle={styles.inputContainerStyle}
-    leftIconContainerStyle={styles.leftIconContainerStyle}
-    rightIconContainerStyle={{ marginRight: scale(10) }}
-    renderLeftIcon={() => <Text style={styles.leftIconText}>{props?.leftIconTitle}</Text>}
-    placeholderTextColor={'#9D9D9D'}
-  />
-)
+const SignInForm = (props: SignInRenderFormProps) => {
+  const { leftIconTitle } = props
+  return (
+    <FormComponent
+      {...props}
+      containerStyle={{ marginBottom: scale(10) }}
+      inputContainerStyle={styles.inputContainerStyle}
+      leftIconContainerStyle={styles.leftIconContainerStyle}
+      renderLeftIcon={() => <Text style={styles.leftIconText}>{leftIconTitle}</Text>}
+      placeholderTextColor={'#9D9D9D'}
+    />
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
