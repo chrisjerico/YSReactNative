@@ -31,7 +31,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
               </Text> */}</View>
             <View style={{ flex: 2, paddingHorizontal: scale(20) }}>
               <View style={styles.experienceContainer}>
-                <Text style={styles.experience}>{taskRewardTotal_f}</Text>
+                <Text style={styles.experience}>{taskRewardTotal_f.toFixed(2)}</Text>
                 <Text style={styles.growText}>{'成长值'}</Text>
               </View>
               <View
@@ -50,7 +50,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
                   justifyContent: 'space-between',
                 }}>
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}</Text>
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f + '/' + nextLevelInt_f}</Text>
+                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f.toFixed(2) + '/' + nextLevelInt_f}</Text>
               </View>
             </View>
           </View>
@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
     paddingBottom: scale(10),
   },
   experience: {
-    fontSize: scale(60),
+    fontSize: scale(50),
     color: '#f6fb00',
-    fontWeight: '800',
+    fontWeight: '600',
     paddingRight: scale(10),
+    paddingTop: scale(10),
   },
   growText: {
     color: '#fdc990',

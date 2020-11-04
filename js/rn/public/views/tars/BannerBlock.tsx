@@ -9,7 +9,8 @@ import UGSwiper from '../../widget/swp/UGSwiper'
 interface BannerBlockProps {
   onlineNum?: number
   banners: (List | Data)[]
-  renderBanner: (item: List & Data, index: number) => any
+  renderBanner: (item: List | Data, index: number, array: (List | Data)[]) => any
+  thisArg?: any
   showOnlineNum?: boolean
   autoplayTimeout: number
   visible?: boolean

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
+import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
@@ -14,10 +15,9 @@ import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import NavBlock from '../../public/views/tars/NavBlock'
 import TouchableImage from '../../public/views/tars/TouchableImage'
-import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import HomeHeader from './views/HomeHeader'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 
@@ -26,45 +26,6 @@ const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 const WNZHomePage = () => {
   const menu = useRef(null)
 
-  const { goTo, refresh, value, sign } = useHomePage({
-    onSuccessSignOut: () => {
-      menu?.current?.close()
-    },
-  })
-
-  const { goToJDPromotionListPage } = goTo
-
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
-
-  const { signOut } = sign
-
-  const { midBanners, navs, homeGames, officialGames, customiseGames } = homeInfo
-
-  const { uid, usr, balance } = userInfo
-
-  const { mobile_logo, midBannerTimer } = sysInfo
-
-  let homeGamesConcat = []
-  homeGames.forEach((item) => (homeGamesConcat = homeGamesConcat.concat(item?.list) ?? []))
-
-  const tabGames = [
-    {
-      name: '官方玩法',
-      logo: getHtml5Image(23, 'home/gfwf'),
-      games: officialGames,
-    },
-    {
-      name: '信用玩法',
-      logo: getHtml5Image(23, 'home/xywf'),
-      games: customiseGames,
-    },
-  ]
-
-  const menus = uid
-    ? config?.menus?.concat(config?.menuSignOut)
-    : // @ts-ignore
-      config?.menuSignIn?.concat(config?.menus)
-
   const openMenu = () => {
     menu?.current?.open()
   }
@@ -72,6 +33,37 @@ const WNZHomePage = () => {
   const closeMenu = () => {
     menu?.current?.close()
   }
+
+  const { goTo, refresh, value, sign, rightMenus } = useHomePage({
+    onSuccessSignOut: closeMenu,
+  })
+
+  const { goToPromotionPage } = goTo
+
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+
+  const { signOut } = sign
+
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
+
+  const { uid, usr, balance } = userInfo
+
+  const { mobile_logo, midBannerTimer } = sysInfo
+
+  const tabGames = [
+    {
+      name: '官方玩法',
+      logo: getHtml5Image(23, 'home/gfwf'),
+      // @ts-ignore
+      games: officialGames?.slice(0, 9).concat(config?.moreGame),
+    },
+    {
+      name: '信用玩法',
+      logo: getHtml5Image(23, 'home/xywf'),
+      // @ts-ignore
+      games: customiseGames?.slice(0, 9).concat(config?.moreGame),
+    },
+  ]
 
   return (
     <HomePage
@@ -83,7 +75,7 @@ const WNZHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'WNZHomePage'}
-      themeColor={WNZThemeColor.威尼斯.themeColor}
+      headerColor={WNZThemeColor.威尼斯.themeColor}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -103,6 +95,8 @@ const WNZHomePage = () => {
         <>
           <NavBlock
             visible={navs?.length > 0}
+            navCounts={5}
+            containerStyle={{ alignItems: 'center' }}
             navs={navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId } = item
@@ -116,7 +110,7 @@ const WNZHomePage = () => {
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
                   }}
-                  titleContainerStyle={{ aspectRatio: 5 }}
+                  titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: config?.navColors[index],
                     fontSize: scale(23),
@@ -124,7 +118,7 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToJDPromotionListPage()
+                      goToPromotionPage()
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -140,6 +134,7 @@ const WNZHomePage = () => {
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
+              //@ts-ignore
               const { linkCategory, linkPosition, image } = item
               return (
                 <TouchableImage
@@ -244,13 +239,18 @@ const WNZHomePage = () => {
                     return (
                       <RowGameButtom
                         showRightBorder={index % 2 == 0}
+                        showLogoBall={title == '更多游戏' ? false : true}
                         logo={pic}
                         name={title}
                         desc={openCycle}
                         logoBallText={tab == '官方玩法' ? '官' : '信'}
-                        onPress={() => {
-                          PushHelper.pushLottery(stringToNumber(id))
-                        }}
+                        onPress={
+                          title == '更多游戏'
+                            ? goToUserCenterType.游戏大厅
+                            : () => {
+                                PushHelper.pushLottery(stringToNumber(id))
+                              }
+                        }
                       />
                     )
                   }}
@@ -263,19 +263,18 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={menus}
-          renderMenu={({ item }) => {
-            const { title, onPress } = item
+          menus={rightMenus}
+          renderMenuItem={({ item }) => {
+            const { name, gameId } = item
             return (
-              <Menu
-                color={WNZThemeColor.威尼斯.themeColor}
-                title={title}
+              <MenuButton
+                title={name}
                 onPress={() => {
-                  if (title == '安全退出') {
+                  if (gameId == 31) {
                     signOut()
                   } else {
                     closeMenu()
-                    onPress && onPress()
+                    PushHelper.pushHomeGame(item)
                   }
                 }}
               />

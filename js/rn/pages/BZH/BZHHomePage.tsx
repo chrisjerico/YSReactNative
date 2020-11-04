@@ -21,7 +21,7 @@ const onPressSignIn = () => push(PageName.BZHSignInPage)
 const onPressSignUp = () => push(PageName.BZHSignUpPage)
 const BZHHomePage = () => {
   const { goTo, refresh, value } = useHomePage({})
-  const { goToJDPromotionListPage } = goTo
+  const { goToPromotionPage } = goTo
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
 
   const { midBanners, navs, homeGames, gameLobby } = homeInfo
@@ -40,7 +40,7 @@ const BZHHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'BZHHomePage'}
-      themeColor={BZHThemeColor.宝石红.themeColor}
+      headerColor={BZHThemeColor.宝石红.themeColor}
       items={homeGames}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
@@ -59,7 +59,7 @@ const BZHHomePage = () => {
               const { icon, name, logo, gameId } = item
               const memoizedOnPressGameButton = useCallback(() => {
                 if (gameId == 9) {
-                  goToJDPromotionListPage()
+                  goToPromotionPage()
                 } else {
                   PushHelper.pushHomeGame(item)
                 }
@@ -87,6 +87,7 @@ const BZHHomePage = () => {
             showOnlineNum={false}
             banners={midBanners}
             renderBanner={(item, index) => {
+              // @ts-ignore
               const { linkCategory, linkPosition, image } = item
               const memoizedPushCategory = useCallback(() => {
                 PushHelper.pushCategory(linkCategory, linkPosition)

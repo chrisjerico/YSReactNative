@@ -13,14 +13,14 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const KSSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({
     homePage: PageName.KSHomePage,
     signUpPage: PageName.KSSignUpPage,
   })
 
   const { navigateToSignUpPage } = navigateTo
 
-  const { signIn } = sign
+  const { signIn, tryPlay } = sign
 
   const { onChangeRemember } = onChange
   const { remember } = value
@@ -33,7 +33,7 @@ const KSSignInPage = () => {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
           <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'登录'}</Text>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeColor={'#000000'} showCheckBox={false} show={show} onChange={onChange} value={value} reference={reference} renderForm={SignInForm} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <TouchableWithoutFeedback onPress={() => {}}>
               <Text style={{ color: '#8e8e93' }}>{'忘记密码'}</Text>
@@ -49,7 +49,7 @@ const KSSignInPage = () => {
             showLogo={false}
             onPress={signIn}
           />
-          <Button title={'免费试玩'} containerStyle={styles.signUpButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={navigateToSignUpPage} />
+          <Button title={'免费试玩'} containerStyle={styles.signUpButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={tryPlay} />
         </View>
       </ScrollView>
     </>

@@ -10,17 +10,18 @@ interface RowGameButtomProps {
   logoBallText: string
   onPress: () => any
   showRightBorder?: boolean
+  showLogoBall?: boolean
 }
 
-const RowGameButtom = ({ logo, name, desc, logoBallText, onPress, showRightBorder = false }: RowGameButtomProps) => {
+const RowGameButtom = ({ logo, name, desc, logoBallText, onPress, showRightBorder = false, showLogoBall }: RowGameButtomProps) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.container}>
-        {/* <View style={{ flex: 1, alignItems: 'flex-end' }}> */}
-        <View style={styles.logoBall}>
-          <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{logoBallText}</Text>
-        </View>
-        {/* </View> */}
+        {showLogoBall && (
+          <View style={styles.logoBall}>
+            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{logoBallText}</Text>
+          </View>
+        )}
         <View style={styles.logoContainer}>
           <View
             style={{

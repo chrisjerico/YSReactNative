@@ -166,14 +166,13 @@ const config = {
     },
   ],
   noticeLogo: getHtml5Image(14, 'notice'),
-  defaultAvatar: getHtml5Image(18, 'money-2'),
   homeHeaderRightLogo: getHtml5Image(14, 'top_yhhd'),
   advertisementLogo: getHtml5Image(14, 'banner', 'gif'),
   lotteryLogo: getHtml5Image(14, 'tjzx'),
   balanceLogo: getHtml5Image(14, 'yue'),
   customerServiceLogo: getHtml5Image(14, 'zxkf'),
   homeGameLeftIcon: getHtml5Image(14, 'hot_icon'),
-  homeGameRightIcon: getHtml5Image(14, 'cai_icon')
+  homeGameRightIcon: getHtml5Image(14, 'cai_icon'),
 }
 
 export default config

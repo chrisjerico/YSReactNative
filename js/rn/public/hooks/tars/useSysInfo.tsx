@@ -74,6 +74,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       agentButton: sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
       slideCode: sysStore?.reg_vcode == 2 ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
+      inviteCode: getOption(sysStore?.inviteCodeSwitch),
     },
     userCenterItems:
       sysStore?.userCenter
@@ -92,6 +93,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       minLength: stringToNumber(sysStore?.pass_length_min),
     },
     currency: sysStore?.currency == 'CNY' ? 'RMB' : sysStore?.currency,
+    allowReg: sysStore?.allowreg == '1' ? true : false,
   }
   return {
     sysInfo,

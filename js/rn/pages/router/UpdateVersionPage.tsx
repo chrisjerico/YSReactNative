@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Platform, Text, View } from 'react-native'
+import {Platform, StyleSheet, Text, View} from 'react-native'
 import CodePush from 'react-native-code-push'
 import * as Progress from 'react-native-progress'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
@@ -13,6 +13,8 @@ import { anyEmpty, arrayEmpty } from '../../public/tools/Ext'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
+import {scale} from "../../public/tools/Scale";
+import {Toast} from "../../public/tools/ToastUtils";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -69,6 +71,24 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         break
     }
 
+    // 超时时间20秒
+    const timer = setTimeout(() => {
+      clearTimeout(timer)
+
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.launchFinish()
+          break
+        case 'android':
+          ANHelper.callAsync(CMD.LAUNCH_GO)
+          break
+      }
+    }, 10000)
+
+    setProps({
+      navbarOpstions: { hidden: true },
+    })
+
     CodePush.sync(
       options,
       (status) => {
@@ -93,9 +113,13 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
             console.log('rn正在下载热更新')
+            //此时不能强制跳转
+            clearTimeout(timer)
             break
           case CodePush.SyncStatus.INSTALLING_UPDATE:
             console.log('rn正在安装热更新')
+            //此时不能强制跳转
+            clearTimeout(timer)
             break
           case CodePush.SyncStatus.UNKNOWN_ERROR:
             console.log('rn热更新出错❌')
@@ -123,28 +147,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       },
       (progress) => {
         let p = progress.receivedBytes / progress.totalBytes
-        setProps({ progress: p })
+        setProps({ progress: p, text: '正在更新，请稍等...' })
         console.log('rn热更新包下载进度：' + p)
       }
     )
-
-    // 超时时间20秒
-    const timer = setTimeout(() => {
-      clearTimeout(timer)
-
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.launchFinish()
-          break
-        case 'android':
-          ANHelper.callAsync(CMD.LAUNCH_GO)
-          break
-      }
-    }, 20000)
-
-    setProps({
-      navbarOpstions: { hidden: true },
-    })
 
     switch (Platform.OS) {
       case 'ios':
@@ -171,7 +177,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 } else {
                   setProps({ backgroundImage: pics.shift() })
                 }
-              }, 2500)
+              }, 3000)
             } else {
               setProps({ bBanner: true })
             }
@@ -218,11 +224,41 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-      <View style={{ marginHorizontal: 15, paddingHorizontal: 15, backgroundColor: '#0000003f', height: 70, marginBottom: 300, borderRadius: 20 }}>
-        <Text style={{ marginTop: 24, color: '#fff', fontWeight: '500' }}>{text}</Text>
-        <Progress.Bar progress={progress} borderWidth={0} borderRadius={2} unfilledColor="#aaa" color="white" height={4} width={AppDefine.width - 60} style={{ marginTop: 10 }} />
+    <View style={_styles.container}>
+      <View style={_styles.content}>
+        <Progress.Bar progress={progress}
+                      borderWidth={0}
+                      borderRadius={0}
+                      unfilledColor="#aaa"
+                      color="white"
+                      height={4}
+                      width={AppDefine.width} />
+        <Text style={_styles.title}>{text}</Text>
       </View>
     </View>
   )
 }
+
+const _styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start'
+  },
+  content: {
+    backgroundColor: '#0000003f',
+    marginBottom: 300,
+  },
+  subComponent: {
+    marginTop: scale(10),
+    backgroundColor: 'white',
+  },
+  coupon_title: {
+    backgroundColor: 'white',
+  },
+  title: {
+    color: '#fff',
+    fontWeight: '500',
+  },
+
+
+})

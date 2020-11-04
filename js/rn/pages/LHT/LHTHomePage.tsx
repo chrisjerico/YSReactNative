@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -11,7 +12,6 @@ import GameButton from '../../public/views/tars/GameButton'
 import HomePage from '../../public/views/tars/HomePage'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import HomeGameComponent from './components/HomeGameComponent'
 import config from './config'
 import BottomToolBlock from './views/BottomToolBlock'
@@ -29,7 +29,7 @@ const LHTHomePage = () => {
   const { goTo, value, sign, refresh } = useHomePage({})
 
   const { signOut, tryPlay } = sign
-  const { goToJDPromotionListPage } = goTo
+  const { goToPromotionPage } = goTo
 
   const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
 
@@ -58,7 +58,7 @@ const LHTHomePage = () => {
       refreshing={refreshing}
       refresh={refresh}
       pagekey={'LHTHomePage'}
-      themeColor={LHThemeColor.六合厅.themeColor}
+      headerColor={LHThemeColor.六合厅.themeColor}
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
@@ -66,7 +66,7 @@ const LHTHomePage = () => {
       noticeLogo={config.noticeLogo}
       renderHeader={() => (
         <HomeHeader
-          avatar={isTest || !avatar ? config.defaultAvatar : avatar}
+          avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
           name={usr}
           showLogout={uid ? true : false}
           leftLogo={mobile_logo}
@@ -75,14 +75,14 @@ const LHTHomePage = () => {
           onPressSignIn={() => push(PageName.LHTSignInPage)}
           onPressSignUp={() => push(PageName.LHTSignUpPage)}
           onPressTryPlay={tryPlay}
-          onPressLogo={goToJDPromotionListPage}
+          onPressLogo={goToPromotionPage}
         />
       )}
       renderListHeaderComponent={() => (
         <View style={styles.contentContainer}>
           <NavBlock
             containerStyle={[styles.subComponent, { borderRadius: scale(20) }]}
-            navs={navs}
+            navs={navs?.slice(0, 8)}
             lotterys={plusLotterys}
             date={lotteryDate}
             advertisement={config.advertisementLogo}
@@ -110,7 +110,7 @@ const LHTHomePage = () => {
                   title={name}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToJDPromotionListPage()
+                      goToPromotionPage()
                     } else {
                       PushHelper.pushHomeGame(item)
                     }

@@ -42,7 +42,7 @@ const NavBlock = ({
   onPressAd,
   onPressSavePoint,
   onPressGetPoint,
-  date = 'date',
+  date = '',
   navs = [],
   lotterys = [],
   advertisement = '',
@@ -62,7 +62,7 @@ const NavBlock = ({
         <View style={styles.topLeftContainer}>
           <Text>{'余额'}</Text>
           <FastImage style={styles.balanceLogo} source={{ uri: balanceLogo }} />
-          <ReLoadBalanceComponent color={'#ff861b'} balance={balance} currency={currency} showK={showK} balanceDecimal={balanceDecimal} />
+          <ReLoadBalanceComponent iconColor={'#ff861b'} balance={balance} currency={currency} showK={showK} balanceDecimal={balanceDecimal} />
         </View>
         <View style={styles.topRightContainer}>
           <Button title={'充值'} containerStyle={[styles.button, { backgroundColor: '#ff8610' }]} titleStyle={styles.title} onPress={onPressSavePoint} />

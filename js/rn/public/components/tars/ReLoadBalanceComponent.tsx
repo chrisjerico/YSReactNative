@@ -1,25 +1,37 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { Animated, Easing, StyleSheet, TouchableWithoutFeedback, ViewStyle, View, Text, TextStyle, StyleProp } from 'react-native'
+import React, { memo, useEffect, useRef, useState } from 'react'
+import { Animated, Easing, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
-import { scale } from '../../tools/Scale'
-import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
-import { stringToFloat, stringToNumber } from '../../tools/tars'
+import APIRouter from '../../network/APIRouter'
+import { scale } from '../../tools/Scale'
+import { stringToFloat } from '../../tools/tars'
 
 interface ReLoadComponentProps {
-  color?: string
+  balance: string
+  balanceDecimal: number
+  currency?: string
+  iconColor?: string
   containerStyle?: StyleProp<ViewStyle>
   size?: number
-  balance: string
   title?: string
   balanceStyle?: StyleProp<TextStyle>
   titleStyle?: StyleProp<TextStyle>
   animatedContainerStyle?: StyleProp<ViewStyle>
-  currency: string
   showK?: boolean
-  balanceDecimal: number
 }
-const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, title, balanceStyle, titleStyle, animatedContainerStyle, currency, showK, balanceDecimal }: ReLoadComponentProps) => {
+const ReLoadBalanceComponent = ({
+  iconColor,
+  containerStyle,
+  size = 25,
+  balance,
+  title,
+  balanceStyle,
+  titleStyle,
+  animatedContainerStyle,
+  currency = '',
+  showK,
+  balanceDecimal,
+}: ReLoadComponentProps) => {
   const [spinValue, setSpinValue] = useState(new Animated.Value(0))
   const reload = useRef(false)
   const spinDeg = spinValue.interpolate({
@@ -69,7 +81,7 @@ const ReLoadBalanceComponent = ({ color, containerStyle, size = 25, balance, tit
           }
         }}>
         <Animated.View style={[styles.animatedContainer, animatedContainerStyle, { width: scale(size) }, { transform: [{ rotateZ: spinDeg }] }]}>
-          <FontAwesome name={'refresh'} size={scale(size)} color={color} />
+          <FontAwesome name={'refresh'} size={scale(size)} color={iconColor} />
         </Animated.View>
       </TouchableWithoutFeedback>
     </View>
@@ -82,7 +94,6 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginTop: scale(2)
   },
   title: { fontSize: scale(19) },
   balance: {
@@ -92,4 +103,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ReLoadBalanceComponent
+export default memo(ReLoadBalanceComponent)

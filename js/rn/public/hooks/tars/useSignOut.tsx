@@ -4,6 +4,7 @@ import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
+import { ToastStatus } from '../../tools/tars'
 
 interface Options {
   onStart?: () => any
@@ -23,6 +24,7 @@ const useSignOut = (options: Options = {}) => {
             OCHelper.call('UGUserModel.setCurrentUser:', []),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName']),
             OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId']),
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout']), // 這裡會跳Toast很煩
             OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]),
           ])
           break
@@ -30,6 +32,7 @@ const useSignOut = (options: Options = {}) => {
           await ANHelper.callAsync(CMD.LOG_OUT)
           break
       }
+
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
       onSuccess && onSuccess()
@@ -49,8 +52,3 @@ const useSignOut = (options: Options = {}) => {
   return { signOut }
 }
 export default useSignOut
-
-// await OCHelper.call('UGUserModel.setCurrentUser:', [])
-// await  OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomName'])
-// await  OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'roomId'])
-// await  OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])

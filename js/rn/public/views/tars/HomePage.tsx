@@ -1,5 +1,5 @@
 import React, { ReactElement, useCallback } from 'react'
-import { ListRenderItem, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
+import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
 import PushHelper from '../../define/PushHelper'
@@ -7,7 +7,7 @@ import { RankingListType } from '../../models/Enum'
 import { httpClient } from '../../network/httpClient'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import Activitys, { FloatAd, Roulette } from './Activitys'
+import Activitys, { FloatAd, GoldenEgg, Roulette } from './Activitys'
 import BannerBlock from './BannerBlock'
 import BottomGap from './BottomGap'
 import BottomLogo from './BottomLogo'
@@ -19,7 +19,7 @@ import SafeAreaHeader from './SafeAreaHeader'
 import TouchableImage from './TouchableImage'
 
 interface HomePageProps {
-  themeColor: string
+  headerColor: string
   loading: boolean
   pagekey: string
   refreshing: boolean
@@ -38,6 +38,8 @@ interface HomePageProps {
   redBag: RedBagDetailActivityModel
   roulette: Roulette[]
   floatAds: FloatAd[]
+  goldenEggs: GoldenEgg[]
+  scratchs: unknown
   showOnlineNum: boolean
   bannersInterval: number
   onlineNum: number
@@ -46,7 +48,7 @@ interface HomePageProps {
   rankLists: any[]
   notices: any[]
   showCoupon: boolean
-  goToJDPromotionListPage: () => any
+  goToPromotionPage: () => any
   rankingListType: RankingListType
   webName: string
   couponBlockStyles?: CouponBlockStyles
@@ -56,6 +58,8 @@ interface HomePageProps {
   containerStyle?: StyleProp<ViewStyle>
   noticeBlockStyles?: NoticeBlockStyles
   noticeLogo?: string
+  showBannerBlock?: boolean
+  refreshTintColor?: string
 }
 
 interface CouponBlockStyles {
@@ -94,7 +98,7 @@ interface NoticeBlockStyles {
 }
 
 const HomePage = ({
-  themeColor,
+  headerColor,
   loading,
   pagekey,
   refreshing,
@@ -113,6 +117,8 @@ const HomePage = ({
   redBag,
   roulette,
   floatAds,
+  goldenEggs,
+  scratchs,
   showOnlineNum,
   bannersInterval,
   onlineNum,
@@ -120,7 +126,7 @@ const HomePage = ({
   showCoupon,
   coupons,
   notices,
-  goToJDPromotionListPage,
+  goToPromotionPage,
   rankingListType,
   webName,
   rankLists,
@@ -131,15 +137,21 @@ const HomePage = ({
   containerStyle,
   noticeBlockStyles,
   noticeLogo,
+  showBannerBlock = true,
+  refreshTintColor = '#000000',
 }: HomePageProps) => {
   const onPressNotice = useCallback(({ content }) => {
     PushHelper.pushNoticePopUp(content)
   }, [])
 
   const renderBanner = useCallback((item, index) => {
-    const { linkCategory, linkPosition, pic } = item
+    const { linkCategory, linkPosition, pic, url } = item
     const pushCategory = useCallback(() => {
-      PushHelper.pushCategory(linkCategory, linkPosition)
+      if (url?.length) {
+        PushHelper.pushCategory(linkCategory, linkPosition)
+      } else {
+        PushHelper.openWebView(url)
+      }
     }, [])
     return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={pushCategory} />
   }, [])
@@ -154,33 +166,34 @@ const HomePage = ({
   if (loading) {
     return (
       <>
-        <SafeAreaHeader headerColor={themeColor} />
+        <SafeAreaHeader headerColor={headerColor} />
         <ProgressCircle />
       </>
     )
   } else {
     return (
       <>
-        <SafeAreaHeader headerColor={themeColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
+        <SafeAreaHeader headerColor={headerColor}>{renderHeader && renderHeader()}</SafeAreaHeader>
         <List
           style={containerStyle}
           uniqueKey={pagekey}
           scrollEnabled={true}
           removeClippedSubviews={true}
           data={items ?? []}
-          refreshing={refreshing}
-          onRefresh={onRefresh}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={refreshTintColor} />}
           ListHeaderComponent={() => (
             <>
-              <BannerBlock
-                showOnlineNum={showOnlineNum}
-                containerStyle={styles.bannerContainer}
-                badgeStyle={styles.bannerBadge}
-                autoplayTimeout={bannersInterval}
-                onlineNum={onlineNum}
-                banners={banners}
-                renderBanner={renderBanner}
-              />
+              {showBannerBlock && (
+                <BannerBlock
+                  showOnlineNum={showOnlineNum}
+                  containerStyle={styles.bannerContainer}
+                  badgeStyle={styles.bannerBadge}
+                  autoplayTimeout={bannersInterval}
+                  onlineNum={onlineNum}
+                  banners={banners}
+                  renderBanner={renderBanner}
+                />
+              )}
               <NoticeBlock {...noticeBlockStyles} notices={notices} logo={noticeLogo} onPressNotice={onPressNotice} />
               {renderListHeaderComponent && renderListHeaderComponent()}
             </>
@@ -192,7 +205,7 @@ const HomePage = ({
               <CouponBlock
                 {...couponBlockStyles}
                 visible={showCoupon}
-                onPressMore={goToJDPromotionListPage}
+                onPressMore={goToPromotionPage}
                 coupons={coupons}
                 renderCoupon={({ item, index }) => {
                   const { pic, linkCategory, linkPosition, title, content, linkUrl } = item
@@ -223,7 +236,7 @@ const HomePage = ({
                 onPressComputer={() => {
                   PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                 }}
-                onPressPromotion={goToJDPromotionListPage}
+                onPressPromotion={goToPromotionPage}
                 debug={false}
               />
               {renderListFooterBottomComponent && renderListFooterBottomComponent()}
@@ -231,7 +244,7 @@ const HomePage = ({
             </>
           )}
         />
-        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} />
+        <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
         {renderRestComponent && renderRestComponent()}
       </>
     )

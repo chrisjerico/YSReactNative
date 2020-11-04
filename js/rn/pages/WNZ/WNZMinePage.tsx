@@ -1,6 +1,7 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
+import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -11,11 +12,10 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
-import MenuModalComponent from './components/MenuModalComponent'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
-import Menu from './views/Menu'
+import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
 
@@ -23,11 +23,18 @@ const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
   const menu = useRef(null)
-  const { value, sign } = useMinePage({
+
+  const openMenu = () => {
+    menu?.current?.open()
+  }
+
+  const closeMenu = () => {
+    menu?.current?.close()
+  }
+
+  const { value, sign, rightMenus } = useMinePage({
     homePage: PageName.WNZHomePage,
-    onSuccessSignOut: () => {
-      menu?.current?.close()
-    },
+    onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
@@ -81,9 +88,7 @@ const WNZMinePage = () => {
                 name={usr}
                 logo={mobile_logo}
                 balance={balance}
-                onPressMenu={() => {
-                  menu?.current?.open()
-                }}
+                onPressMenu={openMenu}
                 onPressComment={() => {
                   PushHelper.pushLottery(LotteryType.香港六合彩)
                 }}
@@ -146,7 +151,7 @@ const WNZMinePage = () => {
                     key={index}
                     logo={logo}
                     title={name}
-                    showUnReadMsg={code == UGUserCenterType.站内信}
+                    showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
                     unreadMsg={unreadMsg || 0}
                     containerStyle={{ width: '25%', marginTop: scale(20) }}
                     imageContainerStyle={{ width: '30%' }}
@@ -162,24 +167,18 @@ const WNZMinePage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={
-          uid
-            ? config?.menus?.concat(config?.menuSignOut)
-            : // @ts-ignore
-              config?.menuSignIn?.concat(config?.menus)
-        }
-        renderMenu={({ item }) => {
-          const { title, onPress } = item
+        menus={rightMenus}
+        renderMenuItem={({ item }) => {
+          const { name, gameId } = item
           return (
-            <Menu
-              color={WNZThemeColor.威尼斯.themeColor}
-              title={title}
+            <MenuButton
+              title={name}
               onPress={() => {
-                if (title == '安全退出') {
+                if (gameId == 31) {
                   signOut()
                 } else {
-                  menu?.current?.close()
-                  onPress && onPress()
+                  closeMenu()
+                  PushHelper.pushHomeGame(item)
                 }
               }}
             />

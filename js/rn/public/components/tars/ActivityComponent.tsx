@@ -1,8 +1,8 @@
-import React, { useState, useEffect, memo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleProp, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../tools/Scale'
 import TouchableImage from '../../views/tars/TouchableImage'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 
 interface ActivityComponentProps {
   logo: string
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default memo(ActivityComponent)
+export default ActivityComponent

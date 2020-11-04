@@ -6,19 +6,17 @@ import AppDefine from '../define/AppDefine'
 import { NSValue } from '../define/OCHelper/OCBridge/OCCall'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import FUtils from '../tools/FUtils'
+import { BYThemeColor } from './colors/BYThemeColor'
 import { BZHThemeColor } from './colors/BZHThemeColor'
-import { GDBThemeColor } from './colors/GDBThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
+import { JXHThemeColor } from './colors/JXHThemeColor'
 import { JYThemeColor } from './colors/JYThemeColor'
 import { KSThemeColor } from './colors/KSThemeColor'
 import { LCThemeColor } from './colors/LCThemeColor'
 import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
 import { OtherThemeColor } from './colors/OtherThemeColor'
-import { PYThemeColor } from './colors/PYThemeColor'
-import { VietnamThemeColors } from './colors/VietnamThemeColors'
 import { WNZThemeColor } from './colors/WNZThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
 import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
@@ -27,19 +25,17 @@ export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
     ...JDThemeColor, // 经典
     ...JYThemeColor, // 简约
-    ...LHThemeColor, // 六合
-    ...XBJThemeColor, // 香槟金
     ...XNHThemeColor, // 新年红
     ...ZLThemeColor, //尊龙
-    ...GDBThemeColor,
-    ...OtherThemeColor, // 其他
     ...LCThemeColor, //乐橙
-    ...KSThemeColor, // 凯时
-    ...WNZThemeColor, // 威尼斯
-    ...PYThemeColor,
-    ...BZHThemeColor, // 宝石红
     ...LLThemeColor, // 利来
-    ...VietnamThemeColors, // 越南
+    ...BZHThemeColor, // 宝石红
+    ...WNZThemeColor, // 威尼斯
+    ...LHThemeColor, // 六合
+    ...JXHThemeColor, // 金星黑
+    ...KSThemeColor, // 凯时
+    ...BYThemeColor, // 白曜
+    ...OtherThemeColor, // 其他
   }
 
   // 更新皮肤
@@ -61,17 +57,19 @@ export default class UGSkinManagers extends UGThemeColor {
       8: `香槟金${mobileTemplateStyle}`,
       9: `简约模板${mobileTemplateStyle}`,
       12: '综合体育',
-      14: `六合厅`,
-      16: `尊龙`,
-      18: `金星黑`,
-      19: `乐橙`,
-      20: `利来`,
-      22: `凯时`,
-      21: `宝石红`,
-      23: `威尼斯`,
+      14: '六合厅',
+      16: '尊龙',
+      18: '金星黑',
+      19: '乐橙',
+      20: '利来',
+      22: '凯时',
+      21: '宝石红',
+      23: '威尼斯',
       25: '天空蓝',
       26: `白曜`,
-      27: `越南`,
+      277: `越南`,//这个值 要与 后台站点一致
+      27: `摩登红`,
+      28: `黑金`,
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
@@ -101,7 +99,9 @@ export default class UGSkinManagers extends UGThemeColor {
   // 应用主题色到iOS原生代码
   static async updateOcSkin() {
     const skin = Skin1
-    if (Platform.OS != 'ios') return
+    if (Platform.OS != 'ios') {
+      return
+    }
     // 已上线模板
     const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin

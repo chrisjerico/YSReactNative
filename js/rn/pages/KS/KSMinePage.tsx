@@ -19,7 +19,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const KSMinePage = () => {
   const { value, sign } = useMinePage({
@@ -106,16 +106,14 @@ const KSMinePage = () => {
             })}
           </View>
         </LinearGradient>
-        <View style={{ width: '100%', aspectRatio: 6, justifyContent: 'center', paddingLeft: scale(20) }}>
-          <Text style={{ color: '#ffffff', fontSize: scale(22), fontWeight: '500' }}>{'总资产'}</Text>
-        </View>
-        <View style={{ width: '100%', aspectRatio: 6, paddingLeft: scale(20) }}>
+        <View style={{ width: '100%', aspectRatio: 4, justifyContent: 'space-evenly', paddingLeft: scale(20) }}>
+          <Text style={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}>{'总资产'}</Text>
           <ReLoadBalanceComponent
             title={'¥ '}
             titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             balance={balance}
             balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
-            color={'#ffffff'}
+            iconColor={'#ffffff'}
             size={30}
             currency={currency}
             balanceDecimal={balanceDecimal}
@@ -144,7 +142,7 @@ const KSMinePage = () => {
         <List
           uniqueKey={'KSMinePage'}
           numColumns={3}
-          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingTop: scale(5) }}
+          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingVertical: scale(15) }}
           data={listUserCenterItems}
           renderItem={({ item }) => {
             const { name, logo, code } = item
@@ -154,11 +152,11 @@ const KSMinePage = () => {
                 logo={logo}
                 enableCircle={false}
                 titleStyle={{ color: '#ffffff' }}
-                containerStyle={{ width: '33%', marginBottom: scale(40), marginTop: scale(30) }}
+                containerStyle={{ width: '33%', marginVertical: scale(15) }}
                 imageContainerStyle={{ width: '50%' }}
                 titleContainerStyle={{ aspectRatio: 5 }}
                 unreadMsg={unreadMsg || 0}
-                showUnReadMsg={code == UGUserCenterType.站内信}
+                showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
                 showSubTitle={false}
                 onPress={() => {
                   PushHelper.pushUserCenterType(code)

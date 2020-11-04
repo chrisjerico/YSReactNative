@@ -13,7 +13,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const JXHSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference } = useSignInPage({
     homePage: PageName.JXHHomePage,
     signUpPage: PageName.JXHSignUpPage,
   })
@@ -32,18 +32,18 @@ const JXHSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <Text style={{ color: '#ffffff', fontSize: scale(30), marginBottom: scale(30) }}>{'欢迎您'}</Text>
-          <View style={{ flexDirection: 'row', marginBottom: scale(20) }}>
-            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'没有账号,立即'}</Text>
+          <Text style={{ color: '#ffffff', fontSize: scale(42), marginBottom: scale(12), fontWeight: '600' }}>{'欢迎您'}</Text>
+          <View style={{ flexDirection: 'row', marginBottom: scale(30) }}>
+            <Text style={{ color: '#ffffff', fontSize: scale(17) }}>{'没有账号,立即'}</Text>
             <TouchableWithoutFeedback onPress={navigateToSignUpPage}>
-              <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'注册'}</Text>
+              <Text style={{ color: '#cfa461', fontSize: scale(17) }}>{'注册'}</Text>
             </TouchableWithoutFeedback>
-            <Text style={{ color: '#ffffff', fontSize: scale(15) }}>{'或'}</Text>
+            <Text style={{ color: '#ffffff', fontSize: scale(17) }}>{'或'}</Text>
             <TouchableWithoutFeedback onPress={tryPlay}>
-              <Text style={{ color: '#cfa461', fontSize: scale(15) }}>{'免费试玩'}</Text>
+              <Text style={{ color: '#cfa461', fontSize: scale(17) }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>
           </View>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
+          <SignInFormList slideCodeColor={'#000000'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
           </View>
@@ -67,8 +67,8 @@ const SignInForm = (props: SignInRenderFormProps) => {
   return (
     <FormComponent
       {...props}
-      containerStyle={{ marginBottom: scale(10) }}
-      inputContainerStyle={{ borderRadius: scale(10), backgroundColor: '#333333', height: scale(63), borderBottomWidth: 0 }}
+      containerStyle={{ marginBottom: scale(20) }}
+      inputContainerStyle={{ borderRadius: scale(10), backgroundColor: '#333333', height: scale(80), borderBottomWidth: 0 }}
       leftIconContainerStyle={{ marginLeft: scale(10) }}
       rightIconContainerStyle={{ marginRight: scale(10) }}
       closeEyeColor={'#cfa461'}
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: scale(20),
     marginBottom: scale(25),
-    aspectRatio: 8,
+    aspectRatio: 7.5,
     borderRadius: scale(5),
   },
   popButton: {

@@ -2,10 +2,11 @@ import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
 import useSignOut from './useSignOut'
 import useRerender from './useRerender'
 import useSysInfo from './useSysInfo'
+import useHomeInfo from './useHomeInfo'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -41,6 +42,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
+  const rightMenus = UGStore.globalProps.rightMenu
   const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
@@ -50,7 +52,8 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
       showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
     },
     onSuccess: () => {
-      showLoading({ type: UGLoadingType.Success, text: '退出成功' })
+      hideLoading()
+      // showLoading({ type: UGLoadingType.Success, text: '退出成功' })
       navigate(homePage, {})
       onSuccessSignOut && onSuccessSignOut()
     },
@@ -78,6 +81,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     onSaveAvatarSuccess,
     value,
     sign,
+    rightMenus,
   }
 }
 

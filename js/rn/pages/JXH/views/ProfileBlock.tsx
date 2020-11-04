@@ -1,9 +1,7 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import { PageName } from '../../../public/navigation/Navigation'
-import { navigate } from '../../../public/navigation/RootNavigation'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 import Avatar from '../../../public/views/tars/Avatar'
@@ -23,17 +21,34 @@ interface ProfileBlockProps {
   onPressTryPlay: () => any
   onPressLeftButton: () => any
   onPressRightButton: () => any
+  onPressSignUpButton: () => any
+  onPressSignInButton: () => any
+  onPressForgetPassword: () => any
 }
 
-const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPressExchange, onPressTryPlay, onPressLeftButton, onPressRightButton }: ProfileBlockProps) => {
+const ProfileBlock = ({
+  uid,
+  curLevelTitle,
+  avatar,
+  usr,
+  balance,
+  onPressExchange,
+  onPressTryPlay,
+  onPressLeftButton,
+  onPressRightButton,
+  onPressSignUpButton,
+  onPressSignInButton,
+  onPressForgetPassword,
+}: ProfileBlockProps) => {
+  const [hideBalance, setHideBalance] = useState(false)
   return (
     <View style={{ width: '100%', aspectRatio: 2.3, backgroundColor: '#111111', borderRadius: scale(10), overflow: 'hidden' }}>
       <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: scale(10) }}>
         {uid ? (
           <>
             <View style={{ flexDirection: 'row', height: '100%', alignItems: 'center' }}>
-              <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10) }}>{usr}</Text>
+              <Avatar size={30} uri={avatar} />
+              <Text style={{ color: '#a0a0a0', marginHorizontal: scale(10), fontSize: scale(20) }}>{usr}</Text>
               <LinearBadge
                 title={curLevelTitle}
                 colors={['#cfa461', '#cfa461']}
@@ -50,42 +65,40 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
           </>
         ) : (
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Avatar size={30} uri={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar} />
-            <Text style={{ color: '#c7c7c7', fontSize: scale(18), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
+            <Avatar size={30} uri={avatar} />
+            <Text style={{ color: '#a0a0a0', fontSize: scale(20), marginLeft: scale(10) }}>{'尊敬的来宾，您好，请登录'}</Text>
           </View>
         )}
       </View>
       <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
         {uid ? (
           <View style={{ flex: 1, marginLeft: scale(20) }}>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
-              <AntDesign name={'eye'} color={'#676767'} size={20} />
+              <Ionicons
+                name={hideBalance ? 'ios-eye-off' : 'ios-eye'}
+                color={'#676767'}
+                size={25}
+                onPress={() => {
+                  setHideBalance(!hideBalance)
+                }}
+              />
             </View>
-            <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{balance}</Text>
+            <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</Text>
           </View>
         ) : (
           <>
-            <Button
-              title={'登录'}
-              containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]}
-              titleStyle={{ color: '#ffffff', fontSize: scale(20) }}
-              onPress={() => {
-                navigate(PageName.JXHSignInPage)
-              }}
-            />
+            <Button title={'登录'} containerStyle={[styles.signButton, { backgroundColor: '#cfa461' }]} titleStyle={{ color: '#ffffff', fontSize: scale(20) }} onPress={onPressSignInButton} />
             <Button
               title={'注册'}
               containerStyle={[styles.signButton, { backgroundColor: '#000000', borderColor: '#cfa461', borderWidth: scale(1) }]}
               titleStyle={{ color: '#cfa461', fontSize: scale(20) }}
-              onPress={() => {
-                navigate(PageName.JXHSignUpPage)
-              }}
+              onPress={onPressSignUpButton}
             />
           </>
         )}
       </View>
-      <View style={{ flex: 1, backgroundColor: '#282828', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
+      <View style={{ flex: 1, backgroundColor: '#2a2a2a', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}>
         {uid ? (
           <>
             <Button
@@ -109,7 +122,9 @@ const ProfileBlock = ({ uid, curLevelTitle, isTest, avatar, usr, balance, onPres
           </>
         ) : (
           <>
-            <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
+            <TouchableWithoutFeedback onPress={onPressForgetPassword}>
+              <Text style={{ color: '#c7c7c7' }}>{'忘记密码'}</Text>
+            </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPressTryPlay}>
               <Text style={{ color: '#cfa461' }}>{'免费试玩'}</Text>
             </TouchableWithoutFeedback>

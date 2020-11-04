@@ -6,6 +6,8 @@ import { AgentType, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { scale } from '../../tools/Scale'
 
+export type SignUpRenderFormProps = FormComponentProps & { [key: string]: any }
+
 interface Show {
   showRecommendGuy: boolean
   showName: boolean
@@ -17,6 +19,7 @@ interface Show {
   showSlideCode: boolean
   showAgentButton: boolean
   showSms: boolean
+  showInviteCode: boolean
 }
 
 interface Label {
@@ -25,21 +28,24 @@ interface Label {
   confirmPasswordLabel: string
   fundPasswordLabel: string
   nameLabel: string
-  imageCodeLabel: string
   emailLabel: string
   phoneNumberLabel: string
   qqLabel: string
   wxLabel: string
+  accountLabel: string
+  inviteCodeLabel: string
 }
 
 interface SignUpFormListProps {
   slideCodeColor: string
-  slideCodeRef: RefObject<any>
   show: Show
   onChange: OnChange
   label: Label
   passwordLimit: PasswordLimit
-  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any
+  renderForm: (props: SignUpRenderFormProps) => any
+  reference?: Reference
+  value: Value
+  placeholder?: Placeholder
 }
 
 interface PasswordLimit {
@@ -48,10 +54,31 @@ interface PasswordLimit {
   minLength: number
 }
 
+interface Reference {
+  slideCodeRef?: RefObject<any>
+}
+
+interface Value {
+  fundPassword: string
+}
+
+interface Placeholder {
+  recommendGuyPlaceholder: string
+  accountPlaceholder: string
+  passwordPlaceholder: string
+  confirmPasswordPlaceholder: string
+  fundPasswordPlaceholder: string
+  qqPlaceholder: string
+  wxPlaceholder: string
+  emailPlaceholder: string
+  smsPlaceholder: string
+  inviteCodePlaceholder: string
+}
+
 interface OnChange {
   onChangeRecommendGuy: (value: string) => any
-  obChangeAccount: (value: string) => any
-  obChangePassword: (value: string) => any
+  onChangeAccount: (value: string) => any
+  onChangePassword: (value: string) => any
   onChangeConfirmPassword: (value: string) => any
   onChaneRealName: (value: string) => any
   onChaneFundPassword: (value: string) => any
@@ -62,24 +89,28 @@ interface OnChange {
   onChaneSms: (value: string) => any
   onChangeSlideCode: (value: SlideCode) => any
   onChangeAgent: (value: AgentType) => any
+  onChangeInviteCode: (value: string) => any
 }
 
-const SignUpFormList = ({
-  slideCodeColor,
-  show,
-  onChange,
-  label,
-  slideCodeRef,
-  passwordLimit,
-  Form = () => {
-    return null
-  },
-}: SignUpFormListProps) => {
-  const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton } = show
+const SignUpFormList = ({ slideCodeColor, show, onChange, label, reference, passwordLimit, value, placeholder, renderForm }: SignUpFormListProps) => {
+  const { fundPassword } = value
+  const {
+    recommendGuyPlaceholder,
+    accountPlaceholder,
+    passwordPlaceholder,
+    confirmPasswordPlaceholder,
+    fundPasswordPlaceholder,
+    qqPlaceholder,
+    wxPlaceholder,
+    emailPlaceholder,
+    smsPlaceholder,
+    inviteCodePlaceholder,
+  } = placeholder
+  const { showRecommendGuy, showName, showFundPassword, showQQ, showWx, showEmail, showPhoneNumber, showSms, showSlideCode, showAgentButton, showInviteCode } = show
   const {
     onChangeRecommendGuy,
-    obChangeAccount,
-    obChangePassword,
+    onChangeAccount,
+    onChangePassword,
     onChangeConfirmPassword,
     onChaneRealName,
     onChaneFundPassword,
@@ -90,21 +121,27 @@ const SignUpFormList = ({
     onChaneSms,
     onChangeSlideCode,
     onChangeAgent,
+    onChangeInviteCode,
   } = onChange
 
-  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel } = label
+  const { recommendGuyLabel, passwordLebel, confirmPasswordLabel, fundPasswordLabel, nameLabel, emailLabel, phoneNumberLabel, wxLabel, qqLabel, accountLabel, inviteCodeLabel } = label
 
   const { maxLength } = passwordLimit
 
+  const { slideCodeRef } = reference
+
+  const Form = renderForm
+
   return (
     <>
-      <Form leftIconName={'users'} onChangeText={onChangeRecommendGuy} label={recommendGuyLabel} placeholder={'推荐人ID'} leftIconTitle={'推荐人'} visible={showRecommendGuy} />
-      <Form onChangeText={obChangeAccount} label={'*请使用6-15位英文或数字的组合'} placeholder={'帐号'} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
+      <Form leftIconName={'users'} onChangeText={onChangeInviteCode} label={inviteCodeLabel} placeholder={inviteCodePlaceholder} leftIconTitle={'邀请码'} visible={showInviteCode} />
+      <Form leftIconName={'users'} onChangeText={onChangeRecommendGuy} label={recommendGuyLabel} placeholder={recommendGuyPlaceholder} leftIconTitle={'推荐人'} visible={showRecommendGuy} />
+      <Form onChangeText={onChangeAccount} label={accountLabel} placeholder={accountPlaceholder} visible={true} leftIconName={'users'} leftIconTitle={'用户帐号'} />
       <Form
         leftIconName={'lock'}
-        onChangeText={obChangePassword}
+        onChangeText={onChangePassword}
         label={passwordLebel}
-        placeholder={'密码'}
+        placeholder={passwordPlaceholder}
         showRightIcon
         visible={true}
         maxLength={maxLength}
@@ -115,7 +152,7 @@ const SignUpFormList = ({
         leftIconName={'lock'}
         onChangeText={onChangeConfirmPassword}
         label={confirmPasswordLabel}
-        placeholder={'确认密码'}
+        placeholder={confirmPasswordPlaceholder}
         showRightIcon
         visible={true}
         rightIconType={'eye'}
@@ -126,12 +163,13 @@ const SignUpFormList = ({
         leftIconName={'lock'}
         onChangeText={onChaneFundPassword}
         label={fundPasswordLabel}
-        placeholder={'取款密码'}
+        placeholder={fundPasswordPlaceholder}
         showRightIcon
         visible={showFundPassword}
         maxLength={4}
         rightIconType={'eye'}
         leftIconTitle={'取款密码'}
+        value={fundPassword}
       />
       <Form
         leftIconProps={{
@@ -140,7 +178,7 @@ const SignUpFormList = ({
         }}
         onChangeText={onChaneQQ}
         label={qqLabel}
-        placeholder={'QQ号'}
+        placeholder={qqPlaceholder}
         visible={showQQ}
         leftIconTitle={'QQ号'}
       />
@@ -151,7 +189,7 @@ const SignUpFormList = ({
         }}
         onChangeText={onChaneWeChat}
         label={wxLabel}
-        placeholder={'微信号'}
+        placeholder={wxPlaceholder}
         leftIconTitle={'微信号'}
         visible={showWx}
       />
@@ -163,11 +201,11 @@ const SignUpFormList = ({
         }}
         onChangeText={onChangeEmail}
         label={emailLabel}
-        placeholder={'电子邮箱'}
+        placeholder={emailPlaceholder}
         leftIconTitle={'电子邮箱'}
         visible={showEmail}
       />
-      <Form leftIconName={'lock'} onChangeText={onChaneSms} placeholder={'短信验证码'} visible={showSms} showRightIcon={true} rightIconType={'sms'} leftIconTitle={'验证码'} />
+      <Form leftIconName={'lock'} onChangeText={onChaneSms} placeholder={smsPlaceholder} visible={showSms} showRightIcon={true} rightIconType={'sms'} leftIconTitle={'验证码'} />
       <AgentButtonComponent visible={showAgentButton} onChangeAgent={onChangeAgent} containerStyle={{ marginVertical: scale(20) }} />
       <ReloadSlidingVerification
         ref={slideCodeRef}

@@ -2,12 +2,13 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -40,12 +41,7 @@ const BZHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <BackBtnComponent
-          homePage={PageName.BZHHomePage}
-          renderHeader={(props) => {
-            return <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressRightTitle={goToUserCenterType.在线客服} />
-          }}
-        />
+        <BackBtnComponent homePage={PageName.BZHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} />} />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -58,7 +54,7 @@ const BZHMinePage = () => {
           balance={balance}
           onPressAvatar={onPressAvatar}
           level={curLevelGrade}
-          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
           name={usr}
           currency={currency}
           features={profileUserCenterItems}
@@ -95,7 +91,7 @@ const BZHMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnReadMsg={code == UGUserCenterType.站内信}
+              showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
               onPress={() => {
                 PushHelper.pushUserCenterType(code)
               }}
@@ -119,7 +115,7 @@ const BZHMinePage = () => {
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
         color={BZHThemeColor.宝石红.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+        initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>

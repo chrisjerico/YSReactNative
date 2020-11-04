@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -18,8 +19,6 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
-
-const { getHtml5Image } = useHtml5Image()
 
 const LHTMinePage = () => {
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
@@ -44,7 +43,7 @@ const LHTMinePage = () => {
           name={usr}
           showK={currency == 'VND'}
           balanceDecimal={balanceDecimal}
-          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
           level={curLevelGrade}
           balance={balance}
           currency={currency}
@@ -77,7 +76,7 @@ const LHTMinePage = () => {
               title={name}
               logo={logo}
               unreadMsg={unreadMsg || 0}
-              showUnReadMsg={code == UGUserCenterType.站内信}
+              showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
@@ -88,7 +87,7 @@ const LHTMinePage = () => {
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
         color={LHThemeColor.六合厅.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+        initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>

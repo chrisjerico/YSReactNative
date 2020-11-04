@@ -1,12 +1,14 @@
-import { useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import useRerender from './useRerender'
 import useSignIn from './useSignIn'
+import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
 
@@ -19,12 +21,16 @@ interface SlidingVerification {
 interface UseSignInPage {
   homePage: PageName
   signUpPage: PageName
+  onSuccessSignOut?: () => any
 }
 
-const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
+const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage) => {
   // stores
+  const { reRender } = useRerender()
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
+  const rightMenus = UGStore.globalProps.rightMenu
+
   const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)
@@ -36,86 +42,136 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   })
   // refs
   const slideCodeRef = useRef(null)
+  const needNameInputRef = useRef(null)
   const rememberRef = useRef(sign?.remember)
 
-  const navigateToSignUpPage = () => {
+  const navigateToSignUpPage = useCallback(() => {
     homePage && navigate(signUpPage, {})
-  }
+  }, [])
 
-  const navigateToHomePage = () => {
+  const navigateToHomePage = useCallback(() => {
     homePage && navigate(homePage, {})
-  }
+  }, [])
 
-  const { signIn } = useSignIn({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-    },
-    onSuccess: () => {
-      console.log("loginTo : ", loginTo)
-      if (loginTo == LoginTo.首页) {
-        navigateToHomePage()
-      } else {
-        navigateToHomePage()
-        PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-      }
-      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-    },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
-      setSlideCode({
-        nc_csessionid: undefined,
-        nc_token: undefined,
-        nc_sig: undefined,
+  const { signIn } = useMemo(
+    () =>
+      useSignIn({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+        },
+        onSuccess: () => {
+          if (loginTo == LoginTo.首页) {
+            navigateToHomePage()
+          } else {
+            navigateToHomePage()
+            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+          }
+          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          setSlideCode({
+            nc_csessionid: undefined,
+            nc_token: undefined,
+            nc_sig: undefined,
+          })
+          slideCodeRef?.current?.reload()
+        },
+        onNeedFullName: () => {
+          needNameInputRef?.current?.reload()
+          hideLoading()
+        },
+      }),
+    []
+  )
+
+  const { tryPlay } = useMemo(
+    () =>
+      useTryPlay({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+        },
+        onSuccess: () => {
+          navigateToHomePage()
+          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+        },
+      }),
+    []
+  )
+
+  const { signOut } = useMemo(
+    () =>
+      useSignOut({
+        onStart: () => {
+          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+        },
+        onSuccess: () => {
+          hideLoading()
+          reRender()
+          onSuccessSignOut && onSuccessSignOut()
+        },
+        onError: (error) => {
+          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+        },
+      }),
+    []
+  )
+
+  const onChangeAccount = useCallback(
+    (value: string) => {
+      UGStore.dispatch({
+        type: 'merge',
+        sign: {
+          account: rememberRef.current ? value : null,
+          password: rememberRef.current ? password : null,
+        },
       })
-      slideCodeRef?.current?.reload()
+      setAccount(value)
     },
-  })
+    [password]
+  )
 
-  const { tryPlay } = useTryPlay({
-    onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+  const onChangePassword = useCallback(
+    (value: string) => {
+      UGStore.dispatch({
+        type: 'merge',
+        sign: {
+          account: rememberRef.current ? account : null,
+          password: rememberRef.current ? value : null,
+        },
+      })
+      setPassword(value)
     },
-    onSuccess: () => {
-      navigateToHomePage()
-      showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+    [account]
+  )
+
+  const onChangeRemember = useCallback(
+    (value: boolean) => {
+      rememberRef.current = value
+      UGStore.dispatch({
+        type: 'merge',
+        sign: {
+          remember: value,
+          account: value ? account : null,
+          password: value ? password : null,
+        },
+      })
     },
-    onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
-    },
-  })
+    [account, password]
+  )
 
-  const onChangeAccount = (value: string) => {
-    UGStore.dispatch({
-      type: 'merge',
-      sign: {
-        account: rememberRef.current ? value : null,
-        password: rememberRef.current ? password : null,
-      },
-    })
-    setAccount(value)
-  }
-
-  const onChangePassword = (value: string) => {
-    UGStore.dispatch({
-      type: 'merge',
-      sign: {
-        account: rememberRef.current ? account : null,
-        password: rememberRef.current ? value : null,
-      },
-    })
-    setPassword(value)
-  }
-
-  const onChangeRemember = (value: boolean) => {
-    rememberRef.current = value
-    UGStore.dispatch({
-      type: 'merge',
-      sign: {
-        remember: value,
-        account: value ? account : null,
-        password: value ? password : null,
-      },
-    })
+  const onChangeFullName = (fullName: string) => {
+    const params = {
+      account: account,
+      //@ts-ignore
+      password: password?.md5(),
+      slideCode,
+      fullName,
+    }
+    signIn(params)
   }
 
   const onChangeSlideCode = setSlideCode
@@ -135,6 +191,7 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
     onChangePassword,
     onChangeRemember,
     onChangeSlideCode,
+    onChangeFullName,
   }
 
   const navigateTo = {
@@ -147,25 +204,33 @@ const useSignInPage = ({ homePage, signUpPage }: UseSignInPage) => {
   }
 
   const _signIn = () => {
-    signIn({
+    const params = {
       account: account,
       //@ts-ignore
       password: password?.md5(),
       slideCode,
-    })
+    }
+    signIn(params)
+  }
+
+  const reference = {
+    slideCodeRef,
+    needNameInputRef,
   }
 
   return {
-    slideCodeRef,
+    valid,
+    reference,
     navigateTo,
     onChange,
     value,
-    valid,
     show,
     sign: {
       signIn: _signIn,
       tryPlay,
+      signOut,
     },
+    rightMenus,
   }
 }
 

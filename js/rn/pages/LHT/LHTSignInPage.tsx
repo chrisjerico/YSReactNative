@@ -12,7 +12,7 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const LHTSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid } = useSignInPage({
     homePage: PageName.LHTHomePage,
     signUpPage: PageName.LHTSignUpPage,
   })
@@ -27,7 +27,7 @@ const LHTSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
+          <SignInFormList slideCodeColor={'#ffffff'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             disabled={!valid}
             title={'登录'}

@@ -19,12 +19,14 @@ export default class ExtUGApplication {
     PageName.LCMinePage,
     PageName.LCHomePage,
     PageName.TransitionPage,
-    PageName.XBJLoginPage,
-    PageName.XBJRegisterPage,
-    PageName.XBJMinePage,
-    PageName.XBJHomePage,
     PageName.ZLHomePage,
     PageName.ZLMinePage,
+    PageName.ZLLoginPage,
+    PageName.ZLRegisterPage,
+    PageName.HJHomePage,
+    PageName.HJMinePage,
+    PageName.HJLoginPage,
+    PageName.HJRegisterPage,
     PageName.PromotionListPage,
     PageName.LHTHomePage,
     PageName.LHTMinePage,
@@ -38,6 +40,10 @@ export default class ExtUGApplication {
     PageName.KSMinePage,
     PageName.LLHomePage,
     PageName.LLMinePage,
+    PageName.BYHomePage,
+    PageName.BYMinePage,
+    PageName.LEFHomePage,
+    PageName.LEFMinePage,
     PageName.UpdateVersionPage,
     PageName.JDPromotionListPage,
   ]
@@ -59,6 +65,10 @@ export default class ExtUGApplication {
     PageName.KSSignUpPage,
     PageName.LLRegisterPage,
     PageName.LLLoginPage,
+    PageName.BYSignUpPage,
+    PageName.BYSignInPage,
+    PageName.LEFSignUpPage,
+    PageName.LEFSignInPage,
     PageName.VietnamLogin,
     PageName.VietnamRegister,
     PageName.VietnamGameList,
@@ -76,6 +86,7 @@ export default class ExtUGApplication {
         //     ? PageName.UpdateVersionPage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
         //     : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         let currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
+        // let currentScene = PageName[PageName.LEFHomePage]
         if (anyEmpty(currentScene)) {
           initName = PageName.UpdateVersionPage
         } else {
