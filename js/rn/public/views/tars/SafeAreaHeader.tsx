@@ -1,6 +1,8 @@
-import React, { memo, ReactNode } from 'react'
-import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
+import React, { memo, ReactNode, useState } from 'react'
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { scale } from '../../tools/Scale'
 
 interface SafeAreaHeaderProps {
@@ -11,6 +13,18 @@ interface SafeAreaHeaderProps {
 
 const SafeAreaHeader = ({ headerColor, containerStyle, children }: SafeAreaHeaderProps) => {
   const safeArea = useSafeArea()
+  const [safeTop, setSafeTop] = useState<number>(0)
+
+  switch (Platform.OS) {
+    case 'ios':
+      // setSafeTop(safeArea?.top)
+      break
+    case 'android':
+      ANHelper.callAsync(CMD.STATUS_BAR_SHOW).then((show) => {
+        setSafeTop(show ? safeArea?.top : 0)
+      })
+      break
+  }
 
   return (
     <View style={{ backgroundColor: headerColor }}>

@@ -35,7 +35,7 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   constructor(props: IPorps) {
     super(props);
-    this.state = {text: null, secureTextEntry: !!props.secureTextEntry};
+    this.state = {text: props?.value, secureTextEntry: !!props.secureTextEntry};
     const iconSize = 20;
 
     let defaultProps: IPorps = {
@@ -235,9 +235,9 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   // 刷新UI
   render() {
-    var props = deepMergeProps(this.newProps, this.props);
+    let props = deepMergeProps(this.newProps, this.props);
     if (this.props.hidden) {
-      deepMergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
+      props = deepMergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
     }
     return (
       <Input

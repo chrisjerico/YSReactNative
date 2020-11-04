@@ -4,7 +4,7 @@ import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { PageName } from '../../navigation/Navigation'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showError, showLoading, showSuccess, UGLoadingType } from '../../widget/UGLoadingCP'
 import useHomeInfo from './useHomeInfo'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
@@ -49,15 +49,15 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     () =>
       useTryPlay({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          showSuccess('登录成功')
           reRender()
           onSuccessTryPlay && onSuccessTryPlay()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
+          showError(error ?? '試玩失败')
         },
       }),
     []
@@ -67,7 +67,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     () =>
       useSignOut({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+          showLoading('正在退出...')
         },
         onSuccess: () => {
           hideLoading()
@@ -75,7 +75,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
           onSuccessSignOut && onSuccessSignOut()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+          showError('退出失败')
         },
       }),
     []

@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: scale(15),
+    color: 'grey',
   },
   enableText: {
     color: '#ffffff',

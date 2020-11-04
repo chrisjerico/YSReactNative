@@ -1,5 +1,6 @@
 
-./rn_make_android_bundle.sh
+./make_android_bundle.sh
+cd ..
 
 #发布的渠道: 正式 Production，测试 Staging
 pub_type=$1

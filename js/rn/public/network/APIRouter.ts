@@ -192,10 +192,12 @@ class APIRouter {
   }
   static user_login = async ({ usr, pwd, ggCode, slideCode, fullName }: { usr: string; pwd: string; ggCode?: string; slideCode?: SlideCodeModel; fullName?: string }) => {
     try {
-      if (slideCode) {
-        slideCode = SlideCodeModel?.get(slideCode)
+      const slideCodeParams = {
+        'slideCode[nc_sid]': slideCode?.nc_csessionid,
+        'slideCode[nc_sig]': slideCode?.nc_value,
+        'slideCode[nc_token]': slideCode?.nc_token,
       }
-      const params = { usr, pwd, ggCode, ...slideCode, fullName }
+      const params = { usr, pwd, ggCode, ...slideCodeParams, fullName }
       return httpClient.post<LoginModel>('c=user&a=login', params, {
         noToken: true,
       } as any)

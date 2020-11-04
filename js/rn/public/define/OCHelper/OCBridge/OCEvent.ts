@@ -46,9 +46,9 @@ export class OCEvent extends OCCall {
       console.log('跳转到rn页面：', params.vcName, params);
       if (params.vcName) {
         if (params.rnAction == 'push') {
-          push(params.vcName, params) || push(RnPageModel.getPageName(params.vcName), params);
+          push(params.vcName, params, true) || push(RnPageModel.getPageName(params.vcName), params, true);
         } else {
-          jumpTo(params.vcName, params) || jumpTo(RnPageModel.getPageName(params.vcName), params);
+          jumpTo(params.vcName, params, true) || jumpTo(RnPageModel.getPageName(params.vcName), params, true);
         }
       }
     });

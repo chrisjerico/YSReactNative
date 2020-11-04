@@ -170,7 +170,7 @@ export default class UGSysConfModel {
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
   // 登陸頁
-  loginVCode?: boolean
+  loginVCode?: boolean; // 登录增加了滑动验证码配置  默认开
   login_to?: '0' | '1'
   adSliderTimer?: number
   appDownloadUrl?: string

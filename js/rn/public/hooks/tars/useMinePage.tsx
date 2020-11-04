@@ -1,13 +1,12 @@
 import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
+import { Necessity } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useSignOut from './useSignOut'
+import { hideLoading, showError, showLoading } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
+import useSignOut from './useSignOut'
 import useSysInfo from './useSysInfo'
-import useHomeInfo from './useHomeInfo'
-import { Necessity } from '../../models/Enum'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -54,7 +53,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
   // signs
   const { signOut } = useSignOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+      showLoading('正在退出...')
     },
     onSuccess: () => {
       hideLoading()
@@ -63,7 +62,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
-      showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+      showError(error ?? '退出失败')
     },
   })
 

@@ -62,7 +62,7 @@ const useHomePage = ({
 
   const { logOut } = useLogOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading })
+      showLoading()
 
     },
     onSuccess: () => {

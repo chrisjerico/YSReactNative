@@ -5,6 +5,7 @@ import { Platform } from "react-native";
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 import { NA_DATA } from "../../public/define/ANHelper/hp/DataDefine";
+import { setProps } from '../../pages/base/UGPage';
 
 export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
@@ -12,7 +13,7 @@ export const AsyncStorageKey = {
 
 export class IGlobalStateHelper {
   static updateUserInfo() {
-    NetworkRequest1.user_info().then(user => {
+    NetworkRequest1.user_info().then(({data:user}) => {
       UGStore.dispatch({ type: 'merge', userInfo: user })
       UGStore.save();
     });

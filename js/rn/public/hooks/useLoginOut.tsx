@@ -14,7 +14,7 @@ import {logoutAndroid} from "../define/ANHelper/InfoHelper";
 const useLoginOut = (pageName: PageName) => {
   const requestLoginOut = async () => {
     try {
-      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' });
+      showLoading('正在退出...');
 
       await APIRouter.user_logout()
 

@@ -156,13 +156,6 @@ const ZLPages = [
     允许未登录访问: false,
   },
   {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
     vcName: 'UGBalanceConversionController',
     vcName2: 'LineConversionHeaderVC',
     fd_prefersNavigationBarHidden: true,

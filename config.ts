@@ -7,12 +7,12 @@ export const devConfig = {
   isTest: () => {
     // 是否测试环境
     if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
+      return 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog,67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog,iwDsp1YB7bcBov7KIaxDP9tLbuUQ4ksvOXqog'.indexOf(OCHelper.CodePushKey) == -1
     }
     return false
   },
 
-  skinKey: '威尼斯', // 宝石红 白曜 威尼斯 六合厅 凯时 利来 金星黑 乐橙 经典
+  skinKey: '宝石红', // 宝石红 白曜 威尼斯 六合厅 凯时 利来 金星黑 乐橙 经典
 }
 
 // 线上环境配置（这几个站点写死经典模板）

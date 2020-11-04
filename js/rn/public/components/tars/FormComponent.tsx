@@ -128,7 +128,7 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      showLoading({ type: UGLoadingType.Loading });
+      showLoading();
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       const { code, msg } = data ?? {}
 

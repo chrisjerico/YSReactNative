@@ -1,3 +1,4 @@
+import { useDimensions } from '@react-native-community/hooks'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import {
@@ -11,36 +12,35 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
-import { HomeTabView } from './component/homePage/homeTabView/HomeTabView'
-import { navigate, push } from '../../public/navigation/RootNavigation'
-import { PageName } from '../../public/navigation/Navigation'
-import { useDimensions } from '@react-native-community/hooks'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import APIRouter from '../../public/network/APIRouter'
-import AutoHeightWebView from 'react-native-autoheight-webview'
-import FastImage from 'react-native-fast-image'
-import RedBagItem from '../../public/components/RedBagItem'
-import { UGStore } from '../../redux/store/UGStore'
-import { TurntableListModel } from '../../public/network/Model/TurntableListModel'
-import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall'
-import AppDefine from '../../public/define/AppDefine'
-import PushHelper from '../../public/define/PushHelper'
-import PromotionsBlock from '../../public/components/PromotionsBlock'
-import RankListCP from '../../public/widget/RankList'
-import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import Carousel from 'react-native-banner-carousel'
-import { List } from '../../public/network/Model/BannerModel'
-import { httpClient } from '../../public/network/httpClient'
+import FastImage from 'react-native-fast-image'
+import { MarqueeHorizontal } from 'react-native-marquee-ab'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import PromotionsBlock from '../../public/components/PromotionsBlock'
+import RedBagItem from '../../public/components/RedBagItem'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import GameButton from '../../public/views/tars/GameButton'
-import { scale } from '../../public/tools/Scale'
-import NavBlock from './component/homePage/NavBlock'
+import AppDefine from '../../public/define/AppDefine'
+import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
+import { httpClient } from '../../public/network/httpClient'
+import { List } from '../../public/network/Model/BannerModel'
+import { TurntableListModel } from '../../public/network/Model/TurntableListModel'
+import { scale } from '../../public/tools/Scale'
+import GameButton from '../../public/views/tars/GameButton'
+import RankListCP from '../../public/widget/RankList'
+import { UGStore } from '../../redux/store/UGStore'
+import MarqueePopupView from '../common/MarqueePopupView'
+import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
+import { HomeTabView } from './component/homePage/homeTabView/HomeTabView'
+import NavBlock from './component/homePage/NavBlock'
 
 
 const LCHomePage = ({ navigation, setProps }) => {
@@ -226,84 +226,6 @@ const LCHomePage = ({ navigation, setProps }) => {
   )
 }
 
-const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
-  const { width, height } = useDimensions().screen
-  if (show) {
-    return (
-      <View style={{
-        width,
-        height,
-        position: 'absolute',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        marginBottom: 10,
-        backgroundColor: 'rgba(153,153,153,0.5)',
-      }}>
-        <View style={{ width: '90%', height: '45%' }}>
-          <View style={{
-            width: '100%',
-            height: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderBottomColor: '#cccccc',
-            borderBottomWidth: 0.5,
-            borderTopRightRadius: 15,
-            borderTopLeftRadius: 15,
-            backgroundColor: 'rgba(246,246,246, 0.95)',
-          }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>公告</Text>
-          </View>
-          <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'white' }}>
-            <AutoHeightWebView style={{ width: width * 0.9 - 20, marginVertical: 8 }} source={{ html: content }} />
-          </View>
-          <View style={{
-            height: 70,
-            paddingBottom: 10,
-            paddingHorizontal: 5,
-            justifyContent: 'space-between',
-            width: '100%',
-            backgroundColor: 'white',
-            flexDirection: 'row',
-            borderBottomRightRadius: 15,
-            borderBottomLeftRadius: 15,
-          }}>
-            <TouchableWithoutFeedback onPress={onDismiss}>
-              <View style={{
-                flex: 1, justifyContent: 'center', alignItems: 'center',
-                height: 50,
-                backgroundColor: 'white',
-                borderRadius: 5,
-                borderColor: '#cccccc',
-                borderWidth: 0.5,
-                marginHorizontal: 10,
-              }}>
-                <Text>取消</Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={onPress}>
-              <View style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 50,
-                backgroundColor: '#FE8A23',
-                borderRadius: 5,
-                borderColor: 'gray',
-                flex: 1,
-                marginHorizontal: 10,
-              }}>
-                <Text style={{ color: 'white' }}>确定</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </View>
-      </View>
-    )
-  } else {
-    return null
-  }
-
-}
 const TurntableListItem = () => {
   const { width, height } = useDimensions().screen
   const { isTest = false, uid = '' } = UGStore.globalProps.userInfo

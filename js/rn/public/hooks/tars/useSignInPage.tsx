@@ -5,7 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
@@ -57,7 +57,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     () =>
       useSignIn({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
           if (loginTo == LoginTo.首页) {
@@ -66,10 +66,10 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
             navigateToHomePage()
             PushHelper.pushUserCenterType(UGUserCenterType.我的页)
           }
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          showSuccess('登录成功')
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          showError(error ?? '登录失败')
           setSlideCode({
             nc_csessionid: undefined,
             nc_token: undefined,
@@ -89,14 +89,14 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     () =>
       useTryPlay({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
           navigateToHomePage()
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          showSuccess('登录成功')
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          showError(error ?? '登录失败')
         },
       }),
     []
@@ -106,7 +106,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     () =>
       useSignOut({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+          showLoading('正在退出...')
         },
         onSuccess: () => {
           hideLoading()
@@ -114,7 +114,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
           onSuccessSignOut && onSuccessSignOut()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+          showError(error ?? '退出失败')
         },
       }),
     []

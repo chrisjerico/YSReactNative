@@ -89,7 +89,7 @@ const ZLLoginPage = ({ route, navigation }) => {
     }, [errors])
     const testPlay = async () => {
         try {
-            showLoading({ type: UGLoadingType.Loading });
+            showLoading();
 
             const { data, status } = await APIRouter.user_guestLogin()
             ugLog("data=", data, status)
@@ -176,7 +176,7 @@ const ZLLoginPage = ({ route, navigation }) => {
             //         break;
             //
             // }
-            showLoading({ type: UGLoadingType.Loading, text: '正在登录...' });
+            showLoading('正在登录...');
 
             const { data, status } = await APIRouter.user_login(account, pwd.md5(), googleCode, slideCode)
             if (data.data == null)

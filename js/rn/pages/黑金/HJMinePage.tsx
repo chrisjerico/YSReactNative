@@ -9,7 +9,7 @@ import {PageName} from "../../public/navigation/Navigation"
 import {useHtml5Image} from "../../public/tools/tars";
 import useMinePage from "../../public/hooks/temp/useMinePage";
 import config from "../BZH/config";
-import SafeAreaHeader from "../../public/views/temp/SafeAreaHeader";
+import SafeAreaHeader from "../../public/views/tars/SafeAreaHeader";
 import GameButton from "../../public/views/temp/GameButton";
 import {scale} from "../../public/tools/Scale";
 import UserCenterItem from "../../public/views/temp/UserCenterItem";
