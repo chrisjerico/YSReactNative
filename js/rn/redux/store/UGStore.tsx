@@ -1,7 +1,7 @@
 // import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native'
 import { Action, Unsubscribe } from 'redux'
-import { UGBasePageProps } from '../../pages/base/UGPage'
+import { setProps, UGBasePageProps } from '../../pages/base/UGPage'
 import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
@@ -87,6 +87,8 @@ export class UGStore {
       for (const cb of this.callbacks) {
         cb.page == act.page && cb.callback()
       }
+    } else {
+      setProps();
     }
   }
 

@@ -51,7 +51,6 @@ export default class ExtUGApplication {
   //在Application初始化之前使用，只能手动初始化 stack列表
   //Router.PageNameLists.stackList
   static STACK_LIST = [
-    PageName.ZLLoginPage,
     PageName.ZLRegisterPage,
     PageName.JDPromotionListPage,
     PageName.PromotionListPage,

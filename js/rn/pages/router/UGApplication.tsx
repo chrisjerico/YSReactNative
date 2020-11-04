@@ -51,21 +51,21 @@ import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import HJLoginPage from '../黑金/HJLoginPage'
-import HJRegisterPage from '../黑金/HJRegisterPage'
-import HJMinePage from '../黑金/HJMinePage'
-import HJGameCategoryPage from '../黑金/cate/HJGameCategoryPage'
-import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
-import LEFSignInPage from '../乐FUN/LEFSignInPage'
-import LEFMinePage from '../乐FUN/LEFMinePage'
-import LEFHomePage from '../乐FUN/LEFHomePage'
-import LCLoginPage from '../乐橙/LCLoginPage'
-import LCRegisterPage from '../乐橙/LCRegisterPage'
-import BYHomePage from '../BY/BYHomePage'
-import BYMinePage from '../BY/BYMinePage'
-import HJHomePage from '../黑金/HJHomePage'
-import BYSignInPage from '../BY/BYSignInPage'
-import BYSignUpPage from '../BY/BYSignUpPage'
+import BYHomePage from "../白曜/BYHomePage";
+import BYMinePage from "../白曜/BYMinePage";
+import HJHomePage from "../黑金/HJHomePage";
+import BYSignInPage from "../白曜/BYSignInPage";
+import BYSignUpPage from "../白曜/BYSignUpPage";
+import HJLoginPage from "../黑金/HJLoginPage";
+import HJRegisterPage from "../黑金/HJRegisterPage";
+import HJMinePage from "../黑金/HJMinePage";
+import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
+import LEFSignUpPage from "../乐FUN/LEFSignUpPage";
+import LEFSignInPage from "../乐FUN/LEFSignInPage";
+import LEFMinePage from "../乐FUN/LEFMinePage";
+import LEFHomePage from "../乐FUN/LEFHomePage";
+import {initDomain} from "../../public/config/DomainUrls";
+import LEFSignUpPage2 from "../乐FUN/LEFSignUpPage";
 
 // TabbarController
 class TabBarController extends Component<{

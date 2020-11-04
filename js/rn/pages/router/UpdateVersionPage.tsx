@@ -15,6 +15,9 @@ import { UGStore } from '../../redux/store/UGStore'
 import { UGBasePageProps } from '../base/UGPage'
 import {scale} from "../../public/tools/Scale";
 import {Toast} from "../../public/tools/ToastUtils";
+import {ugLog} from "../../public/tools/UgLog";
+import {DefaultMenu} from "../../Res/DefaultMenu";
+import {UGThemeColor} from "../../public/theme/UGThemeColor";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -22,10 +25,11 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
   text?: string
   bCodePush?: boolean //codepush是否OK
   bBanner?: boolean //banner是否播放完
+  counter?: number //计数器
 }
-
+const MAX_TIME = 8//最多8秒倒计时
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
+  const { setProps, progress = 0, counter = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -83,7 +87,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           ANHelper.callAsync(CMD.LAUNCH_GO)
           break
       }
-    }, 10000)
+    }, 8000)
 
     setProps({
       navbarOpstions: { hidden: true },
@@ -96,6 +100,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         switch (status) {
           case CodePush.SyncStatus.SYNC_IN_PROGRESS:
             console.log('当前已经在更新了，无须重复执行')
+            setProps({ progress: 1, text: '当前已经在更新了...' })
             break
           case CodePush.SyncStatus.CHECKING_FOR_UPDATE:
             console.log('rn正在查找可用的更新')
@@ -109,6 +114,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break
           case CodePush.SyncStatus.UP_TO_DATE:
             console.log('rn已是最新版本')
+            setProps({ progress: 1, text: '已是最新版本...' })
             isNewest = true
             break
           case CodePush.SyncStatus.DOWNLOADING_PACKAGE:
@@ -123,9 +129,11 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             break
           case CodePush.SyncStatus.UNKNOWN_ERROR:
             console.log('rn热更新出错❌')
+            setProps({ progress: 1, text: '更新出错...' })
             break
           case CodePush.SyncStatus.UPDATE_INSTALLED:
             console.log('rn热更新安装成功，正在重启RN')
+            setProps({ progress: 1, text: '安装成功...' })
             return
         }
 
@@ -161,6 +169,9 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         })
         break
       case 'android':
+        //初始化默认菜单
+        ANHelper.callAsync(CMD.INIT_MENU, {value: DefaultMenu}).then()
+        //初始化启动图
         ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS }).then((picStr) => {
           if (!anyEmpty(picStr)) {
             let pics: [] = JSON.parse(picStr)
@@ -186,6 +197,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
 
     return () => {
+      // ugLog("clear timer")
       clearTimeout(timer)
     }
   }, [])
@@ -200,6 +212,18 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         break
     }
   }, [bCodePush, bBanner])
+
+  useEffect(() => {
+    //设置一个计数器给用户倒计时
+    const interval = setInterval(() => {
+      ugLog('counter=', counter)
+      setProps({ counter: (counter + 1) })
+    }, 1000)
+    return () => {
+      ugLog('clear interval')
+      clearInterval(interval)
+    }
+  }, [counter])
 
   const initConfig = async (sysConf: UGSysConfModel) => {
     UGStore.dispatch({ type: 'merge', sysConf: sysConf })
@@ -220,8 +244,25 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         setProps({ bCodePush: true })
         break
     }
+
+    // 告诉原生RN版本
+    CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((p) => {
+      const verInfo = '(' + p.appVersion + ') ' + p.description;
+      console.log('当前RN Key：', OCHelper.CodePushKey);
+      console.log('当前RN版本信息：', verInfo);
+      Platform.OS == 'ios' && OCHelper.call('AppDefine.shared.setRnVersion:', [verInfo]);
+    });
+    CodePush.getUpdateMetadata(CodePush.UpdateState.LATEST).then((p) => {
+      const verInfo = '(' + p.appVersion + ') ' + p.description;
+      console.log('最新RN版本信息：', verInfo);
+    });
+
     UGStore.save()
   }
+
+  //倒计时
+  let circleProgress = MAX_TIME - counter;
+  circleProgress = circleProgress < 0 ? 0 : circleProgress;
 
   return (
     <View style={_styles.container}>
@@ -235,6 +276,19 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                       width={AppDefine.width} />
         <Text style={_styles.title}>{text}</Text>
       </View>
+      <View style={_styles.container_timer}>
+        <Progress.Circle progress={circleProgress/10}
+                         size={scale(56)}
+                         thickness={scale(2)}
+                         allowFontScaling={true}
+                         indeterminate={false}
+                         showsText={false}
+                         direction={'counter-clockwise'}
+                         color={'#b2cde0'}/>
+        <View style={_styles.counter_container}>
+          <Text style={_styles.title_counter}>{circleProgress + "秒"}</Text>
+        </View>
+      </View>
     </View>
   )
 }
@@ -242,9 +296,19 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 const _styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    alignItems: "flex-end",
+  },
+  container_timer: {
+    flex: 1,
+    paddingTop: scale(8),
+    paddingRight: scale(4),
+    justifyContent: 'flex-end',
+    position: "absolute",
+    alignItems: "flex-start",
   },
   content: {
+    width: '100%',
     backgroundColor: '#0000003f',
     marginBottom: 300,
   },
@@ -256,8 +320,22 @@ const _styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
+    width: '100%',
     color: '#fff',
     fontWeight: '500',
+    fontSize: scale(18),
+  },
+  counter_container: {
+    position: "absolute",
+    width: scale(56),
+    height: scale(56),
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title_counter: {
+    color: '#b2cde0',
+    fontWeight: '500',
+    fontSize: scale(16),
   },
 
 

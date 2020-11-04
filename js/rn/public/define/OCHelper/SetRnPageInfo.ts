@@ -44,6 +44,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages)
     }
+    if (skitType.indexOf('香槟金') != -1) {
+      pages = pages.concat(XBJPages);
+    }
   }
 
   // 测试环境（未上线的内容）
@@ -119,6 +122,35 @@ export function setRnPageInfo() {
   }
 }
 
+// 香槟金
+const XBJPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.XBJLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.XBJRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.XBJMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  }
+];
+
 // 尊龙模板页面
 const ZLPages = [
   {
@@ -153,13 +185,6 @@ const ZLPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
-  },
-  {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
   },
   {
     vcName: 'UGBalanceConversionController',
@@ -405,15 +430,8 @@ const JXHPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  },
-  {
-    vcName: 'UGPromotionsController',
-    rnName: PageName.PromotionPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-]
+  }
+];
 
 // 白曜
 const BYPages = [

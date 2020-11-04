@@ -53,83 +53,10 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     homePage && navigate(homePage, {})
   }, [])
 
-  const { signIn } = useMemo(
-    () =>
-      useSignIn({
-        onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-        },
-        onSuccess: () => {
-          if (loginTo == LoginTo.首页) {
-            navigateToHomePage()
-          } else {
-            navigateToHomePage()
-            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-          }
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-        },
-        onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
-          setSlideCode({
-            nc_csessionid: undefined,
-            nc_token: undefined,
-            nc_sig: undefined,
-          })
-          slideCodeRef?.current?.reload()
-        },
-        onNeedFullName: () => {
-          needNameInputRef?.current?.reload()
-          hideLoading()
-        },
-      }),
-    []
-  )
-
-  const { tryPlay } = useMemo(
-    () =>
-      useTryPlay({
-        onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-        },
-        onSuccess: () => {
-          navigateToHomePage()
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-        },
-        onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
-        },
-      }),
-    []
-  )
-
-  const { signOut } = useMemo(
-    () =>
-      useSignOut({
-        onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
-        },
-        onSuccess: () => {
-          hideLoading()
-          reRender()
-          onSuccessSignOut && onSuccessSignOut()
-        },
-        onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
-        },
-      }),
-    []
-  )
-
-  const onChangeAccount = useCallback(
-    (value: string) => {
-      UGStore.dispatch({
-        type: 'merge',
-        sign: {
-          account: rememberRef.current ? value : null,
-          password: rememberRef.current ? password : null,
-        },
-      })
-      setAccount(value)
+  const { logIn } = useLogIn({
+    onStart: () => {
+      showLoading()
+      ToastStatus('正在登录...')
     },
     [password]
   )

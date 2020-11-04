@@ -226,9 +226,25 @@ const LCHomePage = ({ navigation, setProps }) => {
   )
 }
 
-const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
-  const { width, height } = useDimensions().screen
-  if (show) {
+const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: PromotionsModel, filter?: string, promotionData: PromotionsModel }) => {
+    const [selectId, setSelectedId] = useState(-1)
+    const { width } = useDimensions().window
+    const { onPopViewPress } = usePopUpView()
+    const webViewSource = (item: any) => {
+        return {
+            html: `<head>
+            <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
+            <style>table{border-collapse: collapse};img{width:auto !important;max-width:100%;height:auto !important}</style>
+            <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
+          </head>` +
+                `<script>
+            window.onload = function () {
+              window.location.hash = 1;
+              document.title = document.body.scrollHeight;
+            }
+          </script>` + item.content
+        }
+    }
     return (
       <View style={{
         width,

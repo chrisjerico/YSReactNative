@@ -1,3 +1,3 @@
-./rn_reverse_adb.sh
+cd ..
 #npx react-native start --reset-cache
 npx react-native start

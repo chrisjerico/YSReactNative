@@ -164,26 +164,14 @@ export default class UGSkinManagers extends UGThemeColor {
             key,
           ])
         }
-        await OCHelper.call(
-          'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-          ['UGNotificationWithSkinSuccess']
-        )
       }
-      await OCHelper.call(
-        'NSNotificationCenter.defaultCenter.postNotificationName:object:',
-        ['UGNotificationWithSkinSuccess']
-      )
     }
     // 刷新标签栏、导航条
     await OCHelper.call('UGTabbarController.shared.setTabbarStyle')
     // 刷新状态栏
-    await OCHelper.call(
-      'UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:',
-      [
-        '状态栏背景View',
-        { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' },
-      ]
-    )
+    await OCHelper.call('UGTabbarController.shared.view.viewWithTagString:.setBackgroundColor:', ['状态栏背景View', { selectors: 'UGSkinManagers.currentSkin.navBarBgColor' }])
+
+    await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationWithSkinSuccess'])
   }
 }
 

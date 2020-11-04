@@ -1,12 +1,15 @@
-import { Platform } from 'react-native'
-import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
-import UGPromoteListModel from '../../redux/model/other/UGPromoteModel'
-import UGSysConfModel, { UGAgentApplyInfo } from '../../redux/model/全局/UGSysConfModel'
-import UGUserModel, { UGLoginModel } from '../../redux/model/全局/UGUserModel'
-import { ANHelper } from '../define/ANHelper/ANHelper'
-import { CMD } from '../define/ANHelper/hp/CmdDefine'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import CCSessionModel from './CCSessionModel'
+import {XBJHomeProps} from '../../pages/香槟金/XBJHomeProps';
+import CCSessionModel from './CCSessionModel';
+import AppDefine from '../define/AppDefine';
+import UGSysConfModel, {UGAgentApplyInfo} from '../../redux/model/全局/UGSysConfModel';
+import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
+import UGUserModel, {UGLoginModel} from '../../redux/model/全局/UGUserModel';
+import UGPromoteListModel from '../../redux/model/other/UGPromoteModel';
+import {OCHelper} from '../define/OCHelper/OCHelper';
+import {Platform} from "react-native";
+import {ANHelper} from "../define/ANHelper/ANHelper";
+import {CMD} from "../define/ANHelper/hp/CmdDefine";
+import { Data } from './Model/RegisterModel';
 
 export default class NetworkRequest1 {
   // 拿我的頁列表
@@ -18,8 +21,8 @@ export default class NetworkRequest1 {
     return await CCSessionModel.req('c=lhcdoc&a=lotteryNumber') // c=game&a=lotteryHistoryy
   }
   // 获取首页游戏列表
-  static game_homeGames(): Promise<void> {
-    return CCSessionModel.req('c=game&a=homeGames')
+  static game_homeGames() {
+    return CCSessionModel.req('c=game&a=homeGames');
   }
 
   // 获取帖子详情
@@ -30,6 +33,11 @@ export default class NetworkRequest1 {
   // 获取优惠券
   static async couponList() {
     return await CCSessionModel.req('c=system&a=promotions')
+  }
+
+  // 获取头像列表
+  static system_avatarList() {
+    return CCSessionModel.req<{filename: string;url: string;}[]>('c=system&a=avatarList');
   }
 
   // 获取主页数据
@@ -43,7 +51,7 @@ export default class NetworkRequest1 {
     //游戏
     let game = await CCSessionModel.req('c=game&a=homeGames')
     //优惠
-    let coupon = await NetworkRequest1.couponList()
+    let {data:coupon} = await NetworkRequest1.couponList();
     //用户
     // let userInfo = await CCSessionModel.req('c=user&a=info');
     //红包
@@ -71,51 +79,48 @@ export default class NetworkRequest1 {
     contentId: string, // 帖子ID
     replyPId: string = '', // 回复ID
     page: number = 1, // 页码
-    rows: number = 20 // 每页条数
-  ): Promise<void> {
-    return CCSessionModel.req('c=lhcdoc&a=contentReplyList', { contentId: contentId, replyPId: replyPId, page: page, rows: rows }, false)
+    rows: number = 20, // 每页条数
+  ) {
+    return CCSessionModel.req('c=lhcdoc&a=contentReplyList', {contentId: contentId, replyPId: replyPId, page: page, rows: rows}, false);
   }
 
   // 获取首页优惠活动
-  static systeam_promotions(): Promise<UGPromoteListModel> {
-    return CCSessionModel.req('c=system&a=promotions')
+  static systeam_promotions() {
+    return CCSessionModel.req<UGPromoteListModel>('c=system&a=promotions');
   }
 
   // 获取代理申请信息（推荐收益）
-  static team_agentApplyInfo(): Promise<UGAgentApplyInfo> {
-    return CCSessionModel.req('c=team&a=agentApplyInfo')
+  static team_agentApplyInfo() {
+    return CCSessionModel.req<UGAgentApplyInfo>('c=team&a=agentApplyInfo');
   }
 
   // 获取用户信息（我的页）
-  static user_info(): Promise<UGUserModel> {
-    return CCSessionModel.req('c=user&a=info')
+  static user_info() {
+    return CCSessionModel.req<UGUserModel>('c=user&a=info');
   }
 
   // 登录
-  static user_login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel): Promise<UGLoginModel> {
-    if (slideCode) {
-      slideCode = SlideCodeModel.get(slideCode)
-    }
-    return CCSessionModel.req('c=user&a=login', { usr: uname, pwd: pwd, ggCode: googleCode, ...slideCode }, true)
+  static user_login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) {
+    return CCSessionModel.req<UGLoginModel>('c=user&a=login', {usr: uname, pwd: pwd, ggCode: googleCode, slideCode:slideCode}, true);
   }
 
   // 注册
   static async user_reg(params: {
-    inviter: string // 推荐人ID
-    usr: string // 账号
-    pwd: string // 密码
-    fundPwd: string // 取款密码
-    fullName: string // 真实姓名
-    qq: string // QQ号
-    wx: string // 微信号
-    phone: string // 手机号
-    smsCode: string // 短信验证码
-    imgCode: string // 字母验证码
-    slideCode: SlideCodeModel // 滑动验证码
-    email: string // 邮箱
-    regType: 'user' | 'agent' // 用户注册 或 代理注册
-  }): Promise<void> {
-    let accessToken = ''
+    inviter: string; // 推荐人ID
+    usr: string; // 账号
+    pwd: string; // 密码
+    fundPwd: string; // 取款密码
+    fullName: string; // 真实姓名
+    qq: string; // QQ号
+    wx: string; // 微信号
+    phone: string; // 手机号
+    smsCode: string; // 短信验证码
+    imgCode: string; // 字母验证码
+    slideCode: SlideCodeModel; // 滑动验证码
+    email: string; // 邮箱
+    regType: 'user' | 'agent'; // 用户注册 或 代理注册
+  }) {
+    let accessToken = "";
     switch (Platform.OS) {
       case 'ios':
         accessToken = await OCHelper.call('OpenUDID.value')
@@ -124,27 +129,27 @@ export default class NetworkRequest1 {
         accessToken = await ANHelper.callAsync(CMD.ACCESS_TOKEN)
         break
     }
-    params = Object.assign({ device: '3', accessToken: accessToken }, params)
-    return await CCSessionModel.req('c=user&a=reg', params, true)
+    params = Object.assign({device: '3', accessToken: accessToken}, params);
+    return await CCSessionModel.req<Data>('c=user&a=reg', params, true);
   }
 
   // 发送短信验证码
-  static secure_smsCaptcha(phone: string): Promise<void> {
-    return CCSessionModel.req('c=secure&a=smsCaptcha', { phone: phone }, true)
+  static secure_smsCaptcha(phone: string) {
+    return CCSessionModel.req('c=secure&a=smsCaptcha', {phone: phone}, true);
   }
 
   // 检查用户是否已存在
-  static user_exists(usr: string): Promise<void> {
-    return CCSessionModel.req('c=user&a=exists', { usr: usr }, true)
+  static user_exists(usr: string) {
+    return CCSessionModel.req('c=user&a=exists', {usr: usr}, true);
   }
 
   // 退出登录
-  static user_logout(): Promise<void> {
-    return CCSessionModel.req('c=user&a=logout')
+  static user_logout() {
+    return CCSessionModel.req('c=user&a=logout');
   }
 
   // 登录试玩账号
-  static user_guestLogin(): Promise<void> {
+  static user_guestLogin() {
     return CCSessionModel.req(
       'c=user&a=guestLogin',
       {
@@ -156,12 +161,12 @@ export default class NetworkRequest1 {
   }
 
   // 获取系统配置信息
-  static system_config(): Promise<UGSysConfModel> {
-    return CCSessionModel.req('c=system&a=config')
+  static system_config() {
+    return CCSessionModel.req<UGSysConfModel>('c=system&a=config');
   }
 
   // 上传错误日志
-  static uploadErrorLog(log: string, title: string, tag: string): Promise<void> {
+  static uploadErrorLog(log: string, title: string, tag: string) {
     return CCSessionModel.request(
       'https://www.showdoc.cc/server/api/item/updateByApi',
       {

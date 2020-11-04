@@ -49,7 +49,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
   // signs
   const { signOut } = useSignOut({
     onStart: () => {
-      showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+      showLoading()
     },
     onSuccess: () => {
       hideLoading()

@@ -6,20 +6,12 @@ import { UGStore } from '../../redux/store/UGStore'
 import { navigationRef } from '../navigation/RootNavigation'
 
 export default class AppDefine {
-  static host = 'http://450app.cc' // 接口域名
-  static siteId = '未知站点'
-  static width = Dimensions.get('window').width
-  static height = Dimensions.get('window').height
-  static iOS = Platform.OS == 'ios'
-  static onePx = 1 / PixelRatio.get()
-  static defaultAvatar = 'https://i.ibb.co/mNnwnh7/money-2.png'
-
-  static isTest() {
-    if (Platform.OS == 'ios') {
-      return OCHelper.CodePushKey != '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog' && OCHelper.CodePushKey != 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog'
-    }
-    return false
-  }
+  static host = 'http://450app.cc'; // 接口域名
+  static siteId = '未知站点';
+  static width = Dimensions.get('window').width;
+  static height = Dimensions.get('window').height;
+  static iOS = Platform.OS == 'ios';
+  
 
   static checkHeaderShowBackButton(callback: (show: boolean) => void) {
     if (Platform.OS != 'ios') return

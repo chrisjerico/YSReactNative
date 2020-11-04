@@ -66,7 +66,7 @@ const ZLRegisterPage = () => {
             const fundPwd = requestData?.fundPwd?.md5()
             delete requestData?.repwd;
 
-            showLoading({ type: UGLoadingType.Loading, text: '正在注册...' });
+            showLoading('正在注册...');
 
             // switch (Platform.OS) {
             //   case 'ios':

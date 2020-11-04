@@ -45,41 +45,37 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     })
   }
 
-  const { tryPlay } = useMemo(
-    () =>
-      useTryPlay({
-        onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
-        },
-        onSuccess: () => {
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
-          reRender()
-          onSuccessTryPlay && onSuccessTryPlay()
-        },
-        onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '試玩失败' })
-        },
-      }),
-    []
-  )
+  const { tryPlay } = useTryPlay({
+    onStart: () => {
+      showLoading()
+    },
+    onSuccess: () => {
+      hideLoading()
+      ToastSuccess('登录成功！')
+      rerender()
+      onSuccessTryPlay && onSuccessTryPlay()
+    },
+    onError: (error) => {
+      hideLoading()
+      ToastError(error ?? '試玩失败')
+    },
+  })
 
-  const { signOut } = useMemo(
-    () =>
-      useSignOut({
-        onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
-        },
-        onSuccess: () => {
-          hideLoading()
-          reRender()
-          onSuccessSignOut && onSuccessSignOut()
-        },
-        onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
-        },
-      }),
-    []
-  )
+  const { logOut } = useLogOut({
+    onStart: () => {
+      showLoading()
+    },
+    onSuccess: () => {
+      hideLoading()
+      rerender()
+      onSuccessSignOut && onSuccessSignOut()
+    },
+    onError: (error) => {
+      hideLoading()
+      ToastError(error || '登出失败')
+    },
+  })
+  const signOut = logOut
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
