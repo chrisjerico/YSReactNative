@@ -23,7 +23,7 @@ export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
 
         break
       case 'android':
