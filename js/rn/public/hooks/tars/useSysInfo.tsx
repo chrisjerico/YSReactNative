@@ -28,7 +28,7 @@ interface DefaultUserCenterLogos {
   19: string // QQ客服
 }
 
-const getOption = (reg: string) => {
+const getNecessity = (reg: string) => {
   switch (reg) {
     case '0':
       return Necessity.隱藏
@@ -64,17 +64,18 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
     loginTo: stringToNumber(sysStore?.login_to) ? LoginTo.首页 : LoginTo.我的页,
     showSign: sysStore.checkinSwitch == '1' ? true : false,
     necessity: {
-      recommendGuy: getOption(sysStore?.hide_reco),
-      name: getOption(sysStore?.reg_name),
-      fundPassword: getOption(sysStore?.reg_fundpwd),
-      qq: getOption(sysStore?.reg_qq),
-      wx: getOption(sysStore?.reg_wx),
-      phoneNumber: getOption(sysStore?.reg_phone),
-      email: getOption(sysStore?.reg_email),
+      recommendGuy: getNecessity(sysStore?.hide_reco),
+      name: getNecessity(sysStore?.reg_name),
+      fundPassword: getNecessity(sysStore?.reg_fundpwd),
+      qq: getNecessity(sysStore?.reg_qq),
+      wx: getNecessity(sysStore?.reg_wx),
+      phoneNumber: getNecessity(sysStore?.reg_phone),
+      email: getNecessity(sysStore?.reg_email),
+      inviteCode: getNecessity(sysStore?.inviteCodeSwitch),
       agentButton: sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
-      slideCode: sysStore?.reg_vcode == 2 ? Necessity.必填 : Necessity.隱藏,
+      slideCode: sysStore?.reg_vcode == '1' ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
-      inviteCode: getOption(sysStore?.inviteCodeSwitch),
+      bons: sysStore?.mBonsSwitch == '0' ? Necessity.必填 : Necessity.隱藏,
     },
     userCenterItems:
       sysStore?.userCenter

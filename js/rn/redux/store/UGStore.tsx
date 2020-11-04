@@ -1,17 +1,16 @@
-// import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorage } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Action, Unsubscribe } from 'redux'
 import { UGBasePageProps } from '../../pages/base/UGPage'
 import { PageName } from '../../public/navigation/Navigation'
 import UGBannerModel from '../model/全局/UGBannerModel'
 import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
+import UGRightMenuModel from '../model/全局/UGRightMenuModel'
 import UGSignModel from '../model/全局/UGSignModel'
+import UGSysConfModel from '../model/全局/UGSysConfModel'
+import UGSysNetModel from '../model/全局/UGSysNetModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
-import UGSysConfModel from '../model/全局/UGSysConfModel'
-import { UGSysModel } from '../model/全局/UGSysModel'
-import UGRightMenuModel from '../model/全局/UGRightMenuModel'
 
 // 整个State的树结构
 
@@ -24,7 +23,7 @@ export interface IGlobalState {
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳 陣列
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
-  sys?: UGSysModel
+  sys?: UGSysNetModel
   // value?: any;
 }
 
@@ -69,7 +68,7 @@ export interface UGAction<P = {}> extends Action {
   sign?: UGSignModel // 登入註冊訊息
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
-  sys?: UGSysModel
+  sys?: UGSysNetModel
   rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example
 }
