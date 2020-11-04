@@ -1,7 +1,7 @@
-import { devConfig } from './../../../../../config'
+import { devConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
-import { Skin1 } from './../../theme/UGSkinManagers'
+import { Skin1 } from '../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
 import { Platform } from 'react-native'
 import AppDefine from '../AppDefine'
@@ -44,9 +44,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages)
     }
-    if (skitType.indexOf('香槟金') != -1) {
-      pages = pages.concat(XBJPages);
-    }
+    // if (skitType.indexOf('香槟金') != -1) {
+    //   pages = pages.concat(XBJPages);
+    // }
   }
 
   // 测试环境（未上线的内容）
@@ -74,6 +74,7 @@ export function setRnPageInfo() {
       pages = pages.concat(KSPages)
     }
   }
+
   // —————————————————— 以下为已上线内容 ————————————————————————
   // 优惠活动列表页
   pages.push({
@@ -123,33 +124,33 @@ export function setRnPageInfo() {
 }
 
 // 香槟金
-const XBJPages = [
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.XBJLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.XBJRegisterPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.XBJMinePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  }
-];
+// const XBJPages = [
+//   {
+//     // 登录
+//     vcName: 'UGLoginViewController',
+//     rnName: PageName.XBJLoginPage,
+//     fd_prefersNavigationBarHidden: true,
+//     允许游客访问: true,
+//     允许未登录访问: true,
+//   },
+//   {
+//     // 注册
+//     vcName: 'UGRegisterViewController',
+//     rnName: PageName.XBJRegisterPage,
+//     fd_prefersNavigationBarHidden: true,
+//     允许游客访问: true,
+//     允许未登录访问: true,
+//   },
+//   {
+//     // 我的页
+//     tabbarItemPath: '/user',
+//     vcName: 'UGMineSkinViewController',
+//     rnName: PageName.XBJMinePage,
+//     fd_prefersNavigationBarHidden: true,
+//     允许游客访问: true,
+//     允许未登录访问: false,
+//   }
+// ];
 
 // 尊龙模板页面
 const ZLPages = [
@@ -218,6 +219,14 @@ const LCPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LCRegisterPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
