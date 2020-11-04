@@ -1,3 +1,10 @@
+export interface InviteCode {
+  canGenNum: string
+  canUseNum: string
+  displayWord: string
+  switch: string
+}
+
 export interface LhcPriceList {
   alias: string
   id: string
@@ -15,6 +22,17 @@ export interface MobileMenu {
   status: number
 }
 
+export interface Platform {
+  facebook: boolean
+  google: boolean
+  twitter: boolean
+}
+
+export interface Oauth {
+  platform: Platform
+  switch: boolean
+}
+
 export interface UserCenter {
   category: string
   code: string
@@ -30,7 +48,8 @@ export interface UserCenter {
   status: string
 }
 
-export interface UGSysModel {
+export default interface UGSysNetModel {
+  0: string
   activeReturnCoinRatio: number
   activeReturnCoinStatus: boolean
   adSliderTimer: string
@@ -45,7 +64,7 @@ export interface UGSysModel {
   appPopupQqImg: string
   appPopupQqNum: string
   appPopupWechatImg: string
-  appPopupWechatNum?: any
+  appPopupWechatNum: string
   appSelectType: string
   appdownloadbar: string
   autoTransferLimit: number
@@ -54,18 +73,21 @@ export interface UGSysModel {
   chaseNumber: string
   chatFollowSwitch: boolean
   chatLink: string
-  chatMinFollowAmount: string
   chatRoomName: string
   chatRoomServer: string
   chatRoomSwitch: boolean
+  chatShareBetMinAmount: string
   checkinSwitch: string
   closeregreason: string
+  coinPwdAuditOptionAry: string[]
+  curLangCode: string
   currency: string
   domainBindAgentId: number
   easyRememberDomain: string
   googleVerifier: boolean
   hide_reco: string
   host: string
+  inviteCode: InviteCode
   inviteCodeSwitch: string
   inviteWord: string
   iosRelease: boolean
@@ -74,6 +96,7 @@ export interface UGSysModel {
   lhcdocMiCard: boolean
   loginVCode: boolean
   login_to: string
+  mBonsSwitch: string
   m_promote_pos: string
   maxWithdrawMoney: string
   minWithdrawMoney: string
@@ -90,6 +113,7 @@ export interface UGSysModel {
   mobileTemplateStyle: string
   mobile_logo: string
   myreco_img: string
+  oauth: Oauth
   oftenLoginArea: string
   page_title: string
   pass_length_max: string
@@ -97,6 +121,7 @@ export interface UGSysModel {
   pass_limit: string
   popup_announce: string
   popup_hour: string
+  popup_tab: string[]
   popup_type: string
   rankingListSwitch: number
   reg_email: string
@@ -104,7 +129,7 @@ export interface UGSysModel {
   reg_name: string
   reg_phone: string
   reg_qq: string
-  reg_vcode: number
+  reg_vcode: string
   reg_wx: string
   selectNumber: string
   serviceQQ1: string
@@ -115,6 +140,7 @@ export interface UGSysModel {
   smsVerify: string
   switchAgentRecharge: boolean
   switchAutoTransfer: boolean
+  switchCoinPwd: string
   switchShowActivityCategory: boolean
   switchShowFriendReferral: string
   userCenter: UserCenter[]
