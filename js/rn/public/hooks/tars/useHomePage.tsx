@@ -10,6 +10,8 @@ import useRerender from './useRerender'
 import useSignOut from './useSignOut'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
+import { ToastError, ToastSuccess } from '../../tools/tars'
+import useLogOut from '../temp/useLogOut'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
