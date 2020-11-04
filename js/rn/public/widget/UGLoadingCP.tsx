@@ -1,14 +1,12 @@
-import React, { Component, useState, useEffect } from 'react'
-import LinearGradient from "react-native-linear-gradient"
-import AppDefine from "../define/AppDefine"
-import { View, Text, StyleSheet, Platform } from "react-native"
-import FastImage from "react-native-fast-image"
-import { Skin1 } from "../theme/UGSkinManagers"
-import { Button, Icon } from "react-native-elements"
+import React, { Component, useEffect, useState } from 'react'
+import LinearGradient from 'react-native-linear-gradient'
+import AppDefine from '../define/AppDefine'
+import { Platform, StyleSheet, Text, View } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import { Skin1 } from '../theme/UGSkinManagers'
+import { Button, Icon } from 'react-native-elements'
 import Animated, { Easing } from 'react-native-reanimated'
 import { Res } from '../../Res/icon/Resources'
-import AppDefine from '../define/AppDefine'
-import { Skin1 } from '../theme/UGSkinManagers'
 
 export enum UGLoadingType {
   Message, // 文本提示

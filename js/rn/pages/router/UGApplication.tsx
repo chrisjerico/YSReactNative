@@ -51,11 +51,7 @@ import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import BYHomePage from "../白曜/BYHomePage";
-import BYMinePage from "../白曜/BYMinePage";
 import HJHomePage from "../黑金/HJHomePage";
-import BYSignInPage from "../白曜/BYSignInPage";
-import BYSignUpPage from "../白曜/BYSignUpPage";
 import HJLoginPage from "../黑金/HJLoginPage";
 import HJRegisterPage from "../黑金/HJRegisterPage";
 import HJMinePage from "../黑金/HJMinePage";
@@ -66,6 +62,12 @@ import LEFMinePage from "../乐FUN/LEFMinePage";
 import LEFHomePage from "../乐FUN/LEFHomePage";
 import {initDomain} from "../../public/config/DomainUrls";
 import LEFSignUpPage2 from "../乐FUN/LEFSignUpPage";
+import BYHomePage from '../BY/BYHomePage'
+import BYMinePage from '../BY/BYMinePage'
+import LCLoginPage from '../乐橙/LCLoginPage'
+import LCRegisterPage from '../乐橙/LCRegisterPage'
+import BYSignInPage from '../BY/BYSignInPage'
+import BYSignUpPage from '../BY/BYSignUpPage'
 
 // TabbarController
 class TabBarController extends Component<{
@@ -104,7 +106,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-        <Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />
+        {/*<Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />*/}
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} options={{ unmountOnBlur: true }} />

@@ -315,10 +315,6 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
         </View>
       </View>
     )
-  } else {
-    return null
-  }
-
 }
 const TurntableListItem = () => {
   const { width, height } = useDimensions().screen
