@@ -156,7 +156,7 @@ const LLHomePage = ({ setProps, navigation }) => {
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
-      {uid === '' && (
+      {uid === '' && (  
         <View
           style={{
             flexDirection: 'row',
