@@ -12,6 +12,7 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
+import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
 
@@ -35,6 +36,7 @@ const WNZSignUpPage = () => {
   const { signUp, tryPlay, signOut } = sign
 
   const { navigateToSignInPage } = navigateTo
+  const configMenus = config?.menus?.concat(config?.menuSignIn)
 
   return (
     <>
@@ -75,18 +77,22 @@ const WNZSignUpPage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={rightMenus}
+        menus={rightMenus?.length > 0 ? rightMenus : configMenus}
         renderMenuItem={({ item }) => {
-          const { name, gameId } = item
+          const { name, gameId, title, onPress } = item
           return (
             <MenuButton
-              title={name}
+              title={name ?? title}
               onPress={() => {
                 if (gameId == 31) {
                   signOut()
                 } else {
                   closeMenu()
-                  PushHelper.pushHomeGame(item)
+                  if (onPress) {
+                    onPress()
+                  } else {
+                    PushHelper.pushHomeGame(item)
+                  }
                 }
               }}
             />

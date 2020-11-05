@@ -74,6 +74,7 @@ const WNZMinePage = () => {
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
+  const configMenus = uid ? config?.menus?.concat(config?.menuSignOut) : config?.menus?.concat(config?.menuSignIn)
 
   return (
     <>
@@ -168,18 +169,22 @@ const WNZMinePage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={rightMenus}
+        menus={rightMenus?.length > 0 ? rightMenus : configMenus}
         renderMenuItem={({ item }) => {
-          const { name, gameId } = item
+          const { name, gameId, title, onPress } = item
           return (
             <MenuButton
-              title={name}
+              title={name ?? title}
               onPress={() => {
                 if (gameId == 31) {
                   signOut()
                 } else {
                   closeMenu()
-                  PushHelper.pushHomeGame(item)
+                  if (onPress) {
+                    onPress()
+                  } else {
+                    PushHelper.pushHomeGame(item)
+                  }
                 }
               }}
             />

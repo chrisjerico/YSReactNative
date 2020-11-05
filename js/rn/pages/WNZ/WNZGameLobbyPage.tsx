@@ -49,6 +49,7 @@ const WNZGameLobbyPage = ({ route }) => {
           showsPagination={false}
           banners={banners}
           renderBanner={(item, index) => {
+            // @ts-ignore
             const { linkCategory, linkPosition, pic } = item
             return (
               <TouchableImage

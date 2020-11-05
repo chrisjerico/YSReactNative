@@ -65,6 +65,8 @@ const WNZHomePage = () => {
     },
   ]
 
+  const configMenus = uid ? config?.menus?.concat(config?.menuSignOut) : config?.menus?.concat(config?.menuSignIn)
+
   return (
     <HomePage
       {...homeInfo}
@@ -263,18 +265,22 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={rightMenus}
+          menus={rightMenus?.length > 0 ? rightMenus : configMenus}
           renderMenuItem={({ item }) => {
-            const { name, gameId } = item
+            const { name, gameId, title, onPress } = item
             return (
               <MenuButton
-                title={name}
+                title={name ?? title}
                 onPress={() => {
                   if (gameId == 31) {
                     signOut()
                   } else {
                     closeMenu()
-                    PushHelper.pushHomeGame(item)
+                    if (onPress) {
+                      onPress()
+                    } else {
+                      PushHelper.pushHomeGame(item)
+                    }
                   }
                 }}
               />
