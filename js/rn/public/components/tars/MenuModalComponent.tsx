@@ -7,7 +7,7 @@ import List from '../../../public/views/tars/List'
 interface MenuModalComponentProps {
   menus?: any[]
   renderMenuItem?: (params: RenderMenuItem) => any
-  direction?: 'right' | 'left'
+  direction?: 'right' | 'left' | 'bottom'
   listStyle?: StyleProp<ViewStyle>
   renderMenu?: () => any
 }
@@ -29,18 +29,44 @@ const MenuModalComponent = ({ menus, direction = 'right', listStyle, renderMenu,
     },
   }))
 
+  const animationIn = (direction: 'right' | 'left' | 'bottom') => {
+    switch (direction) {
+      case 'right':
+        return 'slideInRight'
+      case 'left':
+        return 'slideInLeft'
+      case 'bottom':
+        return 'slideInUp'
+      default:
+        return 'slideInUp'
+    }
+  }
+
+  const animationOut = (direction: 'right' | 'left' | 'bottom') => {
+    switch (direction) {
+      case 'right':
+        return 'slideOutRight'
+      case 'left':
+        return 'slideOutLeft'
+      case 'bottom':
+        return 'slideOutDown'
+      default:
+        return 'slideOutDown'
+    }
+  }
+
   return (
     <Modal
       isVisible={visible}
-      animationIn={direction == 'right' ? 'slideInRight' : 'slideInLeft'}
-      animationOut={direction == 'right' ? 'slideOutRight' : 'slideOutLeft'}
+      animationIn={animationIn(direction)}
+      animationOut={animationOut(direction)}
       style={{ width: '100%', margin: 0 }}
       animationInTiming={600}
       animationOutTiming={600}
       useNativeDriver={true}
       hideModalContentWhileAnimating={true}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
-        {direction == 'right' ? (
+        {direction == 'right' || direction == 'bottom' ? (
           <>
             <TouchableWithoutFeedback
               onPress={() => {
