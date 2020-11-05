@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Button, Icon } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AppDefine from '../../public/define/AppDefine';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
@@ -19,8 +18,8 @@ import { UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { XBJRegisterProps } from './XBJRegisterPage';
 import { navigate } from '../../public/navigation/RootNavigation';
-import { ErrorObject } from '../../public/network/CCSessionModel';
 import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 // 声明成员变量
@@ -122,50 +121,47 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
     }
 
     v.reloadSlide();
-    showLoading('正在登录...' );
-    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode))
-      .then(({ data }) => {
-        console.log('登录成功');
-        showSuccess('登录成功！');
+    showLoading('正在登录...');
+    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode)).setCompletionBlock(({ data }) => {
+      console.log('登录成功');
+      showSuccess('登录成功！');
 
-        async function didLogin() {
-          // 退出旧账号（试玩账号）
-          var user = await OCHelper.call('UGUserModel.currentUser');
-          if (user) {
-            console.log('退出旧账号');
-            console.log(user);
-            var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-            await OCHelper.call('UGUserModel.setCurrentUser:');
-          }
-
-          // 保存数据
-          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [props.rememberPassword, 'isRememberPsd']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.account : '', 'userName']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.pwd : '', 'userPsw']);
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-
-          // 去下一页
-          var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
-          if (simplePwds.indexOf(v.pwd) > -1) {
-            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
-              true,
-            ]);
-          } else {
-            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-          }
+      async function didLogin() {
+        // 退出旧账号（试玩账号）
+        var user = await OCHelper.call('UGUserModel.currentUser');
+        if (user) {
+          console.log('退出旧账号');
+          console.log(user);
+          var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+          await OCHelper.call('UGUserModel.setCurrentUser:');
         }
-        didLogin();
-      })
-      .catch((err: ErrorObject) => {
-        showError(err.message);
-        if (loginVCode || (v.errorTimes += 1) > 3) {
-          setProps();
+
+        // 保存数据
+        await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [props.rememberPassword, 'isRememberPsd']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.account : '', 'userName']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.pwd : '', 'userPsw']);
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+
+        // 去下一页
+        var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+        if (simplePwds.indexOf(v.pwd) > -1) {
+          await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+          await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+            { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
+            true,
+          ]);
+        } else {
+          await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
         }
-      });
+      }
+      didLogin();
+    }, (err) => {
+      if (loginVCode || (v.errorTimes += 1) > 3) {
+        setProps();
+      }
+    });
   }
 
   return (

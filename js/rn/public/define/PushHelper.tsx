@@ -7,7 +7,7 @@ import { PageName } from '../navigation/Navigation'
 import { navigate, popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
-import NetworkRequest1 from '../network/NetworkRequest1'
+import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
 import { GoldenEgg } from '../views/tars/Activitys'
@@ -309,7 +309,7 @@ export default class PushHelper {
                 // ShowLoading
                 OCHelper.call('SVProgressHUD.showWithStatus:')
 
-                let {data:info} = await NetworkRequest1.team_agentApplyInfo()
+                let { data: { data: info } } = await api.team.agentApplyInfo().promise;
 
                 if (info.reviewStatus === 2) {
                   // 去推荐收益页

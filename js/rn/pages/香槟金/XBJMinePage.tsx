@@ -1,10 +1,9 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useRef } from 'react';
 import { View, Alert, Platform } from 'react-native';
 import { Button, Text, Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import { UGUserCenterItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from '../../public/define/AppDefine';
 import PushHelper from '../../public/define/PushHelper';
@@ -19,6 +18,8 @@ import { UGBasePageProps } from '../base/UGPage';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 // 定义Props
@@ -29,7 +30,8 @@ export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
 
 export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, avatarURL = 'https://cdn01.guolaow.com/images/face/memberFace2.jpg' } = props;
-  // 获取功能按钮列表
+  const { current: v } = useRef<{} & JDSalaryListCP>({});
+  const { mBonsSwitch = true } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
     setProps({
@@ -77,7 +79,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
     }
 
     // 头像列表
-    NetworkRequest1.system_avatarList().then(({ data: list }) => {
+    api.system.avatarList().setCompletionBlock(({ data: list }) => {
       const filter = list?.filter((ele) => {
         if (ele.filename == UserI.avatar) {
           return ele;
@@ -87,6 +89,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
         setProps({ avatarURL: filter[0].url })
       } else if (list?.length) {
         setProps({ avatarURL: list[0].url })
+      } else {
+        setProps({ avatarURL: 'https://i.ibb.co/mNnwnh7/money-2.png' })
       }
     });
   }, []);
@@ -108,11 +112,12 @@ export const XBJMinePage = (props: XBJMineProps) => {
   });
 
   return (
+    [
     <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
       <View style={{ padding: 16, borderRadius: 4, backgroundColor: Skin1.homeContentColor }}>
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity onPress={() => {
-            console.log('点击');
+            console.log('点击头像');
           }} >
             <FastImage source={{ uri: avatarURL }} style={{ width: 56, height: 56, borderRadius: 28 }} />
           </TouchableOpacity>
@@ -128,6 +133,15 @@ export const XBJMinePage = (props: XBJMineProps) => {
               <Text style={{ fontSize: 12, color: UGColor.RedColor2 }}>{UserI?.curLevelTitle}</Text>
             </View>
           </View>
+          <View style={{ flex: 1 }}></View>
+            {mBonsSwitch && <TouchableOpacity onPress={() => {
+              v?.showSalaryAlert && v?.showSalaryAlert();
+          }}>
+            <LinearGradient colors={['#8DA9F9', '#9774EF']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{paddingVertical:6, paddingHorizontal:8, borderRadius:5, flexDirection:'row'}} >
+              <Text style={{ textAlign: 'right', fontWeight: '600', fontSize: 14, color: '#fff' }}>领取俸禄</Text>
+              <FastImage source={{uri:'https://i.ibb.co/SxCc8CN/image.png'}} style={{marginVertical:-2, marginLeft:2, marginRight:-2, width:20,height:20}} />
+            </LinearGradient>
+          </TouchableOpacity>}
         </View>
         <View style={{ marginLeft: -15, marginTop: 18, flexDirection: 'row', justifyContent: 'space-around' }}>
           <TouchableOpacity
@@ -209,7 +223,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             {
               text: '确定',
               onPress: async () => {
-                NetworkRequest1.user_logout();
+                api.user.logout();
 
                 switch (Platform.OS) {
                   case 'ios':
@@ -229,8 +243,9 @@ export const XBJMinePage = (props: XBJMineProps) => {
           ]);
         }}
       />
-
       <View style={{ height: 150 }} />
-    </ScrollView>
+      </ScrollView>,
+      <JDSalaryListCP c_ref={v} />
+    ]
   );
 }

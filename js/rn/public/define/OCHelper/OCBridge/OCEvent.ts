@@ -26,12 +26,6 @@ export class OCEvent extends OCCall {
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
       // console.log('OCEvent rn收到oc通知：', params);
 
-      if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
-        const currentPage = getCurrentPage()
-        const { didFocus } = UGStore.getPageProps(currentPage);
-        didFocus && didFocus();
-      }
-
       this.events
         .filter(v => {
           return v.type == params._EventName;
@@ -43,13 +37,24 @@ export class OCEvent extends OCCall {
 
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
-      console.log('跳转到rn页面：', params.vcName, params);
       if (params.vcName) {
+        const page = RnPageModel.getPageName(params.vcName);
         if (params.rnAction == 'push') {
-          push(params.vcName, params, true) || push(RnPageModel.getPageName(params.vcName), params, true);
+          console.log('跳转到rn页面：', params.vcName, params);
+          push(page, params, true);
         } else {
-          jumpTo(params.vcName, params, true) || jumpTo(RnPageModel.getPageName(params.vcName), params, true);
+          const currentPage = getCurrentPage()
+          if (currentPage == page) {
+            console.log('成为焦点：', currentPage);
+            const { didFocus } = UGStore.getPageProps(currentPage);
+            didFocus && didFocus();
+          } else {
+            console.log('跳转到rn页面：', params.vcName, params);
+            jumpTo(page, params, true);
+          }
         }
+      } else {
+        console.log('页面为空', params);
       }
     });
 

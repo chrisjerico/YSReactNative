@@ -9,7 +9,6 @@ import HomeFloatAdvComponent from './cp/HomeFloatAdvComponent';
 import HomeNewsComponent from './cp/HomeNewsComponent';
 import HomeRedBagComponent from './cp/HomeRedBagComponent';
 import HomeNoticeComponent from './cp/HomeNoticeComponent';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
@@ -67,14 +66,14 @@ export const XBJHomePage = (props: XBJHomeProps) => {
 
   function requestData() {
     IGlobalStateHelper.updateUserInfo();
-    NetworkRequest1.homeInfo()
-      .then(value => {
-        hideLoading();
-        setProps({ ...value });
-      })
-      .catch(error => {
-        showReload(error);
-      });
+    // NetworkRequest1.homeInfo()
+    //   .then(value => {
+    //     hideLoading();
+    //     setProps({ ...value });
+    //   })
+    //   .catch(error => {
+    //     showReload(error);
+    //   });
   }
 
 
