@@ -13,9 +13,10 @@ interface ProfileBlockProps {
   signImage: string
   onPressSign: () => any
   showBonsTag?: boolean
+  onPressBonsTag?: () => any
 }
 
-const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign, showBonsTag }: ProfileBlockProps) => {
+const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign, showBonsTag, onPressBonsTag }: ProfileBlockProps) => {
   const curLevelInt_f = parseFloat(curLevelInt) || 0
   const nextLevelInt_f = parseFloat(nextLevelInt) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
@@ -57,7 +58,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
           </View>
           <View style={{ flex: 3 }}>
             {showBonsTag && (
-              <TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={onPressBonsTag}>
                 <FastImage source={{ uri: 'http://test60f.fhptcdn.com/images/lqfl.png' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             )}

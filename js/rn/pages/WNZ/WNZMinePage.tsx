@@ -12,6 +12,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
@@ -22,6 +23,8 @@ import ToolBlock from './views/ToolBlock'
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
+  const { current: v } = useRef<{} & JDSalaryListCP>({})
+
   const menu = useRef(null)
 
   const openMenu = () => {
@@ -110,6 +113,9 @@ const WNZMinePage = () => {
           backgroundImage={getHtml5Image(23, 'userBg')}
           signImage={getHtml5Image(23, 'qiaodao')}
           onPressSign={goToUserCenterType.每日签到}
+          onPressBonsTag={() => {
+            v?.showSalaryAlert && v?.showSalaryAlert()
+          }}
         />
         <ButtonGroup
           leftLogo={headrTools[0]?.logo}
@@ -191,6 +197,7 @@ const WNZMinePage = () => {
           )
         }}
       />
+      <JDSalaryListCP c_ref={v} />
     </>
   )
 }
