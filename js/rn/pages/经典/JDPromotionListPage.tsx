@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import { UGPromoteModel } from '../../redux/model/other/UGPromoteModel';
 import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import {Platform, View, ViewStyle, StyleProp} from 'react-native';
+import { Platform, View, ViewStyle, StyleProp } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { UGBasePageProps } from '../base/UGPage';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { getStackLength } from '../../public/navigation/RootNavigation';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 interface JDPromotionListVars {
@@ -47,7 +47,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       },
     });
 
-    NetworkRequest1.systeam_promotions().then(({data}) => {
+    api.system.promotions().setCompletionBlock(({ data }) => {
       if (data.showCategory) {
         const temp: { [x: number]: Array<UGPromoteModel> } = [];
         data.list.map(pm => {

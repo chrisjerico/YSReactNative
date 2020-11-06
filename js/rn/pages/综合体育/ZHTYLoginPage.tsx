@@ -1,10 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {View, TouchableOpacity, Text, Platform, PlatformAndroidStatic, PlatformIOSStatic} from 'react-native';
-import UGBasePage from '../base/UGBasePage';
 import {ZHTYLoginProps, ZHTYLoginStateToProps} from './ZHTYLoginProps';
 import {OCHelper} from '../../public/define/OCHelper/OCHelper';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import WebView from 'react-native-webview';
 import AppDefine from '../../public/define/AppDefine';
@@ -13,7 +11,7 @@ import UGTextField from '../../public/widget/UGTextField';
 import PushHelper from '../../public/define/PushHelper';
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel';
 import LinearGradient from 'react-native-linear-gradient';
-import {Navigation, PageName} from '../../public/navigation/Navigation';
+import {PageName} from '../../public/navigation/Navigation';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import {Icon, Button} from 'react-native-elements';
 import {Res} from '../../Res/icon/Resources';
@@ -22,6 +20,7 @@ import {Toast} from "../../public/tools/ToastUtils";
 import {showLoading, UGLoadingType} from "../../public/widget/UGLoadingCP";
 import {NA_DATA} from "../../public/define/ANHelper/hp/DataDefine";
 import {CMD} from "../../public/define/ANHelper/hp/CmdDefine";
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
   account: string = null; // 账号
@@ -94,8 +93,7 @@ class ZHTYLoginPage extends UGBasePage<ZHTYLoginProps> {
     showLoading('正在登录...');
     // OCHelper.call('SVProgressHUD.showWithStatus:', ['正在登录...']);
 
-    NetworkRequest1.user_login(this.account, this.pwd.md5(), this.googleCode, this.slideCode)
-      .then(({data}) => {
+    api.user.login(this.account, this.pwd.md5(), this.googleCode, this.slideCode).setCompletionBlock(({data}) => {
         console.log('登录成功');
         // OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ['登录成功！']);
         Toast('登录成功！')
