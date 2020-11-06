@@ -5,6 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
+import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignIn from './useSignIn'
@@ -178,7 +179,22 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
-  const valid = account && password && loginVCode_valid ? true : false
+  // const valid = account && password && loginVCode_valid ? true : false
+  const account_valid = account?.length > 0
+  const password_valid = password?.length > 0
+  const valid = account_valid && password_valid && loginVCode_valid ? true : false
+
+  const getValidErrorMessage = () => {
+    if (!account_valid) {
+      return '请输入帐号'
+    } else if (!password_valid) {
+      return '请输入密码'
+    } else if (!loginVCode_valid) {
+      return '请滑动验证码'
+    } else {
+      return '不明错误'
+    }
+  }
 
   const value = {
     account,
@@ -204,13 +220,17 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   }
 
   const _signIn = () => {
-    const params = {
-      account: account,
-      //@ts-ignore
-      password: password?.md5(),
-      slideCode,
+    if (valid) {
+      const params = {
+        account: account,
+        //@ts-ignore
+        password: password?.md5(),
+        slideCode,
+      }
+      signIn(params)
+    } else {
+      showError(getValidErrorMessage() || '')
     }
-    signIn(params)
   }
 
   const reference = {
