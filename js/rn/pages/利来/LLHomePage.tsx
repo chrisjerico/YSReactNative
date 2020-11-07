@@ -4,7 +4,6 @@ import {
   Image,
   ImageBackground,
   LogBox,
-  Platform,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -23,7 +22,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import PushHelper from '../../public/define/PushHelper'
 import { UGStore } from '../../redux/store/UGStore'
 import APIRouter from '../../public/network/APIRouter'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import AppDefine from '../../public/define/AppDefine'
 import { httpClient } from '../../public/network/httpClient'
 import { navigate, push } from '../../public/navigation/RootNavigation'
@@ -35,9 +33,6 @@ import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import { getActivityPosition } from '../../public/tools/tars'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 
 const LLHomePage = ({ setProps, navigation }) => {
@@ -49,7 +44,7 @@ const LLHomePage = ({ setProps, navigation }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      refresh()
+      // refresh()
       //updateUserInfo()
     }, 2000)
     return () => {
@@ -152,7 +147,7 @@ const LLHomePage = ({ setProps, navigation }) => {
             </Text>
           </View>
           <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
-          <Text style={{ color: 'black', textAlign: 'center' }}>version: {25}</Text>
+          <Text style={{ color: 'black', textAlign: 'center' }}>version: {26}</Text>
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
