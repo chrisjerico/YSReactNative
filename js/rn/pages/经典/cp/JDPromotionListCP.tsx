@@ -121,7 +121,6 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
             <WebView
               onMessage={(e) => {
                 const h = parseInt(e.nativeEvent.data);
-                console.log('e.nativeEvent.data', h);
                 if (h > 0 && h != pm.webViewHeight) {
                   pm.webViewHeight = h + (pm.webViewHeight ? 0 : 40);
                   this.setState({});

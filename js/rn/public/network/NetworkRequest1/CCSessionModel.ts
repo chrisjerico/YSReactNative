@@ -1,5 +1,5 @@
 import { UGStore } from './../../../redux/store/UGStore';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { ANHelper } from '../../define/ANHelper/ANHelper';
 import { Platform } from 'react-native';
 import AppDefine from '../../define/AppDefine';
@@ -91,20 +91,22 @@ export class CCSessionReq {
       // 接口请求成功
       sm.status = res.status;
       sm.res = res.data;
+      sm.err = CheckError(sm);
 
-      // 校验业务逻辑错误
-      const err = CheckError(sm);
-      if (err) {
-        return Promise.reject(err);
+      if (sm.err) {
+        return Promise.reject(sm.err);
       }
       console.log('请求成功，', sm.url);
 
       // 向外回调
       sm.success && sm.success(res.data, sm)
       return Promise.resolve(res);
-    }).catch((err) => {
-      sm.err = err;
-      console.log('请求失败， err = ', err);
+    }).catch((err: AxiosError<ResponseObject<T>>) => {
+      sm.status = err.response?.status;
+      sm.res = err.response?.data;
+      sm.err = CheckError(sm);
+
+      console.log('请求失败， err = ', sm.err);
 
       // 向外回调
       sm.failure && sm.failure(sm.err, sm)
