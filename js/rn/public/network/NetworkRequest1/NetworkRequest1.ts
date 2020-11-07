@@ -67,59 +67,59 @@ export function CheckError(sm: CCSessionModel<any>): Error {
 
 export class api {
   // 活动
-  static activity = new api_activity();
+  static activity = api_activity;
 
   // bbs
-  static bbs = new api_bbs();
+  static bbs = api_bbs;
 
   // 聊天
-  static chat = new api_chat();
+  static chat = api_chat;
 
   // 游戏
-  static game = new api_game();
+  static game = api_game;
 
   // 六合资料
-  static lhcdoc = new api_lhcdoc();
+  static lhcdoc = api_lhcdoc;
 
   // 通知
-  static notice = new api_notice();
+  static notice = api_notice;
 
   // 认证
-  static oauth = new api_oauth();
+  static oauth = api_oauth;
 
   // 真人
-  static real = new api_real();
+  static real = api_real;
 
   // 充值
-  static recharge = new api_recharge();
+  static recharge = api_recharge;
 
   // 反馈
-  static report = new api_report();
+  static report = api_report;
 
   // 安全
-  static secure = new api_secure();
+  static secure = api_secure;
 
   // 系统
-  static system = new api_system();
+  static system = api_system;
 
   // 任务
-  static task = new api_task();
+  static task = api_task;
 
   // 代理
-  static team = new api_team();
+  static team = api_team;
 
   // 注单
-  static ticket = new api_ticket();
+  static ticket = api_ticket;
 
   // 用户
-  static user = new api_user();
+  static user = api_user;
 
   // 提现
-  static withdraw = new api_withdraw();
+  static withdraw = api_withdraw;
 
   // 利息宝
-  static yuebao = new api_yuebao();
+  static yuebao = api_yuebao;
 
   // 朋友圈
-  static moment = new api_moment();
+  static moment = api_moment;
 }

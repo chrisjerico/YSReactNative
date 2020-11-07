@@ -1,11 +1,11 @@
-import { CCSessionReq } from "../CCSessionModel";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_report {
-  c = 'c=report&a=';
+  static c = new SampleAPI('c=report&a=');
 
   // 我的长龙助手投注记录
-  getUserRecentBet() {
-    return CCSessionReq.get(this.c + arguments.callee.name, {tag:1});
+  static getUserRecentBet() {
+    return this.c.get('getUserRecentBet', {tag:1});
   }
 }

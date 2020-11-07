@@ -42,6 +42,13 @@ export class CCSessionModel<T = {} | [] | string> {
 // ____________________________________________________________________________________________________________
 // ____________________________________________________________________________________________________________
 
+export class SampleAPI {
+  c: string;
+  constructor(c) { this.c = c; }
+  get<T>(path: string, params: object = {}) { return CCSessionReq.request<T>(this.c + path, params, false); }
+  post<T>(path: string, params: object = {}) { return CCSessionReq.request<T>(this.c + path, params, true); }
+}
+
 // 公共参数
 function publicParams() {
   const { userInfo } = UGStore.globalProps;
@@ -52,11 +59,7 @@ function publicParams() {
 type Dictionary = { [x: string]: any; }
 
 export class CCSessionReq {
-
-  static get<T>(path: string, params: object = {}) { return this.request<T>(path, params, false); }
-  static post<T>(path: string, params: object = {}) { return this.request<T>(path, params, true); }
-
-
+  
   private static isEncrypt = true; // 参数是否加密
   private static http = axios.create({
     baseURL: AppDefine?.host,
@@ -64,7 +67,7 @@ export class CCSessionReq {
     headers: { 'Content-Type': 'application/json', }
   });
 
-  private static request<T>(path: string, params: object = {}, isPost: boolean = false): CCSessionModel<T> {
+  static request<T>(path: string, params: object = {}, isPost: boolean = false): CCSessionModel<T> {
     typeof params == 'string' && (params = JSON.parse(params));// 容错
     let url = `${AppDefine.host}/wjapp/api.php?${path}`;// 拼接url
     params = Object.assign({}, publicParams(), params); // 添加公共参数

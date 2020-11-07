@@ -1,11 +1,11 @@
-import { CCSessionReq } from "../CCSessionModel";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_notice {
-  c = 'c=notice&a=';
+  static c = new SampleAPI('c=notice&a=');
 
   // 获取首页公告
-  latest() {
-    return CCSessionReq.get(this.c + arguments.callee.name);
+  static latest() {
+    return this.c.get('latest');
   }
 }

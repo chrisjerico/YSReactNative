@@ -1,26 +1,26 @@
-import { CCSessionReq } from "../CCSessionModel";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_recharge {
-  c = 'c=recharge&a=';
+  static c = new SampleAPI('c=recharge&a=');
 
   // 获取存款记录
-  logs(startTime?:string, endTime?:string, page=1, rows=20) {
-    return CCSessionReq.get(this.c + arguments.callee.name, {startTime:startTime, endTime:endTime, page:page, rows:rows});
+  static logs(startTime?:string, endTime?:string, page=1, rows=20) {
+    return this.c.get('logs', {startTime:startTime, endTime:endTime, page:page, rows:rows});
   }
 
   // 支付通道列表信息
-  cashier() {
-    return CCSessionReq.get(this.c + arguments.callee.name);
+  static cashier() {
+    return this.c.get('cashier');
   }
 
   // 获取在线支付地址
-  onlinePay(payId:string, money:number) {
-    return CCSessionReq.post(this.c + arguments.callee.name, {payId:payId, money:money});
+  static onlinePay(payId:string, money:number) {
+    return this.c.post('onlinePay', {payId:payId, money:money});
   }
 
   // 线下支付（申请充值）
-  transfer(
+  static transfer(
     channel: number, //支付通道ID
     payee: string, // 支付账号
     payer: string, // 支付姓名（银行卡姓名)（虚拟币金额USDT）
@@ -29,6 +29,6 @@ export class api_recharge {
     depositTime:string, //存款时间2020-10-03 10:20:52
     
   ) {
-    return CCSessionReq.post(this.c + arguments.callee.name, {channel:channel, payee:payee, payer:payer, amount:amount, remark:remark, depositTime:depositTime});
+    return this.c.post('transfer', {channel:channel, payee:payee, payer:payer, amount:amount, remark:remark, depositTime:depositTime});
   }
 }
