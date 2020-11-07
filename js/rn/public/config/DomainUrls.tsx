@@ -83,7 +83,7 @@ const DomainUrls: {[x:string]:string} = {
   'c184': 'http://00fhcp.cn',
   'c186': 'https://200300b.com',
   'c190': 'https://www677272.com',
-  'c193': 'https://4906app.app',
+  'c193': 'https://4906app.com',
   'c198': 'https://2909tycjt.com',
   'c200': 'https://20181995.com',
   'c201': 'https://dkcp520.com',
