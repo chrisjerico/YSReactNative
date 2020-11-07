@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import { AxiosResponse } from 'axios';
 import { api_activity } from './api/api_activity';
 import { api_user } from './api/api_user';
 import { api_bbs } from './api/api_bbs';
@@ -19,12 +18,11 @@ import { api_ticket } from './api/api_ticket';
 import { api_withdraw } from './api/api_withdraw';
 import { api_yuebao } from './api/api_yuebao';
 import { CCSessionModel } from './CCSessionModel';
-import { hideLoading, showError } from '../../widget/UGLoadingCP';
-import UGUserModel from '../../../redux/model/全局/UGUserModel';
+import { hideLoading } from '../../widget/UGLoadingCP';
 import { OCHelper } from '../../define/OCHelper/OCHelper';
 import { UGStore } from '../../../redux/store/UGStore';
 import AppDefine from '../../define/AppDefine';
-import { object } from 'prop-types';
+import { api_moment } from './api/api_moment';
 
 
 // 校验错误信息
@@ -114,4 +112,7 @@ export class api {
 
   // 利息宝
   static yuebao = new api_yuebao();
+
+  // 朋友圈
+  static moment = new api_moment();
 }

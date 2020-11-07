@@ -1,8 +1,4 @@
 import { CCSessionReq } from './../CCSessionModel';
-import { Platform } from "react-native";
-import { ANHelper } from "../../../define/ANHelper/ANHelper";
-import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
-import { OCHelper } from "../../../define/OCHelper/OCHelper";
 
 
 export class api_secure {
@@ -11,5 +7,19 @@ export class api_secure {
   // 发送短信验证码
   smsCaptcha(phone: string) {
     return CCSessionReq.post(this.c + arguments.callee.name, { phone: phone });
+  }
+
+  // 图形验证码（待获取accessToken）
+  imgCaptcha() {
+    const accessToken = undefined;
+    return CCSessionReq.get(this.c + arguments.callee.name, { accessToken: accessToken });
+  }
+
+  // 个人中心谷歌验证相关操作
+  gaCaptcha(
+    action: string,// bind绑定，unbind解绑，gen生成二维码
+    code?: string,// 谷歌验证码（绑定、解绑时必填）
+  ) {
+    return CCSessionReq.get(this.c + arguments.callee.name, { action: action, code: code });
   }
 }

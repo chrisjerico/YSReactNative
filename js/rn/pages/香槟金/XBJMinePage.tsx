@@ -31,7 +31,7 @@ export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
 export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, avatarURL = 'https://cdn01.guolaow.com/images/face/memberFace2.jpg' } = props;
   const { current: v } = useRef<{} & JDSalaryListCP>({});
-  const { mBonsSwitch = true } = UGStore.globalProps?.sysConf;
+  const { mBonsSwitch } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
     setProps({
