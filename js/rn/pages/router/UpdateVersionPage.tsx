@@ -38,7 +38,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     switch (Platform.OS) {
       case 'ios':
         options = {
-          deploymentKey: OCHelper.CodePushKey == 'LocalCode' ? 'iwDsp1YB7bcBov7KIaxDP9tLbuUQ4ksvOXqog' : OCHelper.CodePushKey,
+          deploymentKey:  'EU5wjwXEOTQuI1ErQCHQ8mhzKPur4ksvOXqog',
           /*
          * installMode (codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART 即下一次启动的时候安装。
          * 在更新配置中通过指定installMode来决定安装完成的重启时机，亦即更新生效时机

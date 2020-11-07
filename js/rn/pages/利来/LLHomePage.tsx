@@ -44,7 +44,7 @@ const LLHomePage = ({ setProps, navigation }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      // refresh()
+      refresh()
       //updateUserInfo()
     }, 2000)
     return () => {
