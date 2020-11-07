@@ -27,6 +27,13 @@ import { api_moment } from './api/api_moment';
 
 // 校验错误信息
 export function CheckError(sm: CCSessionModel<any>): Error {
+
+  if (Platform.OS == 'ios') {
+    // api请求信息添加到iOS下拉调试页面
+    OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [sm.url], args2: [sm.params], args3: [sm.res] }]);
+  }
+
+
   if (sm.url.indexOf(AppDefine?.host) == -1) return;
 
   let err: Error;

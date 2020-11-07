@@ -102,9 +102,11 @@ export class CCSessionReq {
       sm.success && sm.success(res.data, sm)
       return Promise.resolve(res);
     }).catch((err: AxiosError<ResponseObject<T>>) => {
-      sm.status = err.response?.status;
-      sm.res = err.response?.data;
-      sm.err = CheckError(sm);
+      if (!sm.err && err.response) {
+        sm.status = err.response?.status;
+        sm.res = err.response?.data;
+        sm.err = CheckError(sm);
+      }
 
       console.log('请求失败， err = ', sm.err);
 
