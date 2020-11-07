@@ -585,10 +585,12 @@ export default class PushHelper {
           }
           case UGUserCenterType.全民竞猜: {
             subId = MenuType.QMJC;
+            // Toast('敬请期待')
             break;
           }
           case UGUserCenterType.开奖走势: {
-            Toast('敬请期待')
+            // Toast('敬请期待')
+            navigate(PageName.TrendView, {})
             return
           }
           case UGUserCenterType.QQ客服: {
@@ -598,6 +600,13 @@ export default class PushHelper {
           case UGUserCenterType.资金明细: {
             subId = MenuType.ZHGL;
             break;
+          }
+          case UGUserCenterType.开奖网: {
+            this.openWebView(
+              //httpClient.defaults.baseURL + '/index2.php'
+              httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
+            )
+            return;
           }
           case UGUserCenterType.彩票大厅: {
             subId = MenuType.GCDT;

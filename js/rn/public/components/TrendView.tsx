@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import {ActivityIndicator, Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { chunkArray } from '../tools/ChunkArr'
@@ -50,7 +50,13 @@ const TrendView = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true])
+      switch (Platform.OS) {
+        case 'ios':
+          OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true])
+          break;
+        case 'android':
+          break;
+      }
     })
     return unsubscribe
   }, [])
