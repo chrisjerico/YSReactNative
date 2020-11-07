@@ -134,7 +134,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             </View>
           </View>
           <View style={{ flex: 1 }}></View>
-            {mBonsSwitch && <TouchableOpacity onPress={() => {
+            {!mBonsSwitch && <TouchableOpacity onPress={() => {
               v?.showSalaryAlert && v?.showSalaryAlert();
           }}>
             <LinearGradient colors={['#8DA9F9', '#9774EF']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{paddingVertical:6, paddingHorizontal:8, borderRadius:5, flexDirection:'row'}} >
