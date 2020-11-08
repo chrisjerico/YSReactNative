@@ -66,7 +66,7 @@ const DomainUrls: {[x:string]:string} = {
   'c120': 'https://asafew435yrtgre.net',
   'c126': 'https://jzcp055.com',
   'c126b': 'https://og878.vip',
-  'c134': 'https://19972030.com',
+  'c134': 'https://19972029.com',
   'c137': 'https://7033005.com',
   'c141': 'http://nhyiec141kcwvvq.phlotgame.com',
   'c150': 'https://0187488.com',
