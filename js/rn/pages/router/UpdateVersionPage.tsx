@@ -206,7 +206,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 } else {
                   setProps({ backgroundImage: pics.shift() })
                 }
-              }, 4000)
+              }, 4500)
             } else {
               setProps({ bBanner: true })
             }
