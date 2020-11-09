@@ -307,7 +307,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           setProps({ clickCount: (clickCount + 1) })
           ugLog('clickCount=' + clickCount)
           //第3次就测网速
-          if (clickCount % 4 == 3) {
+          if (clickCount % 3 == 2) {
             testNetwork()
           }
         }}>

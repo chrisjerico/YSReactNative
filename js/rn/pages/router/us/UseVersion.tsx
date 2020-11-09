@@ -23,11 +23,11 @@ const UseVersion = ({
         let div = curTime - lastTime;
         ugLog('try div=', div);
 
-        if (div < 800) {
+        if (div < 500) {
           testResult && testResult('网络很好')
-        } else if (div < 1600) {
+        } else if (div < 1000) {
           testResult && testResult('网络一般')
-        } else if (div < 2500) {
+        } else if (div < 1500) {
           testResult && testResult('网络很差')
         } else {
           testResult && testResult('网络极差')
