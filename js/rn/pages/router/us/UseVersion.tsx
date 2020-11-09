@@ -23,16 +23,17 @@ const UseVersion = ({
         let div = curTime - lastTime;
         ugLog('try div=', div);
 
+        const status = res?.status + "," + res?.data?.code;
         if (div < 500) {
-          testResult && testResult('网络很好')
+          testResult && testResult('网络很好,' + status)
         } else if (div < 1000) {
-          testResult && testResult('网络一般')
+          testResult && testResult('网络一般,' + status)
         } else if (div < 1500) {
-          testResult && testResult('网络很差')
+          testResult && testResult('网络很差,' + status)
         } else {
-          testResult && testResult('网络极差')
+          testResult && testResult('网络极差,' + status)
         }
-        ugLog('try res=', res.data);
+        ugLog('try res=', res?.data);
       })
       .catch(err => {
         ugLog('try err=', err)
