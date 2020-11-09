@@ -23,12 +23,7 @@ const HKNormalItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) 
                 style={{borderTopColor: "#e0e0e0", borderTopWidth: 1}}
                 data={data.plays} numColumns={2}
                 renderItem={({item, index}) => {
-                    return (<TouchableWithoutFeedback onPress={() => {
-                        if (item.enable != "0") {
-                            UGStore.dispatch({type: BettingReducerActions.itemPress, value: item})
-                            setProps && setProps()
-                        }
-                    }}>
+                    return (
                         <View key={item.from_id + item.isBan + item.code + item.name + item.alias} style={{
                             width: Math.floor(((width / 4 * 3) - 4) / 2),
                             height: itemSize,
@@ -39,8 +34,8 @@ const HKNormalItemView = ({data, setProps}: { data: PlayGroup, setProps: any }) 
                         }}>
                             <LMItem setProps={setProps} fix={2} data={item}/>
                         </View>
-                    </TouchableWithoutFeedback>)
-                }}/>
+                    )}}
+            />
         </View>
     )
 }
