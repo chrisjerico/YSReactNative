@@ -1,16 +1,14 @@
-import React, { Component, useState, useEffect, useRef, MutableRefObject } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { ListRenderItemInfo, Text, View } from "react-native"
+import { Button } from "react-native-elements"
+import { FlatList } from 'react-native-gesture-handler'
 import LinearGradient from "react-native-linear-gradient"
-import { View, Text, StyleSheet, Platform, ListRenderItemInfo } from "react-native"
-import FastImage from "react-native-fast-image"
-import { Button, Icon } from "react-native-elements"
 import Animated, { Easing } from 'react-native-reanimated'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import AppDefine from '../../../public/define/AppDefine'
 import { SalaryModel } from '../../../public/network/Model/SalaryModel'
-import { setProps } from '../../base/UGPage'
-import { hideLoading, showLoading, showSuccess } from '../../../public/widget/UGLoadingCP'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import { hideLoading, showLoading, showSuccess } from '../../../public/widget/UGLoadingCP'
 
 interface UGFadeInAnimationProps {
   children: any;
