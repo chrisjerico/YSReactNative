@@ -48,7 +48,7 @@ export class api_user {
         break;
     }
     params = Object.assign({ device: '3', accessToken: accessToken }, params);
-    return this.c.post<Data>('async', params);
+    return this.c.post<Data>('reg', params);
   }
 
   // 检查用户是否已存在

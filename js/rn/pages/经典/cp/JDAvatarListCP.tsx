@@ -53,11 +53,11 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
   return (
     <AnimationMoveView show={v.show} direction='bottom' >
       <View style={{ flex: 1 }} />
-      <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width, backgroundColor: '#fff' }}>
+      <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width, backgroundColor: '#fff' }}>
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
           <FastImage source={{ uri: v.selected?.url }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
-        <Text style={{ marginTop: 9, textAlign: 'center' }}>头像预览</Text>
+        <Text style={{ marginTop: 9, textAlign: 'center', color:'#fff' }}>头像预览</Text>
         <View style={{ marginTop: 12, flexDirection: 'row', height: 100, paddingHorizontal: 12 }}>
           <Button
             buttonStyle={{ marginTop: 14, paddingHorizontal: 5, paddingVertical: 10, borderRadius: 0, backgroundColor: '#00000000', }}

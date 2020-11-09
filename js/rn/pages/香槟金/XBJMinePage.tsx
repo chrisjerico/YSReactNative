@@ -32,6 +32,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, avatarURL = 'https://cdn01.guolaow.com/images/face/memberFace2.jpg' } = props;
   const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
   const { mBonsSwitch } = UGStore.globalProps?.sysConf;
+  const cellBgColor = '#ffffff99';
 
   useEffect(() => {
     setProps({
@@ -114,7 +115,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
   return (
     [
     <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
-      <View style={{ padding: 16, borderRadius: 4, backgroundColor: Skin1.homeContentColor }}>
+      <View style={{ padding: 16, borderRadius: 4, backgroundColor: cellBgColor }}>
         <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => {
               v?.showAvatarList && v?.showAvatarList();
@@ -123,7 +124,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
           </TouchableOpacity>
           <View style={{ marginLeft: 16 }}>
             <View style={{ marginTop: 4, flexDirection: 'row' }}>
-              <Text style={{ fontWeight: '500', fontSize: 16 }}>{UserI?.usr}</Text>
+              <Text style={{ fontWeight: '500', fontSize: 16 }}>{UserI?.usr?.length > 10 ? UserI?.usr?.substr(0, 10) + "..." : UserI?.usr}</Text>
               <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ marginLeft: 8, marginTop: 1, borderRadius: 3, width: 42, height: 17 }}>
                 <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{UserI?.curLevelGrade}</Text>
               </LinearGradient>
@@ -184,7 +185,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
       </View>
       <View style={{ marginTop: 12, flexDirection: 'row', flex: 1 }}>
         <TouchableOpacity
-          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: Skin1.homeContentColor, flex: 1, marginRight: 12 }}
+          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1, marginRight: 12 }}
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.全民竞猜);
           }}>
@@ -193,7 +194,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
           <FastImage source={{ uri: 'https://i.ibb.co/WHXtKwK/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 80, height: 53 }} />
         </TouchableOpacity>
         <TouchableOpacity
-          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: Skin1.homeContentColor, flex: 1, marginRight: 12 }}
+          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1, marginRight: 12 }}
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.活动彩金);
           }}>
@@ -202,7 +203,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
           <FastImage source={{ uri: 'https://i.ibb.co/Jz0F2nV/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
         </TouchableOpacity>
         <TouchableOpacity
-          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: Skin1.homeContentColor, flex: 1 }}
+          containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1 }}
           onPress={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.任务中心);
           }}>
@@ -211,11 +212,11 @@ export const XBJMinePage = (props: XBJMineProps) => {
           <FastImage source={{ uri: 'https://i.ibb.co/mNs6pFN/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
         </TouchableOpacity>
       </View>
-      <View style={{ marginTop: 12, borderRadius: 4, backgroundColor: Skin1.homeContentColor }}>{cells}</View>
+      <View style={{ marginTop: 12, borderRadius: 4, backgroundColor: cellBgColor }}>{cells}</View>
       <Button
         title="退出登录"
         style={{ marginTop: 12 }}
-        buttonStyle={{ backgroundColor: Skin1.homeContentColor, borderRadius: 4, height: 48 }}
+        buttonStyle={{ backgroundColor: cellBgColor, borderRadius: 4, height: 48 }}
         titleStyle={{ color: UGColor.RedColor2 }}
         onPress={() => {
           Alert.alert('温馨提示', '确定退出账号', [
