@@ -136,8 +136,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           )}
           {type == UGLoadingType.Reload && (
             <View style={{ position: 'absolute', alignSelf: 'flex-end', marginTop: -7, marginLeft: 30 }} >
-              {/* @ts-ignore */}
-              <TouchableOpacity containerStyle={[{ width: 44, height: 44 }, { overflow: false }]} onPress={hideLoading}>
+              <TouchableOpacity containerStyle={[{ width: 44, height: 44 }, { overflow: 'hidden' }]} onPress={hideLoading}>
                 <Icon size={30} type='antdesign' name="closecircleo" color='black' containerStyle={{ alignSelf: 'flex-end', marginRight: -7, backgroundColor: '#eee', borderRadius: 15 }} />
               </TouchableOpacity>
             </View>

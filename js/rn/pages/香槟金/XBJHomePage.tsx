@@ -9,7 +9,6 @@ import HomeFloatAdvComponent from './cp/HomeFloatAdvComponent';
 import HomeNewsComponent from './cp/HomeNewsComponent';
 import HomeRedBagComponent from './cp/HomeRedBagComponent';
 import HomeNoticeComponent from './cp/HomeNoticeComponent';
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import { UGStore } from '../../redux/store/UGStore';
 import { UGBasePageProps } from '../base/UGPage';
 import IBannerAdvBean from '../../redux/model/home/IBannerAdvBean';
@@ -21,6 +20,7 @@ import IRedBagBean from '../../redux/model/home/IRedBagBean';
 import IFloatAdBean from '../../redux/model/home/IFloatAdBean';
 import ILotteryNumberBean from '../../redux/model/home/ILotteryNumberBean';
 import { UGLoadingType, showLoading, hideLoading, showReload } from '../../public/widget/UGLoadingCP';
+import UGUserModel from '../../redux/model/全局/UGUserModel';
 
 
 export interface IHomeBeanMovies {
@@ -65,7 +65,7 @@ export const XBJHomePage = (props: XBJHomeProps) => {
 
 
   function requestData() {
-    IGlobalStateHelper.updateUserInfo();
+    UGUserModel.updateFromNetwork();
     // NetworkRequest1.homeInfo()
     //   .then(value => {
     //     hideLoading();

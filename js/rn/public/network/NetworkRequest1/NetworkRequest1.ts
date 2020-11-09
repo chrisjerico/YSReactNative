@@ -1,3 +1,4 @@
+import { UGStore } from './../../../redux/store/UGStore';
 import { Platform } from 'react-native';
 import { api_activity } from './api/api_activity';
 import { api_user } from './api/api_user';
@@ -20,9 +21,9 @@ import { api_yuebao } from './api/api_yuebao';
 import { CCSessionModel } from './CCSessionModel';
 import { hideLoading } from '../../widget/UGLoadingCP';
 import { OCHelper } from '../../define/OCHelper/OCHelper';
-import { UGStore } from '../../../redux/store/UGStore';
 import AppDefine from '../../define/AppDefine';
 import { api_moment } from './api/api_moment';
+import UGUserModel from '../../../redux/model/全局/UGUserModel';
 
 
 // 校验错误信息
@@ -30,7 +31,8 @@ export function CheckError(sm: CCSessionModel<any>): Error {
 
   if (Platform.OS == 'ios') {
     // api请求信息添加到iOS下拉调试页面
-    OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [sm.url], args2: [sm.params], args3: [sm.res] }]);
+    const params = { ...sm.params, token: UGUserModel.getToken() };
+    OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [sm.url], args2: [params], args3: [sm.res] }]);
   }
 
 

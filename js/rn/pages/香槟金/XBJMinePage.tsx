@@ -8,7 +8,6 @@ import { UGUserCenterItem, UGUserCenterType } from '../../redux/model/全局/UGS
 import AppDefine from '../../public/define/AppDefine';
 import PushHelper from '../../public/define/PushHelper';
 import { connect } from 'react-redux';
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
@@ -20,6 +19,7 @@ import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
 import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
+import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 
 
 // 定义Props
@@ -30,7 +30,7 @@ export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
 
 export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, avatarURL = 'https://cdn01.guolaow.com/images/face/memberFace2.jpg' } = props;
-  const { current: v } = useRef<{} & JDSalaryListCP>({});
+  const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
   const { mBonsSwitch } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
 
         console.log('获取用户信息');
         // 获取用户信息
-        IGlobalStateHelper.updateUserInfo();
+        UGUserModel.updateFromNetwork();
       },
     })
 
@@ -116,8 +116,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
     <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
       <View style={{ padding: 16, borderRadius: 4, backgroundColor: Skin1.homeContentColor }}>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => {
-            console.log('点击头像');
+            <TouchableOpacity onPress={() => {
+              v?.showAvatarList && v?.showAvatarList();
           }} >
             <FastImage source={{ uri: avatarURL }} style={{ width: 56, height: 56, borderRadius: 28 }} />
           </TouchableOpacity>
@@ -245,7 +245,8 @@ export const XBJMinePage = (props: XBJMineProps) => {
       />
       <View style={{ height: 150 }} />
       </ScrollView>,
-      <JDSalaryListCP c_ref={v} />
+      <JDSalaryListCP c_ref={v} />,
+      <JDAvatarListCP c_ref={v} />,
     ]
   );
 }

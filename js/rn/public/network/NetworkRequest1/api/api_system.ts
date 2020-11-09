@@ -1,3 +1,4 @@
+import { AvatarModel } from './../../Model/SystemAvatarListModel';
 import { CCSessionReq, SampleAPI } from './../CCSessionModel';
 import { Platform } from "react-native";
 import UGPromoteListModel from "../../../../redux/model/other/UGPromoteModel";
@@ -9,7 +10,7 @@ export class api_system {
 
   // 获取头像列表
   static avatarList() {
-    return this.c.get<{ filename: string; url: string; }[]>('avatarList');
+    return this.c.get<AvatarModel[]>('avatarList');
   }
 
   // 获取首页优惠活动

@@ -137,7 +137,7 @@ export default class UGSysConfModel {
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
   easyRememberDomain?: string // 黑色模板易记的网址*/
   chatLink?: string // 聊天的链接*/
-  mBonsSwitch: boolean; // 俸禄开关开启。0 为开启， 1 为 关闭
+  mBonsSwitch?: boolean; // 俸禄开关开启。0 为开启， 1 为 关闭
   
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
