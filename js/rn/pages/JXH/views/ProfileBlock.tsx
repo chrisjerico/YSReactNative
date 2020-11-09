@@ -8,7 +8,7 @@ import Avatar from '../../../public/views/tars/Avatar'
 import Button from '../../../public/views/tars/Button'
 import LinearBadge from '../../../public/views/tars/LinearBadge'
 
-const { getHtml5Image } = useHtml5Image()
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 interface ProfileBlockProps {
   uid: string

@@ -148,9 +148,9 @@ const HomePage = ({
     const { linkCategory, linkPosition, pic, url } = item
     const pushCategory = useCallback(() => {
       if (url?.length) {
-        PushHelper.pushCategory(linkCategory, linkPosition)
-      } else {
         PushHelper.openWebView(url)
+      } else {
+        PushHelper.pushCategory(linkCategory, linkPosition)
       }
     }, [])
     return <TouchableImage key={index} pic={pic} resizeMode={'stretch'} onPress={pushCategory} />
