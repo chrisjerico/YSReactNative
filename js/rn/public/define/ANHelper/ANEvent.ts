@@ -1,5 +1,5 @@
 import { PageName } from '../../navigation/Navigation';
-import { getCurrentPage, navigate, pop } from '../../navigation/RootNavigation';
+import {getCurrentPage, jumpTo, navigate, pop, push} from '../../navigation/RootNavigation';
 import { RnPageModel } from '../OCHelper/SetRnPageInfo';
 import { UGBridge } from './UGBridge';
 import {ugLog} from "../../tools/UgLog";
@@ -47,6 +47,26 @@ export class ANEvent extends UGBridge {
         pop();
       }
     });
+
+    // // 跳转到指定页面
+    // this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
+    //   ugLog('跳转到rn页面：', params.vcName, params);
+    //   if (params.vcName) {
+    //     if (params.rnAction == 'push') {
+    //       push(params.vcName, params, true) || push(RnPageModel.getPageName(params.vcName), params, true);
+    //     } else {
+    //       jumpTo(params.vcName, params, true) || jumpTo(RnPageModel.getPageName(params.vcName), params, true);
+    //     }
+    //   }
+    // });
+    //
+    // // 移除页面
+    // this.emitter.addListener('RemoveVC', (params: { vcName: PageName }) => {
+    //   console.log('退出页面', params.vcName);
+    //   if (params.vcName == getCurrentPage()) {
+    //     !pop() && jumpTo(PageName.TransitionPage);
+    //   }
+    // });
 
     // 清除数据
     this.emitter.addListener('ClearData', (params: any) => {
