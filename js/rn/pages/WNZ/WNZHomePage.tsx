@@ -65,7 +65,8 @@ const WNZHomePage = () => {
     },
   ]
 
-  const configMenus = uid ? config?.menus?.concat(config?.menuSignOut) : config?.menus?.concat(config?.menuSignIn)
+  // @ts-ignore
+  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
 
   return (
     <HomePage

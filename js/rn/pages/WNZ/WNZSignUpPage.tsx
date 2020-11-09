@@ -36,7 +36,7 @@ const WNZSignUpPage = () => {
   const { signUp, tryPlay, signOut } = sign
 
   const { navigateToSignInPage } = navigateTo
-  const configMenus = config?.menus?.concat(config?.menuSignIn)
+  const configMenus = config.menuSignIn.concat(config.menus)
 
   return (
     <>

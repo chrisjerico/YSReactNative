@@ -77,8 +77,8 @@ const WNZMinePage = () => {
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
-  const configMenus = uid ? config?.menus?.concat(config?.menuSignOut) : config?.menus?.concat(config?.menuSignIn)
-
+  // @ts-ignore
+  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>

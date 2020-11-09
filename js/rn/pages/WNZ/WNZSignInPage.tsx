@@ -37,8 +37,7 @@ const WNZSignInPage = () => {
 
   const { signIn, tryPlay, signOut } = sign
 
-  const configMenus = config?.menus?.concat(config?.menuSignIn)
-
+  const configMenus = config.menuSignIn.concat(config.menus)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
