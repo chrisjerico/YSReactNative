@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {Platform, StyleSheet, Text, View} from 'react-native'
+import {Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import CodePush from 'react-native-code-push'
 import * as Progress from 'react-native-progress'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
@@ -18,6 +18,7 @@ import {Toast} from "../../public/tools/ToastUtils";
 import {ugLog} from "../../public/tools/UgLog";
 import {DefaultMenu} from "../../Res/DefaultMenu";
 import {UGThemeColor} from "../../public/theme/UGThemeColor";
+import UseVersion from "./us/UseVersion";
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -26,10 +27,27 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
   bCodePush?: boolean //codepush是否OK
   bBanner?: boolean //banner是否播放完
   counter?: number //计数器
+  clickCount?: number //点击倒计时次数
+  showNetwork?: string //显示网络状态
 }
 const MAX_TIME = 8//最多8秒倒计时
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps, progress = 0, counter = 0, text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
+  const { setProps,
+    progress = 0,
+    counter = 0,
+    clickCount = 0,
+    showNetwork = '',
+    text = '正在努力更新中...',
+    bCodePush = false,
+    bBanner = false } = props
+
+  //网络状态的回调
+  const testResult = (str: string) => {
+    let net = " " + AppDefine.host + " " + str
+    ugLog('try: ' + net)
+    setProps({showNetwork: net})
+  }
+  const {testNetwork} = UseVersion({testResult})
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -188,7 +206,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                 } else {
                   setProps({ backgroundImage: pics.shift() })
                 }
-              }, 3000)
+              }, 4000)
             } else {
               setProps({ bBanner: true })
             }
@@ -274,7 +292,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                       color="white"
                       height={4}
                       width={AppDefine.width} />
-        <Text style={_styles.title}>{text}</Text>
+        <Text style={_styles.title}>{text + showNetwork}</Text>
       </View>
       <View style={_styles.container_timer}>
         <Progress.Circle progress={circleProgress/10}
@@ -285,9 +303,18 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
                          showsText={false}
                          direction={'counter-clockwise'}
                          color={'#b2cde0'}/>
-        <View style={_styles.counter_container}>
-          <Text style={_styles.title_counter}>{circleProgress + "秒"}</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={() => {
+          setProps({ clickCount: (clickCount + 1) })
+          ugLog('clickCount=' + clickCount)
+          //第3次就测网速
+          if (clickCount % 3 == 2) {
+            testNetwork()
+          }
+        }}>
+          <View style={_styles.counter_container}>
+            <Text style={_styles.title_counter}>{circleProgress + "秒"}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </View>
   )
