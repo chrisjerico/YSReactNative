@@ -38,9 +38,6 @@ export function setRnPageInfo() {
     if (skitType.indexOf('越南') != -1) {
       pages = pages.concat(VietnamPages);
     }
-    if (skitType.indexOf('香槟金') != -1) {
-      pages = pages.concat(XBJPages);
-    }
   }
 
   // 测试环境（未上线的内容）
@@ -62,6 +59,9 @@ export function setRnPageInfo() {
     }
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
+    }
+    if (skitType.indexOf('香槟金') != -1) {
+      pages = pages.concat(XBJPages);
     }
   }
 
