@@ -134,8 +134,8 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const midBanners = homeAd?.data ?? []
   const floatAds = floatAd?.data ?? []
   const roulette = turntableList?.data
-  const goldenEggs = goldenEggList?.data ?? []
-  const scratchs = scratchList?.data ?? []
+  const goldenEggs = goldenEggList?.data
+  const scratchs = scratchList?.data
 
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
@@ -151,7 +151,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     tryPlay,
     signOut,
   }
-
   const homeInfo = {
     onlineNum,
     showOnlineNum,

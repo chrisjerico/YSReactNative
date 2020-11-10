@@ -86,11 +86,11 @@ class APIRouter {
     let token = null
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         token = user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         token = pms?.token
         break
     }
@@ -114,11 +114,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -132,11 +132,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -151,11 +151,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -169,11 +169,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -209,11 +209,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -227,7 +227,7 @@ class APIRouter {
     let tokenParams = {}
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = {
           token: user?.token,
         }
