@@ -76,9 +76,9 @@ export default class PushHelper {
         break
       case 'android':
         await ANHelper.callAsync(CMD.LOG_OUT)
+        Toast('退出成功')
         break
     }
-    Toast('退出成功')
   }
   // 登入
   static pushLogin() {

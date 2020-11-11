@@ -58,7 +58,7 @@ export class api_user {
 
   // 退出登录
   static logout() {
-    return this.c.get('logout');
+    return this.c.post('logout');
   }
 
   // 登录试玩账号
