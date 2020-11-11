@@ -5,6 +5,8 @@ import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
@@ -176,7 +178,7 @@ const WNZHomePage = () => {
               )
             }}
             renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon } = item
+              const { logo, name, hotIcon, tipFlag, subType, icon, gameId } = item
               const flagType = parseInt(tipFlag)
               return (
                 <View style={styles.gameContainer}>
@@ -208,8 +210,12 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
-                        //@ts-ignore
-                        PushHelper.pushHomeGame(item)
+                        if (!gameId) {
+                          navigate(PageName.WNZGameLobbyPage, { title: name })
+                        } else {
+                          //@ts-ignore
+                          PushHelper.pushHomeGame(item)
+                        }
                       }
                     }}
                   />
