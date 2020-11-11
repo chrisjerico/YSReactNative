@@ -122,7 +122,11 @@ const DomainUrls: {[x:string]:string} = {
 const initDomain = async (siteId?: string) => {
   switch (Platform.OS) {
     case 'ios':
-      const host = DomainUrls[siteId];
+      const sites = {}
+      for (const k in DomainUrls) {
+        sites[k.toLowerCase()] = DomainUrls[k];
+      }
+      const host = sites[siteId.toLowerCase()];
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host]);
       break;
     case 'android':
