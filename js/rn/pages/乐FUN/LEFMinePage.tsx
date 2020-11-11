@@ -60,7 +60,7 @@ const LEFMinePage = () => {
       logo: 'http://test61c.fhptcdn.com/views/mobileTemplate/30/images/recharge.png',
       code: UGUserCenterType.取款,
     }]
-  const listUserCenterItems = userCenterItems?.slice(4, userCenterItems?.length) ?? []
+  const listUserCenterItems = userCenterItems?.slice(0, userCenterItems?.length) ?? []
 
   return (
     <>
@@ -146,7 +146,8 @@ const LEFMinePage = () => {
                 }}
               />
             )
-          })}
+          })
+        }
         <Button
           title={'退出登录'}
           containerStyle={{
