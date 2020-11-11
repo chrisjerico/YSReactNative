@@ -206,6 +206,25 @@ export default class PushHelper {
     }
   }
 
+  static pushPromoteDetail(item) {
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'UGPromoteDetailController.new[setItem:]',
+            args1: [item],
+          },
+          ret: {
+            selectors: 'UGNavigationController.current.pushViewController:animated:',
+            args1: [vc, true],
+          },
+        }))
+        break
+      case 'android':
+        break
+    }
+  }
+
   static openWebView(url: string) {
     switch (Platform.OS) {
       case 'ios':
@@ -309,7 +328,9 @@ export default class PushHelper {
                 // ShowLoading
                 OCHelper.call('SVProgressHUD.showWithStatus:')
 
-                let { data: { data: info } } = await api.team.agentApplyInfo().promise;
+                let {
+                  data: { data: info },
+                } = await api.team.agentApplyInfo().promise
 
                 if (info.reviewStatus === 2) {
                   // 去推荐收益页
