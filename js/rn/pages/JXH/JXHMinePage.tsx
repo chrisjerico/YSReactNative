@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ImageBackground, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
@@ -41,6 +41,7 @@ const JXHMinePage = () => {
       code: -1,
     },
   ] as any)
+  const [hideBalance, setHideBalance] = useState(false)
 
   return (
     <>
@@ -75,10 +76,17 @@ const JXHMinePage = () => {
               <View style={{ backgroundColor: '#111111', aspectRatio: 3, borderRadius: scale(5) }}>
                 <View style={{ flex: 1, paddingLeft: scale(20), alignItems: 'center', flexDirection: 'row' }}>
                   <Text style={{ color: '#676767', marginRight: scale(10) }}>{'账户余额'}</Text>
-                  <AntDesign name={'eye'} color={'#676767'} size={20} />
+                  <Ionicons
+                    name={hideBalance ? 'ios-eye-off' : 'ios-eye'}
+                    color={'#676767'}
+                    size={20}
+                    onPress={() => {
+                      setHideBalance(!hideBalance)
+                    }}
+                  />
                 </View>
                 <View style={{ flex: 1.5, paddingLeft: scale(20) }}>
-                  <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{balance}</Text>
+                  <Text style={{ color: '#cfa461', fontSize: scale(35) }}>{hideBalance ? '*****' : balance}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', width: '100%', flex: 1, backgroundColor: '#2a2a2a' }}>
                   <Button
