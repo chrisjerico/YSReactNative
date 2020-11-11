@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { UGPromoteModel } from '../../redux/model/other/UGPromoteModel';
 import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
@@ -22,7 +22,7 @@ interface JDPromotionListVars {
 /**
  * 优惠券列表
  */
-export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListProps, JDPromotionListVars> {
+export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListProps> {
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   showTopBar?: boolean; // 是否显示顶部栏
@@ -31,7 +31,8 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
 
 // 优惠活动页
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
-  const { setProps, vars: v = { style1: '背景透明' }, containerStyle } = props;
+  const { setProps, containerStyle } = props;
+  const { current: v } = useRef<JDPromotionListVars>({ style1: '背景透明' });
 
   useEffect(() => {
     setProps({

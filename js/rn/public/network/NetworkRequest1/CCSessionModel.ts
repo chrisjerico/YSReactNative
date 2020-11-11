@@ -79,7 +79,12 @@ export class CCSessionReq {
       if (Platform.OS == 'ios' && this.isEncrypt) {
         url += '&checkSign=1';
       }
-      console.log('发起请求', url);
+      // 登录请求去掉token
+      if (url.indexOf('c=user&a=login') != -1) {
+        params['token'] = undefined;
+      }
+
+      console.log('【发起请求】', url);
 
       // 若是GET请求则拼接参数到URL
       if (!isPost) {
@@ -99,7 +104,7 @@ export class CCSessionReq {
       if (sm.err) {
         return Promise.reject(sm.err);
       }
-      console.log('请求成功，', sm.url);
+      console.log('【请求成功】', sm.res?.msg, sm.url);
 
       // 向外回调
       sm.success && sm.success(res.data, sm)
@@ -111,7 +116,7 @@ export class CCSessionReq {
         sm.err = CheckError(sm);
       }
 
-      console.log('请求失败， err = ', sm.err);
+      console.log('【请求失败】', sm.err);
 
       // 向外回调
       sm.failure && sm.failure(sm.err, sm)

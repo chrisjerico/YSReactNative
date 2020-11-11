@@ -10,6 +10,7 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
+import { showMessage } from '../widget/UGLoadingCP'
 import { ANHelper } from './ANHelper/ANHelper'
 import { CMD, OPEN_PAGE_PMS } from './ANHelper/hp/CmdDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
@@ -251,7 +252,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.全民竞猜: {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待'])
+            showMessage('敬请期待');
             break
           }
           case UGUserCenterType.开奖走势: {

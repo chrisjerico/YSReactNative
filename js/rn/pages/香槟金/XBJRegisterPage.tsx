@@ -18,7 +18,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { navigate, popToRoot } from '../../public/navigation/RootNavigation';
 import { Toast } from "../../public/tools/ToastUtils";
 import { SlidingVerification } from './XBJLoginPage';
-import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { ANHelper } from '../../public/define/ANHelper/ANHelper';
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine';
 import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
@@ -28,31 +28,33 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 interface XBJRegisterVars {
-  referrerId: string;// 推荐人ID
-  account: string;// 账号
-  pwd1: string;// 密码
-  pwd2: string;// 确认密码
-  realname: string;// 真实姓名
-  phone: string;// 手机号
-  letterCode: string;// 字母验证码
-  smsCode: string;// 短信验证码
-  slideCode: SlideCodeModel;// 滑动验证码
-  fundPwd: string;// 取款密码
-  qq: string;// QQ
-  wechat: string;// 微信
-  email: string;// 邮箱
-  reloadSlide: () => void; // 刷新滑块
+  referrerId?: string;// 推荐人ID
+  account?: string;// 账号
+  pwd1?: string;// 密码
+  pwd2?: string;// 确认密码
+  realname?: string;// 真实姓名
+  phone?: string;// 手机号
+  letterCode?: string;// 字母验证码
+  smsCode?: string;// 短信验证码
+  slideCode?: SlideCodeModel;// 滑动验证码
+  fundPwd?: string;// 取款密码
+  qq?: string;// QQ
+  wechat?: string;// 微信
+  email?: string;// 邮箱
+  reloadSlide?: () => void; // 刷新滑块
 }
 
 // 定义Props
-export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps, XBJRegisterVars> {
+export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps> {
   isAgent?: boolean; // 是否代理注册
 }
 
 export const XBJRegisterPage = (props: XBJRegisterProps) => {
-  const { setProps, vars: v } = props;
-
+  const { setProps, navigation } = props;
+  const { current: v } = useRef<XBJRegisterVars>({});
+  
   useEffect(() => {
+    navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
@@ -123,14 +125,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       err = '请输入短信验证码';
     }
     if (err) {
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('HUDHelper.showMsg:', [err]);
-          break;
-        case 'android':
-          Toast(err)
-          break;
-      }
+      showMessage(err);
       return;
     }
 
@@ -155,7 +150,8 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     }).then((sm) => {
       sm.setCompletionBlock(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
-        didRegisterSuccess(v.account, v.pwd1?.md5(), autoLogin);
+        navigation.setOptions({unmountOnBlur:true})
+        didRegisterSuccess(v.account, v.pwd1, autoLogin);
       });
     });
   }
@@ -335,13 +331,12 @@ async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean)
     switch (Platform.OS) {
       case 'ios':
         user = await OCHelper.call('UGUserModel.currentUser');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
         break;
       case 'android':
         user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
-        Toast('注册成功')
         break;
     }
+    showMessage('注册成功');
 
     const { data: loginData, status } = await APIRouter.user_login(acct, pwd)
 

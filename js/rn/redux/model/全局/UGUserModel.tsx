@@ -4,6 +4,7 @@ import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
+import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
 import { UGStore } from "../../store/UGStore";
 
@@ -50,6 +51,26 @@ export default class UGUserModel extends UGLoginModel {
     temp.sessid = user['API-SID'];
     temp.token = user['API-SID'];
     return temp;
+  }
+
+  // 获取头像URL
+  static getAvatarURL(list: AvatarModel[], avatar: string) {
+    if (avatar?.indexOf('http') != -1) return avatar;
+    
+    let avatarURL: string;
+    const filter = list?.filter((ele) => {
+      if (ele.filename == UGStore.globalProps?.userInfo?.avatar) {
+        return ele;
+      }
+    })
+    if (filter?.length) {
+      avatarURL = filter[0].url;
+    } else if (list?.length) {
+      avatarURL = list[0].url
+    } else {
+      avatarURL = 'https://i.ibb.co/mNnwnh7/money-2.png'
+    }
+    return avatarURL;
   }
 
   uid?: string; // 用户ID

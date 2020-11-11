@@ -11,6 +11,7 @@ import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { AnimationFadeView, AnimationMoveView } from '../../../public/tools/animation/AnimationViews'
 import { AvatarModel } from '../../../public/network/Model/SystemAvatarListModel'
 import FastImage from 'react-native-fast-image'
+import { UGStore } from '../../../redux/store/UGStore'
 
 
 export interface JDAvatarListCP {
@@ -57,7 +58,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
           <FastImage source={{ uri: v.selected?.url }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
-        <Text style={{ marginTop: 9, textAlign: 'center', color:'#fff' }}>头像预览</Text>
+        <Text style={{ marginTop: 9, textAlign: 'center', color: '#fff' }}>头像预览</Text>
         <View style={{ marginTop: 12, flexDirection: 'row', height: 100, paddingHorizontal: 12 }}>
           <Button
             buttonStyle={{ marginTop: 14, paddingHorizontal: 5, paddingVertical: 10, borderRadius: 0, backgroundColor: '#00000000', }}
@@ -92,6 +93,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
             api.task.changeAvatar(v.selected.filename).setCompletionBlock((res) => {
               showSuccess(res.msg);
               v.show = false;
+              UGStore.dispatch({ type: 'merge', userInfo: { avatar: v.selected.filename } });
               setState({})
             })
           }} />

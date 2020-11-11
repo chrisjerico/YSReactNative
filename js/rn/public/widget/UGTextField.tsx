@@ -32,6 +32,7 @@ interface IState {
 export default class UGTextField extends Component<IPorps, IState> {
   newProps: IPorps; // 自定义props
   code: string = '';
+  defaultValue: string;
 
   constructor(props: IPorps) {
     super(props);
@@ -235,6 +236,10 @@ export default class UGTextField extends Component<IPorps, IState> {
 
   // 刷新UI
   render() {
+    let value = this.state.text ?? null;
+    if (this.defaultValue != this.props.defaultValue) {
+      value = this.defaultValue = this.props.defaultValue;
+    }
     let props = deepMergeProps(this.newProps, this.props);
     if (this.props.hidden) {
       props = deepMergeProps(props, {containerStyle: {marginTop: 0, height: 0}});
@@ -242,7 +247,7 @@ export default class UGTextField extends Component<IPorps, IState> {
     return (
       <Input
         {...props}
-        value={this.state.text ?? null}
+        value={value}
         onChangeText={(text) => {
           var {
             onlyInteger: onlyNumbers,

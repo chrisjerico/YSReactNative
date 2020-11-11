@@ -96,7 +96,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
         return false;
     }
     const currentPage = getCurrentPage();
-    if (currentPage === page) {
+    if (currentPage === page && action == RouterType.Tab && getStackLength() == 1) {
         console.log('页面已存在', page);
         return false;
     }
