@@ -10,7 +10,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#F5F1EF',
     tabNoSelectColor: '#A1A1A0',
     tabSelectedColor: '#987960',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#CBC6C3',
     menuHeadViewColor: ['#7C6657', '#B7A28F'],
   },
   香槟金1: {
@@ -21,7 +21,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#262223',
     tabNoSelectColor: '#919191',
     tabSelectedColor: '#927E6D',
-    homeContentColor: '#ffffff33',
+    homeContentColor: '#5B5B5B',
     progressBgColor: ['#FEC434', '#FE8A23'],
     homeContentSubColor: '#353535',
     cellBgColor: '#181818',
@@ -45,7 +45,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#3F3B58',
     tabNoSelectColor: '#919192',
     tabSelectedColor: '#967C6D',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#7E7C8D',
     menuHeadViewColor: ['#2B2744', '#50506E'],
   },
   香槟金3: {
@@ -56,7 +56,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#D8AAAA',
     tabNoSelectColor: '#865151',
     tabSelectedColor: '#852626',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#C27876',
     menuHeadViewColor: ['#5E2523', '#90595A'],
   },
   香槟金4: {
@@ -67,7 +67,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#DBF5FF',
     tabNoSelectColor: '#398099',
     tabSelectedColor: '#0A4E66',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#A8CEE0',
     menuHeadViewColor: ['#4782A4', '#5A91B1'],
   },
   香槟金5: {
@@ -78,7 +78,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#C8E2D2',
     tabNoSelectColor: '#1C7841',
     tabSelectedColor: '#003D18',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#89BBA3',
     menuHeadViewColor: ['#306346', '#5D795B'],
   },
   香槟金6: {
@@ -89,7 +89,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#C6C6EA',
     tabNoSelectColor: '#36389C',
     tabSelectedColor: '#1B1C4E',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#8D969D',
     menuHeadViewColor: ['#373A8C', '#595DA7'],
   },
   香槟金7: {
@@ -100,7 +100,7 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
     tabBarBgColor: '#FFD8E4',
     tabNoSelectColor: '#C2446C',
     tabSelectedColor: '#730C2C',
-    homeContentColor: '#ffffff55',
+    homeContentColor: '#D79CAF',
     menuHeadViewColor: ['#8B304A', '#9F4964'],
   },
 };
