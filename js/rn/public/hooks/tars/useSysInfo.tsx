@@ -1,5 +1,5 @@
 import { UGStore } from '../../../redux/store/UGStore'
-import { LoginTo, Necessity, PasswordStrength, RankingListType } from '../../models/Enum'
+import { LoginTo, Necessity, PasswordStrength, RankingListType, AnnouncementType } from '../../models/Enum'
 import { stringToNumber } from '../../tools/tars'
 
 interface UseSys {
@@ -95,6 +95,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
     },
     currency: sysStore?.currency == 'CNY' ? 'RMB' : sysStore?.currency,
     allowReg: sysStore?.allowreg == '1' ? true : false,
+    announcementType: sysStore?.popup_type == '1' ? AnnouncementType.登录后弹出 : AnnouncementType.直接弹出,
   }
   return {
     sysInfo,

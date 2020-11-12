@@ -3,6 +3,7 @@ import { push } from '../../../public/navigation/RootNavigation'
 import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
+import { AnnouncementType } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useHomeInfo from './useHomeInfo'
@@ -137,9 +138,17 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const goldenEggs = goldenEggList?.data
   const scratchs = scratchList?.data
 
+  const { uid } = userInfo
+  const { announcementType } = sysInfo
   useEffect(() => {
     if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
+      if (announcementType == AnnouncementType.登录后弹出 && uid) {
+        PushHelper.pushAnnouncement(announcements)
+      } else if (announcementType == AnnouncementType.直接弹出) {
+        PushHelper.pushAnnouncement(announcements)
+      } else {
+        //
+      }
     }
   }, [notice])
 
