@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { Alert, ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
@@ -43,7 +44,7 @@ const WNZMinePage = () => {
 
   const { userInfo, sysInfo } = value
 
-  const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
+  const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance, isTest } = userInfo
   const { mobile_logo, userCenterItems } = sysInfo
   const { showBons } = show
   const { signOut } = sign
@@ -165,7 +166,23 @@ const WNZMinePage = () => {
                     imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}
                     enableCircle={false}
-                    onPress={() => PushHelper.pushUserCenterType(code)}
+                    onPress={() => {
+                      if (isTest && (code == UGUserCenterType.个人信息 || code == UGUserCenterType.推荐收益)) {
+                        Alert.alert('温馨提示', '请先登录您的正式帐号', [
+                          {
+                            text: '取消',
+                          },
+                          {
+                            text: '马上登录',
+                            onPress: () => {
+                              push(PageName.WNZSignInPage)
+                            },
+                          },
+                        ])
+                      } else {
+                        PushHelper.pushUserCenterType(code)
+                      }
+                    }}
                   />
                 )
               }}
