@@ -67,6 +67,10 @@ const LCHomePage = ({ navigation, setProps }) => {
   }, [])
 
   useEffect(() => {
+    console.log("rankingListSwitch", rankingListSwitch)
+  }, [rankingListSwitch])
+
+  useEffect(() => {
     if (notices && notices.length > 0 && noticeFormat.length == 0) {
       let string = ''
       const noticeData = notices.map((res) => {
@@ -141,7 +145,6 @@ const LCHomePage = ({ navigation, setProps }) => {
                 <GameButton
                   showSecondLevelIcon={false}
                   key={index}
-                  containerStyle={{ width: '25%' }}
                   imageContainerStyle={{ width: '45%' }}
                   enableCircle={false}
                   logo={icon ? icon : logo}
@@ -185,14 +188,6 @@ const LCHomePage = ({ navigation, setProps }) => {
         {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-              <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
-            </View>
-            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                        width={Dimensions.get('screen').width - 24} ranks={rankLists} />
-          </SafeAreaView> :
-          rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
               <Text style={{
                 fontSize: 16,
                 lineHeight: 22,
@@ -201,6 +196,14 @@ const LCHomePage = ({ navigation, setProps }) => {
               }}>投注排行榜</Text>
             </View>
             <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
+                        width={Dimensions.get('screen').width - 24} ranks={rankLists} />
+          </SafeAreaView> :
+          rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
+              <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
+            </View>
+            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
                         width={Dimensions.get('screen').width - 24} ranks={rankLists} />
           </SafeAreaView> : <></>}
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>

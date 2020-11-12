@@ -20,7 +20,7 @@ import { httpClient } from '../../../../public/network/httpClient'
 export const CardView = () => {
   const userStore = UGStore.globalProps.userInfo
   const { balance, fullName, todayWinAmount, curLevelGrade } = userStore
-  const [showBalance, setShowBalance] = useState(false)
+  const [showBalance, setShowBalance] = useState(true)
   const [depositItem, setDepositItem] = useState<any>()
   const [withdrawItem, setWithdrawItem] = useState<any>()
   const [LXBItem, setLXBItem] = useState<any>()
@@ -33,18 +33,21 @@ export const CardView = () => {
 
   return (
     <View style={{ height: 300, width: Dimensions.get('screen').width }}>
-      <Image style={{
-        width: Dimensions.get('screen').width,
-        height: '100%',
-        resizeMode: 'stretch',
-        position: 'absolute',
-      }}
-             source={{ uri: 'http://test30.6yc.com/views/mobileTemplate/19/images/assetsBoxbg.png' }} />
-      <View style={{ paddingTop: 20 }}>
-        <View style={{ paddingHorizontal: 50, paddingTop: 10, flexDirection: 'row' }}>
+      <Image
+        style={{
+          width: Dimensions.get('screen').width,
+          height: '90%',
+          resizeMode: 'stretch',
+          position: 'absolute',
+        }}
+        source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/assetsBoxbg.png' }}
+      />
+      <View style={{ paddingTop: 12 }}>
+        <View style={{ paddingLeft: 50, paddingRight: 30, paddingTop: 10, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'row', flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center'}}>{fullName}</Text>
-            <View style={{ height: 22, marginLeft: 8, backgroundColor: '#84C1FF', borderRadius: 10, alignSelf: 'center' }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', alignSelf: 'center' }}>{fullName}</Text>
+            <View
+              style={{ height: 22, marginLeft: 8, backgroundColor: '#84C1FF', borderRadius: 10, alignSelf: 'center' }}>
               <Text style={{
                 color: '#ffffff',
                 fontWeight: 'bold',
@@ -68,22 +71,22 @@ export const CardView = () => {
             </TouchableWithoutFeedback>
           </View>
         </View>
-        <View style={{ paddingHorizontal: 50, paddingTop: 8, flexDirection: 'row' }}>
+        <View style={{ paddingHorizontal: 50, flexDirection: 'row' }}>
           <Text style={{ color: '#65727B', alignSelf: 'center', marginRight: 10 }}>余额 : </Text>
           <TouchableWithoutFeedback onPress={() => setShowBalance(!showBalance)}>
             {showBalance ? <Image source={{
                 width: 22,
                 height: 22,
-                uri: 'http://test30.6yc.com/views/mobileTemplate/19/images/moneyicon.png',
+                uri: httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/moneyicon.png',
               }} /> :
               <Image source={{
                 width: 22,
                 height: 22,
-                uri: 'https://test30.6yc.com/views/mobileTemplate/19/images/moneyhideicon.png',
+                uri: httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/moneyhideicon.png',
               }} />}
           </TouchableWithoutFeedback>
         </View>
-        <View style={{ paddingHorizontal: 50, paddingTop: 8, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ paddingHorizontal: 50, paddingTop: 2, flexDirection: 'row', alignItems: 'center' }}>
           {showBalance ? <Text style={{
             fontSize: 18,
             paddingRight: 10,
@@ -106,7 +109,7 @@ export const CardView = () => {
         </View>
         <View style={{ flexDirection: 'row', marginTop: 24, alignItems: 'center' }}>
           <CardButton
-            uri={'http://test30.6yc.com/views/mobileTemplate/19/images/deposit.png'}
+            uri={httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/deposit.png'}
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.存款)
             }} text={'存款'} />
@@ -116,7 +119,7 @@ export const CardView = () => {
               LXBItem && PushHelper.pushUserCenterType(LXBItem.code)
             }}
             imgStyle={{ height: 39 }}
-            uri={'http://test30.6yc.com/views/mobileTemplate/19/images/bet.png'}
+            uri={httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/bet.png'}
             text={'利息宝'}
           />
           <View style={{ backgroundColor: '#9d9d9d', height: 40, width: 1 }} />
@@ -124,7 +127,7 @@ export const CardView = () => {
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.取款)
             }}
-            uri={'http://test30.6yc.com/views/mobileTemplate/19/images/withdraw.png'}
+            uri={httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/withdraw.png'}
             text={'提现'} />
         </View>
       </View>
@@ -141,7 +144,7 @@ const CardButton = ({ uri, text, imgStyle, onPress }: { uri: string, text: strin
                  source={{ uri }} />
         </View>
         <View style={{ flex: 1 }} />
-        <Text style={{ marginTop: 20 }}>{text}</Text>
+        <Text style={{ marginTop: 12 }}>{text}</Text>
       </View>
     </TouchableWithoutFeedback>
   )

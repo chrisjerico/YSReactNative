@@ -1,9 +1,9 @@
-import {SafeAreaView, View, Image, Text, StatusBar} from "react-native";
-import {LoginButtonBar} from "./LoginButtonBar";
-import * as React from "react";
-import {IGlobalState, UGStore} from "../../../../redux/store/UGStore";
-import FastImage from "react-native-fast-image";
-import {useEffect} from "react";
+import { Image, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import { LoginButtonBar } from './LoginButtonBar'
+import * as React from 'react'
+import { UGStore } from '../../../../redux/store/UGStore'
+import FastImage from 'react-native-fast-image'
+import { httpClient } from '../../../../public/network/httpClient'
 
 export const HomeHeaderButtonBar = () => {
     const userStore = UGStore.globalProps.userInfo;
@@ -20,7 +20,7 @@ export const HomeHeaderButtonBar = () => {
                 {!uid ? <LoginButtonBar/> :
                     <View style={{flexDirection: "row", alignItems: "center", height: 40}}>
                         <Image style={{width: 20, height: 20}}
-                               source={{uri: "http://test10.6yc.com/views/mobileTemplate/19/images/coin.png"}}/>
+                               source={{uri: httpClient.defaults.baseURL + "/views/mobileTemplate/19/images/coin.png"}}/>
                         <Text style={{marginLeft: 10}}>{balance || "0.000"}</Text>
                     </View>}
             </View>
