@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { push } from '../../../public/navigation/RootNavigation'
-import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
 import { AnnouncementType } from '../../models/Enum'
@@ -18,6 +17,7 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
+  const firstAnnouncement = useRef(false)
   const {
     loading,
     refreshing,
@@ -141,16 +141,17 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const { uid } = userInfo
   const { announcementType } = sysInfo
   useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
+    if (notice?.data?.popup) {
       if (announcementType == AnnouncementType.登录后弹出 && uid) {
         PushHelper.pushAnnouncement(announcements)
       } else if (announcementType == AnnouncementType.直接弹出) {
-        PushHelper.pushAnnouncement(announcements)
+        !firstAnnouncement.current && PushHelper.pushAnnouncement(announcements)
+        firstAnnouncement.current = true
       } else {
         //
       }
     }
-  }, [notice])
+  }, [notice, uid])
 
   const goTo = {
     goToPromotionPage,
