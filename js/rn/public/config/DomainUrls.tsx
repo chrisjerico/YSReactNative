@@ -103,7 +103,7 @@ const DomainUrls: {[x:string]:string} = {
   'c239b': 'https://5566569.com',
   'c242': 'https://800516.com',
   'c245': 'https://4823app.com',
-  'c246': 'https://647758.com',
+  'c246': 'https://547758.com',
   'c251': 'https://2420app.app',
   'L001': 'https://4988wap.com',
   'L001gbhy': 'https://demo.gbbet.com',
