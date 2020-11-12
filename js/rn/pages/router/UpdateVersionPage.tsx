@@ -43,7 +43,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
   //网络状态的回调
   const testResult = (str: string) => {
-    let net = " " + AppDefine.host + " " + Platform.Version + " " + str
+    let net = " " + AppDefine.host + " " + str
     ugLog('try: ' + net)
     setProps({showNetwork: net})
   }
