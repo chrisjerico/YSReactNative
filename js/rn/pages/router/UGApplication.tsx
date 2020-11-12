@@ -106,19 +106,19 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
-        <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
-        <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
-        <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} options={{ unmountOnBlur: true }} />
+        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
+        <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
+        <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
+        <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
-        <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.KSMinePage} component={KSMinePage} />
-        <Router.TabScreen name={PageName.JXHHomePage} component={JXHHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.JXHMinePage} component={JXHMinePage} />
-        <Router.TabScreen name={PageName.BYHomePage} component={BYHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.BYMinePage} component={BYMinePage} />
+        <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
+        <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
+        <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
+        <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
+        <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
         <Router.TabScreen name={PageName.WNZGameLobbyPage} component={WNZGameLobbyPage} />
         <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
