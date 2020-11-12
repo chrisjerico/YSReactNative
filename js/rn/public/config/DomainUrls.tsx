@@ -101,7 +101,7 @@ const DomainUrls: {[x:string]:string} = {
   'c235': 'https://www.hilliot.com',
   'c237': 'http://app13478.com',
   'c239b': 'https://5566569.com',
-  'c242': 'https://800516.com',
+  'c242': 'https://239269.com',
   'c245': 'https://4823app.com',
   'c246': 'https://547758.com',
   'c251': 'https://2420app.app',
