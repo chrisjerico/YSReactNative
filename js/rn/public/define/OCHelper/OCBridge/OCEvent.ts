@@ -1,10 +1,12 @@
+import { OCHelper } from './../OCHelper';
 import { UGStore } from './../../../../redux/store/UGStore';
 import { OCCall } from './OCCall';
 import { PageName, } from '../../../navigation/Navigation';
 import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
-import { getCurrentPage, jumpTo, pop, push } from '../../../navigation/RootNavigation';
+import { getCurrentPage, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation';
 import UGSkinManagers from '../../../theme/UGSkinManagers';
 import { RnPageModel } from '../SetRnPageInfo';
+import UGUserModel from '../../../../redux/model/全局/UGUserModel';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
@@ -26,12 +28,6 @@ export class OCEvent extends OCCall {
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
       // console.log('OCEvent rn收到oc通知：', params);
 
-      if (params._EventName == OCEventType.viewWillAppear && params.params == 'ReactNativeVC') {
-        const currentPage = getCurrentPage()
-        const { didFocus } = UGStore.getPageProps(currentPage);
-        didFocus && didFocus();
-      }
-
       this.events
         .filter(v => {
           return v.type == params._EventName;
@@ -43,13 +39,26 @@ export class OCEvent extends OCCall {
 
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
-      console.log('跳转到rn页面：', params.vcName, params);
+      UGUserModel.updateFromYS();
+
       if (params.vcName) {
+        const page = RnPageModel.getPageName(params.vcName);
         if (params.rnAction == 'push') {
-          push(params.vcName, params, true) || push(RnPageModel.getPageName(params.vcName), params, true);
+          console.log('push到rn页面：', params.vcName, params);
+          push(page, params);
         } else {
-          jumpTo(params.vcName, params, true) || jumpTo(RnPageModel.getPageName(params.vcName), params, true);
+          const currentPage = getCurrentPage()
+          if (currentPage == page && getStackLength() < 2) {
+            console.log('成为焦点：', currentPage);
+            const { didFocus } = UGStore.getPageProps(currentPage);
+            didFocus && didFocus();
+          } else {
+            console.log('跳转到rn页面：', params.vcName, params);
+            jumpTo(page, params, true);
+          }
         }
+      } else {
+        console.log('页面为空', params);
       }
     });
 

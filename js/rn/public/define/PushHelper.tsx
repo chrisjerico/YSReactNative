@@ -7,10 +7,10 @@ import { PageName } from '../navigation/Navigation'
 import { navigate, popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
-import NetworkRequest1 from '../network/NetworkRequest1'
+import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
-import { GoldenEgg } from '../views/tars/Activitys'
+import { showMessage } from '../widget/UGLoadingCP'
 import { ANHelper } from './ANHelper/ANHelper'
 import { CMD, OPEN_PAGE_PMS } from './ANHelper/hp/CmdDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
@@ -63,6 +63,20 @@ export default class PushHelper {
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_ROULETTE, { data: turntableList })
+        break
+    }
+  }
+  // 登出
+  static async pushLogout() {
+    switch (Platform.OS) {
+      case 'ios':
+        await OCHelper.call('UGUserModel.setCurrentUser:', [])
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationUserLogout'])
+        await OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+        break
+      case 'android':
+        await ANHelper.callAsync(CMD.LOG_OUT)
+        Toast('退出成功')
         break
     }
   }
@@ -238,14 +252,6 @@ export default class PushHelper {
     switch (Platform.OS) {
       case 'ios':
         switch (code) {
-          case UGUserCenterType.存款: {
-            PushHelper.pushCategory(7, 21)
-            break
-          }
-          case UGUserCenterType.取款: {
-            PushHelper.pushCategory(7, 22)
-            break
-          }
           case UGUserCenterType.存款纪录: {
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
               {
@@ -268,206 +274,20 @@ export default class PushHelper {
             ])
             break
           }
-          case UGUserCenterType.每日签到:
-            {
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true])
-            }
-            break
-          case UGUserCenterType.银行卡管理: {
-            async function func1() {
-              let hasBankCard: boolean = await OCHelper.call('UGUserModel.currentUser.hasBankCard')
-              let hasFundPwd: boolean = await OCHelper.call('UGUserModel.currentUser.hasFundPwd')
-              var vcName = hasBankCard ? 'UGBankCardInfoController' : hasFundPwd ? 'UGBindCardViewController' : 'UGSetupPayPwdController'
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                {
-                  selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                  args1: [vcName],
-                },
-                true,
-              ])
-            }
-            func1()
-            break
-          }
-          case UGUserCenterType.利息宝: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGYubaoViewController'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.推荐收益: {
-            async function func1() {
-              let isTest: boolean = await OCHelper.call('UGUserModel.currentUser.isTest')
-              if (isTest) {
-                // 试玩账号去阉割版的推荐收益页
-                OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true])
-              } else {
-                // ShowLoading
-                OCHelper.call('SVProgressHUD.showWithStatus:')
-
-                let {data:info} = await NetworkRequest1.team_agentApplyInfo()
-
-                if (info.reviewStatus === 2) {
-                  // 去推荐收益页
-                  OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGPromotionIncomeController.new' }, true])
-                } else {
-                  let agent_m_apply = await OCHelper.call('UGSystemConfigModel.currentConfig.agent_m_apply')
-                  if (parseInt(agent_m_apply) !== 1) {
-                    OCHelper.call('HUDHelper.showMsg:', ['在线注册代理已关闭'])
-                  } else {
-                    // 去申请代理
-                    info = Object.assign({ clsName: 'UGagentApplyInfo' }, info)
-                    OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                      {
-                        selectors: 'UGAgentViewController.new[setItem:]',
-                        args1: [],
-                      },
-                      true,
-                    ])
-                  }
-                }
-                // HideLoading
-                OCHelper.call('SVProgressHUD.dismiss')
-              }
-            }
-            func1()
-            break
-          }
-          case UGUserCenterType.彩票注单记录: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGBetRecordViewController.new' }, true])
-            break
-          }
-          case UGUserCenterType.其他注单记录: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:[setGameType:]',
-                args1: ['UGRealBetRecordViewController', 'real'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.额度转换: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGBalanceConversionController'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.站内信: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGMailBoxTableViewController.new' }, true])
-            break
-          }
-          case UGUserCenterType.安全中心: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSecurityCenterViewController.new' }, true])
-            break
-          }
-          case UGUserCenterType.任务中心: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGMissionCenterViewController'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.个人信息: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGUserInfoViewController'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.建议反馈: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              {
-                selectors: 'AppDefine.viewControllerWithStoryboardID:',
-                args1: ['UGFeedBackController'],
-              },
-              true,
-            ])
-            break
-          }
-          case UGUserCenterType.在线客服: {
-            async function func1() {
-              let urlStr: string = await OCHelper.call('UGSystemConfigModel.currentConfig.zxkfUrl.stringByTrim')
-              if (!urlStr.length) return
-              let hasHost = await OCHelper.call('NSURL.URLWithString:.host.length', [urlStr])
-              let hasScheme = await OCHelper.call('NSURL.URLWithString:.scheme.length', [urlStr])
-              // 补全URL
-              if (!hasHost) {
-                urlStr = AppDefine.host + urlStr
-              } else if (!hasScheme) {
-                urlStr = 'http://' + urlStr
-              }
-              OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-                {
-                  selectors: 'SLWebViewController.new[setUrlStr:]',
-                  args1: [urlStr],
-                },
-                true,
-              ])
-            }
-            func1()
-            break
-          }
-          case UGUserCenterType.活动彩金: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGMosaicGoldViewController.new' }, true])
-            break
-          }
-          case UGUserCenterType.长龙助手: {
-            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGChangLongController.new' }, true])
+          case UGUserCenterType.每日签到: {
+            OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGSigInCodeViewController.new', args1: [] }, true])
             break
           }
           case UGUserCenterType.全民竞猜: {
-            OCHelper.call('HUDHelper.showMsg:', ['敬请期待'])
+            showMessage('敬请期待');
             break
           }
           case UGUserCenterType.开奖走势: {
             navigate(PageName.TrendView, {})
             break
           }
-          case UGUserCenterType.QQ客服: {
-            OCHelper.call('UGSystemConfigModel.currentConfig.qqs').then((qqs: Array<string> = []) => {
-              if (!qqs.length) {
-                OCHelper.call('HUDHelper.showMsg:', ['敬请期待'])
-              } else {
-                var btns: Array<AlertButton> = qqs.map(
-                  (qq: string, idx: number): AlertButton => {
-                    return {
-                      text: `QQ客服${idx + 1}：${qq}`,
-                      onPress: () => {
-                        OCHelper.call('CMCommon.goQQ:', [qq])
-                      },
-                    }
-                  }
-                )
-                btns.push({ text: '取消', style: 'cancel' })
-                Alert.alert('请选择QQ客服', null, btns)
-              }
-            })
-            break
-          }
           case UGUserCenterType.资金明细: {
             PushHelper.pushCategory(7, 28)
-            break
-          }
-          case UGUserCenterType.开奖网: {
-            this.openWebView(
-              //httpClient.defaults.baseURL + '/index2.php'
-              httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
-            )
             break
           }
           case UGUserCenterType.彩票大厅: {
@@ -522,6 +342,13 @@ export default class PushHelper {
             ])
             // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
+          }
+          default: {
+            OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
+              if (!succ) {
+
+              }
+            });
           }
         }
 
@@ -598,11 +425,13 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.全民竞猜: {
-            subId = MenuType.QMJC
-            break
+            subId = MenuType.QMJC;
+            // Toast('敬请期待')
+            break;
           }
           case UGUserCenterType.开奖走势: {
-            Toast('敬请期待')
+            // Toast('敬请期待')
+            navigate(PageName.TrendView, {})
             return
           }
           case UGUserCenterType.QQ客服: {
@@ -612,6 +441,13 @@ export default class PushHelper {
           case UGUserCenterType.资金明细: {
             subId = MenuType.ZHGL
             break
+          }
+          case UGUserCenterType.开奖网: {
+            this.openWebView(
+              //httpClient.defaults.baseURL + '/index2.php'
+              httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
+            )
+            return;
           }
           case UGUserCenterType.彩票大厅: {
             subId = MenuType.GCDT

@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
+import React, { useEffect, useRef } from 'react';
 import { UGPromoteModel } from '../../redux/model/other/UGPromoteModel';
 import JDPromotionListCP from './cp/JDPromotionListCP';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import ScrollableTabView, { TabBarProps } from 'react-native-scrollable-tab-view';
 import { Text } from 'react-native-elements';
-import {Platform, View, ViewStyle, StyleProp} from 'react-native';
+import { Platform, View, ViewStyle, StyleProp } from 'react-native';
 import AppDefine from '../../public/define/AppDefine';
 import chroma from 'chroma-js';
 import { UGColor } from '../../public/theme/UGThemeColor';
 import { UGBasePageProps } from '../base/UGPage';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { getStackLength } from '../../public/navigation/RootNavigation';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 interface JDPromotionListVars {
@@ -22,7 +22,7 @@ interface JDPromotionListVars {
 /**
  * 优惠券列表
  */
-export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListProps, JDPromotionListVars> {
+export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListProps> {
   dataArray?: Array<{ category?: string; title: string; list: Array<UGPromoteModel> }>;
   style?: 'slide' | 'popup' | 'page'; // slide折叠、popup弹窗、page内页
   showTopBar?: boolean; // 是否显示顶部栏
@@ -31,7 +31,8 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
 
 // 优惠活动页
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
-  const { setProps, vars: v = { style1: '背景透明' }, containerStyle } = props;
+  const { setProps, containerStyle } = props;
+  const { current: v } = useRef<JDPromotionListVars>({ style1: '背景透明' });
 
   useEffect(() => {
     setProps({
@@ -47,7 +48,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
       },
     });
 
-    NetworkRequest1.systeam_promotions().then(({data}) => {
+    api.system.promotions().setCompletionBlock(({ data }) => {
       if (data.showCategory) {
         const temp: { [x: number]: Array<UGPromoteModel> } = [];
         data.list.map(pm => {

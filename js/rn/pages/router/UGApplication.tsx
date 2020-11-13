@@ -172,6 +172,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
+      {/*<Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />*/}
     </Router.StackNavigator>
   )
 }

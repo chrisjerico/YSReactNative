@@ -79,12 +79,24 @@ const HomeHeader = ({
               resizeMode={'contain'}
             />
           </View>
-          <View style={_styles.right}>
+          <View style={_styles.right_button_container}>
             <Button
-              title={'登录 | 注册'}
+              title={'登录'}
               containerStyle={_styles.button}
               titleStyle={_styles.buttonTitle}
               onPress={onPressSignIn}
+            />
+            <Button
+              title={'|'}
+              containerStyle={_styles.button_divider}
+              titleStyle={_styles.buttonTitle}
+              onPress={onPressSignIn}
+            />
+            <Button
+              title={'注册'}
+              containerStyle={_styles.button}
+              titleStyle={_styles.buttonTitle}
+              onPress={onPressSignUp}
             />
           </View>
         </View>
@@ -101,6 +113,8 @@ const _styles = StyleSheet.create({
   button: {
     paddingHorizontal: scale(4),
     paddingVertical: scale(5),
+  },
+  button_divider: {
   },
   left_text: {
     fontSize: scale(18),
@@ -131,9 +145,11 @@ const _styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   left: {flex: 1},
-  right: {
+  right_button_container: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   right_login: {
     flex: 1,

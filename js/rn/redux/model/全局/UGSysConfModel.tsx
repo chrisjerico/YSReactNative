@@ -44,6 +44,14 @@ export enum UGUserCenterType {
   开奖走势 = 18,
   QQ客服 = 19,
   开奖网 = 20,
+  未结注单 = 21,
+  电子注单 = 22,
+  真人注单 = 23,
+  棋牌注单 = 24,
+  捕鱼注单 = 25,
+  电竞注单 = 26,
+  体育注单 = 27,
+  UG注单 = 28,
   // 自定义（从100+开始写，前面的都是后台定制的）
   彩票大厅 = 100,
   聊天室 = 101,
@@ -137,7 +145,8 @@ export default class UGSysConfModel {
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
   easyRememberDomain?: string // 黑色模板易记的网址*/
   chatLink?: string // 聊天的链接*/
-
+  mBonsSwitch?: boolean; // 俸禄开关开启。0 为开启， 1 为 关闭
+  
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
   reg_name?: number // 真实姓名 0不填，1选填，2必填

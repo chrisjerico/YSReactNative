@@ -32,15 +32,13 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   const state: IGlobalState = Object.assign({}, prevState)
 
   if (act.type == 'reset') {
-    act.sysConf && (state.sysConf = act.sysConf)
-    act.userInfo && (state.userInfo = act.userInfo)
-    act.sign && (state.sign = act.sign)
+    act.sysConf && (state.sysConf = act.sysConf ?? {})
+    act.userInfo && (state.userInfo = act.userInfo ?? {})
+    act.sign && (state.sign = act.sign ?? {})
+    act.gameLobby && (state.gameLobby = act.gameLobby)
     act.banner && (state.banner = act.banner)
     act.sys && (state.sys = act.sys)
-    act.page && (state[act.page] = act.props)
-    // 陣列
-    act.gameLobby && (state.gameLobby = act.gameLobby)
-    act.rightMenu && (state.rightMenu = act.rightMenu)
+    act.page && (state[act.page] = act.props ?? {})
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }

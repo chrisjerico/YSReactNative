@@ -44,9 +44,6 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages)
     }
-    // if (skitType.indexOf('香槟金') != -1) {
-    //   pages = pages.concat(XBJPages);
-    // }
   }
 
   // 测试环境（未上线的内容）
@@ -61,17 +58,8 @@ export function setRnPageInfo() {
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
-    }
-    if (skitType.indexOf('金星黑') != -1) {
-      pages = pages.concat(JXHPages)
-    }
-    if (skitType.indexOf('白曜') != -1) {
-      pages = pages.concat(BYPages)
-    }
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
+    if (skitType.indexOf('香槟金') != -1) {
+      pages = pages.concat(XBJPages);
     }
   }
 

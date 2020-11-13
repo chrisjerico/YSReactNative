@@ -1,4 +1,12 @@
+import { Platform } from "react-native";
+import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
+import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
+import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
+import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
+import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
+import { UGStore } from "../../store/UGStore";
 
 export class UGLoginModel {
   'API-SID'?: string; // sessid
@@ -7,16 +15,62 @@ export class UGLoginModel {
   // 自定义参数
   sessid?: string;
   token?: string;
+  static getToken() {
+    const user = UGStore.globalProps?.userInfo;
+    return user.sessid ?? user["API-SID"];
+  }
 }
 
 export default class UGUserModel extends UGLoginModel {
-  static mine = new UGUserModel();
+  static async updateFromYS() {
+    let user;
+    switch (Platform.OS) {
+      case "ios":
+        user = await OCHelper.call('UGUserModel.currentUser');
+        break;
+      case "android":
+        user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+        break;
+    }
+    if (!user) {
+      UGStore.dispatch({ type: 'reset', userInfo: {} });
+    } else {
+      UGStore.dispatch({ type: 'merge', userInfo: user });
+    }
+    UGStore.save();
+  }
+  static updateFromNetwork() {
+    api.user.info().setCompletionBlock(({ data: user }) => {
+      UGStore.dispatch({ type: 'merge', userInfo: user })
+      UGStore.save();
+    })
+  }
   static getYS(user: UGLoginModel | Data): UGUserModel {
     var temp = Object.assign(new UGUserModel(), user);
     temp['clsName'] = 'UGUserModel';
     temp.sessid = user['API-SID'];
     temp.token = user['API-SID'];
     return temp;
+  }
+
+  // 获取头像URL
+  static getAvatarURL(list: AvatarModel[], avatar: string) {
+    if (avatar?.indexOf('http') != -1) return avatar;
+    
+    let avatarURL: string;
+    const filter = list?.filter((ele) => {
+      if (ele.filename == UGStore.globalProps?.userInfo?.avatar) {
+        return ele;
+      }
+    })
+    if (filter?.length) {
+      avatarURL = filter[0].url;
+    } else if (list?.length) {
+      avatarURL = list[0].url
+    } else {
+      avatarURL = 'https://i.ibb.co/mNnwnh7/money-2.png'
+    }
+    return avatarURL;
   }
 
   uid?: string; // 用户ID

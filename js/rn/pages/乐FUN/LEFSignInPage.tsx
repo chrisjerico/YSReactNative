@@ -51,7 +51,9 @@ const LEFSignInPage = () => {
           backTitle={'首页'}
           titleColor={LEFThemeColor.乐FUN.textColor2}
           showBackBtn={true}
-          onPressBackBtn={pop}
+          onPressBackBtn={
+            popToRoot
+          }
           showCustomerService={false}
           onPressCustomerService={() => {
             PushHelper.pushUserCenterType(UGUserCenterType.在线客服)

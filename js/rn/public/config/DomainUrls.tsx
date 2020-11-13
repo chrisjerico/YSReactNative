@@ -58,15 +58,15 @@ const DomainUrls: {[x:string]:string} = {
   'c085': 'https://xn--7-206cp03b.com',
   'c085yw': 'https://x558.cc',
   'c091': 'https://83f9.com',
-  'c092': 'https://2013ddd.com',
+  'c092': 'https://2013tfc-555.com',
   'c105_b': 'https://390qp8.com',
   'c108': 'https://823653.com',
   'c114': 'https://c432019.com',
-  'c116': 'https://13532037.com',
+  'c116': 'https://13532033.com',
   'c120': 'https://asafew435yrtgre.net',
-  'c126': 'https://758cpapp.com',
+  'c126': 'https://jzcp44.com',
   'c126b': 'https://og878.vip',
-  'c134': 'https://19972030.com',
+  'c134': 'https://19972029.com',
   'c137': 'https://7033005.com',
   'c141': 'http://nhyiec141kcwvvq.phlotgame.com',
   'c150': 'https://0187488.com',
@@ -81,19 +81,19 @@ const DomainUrls: {[x:string]:string} = {
   'c175': 'http://7053fndsjfkn.com',
 //            'c175': 'https://7053lll.com',
   'c184': 'http://00fhcp.cn',
-  'c186': 'https://200300b.com',
+  'c186': 'https://288388d.com',
   'c190': 'https://www677272.com',
-  'c193': 'https://4906app.app',
+  'c193': 'https://4906app.com',
   'c198': 'https://2909tycjt.com',
   'c200': 'https://20181995.com',
   'c201': 'https://dkcp520.com',
   'c203': 'https://xpjcpapp.com',
-  'c205': 'https://494.cyou',
+  'c205': 'https://494.best',
   'c206': 'http://rdiuyotdhjo533fsddylvgi.com',
-  'c208': 'https://771appapp.com',
+  'c208': 'https://771appappapp.com',
   'c211': 'https://310310app.com',
   'c212': 'https://00852030.com',
-  'c213': 'https://450vip14.com',
+  'c213': 'https://4501071.com',
   'c217': 'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
   'c228': 'https://app77787.co',
   'c225': 'https://8393483.com',
@@ -101,13 +101,13 @@ const DomainUrls: {[x:string]:string} = {
   'c235': 'https://www.hilliot.com',
   'c237': 'http://app13478.com',
   'c239b': 'https://5566569.com',
-  'c242': 'https://460889.com',
+  'c242': 'https://239269.com',
   'c245': 'https://4823app.com',
-  'c246': 'https://647758.com',
+  'c246': 'https://547758.com',
   'c251': 'https://2420app.app',
   'L001': 'https://4988wap.com',
   'L001gbhy': 'https://demo.gbbet.com',
-  'L002': 'https://70333c.com',
+  'L002': 'https://70333h.com',
   'h003b': 'https://betv5.com',
   'h005': 'https://534023.com',
   'UGCC': 'http://test20.6yc.com',
@@ -122,7 +122,11 @@ const DomainUrls: {[x:string]:string} = {
 const initDomain = async (siteId?: string) => {
   switch (Platform.OS) {
     case 'ios':
-      const host = DomainUrls[siteId];
+      const sites = {}
+      for (const k in DomainUrls) {
+        sites[k.toLowerCase()] = DomainUrls[k];
+      }
+      const host = sites[siteId.toLowerCase()];
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host]);
       break;
     case 'android':

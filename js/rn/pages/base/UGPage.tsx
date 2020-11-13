@@ -20,23 +20,19 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 
 
 // Props
-export interface UGBasePageProps<P extends UGBasePageProps = {}, V = {}> {
+export interface UGBasePageProps<P extends UGBasePageProps = {}, F = {}> {
   // React-Navigation
-  navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
-  route?: { name: PageName; params: any }
+  navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}>; // 导航助手
+  route?: { name: PageName, params: F };
 
   // 提供自定义api给页面使用
-  setProps?(props?: P, willRender?: boolean): void // 设置Props并刷新
-  vars?: V // 获取成员变量
+  setProps?(props?: P, willRender?: boolean): void;// 设置Props并刷新
 
   // —————————— 配置UI ——————————
-  didFocus?: (p: UGBasePageProps) => void // 成为焦点时回调
-  backgroundColor?: string[] // 背景色
-  backgroundImage?: string
-  navbarOpstions?: UGNavigationBarProps
-
-  // —————————— 安卓独有参数 ——————————
-  fromNative?: string //当前界面是否由原生打开
+  didFocus?: (p: F) => void;// 成为焦点时回调
+  backgroundColor?: string[]; // 背景色
+  backgroundImage?: string;
+  navbarOpstions?: UGNavigationBarProps;
 }
 
 // HOC
@@ -44,7 +40,6 @@ export default (Page: Function) => {
   return class extends React.Component<UGBasePageProps> {
     private unsubscribe: () => void
     private newProps: UGBasePageProps = null
-    private vars: { [x: string]: any } = {}
 
     constructor(props: UGBasePageProps) {
       super(props)
@@ -54,14 +49,17 @@ export default (Page: Function) => {
       let lastParams
       navigation.removeListener('focus', null)
       navigation.addListener('focus', () => {
-        const { name, params } = this.props.route
-        ugLog("成为焦点", name, params)
+        const { name, params = {} } = this.props.route
+        const { didFocus } = this.newProps;
+        console.log('成为焦点', name, params)
+
         if (lastParams !== params) {
-          // 跳转时参数设置到props
-          lastParams = params
-          this.setProps(params)
+          lastParams = params;
+          didFocus && didFocus(params);
+        } else {
+          didFocus && didFocus({});
         }
-        this.newProps.didFocus && this.newProps.didFocus(params)
+        this.setProps({});
       })
       navigation.removeListener("transitionEnd", null)
       navigation.addListener("transitionEnd", (e) => {
@@ -139,7 +137,7 @@ export default (Page: Function) => {
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page {...this.newProps} setProps={this.setProps.bind(this)} vars={this.vars} />
+            <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
           </FastImage>
         </LinearGradient>
       ) // navigation={this.props.navigation}

@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Button, Icon } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import AppDefine from '../../public/define/AppDefine';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
@@ -15,29 +14,27 @@ import PushHelper from '../../public/define/PushHelper';
 import { PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import { UGBasePageProps } from '../base/UGPage';
+import { setProps, UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { XBJRegisterProps } from './XBJRegisterPage';
-import { navigate } from '../../public/navigation/RootNavigation';
-import { ErrorObject } from '../../public/network/CCSessionModel';
-import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { navigate, pop } from '../../public/navigation/RootNavigation';
+import { showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 // 声明成员变量
 interface XJBLoginVars {
-  account: string; // 账号
-  pwd: string; // 密码
-  errorTimes: number; // 失败次数大于3时需要滑动验证
-  slideCode: SlideCodeModel; // 滑动验证码
-  googleCode: string; // 谷歌验证码
-  reloadSlide: () => void; // 刷新滑块
+  account?: string; // 账号
+  pwd?: string; // 密码
+  errorTimes?: number; // 失败次数大于3时需要滑动验证
+  slideCode?: SlideCodeModel; // 滑动验证码
+  googleCode?: string; // 谷歌验证码
+  reloadSlide?: () => void; // 刷新滑块
 }
 
 // 声明Props
-export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, XJBLoginVars> {
+export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, { usr: string, pwd: string }> {
   rememberPassword?: boolean; // 是否记住密码
-  usr?: string;
-  pwd?: string;
 }
 
 // 滑动验证
@@ -58,7 +55,6 @@ export function SlidingVerification(props: { hidden: boolean, setReload: (reload
           const temp: any = e?.nativeEvent?.data;
           const slideCode: SlideCodeModel = temp;
           if (slideCode?.nc_sig) {
-            console.log('滑动成功2', slideCode);
             props.didVerified(slideCode)
           }
           // console.log('e=', e?.nativeEvent?.data);
@@ -69,7 +65,8 @@ export function SlidingVerification(props: { hidden: boolean, setReload: (reload
 }
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
-  const { setProps, vars: v } = props;
+  const { setProps } = props;
+  const { current: v } = useRef<XJBLoginVars>({});
   const { loginVCode } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
@@ -97,7 +94,11 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
           rememberPassword: isRemember,
-          didFocus: () => {
+          didFocus: (params) => {
+            if (params?.usr?.length) {
+              v.account = params?.usr;
+              v.pwd = params?.pwd;
+            }
             v.reloadSlide();
           }
         })
@@ -108,7 +109,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
 
   function onLoginBtnClick() {
     var err: string;
-    if (!v.account?.trim()?.length) {
+    if (!v?.account?.trim()?.length) {
       err = '请输入用户名';
     } else if (!v.pwd?.trim()?.length) {
       err = '请输入密码';
@@ -116,56 +117,51 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       err = '请完成滑动验证';
     }
     if (err) {
-      showLoading()
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      showMessage(err);
       return;
     }
 
     v.reloadSlide();
-    showLoading('正在登录...' );
-    NetworkRequest1.user_login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode))
-      .then(({ data }) => {
-        console.log('登录成功');
-        showSuccess('登录成功！');
+    showLoading('正在登录...');
+    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode)).setCompletionBlock(({ data }) => {
+      showSuccess('登录成功！');
 
-        async function didLogin() {
-          // 退出旧账号（试玩账号）
-          var user = await OCHelper.call('UGUserModel.currentUser');
-          if (user) {
-            console.log('退出旧账号');
-            console.log(user);
-            var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-            await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-            await OCHelper.call('UGUserModel.setCurrentUser:');
-          }
-
-          // 保存数据
-          await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [props.rememberPassword, 'isRememberPsd']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.account : '', 'userName']);
-          await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.pwd : '', 'userPsw']);
-          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
-
-          // 去下一页
-          var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
-          if (simplePwds.indexOf(v.pwd) > -1) {
-            await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
-            await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
-              { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
-              true,
-            ]);
-          } else {
-            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
-          }
+      async function didLogin() {
+        // 退出旧账号（试玩账号）
+        var user = await OCHelper.call('UGUserModel.currentUser');
+        if (user) {
+          console.log('退出旧账号');
+          console.log(user);
+          var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+          await OCHelper.call('UGUserModel.setCurrentUser:');
         }
-        didLogin();
-      })
-      .catch((err: ErrorObject) => {
-        showError(err.message);
-        if (loginVCode || (v.errorTimes += 1) > 3) {
-          setProps();
+
+        // 保存数据
+        await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(data)]);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', [props.rememberPassword, 'isRememberPsd']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.account : '', 'userName']);
+        await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [props.rememberPassword ? v.pwd : '', 'userPsw']);
+        await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
+
+        // 去下一页
+        var simplePwds = ['111111', '000000', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321', 'abcdef', 'aaaaaa', 'qwe123'];
+        if (simplePwds.indexOf(v.pwd) > -1) {
+          await OCHelper.call('HUDHelper.showMsg:', ['你的密码过于简单，可能存在风险，请把密码修改成复杂密码']);
+          await OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
+            { selectors: 'UGSecurityCenterViewController.new[setFromVC:]', args1: ['fromLoginViewController'] },
+            true,
+          ]);
+        } else {
+          pop();
         }
-      });
+      }
+      didLogin();
+    }, (err) => {
+      if (loginVCode || (v.errorTimes += 1) > 3) {
+        setProps();
+      }
+    });
   }
 
   return (
@@ -178,14 +174,14 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             type="账号"
             placeholder="请输入账号"
             containerStyle={{ marginTop: 24 }}
-            defaultValue={props.usr ?? v.account}
+            defaultValue={v.account}
             onChangeText={(text) => {
               v.account = text;
             }}
           />
           <UGTextField
             type="密码"
-            defaultValue={props.pwd ?? v.pwd}
+            defaultValue={v.pwd}
             onChangeText={(text) => {
               v.pwd = text;
             }}
