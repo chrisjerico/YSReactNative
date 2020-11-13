@@ -13,7 +13,7 @@ export const devConfig = {
     return false;
   },
 
-  skinKey: '乐橙',
+  skinKey: '利来',
 }
 
 

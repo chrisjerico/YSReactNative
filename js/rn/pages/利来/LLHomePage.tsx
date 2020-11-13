@@ -43,14 +43,14 @@ const LLHomePage = ({ setProps, navigation }) => {
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    // const timer = setInterval(() => {
       refresh()
       //updateUserInfo()
-    }, 2000)
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
+    // }, 2000)
+    // return () => {
+    //   clearInterval(timer)
+    // }
+  }, [uid])
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
