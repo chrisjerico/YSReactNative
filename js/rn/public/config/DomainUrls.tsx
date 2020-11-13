@@ -88,7 +88,7 @@ const DomainUrls: {[x:string]:string} = {
   'c200': 'https://20181995.com',
   'c201': 'https://dkcp520.com',
   'c203': 'https://xpjcpapp.com',
-  'c205': 'https://494.cyou',
+  'c205': 'https://494.best',
   'c206': 'http://rdiuyotdhjo533fsddylvgi.com',
   'c208': 'https://771appappapp.com',
   'c211': 'https://310310app.com',
