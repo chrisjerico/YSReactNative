@@ -98,7 +98,6 @@ const DomainUrls: {[x:string]:string} = {
   'c217': 'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
   'c228': 'https://app77787.co',
   'c225': 'https://8393483.com',
-  'c230': 'https://www.jdapp588.com',
   'c235': 'https://www.hilliot.com',
   'c237': 'http://app13478.com',
   'c239b': 'https://5566569.com',
