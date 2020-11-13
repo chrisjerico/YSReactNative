@@ -57,28 +57,28 @@ const LCMinePage = () => {
             keyExtractor={(item, index) => `mine-${index}`}
             data={UGUserCenterItem}
             renderItem={({ item }) => (
-                <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
-                  console.log(item.code)
-                  PushHelper.pushUserCenterType(item.code)
+              <TouchableWithoutFeedback style={{ flexDirection: 'row', flex: 1 }} onPress={() => {
+                console.log(item.code)
+                PushHelper.pushUserCenterType(item.code)
+              }}>
+                <View style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  marginLeft: 20,
+                  height: 47,
+                  alignItems: 'center',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#E0E0E0',
                 }}>
-                  <View style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    marginLeft: 20,
-                    height: 47,
-                    alignItems: 'center',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E0E0E0',
-                  }}>
-                    <Image style={{ height: 29, width: 29, marginRight: 10, resizeMode: 'stretch' }}
-                           source={{ uri: item.logo }} />
-                    <Text
-                      style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
-                    <View style={{ marginRight: 20 }}>
-                      <Icon size={20} name={'angle-right'} />
-                    </View>
+                  <Image style={{ height: 29, width: 29, marginRight: 10, resizeMode: 'stretch' }}
+                         source={{ uri: item.logo }} />
+                  <Text
+                    style={{ alignSelf: 'center', color: '#47535B', flex: 1 }}>{item.name}</Text>
+                  <View style={{ marginRight: 20 }}>
+                    <Icon size={20} name={'angle-right'} />
                   </View>
-                </TouchableWithoutFeedback>
+                </View>
+              </TouchableWithoutFeedback>
             )} />
           <LinearGradient
             style={{

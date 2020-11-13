@@ -67,7 +67,7 @@ const LCHomePage = ({ navigation, setProps }) => {
   }, [])
 
   useEffect(() => {
-    console.log("rankingListSwitch", rankingListSwitch)
+    console.log('rankingListSwitch', rankingListSwitch)
   }, [rankingListSwitch])
 
   useEffect(() => {
