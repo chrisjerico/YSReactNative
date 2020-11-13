@@ -84,6 +84,7 @@ const LCHomePage = ({ navigation, setProps }) => {
   }, [notices])
 
   const openPopup = (data: any) => {
+    console.log(data)
     const dataModel = data.data?.popup.map((item, index) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     })
