@@ -9,6 +9,7 @@ import { OCHelper } from "../define/OCHelper/OCHelper";
 const DomainUrls: {[x:string]:string} = {
   'zora': 'http://zhibot071f.fhptcdn.com',
   'txt005': 'http://t005f.fhptcdn.com',
+  'cloud': 'http://t005f.fhptcdn.com',
   'tx07': 'http://test07.6yc.com',
   'tx08': 'http://test08.6yc.com',
   'tx10': 'https://test10.6yc.com',
@@ -37,7 +38,7 @@ const DomainUrls: {[x:string]:string} = {
   'txt500': 'http://t500f.fhptcdn.com',
   'txt501': 'http://t501f.fhptcdn.com',
   'txt502': 'http://t502f.fhptcdn.com',
-  'txtTest': 'http://test61a.fhptcdn.com',
+  'txtTest': 'http://t005f.fhptcdn.com',
   'tstksm': 'http://t133f.fhptcdn.com',
   'chat': 'http://test03.6yc.com',
   'a002': 'https://5049uuu.com',
