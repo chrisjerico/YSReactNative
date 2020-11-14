@@ -44,8 +44,8 @@ const LLHomePage = ({ setProps, navigation }) => {
 
   useEffect(() => {
     // const timer = setInterval(() => {
-      refresh()
-      //updateUserInfo()
+    refresh()
+    //updateUserInfo()
     // }, 2000)
     // return () => {
     //   clearInterval(timer)
@@ -64,7 +64,8 @@ const LLHomePage = ({ setProps, navigation }) => {
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: '#ffffff' }} refreshing={loading} onRefresh={onRefresh} />} style={{ flex: 1 }}>
+        <ScrollView refreshControl={<RefreshControl style={{ backgroundColor: '#ffffff' }} refreshing={loading}
+                                                    onRefresh={onRefresh} />} style={{ flex: 1 }}>
           <HomeHeaderButtonBar logoIcon={mobile_logo} />
           <HomeTabView />
           {m_promote_pos && (
@@ -110,7 +111,8 @@ const LLHomePage = ({ setProps, navigation }) => {
                   中奖排行榜
                 </Text>
               </View>
-              <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'} width={Dimensions.get('screen').width - 24} ranks={rankList} />
+              <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                          width={Dimensions.get('screen').width - 24} ranks={rankList} />
             </SafeAreaView>
           ) : (
             <SafeAreaView style={{ marginHorizontal: 10 }}>
@@ -126,7 +128,8 @@ const LLHomePage = ({ setProps, navigation }) => {
                   投注排行榜
                 </Text>
               </View>
-              <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'} width={Dimensions.get('screen').width - 24} ranks={rankList} />
+              <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
+                          width={Dimensions.get('screen').width - 24} ranks={rankList} />
             </SafeAreaView>
           )}
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
@@ -162,11 +165,13 @@ const LLHomePage = ({ setProps, navigation }) => {
           }}>
           <LinearGradient colors={['#df4133', '#fe695b']} style={{ borderRadius: 40 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', padding: 8 }}>
-              <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }} onPress={() => navigate(PageName.LLLoginPage, {})}>
+              <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }}
+                                onPress={() => navigate(PageName.LLLoginPage, {})}>
                 <Text style={{ fontSize: 20, color: '#ffffff' }}>登录</Text>
               </TouchableOpacity>
               <View style={{ width: 1, backgroundColor: '#ffffff', height: 40 }} />
-              <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }} onPress={() => push(PageName.LLRegisterPage)}>
+              <TouchableOpacity style={{ height: 40, justifyContent: 'center', paddingHorizontal: 30 }}
+                                onPress={() => push(PageName.LLRegisterPage)}>
                 <Text style={{ fontSize: 20, color: '#ffffff' }}>注册</Text>
               </TouchableOpacity>
             </View>
@@ -212,7 +217,8 @@ const TurntableListItem = () => {
     try {
       const res = await APIRouter.activity_turntableList()
       res?.data != null && setTurntableList(res?.data)
-    } catch (error) {}
+    } catch (error) {
+    }
   }
   useEffect(() => {
     if (uid != '') {
@@ -227,7 +233,8 @@ const TurntableListItem = () => {
             Alert.alert('温馨提示', '您还未登录', [
               {
                 text: '取消',
-                onPress: () => {},
+                onPress: () => {
+                },
                 style: 'cancel',
               },
               {
@@ -241,7 +248,8 @@ const TurntableListItem = () => {
             Alert.alert('温馨提示', '请先登录您的正式帐号', [
               {
                 text: '取消',
-                onPress: () => {},
+                onPress: () => {
+                },
                 style: 'cancel',
               },
               {
@@ -253,12 +261,14 @@ const TurntableListItem = () => {
             PushHelper.pushWheel(turntableList?.data)
           }
         }}>
-        <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }} source={{ uri: 'dzp_btn' }}>
+        <ImageBackground style={{ width: 95, height: 95, position: 'absolute', top: height / 2, right: 20 }}
+                         source={{ uri: 'dzp_btn' }}>
           <TouchableWithoutFeedback
             onPress={() => {
               setTurntableListVisiable(false)
             }}>
-            <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }} source={{ uri: 'dialog_close' }} />
+            <Image style={{ width: 20, height: 20, right: 0, top: 0, position: 'absolute' }}
+                   source={{ uri: 'dialog_close' }} />
           </TouchableWithoutFeedback>
         </ImageBackground>
       </TouchableWithoutFeedback>
