@@ -147,7 +147,7 @@ const LLHomePage = ({ setProps, navigation }) => {
             </Text>
           </View>
           <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
-          <Text style={{ color: 'black', textAlign: 'center' }}>version: {26}</Text>
+          <Text style={{ color: 'black', textAlign: 'center' }}>version: {27}</Text>
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
