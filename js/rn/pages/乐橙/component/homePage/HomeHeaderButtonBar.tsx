@@ -4,10 +4,12 @@ import * as React from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
 import FastImage from 'react-native-fast-image'
 import { httpClient } from '../../../../public/network/httpClient'
+import useHomePage from '../../../../public/hooks/tars/useHomePage'
 
 export const HomeHeaderButtonBar = () => {
-  const userStore = UGStore.globalProps.userInfo
-  const { balance, uid } = userStore
+  const { value } = useHomePage({})
+  const { userInfo } = value
+  const { balance, uid } = userInfo
   const sysStore = UGStore.globalProps.sysConf
   const { mobile_logo = '' } = sysStore
 

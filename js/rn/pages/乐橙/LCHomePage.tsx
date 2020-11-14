@@ -67,10 +67,6 @@ const LCHomePage = ({ navigation, setProps }) => {
   }, [])
 
   useEffect(() => {
-    console.log('rankingListSwitch', rankingListSwitch)
-  }, [rankingListSwitch])
-
-  useEffect(() => {
     if (notices && notices.length > 0 && noticeFormat.length == 0) {
       let string = ''
       const noticeData = notices.map((res) => {
