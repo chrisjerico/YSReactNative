@@ -52,7 +52,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
   }, []);
 
   return (
-    <AnimationMoveView show={v.show} direction='bottom' >
+    <AnimationMoveView show={v.show} direction='bottom' backgroundColor='#0005' >
       <View style={{ flex: 1 }} />
       <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width, backgroundColor: '#fff' }}>
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>

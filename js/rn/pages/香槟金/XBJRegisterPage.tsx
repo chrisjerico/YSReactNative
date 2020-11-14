@@ -204,16 +204,15 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               }}
             />
           </View>
-          <UGTextField
+          {hide_reco && <UGTextField
             type="推荐人ID"
             placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
             value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}
             editable={parseInt(domainBindAgentId) <= 0}
-            hidden={!hide_reco}
             onChangeText={text => {
               v.referrerId = text;
             }}
-          />
+          />}
           <UGTextField
             type="账号"
             placeholder="账号长度为6-15位"
@@ -235,49 +234,43 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.pwd2 = text;
             }}
           />
-          <UGTextField
+          {reg_name && <UGTextField
             type="真实姓名"
             placeholder={'真实姓名' + (reg_name == 1 ? '（选填）' : '')}
-            hidden={!reg_name}
             onChangeText={text => {
               v.realname = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_qq != 0 && <UGTextField
             type="QQ"
             placeholder={'QQ号' + (reg_qq == 1 ? '（选填）' : '')}
-            hidden={!reg_qq}
             onChangeText={text => {
               v.qq = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_wx != 0 && <UGTextField
             type="微信"
             placeholder={'微信号' + (reg_wx == 1 ? '（选填）' : '')}
-            hidden={!reg_wx}
             onChangeText={text => {
               v.wechat = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_email != 0 && <UGTextField
             type="邮箱"
             placeholder={'邮箱地址' + (reg_email == 1 ? '（选填）' : '')}
-            hidden={!reg_email}
             onChangeText={text => {
               v.email = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_phone && <UGTextField
             type="手机号"
             placeholder={'手机号' + (reg_phone == 1 ? '（选填）' : '')}
-            hidden={!reg_phone}
             onChangeText={text => {
               v.phone = text;
             }}
-          />
-          <UGTextField
+          />}
+          {smsVerify && <UGTextField
             type="短信验证码"
-            hidden={!smsVerify}
             didSmsButtonClick={startCountdown => {
               api.secure.smsCaptcha(v.phone).setCompletionBlock(() => {
                 startCountdown();
@@ -286,24 +279,22 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             onChangeText={text => {
               v.smsCode = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_vcode == 1 && <UGTextField
             type="字母验证码"
-            hidden={reg_vcode != 1}
             onChangeText={text => {
               v.letterCode = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_fundpwd && <UGTextField
             type="密码"
             maxLength={4}
             placeholder={'取款密码' + (reg_fundpwd == 1 ? '（选填）' : '')}
-            hidden={!reg_fundpwd}
             keyboardType="number-pad"
             onChangeText={text => {
               v.fundPwd = text;
             }}
-          />
+          />}
           <SlidingVerification hidden={reg_vcode == 0} setReload={(reload) => {
             v.reloadSlide = reload;
           }} didVerified={slideCode => {

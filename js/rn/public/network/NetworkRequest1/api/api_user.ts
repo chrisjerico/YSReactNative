@@ -18,8 +18,8 @@ export class api_user {
   }
 
   // 登录
-  static login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel) {
-    return this.c.post<UGLoginModel>('login', { usr: uname, pwd: pwd, ggCode: googleCode, slideCode: slideCode });
+  static login(uname: string, pwd: string, googleCode?: string, slideCode?: SlideCodeModel, fullName?:string) {
+    return this.c.post<UGLoginModel>('login', { usr: uname, pwd: pwd, ggCode: googleCode, slideCode: slideCode, fullName:fullName });
   }
 
   // 注册

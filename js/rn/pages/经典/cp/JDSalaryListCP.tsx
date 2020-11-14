@@ -46,7 +46,7 @@ export const JDSalaryListCP = ({ c_ref }: { c_ref: JDSalaryListCP }) => {
 
   return (
     <AnimationFadeView show={v.show} >
-      <View style={{ marginTop: 115, width: AppDefine.width - 50, height: AppDefine.height - 250, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
+      <View style={{width: AppDefine.width - 55, height: AppDefine.height - 260, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 45, justifyContent: 'center' }} >
           <Text style={{ textAlign: 'center', color: '#fff', fontSize: 17 }} >领取俸禄</Text>
         </LinearGradient>

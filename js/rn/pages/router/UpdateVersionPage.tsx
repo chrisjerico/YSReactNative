@@ -175,6 +175,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         let p = progress.receivedBytes / progress.totalBytes
         setProps({ progress: p, text: '正在更新，请稍等...' })
         console.log('rn热更新包下载进度：' + p)
+      },
+      (update) => {
+        const verInfo = '(' + update.appVersion + ') ' + update.description;
+        console.log('发现新的热更新包：', verInfo);
       }
     )
 
