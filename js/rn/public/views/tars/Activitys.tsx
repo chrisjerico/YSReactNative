@@ -48,7 +48,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       <ActivityComponent
         refreshing={refreshing}
         containerStyle={{ top: scale(250), right: 0 }}
-        show={uid && redBagLogo && !isTest}
+        show={redBag?.data}
         logo={redBagLogo}
         onPress={() => {
           PushHelper.pushRedBag(redBag)

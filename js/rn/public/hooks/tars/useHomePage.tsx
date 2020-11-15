@@ -139,7 +139,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const roulette = turntableList?.data
   const goldenEggs = goldenEggList?.data
   const scratchs = scratchList?.data
-
   const { uid } = userInfo
   const { announcementType } = sysInfo
   useEffect(() => {
