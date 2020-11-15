@@ -298,32 +298,30 @@ export default class PushHelper {
           }
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
-
             showLoading()
             api.activity.scratchList().setCompletionBlock(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const scratchList = Object.assign({ clsName: 'ScratchModel' }, data?.scratchList)
               const scratchWinList = data?.scratchWinList?.map((v) => {
-                return Object.assign({ clsName: 'ScratchWinModel' }, v)
+                return Object.assign({}, { clsName: 'ScratchWinModel' }, v)
               })
-              if (scratchWinList?.length) {
-                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
-                  {
-                    selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
-                    args1: [{ scratchList, scratchWinList }],
-                    args2: [5],
-                  },
-                  true,
-                  undefined,
-                ])
-              }
+              // if (scratchWinList?.length) {
+              OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
+                {
+                  selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
+                  args1: [{ scratchList, scratchWinList }],
+                  args2: [5],
+                },
+                true,
+                undefined,
+              ])
+              // }
             })
             break
           }
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
-
             showLoading()
             api.activity.goldenEggList().setCompletionBlock(({ data }) => {
               hideLoading()
