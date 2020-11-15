@@ -1,11 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import PushHelper from '../../define/PushHelper'
-import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignIn from './useSignIn'
@@ -61,12 +57,13 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
           showLoading('正在登录...')
         },
         onSuccess: () => {
-          if (loginTo == LoginTo.首页) {
-            navigateToHomePage()
-          } else {
-            navigateToHomePage()
-            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-          }
+          navigateToHomePage()
+          // if (loginTo == LoginTo.首页) {
+          //   navigateToHomePage()
+          // } else {
+          //   navigateToHomePage()
+          //   PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+          // }
           showSuccess('登录成功')
         },
         onError: (error) => {

@@ -76,7 +76,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
           onSuccessSignOut && onSuccessSignOut()
         },
         onError: (error) => {
-          showError('退出失败')
+          showError(error ?? '退出失败')
         },
       }),
     []
@@ -100,6 +100,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const homeGameData = useMemo(() => {
     const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
     const homeGames = homeGame?.data?.icons ?? []
+    //@ts-ignore
     const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
 
     return { navs, homeGames, homeGamesConcat }
@@ -120,6 +121,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   }, [lotteryNumber])
 
   const official_customise_Games = useMemo(() => {
+    // @ts-ignore
     const official_customise_games = lotteryGame?.data?.flatMap((ele) => ele?.list)
     const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
     const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
