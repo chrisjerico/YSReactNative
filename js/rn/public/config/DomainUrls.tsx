@@ -131,5 +131,5 @@ const initDomain = async (siteId?: string) => {
   }
 }
 
-export default DomainUrls;
-export {DomainUrls, initDomain};
+// export default DomainUrls;
+// export {DomainUrls, initDomain};

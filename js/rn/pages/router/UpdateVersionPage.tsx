@@ -47,7 +47,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     ugLog('try: ' + net)
     setProps({showNetwork: net})
   }
-  const {testNetwork} = UseVersion({testResult})
+  const {testNetwork, testSite} = UseVersion({testResult})
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -102,7 +102,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           OCHelper.launchFinish()
           break
         case 'android':
-          ANHelper.callAsync(CMD.LAUNCH_GO)
+          // ANHelper.callAsync(CMD.LAUNCH_GO)
           break
       }
     }, 8000)
@@ -226,7 +226,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       case 'ios':
         break
       case 'android':
-        bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO)
+        // bCodePush && bBanner && ANHelper.callAsync(CMD.LAUNCH_GO)
         break
     }
   }, [bCodePush, bBanner])

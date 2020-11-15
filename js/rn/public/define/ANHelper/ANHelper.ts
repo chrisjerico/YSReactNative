@@ -8,7 +8,7 @@ import {UGStore} from "../../../redux/store/UGStore";
 import {NA_DATA} from "./hp/DataDefine";
 import {ugLog} from "../../tools/UgLog";
 import {stringToNumber} from "../../tools/tars";
-import {initDomain} from "../../config/DomainUrls";
+import {initDomain} from "../../config/MultiDomainUrls";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件

@@ -7,7 +7,7 @@ import { OCCall } from './OCBridge/OCCall';
 import { OCEvent } from './OCBridge/OCEvent';
 import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
 import { stringToNumber } from '../../tools/tars';
-import DomainUrls, { initDomain } from '../../config/DomainUrls';
+import {DomainUrls, initDomain} from "../../config/MultiDomainUrls";
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey;
