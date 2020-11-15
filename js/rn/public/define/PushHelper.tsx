@@ -1,6 +1,6 @@
-import { Alert, AlertButton, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
-import { UGAgentApplyInfo, UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
@@ -147,33 +147,6 @@ export default class PushHelper {
     })
   }
 
-  static pushGoldenEggs(goldenEggs: GoldenEgg[]) {
-    // const _goldenEggs = Object.assign({ clsName: 'DZPModel' }, goldenEggs?.[0])
-
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call(({ vc }) => {
-          return {
-            vc: {
-              selectors: 'EggFrenzyViewController.new',
-              modalPresentationStyle: 5,
-              // args1: [5],
-            },
-            ret: {
-              selectors: 'UGNavigationController.current.presentViewController:animated:',
-              args1: [vc, true],
-            },
-          }
-        })
-        // OCHelper.call('UGNavigationController.current.presentViewController:animated:', [{ selectors: 'EggFrenzyViewController.new', args1: [goldenEggs] }, true])
-        console.log('-------去砸Ｇ蛋')
-        break
-      case 'android':
-        break
-    }
-  }
-
-  static pushCratchs(scratchs: any) {}
   // 去彩票大廳 userCenter裡有
   // static pushLotteryLobby() {
   //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
@@ -356,9 +329,9 @@ export default class PushHelper {
               hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
-                const obj = Object.assign({ clsName: 'DZPModel' }, v)
-                obj.param = Object.assign({ clsName: 'DZPparamModel' }, obj.param)
-                obj.param.prizeArr = obj.param?.prizeArr?.map((v) => {
+                let obj = Object.assign({}, { clsName: 'DZPModel' }, v)
+                obj.param = Object.assign({}, { clsName: 'DZPparamModel' }, obj?.param)
+                obj.param.prizeArr = obj?.param?.prizeArr?.map((v) => {
                   return Object.assign({ clsName: 'DZPprizeModel' }, v)
                 })
                 return obj

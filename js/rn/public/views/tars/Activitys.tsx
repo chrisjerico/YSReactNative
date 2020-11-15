@@ -1,9 +1,10 @@
 import React, { memo } from 'react'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { getActivityPosition } from '../../tools/tars'
+import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -69,9 +70,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         enableFastImage={false}
         show={uid && goldenEggs && !isTest}
         logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
-        onPress={() => {
-          PushHelper.pushGoldenEggs(goldenEggs)
-        }}
+        onPress={goToUserCenterType.砸金蛋}
       />
       <ActivityComponent
         refreshing={refreshing}
@@ -79,9 +78,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         enableFastImage={false}
         show={uid && scratchs && !isTest}
         logo={'https://i.ibb.co/0J51pH9/scratch.png'}
-        onPress={() => {
-          PushHelper.pushCratchs(scratchs)
-        }}
+        onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {
         const { image, position, linkCategory, linkPosition } = item
