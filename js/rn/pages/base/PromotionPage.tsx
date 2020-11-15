@@ -29,14 +29,17 @@ const PromotionPage = (props: any) => {
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
+      console.log('-------------value------------', value)
       const { showCategory, style, list, categories } = value
       totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
+      let filterCategory = {}
+      list?.forEach((ele) => (filterCategory[ele?.category] = categories[ele?.category]))
       setLoading(false)
       // @ts-ignore
       setStyle(style)
       setList(totalList.current)
       setShowCategory(showCategory)
-      setCategories(Object.assign({}, categories, { '0': '全部' }))
+      setCategories(Object.assign({}, filterCategory, { '0': '全部' }))
     })
   }, [])
 
