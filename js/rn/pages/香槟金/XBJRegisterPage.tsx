@@ -57,6 +57,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
+      backgroundImage:'https://i.ibb.co/JycJ0nW/3x.png',
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();

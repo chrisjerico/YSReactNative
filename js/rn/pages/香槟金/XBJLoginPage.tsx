@@ -93,8 +93,9 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps();
       } else {
         setProps({
-          navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
+          navbarOpstions: { hidden: false, gradientColor:['#0000', '#0000'], hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
+          backgroundImage:'https://i.ibb.co/JycJ0nW/3x.png',
           rememberPassword: isRemember,
           didFocus: (params) => {
             if (params?.usr?.length) {

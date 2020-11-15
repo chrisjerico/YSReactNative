@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useRef } from 'react';
-import { View, Alert, Platform } from 'react-native';
+import { View, Alert, Platform, Image } from 'react-native';
 import { Button, Text, Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
@@ -21,7 +21,6 @@ import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
-
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
@@ -143,7 +142,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <FastImage source={{ uri: 'https://i.ibb.co/1MzcBGd/2x.png' }} style={{ width: 28, height: 21 }} />
+              <Image source={{ uri: 'https://i.ibb.co/1MzcBGd/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
               <Text style={{ marginTop: 11, fontSize: 12 }}>存款</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -151,7 +150,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.额度转换);
               }}>
-              <FastImage source={{ uri: 'https://i.ibb.co/VNm1G2s/2x.png' }} style={{ width: 28, height: 21 }} />
+              <Image source={{ uri: 'https://i.ibb.co/VNm1G2s/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
               <Text style={{ marginTop: 11, fontSize: 12 }}>额度转换</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -159,7 +158,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.取款);
               }}>
-              <FastImage source={{ uri: 'https://i.ibb.co/mJjNngx/2x.png' }} style={{ width: 28, height: 21 }} />
+              <Image source={{ uri: 'https://i.ibb.co/mJjNngx/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
               <Text style={{ marginTop: 11, fontSize: 12 }}>取款</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -167,7 +166,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <FastImage source={{ uri: 'https://i.ibb.co/RGXm0sc/2x.png' }} style={{ width: 28, height: 21 }} />
+              <Image source={{ uri: 'https://i.ibb.co/RGXm0sc/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
               <Text style={{ marginTop: 11, fontSize: 12 }}>资金管理</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }}>
