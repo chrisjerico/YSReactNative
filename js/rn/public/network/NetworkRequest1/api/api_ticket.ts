@@ -1,9 +1,23 @@
-import { Platform } from "react-native";
-import { ANHelper } from "../../../define/ANHelper/ANHelper";
-import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
-import { OCHelper } from "../../../define/OCHelper/OCHelper";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_ticket {
-  c = 'c=ticket&a=';
+  static c = new SampleAPI('c=ticket&a=');
+
+  // 获取彩票统计数据
+  static lotteryStatistics(startDate: string, endDate: string) {// 2020-09-25
+    return this.c.get('lotteryStatistics', { startDate: startDate, endDate: endDate });
+  }
+
+  // 获取注单列表
+  static history(
+    category: string,//游戏分类：lottery=彩票，real=真人，card=棋牌，game=电子游戏，sport=体育
+    status: number,// 注单状态：1=待开奖，2=已中奖，3=未中奖，4=已撤单
+    startDate: string,
+    endDate?: string,
+    page = 1,
+    rows = 20,
+  ) {
+    return this.c.get('history', { category: category, status: status, startDate: startDate, endDate: endDate, page: page, rows: rows });
+  }
 }

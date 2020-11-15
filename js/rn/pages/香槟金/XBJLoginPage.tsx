@@ -14,29 +14,29 @@ import PushHelper from '../../public/define/PushHelper';
 import { PageName } from '../../public/navigation/Navigation';
 import { OCHelper } from '../../public/define/OCHelper/OCHelper';
 import { UGStore } from '../../redux/store/UGStore';
-import { UGBasePageProps } from '../base/UGPage';
+import { setProps, UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { XBJRegisterProps } from './XBJRegisterPage';
-import { navigate } from '../../public/navigation/RootNavigation';
-import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { navigate, pop } from '../../public/navigation/RootNavigation';
+import { hideLoading, showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
+import { TextFieldAlertCP } from '../../public/widget/TextFieldAlertCP';
 
 
 // 声明成员变量
 interface XJBLoginVars {
-  account: string; // 账号
-  pwd: string; // 密码
-  errorTimes: number; // 失败次数大于3时需要滑动验证
-  slideCode: SlideCodeModel; // 滑动验证码
-  googleCode: string; // 谷歌验证码
-  reloadSlide: () => void; // 刷新滑块
+  account?: string; // 账号
+  pwd?: string; // 密码
+  errorTimes?: number; // 失败次数大于3时需要滑动验证
+  slideCode?: SlideCodeModel; // 滑动验证码
+  googleCode?: string; // 谷歌验证码
+  fullName?: string;// 真实姓名
+  reloadSlide?: () => void; // 刷新滑块
 }
 
 // 声明Props
-export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, XJBLoginVars> {
+export interface XBJLoginProps extends UGBasePageProps<XBJLoginProps, { usr: string, pwd: string }> {
   rememberPassword?: boolean; // 是否记住密码
-  usr?: string;
-  pwd?: string;
 }
 
 // 滑动验证
@@ -57,7 +57,6 @@ export function SlidingVerification(props: { hidden: boolean, setReload: (reload
           const temp: any = e?.nativeEvent?.data;
           const slideCode: SlideCodeModel = temp;
           if (slideCode?.nc_sig) {
-            console.log('滑动成功2', slideCode);
             props.didVerified(slideCode)
           }
           // console.log('e=', e?.nativeEvent?.data);
@@ -68,7 +67,8 @@ export function SlidingVerification(props: { hidden: boolean, setReload: (reload
 }
 
 export const XBJLoginPage = (props: XBJLoginProps) => {
-  const { setProps, vars: v } = props;
+  const { setProps } = props;
+  const { current: v } = useRef<XJBLoginVars & TextFieldAlertCP>({});
   const { loginVCode } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
@@ -96,7 +96,11 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
           rememberPassword: isRemember,
-          didFocus: () => {
+          didFocus: (params) => {
+            if (params?.usr?.length) {
+              v.account = params?.usr;
+              v.pwd = params?.pwd;
+            }
             v.reloadSlide();
           }
         })
@@ -107,7 +111,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
 
   function onLoginBtnClick() {
     var err: string;
-    if (!v.account?.trim()?.length) {
+    if (!v?.account?.trim()?.length) {
       err = '请输入用户名';
     } else if (!v.pwd?.trim()?.length) {
       err = '请输入密码';
@@ -115,15 +119,13 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
       err = '请完成滑动验证';
     }
     if (err) {
-      showLoading()
-      OCHelper.call('HUDHelper.showMsg:', [err]);
+      showMessage(err);
       return;
     }
 
     v.reloadSlide();
     showLoading('正在登录...');
-    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode)).setCompletionBlock(({ data }) => {
-      console.log('登录成功');
+    api.user.login(v.account, v.pwd.md5(), v.googleCode, new SlideCodeModel(v.slideCode), v.fullName).setCompletionBlock(({ data }) => {
       showSuccess('登录成功！');
 
       async function didLogin() {
@@ -153,18 +155,22 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             true,
           ]);
         } else {
-          await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]);
+          pop();
         }
       }
       didLogin();
-    }, (err) => {
-      if (loginVCode || (v.errorTimes += 1) > 3) {
+    }, (err, sm) => {
+      if (sm.res?.data?.needFullName) {
+        sm.noShowErrorHUD = true;
+        hideLoading();
+        v.showTextFieldAlert && v.showTextFieldAlert();
+      } else if (loginVCode || (v.errorTimes += 1) > 3) {
         setProps();
       }
     });
   }
 
-  return (
+  return ([
     <View style={{ marginTop: AppDefine.height * 0.08 }}>
       <FastImage source={{ uri: 'https://i.ibb.co/PrsPnxF/m-logo.png' }} style={{ marginLeft: AppDefine.width * 0.5 - 50, width: 100, height: 36 }} />
       <View style={{ marginLeft: 24, marginTop: 56, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
@@ -174,14 +180,14 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
             type="账号"
             placeholder="请输入账号"
             containerStyle={{ marginTop: 24 }}
-            defaultValue={props.usr ?? v.account}
+            defaultValue={v.account}
             onChangeText={(text) => {
               v.account = text;
             }}
           />
           <UGTextField
             type="密码"
-            defaultValue={props.pwd ?? v.pwd}
+            defaultValue={v.pwd}
             onChangeText={(text) => {
               v.pwd = text;
             }}
@@ -249,6 +255,13 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</Text>
         </TouchableOpacity>
       </View>
-    </View>
-  );
+    </View>,
+    <TextFieldAlertCP c_ref={v} title='请输入绑定的真实姓名' placeholder='请输入真实姓名' completed={(text) => {
+      if (text?.length) {
+        v.fullName = text;
+        onLoginBtnClick();
+        v.fullName = undefined;
+      }
+    }} />
+  ]);
 }

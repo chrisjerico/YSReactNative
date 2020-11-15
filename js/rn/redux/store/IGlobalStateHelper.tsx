@@ -11,15 +11,6 @@ export const AsyncStorageKey = {
   IGlobalState: 'IGlobalState',
 }
 
-export class IGlobalStateHelper {
-  static updateUserInfo() {
-    api.user.info().setCompletionBlock(({ data: user }) => {
-      UGStore.dispatch({ type: 'merge', userInfo: user })
-      UGStore.save();
-    })
-  }
-}
-
 export async function updateUserInfo() {
   try {
     const response = await APIRouter.user_info()

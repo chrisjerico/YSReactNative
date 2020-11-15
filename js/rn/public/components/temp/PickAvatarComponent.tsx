@@ -1,5 +1,14 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import {GestureResponderEvent, Modal, ScrollView, StyleSheet, Text, TouchableNativeFeedback, View} from 'react-native'
+import {
+  GestureResponderEvent,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
 import { Button } from 'react-native-elements'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { scale } from '../../../public/tools/Scale'
@@ -33,6 +42,7 @@ const PickAvatarComponent = ({
       setLoading(true)
       const response = await APIRouter.system_avatarList()
       const avatarList = response?.data?.data ?? []
+      // ugLog("avatarList=", avatarList)
       setAvatarList(avatarList)
     } catch (error) {
       console.log('-------error------', error)
@@ -74,9 +84,13 @@ const PickAvatarComponent = ({
   }))
 
   return (
-    <View style={[styles.container, visible ? {} : {height: 0}]}>
-      <View style={styles.pickerBlock}>
-        <View style={styles.avatarContainer}>
+    <View style={[_styles.container, visible ? {} : {height: 0}]}>
+      <TouchableWithoutFeedback onPress={()=>setVisible(false)}>
+        <View style={_styles.container_touch}>
+        </View>
+      </TouchableWithoutFeedback>
+      <View style={_styles.pickerBlock}>
+        <View style={_styles.avatarContainer}>
           <Avatar uri={avatar} size={200} />
           <Text style={{ marginTop: scale(10) }}>{'头像预览'}</Text>
         </View>
@@ -102,6 +116,7 @@ const PickAvatarComponent = ({
             >
               {avatarList?.map((item, index) => {
                 const { url, filename } = item
+                // ugLog("avatar url2 ", url, filename)
                 return (
                   <TouchableNativeFeedback onPress={(event)=>{
                     ugLog('url = ')
@@ -131,7 +146,7 @@ const PickAvatarComponent = ({
             />
           </View>
         )}
-        <View style={styles.buttonContainer}>
+        <View style={_styles.buttonContainer}>
           <Button
             activeOpacity={1}
             title={'保存头像'}
@@ -159,12 +174,17 @@ const PickAvatarComponent = ({
   )
 }
 
-const styles = StyleSheet.create({
+const _styles = StyleSheet.create({
   container: {
     position: 'absolute',
     flex: 1,
     height: '100%',
     justifyContent: 'flex-end',
+    backgroundColor: '#00000033',
+  },
+  container_touch: {
+    flex: 1,
+    width: '100%',
     backgroundColor: '#00000033',
   },
   pickerBlock: {

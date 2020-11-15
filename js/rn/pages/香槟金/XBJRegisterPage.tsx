@@ -18,7 +18,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers';
 import { navigate, popToRoot } from '../../public/navigation/RootNavigation';
 import { Toast } from "../../public/tools/ToastUtils";
 import { SlidingVerification } from './XBJLoginPage';
-import { showError, showLoading, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
+import { showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
 import { ANHelper } from '../../public/define/ANHelper/ANHelper';
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine';
 import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
@@ -28,31 +28,33 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 interface XBJRegisterVars {
-  referrerId: string;// 推荐人ID
-  account: string;// 账号
-  pwd1: string;// 密码
-  pwd2: string;// 确认密码
-  realname: string;// 真实姓名
-  phone: string;// 手机号
-  letterCode: string;// 字母验证码
-  smsCode: string;// 短信验证码
-  slideCode: SlideCodeModel;// 滑动验证码
-  fundPwd: string;// 取款密码
-  qq: string;// QQ
-  wechat: string;// 微信
-  email: string;// 邮箱
-  reloadSlide: () => void; // 刷新滑块
+  referrerId?: string;// 推荐人ID
+  account?: string;// 账号
+  pwd1?: string;// 密码
+  pwd2?: string;// 确认密码
+  realname?: string;// 真实姓名
+  phone?: string;// 手机号
+  letterCode?: string;// 字母验证码
+  smsCode?: string;// 短信验证码
+  slideCode?: SlideCodeModel;// 滑动验证码
+  fundPwd?: string;// 取款密码
+  qq?: string;// QQ
+  wechat?: string;// 微信
+  email?: string;// 邮箱
+  reloadSlide?: () => void; // 刷新滑块
 }
 
 // 定义Props
-export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps, XBJRegisterVars> {
+export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps> {
   isAgent?: boolean; // 是否代理注册
 }
 
 export const XBJRegisterPage = (props: XBJRegisterProps) => {
-  const { setProps, vars: v } = props;
-
+  const { setProps, navigation } = props;
+  const { current: v } = useRef<XBJRegisterVars>({});
+  
   useEffect(() => {
+    navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
@@ -123,14 +125,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       err = '请输入短信验证码';
     }
     if (err) {
-      switch (Platform.OS) {
-        case 'ios':
-          OCHelper.call('HUDHelper.showMsg:', [err]);
-          break;
-        case 'android':
-          Toast(err)
-          break;
-      }
+      showMessage(err);
       return;
     }
 
@@ -155,7 +150,8 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     }).then((sm) => {
       sm.setCompletionBlock(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
-        didRegisterSuccess(v.account, v.pwd1?.md5(), autoLogin);
+        navigation.setOptions({unmountOnBlur:true})
+        didRegisterSuccess(v.account, v.pwd1, autoLogin);
       });
     });
   }
@@ -208,16 +204,15 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               }}
             />
           </View>
-          <UGTextField
+          {hide_reco && <UGTextField
             type="推荐人ID"
             placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
             value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}
             editable={parseInt(domainBindAgentId) <= 0}
-            hidden={!hide_reco}
             onChangeText={text => {
               v.referrerId = text;
             }}
-          />
+          />}
           <UGTextField
             type="账号"
             placeholder="账号长度为6-15位"
@@ -239,49 +234,43 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.pwd2 = text;
             }}
           />
-          <UGTextField
+          {reg_name && <UGTextField
             type="真实姓名"
             placeholder={'真实姓名' + (reg_name == 1 ? '（选填）' : '')}
-            hidden={!reg_name}
             onChangeText={text => {
               v.realname = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_qq != 0 && <UGTextField
             type="QQ"
             placeholder={'QQ号' + (reg_qq == 1 ? '（选填）' : '')}
-            hidden={!reg_qq}
             onChangeText={text => {
               v.qq = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_wx != 0 && <UGTextField
             type="微信"
             placeholder={'微信号' + (reg_wx == 1 ? '（选填）' : '')}
-            hidden={!reg_wx}
             onChangeText={text => {
               v.wechat = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_email != 0 && <UGTextField
             type="邮箱"
             placeholder={'邮箱地址' + (reg_email == 1 ? '（选填）' : '')}
-            hidden={!reg_email}
             onChangeText={text => {
               v.email = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_phone && <UGTextField
             type="手机号"
             placeholder={'手机号' + (reg_phone == 1 ? '（选填）' : '')}
-            hidden={!reg_phone}
             onChangeText={text => {
               v.phone = text;
             }}
-          />
-          <UGTextField
+          />}
+          {smsVerify && <UGTextField
             type="短信验证码"
-            hidden={!smsVerify}
             didSmsButtonClick={startCountdown => {
               api.secure.smsCaptcha(v.phone).setCompletionBlock(() => {
                 startCountdown();
@@ -290,24 +279,22 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             onChangeText={text => {
               v.smsCode = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_vcode == 1 && <UGTextField
             type="字母验证码"
-            hidden={reg_vcode != 1}
             onChangeText={text => {
               v.letterCode = text;
             }}
-          />
-          <UGTextField
+          />}
+          {reg_fundpwd && <UGTextField
             type="密码"
             maxLength={4}
             placeholder={'取款密码' + (reg_fundpwd == 1 ? '（选填）' : '')}
-            hidden={!reg_fundpwd}
             keyboardType="number-pad"
             onChangeText={text => {
               v.fundPwd = text;
             }}
-          />
+          />}
           <SlidingVerification hidden={reg_vcode == 0} setReload={(reload) => {
             v.reloadSlide = reload;
           }} didVerified={slideCode => {
@@ -335,13 +322,12 @@ async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean)
     switch (Platform.OS) {
       case 'ios':
         user = await OCHelper.call('UGUserModel.currentUser');
-        OCHelper.call('SVProgressHUD.showSuccessWithStatus:', ["注册成功"]);
         break;
       case 'android':
         user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
-        Toast('注册成功')
         break;
     }
+    showMessage('注册成功');
 
     const { data: loginData, status } = await APIRouter.user_login(acct, pwd)
 

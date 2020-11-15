@@ -1,9 +1,11 @@
-import { Platform } from "react-native";
-import { ANHelper } from "../../../define/ANHelper/ANHelper";
-import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
-import { OCHelper } from "../../../define/OCHelper/OCHelper";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_report {
-  c = 'c=report&a=';
+  static c = new SampleAPI('c=report&a=');
+
+  // 我的长龙助手投注记录
+  static getUserRecentBet() {
+    return this.c.get('getUserRecentBet', {tag:1});
+  }
 }

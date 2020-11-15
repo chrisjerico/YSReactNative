@@ -87,7 +87,7 @@ export class UGStore {
         cb.page == act.page && cb.callback()
       }
     } else {
-      setProps();
+      setProps()
     }
   }
 
@@ -96,6 +96,7 @@ export class UGStore {
     const cb = { page: page, callback: callback }
     this.callbacks.push(cb)
     return () => {
+      //@ts-ignore
       UGStore.callbacks.remove(cb)
     }
   }

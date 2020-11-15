@@ -1,9 +1,11 @@
-import { Platform } from "react-native";
-import { ANHelper } from "../../../define/ANHelper/ANHelper";
-import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
-import { OCHelper } from "../../../define/OCHelper/OCHelper";
+import { CCSessionReq, SampleAPI } from "../CCSessionModel";
 
 
 export class api_notice {
-  c = 'c=notice&a=';
+  static c = new SampleAPI('c=notice&a=');
+
+  // 获取首页公告
+  static latest() {
+    return this.c.get('latest');
+  }
 }

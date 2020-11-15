@@ -20,6 +20,7 @@ export class UGLoadingProps {
   type: UGLoadingType
   text?: string
   backgroundColor?: string[] // 支持渐变色
+  pointerEvents?: boolean // 点击穿透
   reloadClick?: () => void
   setHideLoading?: (hideLoading: () => void) => void
 
@@ -30,7 +31,7 @@ let hideLoadingFunc = undefined
 
 // 在当前页面显示Loading
 export function showMessage(text?: string) {
-  showHUD({ type: UGLoadingType.Message, text: text })
+  showHUD({ type: UGLoadingType.Message, text: text, pointerEvents: true })
 }
 export function showLoading(text?: string, backgroundColor?: string[]) {
   showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor })
@@ -45,6 +46,7 @@ export function showReload(text?: string, backgroundColor?: string[], reloadClic
   showHUD({ type: UGLoadingType.Reload, text: text, backgroundColor: backgroundColor, reloadClick: reloadClick })
 }
 export function showHUD(props: UGLoadingProps) {
+  console.log(props?.text)
   UGLoadingProps.shared = {
     ...props,
     setHideLoading: (func) => {
@@ -87,7 +89,7 @@ export class UGLoadingCP extends Component {
 let lastProps: UGLoadingProps
 
 export const UGLoadingCP1 = (props: UGLoadingProps) => {
-  const { type, text, backgroundColor = ['transparent', 'transparent'], reloadClick, setHideLoading } = props
+  const { type, text, backgroundColor = ['transparent', 'transparent'], reloadClick, setHideLoading, pointerEvents } = props
   const [zIndex, setZIndex] = useState(0)
   const fadeInOpacity = new Animated.Value(0)
   const hideLoading = () => {
@@ -125,7 +127,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
   }, [lastProps])
 
   return (
-    <Animated.View style={[{ position: 'absolute', zIndex: zIndex, width: AppDefine.width, height: AppDefine.height }, { opacity: fadeInOpacity }]}>
+    <Animated.View style={[{ position: 'absolute', zIndex: zIndex, width: AppDefine.width, height: AppDefine.height }, { opacity: fadeInOpacity }]} pointerEvents={pointerEvents ? 'none' : 'auto'}>
       <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1, justifyContent: 'center' }}>
         <View style={{ marginHorizontal: 30, marginTop: -50, backgroundColor: '#eee', alignSelf: 'center', borderRadius: 10, padding: 13 }}>
           {type == UGLoadingType.Loading && <FastImage style={[styles.icon, { width: 50, height: 50 }]} source={Res.加载中} />}
@@ -142,8 +144,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           )}
           {type == UGLoadingType.Reload && (
             <View style={{ position: 'absolute', alignSelf: 'flex-end', marginTop: -7, marginLeft: 30 }}>
-              {/* @ts-ignore */}
-              <TouchableOpacity containerStyle={[{ width: 44, height: 44 }, { overflow: false }]} onPress={hideLoading}>
+              <TouchableOpacity style={[{ width: 44, height: 44 }, { overflow: 'hidden' }]} onPress={hideLoading}>
                 <Icon size={30} type="antdesign" name="closecircleo" color="black" containerStyle={{ alignSelf: 'flex-end', marginRight: -7, backgroundColor: '#eee', borderRadius: 15 }} />
               </TouchableOpacity>
             </View>

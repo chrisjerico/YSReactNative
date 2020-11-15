@@ -66,7 +66,7 @@ import BYMinePage from '../BY/BYMinePage'
 import HJHomePage from '../黑金/HJHomePage'
 import BYSignInPage from '../BY/BYSignInPage'
 import BYSignUpPage from '../BY/BYSignUpPage'
-
+import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -102,7 +102,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
@@ -169,6 +169,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
     </Router.StackNavigator>
   )
 }

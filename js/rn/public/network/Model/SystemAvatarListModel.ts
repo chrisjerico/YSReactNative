@@ -1,4 +1,4 @@
-export interface Data {
+export interface AvatarModel {
   filename: string;
   url: string;
 }
@@ -8,3 +8,5 @@ export interface SystemAvatarListModel {
   msg: string;
   data: Data[];
 }
+
+export type Data = AvatarModel;
