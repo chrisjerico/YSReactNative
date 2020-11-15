@@ -12,6 +12,7 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
+import BottomGap from '../../public/views/temp/BottomGap'
 import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
@@ -74,6 +75,7 @@ const WNZSignUpPage = () => {
           <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
         </View>
+        <BottomGap />
       </ScrollView>
       <MenuModalComponent
         ref={menu}

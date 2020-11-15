@@ -12,6 +12,7 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import BottomGap from '../../public/views/temp/BottomGap'
 import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
@@ -83,6 +84,7 @@ const WNZSignInPage = () => {
             }}
           />
         </View>
+        <BottomGap />
       </ScrollView>
     </>
   )

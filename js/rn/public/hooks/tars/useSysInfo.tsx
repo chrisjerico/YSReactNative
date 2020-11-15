@@ -73,7 +73,7 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       email: getNecessity(sysStore?.reg_email),
       inviteCode: getNecessity(sysStore?.inviteCodeSwitch),
       agentButton: sysStore?.agentRegbutton == '1' ? Necessity.必填 : Necessity.隱藏,
-      slideCode: sysStore?.reg_vcode == '1' ? Necessity.必填 : Necessity.隱藏,
+      slideCode: sysStore?.reg_vcode == '2' ? Necessity.必填 : Necessity.隱藏,
       sms: sysStore?.smsVerify == '1' ? Necessity.必填 : Necessity.隱藏,
       bons: sysStore?.mBonsSwitch ? Necessity.隱藏 : Necessity.必填,
     },
