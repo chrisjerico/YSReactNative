@@ -8,7 +8,6 @@ import {  PageName } from '../../public/navigation/Navigation';
 import { Icon, Button } from 'react-native-elements';
 import { useSafeArea } from 'react-native-safe-area-context';
 import { useForm, Controller } from "react-hook-form";
-import { IGlobalStateHelper } from '../../redux/store/IGlobalStateHelper';
 import APIRouter from '../../public/network/APIRouter';
 import useLoginIn from '../../public/hooks/useLoginIn';
 import { push, pop } from '../../public/navigation/RootNavigation';

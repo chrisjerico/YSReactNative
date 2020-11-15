@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Button } from 'react-native-elements';
 import WebView from 'react-native-webview';
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
-import NetworkRequest1 from '../../public/network/NetworkRequest1';
 import AppDefine from '../../public/define/AppDefine';
 import UGTextField from '../../public/widget/UGTextField';
 import { connect } from 'react-redux';
@@ -25,6 +24,7 @@ import { CMD } from '../../public/define/ANHelper/hp/CmdDefine';
 import { NA_DATA } from '../../public/define/ANHelper/hp/DataDefine';
 import APIRouter from '../../public/network/APIRouter';
 import UGUserModel from '../../redux/model/全局/UGUserModel';
+import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
 interface XBJRegisterVars {
@@ -138,7 +138,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
 
     // 注册
     showLoading()
-    NetworkRequest1.user_reg({
+    api.user.reg({
       inviter: v.referrerId,
       usr: v.account,
       pwd: v.pwd1?.md5(),
@@ -152,14 +152,12 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       slideCode: new SlideCodeModel(v.slideCode),
       email: v.email,
       regType: props.isAgent ? 'agent' : 'user',
-    })
-      .then(({ data: { autoLogin } }) => {
+    }).then((sm) => {
+      sm.setCompletionBlock(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
         didRegisterSuccess(v.account, v.pwd1?.md5(), autoLogin);
-      })
-      .catch((err: Error) => {
-        showError(err.message);
       });
+    });
   }
 
   const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify } = UGStore.globalProps.sysConf;
@@ -285,20 +283,9 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
             type="短信验证码"
             hidden={!smsVerify}
             didSmsButtonClick={startCountdown => {
-              NetworkRequest1.secure_smsCaptcha(v.phone)
-                .then(() => {
-                  startCountdown();
-                })
-                .catch(err => {
-                  switch (Platform.OS) {
-                    case 'ios':
-                      OCHelper.call('SVProgressHUD.showErrorWithStatus:', [err.message]);
-                      break;
-                    case 'android':
-                      Toast(err.message)
-                      break;
-                  }
-                });
+              api.secure.smsCaptcha(v.phone).setCompletionBlock(() => {
+                startCountdown();
+              });
             }}
             onChangeText={text => {
               v.smsCode = text;

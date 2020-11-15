@@ -219,7 +219,7 @@ const PromotionLists = ({ dataSource, filter, promotionData }: { dataSource: Pro
         return {
             html: `<head>
             <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-            <style>table{border-collapse: collapse};img{width:auto !important;max-width:100%;height:auto !important}</style>
+            <style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style>
             <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
           </head>` +
                 `<script>

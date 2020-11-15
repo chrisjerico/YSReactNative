@@ -24,7 +24,6 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边'; // 行样式
   style2: 'slide' | 'popup' | 'page' = 'page'; // 详情样式：slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
-  lastSelectedIndex: number = -1;
 
   constructor(props) {
     super(props);
@@ -120,28 +119,28 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
         {
           this.state.selectedIndex === idx && <View style={{ height: pm.webViewHeight ?? 200 }}>
             <WebView
-              onNavigationStateChange={(title) => {
-                if (!pm.webViewHeight && parseInt(title.title)) {
-                  pm.webViewHeight = parseInt(title.title);
-                  if (this.lastSelectedIndex != this.state.selectedIndex) {
-                    this.lastSelectedIndex = this.state.selectedIndex;
-                    this.setState({});
-                  }
+              onMessage={(e) => {
+                const h = parseInt(e.nativeEvent.data);
+                if (h > 0 && h != pm.webViewHeight) {
+                  pm.webViewHeight = h + (pm.webViewHeight ? 0 : 40);
+                  this.setState({});
                 }
               }}
               style={{ flex: 1 }}
               source={{
-                html:
-                  `<head>
+                html:`
+                <head>
                 <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-                <style>table{border-collapse: collapse};img{width:auto !important;max-width:100%;height:auto !important}</style>
+                <style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style>
                 <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
-              </head>` +
-                  `<script>
-                window.onload = function () {
-                  window.location.hash = 1;
-                  document.title = document.body.scrollHeight;
-                }
+                </head>` + `
+              <script>
+              window.onload = function () {
+                window.webkit.messageHandlers.postSwiperData.postMessage(document.body.scrollHeight);
+              }
+              document.addEventListener("DOMContentLoaded", function() {
+                window.webkit.messageHandlers.postSwiperData.postMessage(document.body.scrollHeight);
+              }, false);
               </script>` +
                   pm.content,
               }}

@@ -1,4 +1,11 @@
+import { Platform } from "react-native";
+import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
+import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
+import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
+import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
+import { UGStore } from "../../store/UGStore";
 
 export class UGLoginModel {
   'API-SID'?: string; // sessid
@@ -7,10 +14,36 @@ export class UGLoginModel {
   // 自定义参数
   sessid?: string;
   token?: string;
+  static getToken() {
+    const user = UGStore.globalProps?.userInfo;
+    return user.sessid ?? user["API-SID"];
+  }
 }
 
 export default class UGUserModel extends UGLoginModel {
-  static mine = new UGUserModel();
+  static async updateFromYS() {
+    let user;
+    switch (Platform.OS) {
+      case "ios":
+        user = await OCHelper.call('UGUserModel.currentUser');
+        break;
+      case "android":
+        user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
+        break;
+    }
+    if (!user) {
+      UGStore.dispatch({ type: 'reset', userInfo: {} });
+    } else {
+      UGStore.dispatch({ type: 'merge', userInfo: user });
+    }
+    UGStore.save();
+  }
+  static updateFromNetwork() {
+    api.user.info().setCompletionBlock(({ data: user }) => {
+      UGStore.dispatch({ type: 'merge', userInfo: user })
+      UGStore.save();
+    })
+  }
   static getYS(user: UGLoginModel | Data): UGUserModel {
     var temp = Object.assign(new UGUserModel(), user);
     temp['clsName'] = 'UGUserModel';

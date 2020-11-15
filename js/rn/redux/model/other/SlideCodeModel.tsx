@@ -13,6 +13,6 @@ export default class SlideCodeModel {
     for (const key in sc) {
       this[key] = sc[key];
     }
-    this.nc_sid = sc.nc_csessionid;
+    this.nc_sid = sc?.nc_csessionid;
   }
 }
