@@ -11,6 +11,7 @@ import { UGStore } from "../../store/UGStore";
 export class UGLoginModel {
   'API-SID'?: string; // sessid
   'API-TOKEN'?: string; // token
+  needFullName?: boolean; // 登录是否需要验证真实姓名
 
   // 自定义参数
   sessid?: string;

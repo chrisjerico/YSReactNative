@@ -10,27 +10,33 @@ import AppDefine from '../../define/AppDefine'
 interface UGAnimationFadeProps {
   children: any;
   show?: boolean;
+  backgroundColor?: string;
 }
 export const AnimationFadeView = (props: UGAnimationFadeProps) => {
-  const { show } = props;
+  const { show, backgroundColor } = props;
   const { current: v } = useRef({
-    fadeInOpacity: new Animated.Value(0)
+    opacity: new Animated.Value(0),
+    scale: new Animated.Value(0.6)
   });
   const [zIndex, setZIndex] = useState(0);
 
   useEffect(() => {
     if (show) {
-      Animated.timing(v.fadeInOpacity, { toValue: 1, duration: 250, easing: Easing.linear }).start(); // 淡入
+      Animated.timing(v.scale, { toValue: 1, duration: 150, easing: Easing.linear }).start(); // 放大出现
+      Animated.timing(v.opacity, { toValue: 1, duration: 150, easing: Easing.linear }).start(); // 淡入
       setZIndex(0);// 关闭点击穿透
     } else {
-      Animated.timing(v.fadeInOpacity, { toValue: 0, duration: 250, easing: Easing.linear }).start();// 淡出
+      Animated.timing(v.scale, { toValue: 0.6, duration: 150, easing: Easing.linear }).start();// 缩小隐藏
+      Animated.timing(v.opacity, { toValue: 0, duration: 150, easing: Easing.linear }).start();// 淡出
       setTimeout(() => { setZIndex(-999); }, 250); // 开启点击穿透
     }
   }, [show]);
 
   return (
-    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, alignItems: 'center', }, { opacity: v.fadeInOpacity }]}>
-      {props?.children}
+    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
+      <Animated.View style={[{ transform: [{ scale: v.scale, }] }]}>
+        {props?.children}
+      </Animated.View>
     </Animated.View>
   )
 }
@@ -45,9 +51,10 @@ interface UGAnimationMoveProps {
   children: any;
   show?: boolean;
   direction?: 'left' | 'right' | 'top' | 'bottom';
+  backgroundColor?: string;
 }
 export const AnimationMoveView = (props: UGAnimationMoveProps) => {
-  const { show, direction = 'bottom' } = props;
+  const { show, direction = 'bottom', backgroundColor } = props;
   let startValue: number;
   switch (direction) {
     case 'left':
@@ -82,7 +89,7 @@ export const AnimationMoveView = (props: UGAnimationMoveProps) => {
   }, [show]);
 
   return (
-    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, alignItems: 'center', backgroundColor:'#00000055' }, { opacity: v.opacity }]}>
+    <Animated.View style={[{ zIndex: zIndex, position: 'absolute', width: AppDefine.width, height: AppDefine.height, alignItems: 'center', backgroundColor: backgroundColor }, { opacity: v.opacity }]}>
       <Animated.View style={[{
         transform: [{
           translateX: direction == 'left' || direction == 'right' ? v.offset : 0,
