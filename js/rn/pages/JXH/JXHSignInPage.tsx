@@ -45,7 +45,14 @@ const JXHSignInPage = () => {
           </View>
           <SignInFormList slideCodeColor={'#000000'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} showCheckBox={false} />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} labelTextStyle={{ color: '#8e8e93' }} />
+            <CheckBox
+              onPress={onChangeRemember}
+              label={'记住密码'}
+              containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }}
+              nonCheckContainerStyle={{ backgroundColor: '#ffffff', borderColor: '#d9d9d9' }}
+              defaultValue={remember}
+              labelTextStyle={{ color: '#8e8e93' }}
+            />
           </View>
           <LinearBadge
             colors={['#cfa461', '#cfa461']}
