@@ -1,8 +1,9 @@
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
+import PushHelper from "../../../public/define/PushHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
 import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
@@ -57,7 +58,7 @@ export default class UGUserModel extends UGLoginModel {
   // 获取头像URL
   static getAvatarURL(list: AvatarModel[], avatar: string) {
     if (avatar?.indexOf('http') != -1) return avatar;
-    
+
     let avatarURL: string;
     const filter = list?.filter((ele) => {
       if (ele.filename == UGStore.globalProps?.userInfo?.avatar) {
@@ -72,6 +73,23 @@ export default class UGUserModel extends UGLoginModel {
       avatarURL = 'https://i.ibb.co/mNnwnh7/money-2.png'
     }
     return avatarURL;
+  }
+  static checkLogin() {
+    const { isTest, uid } = UGStore.globalProps.userInfo
+    if (!isTest && uid?.length) return true;
+
+    if (!uid?.length) {
+      Alert.alert("温馨提示", "您还未登录", [
+        { text: "取消", onPress: () => { }, style: "cancel" },
+        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+      ])
+    } else if (isTest) {
+      Alert.alert("温馨提示", "请登录正式账号", [
+        { text: "取消", onPress: () => { }, style: "cancel" },
+        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+      ])
+    }
+    return false;
   }
 
   uid?: string; // 用户ID
