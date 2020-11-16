@@ -57,6 +57,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
+      backgroundImage:'https://i.ibb.co/JycJ0nW/3x.png',
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();
@@ -156,13 +157,13 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     });
   }
 
-  const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify } = UGStore.globalProps.sysConf;
+  const { agentRegbutton = '1', domainBindAgentId, hide_reco, reg_name, reg_fundpwd, reg_qq, reg_wx, reg_phone, reg_email, reg_vcode, smsVerify, mobile_logo } = UGStore.globalProps.sysConf;
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
 
   return (
     <ScrollView style={{ paddingTop: 65, paddingBottom: 100 }}>
-      <FastImage source={{ uri: 'https://i.ibb.co/PrsPnxF/m-logo.png' }} style={{ marginLeft: AppDefine.width * 0.5 - 50, width: 100, height: 36 }} />
-      <View style={{ marginLeft: 24, marginTop: 56, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
+      <FastImage source={{ uri: mobile_logo }} resizeMode={FastImage.resizeMode.contain} style={{ width: AppDefine.width, height: 45 }} />
+      <View style={{ marginLeft: 24, marginTop: 40, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <TouchableOpacity
           style={{ width: 52, flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)', justifyContent: 'center' }}
           activeOpacity={1}
@@ -234,7 +235,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.pwd2 = text;
             }}
           />
-          {reg_name && <UGTextField
+          {reg_name != 0 && <UGTextField
             type="真实姓名"
             placeholder={'真实姓名' + (reg_name == 1 ? '（选填）' : '')}
             onChangeText={text => {
@@ -262,7 +263,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.email = text;
             }}
           />}
-          {reg_phone && <UGTextField
+          {reg_phone != 0 && <UGTextField
             type="手机号"
             placeholder={'手机号' + (reg_phone == 1 ? '（选填）' : '')}
             onChangeText={text => {
@@ -286,7 +287,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.letterCode = text;
             }}
           />}
-          {reg_fundpwd && <UGTextField
+          {reg_fundpwd != 0 && <UGTextField
             type="密码"
             maxLength={4}
             placeholder={'取款密码' + (reg_fundpwd == 1 ? '（选填）' : '')}

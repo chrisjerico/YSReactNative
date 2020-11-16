@@ -69,7 +69,7 @@ export function SlidingVerification(props: { hidden: boolean, setReload: (reload
 export const XBJLoginPage = (props: XBJLoginProps) => {
   const { setProps } = props;
   const { current: v } = useRef<XJBLoginVars & TextFieldAlertCP>({});
-  const { loginVCode } = UGStore.globalProps?.sysConf;
+  const { loginVCode, mobile_logo } = UGStore.globalProps?.sysConf;
 
   useEffect(() => {
     async function getLocalPwd() {
@@ -93,8 +93,9 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps();
       } else {
         setProps({
-          navbarOpstions: { hidden: false, gradientColor: Skin1.bgColor, hideUnderline: true, back: true },
+          navbarOpstions: { hidden: false, gradientColor:['#0000', '#0000'], hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
+          backgroundImage:'https://i.ibb.co/JycJ0nW/3x.png',
           rememberPassword: isRemember,
           didFocus: (params) => {
             if (params?.usr?.length) {
@@ -172,8 +173,8 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
 
   return ([
     <View style={{ marginTop: AppDefine.height * 0.08 }}>
-      <FastImage source={{ uri: 'https://i.ibb.co/PrsPnxF/m-logo.png' }} style={{ marginLeft: AppDefine.width * 0.5 - 50, width: 100, height: 36 }} />
-      <View style={{ marginLeft: 24, marginTop: 56, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
+      <FastImage source={{ uri: mobile_logo }} resizeMode={FastImage.resizeMode.contain} style={{ width: AppDefine.width, height: 45 }} />
+      <View style={{ marginLeft: 24, marginTop: 40, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>
           <Text style={{ fontSize: 20, fontWeight: '500', color: 'white', textAlign: 'center' }}>登录</Text>
           <UGTextField
