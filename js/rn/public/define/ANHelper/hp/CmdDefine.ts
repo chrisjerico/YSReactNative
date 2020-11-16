@@ -30,7 +30,8 @@ export enum CMD {
   VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab, 0 = VISIBLE, 4 = INVISIBLE, 8 = GONE
   RELOAD = 'RELOAD', //重新加载界面, home_page 主页
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
-  APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
+  APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 相对site
+  APP_REAL_SITE = 'AppDefine.shared.real.SiteId', //交互，拿到 实际site
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数

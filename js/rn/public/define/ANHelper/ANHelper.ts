@@ -86,6 +86,7 @@ export class ANHelper extends ANEvent {
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
+    //ugLog('host=  =', host)
     AppDefine.host = host;
     httpClient.defaults.baseURL = host
     AppDefine.siteId = siteId;
@@ -118,5 +119,14 @@ export class ANHelper extends ANEvent {
     UGStore.save();
 
 
+  }
+
+  /**
+   * 刷新域名
+   * @param host
+   */
+  static refreshHost(host?: string) {
+    AppDefine.host = host;
+    httpClient.defaults.baseURL = host
   }
 }
