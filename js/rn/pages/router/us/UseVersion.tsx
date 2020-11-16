@@ -32,7 +32,7 @@ const UseVersion = ({
           testResult && testResult('网络很差,' + status)
         } else {
           testResult && testResult('网络极差,' + status)
-        }``
+        }
         ugLog('try res=', res?.data);
       })
       .catch(err => {

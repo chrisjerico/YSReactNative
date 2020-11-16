@@ -28,7 +28,7 @@ export enum CMD {
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
   CURRENT_PAGE = 'CURRENT_PAGE', //当前的界面
   VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab, 0 = VISIBLE, 4 = INVISIBLE, 8 = GONE
-  RELOAD = 'RELOAD', //重新加载界面, home_page 主页
+  RELOAD_PAGE = 'RELOAD_PAGE', //重新加载界面, home_page 主页
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
   APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密

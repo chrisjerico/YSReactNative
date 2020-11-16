@@ -8,6 +8,9 @@ import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
+import {Platform} from "react-native";
+import {ANHelper} from "../../define/ANHelper/ANHelper";
+import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -48,6 +51,13 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
 
   const navigateToHomePage = useCallback(() => {
     homePage && navigate(homePage, {})
+    switch (Platform.OS) {
+      case 'ios':
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.RELOAD_PAGE, {key: 'home_page'}).then()
+        break;
+    }
   }, [])
 
   const { signIn } = useMemo(
