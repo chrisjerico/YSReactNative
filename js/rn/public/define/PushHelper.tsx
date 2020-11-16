@@ -504,11 +504,21 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.刮刮乐: {
-            ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl' })
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.scratchList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
+            })
             return
           }
           case UGUserCenterType.砸金蛋: {
-            ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd' })
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
+            })
             return
           }
           case UGUserCenterType.我的页: {
