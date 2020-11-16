@@ -108,6 +108,9 @@ export function setRnPageInfo() {
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
   }
+  if (skitType.indexOf('香槟金') != -1) {
+    pages = pages.concat(XBJPages);
+  }
 
   // 替换原生页面
   RnPageModel.pages = pages

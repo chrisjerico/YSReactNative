@@ -302,21 +302,19 @@ export default class PushHelper {
             api.activity.scratchList().setCompletionBlock(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
-              const scratchList = Object.assign({ clsName: 'ScratchModel' }, data?.scratchList)
-              const scratchWinList = data?.scratchWinList?.map((v) => {
-                return Object.assign({}, { clsName: 'ScratchWinModel' }, v)
+              const scratchList = data?.scratchList?.map((v) => {
+                return Object.assign({ clsName: 'ScratchModel' }, v);
               })
-              // if (scratchWinList?.length) {
-              OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
-                {
+              const scratchWinList = data?.scratchWinList?.map((v) => {
+                return Object.assign({ clsName: 'ScratchWinModel' }, v);
+              });
+              if (scratchList?.length) {
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
                   selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
-                  args1: [{ scratchList, scratchWinList }],
-                  args2: [5],
-                },
-                true,
-                undefined,
-              ])
-              // }
+                  args1: [{ clsName: 'ScratchDataModel', scratchList, scratchWinList }],
+                  args2: [5]
+                }, true, undefined])
+              }
             })
             break
           }

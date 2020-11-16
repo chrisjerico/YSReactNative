@@ -21,5 +21,5 @@ interface ScratchModel {
 // 刮刮乐数据
 export interface ScratchDataModel {
   scratchWinList: ScratchWinModel[],
-  scratchList: ScratchModel,
+  scratchList: ScratchModel[],
 }
