@@ -503,6 +503,14 @@ export default class PushHelper {
             subId = MenuType.GCDT
             break
           }
+          case UGUserCenterType.刮刮乐: {
+            ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl' })
+            return
+          }
+          case UGUserCenterType.砸金蛋: {
+            ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd' })
+            return
+          }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX
             break
