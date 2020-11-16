@@ -38,7 +38,7 @@ export class OCEvent extends OCCall {
     });
 
     // 跳转到指定页面
-    this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' }) => {
+    this.emitter.addListener('SelectVC', (params: { vcName: PageName, rnAction: 'jump' | 'push' | 'refresh' }) => {
       UGUserModel.updateFromYS();
 
       if (params.vcName) {
@@ -48,7 +48,7 @@ export class OCEvent extends OCCall {
           push(page, params);
         } else {
           const currentPage = getCurrentPage()
-          if (currentPage == page && getStackLength() < 2) {
+          if (params.rnAction == 'refresh' || (currentPage == page && getStackLength() < 2)) {
             console.log('成为焦点：', currentPage);
             const { didFocus } = UGStore.getPageProps(currentPage);
             didFocus && didFocus();
