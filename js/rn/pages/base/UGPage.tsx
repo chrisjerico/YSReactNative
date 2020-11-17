@@ -137,9 +137,7 @@ export default (Page: Function) => {
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <ScrollView style={{flex:1}}>
-              <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
-            </ScrollView>
+            <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
           </FastImage>
         </LinearGradient>
       ); // navigation={this.props.navigation}
