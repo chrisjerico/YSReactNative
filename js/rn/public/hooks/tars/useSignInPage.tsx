@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
@@ -223,6 +224,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
         //@ts-ignore
         password: password?.md5(),
         slideCode,
+        device: (Platform.OS == 'android' ? 2 : 3) as 2 | 3,
       }
       signIn(params)
     } else {

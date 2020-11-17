@@ -12,6 +12,7 @@ interface SignIn {
   password: string
   slideCode?: any
   fullName?: string
+  device: 2 | 3
 }
 
 interface Options {
@@ -66,7 +67,7 @@ const handleSignIn = async ({ user_login_data, user_login_msg, onSuccess, onErro
 
 const useSignIn = (options: Options = {}) => {
   const { onSuccess, onError, onStart, onNeedFullName } = options
-  const signIn = async ({ account, password, slideCode, fullName }: SignIn) => {
+  const signIn = async ({ account, password, slideCode, fullName, device }: SignIn) => {
     try {
       onStart && onStart()
       const user_login_response = await APIRouter.user_login({
@@ -74,6 +75,7 @@ const useSignIn = (options: Options = {}) => {
         pwd: password,
         slideCode,
         fullName,
+        device,
       })
       const user_login_data = user_login_response?.data?.data
       const user_login_msg = user_login_response?.data?.msg

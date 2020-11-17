@@ -190,14 +190,15 @@ class APIRouter {
   static system_rankingList = async () => {
     return httpClient.get<RankListModel>('c=system&a=rankingList')
   }
-  static user_login = async ({ usr, pwd, ggCode, slideCode, fullName }: { usr: string; pwd: string; ggCode?: string; slideCode?: SlideCodeModel; fullName?: string }) => {
+  static user_login = async ({ usr, pwd, ggCode, slideCode, fullName, device }: { usr: string; pwd: string; ggCode?: string; slideCode?: SlideCodeModel; fullName?: string; device: 2 | 3 }) => {
     try {
       const slideCodeParams = {
         'slideCode[nc_sid]': slideCode?.nc_csessionid,
         'slideCode[nc_sig]': slideCode?.nc_value,
         'slideCode[nc_token]': slideCode?.nc_token,
       }
-      const params = { usr, pwd, ggCode, ...slideCodeParams, fullName }
+      const params = { usr, pwd, ggCode, ...slideCodeParams, fullName, device }
+      console.log('--------params------', params)
       return httpClient.post<LoginModel>('c=user&a=login', params, {
         noToken: true,
       } as any)

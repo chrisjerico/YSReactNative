@@ -20,9 +20,9 @@ const config = {
     15: getIbbImage('gmVTZvM/activity'), // 活动彩金
     16: getIbbImage('4YGRLbs/long'), // 长龙助手
     17: getHtml5Image(18, 'menu-activity'), // 全民竞猜
-    18: getIbbImage('dt5ShBG/award'), // 开奖走势
+    18: getHtml5Image(18, 'kj_trend'), // 开奖走势
     19: getIbbImage('NV1DZ3M/qq'), // QQ客服
-    20: getIbbImage('qRBq508/kjw'), // 開獎網
+    20: getIbbImage('dt5ShBG/award'), // 開獎網
   },
 }
 
