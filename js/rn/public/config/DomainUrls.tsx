@@ -75,7 +75,7 @@ const DomainUrls: {[x:string]:string} = {
   'c153b': 'https://by3680.com',
   'c158': 'https://9055188.com',
   'c163': 'https://c91398.com',
-  'c165': 'https://1875006.com',
+  'c165': 'http://1875007.com',
   'c169': 'http://heixxqic169cqhmszw.playzone88.com',
   'c173': 'https://www.dfjt1.com',
   'c175': 'http://7053fndsjfkn.com',
