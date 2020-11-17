@@ -16,8 +16,8 @@ export const XBJThemeColor: {[x: string]: UGThemeColor} = {
   香槟金1: {
     skitType: '香槟金',
     skitString: '香槟金1 黑色',
-    bgColor: ['#333', '#333'],
-    navBarBgColor: ['#555', '#555'],
+    bgColor: ['#111', '#111'],
+    navBarBgColor: ['#333', '#333'],
     tabBarBgColor: '#262223',
     tabNoSelectColor: '#919191',
     tabSelectedColor: '#927E6D',

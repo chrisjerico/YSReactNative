@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { PageName } from '../../public/navigation/Navigation'
 import { UGStore } from '../../redux/store/UGStore'
-import {UGColor, UGThemeColor} from '../../public/theme/UGThemeColor'
+import { UGColor, UGThemeColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
 import { BottomTabNavigationProp, BottomTabNavigationOptions, } from '@react-navigation/bottom-tabs'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -17,7 +17,8 @@ import StringUtils from "../../public/tools/StringUtils";
 import { Platform } from "react-native";
 import { ANHelper } from "../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
-import {UGThemeConst} from "../../public/theme/const/UGThemeConst";
+import { UGThemeConst } from "../../public/theme/const/UGThemeConst";
+import { ScrollView } from 'react-native-gesture-handler'
 
 
 // Props
@@ -136,7 +137,9 @@ export default (Page: Function) => {
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
+            <ScrollView style={{flex:1}}>
+              <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
+            </ScrollView>
           </FastImage>
         </LinearGradient>
       ); // navigation={this.props.navigation}

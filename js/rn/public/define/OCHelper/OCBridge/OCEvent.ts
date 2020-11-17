@@ -70,10 +70,6 @@ export class OCEvent extends OCCall {
       }
     });
 
-
-    this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
-      UGStore.dispatch({ type: 'merge', sysConf: sysConf });
-    });
     this.addEvent(OCEventType.UGNotificationWithSkinSuccess, () => {
       UGSkinManagers.updateOcSkin();
     });

@@ -41,10 +41,12 @@ export default class UGUserModel extends UGLoginModel {
     }
     UGStore.save();
   }
-  static updateFromNetwork() {
-    api.user.info().setCompletionBlock(({ data: user }) => {
+  static updateFromNetwork(completed?: () => void) {
+    return api.user.info().setCompletionBlock(({ data: user }, sm) => {
+      sm.noShowErrorHUD = true;
       UGStore.dispatch({ type: 'merge', userInfo: user })
       UGStore.save();
+      completed && completed();
     })
   }
   static getYS(user: UGLoginModel | Data): UGUserModel {
@@ -53,26 +55,6 @@ export default class UGUserModel extends UGLoginModel {
     temp.sessid = user['API-SID'];
     temp.token = user['API-SID'];
     return temp;
-  }
-
-  // 获取头像URL
-  static getAvatarURL(list: AvatarModel[], avatar: string) {
-    if (avatar?.indexOf('http') != -1) return avatar;
-
-    let avatarURL: string;
-    const filter = list?.filter((ele) => {
-      if (ele.filename == UGStore.globalProps?.userInfo?.avatar) {
-        return ele;
-      }
-    })
-    if (filter?.length) {
-      avatarURL = filter[0].url;
-    } else if (list?.length) {
-      avatarURL = list[0].url
-    } else {
-      avatarURL = 'https://i.ibb.co/mNnwnh7/money-2.png'
-    }
-    return avatarURL;
   }
   static checkLogin() {
     const { isTest, uid } = UGStore.globalProps.userInfo

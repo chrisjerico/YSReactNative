@@ -33,7 +33,7 @@ let hideLoadingFunc = undefined;
 
 // 在当前页面显示Loading
 export function showMessage(text?: string) {
-  showHUD({ type: UGLoadingType.Message, text: text, pointerEvents:true });
+  showHUD({ type: UGLoadingType.Message, text: text, pointerEvents: true });
 }
 export function showLoading(text?: string, backgroundColor?: string[]) {
   showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor });
@@ -121,8 +121,8 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
   }, [lastProps]);
 
   return (
-    <Animated.View style={[{ position: 'absolute', zIndex: zIndex, width: AppDefine.width, height: AppDefine.height}, { opacity: fadeInOpacity }]} pointerEvents={pointerEvents ? 'none' : 'auto'}>
-      <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1, justifyContent: 'center' }} >
+    <Animated.View style={[{ position: 'absolute', zIndex: zIndex, width: AppDefine.width, height: AppDefine.height }, { opacity: fadeInOpacity }]} pointerEvents={pointerEvents ? 'none' : 'auto'}>
+      <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1, justifyContent: 'center', backgroundColor: backgroundColor?.length == 1 ? backgroundColor[0] : undefined }} >
         <View style={{ marginHorizontal: 30, marginTop: -50, backgroundColor: '#eee', alignSelf: 'center', borderRadius: 10, padding: 13 }} >
           {type == UGLoadingType.Loading && <FastImage style={[styles.icon, { width: 50, height: 50 }]} source={Res.加载中} />}
           {type == UGLoadingType.Success && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载成功} />}

@@ -19,6 +19,7 @@ import {ugLog} from "../../public/tools/UgLog";
 import {DefaultMenu} from "../../Res/DefaultMenu";
 import {UGThemeColor} from "../../public/theme/UGThemeColor";
 import UseVersion from "./us/UseVersion";
+import UGUserModel from '../../redux/model/全局/UGUserModel'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -261,6 +262,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 通知iOS进入首页
         await OCHelper.call('ReactNativeVC.showLastRnPage')
         OCHelper.launchFinish()
+        // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
+        UGSysConfModel.updateFromNetwork();
         break
       case 'android':
         setProps({ bCodePush: true })

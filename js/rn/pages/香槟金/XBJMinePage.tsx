@@ -4,7 +4,7 @@ import { Button, Text, Avatar } from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
-import { UGUserCenterItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
+import UGSysConfModel, { UGUserCenterItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel';
 import AppDefine from '../../public/define/AppDefine';
 import PushHelper from '../../public/define/PushHelper';
 import { connect } from 'react-redux';
@@ -24,16 +24,39 @@ import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
 
 // 定义Props
 export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
-  dataArray?: Array<UGUserCenterItem>; // 功能按钮列表
-  avatarURL?: string;
   list?: AvatarModel[]; // 头像列表
 }
 
 export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, list } = props;
   const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
-  const { sysConf: { mBonsSwitch }, userInfo: UserI } = UGStore.globalProps;
-  const cellBgColor = '#ffffff99';
+  const { mBonsSwitch } = UGStore.globalProps.sysConf;
+  const { avatar, usr, curLevelGrade, curLevelTitle, balance } = UGStore.globalProps.userInfo;
+  const style = {
+    cellBgColor: Skin1.isBlack ? '#fff3' : '#ffffff99',
+    navImageTintColor: Skin1.isBlack ? undefined : Skin1.navBarBgColor[0],
+    showCard: "c245".indexOf(AppDefine.siteId) == -1,
+    textColor: Skin1.isBlack ? '#fff' : '#000',
+    lineColor: Skin1.isBlack ? '#777' : '#bbb',
+  };
+  const avatarURL = avatar?.length ? avatar : 'https://i.ibb.co/mNnwnh7/money-2.png';
+  const dataArray = UGSysConfModel.getUserCenterItems();
+
+  let cells = dataArray?.map(item => {
+    if (!item) return;
+    return [
+      <TouchableOpacity
+        key={item.code}
+        style={{ flexDirection: 'row' }}
+        onPress={() => {
+          PushHelper.pushUserCenterType(item.code);
+        }}>
+        <FastImage source={{ uri: item.logo }} style={{ margin: 10, marginLeft: 13, width: 26, height: 26 }} />
+        <Text style={{ marginTop: 14, marginLeft: 6, color: style.textColor }}>{item.name}</Text>
+      </TouchableOpacity>,
+      <View style={{ marginLeft: 55, height: 0.5, backgroundColor: style.lineColor }} />,
+    ];
+  });
 
   useEffect(() => {
     setProps({
@@ -52,33 +75,14 @@ export const XBJMinePage = (props: XBJMineProps) => {
         ),
       },
       backgroundColor: Skin1.bgColor,
-      dataArray: [],
       didFocus: () => {
         AppDefine.checkHeaderShowBackButton((show) => {
           setProps({ navbarOpstions: { back: show } });
         });
-
-        console.log('获取用户信息');
         // 获取用户信息
         UGUserModel.updateFromNetwork();
       },
     })
-
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').then((list: Array<UGUserCenterItem>) => {
-          let dataArray = list.map(item => new UGUserCenterItem(item));
-          setProps({ dataArray: dataArray });
-        });
-        break;
-      case 'android':
-        ANHelper.callAsync(CMD.ASK_MINE_ITEMS)
-          .then((data) => {
-            const userCenterItems = JSON.parse(data)?.map((item: any) => new UGUserCenterItem(item)) ?? []
-            setProps({ dataArray: userCenterItems });
-          })
-        break;
-    }
 
     // 获取头像列表
     api.system.avatarList().setCompletionBlock(({ data: list }) => {
@@ -86,27 +90,10 @@ export const XBJMinePage = (props: XBJMineProps) => {
     });
   }, []);
 
-  const avatarURL = UGUserModel.getAvatarURL(list, UserI?.avatar);
-
-  let cells = props?.dataArray?.map(item => {
-    return [
-      <TouchableOpacity
-        key={item.code}
-        style={{ flexDirection: 'row' }}
-        onPress={() => {
-          PushHelper.pushUserCenterType(item.code);
-        }}>
-        <FastImage source={{ uri: item.logo }} style={{ margin: 10, marginLeft: 13, width: 26, height: 26 }} />
-        <Text style={{ marginTop: 14, marginLeft: 6 }}>{item.name}</Text>
-      </TouchableOpacity>,
-      <View style={{ marginLeft: 55, height: 0.5, backgroundColor: '#AAA' }} />,
-    ];
-  });
-
   return (
     [
-      <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
-        <View style={{ padding: 16, borderRadius: 4, backgroundColor: cellBgColor }}>
+      <View style={{ flex: 1, padding: 16 }} key="scrollView">
+        <View style={{ padding: 16, borderRadius: 4, backgroundColor: style.cellBgColor }}>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => {
               return;
@@ -116,14 +103,14 @@ export const XBJMinePage = (props: XBJMineProps) => {
             </TouchableOpacity>
             <View style={{ marginLeft: 16 }}>
               <View style={{ marginTop: 4, flexDirection: 'row' }}>
-                <Text style={{ fontWeight: '500', fontSize: 16 }}>{UserI?.usr?.length > 10 ? UserI?.usr?.substr(0, 10) + "..." : UserI?.usr}</Text>
+                <Text style={{ fontWeight: '500', fontSize: 16, color: style.textColor }}>{usr?.length > 10 ? usr?.substr(0, 10) + "..." : usr}</Text>
                 <LinearGradient colors={['#FFEAC3', '#FFE09A']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ marginLeft: 8, marginTop: 1, borderRadius: 3, width: 42, height: 17 }}>
-                  <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{UserI?.curLevelGrade}</Text>
+                  <Text style={{ marginTop: 0.5, textAlign: 'center', color: '#8F6832', fontStyle: 'italic', fontWeight: '600', fontSize: 13 }}>{curLevelGrade}</Text>
                 </LinearGradient>
               </View>
               <View style={{ marginTop: 10, flexDirection: 'row' }}>
-                <Text style={{ fontSize: 12 }}>头衔：</Text>
-                <Text style={{ fontSize: 12, color: UGColor.RedColor2 }}>{UserI?.curLevelTitle}</Text>
+                <Text style={{ fontSize: 12, color: style.textColor }}>头衔：</Text>
+                <Text style={{ fontSize: 12, color: UGColor.YellowColor1 }}>{curLevelTitle}</Text>
               </View>
             </View>
             <View style={{ flex: 1 }}></View>
@@ -142,73 +129,75 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <Image source={{ uri: 'https://i.ibb.co/1MzcBGd/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
-              <Text style={{ marginTop: 11, fontSize: 12 }}>存款</Text>
+              <Image source={{ uri: 'https://i.ibb.co/BtHWXN5/icon-wallet-deposit-u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>存款</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.额度转换);
               }}>
-              <Image source={{ uri: 'https://i.ibb.co/VNm1G2s/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
-              <Text style={{ marginTop: 11, fontSize: 12 }}>额度转换</Text>
+              <Image source={{ uri: 'https://i.ibb.co/qyffqfb/icon-wallet-transfer-u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>额度转换</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.取款);
               }}>
-              <Image source={{ uri: 'https://i.ibb.co/mJjNngx/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
-              <Text style={{ marginTop: 11, fontSize: 12 }}>取款</Text>
+              <Image source={{ uri: 'https://i.ibb.co/SRk9N7y/icon-wallet-withdraw-u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>取款</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: 'center' }}
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <Image source={{ uri: 'https://i.ibb.co/RGXm0sc/2x.png' }} style={{ width: 28, height: 21, tintColor:Skin1.navBarBgColor[0] }} />
-              <Text style={{ marginTop: 11, fontSize: 12 }}>资金管理</Text>
+              <Image source={{ uri: 'https://i.ibb.co/K2FN7sn/icon-mine-vip-u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>资金管理</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }}>
-              <Text style={{ marginTop: 4, fontWeight: '500', color: UGColor.RedColor2 }}>{'¥' + (UserI?.balance ?? '0.00')}</Text>
-              <Text style={{ marginTop: 11, fontSize: 12 }}>中心钱包</Text>
+            <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }} onPress={() => {
+              UGUserModel.updateFromNetwork();
+            }}>
+              <Text style={{ marginTop: 4, fontWeight: '700', color: UGColor.RedColor2 }}>{'¥' + (balance ?? '0.00')}</Text>
+              <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>中心钱包</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: 12, flexDirection: 'row', flex: 1 }}>
+        {style.showCard && (<View style={{ marginTop: 12, flexDirection: 'row', flex: 1 }}>
           <TouchableOpacity
-            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1, marginRight: 12 }}
+            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: style.cellBgColor, flex: 1, marginRight: 12 }}
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.推荐收益);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14 }}>推荐收益</Text>
-            <Text style={{ marginTop: 4, fontSize: 10 }}>现金奖励等你拿</Text>
+            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>推荐收益</Text>
+            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>现金奖励等你拿</Text>
             <FastImage source={{ uri: 'https://i.ibb.co/WHXtKwK/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 80, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
-            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1, marginRight: 12 }}
+            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: style.cellBgColor, flex: 1, marginRight: 12 }}
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.活动彩金);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14 }}>彩金申请</Text>
-            <Text style={{ marginTop: 4, fontSize: 10 }}>新手有好礼</Text>
+            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>彩金申请</Text>
+            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>新手有好礼</Text>
             <FastImage source={{ uri: 'https://i.ibb.co/Jz0F2nV/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
-            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: cellBgColor, flex: 1 }}
+            containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: style.cellBgColor, flex: 1 }}
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.任务中心);
             }}>
-            <Text style={{ marginTop: -3, fontSize: 14 }}>任务中心</Text>
-            <Text style={{ marginTop: 4, fontSize: 10 }}>领取丰富大奖</Text>
+            <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>任务中心</Text>
+            <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>领取丰富大奖</Text>
             <FastImage source={{ uri: 'https://i.ibb.co/mNs6pFN/2x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
-        </View>
-        <View style={{ marginTop: 12, borderRadius: 4, backgroundColor: cellBgColor }}>{cells}</View>
+        </View>)}
+        <View style={{ marginTop: 12, borderRadius: 4, backgroundColor: style.cellBgColor }}>{cells}</View>
         <Button
           title="退出登录"
           style={{ marginTop: 12 }}
-          buttonStyle={{ backgroundColor: cellBgColor, borderRadius: 4, height: 48 }}
+          buttonStyle={{ backgroundColor: style.cellBgColor, borderRadius: 4, height: 48 }}
           titleStyle={{ color: UGColor.RedColor2 }}
           onPress={() => {
             Alert.alert('温馨提示', '确定退出账号', [
@@ -236,7 +225,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
           }}
         />
         <View style={{ height: 150 }} />
-      </ScrollView>,
+      </View>,
       <JDSalaryListCP c_ref={v} />,
       <JDAvatarListCP c_ref={v} />,
     ]

@@ -161,7 +161,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
 
   return (
-    <ScrollView style={{ paddingTop: 65, paddingBottom: 100 }}>
+    <View style={{ paddingTop: 65, paddingBottom: 100 }}>
       <FastImage source={{ uri: mobile_logo }} resizeMode={FastImage.resizeMode.contain} style={{ width: AppDefine.width, height: 45 }} />
       <View style={{ marginLeft: 24, marginTop: 40, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <TouchableOpacity
@@ -312,8 +312,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           />
         </View>
       </View>
-      <View style={{ height: 200 }} />
-    </ScrollView>
+    </View>
   );
 }
 
