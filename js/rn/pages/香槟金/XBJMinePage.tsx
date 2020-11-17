@@ -33,9 +33,9 @@ export const XBJMinePage = (props: XBJMineProps) => {
   const { mBonsSwitch } = UGStore.globalProps.sysConf;
   const { avatar, usr, curLevelGrade, curLevelTitle, balance } = UGStore.globalProps.userInfo;
   const style = {
-    cellBgColor: Skin1.isBlack ? '#fff3' : '#ffffff99',
     navImageTintColor: Skin1.isBlack ? undefined : Skin1.navBarBgColor[0],
     showCard: "c245".indexOf(AppDefine.siteId) == -1,
+    cellBgColor: Skin1.isBlack ? '#555050' : '#ffffff99',
     textColor: Skin1.isBlack ? '#fff' : '#000',
     lineColor: Skin1.isBlack ? '#777' : '#bbb',
   };
@@ -92,7 +92,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
 
   return (
     [
-      <View style={{ flex: 1, padding: 16 }} key="scrollView">
+      <ScrollView style={{ flex: 1, padding: 16 }} key="scrollView">
         <View style={{ padding: 16, borderRadius: 4, backgroundColor: style.cellBgColor }}>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => {
@@ -225,7 +225,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
           }}
         />
         <View style={{ height: 150 }} />
-      </View>,
+      </ScrollView>,
       <JDSalaryListCP c_ref={v} />,
       <JDAvatarListCP c_ref={v} />,
     ]
