@@ -27,7 +27,7 @@ const SafeAreaHeader = ({ headerColor, containerStyle, children }: SafeAreaHeade
         })
         break
     }
-  })
+  }, [])
 
   return (
     <View style={{ backgroundColor: headerColor }}>
