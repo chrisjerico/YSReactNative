@@ -2,21 +2,23 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { PageName } from '../../public/navigation/Navigation'
-import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
-import { UGThemeConst } from "../../public/theme/const/UGThemeConst"
-import { UGColor } from '../../public/theme/UGThemeColor'
+import { UGColor, UGThemeColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
-import { ugLog } from "../../public/tools/UgLog"
 import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
+import { ugLog } from "../../public/tools/UgLog";
+import StringUtils from "../../public/tools/StringUtils";
+import { Platform } from "react-native";
+import { ANHelper } from "../../public/define/ANHelper/ANHelper";
+import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
+import { UGThemeConst } from "../../public/theme/const/UGThemeConst";
+import { ScrollView } from 'react-native-gesture-handler'
 
 
 // Props

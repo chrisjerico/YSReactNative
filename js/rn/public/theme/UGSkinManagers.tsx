@@ -103,9 +103,13 @@ export default class UGSkinManagers extends UGThemeColor {
       return
     }
     // 已上线模板
-    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('宝石红') != -1
-    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
-    if (!ok) return
+    const isOnlineSkin = (
+      skin.skitType.indexOf('尊龙') != -1 ||
+      skin.skitType.indexOf('香槟金') != -1 ||
+      skin.skitType.indexOf('宝石红') != -1
+    );
+    const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin;
+    if (!ok) return;
 
     //
     await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [

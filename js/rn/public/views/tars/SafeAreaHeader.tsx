@@ -1,13 +1,13 @@
-import React, { memo, ReactNode } from 'react'
-import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
+import React, { memo, ReactNode, useLayoutEffect, useState } from 'react'
+import { Platform, StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
 import { scale } from '../../tools/Scale'
-import {ANHelper} from "../../define/ANHelper/ANHelper";
-import {CMD} from "../../define/ANHelper/hp/CmdDefine";
-import {ugLog} from "../../tools/UgLog";
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { ugLog } from '../../tools/UgLog'
 
 interface SafeAreaHeaderProps {
-  headerColor?: string
+  headerColor: string
   containerStyle?: StyleProp<ViewStyle>
   children?: ReactNode
 }
@@ -16,16 +16,29 @@ const SafeAreaHeader = ({ headerColor, containerStyle, children }: SafeAreaHeade
   const safeArea = useSafeArea()
   const [safeTop, setSafeTop] = useState<number>(0)
 
+  useLayoutEffect(() => {
+    switch (Platform.OS) {
+      case 'ios':
+        setSafeTop(safeArea?.top)
+        break
+      case 'android':
+        ANHelper.callAsync(CMD.STATUS_BAR_SHOW).then((show) => {
+          setSafeTop(show ? safeArea?.top : 0)
+        })
+        break
+    }
+  }, [])
+
   return (
     <View style={{ backgroundColor: headerColor }}>
       <View
         style={[
           styles.container,
-          containerStyle,
           {
-            marginTop: safeArea?.top,
+            marginTop: safeTop,
             backgroundColor: headerColor,
           },
+          containerStyle,
         ]}>
         {children}
       </View>

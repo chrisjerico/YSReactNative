@@ -58,9 +58,7 @@ export function setRnPageInfo() {
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    if (skitType.indexOf('香槟金') != -1) {
-      pages = pages.concat(XBJPages);
-    }
+    
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -98,6 +96,9 @@ export function setRnPageInfo() {
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
+  }
+  if (skitType.indexOf('香槟金') != -1) {
+    pages = pages.concat(XBJPages);
   }
 
   // 替换原生页面

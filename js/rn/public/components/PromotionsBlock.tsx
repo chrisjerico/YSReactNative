@@ -1,15 +1,14 @@
-import {View, FlatList, TouchableWithoutFeedback, Text, TouchableOpacity, Linking, Image} from "react-native"
-import React, {useEffect, useState} from 'react'
-import useGetHomeInfo from "../hooks/useGetHomeInfo"
-import usePopUpView from "../hooks/usePopUpView"
-import FastImage, {FastImageProperties} from "react-native-fast-image"
-import AppDefine from "../define/AppDefine"
-import AutoHeightWebView from "react-native-autoheight-webview"
-import {useDimensions} from "@react-native-community/hooks"
-import {httpClient} from "../network/httpClient";
-import {Res} from "../../Res/icon/Resources";
-import {List} from "../network/Model/PromotionsModel";
-import PushHelper from "../define/PushHelper";
+import { FlatList, Linking, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useState } from 'react'
+import useGetHomeInfo from '../hooks/useGetHomeInfo'
+import usePopUpView from '../hooks/usePopUpView'
+import FastImage, { FastImageProperties } from 'react-native-fast-image'
+import AppDefine from '../define/AppDefine'
+import AutoHeightWebView from 'react-native-autoheight-webview'
+import { useDimensions } from '@react-native-community/hooks'
+import { httpClient } from '../network/httpClient'
+import { List } from '../network/Model/PromotionsModel'
+import PushHelper from '../define/PushHelper'
 
 const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal?: boolean, titleVisible?: boolean }) => {
     const {couponListData,} = useGetHomeInfo(['system_promotions'])
@@ -57,7 +56,7 @@ const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal
                             style={{width: width - 20, backgroundColor: 'white'}}
                             viewportContent={'width=device-width, user-scalable=no'}
                             source={{
-                                html: `<head><meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style><style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style></head>` + `<script>window.onload = function () {window.location.hash = 1;document.title = document.body.scrollHeight;}</script>` + `${item.content}`
+                                html: `<head><meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'><style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style><style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style></head>` + `<script>window.onload = function () {window.location.hash = 1;document.title = document.body.scrollHeight;}</script>` + `${item.content}`
                             }}
                         />
                         {item.linkUrl && item.linkUrl !== "" ?

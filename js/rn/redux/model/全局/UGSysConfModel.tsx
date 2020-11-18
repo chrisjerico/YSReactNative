@@ -1,6 +1,8 @@
 // 代理申请信息
 import {ugLog} from "../../../public/tools/UgLog";
 import {anyEmpty} from "../../../public/tools/Ext";
+import { UGStore } from "../../store/UGStore";
+import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
 
 export interface UGAgentApplyInfo {
   username: string // 用户名
@@ -63,6 +65,8 @@ export enum UGUserCenterType {
   取款纪录 = 107,
   资金明细 = 108,
   开奖结果 = 109,
+  砸金蛋 = 110,
+  刮刮乐 = 111,
 }
 
 // 我的页功能按钮
@@ -110,7 +114,23 @@ export class LHPriceModel {}
 
 // 系统配置Model
 export default class UGSysConfModel {
-  static current: UGSysConfModel = new UGSysConfModel()
+  // 过滤掉已关闭的功能
+  static getUserCenterItems() {
+    const { sysConf: { userCenter = [] }, userInfo: { hasActLottery, yuebaoSwitch } } = UGStore.globalProps;
+    const temp = userCenter?.map((uci) => {
+      if (!hasActLottery && uci.code == UGUserCenterType.活动彩金) return
+      if (!yuebaoSwitch && uci.code == UGUserCenterType.利息宝) return
+      return new UGUserCenterItem(uci);
+    })
+    return temp.filter((ele) => ele);
+  }
+  static updateFromNetwork(completed?: () => void) {
+    return api.system.config().setCompletionBlock(({ data }, sm) => {
+      sm.noShowErrorHUD = true;
+      UGStore.dispatch({ type: 'merge', sysConf: data });
+      completed && completed();
+    }).promise
+  }
 
   zxkfUrl2?: string // 在线客服2
   zxkfUrl?: string // 在线客服

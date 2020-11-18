@@ -109,10 +109,5 @@
   },
   "jest": {
     "preset": "react-native"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "git restore --staged dev.json && git update-index --assume-unchanged dev.json"
-    }
   }
 }
