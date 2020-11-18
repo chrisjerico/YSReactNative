@@ -34,6 +34,7 @@ import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 import {FuncTab} from "./views/FuncTab";
 import {ROULETTE_LOGO} from "../../public/define/Res";
+import Activitys from "../../public/views/tars/Activitys";
 
 const LEFHomePage = ({navigation, setProps}) => {
 
@@ -59,6 +60,8 @@ const LEFHomePage = ({navigation, setProps}) => {
     redBag,
     redBagLogo,
     roulette,
+    goldenEggs,
+    scratchs,
   } = value
 
   //ugLog('gameLobby= ', JSON.stringify(gameLobby))
@@ -233,6 +236,15 @@ const LEFHomePage = ({navigation, setProps}) => {
           />
           <BottomGap />
         </ScrollView>
+        <Activitys uid={uid}
+                   isTest={isTest}
+                   refreshing={refreshing}
+                   redBagLogo={redBagLogo}
+                   redBag={redBag}
+                   roulette={roulette}
+                   floatAds={floatAds}
+                   goldenEggs={goldenEggs}
+                   scratchs={scratchs} />
         <ActivityComponent
           refreshing={refreshing}
           containerStyle={{ top: scale(250), right: 0 }}
