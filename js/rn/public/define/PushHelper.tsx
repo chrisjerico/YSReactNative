@@ -503,6 +503,24 @@ export default class PushHelper {
             subId = MenuType.GCDT
             break
           }
+          case UGUserCenterType.刮刮乐: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.scratchList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
+            })
+            return
+          }
+          case UGUserCenterType.砸金蛋: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
+            })
+            return
+          }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX
             break
