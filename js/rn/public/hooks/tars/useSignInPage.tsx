@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { Platform } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
@@ -9,7 +8,6 @@ import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import {Platform} from "react-native";
 import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 
