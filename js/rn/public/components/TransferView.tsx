@@ -137,16 +137,16 @@ const TransferPicker = ({ text, zIndex, setOpenPicker, openPicker }: { text: str
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
       <Text style={{ fontSize: 16, textAlign: 'center' }}>{text}</Text>
-      {open && <View style={{
-        backgroundColor: 'rgba(0,0,0, 0.1)',
-        width: AppDefine.width,
-        height: AppDefine.height,
-        position: 'absolute',
-        flex: 1,
-        zIndex: 98,
-        top: 0-180,
-        left: 0-12
-      }} />}
+      {/*{open && <View style={{*/}
+      {/*  backgroundColor: 'rgba(0,0,0, 0.1)',*/}
+      {/*  width: AppDefine.width,*/}
+      {/*  height: AppDefine.height,*/}
+      {/*  position: 'absolute',*/}
+      {/*  flex: 1,*/}
+      {/*  zIndex: 98,*/}
+      {/*  top: 0-180,*/}
+      {/*  left: 0-12*/}
+      {/*}} />}*/}
       <TouchableWithoutFeedback style={{zIndex: 99}} onPress={() => toggleRow1Content()}>
         <View style={{
           flex: 1,
