@@ -12,7 +12,7 @@ export const BYThemeColor: { [x: string]: UGThemeColor } = {
     tabNoSelectColor: '#9D9D9D',
     homeContentSubColor: '#6C6C6C', // 額度轉換Tab
     bgColor: [tabBarBgColor, tabBarBgColor],
-    navBarBgColor: ['#6C6C6C', '#6C6C6C'],
+    navBarBgColor: [themeColor, themeColor],
     tabSelectedColor: '#000000',
     progressBgColor: [tabBarBgColor, tabBarBgColor],
     homeContentColor: themeLightColor,
