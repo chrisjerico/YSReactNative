@@ -48,7 +48,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
     <>
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(250), right: 0 }}
+        containerStyle={{ top: scale(220), right: 0 }}
         show={redBag?.data}
         logo={redBagLogo}
         onPress={() => {
@@ -57,7 +57,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(400), right: 0 }}
+        containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
         show={uid && roulette && !isTest}
         logo={ ROULETTE_LOGO }
@@ -67,7 +67,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(500), right: 0 }}
+        containerStyle={{ top: scale(450), right: 0 }}
         enableFastImage={false}
         show={uid && goldenEggs && !isTest}
         logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
@@ -75,7 +75,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(600), right: 0 }}
+        containerStyle={{ top: scale(570), right: 0 }}
         enableFastImage={false}
         show={uid && scratchs && !isTest}
         logo={'https://i.ibb.co/0J51pH9/scratch.png'}
