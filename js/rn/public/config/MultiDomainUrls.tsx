@@ -343,7 +343,7 @@ let DomainUrls: { [x: string]: string } = {}
  * @param siteUrl 速度最快的域名
  */
 const recombineDomain = (siteUrl: {}) => {
-  ugLog('filterDomain siteUrl=', JSON.stringify(siteUrl))
+  //ugLog('filterDomain siteUrl=', JSON.stringify(siteUrl))
 
   //默认使用第1条
   let filterDomain = {}
@@ -359,14 +359,14 @@ const recombineDomain = (siteUrl: {}) => {
     ...siteUrl,
   }
 
-  ugLog('DomainUrls=', JSON.stringify(DomainUrls))
+  //ugLog('DomainUrls=', JSON.stringify(DomainUrls))
 }
 
 /**
  * 通知原生域名有变化
  */
 const notifyDomainChanged = async (siteId?: string) => {
-  ugLog('DomainUrls 2 =', JSON.stringify(DomainUrls))
+  //ugLog('DomainUrls 2 =', JSON.stringify(DomainUrls))
 
   switch (Platform.OS) {
     case 'ios':
