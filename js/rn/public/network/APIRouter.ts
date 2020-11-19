@@ -198,7 +198,7 @@ class APIRouter {
         'slideCode[nc_token]': slideCode?.nc_token,
       }
       const params = { usr, pwd, ggCode, ...slideCodeParams, fullName, device }
-      console.log('--------params------', params)
+      console.log('--------params 2------', params)
       return httpClient.post<LoginModel>('c=user&a=login', params, {
         noToken: true,
       } as any)

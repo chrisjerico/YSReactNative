@@ -10,6 +10,7 @@ import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
 import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
+import {Platform} from "react-native";
 
 interface SlidingVerification {
   nc_csessionid: string
