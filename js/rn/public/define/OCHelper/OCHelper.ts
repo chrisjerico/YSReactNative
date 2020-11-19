@@ -1,13 +1,13 @@
-import { UGStore } from '../../../redux/store/UGStore'
-import APIRouter from '../../network/APIRouter'
-import { httpClient } from '../../network/httpClient'
-import { UGBridge } from '../ANHelper/UGBridge'
-import AppDefine from '../AppDefine'
-import { OCCall } from './OCBridge/OCCall'
-import { OCEvent } from './OCBridge/OCEvent'
-import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
-import { stringToNumber } from '../../tools/tars'
-import DomainUrls, { initDomain } from '../../config/DomainUrls'
+import { UGStore } from '../../../redux/store/UGStore';
+import APIRouter from '../../network/APIRouter';
+import { httpClient } from '../../network/httpClient';
+import { UGBridge } from '../ANHelper/UGBridge';
+import AppDefine from '../AppDefine';
+import { OCCall } from './OCBridge/OCCall';
+import { OCEvent } from './OCBridge/OCEvent';
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
+import { stringToNumber } from '../../tools/tars';
+import {DomainUrls, initDomain} from "../../config/MultiDomainUrls";
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey

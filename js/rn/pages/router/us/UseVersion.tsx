@@ -1,5 +1,18 @@
 import APIRouter from "../../../public/network/APIRouter";
 import {ugLog} from "../../../public/tools/UgLog";
+import {CMD} from "../../../public/define/ANHelper/hp/CmdDefine";
+import {ANHelper} from "../../../public/define/ANHelper/ANHelper";
+import axios from "axios";
+import AppDefine from "../../../public/define/AppDefine";
+import {anyEmpty, anyLength} from "../../../public/tools/Ext";
+import {
+  DomainUrls,
+  MultiDomainUrls,
+  notifyDomainChanged,
+  recombineDomain
+} from "../../../public/config/MultiDomainUrls";
+import {OCHelper} from "../../../public/define/OCHelper/OCHelper";
+import {Platform} from "react-native";
 
 interface UseVersion {
   testResult?: (str: string) => void //测试网速结果
@@ -21,7 +34,7 @@ const UseVersion = ({
       .then(res => {
         let curTime = new Date().getTime()
         let div = curTime - lastTime;
-        ugLog('try div=', div);
+        //ugLog('try div=', div);
 
         const status = res?.status + "," + res?.data?.code + "," + res?.data?.msg;
         if (div < 500) {
@@ -33,16 +46,63 @@ const UseVersion = ({
         } else {
           testResult && testResult('网络极差,' + status)
         }
-        ugLog('try res=', res?.data);
+        //ugLog('try res=', res?.data);
       })
       .catch(err => {
-        ugLog('try err=', err)
+        //ugLog('try err=', err)
         testResult && testResult('网络异常:' + JSON.stringify(err))
       })
   }
 
+  //查找最快的域名
+  const testSite = async () => {
+    // 站点编号
+    let siteId = ""
+    switch (Platform.OS) {
+      case 'ios':
+        siteId = await OCHelper.call('AppDefine.shared.SiteId')
+        break;
+      case 'android':
+        siteId = await ANHelper.callAsync(CMD.APP_REAL_SITE)
+        break;
+    }
+
+    //ugLog('site = siteId', siteId)
+    let domains = MultiDomainUrls[siteId]
+
+    //域名多于2条才处理
+    if(anyLength(domains) < 2) return
+    //ugLog('site = domains 7 ', domains)
+
+    let firstUrl = "" //哪条速度最快用哪条
+    for (let url of domains) {
+      // ugLog('site = url', url)
+      axios.create({
+        baseURL: url,
+        timeout: 3000,
+        headers: { 'Content-Type': 'application/json', }
+      }).get('/wjapp/api.php?c=system&a=onlineCount')
+        .then((res) => {
+          //ugLog('site = response 7 ', url, res?.data)
+          //最快的那一条
+          if (res?.status == 200
+                && res?.data?.code == 0
+                && anyEmpty(firstUrl)) {
+            firstUrl = url
+            recombineDomain({[siteId]: firstUrl})
+            notifyDomainChanged(siteId)
+            //ugLog('site = firstUrl 6', url)
+          }
+          return res;
+        }).catch((error) => {
+        ugLog('site = error 6', url, error)
+      });
+    }
+  }
+
   return {
-    testNetwork
+    testNetwork,
+    testSite
   }
 }
 
