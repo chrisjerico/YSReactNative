@@ -447,7 +447,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.个人信息: {
-            subId = MenuType.HYZX
+            subId = MenuType.GRXX
             break
           }
           case UGUserCenterType.建议反馈: {
@@ -523,6 +523,10 @@ export default class PushHelper {
           }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            subId = MenuType.KJJG
             break
           }
         }

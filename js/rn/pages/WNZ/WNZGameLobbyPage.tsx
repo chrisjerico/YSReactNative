@@ -1,10 +1,10 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import {Platform, ScrollView} from 'react-native'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import {navigate, pop} from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
@@ -33,9 +33,16 @@ const WNZGameLobbyPage = ({ route }) => {
         <MineHeader
           showBackBtn={true}
           onPressBackBtn={() => {
-            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
-              navigate(PageName.WNZHomePage, {})
-            })
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
+                  navigate(PageName.WNZHomePage, {})
+                })
+                break;
+              case 'android':
+                pop()
+                break;
+            }
           }}
           title={title}
         />
