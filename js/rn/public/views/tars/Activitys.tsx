@@ -43,6 +43,7 @@ export interface GoldenEgg {
 }
 
 const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+  console.log('-------redBag-----', redBag)
   return (
     <>
       <ActivityComponent

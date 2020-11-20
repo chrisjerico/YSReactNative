@@ -25,8 +25,8 @@ const RowButton = ({ data, title, logo }) => (
     <View style={{ flex: 2 }}>
       <Text style={{ color: '#ffffff', fontSize: scale(30), margin: scale(10) }}>{title}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
-        {data?.list?.slice(0, 6)?.map((item: any) => (
-          <View style={{ width: '33%', height: '50%', alignItems: 'flex-start', justifyContent: 'center', paddingLeft: scale(10) }}>
+        {data?.list?.slice(0, 6)?.map((item: any, index: number) => (
+          <View key={index} style={{ width: '33%', height: '50%', alignItems: 'flex-start', justifyContent: 'center', paddingLeft: scale(10) }}>
             <Text style={{ color: '#ffffff' }} numberOfLines={1}>
               {item?.name || item?.title}
             </Text>
