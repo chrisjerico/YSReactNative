@@ -50,7 +50,7 @@ const UseVersion = ({
       })
       .catch((err) => {
         //ugLog('try err=', err)
-        testResult && testResult('网络异常:' + JSON.stringify(err))
+        testResult && testResult('网络异常:' + JSON.stringify(err?.message))
       })
   }
 
