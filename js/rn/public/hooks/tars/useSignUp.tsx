@@ -28,8 +28,6 @@ const useSignUp = (options: Options = {}) => {
       const user_reg_response = await APIRouter.user_reg(params)
       const user_reg_data = user_reg_response?.data?.data
       const msg_reg_msg = user_reg_response?.data?.msg
-      console.log('--------user_reg_data-------', user_reg_data)
-      console.log('--------msg_reg_msg-------', msg_reg_msg)
       if (user_reg_data) {
         // 註冊成功
         const { autoLogin } = user_reg_data
@@ -38,6 +36,7 @@ const useSignUp = (options: Options = {}) => {
           await signIn({
             account: usr,
             password: pwd,
+            device: Platform.OS == 'android' ? 2 : 3,
           })
         } else {
           onSuccess && onSuccess()

@@ -8,9 +8,9 @@ import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import {ANHelper} from "../../define/ANHelper/ANHelper";
-import {CMD} from "../../define/ANHelper/hp/CmdDefine";
-import {Platform} from "react-native";
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { Platform } from 'react-native'
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -53,10 +53,10 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     homePage && navigate(homePage, {})
     switch (Platform.OS) {
       case 'ios':
-        break;
+        break
       case 'android':
-        ANHelper.callAsync(CMD.RELOAD_PAGE, {key: 'home_page'}).then()
-        break;
+        ANHelper.callAsync(CMD.RELOAD_PAGE, { key: 'home_page' }).then()
+        break
     }
   }, [])
 
@@ -178,6 +178,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
       password: password?.md5(),
       slideCode,
       fullName,
+      device: (Platform.OS == 'android' ? 2 : 3) as 2 | 3,
     }
     signIn(params)
   }

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import {Platform, StyleSheet, View} from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
@@ -84,6 +84,7 @@ const WNZHomePage = () => {
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
+      containerStyle={styles.container}
       renderHeader={() => (
         <HomeHeader
           uid={uid}
@@ -126,10 +127,10 @@ const WNZHomePage = () => {
                       switch (Platform.OS) {
                         case 'ios':
                           goToPromotionPage()
-                          break;
+                          break
                         case 'android':
                           PushHelper.pushHomeGame(item)
-                          break;
+                          break
                       }
                     } else {
                       PushHelper.pushHomeGame(item)
@@ -308,7 +309,7 @@ const WNZHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#E0E0E0',
   },
   gameContainer: {
     width: '25%',
