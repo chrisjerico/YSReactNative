@@ -92,12 +92,13 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
   const { type, text, backgroundColor = ['transparent', 'transparent'], reloadClick, setHideLoading, pointerEvents } = props
   const [zIndex, setZIndex] = useState(0)
   const fadeInOpacity = new Animated.Value(0)
-  const hideLoading = () => {
+  const hideLoadingCP1 = () => {
     Animated.timing(fadeInOpacity, { toValue: 0, duration: 250, easing: Easing.linear }).start() // 淡出
     setTimeout(() => {
       lastProps === props && setZIndex(-999)
     }, 250) // 开启点击穿透
     UGLoadingProps.shared = undefined
+    hideLoading()
   }
 
   // 显示新样式（重新初始化）
@@ -109,20 +110,21 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
   // 初始化
   useEffect(() => {
     Animated.timing(fadeInOpacity, { toValue: 1, duration: 250, easing: Easing.linear }).start() // 淡入
-    setHideLoading(hideLoading)
+    setHideLoading(hideLoadingCP1)
 
     switch (type) {
       case UGLoadingType.Message:
       case UGLoadingType.Success:
       case UGLoadingType.Error:
         setTimeout(() => {
-          lastProps === props && hideLoading()
+          lastProps === props && hideLoadingCP1()
         }, 3000)
+        break;
       case UGLoadingType.Loading:
         setTimeout(() => {
-          lastProps === props && hideLoading()
+          lastProps === props && hideLoadingCP1()
         }, 20000)
-      default:
+        break;
     }
   }, [lastProps])
 
@@ -144,7 +146,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           )}
           {type == UGLoadingType.Reload && (
             <View style={{ position: 'absolute', alignSelf: 'flex-end', marginTop: -7, marginLeft: 30 }}>
-              <TouchableOpacity style={[{ width: 44, height: 44 }, { overflow: 'hidden' }]} onPress={hideLoading}>
+              <TouchableOpacity style={[{ width: 44, height: 44 }, { overflow: 'hidden' }]} onPress={hideLoadingCP1}>
                 <Icon size={30} type="antdesign" name="closecircleo" color="black" containerStyle={{ alignSelf: 'flex-end', marginRight: -7, backgroundColor: '#eee', borderRadius: 15 }} />
               </TouchableOpacity>
             </View>

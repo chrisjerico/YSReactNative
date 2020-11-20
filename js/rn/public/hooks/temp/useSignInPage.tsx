@@ -64,7 +64,7 @@ const useSignInPage = ({
       case 'ios':
         break;
       case 'android':
-        ANHelper.callAsync(CMD.RELOAD, {key: 'home_page'}).then()
+        ANHelper.callAsync(CMD.RELOAD_PAGE, {key: 'home_page'}).then()
         break;
     }
   }

@@ -39,6 +39,7 @@ const ProfileBlock = ({
           <View style={styles.infoContainer}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.text}>{name}</Text>
+              <View style={CommStyles.flex}/>
               <LinearBadge
                 containerStyle={{borderRadius: scale(5), width: scale(80)}}
                 textStyle={{paddingHorizontal: scale(10)}}

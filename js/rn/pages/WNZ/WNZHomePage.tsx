@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
+import {Platform, StyleSheet, View} from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
@@ -123,7 +123,14 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToPromotionPage()
+                      switch (Platform.OS) {
+                        case 'ios':
+                          goToPromotionPage()
+                          break;
+                        case 'android':
+                          PushHelper.pushHomeGame(item)
+                          break;
+                      }
                     } else {
                       PushHelper.pushHomeGame(item)
                     }

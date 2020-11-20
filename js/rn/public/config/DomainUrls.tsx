@@ -9,6 +9,7 @@ import { OCHelper } from "../define/OCHelper/OCHelper";
 const DomainUrls: {[x:string]:string} = {
   'zora': 'http://zhibot071f.fhptcdn.com',
   'txt005': 'http://t005f.fhptcdn.com',
+  'cloud': 'http://t005f.fhptcdn.com',
   'tx07': 'http://test07.6yc.com',
   'tx08': 'http://test08.6yc.com',
   'tx10': 'https://test10.6yc.com',
@@ -37,7 +38,7 @@ const DomainUrls: {[x:string]:string} = {
   'txt500': 'http://t500f.fhptcdn.com',
   'txt501': 'http://t501f.fhptcdn.com',
   'txt502': 'http://t502f.fhptcdn.com',
-  'txtTest': 'http://test61a.fhptcdn.com',
+  'txtTest': 'http://t005f.fhptcdn.com',
   'tstksm': 'http://t133f.fhptcdn.com',
   'chat': 'http://test03.6yc.com',
   'a002': 'https://5049uuu.com',
@@ -63,6 +64,7 @@ const DomainUrls: {[x:string]:string} = {
   'c108': 'https://823653.com',
   'c114': 'https://c432019.com',
   'c116': 'https://13532033.com',
+  'c117': 'https://822323.com',
   'c120': 'https://asafew435yrtgre.net',
   'c126': 'https://jzcp44.com',
   'c126b': 'https://og878.vip',
@@ -79,9 +81,8 @@ const DomainUrls: {[x:string]:string} = {
   'c169': 'http://heixxqic169cqhmszw.playzone88.com',
   'c173': 'https://www.dfjt1.com',
   'c175': 'http://7053fndsjfkn.com',
-//            'c175': 'https://7053lll.com',
   'c184': 'http://00fhcp.cn',
-  'c186': 'https://288388d.com',
+  'c186': 'https://200300g.com',
   'c190': 'https://www677272.com',
   'c193': 'https://4906app.com',
   'c198': 'https://2909tycjt.com',
@@ -97,7 +98,6 @@ const DomainUrls: {[x:string]:string} = {
   'c217': 'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
   'c228': 'https://app77787.co',
   'c225': 'https://8393483.com',
-  'c230': 'https://www.jdapp588.com',
   'c235': 'https://www.hilliot.com',
   'c237': 'http://app13478.com',
   'c239b': 'https://5566569.com',
@@ -135,5 +135,5 @@ const initDomain = async (siteId?: string) => {
   }
 }
 
-export default DomainUrls;
-export {DomainUrls, initDomain};
+// export default DomainUrls;
+// export {DomainUrls, initDomain};

@@ -40,7 +40,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     ugLog('try: ' + net)
     setProps({ showNetwork: net })
   }
-  const { testNetwork } = UseVersion({ testResult })
+  const {testNetwork, testSite} = UseVersion({testResult})
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -210,6 +210,9 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
           }
         })
     }
+
+    //测试哪个域名最快
+    testSite()
 
     return () => {
       // ugLog("clear timer")
