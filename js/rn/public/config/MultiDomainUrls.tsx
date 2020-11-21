@@ -165,6 +165,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c085': [
     'https://xn--7-206cp03b.com',
+    'https://ys-cyw-app1.cc',
+    'https://ys-cyw-app2.cc',
+    'https://ys-cyw-app3.cc',
+    'https://ys-cyw-app4.cc',
+    'https://ys-cyw-app5.cc',
   ],
   'c085yw': [
     'https://x558.cc',
