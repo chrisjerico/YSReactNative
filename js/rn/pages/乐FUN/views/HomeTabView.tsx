@@ -52,7 +52,8 @@ export const HomeTabView = () => {
   }
 
   const calculateHeight = (height: number) => {
-    setHeight(height)
+    ugLog('计算高度: ' + height)
+    setHeight(height + TAB_ITEM_HEIGHT * 1.5)
   }
 
   const calculateTabWidth = games?.length * TAB_ITEM_WIDTH
@@ -92,11 +93,12 @@ export const HomeTabView = () => {
 }
 
 export const TAB_ITEM_WIDTH = scale(96) //tab宽度
+export const TAB_ITEM_HEIGHT = scale(86) //tab高度
 
 const _styles = StyleSheet.create({
   tab_bar: {
     backgroundColor: '#f4f4f4',
-    height: scale(86),
+    height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
     height: scale(0),

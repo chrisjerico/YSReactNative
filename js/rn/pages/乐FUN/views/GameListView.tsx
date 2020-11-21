@@ -25,6 +25,7 @@ import {PushHomeGame} from "../../../public/models/Interface";
 // import useGetHomeInfo from "../../../../../public/hooks/useGetHomeInfo";
 
 export const GAME_ITEM_HEIGHT = scale(130) //游戏条目高度
+export const GAME_SUB_ITEM_HEIGHT = scale(80) //游戏子条目高度
 
 /**
  * 点击索引数据
@@ -59,13 +60,22 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
   const {width, height} = useDimensions().screen
 
   useEffect(() => {
-    refreshHeight((anyLength(listData) / 2 + anyLength(listData) % 2) * GAME_ITEM_HEIGHT)
     setFirstGames(listData)
     setClickData({
       clickIndex: -1,
       partIndex: -1,
     })
   }, [])
+
+  useEffect(()=>{
+    refreshContentHeight()
+  })
+  const refreshContentHeight = () => {
+    let gamesCount = Math.ceil(anyLength(listData) / 2);
+    let subGamesCount = Math.ceil(anyLength(subGames) / 3);
+    //ugLog('数据: ', gamesCount, anyLength(listData), subGamesCount, anyLength(subGames))
+    refreshHeight(gamesCount * GAME_ITEM_HEIGHT + subGamesCount * GAME_SUB_ITEM_HEIGHT)
+  }
 
   /**
    *
@@ -203,7 +213,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                                   _gotoGame(item)
                                 }}>
         <View style={[_styles.sub_item_container, {width: width / 3}]}>
-          <View style={[_styles.sub_item, {width: width / 3}]}>
+          <View style={_styles.sub_item}>
             <Text style={_styles.sub_title}>{anyEmpty(item?.title) ? item?.name : item?.title}</Text>
           </View>
         </View>
@@ -299,23 +309,27 @@ const _styles = StyleSheet.create({
   },
   sub_container: {
     flexDirection: "row",
+    flexWrap: "wrap",
   },
   sub_item_container: {
     flexDirection: "row",
+    padding: scale(4),
+    height: GAME_SUB_ITEM_HEIGHT,
   },
   sub_item: {
     flex: 1,
-    margin: scale(6),
-    paddingHorizontal: scale(6),
+    marginVertical: scale(6),
     paddingVertical: scale(10),
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: scale(1),
     borderColor: '#9D9D9D33',
-    backgroundColor: '#f4f4f4'
+    backgroundColor: '#f4f4f4',
+    borderTopLeftRadius: scale(72),
+    borderBottomRightRadius: scale(72),
   },
   sub_title: {
-    fontSize: scale(24),
+    fontSize: scale(18),
     color: LEFThemeColor.乐FUN.textColor1,
   },
 })

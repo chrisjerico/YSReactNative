@@ -253,7 +253,7 @@ const LEFHomePage = ({navigation, setProps}) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: 'white',
   },
   notice: {
     backgroundColor: '#999999',
