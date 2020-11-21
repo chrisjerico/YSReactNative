@@ -1,30 +1,48 @@
-import React, { useState } from 'react'
-import { FlatList, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { FlatList, Image, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Animated, {
   block,
-  Clock, clockRunning, cond, debug,
-  Easing, Extrapolate, interpolate, set, startClock, stopClock, timing, Value,
+  Clock,
+  clockRunning,
+  cond,
+  debug,
+  Easing,
+  set,
+  startClock,
+  stopClock,
+  timing,
+  Value,
 } from 'react-native-reanimated'
+import useMinePage from '../hooks/tars/useMinePage'
+import { api } from '../network/NetworkRequest1/NetworkRequest1'
 
 export const TransferView = () => {
   const [money, setMoney] = useState(0)
   const mainColor = 'black'
-  const [openPicker, setOpenPicker] = useState(false)
+  const [data, setData] = useState<any>()
+  const [transOut, setTransOut] = useState()
+  const [transIn, setTransIn] = useState()
+  const { value } = useMinePage({})
+  const { userInfo } = value
+  const { balance } = userInfo
+
+  useEffect(() => {
+    getData()
+  }, [])
+
+  const getData = async () => {
+    const { data } = await api.game.realGames().promise
+    setData(data.data)
+  }
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Header mainColor={mainColor} pressRecord={() => {
       }} />
-      <MiddleView mainColor={mainColor} balance={0} money={money} setMoney={setMoney} openPicker={openPicker} setOpenPicker={setOpenPicker} />
-      <AccListView />
-{/*      <View style={{
-        backgroundColor: 'rgba(0,0,0, 0.1)',
-        width: AppDefine.width,
-        height: AppDefine.height,
-        position: 'absolute',
-        flex: 1,
-      }} />*/}
+      <MiddleView data={data} mainColor={mainColor} balance={balance} money={money} setMoney={setMoney} transIn={transIn} transOut={transOut} setTransIn={setTransIn} setTransOut={setTransOut} />
+      {data && <AccListView data={data} />}
     </View>
   )
 }
@@ -62,13 +80,32 @@ const Header = ({ mainColor, pressRecord }: { mainColor: string, pressRecord: ()
   )
 }
 
-const MiddleView = ({ mainColor, balance, money, setMoney, openPicker, setOpenPicker }:
-                      { mainColor: string, balance: string, money: number, setMoney: (text: string) => void, setOpenPicker: (status: boolean) => void }) => {
+const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTransIn, transOut, setTransOut }:
+                      { mainColor: string, balance: string, money: number, setMoney: (text: string) => void }) => {
+  const dataArr = [{ title: '我的钱包' }]
   return (
-    <View style={{ marginHorizontal: 12, marginTop: 16 }}>
-      <TransferPicker text={'转出钱包'} zIndex={99} setOpenPicker={setOpenPicker}  />
-      <TransferPicker text={'转入钱包'} zIndex={98} setOpenPicker={setOpenPicker} />
-      <TransferPicker text={'转换金额'} zIndex={97} setOpenPicker={setOpenPicker} />
+    <View style={{ marginHorizontal: 12, marginTop: 16, zIndex: 99 }}>
+      <View style={{ zIndex: 2 }}>
+        <TransferPicker key={1} text={'转出钱包'} defaultZIndex={3} data={dataArr.concat(data)} wallet={transOut} setWallet={setTransOut} />
+        <TransferPicker key={2} text={'转入钱包'} defaultZIndex={2} data={dataArr.concat(data)} wallet={transIn} setWallet={setTransIn} />
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
+          <TextInput
+            keyboardType={'numeric'}
+            value={money}
+            style={{
+              flex: 1,
+              marginLeft: 20,
+              height: 38,
+              borderBottomWidth: 1,
+              borderBottomColor: '#d9d9d9',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}
+            onChangeText={(text) => setMoney(text)}
+          />
+        </View>
+      </View>
       <View style={{ paddingTop: 32 }}>
         <TouchableWithoutFeedback onPress={() => {
         }}>
@@ -93,7 +130,12 @@ const MiddleView = ({ mainColor, balance, money, setMoney, openPicker, setOpenPi
             height: 40,
           }}>
             <Text
-              style={{ marginLeft: 12, fontSize: 17, color: 'white', alignSelf: 'center' }}>{`帐号余额: ￥${balance}`}</Text>
+              style={{
+                marginLeft: 12,
+                fontSize: 17,
+                color: 'white',
+                alignSelf: 'center',
+              }}>{`帐号余额: ￥${balance || 0}`}</Text>
             <Icon size={20} name={'reload1'} color={'white'} style={{ marginLeft: 16 }} />
           </View>
         </TouchableWithoutFeedback>
@@ -102,52 +144,55 @@ const MiddleView = ({ mainColor, balance, money, setMoney, openPicker, setOpenPi
   )
 }
 
-const AccListView = () => {
+const AccListView = ({ data }: { data: any[] }) => {
   return (
-    <FlatList style={{ marginHorizontal: 12, marginTop: 12 }} data={[1, 2, 3, 4, 5, 6]} renderItem={() => (
-      <View style={{
-        flexDirection: 'row',
-        marginHorizontal: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#d9d9d9',
-        alignItems: 'center',
-        paddingVertical: 12,
-      }}>
-        <Icon style={{ alignSelf: 'center' }} size={24} name={'caretdown'} />
-        <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>MG电子</Text>
-        <Text>￥*****</Text>
-        <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
-      </View>
-    )} />
+    <SafeAreaView style={{ flex: 1, marginBottom: 90 }}>
+      <FlatList
+        key={({item}) => `acc-${item.title}`}
+        style={{ marginHorizontal: 12, marginTop: 12 }} data={data}
+                renderItem={({ item }) => {
+        return (
+          <View style={{
+            flexDirection: 'row',
+            marginHorizontal: 8,
+            borderBottomWidth: 1,
+            borderBottomColor: '#d9d9d9',
+            alignItems: 'center',
+            paddingVertical: 12,
+          }}>
+            <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
+            <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title}</Text>
+            <Text>￥*****</Text>
+            <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
+          </View>
+        )
+      }} />
+    </SafeAreaView>
   )
 }
 
-const TransferPicker = ({ text, zIndex, setOpenPicker, openPicker }: { text: string, zIndex: number, setOpenPicker: (status: boolean) => void, openPicker: boolean }) => {
+const TransferPicker = ({ text, enable = true, defaultZIndex, data, wallet, setWallet }:
+                          { text: string, enable?: boolean, defaultZIndex, data: any, wallet: any, setWallet: (item: any) => void }) => {
   const [open, setOpen] = useState(false)
   const [animation, setAnimation] = useState(new Value(0))
+  const [zIndex, setZIndex] = useState(defaultZIndex)
+
   const toggleRow1Content = () => {
     if (open) {
       setAnimation(runTiming(new Clock(), new Value(250), new Value(0)))
       setOpen(false)
+      setZIndex(defaultZIndex)
     } else {
       setAnimation(runTiming(new Clock(), new Value(0), new Value(250)))
       setOpen(true)
+      setZIndex(99)
     }
   }
+
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
       <Text style={{ fontSize: 16, textAlign: 'center' }}>{text}</Text>
-      {/*{open && <View style={{*/}
-      {/*  backgroundColor: 'rgba(0,0,0, 0.1)',*/}
-      {/*  width: AppDefine.width,*/}
-      {/*  height: AppDefine.height,*/}
-      {/*  position: 'absolute',*/}
-      {/*  flex: 1,*/}
-      {/*  zIndex: 98,*/}
-      {/*  top: 0-180,*/}
-      {/*  left: 0-12*/}
-      {/*}} />}*/}
-      <TouchableWithoutFeedback style={{zIndex: 99}} onPress={() => toggleRow1Content()}>
+      <TouchableWithoutFeedback style={{}} disabled={!enable} onPress={() => toggleRow1Content()}>
         <View style={{
           flex: 1,
           marginLeft: 20,
@@ -157,12 +202,58 @@ const TransferPicker = ({ text, zIndex, setOpenPicker, openPicker }: { text: str
           alignItems: 'center',
           flexDirection: 'row',
         }}>
+          <Text>{wallet ? wallet.title : ""}</Text>
           <View style={{ flex: 1 }} />
-          <Icon style={{ alignSelf: 'center' }} size={16} name={'caretdown'} />
+          <Icon style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
+                name={'caretdown'} />
         </View>
       </TouchableWithoutFeedback>
       <Animated.View
-        style={{ backgroundColor: 'red', height: animation, width: '78%', position: 'absolute', top: 38, left: 85, zIndex: 99 }} />
+        style={{
+          backgroundColor: 'white',
+          height: animation,
+          width: '78%',
+          position: 'absolute',
+          top: 38,
+          left: 85,
+          zIndex,
+          borderWidth: zIndex === 99 ? 1 : 0,
+          borderColor: '#d9d9d9',
+          borderRadius: 4,
+        }}>
+        {data &&
+        <FlatList
+          key={({item}) => `${item.title}`}
+          data={data}
+          renderItem={({ item }) => (
+            <TouchableWithoutFeedback onPress={() => {
+              setWallet(item)
+              toggleRow1Content()
+            }}>
+              <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
+                <Text>{item.title}</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )} />}
+      </Animated.View>
+      {open != 0 && <TouchableWithoutFeedback style={{
+        width: AppDefine.width,
+        height: AppDefine.height,
+        position: 'absolute',
+        flex: 1,
+        top: -180,
+        left: -12,
+      }} onPress={() => toggleRow1Content()}>
+        <View style={{
+          backgroundColor: 'rgba(0,0,0, 0.1)',
+          width: AppDefine.width,
+          height: AppDefine.height,
+          position: 'absolute',
+          flex: 1,
+          top: -180,
+          left: -12,
+        }} />
+      </TouchableWithoutFeedback>}
     </View>
   )
 }
@@ -176,7 +267,7 @@ function runTiming(clock, value, dest) {
   }
 
   const config = {
-    duration: 500,
+    duration: 250,
     toValue: dest,
     easing: Easing.inOut(Easing.cubic),
   }
