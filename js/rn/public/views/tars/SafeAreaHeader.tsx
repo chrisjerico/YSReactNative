@@ -6,7 +6,7 @@ import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { scale } from '../../tools/Scale'
 
 interface SafeAreaHeaderProps {
-  headerColor?: string
+  headerColor: string
   containerStyle?: StyleProp<ViewStyle>
   children?: ReactNode
 }

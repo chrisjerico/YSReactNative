@@ -1,4 +1,4 @@
-import {ActivityIndicator, Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native'
+import { ActivityIndicator, Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { chunkArray } from '../tools/ChunkArr'
@@ -11,6 +11,7 @@ import PushHelper from '../define/PushHelper'
 import { BaseScreen } from '../../pages/乐橙/component/BaseScreen'
 import AppDefine from '../define/AppDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
+import { hideLoading, showLoading } from '../widget/UGLoadingCP'
 
 const TrendView = ({ navigation }) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -20,7 +21,6 @@ const TrendView = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false)
   const [defaultNumber, setDefaultNumber] = useState(0)
   const [currentGame, setCurrentGame] = useState(defaultGame)
-  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getData()
@@ -62,10 +62,10 @@ const TrendView = ({ navigation }) => {
   }, [])
 
   const getData = () => {
-    setLoading(true)
+    showLoading(undefined, ['#0005']);
     APIRouter.getTrendData(currentGame.id.toString()).then((result) => {
       setTrendData(getTrendData(defaultNumber, currentGame.gameType, result.data.data.list))
-      setLoading(false)
+      hideLoading();
     })
   }
 
@@ -448,18 +448,6 @@ const TrendView = ({ navigation }) => {
       {/*<View style={{flexDirection: "row"}}>*/}
       {/*    <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>*/}
       {/*</View>*/}
-      {loading && (
-        <View
-          style={{
-            justifyContent: 'center',
-            width: AppDefine.width,
-            height: AppDefine.height,
-            position: 'absolute',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <ActivityIndicator size={'small'} color={'white'} />
-        </View>
-      )}
     </BaseScreen>
   )
 }

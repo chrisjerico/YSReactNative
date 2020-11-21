@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import RandomTextComponent from '../../public/components/tars/RandomTextComponent'
 import PushHelper from '../../public/define/PushHelper'

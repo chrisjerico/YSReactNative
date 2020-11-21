@@ -10,14 +10,12 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
 import UGSkinManagers from '../../public/theme/UGSkinManagers'
 import { anyEmpty, arrayEmpty } from '../../public/tools/Ext'
+import { scale } from '../../public/tools/Scale'
+import { ugLog } from '../../public/tools/UgLog'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
-import { UGBasePageProps } from '../base/UGPage'
-import { scale } from '../../public/tools/Scale'
-import { Toast } from '../../public/tools/ToastUtils'
-import { ugLog } from '../../public/tools/UgLog'
 import { DefaultMenu } from '../../Res/DefaultMenu'
-import { UGThemeColor } from '../../public/theme/UGThemeColor'
+import { UGBasePageProps } from '../base/UGPage'
 import UseVersion from './us/UseVersion'
 
 // 声明Props
@@ -40,7 +38,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     ugLog('try: ' + net)
     setProps({ showNetwork: net })
   }
-  const {testNetwork, testSite} = UseVersion({testResult})
+  const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -257,6 +255,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 通知iOS进入首页
         await OCHelper.call('ReactNativeVC.showLastRnPage')
         OCHelper.launchFinish()
+        // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
+        UGSysConfModel.updateFromNetwork()
         break
       case 'android':
         setProps({ bCodePush: true })

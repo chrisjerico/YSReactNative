@@ -15,7 +15,7 @@ import { UGStore } from '../../redux/store/UGStore';
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel';
 import { UGBasePageProps } from '../base/UGPage';
 import { Skin1 } from '../../public/theme/UGSkinManagers';
-import { navigate, popToRoot } from '../../public/navigation/RootNavigation';
+import { jumpTo, navigate, pop, popToRoot } from '../../public/navigation/RootNavigation';
 import { Toast } from "../../public/tools/ToastUtils";
 import { SlidingVerification } from './XBJLoginPage';
 import { showError, showLoading, showMessage, showSuccess, UGLoadingType } from '../../public/widget/UGLoadingCP';
@@ -52,12 +52,12 @@ export interface XBJRegisterProps extends UGBasePageProps<XBJRegisterProps> {
 export const XBJRegisterPage = (props: XBJRegisterProps) => {
   const { setProps, navigation } = props;
   const { current: v } = useRef<XBJRegisterVars>({});
-  
+
   useEffect(() => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
-      backgroundImage:'https://i.ibb.co/JycJ0nW/3x.png',
+      backgroundImage: 'https://i.ibb.co/JycJ0nW/3x.png',
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();
@@ -122,7 +122,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       err = '请输入4位数字的取款密码';
     } else if (reg_vcode == 1 && !v.letterCode?.length) {
       err = '请输入验证码';
-    } else if (smsVerify && !v.smsCode?.length) {
+    } else if (smsVerify == true && !v.smsCode?.length) {
       err = '请输入短信验证码';
     }
     if (err) {
@@ -151,7 +151,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     }).then((sm) => {
       sm.setCompletionBlock(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
-        navigation.setOptions({unmountOnBlur:true})
+        navigation.setOptions({ unmountOnBlur: true })
         didRegisterSuccess(v.account, v.pwd1, autoLogin);
       });
     });
@@ -161,7 +161,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
   const selectedColor = 'rgba(0, 0, 0, 0.5)';
 
   return (
-    <ScrollView style={{ paddingTop: 65, paddingBottom: 100 }}>
+    <ScrollView style={{ paddingTop: 65 }}>
       <FastImage source={{ uri: mobile_logo }} resizeMode={FastImage.resizeMode.contain} style={{ width: AppDefine.width, height: 45 }} />
       <View style={{ marginLeft: 24, marginTop: 40, width: AppDefine.width - 48, borderRadius: 8, overflow: 'hidden', flexDirection: 'row' }}>
         <TouchableOpacity
@@ -263,14 +263,14 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               v.email = text;
             }}
           />}
-          {reg_phone != 0 && <UGTextField
+          {(reg_phone != 0 || smsVerify == true) && <UGTextField
             type="手机号"
             placeholder={'手机号' + (reg_phone == 1 ? '（选填）' : '')}
             onChangeText={text => {
               v.phone = text;
             }}
           />}
-          {smsVerify && <UGTextField
+          {smsVerify != false && <UGTextField
             type="短信验证码"
             didSmsButtonClick={startCountdown => {
               api.secure.smsCaptcha(v.phone).setCompletionBlock(() => {
@@ -312,42 +312,21 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           />
         </View>
       </View>
-      <View style={{ height: 200 }} />
+      <View style={{ height: 150 }} />
     </ScrollView>
   );
 }
 
 async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean) {
   if (autoLogin) {
-    let user
-    switch (Platform.OS) {
-      case 'ios':
-        user = await OCHelper.call('UGUserModel.currentUser');
-        break;
-      case 'android':
-        user = await ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO });
-        break;
-    }
-    showMessage('注册成功');
+    api.user.logout().noShowErrorHUD = true;
+    const { data: loginData } = await api.user.login(acct, pwd).setCompletionBlock(undefined, (_, sm) => {
+      // 自动登录失败
+      sm.noShowErrorHUD = true
+      jumpTo(PageName.XBJLoginPage, { usr: acct, pwd: pwd })
+    }).promise;
 
-    const { data: loginData, status } = await APIRouter.user_login(acct, pwd)
-
-    if (user) {
-      console.log('退出旧账号: ', user)
-      switch (Platform.OS) {
-        case 'ios':
-          const sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
-          await OCHelper.call('UGUserModel.setCurrentUser:');
-          break;
-        case 'android':
-          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.LOGIN_INFO });
-          await ANHelper.callAsync(CMD.SAVE_DATA, { key: NA_DATA.USER_INFO });
-          break;
-      }
-      UGStore.dispatch({ type: 'reset' })
-    }
-
+    // 自动登录成功
     switch (Platform.OS) {
       case 'ios':
         await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(loginData?.data)]);
@@ -382,9 +361,8 @@ async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean)
 
     UGStore.dispatch({ type: 'merge', props: UserInfo?.data });
     UGStore.save();
-    popToRoot();
+    pop();
   } else {
-    popToRoot();
-    navigate(PageName.XBJLoginPage, { usr: acct, pwd: pwd })
+    jumpTo(PageName.XBJLoginPage, { usr: acct, pwd: pwd })
   }
 }

@@ -11,12 +11,12 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { PageName } from '../../public/navigation/Navigation'
 import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
 import { UGThemeConst } from '../../public/theme/const/UGThemeConst'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 import { UGColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
 import { ugLog } from '../../public/tools/UgLog'
 import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
 
 // Props
 export interface UGBasePageProps<P extends UGBasePageProps = {}, F = {}> {
