@@ -26,9 +26,18 @@ import {PushHomeGame} from "../../../public/models/Interface";
 
 export const GAME_ITEM_HEIGHT = scale(130) //游戏条目高度
 
+/**
+ * 点击索引数据
+ */
 interface IClickData {
   clickIndex: number,
   partIndex: number,
+}
+
+interface IGameList {
+  listData: List[]
+  refreshHeight: (height: number) => void
+  tabLabel?: string
 }
 
 /**
@@ -36,7 +45,7 @@ interface IClickData {
  * @param list 游戏列表
  * @constructor
  */
-export const GameListView = ({list}: { list: List[] }) => {
+export const GameListView = ({listData, refreshHeight}: IGameList) => {
   //第一部分游戏
   const [firstGames, setFirstGames] = useState([])
   //第二部分游戏
@@ -47,10 +56,11 @@ export const GameListView = ({list}: { list: List[] }) => {
   //当前点击的索引数据
   const [clickData, setClickData] = useState<IClickData>()
 
-  const { width, height } = useDimensions().screen
+  const {width, height} = useDimensions().screen
 
-  useEffect(()=>{
-    setFirstGames(list)
+  useEffect(() => {
+    refreshHeight((anyLength(listData) / 2 + anyLength(listData) % 2) * GAME_ITEM_HEIGHT)
+    setFirstGames(listData)
     setClickData({
       clickIndex: -1,
       partIndex: -1,
@@ -82,26 +92,26 @@ export const GameListView = ({list}: { list: List[] }) => {
         }
         //把数组切成 3部分
         if (compoundIndex % 2 == 0) {
-          if (compoundIndex < list.length - 1) {
-            setFirstGames(list.slice(0, compoundIndex + 2))
+          if (compoundIndex < listData.length - 1) {
+            setFirstGames(listData.slice(0, compoundIndex + 2))
             setSubGames(listItem.subType)
-            setSecondGames(list.slice(compoundIndex + 2))
+            setSecondGames(listData.slice(compoundIndex + 2))
           } else {//点击了最后一条
-            setFirstGames(list)
+            setFirstGames(listData)
             setSubGames(listItem.subType)
             setSecondGames([])
           }
         } else {
-          setFirstGames(list.slice(0, compoundIndex + 1))
+          setFirstGames(listData.slice(0, compoundIndex + 1))
           setSubGames(listItem.subType)
-          setSecondGames(list.slice(compoundIndex + 1))
+          setSecondGames(listData.slice(compoundIndex + 1))
         }
       } else {//重置
         setClickData({
           clickIndex: -1,
           partIndex: -1
         });
-        setFirstGames(list)
+        setFirstGames(listData)
         setSubGames([])
         setSecondGames([])
       }
@@ -152,8 +162,9 @@ export const GameListView = ({list}: { list: List[] }) => {
    */
   const renderItem = (item, index, partIndex) => {
     //ugLog('item=', item)
-    return <TouchableWithoutFeedback onPress={()=>onPress(item, index, partIndex)}>
-      <View style={[_styles.container_item, {width: width/2}]}>
+    return <TouchableWithoutFeedback key={'renderItem_' + index + "_" + partIndex}
+                                     onPress={() => onPress(item, index, partIndex)}>
+      <View style={[_styles.container_item, {width: width / 2}]}>
         <View style={_styles.container_content}>
           <View style={_styles.list_item}>
             <FastImage style={_styles.list_icon}
@@ -187,9 +198,12 @@ export const GameListView = ({list}: { list: List[] }) => {
   const renderSubGamesItem = (item: SubType, index: number) => {
     //ugLog('item item =', item)
     return (
-      <TouchableWithoutFeedback onPress={() => {_gotoGame(item)}}>
-        <View style={[_styles.sub_item_container, {width: width/3}]}>
-          <View style={[_styles.sub_item, {width: width/3}]}>
+      <TouchableWithoutFeedback key={'renderSubGamesItem_' + index}
+                                onPress={() => {
+                                  _gotoGame(item)
+                                }}>
+        <View style={[_styles.sub_item_container, {width: width / 3}]}>
+          <View style={[_styles.sub_item, {width: width / 3}]}>
             <Text style={_styles.sub_title}>{anyEmpty(item?.title) ? item?.name : item?.title}</Text>
           </View>
         </View>
@@ -238,6 +252,7 @@ const _styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   container_item: {
+    height: GAME_ITEM_HEIGHT,
     aspectRatio: 2,
   },
   container_content: {
@@ -256,7 +271,7 @@ const _styles = StyleSheet.create({
     aspectRatio: 1,
   },
   flag_other: {
-    height: GAME_ITEM_HEIGHT*2/5,
+    height: GAME_ITEM_HEIGHT * 2 / 5,
     aspectRatio: 1
   },
   list_item: {
