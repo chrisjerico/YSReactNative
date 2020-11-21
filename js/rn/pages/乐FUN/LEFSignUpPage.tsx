@@ -21,7 +21,7 @@ import MineHeader from "../../public/views/temp/MineHeader";
 const LEFSignUpPage = () => {
   const menu = useRef(null)
 
-  const { slideCodeRef, show, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
+  const { reference, show, label, onChange, sign, passwordLimit, navigateTo, value, placeholder, rightMenus } = useSignUpPage({
     homePage: PageName.LEFHomePage,
     signInPage: PageName.LEFSignInPage,
   })
@@ -50,14 +50,18 @@ const LEFSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeRef={slideCodeRef}
-                          slideCodeColor={'#f2f2f2'}
-                          show={show} label={label}
-                          passwordLimit={passwordLimit}
-                          onChange={onChange}
-                          Form={SignUpForm} />
+          <SignUpFormList
+            slideCodeColor={'#f2f2f2'}
+            reference={reference}
+            show={show}
+            label={label}
+            placeholder={placeholder}
+            passwordLimit={passwordLimit}
+            onChange={onChange}
+            value={value}
+            renderForm={SignUpForm}
+          />
           <Button
-            disabled={!valid}
             title={'立即注册'}
             containerStyle={styles.signUpButton}
             disabledContainerStyle={[

@@ -8,14 +8,14 @@ import {UGStore} from "../../../redux/store/UGStore";
 import {NA_DATA} from "./hp/DataDefine";
 import {ugLog} from "../../tools/UgLog";
 import {stringToNumber} from "../../tools/tars";
-import {initDomain} from "../../config/DomainUrls";
+import {initDomain} from "../../config/MultiDomainUrls";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
-  static addEvent = ANEvent.addEvent;
+  static addEvent = ANEvent.addEvent
 
   // 移除安卓事件
-  static removeEvents = ANEvent.removeEvents;
+  static removeEvents = ANEvent.removeEvents
 
   /**
    * CallBack调用安卓函数
@@ -24,13 +24,13 @@ export class ANHelper extends ANEvent {
    * @param back 返回值
    * @param data 参数
    */
-  static callSync(type: CMD, data?: {[x: string]: any}): any|null {
+  static callSync(type: CMD, data?: { [x: string]: any }): any | null {
     return this.core.executeSync(
       JSON.stringify({
         type: type,
         ...data,
       })
-    );
+    )
   }
 
   /**
@@ -39,17 +39,17 @@ export class ANHelper extends ANEvent {
    * @param type 当前类型
    * @param data 参数
    */
-  static callAsync(type: CMD, data?: {[x: string]: any}): Promise<any|null> {
+  static callAsync(type: CMD, data?: { [x: string]: any }): Promise<any | null> {
     return this.core.executeCmd(
       JSON.stringify({
         type: type,
         ...data,
-      }),
-    );
+      })
+    )
   }
 
   static async setup() {
-    super.setup();
+    super.setup()
 
     await initDomain();
 
@@ -65,20 +65,20 @@ export class ANHelper extends ANEvent {
         ugLog('APP_HOST=', error)
       }),
 
-    // 设置站点编号
-    this.callAsync(CMD.APP_SITE).catch((error) => {
-      ugLog('APP_SITE=', error)
-    }),
+      // 设置站点编号
+      this.callAsync(CMD.APP_SITE).catch((error) => {
+        ugLog('APP_SITE=', error)
+      }),
 
-    // 加载系统设置
-    this.callAsync(CMD.LOAD_DATA, {key: NA_DATA.CONFIG}).catch((error) => {
-      ugLog('CONFIG=', error)
-    }),
+      // 加载系统设置
+      this.callAsync(CMD.LOAD_DATA, { key: NA_DATA.CONFIG }).catch((error) => {
+        ugLog('CONFIG=', error)
+      }),
 
       //加载用户中心条目信息
       ANHelper.callAsync(CMD.ASK_MINE_ITEMS).catch((error) => {
         ugLog('ASK_MINE_ITEMS=', error)
-      })
+      }),
     ])
 
     const host = res[0]
@@ -86,9 +86,10 @@ export class ANHelper extends ANEvent {
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
+    //ugLog('host=  =', host)
     AppDefine.host = host;
     httpClient.defaults.baseURL = host
-    AppDefine.siteId = siteId;
+    AppDefine.siteId = siteId
 
     // net
     const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners'].map(async (router) => {
@@ -114,9 +115,16 @@ export class ANHelper extends ANEvent {
     const gameLobby = net_response[2]?.data?.data ?? []
     const banner = net_response[3]?.data?.data ?? {}
 
-    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net });
-    UGStore.save();
+    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net })
+    UGStore.save()
+  }
 
-
+  /**
+   * 刷新域名
+   * @param host
+   */
+  static refreshHost(host?: string) {
+    AppDefine.host = host;
+    httpClient.defaults.baseURL = host
   }
 }

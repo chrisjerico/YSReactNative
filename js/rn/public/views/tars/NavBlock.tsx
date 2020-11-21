@@ -1,20 +1,18 @@
-import React from 'react'
+import { number } from 'prop-types'
+import React, { memo } from 'react'
 import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 
 interface NavBlockProps {
-  navs: any[];
-  containerStyle?: StyleProp<ViewStyle>;
-  renderNav: (item: any, index: number) => any;
-  visible?: boolean;
+  navs: any[]
+  containerStyle?: StyleProp<ViewStyle>
+  renderNav: (item: any, index: number) => any
+  visible?: boolean
+  navCounts?: number
 }
 
-const NavBlock = ({ renderNav, navs = [], containerStyle, visible }: NavBlockProps) => {
+const NavBlock = ({ renderNav, navs = [], containerStyle, visible, navCounts = 4 }: NavBlockProps) => {
   if (visible) {
-    return (
-      <View style={[styles.container, containerStyle]}>
-        {navs.map(renderNav)}
-      </View>
-    )
+    return <View style={[styles.container, containerStyle]}>{navs?.slice(0, navCounts).map(renderNav)}</View>
   } else {
     return null
   }
@@ -27,8 +25,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start'
-  }
+    alignItems: 'flex-start',
+  },
 })
 
-export default NavBlock
+export default memo(NavBlock)

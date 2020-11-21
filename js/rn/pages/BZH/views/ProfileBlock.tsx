@@ -7,7 +7,7 @@ import LinearBadge from '../../../public/views/tars/LinearBadge'
 import ReLoadBalanceComponent from '../../../public/components/tars/ReLoadBalanceComponent'
 
 interface ProfileBlockProps {
-  balance: string | number
+  balance: string
   features: any[]
   renderFeature: (item: any, index: number) => any
   avatar: string
@@ -15,9 +15,12 @@ interface ProfileBlockProps {
   name: string
   level: string
   onPressAvatar: () => any
+  currency: string
+  showK?: boolean
+  balanceDecimal: number
 }
 
-const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle, name, level, onPressAvatar }: ProfileBlockProps) => {
+const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle, name, level, onPressAvatar, currency, showK, balanceDecimal }: ProfileBlockProps) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.redBlock}></View>
@@ -36,8 +39,11 @@ const ProfileBlock = ({ avatar, balance, features, renderFeature, containerStyle
                 titleStyle={{ fontSize: scale(22) }}
                 balance={balance}
                 balanceStyle={{ color: '#000000', fontSize: scale(22) }}
-                color={'#000000'}
+                iconColor={'#000000'}
                 size={20}
+                currency={currency}
+                showK={showK}
+                balanceDecimal={balanceDecimal}
               />
             </View>
           </View>

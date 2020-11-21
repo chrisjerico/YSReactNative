@@ -25,6 +25,11 @@ const useTryPlay = (options: Options = {}) => {
         switch (Platform.OS) {
           case 'ios':
             await OCHelper.call('UGUserModel.setCurrentUser:', [UGUserModel.getYS(user_guestLogin_data)])
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setBool:forKey:', ['', 'isRememberPsd'])
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userName'])
+            await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', ['', 'userPsw'])
+            await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete'])
+            await OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true])
             break
           case 'android':
             await ANHelper.callAsync(CMD.SAVE_DATA, {

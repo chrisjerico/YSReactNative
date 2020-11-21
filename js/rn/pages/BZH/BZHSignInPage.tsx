@@ -1,20 +1,19 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
-import PushHelper from '../../public/define/PushHelper'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { BZHThemeColor } from '../../public/theme/colors/BZHThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
+import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignInFormList from '../../public/views/tars/SignInFormList'
-import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 
 const BZHSignInPage = () => {
-  const { sign, value, onChange, navigateTo, show, slideCodeRef, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid } = useSignInPage({
     homePage: PageName.BZHHomePage,
     signUpPage: PageName.BZHSignUpPage,
   })
@@ -26,19 +25,11 @@ const BZHSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <MineHeader
-          title={'登录'}
-          showBackBtn={true}
-          onPressBackBtn={pop}
-          showRightTitle={true}
-          onPressRightTitle={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-          }}
-        />
+        <MineHeader title={'登录'} showBackBtn={true} onPressBackBtn={pop} showRightTitle={true} onPressRightTitle={goToUserCenterType.在线客服} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignInFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} onChange={onChange} value={value} Form={SignInForm} />
+          <SignInFormList slideCodeColor={'#ffffff'} reference={reference} show={show} onChange={onChange} value={value} renderForm={SignInForm} />
           <Button
             title={'立即登录'}
             disabled={!valid}
@@ -67,7 +58,7 @@ const BZHSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
+const SignInForm = (props: SignInRenderFormProps) => <FormComponent {...props} containerStyle={{ marginBottom: scale(20) }} inputContainerStyle={{ borderColor: '#d9d9d9' }} />
 
 const styles = StyleSheet.create({
   container: {

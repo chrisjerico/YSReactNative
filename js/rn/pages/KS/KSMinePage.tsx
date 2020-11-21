@@ -8,7 +8,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
+import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -19,16 +19,18 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
+
 const KSMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { value, sign } = useMinePage({
     homePage: PageName.KSHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
+  const { userInfo, sysInfo } = value
 
-  const { balance, userCenterItems, curLevelGrade, usr, unreadMsg } = sysInfo
+  const { balance, curLevelGrade, usr, unreadMsg } = userInfo
+  const { userCenterItems, currency, balanceDecimal } = sysInfo
 
   const { signOut } = sign
 
@@ -76,13 +78,10 @@ const KSMinePage = () => {
               <Text style={{ color: '#ffffff', marginLeft: scale(20), fontSize: scale(25) }}>{curLevelGrade}</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <TouchableWithoutFeedback onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.任务中心)}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.任务中心}>
                 <FastImage source={{ uri: getIbbImage('dkQCr80/task') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-                }}>
+              <TouchableWithoutFeedback onPress={goToUserCenterType.每日签到}>
                 <FastImage source={{ uri: getIbbImage('R4c4wv6/signup') }} style={{ height: '50%', aspectRatio: 3 }} resizeMode={'contain'} />
               </TouchableWithoutFeedback>
             </View>
@@ -107,17 +106,17 @@ const KSMinePage = () => {
             })}
           </View>
         </LinearGradient>
-        <View style={{ width: '100%', aspectRatio: 6, justifyContent: 'center', paddingLeft: scale(20) }}>
-          <Text style={{ color: '#ffffff', fontSize: scale(22), fontWeight: '500' }}>{'总资产'}</Text>
-        </View>
-        <View style={{ width: '100%', aspectRatio: 6, paddingLeft: scale(20) }}>
+        <View style={{ width: '100%', aspectRatio: 4, justifyContent: 'space-evenly', paddingLeft: scale(20) }}>
+          <Text style={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}>{'总资产'}</Text>
           <ReLoadBalanceComponent
             title={'¥ '}
             titleStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
             balance={balance}
             balanceStyle={{ color: '#ffffff', fontSize: scale(30), fontWeight: '500' }}
-            color={'#ffffff'}
+            iconColor={'#ffffff'}
             size={30}
+            currency={currency}
+            balanceDecimal={balanceDecimal}
           />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -143,7 +142,7 @@ const KSMinePage = () => {
         <List
           uniqueKey={'KSMinePage'}
           numColumns={3}
-          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingTop: scale(5) }}
+          style={{ backgroundColor: '#3a3a41', marginTop: scale(10), borderRadius: scale(10), paddingVertical: scale(15) }}
           data={listUserCenterItems}
           renderItem={({ item }) => {
             const { name, logo, code } = item
@@ -153,11 +152,11 @@ const KSMinePage = () => {
                 logo={logo}
                 enableCircle={false}
                 titleStyle={{ color: '#ffffff' }}
-                containerStyle={{ width: '33%', marginBottom: scale(40), marginTop: scale(30) }}
+                containerStyle={{ width: '33%', marginVertical: scale(15) }}
                 imageContainerStyle={{ width: '50%' }}
                 titleContainerStyle={{ aspectRatio: 5 }}
                 unreadMsg={unreadMsg || 0}
-                showUnReadMsg={code == 9}
+                showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
                 showSubTitle={false}
                 onPress={() => {
                   PushHelper.pushUserCenterType(code)

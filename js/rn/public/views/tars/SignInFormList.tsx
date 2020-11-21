@@ -1,29 +1,57 @@
-import React, { RefObject } from 'react'
+import React, { memo, RefObject } from 'react'
 import { FormComponentProps } from '../../components/tars/FormComponent'
+import NeedNameInputComponent from '../../components/tars/NeedNameInputComponent'
 import ReloadSlidingVerification from '../../components/tars/ReloadSlidingVerification'
 import { scale } from '../../tools/Scale'
-import CheckBox from './CheckBox'
+import CheckBox, { CheckBoxProps } from './CheckBox'
+
+export type SignInRenderFormProps = FormComponentProps & { [key: string]: any }
 
 interface SignInFormListProps {
   slideCodeColor?: string
-  slideCodeRef: RefObject<any>
   value: { [key: string]: any }
-  onChange: { [key: string]: any }
-  show: { [key: string]: any }
-  Form?: (props: FormComponentProps & { leftIconTitle: string }) => any
+  onChange: OnChange
+  show: Show
+  renderForm: (props: SignInRenderFormProps) => any
   showCheckBox?: boolean
+  accountFormProps?: { [key: string]: any }
+  passwordFormProps?: { [key: string]: any }
+  checkBoxProps?: CheckBoxProps
+  reference?: Reference
 }
 
-const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeColor, showCheckBox = true }: SignInFormListProps) => {
+interface Reference {
+  slideCodeRef?: RefObject<any>
+  needNameInputRef?: RefObject<any>
+}
+
+interface Show {
+  loginVCode?: boolean
+}
+
+interface OnChange {
+  onChangePassword?: (text: string) => any
+  onChangeAccount?: (text: string) => any
+  onChangeRemember?: (remember: boolean) => any
+  onChangeSlideCode?: (data: any) => any
+  onChangeFullName?: (text: string) => any
+}
+
+const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps, checkBoxProps, reference }: SignInFormListProps) => {
   const { remember, account, password } = value
 
-  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
+  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onChangeFullName } = onChange
 
   const { loginVCode } = show
+
+  const { slideCodeRef, needNameInputRef } = reference
+
+  const Form = renderForm
 
   return (
     <>
       <Form
+        {...accountFormProps}
         visible={true}
         placeholder={'请输入会员帐号'}
         onChangeText={onChangeAccount}
@@ -36,6 +64,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
         leftIconTitle={'帐号'}
       />
       <Form
+        {...passwordFormProps}
         showLabel={false}
         visible={true}
         placeholder={'请输入密码'}
@@ -49,7 +78,7 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
         rightIconType={'eye'}
         leftIconTitle={'密码'}
       />
-      {showCheckBox && <CheckBox onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} />}
+      {showCheckBox && <CheckBox {...checkBoxProps} onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} />}
       <ReloadSlidingVerification
         ref={slideCodeRef}
         show={loginVCode}
@@ -59,8 +88,9 @@ const SignInFormList = ({ slideCodeRef, value, onChange, show, Form, slideCodeCo
           backgroundColor: slideCodeColor,
         }}
       />
+      <NeedNameInputComponent ref={needNameInputRef} onChangeFullName={onChangeFullName} />
     </>
   )
 }
 
-export default SignInFormList
+export default memo(SignInFormList)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
 
 interface ProfileBlockProps {
@@ -11,9 +12,11 @@ interface ProfileBlockProps {
   backgroundImage: string
   signImage: string
   onPressSign: () => any
+  showBonsTag?: boolean
+  onPressBonsTag?: () => any
 }
 
-const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign }: ProfileBlockProps) => {
+const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign, showBonsTag, onPressBonsTag }: ProfileBlockProps) => {
   const curLevelInt_f = parseFloat(curLevelInt) || 0
   const nextLevelInt_f = parseFloat(nextLevelInt) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
@@ -30,7 +33,7 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
               </Text> */}</View>
             <View style={{ flex: 2, paddingHorizontal: scale(20) }}>
               <View style={styles.experienceContainer}>
-                <Text style={styles.experience}>{taskRewardTotal_f}</Text>
+                <Text style={styles.experience}>{taskRewardTotal_f.toFixed(2)}</Text>
                 <Text style={styles.growText}>{'成长值'}</Text>
               </View>
               <View
@@ -49,17 +52,24 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
                   justifyContent: 'space-between',
                 }}>
                 <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{curLevelTitle == nextLevelTitle ? '恭喜您已经是最高等级!' : '距离下一级还差' + diffLevelInt_f}</Text>
-                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f + '/' + nextLevelInt_f}</Text>
+                <Text style={{ color: '#fdc990', fontSize: scale(15) }}>{taskRewardTotal_f.toFixed(2) + '/' + nextLevelInt_f}</Text>
               </View>
             </View>
           </View>
-          <TouchableWithoutFeedback onPress={onPressSign}>
-            <View style={styles.signContainer}>
-              <ImageBackground style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }} source={{ uri: signImage }}>
-                <Text style={{ fontSize: scale(23), color: '#f86764' }}>{'签到'}</Text>
-              </ImageBackground>
-            </View>
-          </TouchableWithoutFeedback>
+          <View style={{ flex: 3 }}>
+            {showBonsTag && (
+              <TouchableWithoutFeedback onPress={onPressBonsTag}>
+                <FastImage source={{ uri: 'http://test60f.fhptcdn.com/images/lqfl.png' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
+              </TouchableWithoutFeedback>
+            )}
+            <TouchableWithoutFeedback onPress={onPressSign}>
+              <View style={styles.signContainer}>
+                <ImageBackground style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }} source={{ uri: signImage }}>
+                  <Text style={{ fontSize: scale(23), color: '#f86764' }}>{'签到'}</Text>
+                </ImageBackground>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
       </ImageBackground>
     </View>
@@ -87,10 +97,11 @@ const styles = StyleSheet.create({
     paddingBottom: scale(10),
   },
   experience: {
-    fontSize: scale(60),
+    fontSize: scale(50),
     color: '#f6fb00',
-    fontWeight: '800',
+    fontWeight: '600',
     paddingRight: scale(10),
+    paddingTop: scale(10),
   },
   growText: {
     color: '#fdc990',
@@ -101,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'center',
     paddingRight: scale(20),
+    marginBottom: scale(20),
   },
 })
 

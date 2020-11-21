@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
+import { Necessity } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { ToastError } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useLogOut from './useLogOut'
+import { hideLoading, showError, showLoading } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
-import useSys from './useSys'
+import useSignOut from './useSignOut'
+import useSysInfo from './useSysInfo'
 
 interface DefaultUserCenterLogos {
   1: string // 存款
@@ -31,67 +31,56 @@ interface DefaultUserCenterLogos {
 }
 interface UseMinePage {
   homePage?: PageName
+  onSuccessSignOut?: () => any
   defaultUserCenterLogos: DefaultUserCenterLogos
 }
 
-const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
+const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: UseMinePage) => {
   // states
   const pickAvatarComponentRef = useRef(null)
-  const { rerender } = useRerender()
+  const { reRender } = useRerender()
 
-  // stores
-  const { sys } = useSys({
+  // infos
+  const userInfo = UGStore.globalProps.userInfo
+  const rightMenus = UGStore.globalProps.rightMenu
+  const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
-  const { avatar, usr, balance, unreadMsg, isTest, curLevelGrade, uid, nextLevelInt, curLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle } = UGStore.globalProps.userInfo
-  const { mobile_logo, userCenterItems, showSign, mobileMenu } = sys
 
-  const { logOut } = useLogOut({
+  const { necessity } = sysInfo
+
+  const { bons } = necessity
+  // signs
+  const { signOut } = useSignOut({
     onStart: () => {
-      showLoading()
+      showLoading('正在退出...')
     },
     onSuccess: () => {
       hideLoading()
+      // showLoading({ type: UGLoadingType.Success, text: '退出成功' })
       navigate(homePage, {})
+      onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '登出失败')
-      console.log('--------登出失败--------', error)
+      showError(error ?? '退出失败')
     },
   })
 
-  const signOut = logOut
-
   const onPressAvatar = () => pickAvatarComponentRef?.current?.open()
 
-  const onSaveAvatarSuccess = rerender
-
-  const sysInfo = {
-    balance,
-    uid,
-    mobile_logo,
-    userCenterItems,
-    curLevelGrade,
-    usr,
-    isTest,
-    avatar,
-    unreadMsg,
-    curLevelInt,
-    nextLevelInt,
-    taskRewardTotal,
-    curLevelTitle,
-    nextLevelTitle,
-    showSign,
-    mobileMenu,
-  }
+  const onSaveAvatarSuccess = reRender
 
   const sign = {
     signOut,
   }
 
+  const show = {
+    showBons: bons == Necessity.必填 ? true : false,
+  }
+
   const value = {
     sysInfo,
+    userInfo,
   }
 
   return {
@@ -100,6 +89,8 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
     onSaveAvatarSuccess,
     value,
     sign,
+    rightMenus,
+    show,
   }
 }
 

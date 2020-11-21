@@ -35,6 +35,8 @@ const useHomePage = ({
     couponList,
     homeAd,
     turntableList,
+    goldenEggsList,
+    scratchsList,
     redBag,
     floatAd,
     lotteryGame,
@@ -104,6 +106,8 @@ const useHomePage = ({
   const midBanners = homeAd?.data ?? []
   const floatAds = floatAd?.data ?? []
   const roulette = turntableList?.data
+  const goldenEggs = goldenEggsList?.data
+  const scratchs = scratchsList?.data
   const lotteryDate = lotteryNumber?.data?.issue
   const lotteryNumbers = lotteryNumber?.data?.numbers?.split(',') ?? []
   const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
@@ -152,6 +156,8 @@ const useHomePage = ({
     redBag,
     redBagLogo,
     roulette,
+    goldenEggs,
+    scratchs,
     floatAds,
     userInfo,
     sys

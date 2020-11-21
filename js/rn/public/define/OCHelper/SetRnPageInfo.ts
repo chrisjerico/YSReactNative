@@ -1,66 +1,75 @@
-import { devConfig } from './../../../../../config';
-import { PageName } from '../../navigation/Navigation';
-import { Router, RouterType } from '../../navigation/Router';
-import { Skin1 } from './../../theme/UGSkinManagers';
-import { OCHelper } from './OCHelper';
-import { Platform } from "react-native";
-import AppDefine from '../AppDefine';
+import { devConfig } from './../../../../../config'
+import { PageName } from '../../navigation/Navigation'
+import { Router, RouterType } from '../../navigation/Router'
+import { Skin1 } from './../../theme/UGSkinManagers'
+import { OCHelper } from './OCHelper'
+import { Platform } from 'react-native'
+import AppDefine from '../AppDefine'
 import { releaseConfig } from '../../../../../config'
 
 // 配置需要被替换的oc页面（替换成rn）
 export function setRnPageInfo() {
-  let pages: Array<RnPageModel> = [];
+  let pages: Array<RnPageModel> = []
 
-  let skitType = Skin1.skitType;
-  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType;
-  console.log("------------------skitType------------------", skitType)
+  let skitType = Skin1.skitType
+  skitType = releaseConfig.skinKeys[AppDefine.siteId] ?? skitType
+  console.log('------------------skitType------------------', skitType)
 
   // 本地编译
   if (devConfig.isDebug) {
-    devConfig?.skinKey && (skitType = devConfig?.skinKey); // 測試開發
-
+    devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+    // ezer
+    if (Skin1.skitType.indexOf('利来') != -1) {
+      pages = pages.concat(LLPages)
+    }
+    if (skitType.indexOf('乐橙') != -1) {
+      pages = pages.concat(LCPages)
+    }
     // tars
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
+    if (skitType.indexOf('宝石红') != -1) {
+      pages = pages.concat(BSHPages)
     }
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    if (skitType.indexOf('宝石红') != -1) {
-      pages = pages.concat(BSHPages)
+    if (skitType.indexOf('六合厅') != -1) {
+      pages = pages.concat(LHTPages)
     }
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
     if (skitType.indexOf('金星黑') != -1) {
-      pages = pages.concat(JXHPages);
+      pages = pages.concat(JXHPages)
     }
-    if (skitType.indexOf('越南') != -1) {
-      pages = pages.concat(VietnamPages);
+    if (skitType.indexOf('白曜') != -1) {
+      pages = pages.concat(BYPages)
     }
   }
 
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
-    }
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
-    }
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
     }
-    if (skitType.indexOf('金星黑') != -1) {
-      pages = pages.concat(JXHPages);
-    }
+    // tars
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    
+    if (skitType.indexOf('六合厅') != -1) {
+      pages = pages.concat(LHTPages)
+    }
+    if (skitType.indexOf('金星黑') != -1) {
+      pages = pages.concat(JXHPages)
+    }
+    if (skitType.indexOf('白曜') != -1) {
+      pages = pages.concat(BYPages)
+    }
+    if (skitType.indexOf('凯时') != -1) {
+      pages = pages.concat(KSPages)
+    }
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -71,7 +80,7 @@ export function setRnPageInfo() {
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  });
+  })
 
   // 虚拟币充值教程
   if (AppDefine.siteId != 'c012') {
@@ -81,7 +90,7 @@ export function setRnPageInfo() {
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
-    });
+    })
   }
 
   // 开奖走势页
@@ -91,10 +100,10 @@ export function setRnPageInfo() {
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  });
+  })
 
   if (skitType.indexOf('尊龙') != -1) {
-    pages = pages.concat(ZLPages);
+    pages = pages.concat(ZLPages)
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
@@ -104,44 +113,15 @@ export function setRnPageInfo() {
   }
 
   // 替换原生页面
-  RnPageModel.pages = pages;
+  RnPageModel.pages = pages
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages]);
-      break;
+      OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
+      break
     case 'android':
-      break;
+      break
   }
 }
-
-// 香槟金
-const XBJPages = [
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.XBJLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.XBJRegisterPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    vcName: 'UGMineSkinViewController',
-    rnName: PageName.XBJMinePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  }
-];
 
 // 尊龙模板页面
 const ZLPages = [
@@ -184,8 +164,8 @@ const ZLPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: false,
     允许未登录访问: false,
-  }
-];
+  },
+]
 
 // 乐橙模板
 const LCPages = [
@@ -206,7 +186,43 @@ const LCPages = [
     允许游客访问: true,
     允许未登录访问: false,
   },
-];
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
+
+// 利来
+const LLPages = [
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.LLHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    rnName: PageName.LLMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LLLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
 
 // 六合厅
 const LHTPages = [
@@ -235,7 +251,14 @@ const LHTPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-];
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+]
 
 // 宝石红
 const BSHPages = [
@@ -272,45 +295,15 @@ const BSHPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
-  }
-];
-
-// 利来
-const LLPages = [
+  },
   {
-    // 首页
-    tabbarItemPath: '/home',
-    rnName: PageName.LLHomePage,
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
   },
-  {
-    // 我的页
-    tabbarItemPath: '/user',
-    rnName: PageName.LLMinePage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: false,
-  },
-  {
-    // 登录
-    vcName: 'UGLoginViewController',
-    rnName: PageName.LLLoginPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-  {
-    // 注册
-    vcName: 'UGRegisterViewController',
-    rnName: PageName.LLRegisterPage,
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  },
-];
-
+]
 // 威尼斯
 const WNSPages = [
   {
@@ -337,8 +330,15 @@ const WNSPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  }
-];
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
 
 // 凯时
 const KSPages = [
@@ -367,7 +367,14 @@ const KSPages = [
     允许游客访问: true,
     允许未登录访问: true,
   },
-];
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
 
 // 金星黑
 const JXHPages = [
@@ -395,15 +402,22 @@ const JXHPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  }
-];
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
 
-// 越南
-const VietnamPages = [
+// 白曜
+const BYPages = [
   {
     // 首页
     tabbarItemPath: '/home',
-    rnName: PageName.VietnamHome,
+    rnName: PageName.BYHomePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
@@ -412,7 +426,7 @@ const VietnamPages = [
     // 我的页
     tabbarItemPath: '/user',
     vcName: 'UGMineSkinViewController',
-    rnName: PageName.VietnamMine,
+    rnName: PageName.BYMinePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: false,
@@ -420,59 +434,57 @@ const VietnamPages = [
   {
     // 登录
     vcName: 'UGLoginViewController',
-    rnName: PageName.VietnamLogin,
+    rnName: PageName.BYSignInPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
   },
   {
     vcName: 'UGPromotionsController',
-    rnName: PageName.JDPromotionListPage,
+    rnName: PageName.PromotionPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  }
-];
-
-
+  },
+]
 
 export class RnPageModel {
-  static pages: RnPageModel[] = [];
+  static pages: RnPageModel[] = []
   static getPageName(vcName: PageName) {
     if (Router.getPageRouterType(vcName) != RouterType.None) {
-      return vcName;
+      return vcName
     }
     for (const rpm of this.pages) {
       if (rpm.vcName == vcName) {
-        return rpm.rnName;
+        return rpm.rnName
       }
     }
-    return null;
+    return null
   }
 
   // 替换oc页面
-  vcName?: string; // 要被替换的oc页面类名
-  vcName2?: string; // 要替换的oc页面类型
-  rnName?: PageName; // rn页面类名
-  fd_interactivePopDisabled?: boolean; //是否禁用全屏滑动返回上一页
-  fd_prefersNavigationBarHidden?: boolean; // 是否隐藏导航条
-  允许游客访问?: boolean;
-  允许未登录访问?: boolean;
+  vcName?: string // 要被替换的oc页面类名
+  vcName2?: string // 要替换的oc页面类型
+  rnName?: PageName // rn页面类名
+  fd_interactivePopDisabled?: boolean //是否禁用全屏滑动返回上一页
+  fd_prefersNavigationBarHidden?: boolean // 是否隐藏导航条
+  允许游客访问?: boolean
+  允许未登录访问?: boolean
 
   // 新增彩种
-  gameType?: string; // 彩种类型
+  gameType?: string // 彩种类型
 
   // 新增我的页Item跳转
-  userCenterItemCode?: number; // 页面标识
-  userCenterItemIcon?: string; // 默认图标URL
-  userCenterItemTitle?: string; // 默认标题
+  userCenterItemCode?: number // 页面标识
+  userCenterItemIcon?: string // 默认图标URL
+  userCenterItemTitle?: string // 默认标题
 
   // 新增TabbarItem跳转
-  tabbarItemPath?: string; // 页面标识
-  tabbarItemIcon?: string; // 默认图标URL
-  tabbarItemTitle?: string; // 默认标题
+  tabbarItemPath?: string // 页面标识
+  tabbarItemIcon?: string // 默认图标URL
+  tabbarItemTitle?: string // 默认标题
 
   // 新增linkCategory跳转
-  linkCategory?: number; // linkCategory ： 1=彩票游戏；2=真人视讯；3=捕鱼游戏；4=电子游戏；5=棋牌游戏；6=体育赛事；7=导航链接；8=电竞游戏；9=聊天室；10=手机资料栏目
-  linkPosition?: number;
+  linkCategory?: number // linkCategory ： 1=彩票游戏；2=真人视讯；3=捕鱼游戏；4=电子游戏；5=棋牌游戏；6=体育赛事；7=导航链接；8=电竞游戏；9=聊天室；10=手机资料栏目
+  linkPosition?: number
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
 import { Badge } from 'react-native-elements'
 import { List } from '../../network/Model/BannerModel'
@@ -9,7 +9,8 @@ import UGSwiper from '../../widget/swp/UGSwiper'
 interface BannerBlockProps {
   onlineNum?: number
   banners: (List | Data)[]
-  renderBanner: (item: List & Data, index: number) => any
+  renderBanner: (item: List | Data, index: number, array: (List | Data)[]) => any
+  thisArg?: any
   showOnlineNum?: boolean
   autoplayTimeout: number
   visible?: boolean
@@ -68,4 +69,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default BannerBlock
+export default memo(BannerBlock)

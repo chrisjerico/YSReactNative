@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {Platform, StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
+import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import CodePush from 'react-native-code-push'
 import * as Progress from 'react-native-progress'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
@@ -10,16 +10,13 @@ import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { setRnPageInfo } from '../../public/define/OCHelper/SetRnPageInfo'
 import UGSkinManagers from '../../public/theme/UGSkinManagers'
 import { anyEmpty, arrayEmpty } from '../../public/tools/Ext'
+import { scale } from '../../public/tools/Scale'
+import { ugLog } from '../../public/tools/UgLog'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../redux/store/UGStore'
+import { DefaultMenu } from '../../Res/DefaultMenu'
 import { UGBasePageProps } from '../base/UGPage'
-import {scale} from "../../public/tools/Scale";
-import {Toast} from "../../public/tools/ToastUtils";
-import {ugLog} from "../../public/tools/UgLog";
-import {DefaultMenu} from "../../Res/DefaultMenu";
-import {UGThemeColor} from "../../public/theme/UGThemeColor";
-import UseVersion from "./us/UseVersion";
-import UGUserModel from '../../redux/model/全局/UGUserModel'
+import UseVersion from './us/UseVersion'
 
 // 声明Props
 export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> {
@@ -31,24 +28,17 @@ export interface UpdateVersionProps extends UGBasePageProps<UpdateVersionProps> 
   clickCount?: number //点击倒计时次数
   showNetwork?: string //显示网络状态
 }
-const MAX_TIME = 8//最多8秒倒计时
+const MAX_TIME = 8 //最多8秒倒计时
 export const UpdateVersionPage = (props: UpdateVersionProps) => {
-  const { setProps,
-    progress = 0,
-    counter = 0,
-    clickCount = 0,
-    showNetwork = '',
-    text = '正在努力更新中...',
-    bCodePush = false,
-    bBanner = false } = props
+  const { setProps, progress = 0, counter = 0, clickCount = 0, showNetwork = '', text = '正在努力更新中...', bCodePush = false, bBanner = false } = props
 
   //网络状态的回调
   const testResult = (str: string) => {
-    let net = " " + AppDefine.host + " " + str
+    let net = ' ' + AppDefine.host + ' ' + str
     ugLog('try: ' + net)
-    setProps({showNetwork: net})
+    setProps({ showNetwork: net })
   }
-  const {testNetwork} = UseVersion({testResult})
+  const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
     console.log('OCHelper.CodePushKey = ', OCHelper.CodePushKey)
@@ -178,8 +168,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         console.log('rn热更新包下载进度：' + p)
       },
       (update) => {
-        const verInfo = '(' + update.appVersion + ') ' + update.description;
-        console.log('发现新的热更新包：', verInfo);
+        const verInfo = '(' + update.appVersion + ') ' + update.description
+        console.log('发现新的热更新包：', verInfo)
       }
     )
 
@@ -193,7 +183,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         break
       case 'android':
         //初始化默认菜单
-        ANHelper.callAsync(CMD.INIT_MENU, {value: DefaultMenu}).then()
+        ANHelper.callAsync(CMD.INIT_MENU, { value: DefaultMenu }).then()
         //初始化启动图
         ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.LAUNCH_PICS }).then((picStr) => {
           if (!anyEmpty(picStr)) {
@@ -219,6 +209,9 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         })
     }
 
+    //测试哪个域名最快
+    testSite()
+
     return () => {
       // ugLog("clear timer")
       clearTimeout(timer)
@@ -240,7 +233,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     //设置一个计数器给用户倒计时
     const interval = setInterval(() => {
       ugLog('counter=', counter)
-      setProps({ counter: (counter + 1) })
+      setProps({ counter: counter + 1 })
     }, 1000)
     return () => {
       // ugLog('clear interval')
@@ -263,7 +256,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         await OCHelper.call('ReactNativeVC.showLastRnPage')
         OCHelper.launchFinish()
         // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
-        UGSysConfModel.updateFromNetwork();
+        UGSysConfModel.updateFromNetwork()
         break
       case 'android':
         setProps({ bCodePush: true })
@@ -272,54 +265,51 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
     // 告诉原生RN版本
     CodePush.getUpdateMetadata(CodePush.UpdateState.RUNNING).then((p) => {
-      const verInfo = '(' + p.appVersion + ') ' + p.description;
-      console.log('当前RN Key：', OCHelper.CodePushKey);
-      console.log('当前RN版本信息：', verInfo);
-      Platform.OS == 'ios' && OCHelper.call('AppDefine.shared.setRnVersion:', [verInfo]);
-    });
+      const verInfo = '(' + p.appVersion + ') ' + p.description
+      console.log('当前RN Key：', OCHelper.CodePushKey)
+      console.log('当前RN版本信息：', verInfo)
+      Platform.OS == 'ios' && OCHelper.call('AppDefine.shared.setRnVersion:', [verInfo])
+    })
     CodePush.getUpdateMetadata(CodePush.UpdateState.LATEST).then((p) => {
-      const verInfo = '(' + p.appVersion + ') ' + p.description;
-      console.log('最新RN版本信息：', verInfo);
-    });
+      const verInfo = '(' + p.appVersion + ') ' + p.description
+      console.log('最新RN版本信息：', verInfo)
+    })
 
     UGStore.save()
   }
 
   //倒计时
-  let circleProgress = MAX_TIME - counter;
-  circleProgress = circleProgress < 0 ? 0 : circleProgress;
+  let circleProgress = MAX_TIME - counter
+  circleProgress = circleProgress < 0 ? 0 : circleProgress
 
   return (
     <View style={_styles.container}>
       <View style={_styles.content}>
-        <Progress.Bar progress={progress}
-                      borderWidth={0}
-                      borderRadius={0}
-                      unfilledColor="#aaa"
-                      color="white"
-                      height={4}
-                      width={AppDefine.width} />
+        <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="#aaa" color="white" height={4} width={AppDefine.width} />
         <Text style={_styles.title}>{text + showNetwork}</Text>
       </View>
       <View style={_styles.container_timer}>
-        <Progress.Circle progress={circleProgress/10}
-                         size={scale(56)}
-                         thickness={scale(2)}
-                         allowFontScaling={true}
-                         indeterminate={false}
-                         showsText={false}
-                         direction={'counter-clockwise'}
-                         color={'#b2cde0'}/>
-        <TouchableWithoutFeedback onPress={() => {
-          setProps({ clickCount: (clickCount + 1) })
-          ugLog('clickCount=' + clickCount)
-          //第3次就测网速
-          if (clickCount % 3 == 2) {
-            testNetwork()
-          }
-        }}>
+        <Progress.Circle
+          progress={circleProgress / 10}
+          size={scale(56)}
+          thickness={scale(2)}
+          allowFontScaling={true}
+          indeterminate={false}
+          showsText={false}
+          direction={'counter-clockwise'}
+          color={'#b2cde0'}
+        />
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setProps({ clickCount: clickCount + 1 })
+            ugLog('clickCount=' + clickCount)
+            //第3次就测网速
+            if (clickCount % 3 == 2) {
+              testNetwork()
+            }
+          }}>
           <View style={_styles.counter_container}>
-            <Text style={_styles.title_counter}>{circleProgress + "秒"}</Text>
+            <Text style={_styles.title_counter}>{circleProgress + '秒'}</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -331,15 +321,15 @@ const _styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
   },
   container_timer: {
     flex: 1,
     paddingTop: scale(8),
     paddingRight: scale(4),
     justifyContent: 'flex-end',
-    position: "absolute",
-    alignItems: "flex-start",
+    position: 'absolute',
+    alignItems: 'flex-start',
   },
   content: {
     width: '100%',
@@ -360,17 +350,15 @@ const _styles = StyleSheet.create({
     fontSize: scale(18),
   },
   counter_container: {
-    position: "absolute",
+    position: 'absolute',
     width: scale(56),
     height: scale(56),
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title_counter: {
     color: '#b2cde0',
     fontWeight: '500',
     fontSize: scale(16),
   },
-
-
 })

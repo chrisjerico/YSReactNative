@@ -3,12 +3,13 @@ import { ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/tars/RefreshControlComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType } from '../../public/tools/tars'
 import BottomGap from '../../public/views/tars/BottomGap'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
@@ -20,31 +21,19 @@ import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = () => {
-  const { getHtml5Image } = useHtml5Image()
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
     homePage: PageName.LHTHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { sysInfo } = value
-  const { balance, userCenterItems, curLevelGrade, usr, isTest, avatar, unreadMsg, showSign } = sysInfo
-
+  const { userInfo, sysInfo } = value
+  const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
+  const { userCenterItems, showSign, currency, balanceDecimal } = sysInfo
   const { signOut } = sign
   return (
     <>
       <SafeAreaHeader headerColor={LHThemeColor.六合厅.themeColor}>
-        <BackBtnComponent
-          homePage={PageName.LHTMinePage}
-          renderHeader={(props) => (
-            <MineHeader
-              {...props}
-              title={'会员中心'}
-              onPressRightTitle={() => {
-                PushHelper.pushUserCenterType(UGUserCenterType.在线客服)
-              }}
-            />
-          )}
-        />
+        <BackBtnComponent homePage={PageName.LHTMinePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} onPressRightTitle={goToUserCenterType.在线客服} />} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} refreshControl={<RefreshControlComponent onRefresh={() => {}} />} showsVerticalScrollIndicator={false}>
         <ProfileBlock
@@ -52,15 +41,14 @@ const LHTMinePage = () => {
           onPressAvatar={onPressAvatar}
           profileButtons={config?.profileButtons}
           name={usr}
-          avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+          showK={currency == 'VND'}
+          balanceDecimal={balanceDecimal}
+          avatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
           level={curLevelGrade}
           balance={balance}
-          onPressDaySign={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
-          }}
-          onPressTaskCenter={() => {
-            PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
-          }}
+          currency={currency}
+          onPressDaySign={goToUserCenterType.每日签到}
+          onPressTaskCenter={goToUserCenterType.任务中心}
           renderProfileButton={(item, index) => {
             const { title, logo, userCenterType } = item
             return (
@@ -87,8 +75,8 @@ const LHTMinePage = () => {
               titleStyle={{ fontSize: scale(20) }}
               title={name}
               logo={logo}
-              unreadMsg={unreadMsg}
-              showUnreadMsg={code == 9}
+              unreadMsg={unreadMsg || 0}
+              showUnReadMsg={code == UGUserCenterType.站内信 && unreadMsg > 0}
               onPress={() => PushHelper.pushUserCenterType(code)}
             />
           )
@@ -99,7 +87,7 @@ const LHTMinePage = () => {
       <PickAvatarComponent
         ref={pickAvatarComponentRef}
         color={LHThemeColor.六合厅.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+        initAvatar={isTest || !avatar ? AppDefine.defaultAvatar : avatar}
         onSaveAvatarSuccess={onSaveAvatarSuccess}
       />
     </>

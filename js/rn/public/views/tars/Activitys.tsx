@@ -1,27 +1,56 @@
+import React, { memo } from 'react'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { getActivityPosition } from '../../tools/tars'
-import React from 'react'
+import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import {ROULETTE_LOGO} from "../../define/Res";
 
 interface ActivitysProps {
   refreshing: boolean
   isTest: boolean
   uid: string | undefined
   redBagLogo: string
-  floatAds: any[]
-  roulette: any[]
+  floatAds: FloatAd[]
+  roulette: Roulette[]
   redBag: RedBagDetailActivityModel
+  goldenEggs: GoldenEgg[]
+  scratchs: unknown
 }
 
-const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds }: ActivitysProps) => {
+export interface FloatAd {
+  image: string
+  position: number
+  linkCategory: number | string
+  linkPosition: number | string
+}
+
+export interface Roulette {
+  end: string
+  id: string
+  param: any
+  start: string
+  type: string
+}
+
+export interface GoldenEgg {
+  end: string
+  id: string
+  integral: number
+  param: any
+  start: string
+  type: string
+}
+
+const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+  console.log('-------redBag-----', redBag)
   return (
     <>
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(250), right: 0 }}
-        show={uid && redBagLogo && !isTest}
+        containerStyle={{ top: scale(220), right: 0 }}
+        show={redBag?.data}
         logo={redBagLogo}
         onPress={() => {
           PushHelper.pushRedBag(redBag)
@@ -29,13 +58,29 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(400), right: 0 }}
+        containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
         show={uid && roulette && !isTest}
-        logo={'dzp_btn'}
+        logo={ ROULETTE_LOGO }
         onPress={() => {
           PushHelper.pushWheel(roulette)
         }}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(450), right: 0 }}
+        enableFastImage={false}
+        show={uid && goldenEggs && !isTest}
+        logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
+        onPress={goToUserCenterType.砸金蛋}
+      />
+      <ActivityComponent
+        refreshing={refreshing}
+        containerStyle={{ top: scale(570), right: 0 }}
+        enableFastImage={false}
+        show={uid && scratchs && !isTest}
+        logo={'https://i.ibb.co/0J51pH9/scratch.png'}
+        onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {
         const { image, position, linkCategory, linkPosition } = item
@@ -45,7 +90,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
             refreshing={refreshing}
             containerStyle={getActivityPosition(position)}
             enableFastImage={true}
-            show={uid && !isTest}
+            show={true}
             logo={image}
             onPress={() => {
               PushHelper.pushCategory(linkCategory, linkPosition)
@@ -57,4 +102,4 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
   )
 }
 
-export default Activitys
+export default memo(Activitys)

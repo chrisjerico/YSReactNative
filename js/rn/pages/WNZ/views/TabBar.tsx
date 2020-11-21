@@ -6,7 +6,7 @@ import AppDefine from '../../../public/define/AppDefine'
 import { scale } from '../../../public/tools/Scale'
 import { useHtml5Image } from '../../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const tabs = [
   {
@@ -22,14 +22,12 @@ const tabs = [
 const Tab = ({ logo, name, focused, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <>
-        <View style={styles.tabContainer}>
-          <View style={styles.titleContainer}>
-            <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
-            <Text style={styles.titleText}>{name}</Text>
-          </View>
-          {name == '官方玩法' && <View style={styles.grayLineContainer} />}
+      <View style={styles.tabContainer}>
+        <View style={styles.titleContainer}>
+          <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
+          <Text style={styles.titleText}>{name}</Text>
         </View>
+        {name == '官方玩法' && <View style={styles.grayLineContainer} />}
         <View
           style={[
             styles.bottomLineContainer,
@@ -38,7 +36,7 @@ const Tab = ({ logo, name, focused, onPress }) => {
             },
           ]}
         />
-      </>
+      </View>
     </TouchableWithoutFeedback>
   )
 }
@@ -58,7 +56,9 @@ const styles = StyleSheet.create({
   tabContainer: {
     width: AppDefine.width / 2,
     flexDirection: 'row',
-    height: scale(80),
+    height: scale(82),
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
   },
   titleText: {
     paddingLeft: scale(10),
@@ -83,7 +83,8 @@ const styles = StyleSheet.create({
     height: scale(2),
     width: '70%',
     borderRadius: scale(100),
-    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 0,
   },
 })
 

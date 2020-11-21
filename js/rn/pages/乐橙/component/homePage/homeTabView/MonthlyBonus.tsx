@@ -1,11 +1,21 @@
-import { Image, Text, View, AsyncStorage } from 'react-native'
-// import AsyncStorage from '@react-native-community/async-storage';
-import * as React from 'react'
+import { Image, Text, View } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import NumberFormat from 'react-number-format'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export const MonthlyBonus = () => {
-  const [bonus, setBonus] = useState<string>()
+  const [bonus, setBonus] = useState(`¥ 2${(Math.random() * 100000).toFixed(2)}`)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      getRandomString()
+    }, 500)
+    return () => clearInterval(timer)
+  }, [])
+
+  const getRandomString = () => {
+    const num = ((2 + Math.random()) * 100000).toFixed(2)
+    setBonus('¥ ' + num)
+  }
   useEffect(() => {
     AsyncStorage.getItem('LCMonthlyBonus').then((value) => {
       const currentDate = new Date()

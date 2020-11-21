@@ -1,10 +1,9 @@
-import React, { ReactNode, useLayoutEffect, useState } from 'react'
-import { Platform, StyleSheet, View, ViewStyle, StyleProp } from 'react-native'
+import React, { memo, ReactNode, useLayoutEffect, useState } from 'react'
+import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { useSafeArea } from 'react-native-safe-area-context'
-import { scale } from '../../tools/Scale'
 import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
-import { ugLog } from '../../tools/UgLog'
+import { scale } from '../../tools/Scale'
 
 interface SafeAreaHeaderProps {
   headerColor: string
@@ -55,4 +54,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default SafeAreaHeader
+export default memo(SafeAreaHeader)

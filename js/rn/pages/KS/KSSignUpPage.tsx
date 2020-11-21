@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { PageName } from '../../public/navigation/Navigation'
 import { popToRoot } from '../../public/navigation/RootNavigation'
@@ -8,10 +8,10 @@ import { scale, scaleHeight } from '../../public/tools/Scale'
 import LinearBadge from '../../public/views/tars/LinearBadge'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import SignUpFormList from '../../public/views/tars/SignUpFormList'
+import SignUpFormList, { SignUpRenderFormProps } from '../../public/views/tars/SignUpFormList'
 
 const KSSignUpPage = () => {
-  const { show, slideCodeRef, label, onChange, sign, valid, passwordLimit, navigateTo } = useSignUpPage({
+  const { show, reference, label, onChange, sign, passwordLimit, placeholder, navigateTo, value } = useSignUpPage({
     homePage: PageName.KSHomePage,
     signInPage: PageName.KSSignInPage,
   })
@@ -27,7 +27,17 @@ const KSSignUpPage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
-          <SignUpFormList slideCodeRef={slideCodeRef} slideCodeColor={'#ffffff'} show={show} label={label} passwordLimit={passwordLimit} onChange={onChange} Form={SignUpForm} />
+          <SignUpFormList
+            slideCodeColor={'#ffffff'}
+            reference={reference}
+            show={show}
+            label={label}
+            placeholder={placeholder}
+            passwordLimit={passwordLimit}
+            onChange={onChange}
+            value={value}
+            renderForm={SignUpForm}
+          />
           <LinearBadge
             colors={['#eb5d4d', '#fb2464']}
             containerStyle={[styles.button, { height: null }]}
@@ -43,7 +53,7 @@ const KSSignUpPage = () => {
   )
 }
 
-const SignUpForm = (props: FormComponentProps) => {
+const SignUpForm = (props: SignUpRenderFormProps) => {
   const [focus, setFocuse] = useState(false)
   return (
     <FormComponent

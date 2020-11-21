@@ -1,6 +1,7 @@
 import { getIbbImage, useHtml5Image } from '../../public/tools/tars'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const config = {
@@ -164,6 +165,14 @@ const config = {
       userCenterType: UGUserCenterType.资金明细,
     },
   ],
+  noticeLogo: getHtml5Image(14, 'notice'),
+  homeHeaderRightLogo: getHtml5Image(14, 'top_yhhd'),
+  advertisementLogo: getHtml5Image(14, 'banner', 'gif'),
+  lotteryLogo: getHtml5Image(14, 'tjzx'),
+  balanceLogo: getHtml5Image(14, 'yue'),
+  customerServiceLogo: getHtml5Image(14, 'zxkf'),
+  homeGameLeftIcon: getHtml5Image(14, 'hot_icon'),
+  homeGameRightIcon: getHtml5Image(14, 'cai_icon'),
 }
 
 export default config

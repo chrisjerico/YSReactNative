@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { scale } from '../../../public/tools/Scale'
@@ -42,24 +42,24 @@ const HomeHeader = ({ uid, name = '', balance = '', onPressSignIn, onPressSignUp
           </TouchableWithoutFeedback>
         </View>
       ) : (
-          <View style={styles.row}>
-            <View style={styles.left}>
-              <Button title={'登录'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignIn} />
-            </View>
-            <View style={styles.imageContainer}>
-              <FastImage
-                source={{
-                  uri: logo,
-                }}
-                style={styles.logo}
-                resizeMode={'contain'}
-              />
-            </View>
-            <View style={styles.right}>
-              <Button title={'注册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} />
-            </View>
+        <View style={styles.row}>
+          <View style={styles.left}>
+            <Button title={'登 录'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignIn} />
           </View>
-        )}
+          <View style={styles.imageContainer}>
+            <FastImage
+              source={{
+                uri: logo,
+              }}
+              style={styles.logo}
+              resizeMode={'contain'}
+            />
+          </View>
+          <View style={styles.right}>
+            <Button title={'注 册'} containerStyle={styles.button} titleStyle={styles.buttonTitle} onPress={onPressSignUp} />
+          </View>
+        </View>
+      )}
     </>
   )
 }
@@ -100,4 +100,4 @@ const styles = StyleSheet.create({
   right: { flex: 1, alignItems: 'flex-end' },
 })
 
-export default HomeHeader
+export default memo(HomeHeader)

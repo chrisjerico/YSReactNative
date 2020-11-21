@@ -1,16 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { push } from '../../../public/navigation/RootNavigation'
-import { B_DEBUG } from '../../../public/tools/UgLog'
 import { UGStore } from '../../../redux/store/UGStore'
 import PushHelper from '../../define/PushHelper'
+import { AnnouncementType } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
-import { ToastError, ToastSuccess } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
-import useTryPlay from './useTryPlay'
-import useHome from './useHome'
-import useLogOut from './useLogOut'
+import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
+import useHomeInfo from './useHomeInfo'
 import useRerender from './useRerender'
-import useSys from './useSys'
+import useSignOut from './useSignOut'
+import useSysInfo from './useSysInfo'
+import useTryPlay from './useTryPlay'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -18,55 +17,79 @@ interface UseHomePage {
 }
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
-  const { loading, refreshing, rankList, homeGame, notice, onlineNum, couponList, homeAd, turntableList, redBag, floatAd, lotteryGame, lotteryNumber, refresh } = useHome()
+  const firstAnnouncement = useRef(false)
 
-  const { rerender } = useRerender()
-
-  const goToJDPromotionListPage = () => {
-    push(PageName.JDPromotionListPage, {
-      containerStyle: {
-        backgroundColor: '#ffffff',
-      },
-    })
-  }
-
-  const { tryPlay } = useTryPlay({
-    onStart: () => {
-      showLoading()
-    },
-    onSuccess: () => {
-      hideLoading()
-      ToastSuccess('登录成功！')
-      rerender()
-      onSuccessTryPlay && onSuccessTryPlay()
-    },
-    onError: (error) => {
-      hideLoading()
-      ToastError(error ?? '試玩失败')
-    },
-  })
-
-  const { logOut } = useLogOut({
-    onStart: () => {
-      showLoading()
-    },
-    onSuccess: () => {
-      hideLoading()
-      rerender()
-      onSuccessSignOut && onSuccessSignOut()
-    },
-    onError: (error) => {
-      hideLoading()
-      ToastError(error || '登出失败')
-    },
-  })
-  const signOut = logOut
-
-  const { sys } = useSys({})
-  // stores
+  // infos
   const userInfo = UGStore.globalProps.userInfo
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
+  const rightMenus = UGStore.globalProps.rightMenu
+  const { sysInfo } = useSysInfo({})
+
+  const {
+    loading,
+    refreshing,
+    rankList,
+    homeGame,
+    notice,
+    onlineNum,
+    showOnlineNum,
+    couponList,
+    homeAd,
+    turntableList,
+    redBag,
+    floatAd,
+    goldenEggList,
+    scratchList,
+    lotteryGame,
+    lotteryNumber,
+    refresh,
+  } = useHomeInfo([userInfo?.uid])
+
+  const { reRender } = useRerender()
+
+  const goToPromotionPage = () => {
+    push(PageName.PromotionPage, {
+      showBackBtn: true,
+    })
+  }
+
+  const { tryPlay } = useMemo(
+    () =>
+      useTryPlay({
+        onStart: () => {
+          showLoading('正在登录...')
+        },
+        onSuccess: () => {
+          showSuccess('登录成功')
+          reRender()
+          onSuccessTryPlay && onSuccessTryPlay()
+        },
+        onError: (error) => {
+          showError(error ?? '試玩失败')
+        },
+      }),
+    []
+  )
+
+  const { signOut } = useMemo(
+    () =>
+      useSignOut({
+        onStart: () => {
+          showLoading('正在退出...')
+        },
+        onSuccess: () => {
+          hideLoading()
+          reRender()
+          onSuccessSignOut && onSuccessSignOut()
+        },
+        onError: (error) => {
+          showError(error ?? '退出失败')
+        },
+      }),
+    []
+  )
+
   // data handle
   const bannersInterval = parseInt(banner?.interval)
   const banners = banner?.list ?? []
@@ -75,62 +98,92 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     notice?.data?.popup?.map((item: any) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     }) ?? []
-  const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort)?.slice(0, 4) ?? []
-  const homeGames = homeGame?.data?.icons ?? []
+
+  const homeGameData = useMemo(() => {
+    const navs = homeGame?.data?.navs?.sort((a: any, b: any) => a.sort - b.sort) ?? []
+    const homeGames = homeGame?.data?.icons ?? []
+    //@ts-ignore
+    const homeGamesConcat = homeGames?.flatMap((ele) => ele?.list)
+
+    return { navs, homeGames, homeGamesConcat }
+  }, [homeGame])
+
+  const lotteryData = useMemo(() => {
+    const lotteryDate = lotteryNumber?.data?.issue
+    const lotteryNumbers = lotteryNumber?.data?.numbers?.split(',') ?? []
+    const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
+    const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
+    const lotterys = lotteryNumbers?.map((item, index) => {
+      return { number: item, color: numColors[index], sx: numSxs[index] }
+    })
+    return {
+      lotteryDate,
+      lotterys,
+    }
+  }, [lotteryNumber])
+
+  const official_customise_Games = useMemo(() => {
+    // @ts-ignore
+    const official_customise_games = lotteryGame?.data?.flatMap((ele) => ele?.list)
+    const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
+    const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
+    return { officialGames, customiseGames }
+  }, [lotteryGame])
+
+  const coupons = useMemo(() => {
+    return couponList?.data?.list?.slice(0, 5) ?? []
+  }, [couponList])
+
   const rankLists = rankList?.data?.list ?? []
   const redBagLogo = redBag?.data?.redBagLogo
-  const coupons = couponList?.data?.list?.slice(0, 5) ?? []
   const midBanners = homeAd?.data ?? []
   const floatAds = floatAd?.data ?? []
   const roulette = turntableList?.data
-  const lotteryDate = lotteryNumber?.data?.issue
-  const lotteryNumbers = lotteryNumber?.data?.numbers?.split(',') ?? []
-  const numColors = lotteryNumber?.data?.numColor?.split(',') ?? []
-  const numSxs = lotteryNumber?.data?.numSx?.split(',') ?? []
-  const lotterys = lotteryNumbers?.map((item, index) => {
-    return { number: item, color: numColors[index], sx: numSxs[index] }
-  })
-  // 官 信
-  let official_customise_games = []
-  lotteryGame?.data?.forEach((ele) => (official_customise_games = official_customise_games?.concat(ele?.list)))
-  const officialGames = official_customise_games?.filter((ele) => ele?.customise == '0') // 官
-  const customiseGames = official_customise_games?.filter((ele) => ele?.customise == '2') // 信
-
+  const goldenEggs = goldenEggList?.data
+  const scratchs = scratchList?.data
+  const { uid } = userInfo
+  const { announcementType } = sysInfo
   useEffect(() => {
-    if (notice?.data?.popup && !B_DEBUG) {
-      PushHelper.pushAnnouncement(announcements)
+    if (notice?.data?.popup) {
+      if (announcementType == AnnouncementType.登录后弹出 && uid) {
+        PushHelper.pushAnnouncement(announcements)
+      } else if (announcementType == AnnouncementType.直接弹出) {
+        !firstAnnouncement.current && PushHelper.pushAnnouncement(announcements)
+        firstAnnouncement.current = true
+      } else {
+        //
+      }
     }
-  }, [notice])
+  }, [notice, uid])
 
   const goTo = {
-    goToJDPromotionListPage,
+    goToPromotionPage,
   }
 
   const sign = {
     tryPlay,
     signOut,
   }
-
   const homeInfo = {
-    lotteryDate,
     onlineNum,
+    showOnlineNum,
     bannersInterval,
-    lotterys,
     banners,
     notices,
     midBanners,
     announcements,
-    navs,
-    homeGames,
     gameLobby,
-    officialGames,
-    customiseGames,
     coupons,
     rankLists,
     redBag,
     redBagLogo,
     roulette,
     floatAds,
+    goldenEggs,
+    scratchs,
+    ...homeGameData,
+    ...lotteryData,
+    ...official_customise_Games,
   }
 
   const value = {
@@ -138,7 +191,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     refreshing,
     homeInfo,
     userInfo,
-    sysInfo: sys,
+    sysInfo,
   }
 
   return {
@@ -146,6 +199,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     sign,
     value,
     refresh,
+    rightMenus,
   }
 }
 

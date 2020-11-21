@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, ViewStyle, StyleProp } from 'react-native'
+import { StyleProp, View, ViewStyle } from 'react-native'
 import { Game, SubType } from '../../models/Interface'
 import List from '../../views/tars/List'
 

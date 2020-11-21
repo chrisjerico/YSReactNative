@@ -1,6 +1,6 @@
-import { Alert, AlertButton, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
-import { UGAgentApplyInfo, UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
@@ -24,7 +24,7 @@ export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
 
         break
       case 'android':
@@ -132,7 +132,7 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
-      seriesId: SeriesId.体育, // 普通彩票
+      seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
     })
@@ -190,6 +190,25 @@ export default class PushHelper {
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_NOTICE, { rnString: notice })
+        break
+    }
+  }
+
+  static pushPromoteDetail(item) {
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'UGPromoteDetailController.new[setItem:]',
+            args1: [item],
+          },
+          ret: {
+            selectors: 'UGNavigationController.current.pushViewController:animated:',
+            args1: [vc, true],
+          },
+        }))
+        break
+      case 'android':
         break
     }
   }
@@ -253,7 +272,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.全民竞猜: {
-            showMessage('敬请期待');
+            showMessage('敬请期待')
             break
           }
           case UGUserCenterType.开奖走势: {
@@ -279,10 +298,9 @@ export default class PushHelper {
           }
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
-
-            showLoading();
+            showLoading()
             api.activity.scratchList().setCompletionBlock(({ data }) => {
-              hideLoading();
+              hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
                 return Object.assign({ clsName: 'ScratchModel' }, v);
@@ -302,25 +320,28 @@ export default class PushHelper {
           }
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
-
             showLoading()
             api.activity.goldenEggList().setCompletionBlock(({ data }) => {
-              hideLoading();
+              hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
-                const obj = Object.assign({ clsName: 'DZPModel' }, v);
-                obj.param = Object.assign({ clsName: 'DZPparamModel' }, obj.param);
-                obj.param.prizeArr = obj.param?.prizeArr?.map((v) => {
-                  return Object.assign({ clsName: 'DZPprizeModel' }, v);
-                });
-                return obj;
-              });
+                let obj = Object.assign({}, { clsName: 'DZPModel' }, v)
+                obj.param = Object.assign({}, { clsName: 'DZPparamModel' }, obj?.param)
+                obj.param.prizeArr = obj?.param?.prizeArr?.map((v) => {
+                  return Object.assign({ clsName: 'DZPprizeModel' }, v)
+                })
+                return obj
+              })
               if (list?.length) {
-                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
-                  selectors: 'EggFrenzyViewController.new[setItem:][setModalPresentationStyle:]',
-                  args1: [list[0]],
-                  args2: [5]
-                }, true, undefined])
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
+                  {
+                    selectors: 'EggFrenzyViewController.new[setItem:][setModalPresentationStyle:]',
+                    args1: [list[0]],
+                    args2: [5],
+                  },
+                  true,
+                  undefined,
+                ])
               }
             })
             break
@@ -337,10 +358,10 @@ export default class PushHelper {
               })
               if (!isOcPush) {
                 const rpm = RnPageModel.pages.filter((p) => {
-                  return p.tabbarItemPath == '/user';
-                })[0];
+                  return p.tabbarItemPath == '/user'
+                })[0]
                 if (rpm) {
-                  push(rpm.rnName);
+                  push(rpm.rnName)
                 } else {
                   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [
                     {
@@ -368,88 +389,87 @@ export default class PushHelper {
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
-
               }
-            });
+            })
           }
         }
 
         break
       case 'android':
-        let subId = "";
+        let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
-            subId = MenuType.CZ;
-            break;
+            subId = MenuType.CZ
+            break
           }
           case UGUserCenterType.每日签到: {
-            subId = MenuType.QD;
+            subId = MenuType.QD
             break
           }
           case UGUserCenterType.取款: {
-            subId = MenuType.TX;
-            break;
+            subId = MenuType.TX
+            break
           }
           case UGUserCenterType.银行卡管理: {
-            subId = MenuType.YHK;
-            break;
+            subId = MenuType.YHK
+            break
           }
           case UGUserCenterType.利息宝: {
-            subId = MenuType.LXB;
-            break;
+            subId = MenuType.LXB
+            break
           }
           case UGUserCenterType.推荐收益: {
-            subId = MenuType.SYTJ;
-            break;
+            subId = MenuType.SYTJ
+            break
           }
           case UGUserCenterType.彩票注单记录: {
-            subId = MenuType.TZJL;
-            break;
+            subId = MenuType.TZJL
+            break
           }
           case UGUserCenterType.其他注单记录: {
-            subId = MenuType.QTZD;
-            break;
+            subId = MenuType.QTZD
+            break
           }
           case UGUserCenterType.额度转换: {
-            subId = MenuType.EDZH;
-            break;
+            subId = MenuType.EDZH
+            break
           }
           case UGUserCenterType.站内信: {
-            subId = MenuType.ZLX;
-            break;
+            subId = MenuType.ZLX
+            break
           }
           case UGUserCenterType.安全中心: {
-            subId = MenuType.AQZX;
-            break;
+            subId = MenuType.AQZX
+            break
           }
           case UGUserCenterType.任务中心: {
-            subId = MenuType.RWZX;
-            break;
+            subId = MenuType.RWZX
+            break
           }
           case UGUserCenterType.个人信息: {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.GRXX
+            break
           }
           case UGUserCenterType.建议反馈: {
-            subId = MenuType.TSZX;
-            break;
+            subId = MenuType.TSZX
+            break
           }
           case UGUserCenterType.在线客服: {
-            subId = MenuType.KF;
-            break;
+            subId = MenuType.KF
+            break
           }
           case UGUserCenterType.活动彩金: {
-            subId = MenuType.SQCJ;
-            break;
+            subId = MenuType.SQCJ
+            break
           }
           case UGUserCenterType.长龙助手: {
-            subId = MenuType.CLZS;
-            break;
+            subId = MenuType.CLZS
+            break
           }
           case UGUserCenterType.全民竞猜: {
-            subId = MenuType.QMJC;
+            subId = MenuType.QMJC
             // Toast('敬请期待')
-            break;
+            break
           }
           case UGUserCenterType.开奖走势: {
             // Toast('敬请期待')
@@ -457,44 +477,65 @@ export default class PushHelper {
             return
           }
           case UGUserCenterType.QQ客服: {
-            subId = MenuType.QQ;
-            break;
+            subId = MenuType.QQ
+            break
           }
           case UGUserCenterType.资金明细: {
-            subId = MenuType.ZHGL;
-            break;
+            subId = MenuType.ZHGL
+            break
           }
           case UGUserCenterType.开奖网: {
             this.openWebView(
               //httpClient.defaults.baseURL + '/index2.php'
               httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
             )
-            return;
+            return
           }
           case UGUserCenterType.彩票大厅: {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
           }
           case UGUserCenterType.聊天室: {
-            subId = MenuType.LTS;
-            break;
+            subId = MenuType.LTS
+            break
           }
           case UGUserCenterType.游戏大厅: {
-            subId = MenuType.GCDT;
-            break;
+            subId = MenuType.GCDT
+            break
+          }
+          case UGUserCenterType.刮刮乐: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.scratchList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
+            })
+            return
+          }
+          case UGUserCenterType.砸金蛋: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
+            })
+            return
           }
           case UGUserCenterType.我的页: {
-            subId = MenuType.HYZX;
-            break;
+            subId = MenuType.HYZX
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            subId = MenuType.KJJG
+            break
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE,
-          {
-            seriesId: '7',
-            subId: subId,
-          })
-        break;
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+          seriesId: '7',
+          subId: subId,
+        })
+        break
     }
   }
 }

@@ -6,9 +6,7 @@ import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
-import {anyEmpty} from "../../tools/Ext";
-import {ugLog} from "../../tools/UgLog";
-import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
+import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
 
 export interface FormComponentProps {
   onChangeText?: any
@@ -57,7 +55,7 @@ const RightIcon = ({ openEyeColor, closeEyeColor, showRightIcon, rightIconType, 
     } else {
       switch (rightIconType) {
         case 'eye':
-          return <Ionicons name={showContent ? 'ios-eye' : 'ios-eye-off'} size={scale(40)} color={showContent ? openEyeColor : closeEyeColor} onPress={onPressEye} {...rightIconProps} />
+          return <Ionicons size={scale(40)} {...rightIconProps} name={showContent ? 'ios-eye' : 'ios-eye-off'} color={showContent ? openEyeColor : closeEyeColor} onPress={onPressEye} />
         case 'sms':
           return (
             <Button
@@ -128,7 +126,7 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      showLoading();
+      showLoading()
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       const { code, msg } = data ?? {}
 
@@ -178,10 +176,9 @@ const FormComponent = ({
             />
           }
           leftIconContainerStyle={[styles.leftIconContainerStyle, leftIconContainerStyle]}
-          rightIconContainerStyle={rightIconContainerStyle}
+          rightIconContainerStyle={[styles.rightIconContainerStyle, rightIconContainerStyle]}
           value={value}
           onChangeText={
-
             rightIconType == 'sms'
               ? (value) => {
                   phoneNumber.current = value
@@ -211,9 +208,12 @@ const styles = StyleSheet.create({
     fontWeight: '100',
     marginTop: scale(10),
   },
+  rightIconContainerStyle: {
+    marginRight: scale(10),
+  },
   leftIconContainerStyle: {
     marginLeft: 0,
-    marginRight: 5,
+    marginRight: scale(10),
     alignItems: 'center',
     width: scale(40),
   },
