@@ -1,20 +1,21 @@
-import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel'
-import UGUserModel from '../../../../redux/model/全局/UGUserModel'
-import { PageName } from '../../../navigation/Navigation'
-import { getCurrentPage, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation'
-import UGSkinManagers from '../../../theme/UGSkinManagers'
-import { RnPageModel } from '../SetRnPageInfo'
-import { UGStore } from './../../../../redux/store/UGStore'
-import { OCCall } from './OCCall'
+import { OCHelper } from './../OCHelper';
+import { UGStore } from './../../../../redux/store/UGStore';
+import { OCCall } from './OCCall';
+import { PageName, } from '../../../navigation/Navigation';
+import UGSysConfModel from '../../../../redux/model/全局/UGSysConfModel';
+import { getCurrentPage, getStackLength, jumpTo, pop, push } from '../../../navigation/RootNavigation';
+import UGSkinManagers from '../../../theme/UGSkinManagers';
+import { RnPageModel } from '../SetRnPageInfo';
+import UGUserModel from '../../../../redux/model/全局/UGUserModel';
+import AppDefine from '../../AppDefine';
 
 export enum OCEventType {
   UGNotificationGetSystemConfigComplete = 'UGSystemConfigModel.currentConfig',
   UGNotificationWithSkinSuccess = 'UGNotificationWithSkinSuccess',
-  JspatchDownloadProgress = 'jsp下载进度',
-  JspatchUpdateComplete = 'jsp更新结果',
   UGNotificationLoginComplete = 'UGNotificationLoginComplete',
   UGNotificationUserLogout = 'UGNotificationUserLogout',
   viewWillAppear = 'viewWillAppear',
+  AppDefineSetupSiteAndSkinParams = 'AppDefine-SetupSiteAndSkinParams',
 }
 
 export class OCEvent extends OCCall {
@@ -72,10 +73,11 @@ export class OCEvent extends OCCall {
     this.addEvent(OCEventType.UGNotificationGetSystemConfigComplete, (sysConf: UGSysConfModel) => {
       UGStore.dispatch({ type: 'merge', sysConf: sysConf })
     })
-    this.addEvent(OCEventType.UGNotificationWithSkinSuccess, () => {
-      UGSkinManagers.updateOcSkin()
+    this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, () => {
+      if (AppDefine.siteId == 'c116') {
+        OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
+      }
     })
-
     this.addEvent(OCEventType.UGNotificationUserLogout, () => {
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
