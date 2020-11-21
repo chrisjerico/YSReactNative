@@ -109,7 +109,10 @@ export function setRnPageInfo() {
     pages = pages.concat(BSHPages)
   }
   if (skitType.indexOf('香槟金') != -1) {
-    pages = pages.concat(XBJPages);
+    pages = pages.concat(XBJPages)
+  }
+  if (skitType.indexOf('威尼斯') != -1) {
+    pages = pages.concat(WNSPages)
   }
 
   // 替换原生页面
@@ -122,6 +125,35 @@ export function setRnPageInfo() {
       break
   }
 }
+
+// 香槟金
+const XBJPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.XBJLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.XBJRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.XBJMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+]
 
 // 尊龙模板页面
 const ZLPages = [
