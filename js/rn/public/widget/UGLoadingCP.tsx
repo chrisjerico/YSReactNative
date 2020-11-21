@@ -102,7 +102,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
     switch (Platform.OS) {
       case 'android':
         hideLoading()
-        break;
+        break
     }
   }
 
@@ -119,21 +119,16 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
 
     switch (type) {
       case UGLoadingType.Message:
-        break
       case UGLoadingType.Success:
-        break
       case UGLoadingType.Error:
         setTimeout(() => {
           lastProps === props && hideLoading()
         }, 3000)
-        break
       case UGLoadingType.Loading:
         setTimeout(() => {
           lastProps === props && hideLoading()
         }, 20000)
-        break
       default:
-        break
     }
   }, [lastProps])
 
