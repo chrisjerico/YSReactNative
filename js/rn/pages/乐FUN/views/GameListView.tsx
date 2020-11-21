@@ -23,6 +23,11 @@ import {anyEmpty} from "../../../public/tools/Ext";
 
 export const GAME_ITEM_HEIGHT = scale(130) //游戏条目高度
 
+/**
+ * 游戏栏目
+ * @param list 游戏列表
+ * @constructor
+ */
 export const GameListView = ({list}: { list: List[] }) => {
   const onPress = (list: List) => {
     list.seriesId != '1' ? PushHelper.pushHomeGame(list) :
@@ -31,26 +36,62 @@ export const GameListView = ({list}: { list: List[] }) => {
         PushHelper.pushCategory(list.seriesId, list.subType[0]?.gameId)
   }
 
+  //绘制游戏图标
+  const renderFlagItem = (item: List) => {
+    switch (item?.tipFlag) {
+      case "4"://中大奖
+        return (
+          <View style={_styles.container_flag}>
+            <FastImage style={_styles.flag_zdj}
+                       resizeMode={'contain'}
+                       source={{uri: item.hotIcon}}/>
+          </View>
+        )
+      default://1热门，2活动，3大奖，4中大奖
+        return (
+          <View style={_styles.container_flag}>
+            <View style={CommStyles.flex}/>
+            <FastImage style={_styles.flag_other}
+                       resizeMode={'contain'}
+                       source={{uri: item.hotIcon}}/>
+          </View>
+        )
+    }
+    return (
+      <View style={_styles.container_flag}>
+        <FastImage style={_styles.flag_zdj}
+                   resizeMode={'contain'}
+                   source={{uri: item.icon}}/>
+      </View>
+    )
+  }
+
+  //绘制游戏条目
   const renderItem = ({item, index}) => {
-    // ugLog('item=', item)
+    ugLog('item=', item)
     return <TouchableWithoutFeedback onPress={()=>onPress(item)}>
       <View style={_styles.container}>
-        <View style={_styles.item}>
-          <FastImage style={_styles.icon}
-                     resizeMode={'stretch'}
-                     source={{uri: item.icon}}/>
-          <View style={CommStyles.flex}>
-            <Text style={_styles.title}>
-              {anyEmpty(item.name) ? item.title : item.name}
-            </Text>
+        <View style={_styles.container_content}>
+          <View style={_styles.item}>
+            <FastImage style={_styles.icon}
+                       resizeMode={'stretch'}
+                       source={{uri: item.icon}}/>
+            <View style={CommStyles.flex}>
+              <Text style={_styles.title}>
+                {anyEmpty(item.name) ? item.title : item.name}
+              </Text>
+            </View>
+            <AntDesign
+              name={'right'}
+              color={'grey'}
+              size={scale(20)}
+              // onPress={onPressLeftTool}
+            />
           </View>
-          <AntDesign
-            name={'right'}
-            color={'grey'}
-            size={scale(20)}
-            // onPress={onPressLeftTool}
-          />
         </View>
+        {
+          renderFlagItem(item)
+        }
       </View>
     </TouchableWithoutFeedback>
   }
@@ -76,6 +117,25 @@ const _styles = StyleSheet.create({
     flex: 1,
     height: GAME_ITEM_HEIGHT,
     maxWidth: '50%',
+  },
+  container_content: {
+    flex: 1,
+  },
+  container_flag: {
+    width: '100%',
+    height: '100%',
+    position: "absolute",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: scale(4),
+  },
+  flag_zdj: {
+    height: '100%',
+    aspectRatio: 1,
+  },
+  flag_other: {
+    height: GAME_ITEM_HEIGHT*2/5,
+    aspectRatio: 1
   },
   item: {
     margin: scale(4),
