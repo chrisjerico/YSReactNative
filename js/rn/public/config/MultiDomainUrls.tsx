@@ -125,7 +125,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c47app1.com',
   ],
   'c002': [
-    'https://154977.com',
+    'https://55114.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',
