@@ -19,14 +19,14 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txt005': [
     'http://t005f.fhptcdn.com',
   ],
-  'cloud': [
-    'http://t005f.fhptcdn.com',
-  ],
   'tx07': [
     'http://test07.6yc.com',
   ],
   'tx08': [
     'http://test08.6yc.com',
+  ],
+  'tx09': [
+    'http://test09.6yc.com/',
   ],
   'tx10': [
     'https://test10.6yc.com',
@@ -51,6 +51,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'txt30': [
     'http://test30f.fhptcdn.com',
+  ],
+  'txt32': [
+    'http://t005f.fhptcdn.com',
   ],
   'tx58a': [
     'http://test58f.ccpt.site',
@@ -88,7 +91,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'txt126': [
     'http://t126f.fhptcdn.com',
   ],
-  'txt127f': [
+  'txt127': [
     'http://t127f.fhptcdn.com',
   ],
   'txt128': [
@@ -107,11 +110,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t005f.fhptcdn.com',
-    'http://test29f.fhptcdn.com',
-    'http://testadaf.fhptcdn.com',
-    'http://test60f.fhptcdn.com',
-    'http://test61f.fhptcdn.com',
+    'http://test61a.fhptcdn.com',
   ],
   'tstksm': [
     'http://t133f.fhptcdn.com',
@@ -138,7 +137,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hx627.com',
   ],
   'c012': [
-    'https://0849513.com',
+    'https://fjc012cpamg12aktk.org',
   ],
   'c018': [
     'https://204421.com',
@@ -174,7 +173,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013tfc-555.com',
+    'https://2013vip5.com',
   ],
   'c105_b': [
     'https://390qp8.com',
@@ -201,7 +200,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://og878.vip',
   ],
   'c134': [
-    'https://19972029.com',
+    'https://19972028.com',
   ],
   'c137': [
     'https://7033005.com',
@@ -228,7 +227,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c91398.com',
   ],
   'c165': [
-    'https://1875006.com',
+    'http://1875007.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -243,13 +242,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://200300g.com',
+    'https://288388f.com',
   ],
   'c190': [
-    'https://www677272.com',
+    'https://549595.com',
   ],
   'c193': [
-    'https://4906app.com',
+    'https://app4906.com',
   ],
   'c198': [
     'https://2909tycjt.com',
@@ -264,13 +263,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://xpjcpapp.com',
   ],
   'c205': [
-    'http://494.best',
+    'https://49488888.com',
   ],
   'c206': [
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771aa771.com',
+    'https://771771b.com',
   ],
   'c211': [
     'https://310310app.com',
@@ -279,7 +278,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501071.com',
+    'https://fjc023cpamg023aktk.org',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -289,6 +288,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c225': [
     'https://8393483.com',
+  ],
+  'c230': [
+    'https://www.jdapp588.com',
   ],
   'c235': [
     'https://www.hilliot.com',
@@ -300,7 +302,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://239269.com',
+    'https://923368.com',
   ],
   'c245': [
     'https://4823app.com',
@@ -311,6 +313,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c251': [
     'https://2420app.app',
   ],
+  'c252': [
+    'https://xggjapp8.com',
+  ],
   'L001': [
     'https://4988wap.com',
   ],
@@ -318,7 +323,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'L002': [
-    'https://70333h.com',
+    'https://7033303.com',
   ],
   'h003b': [
     'https://betv5.com',
@@ -331,6 +336,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'UG29b': [
     'http://test29f.fhptcdn.com',
+  ],
+  't127f': [
+    'http://t127f.fhptcdn.com',
   ],
 
 }
