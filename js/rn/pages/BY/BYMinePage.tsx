@@ -19,8 +19,6 @@ import UserCenterItem from '../../public/views/tars/UserCenterItem'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
-const { getHtml5Image } = useHtml5Image()
-
 const BYMinePage = () => {
   const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value } = useMinePage({
     homePage: PageName.BZHHomePage,

@@ -5,7 +5,7 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import {ROULETTE_LOGO} from "../../define/Res";
+import { ROULETTE_LOGO } from '../../define/Res'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -44,7 +44,6 @@ export interface GoldenEgg {
 }
 
 const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
-  console.log('-------redBag-----', redBag)
   return (
     <>
       <ActivityComponent
@@ -61,7 +60,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
         show={uid && roulette && !isTest}
-        logo={ ROULETTE_LOGO }
+        logo={ROULETTE_LOGO}
         onPress={() => {
           PushHelper.pushWheel(roulette)
         }}

@@ -71,4 +71,6 @@ export enum PageName {
   LCRegisterPage = 'LCRegisterPage',
   PromotionPage = 'PromotionPage',
   XBJLoginPage = 'XBJLoginPage',
+  XBJMinePage = 'XBJMinePage',
+  XBJRegisterPage = 'XBJRegisterPage',
 }
