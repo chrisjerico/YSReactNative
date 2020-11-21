@@ -25,6 +25,8 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const banner = UGStore.globalProps.banner
   const rightMenus = UGStore.globalProps.rightMenu
   const { sysInfo } = useSysInfo({})
+  const { uid } = userInfo
+  const { announcementType } = sysInfo
 
   const {
     loading,
@@ -44,7 +46,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     lotteryGame,
     lotteryNumber,
     refresh,
-  } = useHomeInfo([userInfo?.uid])
+  } = useHomeInfo([uid])
 
   const { reRender } = useRerender()
 
@@ -141,8 +143,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const roulette = turntableList?.data
   const goldenEggs = goldenEggList?.data
   const scratchs = scratchList?.data
-  const { uid } = userInfo
-  const { announcementType } = sysInfo
   useEffect(() => {
     if (notice?.data?.popup) {
       if (announcementType == AnnouncementType.登录后弹出 && uid) {
@@ -154,7 +154,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
         //
       }
     }
-  }, [notice, uid])
+  }, [uid])
 
   const goTo = {
     goToPromotionPage,
