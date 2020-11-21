@@ -18,6 +18,14 @@ interface UseHomePage {
 
 const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const firstAnnouncement = useRef(false)
+
+  // infos
+  const userInfo = UGStore.globalProps.userInfo
+  const gameLobby = UGStore.globalProps.gameLobby
+  const banner = UGStore.globalProps.banner
+  const rightMenus = UGStore.globalProps.rightMenu
+  const { sysInfo } = useSysInfo({})
+
   const {
     loading,
     refreshing,
@@ -36,7 +44,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     lotteryGame,
     lotteryNumber,
     refresh,
-  } = useHomeInfo()
+  } = useHomeInfo([userInfo?.uid])
 
   const { reRender } = useRerender()
 
@@ -82,12 +90,6 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     []
   )
 
-  // infos
-  const userInfo = UGStore.globalProps.userInfo
-  const { sysInfo } = useSysInfo({})
-  const gameLobby = UGStore.globalProps.gameLobby
-  const banner = UGStore.globalProps.banner
-  const rightMenus = UGStore.globalProps.rightMenu
   // data handle
   const bannersInterval = parseInt(banner?.interval)
   const banners = banner?.list ?? []

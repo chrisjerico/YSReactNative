@@ -49,7 +49,7 @@ interface Value {
   scratchList?: ScratchListModel
 }
 
-const useHome = () => {
+const useHome = (dependency: any[] = []) => {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [value, setValue] = useState<Value>({})
@@ -101,11 +101,37 @@ const useHome = () => {
     }
   }
 
+  // const callActivitys = async () => {
+  //   try {
+  //     const response = await Promise.all(
+  //       ['activity_redBagDetail'].map(async (router) => {
+  //         try {
+  //           return await APIRouter[router]()
+  //         } catch (error) {
+  //           console.log(router + ' : ' + error)
+  //         }
+  //       })
+  //     )
+  //     setValue({
+  //       ...value,
+  //       redBag: response[0] ? response[0]?.data : value?.redBag,
+  //     })
+  //   } catch (error) {
+  //     //
+  //   } finally {
+  //   }
+  // }
+
   const refresh = callApis
 
   useEffect(() => {
     callApis()
   }, [])
+
+  // useEffect(() => {
+  //   console.log('----------更新紅包--------')
+  //   loading && callActivitys()
+  // }, [dependency])
 
   return {
     ...value,
