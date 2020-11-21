@@ -50,12 +50,13 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
   }
 
   try {
-    temp['checkSign'] = 1
 
     switch (Platform.OS) {
       case 'ios':
+        temp['checkSign'] = 1
         return OCHelper.call('CMNetwork.encryptionCheckSign:', [temp])
       case 'android':
+        //temp['checkSign'] = 1 对安卓是多余的
         return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: temp })
     }
   } catch (error) {
