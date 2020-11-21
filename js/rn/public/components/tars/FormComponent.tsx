@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { Icon, Input } from 'react-native-elements'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -6,9 +6,7 @@ import APIRouter from '../../network/APIRouter'
 import { scale } from '../../tools/Scale'
 import { ToastError, ToastSuccess } from '../../tools/tars'
 import Button from '../../views/tars/Button'
-import {anyEmpty} from "../../tools/Ext";
-import {ugLog} from "../../tools/UgLog";
-import {hideLoading, showLoading, UGLoadingType} from "../../widget/UGLoadingCP";
+import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
 
 export interface FormComponentProps {
   onChangeText?: any
@@ -128,7 +126,7 @@ const FormComponent = ({
 
   const fetchSms = async () => {
     try {
-      showLoading();
+      showLoading()
       const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
       const { code, msg } = data ?? {}
 
@@ -181,7 +179,6 @@ const FormComponent = ({
           rightIconContainerStyle={[styles.rightIconContainerStyle, rightIconContainerStyle]}
           value={value}
           onChangeText={
-
             rightIconType == 'sms'
               ? (value) => {
                   phoneNumber.current = value
@@ -241,4 +238,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default memo(FormComponent)
+export default FormComponent
