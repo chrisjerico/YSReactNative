@@ -30,7 +30,7 @@ export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
 export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, list } = props;
   const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
-  const { mBonsSwitch } = UGStore.globalProps.sysConf;
+  const { mBonsSwitch, checkinSwitch, missionSwitch } = UGStore.globalProps.sysConf;
   const { avatar, usr, curLevelGrade, curLevelTitle, balance } = UGStore.globalProps.userInfo;
   const style = {
     navImageTintColor: Skin1.isBlack ? undefined : Skin1.navBarBgColor[0],
@@ -114,14 +114,30 @@ export const XBJMinePage = (props: XBJMineProps) => {
               </View>
             </View>
             <View style={{ flex: 1 }}></View>
-            {!mBonsSwitch && <TouchableOpacity onPress={() => {
-              v?.showSalaryAlert && v?.showSalaryAlert();
-            }}>
-              <LinearGradient colors={['#8DA9F9', '#9774EF']} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ paddingVertical: 6, paddingHorizontal: 8, borderRadius: 5, flexDirection: 'row' }} >
-                <Text style={{ textAlign: 'right', fontWeight: '600', fontSize: 14, color: '#fff' }}>领取俸禄</Text>
-                <FastImage source={{ uri: 'https://i.ibb.co/SxCc8CN/image.png' }} style={{ marginVertical: -2, marginLeft: 2, marginRight: -2, width: 20, height: 20 }} />
-              </LinearGradient>
-            </TouchableOpacity>}
+            <View style={{ marginTop: -5, marginRight: -3 }}>
+              {missionSwitch != '1' && <TouchableOpacity onPress={() => {
+                v?.showSalaryAlert && v?.showSalaryAlert();
+              }}>
+                <FastImage source={{ uri: 'https://i.ibb.co/nPtkMTD/missionhall-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
+                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</Text>
+                </FastImage>
+              </TouchableOpacity>}
+              {checkinSwitch != '0' && <TouchableOpacity onPress={() => {
+                v?.showSalaryAlert && v?.showSalaryAlert();
+              }}>
+                <FastImage source={{ uri: 'https://i.ibb.co/fCtpFGP/dailysign-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
+                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
+                </FastImage>
+              </TouchableOpacity>}
+              {(1 || mBonsSwitch != false) && <TouchableOpacity onPress={() => {
+                v?.showSalaryAlert && v?.showSalaryAlert();
+              }}>
+                <FastImage source={{ uri: 'https://i.ibb.co/q94nPCN/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >
+                  <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>领取俸禄</Text>
+                </FastImage>
+              </TouchableOpacity>}
+            </View>
+
           </View>
           <View style={{ marginLeft: -15, marginTop: 18, flexDirection: 'row', justifyContent: 'space-around' }}>
             <TouchableOpacity
