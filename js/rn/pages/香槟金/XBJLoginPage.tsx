@@ -135,8 +135,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         if (user) {
           console.log('退出旧账号');
           console.log(user);
-          var sessid = await OCHelper.call('UGUserModel.currentUser.sessid');
-          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:', [{ token: sessid }]);
+          await OCHelper.call('CMNetwork.userLogoutWithParams:completion:');
           await OCHelper.call('UGUserModel.setCurrentUser:');
         }
 

@@ -45,6 +45,7 @@ export function CheckError(sm: CCSessionModel<any>): Error {
     if (Platform.OS == 'ios') {
       OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationloginTimeout'])
     }
+    console.log('您的账号已经登录超时，请重新登录。', sm.url, sm.params);
     err = new Error('您的账号已经登录超时，请重新登录。');
   }
   else if (sm.status == 402) {

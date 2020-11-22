@@ -254,9 +254,12 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         setRnPageInfo()
         // 通知iOS进入首页
         await OCHelper.call('ReactNativeVC.showLastRnPage')
-        OCHelper.launchFinish()
         // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
         UGSysConfModel.updateFromNetwork()
+        // 等待原生皮肤UI刷新完再进入首页
+        setTimeout(() => {
+          OCHelper.launchFinish()
+        }, 500);
         break
       case 'android':
         setProps({ bCodePush: true })

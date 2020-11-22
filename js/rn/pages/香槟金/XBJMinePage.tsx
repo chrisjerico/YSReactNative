@@ -116,20 +116,20 @@ export const XBJMinePage = (props: XBJMineProps) => {
             <View style={{ flex: 1 }}></View>
             <View style={{ marginTop: -5, marginRight: -3 }}>
               {missionSwitch != '1' && <TouchableOpacity onPress={() => {
-                v?.showSalaryAlert && v?.showSalaryAlert();
+                PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/nPtkMTD/missionhall-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</Text>
                 </FastImage>
               </TouchableOpacity>}
               {checkinSwitch != '0' && <TouchableOpacity onPress={() => {
-                v?.showSalaryAlert && v?.showSalaryAlert();
+                PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/fCtpFGP/dailysign-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
                 </FastImage>
               </TouchableOpacity>}
-              {(1 || mBonsSwitch != false) && <TouchableOpacity onPress={() => {
+              {(mBonsSwitch != false) && <TouchableOpacity onPress={() => {
                 v?.showSalaryAlert && v?.showSalaryAlert();
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/q94nPCN/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >

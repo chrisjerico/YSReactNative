@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import { from } from 'core-js/fn/array'
 import { Platform } from 'react-native'
 import { devConfig, releaseConfig } from '../../../../config'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
@@ -8,6 +9,7 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import FUtils from '../tools/FUtils'
 import { BYThemeColor } from './colors/BYThemeColor'
 import { BZHThemeColor } from './colors/BZHThemeColor'
+import { HJThemeColor } from './colors/HJThemeColor'
 import { JDThemeColor } from './colors/JDThemeColor'
 import { JXHThemeColor } from './colors/JXHThemeColor'
 import { JYThemeColor } from './colors/JYThemeColor'
@@ -16,10 +18,12 @@ import { LCThemeColor } from './colors/LCThemeColor'
 import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
 import { OtherThemeColor } from './colors/OtherThemeColor'
+import { VietnamThemeColors } from './colors/VietnamThemeColors'
 import { WNZThemeColor } from './colors/WNZThemeColor'
 import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
+import { XBJThemeColor } from './colors/XBJThemeColor'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -35,6 +39,8 @@ export default class UGSkinManagers extends UGThemeColor {
     ...JXHThemeColor, // 金星黑
     ...KSThemeColor, // 凯时
     ...BYThemeColor, // 白曜
+    ...HJThemeColor, //黑金
+    ...XBJThemeColor, // 香槟金
     ...OtherThemeColor, // 其他
   }
 
@@ -77,6 +83,7 @@ export default class UGSkinManagers extends UGThemeColor {
     if (devConfig.isDebug) {
       devConfig?.skinKey && (key = devConfig?.skinKey)
     }
+    console.log('RN皮肤 = ', key);
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
     theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
