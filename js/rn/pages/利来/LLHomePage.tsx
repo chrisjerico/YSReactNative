@@ -63,8 +63,6 @@ const LLHomePage = ({ setProps, navigation }) => {
   }, [navigation])
 
   return (
-    // <TransferView />
-    // <TransferRecordView/>
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <SafeAreaView style={{ flex: 1 }}>
@@ -97,8 +95,7 @@ const LLHomePage = ({ setProps, navigation }) => {
               marginTop: 8,
             }}
             onPress={() => {
-              // uid === '' ? PushHelper.pushLogin() : PushHelper.pushUserCenterType(5)
-              PushHelper.pushUserCenterType(8)
+              uid === '' ? PushHelper.pushLogin() : PushHelper.pushUserCenterType(5)
             }}
             uri={'http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png'}
           />
