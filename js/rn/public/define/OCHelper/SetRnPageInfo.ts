@@ -58,7 +58,7 @@ export function setRnPageInfo() {
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    
+
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -86,6 +86,14 @@ export function setRnPageInfo() {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
+
+  pages.push({
+    rnName: PageName.TransferView,
+    userCenterItemCode: 8,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

@@ -70,5 +70,7 @@ export enum PageName {
   JDVirtualCurrencyTutorialPage = "JDVirtualCurrencyTutorialPage",
   LCLoginPage = "LCLoginPage",
   LCRegisterPage = "LCRegisterPage",
-  PromotionPage = 'PromotionPage'
+  PromotionPage = 'PromotionPage',
+  TransferView = 'TransferView',
+  TransferRecordView = 'TransferRecordView'
 }

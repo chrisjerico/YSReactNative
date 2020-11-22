@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Image, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, FlatList, Image, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import AppDefine from '../define/AppDefine'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Animated, {
@@ -15,16 +15,19 @@ import Animated, {
   timing,
   Value,
 } from 'react-native-reanimated'
-import useMinePage from '../hooks/tars/useMinePage'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
+import useHomePage from '../hooks/tars/useHomePage'
+import { navigate } from '../navigation/RootNavigation'
+import { PageName } from '../navigation/Navigation'
+import { Skin1 } from '../theme/UGSkinManagers'
 
 export const TransferView = () => {
   const [money, setMoney] = useState(0)
-  const mainColor = 'black'
+  const mainColor = Skin1.bgColor
   const [data, setData] = useState<any>()
   const [transOut, setTransOut] = useState()
   const [transIn, setTransIn] = useState()
-  const { value } = useMinePage({})
+  const { value, refresh } = useHomePage({})
   const { userInfo } = value
   const { balance } = userInfo
 
@@ -37,11 +40,34 @@ export const TransferView = () => {
     setData(data.data)
   }
 
+  const transfer = async () => {
+    const { data } = await api.real.manualTransfer(transOut.id, transIn.id, money).promise
+    Alert.alert(data.msg)
+  }
+
+  const autoTransfer = async () => {
+    api.real.autoTransferOut().setCompletionBlock((data) => {
+      Alert.alert(data.msg)
+    })
+  }
+
   return (
     <View style={{ flex: 1 }}>
-      <Header mainColor={mainColor} pressRecord={() => {
-      }} />
-      <MiddleView data={data} mainColor={mainColor} balance={balance} money={money} setMoney={setMoney} transIn={transIn} transOut={transOut} setTransIn={setTransIn} setTransOut={setTransOut} />
+      <Header mainColor={mainColor} pressRecord={() => navigate(PageName.TransferRecordView)} />
+      <MiddleView
+        data={data}
+        mainColor={mainColor}
+        balance={balance}
+        money={money}
+        setMoney={setMoney}
+        transIn={transIn}
+        transOut={transOut}
+        setTransIn={setTransIn}
+        setTransOut={setTransOut}
+        transfer={transfer}
+        autoTransfer={autoTransfer}
+        refresh={refresh}
+      />
       {data && <AccListView data={data} />}
     </View>
   )
@@ -68,11 +94,11 @@ const Header = ({ mainColor, pressRecord }: { mainColor: string, pressRecord: ()
           paddingBottom: 15,
           textAlign: 'center',
           fontSize: 20,
-          color: 'white',
+          color: Skin1.textColor1,
         }}>额度转换</Text>
         <TouchableWithoutFeedback onPress={pressRecord}>
           <View style={{ justifyContent: 'flex-end', position: 'absolute', left: AppDefine.width - 80 }}>
-            <Text style={{ color: 'white', fontSize: 18 }}>转换纪录</Text>
+            <Text style={{ color: Skin1.textColor1, fontSize: 18 }}>转换纪录</Text>
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -80,14 +106,16 @@ const Header = ({ mainColor, pressRecord }: { mainColor: string, pressRecord: ()
   )
 }
 
-const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTransIn, transOut, setTransOut }:
-                      { mainColor: string, balance: string, money: number, setMoney: (text: string) => void }) => {
-  const dataArr = [{ title: '我的钱包' }]
+const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTransIn, transOut, setTransOut, autoTransfer, transfer, refresh }:
+                      { mainColor: string, balance: string, money: number, setMoney: (text: string) => void, autoTransfer: () => void, transfer: () => void }) => {
+  const dataArr = [{ title: '我的钱包', id: 0 }]
   return (
     <View style={{ marginHorizontal: 12, marginTop: 16, zIndex: 99 }}>
       <View style={{ zIndex: 2 }}>
-        <TransferPicker key={1} text={'转出钱包'} defaultZIndex={3} data={dataArr.concat(data)} wallet={transOut} setWallet={setTransOut} />
-        <TransferPicker key={2} text={'转入钱包'} defaultZIndex={2} data={dataArr.concat(data)} wallet={transIn} setWallet={setTransIn} />
+        <TransferPicker key={1} text={'转出钱包'} defaultZIndex={3} data={dataArr.concat(data)} wallet={transOut}
+                        setWallet={setTransOut} />
+        <TransferPicker key={2} text={'转入钱包'} defaultZIndex={2} data={dataArr.concat(data)} wallet={transIn}
+                        setWallet={setTransIn} />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
           <TextInput
@@ -107,36 +135,49 @@ const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTra
         </View>
       </View>
       <View style={{ paddingTop: 32 }}>
-        <TouchableWithoutFeedback onPress={() => {
-        }}>
-          <View style={{ backgroundColor: mainColor, paddingVertical: 10, borderRadius: 4, height: 40 }}>
-            <Text style={{ fontSize: 17, color: 'white', alignSelf: 'center' }}>开始转换</Text>
+        <TouchableWithoutFeedback onPress={transfer}>
+          <View style={{
+            backgroundColor: mainColor,
+            paddingVertical: 10,
+            borderRadius: 4,
+            height: 43,
+            borderColor: '#cccccc',
+            borderWidth: 1,
+          }}>
+            <Text style={{ fontSize: 17, color: Skin1.textColor1, alignSelf: 'center' }}>开始转换</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => {
-        }}>
-          <View style={{ backgroundColor: mainColor, paddingVertical: 10, borderRadius: 4, marginTop: 12, height: 40 }}>
-            <Text style={{ fontSize: 17, color: 'white', alignSelf: 'center' }}>一键提取</Text>
+        <TouchableWithoutFeedback onPress={autoTransfer}>
+          <View style={{
+            backgroundColor: mainColor,
+            paddingVertical: 10,
+            borderRadius: 4,
+            marginTop: 12,
+            height: 43,
+            borderColor: '#cccccc',
+            borderWidth: 1,
+          }}>
+            <Text style={{ fontSize: 17, color: Skin1.textColor1, alignSelf: 'center' }}>一键提取</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => {
-        }}>
+        <TouchableWithoutFeedback onPress={refresh}>
           <View style={{
             backgroundColor: mainColor,
             paddingVertical: 10,
             borderRadius: 4,
             marginTop: 12,
             flexDirection: 'row',
-            height: 40,
+            height: 43,
+            borderColor: '#cccccc', borderWidth: 1,
           }}>
             <Text
               style={{
                 marginLeft: 12,
                 fontSize: 17,
-                color: 'white',
+                color: Skin1.textColor1,
                 alignSelf: 'center',
               }}>{`帐号余额: ￥${balance || 0}`}</Text>
-            <Icon size={20} name={'reload1'} color={'white'} style={{ marginLeft: 16 }} />
+            <Icon size={20} name={'reload1'} color={Skin1.textColor1} style={{ marginLeft: 16 }} />
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -148,25 +189,25 @@ const AccListView = ({ data }: { data: any[] }) => {
   return (
     <SafeAreaView style={{ flex: 1, marginBottom: 90 }}>
       <FlatList
-        key={({item}) => `acc-${item.title}`}
+        keyExtractor={(item, index) => `acc-${index}`}
         style={{ marginHorizontal: 12, marginTop: 12 }} data={data}
-                renderItem={({ item }) => {
-        return (
-          <View style={{
-            flexDirection: 'row',
-            marginHorizontal: 8,
-            borderBottomWidth: 1,
-            borderBottomColor: '#d9d9d9',
-            alignItems: 'center',
-            paddingVertical: 12,
-          }}>
-            <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
-            <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title}</Text>
-            <Text>￥*****</Text>
-            <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
-          </View>
-        )
-      }} />
+        renderItem={({ item }) => {
+          return (
+            <View style={{
+              flexDirection: 'row',
+              marginHorizontal: 8,
+              borderBottomWidth: 1,
+              borderBottomColor: '#d9d9d9',
+              alignItems: 'center',
+              paddingVertical: 12,
+            }}>
+              <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
+              <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
+              <Text>￥*****</Text>
+              <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
+            </View>
+          )
+        }} />
     </SafeAreaView>
   )
 }
@@ -202,7 +243,7 @@ const TransferPicker = ({ text, enable = true, defaultZIndex, data, wallet, setW
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-          <Text>{wallet ? wallet.title : ""}</Text>
+          <Text>{wallet ? wallet.title : ''}</Text>
           <View style={{ flex: 1 }} />
           <Icon style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
                 name={'caretdown'} />
@@ -223,7 +264,7 @@ const TransferPicker = ({ text, enable = true, defaultZIndex, data, wallet, setW
         }}>
         {data &&
         <FlatList
-          key={({item}) => `${item.title}`}
+          keyExtractor={(item, index) => `${text}-item-${index}`}
           data={data}
           renderItem={({ item }) => (
             <TouchableWithoutFeedback onPress={() => {
@@ -231,7 +272,7 @@ const TransferPicker = ({ text, enable = true, defaultZIndex, data, wallet, setW
               toggleRow1Content()
             }}>
               <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                <Text>{item.title}</Text>
+                <Text>{item ? item.title || '' : ''}</Text>
               </View>
             </TouchableWithoutFeedback>
           )} />}

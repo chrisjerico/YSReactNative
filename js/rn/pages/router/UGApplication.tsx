@@ -68,6 +68,8 @@ import LCLoginPage from '../乐橙/LCLoginPage'
 import LCRegisterPage from '../乐橙/LCRegisterPage'
 import BYSignInPage from '../BY/BYSignInPage'
 import BYSignUpPage from '../BY/BYSignUpPage'
+import { TransferRecordView } from '../../public/components/TransferRecordView'
+import { TransferView } from '../../public/components/TransferView'
 
 // TabbarController
 class TabBarController extends Component<{
@@ -140,6 +142,8 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
