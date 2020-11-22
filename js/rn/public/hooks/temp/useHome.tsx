@@ -14,6 +14,7 @@ import { TurntableListModel } from '../../network/Model/TurntableListModel'
 import { stringToNumber } from '../../tools/tars'
 import {GoldenEggListModel} from "../../network/Model/GoldenEggListModel";
 import {ScratchListModel} from "../../network/Model/ScratchListModel";
+import {ugLog} from "../../tools/UgLog";
 
 const localRouters = [
   'system_rankingList',
@@ -85,9 +86,11 @@ const useHome = () => {
         try {
           return await APIRouter[router]()
         } catch (error) {
+          ugLog('callApis=', JSON.stringify(error))
           // console.log(error)
         }
       }))
+
       !loading && updateStore(response)
       setValue({
         rankList: response[0] ? response[0]?.data : value?.rankList,

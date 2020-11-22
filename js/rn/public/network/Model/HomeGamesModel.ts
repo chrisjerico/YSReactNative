@@ -38,7 +38,7 @@ export interface List {
     sort: string;
     seriesId: string;
     subId: any;
-    tipFlag: string;
+    tipFlag: string;//1热门，2活动，3大奖，4中大奖
     openWay: string;
     hotIcon: string;
     gameCode: string;

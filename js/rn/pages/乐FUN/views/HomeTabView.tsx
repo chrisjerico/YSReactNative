@@ -1,19 +1,19 @@
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, {ScrollableTabBar} from 'react-native-scrollable-tab-view'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native'
 import useGetHomeInfo from '../../../public/hooks/useGetHomeInfo'
-import { Icon } from '../../../public/network/Model/HomeGamesModel'
-import { removeHTMLTag } from '../../../public/tools/removeHTMLTag'
-import { LEFThemeColor } from '../../../public/theme/colors/LEFThemeColor'
-import { scale } from '../../../public/tools/Scale'
-import { GAME_ITEM_HEIGHT, GameListView } from './GameListView'
+import {Icon} from '../../../public/network/Model/HomeGamesModel'
+import {removeHTMLTag} from '../../../public/tools/removeHTMLTag'
+import {LEFThemeColor} from '../../../public/theme/colors/LEFThemeColor'
+import {scale} from '../../../public/tools/Scale'
+import {GAME_ITEM_HEIGHT, GameListView} from './GameListView'
 import FastImage from 'react-native-fast-image'
-import { ugLog } from '../../../public/tools/UgLog'
+import {ugLog} from '../../../public/tools/UgLog'
 
 export const HomeTabView = () => {
-  const { homeGames, notice, banner, onlineNum } = useGetHomeInfo()
+  const {homeGames, notice, banner, onlineNum} = useGetHomeInfo()
   const [height, setHeight] = useState(775)
   const [games, setGames] = useState<Icon[]>([])
   const [marquee, setMarquee] = useState<string[]>([])
@@ -25,10 +25,10 @@ export const HomeTabView = () => {
   const getMarquee = () => {
     let arr = []
     notice &&
-      notice.data &&
-      notice.data.scroll.map((item, index) => {
-        arr.push({ label: index, value: removeHTMLTag(item.content) })
-      })
+    notice.data &&
+    notice.data.scroll.map((item, index) => {
+      arr.push({label: index, value: removeHTMLTag(item.content)})
+    })
     setMarquee(arr)
   }
 
@@ -45,11 +45,15 @@ export const HomeTabView = () => {
   }, [homeGames])
 
   const getTab = (item: Icon, index: number) => {
-    return <GameListView key={index} list={item.list} tabLabel={item.name} />
+    return <GameListView key={index}
+                         refreshHeight={calculateHeight}
+                         listData={item.list}
+                         tabLabel={item.name}/>
   }
 
-  const calculateHeight = (i: number) => {
-    setHeight((games[i].list.length / 2 + (games[i].list.length % 2) + 1) * GAME_ITEM_HEIGHT)
+  const calculateHeight = (height: number) => {
+    ugLog('计算高度: ' + height)
+    setHeight(height + TAB_ITEM_HEIGHT * 1.5)
   }
 
   const calculateTabWidth = games?.length * TAB_ITEM_WIDTH
@@ -58,29 +62,30 @@ export const HomeTabView = () => {
     <>
       {games?.length > 0 && (
         <ScrollableTabView
-          onChangeTab={({ i }) => calculateHeight(i)}
+          // onChangeTab={({i}) => calculateHeight(i)}
           tabBarUnderlineStyle={_styles.tab_bar_underline}
           // tabBarActiveTextColor={LEFThemeColor.乐FUN.textColor2}
           // tabBarInactiveTextColor={LEFThemeColor.乐FUN.themeColor}
           // tabBarTextStyle={_styles.tab_bar_text}
-          style={[{ flex: 1, height }]}
+          style={[{flex: 1, height}]}
           renderTabBar={() => (
             <ScrollableTabBar
               style={_styles.tab_bar}
-              tabsContainerStyle={{ width: calculateTabWidth }}
+              tabsContainerStyle={{width: calculateTabWidth}}
               renderTab={(name, pageIndex, isTabActive, onPressHandler, onLayoutHandler) => {
                 return (
-                  <TouchableWithoutFeedback onPress={() => onPressHandler(pageIndex)}>
-                    <View style={[_styles.tab_bar_item, isTabActive ? { backgroundColor: 'white' } : {}]}>
-                      <FastImage style={_styles.tab_bar_img} source={{ uri: games[pageIndex].logo }} />
-                      <Text style={[_styles.tab_bar_text, isTabActive ? { color: LEFThemeColor.乐FUN.textColor2 } : {}]}>{name}</Text>
+                  <TouchableWithoutFeedback key={name + pageIndex} onPress={() => onPressHandler(pageIndex)}>
+                    <View style={[_styles.tab_bar_item, isTabActive ? {backgroundColor: 'white'} : {}]}>
+                      <FastImage style={_styles.tab_bar_img} source={{uri: games[pageIndex].logo}}/>
+                      <Text
+                        style={[_styles.tab_bar_text, isTabActive ? {color: LEFThemeColor.乐FUN.textColor2} : {}]}>{name}</Text>
                     </View>
                   </TouchableWithoutFeedback>
                 )
               }}
             />
           )}>
-          {games.length > 0 ? games.map((item, index) => getTab(item, index)) : <View />}
+          {games.length > 0 ? games.map((item, index) => getTab(item, index)) : <View/>}
         </ScrollableTabView>
       )}
     </>
@@ -88,11 +93,12 @@ export const HomeTabView = () => {
 }
 
 export const TAB_ITEM_WIDTH = scale(96) //tab宽度
+export const TAB_ITEM_HEIGHT = scale(86) //tab高度
 
 const _styles = StyleSheet.create({
   tab_bar: {
     backgroundColor: '#f4f4f4',
-    height: scale(86),
+    height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
     height: scale(0),

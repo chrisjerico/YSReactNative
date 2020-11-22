@@ -6,6 +6,7 @@ import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActiv
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
 import { ROULETTE_LOGO } from '../../define/Res'
+import {ugLog} from "../../tools/UgLog";
 
 interface ActivitysProps {
   refreshing: boolean
@@ -82,6 +83,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {
+        ugLog('item=', item)
         const { image, position, linkCategory, linkPosition } = item
         return (
           <ActivityComponent
