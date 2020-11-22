@@ -1,6 +1,7 @@
 import { Alert, AlertButton, Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGAgentApplyInfo, UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
@@ -10,7 +11,7 @@ import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivity
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
 import { ugLog } from '../tools/UgLog'
-import { showMessage } from '../widget/UGLoadingCP'
+import { hideLoading, showLoading, showMessage } from '../widget/UGLoadingCP'
 import { ANHelper } from './ANHelper/ANHelper'
 import { CMD, OPEN_PAGE_PMS } from './ANHelper/hp/CmdDefine'
 import { MenuType } from './ANHelper/hp/GotoDefine'
@@ -286,6 +287,10 @@ export default class PushHelper {
             navigate(PageName.TrendView, {})
             break
           }
+          case UGUserCenterType.额度转换: {
+            navigate(PageName.TransferView, {})
+            break
+          }
           case UGUserCenterType.资金明细: {
             PushHelper.pushCategory(7, 28)
             break
@@ -301,6 +306,54 @@ export default class PushHelper {
           }
           case UGUserCenterType.游戏大厅: {
             OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGYYLotteryHomeViewController.new' }, true])
+            break
+          }
+          case UGUserCenterType.刮刮乐: {
+            if (!UGUserModel.checkLogin()) return
+
+            showLoading();
+            api.activity.scratchList().setCompletionBlock(({ data }) => {
+              hideLoading();
+              // 数据转换为原生格式
+              const scratchList = data?.scratchList?.map((v) => {
+                return Object.assign({ clsName: 'ScratchModel' }, v);
+              })
+              const scratchWinList = data?.scratchWinList?.map((v) => {
+                return Object.assign({ clsName: 'ScratchWinModel' }, v);
+              });
+              if (scratchList?.length) {
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
+                  selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
+                  args1: [{ clsName: 'ScratchDataModel', scratchList, scratchWinList }],
+                  args2: [5]
+                }, true, undefined])
+              }
+            })
+            break
+          }
+          case UGUserCenterType.砸金蛋: {
+            if (!UGUserModel.checkLogin()) return
+
+            showLoading()
+            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+              hideLoading();
+              // 数据转换为原生格式
+              const list = data?.map((v) => {
+                const obj = Object.assign({ clsName: 'DZPModel' }, v);
+                obj.param = Object.assign({ clsName: 'DZPparamModel' }, obj.param);
+                obj.param.prizeArr = obj.param?.prizeArr?.map((v) => {
+                  return Object.assign({ clsName: 'DZPprizeModel' }, v);
+                });
+                return obj;
+              });
+              if (list?.length) {
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
+                  selectors: 'EggFrenzyViewController.new[setItem:][setModalPresentationStyle:]',
+                  args1: [list[0]],
+                  args2: [5]
+                }, true, undefined])
+              }
+            })
             break
           }
           case UGUserCenterType.我的页: {

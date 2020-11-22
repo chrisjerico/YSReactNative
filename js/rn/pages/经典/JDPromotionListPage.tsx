@@ -16,6 +16,7 @@ import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 interface JDPromotionListVars {
   style1: '背景透明' | '背景不透明'; // 标题栏样式
+  scrollEnabled: boolean;
 }
 
 // 声明Props
@@ -32,7 +33,10 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
 // 优惠活动页
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
   const { setProps, containerStyle } = props;
-  const { current: v } = useRef<JDPromotionListVars>({ style1: '背景透明' });
+  const { current: v } = useRef<JDPromotionListVars>({
+    style1: '背景透明',
+    scrollEnabled: true,
+  });
 
   useEffect(() => {
     setProps({
@@ -86,6 +90,9 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   if ('c217'.indexOf(AppDefine.siteId) != -1) {
     v.style1 = '背景不透明';
   }
+  if ('c245'.indexOf(AppDefine.siteId) != -1) {
+    v.scrollEnabled = false;
+  }
 
   const { dataArray = [], showTopBar = true } = props;
   if (dataArray.length == 0) {
@@ -96,6 +103,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   });
   return (
     <ScrollableTabView
+      contentProps={{ scrollEnabled: v.scrollEnabled }}
       style={containerStyle}
       renderTabBar={(props: TabBarProps) => {
         return (
@@ -161,7 +169,6 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
             onPress={() => {
               props.goToPage(idx);
             }}
-            // @ts-ignore 忽略style没有overflow属性错误，实际上可以设置生效
             style={{
               marginTop: 11,
               marginHorizontal: 2,

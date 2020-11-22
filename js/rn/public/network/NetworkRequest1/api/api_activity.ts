@@ -1,3 +1,5 @@
+import { GoldenEggModel } from '../../Model/GoldenEggModel';
+import { ScratchDataModel } from '../../Model/ScratchDataModel';
 import { SampleAPI } from './../CCSessionModel';
 
 
@@ -13,12 +15,12 @@ export class api_activity {
 
   // 获取首页砸金蛋活动
   static goldenEggList() {
-    return this.c.get('goldenEggList');
+    return this.c.get<GoldenEggModel[]>('goldenEggList');
   }
 
   // 获取首页刮刮乐
   static scratchList() {
-    return this.c.get('scratchList');
+    return this.c.get<ScratchDataModel>('scratchList');
   }
 
   // 红包详情

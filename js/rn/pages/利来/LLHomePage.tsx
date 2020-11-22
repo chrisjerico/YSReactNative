@@ -34,6 +34,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
 import { getActivityPosition } from '../../public/tools/tars'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { TransferView } from '../../public/components/TransferView'
+import { TransferRecordView } from '../../public/components/TransferRecordView'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])

@@ -58,9 +58,7 @@ export function setRnPageInfo() {
     if (skitType.indexOf('威尼斯') != -1) {
       pages = pages.concat(WNSPages)
     }
-    if (skitType.indexOf('香槟金') != -1) {
-      pages = pages.concat(XBJPages);
-    }
+
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -93,11 +91,22 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   })
 
+  pages.push({
+    rnName: PageName.TransferView,
+    userCenterItemCode: 8,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
+
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
   }
   if (skitType.indexOf('宝石红') != -1) {
     pages = pages.concat(BSHPages)
+  }
+  if (skitType.indexOf('香槟金') != -1) {
+    pages = pages.concat(XBJPages);
   }
 
   // 替换原生页面

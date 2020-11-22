@@ -1,8 +1,9 @@
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import { ANHelper } from "../../../public/define/ANHelper/ANHelper";
 import { CMD } from "../../../public/define/ANHelper/hp/CmdDefine";
 import { NA_DATA } from "../../../public/define/ANHelper/hp/DataDefine";
 import { OCHelper } from "../../../public/define/OCHelper/OCHelper";
+import PushHelper from "../../../public/define/PushHelper";
 import { Data } from "../../../public/network/Model/LoginModel";
 import { AvatarModel } from "../../../public/network/Model/SystemAvatarListModel";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
@@ -40,10 +41,12 @@ export default class UGUserModel extends UGLoginModel {
     }
     UGStore.save();
   }
-  static updateFromNetwork() {
-    api.user.info().setCompletionBlock(({ data: user }) => {
+  static updateFromNetwork(completed?: () => void) {
+    return api.user.info().setCompletionBlock(({ data: user }, sm) => {
+      sm.noShowErrorHUD = true;
       UGStore.dispatch({ type: 'merge', userInfo: user })
       UGStore.save();
+      completed && completed();
     })
   }
   static getYS(user: UGLoginModel | Data): UGUserModel {
@@ -53,25 +56,22 @@ export default class UGUserModel extends UGLoginModel {
     temp.token = user['API-SID'];
     return temp;
   }
+  static checkLogin() {
+    const { isTest, uid } = UGStore.globalProps.userInfo
+    if (!isTest && uid?.length) return true;
 
-  // 获取头像URL
-  static getAvatarURL(list: AvatarModel[], avatar: string) {
-    if (avatar?.indexOf('http') != -1) return avatar;
-    
-    let avatarURL: string;
-    const filter = list?.filter((ele) => {
-      if (ele.filename == UGStore.globalProps?.userInfo?.avatar) {
-        return ele;
-      }
-    })
-    if (filter?.length) {
-      avatarURL = filter[0].url;
-    } else if (list?.length) {
-      avatarURL = list[0].url
-    } else {
-      avatarURL = 'https://i.ibb.co/mNnwnh7/money-2.png'
+    if (!uid?.length) {
+      Alert.alert("温馨提示", "您还未登录", [
+        { text: "取消", onPress: () => { }, style: "cancel" },
+        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+      ])
+    } else if (isTest) {
+      Alert.alert("温馨提示", "请登录正式账号", [
+        { text: "取消", onPress: () => { }, style: "cancel" },
+        { text: "马上登录", onPress: () => { PushHelper.pushLogin() }, }
+      ])
     }
-    return avatarURL;
+    return false;
   }
 
   uid?: string; // 用户ID
