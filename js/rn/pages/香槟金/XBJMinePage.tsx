@@ -132,7 +132,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
                 </FastImage>
               </TouchableOpacity>}
-              {(mBonsSwitch != false) && <TouchableOpacity onPress={() => {
+              {(mBonsSwitch == false) && <TouchableOpacity onPress={() => {
                 v?.showSalaryAlert && v?.showSalaryAlert();
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/q94nPCN/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >
