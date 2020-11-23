@@ -38,7 +38,7 @@ export function showMessage(text?: string) {
 /**
  *
  * @param text
- * @param backgroundColor 必须为数组，否则Android会崩溃
+ * @param backgroundColor //数量必须>1，否则Android控件出问题
  */
 export function showLoading(text?: string, backgroundColor?: string[]) {
   showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor })
