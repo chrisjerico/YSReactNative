@@ -326,6 +326,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c252': [
     'https://xggjapp8.com',
   ],
+  'c254': [
+    'https://677888c.com',
+    'https://677888b.com',
+    'https://677888a.com',
+    'https://16689g.com',
+    'https://16689f.com',
+  ],
   'L001': [
     'https://4988wap.com',
   ],
