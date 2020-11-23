@@ -247,7 +247,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://288388f.com',
+    'https://200300g.com',
   ],
   'c190': [
     'https://549595.com',
