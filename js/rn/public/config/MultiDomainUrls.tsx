@@ -264,7 +264,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://20181995.com',
+    'https://20171995.com',
   ],
   'c201': [
     'https://dkcp520.com',
