@@ -19,7 +19,7 @@ export const LCThemeColor: { [x: string]: UGThemeColor } = {
         textColor1: '#333333',
         textColor2: '#9a9a9a',
         textColor3: '#9a9a9a',
-        textColor4: 'white',
+        textColor4: '#9a9a9a',
         conversionCellColor: '#444',
         intoViewColor: '#444',
         moneyCellColor: '#444',

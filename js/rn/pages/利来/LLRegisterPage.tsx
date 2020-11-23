@@ -27,8 +27,8 @@ export const LLRegisterPage = () => {
   const { showRecommendGuy, } = show
   const {
     onChangeRecommendGuy,
-    obChangeAccount,
-    obChangePassword,
+    onChangeAccount,
+    onChangePassword,
     onChangeConfirmPassword,
     onChaneRealName,
     onChaneFundPassword,
@@ -39,6 +39,7 @@ export const LLRegisterPage = () => {
     onChaneSms,
     onChangeSlideCode,
     onChangeAgent,
+    onChangeInviteCode,
   } = onChange
   const [acc, setAcc] = useState('')
   const [pwd, setPwd] = useState('')
@@ -131,7 +132,7 @@ export const LLRegisterPage = () => {
         </View>}
         <LLRegisterInput maxLength={15} isPwd={false} onChangeText={(text) => {
           setAcc(text)
-          obChangeAccount(text)
+          onChangeAccount(text)
         }} placeholder={'请输入会员账号（6-15位字母或数字)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
         {!regex.test(acc) && <View style={{ flexDirection: 'row' }}>
@@ -145,7 +146,7 @@ export const LLRegisterPage = () => {
         </View>}
         <LLRegisterInput maxLength={15} isPwd={true} onChangeText={(text) => {
           setPwd(text)
-          obChangePassword(text)
+          onChangePassword(text)
         }} placeholder={'请输入密码（长度不能低于6位)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png'} />
         {pass_length_min && pass_length_max && (pwd.length < pass_length_min || pwd.length > pass_length_max) &&

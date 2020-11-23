@@ -144,7 +144,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           {type == UGLoadingType.Loading && <FastImage style={[styles.icon, { width: 50, height: 50 }]} source={Res.加载中} />}
           {type == UGLoadingType.Success && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载成功} />}
           {type == UGLoadingType.Error && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载失败} />}
-          {text && <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }} >{text}</Text>}
+          {text && typeof text == 'string' && <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }} >{text}</Text>}
           {type == UGLoadingType.Reload && (
             <Button
               buttonStyle={{
@@ -156,7 +156,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
                 borderRadius: 8,
               }}
               titleStyle={{ fontSize: 16 }}
-              title='点击重试'
+              title={'点击重试'}
               onPress={reloadClick}
             />
           )}
