@@ -51,26 +51,26 @@ import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import HJHomePage from "../黑金/HJHomePage";
-import HJLoginPage from "../黑金/HJLoginPage";
-import HJRegisterPage from "../黑金/HJRegisterPage";
-import HJMinePage from "../黑金/HJMinePage";
-import HJGameCategoryPage from "../黑金/cate/HJGameCategoryPage";
-import LEFSignUpPage from "../乐FUN/LEFSignUpPage";
-import LEFSignInPage from "../乐FUN/LEFSignInPage";
-import LEFMinePage from "../乐FUN/LEFMinePage";
-import LEFHomePage from "../乐FUN/LEFHomePage";
-import {initDomain} from "../../public/config/DomainUrls";
-import LEFSignUpPage2 from "../乐FUN/LEFSignUpPage";
-import BYHomePage from '../BY/BYHomePage'
-import BYMinePage from '../BY/BYMinePage'
+import HJLoginPage from '../黑金/HJLoginPage'
+import HJRegisterPage from '../黑金/HJRegisterPage'
+import HJMinePage from '../黑金/HJMinePage'
+import HJGameCategoryPage from '../黑金/cate/HJGameCategoryPage'
+import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
+import LEFSignInPage from '../乐FUN/LEFSignInPage'
+import LEFMinePage from '../乐FUN/LEFMinePage'
+import LEFHomePage from '../乐FUN/LEFHomePage'
 import LCLoginPage from '../乐橙/LCLoginPage'
 import LCRegisterPage from '../乐橙/LCRegisterPage'
+import BYHomePage from '../BY/BYHomePage'
+import BYMinePage from '../BY/BYMinePage'
+import HJHomePage from '../黑金/HJHomePage'
 import BYSignInPage from '../BY/BYSignInPage'
 import BYSignUpPage from '../BY/BYSignUpPage'
+import { XBJLoginPage } from '../香槟金/XBJLoginPage'
+import { XBJMinePage } from '../香槟金/XBJMinePage'
+import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
 import { TransferView } from '../../public/components/TransferView'
-
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -101,7 +101,10 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
         <Router.TabScreen name={PageName.LCMinePage} component={UGPage(LCMinePage)} />
         <Router.TabScreen name={PageName.LCHomePage} component={UGPage(LCHomePage)} />
-        <Router.TabScreen name={PageName.TransitionPage} component={UGPage(TransitionPage)} />
+        <Router.TabScreen name={PageName.TransitionPage} component={UGPage(TransitionPage)} options={{ unmountOnBlur: true }} />
+        <Router.TabScreen name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
+        <Router.TabScreen name={PageName.XBJRegisterPage} component={UGPage(XBJRegisterPage)} />
+        <Router.TabScreen name={PageName.XBJMinePage} component={UGPage(XBJMinePage)} />
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />
@@ -111,21 +114,20 @@ class TabBarController extends Component<{
         {/*<Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />*/}
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
-        <Router.TabScreen name={PageName.LHTHomePage} component={LHTHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.LHTMinePage} component={LHTMinePage} />
-        <Router.TabScreen name={PageName.BZHHomePage} component={BZHHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.BZHMinePage} component={BZHMinePage} />
-        <Router.TabScreen name={PageName.WNZHomePage} component={WNZHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.WNZMinePage} component={WNZMinePage} options={{ unmountOnBlur: true }} />
+        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
+        <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
+        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
+        <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
+        <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
+        <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
-        <Router.TabScreen name={PageName.KSHomePage} component={KSHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.KSMinePage} component={KSMinePage} />
-        <Router.TabScreen name={PageName.JXHHomePage} component={JXHHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.JXHMinePage} component={JXHMinePage} />
-        <Router.TabScreen name={PageName.BYHomePage} component={BYHomePage} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.BYMinePage} component={BYMinePage} />
+        <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
+        <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
+        <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
+        <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
+        <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
-        <Router.TabScreen name={PageName.WNZGameLobbyPage} component={WNZGameLobbyPage} />
         <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
@@ -142,6 +144,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />

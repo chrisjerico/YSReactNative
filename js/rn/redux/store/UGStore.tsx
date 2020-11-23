@@ -35,10 +35,12 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
     act.sysConf && (state.sysConf = act.sysConf ?? {})
     act.userInfo && (state.userInfo = act.userInfo ?? {})
     act.sign && (state.sign = act.sign ?? {})
-    act.gameLobby && (state.gameLobby = act.gameLobby)
     act.banner && (state.banner = act.banner)
     act.sys && (state.sys = act.sys)
-    act.page && (state[act.page] = act.props ?? {})
+    act.page && (state[act.page] = act.props)
+    // 陣列
+    act.gameLobby && (state.gameLobby = act.gameLobby)
+    act.rightMenu && (state.rightMenu = act.rightMenu)
   } else if (act.type == 'merge') {
     state.sysConf = { ...state.sysConf, ...act.sysConf }
     state.userInfo = { ...state.userInfo, ...act.userInfo }
@@ -86,7 +88,7 @@ export class UGStore {
         cb.page == act.page && cb.callback()
       }
     } else {
-      setProps();
+      setProps()
     }
   }
 
@@ -95,6 +97,7 @@ export class UGStore {
     const cb = { page: page, callback: callback }
     this.callbacks.push(cb)
     return () => {
+      //@ts-ignore
       UGStore.callbacks.remove(cb)
     }
   }

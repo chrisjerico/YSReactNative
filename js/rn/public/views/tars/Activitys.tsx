@@ -1,9 +1,12 @@
 import React, { memo } from 'react'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
-import { getActivityPosition } from '../../tools/tars'
+import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import { ROULETTE_LOGO } from '../../define/Res'
+import {ugLog} from "../../tools/UgLog";
 
 interface ActivitysProps {
   refreshing: boolean
@@ -46,8 +49,8 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
     <>
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(250), right: 0 }}
-        show={uid && redBagLogo && !isTest}
+        containerStyle={{ top: scale(220), right: 0 }}
+        show={redBag?.data}
         logo={redBagLogo}
         onPress={() => {
           PushHelper.pushRedBag(redBag)
@@ -55,35 +58,32 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(400), right: 0 }}
+        containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
         show={uid && roulette && !isTest}
-        logo={'dzp_btn'}
+        logo={ROULETTE_LOGO}
         onPress={() => {
           PushHelper.pushWheel(roulette)
         }}
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(500), right: 0 }}
+        containerStyle={{ top: scale(450), right: 0 }}
         enableFastImage={false}
         show={uid && goldenEggs && !isTest}
         logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
-        onPress={() => {
-          PushHelper.pushGoldenEggs(goldenEggs)
-        }}
+        onPress={goToUserCenterType.砸金蛋}
       />
       <ActivityComponent
         refreshing={refreshing}
-        containerStyle={{ top: scale(600), right: 0 }}
+        containerStyle={{ top: scale(570), right: 0 }}
         enableFastImage={false}
         show={uid && scratchs && !isTest}
         logo={'https://i.ibb.co/0J51pH9/scratch.png'}
-        onPress={() => {
-          PushHelper.pushCratchs(scratchs)
-        }}
+        onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {
+        ugLog('item=', item)
         const { image, position, linkCategory, linkPosition } = item
         return (
           <ActivityComponent

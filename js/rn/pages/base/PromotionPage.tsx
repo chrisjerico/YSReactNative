@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'reac
 import AutoHeightCouponComponent from '../../public/components/tars/AutoHeightCouponComponent'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import PushHelper from '../../public/define/PushHelper'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
@@ -29,55 +29,45 @@ const PromotionPage = (props: any) => {
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
+      console.log('-------------value------------', value)
       const { showCategory, style, list, categories } = value
       totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
+      let filterCategory = {}
+      list?.forEach((ele) => (filterCategory[ele?.category] = categories[ele?.category]))
       setLoading(false)
       // @ts-ignore
       setStyle(style)
       setList(totalList.current)
       setShowCategory(showCategory)
-      setCategories(Object.assign({}, categories, { '0': '全部' }))
+      setCategories(Object.assign({}, filterCategory, { '0': '全部' }))
     })
   }, [])
 
   const categoriesKey = Object.keys(categories)
 
   const handleOnPress = ({ setShowPop, item, index }) => {
-    const { linkCategory, linkPosition } = item ?? {}
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, linkPosition]).then((ret) => {
-          if (ret) return
-          switch (style) {
-            // 内页
-            case 'page': {
-              OCHelper.call(({ vc }) => ({
-                vc: {
-                  selectors: 'UGPromoteDetailController.new[setItem:]',
-                  args1: [item],
-                },
-                ret: {
-                  selectors: 'UGNavigationController.current.pushViewController:animated:',
-                  args1: [vc, true],
-                },
-              }))
-              break
-            }
-            // 弹框
-            case 'popup': {
-              setShowPop(true)
-              break
-            }
-            case 'slide': {
-              if (index == selectedItemIndex) {
-                setSelectedItemIndex(-1)
-              } else {
-                setSelectedItemIndex(index)
-              }
-              break
-            }
+        switch (style) {
+          // 内页
+          case 'page': {
+            PushHelper.pushPromoteDetail(item)
+            break
           }
-        })
+          // 弹框
+          case 'popup': {
+            setShowPop(true)
+            break
+          }
+          case 'slide': {
+            if (index == selectedItemIndex) {
+              setSelectedItemIndex(-1)
+            } else {
+              setSelectedItemIndex(index)
+            }
+            break
+          }
+        }
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_COUPON, {
@@ -191,3 +181,36 @@ const styles = StyleSheet.create({
 export default PromotionPage
 
 //OCHelper.call('PromotePopView.alloc.initWithFrame:[setItem:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [item])
+// OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [linkCategory, linkPosition]).then((ret) => {
+//   if (ret) return
+//   switch (style) {
+//     // 内页
+//     case 'page': {
+//       OCHelper.call(({ vc }) => ({
+//         vc: {
+//           selectors: 'UGPromoteDetailController.new[setItem:]',
+//           args1: [item],
+//         },
+//         ret: {
+//           selectors: 'UGNavigationController.current.pushViewController:animated:',
+//           args1: [vc, true],
+//         },
+//       }))
+//       break
+//     }
+//     // 弹框
+//     case 'popup': {
+//       setShowPop(true)
+//       break
+//     }
+//     case 'slide': {
+//       if (index == selectedItemIndex) {
+//         setSelectedItemIndex(-1)
+//       } else {
+//         setSelectedItemIndex(index)
+//       }
+//       break
+//     }
+//   }
+// })
+// break

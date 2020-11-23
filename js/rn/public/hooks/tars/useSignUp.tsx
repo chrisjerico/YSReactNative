@@ -23,29 +23,26 @@ const useSignUp = (options: Options = {}) => {
   })
   const signUp = async (params: UserReg) => {
     try {
-      if (Platform?.OS == 'ios') {
-        onStart && onStart()
-        const { usr, pwd } = params
-        const user_reg_response = await APIRouter.user_reg(params)
-        const user_reg_data = user_reg_response?.data?.data
-        const msg_reg_msg = user_reg_response?.data?.msg
-        console.log('--------user_reg_data-------', user_reg_data)
-        console.log('--------msg_reg_msg-------', msg_reg_msg)
-        if (user_reg_data) {
-          // 註冊成功
-          const { autoLogin } = user_reg_data
-          if (autoLogin) {
-            //登陸
-            await signIn({
-              account: usr,
-              password: pwd,
-            })
-          } else {
-            onSuccess && onSuccess()
-          }
+      onStart && onStart()
+      const { usr, pwd } = params
+      const user_reg_response = await APIRouter.user_reg(params)
+      const user_reg_data = user_reg_response?.data?.data
+      const msg_reg_msg = user_reg_response?.data?.msg
+      if (user_reg_data) {
+        // 註冊成功
+        const { autoLogin } = user_reg_data
+        if (autoLogin) {
+          //登陸
+          await signIn({
+            account: usr,
+            password: pwd,
+            device: Platform.OS == 'android' ? 2 : 3,
+          })
         } else {
-          onError && onError(msg_reg_msg)
+          onSuccess && onSuccess()
         }
+      } else {
+        onError && onError(msg_reg_msg)
       }
     } catch (error) {
       onError && onError(error)

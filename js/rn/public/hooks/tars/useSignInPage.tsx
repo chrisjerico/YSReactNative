@@ -1,18 +1,16 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import { UGStore } from '../../../redux/store/UGStore'
-import PushHelper from '../../define/PushHelper'
-import { LoginTo } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignIn from './useSignIn'
 import useSignOut from './useSignOut'
 import useSys from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import { ToastStatus } from '../../tools/tars'
-import useLogIn from '../temp/useLogIn'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { Platform } from 'react-native'
 
 interface SlidingVerification {
   nc_csessionid: string
@@ -53,25 +51,33 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
 
   const navigateToHomePage = useCallback(() => {
     homePage && navigate(homePage, {})
+    switch (Platform.OS) {
+      case 'ios':
+        break
+      case 'android':
+        ANHelper.callAsync(CMD.RELOAD_PAGE, { key: 'home_page' }).then()
+        break
+    }
   }, [])
 
   const { signIn } = useMemo(
     () =>
       useSignIn({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
-          if (loginTo == LoginTo.首页) {
-            navigateToHomePage()
-          } else {
-            navigateToHomePage()
-            PushHelper.pushUserCenterType(UGUserCenterType.我的页)
-          }
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          navigateToHomePage()
+          // if (loginTo == LoginTo.首页) {
+          //   navigateToHomePage()
+          // } else {
+          //   navigateToHomePage()
+          //   PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+          // }
+          showSuccess('登录成功')
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          showError(error ?? '登录失败')
           setSlideCode({
             nc_csessionid: undefined,
             nc_token: undefined,
@@ -91,14 +97,14 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     () =>
       useTryPlay({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
           navigateToHomePage()
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          showSuccess('登录成功')
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          showError(error ?? '登录失败')
         },
       }),
     []
@@ -108,7 +114,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     () =>
       useSignOut({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+          showLoading('正在退出...')
         },
         onSuccess: () => {
           hideLoading()
@@ -116,7 +122,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
           onSuccessSignOut && onSuccessSignOut()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+          showError(error ?? '退出失败')
         },
       }),
     []
@@ -172,6 +178,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
       password: password?.md5(),
       slideCode,
       fullName,
+      device: (Platform.OS == 'android' ? 2 : 3) as 2 | 3,
     }
     signIn(params)
   }
@@ -180,7 +187,22 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slideCode
   const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
-  const valid = account && password && loginVCode_valid ? true : false
+  // const valid = account && password && loginVCode_valid ? true : false
+  const account_valid = account?.length > 0
+  const password_valid = password?.length > 0
+  const valid = account_valid && password_valid && loginVCode_valid ? true : false
+
+  const getValidErrorMessage = () => {
+    if (!account_valid) {
+      return '请输入帐号'
+    } else if (!password_valid) {
+      return '请输入密码'
+    } else if (!loginVCode_valid) {
+      return '请滑动验证码'
+    } else {
+      return '不明错误'
+    }
+  }
 
   const value = {
     account,
@@ -206,13 +228,18 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   }
 
   const _signIn = () => {
-    const params = {
-      account: account,
-      //@ts-ignore
-      password: password?.md5(),
-      slideCode,
+    if (valid) {
+      const params = {
+        account: account,
+        //@ts-ignore
+        password: password?.md5(),
+        slideCode,
+        device: (Platform.OS == 'android' ? 2 : 3) as 2 | 3,
+      }
+      signIn(params)
+    } else {
+      showError(getValidErrorMessage() || '')
     }
-    signIn(params)
   }
 
   const reference = {

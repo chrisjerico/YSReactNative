@@ -1,20 +1,18 @@
 export enum RankingListType {
   不顯示 = 0,
   中奖排行榜 = 1,
-  投注排行榜 = 2
+  投注排行榜 = 2,
 }
-
 
 export enum LoginTo {
   首页 = '1',
-  我的页 = '0'
+  我的页 = '0',
 }
-
 
 export enum Necessity {
   隱藏 = '0',
   选填 = '1',
-  必填 = '2'
+  必填 = '2',
 }
 
 export enum SeriesId {
@@ -25,9 +23,8 @@ export enum SeriesId {
   棋牌 = 5,
   体育 = 6,
   导航链接 = 7,
-  // 1 普通彩票 2 真人视讯 3 捕鱼游戏 4 电子游戏 5 棋牌游戏 6 体育赛事 7导航链接 
+  // 1 普通彩票 2 真人视讯 3 捕鱼游戏 4 电子游戏 5 棋牌游戏 6 体育赛事 7导航链接
 }
-
 
 export enum SeriesIdEn {
   lottery = 1,
@@ -44,10 +41,15 @@ export enum SeriesIdEn {
 export enum PasswordStrength {
   不限制 = '0',
   数字字母 = '1',
-  数字字母字符 = '2'
+  数字字母字符 = '2',
 }
 
 export enum AgentType {
   用户注册 = 'user',
-  代理注册 = 'agent'
+  代理注册 = 'agent',
+}
+
+export enum AnnouncementType {
+  直接弹出 = '直接弹出',
+  登录后弹出 = '登录后弹出',
 }

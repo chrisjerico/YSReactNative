@@ -18,8 +18,12 @@ export function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+  }
+
+  // 测试环境（未上线的内容）
+  if (devConfig.isTest()) {
     // ezer
-    if (skitType.indexOf('利来') != -1) {
+    if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
@@ -29,14 +33,8 @@ export function setRnPageInfo() {
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
     }
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
-    }
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
-    }
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
     }
     if (skitType.indexOf('金星黑') != -1) {
       pages = pages.concat(JXHPages)
@@ -44,21 +42,9 @@ export function setRnPageInfo() {
     if (skitType.indexOf('白曜') != -1) {
       pages = pages.concat(BYPages)
     }
-  }
-
-  // 测试环境（未上线的内容）
-  if (devConfig.isTest()) {
-    if (skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
+    if (skitType.indexOf('凯时') != -1) {
+      pages = pages.concat(KSPages)
     }
-    if (skitType.indexOf('乐橙') != -1) {
-      pages = pages.concat(LCPages)
-    }
-    // tars
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
-    }
-
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -106,9 +92,11 @@ export function setRnPageInfo() {
     pages = pages.concat(BSHPages)
   }
   if (skitType.indexOf('香槟金') != -1) {
-    pages = pages.concat(XBJPages);
+    pages = pages.concat(XBJPages)
   }
-
+  if (skitType.indexOf('威尼斯') != -1) {
+    pages = pages.concat(WNSPages)
+  }
   // 替换原生页面
   RnPageModel.pages = pages
   switch (Platform.OS) {
@@ -121,33 +109,33 @@ export function setRnPageInfo() {
 }
 
 // 香槟金
-// const XBJPages = [
-//   {
-//     // 登录
-//     vcName: 'UGLoginViewController',
-//     rnName: PageName.XBJLoginPage,
-//     fd_prefersNavigationBarHidden: true,
-//     允许游客访问: true,
-//     允许未登录访问: true,
-//   },
-//   {
-//     // 注册
-//     vcName: 'UGRegisterViewController',
-//     rnName: PageName.XBJRegisterPage,
-//     fd_prefersNavigationBarHidden: true,
-//     允许游客访问: true,
-//     允许未登录访问: true,
-//   },
-//   {
-//     // 我的页
-//     tabbarItemPath: '/user',
-//     vcName: 'UGMineSkinViewController',
-//     rnName: PageName.XBJMinePage,
-//     fd_prefersNavigationBarHidden: true,
-//     允许游客访问: true,
-//     允许未登录访问: false,
-//   }
-// ];
+const XBJPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.XBJLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.XBJRegisterPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.XBJMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+]
 
 // 尊龙模板页面
 const ZLPages = [
@@ -436,8 +424,15 @@ const JXHPages = [
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
-  }
-];
+  },
+  {
+    vcName: 'UGPromotionsController',
+    rnName: PageName.PromotionPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+]
 
 // 白曜
 const BYPages = [

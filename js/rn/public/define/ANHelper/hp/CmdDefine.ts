@@ -16,6 +16,7 @@ export enum CMD {
   OPEN_NAVI_PAGE = 'OPEN_NAVI_PAGE', //打开导航界面
   OPEN_RED_BAD = 'OPEN_RED_BAD', //打开红包
   OPEN_ROULETTE = 'OPEN_ROULETTE', //打开大转盘界面
+  OPEN_ACTIVITIES = 'OPEN_ACTIVITIES', //打开活动
   OPEN_NOTICE = 'OPEN_NOTICE', //打开通知界面
   OPEN_POP_NOTICE = 'OPEN_POP_NOTICE', //打开弹窗口通知界面
   OPEN_COUPON = 'OPEN_COUPON', //打开优惠券
@@ -28,9 +29,10 @@ export enum CMD {
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
   CURRENT_PAGE = 'CURRENT_PAGE', //当前的界面
   VISIBLE_MAIN_TAB = 'VISIBLE_MAIN_TAB', //显示隐藏主页tab, 0 = VISIBLE, 4 = INVISIBLE, 8 = GONE
-  RELOAD = 'RELOAD', //重新加载界面, home_page 主页
+  RELOAD_PAGE = 'RELOAD_PAGE', //重新加载界面, home_page 主页
   APP_HOST = 'AppDefine.shared.Host', //交互，拿到 host
-  APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 site
+  APP_SITE = 'AppDefine.shared.SiteId', //交互，拿到 相对site
+  APP_REAL_SITE = 'AppDefine.shared.real.SiteId', //交互，拿到 实际site
   SITE_ENCRYPTION = 'SITE_ENCRYPTION', //当前站点是否加密
   ENCRYPTION = 'CMNetwork.encryptionCheckSign:', //加密参数
   ENCRYPTION_PARAMS = 'ENCRYPTION_PARAMS', //加密参数

@@ -3,6 +3,8 @@ import AppDefine from '../../public/define/AppDefine';
 import { UGBasePageProps } from '../base/UGPage';
 import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
+import WebView from 'react-native-webview';
+import { View } from 'react-native';
 
 
 interface JDVirtualCurrencyTutorialVars { }
@@ -13,6 +15,12 @@ export interface JDVirtualCurrencyTutorialProps extends UGBasePageProps<JDVirtua
 
 // 虚拟币充值教程
 export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialProps) => {
+  // c084
+  if (AppDefine.siteId == 'c084') {
+    return <C084 />
+  }
+
+  // 其他站点
   const { setProps, itemArry = [], imgH } = props;
 
   useEffect(() => {
@@ -27,14 +35,10 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
     });
   }, [])
 
-  // 识别原生iOS页面类型（充值还是在线支付）
-  const isRecharge = itemArry.map((ele) => {
-    if (ele?.webName == '钱包付款') {
-      return ele;
-    }
-  }).length > 0;
-
-  const imgURL = isRecharge ? 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg' : 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
+  let imgURL = 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
+  if (AppDefine.siteId == 'c116') {
+    imgURL = AppDefine.host + "/static/images/czjc/mobile/CGpayc213.jpg";
+  }
 
   return (
     <ScrollView>
@@ -49,4 +53,17 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
         }}
       />
     </ScrollView>);
+}
+
+
+
+function C084() {
+  return <View style={{ flex: 1 }}>
+    <WebView
+      style={{ flex: 1, marginTop: -44 }}
+      source={{
+        uri: AppDefine.host + '/mobile/#/bank/huobiTutorialsC084'
+      }}
+    />
+  </View>
 }

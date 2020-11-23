@@ -1,13 +1,13 @@
-import { UGStore } from '../../../redux/store/UGStore'
-import APIRouter from '../../network/APIRouter'
-import { httpClient } from '../../network/httpClient'
-import { UGBridge } from '../ANHelper/UGBridge'
-import AppDefine from '../AppDefine'
-import { OCCall } from './OCBridge/OCCall'
-import { OCEvent } from './OCBridge/OCEvent'
-import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
-import { stringToNumber } from '../../tools/tars'
-import DomainUrls, { initDomain } from '../../config/DomainUrls'
+import { UGStore } from '../../../redux/store/UGStore';
+import APIRouter from '../../network/APIRouter';
+import { httpClient } from '../../network/httpClient';
+import { UGBridge } from '../ANHelper/UGBridge';
+import AppDefine from '../AppDefine';
+import { OCCall } from './OCBridge/OCCall';
+import { OCEvent } from './OCBridge/OCEvent';
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
+import { stringToNumber } from '../../tools/tars';
+import {DomainUrls, initDomain} from "../../config/MultiDomainUrls";
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey
@@ -54,6 +54,10 @@ export class OCHelper extends OCEvent {
       AppDefine.host = host
       httpClient.defaults.baseURL = host
       AppDefine.siteId = siteId
+
+      // 配置iOS的域名
+      initDomain(siteId)
+
       // net
       const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners', 'system_mobileRight'].map(async (router) => {
         try {
@@ -72,16 +76,9 @@ export class OCHelper extends OCEvent {
       const gameLobby = net_response[2]?.data?.data ?? []
       const banner = net_response[3]?.data?.data ?? {}
       const rightMenu = net_response[4]?.data?.data ?? []
-      console.log('-------sysConf_net--------', sysConf_net)
+      console.log('--------sysConf_net-------', sysConf_net)
       UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
       UGStore.save()
-      // 修正旧版本原生代码版本号逻辑问题（1.60.xx以前）
-      OCHelper.call('NSBundle.mainBundle.infoDictionary.valueForKey:', ['CFBundleShortVersionString']).then((ver) => {
-        OCHelper.call('AppDefine.shared.setVersion:', [ver])
-      })
-
-      // 配置iOS的域名
-      initDomain(siteId)
     } catch (error) {
       console.log('-----error-----', error)
     }

@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { Alert, ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
@@ -12,6 +13,7 @@ import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP'
 import config from './config'
 import ButtonGroup from './views/ButtonGroup'
 import HomeHeader from './views/HomeHeader'
@@ -22,6 +24,8 @@ import ToolBlock from './views/ToolBlock'
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
 const WNZMinePage = () => {
+  const { current: v } = useRef<{} & JDSalaryListCP>({})
+
   const menu = useRef(null)
 
   const openMenu = () => {
@@ -32,7 +36,7 @@ const WNZMinePage = () => {
     menu?.current?.close()
   }
 
-  const { value, sign, rightMenus } = useMinePage({
+  const { value, sign, rightMenus, show } = useMinePage({
     homePage: PageName.WNZHomePage,
     onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
@@ -40,9 +44,9 @@ const WNZMinePage = () => {
 
   const { userInfo, sysInfo } = value
 
-  const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance } = userInfo
+  const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance, isTest } = userInfo
   const { mobile_logo, userCenterItems } = sysInfo
-
+  const { showBons } = show
   const { signOut } = sign
 
   // data handle
@@ -74,7 +78,8 @@ const WNZMinePage = () => {
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
-
+  // @ts-ignore
+  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -100,6 +105,7 @@ const WNZMinePage = () => {
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <ProfileBlock
+          showBonsTag={showBons}
           curLevelInt={curLevelInt}
           nextLevelInt={nextLevelInt}
           taskRewardTotal={taskRewardTotal}
@@ -108,6 +114,9 @@ const WNZMinePage = () => {
           backgroundImage={getHtml5Image(23, 'userBg')}
           signImage={getHtml5Image(23, 'qiaodao')}
           onPressSign={goToUserCenterType.每日签到}
+          onPressBonsTag={() => {
+            v?.showSalaryAlert && v?.showSalaryAlert()
+          }}
         />
         <ButtonGroup
           leftLogo={headrTools[0]?.logo}
@@ -157,7 +166,23 @@ const WNZMinePage = () => {
                     imageContainerStyle={{ width: '30%' }}
                     titleContainerStyle={{ aspectRatio: 3 }}
                     enableCircle={false}
-                    onPress={() => PushHelper.pushUserCenterType(code)}
+                    onPress={() => {
+                      if (isTest && (code == UGUserCenterType.个人信息 || code == UGUserCenterType.推荐收益)) {
+                        Alert.alert('温馨提示', '请先登录您的正式帐号', [
+                          {
+                            text: '取消',
+                          },
+                          {
+                            text: '马上登录',
+                            onPress: () => {
+                              push(PageName.WNZSignInPage)
+                            },
+                          },
+                        ])
+                      } else {
+                        PushHelper.pushUserCenterType(code)
+                      }
+                    }}
                   />
                 )
               }}
@@ -167,31 +192,36 @@ const WNZMinePage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={rightMenus}
+        menus={rightMenus?.length > 0 ? rightMenus : configMenus}
         renderMenuItem={({ item }) => {
-          const { name, gameId } = item
+          const { name, gameId, title, onPress } = item
           return (
             <MenuButton
-              title={name}
+              title={name ?? title}
               onPress={() => {
                 if (gameId == 31) {
                   signOut()
                 } else {
                   closeMenu()
-                  PushHelper.pushHomeGame(item)
+                  if (onPress) {
+                    onPress()
+                  } else {
+                    PushHelper.pushHomeGame(item)
+                  }
                 }
               }}
             />
           )
         }}
       />
+      <JDSalaryListCP c_ref={v} />
     </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#E0E0E0',
   },
 })
 

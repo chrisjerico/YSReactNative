@@ -1,6 +1,6 @@
-import { Alert, AlertButton, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
-import { UGAgentApplyInfo, UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
+import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
@@ -24,7 +24,7 @@ export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
+        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [data])
 
         break
       case 'android':
@@ -147,33 +147,6 @@ export default class PushHelper {
     })
   }
 
-  static pushGoldenEggs(goldenEggs: GoldenEgg[]) {
-    // const _goldenEggs = Object.assign({ clsName: 'DZPModel' }, goldenEggs?.[0])
-
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call(({ vc }) => {
-          return {
-            vc: {
-              selectors: 'EggFrenzyViewController.new',
-              modalPresentationStyle: 5,
-              // args1: [5],
-            },
-            ret: {
-              selectors: 'UGNavigationController.current.presentViewController:animated:',
-              args1: [vc, true],
-            },
-          }
-        })
-        // OCHelper.call('UGNavigationController.current.presentViewController:animated:', [{ selectors: 'EggFrenzyViewController.new', args1: [goldenEggs] }, true])
-        console.log('-------去砸Ｇ蛋')
-        break
-      case 'android':
-        break
-    }
-  }
-
-  static pushCratchs(scratchs: any) {}
   // 去彩票大廳 userCenter裡有
   // static pushLotteryLobby() {
   //   OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotterySelectController.new' }, true])
@@ -217,6 +190,25 @@ export default class PushHelper {
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_NOTICE, { rnString: notice })
+        break
+    }
+  }
+
+  static pushPromoteDetail(item) {
+    switch (Platform.OS) {
+      case 'ios':
+        OCHelper.call(({ vc }) => ({
+          vc: {
+            selectors: 'UGPromoteDetailController.new[setItem:]',
+            args1: [item],
+          },
+          ret: {
+            selectors: 'UGNavigationController.current.pushViewController:animated:',
+            args1: [vc, true],
+          },
+        }))
+        break
+      case 'android':
         break
     }
   }
@@ -280,7 +272,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.全民竞猜: {
-            showMessage('敬请期待');
+            showMessage('敬请期待')
             break
           }
           case UGUserCenterType.开奖走势: {
@@ -310,10 +302,9 @@ export default class PushHelper {
           }
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
-
-            showLoading();
+            showLoading()
             api.activity.scratchList().setCompletionBlock(({ data }) => {
-              hideLoading();
+              hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
                 return Object.assign({ clsName: 'ScratchModel' }, v);
@@ -333,25 +324,28 @@ export default class PushHelper {
           }
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
-
             showLoading()
             api.activity.goldenEggList().setCompletionBlock(({ data }) => {
-              hideLoading();
+              hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
-                const obj = Object.assign({ clsName: 'DZPModel' }, v);
-                obj.param = Object.assign({ clsName: 'DZPparamModel' }, obj.param);
-                obj.param.prizeArr = obj.param?.prizeArr?.map((v) => {
-                  return Object.assign({ clsName: 'DZPprizeModel' }, v);
-                });
-                return obj;
-              });
+                let obj = Object.assign({}, { clsName: 'DZPModel' }, v)
+                obj.param = Object.assign({}, { clsName: 'DZPparamModel' }, obj?.param)
+                obj.param.prizeArr = obj?.param?.prizeArr?.map((v) => {
+                  return Object.assign({ clsName: 'DZPprizeModel' }, v)
+                })
+                return obj
+              })
               if (list?.length) {
-                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
-                  selectors: 'EggFrenzyViewController.new[setItem:][setModalPresentationStyle:]',
-                  args1: [list[0]],
-                  args2: [5]
-                }, true, undefined])
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
+                  {
+                    selectors: 'EggFrenzyViewController.new[setItem:][setModalPresentationStyle:]',
+                    args1: [list[0]],
+                    args2: [5],
+                  },
+                  true,
+                  undefined,
+                ])
               }
             })
             break
@@ -399,9 +393,8 @@ export default class PushHelper {
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
-
               }
-            });
+            })
           }
         }
 
@@ -458,7 +451,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.个人信息: {
-            subId = MenuType.HYZX
+            subId = MenuType.GRXX
             break
           }
           case UGUserCenterType.建议反馈: {
@@ -478,9 +471,9 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.全民竞猜: {
-            subId = MenuType.QMJC;
+            subId = MenuType.QMJC
             // Toast('敬请期待')
-            break;
+            break
           }
           case UGUserCenterType.开奖走势: {
             // Toast('敬请期待')
@@ -500,7 +493,7 @@ export default class PushHelper {
               //httpClient.defaults.baseURL + '/index2.php'
               httpClient.defaults.baseURL + '/open_prize/index.mobile.html?navhidden=1'
             )
-            return;
+            return
           }
           case UGUserCenterType.彩票大厅: {
             subId = MenuType.GCDT
@@ -514,8 +507,30 @@ export default class PushHelper {
             subId = MenuType.GCDT
             break
           }
+          case UGUserCenterType.刮刮乐: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.scratchList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
+            })
+            return
+          }
+          case UGUserCenterType.砸金蛋: {
+            if (!UGUserModel.checkLogin()) return
+            showLoading()
+            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+              hideLoading()
+              ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
+            })
+            return
+          }
           case UGUserCenterType.我的页: {
             subId = MenuType.HYZX
+            break
+          }
+          case UGUserCenterType.开奖结果: {
+            subId = MenuType.KJJG
             break
           }
         }

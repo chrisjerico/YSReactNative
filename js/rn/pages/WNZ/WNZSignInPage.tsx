@@ -12,6 +12,8 @@ import { goToUserCenterType } from '../../public/tools/tars'
 import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
+import BottomGap from '../../public/views/temp/BottomGap'
+import config from './config'
 import MenuButton from './views/MenuButton'
 import SignHeader from './views/SignHeader'
 
@@ -36,6 +38,7 @@ const WNZSignInPage = () => {
 
   const { signIn, tryPlay, signOut } = sign
 
+  const configMenus = config.menuSignIn.concat(config.menus)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -58,18 +61,22 @@ const WNZSignInPage = () => {
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent
             ref={menu}
-            menus={rightMenus}
+            menus={rightMenus?.length > 0 ? rightMenus : configMenus}
             renderMenuItem={({ item }) => {
-              const { name, gameId } = item
+              const { name, gameId, title, onPress } = item
               return (
                 <MenuButton
-                  title={name}
+                  title={name ?? title}
                   onPress={() => {
                     if (gameId == 31) {
                       signOut()
                     } else {
                       closeMenu()
-                      PushHelper.pushHomeGame(item)
+                      if (onPress) {
+                        onPress()
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }}
                 />
@@ -77,6 +84,7 @@ const WNZSignInPage = () => {
             }}
           />
         </View>
+        <BottomGap />
       </ScrollView>
     </>
   )

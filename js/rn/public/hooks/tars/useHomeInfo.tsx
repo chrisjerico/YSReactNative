@@ -32,6 +32,12 @@ const localRouters = [
 
 const globalRouters = ['game_homeRecommend', 'system_config', 'system_banners', 'system_mobileRight']
 
+const routers = localRouters.concat(globalRouters)
+interface CallApis {
+  onStart: () => any
+  onSuccess: () => any
+}
+
 interface Value {
   rankList?: RankListModel
   homeGame?: HomeGamesModel
@@ -49,7 +55,7 @@ interface Value {
   scratchList?: ScratchListModel
 }
 
-const useHome = () => {
+const useHome = (dependency: any[]) => {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [value, setValue] = useState<Value>({})
@@ -63,10 +69,9 @@ const useHome = () => {
     UGStore.save()
   }
 
-  const callApis = async () => {
+  const callApis = async ({ onStart, onSuccess }: CallApis) => {
     try {
-      !loading && setRefreshing(true)
-      const routers = loading ? localRouters : localRouters.concat(globalRouters)
+      onStart && onStart()
       const response = await Promise.all(
         routers.map(async (router) => {
           try {
@@ -96,16 +101,29 @@ const useHome = () => {
     } catch (error) {
       console.log('--------useHome init error--------', error)
     } finally {
-      setLoading(false)
-      setRefreshing(false)
+      onSuccess && onSuccess()
     }
   }
 
-  const refresh = callApis
+  const refresh = () => {
+    callApis({
+      onStart: () => {
+        setRefreshing(true)
+      },
+      onSuccess: () => {
+        setRefreshing(false)
+      },
+    })
+  }
 
   useEffect(() => {
-    callApis()
-  }, [])
+    callApis({
+      onStart: () => {},
+      onSuccess: () => {
+        setLoading(false)
+      },
+    })
+  }, dependency)
 
   return {
     ...value,

@@ -34,6 +34,7 @@ import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 import {FuncTab} from "./views/FuncTab";
 import {ROULETTE_LOGO} from "../../public/define/Res";
+import Activitys from "../../public/views/tars/Activitys";
 
 const LEFHomePage = ({navigation, setProps}) => {
 
@@ -59,6 +60,8 @@ const LEFHomePage = ({navigation, setProps}) => {
     redBag,
     redBagLogo,
     roulette,
+    goldenEggs,
+    scratchs,
   } = value
 
   //ugLog('gameLobby= ', JSON.stringify(gameLobby))
@@ -166,6 +169,7 @@ const LEFHomePage = ({navigation, setProps}) => {
           />
 
           <FuncTab onPress={(code: number)=>{PushHelper.pushUserCenterType(code)}}/>
+
           <HomeTabView/>
 
           <CouponBlock
@@ -233,41 +237,15 @@ const LEFHomePage = ({navigation, setProps}) => {
           />
           <BottomGap />
         </ScrollView>
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(250), right: 0 }}
-          show={uid && redBagLogo && !isTest}
-          logo={redBagLogo}
-          onPress={() => {
-            PushHelper.pushRedBag(redBag)
-          }}
-        />
-        <ActivityComponent
-          refreshing={refreshing}
-          containerStyle={{ top: scale(400), right: 0 }}
-          enableFastImage={false}
-          show={uid && roulette && !isTest}
-          logo={ROULETTE_LOGO}
-          onPress={() => {
-            PushHelper.pushWheel(roulette)
-          }}
-        />
-        {floatAds?.map((item: any, index) => {
-          const { image, position, linkCategory, linkPosition } = item
-          return (
-            <ActivityComponent
-              key={index}
-              refreshing={refreshing}
-              containerStyle={getActivityPosition(position)}
-              enableFastImage={true}
-              show={uid && !isTest}
-              logo={image}
-              onPress={() => {
-                PushHelper.pushCategory(linkCategory, linkPosition)
-              }}
-            />
-          )
-        })}
+        <Activitys uid={uid}
+                   isTest={isTest}
+                   refreshing={refreshing}
+                   redBagLogo={redBagLogo}
+                   redBag={redBag}
+                   roulette={roulette}
+                   floatAds={floatAds}
+                   goldenEggs={goldenEggs}
+                   scratchs={scratchs} />
       </>
     )
   }
@@ -275,7 +253,7 @@ const LEFHomePage = ({navigation, setProps}) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: 'white',
   },
   notice: {
     backgroundColor: '#999999',

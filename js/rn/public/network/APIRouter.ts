@@ -1,34 +1,36 @@
-import { AxiosResponse } from "axios";
-import { Platform } from "react-native";
-import SlideCodeModel from '../../redux/model/other/SlideCodeModel';
-import { ANHelper } from "../define/ANHelper/ANHelper";
-import { CMD } from "../define/ANHelper/hp/CmdDefine";
-import { OCHelper } from '../define/OCHelper/OCHelper';
-import { UGStore } from './../../redux/store/UGStore';
-import { CachePolicyEnum, httpClient } from './httpClient';
-import { BalanceModel } from './Model/BalanceModel';
-import { BannerModel } from './Model/BannerModel';
-import { FloatADModel } from './Model/FloatADModel';
-import { HomeADModel } from './Model/HomeADModel';
-import { HomeGamesModel } from './Model/HomeGamesModel';
-import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel';
-import { LoginModel } from './Model/LoginModel';
-import { LottoGamesModel } from './Model/LottoGamesModel';
-import { NoticeModel } from './Model/NoticeModel';
-import { OnlineModel } from './Model/OnlineModel';
-import { PlayOddDataModel } from './Model/PlayOddDataModel';
-import { PromotionsModel } from './Model/PromotionsModel';
-import { RankListModel } from './Model/RankListModel';
-import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel';
-import { RegisterModel } from './Model/RegisterModel';
-import { SystemAvatarListModel } from './Model/SystemAvatarListModel';
-import { SystemConfigModel } from './Model/SystemConfigModel';
-import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel';
-import { TurntableListModel } from './Model/TurntableListModel';
-import { YueBaoStatModel } from './Model/YueBaoStatModel';
-import { HomeRecommendModel } from "./Model/HomeRecommendModel";
-import { UserInfoModel } from "./Model/UserInfoModel";
-import { ugLog } from "../tools/UgLog";
+import { AxiosResponse } from 'axios'
+import { Platform } from 'react-native'
+import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
+import { ANHelper } from '../define/ANHelper/ANHelper'
+import { CMD } from '../define/ANHelper/hp/CmdDefine'
+import { OCHelper } from '../define/OCHelper/OCHelper'
+import { UGStore } from './../../redux/store/UGStore'
+import { CachePolicyEnum, httpClient } from './httpClient'
+import { BalanceModel } from './Model/BalanceModel'
+import { BannerModel } from './Model/BannerModel'
+import { FloatADModel } from './Model/FloatADModel'
+import { HomeADModel } from './Model/HomeADModel'
+import { HomeGamesModel } from './Model/HomeGamesModel'
+import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
+import { LoginModel } from './Model/LoginModel'
+import { LottoGamesModel } from './Model/LottoGamesModel'
+import { NoticeModel } from './Model/NoticeModel'
+import { OnlineModel } from './Model/OnlineModel'
+import { PlayOddDataModel } from './Model/PlayOddDataModel'
+import { PromotionsModel } from './Model/PromotionsModel'
+import { RankListModel } from './Model/RankListModel'
+import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
+import { RegisterModel } from './Model/RegisterModel'
+import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
+import { SystemConfigModel } from './Model/SystemConfigModel'
+import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
+import { TurntableListModel } from './Model/TurntableListModel'
+import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { HomeRecommendModel } from './Model/HomeRecommendModel'
+import { UserInfoModel } from './Model/UserInfoModel'
+import { ugLog } from '../tools/UgLog'
+import { GoldenEggListModel } from './Model/GoldenEggListModel'
+import { ScratchListModel } from './Model/ScratchListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -84,11 +86,11 @@ class APIRouter {
     let token = null
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         token = user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         token = pms?.token
         break
     }
@@ -112,11 +114,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -130,11 +132,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -149,11 +151,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -167,11 +169,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -188,16 +190,14 @@ class APIRouter {
   static system_rankingList = async () => {
     return httpClient.get<RankListModel>('c=system&a=rankingList')
   }
-  static user_login = async ({ usr, pwd, ggCode, slideCode, fullName }: { usr: string; pwd: string; ggCode?: string; slideCode?: SlideCodeModel; fullName?: string }) => {
+  static user_login = async ({ usr, pwd, ggCode, slideCode, fullName, device }: { usr: string; pwd: string; ggCode?: string; slideCode?: SlideCodeModel; fullName?: string; device: 2 | 3 }) => {
     try {
-      if (slideCode) {
-        slideCode = {
-          nc_sid: slideCode.nc_csessionid,
-          nc_token: slideCode.nc_token,
-          nc_sig: slideCode.nc_sig,
-        }
+      const slideCodeParams = {
+        'slideCode[nc_sid]': slideCode?.nc_csessionid,
+        'slideCode[nc_sig]': slideCode?.nc_value,
+        'slideCode[nc_token]': slideCode?.nc_token,
       }
-      const params = { usr, pwd, ggCode, ...slideCode, fullName }
+      const params = { usr, pwd, ggCode, ...slideCodeParams, fullName, device }
       return httpClient.post<LoginModel>('c=user&a=login', params, {
         noToken: true,
       } as any)
@@ -209,11 +209,11 @@ class APIRouter {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = 'token=' + user?.token
         break
       case 'android':
-        let pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         tokenParams = 'token=' + pms?.token
         break
     }
@@ -227,7 +227,7 @@ class APIRouter {
     let tokenParams = {}
     switch (Platform.OS) {
       case 'ios':
-        let user = await OCHelper.call('UGUserModel.currentUser')
+        const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams = {
           token: user?.token,
         }

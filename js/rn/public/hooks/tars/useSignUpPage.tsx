@@ -6,7 +6,7 @@ import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
 import { navigate } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
-import { hideLoading, showLoading, UGLoadingType } from '../../widget/UGLoadingCP'
+import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
 import useSignUp from './useSignUp'
@@ -58,14 +58,14 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     () =>
       useTryPlay({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在登录...' })
+          showLoading('正在登录...')
         },
         onSuccess: () => {
-          showLoading({ type: UGLoadingType.Success, text: '登录成功' })
+          showSuccess('登录成功')
           navigateToHomePage()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '登录失败' })
+          showError(error ?? '登录失败')
         },
       }),
     []
@@ -75,21 +75,21 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     () =>
       useSignUp({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在注册...' })
+          showLoading('正在注册...')
         },
         onSuccessAutoLogin: () => {
-          showLoading({ type: UGLoadingType.Success, text: '自动登录成功' })
+          showSuccess('自动登录成功')
           navigateToHomePage()
         },
         onErrorAutoLogin: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '自动登录失败' })
+          showError(error ?? '自动登录失败')
         },
         onSuccess: () => {
-          showLoading({ type: UGLoadingType.Success, text: '注册成功' })
+          showSuccess('注册成功')
           navigateToSignInPage()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '注册失败' })
+          showError(error ?? '注册失败')
           setSlideCode({
             nc_csessionid: undefined,
             nc_token: undefined,
@@ -105,7 +105,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     () =>
       useSignOut({
         onStart: () => {
-          showLoading({ type: UGLoadingType.Loading, text: '正在退出...' })
+          showLoading('正在退出...')
         },
         onSuccess: () => {
           hideLoading()
@@ -113,7 +113,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
           onSuccessSignOut && onSuccessSignOut()
         },
         onError: (error) => {
-          showLoading({ type: UGLoadingType.Error, text: error ?? '退出失败' })
+          showError(error ?? '退出失败')
         },
       }),
     []
@@ -297,7 +297,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
         // @ts-ignore
         signUp(params)
       } else {
-        showLoading({ type: UGLoadingType.Error, text: getValidErrorMessage() })
+        showError(getValidErrorMessage() || '')
       }
     } else {
       Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])

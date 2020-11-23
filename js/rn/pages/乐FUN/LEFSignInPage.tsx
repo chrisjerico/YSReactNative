@@ -6,25 +6,24 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native'
-import FormComponent, {FormComponentProps} from '../../public/components/temp/FormComponent'
+import FormComponent, {FormComponentProps} from '../../public/components/tars/FormComponent'
 import PushHelper from '../../public/define/PushHelper'
-import useSignInPage from '../../public/hooks/temp/useSignInPage'
+import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import {PageName} from '../../public/navigation/Navigation'
 import {pop, popToRoot} from '../../public/navigation/RootNavigation'
 import {BZHThemeColor} from '../../public/theme/colors/BZHThemeColor'
 import {scale, scaleHeight} from '../../public/tools/Scale'
-import Button from '../../public/views/temp/Button'
+import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/temp/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import {UGUserCenterType} from '../../redux/model/全局/UGSysConfModel'
 import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
-import SignInFormList from "./views/SignInFormList";
+import SignInFormList, { SignInRenderFormProps } from '../../public/views/tars/SignInFormList'
 import {httpClient} from "../../public/network/httpClient";
 import AppDefine from "../../public/define/AppDefine";
 
 const LEFSignInPage = () => {
-  console.disableYellowBox = true
 
   const {
     sign,
@@ -32,7 +31,7 @@ const LEFSignInPage = () => {
     onChange,
     navigateTo,
     show,
-    slideCodeRef,
+    reference,
     valid,
   } = useSignInPage({
     homePage: PageName.LEFHomePage,
@@ -62,15 +61,13 @@ const LEFSignInPage = () => {
       </SafeAreaHeader>
       <ScrollView style={_styles.container} showsVerticalScrollIndicator={false}>
         <View style={_styles.formContainer}>
-          <SignInFormList
-            slideCodeRef={slideCodeRef}
-            slideCodeColor={'white'}
-            show={show}
-            onChange={onChange}
-            value={value}
-            Form={SignInForm}
-            hideRemember={true}
-          />
+          <SignInFormList slideCodeColor={'white'}
+                          reference={reference}
+                          show={show}
+                          onChange={onChange}
+                          value={value}
+                          showCheckBox={false}
+                          renderForm={SignInForm} />
           <Button
             title={'立即登录'}
             disabled={!valid}
@@ -118,17 +115,33 @@ const LEFSignInPage = () => {
   )
 }
 
-const SignInForm = (props: FormComponentProps) => (
-  <FormComponent
-    {...props}
-    containerStyle={_styles.input}
-    inputContainerStyle={{borderColor: 'transparent'}}
-    leftIcon={{
-      ...props.leftIcon,
-      color: LEFThemeColor.乐FUN.textColor2,
-    }}
-  />
-)
+// const SignInForm = (props: FormComponentProps) => (
+//   <FormComponent
+//     {...props}
+//     containerStyle={_styles.input}
+//     inputContainerStyle={{borderColor: 'transparent'}}
+//     leftIcon={{
+//       ...props.leftIcon,
+//       color: LEFThemeColor.乐FUN.textColor2,
+//     }}
+//   />
+// )
+
+const SignInForm = (props: SignInRenderFormProps) => {
+  // const { leftIconTitle } = props
+  return (
+    <FormComponent
+      {...props}
+      containerStyle={{ marginBottom: scale(10) }}
+      inputContainerStyle={_styles.input}
+      leftIconProps={{
+        ...props.leftIconProps,
+        color: LEFThemeColor.乐FUN.textColor2,
+      }}
+      placeholderTextColor={'#9D9D9D'}
+    />
+  )
+}
 
 const _styles = StyleSheet.create({
   container: {

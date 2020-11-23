@@ -5,36 +5,29 @@ import React from 'react'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
 import { PageName } from '../../public/navigation/Navigation'
-import { UGColor, UGThemeColor } from '../../public/theme/UGThemeColor'
+import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
+import { UGThemeConst } from '../../public/theme/const/UGThemeConst'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { UGColor } from '../../public/theme/UGThemeColor'
 import { deepMergeProps } from '../../public/tools/FUtils'
+import { ugLog } from '../../public/tools/UgLog'
 import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
-import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
-import { ugLog } from "../../public/tools/UgLog";
-import StringUtils from "../../public/tools/StringUtils";
-import { Platform } from "react-native";
-import { ANHelper } from "../../public/define/ANHelper/ANHelper";
-import { CMD } from "../../public/define/ANHelper/hp/CmdDefine";
-import { UGThemeConst } from "../../public/theme/const/UGThemeConst";
-import { ScrollView } from 'react-native-gesture-handler'
-
 
 // Props
 export interface UGBasePageProps<P extends UGBasePageProps = {}, F = {}> {
   // React-Navigation
-  navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}>; // 导航助手
-  route?: { name: PageName, params: F };
+  navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
+  route?: { name: PageName; params: F }
 
   // 提供自定义api给页面使用
-  setProps?(props?: P, willRender?: boolean): void;// 设置Props并刷新
+  setProps?(props?: P, willRender?: boolean): void // 设置Props并刷新
 
   // —————————— 配置UI ——————————
-  didFocus?: (p: F) => void;// 成为焦点时回调
-  backgroundColor?: string[]; // 背景色
-  backgroundImage?: string;
-  navbarOpstions?: UGNavigationBarProps;
+  didFocus?: (p: F) => void // 成为焦点时回调
+  backgroundColor?: string[] // 背景色
+  backgroundImage?: string
+  navbarOpstions?: UGNavigationBarProps
 }
 
 // HOC
@@ -52,21 +45,21 @@ export default (Page: Function) => {
       navigation.removeListener('focus', null)
       navigation.addListener('focus', () => {
         const { name, params = {} } = this.props.route
-        const { didFocus } = this.newProps;
+        const { didFocus } = this.newProps
         console.log('成为焦点', name, params)
 
         if (lastParams !== params) {
-          lastParams = params;
-          didFocus && didFocus(params);
+          lastParams = params
+          didFocus && didFocus(params)
         } else {
-          didFocus && didFocus({});
+          didFocus && didFocus({})
         }
-        this.setProps({});
+        this.setProps({})
       })
       navigation.removeListener("transitionEnd", null)
       navigation.addListener("transitionEnd", (e) => {
         if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
-          this._showMainTab();
+          this._showMainTab()
         }
       })
       // 监听dispatch
@@ -94,29 +87,29 @@ export default (Page: Function) => {
     _showMainTab = () => {
       const {
         mobileTemplateCategory, // 模版分类ID
-      } = UGStore.globalProps.sysConf;
+      } = UGStore.globalProps.sysConf
 
       if (mobileTemplateCategory == UGThemeConst.黑金) {
         //检查一下Native主页下面的tab是显示还是隐藏
         switch (Platform.OS) {
-          case "ios":
-            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-            break;
-          case "android":
-            ugLog('ug page menu');
-            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 });
-            break;
+          case 'ios':
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true])
+            break
+          case 'android':
+            ugLog('ug page menu')
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 8 })
+            break
         }
       } else {
         //检查一下Native主页下面的tab是显示还是隐藏
         switch (Platform.OS) {
-          case "ios":
-            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
-            break;
-          case "android":
-            ugLog('ug page menu');
-            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 });
-            break;
+          case 'ios':
+            OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true])
+            break
+          case 'android':
+            ugLog('ug page menu')
+            ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 })
+            break
         }
       }
     }
@@ -139,7 +132,7 @@ export default (Page: Function) => {
         <LinearGradient colors={backgroundColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
           <FastImage source={{ uri: backgroundImage }} style={{ flex: 1 }} resizeMode={'stretch'}>
             {!navbarOpstions.hidden && <UGNavigationBar {...navbarOpstions} />}
-            <Page  {...this.newProps} setProps={this.setProps.bind(this)} />
+            <Page {...this.newProps} setProps={this.setProps.bind(this)} />
           </FastImage>
         </LinearGradient>
       ) // navigation={this.props.navigation}

@@ -8,7 +8,7 @@ import {UGStore} from "../../../redux/store/UGStore";
 import {NA_DATA} from "./hp/DataDefine";
 import {ugLog} from "../../tools/UgLog";
 import {stringToNumber} from "../../tools/tars";
-import {initDomain} from "../../config/DomainUrls";
+import {initDomain} from "../../config/MultiDomainUrls";
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
@@ -86,6 +86,7 @@ export class ANHelper extends ANEvent {
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
 
+    //ugLog('host=  =', host)
     AppDefine.host = host;
     httpClient.defaults.baseURL = host
     AppDefine.siteId = siteId
@@ -116,5 +117,14 @@ export class ANHelper extends ANEvent {
 
     UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net })
     UGStore.save()
+  }
+
+  /**
+   * 刷新域名
+   * @param host
+   */
+  static refreshHost(host?: string) {
+    AppDefine.host = host;
+    httpClient.defaults.baseURL = host
   }
 }

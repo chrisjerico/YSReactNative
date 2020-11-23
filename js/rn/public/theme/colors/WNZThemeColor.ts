@@ -6,12 +6,10 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
   威尼斯: {
     skitType: '威尼斯',
     skitString: '威尼斯',
-    tabBarBgColor: '#ffffff',
+    tabBarBgColor: '#000000',
     tabNoSelectColor: '#9D9D9D',
     homeContentSubColor: '#f2f2f2', // 額度轉換Tab
-    get bgColor() {
-      return [this.tabBarBgColor, this.tabBarBgColor]
-    },
+    bgColor: ['#ffffff', '#ffffff'],
     navBarBgColor: [themeColor, themeColor], // 跳頁面最上面的Header顏色
     tabSelectedColor: themeColor,
     get progressBgColor() {

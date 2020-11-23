@@ -9,9 +9,10 @@ export interface CheckBoxProps {
   containerStyle?: ViewStyle | ViewStyle
   labelTextStyle?: TextStyle | TextStyle
   defaultValue?: boolean
+  nonCheckContainerStyle?: ViewStyle
 }
 
-const CheckBox = ({ onPress, label, containerStyle, labelTextStyle, defaultValue = false }: CheckBoxProps) => {
+const CheckBox = ({ onPress, label, containerStyle, labelTextStyle, defaultValue = false, nonCheckContainerStyle }: CheckBoxProps) => {
   const [check, setCheck] = useState(defaultValue)
   return (
     <TouchableWithoutFeedback
@@ -20,7 +21,7 @@ const CheckBox = ({ onPress, label, containerStyle, labelTextStyle, defaultValue
         setCheck(!check)
       }}>
       <View style={[styles.container, containerStyle]}>
-        {check ? <Feather name={'check'} color={'#ffffff'} style={styles.iconStyle} size={scale(25)} /> : <View style={styles.nonCheckContainer}></View>}
+        {check ? <Feather name={'check'} color={'#ffffff'} style={styles.iconStyle} size={scale(25)} /> : <View style={[styles.nonCheckContainer, nonCheckContainerStyle]} />}
         <Text style={[styles.label, labelTextStyle]}>{label}</Text>
       </View>
     </TouchableWithoutFeedback>

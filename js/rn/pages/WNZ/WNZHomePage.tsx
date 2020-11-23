@@ -1,10 +1,12 @@
 import React, { useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { PageName } from '../../public/navigation/Navigation'
+import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
@@ -65,6 +67,9 @@ const WNZHomePage = () => {
     },
   ]
 
+  // @ts-ignore
+  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+
   return (
     <HomePage
       {...homeInfo}
@@ -79,6 +84,7 @@ const WNZHomePage = () => {
       noticeBlockStyles={noticeBlockStyles}
       couponBlockStyles={couponBlockStyles}
       animatedRankComponentStyles={animatedRankComponentStyles}
+      containerStyle={styles.container}
       renderHeader={() => (
         <HomeHeader
           uid={uid}
@@ -118,7 +124,14 @@ const WNZHomePage = () => {
                   circleColor={'transparent'}
                   onPress={() => {
                     if (gameId == 9) {
-                      goToPromotionPage()
+                      switch (Platform.OS) {
+                        case 'ios':
+                          goToPromotionPage()
+                          break
+                        case 'android':
+                          PushHelper.pushHomeGame(item)
+                          break
+                      }
                     } else {
                       PushHelper.pushHomeGame(item)
                     }
@@ -173,7 +186,7 @@ const WNZHomePage = () => {
               )
             }}
             renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon } = item
+              const { logo, name, hotIcon, tipFlag, subType, icon, gameId } = item
               const flagType = parseInt(tipFlag)
               return (
                 <View style={styles.gameContainer}>
@@ -205,8 +218,12 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
-                        //@ts-ignore
-                        PushHelper.pushHomeGame(item)
+                        if (!gameId) {
+                          navigate(PageName.WNZGameLobbyPage, { title: name })
+                        } else {
+                          //@ts-ignore
+                          PushHelper.pushHomeGame(item)
+                        }
                       }
                     }}
                   />
@@ -263,18 +280,22 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={rightMenus}
+          menus={rightMenus?.length > 0 ? rightMenus : configMenus}
           renderMenuItem={({ item }) => {
-            const { name, gameId } = item
+            const { name, gameId, title, onPress } = item
             return (
               <MenuButton
-                title={name}
+                title={name ?? title}
                 onPress={() => {
                   if (gameId == 31) {
                     signOut()
                   } else {
                     closeMenu()
-                    PushHelper.pushHomeGame(item)
+                    if (onPress) {
+                      onPress()
+                    } else {
+                      PushHelper.pushHomeGame(item)
+                    }
                   }
                 }}
               />
@@ -288,7 +309,7 @@ const WNZHomePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#E0E0E0',
   },
   gameContainer: {
     width: '25%',

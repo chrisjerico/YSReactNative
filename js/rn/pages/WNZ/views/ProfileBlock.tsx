@@ -12,9 +12,11 @@ interface ProfileBlockProps {
   backgroundImage: string
   signImage: string
   onPressSign: () => any
+  showBonsTag?: boolean
+  onPressBonsTag?: () => any
 }
 
-const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign }: ProfileBlockProps) => {
+const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle, taskRewardTotal, backgroundImage, signImage, onPressSign, showBonsTag, onPressBonsTag }: ProfileBlockProps) => {
   const curLevelInt_f = parseFloat(curLevelInt) || 0
   const nextLevelInt_f = parseFloat(nextLevelInt) || 0
   const taskRewardTotal_f = parseFloat(taskRewardTotal) || 0
@@ -55,9 +57,11 @@ const ProfileBlock = ({ curLevelInt, nextLevelInt, curLevelTitle, nextLevelTitle
             </View>
           </View>
           <View style={{ flex: 3 }}>
-            <TouchableWithoutFeedback>
-              <FastImage source={{ uri: 'http://test60f.fhptcdn.com/images/lqfl.png' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
-            </TouchableWithoutFeedback>
+            {showBonsTag && (
+              <TouchableWithoutFeedback onPress={onPressBonsTag}>
+                <FastImage source={{ uri: 'http://test60f.fhptcdn.com/images/lqfl.png' }} style={{ width: '100%', height: scale(30), marginTop: scale(10) }} resizeMode={'contain'} />
+              </TouchableWithoutFeedback>
+            )}
             <TouchableWithoutFeedback onPress={onPressSign}>
               <View style={styles.signContainer}>
                 <ImageBackground style={{ width: '100%', aspectRatio: 1, justifyContent: 'center', alignItems: 'center' }} source={{ uri: signImage }}>

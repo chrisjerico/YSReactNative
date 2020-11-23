@@ -12,6 +12,9 @@ import { RankListModel } from '../../network/Model/RankListModel'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { TurntableListModel } from '../../network/Model/TurntableListModel'
 import { stringToNumber } from '../../tools/tars'
+import {GoldenEggListModel} from "../../network/Model/GoldenEggListModel";
+import {ScratchListModel} from "../../network/Model/ScratchListModel";
+import {ugLog} from "../../tools/UgLog";
 
 const localRouters = [
   'system_rankingList',
@@ -28,6 +31,8 @@ const localRouters = [
   'game_homeRecommend',
   'system_config',
   'system_banners',
+  'activity_goldenEggList',
+  'activity_scratchList',
 ]
 
 const globalRouters = [
@@ -48,6 +53,8 @@ interface Value {
   turntableList?: TurntableListModel;
   redBag?: RedBagDetailActivityModel;
   floatAd?: FloatADModel;
+  goldenEggsList?: GoldenEggListModel
+  scratchsList?: ScratchListModel
 }
 
 const useHome = () => {
@@ -79,9 +86,11 @@ const useHome = () => {
         try {
           return await APIRouter[router]()
         } catch (error) {
+          ugLog('callApis=', JSON.stringify(error))
           // console.log(error)
         }
       }))
+
       !loading && updateStore(response)
       setValue({
         rankList: response[0] ? response[0]?.data : value?.rankList,
@@ -94,7 +103,9 @@ const useHome = () => {
         lotteryGame: response[7] ? response[7]?.data : value?.lotteryGame,
         turntableList: response[8] ? response[8]?.data : value?.turntableList,
         redBag: response[9] ? response[9]?.data : value?.redBag,
-        floatAd: response[10] ? response[10]?.data : value?.floatAd
+        floatAd: response[10] ? response[10]?.data : value?.floatAd,
+        goldenEggsList: response[14] ? response[14]?.data : value?.goldenEggsList,
+        scratchsList: response[15] ? response[15]?.data : value?.scratchsList
       })
     } catch (error) {
       console.log("--------useHome init error--------", error)
@@ -120,6 +131,8 @@ const useHome = () => {
     lotteryNumber,
     lotteryGame,
     turntableList,
+    goldenEggsList,
+    scratchsList,
     redBag,
     floatAd,
   } = value
@@ -136,6 +149,8 @@ const useHome = () => {
     lotteryNumber,
     lotteryGame,
     turntableList,
+    goldenEggsList,
+    scratchsList,
     redBag,
     floatAd,
     refresh
