@@ -30,7 +30,6 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
   const rightMenus = UGStore.globalProps.rightMenu
-
   const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)

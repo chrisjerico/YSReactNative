@@ -71,35 +71,38 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     []
   )
 
-  const { signUp } = useMemo(
-    () =>
-      useSignUp({
-        onStart: () => {
-          showLoading('正在注册...')
+  const { signUp } = useSignUp({
+    onStart: () => {
+      showLoading('正在注册...')
+    },
+    onSuccessAutoLogin: () => {
+      showSuccess('自动登录成功')
+      navigateToHomePage()
+    },
+    onErrorAutoLogin: (error) => {
+      showError(error ?? '自动登录失败')
+    },
+    onSuccess: () => {
+      showSuccess('注册成功')
+      UGStore.dispatch({
+        type: 'merge',
+        sign: {
+          account: account,
+          password: password,
         },
-        onSuccessAutoLogin: () => {
-          showSuccess('自动登录成功')
-          navigateToHomePage()
-        },
-        onErrorAutoLogin: (error) => {
-          showError(error ?? '自动登录失败')
-        },
-        onSuccess: () => {
-          showSuccess('注册成功')
-          navigateToSignInPage()
-        },
-        onError: (error) => {
-          showError(error ?? '注册失败')
-          setSlideCode({
-            nc_csessionid: undefined,
-            nc_token: undefined,
-            nc_sig: undefined,
-          })
-          slideCodeRef?.current?.reload()
-        },
-      }),
-    []
-  )
+      })
+      navigateToSignInPage()
+    },
+    onError: (error) => {
+      showError(error ?? '注册失败')
+      setSlideCode({
+        nc_csessionid: undefined,
+        nc_token: undefined,
+        nc_sig: undefined,
+      })
+      slideCodeRef?.current?.reload()
+    },
+  })
 
   const { signOut } = useMemo(
     () =>
