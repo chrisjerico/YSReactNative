@@ -40,6 +40,7 @@ import RankListCP from '../../public/widget/RankList'
 import { UGStore } from '../../redux/store/UGStore'
 import MarqueePopupView from '../common/MarqueePopupView'
 import NavBlock from './component/homePage/NavBlock'
+import Carousel from 'react-native-banner-carousel'
 
 
 
