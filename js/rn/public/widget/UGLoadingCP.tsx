@@ -20,7 +20,7 @@ export enum UGLoadingType {
 export class UGLoadingProps {
   type: UGLoadingType
   text?: string
-  backgroundColor?: string[] // 支持渐变色
+  backgroundColor?: string[] // 支持渐变色,数量必须>1，否则Android控件出问题
   pointerEvents?: boolean // 点击穿透
   reloadClick?: () => void
   setHideLoading?: (hideLoading: () => void) => void
