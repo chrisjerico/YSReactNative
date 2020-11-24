@@ -186,7 +186,7 @@ const WNZHomePage = () => {
               )
             }}
             renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon, gameId } = item
+              const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
               const flagType = parseInt(tipFlag)
               return (
                 <View style={styles.gameContainer}>
@@ -215,11 +215,12 @@ const WNZHomePage = () => {
                     }}
                     enableCircle={false}
                     onPress={() => {
+                      console.log('-------item-------', item)
                       if (subType) {
                         showGameSubType(index)
                       } else {
                         if (!gameId) {
-                          navigate(PageName.WNZGameLobbyPage, { title: name })
+                          navigate(PageName.WNZGameLobbyPage, { subId, name })
                         } else {
                           //@ts-ignore
                           PushHelper.pushHomeGame(item)

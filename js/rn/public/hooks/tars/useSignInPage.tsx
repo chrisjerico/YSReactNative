@@ -170,7 +170,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     [account, password]
   )
 
-  const onChangeFullName = (fullName: string) => {
+  const onSubmitFullName = (fullName: string) => {
     const params = {
       account: account,
       //@ts-ignore
@@ -214,7 +214,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     onChangePassword,
     onChangeRemember,
     onChangeSlideCode,
-    onChangeFullName,
+    onSubmitFullName,
   }
 
   const navigateTo = {

@@ -34,13 +34,13 @@ interface OnChange {
   onChangeAccount?: (text: string) => any
   onChangeRemember?: (remember: boolean) => any
   onChangeSlideCode?: (data: any) => any
-  onChangeFullName?: (text: string) => any
+  onSubmitFullName?: (text: string) => any
 }
 
 const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, showCheckBox = true, accountFormProps, passwordFormProps, checkBoxProps, reference }: SignInFormListProps) => {
   const { remember, account, password } = value
 
-  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onChangeFullName } = onChange
+  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onSubmitFullName } = onChange
 
   const { loginVCode } = show
 
@@ -88,7 +88,7 @@ const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, sho
           backgroundColor: slideCodeColor,
         }}
       />
-      <NeedNameInputComponent ref={needNameInputRef} onChangeFullName={onChangeFullName} />
+      <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName} />
     </>
   )
 }

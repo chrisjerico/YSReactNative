@@ -1,10 +1,10 @@
 import React from 'react'
-import {Platform, ScrollView} from 'react-native'
+import { Platform, ScrollView } from 'react-native'
 import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import {navigate, pop} from '../../public/navigation/RootNavigation'
+import { navigate, pop } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
 import { stringToNumber } from '../../public/tools/tars'
@@ -17,16 +17,26 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGStore } from '../../redux/store/UGStore'
 
-const WNZGameLobbyPage = ({ route }) => {
-  const { title } = route?.params ?? { title: '棋牌游戏' }
+const subIds = {
+  42: '真人',
+  43: '棋牌',
+  44: '电子',
+  45: '体育',
+  46: '电竞',
+  47: '彩票',
+  48: '捕鱼',
+}
 
+const WNZGameLobbyPage = ({ route }) => {
+  const { subId, name } = route?.params ?? { subId: 43, name: '' }
+  const title = subIds[subId]
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   const bannersInterval = stringToNumber(banner?.interval)
   const banners = banner?.list ?? []
-  const item = gameLobby?.find((item: any) => title.includes(item?.categoryName))
+  const item = gameLobby?.find((item: any) => title?.includes(item?.categoryName))
   const { games, categoryName } = item ?? {}
-
+  console.log('------gameLobby-----', gameLobby)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -38,13 +48,13 @@ const WNZGameLobbyPage = ({ route }) => {
                 OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
                   navigate(PageName.WNZHomePage, {})
                 })
-                break;
+                break
               case 'android':
                 pop()
-                break;
+                break
             }
           }}
-          title={title}
+          title={name}
         />
       </SafeAreaHeader>
       <ScrollView showsVerticalScrollIndicator={false}>

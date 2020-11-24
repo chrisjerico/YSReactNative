@@ -2,10 +2,10 @@ import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'r
 import DialogInput from 'react-native-dialog-input'
 
 interface NeedNameInputComponentProps {
-  onChangeFullName?: (text: string) => any
+  onSubmitFullName?: (text: string) => any
 }
 
-const NeedNameInputComponent = ({ onChangeFullName }: NeedNameInputComponentProps, ref: any) => {
+const NeedNameInputComponent = ({ onSubmitFullName }: NeedNameInputComponentProps, ref: any) => {
   const [isDialogVisible, setIsDialogVisible] = useState(false)
   useImperativeHandle(ref, () => ({
     reload: () => {
@@ -15,7 +15,7 @@ const NeedNameInputComponent = ({ onChangeFullName }: NeedNameInputComponentProp
 
   const submitInput = (text: string) => {
     setIsDialogVisible(false)
-    onChangeFullName && onChangeFullName(text)
+    onSubmitFullName && onSubmitFullName(text)
   }
 
   return (
