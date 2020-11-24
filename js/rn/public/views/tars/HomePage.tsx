@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback } from 'react'
+import React, { memo, ReactElement, useCallback } from 'react'
 import { ListRenderItem, RefreshControl, StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native'
 import AnimatedRankComponent from '../../components/tars/AnimatedRankComponent'
 import AutoHeightCouponComponent from '../../components/tars/AutoHeightCouponComponent'
@@ -251,6 +251,14 @@ const HomePage = ({
   }
 }
 
+const areEqual = (prevProps, nextProps) => {
+  if (prevProps?.loading !== nextProps?.loading || prevProps?.refreshing !== nextProps?.refreshing || prevProps?.uid !== nextProps?.uid) {
+    return false
+  } else {
+    return true
+  }
+}
+
 const styles = StyleSheet.create({
   bannerContainer: {
     aspectRatio: 540 / 218,
@@ -259,4 +267,4 @@ const styles = StyleSheet.create({
     top: scale(-210),
   },
 })
-export default HomePage
+export default memo(HomePage, areEqual)

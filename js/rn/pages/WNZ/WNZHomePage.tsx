@@ -215,7 +215,6 @@ const WNZHomePage = () => {
                     }}
                     enableCircle={false}
                     onPress={() => {
-                      console.log('-------item-------', item)
                       if (subType) {
                         showGameSubType(index)
                       } else {
@@ -245,8 +244,8 @@ const WNZHomePage = () => {
               return (
                 <List
                   uniqueKey={'WNZHomePageTabComponent' + index}
-                  legacyImplementation={true}
-                  removeClippedSubviews={true}
+                  // legacyImplementation={true}
+                  // removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
