@@ -122,7 +122,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5049uuu.com',
   ],
   'c001': [
-    'https://c47app1.com',
+    'https://c47c47appapp.com',
   ],
   'c002': [
     'https://55114.vip',
@@ -318,7 +318,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://4823app.com',
   ],
   'c246': [
-    'https://547758.com',
+    'https://847758.com',
   ],
   'c251': [
     'https://2420app.app',
