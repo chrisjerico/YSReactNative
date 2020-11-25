@@ -186,7 +186,11 @@ export default class PushHelper {
   static pushNoticePopUp(notice: string) {
     switch (Platform.OS) {
       case 'ios':
-        OCHelper.call('UGNoticePopView.alloc.initWithFrame:[setContent:].show', [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)], [notice])
+        OCHelper.call(
+          'PromotePopView.alloc.initWithFrame:[setContent:title:].show',
+          [NSValue.CGRectMake(20, AppDefine.height * 0.1, AppDefine.width - 40, AppDefine.height * 0.8)],
+          [notice, '公告详情']
+        )
         break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_NOTICE, { rnString: notice })
@@ -303,17 +307,21 @@ export default class PushHelper {
               hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
-                return Object.assign({ clsName: 'ScratchModel' }, v);
+                return Object.assign({ clsName: 'ScratchModel' }, v)
               })
               const scratchWinList = data?.scratchWinList?.map((v) => {
-                return Object.assign({ clsName: 'ScratchWinModel' }, v);
-              });
+                return Object.assign({ clsName: 'ScratchWinModel' }, v)
+              })
               if (scratchList?.length) {
-                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [{
-                  selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
-                  args1: [{ clsName: 'ScratchDataModel', scratchList, scratchWinList }],
-                  args2: [5]
-                }, true, undefined])
+                OCHelper.call('UINavigationController.current.presentViewController:animated:completion:', [
+                  {
+                    selectors: 'ScratchController.new[setItem:][setModalPresentationStyle:]',
+                    args1: [{ clsName: 'ScratchDataModel', scratchList, scratchWinList }],
+                    args2: [5],
+                  },
+                  true,
+                  undefined,
+                ])
               }
             })
             break
