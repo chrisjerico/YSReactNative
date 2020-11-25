@@ -57,7 +57,7 @@ export const HomeTabView = ({ homeGames }) => {
         h = h + Math.ceil((list.length - 2) / 3) * 100
       }
     } else {
-      h = list.length >= 2 ? Math.ceil(list.length / 2) * 165 + h : h
+      h = list.length >= 2 ? Math.ceil(list.length / 2) * 153 + h : h
     }
     setHeight(h)
   }
