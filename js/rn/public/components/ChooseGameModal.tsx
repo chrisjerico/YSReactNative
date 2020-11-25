@@ -1,22 +1,10 @@
-import {Dimensions, FlatList, Text, TouchableOpacity, View} from "react-native";
-import Modal from "react-native-modal";
-import * as React from "react";
-import {useEffect, useState} from "react";
-import APIRouter from "../network/APIRouter";
-import {getGameList} from "../utils/getGameList";
+import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native'
+import Modal from 'react-native-modal'
+import * as React from 'react'
+import { useState } from 'react'
 
-export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame}) => {
-    let [games, setGames] = useState([])
+export const ChooseGameModal = ({showModal, setShowModal, setCurrentGame, games}) => {
     const [chosen, setChosen] = useState()
-    useEffect(() => {
-        APIRouter.game_lotteryGames().then(({data: res}) => {
-            let arr = []
-            res.data.map((item) => {
-                arr = arr.concat(item.list)
-            })
-            setGames(getGameList(arr))
-        })
-    }, [])
     return (
         <Modal
             hideModalContentWhileAnimating={false}
