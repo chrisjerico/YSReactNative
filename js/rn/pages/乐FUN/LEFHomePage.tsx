@@ -33,7 +33,6 @@ import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {ugLog} from "../../public/tools/UgLog";
 import {HomeTabView} from "./views/HomeTabView";
 import {FuncTab} from "./views/FuncTab";
-import {ROULETTE_LOGO} from "../../public/define/Res";
 import Activitys from "../../public/views/tars/Activitys";
 
 const LEFHomePage = ({navigation, setProps}) => {

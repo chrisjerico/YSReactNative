@@ -5,8 +5,8 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import { ROULETTE_LOGO } from '../../define/Res'
 import {ugLog} from "../../tools/UgLog";
+import {ROULETTE_LOGO} from "../../../Res/icon/Res";
 
 interface ActivitysProps {
   refreshing: boolean
