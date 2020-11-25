@@ -18,6 +18,6 @@ export const checkTrue = (value?: any) => value != null && value === true;
 export const arrayEmpty = (value?: Array<any>) => value == null || value.length <= 0;
 export const arrayLength = (value?: Array<any>) => arrayEmpty(value) ? 0 : value.length;
 export const anyNull = (value?: any) => value == null || value == 'undefined';
-export const anyEmpty = (value?: any) => anyNull(value) || value == "";
+export const anyEmpty = (value?: any) => anyNull(value) || value == "" || value.length <= 0;
 export const anyLength = (value?: any) => anyEmpty(value) ? 0 : value.length;
 
