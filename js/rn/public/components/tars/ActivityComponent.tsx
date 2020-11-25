@@ -17,7 +17,7 @@ const ActivityComponent = ({ logo, onPress, show, enableFastImage = true, contai
   const [hide, setHide] = useState(false)
 
   useEffect(() => {
-    setHide(false)
+    refreshing && setHide(false)
   }, [refreshing])
 
   if (show && !hide) {

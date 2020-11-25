@@ -1,12 +1,10 @@
 import React, { memo } from 'react'
-import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
+import { ROULETTE_LOGO } from '../../define/Res'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import { ROULETTE_LOGO } from '../../define/Res'
-import {ugLog} from "../../tools/UgLog";
 
 interface ActivitysProps {
   refreshing: boolean
@@ -83,7 +81,6 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {
-        ugLog('item=', item)
         const { image, position, linkCategory, linkPosition } = item
         return (
           <ActivityComponent

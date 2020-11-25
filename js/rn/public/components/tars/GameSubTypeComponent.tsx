@@ -19,6 +19,7 @@ interface GameSubTypeComponentProps {
   subTypeNumColumns: number
   uniqueKey: string
   contentContainerStyle?: StyleProp<ViewStyle>
+  reRender?: boolean
 }
 
 interface RenderSubType {
@@ -64,30 +65,18 @@ const GameSubTypeComponent = ({
       <List
         uniqueKey={uniqueKey + 'mainGames'}
         contentContainerStyle={contentContainerStyle}
-        legacyImplementation={true}
-        removeClippedSubviews={true}
+        removeClippedSubviews
         numColumns={numColumns}
         data={mainGames}
         renderItem={({ item, index }) => {
           return renderGame({ item, index, showGameSubType })
         }}
       />
-      {subType?.length > 0 && (
-        <List
-          uniqueKey={uniqueKey + 'subType'}
-          legacyImplementation
-          removeClippedSubviews={true}
-          numColumns={subTypeNumColumns}
-          style={subTypeContainerStyle}
-          data={subType}
-          renderItem={renderSubType}
-        />
-      )}
+      {subType?.length > 0 && <List uniqueKey={uniqueKey + 'subType'} removeClippedSubviews numColumns={subTypeNumColumns} style={subTypeContainerStyle} data={subType} renderItem={renderSubType} />}
       <List
         uniqueKey={uniqueKey + 'subGames'}
         contentContainerStyle={contentContainerStyle}
-        legacyImplementation
-        removeClippedSubviews={true}
+        removeClippedSubviews
         numColumns={numColumns}
         data={subGames}
         renderItem={({ item, index }) => {

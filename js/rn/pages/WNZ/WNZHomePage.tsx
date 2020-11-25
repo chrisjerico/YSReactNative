@@ -186,7 +186,7 @@ const WNZHomePage = () => {
               )
             }}
             renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon, gameId } = item
+              const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
               const flagType = parseInt(tipFlag)
               return (
                 <View style={styles.gameContainer}>
@@ -219,7 +219,7 @@ const WNZHomePage = () => {
                         showGameSubType(index)
                       } else {
                         if (!gameId) {
-                          navigate(PageName.WNZGameLobbyPage, { title: name })
+                          navigate(PageName.WNZGameLobbyPage, { subId, name })
                         } else {
                           //@ts-ignore
                           PushHelper.pushHomeGame(item)
@@ -244,8 +244,8 @@ const WNZHomePage = () => {
               return (
                 <List
                   uniqueKey={'WNZHomePageTabComponent' + index}
-                  legacyImplementation={true}
-                  removeClippedSubviews={true}
+                  // legacyImplementation={true}
+                  // removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore

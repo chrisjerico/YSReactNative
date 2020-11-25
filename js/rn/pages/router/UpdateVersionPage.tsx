@@ -259,7 +259,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 等待原生皮肤UI刷新完再进入首页
         setTimeout(() => {
           OCHelper.launchFinish()
-        }, 500);
+        }, 500)
         break
       case 'android':
         setProps({ bCodePush: true })

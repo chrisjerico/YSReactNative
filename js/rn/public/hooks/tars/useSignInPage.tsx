@@ -30,7 +30,6 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
   const rightMenus = UGStore.globalProps.rightMenu
-
   const { loginVCode, loginTo } = sysInfo
   // states
   const [account, setAccount] = useState(sign?.account)
@@ -171,7 +170,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     [account, password]
   )
 
-  const onChangeFullName = (fullName: string) => {
+  const onSubmitFullName = (fullName: string) => {
     const params = {
       account: account,
       //@ts-ignore
@@ -215,7 +214,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     onChangePassword,
     onChangeRemember,
     onChangeSlideCode,
-    onChangeFullName,
+    onSubmitFullName,
   }
 
   const navigateTo = {
