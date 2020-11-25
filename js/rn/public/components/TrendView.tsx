@@ -62,7 +62,7 @@ const TrendView = ({ navigation }) => {
   }, [])
 
   const getData = () => {
-    showLoading(undefined, ['#0005']);
+    showLoading(undefined, ['#0005', '#0005']);//数量必须>1，否则Android控件出问题
     APIRouter.getTrendData(currentGame.id.toString()).then((result) => {
       setTrendData(getTrendData(defaultNumber, currentGame.gameType, result.data.data.list))
       hideLoading();

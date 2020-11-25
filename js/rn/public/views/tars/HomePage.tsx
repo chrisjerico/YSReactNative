@@ -237,7 +237,8 @@ const HomePage = ({
                   PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
                 }}
                 onPressPromotion={goToPromotionPage}
-                debug={false}
+                version={'20201125'}
+                debug={true}
               />
               {renderListFooterBottomComponent && renderListFooterBottomComponent()}
               <BottomGap />

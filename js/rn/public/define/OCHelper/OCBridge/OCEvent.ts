@@ -1,3 +1,4 @@
+import { Skin1 } from './../../../theme/UGSkinManagers';
 import { OCHelper } from './../OCHelper';
 import { UGStore } from './../../../../redux/store/UGStore';
 import { OCCall } from './OCCall';
@@ -40,25 +41,31 @@ export class OCEvent extends OCCall {
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: { vcName: PageName; rnAction: 'jump' | 'push' | 'refresh' }) => {
       UGUserModel.updateFromYS()
+      const page = RnPageModel.getPageName(params.vcName)
+      const currentPage = getCurrentPage()
 
-      if (params.vcName) {
-        const page = RnPageModel.getPageName(params.vcName)
-        if (params.rnAction == 'push') {
+      let action = params.rnAction;
+      if (action == 'jump' && currentPage == page && getStackLength() < 2) {
+        action = 'refresh';
+      }
+      else if (action == 'refresh' && page.indexOf('Login') != -1) {
+        action = 'jump';
+      }
+
+      switch (action) {
+        case 'push':
           console.log('push到rn页面：', params.vcName, params)
           push(page, params)
-        } else {
-          const currentPage = getCurrentPage()
-          if (params.rnAction == 'refresh' || (currentPage == page && getStackLength() < 2)) {
-            console.log('成为焦点：', currentPage)
-            const { didFocus } = UGStore.getPageProps(currentPage)
-            didFocus && didFocus()
-          } else {
-            console.log('跳转到rn页面：', params.vcName, params)
-            jumpTo(page, params, true)
-          }
-        }
-      } else {
-        console.log('页面为空', params)
+          break
+        case 'jump':
+          console.log('跳转到rn页面：', params.vcName, params)
+          jumpTo(page, params, true)
+          break
+        case 'refresh':
+        default:
+          console.log('成为焦点：', currentPage, params)
+          const { didFocus } = UGStore.getPageProps(currentPage)
+          didFocus && didFocus()
       }
     })
 
@@ -76,6 +83,9 @@ export class OCEvent extends OCCall {
     this.addEvent(OCEventType.AppDefineSetupSiteAndSkinParams, () => {
       if (AppDefine.siteId == 'c116') {
         OCHelper.call('AppDefine.shared.setIsNoOnLineDoc:', [false]);
+      }
+      if (Skin1.skitType == '香槟金') {
+        OCHelper.call('AppDefine.shared.setIsTabMassageBadge:', [false]);
       }
     })
     this.addEvent(OCEventType.UGNotificationUserLogout, () => {

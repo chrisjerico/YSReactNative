@@ -31,7 +31,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
   const { setProps, list } = props;
   const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
   const { mBonsSwitch, checkinSwitch, missionSwitch } = UGStore.globalProps.sysConf;
-  const { avatar, usr, curLevelGrade, curLevelTitle, balance } = UGStore.globalProps.userInfo;
+  const { avatar, usr, curLevelGrade, curLevelTitle, balance, unreadMsg } = UGStore.globalProps.userInfo;
   const style = {
     navImageTintColor: Skin1.isBlack ? undefined : Skin1.navBarBgColor[0],
     showCard: "c245".indexOf(AppDefine.siteId) == -1,
@@ -52,6 +52,9 @@ export const XBJMinePage = (props: XBJMineProps) => {
           PushHelper.pushUserCenterType(item.code);
         }}>
         <FastImage source={{ uri: item.logo }} style={{ margin: 10, marginLeft: 13, width: 26, height: 26 }} />
+        {item.code == UGUserCenterType.站内信 && unreadMsg != 0 && (
+          <Text style={{ marginLeft: -20, marginRight: 6, marginTop: 7, paddingHorizontal: 2.5, minWidth: 14, height: 14, textAlign: 'center', borderRadius: 7, overflow: 'hidden', backgroundColor: 'red', color: '#fff', fontSize: 10 }}>{unreadMsg}</Text>
+        )}
         <Text style={{ marginTop: 14, marginLeft: 6, color: style.textColor }}>{item.name}</Text>
       </TouchableOpacity>,
       <View style={{ marginLeft: 55, height: 0.5, backgroundColor: style.lineColor }} />,
@@ -116,20 +119,20 @@ export const XBJMinePage = (props: XBJMineProps) => {
             <View style={{ flex: 1 }}></View>
             <View style={{ marginTop: -5, marginRight: -3 }}>
               {missionSwitch != '1' && <TouchableOpacity onPress={() => {
-                v?.showSalaryAlert && v?.showSalaryAlert();
+                PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/nPtkMTD/missionhall-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</Text>
                 </FastImage>
               </TouchableOpacity>}
               {checkinSwitch != '0' && <TouchableOpacity onPress={() => {
-                v?.showSalaryAlert && v?.showSalaryAlert();
+                PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/fCtpFGP/dailysign-2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
                 </FastImage>
               </TouchableOpacity>}
-              {(1 || mBonsSwitch != false) && <TouchableOpacity onPress={() => {
+              {(mBonsSwitch == false) && <TouchableOpacity onPress={() => {
                 v?.showSalaryAlert && v?.showSalaryAlert();
               }}>
                 <FastImage source={{ uri: 'https://i.ibb.co/q94nPCN/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >

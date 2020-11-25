@@ -118,7 +118,7 @@ const PickAvatarComponent = ({
                 const { url, filename } = item
                 // ugLog("avatar url2 ", url, filename)
                 return (
-                  <TouchableNativeFeedback onPress={(event)=>{
+                  <TouchableNativeFeedback key={url} onPress={(event)=>{
                     ugLog('url = ')
                   }}>
                     <Avatar

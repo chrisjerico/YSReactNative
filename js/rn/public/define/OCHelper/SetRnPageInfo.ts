@@ -18,6 +18,10 @@ export function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+  }
+
+  // 测试环境（未上线的内容）
+  if (devConfig.isTest()) {
     // ezer
     if (Skin1.skitType.indexOf('利来') != -1) {
       pages = pages.concat(LLPages)
@@ -28,35 +32,6 @@ export function setRnPageInfo() {
     // tars
     if (skitType.indexOf('宝石红') != -1) {
       pages = pages.concat(BSHPages)
-    }
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
-    }
-    if (skitType.indexOf('六合厅') != -1) {
-      pages = pages.concat(LHTPages)
-    }
-    if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
-    }
-    if (skitType.indexOf('金星黑') != -1) {
-      pages = pages.concat(JXHPages)
-    }
-    if (skitType.indexOf('白曜') != -1) {
-      pages = pages.concat(BYPages)
-    }
-  }
-
-  // 测试环境（未上线的内容）
-  if (devConfig.isTest()) {
-    if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
-    }
-    if (skitType.indexOf('乐橙') != -1) {
-      pages = pages.concat(LCPages)
-    }
-    // tars
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat(WNSPages)
     }
     if (skitType.indexOf('六合厅') != -1) {
       pages = pages.concat(LHTPages)
@@ -114,7 +89,6 @@ export function setRnPageInfo() {
   if (skitType.indexOf('威尼斯') != -1) {
     pages = pages.concat(WNSPages)
   }
-
   // 替换原生页面
   RnPageModel.pages = pages
   switch (Platform.OS) {

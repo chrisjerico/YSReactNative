@@ -2,18 +2,24 @@
 ./make_android_bundle.sh
 cd ..
 
-#发布的渠道: 正式 Production，测试 Staging
+#发布的渠道: Staging, Arc, Pyro, Smith, Ian, a002, c001 等等
+#发布所有渠道，输入: all
 pub_type=$1
 
-# if [ "$type" == "1" ]; then
-#     pub_type="Production"
-# else
-#     pub_type="Staging"
-# fi
-
-pub_message="修复问题"
-pub_version="1.0.1"
-
-echo $pub_type $pub_message $pub_version
-
-code-push release UGBWApp ./android/bundle $pub_version --deploymentName $pub_type  --description $pub_message --mandatory true
+if [ "$type" == "all" ]; then
+	all_sites=cmd/all_sites.txt
+	string=$(cat ${all_sites})  
+	array=(${string//,/ })  
+	 
+	for var in ${array[@]}
+	do
+	   cmd/push_x_bundle.sh $var
+	done
+else
+	array=(${pub_type//,/ })
+	 
+	for var in ${array[@]}
+	do
+	   cmd/push_x_bundle.sh $var
+	done
+fi

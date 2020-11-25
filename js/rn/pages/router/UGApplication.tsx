@@ -67,6 +67,8 @@ import HJHomePage from '../黑金/HJHomePage'
 import BYSignInPage from '../BY/BYSignInPage'
 import BYSignUpPage from '../BY/BYSignUpPage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
+import { XBJMinePage } from '../香槟金/XBJMinePage'
+import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -98,6 +100,9 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LCMinePage} component={UGPage(LCMinePage)} />
         <Router.TabScreen name={PageName.LCHomePage} component={UGPage(LCHomePage)} />
         <Router.TabScreen name={PageName.TransitionPage} component={UGPage(TransitionPage)} options={{ unmountOnBlur: true }} />
+        <Router.TabScreen name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
+        <Router.TabScreen name={PageName.XBJRegisterPage} component={UGPage(XBJRegisterPage)} />
+        <Router.TabScreen name={PageName.XBJMinePage} component={UGPage(XBJMinePage)} />
         <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />

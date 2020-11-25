@@ -169,6 +169,7 @@ const LEFHomePage = ({navigation, setProps}) => {
           />
 
           <FuncTab onPress={(code: number)=>{PushHelper.pushUserCenterType(code)}}/>
+
           <HomeTabView/>
 
           <CouponBlock
@@ -252,7 +253,7 @@ const LEFHomePage = ({navigation, setProps}) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: LEFThemeColor.乐FUN.homeContentSubColor,
+    backgroundColor: 'white',
   },
   notice: {
     backgroundColor: '#999999',

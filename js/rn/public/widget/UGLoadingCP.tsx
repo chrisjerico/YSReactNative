@@ -34,6 +34,12 @@ let hideLoadingFunc = undefined
 export function showMessage(text?: string) {
   showHUD({ type: UGLoadingType.Message, text: text, pointerEvents: true })
 }
+
+/**
+ *
+ * @param text
+ * @param backgroundColor //数量必须>1，否则Android控件出问题
+ */
 export function showLoading(text?: string, backgroundColor?: string[]) {
   showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor })
 }
@@ -43,6 +49,13 @@ export function showSuccess(text?: string) {
 export function showError(text?: string) {
   showHUD({ type: UGLoadingType.Error, text: text })
 }
+
+/**
+ *
+ * @param text
+ * @param backgroundColor 必须为数组，否则Android会崩溃
+ * @param reloadClick
+ */
 export function showReload(text?: string, backgroundColor?: string[], reloadClick?: () => void) {
   showHUD({ type: UGLoadingType.Reload, text: text, backgroundColor: backgroundColor, reloadClick: reloadClick })
 }
