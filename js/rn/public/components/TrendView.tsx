@@ -12,6 +12,7 @@ import { BaseScreen } from '../../pages/乐橙/component/BaseScreen'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { hideLoading, showLoading } from '../widget/UGLoadingCP'
 import { getGameList } from '../utils/getGameList'
+import { anyEmpty } from '../tools/Ext'
 
 const TrendView = ({ navigation }) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -76,8 +77,12 @@ const TrendView = ({ navigation }) => {
   const getData = () => {
     showLoading(undefined, ['#0005', '#0005'])//数量必须>1，否则Android控件出问题
     APIRouter.getTrendData(currentGame.id.toString()).then((result) => {
-      setTrendData(getTrendData(defaultNumber, currentGame.gameType, result.data.data.list))
       hideLoading()
+      if (anyEmpty(result?.data?.data?.list)) {
+        setTrendData(null)
+      } else {
+        setTrendData(getTrendData(defaultNumber, currentGame.gameType, result.data.data.list))
+      }
     })
   }
 
@@ -439,7 +444,7 @@ const TrendView = ({ navigation }) => {
               marginLeft: 4,
             }}
             onPress={() => setShowModal(true)}>
-            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 6 }}>选择彩种</Text>
+            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>选择彩种</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -451,7 +456,7 @@ const TrendView = ({ navigation }) => {
               marginLeft: 4,
             }}
             onPress={() => PushHelper.pushCategory(1, currentGame.id)}>
-            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 6 }}>去下注</Text>
+            <Text style={{ color: 'white', paddingHorizontal: 8, paddingVertical: 4, fontSize: 14 }}>去下注</Text>
           </TouchableOpacity>
         </View>
         <ChooseGameModal
@@ -464,9 +469,11 @@ const TrendView = ({ navigation }) => {
           showModal={showModal}
         />
       </View>
-      <View style={{ flexDirection: 'row', height: 30 }}>
-        <View style={{ backgroundColor: '#d7213a', height: 50, width: 160, position: 'absolute' }} />
-      </View>
+      {
+        Platform.OS == 'ios' ? <View style={{ flexDirection: 'row', height: 30 }}>
+          <View style={{ backgroundColor: '#d7213a', height: 50, width: 160, position: 'absolute' }} />
+        </View> : null
+      }
     </BaseScreen>
   )
 }
