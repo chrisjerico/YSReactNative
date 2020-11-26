@@ -28,7 +28,7 @@ const TrendView = ({ navigation }) => {
   }, [defaultNumber, currentGame, games])
 
   useEffect(() => {
-    APIRouter.game_lotteryGames().then(({data: res}) => {
+    APIRouter.game_lotteryGames().then(({ data: res }) => {
       let arr = []
       res.data.map((item) => {
         arr = arr.concat(item.list)
@@ -44,12 +44,10 @@ const TrendView = ({ navigation }) => {
   //     // OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
   //     // const unsubscribe = navigation.addListener('focus', () => {
   //     //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-  //     //     console.log("123456")
   //     // }, []);
   //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
   //     // const _unsubscribe = navigation.addListener('blur', () => {
   //     //     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
-  //     //     console.log("123456")
   //     // }, []);
   //
   //     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -147,50 +145,15 @@ const TrendView = ({ navigation }) => {
           )
         })}
       </View>
-      <ScrollView bounces={false}>
-        <ScrollView horizontal={true} bounces={false}>
-          <View>
-            <View style={{ flexDirection: 'row' }}>
-              <View style={{ flexDirection: 'row', flex: 1 }}>
-                {trendData?.data[0].map((item, index) => {
-                  return index == 0 ? (
-                    <Text
-                      style={{
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                        width: 120,
-                        textAlign: 'center',
-                      }}>
-                      期数
-                    </Text>
-                  ) : (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        textAlign: 'center',
-                        width: (screenWidth - 120) / 6,
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                      }}>
-                      {getHeaderIndex(currentGame.gameType, index)}
-                    </Text>
-                  )
-                })}
-              </View>
-            </View>
-            {trendData?.data.map((item, index) => (
-              <View key={`row-${index}`} style={{ flexDirection: 'row' }}>
+      {trendData && trendData.data ?
+        <ScrollView bounces={false}>
+          <ScrollView horizontal={true} bounces={false}>
+            <View>
+              <View style={{ flexDirection: 'row' }}>
                 <View style={{ flexDirection: 'row', flex: 1 }}>
-                  {item.map((data, i) => {
-                    return i == 0 ? (
+                  {trendData?.data[0].map((item, index) => {
+                    return index == 0 ? (
                       <Text
-                        key={`${index}-${i}`}
                         style={{
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
@@ -200,26 +163,77 @@ const TrendView = ({ navigation }) => {
                           width: 120,
                           textAlign: 'center',
                         }}>
-                        {data}
+                        期数
                       </Text>
                     ) : (
-                      <View
+                      <Text
+                        key={`header-${index}`}
                         style={{
-                          backgroundColor: '#d4d4ed',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          textAlign: 'center',
+                          width: (screenWidth - 120) / 6,
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
                         }}>
-                        {typeof data === 'string' ? (
-                          <>
-                            <View
-                              style={{
-                                width: 28,
-                                height: 28,
-                                backgroundColor: '#409fdc',
-                                borderRadius: 14,
-                                position: 'absolute',
-                              }}
-                            />
+                        {getHeaderIndex(currentGame.gameType, index)}
+                      </Text>
+                    )
+                  })}
+                </View>
+              </View>
+              {trendData?.data.map((item, index) => (
+                <View key={`row-${index}`} style={{ flexDirection: 'row' }}>
+                  <View style={{ flexDirection: 'row', flex: 1 }}>
+                    {item.map((data, i) => {
+                      return i == 0 ? (
+                        <Text
+                          key={`${index}-${i}`}
+                          style={{
+                            backgroundColor: '#c2adac',
+                            borderWidth: 0.5,
+                            borderColor: '#ccc',
+                            color: '#ffffff',
+                            paddingVertical: 8,
+                            width: 120,
+                            textAlign: 'center',
+                          }}>
+                          {data}
+                        </Text>
+                      ) : (
+                        <View
+                          style={{
+                            backgroundColor: '#d4d4ed',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          {typeof data === 'string' ? (
+                            <>
+                              <View
+                                style={{
+                                  width: 28,
+                                  height: 28,
+                                  backgroundColor: '#409fdc',
+                                  borderRadius: 14,
+                                  position: 'absolute',
+                                }}
+                              />
+                              <Text
+                                style={{
+                                  height: 34.5,
+                                  textAlign: 'center',
+                                  width: (screenWidth - 120) / 6,
+                                  borderWidth: 0.5,
+                                  borderColor: '#ccc',
+                                  color: '#ffffff',
+                                  fontSize: 14,
+                                  paddingVertical: 8,
+                                }}>
+                                {data}
+                              </Text>
+                            </>
+                          ) : (
                             <Text
                               style={{
                                 height: 34.5,
@@ -227,187 +241,177 @@ const TrendView = ({ navigation }) => {
                                 width: (screenWidth - 120) / 6,
                                 borderWidth: 0.5,
                                 borderColor: '#ccc',
-                                color: '#ffffff',
-                                fontSize: 14,
+                                color: '#aaa',
                                 paddingVertical: 8,
+                                fontSize: 14,
                               }}>
                               {data}
                             </Text>
-                          </>
-                        ) : (
-                          <Text
-                            style={{
-                              height: 34.5,
-                              textAlign: 'center',
-                              width: (screenWidth - 120) / 6,
-                              borderWidth: 0.5,
-                              borderColor: '#ccc',
-                              color: '#aaa',
-                              paddingVertical: 8,
-                              fontSize: 14,
-                            }}>
-                            {data}
-                          </Text>
-                        )}
-                      </View>
+                          )}
+                        </View>
+                      )
+                    })}
+                  </View>
+                </View>
+              ))}
+              <>
+                <View style={{ flexDirection: 'row' }}>
+                  {trendData?.totalTimes.map((item, index) => {
+                    return index == 0 ? (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                          width: 120,
+                          textAlign: 'center',
+                        }}>
+                        {item}
+                      </Text>
+                    ) : (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          textAlign: 'center',
+                          width: (screenWidth - 120) / 6,
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                        }}>
+                        {item}
+                      </Text>
                     )
                   })}
                 </View>
-              </View>
-            ))}
-            <>
-              <View style={{ flexDirection: 'row' }}>
-                {trendData?.totalTimes.map((item, index) => {
-                  return index == 0 ? (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                        width: 120,
-                        textAlign: 'center',
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        textAlign: 'center',
-                        width: (screenWidth - 120) / 6,
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                      }}>
-                      {item}
-                    </Text>
-                  )
+                <View style={{ flexDirection: 'row' }}>
+                  {trendData?.averageOmission.map((item, index) => {
+                    return index == 0 ? (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                          width: 120,
+                          textAlign: 'center',
+                        }}>
+                        {item}
+                      </Text>
+                    ) : (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          textAlign: 'center',
+                          width: (screenWidth - 120) / 6,
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                        }}>
+                        {item}
+                      </Text>
+                    )
+                  })}
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  {trendData?.maximumOmission.map((item, index) => {
+                    return index == 0 ? (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                          width: 120,
+                          textAlign: 'center',
+                        }}>
+                        {item}
+                      </Text>
+                    ) : (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          textAlign: 'center',
+                          width: (screenWidth - 120) / 6,
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                        }}>
+                        {item}
+                      </Text>
+                    )
+                  })}
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  {trendData?.maximumConnection.map((item, index) => {
+                    return index == 0 ? (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                          width: 120,
+                          textAlign: 'center',
+                        }}>
+                        {item}
+                      </Text>
+                    ) : (
+                      <Text
+                        key={`header-${index}`}
+                        style={{
+                          textAlign: 'center',
+                          width: (screenWidth - 120) / 6,
+                          backgroundColor: '#c2adac',
+                          borderWidth: 0.5,
+                          borderColor: '#ccc',
+                          color: '#ffffff',
+                          paddingVertical: 8,
+                        }}>
+                        {item}
+                      </Text>
+                    )
+                  })}
+                </View>
+              </>
+            </View>
+            {trendData?.positionArr && trendData?.positionArr?.length > 0 && (
+              <Svg height={'100%'} width={'100%'} style={{ position: 'absolute', flex: 1 }}>
+                {trendData?.positionArr.map((item, index) => {
+                  return index != 0 && <Line key={index} x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x}
+                                             y2={trendData?.positionArr[index - 1].y} stroke="#409fdc" strokeWidth="1" />
                 })}
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                {trendData?.averageOmission.map((item, index) => {
-                  return index == 0 ? (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                        width: 120,
-                        textAlign: 'center',
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        textAlign: 'center',
-                        width: (screenWidth - 120) / 6,
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                      }}>
-                      {item}
-                    </Text>
-                  )
-                })}
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                {trendData?.maximumOmission.map((item, index) => {
-                  return index == 0 ? (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                        width: 120,
-                        textAlign: 'center',
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        textAlign: 'center',
-                        width: (screenWidth - 120) / 6,
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                      }}>
-                      {item}
-                    </Text>
-                  )
-                })}
-              </View>
-              <View style={{ flexDirection: 'row' }}>
-                {trendData?.maximumConnection.map((item, index) => {
-                  return index == 0 ? (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                        width: 120,
-                        textAlign: 'center',
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    <Text
-                      key={`header-${index}`}
-                      style={{
-                        textAlign: 'center',
-                        width: (screenWidth - 120) / 6,
-                        backgroundColor: '#c2adac',
-                        borderWidth: 0.5,
-                        borderColor: '#ccc',
-                        color: '#ffffff',
-                        paddingVertical: 8,
-                      }}>
-                      {item}
-                    </Text>
-                  )
-                })}
-              </View>
-            </>
-          </View>
-          {trendData?.positionArr && trendData?.positionArr?.length > 0 && (
-            <Svg height={'100%'} width={'100%'} style={{ position: 'absolute', flex: 1 }}>
-              {trendData?.positionArr.map((item, index) => {
-                return index != 0 && <Line key={index} x1={item.x} y1={item.y} x2={trendData?.positionArr[index - 1].x} y2={trendData?.positionArr[index - 1].y} stroke="#409fdc" strokeWidth="1" />
-              })}
-            </Svg>
-          )}
-        </ScrollView>
-      </ScrollView>
+              </Svg>
+            )}
+          </ScrollView>
+        </ScrollView> :
+        <View style={{flex:1, backgroundColor: "#f3f3f3", justifyContent: 'center'}}>
+          <Text style={{alignSelf: 'center', color: "#cccccc", fontSize: 18}}>此彩种暂无走势资料</Text>
+        </View>}
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity style={{ backgroundColor: '#d7213a', height: 44, width: 160, justifyContent: 'center' }} onPress={() => setShowModal(true)}>
+        <TouchableOpacity style={{ backgroundColor: '#d7213a', height: 44, width: 160, justifyContent: 'center' }}
+                          onPress={() => setShowModal(true)}>
           <Text
             style={{
               textAlign: 'center',
               color: 'white',
               paddingHorizontal: 16,
             }}>
-            {currentGame ? currentGame.title : ""}
+            {currentGame ? currentGame.title : ''}
           </Text>
         </TouchableOpacity>
         <View style={{ flex: 1, flexDirection: 'row', paddingRight: 8, alignItems: 'center' }}>
@@ -460,8 +464,8 @@ const TrendView = ({ navigation }) => {
           showModal={showModal}
         />
       </View>
-      <View style={{flexDirection: "row"}}>
-          <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>
+      <View style={{ flexDirection: 'row', height: 30 }}>
+        <View style={{ backgroundColor: '#d7213a', height: 50, width: 160, position: 'absolute' }} />
       </View>
     </BaseScreen>
   )
