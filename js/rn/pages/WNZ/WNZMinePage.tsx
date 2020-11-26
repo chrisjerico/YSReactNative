@@ -94,9 +94,7 @@ const WNZMinePage = () => {
                 logo={mobile_logo}
                 balance={balance}
                 onPressMenu={openMenu}
-                onPressComment={() => {
-                  PushHelper.pushLottery(LotteryType.香港六合彩)
-                }}
+                onPressComment={goToUserCenterType.聊天室}
                 onPressUser={goToUserCenterType.我的页}
               />
             )

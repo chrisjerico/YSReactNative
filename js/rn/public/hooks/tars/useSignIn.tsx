@@ -79,6 +79,8 @@ const useSignIn = (options: Options = {}) => {
       })
       const user_login_data = user_login_response?.data?.data
       const user_login_msg = user_login_response?.data?.msg
+      console.log('-------user_login_data-------', user_login_data)
+      console.log('-------user_login_msg-------', user_login_msg)
       if (user_login_data?.['needFullName']) {
         onNeedFullName && onNeedFullName()
       } else {

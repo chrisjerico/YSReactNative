@@ -109,7 +109,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
         <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />
         <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
         {/*<Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />*/}
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} options={{ unmountOnBlur: true }} />

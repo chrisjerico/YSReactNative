@@ -1,17 +1,17 @@
-import { ActivityIndicator, Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { chunkArray } from '../tools/ChunkArr'
 import { getTrendData } from '../utils/getTrendData'
 import { TrendData } from '../interface/trendData'
-import Svg, { Line, G } from 'react-native-svg'
+import Svg, { Line } from 'react-native-svg'
 import APIRouter from '../network/APIRouter'
 import { ChooseGameModal } from './ChooseGameModal'
 import PushHelper from '../define/PushHelper'
 import { BaseScreen } from '../../pages/乐橙/component/BaseScreen'
-import AppDefine from '../define/AppDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { hideLoading, showLoading } from '../widget/UGLoadingCP'
+import { getGameList } from '../utils/getGameList'
 
 const TrendView = ({ navigation }) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -20,11 +20,25 @@ const TrendView = ({ navigation }) => {
   const itemWidth = screenWidth / 6 - 4
   const [showModal, setShowModal] = useState(false)
   const [defaultNumber, setDefaultNumber] = useState(0)
-  const [currentGame, setCurrentGame] = useState(defaultGame)
+  const [currentGame, setCurrentGame] = useState()
+  let [games, setGames] = useState([])
 
   useEffect(() => {
-    getData()
-  }, [defaultNumber, currentGame])
+    currentGame && games.length > 0 && getData()
+  }, [defaultNumber, currentGame, games])
+
+  useEffect(() => {
+    APIRouter.game_lotteryGames().then(({data: res}) => {
+      let arr = []
+      res.data.map((item) => {
+        arr = arr.concat(item.list)
+      })
+      const list = getGameList(arr)
+      setGames(list)
+      !currentGame && setCurrentGame(list[0])
+
+    })
+  }, [])
 
   // useEffect(() => {
   //     // OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
@@ -53,19 +67,19 @@ const TrendView = ({ navigation }) => {
       switch (Platform.OS) {
         case 'ios':
           OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true])
-          break;
+          break
         case 'android':
-          break;
+          break
       }
     })
     return unsubscribe
   }, [])
 
   const getData = () => {
-    showLoading(undefined, ['#0005', '#0005']);//数量必须>1，否则Android控件出问题
+    showLoading(undefined, ['#0005', '#0005'])//数量必须>1，否则Android控件出问题
     APIRouter.getTrendData(currentGame.id.toString()).then((result) => {
       setTrendData(getTrendData(defaultNumber, currentGame.gameType, result.data.data.list))
-      hideLoading();
+      hideLoading()
     })
   }
 
@@ -393,7 +407,7 @@ const TrendView = ({ navigation }) => {
               color: 'white',
               paddingHorizontal: 16,
             }}>
-            {currentGame.title}
+            {currentGame ? currentGame.title : ""}
           </Text>
         </TouchableOpacity>
         <View style={{ flex: 1, flexDirection: 'row', paddingRight: 8, alignItems: 'center' }}>
@@ -441,33 +455,16 @@ const TrendView = ({ navigation }) => {
             setDefaultNumber(0)
             setCurrentGame(game)
           }}
+          games={games}
           setShowModal={setShowModal}
           showModal={showModal}
         />
       </View>
-      {/*<View style={{flexDirection: "row"}}>*/}
-      {/*    <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>*/}
-      {/*</View>*/}
+      <View style={{flexDirection: "row"}}>
+          <View style={{backgroundColor: "#d7213a", height: 20, width: 160,}}/>
+      </View>
     </BaseScreen>
   )
-}
-
-const defaultGame = {
-  id: 50,
-  changlong: false,
-  title: '北京赛车(PK10)',
-  name: 'pk10',
-  sort: 11,
-  cate: 6,
-  open: 0,
-  enable: '1',
-  isSeal: '0',
-  customise: '0',
-  from_type: '0',
-  isInstant: '0',
-  lowFreq: '0',
-  gameType: 'pk10',
-  is_own: 0,
 }
 
 export default TrendView
