@@ -291,7 +291,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501062.com ',
+    'https://4501062.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -402,7 +402,7 @@ const notifyDomainChanged = async (siteId?: string) => {
       for (const k in DomainUrls) {
         sites[k.toLowerCase()] = DomainUrls[k]
       }
-      const host = sites[siteId.toLowerCase()]
+      const host = sites[siteId.toLowerCase()].trim()
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
