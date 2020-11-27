@@ -208,7 +208,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://og878.vip',
   ],
   'c134': [
-    'https://19972028.com',
+    'https://19972025.com',
   ],
   'c137': [
     'https://7033005.com',
@@ -315,7 +315,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://923368.com',
+    'https://568978.com',
   ],
   'c245': [
     'https://4823app.com',
