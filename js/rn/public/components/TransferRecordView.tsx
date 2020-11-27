@@ -35,7 +35,7 @@ export const TransferRecordView = () => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <SafeAreaView style={{ backgroundColor: Skin1.bgColor, borderBottomColor: '#cccccc', borderBottomWidth: 1 }}>
         <View style={{
           backgroundColor: Skin1.bgColor,
@@ -88,7 +88,7 @@ export const TransferRecordView = () => {
       </View>
       <FlatList
         data={dataList}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1}}
         ListEmptyComponent={() => (
           <View style={{ backgroundColor: '#f6f6f6', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ position: 'absolute', width: AppDefine.width, height: AppDefine.height, top: 0 }}>

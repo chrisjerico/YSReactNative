@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, FlatList, Image, SafeAreaView, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import {
+  Alert,
+  FlatList,
+  Image, Platform,
+  SafeAreaView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
 import AppDefine from '../define/AppDefine'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Animated, {
@@ -17,13 +27,13 @@ import Animated, {
 } from 'react-native-reanimated'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import useHomePage from '../hooks/tars/useHomePage'
-import { navigate } from '../navigation/RootNavigation'
+import { navigate, pop } from '../navigation/RootNavigation'
 import { PageName } from '../navigation/Navigation'
 import { Skin1 } from '../theme/UGSkinManagers'
+import { OCHelper } from '../define/OCHelper/OCHelper'
 
 export const TransferView = () => {
   const [money, setMoney] = useState(0)
-  const mainColor = Skin1.bgColor
   const [data, setData] = useState<any>()
   const [transOut, setTransOut] = useState()
   const [transIn, setTransIn] = useState()
@@ -53,10 +63,9 @@ export const TransferView = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Header mainColor={mainColor} pressRecord={() => navigate(PageName.TransferRecordView)} />
+      <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
       <MiddleView
         data={data}
-        mainColor={mainColor}
         balance={balance}
         money={money}
         setMoney={setMoney}
@@ -73,23 +82,37 @@ export const TransferView = () => {
   )
 }
 
-const Header = ({ mainColor, pressRecord }: { mainColor: string, pressRecord: () => {} }) => {
+const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
   return (
     <SafeAreaView style={{
-      backgroundColor: mainColor,
+      backgroundColor: Skin1.bgColor,
       borderBottomColor: '#cccccc',
       borderBottomWidth: 1,
       flexDirection: 'row',
     }}>
       <View style={{
         width: AppDefine.width,
-        backgroundColor: mainColor,
+        backgroundColor: Skin1.bgColor,
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'center',
+        justifyContent: 'center',
       }}>
+        <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
+          switch (Platform.OS) {
+            case 'ios':
+              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+              break;
+            case 'android':
+
+              break;
+          }
+          pop()
+        }}>
+          <Icon size={28} name={'left'}/>
+        </TouchableOpacity>
         <Text style={{
-          flex: 1,
+          alignSelf: 'center',
           paddingTop: 15,
           paddingBottom: 15,
           textAlign: 'center',
@@ -106,8 +129,8 @@ const Header = ({ mainColor, pressRecord }: { mainColor: string, pressRecord: ()
   )
 }
 
-const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTransIn, transOut, setTransOut, autoTransfer, transfer, refresh }:
-                      { mainColor: string, balance: string, money: number, setMoney: (text: string) => void, autoTransfer: () => void, transfer: () => void }) => {
+const MiddleView = ({ balance, money, setMoney, data, transIn, setTransIn, transOut, setTransOut, autoTransfer, transfer, refresh }:
+                      { balance: string, money: number, setMoney: (text: string) => void, autoTransfer: () => void, transfer: () => void }) => {
   const dataArr = [{ title: '我的钱包', id: 0 }]
   return (
     <View style={{ marginHorizontal: 12, marginTop: 16, zIndex: 99 }}>
@@ -137,7 +160,7 @@ const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTra
       <View style={{ paddingTop: 32 }}>
         <TouchableWithoutFeedback onPress={transfer}>
           <View style={{
-            backgroundColor: mainColor,
+            backgroundColor: Skin1.bgColor,
             paddingVertical: 10,
             borderRadius: 4,
             height: 43,
@@ -149,7 +172,7 @@ const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTra
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={autoTransfer}>
           <View style={{
-            backgroundColor: mainColor,
+            backgroundColor: Skin1.bgColor,
             paddingVertical: 10,
             borderRadius: 4,
             marginTop: 12,
@@ -162,7 +185,7 @@ const MiddleView = ({ mainColor, balance, money, setMoney, data, transIn, setTra
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={refresh}>
           <View style={{
-            backgroundColor: mainColor,
+            backgroundColor: Skin1.bgColor,
             paddingVertical: 10,
             borderRadius: 4,
             marginTop: 12,
