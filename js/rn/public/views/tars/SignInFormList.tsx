@@ -26,7 +26,7 @@ interface Reference {
 }
 
 interface Show {
-  loginVCode?: boolean
+  showSignInSlideCode?: boolean
 }
 
 interface OnChange {
@@ -42,7 +42,7 @@ const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, sho
 
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onSubmitFullName } = onChange
 
-  const { loginVCode } = show
+  const { showSignInSlideCode } = show
 
   const { slideCodeRef, needNameInputRef } = reference
 
@@ -81,7 +81,7 @@ const SignInFormList = ({ value, onChange, show, renderForm, slideCodeColor, sho
       {showCheckBox && <CheckBox {...checkBoxProps} onPress={onChangeRemember} label={'记住密码'} containerStyle={{ alignSelf: 'flex-start', marginTop: scale(10) }} defaultValue={remember} />}
       <ReloadSlidingVerification
         ref={slideCodeRef}
-        show={loginVCode}
+        show={showSignInSlideCode}
         onChange={onChangeSlideCode}
         backgroundColor={slideCodeColor}
         containerStyle={{
