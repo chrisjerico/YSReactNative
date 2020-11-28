@@ -60,6 +60,7 @@ interface HomePageProps {
   noticeLogo?: string
   showBannerBlock?: boolean
   refreshTintColor?: string
+  equalFactor?: any
 }
 
 interface CouponBlockStyles {
@@ -253,7 +254,7 @@ const HomePage = ({
 }
 
 const areEqual = (prevProps, nextProps) => {
-  if (prevProps?.loading !== nextProps?.loading || prevProps?.refreshing !== nextProps?.refreshing || prevProps?.uid !== nextProps?.uid) {
+  if (prevProps?.loading !== nextProps?.loading || prevProps?.refreshing !== nextProps?.refreshing || prevProps?.uid !== nextProps?.uid || prevProps?.equalFactor !== nextProps?.equalFactor) {
     return false
   } else {
     return true

@@ -54,6 +54,7 @@ const LHTHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
+      equalFactor={JSON.stringify(chooseGames?.map((ele) => ele?.gameId))}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
