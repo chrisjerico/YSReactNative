@@ -27,6 +27,7 @@ interface Reference {
 
 interface Show {
   showSignInSlideCode?: boolean
+  showFacebookSignIn?: boolean
 }
 
 interface OnChange {

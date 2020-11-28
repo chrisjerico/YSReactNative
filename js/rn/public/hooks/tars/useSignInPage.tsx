@@ -31,7 +31,8 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
   const rightMenus = UGStore.globalProps.rightMenu
-  const { loginVCode, loginTo } = sysInfo
+  const { loginVCode, loginTo, oauth } = sysInfo
+  const showFacebookSignIn = oauth?.switch
   // states
   const [account, setAccount] = useState(sign?.account)
   const [password, setPassword] = useState(sign?.password)
@@ -227,6 +228,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
 
   const show = {
     showSignInSlideCode,
+    showFacebookSignIn,
   }
 
   const _signIn = () => {
