@@ -50,7 +50,7 @@ import CommStyles from "../base/CommStyles";
 import {FastImageAutoHeight, FastImageAutoWidth} from "../../public/tools/img/ExtImage";
 import ActivityComponent from "../../public/components/temp/ActivityComponent";
 import {getActivityPosition} from "../../public/tools/tars";
-import {ROULETTE_LOGO} from "../../public/define/Res";
+import {ROULETTE_LOGO} from "../../Res/icon/Res";
 
 /**
  * 主页

@@ -189,8 +189,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c114': [
     'https://c432019.com',
   ],
+  'c115': [
+    'https://6615322.com',
+  ],
   'c116': [
-    'https://1353520.com',
+    'https://1353519.com',
   ],
   'c117': [
     'https://822323.com',
@@ -205,7 +208,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://og878.vip',
   ],
   'c134': [
-    'https://19972028.com',
+    'https://19972025.com',
   ],
   'c137': [
     'https://7033005.com',
@@ -279,7 +282,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771b.com',
+    'https://771771c.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -288,7 +291,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501072.com',
+    'https://4501062.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -312,7 +315,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://923368.com',
+    'https://568978.com',
   ],
   'c245': [
     'https://4823app.com',
@@ -399,7 +402,7 @@ const notifyDomainChanged = async (siteId?: string) => {
       for (const k in DomainUrls) {
         sites[k.toLowerCase()] = DomainUrls[k]
       }
-      const host = sites[siteId.toLowerCase()]
+      const host = sites[siteId.toLowerCase()].trim()
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':

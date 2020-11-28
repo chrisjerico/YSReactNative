@@ -3,6 +3,7 @@ import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { PageName } from '../../navigation/Navigation'
 import { anyEmpty } from '../Ext'
+import { ugLog } from '../UgLog'
 
 /**
  * Arc
@@ -23,6 +24,8 @@ export default class ExtUGApplication {
     PageName.ZLMinePage,
     PageName.ZLLoginPage,
     PageName.ZLRegisterPage,
+    PageName.WNZSignInPage,
+    PageName.WNZSignUpPage,
     PageName.HJHomePage,
     PageName.HJMinePage,
     PageName.HJLoginPage,
@@ -60,6 +63,8 @@ export default class ExtUGApplication {
     PageName.BZHSignInPage,
     PageName.LottoBetting,
     PageName.ZLMinePage,
+    PageName.WNZHomePage,
+    PageName.WNZMinePage,
     PageName.KSSignInPage,
     PageName.KSSignUpPage,
     PageName.LLRegisterPage,
@@ -85,6 +90,7 @@ export default class ExtUGApplication {
         //     ? PageName.UpdateVersionPage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
         //     : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         let currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
+        // ugLog('ext currentScene=', currentScene)
         // let currentScene = PageName[PageName.LEFHomePage]
         if (anyEmpty(currentScene)) {
           initName = PageName.UpdateVersionPage

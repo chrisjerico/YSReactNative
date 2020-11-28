@@ -1,10 +1,10 @@
 import React, { memo } from 'react'
 import ActivityComponent from '../../components/tars/ActivityComponent'
 import PushHelper from '../../define/PushHelper'
-import { ROULETTE_LOGO } from '../../define/Res'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
+import {ROULETTE_LOGO} from "../../../Res/icon/Res";
 
 interface ActivitysProps {
   refreshing: boolean
