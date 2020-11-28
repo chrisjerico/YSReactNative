@@ -201,7 +201,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   const passwordLebel = '请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
   const confirmPasswordLabel = password == confirmPassword || (!password?.length && !confirmPassword?.length) ? '' : '密码不一致'
   const accountLabel = '请使用6-15位英文或数字的组合'
-  const inviteCodeLabel = '邀请码，如没有可不填'
+  const inviteCodeLabel = getLabel(necessity?.inviteCode, '邀请码') // ，如没有可不填
 
   const onChange = {
     onChangeRecommendGuy,
@@ -296,7 +296,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
           regType: agentRef.current, // 用户注册 或 代理注册,
           inviteCode: inviteCodeRef.current, // 邀請碼
         }
-        console.log('-------params------', params)
         // @ts-ignore
         signUp(params)
       } else {
