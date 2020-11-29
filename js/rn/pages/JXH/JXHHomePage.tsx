@@ -82,9 +82,7 @@ const JXHHomePage = () => {
               onPressSignUpButton={() => {
                 navigate(PageName.JXHSignUpPage)
               }}
-              onPressForgetPassword={() => {
-                PushHelper.openWebView(httpClient.defaults.baseURL + '/index2.php')
-              }}
+              onPressForgetPassword={goToUserCenterType.在线客服}
             />
             <TabComponent
               tabBarBackgroundColor={'#000000'}
