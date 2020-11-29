@@ -190,7 +190,7 @@ const LHTHomePage = () => {
                   showSecondLevelIcon={false}
                   flagIcon={hotIcon}
                   logo={icon || logo}
-                  title={title}
+                  title={title || name}
                   showSubTitle={false}
                   containerStyle={{
                     width: '33.3%',
