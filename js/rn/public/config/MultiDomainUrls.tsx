@@ -110,7 +110,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t005f.fhptcdn.com',
+    'http://t126f.fhptcdn.com',
   ],
   'tstksm': [
     'http://t133f.fhptcdn.com',
@@ -295,7 +295,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501062.com',
+    'https://app213xpj.co',
+    'https://c213aapp.cc',
+    'https://c213app.com',
+    'https://c213app01.co',
+    'https://c213app01.me',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
