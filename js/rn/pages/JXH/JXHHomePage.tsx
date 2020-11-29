@@ -8,7 +8,7 @@ import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { httpClient } from '../../public/network/httpClient'
 import { scale } from '../../public/tools/Scale'
-import { getIbbImage, goToUserCenterType } from '../../public/tools/tars'
+import { goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
 import List from '../../public/views/tars/List'
 import TouchableImage from '../../public/views/tars/TouchableImage'
@@ -44,7 +44,7 @@ const JXHHomePage = () => {
     if (index) {
       return <List uniqueKey={'JXHHomePageTabComponent' + index} style={{}} data={item} renderItem={renderGame} numColumns={2} />
     } else {
-      return <PopularGameTabPage homeGames={homeGames} />
+      return <PopularGameTabPage games={homeGames[0]} />
     }
   }
 
