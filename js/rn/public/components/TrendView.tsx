@@ -13,6 +13,7 @@ import { OCHelper } from '../define/OCHelper/OCHelper'
 import { hideLoading, showLoading } from '../widget/UGLoadingCP'
 import { getGameList } from '../utils/getGameList'
 import { anyEmpty } from '../tools/Ext'
+import { scale } from '../tools/Scale'
 
 const TrendView = ({ navigation }) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -165,7 +166,7 @@ const TrendView = ({ navigation }) => {
                           borderColor: '#ccc',
                           color: '#ffffff',
                           paddingVertical: 8,
-                          width: 120,
+                          width: GRID_LEFT_HEADER_WIDTH,
                           textAlign: 'center',
                         }}>
                         期数
@@ -175,7 +176,7 @@ const TrendView = ({ navigation }) => {
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
-                          width: (screenWidth - 120) / 6,
+                          width: GRID_ITEM_WIDTH,
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
                           borderColor: '#ccc',
@@ -201,7 +202,8 @@ const TrendView = ({ navigation }) => {
                             borderColor: '#ccc',
                             color: '#ffffff',
                             paddingVertical: 8,
-                            width: 120,
+                            height: GRID_ITEM_HEIGHT,
+                            width: GRID_LEFT_HEADER_WIDTH,
                             textAlign: 'center',
                           }}>
                           {data}
@@ -226,9 +228,9 @@ const TrendView = ({ navigation }) => {
                               />
                               <Text
                                 style={{
-                                  height: 34.5,
+                                  height: GRID_ITEM_HEIGHT,
                                   textAlign: 'center',
-                                  width: (screenWidth - 120) / 6,
+                                  width: GRID_ITEM_WIDTH,
                                   borderWidth: 0.5,
                                   borderColor: '#ccc',
                                   color: '#ffffff',
@@ -241,9 +243,9 @@ const TrendView = ({ navigation }) => {
                           ) : (
                             <Text
                               style={{
-                                height: 34.5,
+                                height: GRID_ITEM_HEIGHT,
                                 textAlign: 'center',
-                                width: (screenWidth - 120) / 6,
+                                width: GRID_ITEM_WIDTH,
                                 borderWidth: 0.5,
                                 borderColor: '#ccc',
                                 color: '#aaa',
@@ -271,7 +273,7 @@ const TrendView = ({ navigation }) => {
                           borderColor: '#ccc',
                           color: '#ffffff',
                           paddingVertical: 8,
-                          width: 120,
+                          width: GRID_LEFT_HEADER_WIDTH,
                           textAlign: 'center',
                         }}>
                         {item}
@@ -281,7 +283,7 @@ const TrendView = ({ navigation }) => {
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
-                          width: (screenWidth - 120) / 6,
+                          width: GRID_ITEM_WIDTH,
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
                           borderColor: '#ccc',
@@ -304,7 +306,7 @@ const TrendView = ({ navigation }) => {
                           borderColor: '#ccc',
                           color: '#ffffff',
                           paddingVertical: 8,
-                          width: 120,
+                          width: GRID_LEFT_HEADER_WIDTH,
                           textAlign: 'center',
                         }}>
                         {item}
@@ -314,7 +316,7 @@ const TrendView = ({ navigation }) => {
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
-                          width: (screenWidth - 120) / 6,
+                          width: GRID_ITEM_WIDTH,
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
                           borderColor: '#ccc',
@@ -337,7 +339,7 @@ const TrendView = ({ navigation }) => {
                           borderColor: '#ccc',
                           color: '#ffffff',
                           paddingVertical: 8,
-                          width: 120,
+                          width: GRID_LEFT_HEADER_WIDTH,
                           textAlign: 'center',
                         }}>
                         {item}
@@ -347,7 +349,7 @@ const TrendView = ({ navigation }) => {
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
-                          width: (screenWidth - 120) / 6,
+                          width: GRID_ITEM_WIDTH,
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
                           borderColor: '#ccc',
@@ -370,7 +372,7 @@ const TrendView = ({ navigation }) => {
                           borderColor: '#ccc',
                           color: '#ffffff',
                           paddingVertical: 8,
-                          width: 120,
+                          width: GRID_LEFT_HEADER_WIDTH,
                           textAlign: 'center',
                         }}>
                         {item}
@@ -380,7 +382,7 @@ const TrendView = ({ navigation }) => {
                         key={`header-${index}`}
                         style={{
                           textAlign: 'center',
-                          width: (screenWidth - 120) / 6,
+                          width: GRID_ITEM_WIDTH,
                           backgroundColor: '#c2adac',
                           borderWidth: 0.5,
                           borderColor: '#ccc',
@@ -477,5 +479,9 @@ const TrendView = ({ navigation }) => {
     </BaseScreen>
   )
 }
+
+export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
+export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
+export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default TrendView
