@@ -49,11 +49,7 @@ const JXHHomePage = () => {
   }
 
   return (
-    <ImageBackground
-      source={{
-        uri: getIbbImage('XkRNwyM/1602669892140124'),
-      }}
-      style={{ flex: 1 }}>
+    <ImageBackground source={require('./jxhbackground.png')} style={{ flex: 1 }}>
       <HomePage
         {...homeInfo}
         {...userInfo}
