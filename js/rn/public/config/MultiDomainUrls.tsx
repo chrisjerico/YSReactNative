@@ -197,7 +197,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615322.com',
   ],
   'c116': [
-    'https://1353519.com',
+    'https://csj116app.com',
+    'https://csj116app.co',
+    'https://c116app.org',
+    'https://c116app.me',
+    'https://app116csj.me',
   ],
   'c117': [
     'https://822323.com',
