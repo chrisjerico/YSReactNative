@@ -110,7 +110,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t005f.fhptcdn.com',
+    'http://t126f.fhptcdn.com',
   ],
   'tstksm': [
     'http://t133f.fhptcdn.com',
