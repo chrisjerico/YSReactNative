@@ -39,7 +39,6 @@ export enum PageName {
   WNZMinePage = 'WNZMinePage',
   WNZSignUpPage = 'WNZSignUpPage',
   WNZSignInPage = 'WNZSignInPage',
-  WNZGameLobbyPage = 'WNZGameLobbyPage',
   PromotionListPage = 'PromotionListPage',
   LLHomePage = 'LLHomePage',
   LLMinePage = 'LLMinePage',
@@ -73,4 +72,5 @@ export enum PageName {
   XBJLoginPage = 'XBJLoginPage',
   XBJMinePage = 'XBJMinePage',
   XBJRegisterPage = 'XBJRegisterPage',
+  SeriesLobbyPage = 'SeriesLobbyPage',
 }

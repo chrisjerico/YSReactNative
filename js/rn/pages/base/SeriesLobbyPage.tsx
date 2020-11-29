@@ -27,26 +27,25 @@ const subIds = {
   48: '捕鱼',
 }
 
-const WNZGameLobbyPage = ({ route }) => {
-  const { subId, name } = route?.params ?? { subId: 43, name: '' }
-  const title = subIds[subId]
+const SeriesLobbyPage = ({ route }) => {
+  const { subId, name, headerColor, homePage } = route?.params ?? { subId: 43, name: '' }
+  const subIdTitle = subIds[subId]
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
   const bannersInterval = stringToNumber(banner?.interval)
   const banners = banner?.list ?? []
-  const item = gameLobby?.find((item: any) => title?.includes(item?.categoryName))
+  const item = gameLobby?.find((item: any) => subIdTitle?.includes(item?.categoryName))
   const { games, categoryName } = item ?? {}
-  console.log('------gameLobby-----', gameLobby)
   return (
     <>
-      <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
+      <SafeAreaHeader headerColor={headerColor}>
         <MineHeader
           showBackBtn={true}
           onPressBackBtn={() => {
             switch (Platform.OS) {
               case 'ios':
                 OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0]).then(() => {
-                  navigate(PageName.WNZHomePage, {})
+                  navigate(homePage, {})
                 })
                 break
               case 'android':
@@ -81,7 +80,7 @@ const WNZGameLobbyPage = ({ route }) => {
           }}
         />
         <List
-          uniqueKey={'WNZGameLobbyPage' + title}
+          uniqueKey={'SeriesLobbyPage' + subIdTitle}
           style={{ marginTop: scale(45) }}
           data={games}
           numColumns={4}
@@ -116,4 +115,4 @@ const WNZGameLobbyPage = ({ route }) => {
   )
 }
 
-export default WNZGameLobbyPage
+export default SeriesLobbyPage

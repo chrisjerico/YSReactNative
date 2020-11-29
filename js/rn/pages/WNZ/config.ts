@@ -2,6 +2,7 @@ import PushHelper from '../../public/define/PushHelper'
 import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
+import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
@@ -65,31 +66,31 @@ const config = {
     {
       title: '真人视讯',
       onPress: () => {
-        navigate(PageName.WNZGameLobbyPage, { title: '真人视讯' })
+        navigate(PageName.SeriesLobbyPage, { name: '真人视讯', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 42 })
       },
     },
     {
       title: '电子游艺',
       onPress: () => {
-        navigate(PageName.WNZGameLobbyPage, { title: '电子游艺' })
+        navigate(PageName.SeriesLobbyPage, { name: '电子游艺', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 44 })
       },
     },
     {
       title: '捕鱼达人',
       onPress: () => {
-        navigate(PageName.WNZGameLobbyPage, { title: '捕鱼达人' })
+        navigate(PageName.SeriesLobbyPage, { name: '捕鱼达人', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 48 })
       },
     },
     {
       title: '体育游戏',
       onPress: () => {
-        navigate(PageName.WNZGameLobbyPage, { title: '体育游戏' })
+        navigate(PageName.SeriesLobbyPage, { name: '体育游戏', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 45 })
       },
     },
     {
       title: '棋牌游戏',
       onPress: () => {
-        navigate(PageName.WNZGameLobbyPage, { title: '棋牌游戏' })
+        navigate(PageName.SeriesLobbyPage, { name: '棋牌游戏', headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage, subId: 43 })
       },
     },
     {

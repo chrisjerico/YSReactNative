@@ -179,7 +179,7 @@ const LHTHomePage = () => {
               )
             }}
             renderRightGame={({ item, index }) => {
-              const { logo, icon, title, hotIcon, tipFlag } = item
+              const { logo, icon, title, hotIcon, tipFlag, gameId, subId, name } = item
               const showFlag = stringToNumber(tipFlag)
               return (
                 <GameButton
@@ -207,7 +207,13 @@ const LHTHomePage = () => {
                   }}
                   titleStyle={{ fontSize: scale(23) }}
                   subTitleStyle={{ fontSize: scale(23) }}
-                  onPress={() => PushHelper.pushHomeGame(item)}
+                  onPress={() => {
+                    if (!gameId) {
+                      navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: LHThemeColor.六合厅.themeColor })
+                    } else {
+                      PushHelper.pushHomeGame(item)
+                    }
+                  }}
                 />
               )
             }}
