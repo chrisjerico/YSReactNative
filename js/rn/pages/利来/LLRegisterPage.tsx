@@ -133,7 +133,7 @@ export const LLRegisterPage = () => {
         <LLRegisterInput maxLength={15} isPwd={false} onChangeText={(text) => {
           setAcc(text)
           onChangeAccount(text)
-        }} placeholder={'请输入会员账号（6-15位字母或数字)'}
+        }} placeholder={'请输入会员账号（7-15位字母或数字)'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png'} />
         {!regex.test(acc) && <View style={{ flexDirection: 'row' }}>
           <Text style={{
@@ -142,7 +142,7 @@ export const LLRegisterPage = () => {
             textAlign: 'left',
             flex: 1,
             paddingVertical: 4,
-          }}>*请使用6-15位英文或数字的组合</Text>
+          }}>*请使用7-15位英文或数字的组合</Text>
         </View>}
         <LLRegisterInput maxLength={15} isPwd={true} onChangeText={(text) => {
           setPwd(text)
