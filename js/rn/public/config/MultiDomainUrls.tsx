@@ -202,7 +202,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jzcp444.com',
+    'https://jzcp344.com',
   ],
   'c126b': [
     'https://og878.vip',
