@@ -1,9 +1,11 @@
 import { PageName } from '../../navigation/Navigation';
-import {getCurrentPage, jumpTo, navigate, pop, push} from '../../navigation/RootNavigation';
+import { getCurrentPage, getStackLength, jumpTo, navigate, pop, push } from '../../navigation/RootNavigation'
 import { RnPageModel } from '../OCHelper/SetRnPageInfo';
 import { UGBridge } from './UGBridge';
 import {ugLog} from "../../tools/UgLog";
 import {UGStore} from "../../../redux/store/UGStore";
+import { ANHelper } from './ANHelper'
+import { CMD } from './hp/CmdDefine'
 
 export enum ANEventType { }
 
@@ -33,10 +35,28 @@ export class ANEvent extends UGBridge {
     });
 
     // 跳转到指定页面
-    this.emitter.addListener('SelectVC', (params: { vcName: PageName }) => {
+    this.emitter.addListener('SelectVC', (params: { vcName: PageName; action: string }) => {
       ugLog('跳转到rn页面：', JSON.stringify(params));
-      if (params.vcName) {
-        navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
+      if (params?.vcName) {
+        // navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
+        const page = RnPageModel.getPageName(params.vcName)
+        switch (params?.action) {
+          case 'push':
+            ugLog('push到rn页面：', params.vcName, params)
+            push(page, params)
+            break
+          case 'jump':
+            ugLog('跳转到rn页面：', params.vcName, params)
+            // jumpTo(page, params, true)
+            navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
+            break
+          default:
+            const currentPage = getCurrentPage()
+            ugLog('成为焦点：', currentPage, params)
+            const { didFocus } = UGStore.getPageProps(currentPage)
+            didFocus && didFocus()
+            break
+        }
       }
     });
 
@@ -45,6 +65,16 @@ export class ANEvent extends UGBridge {
       ugLog('退出页面', params.vcName);
       if (params.vcName == getCurrentPage()) {
         pop();
+      }
+    });
+
+    // 检查界面
+    this.emitter.addListener('CheckPages', (params: { type: string }) => {
+      ugLog('检查界面：', JSON.stringify(params));
+      switch (params?.type) {
+        case 'main_menu_status':
+          ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: getStackLength() < 2 ? 0 : 8});
+          break;
       }
     });
 

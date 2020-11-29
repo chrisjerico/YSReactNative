@@ -32,7 +32,7 @@ const JXHSignUpPage = () => {
           <View style={{ flexDirection: 'row', marginVertical: scale(20) }}>
             <Text style={{ color: '#ffffff' }}>{'我已有帐号，立即'}</Text>
             <TouchableWithoutFeedback onPress={navigateToSignInPage}>
-              <Text style={{ color: '#cfa461' }}>{'登陆'}</Text>
+              <Text style={{ color: '#cfa461' }}>{'登录'}</Text>
             </TouchableWithoutFeedback>
           </View>
           <SignUpFormList

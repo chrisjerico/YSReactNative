@@ -75,13 +75,21 @@ const MenuModalComponent = ({ menus, direction = 'right', listStyle, renderMenu,
               <View style={{ flex: 1 }} />
             </TouchableWithoutFeedback>
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
-              {renderMenu ? renderMenu() : <List uniqueKey={'MenuModalComponent'} style={[styles.rightList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} />}
+              {renderMenu ? (
+                renderMenu()
+              ) : (
+                <List uniqueKey={'MenuModalComponent'} style={[styles.rightList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} scrollEnabled={true} />
+              )}
             </View>
           </>
         ) : (
           <>
             <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0)' }}>
-              {renderMenu ? renderMenu() : <List uniqueKey={'MenuModalComponent'} style={[styles.leftList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} />}
+              {renderMenu ? (
+                renderMenu()
+              ) : (
+                <List uniqueKey={'MenuModalComponent'} style={[styles.leftList, listStyle]} data={menus} renderItem={renderMenuItem} initialNumToRender={menus?.length} scrollEnabled={true} />
+              )}
             </View>
             <TouchableWithoutFeedback
               onPress={() => {

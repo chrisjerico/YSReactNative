@@ -62,7 +62,7 @@ export function CheckError(sm: CCSessionModel<any>): Error {
     err = new Error('登录已过期。');
   }
   else if (sm?.res?.code != 0) {
-    // “授权TOKEN:参数未传递! ” 的错误不提示出来
+    // 【授权TOKEN:参数未传递!】 此类错误不提示出来
     if (sm?.res?.msg?.indexOf('TOKEN') != -1) {
       sm.noShowErrorHUD = true;
     }

@@ -10,8 +10,10 @@ import useRerender from './useRerender'
 import useSignOut from './useSignOut'
 import useSysInfo from './useSysInfo'
 import useTryPlay from './useTryPlay'
-import { ToastError, ToastSuccess } from '../../tools/tars'
-import useLogOut from '../temp/useLogOut'
+import { Platform } from 'react-native'
+import { ANHelper } from '../../define/ANHelper/ANHelper'
+import { CMD } from '../../define/ANHelper/hp/CmdDefine'
+import { MenuType } from '../../define/ANHelper/hp/GotoDefine'
 
 interface UseHomePage {
   onSuccessSignOut?: () => any
@@ -53,9 +55,19 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const { reRender } = useRerender()
 
   const goToPromotionPage = () => {
-    push(PageName.PromotionPage, {
-      showBackBtn: true,
-    })
+    switch (Platform.OS) {
+      case 'ios':
+        push(PageName.PromotionPage, {
+          showBackBtn: true,
+        })
+        break;
+      case 'android':
+        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+          seriesId: '7',
+          subId: MenuType.YHDD,
+        })
+        break;
+    }
   }
 
   const { tryPlay } = useMemo(
