@@ -111,152 +111,155 @@ const LCRegisterPage = ({ navigation, setProps }) => {
   }, [reg_vcode, code])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-      <SafeAreaView style={{ backgroundColor: 'gold' }}>
-        <View style={{
-          backgroundColor: 'gold',
-          width: Dimensions.get('screen').width,
-          flexDirection: 'row',
-          alignItems: 'center',
-          alignSelf: 'center',
-        }}>
-          <Text style={{
-            paddingTop: 20,
-            paddingBottom: 20,
-            textAlign: 'center',
-            fontSize: 17,
-            width: '100%',
+    <SafeAreaView style={{ backgroundColor: 'gold', flex: 1 }}>
+      <View style={{ backgroundColor: '#f3f3f3', flex: 1 }}>
+        <SafeAreaView style={{ backgroundColor: 'gold' }}>
+          <View style={{
+            backgroundColor: 'gold',
+            width: Dimensions.get('screen').width,
+            flexDirection: 'row',
+            alignItems: 'center',
             alignSelf: 'center',
-          }}>注册</Text>
-          <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
-            <Icon size={33} name={'angle-left'} />
-          </TouchableOpacity>
-        </View>
-        <View style={{ height: 40, backgroundColor: 'gold' }} />
-      </SafeAreaView>
-      <View style={{
-
-        borderWidth: 1,
-        backgroundColor: 'white',
-        borderColor: '#ddd',
-        borderRadius: 12,
-        bottom: 30,
-      }}>
-        <SafeAreaView>
-          <ScrollView showsVerticalScrollIndicator={false}
-                      style={{ marginHorizontal: 12, marginVertical: 20, maxHeight: 550 }}>
-            <Text style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</Text>
-            <View style={{
-              flexDirection: 'row',
-              paddingVertical: 10,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              borderColor: '#ddd',
-              marginTop: 12,
-            }}>
-              <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'user-o'} />
-              <TextInput onChangeText={(text) => {
-                onChangeAccount(text)
-                setData({ ...data, acc: text })
-              }} placeholder={'帐号'}
-                         style={{ flex: 1 }} />
-            </View>
-            {regex.test(data.acc) ?
-              <Text style={{ marginTop: 12, fontSize: 12, color: '#6bab64' }}>*该账号可用</Text> :
-              <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用6-15位英文或数字的组合</Text>
-            }
-            <View style={{
-              flexDirection: 'row',
-              paddingVertical: 10,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              borderColor: '#ddd',
-              marginTop: 12,
-              alignItems: 'center'
-            }}>
-              <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'unlock-alt'} />
-              <TextInput
-                secureTextEntry={!showPwd}
-                onChangeText={(text) => {
-                onChangePassword(text)
-                setData({ ...data, pwd: text })
-              }} placeholder={'密码'}
-                         style={{ flex: 1 }} />
-              <TouchableWithoutFeedback onPress={() => setShowPwd(!showPwd)}>
-                <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
-                       source={{ uri: showPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
-              </TouchableWithoutFeedback>
-            </View>
-            <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用至少6位字符</Text>
-            <View style={{
-              flexDirection: 'row',
-              paddingVertical: 10,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              borderColor: '#ddd',
-              marginTop: 12,
-            }}>
-              <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'unlock-alt'} />
-              <TextInput secureTextEntry={!showConfirmPwd} onChangeText={(text) => setData({ ...data, confirmPwd: text })}
-                         placeholder={'确认密码'} style={{ flex: 1 }} />
-              <TouchableWithoutFeedback onPress={() => setShowConfirmPwd(!showConfirmPwd)}>
-                <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
-                       source={{ uri: showConfirmPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
-              </TouchableWithoutFeedback>
-            </View>
-            {data.pwd != '' && data.pwd != data.confirmPwd &&
-            <Text style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</Text>}
-            <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={reg_name}
-                          onChangeText={(text) => {
-                            onChaneRealName(text)
-                            setData({ ...data, reg_name: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入4数字取款密码'} iconName={'unlock-alt'} config={reg_fundpwd}
-                          onChangeText={(text) => {
-                            onChaneFundPassword(text)
-                            setData({ ...data, reg_fundpwd: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={reg_qq}
-                          onChangeText={(text) => {
-                            onChaneQQ(text)
-                            setData({ ...data, reg_qq: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={reg_wx}
-                          onChangeText={(text) => {
-                            onChaneWeChat(text)
-                            setData({ ...data, reg_wx: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={reg_phone}
-                          onChangeText={(text) => {
-                            onChanePhone(text)
-                            setData({ ...data, reg_phone: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={smsVerify}
-                          onChangeText={(text) => {
-                            onChaneSms(text)
-                            setData({ ...data, reg_vcdoe: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={reg_email}
-                          onChangeText={(text) => {
-                            onChangeEmail(text)
-                            setData({ ...data, reg_email: text })
-                          }} />
-            {getVcode}
-            <TouchableOpacity
-              onPress={() => signUp()}
-              style={{ paddingVertical: 16, marginTop: 12, borderRadius: 8, backgroundColor: '#ff9c06' }}>
-              <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</Text>
+          }}>
+            <Text style={{
+              paddingTop: 20,
+              paddingBottom: 20,
+              textAlign: 'center',
+              fontSize: 17,
+              width: '100%',
+              alignSelf: 'center',
+            }}>注册</Text>
+            <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
+              <Icon size={33} name={'angle-left'} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate(PageName.LCLoginPage)}>
-              <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回登录</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate(PageName.LCHomePage)}>
-              <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回首页</Text>
-            </TouchableOpacity>
-          </ScrollView>
+          </View>
+          <View style={{ height: 40, backgroundColor: 'gold' }} />
         </SafeAreaView>
+        <View style={{
+
+          borderWidth: 1,
+          backgroundColor: 'white',
+          borderColor: '#ddd',
+          borderRadius: 12,
+          bottom: 30,
+        }}>
+          <SafeAreaView>
+            <ScrollView showsVerticalScrollIndicator={false}
+                        style={{ marginHorizontal: 12, marginVertical: 20, maxHeight: 550 }}>
+              <Text style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</Text>
+              <View style={{
+                flexDirection: 'row',
+                paddingVertical: 10,
+                borderWidth: 1,
+                paddingHorizontal: 12,
+                borderColor: '#ddd',
+                marginTop: 12,
+              }}>
+                <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'user-o'} />
+                <TextInput onChangeText={(text) => {
+                  onChangeAccount(text)
+                  setData({ ...data, acc: text })
+                }} placeholder={'帐号'}
+                           style={{ flex: 1 }} />
+              </View>
+              {regex.test(data.acc) ?
+                <Text style={{ marginTop: 12, fontSize: 12, color: '#6bab64' }}>*该账号可用</Text> :
+                <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用6-15位英文或数字的组合</Text>
+              }
+              <View style={{
+                flexDirection: 'row',
+                paddingVertical: 10,
+                borderWidth: 1,
+                paddingHorizontal: 12,
+                borderColor: '#ddd',
+                marginTop: 12,
+                alignItems: 'center',
+              }}>
+                <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'unlock-alt'} />
+                <TextInput
+                  secureTextEntry={!showPwd}
+                  onChangeText={(text) => {
+                    onChangePassword(text)
+                    setData({ ...data, pwd: text })
+                  }} placeholder={'密码'}
+                  style={{ flex: 1 }} />
+                <TouchableWithoutFeedback onPress={() => setShowPwd(!showPwd)}>
+                  <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
+                         source={{ uri: showPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
+                </TouchableWithoutFeedback>
+              </View>
+              <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>*请使用至少6位字符</Text>
+              <View style={{
+                flexDirection: 'row',
+                paddingVertical: 10,
+                borderWidth: 1,
+                paddingHorizontal: 12,
+                borderColor: '#ddd',
+                marginTop: 12,
+              }}>
+                <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'unlock-alt'} />
+                <TextInput secureTextEntry={!showConfirmPwd}
+                           onChangeText={(text) => setData({ ...data, confirmPwd: text })}
+                           placeholder={'确认密码'} style={{ flex: 1 }} />
+                <TouchableWithoutFeedback onPress={() => setShowConfirmPwd(!showConfirmPwd)}>
+                  <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
+                         source={{ uri: showConfirmPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
+                </TouchableWithoutFeedback>
+              </View>
+              {data.pwd != '' && data.pwd != data.confirmPwd &&
+              <Text style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</Text>}
+              <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={reg_name}
+                            onChangeText={(text) => {
+                              onChaneRealName(text)
+                              setData({ ...data, reg_name: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入4数字取款密码'} iconName={'unlock-alt'} config={reg_fundpwd}
+                            onChangeText={(text) => {
+                              onChaneFundPassword(text)
+                              setData({ ...data, reg_fundpwd: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={reg_qq}
+                            onChangeText={(text) => {
+                              onChaneQQ(text)
+                              setData({ ...data, reg_qq: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={reg_wx}
+                            onChangeText={(text) => {
+                              onChaneWeChat(text)
+                              setData({ ...data, reg_wx: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={reg_phone}
+                            onChangeText={(text) => {
+                              onChanePhone(text)
+                              setData({ ...data, reg_phone: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={smsVerify}
+                            onChangeText={(text) => {
+                              onChaneSms(text)
+                              setData({ ...data, reg_vcdoe: text })
+                            }} />
+              <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={reg_email}
+                            onChangeText={(text) => {
+                              onChangeEmail(text)
+                              setData({ ...data, reg_email: text })
+                            }} />
+              {getVcode}
+              <TouchableOpacity
+                onPress={() => signUp()}
+                style={{ paddingVertical: 16, marginTop: 12, borderRadius: 8, backgroundColor: '#ff9c06' }}>
+                <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate(PageName.LCLoginPage)}>
+                <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回登录</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate(PageName.LCHomePage)}>
+                <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回首页</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </SafeAreaView>
+        </View>
       </View>
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 
@@ -264,10 +267,10 @@ export default LCRegisterPage
 
 const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
   const webViewScript = `setTimeout(function() {
-            document.getElementById('app').style.background = 'white'
-            window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
-          }, 500);
-          true;`
+document.getElementById('app').style.background = 'white'
+window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
+}, 500);
+true;`
   const [webviewHeight, setWebViewHeight] = useState(0)
   const hadnleMessage = (e: WebViewMessageEvent) => {
     let eData = e?.nativeEvent?.data

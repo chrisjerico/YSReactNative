@@ -95,9 +95,9 @@ const LLHomePage = ({ setProps, navigation }) => {
               marginTop: 8,
             }}
             onPress={() => {
-              uid === '' ? PushHelper.pushLogin() : PushHelper.pushUserCenterType(5)
+              (!uid || uid === '') ? PushHelper.pushLogin() : PushHelper.pushUserCenterType(5)
             }}
-            uri={'http://test05.6yc.com/views/mobileTemplate/20/images/llhhr.png'}
+            uri={httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/llhhr.png'}
           />
           {rankingListSwitch === 1 ? (
             <SafeAreaView style={{ marginHorizontal: 10 }}>
@@ -152,11 +152,11 @@ const LLHomePage = ({ setProps, navigation }) => {
             </Text>
           </View>
           <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
-          <Text style={{ color: 'black', textAlign: 'center' }}>version: {27}</Text>
+          <Text style={{ color: 'black', textAlign: 'center' }}>version: {28}</Text>
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
-      {uid === '' && (
+      {(!uid || uid === '') && (
         <View
           style={{
             flexDirection: 'row',
