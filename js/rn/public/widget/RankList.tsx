@@ -5,19 +5,18 @@ import * as React from 'react'
 import {UGStore} from "../../redux/store/UGStore"
 
 const RankListCP = ({ranks, width, height = 200, titleVisible = true, backgroundColor = 'white', textColor = "black", timing = 10000, titleTextStyle}:
-                        { ranks: RankListModel, width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle }) => {
+                        { ranks: any[], width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle }) => {
   const [currentY] = useState(new Animated.Value(height))
   const {rankingListSwitch} = UGStore.globalProps.sysConf;
-  console.log(ranks)
   useEffect(() => {
     const value = Animated.loop(
         Animated.timing(currentY, {
-          toValue: -1 *  (ranks?.data?.list?.length + 5) ?? 0,
+          toValue: -1 *  (ranks.length + 5) ?? 0,
           duration: timing,
           useNativeDriver: true
         })
     )
-    if (ranks?.data?.list?.length > 0) {
+    if (ranks.length > 0) {
       value.start()
     }
     return (() => {
@@ -40,7 +39,7 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
             }}>投注排行榜</Text>
           </View>}
           <View style={{backgroundColor: backgroundColor, alignSelf: 'center', borderRadius: 8}}>
-            {ranks?.data?.list?.length > 0 ?
+            {ranks.length > 0 ?
                 <View style={{flexDirection: 'row', width: width, alignSelf: 'center',}}>
 
                   <Text style={{
@@ -72,7 +71,7 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
                   translateY: currentY,
                 }]
               }}>
-                {ranks?.data?.list?.map((item, index) => {
+                {ranks.map((item, index) => {
                   return <View key={item.coin + index} style={{flexDirection: 'row'}}>
                     <Text style={{
                       flex: 1,
