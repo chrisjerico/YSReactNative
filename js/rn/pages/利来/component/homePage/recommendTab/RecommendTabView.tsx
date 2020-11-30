@@ -32,7 +32,7 @@ export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitc
         <ImageButton imgStyle={{ height: 140, marginTop: 8, resizeMode: 'stretch' }}
                      uri={list[1]?.icon}
                      onPress={() => onPress(list[1])} />
-        <View style={{ flexDirection: 'row', marginTop: 8, flex: 1 }}>
+        <View style={{ flexDirection: 'row', marginTop: 8 }}>
           <ImageButton imgStyle={{ flex: 2 / 3, height: 100, width: 'auto', resizeMode: 'stretch' }}
                        uri={list[2]?.icon || list[2]?.subType && list[2]?.subType[0]?.icon}
                        onPress={() => onPress(list[2])} />

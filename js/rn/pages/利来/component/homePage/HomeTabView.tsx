@@ -55,7 +55,7 @@ export const HomeTabView = () => {
 
     const calculateHeight = (i: number) => {
         i == 0 ?
-            setHeight(825) :
+            setHeight(725) :
             gamesIndex[i].indexOf("彩票") != -1 ?
                 setHeight(Math.ceil(games[i].list.length / 4) * 95 + 50) :
                 setHeight(Math.ceil(games[i].list.length / 2) * 125 + 50)
