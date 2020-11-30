@@ -105,7 +105,7 @@ export const LLRegisterPage = () => {
   }, [reg_vcode, code])
 
   return (
-    <BaseScreen screenName={'注册'}>
+    <BaseScreen screenName={'注册'} style={{backgroundColor: "#ffffff"}}>
       <StatusBar barStyle="dark-content" translucent={true} />
       <View style={{ alignItems: 'center', width: AppDefine.width, height: 140 }}>
         <Image style={{ width: AppDefine.width, height: 182, resizeMode: 'stretch', position: 'absolute' }}

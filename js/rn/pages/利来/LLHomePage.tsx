@@ -32,17 +32,19 @@ import RankListCP from '../../public/widget/RankList'
 import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import ActivityComponent from '../../public/components/tars/ActivityComponent'
-import { getActivityPosition } from '../../public/tools/tars'
+import { getActivityPosition, goToUserCenterType } from '../../public/tools/tars'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { TransferView } from '../../public/components/TransferView'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
+import { scale } from '../../public/tools/Scale'
+import Activitys from '../../public/views/tars/Activitys'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { value, refresh } = useHomePage({})
   const { homeInfo } = value
-  const { rankLists, redBag } = homeInfo
-  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos } = value
+  const { rankLists, redBag, goldenEggs, scratchs } = homeInfo
+  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo, roulette } = value
   const { uid } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
@@ -198,8 +200,7 @@ const LLHomePage = ({ setProps, navigation }) => {
           />
         )
       })}
-      <RedBagItem redBag={redBag} style={{ top: 200 }} />
-      <TurntableListItem />
+      <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
     </View>
   )
 }

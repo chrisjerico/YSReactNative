@@ -58,7 +58,7 @@ const LLMinePage = ({ navigation, setProps }) => {
   })
   const userStore = UGStore.globalProps.userInfo
   const { width } = useDimensions().window
-  const { uid = '', curLevelTitle, curLevelInt, nextLevelInt, curLevelGrade, avatar, isTest, balance, usr, unreadMsg } = userStore
+  const { uid = '', curLevelTitle, curLevelInt, nextLevelInt, curLevelGrade, avatar, isTest, balance, usr, unreadMsg, taskRewardTotal } = userStore
 
   const getLevelWidth = () => {
     setLevelWidth(193 * parseFloat(curLevelInt).toFixed(balanceDecimal || 2) / parseFloat(nextLevelInt).toFixed(balanceDecimal || 2))
@@ -164,7 +164,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                         color: '#ffffff',
                         lineHeight: 20,
                         fontSize: 8,
-                      }}>{isNaN(parseFloat(curLevelInt) / parseFloat(nextLevelInt)) ? '0%' : parseFloat(curLevelInt) / parseFloat(nextLevelInt)+ '%'}</Text>
+                      }}>{isNaN(parseFloat(curLevelInt) / parseFloat(taskRewardTotal)) ? '0%' : parseFloat(curLevelInt) / parseFloat(taskRewardTotal)+ '%'}</Text>
                     <Text
                       style={{
                         color: '#ffffff',
@@ -177,7 +177,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                     <Text style={{
                       color: '#ffffff',
                       fontSize: 14,
-                    }}>{`距离下一级还差${isNaN(parseFloat(nextLevelInt) - parseFloat(curLevelInt)) ? 0.00 : (parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) - parseFloat(curLevelInt).toFixed(balanceDecimal || 2)).toFixed(balanceDecimal || 2)}`}</Text>
+                    }}>{`距离下一级还差${isNaN(parseFloat(nextLevelInt) - parseFloat(taskRewardTotal)) ? 0.00 : (parseFloat(nextLevelInt).toFixed(balanceDecimal || 2) - parseFloat(taskRewardTotal).toFixed(balanceDecimal || 2)).toFixed(balanceDecimal || 2)}`}</Text>
                   }
                 </View>
               </View>
