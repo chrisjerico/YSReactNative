@@ -12,7 +12,7 @@ import { removeHTMLTag } from "../../../../public/tools/removeHTMLTag";
 
 export const HomeTabView = () => {
     const { homeGames, notice, banner, onlineNum, onlineSwitch } = useGetHomeInfo()
-    const [height, setHeight] = useState(775)
+    const [height, setHeight] = useState(725)
     const [games, setGames] = useState<Icon[]>([])
     const [marquee, setMarquee] = useState<string[]>([])
     const [gamesIndex, setGamesIndex] = useState<string[]>([])
