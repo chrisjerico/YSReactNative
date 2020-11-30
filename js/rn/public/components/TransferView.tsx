@@ -203,7 +203,7 @@ const MiddleView = ({ balance, money, setMoney, data, transIn, setTransIn, trans
               borderColor: '#cccccc', borderWidth: 1,
             }}>
               <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                <View style={{flexDirection: 'row', paddingVertical: 10, height: 43}}>
+                <View style={{ flexDirection: 'row', paddingVertical: 10, height: 43 }}>
                   <Text
                     style={{
                       marginLeft: 12,
@@ -224,28 +224,30 @@ const MiddleView = ({ balance, money, setMoney, data, transIn, setTransIn, trans
 
 const AccListView = ({ data }: { data: any[] }) => {
   return (
-    <SafeAreaView style={{ flex: 1, marginBottom: 90, backgroundColor: "white" }}>
-      <FlatList
-        keyExtractor={(item, index) => `acc-${index}`}
-        style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: "white" }} data={data}
-        renderItem={({ item }) => {
-          return (
-            <View style={{
-              flexDirection: 'row',
-              marginHorizontal: 8,
-              borderBottomWidth: 1,
-              borderBottomColor: '#d9d9d9',
-              alignItems: 'center',
-              paddingVertical: 12,
-            }}>
-              <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
-              <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
-              <Text>￥*****</Text>
-              <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
-            </View>
-          )
-        }} />
-    </SafeAreaView>
+    <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <FlatList
+          keyExtractor={(item, index) => `acc-${index}`}
+          style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: 'white', borderRadius: 10 }} data={data}
+          renderItem={({ item }) => {
+            return (
+              <View style={{
+                flexDirection: 'row',
+                marginHorizontal: 8,
+                borderBottomWidth: 1,
+                borderBottomColor: '#d9d9d9',
+                alignItems: 'center',
+                paddingVertical: 12,
+              }}>
+                <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
+                <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
+                <Text>￥*****</Text>
+                <Icon size={20} name={'reload1'} color={'black'} style={{ marginLeft: 16 }} />
+              </View>
+            )
+          }} />
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 
@@ -268,71 +270,68 @@ const TransferPicker = ({ text, enable = true, defaultZIndex, data, wallet, setW
   }
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
-      <Text style={{ fontSize: 16, textAlign: 'center' }}>{text}</Text>
-      <TouchableWithoutFeedback style={{}} disabled={!enable} onPress={() => toggleRow1Content()}>
-        <View style={{
-          flex: 1,
-          marginLeft: 20,
-          height: 38,
-          borderBottomWidth: 1,
-          borderBottomColor: '#d9d9d9',
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}>
-          <Text>{wallet ? wallet.title : ''}</Text>
-          <View style={{ flex: 1 }} />
-          <Icon style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
-                name={'caretdown'} />
-        </View>
-      </TouchableWithoutFeedback>
-      <Animated.View
-        style={{
-          backgroundColor: 'white',
-          height: animation,
-          width: '78%',
-          position: 'absolute',
-          top: 38,
-          left: 85,
-          zIndex,
-          borderWidth: zIndex === 99 ? 1 : 0,
-          borderColor: '#d9d9d9',
-          borderRadius: 4,
-        }}>
-        {data &&
-        <FlatList
-          keyExtractor={(item, index) => `${text}-item-${index}`}
-          data={data}
-          renderItem={({ item }) => (
-            <TouchableWithoutFeedback onPress={() => {
-              setWallet(item)
-              toggleRow1Content()
-            }}>
-              <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
-                <Text>{item ? item.title || '' : ''}</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          )} />}
-      </Animated.View>
-      {open != 0 && <TouchableWithoutFeedback style={{
+    <>
+      <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
+        <Text style={{ fontSize: 16, textAlign: 'center' }}>{text}</Text>
+        <TouchableWithoutFeedback style={{}} disabled={!enable} onPress={() => toggleRow1Content()}>
+          <View style={{
+            flex: 1,
+            marginLeft: 20,
+            height: 38,
+            borderBottomWidth: 1,
+            borderBottomColor: '#d9d9d9',
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+            <Text>{wallet ? wallet.title : ''}</Text>
+            <View style={{ flex: 1 }} />
+            <Icon style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
+                  name={'caretdown'} />
+          </View>
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={{
+            backgroundColor: 'white',
+            height: animation,
+            width: '78%',
+            position: 'absolute',
+            top: 38,
+            left: 85,
+            zIndex,
+            borderWidth: zIndex === 99 ? 1 : 0,
+            borderColor: '#d9d9d9',
+            borderRadius: 4,
+          }}>
+          {data &&
+          <FlatList
+            keyExtractor={(item, index) => `${text}-item-${index}`}
+            data={data}
+            renderItem={({ item }) => (
+              <TouchableWithoutFeedback onPress={() => {
+                setWallet(item)
+                toggleRow1Content()
+              }}>
+                <View style={{ paddingVertical: 12, paddingHorizontal: 12, justifyContent: 'center' }}>
+                  <Text>{item ? item.title || '' : ''}</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )} />}
+        </Animated.View>
+      </View>
+      {open && <TouchableWithoutFeedback style={{
         width: AppDefine.width,
         height: AppDefine.height,
         position: 'absolute',
-        flex: 1,
-        top: -180,
-        left: -12,
       }} onPress={() => toggleRow1Content()}>
         <View style={{
           backgroundColor: 'rgba(0,0,0, 0.1)',
           width: AppDefine.width,
           height: AppDefine.height,
           position: 'absolute',
-          flex: 1,
-          top: -180,
           left: -12,
         }} />
       </TouchableWithoutFeedback>}
-    </View>
+    </>
   )
 }
 

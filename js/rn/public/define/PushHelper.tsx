@@ -284,7 +284,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.额度转换: {
-            navigate(PageName.TransferView, {})
+            push(PageName.TransferView, {})
             break
           }
           case UGUserCenterType.资金明细: {
