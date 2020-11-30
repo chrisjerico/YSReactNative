@@ -73,4 +73,6 @@ export enum PageName {
   XBJMinePage = 'XBJMinePage',
   XBJRegisterPage = 'XBJRegisterPage',
   SeriesLobbyPage = 'SeriesLobbyPage',
+  UserMessagePage = 'UserMessagePage',
+  UserInfoPage = 'UserInfoPage',
 }
