@@ -31,6 +31,8 @@ import { navigate, pop } from '../navigation/RootNavigation'
 import { PageName } from '../navigation/Navigation'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { OCHelper } from '../define/OCHelper/OCHelper'
+import LinearGradient from 'react-native-linear-gradient'
+import { httpClient } from '../network/httpClient'
 
 export const TransferView = () => {
   const [money, setMoney] = useState(0)
@@ -62,7 +64,7 @@ export const TransferView = () => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: Skin1.bgColor }}>
       <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
       <MiddleView
         data={data}
@@ -84,48 +86,48 @@ export const TransferView = () => {
 
 const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
   return (
-    <SafeAreaView style={{
-      backgroundColor: Skin1.bgColor,
-      borderBottomColor: '#cccccc',
-      borderBottomWidth: 1,
-      flexDirection: 'row',
-    }}>
-      <View style={{
-        width: AppDefine.width,
-        backgroundColor: Skin1.bgColor,
+    <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <SafeAreaView style={{
+        borderBottomColor: '#cccccc',
+        borderBottomWidth: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'center',
-        justifyContent: 'center',
       }}>
-        <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
-          switch (Platform.OS) {
-            case 'ios':
-              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-              break;
-            case 'android':
-
-              break;
-          }
-          pop()
-        }}>
-          <Icon size={28} name={'left'}/>
-        </TouchableOpacity>
-        <Text style={{
+        <View style={{
+          width: AppDefine.width,
+          flexDirection: 'row',
+          alignItems: 'center',
           alignSelf: 'center',
-          paddingTop: 15,
-          paddingBottom: 15,
-          textAlign: 'center',
-          fontSize: 20,
-          color: Skin1.textColor1,
-        }}>额度转换</Text>
-        <TouchableWithoutFeedback onPress={pressRecord}>
-          <View style={{ justifyContent: 'flex-end', position: 'absolute', left: AppDefine.width - 80 }}>
-            <Text style={{ color: Skin1.textColor1, fontSize: 18 }}>转换纪录</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    </SafeAreaView>
+          justifyContent: 'center',
+        }}>
+          <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
+            switch (Platform.OS) {
+              case 'ios':
+                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
+                break
+              case 'android':
+
+                break
+            }
+            pop()
+          }}>
+            <Icon size={28} name={'left'} color={Skin1.textColor1} />
+          </TouchableOpacity>
+          <Text style={{
+            alignSelf: 'center',
+            paddingTop: 15,
+            paddingBottom: 15,
+            textAlign: 'center',
+            fontSize: 20,
+            color: Skin1.textColor1,
+          }}>额度转换</Text>
+          <TouchableWithoutFeedback onPress={pressRecord}>
+            <View style={{ justifyContent: 'flex-end', position: 'absolute', left: AppDefine.width - 80 }}>
+              <Text style={{ color: Skin1.textColor1, fontSize: 18 }}>转换纪录</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 
@@ -133,87 +135,99 @@ const MiddleView = ({ balance, money, setMoney, data, transIn, setTransIn, trans
                       { balance: string, money: number, setMoney: (text: string) => void, autoTransfer: () => void, transfer: () => void }) => {
   const dataArr = [{ title: '我的钱包', id: 0 }]
   return (
-    <View style={{ marginHorizontal: 12, marginTop: 16, zIndex: 99 }}>
-      <View style={{ zIndex: 2 }}>
-        <TransferPicker key={1} text={'转出钱包'} defaultZIndex={3} data={dataArr.concat(data)} wallet={transOut}
-                        setWallet={setTransOut} />
-        <TransferPicker key={2} text={'转入钱包'} defaultZIndex={2} data={dataArr.concat(data)} wallet={transIn}
-                        setWallet={setTransIn} />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
-          <TextInput
-            keyboardType={'numeric'}
-            value={money}
-            style={{
-              flex: 1,
-              marginLeft: 20,
-              height: 38,
-              borderBottomWidth: 1,
-              borderBottomColor: '#d9d9d9',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-            onChangeText={(text) => setMoney(text)}
-          />
+    <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <View style={{ marginHorizontal: 12, marginTop: 16, zIndex: 99 }}>
+        <View style={{ zIndex: 2 }}>
+          <TransferPicker key={1} text={'转出钱包'} defaultZIndex={3} data={dataArr.concat(data)} wallet={transOut}
+                          setWallet={setTransOut} />
+          <TransferPicker key={2} text={'转入钱包'} defaultZIndex={2} data={dataArr.concat(data)} wallet={transIn}
+                          setWallet={setTransIn} />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
+            <TextInput
+              keyboardType={'numeric'}
+              value={money}
+              style={{
+                flex: 1,
+                marginLeft: 20,
+                height: 38,
+                borderBottomWidth: 1,
+                borderBottomColor: '#d9d9d9',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}
+              onChangeText={(text) => setMoney(text)}
+            />
+          </View>
+        </View>
+        <View style={{ paddingTop: 32 }}>
+          <TouchableWithoutFeedback onPress={transfer}>
+            <View style={{
+              borderRadius: 4,
+              borderColor: '#cccccc',
+              borderWidth: 1,
+            }}>
+              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                <Text style={{
+                  fontSize: 17,
+                  color: Skin1.textColor1,
+                  alignSelf: 'center',
+                  paddingVertical: 10,
+                  height: 43,
+                }}>开始转换</Text>
+              </LinearGradient>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={autoTransfer}>
+            <View style={{
+              borderRadius: 4,
+              marginTop: 12,
+              borderColor: '#cccccc',
+              borderWidth: 1,
+            }}>
+              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                <Text style={{
+                  fontSize: 17,
+                  color: Skin1.textColor1,
+                  alignSelf: 'center',
+                  paddingVertical: 10,
+                  height: 43,
+                }}>一键提取</Text>
+              </LinearGradient>
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={refresh}>
+            <View style={{
+              borderRadius: 4,
+              marginTop: 12,
+              borderColor: '#cccccc', borderWidth: 1,
+            }}>
+              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                <View style={{flexDirection: 'row', paddingVertical: 10, height: 43}}>
+                  <Text
+                    style={{
+                      marginLeft: 12,
+                      fontSize: 17,
+                      color: Skin1.textColor1,
+                      alignSelf: 'center',
+                    }}>{`帐号余额: ￥${balance || 0}`}</Text>
+                  <Icon size={20} name={'reload1'} color={Skin1.textColor1} style={{ marginLeft: 16 }} />
+                </View>
+              </LinearGradient>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </View>
-      <View style={{ paddingTop: 32 }}>
-        <TouchableWithoutFeedback onPress={transfer}>
-          <View style={{
-            backgroundColor: Skin1.bgColor,
-            paddingVertical: 10,
-            borderRadius: 4,
-            height: 43,
-            borderColor: '#cccccc',
-            borderWidth: 1,
-          }}>
-            <Text style={{ fontSize: 17, color: Skin1.textColor1, alignSelf: 'center' }}>开始转换</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={autoTransfer}>
-          <View style={{
-            backgroundColor: Skin1.bgColor,
-            paddingVertical: 10,
-            borderRadius: 4,
-            marginTop: 12,
-            height: 43,
-            borderColor: '#cccccc',
-            borderWidth: 1,
-          }}>
-            <Text style={{ fontSize: 17, color: Skin1.textColor1, alignSelf: 'center' }}>一键提取</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={refresh}>
-          <View style={{
-            backgroundColor: Skin1.bgColor,
-            paddingVertical: 10,
-            borderRadius: 4,
-            marginTop: 12,
-            flexDirection: 'row',
-            height: 43,
-            borderColor: '#cccccc', borderWidth: 1,
-          }}>
-            <Text
-              style={{
-                marginLeft: 12,
-                fontSize: 17,
-                color: Skin1.textColor1,
-                alignSelf: 'center',
-              }}>{`帐号余额: ￥${balance || 0}`}</Text>
-            <Icon size={20} name={'reload1'} color={Skin1.textColor1} style={{ marginLeft: 16 }} />
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-    </View>
+    </LinearGradient>
   )
 }
 
 const AccListView = ({ data }: { data: any[] }) => {
   return (
-    <SafeAreaView style={{ flex: 1, marginBottom: 90 }}>
+    <SafeAreaView style={{ flex: 1, marginBottom: 90, backgroundColor: "white" }}>
       <FlatList
         keyExtractor={(item, index) => `acc-${index}`}
-        style={{ marginHorizontal: 12, marginTop: 12 }} data={data}
+        style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: "white" }} data={data}
         renderItem={({ item }) => {
           return (
             <View style={{
