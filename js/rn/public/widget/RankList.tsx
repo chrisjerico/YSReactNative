@@ -8,6 +8,7 @@ const RankListCP = ({ranks, width, height = 200, titleVisible = true, background
                         { ranks: RankListModel, width: number, height?: number, titleVisible?: boolean, backgroundColor?: string, textColor: string, timing: number, titleTextStyle?: TextStyle }) => {
   const [currentY] = useState(new Animated.Value(height))
   const {rankingListSwitch} = UGStore.globalProps.sysConf;
+  console.log(ranks)
   useEffect(() => {
     const value = Animated.loop(
         Animated.timing(currentY, {

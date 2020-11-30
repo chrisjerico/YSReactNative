@@ -99,7 +99,7 @@ const LLHomePage = ({ setProps, navigation }) => {
             }}
             uri={httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/llhhr.png'}
           />
-          {rankingListSwitch === 1 ? (
+          {rankList ? rankingListSwitch === 1 ? (
             <SafeAreaView style={{ marginHorizontal: 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
@@ -133,7 +133,7 @@ const LLHomePage = ({ setProps, navigation }) => {
               <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
                           width={Dimensions.get('screen').width - 24} ranks={rankList} />
             </SafeAreaView>
-          )}
+          ) : <></>}
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
             <Text
               onPress={() => {

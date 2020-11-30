@@ -22,7 +22,6 @@ export const LotteryTabView = ({ list }: { list: List[] }) => {
               backgroundColor: "rgba(255, 255, 255, 0.5)",
             }}
             onPress={() => {
-              // console.log(item)
               PushHelper.pushCategory(1, item.gameId)
             }}>
             <View style={{

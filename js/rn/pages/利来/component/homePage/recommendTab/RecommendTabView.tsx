@@ -5,14 +5,10 @@ import { List } from '../../../../../public/network/Model/HomeGamesModel'
 import { MarqueeView } from '../MarqueeView'
 import { ImageButton } from '../../ImageButton'
 import PushHelper from '../../../../../public/define/PushHelper'
-import { UGStore } from '../../../../../redux/store/UGStore'
 import { BannerModel } from '../../../../../public/network/Model/BannerModel'
 import { useDimensions } from '@react-native-community/hooks'
 import Carousel from 'react-native-banner-carousel'
 import FastImage from 'react-native-fast-image'
-import useGetHomeInfo from '../../../../../public/hooks/useGetHomeInfo'
-import { push } from '../../../../../public/navigation/RootNavigation'
-import { PageName } from '../../../../../public/navigation/Navigation'
 
 export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitch = 0 }: { list: List[], marquee: any[], banner: BannerModel, onlineNum: number, onlineSwitch: number }) => {
   const onPress = (list: List) => {
@@ -21,8 +17,6 @@ export const RecommendTabView = ({ list, marquee, banner, onlineNum, onlineSwitc
         PushHelper.pushCategory(list.seriesId, list.gameId) :
         PushHelper.pushCategory(list.seriesId, list.subType[0]?.gameId)
   }
-
-  console.log(list)
 
   return (
     <View style={{ paddingTop: 10, flex: 1 }}>
