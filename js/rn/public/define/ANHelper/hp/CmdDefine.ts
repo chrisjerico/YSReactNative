@@ -6,6 +6,7 @@
  */
 export enum CMD {
   INIT_DOMAIN = 'INIT_DOMAIN', //初始化 Domain
+  INIT_WHOLE_DOMAIN = 'INIT_WHOLE_DOMAIN', //初始化 完整的Domain
   INIT_MENU = 'INIT_MENU', //初始化 默认菜单
   INIT_PAGES = 'INIT_PAGES', //初始化哪些界面需要替换
   PAGE_PARAMS = 'PAGE_PARAMS', //得到这个界面的参数

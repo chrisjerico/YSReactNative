@@ -431,6 +431,7 @@ const notifyDomainChanged = async (siteId?: string) => {
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
+      await ANHelper.callAsync(CMD.INIT_WHOLE_DOMAIN, MultiDomainUrls);
       break;
   }
 
