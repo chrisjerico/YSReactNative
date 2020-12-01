@@ -216,6 +216,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://og878.vip',
   ],
   'c134': [
+    'https://19972015.com',
     'https://19972023.com',
     'https://19972022.com',
     'https://19972018.com',
@@ -298,6 +299,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c208': [
     'https://771771c.com',
+    'https://771771d.com',
+    'https://771771f.com',
+    'https://771771g.com',
+    'https://771771h.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -306,7 +311,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://app213xpj.co',
+    'https://4501078.com',
     'https://c213aapp.cc',
     'https://c213app.com',
     'https://c213app01.co',
