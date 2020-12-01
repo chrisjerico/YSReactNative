@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
-import List from '../../public/views/tars/List'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import Button from '../../public/views/tars/Button'
+import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 
 const UserMessagePage = () => {
+  const reload = useRef(false)
+  const sliderIsOpen = useRef(true)
   const [list, setList] = useState([])
+
+  const [spinValue, setSpinValue] = useState(new Animated.Value(0))
+  const [translateY, setTranslateY] = useState(new Animated.Value(0))
+  const spinDeg = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  })
+
   useEffect(() => {
     APIRouter.user_msgList().then((value) => {
       const list = value?.data?.data.list
       setList(list)
-      console.log('------list------', list)
     })
   }, [])
   return (
@@ -37,12 +46,36 @@ const UserMessagePage = () => {
           )
         }}
       />
-      <View style={{ position: 'absolute', bottom: 80, right: 0, height: 100, width: '100%', alignItems: 'flex-end' }}>
-        <View style={{ width: '30%', aspectRatio: 4 }}>
-          <ImageBackground source={{ uri: '站内信_底' }} style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }} resizeMode={'contain'}>
-            <Image source={{ uri: '站内信_三角形' }} style={{ width: '15%', aspectRatio: 1 }} resizeMode={'contain'} />
-          </ImageBackground>
-        </View>
+      <Animated.View style={{ position: 'absolute', bottom: 80, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (!reload.current) {
+              reload.current = true
+              Animated.parallel([
+                Animated.timing(spinValue, {
+                  toValue: sliderIsOpen.current ? 1 : 0,
+                  duration: 1000,
+                  easing: Easing.linear,
+                  useNativeDriver: true,
+                }),
+                Animated.timing(translateY, {
+                  toValue: sliderIsOpen.current ? 70 : 0,
+                  duration: 1000,
+                  easing: Easing.linear,
+                  useNativeDriver: true,
+                }),
+              ]).start(() => {
+                sliderIsOpen.current = !sliderIsOpen.current
+                reload.current = false
+              })
+            }
+          }}>
+          <View style={{ width: '30%', aspectRatio: 4 }}>
+            <ImageBackground source={{ uri: '站内信_底' }} style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }} resizeMode={'contain'}>
+              <Animated.Image source={{ uri: '站内信_三角形' }} style={{ width: '15%', aspectRatio: 1, transform: [{ rotateZ: spinDeg }] }} resizeMode={'contain'} />
+            </ImageBackground>
+          </View>
+        </TouchableWithoutFeedback>
         <View style={{ flex: 1, backgroundColor: '#2894FF', width: '100%', flexDirection: 'row', alignItems: 'center' }}>
           <Button
             title={'全部已读'}
@@ -63,7 +96,7 @@ const UserMessagePage = () => {
             useFastImage={false}
           />
         </View>
-      </View>
+      </Animated.View>
     </>
   )
 }
