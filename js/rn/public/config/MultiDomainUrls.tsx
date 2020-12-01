@@ -419,21 +419,22 @@ const recombineDomain = (siteUrl: {}) => {
 const notifyDomainChanged = async (siteId?: string) => {
   //ugLog('DomainUrls 2 =', JSON.stringify(DomainUrls))
 
+  // 不区分大小写
+  const sites = {}
+  for (const k in DomainUrls) {
+    sites[k.toLowerCase()] = DomainUrls[k]
+  }
+  const host = sites[siteId.toLowerCase()].trim()
+  host.length && ANHelper.refreshHost(host)
+  
   switch (Platform.OS) {
     case 'ios':
-      const sites = {}
-      for (const k in DomainUrls) {
-        sites[k.toLowerCase()] = DomainUrls[k]
-      }
-      const host = sites[siteId.toLowerCase()].trim()
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
       break;
   }
-
-  await ANHelper.refreshHost(DomainUrls[siteId])
 }
 
 /**
