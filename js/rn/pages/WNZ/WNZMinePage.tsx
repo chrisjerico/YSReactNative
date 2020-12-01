@@ -176,6 +176,8 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
+                      } else if (code == UGUserCenterType.站内信) {
+                        navigate(PageName.UserMessagePage)
                       } else {
                         PushHelper.pushUserCenterType(code)
                       }
