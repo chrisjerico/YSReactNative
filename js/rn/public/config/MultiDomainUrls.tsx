@@ -298,6 +298,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c208': [
     'https://771771c.com',
+    'https://771771d.com',
+    'https://771771f.com',
+    'https://771771g.com',
+    'https://771771h.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
