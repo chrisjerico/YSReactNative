@@ -37,27 +37,25 @@ export class ANEvent extends UGBridge {
     // 跳转到指定页面
     this.emitter.addListener('SelectVC', (params: { vcName: PageName; action: string }) => {
       ugLog('跳转到rn页面：', JSON.stringify(params));
-      if (params?.vcName) {
-        // navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
-        const page = RnPageModel.getPageName(params.vcName)
-        switch (params?.action) {
-          case 'push':
-            ugLog('push到rn页面：', params.vcName, params)
-            push(page, params)
-            break
-          case 'jump':
-            ugLog('跳转到rn页面：', params.vcName, params)
-            // jumpTo(page, params, true)
-            navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
-            break
-          default:
-            const currentPage = getCurrentPage()
-            ugLog('成为焦点：', currentPage, params)
-            const { didFocus } = UGStore.getPageProps(currentPage)
-            didFocus && didFocus()
-            break
-        }
+      // navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName));
+      const page = RnPageModel.getPageName(params?.vcName)
+      switch (params?.action) {
+        case 'push':
+          push(page, params)
+          break
+        case 'jump':
+          // jumpTo(page, params, true)
+          navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
+          break
+        case 'refresh':
+        default:
+          const currentPage = getCurrentPage()
+          const { didFocus } = UGStore.getPageProps(currentPage)
+          didFocus && didFocus()
+          ugLog('成为焦点：', currentPage, UGStore.getPageProps(currentPage))
+          break
       }
+
     });
 
     // 移除页面
