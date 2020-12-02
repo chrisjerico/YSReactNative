@@ -1,10 +1,9 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Alert, ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
-import useRerender from '../../public/hooks/temp/useRerender'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -23,7 +22,7 @@ import ToolBlock from './views/ToolBlock'
 
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
-const WNZMinePage = ({ setProps }) => {
+const WNZMinePage = () => {
   const { current: v } = useRef<{} & JDSalaryListCP>({})
 
   const menu = useRef(null)
@@ -36,17 +35,11 @@ const WNZMinePage = ({ setProps }) => {
     menu?.current?.close()
   }
 
-  const { value, sign, rightMenus, show, reRender } = useMinePage({
+  const { value, sign, rightMenus, show } = useMinePage({
     homePage: PageName.WNZHomePage,
     onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
-
-  useEffect(() => {
-    setProps({
-      didFocus: reRender,
-    })
-  }, [])
 
   const { userInfo, sysInfo } = value
 
@@ -230,9 +223,3 @@ const styles = StyleSheet.create({
 })
 
 export default WNZMinePage
-
-// else if (code == UGUserCenterType.站内信) {
-//   navigate(PageName.UserMessagePage)
-// } else if (code == UGUserCenterType.个人信息) {
-//   navigate(PageName.UserInfoPage)
-// }
