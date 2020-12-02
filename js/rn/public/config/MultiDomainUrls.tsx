@@ -4,6 +4,7 @@ import {CMD} from "../define/ANHelper/hp/CmdDefine";
 import {OCHelper} from "../define/OCHelper/OCHelper";
 import {string} from "prop-types";
 import {ugLog} from "../tools/UgLog";
+import { anyEmpty } from '../tools/Ext'
 
 /**
  * 所有站点的域名，key 不能随便动，否则原生那边会找不到对应的域名
@@ -434,8 +435,8 @@ const notifyDomainChanged = async (siteId?: string) => {
   for (const k in DomainUrls) {
     sites[k.toLowerCase()] = DomainUrls[k]
   }
-  const host = sites[siteId.toLowerCase()].trim()
-  host.length && ANHelper.refreshHost(host)
+  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()].trim()
+  host?.length && ANHelper.refreshHost(host)
 
   switch (Platform.OS) {
     case 'ios':

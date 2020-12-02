@@ -1,10 +1,11 @@
 import {Dimensions} from "react-native";
+import { GRID_ITEM_HEIGHT, GRID_ITEM_WIDTH, GRID_LEFT_HEADER_WIDTH } from '../components/TrendView'
 
 export function getTrendData_gdkl10_xync(data, defaultNumber = 0) {
     let numberArray = []
     let positionArr = []
     const header = ['一', '二', '三','四', '五', '六', '七', '八']
-    const {width: screenWidth} = Dimensions.get("screen")
+    // const {width: screenWidth} = Dimensions.get("screen")
     for (let i = 0; i < data.length; i++) {
         let element = data[i];
         let lottoryData = element.num.split(",");
@@ -56,7 +57,7 @@ export function getTrendData_gdkl10_xync(data, defaultNumber = 0) {
                     }
                 } else {
                     if(Number(lottoryData[defaultNumber]) == j){
-                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * GRID_ITEM_WIDTH + GRID_LEFT_HEADER_WIDTH - GRID_ITEM_WIDTH/2,  y: GRID_ITEM_HEIGHT * positionArr.length + GRID_ITEM_HEIGHT*3/2}
                         newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -79,7 +80,7 @@ export function getTrendData_gdkl10_xync(data, defaultNumber = 0) {
                     }
                 } else {
                     if(Number(lottoryData[defaultNumber]) == j){
-                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * GRID_ITEM_WIDTH + GRID_LEFT_HEADER_WIDTH - GRID_ITEM_WIDTH/2,  y: GRID_ITEM_HEIGHT * positionArr.length + GRID_ITEM_HEIGHT*3/2}
                         newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
@@ -101,7 +102,7 @@ export function getTrendData_gdkl10_xync(data, defaultNumber = 0) {
                     }
                 } else {
                     if(Number(lottoryData[defaultNumber]) == j){
-                        positionArr[positionArr.length] = {x: j * (screenWidth - 120) / 6 + 100,  y: 34.5 * positionArr.length + 51.75}
+                        positionArr[positionArr.length] = {x: j * GRID_ITEM_WIDTH + GRID_LEFT_HEADER_WIDTH - GRID_ITEM_WIDTH/2,  y: GRID_ITEM_HEIGHT * positionArr.length + GRID_ITEM_HEIGHT*3/2}
                         newTr[i][j] = lottoryData[defaultNumber]
                     } else {   //遗漏
                         newTr[i][j] = thisFinal[i][j - 1]
