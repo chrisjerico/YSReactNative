@@ -1,17 +1,16 @@
-import React, { useRef } from 'react'
-import { Alert, ScrollView, StyleSheet } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { Alert, Platform, ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 import GameButton from '../../public/views/tars/GameButton'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP'
 import config from './config'
@@ -20,10 +19,19 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
+import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
-const WNZMinePage = () => {
+const WNZMinePage = ({ setProps }) => {
+  useEffect(() => {
+    setProps({
+      didFocus: setProps,
+    })
+  }, [])
+
   const { current: v } = useRef<{} & JDSalaryListCP>({})
 
   const menu = useRef(null)

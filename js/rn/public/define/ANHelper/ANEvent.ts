@@ -6,6 +6,7 @@ import {ugLog} from "../../tools/UgLog";
 import {UGStore} from "../../../redux/store/UGStore";
 import { ANHelper } from './ANHelper'
 import { CMD } from './hp/CmdDefine'
+import { NA_DATA } from './hp/DataDefine'
 
 export enum ANEventType { }
 
@@ -52,7 +53,7 @@ export class ANEvent extends UGBridge {
           const currentPage = getCurrentPage()
           const { didFocus } = UGStore.getPageProps(currentPage)
           didFocus && didFocus()
-          ugLog('成为焦点：', currentPage, UGStore.getPageProps(currentPage))
+          ugLog('触发焦点：', currentPage, didFocus)
           break
       }
 
@@ -101,6 +102,27 @@ export class ANEvent extends UGBridge {
       ugLog('清除数据');
       UGStore.dispatch({ type: 'reset', userInfo: {} })
       UGStore.save()
+    });
+
+    // 刷新数据
+    this.emitter.addListener('RefreshData', (params: any) => {
+      ugLog('刷新数据=', params);
+      switch (params) {
+        case NA_DATA.LOGIN_INFO:
+          break;
+        case NA_DATA.USER_INFO:
+          ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.USER_INFO }).then((user) => {
+            UGStore.dispatch({ type: 'merge', userInfo: JSON.parse(user) })
+            UGStore.save()
+          })
+          break;
+        case NA_DATA.CONFIG:
+          ANHelper.callAsync(CMD.LOAD_DATA, { key: NA_DATA.CONFIG }).then((config) => {
+            UGStore.dispatch({ type: 'merge', sysConf: JSON.parse(config) })
+            UGStore.save()
+          })
+          break;
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-import { Dimensions, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { chunkArray } from '../tools/ChunkArr'
@@ -196,16 +196,18 @@ const TrendView = ({ navigation }) => {
                       return i == 0 ? (
                         <Text
                           key={`${index}-${i}`}
-                          style={{
-                            backgroundColor: '#c2adac',
-                            borderWidth: 0.5,
-                            borderColor: '#ccc',
-                            color: '#ffffff',
-                            paddingVertical: 8,
-                            height: GRID_ITEM_HEIGHT,
-                            width: GRID_LEFT_HEADER_WIDTH,
-                            textAlign: 'center',
-                          }}>
+                          style={[
+                            {
+                              backgroundColor: '#c2adac',
+                              borderWidth: 0.5,
+                              borderColor: '#ccc',
+                              color: '#ffffff',
+                              paddingVertical: 8,
+                              width: GRID_LEFT_HEADER_WIDTH,
+                              textAlign: 'center',
+                            },
+                            Platform.OS == 'ios' ? {} : { height: GRID_ITEM_HEIGHT },
+                          ]}>
                           {data}
                         </Text>
                       ) : (
