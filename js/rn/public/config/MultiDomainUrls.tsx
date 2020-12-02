@@ -184,7 +184,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c092': [
     'https://2013vip5.com',
   ],
-  'c105_b': [
+  'c105b': [
     'https://390qp8.com',
   ],
   'c108': [
@@ -360,13 +360,13 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://16689g.com',
     'https://16689f.com',
   ],
-  'L001': [
+  'l001': [
     'https://4988wap.com',
   ],
-  'L001gbhy': [
+  'l001gbhy': [
     'https://demo.gbbet.com',
   ],
-  'L002': [
+  'l002': [
     'https://7033303.com',
   ],
   'h003b': [
