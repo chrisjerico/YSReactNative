@@ -150,7 +150,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5504578.com',
   ],
   'c048': [
-    'https://dsjf43-43-f14-345-36-g54t-gfh54.com',
+    'https://f811.cc',
+    'https://f822.cc',
+    'https://f833.cc',
+    'https://f855.cc',
+    'https://f877.cc',
   ],
   'c052': [
     'https://4924920.com',
@@ -184,7 +188,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c092': [
     'https://2013vip5.com',
   ],
-  'c105_b': [
+  'c105b': [
     'https://390qp8.com',
   ],
   'c108': [
@@ -217,6 +221,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c134': [
     'https://19972015.com',
+    'https://19972023.com',
     'https://19972022.com',
     'https://19972018.com',
     'https://19972017.com',
@@ -310,7 +315,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://app213xpj.co',
+    'https://4501078.com',
     'https://c213aapp.cc',
     'https://c213app.com',
     'https://c213app01.co',
@@ -359,14 +364,18 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://16689g.com',
     'https://16689f.com',
   ],
-  'L001': [
+  'l001': [
     'https://4988wap.com',
   ],
-  'L001gbhy': [
+  'l001gbhy': [
     'https://demo.gbbet.com',
   ],
-  'L002': [
-    'https://7033303.com',
+  'l002': [
+    'https://70333app.cc',
+    'https://70333app.com',
+    'https://70333app.info',
+    'https://70333app.org',
+    'https://70333app.vip',
   ],
   'h003b': [
     'https://betv5.com',
@@ -426,13 +435,14 @@ const notifyDomainChanged = async (siteId?: string) => {
   }
   const host = sites[siteId.toLowerCase()].trim()
   host.length && ANHelper.refreshHost(host)
-  
+
   switch (Platform.OS) {
     case 'ios':
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
+      await ANHelper.callAsync(CMD.INIT_WHOLE_DOMAIN, MultiDomainUrls);
       break;
   }
 }
