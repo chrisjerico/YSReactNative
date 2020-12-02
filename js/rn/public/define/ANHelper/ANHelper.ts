@@ -92,7 +92,7 @@ export class ANHelper extends ANEvent {
     AppDefine.siteId = siteId
 
     // net
-    const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners'].map(async (router) => {
+    const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners', 'system_mobileRight'].map(async (router) => {
       try {
         return await APIRouter[router]()
       } catch (error) {
@@ -103,19 +103,14 @@ export class ANHelper extends ANEvent {
     //@ts-ignore
     const userInfo = net_response[0]?.data?.data ?? {}
     //@ts-ignore
-
     const sysConf_net = net_response[1]?.data?.data ?? {}
     const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-    const sysConf = Object.assign({}, sysConf_android,
-      { loginVCode, login_to,
-        adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
-
-    // ugLog('ANHelper sysConf=', sysConf)
-
+    const sysConf = Object.assign({}, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
     const gameLobby = net_response[2]?.data?.data ?? []
     const banner = net_response[3]?.data?.data ?? {}
-
-    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, sys: sysConf_net })
+    const rightMenu = net_response[4]?.data?.data ?? []
+    console.log('--------sysConf_net-------', sysConf_net)
+    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
     UGStore.save()
   }
 
