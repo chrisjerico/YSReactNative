@@ -176,6 +176,8 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
+                      } else if (code == UGUserCenterType.个人信息) {
+                        navigate(PageName.UserInfoPage)
                       } else {
                         PushHelper.pushUserCenterType(code)
                       }

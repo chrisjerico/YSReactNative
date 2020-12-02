@@ -7,10 +7,11 @@ import { pop } from '../../public/navigation/RootNavigation'
 import Avatar from '../../public/views/tars/Avatar'
 import { UGStore } from '../../redux/store/UGStore'
 import AppDefine from '../../public/define/AppDefine'
+import Dash from 'react-native-dash'
 
 const UserInfoPage = () => {
   const userInfo = UGStore.globalProps.userInfo
-  const { avatar, isTest, usr } = userInfo
+  const { avatar, isTest, usr, qq } = userInfo
 
   return (
     <>
@@ -36,11 +37,32 @@ const UserInfoPage = () => {
           </View>
         </ImageBackground>
         <View style={{ marginHorizontal: '5%', marginTop: '5%' }}>
-          <Text style={{ fontSize: 25 }}>{'我的资料'}</Text>
+          <Text style={{ fontSize: 25, marginBottom: 20 }}>{'我的资料'}</Text>
+          <Text style={{ fontSize: 20, marginBottom: 10 }}>{'帐号 : ' + usr}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'真实姓名 : 有效'}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'QQ : ' + qq}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'手机 : ***********'}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'邮箱 : '}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'币别 : '}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'Facebook : '}</Text>
+          <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
         </View>
       </View>
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  dash: {
+    width: '100%',
+    height: 1,
+  },
+})
 
 export default UserInfoPage
