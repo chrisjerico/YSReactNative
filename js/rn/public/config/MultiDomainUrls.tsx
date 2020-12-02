@@ -302,7 +302,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771c.com',
     'https://771771d.com',
     'https://771771f.com',
     'https://771771g.com',
