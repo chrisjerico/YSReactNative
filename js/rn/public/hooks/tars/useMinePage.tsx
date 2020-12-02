@@ -91,6 +91,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     sign,
     rightMenus,
     show,
+    reRender,
   }
 }
 
