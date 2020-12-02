@@ -31,6 +31,7 @@ import { UserInfoModel } from './Model/UserInfoModel'
 import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
+import { UserMsgListModel } from './Model/UserMsgListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -55,6 +56,22 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static user_msgList = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<UserMsgListModel>('c=user&a=msgList&rows=20&type=&' + tokenParams)
+  }
+
   static game_homeRecommend = async () => {
     return httpClient.get<HomeRecommendModel>('c=game&a=homeRecommend')
   }

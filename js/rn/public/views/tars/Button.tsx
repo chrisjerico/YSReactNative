@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { StyleSheet, Text, View, ViewStyle, TextStyle, TouchableWithoutFeedback, StyleProp, ImageStyle } from 'react-native'
+import { Image, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
 
 interface Button {
@@ -13,13 +13,14 @@ interface Button {
   logo?: string
   showLogo?: boolean
   logoStyle?: StyleProp<unknown>
+  useFastImage?: boolean
 }
 
-const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false, logo, showLogo = false, logoStyle }: Button) => {
+const Button = ({ containerStyle, disabledContainerStyle, titleStyle, title, numberOfLines = 1, onPress, disabled = false, logo, showLogo = false, logoStyle, useFastImage = true }: Button) => {
   return (
     <TouchableWithoutFeedback onPress={disabled ? null : onPress}>
       <View style={disabled ? [styles.disabledContainer, disabledContainerStyle] : [styles.container, containerStyle]}>
-        {showLogo && <FastImage source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} />}
+        {showLogo && (useFastImage ? <FastImage source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} /> : <Image source={{ uri: logo }} style={logoStyle} resizeMode={'contain'} />)}
         <Text style={[styles.title, titleStyle]} numberOfLines={numberOfLines}>
           {title}
         </Text>

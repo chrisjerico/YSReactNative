@@ -1,10 +1,10 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Alert } from 'react-native'
 import { UGStore } from '../../../redux/store/UGStore'
 import { AgentType, Necessity, PasswordStrength } from '../../models/Enum'
 import { SlideCode } from '../../models/Interface'
 import { PageName } from '../../navigation/Navigation'
-import { navigate } from '../../navigation/RootNavigation'
+import { navigate, popToRoot } from '../../navigation/RootNavigation'
 import { validPassword } from '../../tools/tars'
 import { hideLoading, showError, showLoading, showSuccess } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
@@ -126,6 +126,12 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   const { sysInfo } = useSysInfo({})
   // data handle
   const { necessity, passwordLimit, allowReg, closeregreason, inviteWord } = sysInfo
+  useEffect(() => {
+    if (!allowReg) {
+      Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel', onPress: popToRoot }])
+    }
+  }, [allowReg])
+
   const { strength, maxLength, minLength } = passwordLimit
   // const { nc_csessionid, nc_token, nc_sig } = slideCode
   // valid
@@ -201,7 +207,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   const passwordLebel = '请使用至少' + minLength + '位至' + maxLength + '位英文或数字的组合' + getPasswordLimitString()
   const confirmPasswordLabel = password == confirmPassword || (!password?.length && !confirmPassword?.length) ? '' : '密码不一致'
   const accountLabel = '请使用6-15位英文或数字的组合'
-  const inviteCodeLabel = '邀请码，如没有可不填'
+  const inviteCodeLabel = getLabel(necessity?.inviteCode, '邀请码') // ，如没有可不填
 
   const onChange = {
     onChangeRecommendGuy,
@@ -277,34 +283,33 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   }
 
   const _signUp = () => {
-    if (allowReg) {
-      if (valid) {
-        const params = {
-          inviter: recommendGuy, // 推荐人ID
-          usr: account, // 账号
-          pwd: password?.md5(), // 密码
-          fundPwd: fundPassword?.md5(), // 取款密码
-          fullName: name, // 真实姓名
-          qq: qq, // QQ号
-          wx: weChat, // 微信号
-          phone: phoneNumber, // 手机号
-          smsCode: sms ?? '', // 短信验证码
-          'slideCode[nc_sid]': slideCode?.nc_csessionid,
-          'slideCode[nc_token]': slideCode?.nc_token,
-          'slideCode[nc_sig]': slideCode?.nc_sig,
-          email: email, // 邮箱
-          regType: agentRef.current, // 用户注册 或 代理注册,
-          inviteCode: inviteCodeRef.current, // 邀請碼
-        }
-        console.log('-------params------', params)
-        // @ts-ignore
-        signUp(params)
-      } else {
-        showError(getValidErrorMessage() || '')
+    // if (allowReg) {
+    if (valid) {
+      const params = {
+        inviter: recommendGuy, // 推荐人ID
+        usr: account, // 账号
+        pwd: password?.md5(), // 密码
+        fundPwd: fundPassword?.md5(), // 取款密码
+        fullName: name, // 真实姓名
+        qq: qq, // QQ号
+        wx: weChat, // 微信号
+        phone: phoneNumber, // 手机号
+        smsCode: sms ?? '', // 短信验证码
+        'slideCode[nc_sid]': slideCode?.nc_csessionid,
+        'slideCode[nc_token]': slideCode?.nc_token,
+        'slideCode[nc_sig]': slideCode?.nc_sig,
+        email: email, // 邮箱
+        regType: agentRef.current, // 用户注册 或 代理注册,
+        inviteCode: inviteCodeRef.current, // 邀請碼
       }
+      // @ts-ignore
+      signUp(params)
     } else {
-      Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
+      showError(getValidErrorMessage() || '')
     }
+    // } else {
+    //   Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
+    // }
   }
 
   const value = {

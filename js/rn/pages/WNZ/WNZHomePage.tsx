@@ -219,7 +219,7 @@ const WNZHomePage = () => {
                         showGameSubType(index)
                       } else {
                         if (!gameId) {
-                          navigate(PageName.WNZGameLobbyPage, { subId, name })
+                          navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
                         } else {
                           //@ts-ignore
                           PushHelper.pushHomeGame(item)

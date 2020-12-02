@@ -26,11 +26,13 @@ interface UseSignInPage {
 
 const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage) => {
   // stores
+  const serverErrorCount = useRef(0)
   const { reRender } = useRerender()
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
   const rightMenus = UGStore.globalProps.rightMenu
-  const { loginVCode, loginTo } = sysInfo
+  const { loginVCode, loginTo, oauth } = sysInfo
+  const showFacebookSignIn = oauth?.switch
   // states
   const [account, setAccount] = useState(sign?.account)
   const [password, setPassword] = useState(sign?.password)
@@ -76,6 +78,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
           showSuccess('登录成功')
         },
         onError: (error) => {
+          serverErrorCount.current = serverErrorCount.current + 1
           showError(error ?? '登录失败')
           setSlideCode({
             nc_csessionid: undefined,
@@ -182,10 +185,11 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     signIn(params)
   }
 
+  const showSignInSlideCode = loginVCode || serverErrorCount.current >= 3
   const onChangeSlideCode = setSlideCode
   // data handle
   const { nc_csessionid, nc_token, nc_sig } = slideCode
-  const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !loginVCode
+  const loginVCode_valid = (nc_csessionid && nc_token && nc_sig) || !showSignInSlideCode
   // const valid = account && password && loginVCode_valid ? true : false
   const account_valid = account?.length > 0
   const password_valid = password?.length > 0
@@ -223,7 +227,8 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   }
 
   const show = {
-    loginVCode,
+    showSignInSlideCode,
+    showFacebookSignIn,
   }
 
   const _signIn = () => {
