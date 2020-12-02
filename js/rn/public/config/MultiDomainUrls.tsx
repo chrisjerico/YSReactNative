@@ -150,7 +150,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5504578.com',
   ],
   'c048': [
-    'https://dsjf43-43-f14-345-36-g54t-gfh54.com',
+    'https://f811.cc',
+    'https://f822.cc',
+    'https://f833.cc',
+    'https://f855.cc',
+    'https://f877.cc',
   ],
   'c052': [
     'https://4924920.com',
@@ -367,7 +371,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://7033303.com',
+    'https://70333app.cc',
+    'https://70333app.com',
+    'https://70333app.info',
+    'https://70333app.org',
+    'https://70333app.vip',
   ],
   'h003b': [
     'https://betv5.com',
