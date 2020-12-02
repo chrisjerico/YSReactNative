@@ -22,6 +22,7 @@ import { XBJThemeColor } from './colors/XBJThemeColor'
 import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
+import { LEFThemeColor } from './colors/LEFThemeColor'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -38,6 +39,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...KSThemeColor, // 凯时
     ...BYThemeColor, // 白曜
     ...HJThemeColor, //黑金
+    ...LEFThemeColor, //黑金
     ...XBJThemeColor, // 香槟金
     ...OtherThemeColor, // 其他
   }
@@ -92,8 +94,9 @@ export default class UGSkinManagers extends UGThemeColor {
     Object.assign(skin, theme)
     if (!FUtils.isExactlyEqual(skin, Skin1)) {
       Skin1 = skin
-      console.log('当前为皮肤：' + skin.skitString, skin)
     }
+    console.log('当前为皮肤：' + skin.skitString, skin)
+
     await this.updateOcSkin()
   }
 
