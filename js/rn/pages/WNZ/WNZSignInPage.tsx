@@ -39,6 +39,8 @@ const WNZSignInPage = () => {
   const { signIn, tryPlay, signOut } = sign
 
   const configMenus = config.menuSignIn.concat(config.menus)
+
+  const { showFacebookSignIn } = show
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -55,6 +57,7 @@ const WNZSignInPage = () => {
             titleStyle={{ color: '#ffffff', fontSize: scale(25) }}
             onPress={signIn}
           />
+          {showFacebookSignIn && <Button title={'使用Facebook登录'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={() => {}} />}
           <Button title={'立即注册'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={navigateToSignUpPage} />
           <Button title={'在线客服'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={goToUserCenterType.在线客服} />
           <Button title={'免费试玩'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={tryPlay} />

@@ -107,6 +107,8 @@ httpClient.interceptors.response.use(
               break
             case 'android':
               ANHelper.callAsync(CMD.LOG_OUT)
+              UGStore.dispatch({ type: 'reset', userInfo: {} })
+              UGStore.save()
               break
           }
           break

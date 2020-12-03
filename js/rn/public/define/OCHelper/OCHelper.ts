@@ -1,13 +1,13 @@
-import { UGStore } from '../../../redux/store/UGStore';
-import APIRouter from '../../network/APIRouter';
-import { httpClient } from '../../network/httpClient';
-import { UGBridge } from '../ANHelper/UGBridge';
-import AppDefine from '../AppDefine';
-import { OCCall } from './OCBridge/OCCall';
-import { OCEvent } from './OCBridge/OCEvent';
-import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel';
-import { stringToNumber } from '../../tools/tars';
-import {DomainUrls, initDomain} from "../../config/MultiDomainUrls";
+import { UGStore } from '../../../redux/store/UGStore'
+import APIRouter from '../../network/APIRouter'
+import { httpClient } from '../../network/httpClient'
+import { UGBridge } from '../ANHelper/UGBridge'
+import AppDefine from '../AppDefine'
+import { OCCall } from './OCBridge/OCCall'
+import { OCEvent } from './OCBridge/OCEvent'
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
+import { stringToNumber } from '../../tools/tars'
+import { DomainUrls, initDomain } from '../../config/MultiDomainUrls'
 
 export class OCHelper extends OCEvent {
   static CodePushKey = UGBridge.core.CodePushKey
@@ -76,7 +76,6 @@ export class OCHelper extends OCEvent {
       const gameLobby = net_response[2]?.data?.data ?? []
       const banner = net_response[3]?.data?.data ?? {}
       const rightMenu = net_response[4]?.data?.data ?? []
-      console.log('--------sysConf_net-------', sysConf_net)
       UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
       UGStore.save()
     } catch (error) {

@@ -10,8 +10,15 @@ import { ugLog } from '../../public/tools/UgLog'
 import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import PromotionPage from '../base/PromotionPage'
+import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
+import UserInfoPage from '../base/UserInfoPage'
+import UserMessagePage from '../base/UserMessagePage'
+import BYHomePage from '../BY/BYHomePage'
+import BYMinePage from '../BY/BYMinePage'
+import BYSignInPage from '../BY/BYSignInPage'
+import BYSignUpPage from '../BY/BYSignUpPage'
 import BZHGameLobbyPage from '../BZH/BZHGameLobbyPage'
 import BZHHomePage from '../BZH/BZHHomePage'
 import BZHMinePage from '../BZH/BZHMinePage'
@@ -32,14 +39,19 @@ import LHTMinePage from '../LHT/LHTMinePage'
 import LHTPreferencePage from '../LHT/LHTPreferencePage'
 import LHTSignInPage from '../LHT/LHTSignInPage'
 import LHTSignUpPage from '../LHT/LHTSignUpPage'
-import WNZGameLobbyPage from '../WNZ/WNZGameLobbyPage'
 import WNZHomePage from '../WNZ/WNZHomePage'
 import WNZMinePage from '../WNZ/WNZMinePage'
 import WNZSignInPage from '../WNZ/WNZSignInPage'
 import WNZSignUpPage from '../WNZ/WNZSignUpPage'
+import LEFHomePage from '../乐FUN/LEFHomePage'
+import LEFMinePage from '../乐FUN/LEFMinePage'
+import LEFSignInPage from '../乐FUN/LEFSignInPage'
+import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
 import LXBView from '../乐橙/component/minePage/LXBView'
 import LCHomePage from '../乐橙/LCHomePage'
+import LCLoginPage from '../乐橙/LCLoginPage'
 import LCMinePage from '../乐橙/LCMinePage'
+import LCRegisterPage from '../乐橙/LCRegisterPage'
 import LLHomePage from '../利来/LLHomePage'
 import { LLLoginPage } from '../利来/LLLoginPage'
 import LLMinePage from '../利来/LLMinePage'
@@ -50,25 +62,15 @@ import ZLMinePage from '../尊龙/ZLMinePage'
 import ZLRegisterPage from '../尊龙/ZLRegisterPage'
 import { JDPromotionListPage } from '../经典/JDPromotionListPage'
 import { JDVirtualCurrencyTutorialPage } from '../经典/JDVirtualCurrencyTutorialPage'
-import { UpdateVersionPage } from './UpdateVersionPage'
-import HJLoginPage from '../黑金/HJLoginPage'
-import HJRegisterPage from '../黑金/HJRegisterPage'
-import HJMinePage from '../黑金/HJMinePage'
-import HJGameCategoryPage from '../黑金/cate/HJGameCategoryPage'
-import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
-import LEFSignInPage from '../乐FUN/LEFSignInPage'
-import LEFMinePage from '../乐FUN/LEFMinePage'
-import LEFHomePage from '../乐FUN/LEFHomePage'
-import LCLoginPage from '../乐橙/LCLoginPage'
-import LCRegisterPage from '../乐橙/LCRegisterPage'
-import BYHomePage from '../BY/BYHomePage'
-import BYMinePage from '../BY/BYMinePage'
-import HJHomePage from '../黑金/HJHomePage'
-import BYSignInPage from '../BY/BYSignInPage'
-import BYSignUpPage from '../BY/BYSignUpPage'
 import { XBJLoginPage } from '../香槟金/XBJLoginPage'
 import { XBJMinePage } from '../香槟金/XBJMinePage'
 import { XBJRegisterPage } from '../香槟金/XBJRegisterPage'
+import HJGameCategoryPage from '../黑金/cate/HJGameCategoryPage'
+import HJHomePage from '../黑金/HJHomePage'
+import HJLoginPage from '../黑金/HJLoginPage'
+import HJMinePage from '../黑金/HJMinePage'
+import HJRegisterPage from '../黑金/HJRegisterPage'
+import { UpdateVersionPage } from './UpdateVersionPage'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
 import { TransferView } from '../../public/components/TransferView'
 // TabbarController
@@ -144,7 +146,7 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZGameLobbyPage} component={UGPage(WNZGameLobbyPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
@@ -179,7 +181,9 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
-      {/*<Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />*/}
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.UserMessagePage} component={UGPage(UserMessagePage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
     </Router.StackNavigator>
   )
 }

@@ -4,6 +4,7 @@ import {CMD} from "../define/ANHelper/hp/CmdDefine";
 import {OCHelper} from "../define/OCHelper/OCHelper";
 import {string} from "prop-types";
 import {ugLog} from "../tools/UgLog";
+import { anyEmpty } from '../tools/Ext'
 
 /**
  * 所有站点的域名，key 不能随便动，否则原生那边会找不到对应的域名
@@ -110,7 +111,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://t502f.fhptcdn.com',
   ],
   'txtTest': [
-    'http://t005f.fhptcdn.com',
+    'http://t126f.fhptcdn.com',
   ],
   'tstksm': [
     'http://t133f.fhptcdn.com',
@@ -138,6 +139,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c012': [
     'https://fjc012cpamg12aktk.org',
+    'https://0849520.com',
+    'https://0849519.com',
+    'https://0849518.com',
+    'https://0849517.com',
   ],
   'c018': [
     'https://204421.com',
@@ -146,7 +151,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5504578.com',
   ],
   'c048': [
-    'https://dsjf43-43-f14-345-36-g54t-gfh54.com',
+    'https://f811.cc',
+    'https://f822.cc',
+    'https://f833.cc',
+    'https://f855.cc',
+    'https://f877.cc',
   ],
   'c052': [
     'https://4924920.com',
@@ -180,7 +189,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c092': [
     'https://2013vip5.com',
   ],
-  'c105_b': [
+  'c105b': [
     'https://390qp8.com',
   ],
   'c108': [
@@ -193,7 +202,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615322.com',
   ],
   'c116': [
-    'https://1353519.com',
+    'https://csj116app.com',
+    'https://csj116app.co',
+    'https://c116app.org',
+    'https://c116app.me',
+    'https://app116csj.me',
   ],
   'c117': [
     'https://822323.com',
@@ -202,13 +215,20 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jzcp344.com',
+    'http://jzcp46.com',
+    'http://jzcp466.com',
+    'http://jzcp48.com',
+    'http://jzcp488.com',
   ],
   'c126b': [
     'https://og878.vip',
   ],
   'c134': [
-    'https://19972025.com',
+    'https://19972015.com',
+    'https://19972023.com',
+    'https://19972022.com',
+    'https://19972018.com',
+    'https://19972017.com',
   ],
   'c137': [
     'https://7033005.com',
@@ -286,7 +306,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771c.com',
+    'https://771771d.com',
+    'https://771771f.com',
+    'https://771771g.com',
+    'https://771771h.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -295,7 +318,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501062.com',
+    'https://4501078.com',
+    'https://c213aapp.cc',
+    'https://c213app.com',
+    'https://c213app01.co',
+    'https://c213app01.me',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -331,7 +358,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2420app.app',
   ],
   'c252': [
-    'https://xggjapp8.com',
+    'https://xg344app.com',
+    'https://xggjapp7.com',
+    'https://xggjapp9.com',
   ],
   'c254': [
     'https://677888c.com',
@@ -340,14 +369,21 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://16689g.com',
     'https://16689f.com',
   ],
-  'L001': [
+  'c257': [
+    'https://hg88991.com',
+  ],
+  'l001': [
     'https://4988wap.com',
   ],
-  'L001gbhy': [
+  'l001gbhy': [
     'https://demo.gbbet.com',
   ],
-  'L002': [
-    'https://7033303.com',
+  'l002': [
+    'https://70333app.cc',
+    'https://70333app.com',
+    'https://70333app.info',
+    'https://70333app.org',
+    'https://70333app.vip',
   ],
   'h003b': [
     'https://betv5.com',
@@ -400,21 +436,23 @@ const recombineDomain = (siteUrl: {}) => {
 const notifyDomainChanged = async (siteId?: string) => {
   //ugLog('DomainUrls 2 =', JSON.stringify(DomainUrls))
 
+  // 不区分大小写
+  const sites = {}
+  for (const k in DomainUrls) {
+    sites[k.toLowerCase()] = DomainUrls[k]
+  }
+  const host = anyEmpty(siteId) ? null : sites[siteId.toLowerCase()].trim()
+  host?.length && ANHelper.refreshHost(host)
+
   switch (Platform.OS) {
     case 'ios':
-      const sites = {}
-      for (const k in DomainUrls) {
-        sites[k.toLowerCase()] = DomainUrls[k]
-      }
-      const host = sites[siteId.toLowerCase()].trim()
       host.length && OCHelper.call('AppDefine.shared.setHost:', [host])
       break
     case 'android':
       await ANHelper.callAsync(CMD.INIT_DOMAIN, DomainUrls);
+      await ANHelper.callAsync(CMD.INIT_WHOLE_DOMAIN, MultiDomainUrls);
       break;
   }
-
-  await ANHelper.refreshHost(DomainUrls[siteId])
 }
 
 /**

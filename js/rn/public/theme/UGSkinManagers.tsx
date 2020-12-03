@@ -1,5 +1,4 @@
 import chroma from 'chroma-js'
-import { from } from 'core-js/fn/array'
 import { Platform } from 'react-native'
 import { devConfig, releaseConfig } from '../../../../config'
 import UGSysConfModel from '../../redux/model/全局/UGSysConfModel'
@@ -18,12 +17,11 @@ import { LCThemeColor } from './colors/LCThemeColor'
 import { LHThemeColor } from './colors/LHThemeColor'
 import { LLThemeColor } from './colors/LLThemeCololr'
 import { OtherThemeColor } from './colors/OtherThemeColor'
-import { VietnamThemeColors } from './colors/VietnamThemeColors'
 import { WNZThemeColor } from './colors/WNZThemeColor'
+import { XBJThemeColor } from './colors/XBJThemeColor'
 import { XNHThemeColor } from './colors/XNHThemeColor'
 import { ZLThemeColor } from './colors/ZLThemeColor'
 import { UGThemeColor } from './UGThemeColor'
-import { XBJThemeColor } from './colors/XBJThemeColor'
 
 export default class UGSkinManagers extends UGThemeColor {
   static allThemeColor: { [x: string]: UGThemeColor } = {
@@ -73,7 +71,7 @@ export default class UGSkinManagers extends UGThemeColor {
       23: '威尼斯',
       25: '天空蓝',
       26: `白曜`,
-      277: `越南`,//这个值 要与 后台站点一致
+      277: `越南`, //这个值 要与 后台站点一致
       27: `摩登红`,
       28: `黑金`,
     }
@@ -83,7 +81,7 @@ export default class UGSkinManagers extends UGThemeColor {
     if (devConfig.isDebug) {
       devConfig?.skinKey && (key = devConfig?.skinKey)
     }
-    console.log('RN皮肤 = ', key);
+    console.log('RN皮肤 = ', key)
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor =
       theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
@@ -110,12 +108,7 @@ export default class UGSkinManagers extends UGThemeColor {
       return
     }
     // 已上线模板
-    const isOnlineSkin = (
-      skin.skitType.indexOf('尊龙') != -1 ||
-      skin.skitType.indexOf('香槟金') != -1 ||
-      skin.skitType.indexOf('威尼斯') != -1 ||
-      skin.skitType.indexOf('宝石红') != -1
-    );
+    const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('香槟金') != -1 || skin.skitType.indexOf('威尼斯') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin
     if (!ok) return
 
