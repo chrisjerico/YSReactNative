@@ -9,7 +9,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
-import { showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
+import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 const UserMessagePage = () => {
   const inAnimated = useRef(false)
@@ -72,19 +72,19 @@ const UserMessagePage = () => {
           return (
             <TouchableWithoutFeedback
               onPress={() => {
+                APIRouter.user_readMsg(id).finally(() => {
+                  const _list = list?.map((ele) => {
+                    if (ele?.id == id) {
+                      return Object.assign({}, ele, { isRead: 1 })
+                    } else {
+                      return ele
+                    }
+                  })
+                  setList(_list)
+                })
                 Alert.alert('UG集团站内信', content, [
                   {
                     text: '确定',
-                    onPress: () => {
-                      const _list = list?.map((ele) => {
-                        if (ele?.id == id) {
-                          return Object.assign({}, ele, { isRead: 1 })
-                        } else {
-                          return ele
-                        }
-                      })
-                      setList(_list)
-                    },
                   },
                 ])
               }}>
@@ -157,11 +157,17 @@ const UserMessagePage = () => {
             useFastImage={false}
             onPress={() => {
               showLoading()
-              const _list = list?.map((ele) => {
-                return Object.assign({}, ele, { isRead: 1 })
-              })
-              setList(_list)
-              showSuccess('一键设置已读成功')
+              APIRouter.user_readMsgAll()
+                .then(() => {
+                  const _list = list?.map((ele) => {
+                    return Object.assign({}, ele, { isRead: 1 })
+                  })
+                  setList(_list)
+                  showSuccess('一键设置已读成功')
+                })
+                .catch((error) => {
+                  showError(error)
+                })
             }}
           />
           <Button
@@ -174,8 +180,14 @@ const UserMessagePage = () => {
             useFastImage={false}
             onPress={() => {
               showLoading()
-              setList([])
-              showSuccess('一键设置删除成功')
+              APIRouter.user_deleteMsgAll()
+                .then(() => {
+                  setList([])
+                  showSuccess('一键设置删除成功')
+                })
+                .catch((error) => {
+                  showError(error)
+                })
             }}
           />
         </View>

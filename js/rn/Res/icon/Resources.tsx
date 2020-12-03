@@ -30,14 +30,14 @@ export const Res = {
   zhtyLoginBg: { uri: 'https://i.ibb.co/Hh2m2Zt/register-modal-bg.jpg' },
   zhtyLoginSponsor: { uri: 'https://i.ibb.co/GCKn120/logo1.png' },
   zhtyMineBg: { uri: 'https://i.ibb.co/mzG0vBS/floor-bg-bottom.png' },
-  加载中: { uri: 'https://i.ibb.co/8N0HSVP/loading-1.gif' },
-  加载成功: { uri: 'https://i.ibb.co/RgHtgQ2/success-3x.png' },
-  加载失败: { uri: 'https://i.ibb.co/4W7qMmZ/error-3x.png' },
-};
+  加载中: { uri: 'https://git.fhptbet.com/fish/fhcpAppResourceFiles/raw/master/assets/gif/loading-1.gif' },
+  加载成功: { uri: 'https://git.fhptbet.com/fish/fhcpAppResourceFiles/raw/master/assets/success@3x.png' },
+  加载失败: { uri: 'https://git.fhptbet.com/fish/fhcpAppResourceFiles/raw/master/assets/error@3x.png' },
+}
 
 /**
  * 图标
  */
 export const RIcons = {
   c199: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg' },
-};
+}
