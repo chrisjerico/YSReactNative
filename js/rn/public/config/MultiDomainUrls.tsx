@@ -270,12 +270,12 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://200300g.com',
-    'https://200300j.com',
-    'https://200300i.com',
     'https://200300f.com',
     'https://288388e.com',
     'https://288388i.com',
+    'https://200300c.com',
+    'https://200300d.com',
+    'https://200300e.com',
   ],
   'c190': [
     'https://549595.com',
