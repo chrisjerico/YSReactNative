@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react'
-import { Alert, Platform, ScrollView, StyleSheet } from 'react-native'
+import React, { useRef } from 'react'
+import { Alert, ScrollView, StyleSheet } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -19,9 +19,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import ProfileBlock from './views/ProfileBlock'
 import ToolBlock from './views/ToolBlock'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
@@ -179,6 +176,10 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
+                      } else if (code == UGUserCenterType.个人信息) {
+                        navigate(PageName.UserInfoPage)
+                      } else if (code == UGUserCenterType.站内信) {
+                        navigate(PageName.UserMessagePage)
                       } else {
                         PushHelper.pushUserCenterType(code)
                       }
@@ -226,9 +227,3 @@ const styles = StyleSheet.create({
 })
 
 export default WNZMinePage
-
-// else if (code == UGUserCenterType.个人信息) {
-//   navigate(PageName.UserInfoPage)
-// } else if (code == UGUserCenterType.站内信) {
-//   navigate(PageName.UserMessagePage)
-// }
