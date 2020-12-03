@@ -20,11 +20,12 @@ export function setRnPageInfo() {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
   }
 
+  console.log("devConfig.isTest()", devConfig.isTest())
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
     // ezer
     if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LLPages)
+      pages = pages.concat(LCPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)
@@ -45,6 +46,7 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
+    pages = pages.concat(LCPages)
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————

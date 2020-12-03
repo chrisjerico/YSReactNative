@@ -68,7 +68,7 @@ export const TransferView = () => {
 
   const transfer = async () => {
     if ((!transOut || !transIn) || transOut.id === transIn.id) {
-      Alert.alert('输入钱包和输出钱包不能一制' )
+      Alert.alert('输入钱包和输出钱包不能一制')
     } else {
       const { data } = await api.real.manualTransfer(transOut.id, transIn.id, money).promise
       Alert.alert(data.msg)
@@ -94,163 +94,162 @@ export const TransferView = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Skin1.bgColor }}>
-      <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
-      <LinearGradient style={{ paddingHorizontal: 12, paddingTop: 16, zIndex: 2 }} colors={Skin1.bgColor}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}>
-        <TransferPicker
-          key={1}
-          text={'转出钱包'}
-          animation={animation}
-          defaultZIndex={3}
-          zIndex={zIndex}
-          open={open}
-          setOpen={setOpen}
-          data={dataArr.concat(data)} wallet={transOut}
-          setWallet={(wallet) => {
-            setTransOut(wallet)
-            onGreyBGPress()
-          }}
-          onPress={() => {
-            if (open) {
-              setAnimation(runTiming(new Clock(), new Value(250), new Value(0)))
-              setOpen(false)
-              setZIndex(3)
+    <View style={{ flex: 1 }}>
+      <LinearGradient style={{flex: 1}} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+        <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
+          <View style={{ paddingHorizontal: 12, paddingTop: 16, zIndex: 2 }}>
+          <TransferPicker
+            key={1}
+            text={'转出钱包'}
+            animation={animation}
+            defaultZIndex={3}
+            zIndex={zIndex}
+            open={open}
+            setOpen={setOpen}
+            data={dataArr.concat(data)} wallet={transOut}
+            setWallet={(wallet) => {
+              setTransOut(wallet)
+              onGreyBGPress()
+            }}
+            onPress={() => {
+              if (open) {
+                setAnimation(runTiming(new Clock(), new Value(250), new Value(0)))
+                setOpen(false)
+                setZIndex(3)
+              } else {
+                setAnimation(runTiming(new Clock(), new Value(0), new Value(250)))
+                setOpen(true)
+                setZIndex(99)
+              }
+            }} />
+          <TransferPicker
+            key={2}
+            text={'转入钱包'}
+            animation={animation2}
+            defaultZIndex={2}
+            zIndex={zIndex2}
+            open={open}
+            setOpen={setOpen}
+            data={dataArr.concat(data)}
+            wallet={transIn}
+            setWallet={(wallet) => {
+              setTransIn(wallet)
+              onGreyBGPress()
+            }} onPress={() => {
+            if (open2) {
+              setAnimation2(runTiming(new Clock(), new Value(250), new Value(0)))
+              setOpen2(false)
+              setZIndex2(2)
             } else {
-              setAnimation(runTiming(new Clock(), new Value(0), new Value(250)))
-              setOpen(true)
-              setZIndex(99)
+              setAnimation2(runTiming(new Clock(), new Value(0), new Value(250)))
+              setOpen2(true)
+              setZIndex2(99)
             }
           }} />
-        <TransferPicker
-          key={2}
-          text={'转入钱包'}
-          animation={animation2}
-          defaultZIndex={2}
-          zIndex={zIndex2}
-          open={open}
-          setOpen={setOpen}
-          data={dataArr.concat(data)}
-          wallet={transIn}
-          setWallet={(wallet) => {
-            setTransIn(wallet)
-            onGreyBGPress()
-          }} onPress={() => {
-          if (open2) {
-            setAnimation2(runTiming(new Clock(), new Value(250), new Value(0)))
-            setOpen2(false)
-            setZIndex2(2)
-          } else {
-            setAnimation2(runTiming(new Clock(), new Value(0), new Value(250)))
-            setOpen2(true)
-            setZIndex2(99)
-          }
-        }} />
+          {(open || open2) && <TouchableWithoutFeedback style={{
+            width: AppDefine.width,
+            height: AppDefine.height,
+            position: 'absolute',
+            zIndex: 4,
+          }} onPress={onGreyBGPress}>
+            <View style={{
+              zIndex: 4,
+              backgroundColor: 'rgba(0,0,0, 0.1)',
+              width: AppDefine.width,
+              height: AppDefine.height,
+              position: 'absolute',
+            }} />
+          </TouchableWithoutFeedback>}
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
+            <TextInput
+              keyboardType={'numeric'}
+              value={money}
+              placeholder={'请输入金额'}
+              placeholderTextColor={Skin1.textColor2}
+              style={{
+                flex: 1,
+                marginLeft: 20,
+                height: 38,
+                borderBottomWidth: 1,
+                borderBottomColor: Skin1.textColor3,
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}
+              onChangeText={(text) => setMoney(parseFloat(text))}
+            />
+          </View>
+          <View style={{ paddingTop: 32 }}>
+            <TouchableWithoutFeedback onPress={transfer}>
+              <View style={{
+                borderRadius: 4,
+                backgroundColor: Skin1.themeColor
+              }}>
+                  <Text style={{
+                    fontSize: 17,
+                    color: Skin1.textColor4,
+                    alignSelf: 'center',
+                    paddingVertical: 10,
+                  }}>开始转换</Text>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={autoTransfer}>
+              <View style={{
+                borderRadius: 4,
+                marginTop: 12,
+              }}>
+                <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                  <Text style={{
+                    fontSize: 17,
+                    color: Skin1.textColor4,
+                    alignSelf: 'center',
+                    paddingVertical: 10,
+                  }}>一键提取</Text>
+                </LinearGradient>
+              </View>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => {
+              animatedSpin(spinValue, setSpinValue)
+              refresh()
+            }}>
+              <View style={{
+                borderRadius: 4,
+                marginTop: 12,
+              }}>
+                <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+                  <View style={{
+                    flexDirection: 'row', paddingVertical: 10,
+                  }}>
+                    <Text
+                      style={{
+                        marginLeft: 12,
+                        fontSize: 17,
+                        color: Skin1.textColor1,
+                        alignSelf: 'center',
+                      }}>{`帐号余额: ￥${balance || 0}`}</Text>
+                    <Animated.Image
+                      style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}
+                      source={{ uri: 'shuaxindef' }} />
+                  </View>
+                </LinearGradient>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+          </View>
+        {data && <AccListView data={data} />}
         {(open || open2) && <TouchableWithoutFeedback style={{
           width: AppDefine.width,
           height: AppDefine.height,
           position: 'absolute',
-          zIndex: 4,
         }} onPress={onGreyBGPress}>
           <View style={{
-            zIndex: 4,
             backgroundColor: 'rgba(0,0,0, 0.1)',
             width: AppDefine.width,
             height: AppDefine.height,
             position: 'absolute',
           }} />
         </TouchableWithoutFeedback>}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
-          <TextInput
-            keyboardType={'numeric'}
-            value={money}
-            placeholder={'请输入金额'}
-            placeholderTextColor={Skin1.textColor2}
-            style={{
-              flex: 1,
-              marginLeft: 20,
-              height: 38,
-              borderBottomWidth: 1,
-              borderBottomColor: Skin1.textColor3,
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-            onChangeText={(text) => setMoney(parseFloat(text))}
-          />
-        </View>
-        <View style={{ paddingTop: 32 }}>
-          <TouchableWithoutFeedback onPress={transfer}>
-            <View style={{
-              borderRadius: 4,
-            }}>
-              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                <Text style={{
-                  fontSize: 17,
-                  color: Skin1.textColor4,
-                  alignSelf: 'center',
-                  paddingVertical: 10,
-                }}>开始转换</Text>
-              </LinearGradient>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={autoTransfer}>
-            <View style={{
-              borderRadius: 4,
-              marginTop: 12,
-            }}>
-              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                <Text style={{
-                  fontSize: 17,
-                  color: Skin1.textColor4,
-                  alignSelf: 'center',
-                  paddingVertical: 10,
-                }}>一键提取</Text>
-              </LinearGradient>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={() => {
-            animatedSpin(spinValue, setSpinValue)
-            refresh()
-          }}>
-            <View style={{
-              borderRadius: 4,
-              marginTop: 12,
-            }}>
-              <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                <View style={{
-                  flexDirection: 'row', paddingVertical: 10,
-                }}>
-                  <Text
-                    style={{
-                      marginLeft: 12,
-                      fontSize: 17,
-                      color: Skin1.textColor1,
-                      alignSelf: 'center',
-                    }}>{`帐号余额: ￥${balance || 0}`}</Text>
-                  <Animated.Image
-                    style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}
-                    source={{ uri: 'shuaxindef' }} />
-                </View>
-              </LinearGradient>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
       </LinearGradient>
-      {data && <AccListView data={data} />}
-      {(open || open2) && <TouchableWithoutFeedback style={{
-        width: AppDefine.width,
-        height: AppDefine.height,
-        position: 'absolute',
-      }} onPress={onGreyBGPress}>
-        <View style={{
-          backgroundColor: 'rgba(0,0,0, 0.1)',
-          width: AppDefine.width,
-          height: AppDefine.height,
-          position: 'absolute',
-        }} />
-      </TouchableWithoutFeedback>}
     </View>
   )
 }
@@ -302,19 +301,17 @@ const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
 
 const AccListView = ({ data }: { data: any[] }) => {
   return (
-    <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <FlatList
-          keyExtractor={(item, index) => `acc-${index}`}
-          style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: 'white', borderRadius: 10, marginBottom: 60 }}
-          data={data}
-          renderItem={({ item }) => {
-            return (
-              <AccItem item={item} />
-            )
-          }} />
-      </SafeAreaView>
-    </LinearGradient>
+    <SafeAreaView style={{flex: 1, marginBottom: 30}}>
+      <FlatList
+        keyExtractor={(item, index) => `acc-${index}`}
+        style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: 'white', borderRadius: 10, marginBottom: 60 }}
+        data={data}
+        renderItem={({ item }) => {
+          return (
+            <AccItem item={item} />
+          )
+        }} />
+    </SafeAreaView>
   )
 }
 
@@ -370,15 +367,15 @@ const TransferPicker = ({ text, animation, data, wallet, setWallet, zIndex, open
   )
 }
 
-const AccItem = ({ item }: {item: any}) => {
-  const [balance, setBalance] = useState("*****")
+const AccItem = ({ item }: { item: any }) => {
+  const [balance, setBalance] = useState('*****')
   const [spinValue, setSpinValue] = useState(new Value(0))
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   })
   const checkBalance = async (id) => {
-    const {data} = await api.real.checkBalance(id).promise
+    const { data } = await api.real.checkBalance(id).promise
     data && setBalance(data.data.balance)
   }
   return (
@@ -392,7 +389,7 @@ const AccItem = ({ item }: {item: any}) => {
     }}>
       <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
       <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
-      <Text style={{color: "#F75000"}}>{`￥${balance}`}</Text>
+      <Text style={{ color: '#F75000' }}>{`￥${balance}`}</Text>
       <TouchableWithoutFeedback onPress={() => {
         animatedSpin(spinValue, setSpinValue)
         checkBalance(item.id)

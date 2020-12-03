@@ -2,6 +2,7 @@ import { useDimensions } from '@react-native-community/hooks'
 import { Text, TouchableWithoutFeedback, View } from 'react-native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import React from 'react'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 
 const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
   const { width, height } = useDimensions().screen
@@ -44,7 +45,7 @@ const MarqueePopupView = ({ content, show, onPress, onDismiss }) => {
               <View style={{
                 justifyContent: 'center',
                 alignItems: 'center', flex: 1, height: 50, marginLeft: 8,
-                backgroundColor: '#46A3FF', borderRadius: 5,
+                backgroundColor: Skin1.themeColor, borderRadius: 5,
                 borderColor: 'gray', borderWidth: 0.5,
               }}>
                 <Text style={{ color: 'white' }}>确定</Text>
