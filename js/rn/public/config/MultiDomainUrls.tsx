@@ -215,10 +215,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'http://jzcp46.com',
-    'http://jzcp466.com',
-    'http://jzcp48.com',
-    'http://jzcp488.com',
+    'https://jzcp46.com',
+    'https://jzcp466.com',
+    'https://jzcp48.com',
+    'https://jzcp488.com',
   ],
   'c126b': [
     'https://og878.vip',
