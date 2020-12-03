@@ -124,13 +124,13 @@ const UserMessagePage = () => {
               Animated.parallel([
                 Animated.timing(spinValue, {
                   toValue: sliderIsOpen.current ? 1 : 0,
-                  duration: 1000,
+                  duration: 500,
                   easing: Easing.linear,
                   useNativeDriver: true,
                 }),
                 Animated.timing(translateY, {
                   toValue: sliderIsOpen.current ? 70 : 0,
-                  duration: 1000,
+                  duration: 500,
                   easing: Easing.linear,
                   useNativeDriver: true,
                 }),
