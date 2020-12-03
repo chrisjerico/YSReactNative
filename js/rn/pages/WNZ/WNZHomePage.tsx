@@ -116,6 +116,9 @@ const WNZHomePage = () => {
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
                   }}
+                  imageContainerStyle={{
+                    width: '100%',
+                  }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: config?.navColors[index],
