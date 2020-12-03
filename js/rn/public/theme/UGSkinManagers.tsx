@@ -81,8 +81,6 @@ export default class UGSkinManagers extends UGThemeColor {
     if (devConfig.isDebug) {
       devConfig?.skinKey && (key = devConfig?.skinKey)
     }
-    key = '乐橙'
-    console.log("keykey", key)
     console.log('RN皮肤 = ', key)
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
     theme.themeColor =

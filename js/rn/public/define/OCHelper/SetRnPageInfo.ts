@@ -25,7 +25,7 @@ export function setRnPageInfo() {
   if (devConfig.isTest()) {
     // ezer
     if (Skin1.skitType.indexOf('利来') != -1) {
-      pages = pages.concat(LCPages)
+      pages = pages.concat(LLPages)
     }
     if (skitType.indexOf('乐橙') != -1) {
       pages = pages.concat(LCPages)

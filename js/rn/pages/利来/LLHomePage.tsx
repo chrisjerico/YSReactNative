@@ -43,8 +43,8 @@ const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { value, refresh } = useHomePage({})
   const { homeInfo } = value
-  const { rankLists, redBag, goldenEggs, scratchs } = homeInfo
-  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo, roulette } = value
+  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo
+  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo } = value
   const { uid } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
@@ -184,22 +184,6 @@ const LLHomePage = ({ setProps, navigation }) => {
           </LinearGradient>
         </View>
       )}
-      {floatAds?.map((item: any, index) => {
-        const { image, position, linkCategory, linkPosition } = item
-        return (
-          <ActivityComponent
-            key={index}
-            refreshing={refreshing}
-            containerStyle={getActivityPosition(position)}
-            enableFastImage={true}
-            show={true} // uid && !isTest
-            logo={image}
-            onPress={() => {
-              PushHelper.pushCategory(linkCategory, linkPosition)
-            }}
-          />
-        )
-      })}
       <Activitys uid={uid} isTest={isTest} refreshing={refreshing} redBagLogo={redBagLogo} redBag={redBag} roulette={roulette} floatAds={floatAds} goldenEggs={goldenEggs} scratchs={scratchs} />
     </View>
   )
