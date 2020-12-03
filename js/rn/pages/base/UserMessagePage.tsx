@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View, ActivityIndicator } from 'react-native'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
@@ -8,14 +8,19 @@ import Button from '../../public/views/tars/Button'
 import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import BottomGap from '../../public/views/temp/BottomGap'
 
 const UserMessagePage = () => {
-  const reload = useRef(false)
-  const sliderIsOpen = useRef(true)
+  const inAnimated = useRef(false)
+  const sliderIsOpen = useRef(false)
+  const page = useRef(1)
+  const maxPage = useRef(0)
+
+  const [loading, setLoading] = useState(false)
   const [list, setList] = useState([])
 
-  const [spinValue, setSpinValue] = useState(new Animated.Value(0))
-  const [translateY, setTranslateY] = useState(new Animated.Value(0))
+  const [spinValue, setSpinValue] = useState(new Animated.Value(1))
+  const [translateY, setTranslateY] = useState(new Animated.Value(70))
   const spinDeg = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
@@ -23,8 +28,9 @@ const UserMessagePage = () => {
 
   useEffect(() => {
     APIRouter.user_msgList().then((value) => {
-      const list = value?.data?.data.list
-      setList(list)
+      const _list = value?.data?.data.list
+      maxPage.current = Math.ceil(value?.data?.data?.total / 20)
+      setList(_list)
     })
   }, [])
   return (
@@ -34,6 +40,20 @@ const UserMessagePage = () => {
       </SafeAreaHeader>
       <List
         uniqueKey={'MessagePage'}
+        onEndReached={() => {
+          if (page.current < maxPage.current) {
+            setLoading(true)
+            APIRouter.user_msgList(page.current)
+              .then((value) => {
+                const _list = value?.data?.data.list
+                setList(list?.concat(_list))
+              })
+              .finally(() => {
+                page.current = page.current + 1
+                setLoading(false)
+              })
+          }
+        }}
         scrollEnabled={true}
         data={list}
         renderItem={({ item }) => {
@@ -45,12 +65,32 @@ const UserMessagePage = () => {
             </View>
           )
         }}
+        ListFooterComponent={() => {
+          if (page.current >= maxPage.current) {
+            return null
+          } else {
+            if (loading) {
+              return (
+                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50, flexDirection: 'row' }}>
+                  <ActivityIndicator />
+                  <Text style={{ fontWeight: '500', marginLeft: 20 }}>{'Loading...'}</Text>
+                </View>
+              )
+            } else {
+              return (
+                <View style={{ justifyContent: 'center', alignItems: 'center', height: 50 }}>
+                  <Text style={{ fontWeight: '500' }}>{'Tap or pull up to load more'}</Text>
+                </View>
+              )
+            }
+          }
+        }}
       />
       <Animated.View style={{ position: 'absolute', bottom: 80, right: 0, height: 100, width: '100%', alignItems: 'flex-end', transform: [{ translateY }] }}>
         <TouchableWithoutFeedback
           onPress={() => {
-            if (!reload.current) {
-              reload.current = true
+            if (!inAnimated.current) {
+              inAnimated.current = true
               Animated.parallel([
                 Animated.timing(spinValue, {
                   toValue: sliderIsOpen.current ? 1 : 0,
@@ -66,7 +106,7 @@ const UserMessagePage = () => {
                 }),
               ]).start(() => {
                 sliderIsOpen.current = !sliderIsOpen.current
-                reload.current = false
+                inAnimated.current = false
               })
             }
           }}>
@@ -97,6 +137,7 @@ const UserMessagePage = () => {
           />
         </View>
       </Animated.View>
+      <BottomGap />
     </>
   )
 }
