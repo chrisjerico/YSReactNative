@@ -1,8 +1,8 @@
+import { Platform } from 'react-native';
 import { devConfig } from './../../../../config';
 import { OCHelper } from './../define/OCHelper/OCHelper';
 
 const CodePushKeysForIOS = {
-  default: '',
   a002: 'NvWd2a9glPunOO5sX9EUCt2hn5kWkpVXGP8d2',
   a002_t: 'lUSg1gwbZlsiH-eoGjLa0DRv1Ulca51LXuOua',
   c001: 'C2jO6fsZXXSbGdyP-jOK0Uv37LedntR3pvECI',
@@ -123,8 +123,21 @@ const CodePushKeysForIOS = {
   l002_t: 'd52KElzGUgQsK8LHsOojWSS7mgsPOqMB0Uv9i',
 }
 
+export function isTest() {
+  if (__DEV__) return true
+  if (Platform.OS == 'ios') {
+    for (const k in CodePushKeysForIOS) {
+      if (OCHelper.CodePushKey == CodePushKeysForIOS[k]) {
+        return k.indexOf('_t') == -1;
+      }
+    }
+    return false
+  }
+  return false
+}
+
 export async function getIOSCodePushKey() : Promise<string> {
-  if (devConfig.isTest()) {
+  if (isTest()) {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.a002_t : OCHelper.CodePushKey;
   }
   const host = await OCHelper.call('AppDefine.shared.Host')
