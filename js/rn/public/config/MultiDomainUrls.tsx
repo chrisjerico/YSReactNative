@@ -194,6 +194,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c108': [
     'https://823653.com',
+    'https://568173.com',
+    'https://982112.com',
+    'https://6603-app.com',
+    'https://6603app.com',
+    'https://69989app.com',
   ],
   'c114': [
     'https://c432019.com',
