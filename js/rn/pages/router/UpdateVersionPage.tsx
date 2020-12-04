@@ -133,7 +133,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       )
     }
     if (Platform.OS == 'ios') {
-      OCHelper.call('CodePushConfig.current.setServerURL:', ['https://codepush.appcenter.ms/']).then(async () => {
+      OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/']).then(async () => {
         await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
         const CodePushKey = await getIOSCodePushKey()
         console.log('OCHelper.CodePushKey = ', CodePushKey)
