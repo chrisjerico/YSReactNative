@@ -140,8 +140,8 @@ export async function getIOSCodePushKey() : Promise<string> {
   if (isTest()) {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.a002_t : OCHelper.CodePushKey;
   }
-  const host = await OCHelper.call('AppDefine.shared.Host')
-  return CodePushKeysForIOS[host] ?? CodePushKeysForIOS.a002
+  const siteId = await OCHelper.call('AppDefine.shared.SiteId')
+  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.a002
 }
 
 
