@@ -379,11 +379,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333app.cc',
-    'https://70333app.com',
+    'https://70333app.co',
+    'https://70333app.me',
     'https://70333app.info',
     'https://70333app.org',
-    'https://70333app.vip',
+    'https://70333app.net',
   ],
   'h003b': [
     'https://betv5.com',
