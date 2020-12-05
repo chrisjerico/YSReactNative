@@ -25,13 +25,7 @@ import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://test05.6yc.com/')
 
-const WNZMinePage = ({ setProps }) => {
-  useEffect(() => {
-    setProps({
-      didFocus: setProps,
-    })
-  }, [])
-
+const WNZMinePage = () => {
   const { current: v } = useRef<{} & JDSalaryListCP>({})
 
   const menu = useRef(null)
@@ -232,3 +226,9 @@ const styles = StyleSheet.create({
 })
 
 export default WNZMinePage
+
+// else if (code == UGUserCenterType.个人信息) {
+//   navigate(PageName.UserInfoPage)
+// } else if (code == UGUserCenterType.站内信) {
+//   navigate(PageName.UserMessagePage)
+// }
