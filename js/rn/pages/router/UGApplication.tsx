@@ -71,6 +71,7 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -145,6 +146,7 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityJackpotView} component={UGPage(ActivityJackpotView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
