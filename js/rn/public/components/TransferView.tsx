@@ -35,7 +35,10 @@ import LinearGradient from 'react-native-linear-gradient'
 import { httpClient } from '../network/httpClient'
 import App from 'react-native-safe-area-context/lib/typescript/example/App'
 
-export const TransferView = () => {
+const myWallet = { title: '我的钱包', id: 0 }
+const dataArr = [myWallet]
+
+export const TransferView = ({setProps}) => {
   const [money, setMoney] = useState(0)
   const [data, setData] = useState<any>()
   const [transOut, setTransOut] = useState()
@@ -48,9 +51,9 @@ export const TransferView = () => {
   const [zIndex2, setZIndex2] = useState(2)
   const [spinValue, setSpinValue] = useState(new Value(0))
   const { value, refresh } = useHomePage({})
+  const [updateWallet, setUpdateWallet] = useState<{ id: any, balance: string }[]>([])
   const { userInfo } = value
   const { balance } = userInfo
-  const dataArr = [{ title: '我的钱包', id: 0 }]
 
   useEffect(() => {
     getData()
@@ -66,12 +69,23 @@ export const TransferView = () => {
     setData(data.data)
   }
 
+  const checkBalance = async (id) => {
+    const { data } = await api.real.checkBalance(id).promise
+    return data
+  }
+
   const transfer = async () => {
     if ((!transOut || !transIn) || transOut.id === transIn.id) {
-      Alert.alert('输入钱包和输出钱包不能一制')
+      Alert.alert('输入钱包和输出钱包不能一致')
     } else {
       const { data } = await api.real.manualTransfer(transOut.id, transIn.id, money).promise
       Alert.alert(data.msg)
+      const update1 = transIn.id == 0 ? { data: { balance: 0 } } : await checkBalance(transIn.id)
+      const update2 = transOut.id == 0 ? { data: { balance: 0 } } : await checkBalance(transOut.id)
+      setUpdateWallet([{ id: transIn.id, balance: update1.data.balance }, {
+        id: transOut.id,
+        balance: update2.data.balance,
+      }])
     }
   }
 
@@ -95,9 +109,9 @@ export const TransferView = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient style={{flex: 1}} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-        <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
-          <View style={{ paddingHorizontal: 12, paddingTop: 16, zIndex: 2 }}>
+      <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+        <Header setProps={setProps} pressRecord={() => navigate(PageName.TransferRecordView)} />
+        <View style={{ paddingHorizontal: 12, paddingTop: 16, zIndex: 2 }}>
           <TransferPicker
             key={1}
             text={'转出钱包'}
@@ -124,6 +138,7 @@ export const TransferView = () => {
             }} />
           <TransferPicker
             key={2}
+            placeholder={`请选择转入钱包`}
             text={'转入钱包'}
             animation={animation2}
             defaultZIndex={2}
@@ -161,7 +176,7 @@ export const TransferView = () => {
             }} />
           </TouchableWithoutFeedback>}
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, textAlign: 'center' }}>转换金额</Text>
+            <Text style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>转换金额</Text>
             <TextInput
               keyboardType={'numeric'}
               value={money}
@@ -175,6 +190,7 @@ export const TransferView = () => {
                 borderBottomColor: Skin1.textColor3,
                 alignItems: 'center',
                 flexDirection: 'row',
+                color: Skin1.isBlack ? 'white' : '#111'
               }}
               onChangeText={(text) => setMoney(parseFloat(text))}
             />
@@ -183,14 +199,14 @@ export const TransferView = () => {
             <TouchableWithoutFeedback onPress={transfer}>
               <View style={{
                 borderRadius: 4,
-                backgroundColor: Skin1.themeColor
+                backgroundColor: Skin1.themeColor,
               }}>
-                  <Text style={{
-                    fontSize: 17,
-                    color: Skin1.textColor4,
-                    alignSelf: 'center',
-                    paddingVertical: 10,
-                  }}>开始转换</Text>
+                <Text style={{
+                  fontSize: 17,
+                  color: Skin1.isBlack? "#fff" : Skin1.textColor4,
+                  alignSelf: 'center',
+                  paddingVertical: 10,
+                }}>开始转换</Text>
               </View>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={autoTransfer}>
@@ -201,7 +217,7 @@ export const TransferView = () => {
                 <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                   <Text style={{
                     fontSize: 17,
-                    color: Skin1.textColor4,
+                    color: Skin1.isBlack? "#fff" : Skin1.textColor4,
                     alignSelf: 'center',
                     paddingVertical: 10,
                   }}>一键提取</Text>
@@ -235,8 +251,8 @@ export const TransferView = () => {
               </View>
             </TouchableWithoutFeedback>
           </View>
-          </View>
-        {data && <AccListView data={data} />}
+        </View>
+        {data && <AccListView data={data} updateWallet={updateWallet} />}
         {(open || open2) && <TouchableWithoutFeedback style={{
           width: AppDefine.width,
           height: AppDefine.height,
@@ -254,7 +270,14 @@ export const TransferView = () => {
   )
 }
 
-const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
+const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: () => void }) => {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    AppDefine.checkHeaderShowBackButton((show) => {
+      show && setShow(show)
+      setProps()
+    })
+  }, [])
   return (
     <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       <SafeAreaView style={{
@@ -267,7 +290,7 @@ const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
           alignSelf: 'center',
           justifyContent: 'center',
         }}>
-          <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
+          {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
             switch (Platform.OS) {
               case 'ios':
                 OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
@@ -278,19 +301,19 @@ const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
             }
             pop()
           }}>
-            <Icon size={28} name={'left'} color={Skin1.textColor4} />
-          </TouchableOpacity>
+            <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
+          </TouchableOpacity>}
           <Text style={{
             alignSelf: 'center',
             paddingTop: 15,
             paddingBottom: 15,
             textAlign: 'center',
             fontSize: 20,
-            color: Skin1.textColor4,
+            color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
           }}>额度转换</Text>
           <TouchableWithoutFeedback onPress={pressRecord}>
             <View style={{ justifyContent: 'flex-end', position: 'absolute', left: AppDefine.width - 80 }}>
-              <Text style={{ color: Skin1.textColor4, fontSize: 18 }}>转换纪录</Text>
+              <Text style={{ color: Skin1.isBlack ? '#fff' : Skin1.textColor4, fontSize: 18 }}>转换记录</Text>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -299,27 +322,42 @@ const Header = ({ pressRecord }: { pressRecord: () => {} }) => {
   )
 }
 
-const AccListView = ({ data }: { data: any[] }) => {
+const AccListView = ({ data, updateWallet }: { data: any[], updateWallet: any[] }) => {
+  const [marginBottom, setMarginBottom] = useState(60)
+  useEffect(() => {
+    setMargin()
+  })
+
+  const setMargin = async() => {
+    const cnt = await OCHelper.call('UGNavigationController.current.viewControllers.count')
+    console.log("cnt", cnt)
+    if (cnt > 1) {
+      setMarginBottom(0)
+    } else {
+      setMarginBottom(60)
+    }
+  }
   return (
-    <SafeAreaView style={{flex: 1, marginBottom: 30}}>
+    <SafeAreaView style={{ flex: 1, marginBottom: 30 }}>
       <FlatList
         keyExtractor={(item, index) => `acc-${index}`}
-        style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: 'white', borderRadius: 10, marginBottom: 60 }}
+        style={{ marginHorizontal: 12, marginTop: 12, backgroundColor: 'white', borderRadius: 10, marginBottom }}
         data={data}
         renderItem={({ item }) => {
+          const wallet = updateWallet.find((wallet) => wallet.id === item.id)
           return (
-            <AccItem item={item} />
+            <AccItem item={item} updateBalance={wallet && wallet.balance} />
           )
         }} />
     </SafeAreaView>
   )
 }
 
-const TransferPicker = ({ text, animation, data, wallet, setWallet, zIndex, open, onPress }:
-                          { text: string, enable?: boolean, animation: any, defaultZIndex, zIndex, data: any, wallet: any, setWallet: (item: any) => void, onPress: () => void }) => {
+const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data, wallet, setWallet, zIndex, open, onPress }:
+                          { placeholder?: string, text: string, enable?: boolean, animation: any, defaultZIndex, zIndex, data: any, wallet: any, setWallet: (item: any) => void, onPress: () => void }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
-      <Text style={{ fontSize: 16, textAlign: 'center' }}>{text}</Text>
+      <Text style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>{text}</Text>
       <TouchableWithoutFeedback onPress={() => onPress()}>
         <View style={{
           flex: 1,
@@ -330,9 +368,9 @@ const TransferPicker = ({ text, animation, data, wallet, setWallet, zIndex, open
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-          <Text style={{ color: !wallet ? Skin1.textColor2 : 'black' }}>{wallet ? wallet.title : '请选择钱包'}</Text>
+          <Text style={{ color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2 }}>{wallet ? wallet.title : placeholder}</Text>
           <View style={{ flex: 1 }} />
-          <Icon style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
+          <Icon color={Skin1.isBlack ? "#fff" : "#111"} style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
                 name={'caretdown'} />
         </View>
       </TouchableWithoutFeedback>
@@ -367,7 +405,7 @@ const TransferPicker = ({ text, animation, data, wallet, setWallet, zIndex, open
   )
 }
 
-const AccItem = ({ item }: { item: any }) => {
+const AccItem = ({ item, updateBalance }: { item: any, updateBalance: string }) => {
   const [balance, setBalance] = useState('*****')
   const [spinValue, setSpinValue] = useState(new Value(0))
   const spin = spinValue.interpolate({
@@ -389,7 +427,7 @@ const AccItem = ({ item }: { item: any }) => {
     }}>
       <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
       <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
-      <Text style={{ color: '#F75000' }}>{`￥${balance}`}</Text>
+      <Text style={{ color: '#F75000' }}>{`￥${updateBalance || balance}`}</Text>
       <TouchableWithoutFeedback onPress={() => {
         animatedSpin(spinValue, setSpinValue)
         checkBalance(item.id)

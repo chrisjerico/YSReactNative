@@ -38,7 +38,7 @@ export const TransferRecordView = () => {
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-        <SafeAreaView style={{ backgroundColor: Skin1.bgColor}}>
+        <SafeAreaView style={{ backgroundColor: Skin1.bgColor }}>
           <View style={{
             backgroundColor: Skin1.bgColor,
             width: Dimensions.get('screen').width,
@@ -53,8 +53,8 @@ export const TransferRecordView = () => {
               fontSize: 17,
               width: '100%',
               alignSelf: 'center',
-              color: Skin1.textColor4,
-            }}>{'额度转换纪录'}</Text>
+              color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
+            }}>{'额度转换记录'}</Text>
             <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
               pop()
               switch (Platform.OS) {
@@ -66,7 +66,7 @@ export const TransferRecordView = () => {
                   break
               }
             }}>
-              <Icon size={33} name={'angle-left'} color={Skin1.textColor4} />
+              <Icon size={33} name={'angle-left'} color={Skin1.isBlack ? '#fff' :Skin1.textColor4} />
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -77,51 +77,51 @@ export const TransferRecordView = () => {
         <View style={{ flexDirection: 'row' }}>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center' }}>游戏</Text>
+            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>游戏</Text>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center' }}>金额</Text>
+            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>金额</Text>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center' }}>日期</Text>
+            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>日期</Text>
           </View>
           <View
             style={{ flex: 1, paddingVertical: 16, borderColor: '#d9d9d9' }}>
-            <Text style={{ alignSelf: 'center' }}>模式</Text>
+            <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>模式</Text>
           </View>
         </View>
       </LinearGradient>
       <FlatList
         data={dataList}
-        style={{backgroundColor: Skin1.bgColor}}
-        contentContainerStyle={{ flexGrow: 1, backgroundColor: "#cccccc" }}
+        style={{ backgroundColor: Skin1.bgColor }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: '#cccccc' }}
         ListEmptyComponent={() => (
           <View style={{ backgroundColor: '#f6f6f6', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ position: 'absolute', width: AppDefine.width, height: AppDefine.height, top: 0 }}>
               {emptyRow()}
             </View>
-            <Text style={{ color: '#c7c7c7', fontSize: 18 }}>暂无更多数据</Text>
+            <Text style={{ color: Skin1.isBlack ? "#000" : '#c7c7c7', fontSize: 18,  }}>暂无更多数据</Text>
           </View>
         )}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Skin1.cellBgColor }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: Skin1.isBlack ? Skin1.themeColor : Skin1.cellBgColor }}>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center' }}>{item.gameName}</Text>
+              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000"  }}>{item.gameName}</Text>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center' }}>{`¥ ${item.amount}`}</Text>
+              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{`¥ ${item.amount}`}</Text>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center' }}>{item.actionTime}</Text>
+              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.actionTime}</Text>
             </View>
             <View
               style={{ flex: 1, paddingVertical: 16 }}>
-              <Text style={{ alignSelf: 'center' }}>{item.isAuto ? '手动' : '自动'}</Text>
+              <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>{item.isAuto ? '手动' : '自动'}</Text>
             </View>
           </View>
         )}

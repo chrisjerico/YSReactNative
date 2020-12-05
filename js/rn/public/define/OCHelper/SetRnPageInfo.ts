@@ -20,7 +20,6 @@ export function setRnPageInfo() {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
   }
 
-  console.log("devConfig.isTest()", devConfig.isTest())
   // 测试环境（未上线的内容）
   if (devConfig.isTest()) {
     // ezer
@@ -46,7 +45,6 @@ export function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
-    pages = pages.concat(LCPages)
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
