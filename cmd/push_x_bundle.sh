@@ -8,7 +8,7 @@ pub_type=$1
 # fi
 
 pub_message="修复问题"
-pub_version="1.0.2"
+pub_version="1.0.1"
 
 echo $pub_type $pub_message $pub_version
 
