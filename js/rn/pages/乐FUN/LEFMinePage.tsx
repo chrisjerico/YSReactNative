@@ -49,6 +49,7 @@ const LEFMinePage = () => {
 
   const {signOut} = sign
 
+  // data handle
   const profileUserCenterItems = [{
     name: '充值',
     logo: 'http://test61c.fhptcdn.com/views/mobileTemplate/30/images/recharge.png',
