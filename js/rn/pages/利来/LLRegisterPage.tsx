@@ -121,7 +121,7 @@ export const LLRegisterPage = () => {
         }}
                          placeholder={'推荐人或上级代理'}
                          img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
-        {showRecommendGuy && inviter == '' && <View style={{ flexDirection: 'row' }}>
+        {showRecommendGuy && inviter == '' && hide_reco == 2 && <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',
             fontSize: 12,

@@ -18,7 +18,7 @@ const LCLoginPage = () => {
     homePage: PageName.LCHomePage,
     signUpPage: PageName.LCRegisterPage,
   })
-  const { loginVCode } = show
+  const { showSignInSlideCode } = show
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
   const { remember, account, password } = value
   const { signIn, tryPlay } = sign
@@ -34,10 +34,10 @@ const LCLoginPage = () => {
   }
 
   const getVCode = useMemo(() => {
-    if (loginVCode) {
+    if (showSignInSlideCode) {
       return <SlidingVerification onChange={onChangeSlideCode} />
     } else return <View />
-  }, [loginVCode, code])
+  }, [showSignInSlideCode, code])
   return (
     <BaseScreen screenName={'登录'}>
       <View style={{ marginHorizontal: 24, top: 46 }}>

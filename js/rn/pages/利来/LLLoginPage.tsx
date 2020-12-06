@@ -11,6 +11,7 @@ import { EventRegister } from 'react-native-event-listeners'
 import AppDefine from '../../public/define/AppDefine'
 import { ugLog } from '../../public/tools/UgLog'
 import APIRouter from '../../public/network/APIRouter'
+import CheckBox from '../../public/views/tars/CheckBox'
 
 export const LLLoginPage = ({ setProps }) => {
   const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
@@ -19,20 +20,20 @@ export const LLLoginPage = ({ setProps }) => {
   })
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
   const { signIn, tryPlay } = sign
-  const { loginVCode } = show
+  const { showSignInSlideCode } = show
   const { remember, account, password } = value
   const { navigateToSignUpPage } = navigateTo
   const [code, setCode] = useState('')
 
   const getVCode = useMemo(() => {
-    if (loginVCode) {
+    if (showSignInSlideCode) {
       return <SlidingVerification onChange={onChangeSlideCode} />
     } else return <View />
-  }, [loginVCode, code])
+  }, [showSignInSlideCode, code])
 
   useEffect(() => {
     reRenderCode()
-  }, [loginVCode])
+  }, [showSignInSlideCode])
 
   console.log(password)
 
@@ -51,7 +52,7 @@ export const LLLoginPage = ({ setProps }) => {
         backgroundColor: '#ffffff',
       }}>
       <StatusBar barStyle="dark-content" translucent={true} />
-      <View style={{marginHorizontal: 28}}>
+      <View style={{ marginHorizontal: 28 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -63,7 +64,7 @@ export const LLLoginPage = ({ setProps }) => {
           <Image
             style={{ height: 18, width: 18, marginRight: 8 }}
             source={{
-              uri: 'https://test10.6yc.com/images/moban9_icon/icon-user.png',
+              uri: httpClient.defaults.baseURL + '/images/moban9_icon/icon-user.png',
             }}
           />
           <TextInput value={account} onChangeText={(text) => onChangeAccount(text)}
@@ -86,7 +87,7 @@ export const LLLoginPage = ({ setProps }) => {
               resizeMode: 'stretch',
             }}
             source={{
-              uri: 'https://test10.6yc.com/images/moban9_icon/icon-pwd.png',
+              uri: httpClient.defaults.baseURL + '/images/moban9_icon/icon-pwd.png',
             }}
           />
           <TextInput
@@ -98,7 +99,7 @@ export const LLLoginPage = ({ setProps }) => {
             placeholder={'请输入密码'}
           />
         </View>
-        {(password == null || password == "") && <View style={{ flexDirection: 'row' }}>
+        {(password == null || password == '') && <View style={{ flexDirection: 'row' }}>
           <Text style={{
             color: 'red',
             fontSize: 12,
@@ -107,6 +108,9 @@ export const LLLoginPage = ({ setProps }) => {
             paddingVertical: 4,
           }}>{`*请输入密码`}</Text>
         </View>}
+        <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 24 }}>
+          <CheckBox onPress={onChangeRemember} label={'记住密码'} defaultValue={remember} />
+        </View>
         {getVCode}
         <View style={{ flexDirection: 'row' }}>
           <TouchableHighlight
@@ -127,21 +131,13 @@ export const LLLoginPage = ({ setProps }) => {
           </TouchableHighlight>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
-          {/* <CheckBox
-          isCheck={remember}
-          onCheck={() => {
-            onChangeRemember(!remember)
-            setProps()
-          }}
-          text={'记住密码'}
-        /> */}
           <View style={{ flex: 1 }} />
           <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}
                             onPress={() => PushHelper.pushUserCenterType(UGUserCenterType.在线客服)}>
             <Image
               style={{ height: 24, width: 24 }}
               source={{
-                uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/kf.png',
+                uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/kf.png',
               }}
             />
             <Text style={{ color: '#333333', paddingLeft: 8 }}>在线客服</Text>
@@ -158,7 +154,7 @@ export const LLLoginPage = ({ setProps }) => {
               <Image
                 style={{ height: 64, width: 64 }}
                 source={{
-                  uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/register.png',
+                  uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/register.png',
                 }}
               />
               <Text style={{ marginTop: 8 }}>马上注册</Text>
@@ -168,7 +164,7 @@ export const LLLoginPage = ({ setProps }) => {
               <Image
                 style={{ height: 64, width: 64 }}
                 source={{
-                  uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/mfsw.png',
+                  uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/mfsw.png',
                 }}
               />
               <Text style={{ marginTop: 8 }}>免费试玩</Text>
@@ -182,7 +178,7 @@ export const LLLoginPage = ({ setProps }) => {
               <Image
                 style={{ height: 64, width: 64 }}
                 source={{
-                  uri: 'https://test10.6yc.com/views/mobileTemplate/20/images/dnb.png',
+                  uri: httpClient.defaults.baseURL + '/views/mobileTemplate/20/images/dnb.png',
                 }}
               />
               <Text style={{ marginTop: 8 }}>电脑版</Text>
