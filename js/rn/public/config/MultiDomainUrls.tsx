@@ -122,7 +122,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'a002': [
     'https://c49zq.com',
     'https://5049ttt.com',
-    'https://c49zj.com',
+    'https://c49xg.com',
     'https://c49nx.com',
     'https://c49ln.com',
   ],
@@ -295,7 +295,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://2909tycjt.com',
   ],
   'c200': [
-    'https://20171995.com',
+    'https://19952022.com',
+    'https://19952023.com',
+    'https://19952024.com',
+    'https://19952025.com',
+    'https://19952026.com',
   ],
   'c201': [
     'https://dkcp520.com',
