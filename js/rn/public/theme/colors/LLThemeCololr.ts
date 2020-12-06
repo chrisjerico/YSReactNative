@@ -18,7 +18,7 @@ export const LLThemeColor: { [x: string]: UGThemeColor } = {
         menuHeadViewColor: ['#555555', '#555555'],
         textColor1: '#111',
         textColor2: '#555',
-        textColor3: 'c1c1c1',
+        textColor3: '#c1c1c1',
         textColor4: '#ffffff',
         conversionCellColor: '#444',
         intoViewColor: '#444',
