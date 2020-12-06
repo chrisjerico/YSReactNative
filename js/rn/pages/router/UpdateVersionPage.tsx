@@ -235,6 +235,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         }, 500)
         break
       case 'android':
+        await UGSkinManagers.updateSkin(sysConf)
         setProps({ bCodePush: true })
         break
     }
