@@ -10,14 +10,17 @@ import LinearGradient from 'react-native-linear-gradient'
 
 export const TransferRecordView = () => {
   const [dataList, setDataList] = useState([])
+  const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
     getData()
   }, [])
 
   const getData = async () => {
+    setIsRefreshing(true)
     const { data } = await api.real.transferLogs().promise
     setDataList(data.data.list)
     setDataList(data.data.list)
+    setIsRefreshing(false)
   }
 
   const emptyRow = () => {
@@ -95,6 +98,8 @@ export const TransferRecordView = () => {
       </LinearGradient>
       <FlatList
         data={dataList}
+        onRefresh={() => getData()}
+        refreshing={isRefreshing}
         style={{ backgroundColor: Skin1.bgColor }}
         contentContainerStyle={{ flexGrow: 1, backgroundColor: '#cccccc' }}
         ListEmptyComponent={() => (

@@ -32,13 +32,11 @@ import { PageName } from '../navigation/Navigation'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
-import { httpClient } from '../network/httpClient'
-import App from 'react-native-safe-area-context/lib/typescript/example/App'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]
 
-export const TransferView = ({setProps}) => {
+export const TransferView = ({ setProps, navigation }) => {
   const [money, setMoney] = useState(0)
   const [data, setData] = useState<any>()
   const [transOut, setTransOut] = useState()
@@ -59,6 +57,17 @@ export const TransferView = ({setProps}) => {
     getData()
   }, [])
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('focus')
+      transIn && setTransIn(undefined)
+      transOut && setTransOut(undefined)
+      setProps()
+    })
+
+    return unsubscribe
+  }, [navigation])
+
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
@@ -76,7 +85,9 @@ export const TransferView = ({setProps}) => {
 
   const transfer = async () => {
     if ((!transOut || !transIn) || transOut.id === transIn.id) {
-      Alert.alert('输入钱包和输出钱包不能一致')
+      (!transOut || !transIn) ?
+        Alert.alert('请选择需要转出和转入的游戏类型') :
+        Alert.alert('输入钱包和输出钱包不能一致')
     } else {
       const { data } = await api.real.manualTransfer(transOut.id, transIn.id, money).promise
       Alert.alert(data.msg)
@@ -120,7 +131,8 @@ export const TransferView = ({setProps}) => {
             zIndex={zIndex}
             open={open}
             setOpen={setOpen}
-            data={dataArr.concat(data)} wallet={transOut}
+            data={dataArr.concat(data)}
+            wallet={transOut}
             setWallet={(wallet) => {
               setTransOut(wallet)
               onGreyBGPress()
@@ -190,7 +202,7 @@ export const TransferView = ({setProps}) => {
                 borderBottomColor: Skin1.textColor3,
                 alignItems: 'center',
                 flexDirection: 'row',
-                color: Skin1.isBlack ? 'white' : '#111'
+                color: Skin1.isBlack ? 'white' : '#111',
               }}
               onChangeText={(text) => setMoney(parseFloat(text))}
             />
@@ -203,7 +215,7 @@ export const TransferView = ({setProps}) => {
               }}>
                 <Text style={{
                   fontSize: 17,
-                  color: Skin1.isBlack? "#fff" : Skin1.textColor4,
+                  color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                   alignSelf: 'center',
                   paddingVertical: 10,
                 }}>开始转换</Text>
@@ -217,7 +229,7 @@ export const TransferView = ({setProps}) => {
                 <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
                   <Text style={{
                     fontSize: 17,
-                    color: Skin1.isBlack? "#fff" : Skin1.textColor4,
+                    color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                     alignSelf: 'center',
                     paddingVertical: 10,
                   }}>一键提取</Text>
@@ -328,9 +340,9 @@ const AccListView = ({ data, updateWallet }: { data: any[], updateWallet: any[] 
     setMargin()
   })
 
-  const setMargin = async() => {
+  const setMargin = async () => {
     const cnt = await OCHelper.call('UGNavigationController.current.viewControllers.count')
-    console.log("cnt", cnt)
+    console.log('cnt', cnt)
     if (cnt > 1) {
       setMarginBottom(0)
     } else {
@@ -368,9 +380,11 @@ const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-          <Text style={{ color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2 }}>{wallet ? wallet.title : placeholder}</Text>
+          <Text
+            style={{ color: wallet ? Skin1.isBlack ? 'white' : 'black' : Skin1.textColor2 }}>{wallet ? wallet.title : placeholder}</Text>
           <View style={{ flex: 1 }} />
-          <Icon color={Skin1.isBlack ? "#fff" : "#111"} style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
+          <Icon color={Skin1.isBlack ? '#fff' : '#111'}
+                style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }] }} size={16}
                 name={'caretdown'} />
         </View>
       </TouchableWithoutFeedback>
