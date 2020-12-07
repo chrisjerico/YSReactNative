@@ -120,13 +120,17 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://test03.6yc.com',
   ],
   'a002': [
-    'https://5049uuu.com',
+    'https://c49zq.com',
+    'https://c49ln.com',
+    'https://c49nx.com',
+    'https://c49xg.com',
+    'https://5049ttt.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
   ],
   'c002': [
-    'https://55114.vip',
+    'https://66075.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',
@@ -194,6 +198,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c108': [
     'https://823653.com',
+    'https://568173.com',
+    'https://982112.com',
+    'https://6603-app.com',
+    'https://6603app.com',
+    'https://69989app.com',
   ],
   'c114': [
     'https://c432019.com',
@@ -270,10 +279,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://00fhcp.cn',
   ],
   'c186': [
-    'https://200300g.com',
-    'https://200300j.com',
-    'https://200300i.com',
-    'https://200300f.com',
+    'https://200300c.com',
+    'https://200300d.com',
+    'https://200300e.com',
     'https://288388e.com',
     'https://288388i.com',
   ],
@@ -379,11 +387,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333app.cc',
-    'https://70333app.com',
+    'https://70333app.co',
+    'https://70333app.me',
     'https://70333app.info',
     'https://70333app.org',
-    'https://70333app.vip',
+    'https://70333app.net',
   ],
   'h003b': [
     'https://betv5.com',

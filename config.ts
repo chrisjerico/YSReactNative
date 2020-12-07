@@ -1,17 +1,11 @@
 import { Platform } from 'react-native'
+import { isTest } from './js/rn/public/config/CodePushKeys'
 import { OCHelper } from './js/rn/public/define/OCHelper/OCHelper'
 
 // 调试环境配置
 export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
-  isTest: () => {
-    // 是否测试环境
-    if (__DEV__) return true
-    if (Platform.OS == 'ios') {
-      return 'by5lebbE5vmYSJAdd5y0HRIFRcVJ4ksvOXqog,67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog,iwDsp1YB7bcBov7KIaxDP9tLbuUQ4ksvOXqog'.indexOf(OCHelper.CodePushKey) == -1
-    }
-    return false
-  },
+  isTest: () => { return isTest() },// 是否是测试环境
 
   skinKey: '威尼斯', // 宝石红 白曜 威尼斯 六合厅 凯时 利来 金星黑 乐橙 经典
 }
