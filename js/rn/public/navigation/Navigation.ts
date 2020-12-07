@@ -76,4 +76,6 @@ export enum PageName {
   SeriesLobbyPage = 'SeriesLobbyPage',
   UserMessagePage = 'UserMessagePage',
   UserInfoPage = 'UserInfoPage',
+  SafeCenterPage = 'SafeCenterPage',
+  ActivityRewardPage = 'ActivityRewardPage',
 }

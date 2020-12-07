@@ -2,6 +2,7 @@ import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Component } from 'react'
+import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
 import TrendView from '../../public/components/TrendView'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
@@ -10,11 +11,13 @@ import { ugLog } from '../../public/tools/UgLog'
 import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import PromotionPage from '../base/PromotionPage'
+import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import ActivityRewardPage from '../base/ActivityRewardPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -71,7 +74,6 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -181,6 +183,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserMessagePage} component={UGPage(UserMessagePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
     </Router.StackNavigator>
   )
 }

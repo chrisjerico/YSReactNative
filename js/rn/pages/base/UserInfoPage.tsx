@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import Dash from 'react-native-dash'
+import AppDefine from '../../public/define/AppDefine'
+import { pop } from '../../public/navigation/RootNavigation'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+import Avatar from '../../public/views/tars/Avatar'
+import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/temp/MineHeader'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { pop } from '../../public/navigation/RootNavigation'
-import Avatar from '../../public/views/tars/Avatar'
 import { UGStore } from '../../redux/store/UGStore'
-import AppDefine from '../../public/define/AppDefine'
-import Dash from 'react-native-dash'
-import Button from '../../public/views/tars/Button'
 
 const UserInfoPage = () => {
   const userInfo = UGStore.globalProps.userInfo
   const { avatar, isTest, usr, qq, phone, email, fullName } = userInfo
-  console.log('----userInfo-----', userInfo)
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
