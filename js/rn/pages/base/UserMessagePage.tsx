@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View, ActivityIndicator } from 'react-native'
+import { Animated, Easing, ImageBackground, StyleSheet, Text, View, ActivityIndicator, RefreshControl, TouchableWithoutFeedback, Alert } from 'react-native'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
@@ -9,6 +9,7 @@ import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
+import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 const UserMessagePage = () => {
   const inAnimated = useRef(false)
@@ -39,7 +40,17 @@ const UserMessagePage = () => {
         <MineHeader title={'站內信'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <List
+        initialNumToRender={20}
         uniqueKey={'MessagePage'}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              console.log('-----onRefresh---')
+            }}
+          />
+        }
+        // onEndReached onScrollEndDrag
         onEndReached={() => {
           if (page.current < maxPage.current) {
             setLoading(true)
@@ -57,12 +68,31 @@ const UserMessagePage = () => {
         scrollEnabled={true}
         data={list}
         renderItem={({ item }) => {
-          const { content, title, updateTime } = item
+          const { content, title, updateTime, isRead, id } = item
           return (
-            <View style={styles.message}>
-              <Text>{title}</Text>
-              <Text>{updateTime}</Text>
-            </View>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                APIRouter.user_readMsg(id).finally(() => {
+                  const _list = list?.map((ele) => {
+                    if (ele?.id == id) {
+                      return Object.assign({}, ele, { isRead: 1 })
+                    } else {
+                      return ele
+                    }
+                  })
+                  setList(_list)
+                })
+                Alert.alert('UG集团站内信', content, [
+                  {
+                    text: '确定',
+                  },
+                ])
+              }}>
+              <View style={styles.message}>
+                <Text style={isRead ? styles.readTextStyle : {}}>{title}</Text>
+                <Text style={isRead ? styles.readTextStyle : {}}>{updateTime}</Text>
+              </View>
+            </TouchableWithoutFeedback>
           )
         }}
         ListFooterComponent={() => {
@@ -94,13 +124,13 @@ const UserMessagePage = () => {
               Animated.parallel([
                 Animated.timing(spinValue, {
                   toValue: sliderIsOpen.current ? 1 : 0,
-                  duration: 1000,
+                  duration: 500,
                   easing: Easing.linear,
                   useNativeDriver: true,
                 }),
                 Animated.timing(translateY, {
                   toValue: sliderIsOpen.current ? 70 : 0,
-                  duration: 1000,
+                  duration: 500,
                   easing: Easing.linear,
                   useNativeDriver: true,
                 }),
@@ -125,6 +155,20 @@ const UserMessagePage = () => {
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
             titleStyle={{ fontWeight: '600', fontSize: 16 }}
             useFastImage={false}
+            onPress={() => {
+              showLoading()
+              APIRouter.user_readMsgAll()
+                .then(() => {
+                  const _list = list?.map((ele) => {
+                    return Object.assign({}, ele, { isRead: 1 })
+                  })
+                  setList(_list)
+                  showSuccess('一键设置已读成功')
+                })
+                .catch((error) => {
+                  showError(error)
+                })
+            }}
           />
           <Button
             title={'全部删除'}
@@ -134,6 +178,17 @@ const UserMessagePage = () => {
             logoStyle={{ width: '17%', aspectRatio: 1, marginRight: 10 }}
             titleStyle={{ fontWeight: '600', fontSize: 16 }}
             useFastImage={false}
+            onPress={() => {
+              showLoading()
+              APIRouter.user_deleteMsgAll()
+                .then(() => {
+                  setList([])
+                  showSuccess('一键设置删除成功')
+                })
+                .catch((error) => {
+                  showError(error)
+                })
+            }}
           />
         </View>
       </Animated.View>
@@ -152,6 +207,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf: 'center',
+  },
+  readTextStyle: {
+    color: '#9D9D9D',
   },
 })
 

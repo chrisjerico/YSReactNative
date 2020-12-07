@@ -56,6 +56,20 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static user_deleteMsgAll = async () => {
+    return httpClient.post<any>('c=user&a=deleteMsgAll')
+  }
+
+  static user_readMsgAll = async () => {
+    return httpClient.get<any>('c=user&a=readMsgAll')
+  }
+
+  static user_readMsg = async (id: string) => {
+    return httpClient.post<any>('c=user&a=readMsg', {
+      id,
+    })
+  }
+
   static user_msgList = async (page: number = 1) => {
     let tokenParams = ''
     switch (Platform.OS) {
