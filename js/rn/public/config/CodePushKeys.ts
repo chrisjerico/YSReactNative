@@ -1,5 +1,4 @@
 import { Platform } from 'react-native'
-import { devConfig } from './../../../../config'
 import { OCHelper } from './../define/OCHelper/OCHelper'
 
 const CodePushKeysForIOS = {
