@@ -3,7 +3,7 @@ import { SeriesId } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
-import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
