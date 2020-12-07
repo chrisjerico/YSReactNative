@@ -2,7 +2,7 @@
 
 ------
 
-***Author: Arc***
+***Author: You***
 
 ![avatar](https://i.ibb.co/yP14TXs/ic-launcher.png)
 

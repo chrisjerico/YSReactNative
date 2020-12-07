@@ -130,7 +130,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c47c47appapp.com',
   ],
   'c002': [
-    'https://55114.vip',
+    'https://66075.vip',
   ],
   'c005': [
     'http://nxmdbybnbc005ojrz.playzone88.com',

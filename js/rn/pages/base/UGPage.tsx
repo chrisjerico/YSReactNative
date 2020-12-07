@@ -19,7 +19,7 @@ import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 
 // Props
-export interface UGBasePageProps<P extends UGBasePageProps = {}, F = {}> {
+export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
   // React-Navigation
   navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
   route?: { name: PageName; params: F }
