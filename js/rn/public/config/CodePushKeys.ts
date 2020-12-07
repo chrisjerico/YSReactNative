@@ -128,7 +128,7 @@ export function isTest() {
   if (Platform.OS == 'ios') {
     for (const k in CodePushKeysForIOS) {
       if (OCHelper.CodePushKey == CodePushKeysForIOS[k]) {
-        return k.indexOf('_t') == -1;
+        return k.indexOf('_t') != -1;
       }
     }
     return false
