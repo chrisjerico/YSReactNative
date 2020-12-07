@@ -33,11 +33,11 @@ export const Res = {
   加载中: { uri: 'https://appstatic.woyovr.com/assets/gif/loading-1.gif' },
   加载成功: { uri: 'https://appstatic.woyovr.com/assets/success@3x.png' },
   加载失败: { uri: 'https://appstatic.woyovr.com/assets/error@3x.png' },
-};
+}
 
 /**
  * 图标
  */
 export const RIcons = {
   c199: { uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg' },
-};
+}

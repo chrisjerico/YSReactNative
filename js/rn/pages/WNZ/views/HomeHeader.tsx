@@ -17,9 +17,10 @@ export interface HomeHeaderProps {
   showBackBtn?: boolean
   uid: string
   onPressBackBtn?: () => any
+  showChatRoom?: any
 }
 
-const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, onPressBackBtn }: HomeHeaderProps) => {
+const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressUser, uid, onPressBackBtn, showChatRoom }: HomeHeaderProps) => {
   const [showBackBtn, setShowBackBtn] = useState(false)
   AppDefine.checkHeaderShowBackButton((show) => {
     show != showBackBtn && setShowBackBtn(show)
@@ -69,16 +70,18 @@ const HomeHeader = ({ name, logo, balance, onPressMenu, onPressComment, onPressU
               </View>
             </TouchableWithoutFeedback>
           )}
-          <TouchableWithoutFeedback onPress={onPressComment}>
-            <View
-              style={{
-                marginRight: scale(5),
-                height: '100%',
-                justifyContent: 'center',
-              }}>
-              <FontAwesome name={'commenting'} size={scale(20)} color={'#ffffff'} />
-            </View>
-          </TouchableWithoutFeedback>
+          {showChatRoom && (
+            <TouchableWithoutFeedback onPress={onPressComment}>
+              <View
+                style={{
+                  marginRight: scale(5),
+                  height: '100%',
+                  justifyContent: 'center',
+                }}>
+                <FontAwesome name={'commenting'} size={scale(20)} color={'#ffffff'} />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
           <TouchableWithoutFeedback onPress={onPressMenu}>
             <View
               style={{
