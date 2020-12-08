@@ -55,7 +55,7 @@ const PromotionListPage = ({ navigation }) => {
       categoriesArray = [...new Set(categoriesArray)]
       categoriesArray.sort()
       setCategories(categoriesArray)
-    } catch (error) {}
+    } catch (error) { }
   }
 
   return (
@@ -114,7 +114,7 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
     if (data?.linkUrl != '') {
       Linking.openURL(data?.linkUrl)
     } else if (data.linkCategory == 0 && data.linkPosition == 0) {
-      onPopViewPress(data, type, onPress ? onPress : () => {})
+      onPopViewPress(data, type, onPress ? onPress : () => { })
     } else {
       PushHelper.pushCategory(data.linkCategory, data.linkPosition)
     }

@@ -283,6 +283,10 @@ export default class PushHelper {
             navigate(PageName.TrendView, {})
             break
           }
+          case UGUserCenterType.额度转换: {
+            push(PageName.TransferView, {})
+            break
+          }
           case UGUserCenterType.资金明细: {
             PushHelper.pushCategory(7, 28)
             break

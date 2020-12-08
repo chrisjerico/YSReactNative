@@ -14,22 +14,23 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native'
-import Carousel from 'react-native-banner-carousel'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
+import { HomeTabView } from './component/homePage/homeTabView/HomeTabView'
+import { navigate, push } from '../../public/navigation/RootNavigation'
+import { PageName } from '../../public/navigation/Navigation'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import APIRouter from '../../public/network/APIRouter'
 import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import PromotionsBlock from '../../public/components/PromotionsBlock'
 import RedBagItem from '../../public/components/RedBagItem'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import AppDefine from '../../public/define/AppDefine'
 import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { PageName } from '../../public/navigation/Navigation'
-import { navigate, push } from '../../public/navigation/RootNavigation'
-import APIRouter from '../../public/network/APIRouter'
 import { httpClient } from '../../public/network/httpClient'
 import { List } from '../../public/network/Model/BannerModel'
 import { TurntableListModel } from '../../public/network/Model/TurntableListModel'
@@ -38,9 +39,9 @@ import GameButton from '../../public/views/tars/GameButton'
 import RankListCP from '../../public/widget/RankList'
 import { UGStore } from '../../redux/store/UGStore'
 import MarqueePopupView from '../common/MarqueePopupView'
-import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
-import { HomeTabView } from './component/homePage/homeTabView/HomeTabView'
 import NavBlock from './component/homePage/NavBlock'
+import Carousel from 'react-native-banner-carousel'
+
 
 
 const LCHomePage = ({ navigation, setProps }) => {
@@ -80,6 +81,7 @@ const LCHomePage = ({ navigation, setProps }) => {
   }, [notices])
 
   const openPopup = (data: any) => {
+    console.log(data)
     const dataModel = data.data?.popup.map((item, index) => {
       return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
     })
@@ -141,7 +143,6 @@ const LCHomePage = ({ navigation, setProps }) => {
                 <GameButton
                   showSecondLevelIcon={false}
                   key={index}
-                  containerStyle={{ width: '25%' }}
                   imageContainerStyle={{ width: '45%' }}
                   enableCircle={false}
                   logo={icon ? icon : logo}
@@ -185,14 +186,6 @@ const LCHomePage = ({ navigation, setProps }) => {
         {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
-              <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
-            </View>
-            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
-                        width={Dimensions.get('screen').width - 24} ranks={rankLists} />
-          </SafeAreaView> :
-          rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
               <Text style={{
                 fontSize: 16,
                 lineHeight: 22,
@@ -201,6 +194,14 @@ const LCHomePage = ({ navigation, setProps }) => {
               }}>投注排行榜</Text>
             </View>
             <RankListCP titleVisible={false} timing={5000} backgroundColor={'white'} textColor={'black'}
+                        width={Dimensions.get('screen').width - 24} ranks={rankLists} />
+          </SafeAreaView> :
+          rankingListSwitch === 1 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />
+              <Text style={{ fontSize: 16, lineHeight: 22, color: '#3c3c3c', marginVertical: 10 }}>中奖排行榜</Text>
+            </View>
+            <RankListCP titleVisible={false} timing={10000} backgroundColor={'white'} textColor={'black'}
                         width={Dimensions.get('screen').width - 24} ranks={rankLists} />
           </SafeAreaView> : <></>}
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
@@ -212,7 +213,7 @@ const LCHomePage = ({ navigation, setProps }) => {
           }}>🎁优惠活动</Text>
         </View>
         <Text style={{ color: 'black', textAlign: 'center' }}>COPYRIGHT © {webName} RESERVED</Text>
-        <Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 07'}</Text>
+        <Text style={{ color: '#000000', textAlign: 'center' }}>{'VERSION : 13'}</Text>
         <View style={{ height: 100 }} />
       </ScrollView>
       <RedBagItem redBag={redBag} />

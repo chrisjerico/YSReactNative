@@ -58,7 +58,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         refreshing={refreshing}
         containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
-        show={uid && roulette && !isTest}
+        show={roulette}
         logo={ROULETTE_LOGO}
         onPress={() => {
           PushHelper.pushWheel(roulette)
@@ -76,7 +76,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         refreshing={refreshing}
         containerStyle={{ top: scale(570), right: 0 }}
         enableFastImage={false}
-        show={uid && scratchs && !isTest}
+        show={scratchs}
         logo={'https://i.ibb.co/0J51pH9/scratch.png'}
         onPress={goToUserCenterType.刮刮乐}
       />

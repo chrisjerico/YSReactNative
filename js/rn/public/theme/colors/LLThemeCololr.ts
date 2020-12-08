@@ -16,13 +16,14 @@ export const LLThemeColor: { [x: string]: UGThemeColor } = {
         cellBgColor: '#ffffff',
         CLBgColor: '#E6E6E6',
         menuHeadViewColor: ['#555555', '#555555'],
-        textColor1: '#555555',
-        textColor2: '#555555',
-        textColor3: '#999999',
+        textColor1: '#111',
+        textColor2: '#555',
+        textColor3: '#c1c1c1',
         textColor4: '#ffffff',
         conversionCellColor: '#444',
         intoViewColor: '#444',
         moneyCellColor: '#444',
-        yubaoBgColor: "#444"
+        yubaoBgColor: "#444",
+        isBlack: false
     }
 };

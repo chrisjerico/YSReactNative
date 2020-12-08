@@ -2,12 +2,8 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { DrawerNavigationProp } from '@react-navigation/drawer'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React from 'react'
-import { Platform } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import LinearGradient from 'react-native-linear-gradient'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import { PageName } from '../../public/navigation/Navigation'
 import { getCurrentPage, navigationRef } from '../../public/navigation/RootNavigation'
 import { UGThemeConst } from '../../public/theme/const/UGThemeConst'
@@ -17,6 +13,10 @@ import { deepMergeProps } from '../../public/tools/FUtils'
 import { ugLog } from '../../public/tools/UgLog'
 import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNavigationBar'
 import { UGStore } from '../../redux/store/UGStore'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
+import { Platform } from 'react-native'
+import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
+import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 
 // Props
 export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
@@ -60,8 +60,8 @@ export default (Page: Function) => {
         }
         this.setProps({})
       })
-      navigation.removeListener('transitionEnd', null)
-      navigation.addListener('transitionEnd', (e) => {
+      navigation.removeListener("transitionEnd", null)
+      navigation.addListener("transitionEnd", (e) => {
         if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
           this._showMainTab()
         }
@@ -125,7 +125,7 @@ export default (Page: Function) => {
 
     setProps<P>(props: P): void {
       // console.log('setProps, name = ', this.props.route.name, props);
-      UGStore.dispatch({ type: 'merge', page: this.props.route.name, props: props })
+      UGStore.dispatch({ type: "merge", page: this.props.route.name, props: props })
     }
 
     render() {
