@@ -19,7 +19,7 @@ import UGNavigationBar, { UGNavigationBarProps } from '../../public/widget/UGNav
 import { UGStore } from '../../redux/store/UGStore'
 
 // Props
-export interface UGBasePageProps<P extends UGBasePageProps = {}, F = {}> {
+export interface UGBasePageProps<P extends UGBasePageProps = {}, F = any> {
   // React-Navigation
   navigation?: BottomTabNavigationProp<{}> & StackNavigationProp<{}> & DrawerNavigationProp<{}> // 导航助手
   route?: { name: PageName; params: F }

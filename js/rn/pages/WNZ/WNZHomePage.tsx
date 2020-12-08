@@ -50,7 +50,7 @@ const WNZHomePage = () => {
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch } = sysInfo
 
   const tabGames = [
     {
@@ -69,7 +69,6 @@ const WNZHomePage = () => {
 
   // @ts-ignore
   const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
-
   return (
     <HomePage
       {...homeInfo}
@@ -92,6 +91,7 @@ const WNZHomePage = () => {
           name={usr}
           logo={mobile_logo}
           balance={balance}
+          showChatRoom={chatRoomSwitch}
           onPressMenu={openMenu}
           onPressComment={goToUserCenterType.聊天室}
           onPressUser={goToUserCenterType.我的页}
@@ -115,6 +115,9 @@ const WNZHomePage = () => {
                     width: '20%',
                     backgroundColor: '#ffffff',
                     justifyContent: 'center',
+                  }}
+                  imageContainerStyle={{
+                    width: '100%',
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{

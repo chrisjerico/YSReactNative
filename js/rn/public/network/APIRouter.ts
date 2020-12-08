@@ -56,7 +56,21 @@ export interface UserReg {
 }
 
 class APIRouter {
-  static user_msgList = async () => {
+  static user_deleteMsgAll = async () => {
+    return httpClient.post<any>('c=user&a=deleteMsgAll')
+  }
+
+  static user_readMsgAll = async () => {
+    return httpClient.get<any>('c=user&a=readMsgAll')
+  }
+
+  static user_readMsg = async (id: string) => {
+    return httpClient.post<any>('c=user&a=readMsg', {
+      id,
+    })
+  }
+
+  static user_msgList = async (page: number = 1) => {
     let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
@@ -69,7 +83,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<UserMsgListModel>('c=user&a=msgList&rows=20&type=&' + tokenParams)
+    return httpClient.get<UserMsgListModel>('c=user&a=msgList&rows=20&type=&page=' + page + tokenParams)
   }
 
   static game_homeRecommend = async () => {
