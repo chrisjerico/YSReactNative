@@ -289,8 +289,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://549595.com',
   ],
   'c193': [
-    'https://49065555.com',
     'https://4906107.com',
+    'https://49065555.com',
+    'https://49060333.com',
+    'https://49060222.com',
+    'https://49061111.com',
   ],
   'c198': [
     'https://2909tycjt.com',

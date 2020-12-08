@@ -28,24 +28,33 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { ActivityJackpotData, ActivityJackpotModel } from '../../network/Model/ActivityJackpotModel'
+import { ActivityJackpotData, ActivityJackpotModel } from '../../network/Model/act/ActivityJackpotModel'
+import UseActivityJackpot from './UseActivityJackpot'
+import { ugLog } from '../../tools/UgLog'
 
+/**
+ * 申请彩金
+ * @param navigation
+ * @constructor
+ */
 const ActivityJackpotView = ({ navigation }) => {
-  //列表数据
-  const [listData, setListData] = useState<ActivityJackpotData>()
-  //当前是第几页数据
-  const [pageIndex, setPageIndex] = useState(0)
+  // //列表数据
+  // const [listData, setListData] = useState<ActivityJackpotData>()
+  // //当前是第几页数据
+  // const [pageIndex, setPageIndex] = useState(0)
+  //
+  // useEffect(() => {
+  //   setPageIndex(1)
+  // }, [])
+  //
+  // useEffect(() => {
+  //   APIRouter.activity_winApplyList().then(({ data: res }) => {
+  //
+  //   })
+  // }, [pageIndex])
 
-  useEffect(() => {
-    setPageIndex(1)
-  }, [])
-
-  useEffect(() => {
-    APIRouter.game_lotteryGames().then(({ data: res }) => {
-
-
-    })
-  }, [pageIndex])
+  const { listData } = UseActivityJackpot()
+  ugLog('listData=', listData)
 
   const tabItems = [
     {
@@ -92,7 +101,7 @@ const _styles = StyleSheet.create({
     height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
-    height: scale(2),
+    height: scale(3),
     backgroundColor: Skin1.themeColor,
   },
 })

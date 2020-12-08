@@ -481,7 +481,8 @@ export default class PushHelper {
           }
           case UGUserCenterType.开奖走势: {
             // Toast('敬请期待')
-            navigate(PageName.TrendView, {})
+            // navigate(PageName.TrendView, {})
+            navigate(PageName.ActivityJackpotView, {})
             return
           }
           case UGUserCenterType.QQ客服: {
