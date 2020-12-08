@@ -467,6 +467,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.活动彩金: {
+            navigate(PageName.ActivityJackpotView, {})
             subId = MenuType.SQCJ
             break
           }

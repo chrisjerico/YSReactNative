@@ -53,7 +53,13 @@ const ActivityJackpotView = ({ navigation }) => {
   //   })
   // }, [pageIndex])
 
-  const { listData } = UseActivityJackpot()
+  const {
+    listData,
+    categoryData,
+    requestJackpotData,
+    requestLogData
+  } = UseActivityJackpot()
+
   ugLog('listData=', listData)
 
   const tabItems = [
@@ -74,7 +80,9 @@ const ActivityJackpotView = ({ navigation }) => {
     <BaseScreen style={_styles.container} screenName={'活动彩金'}>
       <ScrollableTabView
         onChangeTab={(tab) =>{
+          if (tab.from == tab.i) {
 
+          }
         }}
         tabBarUnderlineStyle={_styles.tab_bar_underline}
         tabBarActiveTextColor={Skin1.themeColor}
