@@ -124,6 +124,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5049ttt.com',
     'https://c49xg.com',
     'https://c49nx.com',
+    'https://c49ln.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
