@@ -65,24 +65,30 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
           <View style={{ marginTop: 6, marginLeft: 5, flexDirection: 'row' }}>
             <Button title='选择头像' buttonStyle={{ marginTop: 0.5, backgroundColor: 'transparent' }} titleStyle={{ fontSize: 14, color: UGColor.RedColor3 }} />
             <Button title='上传头像' buttonStyle={{ backgroundColor: 'transparent' }} titleStyle={{ fontSize: 14 }} onPress={() => {
-              OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
-                selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
-                args1: [1],
-                args2: [false],
-                args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
-              }, true]);
-              OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
-              OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, ({ 0: imgs }: { 0: string[] }) => {
-                if (imgs?.length) {
-                  showLoading()
-                  api.user.uploadAvatar(imgs[0]).setCompletionBlock(({ data, msg }) => {
-                    showSuccess(msg)
-                    v.show = false;
-                    UGStore.dispatch({ type: 'merge', userInfo: { avatar: imgs[0] } });
-                    setState({})
-                  });
-                }
-              })
+              if (Platform.OS) {
+                // 打开原生相册
+                OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
+                  selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
+                  args1: [1],
+                  args2: [false],
+                  args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
+                }, true]);
+                // 上传图片
+                OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
+                OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, ({ 0: imgs }: { 0: string[] }) => {
+                  if (imgs?.length) {
+                    showLoading()
+                    api.user.uploadAvatar(imgs[0]).setCompletionBlock(({ data, msg }) => {
+                      showSuccess(msg)
+                      v.show = false;
+                      UGStore.dispatch({ type: 'merge', userInfo: { avatar: imgs[0] } });
+                      setState({})
+                    });
+                  }
+                })
+              } else {
+                //TODO Android
+              }
             }} />
           </View>
         )}
