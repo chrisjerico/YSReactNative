@@ -42,9 +42,14 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
       if (!v.list) {
         // 俸禄数据
         showLoading();
-        api.user.getAvatarSetting().setCompletionBlock(({ data }) => {
+        api.user.getAvatarSetting().setCompletionBlock(async ({ data }) => {
           hideLoading();
-          v.isAcceptUpload = data?.isAcceptUpload;
+          if (Platform.OS == 'ios') {
+            const iosCanUpload = await OCHelper.call('AppDefine.shared.isCanUploadAvatar')
+            v.isAcceptUpload = iosCanUpload && data?.isAcceptUpload;
+          } else {
+            v.isAcceptUpload = data?.isAcceptUpload;
+          }
           v.list = data?.publicAvatarList;
           v.selected = v.list[0];
           v.show = true;
@@ -81,8 +86,10 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
                     api.user.uploadAvatar(imgs[0]).setCompletionBlock(({ data, msg }) => {
                       showSuccess(msg)
                       v.show = false;
-                      UGStore.dispatch({ type: 'merge', userInfo: { avatar: imgs[0] } });
                       setState({})
+                      if (data?.isReview) {
+                        UGStore.dispatch({ type: 'merge', userInfo: { avatar: imgs[0] } });
+                      }
                     });
                   }
                 })
