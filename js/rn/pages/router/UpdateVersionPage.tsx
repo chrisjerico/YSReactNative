@@ -133,6 +133,10 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       )
     }
     if (Platform.OS == 'ios') {
+      // 先初始化一遍原生配置（避免有些用户网络慢，没更新完RN配置就直接超时进入首页）
+      OCHelper.call('UGSystemConfigModel.currentConfig').then((sysConf: UGSysConfModel) => {
+        initConfig(sysConf, false)
+      })
       OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/']).then(async () => {
         await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
         const CodePushKey = await getIOSCodePushKey()
@@ -214,7 +218,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
   }, [counter])
 
-  const initConfig = async (sysConf: UGSysConfModel) => {
+  const initConfig = async (sysConf: UGSysConfModel, willLaunch = true) => {
     UGStore.dispatch({ type: 'merge', sysConf: sysConf })
     sysConf = UGStore.globalProps.sysConf
 
@@ -226,11 +230,11 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 配置替换rn的页面
         setRnPageInfo()
         // 通知iOS进入首页
-        await OCHelper.call('ReactNativeVC.showLastRnPage')
+        willLaunch && await OCHelper.call('ReactNativeVC.showLastRnPage')
         // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
         UGSysConfModel.updateFromNetwork()
         // 等待原生皮肤UI刷新完再进入首页
-        setTimeout(() => {
+        willLaunch && setTimeout(() => {
           OCHelper.launchFinish()
         }, 500)
         break
