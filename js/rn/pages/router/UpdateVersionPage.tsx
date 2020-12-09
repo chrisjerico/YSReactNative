@@ -102,6 +102,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
               setProps({ progress: 1, text: '安装成功...' })
+              Platform.OS == 'ios' && OCHelper.call('ReactNativeVC.showSnapshotImageWhenRnIMMEDIATE')
               return
           }
 
