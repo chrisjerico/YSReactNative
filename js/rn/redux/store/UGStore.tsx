@@ -7,7 +7,7 @@ import UGGameLobbyModel from '../model/全局/UGGameLobbyModel'
 import UGRightMenuModel from '../model/全局/UGRightMenuModel'
 import UGSignModel from '../model/全局/UGSignModel'
 import UGSysConfModel from '../model/全局/UGSysConfModel'
-import UGSysNetModel from '../model/全局/UGSysNetModel'
+import UGSystemModel from '../model/全局/UGSystemModel'
 import UGUserModel from '../model/全局/UGUserModel'
 import BettingReducer, { BettingReducerActions, BettingReducerProps } from '../reducer/BettingReducer'
 import { AsyncStorageKey } from './IGlobalStateHelper'
@@ -23,7 +23,7 @@ export interface IGlobalState {
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳 陣列
   rightMenu?: UGRightMenuModel[] // 又選單 陣列
   banner?: UGBannerModel
-  sys?: UGSysNetModel
+  sys?: UGSystemModel
   // value?: any;
 }
 

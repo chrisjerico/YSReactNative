@@ -26,12 +26,12 @@ const LHTHomePage = () => {
   const [preferenceGames, setPreferenceGames] = useState(config?.preferences)
   // functions
 
-  const { goTo, value, sign, refresh } = useHomePage({})
+  const { goTo, info, sign, refresh } = useHomePage({})
 
   const { signOut, tryPlay } = sign
   const { goToPromotionPage } = goTo
 
-  const { loading, refreshing, userInfo, homeInfo, sysInfo } = value
+  const { loading, refreshing, userInfo, homeInfo, sysInfo } = info
 
   const { lotteryDate, lotterys, navs, homeGames } = homeInfo
   const { uid, usr, balance, isTest, avatar } = userInfo

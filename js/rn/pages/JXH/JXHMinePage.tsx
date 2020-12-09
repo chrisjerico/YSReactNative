@@ -21,12 +21,12 @@ import config from './config'
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const JXHMinePage = () => {
-  const { value, sign, pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess } = useMinePage({
+  const { info, sign, pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess } = useMinePage({
     homePage: PageName.JXHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo } = info
 
   const { balance, curLevelGrade, usr, unreadMsg, avatar, isTest } = userInfo
   const { userCenterItems } = sysInfo

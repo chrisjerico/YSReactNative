@@ -19,12 +19,12 @@ import { UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import config from './config'
 
 const BYMinePage = () => {
-  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value } = useMinePage({
+  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, info } = useMinePage({
     homePage: PageName.BZHHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo } = info
 
   const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg, curLevelInt } = userInfo
   const { userCenterItems, currency, balanceDecimal } = sysInfo
