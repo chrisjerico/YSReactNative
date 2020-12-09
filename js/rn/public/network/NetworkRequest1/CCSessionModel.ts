@@ -46,7 +46,8 @@ export class SampleAPI {
   c: string;
   constructor(c) { this.c = c; }
   get<T>(path: string, params: object = {}) { return CCSessionReq.request<T>(this.c + path, params, false); }
-  post<T>(path: string, params: object = {}) { return CCSessionReq.request<T>(this.c + path, params, true); }
+  // files 字段传{key:文件路径}
+  post<T>(path: string, params: object = {}, files?: { [x: string]: string }) { return CCSessionReq.request<T>(this.c + path, params, true, files); }
 }
 
 // 公共参数
@@ -59,15 +60,15 @@ function publicParams() {
 type Dictionary = { [x: string]: any; }
 
 export class CCSessionReq {
-  
+
   private static isEncrypt = true; // 参数是否加密
   private static http = axios.create({
     baseURL: AppDefine?.host,
-    timeout: 3000, // 0 no limit
+    // timeout: 30000, // 0 no limit
     headers: { 'Content-Type': 'application/json', }
   });
 
-  static request<T>(path: string, params: object = {}, isPost: boolean = false): CCSessionModel<T> {
+  static request<T>(path: string, params: object = {}, isPost: boolean = false, files?: { [x: string]: string }): CCSessionModel<T> {
     typeof params == 'string' && (params = JSON.parse(params));// 容错
     let url = `${AppDefine.host}/wjapp/api.php?${path}`;// 拼接url
     params = Object.assign({}, publicParams(), params); // 添加公共参数
@@ -92,13 +93,26 @@ export class CCSessionReq {
           url += `&${key}=${params[key]}`;
         }
         return this.http.get<ResponseObject<T>>(url);
+      } else if (files && Object.keys(files).length) {
+        // 上传文件
+        const formData = new FormData();
+        for (const k in files) {
+          const uri = files[k];
+          const name = uri.substring(uri.lastIndexOf('/') + 1);
+          const blob: any & Blob = { uri: uri, type: 'multipart/form-data', name: name };
+          formData.append(k, blob);
+        }
+        for (const k in params) {
+          formData.append(k, params[k])
+        }
+        return this.http.post<ResponseObject<T>>(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       } else {
         return this.http.post<ResponseObject<T>>(url, params);
       }
     }).then((res) => {
       // 接口请求成功
-      sm.status = res.status;
-      sm.res = res.data;
+      sm.status = res?.status;
+      sm.res = res?.data;
       sm.err = CheckError(sm);
 
       if (sm.err) {
@@ -107,13 +121,15 @@ export class CCSessionReq {
       console.log('【请求成功】', sm.res?.msg, sm.url);
 
       // 向外回调
-      sm.success && sm.success(res.data, sm)
+      sm.success && sm.success(res?.data, sm)
       return Promise.resolve(res);
     }).catch((err: AxiosError<ResponseObject<T>>) => {
       if (!sm.err && err.response) {
         sm.status = err.response?.status;
         sm.res = err.response?.data;
         sm.err = CheckError(sm);
+      } else {
+        sm.err = err;
       }
 
       console.log('【请求失败】', sm.err);

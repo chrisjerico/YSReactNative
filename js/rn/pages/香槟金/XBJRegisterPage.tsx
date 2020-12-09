@@ -205,7 +205,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               }}
             />
           </View>
-          {hide_reco && <UGTextField
+          {hide_reco != 0 && <UGTextField
             type="推荐人ID"
             placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
             value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}
