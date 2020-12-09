@@ -208,7 +208,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c432019.com',
   ],
   'c115': [
-    'https://6615322.com',
+    'https://6615nn.com',
+    'https://6615qq.com',
+    'https://6615pp.com',
+    'https://6615uu.com',
+    'https://6615uu.com',
   ],
   'c116': [
     'https://csj116app.com',
@@ -216,6 +220,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c116app.org',
     'https://c116app.me',
     'https://app116csj.me',
+
   ],
   'c117': [
     'https://822323.com',
