@@ -121,10 +121,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'a002': [
     'https://c49zq.com',
-    'https://5049ttt.com',
-    'https://c49xg.com',
-    'https://c49nx.com',
     'https://c49ln.com',
+    'https://c49nx.com',
+    'https://c49xg.com',
+    'https://5049ttt.com',
   ],
   'c001': [
     'https://c47c47appapp.com',
@@ -212,7 +212,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://6615qq.com',
     'https://6615pp.com',
     'https://6615uu.com',
-    'https://6615uu.com',
+    'https://6615vv.com',
   ],
   'c116': [
     'https://csj116app.com',
@@ -220,7 +220,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c116app.org',
     'https://c116app.me',
     'https://app116csj.me',
-
   ],
   'c117': [
     'https://833030.com',
@@ -269,7 +268,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c91398.com',
   ],
   'c165': [
-    'http://1875007.com',
+    'https://1875883.com',
+    'https://1875885.com',
+    'https://1875886.com',
+    'https://1875887.com',
+    'https://1875005.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -324,7 +327,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c208': [
     'https://771771h.com',
-    'https://771771f.com',
+    'https://771771l.com',
     'https://771771a.com',
     'https://771771k.com',
     'https://771771i.com',
