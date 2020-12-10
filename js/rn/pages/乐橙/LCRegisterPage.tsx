@@ -1,6 +1,6 @@
 import {
-  Alert,
-  Dimensions, Image,
+  Dimensions,
+  Image,
   SafeAreaView,
   ScrollView,
   Text,
@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { navigate, pop, popToRoot } from '../../public/navigation/RootNavigation'
+import { navigate, pop } from '../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -17,10 +17,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { PageName } from '../../public/navigation/Navigation'
 import { RegisterItem } from './component/registerPage/RegisterItem'
 // @ts-ignore
-import md5 from 'blueimp-md5'
-import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import APIRouter from '../../public/network/APIRouter'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { EventRegister } from 'react-native-event-listeners'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
 import { ugLog } from '../../public/tools/UgLog'
@@ -47,6 +44,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
   const [regType, setRegType] = useState<'user' | 'agent'>('user')
   const [data, setData] = useState<RegisterData>({ acc: '', pwd: '', confirmPwd: '' })
   const [code, setCode] = useState('')
+  const [inviter, setInviter] = useState('')
   const SystemStore = UGStore.globalProps.sysConf
   const regex = RegExp('^[A-Za-z0-9]{6,15}$')
   const [showPwd, setShowPwd] = useState(false)
@@ -89,6 +87,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
     pass_length_max, // 注册密码最大长度,
     agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
     smsVerify, // 手机短信验证,
+    showInviteCode,
     allowreg,
     closeregreason,
   } = SystemStore
@@ -130,7 +129,9 @@ const LCRegisterPage = ({ navigation, setProps }) => {
               alignSelf: 'center',
               color: '#fff',
             }}>注册</Text>
-            <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20, justifyContent: 'center', height: 33 }} onPress={() => pop()}>
+            <TouchableOpacity
+              style={{ width: 30, position: 'absolute', left: 20, justifyContent: 'center', height: 33 }}
+              onPress={() => pop()}>
               <Icon size={33} color={'#fff'} name={'angle-left'} />
             </TouchableOpacity>
           </View>
@@ -206,11 +207,11 @@ const LCRegisterPage = ({ navigation, setProps }) => {
             </View>
             {data.pwd != '' && data.pwd != data.confirmPwd &&
             <Text style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</Text>}
-            <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={reg_name}
-                          onChangeText={(text) => {
-                            onChaneRealName(text)
-                            setData({ ...data, reg_name: text })
-                          }} />
+            {reg_name ? <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={reg_name}
+                                      onChangeText={(text) => {
+                                        onChaneRealName(text)
+                                        setData({ ...data, reg_name: text })
+                                      }} /> : null}
             <View style={{
               flexDirection: 'row',
               paddingVertical: 10,
@@ -233,31 +234,48 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                        source={{ uri: showFundPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
               </TouchableWithoutFeedback>
             </View>
-            <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={reg_qq}
-                          onChangeText={(text) => {
-                            onChaneQQ(text)
-                            setData({ ...data, reg_qq: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={reg_wx}
-                          onChangeText={(text) => {
-                            onChaneWeChat(text)
-                            setData({ ...data, reg_wx: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={reg_phone}
-                          onChangeText={(text) => {
-                            onChanePhone(text)
-                            setData({ ...data, reg_phone: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={smsVerify}
-                          onChangeText={(text) => {
-                            onChaneSms(text)
-                            setData({ ...data, reg_vcdoe: text })
-                          }} />
-            <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={reg_email}
-                          onChangeText={(text) => {
-                            onChangeEmail(text)
-                            setData({ ...data, reg_email: text })
-                          }} />
+            {showRecommendGuy ? <RegisterItem placeHolder={'推荐人'} iconName={'unlock-alt'} config={smsVerify}
+                                              onChangeText={(text) => {
+                                                setInviter(text)
+                                                onChangeRecommendGuy(text)
+                                              }} /> : null}
+            {showRecommendGuy && inviter == '' && hide_reco == 2 && <View style={{ flexDirection: 'row' }}>
+              <Text style={{
+                color: 'red',
+                fontSize: 12,
+                textAlign: 'left',
+                flex: 1,
+                paddingVertical: 4,
+              }}>*请填写推荐人ID</Text>
+            </View>}
+            {smsVerify ? <RegisterItem placeHolder={'邀请码'} iconName={'unlock-alt'} config={smsVerify}
+                                       onChangeText={(text) => {
+                                         onChangeInviteCode(text)
+                                       }} /> : null}
+            {reg_qq ? <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={reg_qq}
+                                    onChangeText={(text) => {
+                                      onChaneQQ(text)
+                                    }} /> : null}
+            {reg_wx ? <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={reg_wx}
+                                    onChangeText={(text) => {
+                                      onChaneWeChat(text)
+                                      setData({ ...data, reg_wx: text })
+                                    }} /> : null}
+            {reg_phone ? <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={reg_phone}
+                                       onChangeText={(text) => {
+                                         onChanePhone(text)
+                                         setData({ ...data, reg_phone: text })
+                                       }} /> : null}
+            {smsVerify ? <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={smsVerify}
+                                       onChangeText={(text) => {
+                                         onChaneSms(text)
+                                         setData({ ...data, reg_vcdoe: text })
+                                       }} /> : null}
+            {reg_email ? <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={reg_email}
+                                       onChangeText={(text) => {
+                                         onChangeEmail(text)
+                                         setData({ ...data, reg_email: text })
+                                       }} /> : null}
             {getVcode}
             <TouchableOpacity
               onPress={() => signUp()}
