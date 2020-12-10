@@ -28,16 +28,16 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { ActivityJackpotData, ActivityJackpotModel } from '../../network/Model/act/ActivityJackpotModel'
-import UseActivityJackpot from './UseActivityJackpot'
+import { ManageBankData, ManageBankModel } from '../../network/Model/act/ManageBankModel'
+import UseManageBankList from './UseManageBankList'
 import { ugLog } from '../../tools/UgLog'
 
 /**
- * 申请彩金
+ * 银行卡管理
  * @param navigation
  * @constructor
  */
-const ActivityJackpotView = ({ navigation }) => {
+const ManageBankListView = ({ navigation }) => {
   // //列表数据
   // const [listData, setListData] = useState<ActivityJackpotData>()
   // //当前是第几页数据
@@ -56,9 +56,9 @@ const ActivityJackpotView = ({ navigation }) => {
   const {
     listData,
     categoryData,
-    requestJackpotData,
+    requestManageBankData,
     requestLogData
-  } = UseActivityJackpot()
+  } = UseManageBankList()
 
   ugLog('listData=', listData)
 
@@ -118,4 +118,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default ActivityJackpotView
+export default ManageBankListView

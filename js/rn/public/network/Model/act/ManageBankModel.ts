@@ -2,18 +2,18 @@
  * 活动彩金数据
  */
 
-export interface ActivityJackpotModel {
+export interface ManageBankModel {
   code?: number
   msg?: string
-  data?: ActivityJackpotData
+  data?: ManageBankData
 }
 
-export interface ActivityJackpotData {
-  list?: ActivityJackpotList[]
+export interface ManageBankData {
+  list?: ManageBankList[]
   total?: number //当前总共有多少条数据
 }
 
-export interface ActivityJackpotList {
+export interface ManageBankList {
   adminComment?: string
   amount?: string
   state?: string

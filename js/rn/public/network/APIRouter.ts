@@ -32,7 +32,7 @@ import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
-import { ActivityJackpotModel } from './Model/act/ActivityJackpotModel'
+import { ManageBankModel } from './Model/act/ManageBankModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -146,7 +146,7 @@ class APIRouter {
   /**
    * 彩金活动分类和数据列表
    */
-  static activity_winApplyList = async (category: string): Promise<AxiosResponse<ActivityJackpotModel>> => {
+  static activity_winApplyList = async (category: string): Promise<AxiosResponse<ManageBankModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = '&page=1&rows=999&category=' + category
@@ -161,13 +161,13 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<ActivityJackpotModel>('c=activity&a=winApplyList&' + tokenParams)
+    return httpClient.get<ManageBankModel>('c=activity&a=winApplyList&' + tokenParams)
   }
 
   /**
    * 彩金活动分类记录
    */
-  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ActivityJackpotModel>> => {
+  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = '&page=1&rows=999&category=' + category
@@ -184,7 +184,7 @@ class APIRouter {
 
     ugLog('tokenParams=', tokenParams)
 
-    return httpClient.get<ActivityJackpotModel>('c=activity&a=applyWinLog&' + tokenParams)
+    return httpClient.get<ManageBankModel>('c=activity&a=applyWinLog&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {

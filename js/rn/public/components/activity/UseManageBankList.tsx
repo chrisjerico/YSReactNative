@@ -4,10 +4,10 @@ import { ugLog } from '../../tools/UgLog'
 import { anyEmpty } from '../../tools/Ext'
 
 /**
- * 申请彩金
+ * 银行卡管理
  * @constructor
  */
-const UseActivityJackpot = () => {
+const UseManageBankList = () => {
 
   const [listData, setListData] = useState(null)
   const [categoryData, setCategoryData] = useState(null)
@@ -16,7 +16,7 @@ const UseActivityJackpot = () => {
    * 初始化1次数据
    */
   useEffect(() => {
-    requestJackpotData("0")
+    requestManageBankData("0")
     requestLogData("0")
   },[])
 
@@ -24,7 +24,7 @@ const UseActivityJackpot = () => {
    * 请求申请彩金数据
    * @param category 分类
    */
-  const requestJackpotData = (category: string) => {
+  const requestManageBankData = (category: string) => {
     APIRouter.activity_winApplyList(category).then(({ data: res }) => {
       setListData(res?.data)
 
@@ -54,9 +54,9 @@ const UseActivityJackpot = () => {
   return {
     listData,
     categoryData,
-    requestJackpotData,
+    requestManageBankData,
     requestLogData
   }
 }
 
-export default UseActivityJackpot
+export default UseManageBankList

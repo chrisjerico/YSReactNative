@@ -419,6 +419,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
+            navigate(PageName.ManageBankView, {})
             subId = MenuType.YHK
             break
           }
@@ -467,7 +468,6 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.活动彩金: {
-            navigate(PageName.ActivityJackpotView, {})
             subId = MenuType.SQCJ
             break
           }
