@@ -179,8 +179,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c085': [
     'https://xn--7-206cp03b.com',
     'https://ys-cyw-app1.cc',
-    'https://ys-cyw-app2.cc',
-    'https://ys-cyw-app3.cc',
+    'https://www.xn--5-206cp03b.com',
+    'https://www.xn--4-206cp03b.com',
     'https://ys-cyw-app4.cc',
     'https://ys-cyw-app5.cc',
   ],
@@ -208,7 +208,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c432019.com',
   ],
   'c115': [
-    'https://6615322.com',
+    'https://6615nn.com',
+    'https://6615qq.com',
+    'https://6615pp.com',
+    'https://6615uu.com',
+    'https://6615vv.com',
   ],
   'c116': [
     'https://csj116app.com',
@@ -218,7 +222,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://822323.com',
+    'https://877171.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
@@ -230,7 +234,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jzcp488.com',
   ],
   'c126b': [
-    'https://og878.vip',
+    'http://781789.com',
+    'http://b66673.com',
+    'http://b66224.com',
+    'http://b62244.com',
+    'http://b62224.com',
   ],
   'c134': [
     'https://19972015.com',
@@ -264,7 +272,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c91398.com',
   ],
   'c165': [
-    'http://1875007.com',
+    'https://1875883.com',
+    'https://1875885.com',
+    'https://1875886.com',
+    'https://1875887.com',
+    'https://1875005.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -318,10 +330,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771d.com',
-    'https://771771f.com',
-    'https://771771g.com',
     'https://771771h.com',
+    'https://771771f.com',
+    'https://771771a.com',
+    'https://771771k.com',
+    'https://771771i.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -352,7 +365,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hilliot.com',
   ],
   'c237': [
-    'http://app13478.com',
+    'https://13478116.com',
+    'https://13478117.com',
+    'https://13478118.com',
+    'https://13478119.com',
+    'https://13478120.com',
   ],
   'c239b': [
     'https://5566569.com',
