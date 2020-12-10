@@ -65,6 +65,7 @@ export const LLRegisterPage = () => {
     agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
     smsVerify, // 手机短信验证
     allowreg,
+    showInviteCode,
     closeregreason,
   } = SystemStore
 
@@ -115,6 +116,11 @@ export const LLRegisterPage = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}
                   style={{ marginHorizontal: 36, marginTop: 28, marginBottom: 30 }}>
+        <LLRegisterInput isPwd={false} visible={showRecommendGuy} onChangeText={(text) => {
+          onChangeInviteCode(text)
+        }}
+                         placeholder={'邀请码'}
+                         img={httpClient.defaults.baseURL + '/images/moban9_icon/icon-reco.png'} />
         <LLRegisterInput isPwd={false} visible={showRecommendGuy} onChangeText={(text) => {
           setInviter(text)
           onChangeRecommendGuy(text)
