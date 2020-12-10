@@ -16,7 +16,7 @@ interface BaseScreenProps {
 export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps) => {
     return (
         <View style={[{flex: 1, backgroundColor: Skin1.bgColor[0]}, style]}>
-            <SafeAreaView style={{backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
+            <SafeAreaView style={{backgroundColor: Skin1.themeColor, borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
                 <View style={{
                     backgroundColor: Skin1.themeColor, //根据当前主题来
                     width: scale(540),
@@ -33,17 +33,7 @@ export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps)
                         alignSelf: "center",
                         color: Skin1.navBarTitleColor //根据当前主题来
                     }}>{screenName}</Text>
-                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
-                        pop()
-                        switch (Platform.OS) {
-                          case 'ios':
-                              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-                            break;
-                          case 'android':
-
-                            break;
-                        }
-                    }}>
+                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
                         <Icon size={33} name={icon || 'angle-left'}
                               color={ Skin1.navBarTitleColor } //根据当前主题来
                         />

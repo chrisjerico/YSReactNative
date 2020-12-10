@@ -102,6 +102,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
               setProps({ progress: 1, text: '安装成功...' })
+              Platform.OS == 'ios' && OCHelper.call('ReactNativeVC.showSnapshotImageWhenRnIMMEDIATE')
               return
           }
 
@@ -133,7 +134,14 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
       )
     }
     if (Platform.OS == 'ios') {
-      OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/']).then(async () => {
+      // 重新启动后直接进入首页（优化CodePush访问慢用户的体验）
+      OCHelper.call('AppDefine.shared.rnVersion').then(async (rnVersion: string) => {
+        const isFirst = !rnVersion?.length
+        // 先初始化一遍原生配置（避免有些用户网络慢，没更新完RN配置就直接超时进入首页）
+        const sysConf: UGSysConfModel = await OCHelper.call('UGSystemConfigModel.currentConfig')
+        initConfig(sysConf, !isFirst)
+        // 检查更新
+        await OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/'])
         await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
         const CodePushKey = await getIOSCodePushKey()
         console.log('OCHelper.CodePushKey = ', CodePushKey)
@@ -214,7 +222,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
   }, [counter])
 
-  const initConfig = async (sysConf: UGSysConfModel) => {
+  const initConfig = async (sysConf: UGSysConfModel, willLaunch = true) => {
     UGStore.dispatch({ type: 'merge', sysConf: sysConf })
     sysConf = UGStore.globalProps.sysConf
 
@@ -226,11 +234,11 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 配置替换rn的页面
         setRnPageInfo()
         // 通知iOS进入首页
-        await OCHelper.call('ReactNativeVC.showLastRnPage')
+        willLaunch && await OCHelper.call('ReactNativeVC.showLastRnPage')
         // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
         UGSysConfModel.updateFromNetwork()
         // 等待原生皮肤UI刷新完再进入首页
-        setTimeout(() => {
+        willLaunch && setTimeout(() => {
           OCHelper.launchFinish()
         }, 500)
         break

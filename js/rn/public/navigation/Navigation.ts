@@ -77,5 +77,9 @@ export enum PageName {
   UserMessagePage = 'UserMessagePage',
   UserInfoPage = 'UserInfoPage',
   TransferView = 'TransferView',
-  TransferRecordView = 'TransferRecordView'
+  TransferRecordView = 'TransferRecordView',
+  FeedbackView = 'FeedbackView',
+  FeedbackSubmitView = 'FeedbackSubmitView',
+  FeedbackRecordView = 'FeedbackRecordView',
+  SupFeedbackSubmitView = 'SupFeedbackSubmitView',
 }

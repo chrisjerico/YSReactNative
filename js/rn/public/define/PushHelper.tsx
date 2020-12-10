@@ -463,7 +463,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.建议反馈: {
-            subId = MenuType.TSZX
+            navigate(PageName.FeedbackView)
             break
           }
           case UGUserCenterType.在线客服: {

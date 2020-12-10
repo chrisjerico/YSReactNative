@@ -77,6 +77,16 @@ export function setRnPageInfo() {
     允许未登录访问: true,
   })
 
+  // 建议反馈页
+  pages.push({
+    rnName: PageName.FeedbackView,
+    userCenterItemCode: 13,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
+  //额度转页
   pages.push({
     rnName: PageName.TransferView,
     userCenterItemCode: 8,
