@@ -74,6 +74,10 @@ import { UpdateVersionPage } from './UpdateVersionPage'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
 import { TransferView } from '../../public/components/TransferView'
 import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
+import { FeedbackView } from '../../public/components/FeedbackView'
+import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
+import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
+import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -148,6 +152,10 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackView} component={UGPage(FeedbackView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackSubmitView} component={UGPage(FeedbackSubmitView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackRecordView} component={UGPage(FeedbackRecordView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.SupFeedbackSubmitView} component={UGPage(SupFeedbackSubmitView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>

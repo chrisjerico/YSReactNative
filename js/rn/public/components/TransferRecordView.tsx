@@ -58,17 +58,7 @@ export const TransferRecordView = () => {
               alignSelf: 'center',
               color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
             }}>{'额度转换记录'}</Text>
-            <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
-              pop()
-              switch (Platform.OS) {
-                case 'ios':
-                  OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
-                  break
-                case 'android':
-
-                  break
-              }
-            }}>
+            <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
               <Icon size={33} name={'angle-left'} color={Skin1.isBlack ? '#fff' :Skin1.textColor4} />
             </TouchableOpacity>
           </View>

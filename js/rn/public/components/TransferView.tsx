@@ -302,17 +302,7 @@ const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: ()
           alignSelf: 'center',
           justifyContent: 'center',
         }}>
-          {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => {
-            switch (Platform.OS) {
-              case 'ios':
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true])
-                break
-              case 'android':
-
-                break
-            }
-            pop()
-          }}>
+          {show && <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
             <Icon size={28} name={'left'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
           </TouchableOpacity>}
           <Text style={{
