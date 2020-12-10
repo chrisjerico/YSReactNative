@@ -361,7 +361,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hilliot.com',
   ],
   'c237': [
-    'http://app13478.com',
+    'https://13478116.com',
+    'https://13478117.com',
+    'https://13478118.com',
+    'https://13478119.com',
+    'https://13478120.com',
   ],
   'c239b': [
     'https://5566569.com',
