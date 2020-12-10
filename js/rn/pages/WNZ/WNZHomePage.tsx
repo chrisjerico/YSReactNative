@@ -22,6 +22,7 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
+import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -221,7 +222,7 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
-                        if (!gameId) {
+                        if (!gameId && gameId > 0) {
                           navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
                         } else {
                           //@ts-ignore
