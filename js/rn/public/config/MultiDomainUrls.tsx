@@ -146,7 +146,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://0849520.com',
     'https://0849519.com',
     'https://0849518.com',
-    'https://0849517.com',
+    'https://0849516.com',
   ],
   'c018': [
     'https://204421.com',
@@ -285,7 +285,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'http://7053fndsjfkn.com',
+    'https://7053bbb.com',
+    'https://7053fff.vip',
+    'https://7053eee.vip',
+    'https://7053ccc.vip',
   ],
   'c184': [
     'http://00fhcp.cn',
