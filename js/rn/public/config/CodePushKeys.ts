@@ -79,8 +79,8 @@ export function isTest() {
 }
 
 export async function getIOSCodePushKey(): Promise<string> {
-  const isTest = await OCHelper.call('AppDefine.shared.Test');
-  if (isTest == true || isTest()) {
+  const ocTest = await OCHelper.call('AppDefine.shared.Test');
+  if (ocTest || isTest()) {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey;
   }
   const siteId = await OCHelper.call('AppDefine.shared.SiteId')
