@@ -48,9 +48,9 @@ export const TransferView = ({ setProps, navigation }) => {
   const [animation2, setAnimation2] = useState(new Value(0))
   const [zIndex2, setZIndex2] = useState(2)
   const [spinValue, setSpinValue] = useState(new Value(0))
-  const { value, refresh } = useHomePage({})
+  const { info, refresh } = useHomePage({})
   const [updateWallet, setUpdateWallet] = useState<{ id: any, balance: string }[]>([])
-  const { userInfo } = value
+  const { userInfo } = info
   const { balance } = userInfo
 
   useEffect(() => {

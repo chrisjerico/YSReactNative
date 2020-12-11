@@ -82,4 +82,6 @@ export enum PageName {
   FeedbackSubmitView = 'FeedbackSubmitView',
   FeedbackRecordView = 'FeedbackRecordView',
   SupFeedbackSubmitView = 'SupFeedbackSubmitView',
+  SafeCenterPage = 'SafeCenterPage',
+  ActivityRewardPage = 'ActivityRewardPage',
 }

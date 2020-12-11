@@ -1,17 +1,7 @@
 import React from 'react'
 import { Skin1 } from '../theme/UGSkinManagers'
-import {
-  Dimensions,
-  Image,
-  Platform,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { Dimensions, Image, SafeAreaView, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import { navigate, pop } from '../navigation/RootNavigation'
-import { OCHelper } from '../define/OCHelper/OCHelper'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { httpClient } from '../network/httpClient'
 import { goToUserCenterType } from '../tools/tars'

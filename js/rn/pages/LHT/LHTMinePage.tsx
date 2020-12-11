@@ -21,12 +21,12 @@ import ProfileBlock from './views/ProfileBlock'
 import ProfileButton from './views/ProfileButton'
 
 const LHTMinePage = () => {
-  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, value, sign } = useMinePage({
+  const { pickAvatarComponentRef, onPressAvatar, onSaveAvatarSuccess, info, sign } = useMinePage({
     homePage: PageName.LHTHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo } = info
   const { balance, curLevelGrade, usr, isTest, avatar, unreadMsg } = userInfo
   const { userCenterItems, showSign, currency, balanceDecimal } = sysInfo
   const { signOut } = sign

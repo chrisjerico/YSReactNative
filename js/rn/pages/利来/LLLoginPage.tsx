@@ -14,14 +14,14 @@ import APIRouter from '../../public/network/APIRouter'
 import CheckBox from '../../public/views/tars/CheckBox'
 
 export const LLLoginPage = ({ setProps }) => {
-  const { onChange, show, slideCodeRef, sign, valid, navigateTo, value } = useSignInPage({
+  const { onChange, show, slideCodeRef, sign, valid, navigateTo, info } = useSignInPage({
     homePage: PageName.LLHomePage,
     signUpPage: PageName.LLRegisterPage,
   })
   const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
   const { signIn, tryPlay } = sign
   const { showSignInSlideCode } = show
-  const { remember, account, password } = value
+  const { remember, account, password } = info
   const { navigateToSignUpPage } = navigateTo
   const [code, setCode] = useState('')
 
