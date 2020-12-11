@@ -32,7 +32,7 @@ import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
-import { ManageBankModel } from './Model/act/ManageBankModel'
+import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -144,9 +144,30 @@ class APIRouter {
   }
 
   /**
-   * 彩金活动分类和数据列表
+   * 银行卡和虚拟币等信息
    */
-  static activity_winApplyList = async (category: string): Promise<AxiosResponse<ManageBankModel>> => {
+  static user_bankCardList = async (): Promise<AxiosResponse<ManageBankCardModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams += '&token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<ManageBankCardModel>('c=user&a=bankCard&' + tokenParams)
+  }
+
+  /**
+   * 银行卡和虚拟币等信息
+   */
+  static user_bankInfoList = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = '&page=1&rows=999&category=' + category
@@ -161,13 +182,13 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<ManageBankModel>('c=activity&a=winApplyList&' + tokenParams)
+    return httpClient.get<ManageBankCardModel>('c=activity&a=winApplyList&' + tokenParams)
   }
 
   /**
    * 彩金活动分类记录
    */
-  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankModel>> => {
+  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = '&page=1&rows=999&category=' + category
@@ -184,7 +205,7 @@ class APIRouter {
 
     ugLog('tokenParams=', tokenParams)
 
-    return httpClient.get<ManageBankModel>('c=activity&a=applyWinLog&' + tokenParams)
+    return httpClient.get<ManageBankCardModel>('c=activity&a=applyWinLog&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {

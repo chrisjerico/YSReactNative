@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import APIRouter from '../../network/APIRouter'
 import { ugLog } from '../../tools/UgLog'
-import { anyEmpty } from '../../tools/Ext'
+import { anyEmpty, anyLength } from '../../tools/Ext'
+import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
+import { RefreshControl } from 'react-native'
+import * as React from 'react'
+import { Res } from '../../../Res/icon/Res'
 
 /**
  * 银行卡管理
@@ -9,53 +13,88 @@ import { anyEmpty } from '../../tools/Ext'
  */
 const UseManageBankList = () => {
 
-  const [listData, setListData] = useState(null)
-  const [categoryData, setCategoryData] = useState(null)
+  // const [listData, setListData] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
+  // const [categoryData, setCategoryData] = useState(null)
+  const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
+
+  //刷新控件
+  const refreshCT = <RefreshControl refreshing={refreshing}
+                                    onRefresh={() => {
+                                      setRefreshing(true)
+                                      requestManageBankData("0")
+                                    }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestManageBankData("0")
-    requestLogData("0")
-  },[])
+    setRefreshing(true)
+    requestManageBankData('0')
+    // requestLogData("0")
+  }, [])
 
   /**
    * 请求申请彩金数据
    * @param category 分类
    */
-  const requestManageBankData = (category: string) => {
-    APIRouter.activity_winApplyList(category).then(({ data: res }) => {
-      setListData(res?.data)
-
-      //第一次才初始化
-      if (anyEmpty(categoryData)) {
-        let cats = {}
-        res?.data?.list?.map((item) => {
-          cats[item.categoryName] = ""
-        })
-        let catNames = Object.keys(cats)
-        ugLog('cat name=', catNames)
-        setCategoryData(catNames)
-      }
+  const requestManageBankData = async (category: string) => {
+    APIRouter.user_bankCardList().then(({ data: res }) => {
+      // setListData(anyLength(res?.data?.allAccountList) ? null : res?.data?.allAccountList[0])
+      // setCategoryData(res?.data)
+      setBankCardData(res?.data)
+      setRefreshing(false)
     })
   }
 
+  // /**
+  //  * 请求申请彩金数据
+  //  * @param category 分类
+  //  */
+  // const requestLogData = (category: string) => {
+  //   APIRouter.activity_applyWinLog(category).then(({ data: res }) => {
+  //     setListData(res?.data)
+  //   })
+  // }
+
   /**
-   * 请求申请彩金数据
-   * @param category 分类
+   * 得到图标
+   * @param type
    */
-  const requestLogData = (category: string) => {
-    APIRouter.activity_applyWinLog(category).then(({ data: res }) => {
-      setListData(res?.data)
-    })
+  const getBankIcon = (type?: string): {} => {
+    ugLog('image type=', type == '1')
+    if(type == '1') {
+      return { uri: Res.bankhl1 }
+    } else if(type == '2') {
+      return { uri: Res.zfb_icon }
+    } else if(type == '3') {
+      return { uri: Res.wechatpay_icon }
+    } else if(type == '4') {
+      return { uri: Res.btc }
+    }
+
+    return null
+
+    // switch (type) {
+    //   case '1':
+    //     return { uri: Res.bankhl1 }
+    //   case '2':
+    //     return { uri: Res.zfb_icon }
+    //   case '3':
+    //     return { uri: Res.wechatpay_icon }
+    //   case '4':
+    //     return { uri: Res.btc }
+    //   default:
+    //     return null
+    // }
   }
 
   return {
-    listData,
-    categoryData,
+    getBankIcon,
+    refreshCT,
+    bankCardData,
     requestManageBankData,
-    requestLogData
+    // requestLogData,
   }
 }
 
