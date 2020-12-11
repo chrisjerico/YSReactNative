@@ -28,24 +28,39 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { ActivityJackpotData, ActivityJackpotModel } from '../../network/Model/ActivityJackpotModel'
+import { ManageBankData, ManageBankModel } from '../../network/Model/act/ManageBankModel'
+import UseManageBankList from './UseManageBankList'
+import { ugLog } from '../../tools/UgLog'
 
-const ActivityJackpotView = ({ navigation }) => {
-  //列表数据
-  const [listData, setListData] = useState<ActivityJackpotData>()
-  //当前是第几页数据
-  const [pageIndex, setPageIndex] = useState(0)
+/**
+ * 银行卡管理
+ * @param navigation
+ * @constructor
+ */
+const ManageBankListView = ({ navigation }) => {
+  // //列表数据
+  // const [listData, setListData] = useState<ActivityJackpotData>()
+  // //当前是第几页数据
+  // const [pageIndex, setPageIndex] = useState(0)
+  //
+  // useEffect(() => {
+  //   setPageIndex(1)
+  // }, [])
+  //
+  // useEffect(() => {
+  //   APIRouter.activity_winApplyList().then(({ data: res }) => {
+  //
+  //   })
+  // }, [pageIndex])
 
-  useEffect(() => {
-    setPageIndex(1)
-  }, [])
+  const {
+    listData,
+    categoryData,
+    requestManageBankData,
+    requestLogData
+  } = UseManageBankList()
 
-  useEffect(() => {
-    APIRouter.game_lotteryGames().then(({ data: res }) => {
-
-
-    })
-  }, [pageIndex])
+  ugLog('listData=', listData)
 
   const tabItems = [
     {
@@ -65,7 +80,9 @@ const ActivityJackpotView = ({ navigation }) => {
     <BaseScreen style={_styles.container} screenName={'活动彩金'}>
       <ScrollableTabView
         onChangeTab={(tab) =>{
+          if (tab.from == tab.i) {
 
+          }
         }}
         tabBarUnderlineStyle={_styles.tab_bar_underline}
         tabBarActiveTextColor={Skin1.themeColor}
@@ -92,7 +109,7 @@ const _styles = StyleSheet.create({
     height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
-    height: scale(2),
+    height: scale(3),
     backgroundColor: Skin1.themeColor,
   },
 })
@@ -101,4 +118,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default ActivityJackpotView
+export default ManageBankListView
