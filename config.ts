@@ -6,7 +6,9 @@ import { OCHelper } from './js/rn/public/define/OCHelper/OCHelper'
 // 调试环境配置
 export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
-  isTest: () => { return isTest() },// 是否是测试环境
+  isTest: () => {
+    return true
+  }, // 是否是测试环境
 
   skinKey: '乐橙',
 }

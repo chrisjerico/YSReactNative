@@ -16,10 +16,10 @@ import PopularGameTabPage from './views/PopularGameTabPage'
 import ProfileBlock from './views/ProfileBlock'
 
 const JXHHomePage = () => {
-  const { goTo, refresh, value, sign } = useHomePage({})
+  const { goTo, refresh, info, sign } = useHomePage({})
 
   const { goToPromotionPage } = goTo
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
 
   const { homeGames } = homeInfo
   const { isTest, avatar } = userInfo

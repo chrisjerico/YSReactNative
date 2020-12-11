@@ -4,6 +4,7 @@ import FormComponent from '../../public/components/tars/FormComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -28,17 +29,19 @@ const WNZSignInPage = () => {
 
   const menu = useRef(null)
 
-  const { sign, value, onChange, navigateTo, show, reference, valid, rightMenus } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, reference, valid, info } = useSignInPage({
     homePage: PageName.WNZHomePage,
     signUpPage: PageName.WNZSignUpPage,
     onSuccessSignOut: closeMenu,
   })
 
+  const { menus, sysInfo } = info
+  const { appVersion } = sysInfo
   const { navigateToSignUpPage } = navigateTo
 
   const { signIn, tryPlay, signOut } = sign
 
-  const configMenus = config.menuSignIn.concat(config.menus)
+  const defaultMenus = config.menuSignIn.concat(config.menus)
 
   const { showFacebookSignIn } = show
   return (
@@ -64,14 +67,16 @@ const WNZSignInPage = () => {
           <Button title={'返回首页'} containerStyle={styles.whiteButton} titleStyle={styles.whitwButtonTitle} onPress={popToRoot} />
           <MenuModalComponent
             ref={menu}
-            menus={rightMenus?.length > 0 ? rightMenus : configMenus}
+            menus={menus?.length ? menus : defaultMenus}
             renderMenuItem={({ item }) => {
               const { name, gameId, title, onPress } = item
               return (
                 <MenuButton
                   title={name ?? title}
+                  subTitle={'(' + appVersion + ')'}
+                  showSubTitle={gameId == GameType.APP版本号}
                   onPress={() => {
-                    if (gameId == 31) {
+                    if (gameId == GameType.登出) {
                       signOut()
                     } else {
                       closeMenu()

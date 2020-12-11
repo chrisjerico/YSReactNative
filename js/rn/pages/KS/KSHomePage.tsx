@@ -23,9 +23,9 @@ const buttonHeight = scale(82)
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const KSHomePage = () => {
-  const { goTo, refresh, value, sign } = useHomePage({})
+  const { goTo, refresh, info, sign } = useHomePage({})
 
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
 
   const { bannersInterval, onlineNum, banners, homeGamesConcat } = homeInfo
   const { mobile_logo } = sysInfo
@@ -34,7 +34,6 @@ const KSHomePage = () => {
   const moreGames = homeGamesConcat?.slice(8, homeGamesConcat?.length) ?? []
   const { tryPlay } = sign
 
-  // console.log('----homeGames----', homeGames)
   return (
     <HomePage
       {...homeInfo}

@@ -4,6 +4,7 @@ import FormComponent from '../../public/components/tars/FormComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useSignUpPage from '../../public/hooks/tars/useSignUpPage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { pop, popToRoot } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -28,16 +29,18 @@ const WNZSignUpPage = () => {
 
   const menu = useRef(null)
 
-  const { reference, show, label, onChange, sign, passwordLimit, navigateTo, value, placeholder, rightMenus } = useSignUpPage({
+  const { reference, show, label, onChange, sign, passwordLimit, navigateTo, value, placeholder, info } = useSignUpPage({
     homePage: PageName.WNZHomePage,
     signInPage: PageName.WNZSignInPage,
     onSuccessSignOut: closeMenu,
   })
 
+  const { menus, sysInfo } = info
+  const { appVersion } = sysInfo
   const { signUp, tryPlay, signOut } = sign
 
   const { navigateToSignInPage } = navigateTo
-  const configMenus = config.menuSignIn.concat(config.menus)
+  const defaultMenus = config.menuSignIn.concat(config.menus)
 
   return (
     <>
@@ -79,14 +82,16 @@ const WNZSignUpPage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={rightMenus?.length > 0 ? rightMenus : configMenus}
+        menus={menus?.length > 0 ? menus : defaultMenus}
         renderMenuItem={({ item }) => {
           const { name, gameId, title, onPress } = item
           return (
             <MenuButton
               title={name ?? title}
+              subTitle={'(' + appVersion + ')'}
+              showSubTitle={gameId == GameType.APP版本号}
               onPress={() => {
-                if (gameId == 31) {
+                if (gameId == GameType.登出) {
                   signOut()
                 } else {
                   closeMenu()

@@ -35,12 +35,12 @@ const LLMinePage = ({ navigation, setProps }) => {
     pickAvatarComponentRef,
     onSaveAvatarSuccess,
     onPressAvatar,
-    value,
+    info,
   } = useMinePage({
     homePage: PageName.LLHomePage,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
-  const { sysInfo } = value
+  const { sysInfo } = info
   const { balanceDecimal } = sysInfo
   const { getHtml5Image } = useHtml5Image()
   const { UGUserCenterItem } = useMemberItems()

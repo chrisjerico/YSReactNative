@@ -22,12 +22,12 @@ import config from './config'
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com/')
 
 const KSMinePage = () => {
-  const { value, sign } = useMinePage({
+  const { info, sign } = useMinePage({
     homePage: PageName.KSHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo } = info
 
   const { balance, curLevelGrade, usr, unreadMsg } = userInfo
   const { userCenterItems, currency, balanceDecimal } = sysInfo

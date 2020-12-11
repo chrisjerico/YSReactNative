@@ -35,10 +35,10 @@ import Activitys from '../../public/views/tars/Activitys'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
-  const { value, refresh } = useHomePage({})
-  const { homeInfo } = value
+  const { info, refresh } = useHomePage({})
+  const { homeInfo } = info
   const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo
-  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo } = value
+  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo } = info
   const { uid } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 

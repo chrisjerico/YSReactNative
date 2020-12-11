@@ -4,6 +4,7 @@ import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -35,16 +36,16 @@ const WNZMinePage = () => {
     menu?.current?.close()
   }
 
-  const { value, sign, rightMenus, show } = useMinePage({
+  const { info, sign, show } = useMinePage({
     homePage: PageName.WNZHomePage,
     onSuccessSignOut: closeMenu,
     defaultUserCenterLogos: config.defaultUserCenterLogos,
   })
 
-  const { userInfo, sysInfo } = value
+  const { userInfo, sysInfo, menus } = info
 
   const { uid, usr, curLevelInt, nextLevelInt, taskRewardTotal, curLevelTitle, nextLevelTitle, unreadMsg, balance, isTest } = userInfo
-  const { mobile_logo, userCenterItems } = sysInfo
+  const { mobile_logo, userCenterItems, appVersion } = sysInfo
   const { showBons } = show
   const { signOut } = sign
 
@@ -78,7 +79,7 @@ const WNZMinePage = () => {
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
   // @ts-ignore
-  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+  const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
     <>
       <SafeAreaHeader headerColor={WNZThemeColor.威尼斯.themeColor}>
@@ -176,6 +177,14 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
+                      } else if (code == UGUserCenterType.个人信息) {
+                        navigate(PageName.UserInfoPage)
+                      } else if (code == UGUserCenterType.站内信) {
+                        navigate(PageName.UserMessagePage)
+                      } else if (code == UGUserCenterType.安全中心) {
+                        navigate(PageName.SafeCenterPage)
+                      } else if (code == UGUserCenterType.活动彩金) {
+                        navigate(PageName.ActivityRewardPage)
                       } else {
                         PushHelper.pushUserCenterType(code)
                       }
@@ -189,14 +198,16 @@ const WNZMinePage = () => {
       </ScrollView>
       <MenuModalComponent
         ref={menu}
-        menus={rightMenus?.length > 0 ? rightMenus : configMenus}
+        menus={menus?.length ? menus : defaultMenus}
         renderMenuItem={({ item }) => {
           const { name, gameId, title, onPress } = item
           return (
             <MenuButton
               title={name ?? title}
+              subTitle={'(' + appVersion + ')'}
+              showSubTitle={gameId == GameType.APP版本号}
               onPress={() => {
-                if (gameId == 31) {
+                if (gameId == GameType.登出) {
                   signOut()
                 } else {
                   closeMenu()
@@ -223,9 +234,3 @@ const styles = StyleSheet.create({
 })
 
 export default WNZMinePage
-
-// else if (code == UGUserCenterType.个人信息) {
-//   navigate(PageName.UserInfoPage)
-// } else if (code == UGUserCenterType.站内信) {
-//   navigate(PageName.UserMessagePage)
-// } 
