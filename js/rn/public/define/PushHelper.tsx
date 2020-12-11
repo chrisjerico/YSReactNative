@@ -419,6 +419,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
+            // navigate(PageName.ManageBankListView, {})
             subId = MenuType.YHK
             break
           }
