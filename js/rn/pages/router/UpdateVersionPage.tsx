@@ -42,13 +42,14 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
+    CodePush.notifyAppReady()
+    
     // 超时时间20秒
     const timer = setTimeout(() => {
       clearTimeout(timer)
 
       switch (Platform.OS) {
         case 'ios':
-          OCHelper.launchFinish()
           break
         case 'android':
           ANHelper.callAsync(CMD.LAUNCH_GO)
