@@ -42,8 +42,6 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
   const { testNetwork, testSite } = UseVersion({ testResult })
 
   useEffect(() => {
-    CodePush.notifyAppReady()
-    
     // 超时时间20秒
     const timer = setTimeout(() => {
       clearTimeout(timer)
