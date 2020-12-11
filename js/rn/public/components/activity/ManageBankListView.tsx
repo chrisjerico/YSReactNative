@@ -28,7 +28,7 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { ManageBankData, ManageBankModel } from '../../network/Model/act/ManageBankModel'
+import { ManageBankCardData, ManageBankCardModel } from '../../network/Model/act/ManageBankCardModel'
 import UseManageBankList from './UseManageBankList'
 import { ugLog } from '../../tools/UgLog'
 
@@ -54,13 +54,14 @@ const ManageBankListView = ({ navigation }) => {
   // }, [pageIndex])
 
   const {
-    listData,
-    categoryData,
+    bankCardData,
     requestManageBankData,
-    requestLogData
+    // requestLogData,
   } = UseManageBankList()
 
-  ugLog('listData=', listData)
+  // bankCardData?.allAccountList?.map((tabItems) => {
+  //   ugLog('bankCardData=', tabItems.name)
+  // })
 
   const tabItems = [
     {
@@ -73,6 +74,9 @@ const ManageBankListView = ({ navigation }) => {
     },
 
   ]
+
+  ugLog('tabItems=', tabItems)
+  ugLog('bankCardData=', bankCardData)
 
   // const _renderDataList = ()
 

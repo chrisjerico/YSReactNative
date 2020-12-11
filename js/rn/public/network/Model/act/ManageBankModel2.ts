@@ -2,18 +2,18 @@
  * 活动彩金数据
  */
 
-export interface ManageBankModel {
+export interface ManageBank2Model {
   code?: number
   msg?: string
-  data?: ManageBankData
+  data?: ManageBank2Data
 }
 
-export interface ManageBankData {
-  list?: ManageBankList[]
+export interface ManageBank2Data {
+  list?: ManageBank2List[]
   total?: number //当前总共有多少条数据
 }
 
-export interface ManageBankList {
+export interface ManageBank2List {
   adminComment?: string
   amount?: string
   state?: string
@@ -31,7 +31,7 @@ export interface ManageBankList {
   show_time?: string
   category?: string //彩金分类
   categoryName?: string //彩金分类名字
-  param?: ActivityParam
+  param?: Activity2Param
   max_amount?: string
   used_amount?: string
   max_member?: string
@@ -40,7 +40,7 @@ export interface ManageBankList {
   winSort?: string
 }
 
-export interface ActivityParam {
+export interface Activity2Param {
   quickAmount1?: string
   quickAmount2?: string
   quickAmount3?: string
