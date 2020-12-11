@@ -9,7 +9,7 @@ export interface ManageBankCardModel {
 }
 
 export interface ManageBankCardData {
-  allAccountList?: AllAccountList[]
+  allAccountList?: AllAccountListData[]
   id?: string //
   uid?: string //
   type?: string //
@@ -27,7 +27,7 @@ export interface ManageBankCardData {
   bankBackgroundImage?: string //
 }
 
-export interface AllAccountList {
+export interface AllAccountListData {
   type?: string
   name?: string
   isshow?: boolean

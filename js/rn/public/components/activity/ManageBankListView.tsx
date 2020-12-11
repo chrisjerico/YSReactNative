@@ -1,7 +1,7 @@
 import {
-  Dimensions,
+  Dimensions, FlatList,
   Image,
-  Platform,
+  Platform, RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -28,9 +28,10 @@ import { Skin1 } from '../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { ManageBankCardData, ManageBankCardModel } from '../../network/Model/act/ManageBankCardModel'
+import { BankInfoParam, ManageBankCardData, ManageBankCardModel } from '../../network/Model/act/ManageBankCardModel'
 import UseManageBankList from './UseManageBankList'
 import { ugLog } from '../../tools/UgLog'
+import { UGColor } from '../../theme/UGThemeColor'
 
 /**
  * 银行卡管理
@@ -52,58 +53,86 @@ const ManageBankListView = ({ navigation }) => {
   //
   //   })
   // }, [pageIndex])
+  const [tabIndex, setTabIndex] = useState<number>(0)
 
   const {
+    refreshCT,
     bankCardData,
     requestManageBankData,
     // requestLogData,
   } = UseManageBankList()
 
-  // bankCardData?.allAccountList?.map((tabItems) => {
-  //   ugLog('bankCardData=', tabItems.name)
-  // })
-
-  const tabItems = [
-    {
-      name: '申请彩金',
-      dataList: ['AAAA', 'BBBB', 'ccccc'],
-    },
-    {
-      name: '申请反馈',
-      dataList: ['AAAA', 'BBBB', 'ccccc'],
-    },
-
-  ]
-
-  ugLog('tabItems=', tabItems)
-  ugLog('bankCardData=', bankCardData)
-
-  // const _renderDataList = ()
-
   return (
-    <BaseScreen style={_styles.container} screenName={'活动彩金'}>
-      <ScrollableTabView
-        onChangeTab={(tab) =>{
-          if (tab.from == tab.i) {
+    <BaseScreen style={_styles.container} screenName={'我的提款账户'}>
+      {
+        bankCardData?.allAccountList && <ScrollableTabView
+          onChangeTab={(tab) =>{
+            if (tab.from == tab.i) {
+              ugLog('tab index=', tab.i)
+            }
+          }}
+          tabBarUnderlineStyle={_styles.tab_bar_underline}
+          tabBarActiveTextColor={Skin1.themeColor}
+          tabBarInactiveTextColor={Skin1.textColor1}
+          tabBarTextStyle={{ fontSize: scale(22) }}
+          style={[{ flex: 1 }]}
+          renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
+          {
+            bankCardData.allAccountList.map((tabItem, index) => {
+              // ugLog('tabItem=', tabItem)
+              return (
+                <FlatList tabLabel={tabItem.name}
+                          refreshControl={ refreshCT }
+                          keyExtractor={(item, index) => `${item}-${index}`}
+                          data={tabItem.data}
+                          renderItem={ ({item, index}) => {
+                            // ugLog('ITEM=', item)
+                            return (
+                              <View style={_styles.item_container}>
+                                <View style={_styles.item_content}>
+                                  <View style={_styles.bank_name_container}>
+                                    <Text style={_styles.bank_name}>{item.bankName}</Text>
+                                  </View>
+                                  <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+                                  <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+                                  <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+                                </View>
+                              </View>
+                            )
+                          }} />
+                // <View key={tabItem.type} tabLabel={tabItem.name}>
+                //   {
+                //     tabItem.data?.map((item, index) => {
+                //         // ugLog('item=', item)
+                //         return (
+                //           <View key={item.id} style={_styles.item_container}>
+                //             <View style={_styles.item_content}>
+                //               <View style={_styles.bank_name_container}>
+                //                 <Text style={_styles.bank_name}>{item.bankName}</Text>
+                //               </View>
+                //               <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+                //               <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+                //               <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+                //             </View>
+                //           </View>
+                //         )
+                //       }
+                //
+                //     )
+                //   }
+                // </View>
+              )
+              }
 
+            )
           }
-        }}
-        tabBarUnderlineStyle={_styles.tab_bar_underline}
-        tabBarActiveTextColor={Skin1.themeColor}
-        tabBarInactiveTextColor={Skin1.textColor1}
-        tabBarTextStyle={{ fontSize: scale(22) }}
-        style={[{ flex: 1 }]}
-        renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
-        {
-          tabItems.map((item, index) =>
-            <Text tabLabel={item.name}>{item.name + '_' + index}</Text>)
-        }
-      </ScrollableTabView>
+        </ScrollableTabView>
+      }
     </BaseScreen>
   )
 }
 
-export const TAB_ITEM_WIDTH = scale(96) //tab宽度
+// export const TAB_ITEM_WIDTH = scale(96) //tab宽度
 export const TAB_ITEM_HEIGHT = scale(60) //tab高度
 
 const _styles = StyleSheet.create({
@@ -116,6 +145,30 @@ const _styles = StyleSheet.create({
     height: scale(3),
     backgroundColor: Skin1.themeColor,
   },
+  item_container: {
+    paddingHorizontal: scale(32),
+    paddingTop: scale(32),
+  },
+  item_content: {
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor1,
+    borderRadius: scale(22),
+    padding: scale(16),
+  },
+  bank_name_container: {
+    color: UGColor.TextColor1,
+    fontSize: scale(24),
+  },
+  bank_name: {
+    color: UGColor.TextColor1,
+    fontSize: scale(24),
+  },
+  bank_user_name: {
+    color: UGColor.TextColor3,
+    fontSize: scale(22),
+    paddingTop: scale(16),
+  },
+
 })
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽

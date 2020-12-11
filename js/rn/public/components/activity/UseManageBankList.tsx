@@ -3,6 +3,8 @@ import APIRouter from '../../network/APIRouter'
 import { ugLog } from '../../tools/UgLog'
 import { anyEmpty, anyLength } from '../../tools/Ext'
 import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
+import { RefreshControl } from 'react-native'
+import * as React from 'react'
 
 /**
  * 银行卡管理
@@ -11,16 +13,25 @@ import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
 const UseManageBankList = () => {
 
   // const [listData, setListData] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
   // const [categoryData, setCategoryData] = useState(null)
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
+
+  //刷新控件
+  const refreshCT = <RefreshControl refreshing={refreshing}
+                                    onRefresh={() => {
+                                      setRefreshing(true)
+                                      requestManageBankData("0")
+                                    }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestManageBankData("0")
+    setRefreshing(true)
+    requestManageBankData('0')
     // requestLogData("0")
-  },[])
+  }, [])
 
   /**
    * 请求申请彩金数据
@@ -30,8 +41,8 @@ const UseManageBankList = () => {
     APIRouter.user_bankCardList().then(({ data: res }) => {
       // setListData(anyLength(res?.data?.allAccountList) ? null : res?.data?.allAccountList[0])
       // setCategoryData(res?.data)
-      ugLog('requestManageBankData=', res?.data)
       setBankCardData(res?.data)
+      setRefreshing(false)
     })
   }
 
@@ -46,6 +57,7 @@ const UseManageBankList = () => {
   // }
 
   return {
+    refreshCT,
     bankCardData,
     requestManageBankData,
     // requestLogData,
