@@ -32,6 +32,7 @@ import { BankInfoParam, ManageBankCardData, ManageBankCardModel } from '../../ne
 import UseManageBankList from './UseManageBankList'
 import { ugLog } from '../../tools/UgLog'
 import { UGColor } from '../../theme/UGThemeColor'
+import { Res } from '../../../Res/icon/Res'
 
 /**
  * 银行卡管理
@@ -56,6 +57,7 @@ const ManageBankListView = ({ navigation }) => {
   const [tabIndex, setTabIndex] = useState<number>(0)
 
   const {
+    getBankIcon,
     refreshCT,
     bankCardData,
     requestManageBankData,
@@ -66,7 +68,7 @@ const ManageBankListView = ({ navigation }) => {
     <BaseScreen style={_styles.container} screenName={'我的提款账户'}>
       {
         bankCardData?.allAccountList && <ScrollableTabView
-          onChangeTab={(tab) =>{
+          onChangeTab={(tab) => {
             if (tab.from == tab.i) {
               ugLog('tab index=', tab.i)
             }
@@ -76,54 +78,60 @@ const ManageBankListView = ({ navigation }) => {
           tabBarInactiveTextColor={Skin1.textColor1}
           tabBarTextStyle={{ fontSize: scale(22) }}
           style={[{ flex: 1 }]}
-          renderTabBar={() => <DefaultTabBar style={_styles.tab_bar} />}>
+          renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
           {
             bankCardData.allAccountList.map((tabItem, index) => {
-              // ugLog('tabItem=', tabItem)
-              return (
-                <FlatList tabLabel={tabItem.name}
-                          refreshControl={ refreshCT }
-                          keyExtractor={(item, index) => `${item}-${index}`}
-                          data={tabItem.data}
-                          renderItem={ ({item, index}) => {
-                            // ugLog('ITEM=', item)
-                            return (
-                              <View style={_styles.item_container}>
-                                <View style={_styles.item_content}>
-                                  <View style={_styles.bank_name_container}>
-                                    <Text style={_styles.bank_name}>{item.bankName}</Text>
+                // ugLog('tabItem=', tabItem)
+                return (
+                  <FlatList tabLabel={tabItem.name}
+                            refreshControl={refreshCT}
+                            keyExtractor={(item, index) => `${item}-${index}`}
+                            data={tabItem.data}
+                            renderItem={({ item, index }) => {
+                              // ugLog('ITEM=', item)
+                              let bankIcon = getBankIcon(tabItem.type)
+                              ugLog('bankIcon type=', bankIcon)
+                              return (
+                                <View style={_styles.item_container}>
+                                  <View style={_styles.item_content}>
+                                    <View style={_styles.bank_name_container}>
+                                      <FastImage source={bankIcon}
+                                                 resizeMode={'contain'}
+                                                 style={_styles.bank_name_icon}/>
+                                      <Text style={_styles.bank_name}>{item.bankName}</Text>
+                                      <FastImage source={{ uri: Res.edit }}
+                                                 style={_styles.bank_name_edit}/>
+                                    </View>
+                                    <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+                                    <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+                                    <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
                                   </View>
-                                  <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-                                  <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-                                  <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
                                 </View>
-                              </View>
-                            )
-                          }} />
-                // <View key={tabItem.type} tabLabel={tabItem.name}>
-                //   {
-                //     tabItem.data?.map((item, index) => {
-                //         // ugLog('item=', item)
-                //         return (
-                //           <View key={item.id} style={_styles.item_container}>
-                //             <View style={_styles.item_content}>
-                //               <View style={_styles.bank_name_container}>
-                //                 <Text style={_styles.bank_name}>{item.bankName}</Text>
-                //               </View>
-                //               <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-                //               <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-                //               <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
-                //             </View>
-                //           </View>
-                //         )
-                //       }
-                //
-                //     )
-                //   }
-                // </View>
-              )
-              }
-
+                              )
+                            }}/>
+                  // <View key={tabItem.type} tabLabel={tabItem.name}>
+                  //   {
+                  //     tabItem.data?.map((item, index) => {
+                  //         // ugLog('item=', item)
+                  //         return (
+                  //           <View key={item.id} style={_styles.item_container}>
+                  //             <View style={_styles.item_content}>
+                  //               <View style={_styles.bank_name_container}>
+                  //                 <Text style={_styles.bank_name}>{item.bankName}</Text>
+                  //               </View>
+                  //               <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+                  //               <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+                  //               <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+                  //             </View>
+                  //           </View>
+                  //         )
+                  //       }
+                  //
+                  //     )
+                  //   }
+                  // </View>
+                )
+              },
             )
           }
         </ScrollableTabView>
@@ -156,12 +164,24 @@ const _styles = StyleSheet.create({
     padding: scale(16),
   },
   bank_name_container: {
+    flexDirection: 'row',
     color: UGColor.TextColor1,
     fontSize: scale(24),
+    alignItems: 'center',
+  },
+  bank_name_icon: {
+    width: scale(40),
+    height: scale(40),
   },
   bank_name: {
+    flex: 1,
     color: UGColor.TextColor1,
     fontSize: scale(24),
+    marginLeft: scale(16),
+  },
+  bank_name_edit: {
+    width: scale(28),
+    height: scale(28),
   },
   bank_user_name: {
     color: UGColor.TextColor3,

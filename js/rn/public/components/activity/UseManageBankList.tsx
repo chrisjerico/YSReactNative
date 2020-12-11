@@ -5,6 +5,7 @@ import { anyEmpty, anyLength } from '../../tools/Ext'
 import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
+import { Res } from '../../../Res/icon/Res'
 
 /**
  * 银行卡管理
@@ -56,7 +57,40 @@ const UseManageBankList = () => {
   //   })
   // }
 
+  /**
+   * 得到图标
+   * @param type
+   */
+  const getBankIcon = (type?: string): {} => {
+    ugLog('image type=', type == '1')
+    if(type == '1') {
+      return { uri: Res.bankhl1 }
+    } else if(type == '2') {
+      return { uri: Res.zfb_icon }
+    } else if(type == '3') {
+      return { uri: Res.wechatpay_icon }
+    } else if(type == '4') {
+      return { uri: Res.btc }
+    }
+
+    return null
+
+    // switch (type) {
+    //   case '1':
+    //     return { uri: Res.bankhl1 }
+    //   case '2':
+    //     return { uri: Res.zfb_icon }
+    //   case '3':
+    //     return { uri: Res.wechatpay_icon }
+    //   case '4':
+    //     return { uri: Res.btc }
+    //   default:
+    //     return null
+    // }
+  }
+
   return {
+    getBankIcon,
     refreshCT,
     bankCardData,
     requestManageBankData,
