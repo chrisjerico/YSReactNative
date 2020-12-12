@@ -1,23 +1,23 @@
 import { Alert, FlatList, Linking, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { BaseScreen } from '../../../pages/乐橙/component/BaseScreen'
-import { anyEmpty } from '../../tools/Ext'
-import { scale } from '../../tools/Scale'
-import { Skin1 } from '../../theme/UGSkinManagers'
+import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
+import { anyEmpty } from '../../../tools/Ext'
+import { scale } from '../../../tools/Scale'
+import { Skin1 } from '../../../theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
 import UseManageBankList from './UseManageBankList'
-import { ugLog } from '../../tools/UgLog'
-import { UGColor } from '../../theme/UGThemeColor'
-import { Res } from '../../../Res/icon/Res'
-import EmptyView from '../view/empty/EmptyView'
-import { push } from '../../navigation/RootNavigation'
-import { PageName } from '../../navigation/Navigation'
-import { HJThemeColor } from '../../theme/colors/HJThemeColor'
-import APIRouter from '../../network/APIRouter'
-import { UGStore } from '../../../redux/store/UGStore'
-import PushHelper from '../../define/PushHelper'
+import { ugLog } from '../../../tools/UgLog'
+import { UGColor } from '../../../theme/UGThemeColor'
+import { Res } from '../../../../Res/icon/Res'
+import EmptyView from '../../view/empty/EmptyView'
+import { push } from '../../../navigation/RootNavigation'
+import { PageName } from '../../../navigation/Navigation'
+import { HJThemeColor } from '../../../theme/colors/HJThemeColor'
+import APIRouter from '../../../network/APIRouter'
+import { UGStore } from '../../../../redux/store/UGStore'
+import PushHelper from '../../../define/PushHelper'
 
 /**
  * 银行卡管理
@@ -65,7 +65,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
       refreshBankList: () => {
         requestManageBankData(null)
       },
-      bankCardData: bankCardData
+      bankCardData: bankCardData,
     })
   }
   }>
@@ -74,18 +74,20 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
 
   //点击编辑
   const clickEdit = () => {
-    Alert.alert('提示', '请联系在线客服', [
-      {
-        text: '取消'
-      },
-      {
-        text: '联系客服',
-        onPress: () => {
-          // Linking.openURL(systemStore?.zxkfUrl)
-          PushHelper.openWebView(systemStore?.zxkfUrl)
-        }
-      }
-    ])
+    Alert.alert('提示',
+      '请联系在线客服',
+      [
+        {
+          text: '取消',
+        },
+        {
+          text: '联系客服',
+          onPress: () => {
+            // Linking.openURL(systemStore?.zxkfUrl)
+            PushHelper.openWebView(systemStore?.zxkfUrl)
+          },
+        },
+      ])
   }
 
   return (

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import APIRouter from '../../network/APIRouter'
-import { ugLog } from '../../tools/UgLog'
-import { anyEmpty, anyLength } from '../../tools/Ext'
-import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
+import APIRouter from '../../../network/APIRouter'
+import { ugLog } from '../../../tools/UgLog'
+import { anyEmpty, anyLength } from '../../../tools/Ext'
+import { ManageBankCardData } from '../../../network/Model/act/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
-import { Res } from '../../../Res/icon/Res'
-import { UGStore } from '../../../redux/store/UGStore'
+import { Res } from '../../../../Res/icon/Res'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 银行卡管理
