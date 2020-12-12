@@ -33,6 +33,7 @@ import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
+import { BankDetailListModel } from './Model/bank/BankDetailListModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -166,46 +167,31 @@ class APIRouter {
 
   /**
    * 银行卡和虚拟币等信息
+   * category: 1, 银行卡，4虚拟币
    */
-  static user_bankInfoList = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
+  static user_bankInfoList = async (category: string): Promise<AxiosResponse<BankDetailListModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
-    let tokenParams = '&page=1&rows=999&category=' + category
+    let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
+        //TODO iOS 完成 type, status 参数配置
         const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams += '&token=' + user?.token
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              status: 0,
+              type: category,
+            },
+          })
+        tokenParams += '&token=' + pms?.token + '&type=' + pms?.type + '&status=' + pms?.status
         break
     }
 
-    return httpClient.get<ManageBankCardModel>('c=activity&a=winApplyList&' + tokenParams)
-  }
-
-  /**
-   * 彩金活动分类记录
-   */
-  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
-
-    let tokenParams = '&page=1&rows=999&category=' + category
-    switch (Platform.OS) {
-      case 'ios':
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams += '&token=' + pms?.token
-        break
-    }
-
-    ugLog('tokenParams=', tokenParams)
-
-    return httpClient.get<ManageBankCardModel>('c=activity&a=applyWinLog&' + tokenParams)
+    return httpClient.get<BankDetailListModel>('c=system&a=bankList&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
@@ -332,7 +318,6 @@ class APIRouter {
         break
       case 'android':
         tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        ugLog('tokenParams=', tokenParams)
         break
     }
 

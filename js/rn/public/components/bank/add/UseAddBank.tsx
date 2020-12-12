@@ -6,6 +6,7 @@ import { ManageBankCardData } from '../../../network/Model/act/ManageBankCardMod
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
+import { BankDetailListData, BankDetailListModel } from '../../../network/Model/bank/BankDetailListModel'
 
 /**
  * 银行卡管理
@@ -13,23 +14,48 @@ import { Res } from '../../../../Res/icon/Res'
  */
 const UseAddBank = () => {
 
-  const [bankDetailData, setBankDetailData] = useState<ManageBankCardData>(null)
-  const [btcDetailData, setBtcDetailData] = useState<ManageBankCardData>(null)
+  /**
+   * 银行账户类似
+   */
+  const [bankDetailData, setBankDetailData] = useState<BankDetailListModel>(null)
+  const [btcDetailData, setBtcDetailData] = useState<BankDetailListModel>(null)
+
+  /**
+   * 银行有哪些
+   */
+  const [bankDetailItems, setBankDetailItems] = useState(null)
+
+  /**
+   * 虚拟币有哪些
+   */
+  const [btcDetailItems, setBtcDetailItems] = useState(null)
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestBankDetailData(null)
+    requestBankDetailData("1")
+    requestBankDetailData("4")
     // requestLogData("0")
   }, [])
 
   /**
    * 请求申请彩金数据
-   * @param category 分类
+   * @param category 1, 银行卡，4虚拟币
    */
   const requestBankDetailData = async (category?: string) => {
-    APIRouter.user_bankCardList().then(({ data: res }) => {
+    APIRouter.user_bankInfoList(category).then(({ data: res }) => {
+      if (category == '1') {
+        setBankDetailData(res)
+        !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
+          (item, index) =>
+            ({ label: item.name, value: item.id })))
+      } else if (category == '4') {
+        setBtcDetailData(res)
+        !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
+          (item, index) =>
+            ({ label: item.name, value: item.id })))
+      }
     }).finally(() => {
     })
   }
@@ -37,6 +63,8 @@ const UseAddBank = () => {
   return {
     bankDetailData,
     btcDetailData,
+    bankDetailItems,
+    btcDetailItems,
     requestBankDetailData,
   }
 }

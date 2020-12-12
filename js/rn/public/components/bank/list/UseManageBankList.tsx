@@ -20,8 +20,6 @@ const UseManageBankList = () => {
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
   const systemStore = UGStore.globalProps.sysConf
 
-  ugLog('SystemStore=', systemStore)
-
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
