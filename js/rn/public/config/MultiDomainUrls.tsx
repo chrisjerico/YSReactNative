@@ -234,11 +234,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jzcp488.com',
   ],
   'c126b': [
-    'http://781789.com',
-    'http://bc44698.com',
-    'http://b66224.com',
-    'http://b62244.com',
-    'http://b62224.com',
+    'https://781789.com',
+    'https://bc44698.com',
+    'https://b66224.com',
+    'https://b62244.com',
+    'https://b62224.com',
   ],
   'c134': [
     'https://19972015.com',
