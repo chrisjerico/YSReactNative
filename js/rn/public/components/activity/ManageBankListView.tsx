@@ -68,8 +68,8 @@ const ManageBankListView = ({ navigation }) => {
   return (
     <BaseScreen style={_styles.container} screenName={'我的提款账户'}>
       {
-        true
-          ? <EmptyView style={{flex: 1}}/>
+        anyEmpty(bankCardData?.allAccountList)
+          ? <EmptyView style={{ flex: 1 }}/>
           : <ScrollableTabView
             onChangeTab={(tab) => {
               if (tab.from == tab.i) {
@@ -86,32 +86,36 @@ const ManageBankListView = ({ navigation }) => {
               bankCardData.allAccountList.map((tabItem, index) => {
                   // ugLog('tabItem=', tabItem)
                   return (
-                    <FlatList tabLabel={tabItem.name}
-                              refreshControl={refreshCT}
-                              keyExtractor={(item, index) => `${item}-${index}`}
-                              data={tabItem.data}
-                              renderItem={({ item, index }) => {
-                                // ugLog('ITEM=', item)
-                                let bankIcon = getBankIcon(tabItem.type)
-                                ugLog('bankIcon type=', bankIcon)
-                                return (
-                                  <View style={_styles.item_container}>
-                                    <View style={_styles.item_content}>
-                                      <View style={_styles.bank_name_container}>
-                                        <FastImage source={bankIcon}
-                                                   resizeMode={'contain'}
-                                                   style={_styles.bank_name_icon}/>
-                                        <Text style={_styles.bank_name}>{item.bankName}</Text>
-                                        <FastImage source={{ uri: Res.edit }}
-                                                   style={_styles.bank_name_edit}/>
+                    anyEmpty(tabItem?.data)
+                      ? <EmptyView tabLabel={tabItem.name}
+                                   text={'空空如也\n点击右上角“新增”添加提款账户吧'}
+                                   style={{ flex: 1 }}/>
+                      : <FlatList tabLabel={tabItem.name}
+                                  refreshControl={refreshCT}
+                                  keyExtractor={(item, index) => `${item}-${index}`}
+                                  data={tabItem.data}
+                                  renderItem={({ item, index }) => {
+                                    // ugLog('ITEM=', item)
+                                    let bankIcon = getBankIcon(tabItem.type)
+                                    ugLog('bankIcon type=', bankIcon)
+                                    return (
+                                      <View style={_styles.item_container}>
+                                        <View style={_styles.item_content}>
+                                          <View style={_styles.bank_name_container}>
+                                            <FastImage source={bankIcon}
+                                                       resizeMode={'contain'}
+                                                       style={_styles.bank_name_icon}/>
+                                            <Text style={_styles.bank_name}>{item.bankName}</Text>
+                                            <FastImage source={{ uri: Res.edit }}
+                                                       style={_styles.bank_name_edit}/>
+                                          </View>
+                                          <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+                                          <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+                                          <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+                                        </View>
                                       </View>
-                                      <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-                                      <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-                                      <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
-                                    </View>
-                                  </View>
-                                )
-                              }}/>
+                                    )
+                                  }}/>
                   )
                 },
               )

@@ -21,7 +21,7 @@ const EmptyView = ({
                      style,
                    }: EmptyViewProps) => {
 
-  let textContent = !anyEmpty(text) ? text : '空空如也\n点击右上角“新增”添加提款账户吧'
+  let textContent = !anyEmpty(text) ? text : '空空如也'
 
   return (
     <View style={[_styles.container, style]}>
@@ -36,6 +36,7 @@ const EmptyView = ({
 const _styles = StyleSheet.create({
   container: {
     width: '100%',
+    paddingBottom: scale(200),
     alignItems: 'center',
     justifyContent: 'center',
   },
