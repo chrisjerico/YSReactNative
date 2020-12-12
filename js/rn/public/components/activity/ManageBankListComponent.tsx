@@ -40,7 +40,7 @@ import EmptyView from '../view/empty/EmptyView'
  * @param navigation
  * @constructor
  */
-const ManageBankListView = ({ navigation }) => {
+const ManageBankListComponent = ({ navigation }) => {
   // //列表数据
   // const [listData, setListData] = useState<ActivityJackpotData>()
   // //当前是第几页数据
@@ -181,4 +181,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default ManageBankListView
+export default ManageBankListComponent

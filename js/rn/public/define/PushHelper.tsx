@@ -420,7 +420,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             if (B_DEBUG) {
-              navigate(PageName.ManageBankListView, {})
+              navigate(PageName.ManageBankListComponent, {})
             }
             subId = MenuType.YHK
             break
