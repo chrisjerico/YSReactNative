@@ -29,8 +29,7 @@ const UseManageBankList = () => {
    * 初始化1次数据
    */
   useEffect(() => {
-    setRefreshing(true)
-    requestManageBankData('0')
+    requestManageBankData(null)
     // requestLogData("0")
   }, [])
 
@@ -38,11 +37,13 @@ const UseManageBankList = () => {
    * 请求申请彩金数据
    * @param category 分类
    */
-  const requestManageBankData = async (category: string) => {
+  const requestManageBankData = async (category?: string) => {
+    setRefreshing(true)
     APIRouter.user_bankCardList().then(({ data: res }) => {
       // setListData(anyLength(res?.data?.allAccountList) ? null : res?.data?.allAccountList[0])
       // setCategoryData(res?.data)
       setBankCardData(res?.data)
+    }).finally(() => {
       setRefreshing(false)
     })
   }

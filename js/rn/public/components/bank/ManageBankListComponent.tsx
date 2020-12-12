@@ -1,46 +1,29 @@
-import {
-  Dimensions, FlatList,
-  Image,
-  Platform, RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { chunkArray } from '../../tools/ChunkArr'
-import { getTrendData } from '../../utils/getTrendData'
-import { TrendData } from '../../interface/trendData'
-import Svg, { Line } from 'react-native-svg'
-import APIRouter from '../../network/APIRouter'
-import { ChooseGameModal } from '../ChooseGameModal'
-import PushHelper from '../../define/PushHelper'
 import { BaseScreen } from '../../../pages/乐橙/component/BaseScreen'
-import { OCHelper } from '../../define/OCHelper/OCHelper'
-import { hideLoading, showLoading } from '../../widget/UGLoadingCP'
-import { getGameList } from '../../utils/getGameList'
 import { anyEmpty } from '../../tools/Ext'
 import { scale } from '../../tools/Scale'
 import { Skin1 } from '../../theme/UGSkinManagers'
-import { LEFThemeColor } from '../../theme/colors/LEFThemeColor'
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { BankInfoParam, ManageBankCardData, ManageBankCardModel } from '../../network/Model/act/ManageBankCardModel'
 import UseManageBankList from './UseManageBankList'
 import { ugLog } from '../../tools/UgLog'
 import { UGColor } from '../../theme/UGThemeColor'
 import { Res } from '../../../Res/icon/Res'
 import EmptyView from '../view/empty/EmptyView'
+import { push } from '../../navigation/RootNavigation'
+import { PageName } from '../../navigation/Navigation'
+import { HJThemeColor } from '../../theme/colors/HJThemeColor'
+import APIRouter from '../../network/APIRouter'
+import { UGStore } from '../../../redux/store/UGStore'
 
 /**
  * 银行卡管理
  * @param navigation
  * @constructor
  */
-const ManageBankListComponent = ({ navigation }) => {
+const ManageBankListComponent = ({ navigation, setProps }) => {
   // //列表数据
   // const [listData, setListData] = useState<ActivityJackpotData>()
   // //当前是第几页数据
@@ -55,6 +38,15 @@ const ManageBankListComponent = ({ navigation }) => {
   //
   //   })
   // }, [pageIndex])
+
+  // useEffect(() => {
+  //   setProps({
+  //     didFocus: async () => {
+  //
+  //     }
+  //   })
+  // }, [])
+
   const [tabIndex, setTabIndex] = useState<number>(0)
 
   const {
@@ -65,8 +57,23 @@ const ManageBankListComponent = ({ navigation }) => {
     // requestLogData,
   } = UseManageBankList()
 
+  //右边按钮
+  const rightButton = <TouchableWithoutFeedback onPress={() => {
+    push(PageName.AddBankComponent, {
+      refreshBankList: () => {
+        requestManageBankData(null)
+      },
+      bankCardData: bankCardData
+    })
+  }
+  }>
+    <Text style={_styles.right_button}>新增</Text>
+  </TouchableWithoutFeedback>
+
   return (
-    <BaseScreen style={_styles.container} screenName={'我的提款账户'}>
+    <BaseScreen style={_styles.container}
+                screenName={'我的提款账户'}
+                rightButton={rightButton}>
       {
         anyEmpty(bankCardData?.allAccountList)
           ? <EmptyView style={{ flex: 1 }}/>
@@ -173,6 +180,11 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor3,
     fontSize: scale(22),
     paddingTop: scale(16),
+  },
+  right_button: {
+    color: 'white',
+    fontSize: scale(20),
+    padding: scale(8),
   },
 
 })
