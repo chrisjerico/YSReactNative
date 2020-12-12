@@ -7,6 +7,7 @@ import { RefreshControl } from 'react-native'
 import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
 import { BankDetailListData, BankDetailListModel } from '../../../network/Model/bank/BankDetailListModel'
+import { BankConst } from '../const/BankConst'
 
 /**
  * 银行卡管理
@@ -34,8 +35,8 @@ const UseAddBank = () => {
    * 初始化1次数据
    */
   useEffect(() => {
-    requestBankDetailData("1")
-    requestBankDetailData("4")
+    requestBankDetailData(BankConst.BANK)
+    requestBankDetailData(BankConst.BTC)
     // requestLogData("0")
   }, [])
 
@@ -45,12 +46,12 @@ const UseAddBank = () => {
    */
   const requestBankDetailData = async (category?: string) => {
     APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-      if (category == '1') {
+      if (category == BankConst.BANK) {
         setBankDetailData(res)
         !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
           (item, index) =>
             ({ label: item.name, value: item.id })))
-      } else if (category == '4') {
+      } else if (category == BankConst.BTC) {
         setBtcDetailData(res)
         !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
           (item, index) =>
