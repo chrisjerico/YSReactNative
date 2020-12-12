@@ -71,7 +71,7 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import ManageBankListComponent from '../../public/components/activity/ManageBankListComponent'
+import ManageBankListComponent from '../../public/components/bank/ManageBankListComponent'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
