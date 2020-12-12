@@ -235,7 +235,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c126b': [
     'http://781789.com',
-    'http://b66673.com',
+    'http://bc44698.com',
     'http://b66224.com',
     'http://b62244.com',
     'http://b62224.com',
