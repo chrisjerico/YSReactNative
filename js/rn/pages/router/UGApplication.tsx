@@ -72,6 +72,7 @@ import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import ManageBankListView from '../../public/components/activity/ManageBankListView'
+import CodePush from 'react-native-code-push'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -91,6 +92,7 @@ class TabBarController extends Component<{
   }
 
   componentDidMount() {
+    CodePush.notifyAppReady()
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
 

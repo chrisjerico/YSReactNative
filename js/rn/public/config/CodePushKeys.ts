@@ -3,7 +3,7 @@ import { devConfig } from './../../../../config';
 import { OCHelper } from './../define/OCHelper/OCHelper';
 
 const CodePushKeysForIOS = {
-  master:'67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog',
+  master: '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog',
   a002: 'iaSI4okfkRlB8wXVKMUTCMEitmYb4ksvOXqog',
   c001: '8QmjutQYWePbzC8ChRgCSGaR2hhB4ksvOXqog',
   c002: '0fgUHhzdmLyEvHdMoPuZOD0F5Du44ksvOXqog',
@@ -79,7 +79,7 @@ export function isTest() {
 }
 
 export async function getIOSCodePushKey(): Promise<string> {
-  const ocTest = await OCHelper.call('AppDefine.shared.Test');
+  const ocTest: boolean = await OCHelper.call('AppDefine.shared.Test');
   if (ocTest || isTest()) {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey;
   }
