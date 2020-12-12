@@ -6,6 +6,7 @@ import { ManageBankCardData } from '../../network/Model/act/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
 import { Res } from '../../../Res/icon/Res'
+import { UGStore } from '../../../redux/store/UGStore'
 
 /**
  * 银行卡管理
@@ -17,6 +18,9 @@ const UseManageBankList = () => {
   const [refreshing, setRefreshing] = useState(false)
   // const [categoryData, setCategoryData] = useState(null)
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
+  const systemStore = UGStore.globalProps.sysConf
+
+  ugLog('SystemStore=', systemStore)
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -91,6 +95,7 @@ const UseManageBankList = () => {
   }
 
   return {
+    systemStore,
     getBankIcon,
     refreshCT,
     bankCardData,

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, FlatList, Linking, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { BaseScreen } from '../../../pages/乐橙/component/BaseScreen'
@@ -17,6 +17,7 @@ import { PageName } from '../../navigation/Navigation'
 import { HJThemeColor } from '../../theme/colors/HJThemeColor'
 import APIRouter from '../../network/APIRouter'
 import { UGStore } from '../../../redux/store/UGStore'
+import PushHelper from '../../define/PushHelper'
 
 /**
  * 银行卡管理
@@ -50,6 +51,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
   const [tabIndex, setTabIndex] = useState<number>(0)
 
   const {
+    systemStore,
     getBankIcon,
     refreshCT,
     bankCardData,
@@ -69,6 +71,22 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
   }>
     <Text style={_styles.right_button}>新增</Text>
   </TouchableWithoutFeedback>
+
+  //点击编辑
+  const clickEdit = () => {
+    Alert.alert('提示', '请联系在线客服', [
+      {
+        text: '取消'
+      },
+      {
+        text: '联系客服',
+        onPress: () => {
+          // Linking.openURL(systemStore?.zxkfUrl)
+          PushHelper.openWebView(systemStore?.zxkfUrl)
+        }
+      }
+    ])
+  }
 
   return (
     <BaseScreen style={_styles.container}
@@ -113,8 +131,10 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
                                                        resizeMode={'contain'}
                                                        style={_styles.bank_name_icon}/>
                                             <Text style={_styles.bank_name}>{item.bankName}</Text>
-                                            <FastImage source={{ uri: Res.edit }}
-                                                       style={_styles.bank_name_edit}/>
+                                            <TouchableWithoutFeedback onPress={clickEdit}>
+                                              <FastImage source={{ uri: Res.edit }}
+                                                         style={_styles.bank_name_edit}/>
+                                            </TouchableWithoutFeedback>
                                           </View>
                                           <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
                                           <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>

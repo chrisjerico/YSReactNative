@@ -217,7 +217,7 @@ export default class PushHelper {
     }
   }
 
-  static openWebView(url: string) {
+  static openWebView(url?: string) {
     switch (Platform.OS) {
       case 'ios':
         OCHelper.call(({ vc }) => ({
