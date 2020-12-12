@@ -7,16 +7,59 @@ import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/tars/MineHeader'
 import APIRouter from '../../public/network/APIRouter'
 import ProgressCircle from '../../public/views/temp/ProgressCircle'
+import List from '../../public/views/tars/List'
+import Button from '../../public/views/tars/Button'
 
-const ApplyReward = ({ tabLabel }) => {
+interface ApplyRewardProps {
+  tabLabel: string
+  list: any[]
+}
+
+const RewardList = ({ data, uniqueKey }) => (
+  <List
+    uniqueKey={uniqueKey}
+    data={data} // list?.filter((item) => item?.category == '1')
+    scrollEnabled={true}
+    renderItem={({ item }) => {
+      const { name } = item
+      return (
+        <>
+          <View style={{ width: '100%', aspectRatio: 3, backgroundColor: 'red' }}>
+            <View style={{ flex: 3 }}></View>
+            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ color: '#ffffff' }}>{name}</Text>
+            </View>
+          </View>
+          <Button
+            title={'点击申请'}
+            containerStyle={{ width: 100, height: 30, backgroundColor: '#AE0000', borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
+            titleStyle={{ color: '#ffffff' }}
+          />
+        </>
+      )
+    }}
+  />
+)
+
+const ApplyReward = ({ tabLabel, list }: ApplyRewardProps) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollableTabView tabBarUnderlineStyle={{ backgroundColor: Skin1.themeColor }} tabBarActiveTextColor={Skin1.themeColor}>
-        <View tabLabel={'全部'}></View>
-        <View tabLabel={'热门'}></View>
-        <View tabLabel={'未分类'}></View>
-        <View tabLabel={'彩票'}></View>
-        <View tabLabel={'体育'}></View>
+        <View tabLabel={'全部'}>
+          <RewardList uniqueKey={'ApplyReward_全部'} data={list} />
+        </View>
+        <View tabLabel={'热门'}>
+          <RewardList uniqueKey={'ApplyReward_热门'} data={list?.filter((item) => item?.category == '1')} />
+        </View>
+        <View tabLabel={'未分类'}>
+          <RewardList uniqueKey={'ApplyReward_未分类'} data={list?.filter((item) => item?.category == '-1')} />
+        </View>
+        <View tabLabel={'彩票'}>
+          <RewardList uniqueKey={'ApplyReward_彩票'} data={list?.filter((item) => item?.category == '2')} />
+        </View>
+        <View tabLabel={'体育'}>
+          <RewardList uniqueKey={'ApplyReward_体育'} data={list?.filter((item) => item?.category == '7')} />
+        </View>
       </ScrollableTabView>
     </View>
   )
@@ -41,11 +84,13 @@ const ActivityRewardPage = () => {
   }
 
   const [loading, setLoading] = useState(true)
+  const [list, setList] = useState([])
 
   useEffect(() => {
     APIRouter.activity_winApplyList()
       .then((value) => {
         const list = value?.data?.data?.list
+        setList(list)
         console.log('--------list-------', list)
       })
       .finally(() => {
@@ -90,7 +135,7 @@ const ActivityRewardPage = () => {
                 </>
               )
             }}>
-            <ApplyReward tabLabel={'申请彩金'} />
+            <ApplyReward tabLabel={'申请彩金'} list={list} />
             <ApplyFeedBack tabLabel={'申请反馈'} />
           </ScrollableTabView>
         )}

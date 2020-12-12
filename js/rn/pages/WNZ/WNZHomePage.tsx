@@ -47,12 +47,13 @@ const WNZHomePage = () => {
 
   const { signOut } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
 
+  console.log('-------homeGames------', homeGames)
   const tabGames = [
     {
       name: '官方玩法',
