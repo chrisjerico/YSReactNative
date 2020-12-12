@@ -8,7 +8,7 @@ import AppDefine from '../AppDefine'
 import { releaseConfig } from '../../../../../config'
 
 // 配置需要被替换的oc页面（替换成rn）
-export function setRnPageInfo() {
+export async function setRnPageInfo() {
   let pages: Array<RnPageModel> = []
 
   let skitType = Skin1.skitType
@@ -93,7 +93,7 @@ export function setRnPageInfo() {
   RnPageModel.pages = pages
   switch (Platform.OS) {
     case 'ios':
-      OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
+      await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
       break
     case 'android':
       break
