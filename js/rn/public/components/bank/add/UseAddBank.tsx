@@ -8,12 +8,18 @@ import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
 import { BankDetailListData, BankDetailListModel } from '../../../network/Model/bank/BankDetailListModel'
 import { BankConst } from '../const/BankConst'
+import { UGStore } from '../../../../redux/store/UGStore'
 
 /**
  * 银行卡管理
  * @constructor
  */
 const UseAddBank = () => {
+
+  /**
+   * 用户信息
+   */
+  const userInfo = UGStore.globalProps.userInfo
 
   /**
    * 银行账户类似
@@ -62,6 +68,7 @@ const UseAddBank = () => {
   }
 
   return {
+    userInfo,
     bankDetailData,
     btcDetailData,
     bankDetailItems,

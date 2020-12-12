@@ -38,6 +38,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import UGDropDownPicker from './view/UGDropdownPicker'
 import { BankConst } from '../const/BankConst'
+import Button from '../../../views/tars/Button'
 
 interface IRouteParams {
   refreshBankList?: () => any,
@@ -76,6 +77,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const { refreshBankList, bankCardData }: IRouteParams = route?.params
 
   const {
+    userInfo,
     bankDetailData,
     btcDetailData,
     bankDetailItems,
@@ -197,7 +199,14 @@ const AddBankComponent = ({ navigation, route }) => {
                 curAccountIndex == BankConst.ALI && renderAli(),
               ]
             }
-            <Text style={_styles.real_name}>{'真实姓名：'}</Text>
+
+            <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
+            <Button title={'提交'}
+                    titleStyle={_styles.submit_text}
+                    containerStyle={_styles.submit_bt}
+                    onPress={() => {
+
+                    }}/>
           </View>
       }
     </BaseScreen>
@@ -261,6 +270,17 @@ const _styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     borderBottomWidth: 0,
   },
+  submit_text: {
+    fontSize: scale(22),
+    color: 'white',
+  },
+  submit_bt: {
+    width: '100%',
+    height: scale(66),
+    backgroundColor: Skin1.themeColor,
+    borderRadius: scale(8),
+  },
+
 })
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
