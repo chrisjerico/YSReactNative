@@ -21,12 +21,12 @@ const onPressSignUp = () => push(PageName.BYSignUpPage)
 const BYHomePage = () => {
   const menu = useRef(null)
 
-  const { refresh, value, sign, goTo } = useHomePage({
+  const { refresh, info, sign, goTo } = useHomePage({
     onSuccessSignOut: () => {
       menu?.current?.close()
     },
   })
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
 
   const { homeGames } = homeInfo
   const { uid, usr, balance } = userInfo

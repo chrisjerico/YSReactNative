@@ -42,7 +42,7 @@ export interface GoldenEgg {
   type: string
 }
 
-const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
+const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, goldenEggs, scratchs }: ActivitysProps) => {
   return (
     <>
       <ActivityComponent
@@ -58,7 +58,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         refreshing={refreshing}
         containerStyle={{ top: scale(340), right: 0 }}
         enableFastImage={false}
-        show={uid && roulette && !isTest}
+        show={uid && roulette}
         logo={ROULETTE_LOGO}
         onPress={() => {
           PushHelper.pushWheel(roulette)
@@ -68,7 +68,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         refreshing={refreshing}
         containerStyle={{ top: scale(450), right: 0 }}
         enableFastImage={false}
-        show={uid && goldenEggs && !isTest}
+        show={uid && goldenEggs}
         logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
         onPress={goToUserCenterType.砸金蛋}
       />
@@ -76,7 +76,7 @@ const Activitys = ({ refreshing, isTest, redBagLogo, uid, redBag, roulette, floa
         refreshing={refreshing}
         containerStyle={{ top: scale(570), right: 0 }}
         enableFastImage={false}
-        show={uid && scratchs && !isTest}
+        show={uid && scratchs}
         logo={'https://i.ibb.co/0J51pH9/scratch.png'}
         onPress={goToUserCenterType.刮刮乐}
       />

@@ -1,6 +1,5 @@
-import { Platform } from 'react-native';
-import { devConfig } from './../../../../config';
-import { OCHelper } from './../define/OCHelper/OCHelper';
+import { Platform } from 'react-native'
+import { OCHelper } from './../define/OCHelper/OCHelper'
 
 const CodePushKeysForIOS = {
   master: '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog',
@@ -70,7 +69,7 @@ export function isTest() {
   if (Platform.OS == 'ios') {
     for (const k in CodePushKeysForIOS) {
       if (OCHelper.CodePushKey == CodePushKeysForIOS[k]) {
-        return false;
+        return false
       }
     }
     return true
@@ -79,14 +78,13 @@ export function isTest() {
 }
 
 export async function getIOSCodePushKey(): Promise<string> {
-  const ocTest: boolean = await OCHelper.call('AppDefine.shared.Test');
+  const ocTest: boolean = await OCHelper.call('AppDefine.shared.Test')
   if (ocTest || isTest()) {
-    return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey;
+    return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey
   }
   const siteId = await OCHelper.call('AppDefine.shared.SiteId')
   return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.a002
 }
-
 
 export const CodePushKeysForAndroid = {
   a002: 'fKPOT68NgVUksKdMXlcKJTLC8KWGJr17kgr14',

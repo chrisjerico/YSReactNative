@@ -42,7 +42,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
 
   // infos
   const userInfo = UGStore.globalProps.userInfo
-  const rightMenus = UGStore.globalProps.rightMenu
+  const menus = UGStore.globalProps.rightMenu
   const { sysInfo } = useSysInfo({
     defaultUserCenterLogos,
   })
@@ -78,7 +78,8 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     showBons: bons == Necessity.必填 ? true : false,
   }
 
-  const value = {
+  const info = {
+    menus,
     sysInfo,
     userInfo,
   }
@@ -87,9 +88,8 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     pickAvatarComponentRef,
     onPressAvatar,
     onSaveAvatarSuccess,
-    value,
+    info,
     sign,
-    rightMenus,
     show,
   }
 }

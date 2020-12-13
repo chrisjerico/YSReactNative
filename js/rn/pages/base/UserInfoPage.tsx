@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import Dash from 'react-native-dash'
+import AppDefine from '../../public/define/AppDefine'
+import { pop } from '../../public/navigation/RootNavigation'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+import Avatar from '../../public/views/tars/Avatar'
+import Button from '../../public/views/tars/Button'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import MineHeader from '../../public/views/temp/MineHeader'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import { pop } from '../../public/navigation/RootNavigation'
-import Avatar from '../../public/views/tars/Avatar'
 import { UGStore } from '../../redux/store/UGStore'
-import AppDefine from '../../public/define/AppDefine'
-import Dash from 'react-native-dash'
 
 const UserInfoPage = () => {
   const userInfo = UGStore.globalProps.userInfo
-  const { avatar, isTest, usr, qq } = userInfo
-
+  const { avatar, isTest, usr, qq, phone, email, fullName } = userInfo
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
@@ -40,17 +40,20 @@ const UserInfoPage = () => {
           <Text style={{ fontSize: 25, marginBottom: 20 }}>{'我的资料'}</Text>
           <Text style={{ fontSize: 20, marginBottom: 10 }}>{'帐号 : ' + usr}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'真实姓名 : 有效'}</Text>
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'真实姓名 : ' + fullName}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
           <Text style={{ fontSize: 20, marginVertical: 10 }}>{'QQ : ' + qq}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'手机 : ***********'}</Text>
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'手机 : ' + phone}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'邮箱 : '}</Text>
+          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'邮箱 : ' + email}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
           <Text style={{ fontSize: 20, marginVertical: 10 }}>{'币别 : '}</Text>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
-          <Text style={{ fontSize: 20, marginVertical: 10 }}>{'Facebook : '}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Text style={{ fontSize: 20, marginVertical: 10 }}>{'Facebook : '}</Text>
+            <Button title={'未绑定FB'} containerStyle={{ width: 100, height: 30, backgroundColor: '#ADADAD' }} titleStyle={{ color: '#ffffff' }} />
+          </View>
           <Dash style={styles.dash} dashGap={2} dashLength={4} dashThickness={1} dashColor={'#d9d9d9'} />
         </View>
       </View>

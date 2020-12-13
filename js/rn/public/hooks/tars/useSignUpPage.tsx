@@ -22,7 +22,7 @@ interface UseRegisterPage {
 const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPage) => {
   const { reRender } = useRerender()
 
-  const rightMenus = UGStore.globalProps.rightMenu
+  const menus = UGStore.globalProps.rightMenu
 
   // states
   const [recommendGuy, setRecommendGuy] = useState(null)
@@ -320,6 +320,11 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     slideCodeRef,
   }
 
+  const info = {
+    menus,
+    sysInfo,
+  }
+
   return {
     placeholder,
     reference,
@@ -335,7 +340,7 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
       tryPlay,
       signOut,
     },
-    rightMenus,
+    info,
   }
 }
 

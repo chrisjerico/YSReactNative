@@ -49,8 +49,8 @@ const LCHomePage = ({ navigation, setProps }) => {
   const [noticeFormat, setNoticeFormat] = useState<{ label: string, value: string }[]>([])
   const [show, setShow] = useState(false)
   const [content, setContent] = useState('')
-  const { goTo, refresh, value } = useHomePage({})
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { goTo, refresh, info } = useHomePage({})
+  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
   const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, announcements, bannersInterval } = homeInfo
   const { rankingListSwitch, webName, midBannerTimer } = sysInfo
 

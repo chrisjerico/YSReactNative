@@ -32,6 +32,7 @@ import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
+import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
@@ -57,6 +58,10 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static activity_winApplyList = async () => {
+    return httpClient.get<ActivityWinApplyListModel>('c=activity&a=winApplyList')
+  }
+
   static user_deleteMsgAll = async () => {
     return httpClient.post<any>('c=user&a=deleteMsgAll')
   }

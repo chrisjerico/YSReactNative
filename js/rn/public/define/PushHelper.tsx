@@ -132,6 +132,7 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
+      category: '不要为空',
       seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
@@ -141,6 +142,7 @@ export default class PushHelper {
   // 去捕魚
   static pushFish(code: string) {
     this.pushHomeGame({
+      category: '不要为空',
       seriesId: SeriesId.捕鱼, // 捕魚
       subId: code,
       gameId: code,

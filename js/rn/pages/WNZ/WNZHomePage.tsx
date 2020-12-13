@@ -5,6 +5,7 @@ import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -22,7 +23,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -37,21 +37,21 @@ const WNZHomePage = () => {
     menu?.current?.close()
   }
 
-  const { goTo, refresh, value, sign, rightMenus } = useHomePage({
+  const { goTo, refresh, info, sign } = useHomePage({
     onSuccessSignOut: closeMenu,
   })
 
   const { goToPromotionPage } = goTo
 
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo, menus } = info
 
   const { signOut } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
 
   const tabGames = [
     {
@@ -69,7 +69,8 @@ const WNZHomePage = () => {
   ]
 
   // @ts-ignore
-  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+  const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+
   return (
     <HomePage
       {...homeInfo}
@@ -127,7 +128,7 @@ const WNZHomePage = () => {
                   }}
                   circleColor={'transparent'}
                   onPress={() => {
-                    if (gameId == 9) {
+                    if (gameId == GameType.优惠活动) {
                       switch (Platform.OS) {
                         case 'ios':
                           goToPromotionPage()
@@ -222,7 +223,7 @@ const WNZHomePage = () => {
                       if (subType) {
                         showGameSubType(index)
                       } else {
-                        if (!gameId && gameId > 0) {
+                        if (gameId == GameType.大厅) {
                           navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
                         } else {
                           //@ts-ignore
@@ -248,8 +249,6 @@ const WNZHomePage = () => {
               return (
                 <List
                   uniqueKey={'WNZHomePageTabComponent' + index}
-                  // legacyImplementation={true}
-                  // removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
@@ -284,14 +283,16 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={rightMenus?.length > 0 ? rightMenus : configMenus}
+          menus={menus?.length ? menus : defaultMenus}
           renderMenuItem={({ item }) => {
             const { name, gameId, title, onPress } = item
             return (
               <MenuButton
                 title={name ?? title}
+                subTitle={'(' + appVersion + ')'}
+                showSubTitle={gameId == GameType.APP版本号}
                 onPress={() => {
-                  if (gameId == 31) {
+                  if (gameId == GameType.登出) {
                     signOut()
                   } else {
                     closeMenu()
