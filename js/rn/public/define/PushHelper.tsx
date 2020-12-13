@@ -117,7 +117,7 @@ export default class PushHelper {
   }
   // 首页游戏列表跳转
   static pushHomeGame(game: PushHomeGame) {
-    game = Object.assign({ clsName: 'GameModel' }, game)
+    game = Object.assign({}, game?.category ? { clsName: 'GameModel' } : { clsName: 'GameModel', category: '不要为空' }, game)
     console.log('--------game-------', game)
     switch (Platform.OS) {
       case 'ios':
@@ -132,7 +132,6 @@ export default class PushHelper {
   // 去彩票
   static pushLottery(code: LotteryType | number) {
     this.pushHomeGame({
-      category: '不要为空',
       seriesId: SeriesId.彩票, // 普通彩票
       subId: code,
       gameId: code,
@@ -142,7 +141,6 @@ export default class PushHelper {
   // 去捕魚
   static pushFish(code: string) {
     this.pushHomeGame({
-      category: '不要为空',
       seriesId: SeriesId.捕鱼, // 捕魚
       subId: code,
       gameId: code,
