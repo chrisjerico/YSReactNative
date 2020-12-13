@@ -74,6 +74,7 @@ const AddBankComponent = ({ navigation, route }) => {
    * 选择了哪个虚拟币
    */
   const [curBtcIndex, setCurBtcIndex] = useState(null)
+
   /**
    * 链有哪些
    */
@@ -84,7 +85,9 @@ const AddBankComponent = ({ navigation, route }) => {
    */
   const [curChainIndex, setCurChainIndex] = useState(null)
 
-  let controller
+  let bankController //银行选择
+  let btcController //币种选择
+  let chainController //链选择
 
   /**
    * refreshBankList: 刷新银行卡列表
@@ -209,17 +212,28 @@ const AddBankComponent = ({ navigation, route }) => {
             {
               !anyEmpty(curAccountIndex) && <UGDropDownPicker
                 items={accountItems}
-                // controller={instance => controller = instance}
                 defaultValue={curAccountIndex}
-                onChangeItem={item => setCurAccountIndex(item.value)}/>
+                onOpen={() => {
+                  bankController?.close()
+                  btcController?.close()
+                  chainController?.close()
+                }}
+                onChangeItem={item => {
+                  setCurAccountIndex(item.value)
+                }
+                }/>
             }
             <View style={{ height: scale(32) }}/>
             {
               [
+
+                ugLog('curBankIndex=', curBankIndex),
+                ugLog('bankDetailItems=', bankDetailItems),
+
                 // 绘制银行
                 curAccountIndex == BankConst.BANK && !anyEmpty(curBankIndex) && <UGDropDownPicker
                   items={bankDetailItems}
-                  // controller={instance => controller = instance}
+                  controller={instance => bankController = instance}
                   style={_styles.bank_picker}
                   defaultValue={curBankIndex}
                   onChangeItem={item => setCurBankIndex(item.value)}/>,
@@ -228,14 +242,20 @@ const AddBankComponent = ({ navigation, route }) => {
                 //绘制虚拟币
                 curAccountIndex == BankConst.BTC && !anyEmpty(curBtcIndex) && <UGDropDownPicker
                   items={btcDetailItems}
-                  // controller={instance => controller = instance}
+                  controller={instance => btcController = instance}
                   style={_styles.bank_picker}
                   defaultValue={curBtcIndex}
-                  onChangeItem={item => setCurBtcIndex(item.value)}/>,
+                  onOpen={() => {
+                    chainController?.close()
+                  }}
+                  onChangeItem={item => {
+                    setCurBtcIndex(item.value)
+                  }}/>,
                 //绘制链
-                curAccountIndex == BankConst.BTC && !anyEmpty(curChainIndex) && !anyEmpty(chainDetailItems) && <UGDropDownPicker
+                curAccountIndex == BankConst.BTC && !anyEmpty(curChainIndex) && !anyEmpty(chainDetailItems) &&
+                <UGDropDownPicker
                   items={chainDetailItems}
-                  // controller={instance => controller = instance}
+                  controller={instance => chainController = instance}
                   style={_styles.bank_picker}
                   defaultValue={curChainIndex}
                   onChangeItem={item => setCurChainIndex(item.value)}/>,

@@ -5,10 +5,13 @@ import * as React from 'react'
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native'
 
 interface IUGDropdownPicker {
+  controller?: (instance: object) => void,
   items: { label: any, value: any, icon?: () => JSX.Element, hidden?: boolean, disabled?: boolean, selected?: boolean }[];
   defaultValue?: any;
   onChangeItem?: (item: any, index: number) => void;
   style?: StyleProp<ViewStyle>;
+  onOpen?: () => void;
+  onClose?: () => void;
 }
 /**
  * 选择器
