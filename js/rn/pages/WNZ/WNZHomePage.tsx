@@ -53,7 +53,6 @@ const WNZHomePage = () => {
 
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
 
-  console.log('-------homeGames------', homeGames)
   const tabGames = [
     {
       name: '官方玩法',
