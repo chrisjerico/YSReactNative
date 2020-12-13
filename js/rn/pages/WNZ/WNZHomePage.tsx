@@ -3,6 +3,7 @@ import { Platform, StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType } from '../../public/models/Enum'
@@ -45,14 +46,13 @@ const WNZHomePage = () => {
 
   const { loading, refreshing, userInfo, sysInfo, homeInfo, menus } = info
 
-  const { signOut } = sign
+  const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
-
   const tabGames = [
     {
       name: '官方玩法',
@@ -105,9 +105,9 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={navs}
+            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
             renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
+              const { icon, name, logo, gameId, onPress } = item
               return (
                 <GameButton
                   key={index}
@@ -123,22 +123,30 @@ const WNZHomePage = () => {
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
-                    color: config?.navColors[index],
+                    color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
                     fontSize: scale(23),
                   }}
                   circleColor={'transparent'}
                   onPress={() => {
-                    if (gameId == GameType.优惠活动) {
-                      switch (Platform.OS) {
-                        case 'ios':
-                          goToPromotionPage()
-                          break
-                        case 'android':
-                          PushHelper.pushHomeGame(item)
-                          break
+                    if (AppDefine.siteId == 'c245') {
+                      if (gameId == 'tryPlay') {
+                        tryPlay()
+                      } else {
+                        onPress()
                       }
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      if (gameId == GameType.优惠活动) {
+                        switch (Platform.OS) {
+                          case 'ios':
+                            goToPromotionPage()
+                            break
+                          case 'android':
+                            PushHelper.pushHomeGame(item)
+                            break
+                        }
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }}
                 />
