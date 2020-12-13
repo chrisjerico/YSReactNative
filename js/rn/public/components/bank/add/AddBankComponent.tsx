@@ -39,6 +39,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import UGDropDownPicker from './view/UGDropdownPicker'
 import { BankConst } from '../const/BankConst'
 import Button from '../../../views/tars/Button'
+import { getBankIcon } from '../list/UseManageBankList'
 
 interface IRouteParams {
   refreshBankList?: () => any,
@@ -92,7 +93,11 @@ const AddBankComponent = ({ navigation, route }) => {
   useEffect(() => {
     let accountTypes = bankList.map(
       (item, index) =>
-        ({ label: item.name, value: item.type }))
+        ({
+          label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
+                                                                     resizeMode={'contain'}
+                                                                     style={_styles.bank_name_icon}/>,
+        }))
     !anyEmpty(bankList) && setAccountItems(accountTypes)
     !anyEmpty(bankList) && setCurAccountIndex(accountTypes[0].value)
   }, [])
@@ -279,6 +284,10 @@ const _styles = StyleSheet.create({
     height: scale(66),
     backgroundColor: Skin1.themeColor,
     borderRadius: scale(8),
+  },
+  bank_name_icon: {
+    width: scale(32),
+    height: scale(32),
   },
 
 })

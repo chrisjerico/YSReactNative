@@ -7,7 +7,7 @@ import { scale } from '../../../tools/Scale'
 import { Skin1 } from '../../../theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import UseManageBankList from './UseManageBankList'
+import UseManageBankList, { getBankIcon } from './UseManageBankList'
 import { ugLog } from '../../../tools/UgLog'
 import { UGColor } from '../../../theme/UGThemeColor'
 import { Res } from '../../../../Res/icon/Res'
@@ -54,7 +54,6 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
   const {
     systemStore,
     categoryData,
-    getBankIcon,
     refreshCT,
     bankCardData,
     requestManageBankData,

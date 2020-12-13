@@ -28,7 +28,7 @@ const UseManageBankList = () => {
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
                                       setRefreshing(true)
-                                      requestManageBankData("0")
+                                      requestManageBankData('0')
                                     }}/>
 
   /**
@@ -57,7 +57,7 @@ const UseManageBankList = () => {
    * 生成tab数据
    */
   let generateListData = (data?: ManageBankCardData) => {
-    if(anyEmpty(data?.allAccountList)) return
+    if (anyEmpty(data?.allAccountList)) return
 
     const tabAll: AllAccountListData = {
       type: 0,
@@ -66,7 +66,7 @@ const UseManageBankList = () => {
     }
 
     data?.allAccountList.map((item, index) => {
-      if(!anyEmpty(item.data)) {
+      if (!anyEmpty(item.data)) {
         tabAll.data = tabAll.data.concat(item.data)
       }
     })
@@ -74,41 +74,9 @@ const UseManageBankList = () => {
     setCategoryData([tabAll, ...data?.allAccountList])
   }
 
-  /**
-   * 得到图标
-   * @param type
-   */
-  const getBankIcon = (type?: string): {} => {
-    if(type == '1') {
-      return { uri: Res.bankhl1 }
-    } else if(type == '2') {
-      return { uri: Res.zfb_icon }
-    } else if(type == '3') {
-      return { uri: Res.wechatpay_icon }
-    } else if(type == '4') {
-      return { uri: Res.btc }
-    }
-
-    return null
-
-    // switch (type) {
-    //   case '1':
-    //     return { uri: Res.bankhl1 }
-    //   case '2':
-    //     return { uri: Res.zfb_icon }
-    //   case '3':
-    //     return { uri: Res.wechatpay_icon }
-    //   case '4':
-    //     return { uri: Res.btc }
-    //   default:
-    //     return null
-    // }
-  }
-
   return {
     systemStore,
     categoryData,
-    getBankIcon,
     refreshCT,
     bankCardData,
     requestManageBankData,
@@ -116,4 +84,37 @@ const UseManageBankList = () => {
   }
 }
 
+/**
+ * 得到图标
+ * @param type
+ */
+const getBankIcon = (type?: string): {} => {
+  if (type == '1') {
+    return { uri: Res.bankhl1 }
+  } else if (type == '2') {
+    return { uri: Res.zfb_icon }
+  } else if (type == '3') {
+    return { uri: Res.wechatpay_icon }
+  } else if (type == '4') {
+    return { uri: Res.btc }
+  }
+
+  return null
+
+  // switch (type) {
+  //   case '1':
+  //     return { uri: Res.bankhl1 }
+  //   case '2':
+  //     return { uri: Res.zfb_icon }
+  //   case '3':
+  //     return { uri: Res.wechatpay_icon }
+  //   case '4':
+  //     return { uri: Res.btc }
+  //   default:
+  //     return null
+  // }
+}
+
 export default UseManageBankList
+export { getBankIcon }
+

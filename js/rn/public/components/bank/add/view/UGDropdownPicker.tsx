@@ -28,6 +28,8 @@ const UGDropDownPicker = (props: IUGDropdownPicker) => {
       itemStyle={{ justifyContent: 'flex-start' }}
       labelStyle={{ fontSize: scale(22) }}
       arrowColor={UGColor.LineColor2}
+      arrowSize={scale(32)}
+
       dropDownStyle={{ backgroundColor: UGColor.BackgroundColor2 }}
       {
         ...props
