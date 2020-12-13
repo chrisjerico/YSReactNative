@@ -123,6 +123,70 @@ const config = {
       onPress: () => {},
     },
   ],
+  c254UnAuthNavs: [
+    {
+      name: '登入/注册',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/drzc.png',
+      onPress: () => {
+        push(PageName.WNZSignInPage)
+      },
+    },
+    {
+      name: '充值中心',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/czzx.png',
+      onPress: goToUserCenterType.存款,
+    },
+    {
+      name: '优惠介绍',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/yhjs.png',
+      onPress: () => {
+        push(PageName.PromotionPage, {
+          showBackBtn: true,
+        })
+      },
+    },
+    {
+      name: '线上客服',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/xskf.png',
+      onPress: goToUserCenterType.在线客服,
+    },
+    {
+      gameId: 'tryPlay',
+      name: '游戏试玩',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/yxsw.png',
+    },
+  ],
+  c254AuthNavs: [
+    {
+      name: '会员中心',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/hyzx.png',
+      onPress: goToUserCenterType.个人信息,
+    },
+    {
+      name: '充值中心',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/czzx.png',
+      onPress: goToUserCenterType.存款,
+    },
+    {
+      name: '优惠介绍',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/yhjs.png',
+      onPress: () => {
+        push(PageName.PromotionPage, {
+          showBackBtn: true,
+        })
+      },
+    },
+    {
+      name: '线上客服',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/xskf.png',
+      onPress: goToUserCenterType.在线客服,
+    },
+    {
+      name: '投注记录',
+      icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/tzjl.png',
+      onPress: goToUserCenterType.彩票注单记录,
+    },
+  ],
 }
 
 export default config
