@@ -123,7 +123,7 @@ const config = {
       onPress: () => {},
     },
   ],
-  c254UnAuthNavs: [
+  c245UnAuthNavs: [
     {
       name: '登入/注册',
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/drzc.png',
@@ -156,7 +156,7 @@ const config = {
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/yxsw.png',
     },
   ],
-  c254AuthNavs: [
+  c245AuthNavs: [
     {
       name: '会员中心',
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/hyzx.png',

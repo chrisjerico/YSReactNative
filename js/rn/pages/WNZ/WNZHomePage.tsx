@@ -53,7 +53,6 @@ const WNZHomePage = () => {
   const { uid, usr, balance } = userInfo
 
   const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
-
   const tabGames = [
     {
       name: '官方玩法',
@@ -106,7 +105,7 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={AppDefine.siteId == 'c254' ? (uid ? config.c254AuthNavs : config.c254UnAuthNavs) : navs}
+            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
             renderNav={(item, index) => {
               const { icon, name, logo, gameId, onPress } = item
               return (
@@ -124,12 +123,12 @@ const WNZHomePage = () => {
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
-                    color: AppDefine.siteId == 'c254' ? '#000000' : config?.navColors[index],
+                    color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
                     fontSize: scale(23),
                   }}
                   circleColor={'transparent'}
                   onPress={() => {
-                    if (AppDefine.siteId == 'c254') {
+                    if (AppDefine.siteId == 'c245') {
                       if (gameId == 'tryPlay') {
                         tryPlay()
                       } else {
