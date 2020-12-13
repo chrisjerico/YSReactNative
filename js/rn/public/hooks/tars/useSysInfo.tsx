@@ -78,16 +78,14 @@ const useSysInfo = ({ defaultUserCenterLogos }: UseSys) => {
       bons: sysStore?.mBonsSwitch ? Necessity.隱藏 : Necessity.必填,
     },
     userCenterItems:
-      sysStore?.userCenter
-        ?.map((item) => {
-          const { code, sorts, logo } = item ?? {}
-          return Object.assign({}, item, {
-            code: stringToNumber(code),
-            sorts: stringToNumber(sorts),
-            logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
-          })
+      sysStore?.userCenter?.map((item) => {
+        const { code, sorts, logo } = item ?? {}
+        return Object.assign({}, item, {
+          code: stringToNumber(code),
+          sorts: stringToNumber(sorts),
+          logo: (logo?.length == 0 || !logo ? defaultUserCenterLogos?.[stringToNumber(code)] : logo) ?? '',
         })
-        ?.filter((item) => item.code <= 20) ?? [],
+      }) ?? [],
     passwordLimit: {
       strength: getPasswordStrength(sysStore?.pass_limit),
       maxLength: stringToNumber(sysStore?.pass_length_max),

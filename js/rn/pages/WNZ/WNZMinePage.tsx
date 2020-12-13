@@ -74,7 +74,18 @@ const WNZMinePage = () => {
   )
 
   const recordTools = otherTools?.filter((ele) =>
-    [UGUserCenterType.开奖网, UGUserCenterType.其他注单记录, UGUserCenterType.活动彩金, UGUserCenterType.彩票注单记录, UGUserCenterType.长龙助手].includes(ele?.code)
+    [
+      UGUserCenterType.开奖网,
+      UGUserCenterType.其他注单记录,
+      UGUserCenterType.活动彩金,
+      UGUserCenterType.彩票注单记录,
+      UGUserCenterType.长龙助手,
+      UGUserCenterType.真人注单,
+      UGUserCenterType.电子注单,
+      UGUserCenterType.电竞注单,
+      UGUserCenterType.棋牌注单,
+      UGUserCenterType.体育注单,
+    ].includes(ele?.code)
   )
 
   const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
@@ -178,7 +189,21 @@ const WNZMinePage = () => {
                           },
                         ])
                       } else {
-                        PushHelper.pushUserCenterType(code)
+                        if (__DEV__) {
+                          if (code == UGUserCenterType.个人信息) {
+                            navigate(PageName.UserInfoPage)
+                          } else if (code == UGUserCenterType.站内信) {
+                            navigate(PageName.UserMessagePage)
+                          } else if (code == UGUserCenterType.安全中心) {
+                            navigate(PageName.SafeCenterPage)
+                          } else if (code == UGUserCenterType.活动彩金) {
+                            navigate(PageName.ActivityRewardPage)
+                          } else {
+                            PushHelper.pushUserCenterType(code)
+                          }
+                        } else {
+                          PushHelper.pushUserCenterType(code)
+                        }
                       }
                     }}
                   />
@@ -226,13 +251,3 @@ const styles = StyleSheet.create({
 })
 
 export default WNZMinePage
-
-// else if (code == UGUserCenterType.个人信息) {
-//   navigate(PageName.UserInfoPage)
-// } else if (code == UGUserCenterType.站内信) {
-//   navigate(PageName.UserMessagePage)
-// } else if (code == UGUserCenterType.安全中心) {
-//   navigate(PageName.SafeCenterPage)
-// } else if (code == UGUserCenterType.活动彩金) {
-//   navigate(PageName.ActivityRewardPage)
-// }
