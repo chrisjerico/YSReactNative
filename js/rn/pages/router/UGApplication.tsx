@@ -2,7 +2,6 @@ import { BottomTabBarOptions } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { Component } from 'react'
-import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
 import TrendView from '../../public/components/TrendView'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigationRef } from '../../public/navigation/RootNavigation'
@@ -74,6 +73,8 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import ManageBankListView from '../../public/components/activity/ManageBankListView'
+import CodePush from 'react-native-code-push'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -93,6 +94,7 @@ class TabBarController extends Component<{
   }
 
   componentDidMount() {
+    CodePush.notifyAppReady()
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
@@ -148,7 +150,7 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityJackpotView} component={UGPage(ActivityJackpotView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListView} component={UGPage(ManageBankListView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />

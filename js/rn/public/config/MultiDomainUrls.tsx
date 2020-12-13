@@ -146,7 +146,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://0849520.com',
     'https://0849519.com',
     'https://0849518.com',
-    'https://0849517.com',
+    'https://0849516.com',
   ],
   'c018': [
     'https://204421.com',
@@ -179,8 +179,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c085': [
     'https://xn--7-206cp03b.com',
     'https://ys-cyw-app1.cc',
-    'https://ys-cyw-app2.cc',
-    'https://ys-cyw-app3.cc',
+    'https://www.xn--5-206cp03b.com',
+    'https://www.xn--4-206cp03b.com',
     'https://ys-cyw-app4.cc',
     'https://ys-cyw-app5.cc',
   ],
@@ -208,7 +208,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c432019.com',
   ],
   'c115': [
-    'https://6615322.com',
+    'https://6615nn.com',
+    'https://6615qq.com',
+    'https://6615pp.com',
+    'https://6615uu.com',
+    'https://6615vv.com',
   ],
   'c116': [
     'https://csj116app.com',
@@ -218,7 +222,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://822323.com',
+    'https://877171.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
@@ -230,7 +234,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jzcp488.com',
   ],
   'c126b': [
-    'https://og878.vip',
+    'https://781789.com',
+    'https://bc44698.com',
+    'https://b66224.com',
+    'https://b62244.com',
+    'https://b62224.com',
   ],
   'c134': [
     'https://19972015.com',
@@ -264,7 +272,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://c91398.com',
   ],
   'c165': [
-    'http://1875007.com',
+    'https://1875883.com',
+    'https://1875885.com',
+    'https://1875886.com',
+    'https://1875887.com',
+    'https://1875005.com',
   ],
   'c169': [
     'http://heixxqic169cqhmszw.playzone88.com',
@@ -273,7 +285,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'http://7053fndsjfkn.com',
+    'https://7053bbb.com',
+    'https://7053fff.vip',
+    'https://7053eee.vip',
+    'https://7053ccc.vip',
   ],
   'c184': [
     'http://00fhcp.cn',
@@ -289,8 +304,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://549595.com',
   ],
   'c193': [
-    'https://44444906.com',
-    'https://4906108.com',
+    'https://4906107.com',
+    'https://49065555.com',
     'https://49060333.com',
     'https://49060222.com',
     'https://49061111.com',
@@ -318,10 +333,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771d.com',
-    'https://771771f.com',
-    'https://771771g.com',
     'https://771771h.com',
+    'https://771771l.com',
+    'https://771771a.com',
+    'https://771771k.com',
+    'https://771771i.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -330,11 +346,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501078.com',
-    'https://c213aapp.cc',
-    'https://c213app.com',
-    'https://c213app01.co',
-    'https://c213app01.me',
+    'https://app213xpj.me',
+    'https://c213aapp.me',
+    'https://c213app01.cc',
+    'https://app213xpj.cc',
+    'https://app213xpj.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -352,7 +368,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.hilliot.com',
   ],
   'c237': [
-    'http://app13478.com',
+    'https://13478116.com',
+    'https://13478117.com',
+    'https://13478118.com',
+    'https://13478119.com',
+    'https://13478120.com',
   ],
   'c239b': [
     'https://5566569.com',
@@ -391,11 +411,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333app.co',
-    'https://70333app.me',
-    'https://70333app.info',
-    'https://70333app.org',
-    'https://70333app.net',
+    'https://7033303.com',
   ],
   'h003b': [
     'https://betv5.com',
