@@ -36,6 +36,11 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
     return <C084 />
   }
 
+  // c126
+  if (AppDefine.siteId == 'c126') {
+    return <C126 />
+  }
+
   let imgURL = 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
   if (AppDefine.siteId == 'c116') {
     imgURL = AppDefine.host + "/static/images/czjc/mobile/CGpayc213.jpg";
@@ -62,9 +67,16 @@ function C084() {
   return <View style={{ flex: 1 }}>
     <WebView
       style={{ flex: 1, marginTop: -44 }}
-      source={{
-        uri: AppDefine.host + '/mobile/#/bank/showXnb_transferC084'
-      }}
+      source={{ uri: AppDefine.host + '/mobile/#/bank/showXnb_transferC084' }}
+    />
+  </View>
+}
+
+function C126() {
+  return <View style={{ flex: 1 }}>
+    <WebView
+      style={{ flex: 1 }}
+      source={{ uri: 'http://266327.com/m.html' }}
     />
   </View>
 }
