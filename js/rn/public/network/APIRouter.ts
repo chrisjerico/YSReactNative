@@ -167,7 +167,7 @@ class APIRouter {
 
   /**
    * 银行卡和虚拟币等信息
-   * category: 1, 银行卡，4虚拟币
+   * category: 定义在 BankConst
    */
   static user_bankInfoList = async (category: string): Promise<AxiosResponse<BankDetailListModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
@@ -192,6 +192,15 @@ class APIRouter {
     }
 
     return httpClient.get<BankDetailListModel>('c=system&a=bankList&' + tokenParams)
+  }
+
+  /**
+   * 银行卡和虚拟币等信息
+   * category: 定义在 BankConst
+   */
+  static user_addBank = async (params: {}): Promise<AxiosResponse<any>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<any>('c=user&a=bindBank', params)
   }
 
   static activity_redBagDetail = async () => {

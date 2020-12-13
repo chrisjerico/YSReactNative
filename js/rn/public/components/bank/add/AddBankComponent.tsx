@@ -28,7 +28,12 @@ import { Skin1 } from '../../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../../theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import { BankInfoParam, ManageBankCardData, ManageBankCardModel } from '../../../network/Model/act/ManageBankCardModel'
+import {
+  AllAccountListData,
+  BankInfoParam,
+  ManageBankCardData,
+  ManageBankCardModel,
+} from '../../../network/Model/act/ManageBankCardModel'
 import UseAddBank from './UseAddBank'
 import { ugLog } from '../../../tools/UgLog'
 import { UGColor, UGThemeColor } from '../../../theme/UGThemeColor'
@@ -40,6 +45,7 @@ import UGDropDownPicker from './view/UGDropdownPicker'
 import { BankConst } from '../const/BankConst'
 import Button from '../../../views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
+import { BankDetailListData } from '../../../network/Model/bank/BankDetailListModel'
 
 interface IRouteParams {
   refreshBankList?: () => any,
@@ -68,6 +74,15 @@ const AddBankComponent = ({ navigation, route }) => {
    * 选择了哪个虚拟币
    */
   const [curBtcIndex, setCurBtcIndex] = useState(null)
+  /**
+   * 链有哪些
+   */
+  const [chainDetailItems, setChainDetailItems] = useState(null)
+
+  /**
+   * 选择了哪个链
+   */
+  const [curChainIndex, setCurChainIndex] = useState(null)
 
   let controller
 
@@ -117,6 +132,27 @@ const AddBankComponent = ({ navigation, route }) => {
   }, [btcDetailItems])
 
   /**
+   * 监听虚拟币数据变动，可能改变链内容
+   */
+  useEffect(() => {
+    if (curBtcIndex > 0) {
+      // let homeStr = bankDetailData?.data[curBtcIndex].home
+      let btcInfo: BankDetailListData = btcDetailData?.data.find((item) => item.id == curBtcIndex)
+      let homeStr = btcInfo.home
+      if (!anyEmpty(homeStr)) {
+        let chainItems = homeStr?.split(',').map(
+          (item, index) => ({ label: item, value: item }))
+        setChainDetailItems(chainItems)
+
+        setCurChainIndex(chainItems[0].value)
+      }
+
+    } else {
+      setCurChainIndex(null)
+    }
+  }, [bankDetailData, curBtcIndex])
+
+  /**
    * 绘制银行
    */
   const renderBank = () => <View style={_styles.item_bank_2nd_content}>
@@ -136,7 +172,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderBtc = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 placeholder={'请输入您的收款钱包地址'}/>
+                 placeholder={'请输入您的虚拟币收款钱包地址'}/>
     </View>
   </View>
 
@@ -196,6 +232,13 @@ const AddBankComponent = ({ navigation, route }) => {
                   style={_styles.bank_picker}
                   defaultValue={curBtcIndex}
                   onChangeItem={item => setCurBtcIndex(item.value)}/>,
+                //绘制链
+                curAccountIndex == BankConst.BTC && !anyEmpty(curChainIndex) && !anyEmpty(chainDetailItems) && <UGDropDownPicker
+                  items={chainDetailItems}
+                  // controller={instance => controller = instance}
+                  style={_styles.bank_picker}
+                  defaultValue={curChainIndex}
+                  onChangeItem={item => setCurChainIndex(item.value)}/>,
                 curAccountIndex == BankConst.BTC && renderBtc(),
 
                 //绘制微信
