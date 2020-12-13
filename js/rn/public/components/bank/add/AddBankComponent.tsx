@@ -59,31 +59,20 @@ interface IRouteParams {
  */
 const AddBankComponent = ({ navigation, route }) => {
 
-  /**
-   * 选择了银行、微信、支付宝、虚拟币
-   */
-  const [curAccountIndex, setCurAccountIndex] = useState(null)
-  const [accountItems, setAccountItems] = useState(null)
+  const [bankAddr, setBankAddr] = useState(null)//请输入您的银行卡开户地址
+  const [bankNumber, setBankNumber] = useState(null) //请输入您的银行卡卡号
+  const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
+  const [btcAddr, setBtcAddr] = useState(null) //请输入您的虚拟币收款钱包地址
+  const [wxAccount, setWxAccount] = useState(null) //请输入微信号
+  const [wxPhone, setWxPhone] = useState(null) //请输入微信所绑定手机号
+  const [aliAccount, setAliAccount] = useState(null) //请输入您的支付宝账号
+  const [curAccountType, setCurAccountType] = useState(null) //选择了银行、微信、支付宝、虚拟币
+  const [curBankID, setCurBankID] = useState(null) //选择了哪个银行
+  const [curBtcID, setCurBtcID] = useState(null) //选择了哪个虚拟币
+  const [curChainValue, setCurChainValue] = useState(null) //选择了哪个链
 
-  /**
-   * 选择了哪个银行
-   */
-  const [curBankIndex, setCurBankIndex] = useState(null)
-
-  /**
-   * 选择了哪个虚拟币
-   */
-  const [curBtcIndex, setCurBtcIndex] = useState(null)
-
-  /**
-   * 链有哪些
-   */
-  const [chainDetailItems, setChainDetailItems] = useState(null)
-
-  /**
-   * 选择了哪个链
-   */
-  const [curChainIndex, setCurChainIndex] = useState(null)
+  const [accountItems, setAccountItems] = useState(null) //账户有哪些
+  const [chainDetailItems, setChainDetailItems] = useState(null) //链有哪些
 
   let bankController //银行选择
   let btcController //币种选择
@@ -97,15 +86,17 @@ const AddBankComponent = ({ navigation, route }) => {
 
   const {
     userInfo,
+    systemInfo,
     bankDetailData,
     btcDetailData,
     bankDetailItems,
     btcDetailItems,
     requestBankDetailData,
+    addBankAccount,
   } = UseAddBank()
 
   /**
-   * 银行列表
+   * 账户列表
    */
   let bankList = bankCardData?.allAccountList
   useEffect(() => {
@@ -117,43 +108,42 @@ const AddBankComponent = ({ navigation, route }) => {
                                                                      style={_styles.bank_name_icon}/>,
         }))
     !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountIndex(accountTypes[0].value)
+    !anyEmpty(bankList) && setCurAccountType(accountTypes[0].value)
   }, [])
 
   /**
    * 监听银行数据变动
    */
   useEffect(() => {
-    !anyEmpty(bankDetailItems) && setCurBankIndex(bankDetailItems[0].value)
+    !anyEmpty(bankDetailItems) && setCurBankID(bankDetailItems[0].value)
   }, [bankDetailItems])
 
   /**
    * 监听虚拟币数据变动
    */
   useEffect(() => {
-    !anyEmpty(btcDetailItems) && setCurBtcIndex(btcDetailItems[0].value)
+    !anyEmpty(btcDetailItems) && setCurBtcID(btcDetailItems[0].value)
   }, [btcDetailItems])
 
   /**
    * 监听虚拟币数据变动，可能改变链内容
    */
   useEffect(() => {
-    if (curBtcIndex > 0) {
-      // let homeStr = bankDetailData?.data[curBtcIndex].home
-      let btcInfo: BankDetailListData = btcDetailData?.data.find((item) => item.id == curBtcIndex)
+    if (curBtcID > 0) {
+      let btcInfo: BankDetailListData = btcDetailData?.data.find((item) => item.id == curBtcID)
       let homeStr = btcInfo.home
       if (!anyEmpty(homeStr)) {
         let chainItems = homeStr?.split(',').map(
           (item, index) => ({ label: item, value: item }))
         setChainDetailItems(chainItems)
 
-        setCurChainIndex(chainItems[0].value)
+        setCurChainValue(chainItems[0].value)
       }
 
     } else {
-      setCurChainIndex(null)
+      setCurChainValue(null)
     }
-  }, [bankDetailData, curBtcIndex])
+  }, [bankDetailData, curBtcID])
 
   /**
    * 绘制银行
@@ -161,12 +151,22 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderBank = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setBankAddr(text)}
                  placeholder={'请输入您的银行卡开户地址'}/>
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setBankNumber(text)}
                  placeholder={'请输入您的银行卡卡号'}/>
     </View>
+    {
+      systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   onChangeText={ text => setBankPassword(text)}
+                   placeholder={'请输入提款密碼'}/>
+      </View>
+    }
+
   </View>
 
   /**
@@ -175,6 +175,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderBtc = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setBtcAddr(text)}
                  placeholder={'请输入您的虚拟币收款钱包地址'}/>
     </View>
   </View>
@@ -185,10 +186,12 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderWx = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setWxAccount(text)}
                  placeholder={'请输入微信号'}/>
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setWxPhone(text)}
                  placeholder={'请输入微信所绑定手机号'}/>
     </View>
   </View>
@@ -199,6 +202,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderAli = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
+                 onChangeText={ text => setAliAccount(text)}
                  placeholder={'请输入您的支付宝账号'}/>
     </View>
   </View>
@@ -210,61 +214,57 @@ const AddBankComponent = ({ navigation, route }) => {
           <EmptyView style={{ flex: 1 }}/> :
           <View style={_styles.item_bank_container}>
             {
-              !anyEmpty(curAccountIndex) && <UGDropDownPicker
+              !anyEmpty(curAccountType) && <UGDropDownPicker
                 items={accountItems}
-                defaultValue={curAccountIndex}
+                defaultValue={curAccountType}
                 onOpen={() => {
                   bankController?.close()
                   btcController?.close()
                   chainController?.close()
                 }}
                 onChangeItem={item => {
-                  setCurAccountIndex(item.value)
+                  setCurAccountType(item.value)
                 }
                 }/>
             }
             <View style={{ height: scale(32) }}/>
             {
               [
-
-                ugLog('curBankIndex=', curBankIndex),
-                ugLog('bankDetailItems=', bankDetailItems),
-
                 // 绘制银行
-                curAccountIndex == BankConst.BANK && !anyEmpty(curBankIndex) && <UGDropDownPicker
+                curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
                   items={bankDetailItems}
                   controller={instance => bankController = instance}
                   style={_styles.bank_picker}
-                  defaultValue={curBankIndex}
-                  onChangeItem={item => setCurBankIndex(item.value)}/>,
-                curAccountIndex == BankConst.BANK && renderBank(),
+                  defaultValue={curBankID}
+                  onChangeItem={item => setCurBankID(item.value)}/>,
+                curAccountType == BankConst.BANK && renderBank(),
 
                 //绘制虚拟币
-                curAccountIndex == BankConst.BTC && !anyEmpty(curBtcIndex) && <UGDropDownPicker
+                curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
                   items={btcDetailItems}
                   controller={instance => btcController = instance}
                   style={_styles.bank_picker}
-                  defaultValue={curBtcIndex}
+                  defaultValue={curBtcID}
                   onOpen={() => {
                     chainController?.close()
                   }}
                   onChangeItem={item => {
-                    setCurBtcIndex(item.value)
+                    setCurBtcID(item.value)
                   }}/>,
                 //绘制链
-                curAccountIndex == BankConst.BTC && !anyEmpty(curChainIndex) && !anyEmpty(chainDetailItems) &&
+                curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
                 <UGDropDownPicker
                   items={chainDetailItems}
                   controller={instance => chainController = instance}
                   style={_styles.bank_picker}
-                  defaultValue={curChainIndex}
-                  onChangeItem={item => setCurChainIndex(item.value)}/>,
-                curAccountIndex == BankConst.BTC && renderBtc(),
+                  defaultValue={curChainValue}
+                  onChangeItem={item => setCurChainValue(item.value)}/>,
+                curAccountType == BankConst.BTC && renderBtc(),
 
                 //绘制微信
-                curAccountIndex == BankConst.WX && renderWx(),
+                curAccountType == BankConst.WX && renderWx(),
                 //绘制支付宝
-                curAccountIndex == BankConst.ALI && renderAli(),
+                curAccountType == BankConst.ALI && renderAli(),
               ]
             }
 
@@ -273,6 +273,20 @@ const AddBankComponent = ({ navigation, route }) => {
                     titleStyle={_styles.submit_text}
                     containerStyle={_styles.submit_bt}
                     onPress={() => {
+                      addBankAccount({
+                        curAccountType: curAccountType,
+                        curBankID: curBankID,
+                        curBtcID: curBtcID,
+                        curChainValue: curChainValue,
+                        bankAddr: bankAddr,
+                        bankNumber: bankNumber,
+                        bankPassword: bankPassword,
+                        btcAddr: btcAddr,
+                        wxAccount: wxAccount,
+                        wxPhone: wxPhone,
+                        aliAccount: aliAccount,
+                        callBack: () => refreshBankList
+                      })
 
                     }}/>
           </View>

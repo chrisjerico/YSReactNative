@@ -34,6 +34,7 @@ import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
+import { NormalModel } from './Model/NormalModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -198,9 +199,9 @@ class APIRouter {
    * 银行卡和虚拟币等信息
    * category: 定义在 BankConst
    */
-  static user_addBank = async (params: {}): Promise<AxiosResponse<any>> => {
+  static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
-    return httpClient.post<any>('c=user&a=bindBank', params)
+    return httpClient.post<NormalModel>('c=user&a=bindBank', params)
   }
 
   static activity_redBagDetail = async () => {

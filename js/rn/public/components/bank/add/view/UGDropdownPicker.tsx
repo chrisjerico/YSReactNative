@@ -32,7 +32,6 @@ const UGDropDownPicker = (props: IUGDropdownPicker) => {
       labelStyle={{ fontSize: scale(22) }}
       arrowColor={UGColor.LineColor2}
       arrowSize={scale(32)}
-
       dropDownStyle={{ backgroundColor: UGColor.BackgroundColor2 }}
       {
         ...props

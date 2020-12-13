@@ -90,11 +90,9 @@ export default class ExtUGApplication {
         //     ? PageName.UpdateVersionPage //Chrome 调试无法使用 Native同步方法，所以暂时使用主页
         //     : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         let currentScene
-        // if (B_DEBUG) {
-        //   currentScene = PageName[PageName.BZHHomePage]
-        // } else {
+        // B_DEBUG ?
+        //   currentScene = PageName[PageName.BZHHomePage] :
           currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
-        // }
         ugLog('ext currentScene=', currentScene)
         if (anyEmpty(currentScene)) {
           initName = PageName.UpdateVersionPage

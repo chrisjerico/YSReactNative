@@ -14,7 +14,6 @@ import { UGStore } from '../../../../redux/store/UGStore'
  */
 const UseManageBankList = () => {
 
-  // const [listData, setListData] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
 
   //tab分类数据

@@ -11,6 +11,8 @@ import { BankConst } from '../const/BankConst'
 import { UGStore } from '../../../../redux/store/UGStore'
 import { Toast } from '../../../tools/ToastUtils'
 import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
+import md5 from 'blueimp-md5'
+import { pop } from '../../../navigation/RootNavigation'
 
 /**
  * 银行卡管理
@@ -18,10 +20,8 @@ import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
  */
 const UseAddBank = () => {
 
-  /**
-   * 用户信息
-   */
-  const userInfo = UGStore.globalProps.userInfo
+  const userInfo = UGStore.globalProps.userInfo //用户信息
+  const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   /**
    * 银行账户类似
@@ -80,106 +80,114 @@ const UseAddBank = () => {
     })
   }
 
-
-// * @param accountType 银行卡或者虚拟币账户
-//   * @param subType 哪个银行
-//   * @param addr 地址
-//   * @param cardNumber 卡号
-//   * @param chain 链地址
-//   * @param wxNumber 微信账号
-//   * @param phone 手机账号
-//   * @param aliNumber 阿里账户
-
   /**
    * 添加银行卡或者虚拟币账户
    *
-   * @param accountType 账户类型
-   * @param bankParams 银行相关参数
-   * @param btcParams 虚拟币相关参数
-   * @param wxParams 微信相关参数
-   * @param aliParams 阿里相关参数
+   *  参数含义备注在 IAddAccount
+   *
+   * @param curAccountType
+   * @param curBankID
+   * @param curBtcID
+   * @param curChainValue
+   * @param bankAddr
+   * @param bankNumber
+   * @param bankPassword
+   * @param btcAddr
+   * @param wxAccount
+   * @param wxPhone
+   * @param aliAccount
    */
-  const addBankAccount = (accountType?: string, //账户类型
-                          bankParams?: {
-                            bank_id?: string,//哪个银行
-                            bank_card?: string, //银行卡号
-                            bank_addr?: string, //地址
-                            pwd?: string, //密码
-                          },
-                          btcParams?: {
-                            bank_id?: string,//哪种币
-                            bank_card?: string, //虚拟币收款地址
-                            bank_addr?: string, // 链地址
-                          },
-                          wxParams?: {
-                            bank_card?: string, //微信号
-                            bank_addr?: string, //微信手机号
-                          },
-                          aliParams?: {
-                            bank_card?: string, //阿里账号
-                          }) => {
+  const addBankAccount = ({
+                            curAccountType,
+                            curBankID,
+                            curBtcID,
+                            curChainValue,
+                            bankAddr,
+                            bankNumber,
+                            bankPassword,
+                            btcAddr,
+                            wxAccount,
+                            wxPhone,
+                            aliAccount,
+                            callBack,
+                          }: IAddAccount) => {
     let params = null
 
-    switch (accountType) {
+    switch (curAccountType.toString()) {
       case BankConst.BANK:
-        if (anyEmpty(bankParams?.bank_addr)) {
+        if (anyEmpty(bankAddr)) {
           Toast('请输入您的银行卡开户行地址')
           return
-        } else if (anyEmpty(bankParams?.bank_card)) {
+        } else if (anyEmpty(bankNumber)) {
           Toast('请输入您的银行卡卡号')
+          return
+        } else if (!anyEmpty(bankPassword) && systemInfo?.switchBindVerify == 1) {
+          Toast('请输入取款密码')
           return
         } else {
           params = {
-            type: accountType,
+            type: curAccountType,
+            bank_id: curBankID,
+            bank_card: bankNumber,
+            bank_addr: bankAddr,
+            pwd: anyEmpty(bankPassword) ? null : md5(bankPassword),
             owner_name: userInfo?.fullName,
-            ...bankParams,
           }
         }
         break
       case BankConst.BTC:
-        if (anyEmpty(bankParams?.bank_card)) {
+        if (anyEmpty(btcAddr)) {
           Toast('请输入您的虚拟币收款钱包地址')
           return
         } else {
           params = {
-            type: accountType,
-            ...btcParams,
+            type: curAccountType,
+            bank_id: curBtcID,
+            bank_card: btcAddr,
+            bank_addr: curChainValue,
           }
         }
         break
       case BankConst.WX:
-        if (anyEmpty(bankParams?.bank_card)) {
+        if (anyEmpty(wxAccount)) {
           Toast('请输入微信号')
           return
-        } else if (!anyEmpty(wxParams?.bank_addr) && anyLength(wxParams?.bank_addr) < 11) {
+        } else if (!anyEmpty(wxPhone) && anyLength(wxPhone) < 11) {
           Toast('请输入11位手机号码')
           return
         } else {
           params = {
-            type: accountType,
-            bank_card: wxParams.bank_card,
-            bank_addr: wxParams.bank_addr,
+            type: curAccountType,
+            bank_card: wxAccount,
+            bank_addr: wxPhone,
           }
         }
         break
       case BankConst.ALI:
-        if (anyEmpty(bankParams?.bank_card)) {
+        if (anyEmpty(aliAccount)) {
           Toast('请输入您的支付宝账号')
           return
         } else {
           params = {
-            type: accountType,
-            bank_card: aliParams?.bank_card,
+            type: curAccountType,
+            bank_card: aliAccount,
           }
         }
         break
     }
 
-    if (!anyEmpty(params)) return
+    if (anyEmpty(params)) return
 
     showLoading()
     APIRouter.user_addBank(params).then((result) => {
-
+      ugLog('curBankI result=', result)
+      if (result?.data?.code == 0) {
+        Toast('增加成功')
+        callBack && callBack()
+        pop()
+      } else {
+        Toast(result?.data?.msg)
+      }
     }).finally(() => {
       hideLoading()
     })
@@ -188,12 +196,50 @@ const UseAddBank = () => {
 
   return {
     userInfo,
+    systemInfo,
     bankDetailData,
     btcDetailData,
     bankDetailItems,
     btcDetailItems,
     requestBankDetailData,
+    addBankAccount,
   }
+}
+
+/**
+ * 添加账户参数
+ */
+interface IAddAccount {
+  curAccountType?: string, //账户类型 选择了银行、微信、支付宝、虚拟币
+  curBankID?: string, //选择了哪个银行
+  curBtcID?: string, //选择了哪个虚拟币
+  curChainValue?: string, //选择了哪个链
+  bankAddr?: string, //请输入您的银行卡开户地址
+  bankNumber?: string, //请输入您的银行卡卡号
+  bankPassword?: string, //请输入取款密码
+  btcAddr?: string, //请输入您的虚拟币收款钱包地址
+  wxAccount?: string, //请输入微信号
+  wxPhone?: string, //请输入微信所绑定手机号
+  aliAccount?: string, //请输入您的支付宝账号
+  callBack?: () => void //成功回调
+  // bankParams?: {//银行相关参数
+  //   bank_id?: string,//哪个银行
+  //   bank_card?: string, //银行卡号
+  //   bank_addr?: string, //地址
+  //   pwd?: string, //密码
+  // },
+  // btcParams?: {//虚拟币相关参数
+  //   bank_id?: string,//哪种币
+  //   bank_card?: string, //虚拟币收款地址
+  //   bank_addr?: string, // 链地址
+  // },
+  // wxParams?: {//微信相关参数
+  //   bank_card?: string, //微信号
+  //   bank_addr?: string, //微信手机号
+  // },
+  // aliParams?: {//阿里相关参数
+  //   bank_card?: string, //阿里账号
+  // }
 }
 
 export default UseAddBank

@@ -166,7 +166,7 @@ export default class UGSysConfModel {
   easyRememberDomain?: string // 黑色模板易记的网址*/
   chatLink?: string // 聊天的链接*/
   mBonsSwitch?: boolean; // 俸禄开关开启。0 为开启， 1 为 关闭
-  
+
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
   reg_name?: number // 真实姓名 0不填，1选填，2必填
@@ -189,6 +189,7 @@ export default class UGSysConfModel {
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
   yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
+  switchBindVerify?: number // 新增提款账号時，校验取款密码
   switchAgentRecharge?: boolean // 给下级会员充值开关
 
   lhcdocMiCard?: boolean // 六合彩开奖咪牌(默认状态)开关

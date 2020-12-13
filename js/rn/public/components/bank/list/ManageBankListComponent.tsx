@@ -18,7 +18,8 @@ import { HJThemeColor } from '../../../theme/colors/HJThemeColor'
 import APIRouter from '../../../network/APIRouter'
 import { UGStore } from '../../../../redux/store/UGStore'
 import PushHelper from '../../../define/PushHelper'
-import { AllAccountListData } from '../../../network/Model/act/ManageBankCardModel'
+import { AllAccountListData, BankInfoParam } from '../../../network/Model/act/ManageBankCardModel'
+import { BankConst } from '../const/BankConst'
 
 /**
  * 银行卡管理
@@ -91,6 +92,49 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
       ])
   }
 
+  /**
+   * 绘制银行信息
+   * @param item
+   */
+  const renderBank = (item: BankInfoParam) => <View>
+    <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
+    <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
+    <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+  </View>
+
+  /**
+   * 绘制虚拟币信息
+   * @param item
+   */
+  const renderBtc = (item: BankInfoParam) => <View>
+    <Text style={_styles.bank_user_name}>{'币种: ' + item.bankName}</Text>
+    <Text style={_styles.bank_user_name}>{'钱包地址: ' + item.bankCard}</Text>
+    {
+      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'链名称: ' + item.bankAddr}</Text>
+    }
+  </View>
+
+  /**
+   * 绘制微信信息
+   * @param item
+   */
+  const renderWx = (item: BankInfoParam) => <View>
+    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
+    <Text style={_styles.bank_user_name}>{'微信号: ' + item.bankCard}</Text>
+    {
+      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'绑定手机号: ' + item.bankAddr}</Text>
+    }
+  </View>
+
+  /**
+   * 绘制支付宝信息
+   * @param item
+   */
+  const renderAli = (item: BankInfoParam) => <View>
+    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
+    <Text style={_styles.bank_user_name}>{'支付宝账户: ' + item.bankCard}</Text>
+  </View>
+
   return (
     <BaseScreen style={_styles.container}
                 screenName={'我的提款账户'}
@@ -137,9 +181,14 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
                                                          style={_styles.bank_name_edit}/>
                                             </TouchableWithoutFeedback>
                                           </View>
-                                          <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-                                          <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-                                          <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
+                                          {
+                                            [
+                                              item.type == BankConst.BANK && renderBank(item),
+                                              item.type == BankConst.BTC && renderBtc(item),
+                                              item.type == BankConst.WX && renderWx(item),
+                                              item.type == BankConst.ALI && renderAli(item),
+                                            ]
+                                          }
                                         </View>
                                       </View>
                                     )
