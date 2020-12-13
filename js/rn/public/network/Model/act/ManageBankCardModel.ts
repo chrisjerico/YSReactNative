@@ -28,7 +28,7 @@ export interface ManageBankCardData {
 }
 
 export interface AllAccountListData {
-  type?: string
+  type?: number
   name?: string
   isshow?: boolean
   ismore?: boolean

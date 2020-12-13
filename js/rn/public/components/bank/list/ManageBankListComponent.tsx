@@ -18,6 +18,7 @@ import { HJThemeColor } from '../../../theme/colors/HJThemeColor'
 import APIRouter from '../../../network/APIRouter'
 import { UGStore } from '../../../../redux/store/UGStore'
 import PushHelper from '../../../define/PushHelper'
+import { AllAccountListData } from '../../../network/Model/act/ManageBankCardModel'
 
 /**
  * 银行卡管理
@@ -52,6 +53,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
 
   const {
     systemStore,
+    categoryData,
     getBankIcon,
     refreshCT,
     bankCardData,
@@ -95,7 +97,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
                 screenName={'我的提款账户'}
                 rightButton={rightButton}>
       {
-        anyEmpty(bankCardData?.allAccountList)
+        anyEmpty(categoryData)
           ? <EmptyView style={{ flex: 1 }}/>
           : <ScrollableTabView
             onChangeTab={(tab) => {
@@ -110,8 +112,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
             style={[{ flex: 1 }]}
             renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
             {
-              bankCardData.allAccountList.map((tabItem, index) => {
-                  // ugLog('tabItem=', tabItem)
+              categoryData?.map((tabItem, index) => {
                   return (
                     anyEmpty(tabItem?.data)
                       ? <EmptyView tabLabel={tabItem.name}
@@ -123,8 +124,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
                                   data={tabItem.data}
                                   renderItem={({ item, index }) => {
                                     // ugLog('ITEM=', item)
-                                    let bankIcon = getBankIcon(tabItem.type)
-                                    ugLog('bankIcon type=', bankIcon)
+                                    let bankIcon = getBankIcon(item.type)
                                     return (
                                       <View style={_styles.item_container}>
                                         <View style={_styles.item_content}>
@@ -170,7 +170,7 @@ const _styles = StyleSheet.create({
   },
   item_container: {
     paddingHorizontal: scale(32),
-    paddingTop: scale(32),
+    paddingVertical: scale(16),
   },
   item_content: {
     borderWidth: scale(1),

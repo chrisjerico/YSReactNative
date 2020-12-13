@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import APIRouter from '../../../network/APIRouter'
 import { ugLog } from '../../../tools/UgLog'
 import { anyEmpty, anyLength } from '../../../tools/Ext'
-import { ManageBankCardData } from '../../../network/Model/act/ManageBankCardModel'
+import { AllAccountListData, ManageBankCardData } from '../../../network/Model/act/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
@@ -16,7 +16,11 @@ const UseManageBankList = () => {
 
   // const [listData, setListData] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
-  // const [categoryData, setCategoryData] = useState(null)
+
+  //tab分类数据
+  const [categoryData, setCategoryData] = useState<AllAccountListData[]>(null)
+
+  //所有数据
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
   const systemStore = UGStore.globalProps.sysConf
 
@@ -42,30 +46,39 @@ const UseManageBankList = () => {
   const requestManageBankData = async (category?: string) => {
     setRefreshing(true)
     APIRouter.user_bankCardList().then(({ data: res }) => {
-      // setListData(anyLength(res?.data?.allAccountList) ? null : res?.data?.allAccountList[0])
-      // setCategoryData(res?.data)
       setBankCardData(res?.data)
+      generateListData(res?.data)
     }).finally(() => {
       setRefreshing(false)
     })
   }
 
-  // /**
-  //  * 请求申请彩金数据
-  //  * @param category 分类
-  //  */
-  // const requestLogData = (category: string) => {
-  //   APIRouter.activity_applyWinLog(category).then(({ data: res }) => {
-  //     setListData(res?.data)
-  //   })
-  // }
+  /**
+   * 生成tab数据
+   */
+  let generateListData = (data?: ManageBankCardData) => {
+    if(anyEmpty(data?.allAccountList)) return
+
+    const tabAll: AllAccountListData = {
+      type: 0,
+      name: '全部',
+      data: [],
+    }
+
+    data?.allAccountList.map((item, index) => {
+      if(!anyEmpty(item.data)) {
+        tabAll.data = tabAll.data.concat(item.data)
+      }
+    })
+
+    setCategoryData([tabAll, ...data?.allAccountList])
+  }
 
   /**
    * 得到图标
    * @param type
    */
   const getBankIcon = (type?: string): {} => {
-    ugLog('image type=', type == '1')
     if(type == '1') {
       return { uri: Res.bankhl1 }
     } else if(type == '2') {
@@ -94,6 +107,7 @@ const UseManageBankList = () => {
 
   return {
     systemStore,
+    categoryData,
     getBankIcon,
     refreshCT,
     bankCardData,
