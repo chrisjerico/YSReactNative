@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, Animated, TouchableWithoutFeedback, Text, Modal, Image } from 'react-native'
-import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { pop } from '../../public/navigation/RootNavigation'
-import { Skin1 } from '../../public/theme/UGSkinManagers'
-import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import MineHeader from '../../public/views/tars/MineHeader'
-import APIRouter from '../../public/network/APIRouter'
-import ProgressCircle from '../../public/views/temp/ProgressCircle'
-import List from '../../public/views/tars/List'
-import Button from '../../public/views/tars/Button'
-import AppDefine from '../../public/define/AppDefine'
+import { Animated, Image, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
+import ScrollableTabView from 'react-native-scrollable-tab-view'
+import AppDefine from '../../public/define/AppDefine'
+import { pop } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { removeHTMLTag } from '../../public/tools/removeHTMLTag'
+import Button from '../../public/views/tars/Button'
+import List from '../../public/views/tars/List'
+import MineHeader from '../../public/views/tars/MineHeader'
+import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
+import ProgressCircle from '../../public/views/temp/ProgressCircle'
 
 interface ApplyRewardProps {
   tabLabel: string
   list: any[]
   onPress: () => any
-  onPressApply: () => any
+  onPressApply: ({ win_apply_content }: { win_apply_content: string }) => any
 }
 
 const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
@@ -26,6 +27,7 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
     scrollEnabled={true}
     renderItem={({ item }) => {
       const { name } = item
+      const win_apply_content = item?.param?.win_apply_content
       return (
         <>
           <TouchableWithoutFeedback onPress={onPress}>
@@ -40,7 +42,7 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
             title={'点击申请'}
             containerStyle={{ width: 100, height: 30, backgroundColor: '#AE0000', borderRadius: 5, alignSelf: 'center', marginVertical: 10 }}
             titleStyle={{ color: '#ffffff' }}
-            onPress={onPressApply}
+            onPress={() => onPressApply({ win_apply_content })}
           />
         </>
       )
@@ -94,13 +96,13 @@ const ActivityRewardPage = () => {
   const [list, setList] = useState([])
   const [activityVisible, setActivityVisible] = useState(false)
   const [applyVisible, setApplyVisible] = useState(false)
+  const [activityContent, setActivityContent] = useState('')
 
   useEffect(() => {
     APIRouter.activity_winApplyList()
       .then((value) => {
         const list = value?.data?.data?.list
         setList(list)
-        console.log('--------list-------', list)
       })
       .finally(() => {
         setLoading(false)
@@ -126,6 +128,7 @@ const ActivityRewardPage = () => {
                     {tabs?.map((item, index) => {
                       return (
                         <TouchableWithoutFeedback
+                          key={index}
                           onPress={() => {
                             if (!inAnimated.current) {
                               inAnimated.current = true
@@ -150,8 +153,9 @@ const ActivityRewardPage = () => {
               onPress={() => {
                 setActivityVisible(true)
               }}
-              onPressApply={() => {
+              onPressApply={({ win_apply_content }) => {
                 setApplyVisible(true)
+                setActivityContent(win_apply_content)
               }}
             />
             <ApplyFeedBack tabLabel={'申请反馈'} />
@@ -197,7 +201,7 @@ const ActivityRewardPage = () => {
             <Text style={{ fontSize: 15, marginVertical: 10 }}>{'彩金活动'}</Text>
             <View style={{ width: '100%', marginVertical: 10, paddingHorizontal: 20 }}>
               <Text style={{ marginBottom: 10 }}>{'活动说明'}</Text>
-              <Text>{'AAAAAAAAAA'}</Text>
+              <Text>{removeHTMLTag(activityContent)}</Text>
             </View>
             <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 30, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5, marginBottom: 10 }} placeholder={'申请金额'} />
             <TextInput style={{ borderColor: '#d9d9d9', width: '90%', height: 100, paddingHorizontal: 10, borderWidth: AppDefine.onePx, borderRadius: 5 }} placeholder={'申请说明'} numberOfLines={5} />
