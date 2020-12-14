@@ -65,6 +65,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
   const rightButton = <TouchableWithoutFeedback onPress={() => {
     push(PageName.AddBankComponent, {
       refreshBankList: () => {
+        ugLog('点击边按钮1')
         requestManageBankData(null)
       },
       bankCardData: bankCardData,

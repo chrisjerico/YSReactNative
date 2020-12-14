@@ -121,9 +121,11 @@ const UseAddBank = () => {
         } else if (anyEmpty(bankNumber)) {
           Toast('请输入您的银行卡卡号')
           return
-        } else if (!anyEmpty(bankPassword) && systemInfo?.switchBindVerify == 1) {
-          Toast('请输入取款密码')
-          return
+        } else if (systemInfo?.switchBindVerify == 1) {
+          if(anyEmpty(bankPassword)) {
+            Toast('请输入取款密码')
+            return
+          }
         } else {
           params = {
             type: curAccountType,

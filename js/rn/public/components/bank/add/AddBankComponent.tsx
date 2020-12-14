@@ -136,8 +136,10 @@ const AddBankComponent = ({ navigation, route }) => {
         let chainItems = homeStr?.split(',').map(
           (item, index) => ({ label: item, value: item }))
         setChainDetailItems(chainItems)
-
         setCurChainValue(chainItems[0].value)
+      } else {
+        setChainDetailItems(null)
+        setCurChainValue(null)
       }
 
     } else {
@@ -151,18 +153,18 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderBank = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setBankAddr(text)}
+                 onChangeText={text => setBankAddr(text)}
                  placeholder={'请输入您的银行卡开户地址'}/>
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setBankNumber(text)}
+                 onChangeText={text => setBankNumber(text)}
                  placeholder={'请输入您的银行卡卡号'}/>
     </View>
     {
       systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
-                   onChangeText={ text => setBankPassword(text)}
+                   onChangeText={text => setBankPassword(text)}
                    placeholder={'请输入提款密碼'}/>
       </View>
     }
@@ -175,7 +177,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderBtc = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setBtcAddr(text)}
+                 onChangeText={text => setBtcAddr(text)}
                  placeholder={'请输入您的虚拟币收款钱包地址'}/>
     </View>
   </View>
@@ -186,12 +188,12 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderWx = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setWxAccount(text)}
+                 onChangeText={text => setWxAccount(text)}
                  placeholder={'请输入微信号'}/>
     </View>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setWxPhone(text)}
+                 onChangeText={text => setWxPhone(text)}
                  placeholder={'请输入微信所绑定手机号'}/>
     </View>
   </View>
@@ -202,7 +204,7 @@ const AddBankComponent = ({ navigation, route }) => {
   const renderAli = () => <View style={_styles.item_bank_2nd_content_wx}>
     <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
       <TextInput style={_styles.input_name}
-                 onChangeText={ text => setAliAccount(text)}
+                 onChangeText={text => setAliAccount(text)}
                  placeholder={'请输入您的支付宝账号'}/>
     </View>
   </View>
@@ -285,7 +287,9 @@ const AddBankComponent = ({ navigation, route }) => {
                         wxAccount: wxAccount,
                         wxPhone: wxPhone,
                         aliAccount: aliAccount,
-                        callBack: () => refreshBankList
+                        callBack: () => {
+                          refreshBankList()
+                        },
                       })
 
                     }}/>
