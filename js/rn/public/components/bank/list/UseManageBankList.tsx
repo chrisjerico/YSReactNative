@@ -44,14 +44,18 @@ const UseManageBankList = () => {
   }, [])
 
   /**
-   * 请求申请彩金数据
+   * 请求账户类型数据
    * @param category 分类
    */
   const requestManageBankData = async (category?: string) => {
     setRefreshing(true)
     APIRouter.user_bankCardList().then(({ data: res }) => {
-      setBankCardData(res?.data)
-      generateListData(res?.data)
+      let actData = res?.data
+      if(anyEmpty(actData?.allAccountList)) return
+
+      actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
+      setBankCardData(actData)
+      generateListData(actData)
     }).finally(() => {
       setRefreshing(false)
     })
@@ -61,7 +65,8 @@ const UseManageBankList = () => {
    * 生成tab数据
    */
   let generateListData = (data?: ManageBankCardData) => {
-    if (anyEmpty(data?.allAccountList)) return
+    let actListData = data?.allAccountList
+    if (anyEmpty(actListData)) return
 
     const tabAll: AllAccountListData = {
       type: 0,
@@ -69,13 +74,13 @@ const UseManageBankList = () => {
       data: [],
     }
 
-    data?.allAccountList.map((item, index) => {
+    actListData?.map((item, index) => {
       if (!anyEmpty(item.data)) {
         tabAll.data = tabAll.data.concat(item.data)
       }
     })
 
-    setCategoryData([tabAll, ...data?.allAccountList])
+    setCategoryData([tabAll, ...actListData])
   }
 
   /**
