@@ -351,9 +351,6 @@ const AddBankComponent = ({ navigation, route }) => {
   )
 }
 
-// export const TAB_ITEM_WIDTH = scale(96) //tab宽度
-export const TAB_ITEM_HEIGHT = scale(60) //tab高度
-
 const _styles = StyleSheet.create({
   container: {},
   item_pwd_container: {

@@ -34,11 +34,6 @@ const UseAddBank = () => {
   const [btcDetailData, setBtcDetailData] = useState<BankDetailListModel>(null)
 
   /**
-   * 链类型
-   */
-  const [chainData, setChainData] = useState<[string]>(null)
-
-  /**
    * 银行有哪些
    */
   const [bankDetailItems, setBankDetailItems] = useState(null)

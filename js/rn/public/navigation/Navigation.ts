@@ -65,7 +65,8 @@ export enum PageName {
   VietnamGameList = 'VietnamGameList',
   LHTPreferencePage = 'LHTPreferencePage',
   TrendView = 'TrendView',
-  ManageBankListComponent = 'ManageBankListComponent',
+  ManageBankListComponent = 'ManageBankListComponent',//银行卡
+  CapitalListComponent = 'CapitalListComponent',//存款取款资金明细
   AddBankComponent = 'AddBankComponent',
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   LCLoginPage = 'LCLoginPage',

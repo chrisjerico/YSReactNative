@@ -407,6 +407,10 @@ export default class PushHelper {
         let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
+            if (B_DEBUG) {
+              navigate(PageName.CapitalListComponent, {})
+              // return
+            }
             subId = MenuType.CZ
             break
           }
