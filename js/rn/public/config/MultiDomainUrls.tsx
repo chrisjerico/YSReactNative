@@ -327,7 +327,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://xpjcpapp.com',
   ],
   'c205': [
-    'https://49488888.com',
+    'https://494app.club',
+    'https://494app.xyz',
+    'https://494app.live',
+    'https://494app.me',
+    'https://494app.co',
   ],
   'c206': [
     'http://rdiuyotdhjo533fsddylvgi.com',
