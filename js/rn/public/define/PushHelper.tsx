@@ -117,7 +117,7 @@ export default class PushHelper {
   }
   // 首页游戏列表跳转
   static pushHomeGame(game: PushHomeGame) {
-    game = Object.assign({ clsName: 'GameModel' }, game)
+    game = Object.assign({}, game?.category ? { clsName: 'GameModel' } : { clsName: 'GameModel', category: '不要为空' }, game)
     console.log('--------game-------', game)
     switch (Platform.OS) {
       case 'ios':
@@ -423,6 +423,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
+            // navigate(PageName.ManageBankListView, {})
             subId = MenuType.YHK
             break
           }

@@ -22,7 +22,7 @@ const Form = ({ title, placeholder }) => (
   </>
 )
 
-const A = ({ tabLabel }) => {
+const SignInPassword = ({ tabLabel }) => {
   return (
     <View style={{ flex: 1, marginTop: 35 }}>
       <Form title={'原登录密码'} placeholder={'请输入原登录密码'} />
@@ -33,7 +33,7 @@ const A = ({ tabLabel }) => {
   )
 }
 
-const B = ({ tabLabel }) => {
+const TakeMoneyPassword = ({ tabLabel }) => {
   return (
     <View style={{ flex: 1, marginTop: 35 }}>
       <Form title={'旧取款密码'} placeholder={'请输入旧取款密码'} />
@@ -92,8 +92,8 @@ const SafeCenterPage = () => {
               </>
             )
           }}>
-          <A tabLabel={'登录密码'} />
-          <B tabLabel={'取款密码'} />
+          <SignInPassword tabLabel={'登录密码'} />
+          <TakeMoneyPassword tabLabel={'取款密码'} />
         </ScrollableTabView>
       </View>
     </>

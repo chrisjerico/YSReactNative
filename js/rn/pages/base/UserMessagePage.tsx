@@ -42,6 +42,9 @@ const UserMessagePage = () => {
       <List
         initialNumToRender={20}
         uniqueKey={'MessagePage'}
+        onScrollToTop={() => {
+          console.log('-------onScrollToTop-----')
+        }}
         refreshControl={
           <RefreshControl
             refreshing={false}

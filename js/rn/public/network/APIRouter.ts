@@ -33,6 +33,7 @@ import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
+import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -146,6 +147,72 @@ class APIRouter {
       pwd: '46da83e1773338540e1e1c973f6c8a68',
     })
   }
+
+  /**
+   * 银行卡和虚拟币等信息
+   */
+  static user_bankCardList = async (): Promise<AxiosResponse<ManageBankCardModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams += '&token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<ManageBankCardModel>('c=user&a=bankCard&' + tokenParams)
+  }
+
+  /**
+   * 银行卡和虚拟币等信息
+   */
+  static user_bankInfoList = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = '&page=1&rows=999&category=' + category
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams += '&token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<ManageBankCardModel>('c=activity&a=winApplyList&' + tokenParams)
+  }
+
+  /**
+   * 彩金活动分类记录
+   */
+  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = '&page=1&rows=999&category=' + category
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams += '&token=' + pms?.token
+        break
+    }
+
+    ugLog('tokenParams=', tokenParams)
+
+    return httpClient.get<ManageBankCardModel>('c=activity&a=applyWinLog&' + tokenParams)
+  }
+
   static activity_redBagDetail = async () => {
     let tokenParams = ''
     switch (Platform.OS) {
@@ -351,6 +418,7 @@ class APIRouter {
       expiredTime: 3,
     })
   }
+
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {
     return httpClient.get('c=game&a=playOdds&id=' + id, {
       //@ts-ignore

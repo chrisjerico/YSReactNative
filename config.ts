@@ -1,8 +1,3 @@
-import { Platform } from 'react-native'
-import { isTest } from './js/rn/public/config/CodePushKeys'
-import { OCHelper } from './js/rn/public/define/OCHelper/OCHelper'
-
-
 // 调试环境配置
 export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
