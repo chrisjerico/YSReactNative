@@ -182,9 +182,7 @@ const UseAddBank = () => {
 
     showLoading()
     APIRouter.user_addBank(params).then((result) => {
-      ugLog('curBankI result=', result)
       if (result?.data?.code == 0) {
-        Toast('增加成功')
         callBack && callBack()
         pop()
       } else {

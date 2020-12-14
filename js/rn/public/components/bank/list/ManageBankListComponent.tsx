@@ -1,6 +1,6 @@
 import { Alert, FlatList, Linking, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../tools/Ext'
 import { scale } from '../../../tools/Scale'
@@ -20,6 +20,9 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import PushHelper from '../../../define/PushHelper'
 import { AllAccountListData, BankInfoParam } from '../../../network/Model/act/ManageBankCardModel'
 import { BankConst } from '../const/BankConst'
+import ReloadSlidingVerification from '../../tars/ReloadSlidingVerification'
+import NeedNameInputComponent from '../../tars/NeedNameInputComponent'
+import WebView from 'react-native-webview'
 
 /**
  * 银行卡管理
@@ -27,71 +30,19 @@ import { BankConst } from '../const/BankConst'
  * @constructor
  */
 const ManageBankListComponent = ({ navigation, setProps }) => {
-  // //列表数据
-  // const [listData, setListData] = useState<ActivityJackpotData>()
-  // //当前是第几页数据
-  // const [pageIndex, setPageIndex] = useState(0)
-  //
-  // useEffect(() => {
-  //   setPageIndex(1)
-  // }, [])
-  //
-  // useEffect(() => {
-  //   APIRouter.activity_winApplyList().then(({ data: res }) => {
-  //
-  //   })
-  // }, [pageIndex])
 
-  // useEffect(() => {
-  //   setProps({
-  //     didFocus: async () => {
-  //
-  //     }
-  //   })
-  // }, [])
-
+  const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
 
   const {
-    systemStore,
+    systemInfo,
+    userInfo,
     categoryData,
     refreshCT,
     bankCardData,
     requestManageBankData,
-    // requestLogData,
+    bindRealName,
   } = UseManageBankList()
-
-  //右边按钮
-  const rightButton = <TouchableWithoutFeedback onPress={() => {
-    push(PageName.AddBankComponent, {
-      refreshBankList: () => {
-        ugLog('点击边按钮1')
-        requestManageBankData(null)
-      },
-      bankCardData: bankCardData,
-    })
-  }
-  }>
-    <Text style={_styles.right_button}>新增</Text>
-  </TouchableWithoutFeedback>
-
-  //点击编辑
-  const clickEdit = () => {
-    Alert.alert('提示',
-      '请联系在线客服',
-      [
-        {
-          text: '取消',
-        },
-        {
-          text: '联系客服',
-          onPress: () => {
-            // Linking.openURL(systemStore?.zxkfUrl)
-            PushHelper.openWebView(systemStore?.zxkfUrl)
-          },
-        },
-      ])
-  }
 
   /**
    * 绘制银行信息
@@ -136,69 +87,117 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     <Text style={_styles.bank_user_name}>{'支付宝账户: ' + item.bankCard}</Text>
   </View>
 
+  /**
+   * 点击编辑
+   */
+  const clickEdit = () => {
+    Alert.alert('提示',
+      '请联系在线客服',
+      [
+        {
+          text: '取消',
+        },
+        {
+          text: '联系客服',
+          onPress: () => {
+            // Linking.openURL(systemStore?.zxkfUrl)
+            PushHelper.openWebView(systemInfo?.zxkfUrl)
+          },
+        },
+      ])
+  }
+
+  /**
+   * 绑定姓名
+   * @param text
+   */
+  const onSubmitFullName = (text?: string) => {
+    ugLog('onSubmitFullName=', text)
+    bindRealName(text, addNewAccount)
+  }
+
+  /**
+   * 右边按钮添加新账户
+   */
+  let addNewAccount = () => {
+    //是否实名过
+    if (anyEmpty(userInfo?.fullName)) {
+      needNameInputRef?.current?.reload()
+    } else {
+      push(PageName.AddBankComponent, {
+        refreshBankList: () => {
+          requestManageBankData(null)
+        },
+        bankCardData: bankCardData,
+      })
+    }
+  }
+
+  const rightButton = <TouchableWithoutFeedback onPress={addNewAccount}>
+    <Text style={_styles.right_button}>新增</Text>
+  </TouchableWithoutFeedback>
+
   return (
     <BaseScreen style={_styles.container}
                 screenName={'我的提款账户'}
                 rightButton={rightButton}>
       {
-        anyEmpty(categoryData)
-          ? <EmptyView style={{ flex: 1 }}/>
-          : <ScrollableTabView
-            onChangeTab={(tab) => {
-              if (tab.from == tab.i) {
-                ugLog('tab index=', tab.i)
-              }
-            }}
-            tabBarUnderlineStyle={_styles.tab_bar_underline}
-            tabBarActiveTextColor={Skin1.themeColor}
-            tabBarInactiveTextColor={Skin1.textColor1}
-            tabBarTextStyle={{ fontSize: scale(22) }}
-            style={[{ flex: 1 }]}
-            renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
-            {
-              categoryData?.map((tabItem, index) => {
-                  return (
-                    anyEmpty(tabItem?.data)
-                      ? <EmptyView tabLabel={tabItem.name}
-                                   text={'空空如也\n点击右上角“新增”添加提款账户吧'}
-                                   style={{ flex: 1 }}/>
-                      : <FlatList tabLabel={tabItem.name}
-                                  refreshControl={refreshCT}
-                                  keyExtractor={(item, index) => `${item}-${index}`}
-                                  data={tabItem.data}
-                                  renderItem={({ item, index }) => {
-                                    // ugLog('ITEM=', item)
-                                    let bankIcon = getBankIcon(item.type)
-                                    return (
-                                      <View style={_styles.item_container}>
-                                        <View style={_styles.item_content}>
-                                          <View style={_styles.bank_name_container}>
-                                            <FastImage source={bankIcon}
-                                                       resizeMode={'contain'}
-                                                       style={_styles.bank_name_icon}/>
-                                            <Text style={_styles.bank_name}>{item.bankName}</Text>
-                                            <TouchableWithoutFeedback onPress={clickEdit}>
-                                              <FastImage source={{ uri: Res.edit }}
-                                                         style={_styles.bank_name_edit}/>
-                                            </TouchableWithoutFeedback>
+        [
+          anyEmpty(categoryData)
+            ? <EmptyView style={{ flex: 1 }}/>
+            : <ScrollableTabView
+              tabBarUnderlineStyle={_styles.tab_bar_underline}
+              tabBarActiveTextColor={Skin1.themeColor}
+              tabBarInactiveTextColor={Skin1.textColor1}
+              tabBarTextStyle={{ fontSize: scale(22) }}
+              style={[{ flex: 1 }]}
+              renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+              {
+                categoryData?.map((tabItem, index) => {
+                    return (
+                      anyEmpty(tabItem?.data)
+                        ? <EmptyView tabLabel={tabItem.name}
+                                     text={'空空如也\n点击右上角“新增”添加提款账户吧'}
+                                     style={{ flex: 1 }}/>
+                        : <FlatList tabLabel={tabItem.name}
+                                    refreshControl={refreshCT}
+                                    keyExtractor={(item, index) => `${item}-${index}`}
+                                    data={tabItem.data}
+                                    renderItem={({ item, index }) => {
+                                      // ugLog('ITEM=', item)
+                                      let bankIcon = getBankIcon(item.type)
+                                      return (
+                                        <View style={_styles.item_container}>
+                                          <View style={_styles.item_content}>
+                                            <View style={_styles.bank_name_container}>
+                                              <FastImage source={bankIcon}
+                                                         resizeMode={'contain'}
+                                                         style={_styles.bank_name_icon}/>
+                                              <Text style={_styles.bank_name}>{item.bankName}</Text>
+                                              <TouchableWithoutFeedback onPress={clickEdit}>
+                                                <FastImage source={{ uri: Res.edit }}
+                                                           style={_styles.bank_name_edit}/>
+                                              </TouchableWithoutFeedback>
+                                            </View>
+                                            {
+                                              [
+                                                item.type == BankConst.BANK && renderBank(item),
+                                                item.type == BankConst.BTC && renderBtc(item),
+                                                item.type == BankConst.WX && renderWx(item),
+                                                item.type == BankConst.ALI && renderAli(item),
+                                              ]
+                                            }
                                           </View>
-                                          {
-                                            [
-                                              item.type == BankConst.BANK && renderBank(item),
-                                              item.type == BankConst.BTC && renderBtc(item),
-                                              item.type == BankConst.WX && renderWx(item),
-                                              item.type == BankConst.ALI && renderAli(item),
-                                            ]
-                                          }
                                         </View>
-                                      </View>
-                                    )
-                                  }}/>
-                  )
-                },
-              )
-            }
-          </ScrollableTabView>
+                                      )
+                                    }}/>
+                    )
+                  },
+                )
+              }
+            </ScrollableTabView>,
+          <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName}/>,
+        ]
       }
     </BaseScreen>
   )

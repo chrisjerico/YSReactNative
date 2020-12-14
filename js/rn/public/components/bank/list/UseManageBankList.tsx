@@ -7,6 +7,9 @@ import { RefreshControl } from 'react-native'
 import * as React from 'react'
 import { Res } from '../../../../Res/icon/Res'
 import { UGStore } from '../../../../redux/store/UGStore'
+import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
+import { Toast } from '../../../tools/ToastUtils'
+import { pop } from '../../../navigation/RootNavigation'
 
 /**
  * 银行卡管理
@@ -21,7 +24,9 @@ const UseManageBankList = () => {
 
   //所有数据
   const [bankCardData, setBankCardData] = useState<ManageBankCardData>(null)
-  const systemStore = UGStore.globalProps.sysConf
+
+  const userInfo = UGStore.globalProps.userInfo //用户信息
+  const systemInfo = UGStore.globalProps.sysConf //系统信息
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -73,13 +78,38 @@ const UseManageBankList = () => {
     setCategoryData([tabAll, ...data?.allAccountList])
   }
 
+  /**
+   * 绑定实名
+   * @param fullName 真名
+   * @param callBack
+   */
+  const bindRealName = async (fullName?: string, callBack?: () => void) => {
+    if (anyEmpty(fullName)) return
+
+    showLoading()
+    APIRouter.user_bindRealName({ fullName: fullName }).then((result) => {
+      if (result?.data?.code == 0) {
+        userInfo.fullName = fullName
+        UGStore.dispatch({type: 'merge', userInfo: { fullName: fullName }});
+        UGStore.save();
+        callBack && callBack()
+
+      } else {
+        Toast(result?.data?.msg)
+      }
+    }).finally(() => {
+      hideLoading()
+    })
+  }
+
   return {
-    systemStore,
+    systemInfo,
+    userInfo,
     categoryData,
     refreshCT,
     bankCardData,
     requestManageBankData,
-    // requestLogData,
+    bindRealName,
   }
 }
 

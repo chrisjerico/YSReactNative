@@ -202,11 +202,28 @@ class APIRouter {
 
   /**
    * 银行卡和虚拟币等信息
-   * category: 定义在 BankConst
+   * @param params 增加银行卡，虚拟币，微信，支付宝
+   * type: 增加银行卡，虚拟币，微信，支付宝
+   * bank_id:
+   * bank_card:
+   * bank_addr:
+   * pwd:
+   * owner_name:
+   *
    */
   static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
     return httpClient.post<NormalModel>('c=user&a=bindBank', params)
+  }
+
+  /**
+   * 绑定实名
+   * @param params 真名
+   * fullName: 真名
+   */
+  static user_bindRealName = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<NormalModel>('c=user&a=profileName', params)
   }
 
   static activity_redBagDetail = async () => {
