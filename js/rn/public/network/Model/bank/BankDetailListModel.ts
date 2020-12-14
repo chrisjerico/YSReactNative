@@ -1,5 +1,5 @@
 /**
- * 活动彩金数据
+ * 银行卡信息数据
  */
 
 export interface BankDetailListModel {

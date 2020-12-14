@@ -10,6 +10,7 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
 import { Toast } from '../../../tools/ToastUtils'
 import { pop } from '../../../navigation/RootNavigation'
+import { BankConst } from '../const/BankConst'
 
 /**
  * 银行卡管理
@@ -32,7 +33,7 @@ const UseManageBankList = () => {
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
                                       setRefreshing(true)
-                                      requestManageBankData('0')
+                                      requestManageBankData(null)
                                     }}/>
 
   /**
@@ -123,30 +124,18 @@ const UseManageBankList = () => {
  * @param type
  */
 const getBankIcon = (type?: string): {} => {
-  if (type == '1') {
-    return { uri: Res.bankhl1 }
-  } else if (type == '2') {
-    return { uri: Res.zfb_icon }
-  } else if (type == '3') {
-    return { uri: Res.wechatpay_icon }
-  } else if (type == '4') {
-    return { uri: Res.btc }
+  switch (type) {
+    case BankConst.BANK:
+      return { uri: Res.bankhl1 }
+    case BankConst.ALI:
+      return { uri: Res.zfb_icon }
+    case BankConst.WX:
+      return { uri: Res.wechatpay_icon }
+    case BankConst.BTC:
+      return { uri: Res.btc }
+    default:
+      return null
   }
-
-  return null
-
-  // switch (type) {
-  //   case '1':
-  //     return { uri: Res.bankhl1 }
-  //   case '2':
-  //     return { uri: Res.zfb_icon }
-  //   case '3':
-  //     return { uri: Res.wechatpay_icon }
-  //   case '4':
-  //     return { uri: Res.btc }
-  //   default:
-  //     return null
-  // }
 }
 
 export default UseManageBankList

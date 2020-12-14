@@ -1,5 +1,5 @@
 /**
- * 活动彩金数据
+ * 银行列表数据
  */
 
 export interface ManageBankCardModel {
