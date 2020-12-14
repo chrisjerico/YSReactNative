@@ -33,7 +33,7 @@ import {
   BankInfoParam,
   ManageBankCardData,
   ManageBankCardModel,
-} from '../../../network/Model/act/ManageBankCardModel'
+} from '../../../network/Model/bank/ManageBankCardModel'
 import UseAddBank from './UseAddBank'
 import { ugLog } from '../../../tools/UgLog'
 import { UGColor, UGThemeColor } from '../../../theme/UGThemeColor'

@@ -33,7 +33,7 @@ import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
-import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
+import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
 import { NormalModel } from './Model/NormalModel'
 //api 統一在這邊註冊
