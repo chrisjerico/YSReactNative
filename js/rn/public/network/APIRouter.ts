@@ -226,6 +226,16 @@ class APIRouter {
     return httpClient.post<NormalModel>('c=user&a=profileName', params)
   }
 
+  /**
+   * 绑定密码
+   * login_pwd: 登录密码
+   * fund_pwd: 取款密码
+   */
+  static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
+  }
+
   static activity_redBagDetail = async () => {
     let tokenParams = ''
     switch (Platform.OS) {

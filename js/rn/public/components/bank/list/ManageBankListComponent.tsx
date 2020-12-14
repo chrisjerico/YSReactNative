@@ -233,13 +233,13 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
   },
   bank_name_icon: {
-    width: scale(40),
-    height: scale(40),
+    width: scale(36),
+    height: scale(36),
   },
   bank_name: {
     flex: 1,
     color: UGColor.TextColor1,
-    fontSize: scale(24),
+    fontSize: scale(22),
     marginLeft: scale(16),
   },
   bank_name_edit: {
@@ -248,7 +248,7 @@ const _styles = StyleSheet.create({
   },
   bank_user_name: {
     color: UGColor.TextColor3,
-    fontSize: scale(22),
+    fontSize: scale(20),
     paddingTop: scale(16),
   },
   right_button: {

@@ -122,7 +122,7 @@ const UseAddBank = () => {
           Toast('请输入您的银行卡卡号')
           return
         } else if (systemInfo?.switchBindVerify == 1) {
-          if(anyEmpty(bankPassword)) {
+          if (anyEmpty(bankPassword)) {
             Toast('请输入取款密码')
             return
           }
@@ -194,6 +194,48 @@ const UseAddBank = () => {
 
   }
 
+
+  /**
+   * 绑定密码
+   * @param fullName 真名
+   * @param callBack
+   */
+  const bindPassword = async ({
+                                login_pwd,
+                                fund_pwd,
+                                fund_pwd2,
+                                callBack,
+                              }: IBindPassword) => {
+    if (anyEmpty(login_pwd)) {
+      Toast('请填写密码(至少6位数字加字母组合)')
+      return
+    } else if (anyEmpty(fund_pwd)) {
+      Toast('请输入您的4位数字提款密码')
+      return
+    } else if (fund_pwd != fund_pwd2) {
+      Toast('两次输入提款密码不一致')
+      return
+    }
+
+    showLoading()
+    APIRouter.user_bindPwd({
+      login_pwd: md5(login_pwd),
+      fund_pwd: md5(fund_pwd),
+    }).then((result) => {
+      if (result?.data?.code == 0) {
+        userInfo.hasFundPwd = true
+        UGStore.dispatch({ type: 'merge', userInfo: { hasFundPwd: true } })
+        UGStore.save()
+        callBack && callBack()
+
+      } else {
+        Toast(result?.data?.msg)
+      }
+    }).finally(() => {
+      hideLoading()
+    })
+  }
+
   return {
     userInfo,
     systemInfo,
@@ -203,7 +245,18 @@ const UseAddBank = () => {
     btcDetailItems,
     requestBankDetailData,
     addBankAccount,
+    bindPassword,
   }
+}
+
+/**
+ * 绑定密码
+ */
+interface IBindPassword {
+  login_pwd?: string, //登录密码
+  fund_pwd?: string, //取款密码
+  fund_pwd2?: string, //取款密码
+  callBack?: () => void //成功回调
 }
 
 /**
@@ -222,24 +275,6 @@ interface IAddAccount {
   wxPhone?: string, //请输入微信所绑定手机号
   aliAccount?: string, //请输入您的支付宝账号
   callBack?: () => void //成功回调
-  // bankParams?: {//银行相关参数
-  //   bank_id?: string,//哪个银行
-  //   bank_card?: string, //银行卡号
-  //   bank_addr?: string, //地址
-  //   pwd?: string, //密码
-  // },
-  // btcParams?: {//虚拟币相关参数
-  //   bank_id?: string,//哪种币
-  //   bank_card?: string, //虚拟币收款地址
-  //   bank_addr?: string, // 链地址
-  // },
-  // wxParams?: {//微信相关参数
-  //   bank_card?: string, //微信号
-  //   bank_addr?: string, //微信手机号
-  // },
-  // aliParams?: {//阿里相关参数
-  //   bank_card?: string, //阿里账号
-  // }
 }
 
 export default UseAddBank

@@ -59,6 +59,9 @@ interface IRouteParams {
  */
 const AddBankComponent = ({ navigation, route }) => {
 
+  const [loginPwd, setLoginPwd] = useState(null) //登录密码
+  const [fundPwd, setFundPwd] = useState(null) //取款密码
+  const [fundPwd2, setFundPwd2] = useState(null) //取款密码
   const [bankAddr, setBankAddr] = useState(null)//请输入您的银行卡开户地址
   const [bankNumber, setBankNumber] = useState(null) //请输入您的银行卡卡号
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
@@ -93,6 +96,7 @@ const AddBankComponent = ({ navigation, route }) => {
     btcDetailItems,
     requestBankDetailData,
     addBankAccount,
+    bindPassword,
   } = UseAddBank()
 
   /**
@@ -209,91 +213,139 @@ const AddBankComponent = ({ navigation, route }) => {
     </View>
   </View>
 
+  /**
+   * 绘制绑定密码
+   */
+  const renderBindPwd = () => <View style={_styles.item_pwd_container}>
+    <View style={_styles.item_pwd_content}>
+      <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
+        <TextInput style={_styles.input_name}
+                   secureTextEntry={true}
+                   onChangeText={text => setLoginPwd(text)}
+                   placeholder={'请输入当前登录密码'}/>
+      </View>
+      <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setFundPwd(text)}
+                   placeholder={'请输入您的4位数字提款密码'}/>
+      </View>
+      <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setFundPwd2(text)}
+                   placeholder={'请确认您的提款密码'}/>
+      </View>
+    </View>
+
+    <Button title={'提交'}
+            titleStyle={_styles.submit_text}
+            containerStyle={_styles.submit_bt}
+            onPress={() => {
+              bindPassword({
+                login_pwd: loginPwd,
+                fund_pwd: fundPwd,
+                fund_pwd2: fundPwd2,
+                callBack: () => {
+                  setLoginPwd(null)
+                },
+              })
+
+            }}/>
+  </View>
+
   return (
     <BaseScreen style={_styles.container} screenName={'绑定提款账户'}>
       {
-        anyEmpty(bankList) ?
-          <EmptyView style={{ flex: 1 }}/> :
-          <View style={_styles.item_bank_container}>
-            {
-              !anyEmpty(curAccountType) && <UGDropDownPicker
-                items={accountItems}
-                defaultValue={curAccountType}
-                onOpen={() => {
-                  bankController?.close()
-                  btcController?.close()
-                  chainController?.close()
-                }}
-                onChangeItem={item => {
-                  setCurAccountType(item.value)
+        anyEmpty(userInfo?.hasFundPwd) ?
+          renderBindPwd() ://先绑定密码
+          (
+            anyEmpty(bankList) ?
+              <EmptyView style={{ flex: 1 }}/> : //没有数据
+              <View style={_styles.item_bank_container}>
+                {
+                  !anyEmpty(curAccountType) && <UGDropDownPicker
+                    items={accountItems}
+                    defaultValue={curAccountType}
+                    onOpen={() => {
+                      bankController?.close()
+                      btcController?.close()
+                      chainController?.close()
+                    }}
+                    onChangeItem={item => {
+                      setCurAccountType(item.value)
+                    }
+                    }/>
                 }
-                }/>
-            }
-            <View style={{ height: scale(32) }}/>
-            {
-              [
-                // 绘制银行
-                curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
-                  items={bankDetailItems}
-                  controller={instance => bankController = instance}
-                  style={_styles.bank_picker}
-                  defaultValue={curBankID}
-                  onChangeItem={item => setCurBankID(item.value)}/>,
-                curAccountType == BankConst.BANK && renderBank(),
+                <View style={{ height: scale(32) }}/>
+                {
+                  [
+                    // 绘制银行
+                    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
+                      items={bankDetailItems}
+                      controller={instance => bankController = instance}
+                      style={_styles.bank_picker}
+                      defaultValue={curBankID}
+                      onChangeItem={item => setCurBankID(item.value)}/>,
+                    curAccountType == BankConst.BANK && renderBank(),
 
-                //绘制虚拟币
-                curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
-                  items={btcDetailItems}
-                  controller={instance => btcController = instance}
-                  style={_styles.bank_picker}
-                  defaultValue={curBtcID}
-                  onOpen={() => {
-                    chainController?.close()
-                  }}
-                  onChangeItem={item => {
-                    setCurBtcID(item.value)
-                  }}/>,
-                //绘制链
-                curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
-                <UGDropDownPicker
-                  items={chainDetailItems}
-                  controller={instance => chainController = instance}
-                  style={_styles.bank_picker}
-                  defaultValue={curChainValue}
-                  onChangeItem={item => setCurChainValue(item.value)}/>,
-                curAccountType == BankConst.BTC && renderBtc(),
+                    //绘制虚拟币
+                    curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
+                      items={btcDetailItems}
+                      controller={instance => btcController = instance}
+                      style={_styles.bank_picker}
+                      defaultValue={curBtcID}
+                      onOpen={() => {
+                        chainController?.close()
+                      }}
+                      onChangeItem={item => {
+                        setCurBtcID(item.value)
+                      }}/>,
+                    //绘制链
+                    curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
+                    <UGDropDownPicker
+                      items={chainDetailItems}
+                      controller={instance => chainController = instance}
+                      style={_styles.bank_picker}
+                      defaultValue={curChainValue}
+                      onChangeItem={item => setCurChainValue(item.value)}/>,
+                    curAccountType == BankConst.BTC && renderBtc(),
 
-                //绘制微信
-                curAccountType == BankConst.WX && renderWx(),
-                //绘制支付宝
-                curAccountType == BankConst.ALI && renderAli(),
-              ]
-            }
+                    //绘制微信
+                    curAccountType == BankConst.WX && renderWx(),
+                    //绘制支付宝
+                    curAccountType == BankConst.ALI && renderAli(),
+                  ]
+                }
 
-            <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
-            <Button title={'提交'}
-                    titleStyle={_styles.submit_text}
-                    containerStyle={_styles.submit_bt}
-                    onPress={() => {
-                      addBankAccount({
-                        curAccountType: curAccountType,
-                        curBankID: curBankID,
-                        curBtcID: curBtcID,
-                        curChainValue: curChainValue,
-                        bankAddr: bankAddr,
-                        bankNumber: bankNumber,
-                        bankPassword: bankPassword,
-                        btcAddr: btcAddr,
-                        wxAccount: wxAccount,
-                        wxPhone: wxPhone,
-                        aliAccount: aliAccount,
-                        callBack: () => {
-                          refreshBankList()
-                        },
-                      })
+                <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
+                <Button title={'提交'}
+                        titleStyle={_styles.submit_text}
+                        containerStyle={_styles.submit_bt}
+                        onPress={() => {
+                          addBankAccount({
+                            curAccountType: curAccountType,
+                            curBankID: curBankID,
+                            curBtcID: curBtcID,
+                            curChainValue: curChainValue,
+                            bankAddr: bankAddr,
+                            bankNumber: bankNumber,
+                            bankPassword: bankPassword,
+                            btcAddr: btcAddr,
+                            wxAccount: wxAccount,
+                            wxPhone: wxPhone,
+                            aliAccount: aliAccount,
+                            callBack: () => {
+                              refreshBankList()
+                            },
+                          })
 
-                    }}/>
-          </View>
+                        }}/>
+              </View>
+
+          )
       }
     </BaseScreen>
   )
@@ -304,6 +356,16 @@ export const TAB_ITEM_HEIGHT = scale(60) //tab高度
 
 const _styles = StyleSheet.create({
   container: {},
+  item_pwd_container: {
+    padding: scale(32),
+    flex: 1,
+  },
+  item_pwd_content: {
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor1,
+    borderRadius: scale(8),
+    marginBottom: scale(64),
+  },
   item_bank_container: {
     paddingHorizontal: scale(32),
     paddingTop: scale(32),
@@ -340,7 +402,7 @@ const _styles = StyleSheet.create({
     flex: 1,
     color: UGColor.TextColor1,
     fontSize: scale(22),
-    marginLeft: scale(16),
+    marginHorizontal: scale(16),
   },
   real_name: {
     color: UGColor.TextColor2,
