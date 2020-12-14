@@ -20,7 +20,7 @@ export const WNZThemeColor: { [x: string]: UGThemeColor } = {
     }, // 真人大廳小方塊背景
     // cellBgColor: '#444',
     // CLBgColor: '#E6E6E6', // 推薦收益區塊
-    menuHeadViewColor: [themeColor, themeColor],
+    menuHeadViewColor: ['#ffffff', '#ffffff'],
     textColor1: '#111111',
     textColor2: '#555555',
     textColor3: '#C1C1C1',
