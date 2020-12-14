@@ -73,6 +73,8 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import ManageBankListView from '../../public/components/activity/ManageBankListView'
+import CodePush from 'react-native-code-push'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
 import { TransferView } from '../../public/components/TransferView'
 import ActivityJackpotView from '../../public/components/activity/ActivityJackpotView'
@@ -99,6 +101,7 @@ class TabBarController extends Component<{
   }
 
   componentDidMount() {
+    CodePush.notifyAppReady()
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
@@ -162,7 +165,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityJackpotView} component={UGPage(ActivityJackpotView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListView} component={UGPage(ManageBankListView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />

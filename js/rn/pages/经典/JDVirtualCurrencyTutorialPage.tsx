@@ -15,10 +15,6 @@ export interface JDVirtualCurrencyTutorialProps extends UGBasePageProps<JDVirtua
 
 // 虚拟币充值教程
 export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialProps) => {
-  // c084
-  if (AppDefine.siteId == 'c084') {
-    return <C084 />
-  }
 
   // 其他站点
   const { setProps, itemArry = [], imgH } = props;
@@ -34,6 +30,16 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
       },
     });
   }, [])
+
+  // c084
+  if (AppDefine.siteId == 'c084') {
+    return <C084 />
+  }
+
+  // c126
+  if (AppDefine.siteId == 'c126') {
+    return <C126 />
+  }
 
   let imgURL = 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
   if (AppDefine.siteId == 'c116') {
@@ -61,9 +67,16 @@ function C084() {
   return <View style={{ flex: 1 }}>
     <WebView
       style={{ flex: 1, marginTop: -44 }}
-      source={{
-        uri: AppDefine.host + '/mobile/#/bank/huobiTutorialsC084'
-      }}
+      source={{ uri: AppDefine.host + '/mobile/#/bank/showXnb_transferC084' }}
+    />
+  </View>
+}
+
+function C126() {
+  return <View style={{ flex: 1 }}>
+    <WebView
+      style={{ flex: 1 }}
+      source={{ uri: 'http://266327.com/m.html' }}
     />
   </View>
 }

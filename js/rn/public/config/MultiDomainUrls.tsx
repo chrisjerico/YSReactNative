@@ -146,7 +146,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://0849520.com',
     'https://0849519.com',
     'https://0849518.com',
-    'https://0849517.com',
+    'https://0849516.com',
   ],
   'c018': [
     'https://204421.com',
@@ -222,7 +222,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://833030.com',
+    'https://877171.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
@@ -234,11 +234,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://jzcp488.com',
   ],
   'c126b': [
-    'http://b66673.com',
-    'http://b66224.com',
-    'http://b62244.com',
-    'http://b62224.com',
-    'http://781789.com',
+    'https://781789.com',
+    'https://bc44698.com',
+    'https://b66224.com',
+    'https://b62244.com',
+    'https://b62224.com',
   ],
   'c134': [
     'https://19972015.com',
@@ -285,7 +285,10 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://www.dfjt1.com',
   ],
   'c175': [
-    'http://7053fndsjfkn.com',
+    'https://7053bbb.com',
+    'https://7053fff.vip',
+    'https://7053eee.vip',
+    'https://7053ccc.vip',
   ],
   'c184': [
     'http://00fhcp.cn',
@@ -324,7 +327,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://xpjcpapp.com',
   ],
   'c205': [
-    'https://49488888.com',
+    'https://494app.club',
+    'https://494app.xyz',
+    'https://494app.live',
+    'https://494app.me',
+    'https://494app.co',
   ],
   'c206': [
     'http://rdiuyotdhjo533fsddylvgi.com',
@@ -343,11 +350,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://4501078.com',
-    'https://c213aapp.cc',
-    'https://c213app.com',
-    'https://c213app01.co',
-    'https://c213app01.me',
+    'https://app213xpj.me',
+    'https://c213aapp.me',
+    'https://c213app01.cc',
+    'https://app213xpj.cc',
+    'https://app213xpj.com',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -408,11 +415,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://70333app.co',
-    'https://70333app.me',
-    'https://70333app.info',
-    'https://70333app.org',
-    'https://70333app.net',
+    'https://7033303.com',
   ],
   'h003b': [
     'https://betv5.com',

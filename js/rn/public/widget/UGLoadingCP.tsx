@@ -8,6 +8,7 @@ import { Button, Icon } from 'react-native-elements'
 import Animated, { Easing } from 'react-native-reanimated'
 import { Res } from '../../Res/icon/Resources'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Toast } from '../tools/ToastUtils'
 
 
 export enum UGLoadingType {
@@ -65,6 +66,16 @@ export function showReload(text?: string, backgroundColor?: string[], reloadClic
 
 export function showHUD(props: UGLoadingProps) {
   console.log(props?.text)
+  if (props?.type != UGLoadingType.Loading) {
+    hideLoading()
+    //该弹窗对安卓兼容性有问题
+    switch (Platform.OS) {
+      case 'android':
+        Toast(props?.text)
+        return;
+    }
+  }
+
   UGLoadingProps.shared = {
     ...props,
     setHideLoading: (func) => {
