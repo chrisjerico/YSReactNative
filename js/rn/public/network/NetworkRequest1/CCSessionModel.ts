@@ -24,7 +24,7 @@ export class CCSessionModel<T = {} | [] | string> {
   res: ResponseObject<T>;
   err: Error;
   status: number;
-  promise: Promise<AxiosResponse<ResponseObject<T>>>;
+  promise: Promise<AxiosResponse<T>>;
 
   // 只写
   noShowErrorHUD: boolean;
@@ -59,7 +59,7 @@ function publicParams() {
 type Dictionary = { [x: string]: any; }
 
 export class CCSessionReq {
-  
+
   private static isEncrypt = true; // 参数是否加密
   private static http = axios.create({
     baseURL: AppDefine?.host,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Dimensions, FlatList,
-  Platform,
+  Dimensions,
+  FlatList,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -10,16 +10,17 @@ import {
 } from 'react-native'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { navigate, pop } from '../navigation/RootNavigation'
-import { OCHelper } from '../define/OCHelper/OCHelper'
-import Icon from 'react-native-vector-icons/AntDesign'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import Animated, {
   block,
   Clock,
   clockRunning,
-  cond, debug,
+  cond,
+  debug,
   Easing,
   set,
-  startClock, stopClock,
+  startClock,
+  stopClock,
   timing,
   Value,
 } from 'react-native-reanimated'
@@ -27,7 +28,6 @@ import moment from 'moment'
 import AppDefine from '../define/AppDefine'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { PageName } from '../navigation/Navigation'
-import { setProps } from '../../pages/base/UGPage'
 
 const typeArr = ['全部状态', '待回复', '已回复']
 const borderColor = '#d9d9d9'
@@ -327,7 +327,7 @@ const Header = () => {
           color: Skin1.navBarTitleColor,
         }}>反馈记录</Text>
         <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
-          <Icon size={33} color={Skin1.navBarTitleColor} name={'left'} />
+          <Icon size={33} color={Skin1.navBarTitleColor} name={'angle-left'} />
         </TouchableOpacity>
       </View>
     </SafeAreaView>)

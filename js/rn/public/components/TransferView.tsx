@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Alert,
   FlatList,
-  Image, Platform,
+  Image,
   SafeAreaView,
   Text,
   TextInput,
@@ -18,7 +18,7 @@ import Animated, {
   clockRunning,
   cond,
   debug,
-  Easing, interpolate,
+  Easing,
   set,
   startClock,
   stopClock,

@@ -9,8 +9,8 @@ interface NavBlockProps {
 }
 
 const NavBlock = ({renderNav, containerStyle}: NavBlockProps) => {
-    const { value } = useHomePage({})
-    const { homeInfo } = value
+    const { info } = useHomePage({})
+    const { homeInfo } = info
     const { navs} = homeInfo
     return (
         <ScrollView showsHorizontalScrollIndicator={false} bounces={false} contentContainerStyle={{ backgroundColor: '#ffffff'}} horizontal={true}>

@@ -1,8 +1,7 @@
-import * as React from "react";
-import {Dimensions, Platform, SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {pop} from "../../../public/navigation/RootNavigation";
-import {OCHelper} from "../../../public/define/OCHelper/OCHelper";
+import * as React from 'react'
+import { SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { pop } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 
@@ -15,7 +14,7 @@ interface BaseScreenProps {
 
 export const BaseScreen = ({children, screenName, style, icon}: BaseScreenProps) => {
     return (
-        <View style={[{flex: 1, backgroundColor: Skin1.bgColor[0]}, style]}>
+        <View style={[{flex: 1, backgroundColor: Skin1.homeContentColor}, style]}>
             <SafeAreaView style={{backgroundColor: Skin1.themeColor, borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
                 <View style={{
                     backgroundColor: Skin1.themeColor, //根据当前主题来
