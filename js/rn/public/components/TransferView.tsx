@@ -32,6 +32,7 @@ import { PageName } from '../navigation/Navigation'
 import { Skin1 } from '../theme/UGSkinManagers'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]
@@ -59,9 +60,9 @@ export const TransferView = ({ setProps, navigation }) => {
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('focus')
       transIn && setTransIn(undefined)
       transOut && setTransOut(undefined)
+      money && setMoney(0)
       setProps()
     })
 
@@ -97,12 +98,14 @@ export const TransferView = ({ setProps, navigation }) => {
         id: transOut.id,
         balance: update2.data.balance,
       }])
+      UGUserModel.updateFromNetwork()
     }
   }
 
   const autoTransfer = async () => {
     api.real.autoTransferOut().setCompletionBlock((data) => {
       Alert.alert(data.msg)
+      UGUserModel.updateFromNetwork()
     })
   }
 
@@ -208,7 +211,7 @@ export const TransferView = ({ setProps, navigation }) => {
             />
           </View>
           <View style={{ paddingTop: 32 }}>
-            <TouchableWithoutFeedback onPress={transfer}>
+            <TouchableOpacity onPress={transfer}>
               <View style={{
                 borderRadius: 4,
                 backgroundColor: Skin1.themeColor,
@@ -220,8 +223,8 @@ export const TransferView = ({ setProps, navigation }) => {
                   paddingVertical: 10,
                 }}>开始转换</Text>
               </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={autoTransfer}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={autoTransfer}>
               <View style={{
                 borderRadius: 4,
                 marginTop: 12,
@@ -235,10 +238,10 @@ export const TransferView = ({ setProps, navigation }) => {
                   }}>一键提取</Text>
                 </LinearGradient>
               </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => {
               animatedSpin(spinValue, setSpinValue)
-              refresh()
+              UGUserModel.updateFromNetwork()
             }}>
               <View style={{
                 borderRadius: 4,
@@ -252,19 +255,20 @@ export const TransferView = ({ setProps, navigation }) => {
                       style={{
                         marginLeft: 12,
                         fontSize: 17,
-                        color: Skin1.textColor1,
+                        color: Skin1.isBlack? "#fff" : Skin1.textColor1,
                         alignSelf: 'center',
                       }}>{`帐号余额: ￥${balance || 0}`}</Text>
-                    <Animated.Image
-                      style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}
-                      source={{ uri: 'shuaxindef' }} />
+                    <Animated.View
+                      style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}>
+                      <Icon size={20} name={'reload1'} color={Skin1.isBlack ? '#fff' : Skin1.textColor1} />
+                    </Animated.View>
                   </View>
                 </LinearGradient>
               </View>
             </TouchableWithoutFeedback>
           </View>
         </View>
-        {data && <AccListView data={data} updateWallet={updateWallet} />}
+        {data && <AccListView data={data} updateWallet={updateWallet} setUpdateWallet={setUpdateWallet} />}
         {(open || open2) && <TouchableWithoutFeedback style={{
           width: AppDefine.width,
           height: AppDefine.height,
@@ -324,7 +328,7 @@ const Header = ({ pressRecord, setProps }: { pressRecord: () => {}, setProps: ()
   )
 }
 
-const AccListView = ({ data, updateWallet }: { data: any[], updateWallet: any[] }) => {
+const AccListView = ({ data, updateWallet, setUpdateWallet }: { data: any[], updateWallet: any[], setUpdateWallet: (item: { id: any, balance: string }[]) => void }) => {
   const [marginBottom, setMarginBottom] = useState(60)
   useEffect(() => {
     setMargin()
@@ -348,7 +352,7 @@ const AccListView = ({ data, updateWallet }: { data: any[], updateWallet: any[] 
         renderItem={({ item }) => {
           const wallet = updateWallet.find((wallet) => wallet.id === item.id)
           return (
-            <AccItem item={item} updateBalance={wallet && wallet.balance} />
+            <AccItem item={item} updateBalance={wallet && wallet.balance} setUpdateWallet={setUpdateWallet}/>
           )
         }} />
     </SafeAreaView>
@@ -409,7 +413,7 @@ const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data
   )
 }
 
-const AccItem = ({ item, updateBalance }: { item: any, updateBalance: string }) => {
+const AccItem = ({ item, updateBalance, setUpdateWallet }: { item: any, updateBalance: string, setUpdateWallet: (item: { id: any, balance: string }[]) => void }) => {
   const [balance, setBalance] = useState('*****')
   const [spinValue, setSpinValue] = useState(new Value(0))
   const spin = spinValue.interpolate({
@@ -419,6 +423,7 @@ const AccItem = ({ item, updateBalance }: { item: any, updateBalance: string }) 
   const checkBalance = async (id) => {
     const { data } = await api.real.checkBalance(id).promise
     data && setBalance(data.data.balance)
+    setUpdateWallet([{ id, balance: data.data.balance }])
   }
   return (
     <View style={{
