@@ -247,7 +247,7 @@ const WNZHomePage = () => {
               )
             }}
           />
-          {!mobileHomeGameTypeSwitch ? (
+          {mobileHomeGameTypeSwitch ? (
             <TabComponent
               tabGames={homeGames}
               baseHeight={scale(65)}
