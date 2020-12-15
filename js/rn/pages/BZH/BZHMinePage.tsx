@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native'
 import BackBtnComponent from '../../public/components/tars/BackBtnComponent'
 import PickAvatarComponent from '../../public/components/tars/PickAvatarComponent'
 import AppDefine from '../../public/define/AppDefine'
+import { OCHelper } from '../../public/define/OCHelper/OCHelper'
 import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { PageName } from '../../public/navigation/Navigation'
@@ -39,7 +40,9 @@ const BZHMinePage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={BZHThemeColor.宝石红.themeColor}>
-        <BackBtnComponent homePage={PageName.BZHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} />} />
+        <BackBtnComponent homePage={PageName.BZHHomePage} renderHeader={(props) => <MineHeader {...props} title={'会员中心'} showRightTitle={false} onPressBackBtn={() =>
+          OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])} />
+        } />
       </SafeAreaHeader>
       <ScrollView
         showsVerticalScrollIndicator={false}
