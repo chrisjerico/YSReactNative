@@ -75,6 +75,7 @@ import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import ManageBankListView from '../../public/components/activity/ManageBankListView'
 import CodePush from 'react-native-code-push'
+import LotteryHistoryPage from '../base/LotteryHistoryPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -187,6 +188,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LotteryHistoryPage} component={UGPage(LotteryHistoryPage)} />
     </Router.StackNavigator>
   )
 }
