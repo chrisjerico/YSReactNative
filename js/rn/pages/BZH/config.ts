@@ -10,7 +10,7 @@ const config = {
     5: getHtml5Image(21, 'center/menu-myreco'), // 推荐收益
     6: getHtml5Image(21, 'center/menu-rule-1'), // 彩票注单记录
     7: getHtml5Image(21, 'center/menu-account'), // 其他注单记录
-    8: getHtml5Image(21, 'hbdz-icon', 'gif'), // 额度转换
+    8: 'https://appstatic.woyovr.com/assets/BZH/transferMoney.png', // 额度转换
     9: getHtml5Image(21, 'center/menu-notice'), // 站内信
     10: getHtml5Image(21, 'center/menu-password'), // 安全中心
     11: getHtml5Image(21, 'center/task'), // 任务中心
