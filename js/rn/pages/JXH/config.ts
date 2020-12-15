@@ -1,10 +1,10 @@
-import { useHtml5Image, getIbbImage } from '../../public/tools/tars'
-const { getHtml5Image } = useHtml5Image('http://test10.6yc.com/')
+import { useHtml5Image } from '../../public/tools/tars'
+const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com/')
 
 const config = {
   defaultUserCenterLogos: {
-    1: getIbbImage('gZj6n42/money'), // 存款
-    2: getIbbImage('gZj6n42/money'), // 取款
+    1: getHtml5Image(23, 'chongzhi'), // 存款
+    2: getHtml5Image(23, 'tixian'), // 取款
     3: getHtml5Image(18, 'bank'), // 银行卡管理
     4: getHtml5Image(18, 'syb3-1'), // 利息宝
     5: getHtml5Image(18, 'menu-myreco'), // 推荐收益
@@ -16,13 +16,13 @@ const config = {
     11: getHtml5Image(18, 'task'), // 任务中心
     12: getHtml5Image(18, 'userInf'), // 个人信息
     13: getHtml5Image(18, 'menu-feedback'), // 建议反馈
-    14: getIbbImage('VjcSg8s/service'), // 在线客服
-    15: getIbbImage('gmVTZvM/activity'), // 活动彩金
-    16: getIbbImage('4YGRLbs/long'), // 长龙助手
+    14: getHtml5ImagePlatform('c087', 'zxkf'), // 在线客服 X
+    15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
+    16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(18, 'menu-activity'), // 全民竞猜
     18: getHtml5Image(18, 'kj_trend'), // 开奖走势
-    19: getIbbImage('NV1DZ3M/qq'), // QQ客服
-    20: getIbbImage('dt5ShBG/award'), // 開獎網
+    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
+    20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
   },
 }
 
