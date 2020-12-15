@@ -177,12 +177,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://xn--7-206cp03b.com',
-    'https://ys-cyw-app1.cc',
-    'https://www.xn--5-206cp03b.com',
-    'https://www.xn--4-206cp03b.com',
-    'https://ys-cyw-app4.cc',
-    'https://ys-cyw-app5.cc',
+    'https://www.ysap03xyw.cc',
+    'https://www.ysap01ntd.cc',
+    'https://www.ysay02psi.cc',
+    'https://www.ysay04upx.cc',
+    'https://www.ysay05432.xyz',
   ],
   'c085yw': [
     'https://x558.cc',
