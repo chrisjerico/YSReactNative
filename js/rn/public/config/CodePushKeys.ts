@@ -84,7 +84,7 @@ export async function getIOSCodePushKey(): Promise<string> {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey
   }
   const siteId = await OCHelper.call('AppDefine.shared.SiteId')
-  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.a002
+  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.master
 }
 
 export const CodePushKeysForAndroid = {
