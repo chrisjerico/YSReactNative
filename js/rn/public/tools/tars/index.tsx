@@ -69,7 +69,14 @@ export const useHtml5Image = (host: string = AppDefine.host) => {
       return host + '/images/' + path + '.' + type
     }
   }
-  return { getHtml5Image }
+  const getHtml5ImagePlatform = (siteId: string, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
+    if (siteId) {
+      return host + '/platform/' + siteId?.toString() + '/images/' + path + '.' + type
+    } else {
+      return host + '/images/' + path + '.' + type
+    }
+  }
+  return { getHtml5Image, getHtml5ImagePlatform }
 }
 
 export const getIbbImage = (path: string) => {
