@@ -9,8 +9,8 @@ import PushHelper from '../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 
 export const HomeHeaderButtonBar = () => {
-  const { value } = useHomePage({})
-  const { userInfo } = value
+  const { info } = useHomePage({})
+  const { userInfo } = info
   const { balance, uid } = userInfo
   const sysStore = UGStore.globalProps.sysConf
   const { mobile_logo = '' } = sysStore

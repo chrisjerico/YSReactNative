@@ -82,6 +82,10 @@ import { FeedbackView } from '../../public/components/FeedbackView'
 import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
 import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
 import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { AlipayView } from '../../public/components/alipay/AlipayView'
+import { AlipayTransferView } from '../../public/components/alipay/AlipayTransferView'
+import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
+import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -157,6 +161,10 @@ const StackScreens = () => {
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayView} component={UGPage(AlipayView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayTransferView} component={UGPage(AlipayTransferView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayTransferRecordView} component={UGPage(AlipayTransferRecordView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayProfitView} component={UGPage(AlipayProfitView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackView} component={UGPage(FeedbackView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackSubmitView} component={UGPage(FeedbackSubmitView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackRecordView} component={UGPage(FeedbackRecordView)} />
