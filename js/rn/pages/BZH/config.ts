@@ -16,13 +16,13 @@ const config = {
     11: getHtml5Image(21, 'center/task'), // 任务中心
     12: getHtml5Image(21, 'center/userInf'), // 个人信息
     13: getHtml5Image(21, 'center/menu-feedback'), // 建议反馈
-    14: getHtml5Image(21, 'zxkf'), // 在线客服
+    14: 'https://appstatic.woyovr.com/assets/BZH/service.png', // 在线客服
     15: getHtml5Image(21, 'center/money'), // 活动彩金
-    16: getIbbImage('Twnz2tK/changlong'), // 长龙助手
+    16: 'https://appstatic.woyovr.com/assets/BZH/long.png', // 长龙助手
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
-    19: getIbbImage('pw7LqkR/qq'), // QQ客服
-    20: getIbbImage('qRBq508/kjw'), // 開獎網
+    19: 'https://appstatic.woyovr.com/assets/BZH/qq.png', // QQ客服
+    20: 'https://appstatic.woyovr.com/assets/BZH/award.png', // 開獎網
   },
 }
 
