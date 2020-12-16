@@ -34,6 +34,7 @@ import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
 import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
+import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -58,6 +59,25 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static user_changeLoginPwd = async ({ oldPwd, newPwd }) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.post<UserChangeLoginPwdModel>('c=user&a=changeLoginPwd', {
+      old_pwd: oldPwd,
+      new_pwd: newPwd,
+      token: tokenParams,
+    })
+  }
+
   static activity_winApplyList = async () => {
     return httpClient.get<ActivityWinApplyListModel>('c=activity&a=winApplyList')
   }

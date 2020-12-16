@@ -183,50 +183,49 @@ const TabComponent = ({
               showsVerticalScrollIndicator={false}
               contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
               scrollEventThrottle={5000}>
-              <View style={[tabStyle, { height: defaultTabHeight, flexDirection: 'row' }]}>
-                {tabGames?.map((item, index) => {
-                  const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
-                  return (
-                    <TouchableWithoutFeedback
-                      key={index}
-                      onPress={() => {
-                        goToPage(index)
-                      }}>
-                      <View
+              {tabGames?.map((item, index) => {
+                const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
+                return (
+                  <TouchableWithoutFeedback
+                    key={index}
+                    onPress={() => {
+                      goToPage(index)
+                    }}>
+                    <View
+                      style={[
+                        styles.tabContainer,
+                        tabStyle,
+                        {
+                          width: getTabWidth(),
+                        },
+                      ]}>
+                      <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit={true}
                         style={[
+                          styles.tabText,
+                          tabTextStyle,
                           {
-                            width: getTabWidth(),
+                            color: activeTab == index ? focusTabColor : tabTextColor,
                           },
-                          styles.tabTextContainer,
                         ]}>
-                        <Text
-                          numberOfLines={1}
-                          adjustsFontSizeToFit={true}
+                        {title}
+                      </Text>
+                      {showIndicator && (
+                        <View
                           style={[
-                            styles.tabText,
-                            tabTextStyle,
+                            styles.focusBar,
                             {
-                              color: activeTab == index ? focusTabColor : tabTextColor,
+                              width: '50%',
+                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
                             },
-                          ]}>
-                          {title}
-                        </Text>
-                        {showIndicator && (
-                          <View
-                            style={[
-                              styles.focusBar,
-                              {
-                                width: '50%',
-                                backgroundColor: activeTab == index ? focusTabColor : 'transparent',
-                              },
-                            ]}
-                          />
-                        )}
-                      </View>
-                    </TouchableWithoutFeedback>
-                  )
-                })}
-              </View>
+                          ]}
+                        />
+                      )}
+                    </View>
+                  </TouchableWithoutFeedback>
+                )
+              })}
             </ScrollView>
           </View>
         )
@@ -273,7 +272,7 @@ const styles = StyleSheet.create({
     fontSize: scale(25),
     marginBottom: scale(5),
   },
-  tabTextContainer: {
+  tabContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
