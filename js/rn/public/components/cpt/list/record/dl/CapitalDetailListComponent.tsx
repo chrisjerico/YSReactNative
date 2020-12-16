@@ -2,24 +2,24 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
 import { anyEmpty } from '../../../../../tools/Ext'
 import { scale } from '../../../../../tools/Scale'
-import { ugLog } from '../../../../../tools/UgLog'
 import { UGColor } from '../../../../../theme/UGThemeColor'
-import UseWithdrawalRecordList from '../wd/UseWithdrawalRecordList'
 import EmptyView from '../../../../view/empty/EmptyView'
 import { WithdrawalListData } from '../../../../../network/Model/wd/WithdrawalRecordModel'
 import CommStyles from '../../../../../../pages/base/CommStyles'
+import UseCapitalDetailRecordList from './UseCapitalDetailRecordList'
+import { CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
 
 /**
- * 取款记录
+ * 资金明细记录
  * @param navigation
  * @constructor
  */
-const WithdrawalRecordListComponent = () => {
+const CapitalDetailListComponent = () => {
   const {
     refreshCT,
-    withdrawalData,
-    requestWithdrawalData,
-  } = UseWithdrawalRecordList()
+    capitalDetailData,
+    requestListDetailData,
+  } = UseCapitalDetailRecordList()
 
   /**
    * 绘制提示标题
@@ -28,17 +28,19 @@ const WithdrawalRecordListComponent = () => {
   const renderTitleHint = () => <View style={_styles.text_title_container}>
     <Text style={_styles.text_title_0}>{'日期'}</Text>
     <Text style={_styles.text_title_0}>{'金额'}</Text>
-    <Text style={_styles.text_title_0}>{'状态'}</Text>
+    <Text style={_styles.text_title_0}>{'类型'}</Text>
+    <Text style={_styles.text_title_0}>{'余额'}</Text>
   </View>
 
   /**
    * 绘制提示标题
    * @param item
    */
-  const renderItemContent = (item: WithdrawalListData) => <View style={_styles.text_item_container}>
-    <Text style={_styles.text_content_0}>{item.applyTime}</Text>
-    <Text style={_styles.text_content_0}>{item.amount}</Text>
-    <Text style={_styles.text_content_0}>{item.status}</Text>
+  const renderItemContent = (item: CapitalListData) => <View style={_styles.text_item_container}>
+    <Text style={_styles.text_content_0}>{item.time}</Text>
+    <Text style={_styles.text_content_0}>{item.changeMoney}</Text>
+    <Text style={_styles.text_content_0}>{item.category}</Text>
+    <Text style={_styles.text_content_0}>{item.balance}</Text>
   </View>
 
   return (
@@ -46,14 +48,14 @@ const WithdrawalRecordListComponent = () => {
       {
         [
           renderTitleHint(),
-          anyEmpty(withdrawalData)
+          anyEmpty(capitalDetailData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList refreshControl={refreshCT}
                         keyExtractor={(item, index) => `${item}-${index}`}
-                        data={withdrawalData}
+                        data={capitalDetailData}
               // ListEmptyComponent={() => <EmptyView/>}
                         onEndReached={({ distanceFromEnd }) => {
-                          requestWithdrawalData(false)
+                          requestListDetailData(false)
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {
@@ -105,4 +107,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default WithdrawalRecordListComponent
+export default CapitalDetailListComponent

@@ -5,51 +5,52 @@ import APIRouter from '../../../../../network/APIRouter'
 import { arrayEmpty } from '../../../../../tools/Ext'
 import { ugLog } from '../../../../../tools/UgLog'
 import { Toast } from '../../../../../tools/ToastUtils'
-import { WithdrawalListData } from '../../../../../network/Model/wd/WithdrawalRecordModel'
+import { CapitalGroupData, CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
 
 /**
- * 取款记录
+ * 资金明细记录
  * @constructor
  */
-const UseWithdrawalRecordList = () => {
+const UseCapitalDetailRecordList = () => {
 
   const [refreshing, setRefreshing] = useState(false)
 
-  const [withdrawalData, setWithdrawalData] = useState<Array<WithdrawalListData>>([])//所有数据
+  const [capitalDetailData, setListDetailData] = useState<Array<CapitalListData>>([])//所有数据
 
   const [pageIndex, setPageIndex] = useState(1)//当前第几页
+  const [groups, setGroups] = useState<Array<CapitalGroupData>>([{ id: 0, name: '' }])//当前的分组数据
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
                                       setPageIndex(1)
                                       setRefreshing(true)
-                                      requestWithdrawalData(true)
+                                      requestListDetailData(true)
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestWithdrawalData(true)
+    requestListDetailData(true)
   }, [])
 
   /**
-   * 请求取款记录
+   * 请求资金明细记录
    * clear: 从头请求
    */
-  const requestWithdrawalData = async (clear: boolean) => {
+  const requestListDetailData = async (clear: boolean) => {
     //pageIndex为1的时候，不再执行加载更多
-    if(!clear && pageIndex == 1) return
+    if (!clear && pageIndex == 1) return
 
     clear && setRefreshing(true)
     const date = new Date().format('yyyy-MM-dd')
 
-    APIRouter.capital_withdrawalRecordList({
+    APIRouter.capital_capitalDetailRecordList({
       startDate: '2020-01-01',
       endDate: date,
       page: pageIndex.toString(),
-      rows: "20",
+      rows: '20',
     }).then(({ data: res }) => {
       let listData = res?.data?.list
       ugLog('datas res=', pageIndex, res)
@@ -60,9 +61,9 @@ const UseWithdrawalRecordList = () => {
         } else {
           setPageIndex(pageIndex + 1)
           if (clear) {
-            setWithdrawalData(listData)
+            setListDetailData(listData)
           } else {
-            setWithdrawalData([...withdrawalData, ...listData])
+            setListDetailData([...capitalDetailData, ...listData])
           }
         }
 
@@ -76,10 +77,10 @@ const UseWithdrawalRecordList = () => {
 
   return {
     refreshCT,
-    withdrawalData,
-    requestWithdrawalData,
+    capitalDetailData,
+    requestListDetailData,
   }
 }
 
-export default UseWithdrawalRecordList
+export default UseCapitalDetailRecordList
 

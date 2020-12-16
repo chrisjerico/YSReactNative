@@ -21,6 +21,6 @@ export interface CapitalListData {
 }
 
 export interface CapitalGroupData {
-  id?: string
+  id?: number
   name?: string
 }

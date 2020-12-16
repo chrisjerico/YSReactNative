@@ -37,6 +37,8 @@ import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
 import { NormalModel } from './Model/NormalModel'
 import { DepositListData, DepositRecordModel } from './Model/wd/DepositRecordModel'
+import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
+import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -286,7 +288,7 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async ({startDate, endDate, page, rows}:
-                                               IDepositRecordListData): Promise<AxiosResponse<DepositRecordModel>> => {
+                                               IDepositRecordListData): Promise<AxiosResponse<WithdrawalRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -316,7 +318,49 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<DepositRecordModel>('c=withdraw&a=logs&' + tokenParams)
+    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs&' + tokenParams)
+  }
+
+  /**
+   * 资金明细记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_capitalDetailRecordList = async ({startDate, endDate, page, rows}:
+                                               IDepositRecordListData): Promise<AxiosResponse<CapitalDetailModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+            },
+          })
+
+        tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+
+        break
+    }
+
+    return httpClient.get<CapitalDetailModel>('c=user&a=fundLog&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
