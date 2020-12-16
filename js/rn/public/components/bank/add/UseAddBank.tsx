@@ -53,7 +53,7 @@ const UseAddBank = () => {
   }, [])
 
   /**
-   * 请求申请彩金数据
+   * 请求增加银行和虚拟币类型数据
    * @param category 定义在 BankConst
    */
   const requestBankDetailData = async (category?: string) => {

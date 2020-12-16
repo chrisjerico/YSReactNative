@@ -203,14 +203,10 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
   )
 }
 
-// export const TAB_ITEM_WIDTH = scale(96) //tab宽度
-const TAB_ITEM_HEIGHT = scale(70) //tab高度
-
 const _styles = StyleSheet.create({
   container: {},
   tab_bar: {
     backgroundColor: '#f4f4f4',
-    height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
     height: scale(3),

@@ -17,6 +17,8 @@ import PushHelper from '../../../define/PushHelper'
 import { BankInfoParam } from '../../../network/Model/bank/ManageBankCardModel'
 import NeedNameInputComponent from '../../tars/NeedNameInputComponent'
 import UseCapitalList from './UseCapitalList'
+import { CapitalConst } from '../const/CapitalConst'
+import DepositRecordListComponent from './record/DepositRecordListComponent'
 
 /**
  * 存款提现
@@ -32,98 +34,25 @@ const CapitalListComponent = ({ navigation, setProps }) => {
     systemInfo,
     userInfo,
     categoryData,
-    refreshCT,
     bankCardData,
-    requestManageBankData,
-    bindRealName,
   } = UseCapitalList()
 
   /**
-   * 绘制银行信息
+   * 绘制各列表
    * @param item
    */
-  const renderBank = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'开户姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'银行账户: ' + item.bankCard}</Text>
-    <Text style={_styles.bank_user_name}>{'开卡地址: ' + item.bankAddr}</Text>
-  </View>
-
-  /**
-   * 绘制虚拟币信息
-   * @param item
-   */
-  const renderBtc = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'币种: ' + item.bankName}</Text>
-    <Text style={_styles.bank_user_name}>{'钱包地址: ' + item.bankCard}</Text>
-    {
-      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'链名称: ' + item.bankAddr}</Text>
-    }
-  </View>
-
-  /**
-   * 绘制微信信息
-   * @param item
-   */
-  const renderWx = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'微信号: ' + item.bankCard}</Text>
-    {
-      !anyEmpty(item.bankAddr) && <Text style={_styles.bank_user_name}>{'绑定手机号: ' + item.bankAddr}</Text>
-    }
-  </View>
-
-  /**
-   * 绘制支付宝信息
-   * @param item
-   */
-  const renderAli = (item: BankInfoParam) => <View>
-    <Text style={_styles.bank_user_name}>{'真实姓名: ' + item.ownerName}</Text>
-    <Text style={_styles.bank_user_name}>{'支付宝账户: ' + item.bankCard}</Text>
-  </View>
-
-  /**
-   * 点击编辑
-   */
-  const clickEdit = () => {
-    Alert.alert('提示',
-      '请联系在线客服',
-      [
-        {
-          text: '取消',
-        },
-        {
-          text: '联系客服',
-          onPress: () => {
-            // Linking.openURL(systemStore?.zxkfUrl)
-            PushHelper.openWebView(systemInfo?.zxkfUrl)
-          },
-        },
-      ])
-  }
-
-  /**
-   * 绑定姓名
-   * @param text
-   */
-  const onSubmitFullName = (text?: string) => {
-    ugLog('onSubmitFullName=', text)
-    bindRealName(text, addNewAccount)
-  }
-
-  /**
-   * 右边按钮添加新账户
-   */
-  let addNewAccount = () => {
-    //是否实名过
-    if (anyEmpty(userInfo?.fullName)) {
-      needNameInputRef?.current?.reload()
-    } else {
-      push(PageName.AddBankComponent, {
-        refreshBankList: () => {
-          requestManageBankData(null)
-        },
-        bankCardData: bankCardData,
-      })
+  const renderRecordList = (item: string) => {
+    switch (item) {
+      case CapitalConst.DEPOSIT:
+        return <DepositRecordListComponent tabLabel={item}/>
+      case CapitalConst.WITHDRAWAL:
+        return <DepositRecordListComponent tabLabel={item}/>
+      case CapitalConst.DEPOSIT_RECORD:
+        return <DepositRecordListComponent tabLabel={item}/>
+      case CapitalConst.WITHDRAWAL_RECORD:
+        return <DepositRecordListComponent tabLabel={item}/>
+      case CapitalConst.CAPITAL_DETAIL:
+        return <DepositRecordListComponent tabLabel={item}/>
     }
   }
 
@@ -144,63 +73,22 @@ const CapitalListComponent = ({ navigation, setProps }) => {
               {
                 categoryData?.map((tabItem, index) => {
                     return (
-                      <EmptyView tabLabel={tabItem}
-                                 style={{ flex: 1 }}/>
-                      // anyEmpty(tabItem?.data)
-                      //   ? <EmptyView tabLabel={tabItem.name}
-                      //                style={{ flex: 1 }}/>
-                      //   : <FlatList tabLabel={tabItem.name}
-                      //               refreshControl={refreshCT}
-                      //               keyExtractor={(item, index) => `${item}-${index}`}
-                      //               data={tabItem.data}
-                      //               renderItem={({ item, index }) => {
-                      //                 // ugLog('ITEM=', item)
-                      //                 let bankIcon = getBankIcon(item.type)
-                      //                 return (
-                      //                   <View style={_styles.item_container}>
-                      //                     <View style={_styles.item_content}>
-                      //                       <View style={_styles.bank_name_container}>
-                      //                         <FastImage source={bankIcon}
-                      //                                    resizeMode={'contain'}
-                      //                                    style={_styles.bank_name_icon}/>
-                      //                         <Text style={_styles.bank_name}>{item.bankName}</Text>
-                      //                         <TouchableWithoutFeedback onPress={clickEdit}>
-                      //                           <FastImage source={{ uri: Res.edit }}
-                      //                                      style={_styles.bank_name_edit}/>
-                      //                         </TouchableWithoutFeedback>
-                      //                       </View>
-                      //                       {
-                      //                         [
-                      //                           item.type == BankConst.BANK && renderBank(item),
-                      //                           item.type == BankConst.BTC && renderBtc(item),
-                      //                           item.type == BankConst.WX && renderWx(item),
-                      //                           item.type == BankConst.ALI && renderAli(item),
-                      //                         ]
-                      //                       }
-                      //                     </View>
-                      //                   </View>
-                      //                 )
-                      //               }}/>
+                      renderRecordList(tabItem)
                     )
                   },
                 )
               }
             </ScrollableTabView>,
-          <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName}/>,
         ]
       }
     </BaseScreen>
   )
 }
 
-// export const TAB_ITEM_WIDTH = scale(96) //tab宽度
-export const TAB_ITEM_HEIGHT = scale(70) //tab高度
-
 const _styles = StyleSheet.create({
   container: {},
   tab_bar: {
     backgroundColor: '#f4f4f4',
-    height: TAB_ITEM_HEIGHT,
   },
   tab_bar_underline: {
     height: scale(3),
