@@ -357,6 +357,7 @@ class APIRouter {
           + '&endDate=' + pms?.endDate
           + '&page=' + pms?.page
           + '&rows=' + pms?.rows
+          + '&group=' + pms?.group
 
         break
     }

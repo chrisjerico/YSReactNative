@@ -10,6 +10,7 @@ import UseCapitalDetailRecordList from './UseCapitalDetailRecordList'
 import { CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
 import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { ugLog } from '../../../../../tools/UgLog'
 
 /**
  * 资金明细记录
@@ -39,15 +40,18 @@ const CapitalDetailListComponent = () => {
         controller={instance => capitalController = instance}
         items={groups}
         defaultValue={curGroup}
-        onChangeItem={item => setCurGroup(item.value)}/>
+        onChangeItem={item => {
+          setCurGroup(item.value)
+          requestListDetailData({ clear: true, selGroup: item.value, selPage: 1 })
+        }}/>
     </View>
     <View style={_styles.text_title_container}>
       <Text style={_styles.text_title_0}>{'日期'}</Text>
       <Text style={_styles.text_title_0}>{'金额'}</Text>
       <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
         <View style={_styles.item_type}>
-          <Text style={_styles.text_title_0}>{groups[curGroup].label}</Text>
-          <Icon size={scale(20)} name={'caret-down'} />
+          <Text style={_styles.text_title_0} numberOfLines={1}>{groups[curGroup].label}</Text>
+          <Icon size={scale(20)} name={'caret-down'}/>
         </View>
       </TouchableWithoutFeedback>
       <Text style={_styles.text_title_0}>{'余额'}</Text>
@@ -77,7 +81,7 @@ const CapitalDetailListComponent = () => {
                         data={capitalDetailData}
               // ListEmptyComponent={() => <EmptyView/>}
                         onEndReached={({ distanceFromEnd }) => {
-                          requestListDetailData(false)
+                          requestListDetailData({ clear: false })
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {
