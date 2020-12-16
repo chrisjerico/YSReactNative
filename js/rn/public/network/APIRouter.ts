@@ -36,6 +36,7 @@ import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
 import { BankDetailListModel } from './Model/bank/BankDetailListModel'
 import { NormalModel } from './Model/NormalModel'
+import { DepositListData, DepositRecordModel } from './Model/wd/DepositRecordModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -234,6 +235,47 @@ class APIRouter {
   static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
     return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
+  }
+
+  /**
+   * 充值记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_rechargeRecordList = async ({startDate, endDate, page, rows}:
+                                               IDepositRecordListData): Promise<AxiosResponse<DepositRecordModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+            },
+          })
+        tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+
+        break
+    }
+
+    return httpClient.get<DepositRecordModel>('c=recharge&a=logs&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
@@ -489,4 +531,12 @@ class APIRouter {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
   }
 }
+
+interface IDepositRecordListData {
+  startDate?: string
+  endDate?: string
+  page?: string
+  rows?: string
+}
+
 export default APIRouter
