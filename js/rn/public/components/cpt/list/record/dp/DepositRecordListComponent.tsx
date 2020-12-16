@@ -71,6 +71,7 @@ const DepositRecordListComponent = () => {
 }
 
 const TAB_ITEM_HEIGHT = scale(70) //tab高度
+const CONTENT_ITEM_HEIGHT = scale(80) //内容高度
 
 const _styles = StyleSheet.create({
   text_title_container: {
@@ -86,7 +87,7 @@ const _styles = StyleSheet.create({
     marginHorizontal: scale(8),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.BackgroundColor3,
-    height: TAB_ITEM_HEIGHT,
+    height: CONTENT_ITEM_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
   },
