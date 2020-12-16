@@ -247,7 +247,7 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async ({startDate, endDate, page, rows}:
-                                               IDepositRecordListData): Promise<AxiosResponse<DepositRecordModel>> => {
+                                               IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -288,7 +288,7 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async ({startDate, endDate, page, rows}:
-                                               IDepositRecordListData): Promise<AxiosResponse<WithdrawalRecordModel>> => {
+                                                 IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -328,8 +328,8 @@ class APIRouter {
    * page 第几页
    * rows 每页多少条
    */
-  static capital_capitalDetailRecordList = async ({startDate, endDate, page, rows}:
-                                               IDepositRecordListData): Promise<AxiosResponse<CapitalDetailModel>> => {
+  static capital_capitalDetailRecordList = async ({startDate, endDate, page, rows, group}:
+                                                    ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -348,6 +348,7 @@ class APIRouter {
               endDate: endDate,
               page: page,
               rows: rows,
+              group: group,
             },
           })
 
@@ -360,7 +361,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<CapitalDetailModel>('c=user&a=fundLog&' + tokenParams)
+    return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
@@ -615,13 +616,6 @@ class APIRouter {
   static yuebao_stat = async () => {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
   }
-}
-
-interface IDepositRecordListData {
-  startDate?: string
-  endDate?: string
-  page?: string
-  rows?: string
 }
 
 export default APIRouter

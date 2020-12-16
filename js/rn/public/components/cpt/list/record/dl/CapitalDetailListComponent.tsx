@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { anyEmpty } from '../../../../../tools/Ext'
 import { scale } from '../../../../../tools/Scale'
@@ -8,6 +8,7 @@ import { WithdrawalListData } from '../../../../../network/Model/wd/WithdrawalRe
 import CommStyles from '../../../../../../pages/base/CommStyles'
 import UseCapitalDetailRecordList from './UseCapitalDetailRecordList'
 import { CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
+import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
 
 /**
  * 资金明细记录
@@ -15,8 +16,14 @@ import { CapitalListData } from '../../../../../network/Model/wd/CapitalDetailMo
  * @constructor
  */
 const CapitalDetailListComponent = () => {
+
+  let capitalController //类型选择
+
   const {
     refreshCT,
+    groups,
+    curGroup,
+    setCurGroup,
     capitalDetailData,
     requestListDetailData,
   } = UseCapitalDetailRecordList()
@@ -25,11 +32,22 @@ const CapitalDetailListComponent = () => {
    * 绘制提示标题
    * @param item
    */
-  const renderTitleHint = () => <View style={_styles.text_title_container}>
-    <Text style={_styles.text_title_0}>{'日期'}</Text>
-    <Text style={_styles.text_title_0}>{'金额'}</Text>
-    <Text style={_styles.text_title_0}>{'类型'}</Text>
-    <Text style={_styles.text_title_0}>{'余额'}</Text>
+  const renderTitleHint = () => <View>
+    <View style={_styles.capital_type_picker}>
+      <UGDropDownPicker
+        controller={instance => capitalController = instance}
+        items={groups}
+        defaultValue={curGroup}
+        onChangeItem={item => setCurGroup(item.value)}/>
+    </View>
+    <View style={_styles.text_title_container}>
+      <Text style={_styles.text_title_0}>{'日期'}</Text>
+      <Text style={_styles.text_title_0}>{'金额'}</Text>
+      <TouchableWithoutFeedback onPress={() => capitalController?.toggle()}>
+        <Text style={_styles.text_title_0}>{groups[curGroup].label}</Text>
+      </TouchableWithoutFeedback>
+      <Text style={_styles.text_title_0}>{'余额'}</Text>
+    </View>
   </View>
 
   /**
@@ -80,8 +98,14 @@ const _styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: scale(8),
   },
+  capital_type_picker: {
+    padding: scale(8),
+    position: 'absolute',
+    width: '100%',
+  },
   text_item_container: {
     flex: 1,
+    marginHorizontal: scale(8),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.BackgroundColor3,
     height: TAB_ITEM_HEIGHT,

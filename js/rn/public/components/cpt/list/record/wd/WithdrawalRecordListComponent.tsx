@@ -80,6 +80,7 @@ const _styles = StyleSheet.create({
   },
   text_item_container: {
     flex: 1,
+    marginHorizontal: scale(8),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.BackgroundColor3,
     height: TAB_ITEM_HEIGHT,

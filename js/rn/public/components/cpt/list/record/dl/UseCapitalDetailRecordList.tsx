@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
 import APIRouter from '../../../../../network/APIRouter'
-import { arrayEmpty } from '../../../../../tools/Ext'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../../tools/Ext'
 import { ugLog } from '../../../../../tools/UgLog'
 import { Toast } from '../../../../../tools/ToastUtils'
 import { CapitalGroupData, CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
@@ -18,7 +18,8 @@ const UseCapitalDetailRecordList = () => {
   const [capitalDetailData, setListDetailData] = useState<Array<CapitalListData>>([])//所有数据
 
   const [pageIndex, setPageIndex] = useState(1)//当前第几页
-  const [groups, setGroups] = useState<Array<CapitalGroupData>>([{ id: 0, name: '' }])//当前的分组数据
+  const [curGroup, setCurGroup] = useState(0)//当前组id
+  const [groups, setGroups] = useState([{ value: 0, label: '全部类型' }])//当前的分组数据
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -51,10 +52,19 @@ const UseCapitalDetailRecordList = () => {
       endDate: date,
       page: pageIndex.toString(),
       rows: '20',
+      group: "0",
     }).then(({ data: res }) => {
       let listData = res?.data?.list
+      let cpGroups = res?.data?.groups
+
       ugLog('datas res=', pageIndex, res)
       if (res?.code == 0) {
+        //每一次需要注入数据
+        if (arrayLength(groups) <= 1 && !arrayEmpty(cpGroups)) {
+          setGroups([...groups, ...cpGroups.map(
+            (item, index) =>
+              ({ label: item.name, value: item.id }))])
+        }
         //没有更多数据了
         if (arrayEmpty(listData)) {
           setPageIndex(1)
@@ -77,6 +87,9 @@ const UseCapitalDetailRecordList = () => {
 
   return {
     refreshCT,
+    groups,
+    curGroup,
+    setCurGroup,
     capitalDetailData,
     requestListDetailData,
   }

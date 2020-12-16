@@ -12,6 +12,7 @@ import UseCapital from './UseCapital'
 import { CapitalConst } from '../const/CapitalConst'
 import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
 import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListComponent'
+import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 
 /**
  * 存款提现
@@ -45,7 +46,7 @@ const CapitalComponent = ({ navigation, setProps }) => {
       case CapitalConst.WITHDRAWAL_RECORD:
         return <WithdrawalRecordListComponent tabLabel={item}/>
       case CapitalConst.CAPITAL_DETAIL:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <CapitalDetailListComponent tabLabel={item}/>
     }
   }
 
