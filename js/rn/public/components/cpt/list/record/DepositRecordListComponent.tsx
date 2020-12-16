@@ -53,19 +53,20 @@ const DepositRecordListComponent = () => {
           anyEmpty(depositData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList refreshControl={refreshCT}
-                    keyExtractor={(item, index) => `${item}-${index}`}
-                    data={depositData}
-                    // ListEmptyComponent={() => <EmptyView/>}
-                    onEndReached={({distanceFromEnd}) => {
-                      ugLog('distanceFromEnd=', distanceFromEnd)
-                      requestDepositData(false)
-                    }}
-                    renderItem={({ item, index }) => {
-                      ugLog('ITEM=', item)
-                      return (
-                        renderItemContent(item)
-                      )
-                    }}/>,
+                        keyExtractor={(item, index) => `${item}-${index}`}
+                        data={depositData}
+              // ListEmptyComponent={() => <EmptyView/>}
+                        onEndReached={({ distanceFromEnd }) => {
+                          ugLog('distanceFromEnd=', distanceFromEnd)
+                          requestDepositData(false)
+                        }}
+                        onEndReachedThreshold={0.1}
+                        renderItem={({ item, index }) => {
+                          ugLog('ITEM=', item)
+                          return (
+                            renderItemContent(item)
+                          )
+                        }}/>,
         ]
       }
     </View>

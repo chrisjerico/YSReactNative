@@ -5,6 +5,8 @@ import { DepositListData, DepositRecordData, DepositRecordModel } from '../../..
 import APIRouter from '../../../../network/APIRouter'
 import { anyEmpty, arrayEmpty } from '../../../../tools/Ext'
 import { ugLog } from '../../../../tools/UgLog'
+import { BankConst } from '../../../bank/const/BankConst'
+import { Toast } from '../../../../tools/ToastUtils'
 
 /**
  * 存款记录
@@ -41,7 +43,7 @@ const UseDepositRecordList = () => {
     //pageIndex为1的时候，不再执行加载更多
     if(!clear && pageIndex == 1) return
 
-    setRefreshing(true)
+    clear && setRefreshing(true)
     const date = new Date().format('yyyy-MM-dd')
 
     APIRouter.capital_rechargeRecordList({
@@ -57,12 +59,19 @@ const UseDepositRecordList = () => {
         if (arrayEmpty(listData)) {
           setPageIndex(1)
         } else {
-          setPageIndex(clear ? 1 : pageIndex + 1)
-          setDepositData([...depositData, ...listData])
+          setPageIndex(pageIndex + 1)
+          if (clear) {
+            setDepositData(listData)
+          } else {
+            setDepositData([...depositData, ...listData])
+          }
         }
+
+      } else {
+        Toast(res?.msg)
       }
     }).finally(() => {
-      setRefreshing(false)
+      clear && setRefreshing(false)
     })
   }
 

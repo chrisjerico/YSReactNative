@@ -58,18 +58,23 @@ const UseAddBank = () => {
    */
   const requestBankDetailData = async (category?: string) => {
     APIRouter.user_bankInfoList(category).then(({ data: res }) => {
-      if (category == BankConst.BANK) {
-        setBankDetailData(res)
-        !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
-          (item, index) =>
-            ({ label: item.name, value: item.id })))
+      if (res?.code == 0) {
+        if (category == BankConst.BANK) {
+          setBankDetailData(res)
+          !anyEmpty(res?.data) && setBankDetailItems(res?.data?.map(
+            (item, index) =>
+              ({ label: item.name, value: item.id })))
 
-      } else if (category == BankConst.BTC) {
-        setBtcDetailData(res)
-        !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
-          (item, index) =>
-            ({ label: item.name, value: item.id })))
+        } else if (category == BankConst.BTC) {
+          setBtcDetailData(res)
+          !anyEmpty(res?.data) && setBtcDetailItems(res?.data?.map(
+            (item, index) =>
+              ({ label: item.name, value: item.id })))
 
+        }
+
+      } else {
+        Toast(res?.msg)
       }
     }).finally(() => {
     })
