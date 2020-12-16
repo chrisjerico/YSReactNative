@@ -53,7 +53,7 @@ const WithdrawalRecordListComponent = () => {
                         data={withdrawalData}
               // ListEmptyComponent={() => <EmptyView/>}
                         onEndReached={({ distanceFromEnd }) => {
-                          requestWithdrawalData(false)
+                          requestWithdrawalData({clear: false})
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {

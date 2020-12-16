@@ -55,8 +55,7 @@ const DepositRecordListComponent = () => {
                         data={depositData}
               // ListEmptyComponent={() => <EmptyView/>}
                         onEndReached={({ distanceFromEnd }) => {
-                          ugLog('distanceFromEnd=', distanceFromEnd)
-                          requestDepositData(false)
+                          requestDepositData({ clear: false })
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {

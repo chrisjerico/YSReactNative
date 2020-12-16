@@ -104,6 +104,9 @@ const UseCapitalDetailRecordList = () => {
 
 /**
  * 请求参数
+ * clear: 从头请求
+ * selGroup: 指定哪个分类
+ * selPage: 指定哪一页
  */
 interface IReqCapitalDetail {
   clear: boolean,
