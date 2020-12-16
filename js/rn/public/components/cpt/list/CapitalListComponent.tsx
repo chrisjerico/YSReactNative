@@ -19,6 +19,7 @@ import NeedNameInputComponent from '../../tars/NeedNameInputComponent'
 import UseCapitalList from './UseCapitalList'
 import { CapitalConst } from '../const/CapitalConst'
 import DepositRecordListComponent from './record/DepositRecordListComponent'
+import WithdrawalRecordListComponent from './record/WithdrawalRecordListComponent'
 
 /**
  * 存款提现
@@ -50,7 +51,7 @@ const CapitalListComponent = ({ navigation, setProps }) => {
       case CapitalConst.DEPOSIT_RECORD:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL_RECORD:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <WithdrawalRecordListComponent tabLabel={item}/>
       case CapitalConst.CAPITAL_DETAIL:
         return <DepositRecordListComponent tabLabel={item}/>
     }

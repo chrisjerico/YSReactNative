@@ -1,21 +1,21 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
-import { DepositListData } from '../../../../network/Model/wd/DepositRecordModel'
 import APIRouter from '../../../../network/APIRouter'
 import { arrayEmpty } from '../../../../tools/Ext'
 import { ugLog } from '../../../../tools/UgLog'
 import { Toast } from '../../../../tools/ToastUtils'
+import { WithdrawalListData } from '../../../../network/Model/wd/WithdrawalRecordModel'
 
 /**
- * 存款记录
+ * 取款记录
  * @constructor
  */
-const UseDepositRecordList = () => {
+const UseWithdrawalRecordList = () => {
 
   const [refreshing, setRefreshing] = useState(false)
 
-  const [depositData, setDepositData] = useState<Array<DepositListData>>([])//所有数据
+  const [withdrawalData, setWithdrawalData] = useState<Array<WithdrawalListData>>([])//所有数据
 
   const [pageIndex, setPageIndex] = useState(1)//当前第几页
 
@@ -24,28 +24,28 @@ const UseDepositRecordList = () => {
                                     onRefresh={() => {
                                       setPageIndex(1)
                                       setRefreshing(true)
-                                      requestDepositData(true)
+                                      requestWithdrawalData(true)
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestDepositData(true)
+    requestWithdrawalData(true)
   }, [])
 
   /**
-   * 请求存款记录
+   * 请求取款记录
    * clear: 从头请求
    */
-  const requestDepositData = async (clear: boolean) => {
+  const requestWithdrawalData = async (clear: boolean) => {
     //pageIndex为1的时候，不再执行加载更多
     if(!clear && pageIndex == 1) return
 
     clear && setRefreshing(true)
     const date = new Date().format('yyyy-MM-dd')
 
-    APIRouter.capital_rechargeRecordList({
+    APIRouter.capital_withdrawalRecordList({
       startDate: '2020-01-01',
       endDate: date,
       page: pageIndex.toString(),
@@ -60,9 +60,9 @@ const UseDepositRecordList = () => {
         } else {
           setPageIndex(pageIndex + 1)
           if (clear) {
-            setDepositData(listData)
+            setWithdrawalData(listData)
           } else {
-            setDepositData([...depositData, ...listData])
+            setWithdrawalData([...withdrawalData, ...listData])
           }
         }
 
@@ -76,10 +76,10 @@ const UseDepositRecordList = () => {
 
   return {
     refreshCT,
-    depositData,
-    requestDepositData,
+    withdrawalData,
+    requestWithdrawalData,
   }
 }
 
-export default UseDepositRecordList
+export default UseWithdrawalRecordList
 

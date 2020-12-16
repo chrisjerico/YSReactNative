@@ -238,7 +238,7 @@ class APIRouter {
   }
 
   /**
-   * 充值记录
+   * 存款记录
    * startDate 开始日期
    * endDate 结束日期
    * page 第几页
@@ -276,6 +276,47 @@ class APIRouter {
     }
 
     return httpClient.get<DepositRecordModel>('c=recharge&a=logs&' + tokenParams)
+  }
+
+  /**
+   * 取款记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_withdrawalRecordList = async ({startDate, endDate, page, rows}:
+                                               IDepositRecordListData): Promise<AxiosResponse<DepositRecordModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+            },
+          })
+        tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+
+        break
+    }
+
+    return httpClient.get<DepositRecordModel>('c=withdraw&a=logs&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
