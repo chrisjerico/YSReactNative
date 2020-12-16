@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
-import { DepositListData } from '../../../../network/Model/wd/DepositRecordModel'
-import APIRouter from '../../../../network/APIRouter'
-import { arrayEmpty } from '../../../../tools/Ext'
-import { ugLog } from '../../../../tools/UgLog'
-import { Toast } from '../../../../tools/ToastUtils'
+import { DepositListData } from '../../../../../network/Model/wd/DepositRecordModel'
+import APIRouter from '../../../../../network/APIRouter'
+import { arrayEmpty } from '../../../../../tools/Ext'
+import { ugLog } from '../../../../../tools/UgLog'
+import { Toast } from '../../../../../tools/ToastUtils'
 
 /**
  * 存款记录

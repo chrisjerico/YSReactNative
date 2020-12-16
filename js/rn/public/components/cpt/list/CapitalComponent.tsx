@@ -10,8 +10,8 @@ import { UGColor } from '../../../theme/UGThemeColor'
 import EmptyView from '../../view/empty/EmptyView'
 import UseCapital from './UseCapital'
 import { CapitalConst } from '../const/CapitalConst'
-import DepositRecordListComponent from './record/DepositRecordListComponent'
-import WithdrawalRecordListComponent from './record/WithdrawalRecordListComponent'
+import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
+import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListComponent'
 
 /**
  * 存款提现

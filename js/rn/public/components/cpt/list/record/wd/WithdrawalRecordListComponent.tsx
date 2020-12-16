@@ -1,13 +1,13 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../tools/Ext'
-import { scale } from '../../../../tools/Scale'
-import { ugLog } from '../../../../tools/UgLog'
-import { UGColor } from '../../../../theme/UGThemeColor'
+import { anyEmpty } from '../../../../../tools/Ext'
+import { scale } from '../../../../../tools/Scale'
+import { ugLog } from '../../../../../tools/UgLog'
+import { UGColor } from '../../../../../theme/UGThemeColor'
 import UseWithdrawalRecordList from './UseWithdrawalRecordList'
-import EmptyView from '../../../view/empty/EmptyView'
-import { WithdrawalListData } from '../../../../network/Model/wd/WithdrawalRecordModel'
-import CommStyles from '../../../../../pages/base/CommStyles'
+import EmptyView from '../../../../view/empty/EmptyView'
+import { WithdrawalListData } from '../../../../../network/Model/wd/WithdrawalRecordModel'
+import CommStyles from '../../../../../../pages/base/CommStyles'
 
 /**
  * 取款记录
