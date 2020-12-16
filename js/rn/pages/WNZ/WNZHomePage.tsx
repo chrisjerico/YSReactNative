@@ -257,7 +257,7 @@ const WNZHomePage = () => {
               tabBarStyle={{
                 marginHorizontal: scale(5),
               }}
-              tabWidth={AppDefine.width / 7}
+              enableMinWidth={false}
               showIndicator={false}
               focusTabColor={WNZThemeColor.威尼斯.themeColor}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}

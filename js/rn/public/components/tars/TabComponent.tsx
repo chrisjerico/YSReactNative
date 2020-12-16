@@ -29,6 +29,7 @@ interface TabComponentProps {
   showIndicator?: boolean
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
+  enableMinWidth?: boolean
 }
 
 interface RenderTabBar {
@@ -88,6 +89,7 @@ const TabComponent = ({
   showIndicator = true,
   tabBarStyle,
   locked = true,
+  enableMinWidth = true,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
@@ -122,10 +124,10 @@ const TabComponent = ({
     }
     const tabCount = getTabCount()
     const width = tabCount ? AppDefine.width / tabCount : 0
-    if (width < minTabWidth) {
+    if (enableMinWidth && width < minTabWidth) {
       return minTabWidth + scale(20)
     } else {
-      return width + scale(20)
+      return width //+ scale(20)
     }
   }
 
