@@ -1,4 +1,4 @@
-import { Alert, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import * as React from 'react'
 import { useRef, useState } from 'react'
 import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
@@ -6,17 +6,9 @@ import { anyEmpty } from '../../../tools/Ext'
 import { scale } from '../../../tools/Scale'
 import { Skin1 } from '../../../theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
-import FastImage from 'react-native-fast-image'
-import { ugLog } from '../../../tools/UgLog'
 import { UGColor } from '../../../theme/UGThemeColor'
-import { Res } from '../../../../Res/icon/Res'
 import EmptyView from '../../view/empty/EmptyView'
-import { push } from '../../../navigation/RootNavigation'
-import { PageName } from '../../../navigation/Navigation'
-import PushHelper from '../../../define/PushHelper'
-import { BankInfoParam } from '../../../network/Model/bank/ManageBankCardModel'
-import NeedNameInputComponent from '../../tars/NeedNameInputComponent'
-import UseCapitalList from './UseCapitalList'
+import UseCapital from './UseCapital'
 import { CapitalConst } from '../const/CapitalConst'
 import DepositRecordListComponent from './record/DepositRecordListComponent'
 import WithdrawalRecordListComponent from './record/WithdrawalRecordListComponent'
@@ -26,7 +18,7 @@ import WithdrawalRecordListComponent from './record/WithdrawalRecordListComponen
  * @param navigation
  * @constructor
  */
-const CapitalListComponent = ({ navigation, setProps }) => {
+const CapitalComponent = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -36,7 +28,7 @@ const CapitalListComponent = ({ navigation, setProps }) => {
     userInfo,
     categoryData,
     bankCardData,
-  } = UseCapitalList()
+  } = UseCapital()
 
   /**
    * 绘制各列表
@@ -142,4 +134,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default CapitalListComponent
+export default CapitalComponent

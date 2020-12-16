@@ -1,20 +1,14 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import APIRouter from '../../../network/APIRouter'
-import { anyEmpty } from '../../../tools/Ext'
-import { AllAccountListData, ManageBankCardData } from '../../../network/Model/bank/ManageBankCardModel'
-import { RefreshControl } from 'react-native'
-import { Res } from '../../../../Res/icon/Res'
+import { ManageBankCardData } from '../../../network/Model/bank/ManageBankCardModel'
 import { UGStore } from '../../../../redux/store/UGStore'
-import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
-import { Toast } from '../../../tools/ToastUtils'
 import { CapitalConst } from '../const/CapitalConst'
 
 /**
  * 存款提现
  * @constructor
  */
-const UseCapitalList = () => {
+const UseCapital = () => {
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -43,5 +37,5 @@ const UseCapitalList = () => {
   }
 }
 
-export default UseCapitalList
+export default UseCapital
 
