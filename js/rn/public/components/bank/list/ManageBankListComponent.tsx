@@ -164,7 +164,6 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
                                     keyExtractor={(item, index) => `${item}-${index}`}
                                     data={tabItem.data}
                                     renderItem={({ item, index }) => {
-                                      // ugLog('ITEM=', item)
                                       let bankIcon = getBankIcon(item.type)
                                       return (
                                         <View style={_styles.item_container}>

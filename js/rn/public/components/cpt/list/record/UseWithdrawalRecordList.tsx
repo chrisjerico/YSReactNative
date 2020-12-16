@@ -52,7 +52,7 @@ const UseWithdrawalRecordList = () => {
       rows: "20",
     }).then(({ data: res }) => {
       let listData = res?.data?.list
-      ugLog('datas res=', res)
+      ugLog('datas res=', pageIndex, res)
       if (res?.code == 0) {
         //没有更多数据了
         if (arrayEmpty(listData)) {

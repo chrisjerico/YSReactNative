@@ -60,7 +60,6 @@ const DepositRecordListComponent = () => {
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {
-                          ugLog('ITEM=', item)
                           return (
                             renderItemContent(item)
                           )

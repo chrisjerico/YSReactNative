@@ -53,12 +53,10 @@ const WithdrawalRecordListComponent = () => {
                         data={withdrawalData}
               // ListEmptyComponent={() => <EmptyView/>}
                         onEndReached={({ distanceFromEnd }) => {
-                          ugLog('distanceFromEnd=', distanceFromEnd)
                           requestWithdrawalData(false)
                         }}
                         onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {
-                          ugLog('ITEM=', item)
                           return (
                             renderItemContent(item)
                           )
