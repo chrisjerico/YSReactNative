@@ -24,40 +24,45 @@ const UseCapitalDetailRecordList = () => {
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
-                                      setPageIndex(1)
-                                      setRefreshing(true)
-                                      requestListDetailData(true)
+                                      requestListDetailData({clear: true, selPage: 1})
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestListDetailData(true)
+    requestListDetailData({ clear: true, selPage: 1 })
   }, [])
 
   /**
    * 请求资金明细记录
    * clear: 从头请求
+   * selGroup: 指定哪个分类
+   * selPage: 指定哪一页
    */
-  const requestListDetailData = async (clear: boolean) => {
-    //pageIndex为1的时候，不再执行加载更多
+
+  const requestListDetailData = async ({clear,
+                                         selGroup,
+                                         selPage}: IReqCapitalDetail) => {
+    //pageIndex为1的时候，不再执行 加载更多操作
     if (!clear && pageIndex == 1) return
 
     clear && setRefreshing(true)
     const date = new Date().format('yyyy-MM-dd')
+    let reqGroup = !anyEmpty(selGroup) ? selGroup : groups[curGroup].value.toString()
+    let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
     APIRouter.capital_capitalDetailRecordList({
       startDate: '2020-01-01',
       endDate: date,
-      page: pageIndex.toString(),
+      page: reqPage.toString(),
       rows: '20',
-      group: "0",
+      group: reqGroup,
     }).then(({ data: res }) => {
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
 
-      ugLog('datas res=', pageIndex, res)
+      ugLog('datas res=', reqPage, JSON.stringify(res?.data?.list))
       if (res?.code == 0) {
         //每一次需要注入数据
         if (arrayLength(groups) <= 1 && !arrayEmpty(cpGroups)) {
@@ -65,14 +70,16 @@ const UseCapitalDetailRecordList = () => {
             (item, index) =>
               ({ label: item.name, value: item.id }))])
         }
-        //没有更多数据了
-        if (arrayEmpty(listData)) {
-          setPageIndex(1)
+
+        if (clear) {
+          setPageIndex(reqPage + 1)
+          setListDetailData(listData)
         } else {
-          setPageIndex(pageIndex + 1)
-          if (clear) {
-            setListDetailData(listData)
+          //没有更多数据了
+          if (arrayEmpty(listData)) {
+            setPageIndex(1)
           } else {
+            setPageIndex(reqPage + 1)
             setListDetailData([...capitalDetailData, ...listData])
           }
         }
@@ -93,6 +100,18 @@ const UseCapitalDetailRecordList = () => {
     capitalDetailData,
     requestListDetailData,
   }
+}
+
+/**
+ * 请求参数
+ * clear: 从头请求
+ * selGroup: 指定哪个分类
+ * selPage: 指定哪一页
+ */
+interface IReqCapitalDetail {
+  clear: boolean,
+  selGroup?: string,
+  selPage?: number,
 }
 
 export default UseCapitalDetailRecordList
