@@ -154,6 +154,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c035': [
     'https://5504578.com',
   ],
+  'c041': [
+    'https://70258.com',
+  ],
   'c048': [
     'https://f811.cc',
     'https://f822.cc',
@@ -221,7 +224,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://877171.com',
+    'https://646482.com',
+    'https://646481.com',
+    'https://404061.com',
+    'https://404069.com',
+    'https://404079.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
