@@ -30,7 +30,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
   const { reRender } = useRerender()
   const { sysInfo } = useSys({})
   const sign = UGStore?.globalProps.sign
-  const rightMenus = UGStore.globalProps.rightMenu
+  const menus = UGStore.globalProps.rightMenu
   const { loginVCode, loginTo, oauth } = sysInfo
   const showFacebookSignIn = oauth?.switch
   // states
@@ -251,6 +251,11 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
     needNameInputRef,
   }
 
+  const info = {
+    menus,
+    sysInfo,
+  }
+
   return {
     valid,
     reference,
@@ -263,7 +268,7 @@ const useSignInPage = ({ homePage, signUpPage, onSuccessSignOut }: UseSignInPage
       tryPlay,
       signOut,
     },
-    rightMenus,
+    info,
   }
 }
 

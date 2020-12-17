@@ -32,7 +32,13 @@ import { ugLog } from '../tools/UgLog'
 import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
-import { ManageBankCardModel } from './Model/act/ManageBankCardModel'
+import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
+import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
+import { BankDetailListModel } from './Model/bank/BankDetailListModel'
+import { NormalModel } from './Model/NormalModel'
+import { DepositListData, DepositRecordModel } from './Model/wd/DepositRecordModel'
+import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
+import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -57,6 +63,10 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static activity_winApplyList = async () => {
+    return httpClient.get<ActivityWinApplyListModel>('c=activity&a=winApplyList')
+  }
+
   static user_deleteMsgAll = async () => {
     return httpClient.post<any>('c=user&a=deleteMsgAll')
   }
@@ -166,46 +176,193 @@ class APIRouter {
 
   /**
    * 银行卡和虚拟币等信息
+   * category: 定义在 BankConst
    */
-  static user_bankInfoList = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
+  static user_bankInfoList = async (category: string): Promise<AxiosResponse<BankDetailListModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
-    let tokenParams = '&page=1&rows=999&category=' + category
+    let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
+        //TODO iOS 完成 type, status 参数配置
         const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams += '&token=' + user?.token
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              status: 0,
+              type: category,
+            },
+          })
+        tokenParams += '&token=' + pms?.token + '&type=' + pms?.type + '&status=' + pms?.status
         break
     }
 
-    return httpClient.get<ManageBankCardModel>('c=activity&a=winApplyList&' + tokenParams)
+    return httpClient.get<BankDetailListModel>('c=system&a=bankList&' + tokenParams)
   }
 
   /**
-   * 彩金活动分类记录
+   * 银行卡和虚拟币等信息
+   * @param params 增加银行卡，虚拟币，微信，支付宝
+   * type: 增加银行卡，虚拟币，微信，支付宝
+   * bank_id:
+   * bank_card:
+   * bank_addr:
+   * pwd:
+   * owner_name:
+   *
    */
-  static activity_applyWinLog = async (category: string): Promise<AxiosResponse<ManageBankCardModel>> => {
+  static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<NormalModel>('c=user&a=bindBank', params)
+  }
+
+  /**
+   * 绑定实名
+   * @param params 真名
+   * fullName: 真名
+   */
+  static user_bindRealName = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<NormalModel>('c=user&a=profileName', params)
+  }
+
+  /**
+   * 绑定密码
+   * login_pwd: 登录密码
+   * fund_pwd: 取款密码
+   */
+  static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+    return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
+  }
+
+  /**
+   * 存款记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_rechargeRecordList = async ({startDate, endDate, page, rows}:
+                                               IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
-    let tokenParams = '&page=1&rows=999&category=' + category
+    let tokenParams = ''
     switch (Platform.OS) {
       case 'ios':
         const user = await OCHelper.call('UGUserModel.currentUser')
         tokenParams += '&token=' + user?.token
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+            },
+          })
         tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+
         break
     }
 
-    ugLog('tokenParams=', tokenParams)
+    return httpClient.get<DepositRecordModel>('c=recharge&a=logs&' + tokenParams)
+  }
 
-    return httpClient.get<ManageBankCardModel>('c=activity&a=applyWinLog&' + tokenParams)
+  /**
+   * 取款记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_withdrawalRecordList = async ({startDate, endDate, page, rows}:
+                                                 IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+            },
+          })
+        tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+
+        break
+    }
+
+    return httpClient.get<WithdrawalRecordModel>('c=withdraw&a=logs&' + tokenParams)
+  }
+
+  /**
+   * 资金明细记录
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_capitalDetailRecordList = async ({startDate, endDate, page, rows, group}:
+                                                    ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) return null
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        // tokenParams += '&token=' + pms?.token
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
+          {
+            params: {
+              startDate: startDate,
+              endDate: endDate,
+              page: page,
+              rows: rows,
+              group: group,
+            },
+          })
+
+        tokenParams += '&token=' + pms?.token
+          + '&startDate=' + pms?.startDate
+          + '&endDate=' + pms?.endDate
+          + '&page=' + pms?.page
+          + '&rows=' + pms?.rows
+          + '&group=' + pms?.group
+
+        break
+    }
+
+    return httpClient.get<CapitalDetailModel>('c=user&a=fundLogs&' + tokenParams)
   }
 
   static activity_redBagDetail = async () => {
@@ -332,7 +489,6 @@ class APIRouter {
         break
       case 'android':
         tokenParams = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
-        ugLog('tokenParams=', tokenParams)
         break
     }
 
@@ -462,4 +618,5 @@ class APIRouter {
     return httpClient.get<YueBaoStatModel>('c=yuebao&a=stat')
   }
 }
+
 export default APIRouter

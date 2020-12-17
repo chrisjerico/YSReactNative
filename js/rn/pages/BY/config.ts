@@ -1,6 +1,6 @@
 import { getIbbImage, goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
 
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
+const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const config = {
   defaultUserCenterLogos: {
@@ -17,50 +17,49 @@ const config = {
     11: getHtml5Image(23, 'center/my_redenvelope'), // 任务中心
     12: getHtml5Image(23, 'center/user_info'), // 个人信息
     13: getHtml5Image(7, 'zhmx'), // 建议反馈
-    14: getIbbImage('DtPJymN/online-Service'), // 在线客服 X
+    14: getHtml5ImagePlatform('c087', 'zxkf'), // 在线客服 X
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
-    16: getIbbImage('TkNkFK8/changlong'), // 长龙助手 X
+    16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: getIbbImage('FBLBM0C/qq-Service'), // QQ客服 X
-    20: getIbbImage('4gLtWb1/kjw'), // 開獎網 X
+    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
+    20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
   },
   menus: [
     {
       title: '充值',
-      logo: getIbbImage('C177sfz/savemoney'),
+      logo: getHtml5Image(7, 'cz'),
       onPress: goToUserCenterType.存款,
     },
     {
       title: '提现',
-      logo: getIbbImage('s5WZc3p/takemoney'),
+      logo: getHtml5Image(7, 'tx'),
       onPress: goToUserCenterType.取款,
     },
     {
       title: '额度转换',
-      logo: getIbbImage('s5WZc3p/takemoney'),
-
+      logo: getHtml5Image(7, 'edzh'),
       onPress: goToUserCenterType.额度转换,
     },
     {
       title: '投注记录',
-      logo: getIbbImage('RBr7sMH/playhistroy'),
+      logo: getHtml5ImagePlatform('c175', 'tzjl'),
       onPress: goToUserCenterType.彩票注单记录,
     },
     {
       title: '开奖结果',
-      logo: getIbbImage('JsrjgjJ/rewardresult'),
+      logo: getHtml5Image(7, 'kaijiang_c'),
 
       onPress: goToUserCenterType.开奖结果,
     },
     {
       title: '账户管理',
-      logo: getIbbImage('tsLSDZC/account'),
+      logo: getHtml5Image(10, 'center/menu-account'),
       onPress: goToUserCenterType.资金明细,
     },
     {
       title: '站内短信',
-      logo: getIbbImage('hRbQ3xF/message'),
+      logo: getHtml5ImagePlatform('c054', 'znx'),
       onPress: goToUserCenterType.站内信,
     },
     {

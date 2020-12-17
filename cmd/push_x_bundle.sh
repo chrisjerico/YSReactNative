@@ -7,7 +7,7 @@ pub_type=$1
 #     pub_type="Staging"
 # fi
 
-pub_message="修复问题"
+pub_message="修复已知问题"
 pub_version="1.0.1"
 
 echo $pub_type $pub_message $pub_version

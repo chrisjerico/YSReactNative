@@ -48,7 +48,7 @@ export interface UserCenter {
   status: string
 }
 
-export default interface UGSysNetModel {
+export default interface UGSystemModel {
   0: string
   activeReturnCoinRatio: number
   activeReturnCoinStatus: boolean
@@ -150,4 +150,6 @@ export default interface UGSysNetModel {
   znxNotify: string
   zxkfUrl: string
   zxkfUrl2: string
+  appVersion: string
+  mobileHomeGameTypeSwitch: boolean
 }

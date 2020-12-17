@@ -65,7 +65,9 @@ export enum PageName {
   VietnamGameList = 'VietnamGameList',
   LHTPreferencePage = 'LHTPreferencePage',
   TrendView = 'TrendView',
-  ManageBankListView = 'ManageBankListView',
+  ManageBankListComponent = 'ManageBankListComponent',//银行卡
+  CapitalComponent = 'CapitalComponent',//存款取款资金明细
+  AddBankComponent = 'AddBankComponent',
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   LCLoginPage = 'LCLoginPage',
   LCRegisterPage = 'LCRegisterPage',
@@ -76,4 +78,6 @@ export enum PageName {
   SeriesLobbyPage = 'SeriesLobbyPage',
   UserMessagePage = 'UserMessagePage',
   UserInfoPage = 'UserInfoPage',
+  SafeCenterPage = 'SafeCenterPage',
+  ActivityRewardPage = 'ActivityRewardPage',
 }

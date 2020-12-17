@@ -3,8 +3,10 @@ import { Platform, StyleSheet, View } from 'react-native'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
+import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
@@ -22,7 +24,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-import { ugLog } from '../../public/tools/UgLog'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -37,22 +38,21 @@ const WNZHomePage = () => {
     menu?.current?.close()
   }
 
-  const { goTo, refresh, value, sign, rightMenus } = useHomePage({
+  const { goTo, refresh, info, sign } = useHomePage({
     onSuccessSignOut: closeMenu,
   })
 
   const { goToPromotionPage } = goTo
 
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = value
+  const { loading, refreshing, userInfo, sysInfo, homeInfo, menus } = info
 
-  const { signOut } = sign
+  const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch } = sysInfo
-
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch } = sysInfo
   const tabGames = [
     {
       name: '官方玩法',
@@ -69,7 +69,81 @@ const WNZHomePage = () => {
   ]
 
   // @ts-ignore
-  const configMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+  const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+
+  const renderGameSubTypeComponent = (games: any[]) => (
+    <GameSubTypeComponent
+      uniqueKey={'WNZHomePage_GameSubTypeComponent'}
+      containerStyle={{ paddingVertical: scale(5) }}
+      numColumns={4}
+      games={games}
+      subTypeContainerStyle={{
+        marginTop: scale(10),
+        paddingHorizontal: scale(10),
+      }}
+      subTypeNumColumns={4}
+      renderSubType={({ item, index }) => {
+        const { title } = item
+        return (
+          <Button
+            key={index}
+            containerStyle={styles.subTypeButton}
+            titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
+            title={title}
+            onPress={() => {
+              PushHelper.pushHomeGame(item)
+            }}
+          />
+        )
+      }}
+      renderGame={({ item, index, showGameSubType }) => {
+        const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        const flagType = parseInt(tipFlag)
+        return (
+          <View style={styles.gameContainer}>
+            <GameButton
+              logo={icon || logo}
+              showSecondLevelIcon={subType ? true : false}
+              showRightTopFlag={flagType > 0 && flagType < 4}
+              showCenterFlag={flagType == 4}
+              flagIcon={hotIcon}
+              title={name}
+              containerStyle={{
+                width: '100%',
+                backgroundColor: '#ffffff',
+                aspectRatio: 0.9,
+                borderRadius: scale(10),
+                justifyContent: 'center',
+              }}
+              titleContainerStyle={{
+                aspectRatio: 5,
+                paddingTop: scale(5),
+              }}
+              secondLevelIconContainerStyle={{
+                right: -scale(10),
+                top: null,
+                bottom: 0,
+              }}
+              enableCircle={false}
+              onPress={() => {
+                if (subType) {
+                  showGameSubType(index)
+                } else {
+                  if (gameId == GameType.大厅) {
+                    navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
+                  } else {
+                    //@ts-ignore
+                    PushHelper.pushHomeGame(item)
+                  }
+                }
+              }}
+            />
+          </View>
+        )
+      }}
+    />
+  )
+
   return (
     <HomePage
       {...homeInfo}
@@ -104,9 +178,9 @@ const WNZHomePage = () => {
             visible={navs?.length > 0}
             navCounts={5}
             containerStyle={{ alignItems: 'center' }}
-            navs={navs}
+            navs={AppDefine.siteId == 'c245' ? (uid ? config.c245AuthNavs : config.c245UnAuthNavs) : navs}
             renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
+              const { icon, name, logo, gameId, onPress } = item
               return (
                 <GameButton
                   key={index}
@@ -122,22 +196,30 @@ const WNZHomePage = () => {
                   }}
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
-                    color: config?.navColors[index],
+                    color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
                     fontSize: scale(23),
                   }}
                   circleColor={'transparent'}
                   onPress={() => {
-                    if (gameId == 9) {
-                      switch (Platform.OS) {
-                        case 'ios':
-                          goToPromotionPage()
-                          break
-                        case 'android':
-                          PushHelper.pushHomeGame(item)
-                          break
+                    if (AppDefine.siteId == 'c245') {
+                      if (gameId == 'tryPlay') {
+                        tryPlay()
+                      } else {
+                        onPress()
                       }
                     } else {
-                      PushHelper.pushHomeGame(item)
+                      if (gameId == GameType.优惠活动) {
+                        switch (Platform.OS) {
+                          case 'ios':
+                            goToPromotionPage()
+                            break
+                          case 'android':
+                            PushHelper.pushHomeGame(item)
+                            break
+                        }
+                      } else {
+                        PushHelper.pushHomeGame(item)
+                      }
                     }
                   }}
                 />
@@ -145,7 +227,7 @@ const WNZHomePage = () => {
             }}
           />
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5) }}
+            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5), marginBottom: 5 }}
             visible={midBanners?.length > 0}
             autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
@@ -165,81 +247,28 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <GameSubTypeComponent
-            uniqueKey={'WNZHomePage_GameSubTypeComponent'}
-            containerStyle={{ paddingVertical: scale(5) }}
-            numColumns={4}
-            games={homeGamesConcat}
-            subTypeContainerStyle={{
-              marginTop: scale(10),
-              paddingHorizontal: scale(10),
-            }}
-            subTypeNumColumns={4}
-            renderSubType={({ item, index }) => {
-              const { title } = item
-              return (
-                <Button
-                  key={index}
-                  containerStyle={styles.subTypeButton}
-                  titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
-                  title={title}
-                  onPress={() => {
-                    PushHelper.pushHomeGame(item)
-                  }}
-                />
-              )
-            }}
-            renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
-              const flagType = parseInt(tipFlag)
-              return (
-                <View style={styles.gameContainer}>
-                  <GameButton
-                    logo={icon || logo}
-                    showSecondLevelIcon={subType ? true : false}
-                    showRightTopFlag={flagType > 0 && flagType < 4}
-                    showCenterFlag={flagType == 4}
-                    flagIcon={hotIcon}
-                    title={name}
-                    containerStyle={{
-                      width: '100%',
-                      backgroundColor: '#ffffff',
-                      aspectRatio: 0.9,
-                      borderRadius: scale(10),
-                      justifyContent: 'center',
-                    }}
-                    titleContainerStyle={{
-                      aspectRatio: 5,
-                      paddingTop: scale(5),
-                    }}
-                    secondLevelIconContainerStyle={{
-                      right: -scale(10),
-                      top: null,
-                      bottom: 0,
-                    }}
-                    enableCircle={false}
-                    onPress={() => {
-                      if (subType) {
-                        showGameSubType(index)
-                      } else {
-                        if (!gameId && gameId > 0) {
-                          navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
-                        } else {
-                          //@ts-ignore
-                          PushHelper.pushHomeGame(item)
-                        }
-                      }
-                    }}
-                  />
-                </View>
-              )
-            }}
-          />
+          {mobileHomeGameTypeSwitch ? (
+            <TabComponent
+              tabGames={homeGames}
+              baseHeight={scale(65)}
+              itemHeight={scale(150)}
+              numColumns={4}
+              tabBarBackgroundColor={'#ffffff'}
+              tabBarStyle={{
+                marginHorizontal: scale(5),
+              }}
+              showIndicator={false}
+              focusTabColor={WNZThemeColor.威尼斯.themeColor}
+              renderScene={({ item }) => renderGameSubTypeComponent(item)}
+            />
+          ) : (
+            renderGameSubTypeComponent(homeGamesConcat)
+          )}
           <TabComponent
             tabGames={tabGames}
             numColumns={2}
             enableAutoScrollTab={false}
-            tabScrollEnabled={false}
+            tabBarScrollEnabled={false}
             initialTabIndex={0}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
@@ -248,8 +277,6 @@ const WNZHomePage = () => {
               return (
                 <List
                   uniqueKey={'WNZHomePageTabComponent' + index}
-                  // legacyImplementation={true}
-                  // removeClippedSubviews={true}
                   style={{ backgroundColor: '#ffffff' }}
                   numColumns={2}
                   //@ts-ignore
@@ -284,14 +311,16 @@ const WNZHomePage = () => {
       renderRestComponent={() => (
         <MenuModalComponent
           ref={menu}
-          menus={rightMenus?.length > 0 ? rightMenus : configMenus}
+          menus={menus?.length ? menus : defaultMenus}
           renderMenuItem={({ item }) => {
             const { name, gameId, title, onPress } = item
             return (
               <MenuButton
                 title={name ?? title}
+                subTitle={'(' + appVersion + ')'}
+                showSubTitle={gameId == GameType.APP版本号}
                 onPress={() => {
-                  if (gameId == 31) {
+                  if (gameId == GameType.登出) {
                     signOut()
                   } else {
                     closeMenu()

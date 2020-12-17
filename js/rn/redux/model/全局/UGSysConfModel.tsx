@@ -1,8 +1,7 @@
 // 代理申请信息
-import {ugLog} from "../../../public/tools/UgLog";
-import {anyEmpty} from "../../../public/tools/Ext";
-import { UGStore } from "../../store/UGStore";
-import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
+import { anyEmpty } from '../../../public/tools/Ext'
+import { UGStore } from '../../store/UGStore'
 
 export interface UGAgentApplyInfo {
   username: string // 用户名
@@ -103,8 +102,8 @@ export class UGUserCenterItem {
     Object.assign(this, props)
     // 设置默认图标
     if (anyEmpty(this.logo) || this.logo?.indexOf('http') == -1) {
-      this.logo = UGUserCenterItem.defaultLogos[props.code];
-      this.isDefaultLogo = true;
+      this.logo = UGUserCenterItem.defaultLogos[props.code]
+      this.isDefaultLogo = true
     }
   }
 }
@@ -116,19 +115,22 @@ export class LHPriceModel {}
 export default class UGSysConfModel {
   // 过滤掉已关闭的功能
   static getUserCenterItems() {
-    const { sysConf: { userCenter = [] }, userInfo: { hasActLottery, yuebaoSwitch } } = UGStore.globalProps;
+    const {
+      sysConf: { userCenter = [] },
+      userInfo: { hasActLottery, yuebaoSwitch },
+    } = UGStore.globalProps
     const temp = userCenter?.map((uci) => {
       if (!hasActLottery && uci.code == UGUserCenterType.活动彩金) return
       if (!yuebaoSwitch && uci.code == UGUserCenterType.利息宝) return
-      return new UGUserCenterItem(uci);
+      return new UGUserCenterItem(uci)
     })
-    return temp.filter((ele) => ele);
+    return temp.filter((ele) => ele)
   }
   static updateFromNetwork(completed?: () => void) {
     return api.system.config().setCompletionBlock(({ data }, sm) => {
-      sm.noShowErrorHUD = true;
-      UGStore.dispatch({ type: 'merge', sysConf: data });
-      completed && completed();
+      sm.noShowErrorHUD = true
+      UGStore.dispatch({ type: 'merge', sysConf: data })
+      completed && completed()
     }).promise
   }
 
@@ -165,8 +167,8 @@ export default class UGSysConfModel {
   chatMinFollowAmount?: string // 聊天室跟注最小金额*/
   easyRememberDomain?: string // 黑色模板易记的网址*/
   chatLink?: string // 聊天的链接*/
-  mBonsSwitch?: boolean; // 俸禄开关开启。0 为开启， 1 为 关闭
-  
+  mBonsSwitch?: boolean // 俸禄开关开启。0 为开启， 1 为 关闭
+
   // 注册页
   hide_reco?: number // 代理人 0不填，1选填，2必填
   reg_name?: number // 真实姓名 0不填，1选填，2必填
@@ -189,6 +191,7 @@ export default class UGSysConfModel {
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
   yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
+  switchBindVerify?: number // 新增提款账号時，校验取款密码
   switchAgentRecharge?: boolean // 给下级会员充值开关
 
   lhcdocMiCard?: boolean // 六合彩开奖咪牌(默认状态)开关
@@ -199,7 +202,7 @@ export default class UGSysConfModel {
   userCenter?: Array<UGUserCenterItem> // 我的页功能按钮
 
   // 登陸頁
-  loginVCode?: boolean; // 登录增加了滑动验证码配置  默认开
+  loginVCode?: boolean // 登录增加了滑动验证码配置  默认开
   login_to?: '0' | '1'
   adSliderTimer?: number
   appDownloadUrl?: string

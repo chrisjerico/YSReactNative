@@ -53,3 +53,10 @@ export enum AnnouncementType {
   直接弹出 = '直接弹出',
   登录后弹出 = '登录后弹出',
 }
+
+export enum GameType {
+  大厅 = 0,
+  登出 = 31,
+  APP版本号 = 27,
+  优惠活动 = 9,
+}

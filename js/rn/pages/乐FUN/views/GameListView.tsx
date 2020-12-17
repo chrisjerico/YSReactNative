@@ -171,7 +171,6 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
    * @param partIndex 点击了第几部分的游戏
    */
   const renderItem = (item, index, partIndex) => {
-    //ugLog('item=', item)
     return <TouchableWithoutFeedback key={'renderItem_' + index + "_" + partIndex}
                                      onPress={() => onPress(item, index, partIndex)}>
       <View style={[_styles.container_item, {width: width / 2}]}>

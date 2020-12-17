@@ -29,7 +29,6 @@ const PromotionPage = (props: any) => {
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
       const value = response?.data?.data
-      console.log('-------------value------------', value)
       const { showCategory, style, list, categories } = value
       totalList.current = list?.map((item) => Object.assign({}, item, { clsName: 'UGPromoteModel' }))
       let filterCategory = {}

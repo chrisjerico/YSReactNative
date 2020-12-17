@@ -33,10 +33,10 @@ export class OCHelper extends OCEvent {
       // 设置接口域名
       // 获取系统配置信息
       const ios_response = await Promise.all([
-        OCHelper.call('AppDefine.shared.Host').catch((error) => {
+        OCHelper.call('AppDefine.shared.SiteId').catch((error) => {
           console.log(error)
         }),
-        OCHelper.call('AppDefine.shared.SiteId').catch((error) => {
+        OCHelper.call('AppDefine.shared.Host').catch((error) => {
           console.log(error)
         }),
         OCHelper.call('UGSystemConfigModel.currentConfig').catch((error) => {
@@ -45,12 +45,15 @@ export class OCHelper extends OCEvent {
         OCHelper.call('UGSystemConfigModel.currentConfig.userCenter').catch((error) => {
           console.log(error)
         }),
+        OCHelper.call('AppDefine.shared.Version').catch((error) => {
+          console.log(error)
+        }),
       ])
-      const siteId = ios_response[1]
-      const host = DomainUrls[siteId] ?? ios_response[0]
+      const siteId = ios_response[0]
+      const host = DomainUrls[siteId] ?? ios_response[1]
       const sysConf_ios = ios_response[2] ?? {}
       const userCenterItems = ios_response[3]?.map((item: any) => new UGUserCenterItem(item)) ?? []
-
+      const appVersion = ios_response[4]
       AppDefine.host = host
       httpClient.defaults.baseURL = host
       AppDefine.siteId = siteId
@@ -76,7 +79,7 @@ export class OCHelper extends OCEvent {
       const gameLobby = net_response[2]?.data?.data ?? []
       const banner = net_response[3]?.data?.data ?? {}
       const rightMenu = net_response[4]?.data?.data ?? []
-      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
+      UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
       UGStore.save()
     } catch (error) {
       console.log('-----error-----', error)

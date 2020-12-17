@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Easing, ImageBackground, StyleSheet, Text, View, ActivityIndicator, RefreshControl, TouchableWithoutFeedback, Alert } from 'react-native'
+import { ActivityIndicator, Alert, Animated, Easing, ImageBackground, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import PullToRefreshListComponent from '../../public/components/tars/PullToRefreshListComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
-import List from '../../public/views/tars/List'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import BottomGap from '../../public/views/temp/BottomGap'
 import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
+
+const sleep = async (ms = 0) => {
+  return new Promise((r) => setTimeout(r, ms))
+}
 
 const UserMessagePage = () => {
   const inAnimated = useRef(false)
@@ -39,18 +43,12 @@ const UserMessagePage = () => {
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'站內信'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
-      <List
+      <PullToRefreshListComponent
+        onReleaseToRefresh={async () => {
+          await sleep(1000)
+        }}
         initialNumToRender={20}
         uniqueKey={'MessagePage'}
-        refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={() => {
-              console.log('-----onRefresh---')
-            }}
-          />
-        }
-        // onEndReached onScrollEndDrag
         onEndReached={() => {
           if (page.current < maxPage.current) {
             setLoading(true)

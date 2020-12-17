@@ -10,11 +10,13 @@ import { ugLog } from '../../public/tools/UgLog'
 import ExtUGApplication from '../../public/tools/ui/ExtUGApplication'
 import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import PromotionPage from '../base/PromotionPage'
+import SafeCenterPage from '../base/SafeCenterPage'
 import SeriesLobbyPage from '../base/SeriesLobbyPage'
 import { TransitionPage } from '../base/TransitionPage'
 import UGPage from '../base/UGPage'
 import UserInfoPage from '../base/UserInfoPage'
 import UserMessagePage from '../base/UserMessagePage'
+import ActivityRewardPage from '../base/ActivityRewardPage'
 import BYHomePage from '../BY/BYHomePage'
 import BYMinePage from '../BY/BYMinePage'
 import BYSignInPage from '../BY/BYSignInPage'
@@ -71,7 +73,10 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import ManageBankListView from '../../public/components/activity/ManageBankListView'
+import CodePush from 'react-native-code-push'
+import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
+import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
+import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -91,6 +96,7 @@ class TabBarController extends Component<{
   }
 
   componentDidMount() {
+    CodePush.notifyAppReady()
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
 
@@ -146,7 +152,9 @@ const StackScreens = () => {
       <Router.StackScreen name={' '} component={TabBarController} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListView} component={UGPage(ManageBankListView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListComponent} component={UGPage(ManageBankListComponent)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.CapitalComponent} component={UGPage(CapitalComponent)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AddBankComponent} component={UGPage(AddBankComponent)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
@@ -181,6 +189,8 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserMessagePage} component={UGPage(UserMessagePage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
     </Router.StackNavigator>
   )
 }

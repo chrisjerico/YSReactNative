@@ -27,7 +27,7 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   const userInfo = UGStore.globalProps.userInfo
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
-  const rightMenus = UGStore.globalProps.rightMenu
+  const menus = UGStore.globalProps.rightMenu
   const { sysInfo } = useSysInfo({})
   const { uid } = userInfo
   const { announcementType } = sysInfo
@@ -60,13 +60,13 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
         push(PageName.PromotionPage, {
           showBackBtn: true,
         })
-        break;
+        break
       case 'android':
         ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
           seriesId: '7',
           subId: MenuType.YHDD,
         })
-        break;
+        break
     }
   }
 
@@ -200,9 +200,10 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
     ...official_customise_Games,
   }
 
-  const value = {
+  const info = {
     loading,
     refreshing,
+    menus,
     homeInfo,
     userInfo,
     sysInfo,
@@ -211,9 +212,8 @@ const useHomePage = ({ onSuccessSignOut, onSuccessTryPlay }: UseHomePage) => {
   return {
     goTo,
     sign,
-    value,
+    info,
     refresh,
-    rightMenus,
   }
 }
 

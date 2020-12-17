@@ -1,9 +1,8 @@
-import { Platform } from 'react-native';
-import { devConfig } from './../../../../config';
-import { OCHelper } from './../define/OCHelper/OCHelper';
+import { Platform } from 'react-native'
+import { OCHelper } from './../define/OCHelper/OCHelper'
 
 const CodePushKeysForIOS = {
-  master:'67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog',
+  master: '67f7hDao71zMjLy5xjilGx0THS4o4ksvOXqog',
   a002: 'iaSI4okfkRlB8wXVKMUTCMEitmYb4ksvOXqog',
   c001: '8QmjutQYWePbzC8ChRgCSGaR2hhB4ksvOXqog',
   c002: '0fgUHhzdmLyEvHdMoPuZOD0F5Du44ksvOXqog',
@@ -61,6 +60,7 @@ const CodePushKeysForIOS = {
   c252: 'spzTpSgi5H7ebn9SV7pZ4XV4oZl54ksvOXqog',
   c254: 'NQoF3CTLMIK3l34dlDCUTeVcmUUG4ksvOXqog',
   c257: 'YmkUvFvTTxCKblY9MxGBASL7XGkc4ksvOXqog',
+  c259:'cP9P5NmuUrCWz7jOyGyEP1S64gFj4ksvOXqog',
   h003b: '6Ezn6jgJhZnOwslpQCeBp2hDFO6b4ksvOXqog',
   l002: '3pcbblg7f9ZygsdecDisvV2LwTRv4ksvOXqog',
 }
@@ -70,7 +70,7 @@ export function isTest() {
   if (Platform.OS == 'ios') {
     for (const k in CodePushKeysForIOS) {
       if (OCHelper.CodePushKey == CodePushKeysForIOS[k]) {
-        return false;
+        return false
       }
     }
     return true
@@ -79,14 +79,13 @@ export function isTest() {
 }
 
 export async function getIOSCodePushKey(): Promise<string> {
-  const isTest = await OCHelper.call('AppDefine.shared.Test');
-  if (isTest == true || isTest()) {
-    return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey;
+  const ocTest: boolean = await OCHelper.call('AppDefine.shared.Test')
+  if (ocTest || isTest()) {
+    return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey
   }
   const siteId = await OCHelper.call('AppDefine.shared.SiteId')
-  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.a002
+  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.master
 }
-
 
 export const CodePushKeysForAndroid = {
   a002: 'fKPOT68NgVUksKdMXlcKJTLC8KWGJr17kgr14',
