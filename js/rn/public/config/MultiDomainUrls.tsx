@@ -422,7 +422,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://7033303.com',
+    'https://7033302.com',
   ],
   'h003b': [
     'https://betv5.com',
