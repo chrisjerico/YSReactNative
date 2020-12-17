@@ -177,12 +177,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://xn--7-206cp03b.com',
-    'https://ys-cyw-app1.cc',
-    'https://www.xn--5-206cp03b.com',
-    'https://www.xn--4-206cp03b.com',
-    'https://ys-cyw-app4.cc',
-    'https://ys-cyw-app5.cc',
+    'https://www.ysap03xyw.cc',
+    'https://www.ysap01ntd.cc',
+    'https://www.ysay02psi.cc',
+    'https://www.ysay04upx.cc',
+    'https://www.ysay05432.xyz',
   ],
   'c085yw': [
     'https://x558.cc',
@@ -222,7 +221,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://877171.com',
+    'https://646482.com',
+    'https://646481.com',
+    'https://404061.com',
+    'https://404069.com',
+    'https://404079.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
@@ -304,8 +307,8 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://549595.com',
   ],
   'c193': [
-    'https://4906107.com',
-    'https://49065555.com',
+    'https://4906211.com',
+    'https://4906212.com',
     'https://49060333.com',
     'https://49060222.com',
     'https://49061111.com',
@@ -382,7 +385,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://568978.com',
+    'https://499918.com',
+    'https://894556.com',
+    'https://067055.com',
+    'https://012633.com',
+    'https://065155.com',
   ],
   'c245': [
     'https://4823app.com',

@@ -21,7 +21,6 @@ const HJGameCategoryPage = (props: any) => {
   const _renderItem = ({item, index}) => {
 
     return <TouchableWithoutFeedback onPress={() => {
-      //ugLog('item=', JSON.stringify(item))
       PushHelper.pushHomeGame(item)
     }}>
       <FastImage

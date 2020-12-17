@@ -48,11 +48,11 @@ const WNZHomePage = () => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch } = sysInfo
   const tabGames = [
     {
       name: '官方玩法',
@@ -70,6 +70,79 @@ const WNZHomePage = () => {
 
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
+
+  const renderGameSubTypeComponent = (games: any[]) => (
+    <GameSubTypeComponent
+      uniqueKey={'WNZHomePage_GameSubTypeComponent'}
+      containerStyle={{ paddingVertical: scale(5) }}
+      numColumns={4}
+      games={games}
+      subTypeContainerStyle={{
+        marginTop: scale(10),
+        paddingHorizontal: scale(10),
+      }}
+      subTypeNumColumns={4}
+      renderSubType={({ item, index }) => {
+        const { title } = item
+        return (
+          <Button
+            key={index}
+            containerStyle={styles.subTypeButton}
+            titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
+            title={title}
+            onPress={() => {
+              PushHelper.pushHomeGame(item)
+            }}
+          />
+        )
+      }}
+      renderGame={({ item, index, showGameSubType }) => {
+        const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        const flagType = parseInt(tipFlag)
+        return (
+          <View style={styles.gameContainer}>
+            <GameButton
+              logo={icon || logo}
+              showSecondLevelIcon={subType ? true : false}
+              showRightTopFlag={flagType > 0 && flagType < 4}
+              showCenterFlag={flagType == 4}
+              flagIcon={hotIcon}
+              title={name}
+              containerStyle={{
+                width: '100%',
+                backgroundColor: '#ffffff',
+                aspectRatio: 0.9,
+                borderRadius: scale(10),
+                justifyContent: 'center',
+              }}
+              titleContainerStyle={{
+                aspectRatio: 5,
+                paddingTop: scale(5),
+              }}
+              secondLevelIconContainerStyle={{
+                right: -scale(10),
+                top: null,
+                bottom: 0,
+              }}
+              enableCircle={false}
+              onPress={() => {
+                if (subType) {
+                  showGameSubType(index)
+                } else {
+                  if (gameId == GameType.大厅) {
+                    navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
+                  } else {
+                    //@ts-ignore
+                    PushHelper.pushHomeGame(item)
+                  }
+                }
+              }}
+            />
+          </View>
+        )
+      }}
+    />
+  )
 
   return (
     <HomePage
@@ -154,7 +227,7 @@ const WNZHomePage = () => {
             }}
           />
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5) }}
+            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5), marginBottom: 5 }}
             visible={midBanners?.length > 0}
             autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
@@ -174,81 +247,28 @@ const WNZHomePage = () => {
               )
             }}
           />
-          <GameSubTypeComponent
-            uniqueKey={'WNZHomePage_GameSubTypeComponent'}
-            containerStyle={{ paddingVertical: scale(5) }}
-            numColumns={4}
-            games={homeGamesConcat}
-            subTypeContainerStyle={{
-              marginTop: scale(10),
-              paddingHorizontal: scale(10),
-            }}
-            subTypeNumColumns={4}
-            renderSubType={({ item, index }) => {
-              const { title } = item
-              return (
-                <Button
-                  key={index}
-                  containerStyle={styles.subTypeButton}
-                  titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
-                  title={title}
-                  onPress={() => {
-                    PushHelper.pushHomeGame(item)
-                  }}
-                />
-              )
-            }}
-            renderGame={({ item, index, showGameSubType }) => {
-              const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
-              const flagType = parseInt(tipFlag)
-              return (
-                <View style={styles.gameContainer}>
-                  <GameButton
-                    logo={icon || logo}
-                    showSecondLevelIcon={subType ? true : false}
-                    showRightTopFlag={flagType > 0 && flagType < 4}
-                    showCenterFlag={flagType == 4}
-                    flagIcon={hotIcon}
-                    title={name}
-                    containerStyle={{
-                      width: '100%',
-                      backgroundColor: '#ffffff',
-                      aspectRatio: 0.9,
-                      borderRadius: scale(10),
-                      justifyContent: 'center',
-                    }}
-                    titleContainerStyle={{
-                      aspectRatio: 5,
-                      paddingTop: scale(5),
-                    }}
-                    secondLevelIconContainerStyle={{
-                      right: -scale(10),
-                      top: null,
-                      bottom: 0,
-                    }}
-                    enableCircle={false}
-                    onPress={() => {
-                      if (subType) {
-                        showGameSubType(index)
-                      } else {
-                        if (gameId == GameType.大厅) {
-                          navigate(PageName.SeriesLobbyPage, { subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
-                        } else {
-                          //@ts-ignore
-                          PushHelper.pushHomeGame(item)
-                        }
-                      }
-                    }}
-                  />
-                </View>
-              )
-            }}
-          />
+          {mobileHomeGameTypeSwitch ? (
+            <TabComponent
+              tabGames={homeGames}
+              baseHeight={scale(65)}
+              itemHeight={scale(150)}
+              numColumns={4}
+              tabBarBackgroundColor={'#ffffff'}
+              tabBarStyle={{
+                marginHorizontal: scale(5),
+              }}
+              showIndicator={false}
+              focusTabColor={WNZThemeColor.威尼斯.themeColor}
+              renderScene={({ item }) => renderGameSubTypeComponent(item)}
+            />
+          ) : (
+            renderGameSubTypeComponent(homeGamesConcat)
+          )}
           <TabComponent
             tabGames={tabGames}
             numColumns={2}
             enableAutoScrollTab={false}
-            tabScrollEnabled={false}
+            tabBarScrollEnabled={false}
             initialTabIndex={0}
             baseHeight={scale(82)}
             itemHeight={scale(100)}

@@ -1,5 +1,5 @@
 /**
- * 活动彩金数据
+ * 银行列表数据
  */
 
 export interface ManageBankCardModel {
@@ -28,7 +28,7 @@ export interface ManageBankCardData {
 }
 
 export interface AllAccountListData {
-  type?: string
+  type?: number
   name?: string
   isshow?: boolean
   ismore?: boolean

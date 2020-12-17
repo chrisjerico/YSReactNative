@@ -151,4 +151,5 @@ export default interface UGSystemModel {
   zxkfUrl: string
   zxkfUrl2: string
   appVersion: string
+  mobileHomeGameTypeSwitch: boolean
 }

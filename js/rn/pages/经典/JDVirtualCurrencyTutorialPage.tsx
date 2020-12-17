@@ -44,6 +44,8 @@ export const JDVirtualCurrencyTutorialPage = (props: JDVirtualCurrencyTutorialPr
   let imgURL = 'http://wdac012ivpemrufgq.lotgame789.com/static/images/czjc//huobi/huobic012.jpg';
   if (AppDefine.siteId == 'c116') {
     imgURL = AppDefine.host + "/static/images/czjc/mobile/CGpayc213.jpg";
+  } else if (AppDefine.siteId == 'c134') {
+    imgURL = 'https://appstatic.guolaow.com/c134/top-up_%20tutorial.png'
   }
 
   return (

@@ -73,7 +73,6 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
-import ManageBankListView from '../../public/components/activity/ManageBankListView'
 import CodePush from 'react-native-code-push'
 import { TransferRecordView } from '../../public/components/TransferRecordView'
 import { TransferView } from '../../public/components/TransferView'
@@ -86,6 +85,9 @@ import { AlipayView } from '../../public/components/alipay/AlipayView'
 import { AlipayTransferView } from '../../public/components/alipay/AlipayTransferView'
 import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
 import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
+import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
+import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
+import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -173,7 +175,9 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListView} component={UGPage(ManageBankListView)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListComponent} component={UGPage(ManageBankListComponent)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.CapitalComponent} component={UGPage(CapitalComponent)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.AddBankComponent} component={UGPage(AddBankComponent)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
