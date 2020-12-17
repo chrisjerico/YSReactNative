@@ -242,7 +242,8 @@ const AddBankComponent = ({ navigation, route }) => {
 
     <Button title={'提交'}
             titleStyle={_styles.submit_text}
-            containerStyle={_styles.submit_bt}
+            containerStyle={[_styles.submit_bt,
+              { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
               bindPassword({
                 login_pwd: loginPwd,
@@ -422,7 +423,6 @@ const _styles = StyleSheet.create({
   submit_bt: {
     width: '100%',
     height: scale(66),
-    backgroundColor: Skin1.themeColor,
     borderRadius: scale(8),
   },
   bank_name_icon: {

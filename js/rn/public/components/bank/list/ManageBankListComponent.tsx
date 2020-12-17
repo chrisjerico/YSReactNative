@@ -146,7 +146,8 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
           anyEmpty(categoryData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <ScrollableTabView
-              tabBarUnderlineStyle={_styles.tab_bar_underline}
+              tabBarUnderlineStyle={[_styles.tab_bar_underline,
+                { backgroundColor: Skin1.themeColor }]}
               tabBarActiveTextColor={Skin1.themeColor}
               tabBarInactiveTextColor={Skin1.textColor1}
               tabBarTextStyle={{ fontSize: scale(20) }}
@@ -209,7 +210,6 @@ const _styles = StyleSheet.create({
   },
   tab_bar_underline: {
     height: scale(3),
-    backgroundColor: Skin1.themeColor,
   },
   item_container: {
     paddingHorizontal: scale(32),
