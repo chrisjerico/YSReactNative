@@ -1,8 +1,10 @@
 import { UGThemeColor } from '../UGThemeColor';
 
+const themeColor = '#999999'
 export const LLThemeColor: { [x: string]: UGThemeColor } = {
 
     利来: {
+        themeColor,
         skitType: '利来',
         skitString: '利来',
         bgColor: ['#f5f5f9', '#f5f5f9'],
@@ -24,6 +26,7 @@ export const LLThemeColor: { [x: string]: UGThemeColor } = {
         intoViewColor: '#444',
         moneyCellColor: '#444',
         yubaoBgColor: "#444",
-        isBlack: false
+        isBlack: false,
+        is23: false,
     }
 };

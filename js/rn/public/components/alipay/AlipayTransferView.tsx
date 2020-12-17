@@ -27,7 +27,7 @@ export const AlipayTransferView = ({ route }) => {
 
   return (
     <View style={{ backgroundColor: '#f3f3f3', flex: 1 }}>
-      <Header />
+      <Header name={yuebao?.yuebaoName} activeTab={activeTab}/>
       <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
       {activeTab == 0 ? <AlipayTransInView yuebao={yuebao} getData={getData} /> :
         <AlipayTransOutView getData={getData} yuebao={yuebao} />}
@@ -35,7 +35,7 @@ export const AlipayTransferView = ({ route }) => {
   )
 }
 
-const Header = ({ name }) => {
+const Header = ({ name, activeTab }) => {
   return (
     <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
       <SafeAreaView style={{
@@ -62,7 +62,7 @@ const Header = ({ name }) => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>{`转入${name || `支付宝`}`}</Text>
+          }}>{`${activeTab == 0 ? '转入' : '转出'}${name || `支付宝`}`}</Text>
         </View>
       </SafeAreaView>
     </LinearGradient>
