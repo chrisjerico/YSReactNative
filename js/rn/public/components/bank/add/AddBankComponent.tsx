@@ -324,7 +324,8 @@ const AddBankComponent = ({ navigation, route }) => {
                 <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
                 <Button title={'提交'}
                         titleStyle={_styles.submit_text}
-                        containerStyle={_styles.submit_bt}
+                        containerStyle={[_styles.submit_bt,
+                          { backgroundColor: Skin1.themeColor }]}
                         onPress={() => {
                           addBankAccount({
                             curAccountType: curAccountType,
