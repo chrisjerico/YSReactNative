@@ -340,11 +340,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771h.com',
-    'https://771771l.com',
-    'https://771771a.com',
-    'https://771771k.com',
+    'https://771771r.com',
+    'https://771771s.com',
     'https://771771i.com',
+    'https://771771j.com',
+    'https://771771k.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
