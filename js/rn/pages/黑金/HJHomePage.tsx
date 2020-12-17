@@ -208,7 +208,6 @@ const HJHomePage = ({navigation, setProps}) => {
                    }}
                    listRef={gameListRef}
                    clickItem={(item) => {
-                     //ugLog('item=', JSON.stringify(item))
                      PushHelper.pushHomeGame(item)
 
                    }}/>

@@ -51,10 +51,10 @@ export const AlipayView = ({ setProps }) => {
         <Text style={{ color: Skin1.textColor2 }}>今日收益(元)</Text>
         <Text style={{ marginTop: 16, fontSize: 30 }}>0</Text>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
-          <Text style={{ color: Skin1.textColor2 }}>支付宝余额：</Text>
+          <Text style={{ color: Skin1.textColor2 }}>{yuebao?.yuebaoName || ''}余额：</Text>
           <Text style={{ color: '#fb4f48' }}>{`${yuebao?.balance || 0.0000000000}元`}</Text>
           <Text style={{ color: Skin1.textColor2 }}>,年化率：</Text>
-          <Text style={{ color: '#fb4f48' }}>{`${yuebao?.annualizedRate} %`}</Text>
+          <Text style={{ color: '#fb4f48' }}>{`${yuebao ? yuebao?.annualizedRate * 100 : 0} %`}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
           <Text style={{ color: Skin1.textColor2 }}>体验金：</Text>

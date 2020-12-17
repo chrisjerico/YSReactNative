@@ -19,13 +19,16 @@ interface TabComponentProps {
   tabWidth?: number
   tabStyle?: StyleProp<ViewStyle>
   enableAutoScrollTab?: boolean
-  tabScrollEnabled?: boolean
+  tabBarScrollEnabled?: boolean
   numColumns: number
   tabTextColor?: string
   tabBarBackgroundColor?: string
   fixedHeight?: number
   fixedHeightIndex?: number[]
   enableFixedHeight?: boolean
+  showIndicator?: boolean
+  tabBarStyle?: StyleProp<ViewStyle>
+  locked?: boolean
 }
 
 interface RenderTabBar {
@@ -74,7 +77,7 @@ const TabComponent = ({
   tabWidth,
   tabStyle,
   enableAutoScrollTab = true,
-  tabScrollEnabled = true,
+  tabBarScrollEnabled = true,
   numColumns,
   renderTabBar,
   tabTextColor = '#000000',
@@ -82,6 +85,9 @@ const TabComponent = ({
   fixedHeight,
   fixedHeightIndex,
   enableFixedHeight,
+  showIndicator = true,
+  tabBarStyle,
+  locked = true,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
@@ -162,15 +168,15 @@ const TabComponent = ({
       tabBarBackgroundColor={tabBarBackgroundColor}
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
-      locked={true}
+      locked={locked}
       renderTabBar={(props) => {
         const { activeTab, goToPage } = props
         return renderTabBar ? (
           renderTabBar({ activeTab, goToPage })
         ) : (
-          <View style={{ height: defaultTabHeight }}>
+          <View style={[tabBarStyle, { height: defaultTabHeight }]}>
             <ScrollView
-              scrollEnabled={tabScrollEnabled}
+              scrollEnabled={tabBarScrollEnabled}
               ref={scroll}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -205,15 +211,17 @@ const TabComponent = ({
                           ]}>
                           {title}
                         </Text>
-                        <View
-                          style={[
-                            styles.focusBar,
-                            {
-                              width: '50%',
-                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
-                            },
-                          ]}
-                        />
+                        {showIndicator && (
+                          <View
+                            style={[
+                              styles.focusBar,
+                              {
+                                width: '50%',
+                                backgroundColor: activeTab == index ? focusTabColor : 'transparent',
+                              },
+                            ]}
+                          />
+                        )}
                       </View>
                     </TouchableWithoutFeedback>
                   )

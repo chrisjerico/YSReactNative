@@ -40,7 +40,7 @@ const LCLoginPage = () => {
     } else return <View />
   }, [showSignInSlideCode, code])
   return (
-    <BaseScreen screenName={'登录'}>
+    <BaseScreen style={{backgroundColor: "#ffffff"}} screenName={'登录'}>
       <View style={{ marginHorizontal: 24, top: 46 }}>
         <View
           style={{

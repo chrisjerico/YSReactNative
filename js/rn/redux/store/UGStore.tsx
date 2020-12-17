@@ -69,7 +69,7 @@ export interface UGAction<P = {}> extends Action {
   sign?: UGSignModel // 登入註冊訊息
   gameLobby?: UGGameLobbyModel[] // 遊戲大廳
   banner?: UGBannerModel
-  sys?: UGSysNetModel
+  sys?: UGSystemModel
   rightMenu?: UGRightMenuModel[]
   // value?: any;// 其他 example
 }

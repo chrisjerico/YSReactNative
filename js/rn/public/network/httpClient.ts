@@ -60,7 +60,7 @@ const encryptParams = async (params: Dictionary, isEncrypt): Promise<Dictionary>
         return ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, { params: temp })
     }
   } catch (error) {
-    console.warn(error)
+    console.warn("error", error)
     return null
   }
 }

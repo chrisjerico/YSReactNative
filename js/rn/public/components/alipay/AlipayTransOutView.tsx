@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import md5 from 'blueimp-md5'
 import { pop } from '../../navigation/RootNavigation'
-import { Modal, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, Modal, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import { Skin1 } from '../../theme/UGSkinManagers'
 import AppDefine from '../../define/AppDefine'
 
@@ -11,11 +11,14 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
   const [money, setMoney] = useState<any>()
   const [fundPwd, setFundPwd] = useState<string>()
   const [showModal, setShowModal] = useState(false)
+  const [error, setError] = useState()
   const transferOut = () => {
     api.yuebao.transfer(money, 'out', md5(fundPwd)).promise.then(async ({ data }) => {
       await setShowModal(false)
       pop()
       getData()
+    }).catch( (error) => {
+      setShowModal(false)
     })
   }
 
@@ -53,7 +56,9 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
           <Text style={{ fontSize: 13, color: Skin1.isBlack ? '#fff' : Skin1.textColor4 }}>{` 元`}</Text>
         </View>
       </View>
-      <TouchableWithoutFeedback onPress={() => setShowModal(true)}>
+      <TouchableWithoutFeedback onPress={() => {
+        money ? setShowModal(true) : Alert.alert("请输入取款金额")
+      }}>
         <View style={{
           backgroundColor: Skin1.themeColor,
           marginTop: 12,

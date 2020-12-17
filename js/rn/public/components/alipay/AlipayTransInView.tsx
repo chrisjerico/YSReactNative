@@ -30,7 +30,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
             style={{ color: Skin1.textColor4, marginTop: 4 }}>{userInfo.balance ? parseInt(userInfo.balance).toFixed(2) : 0}</Text>
         </View>
         <View style={{ backgroundColor: Skin1.themeColor, flex: 1, alignItems: 'center', paddingVertical: 8 }}>
-          <Text style={{ color: Skin1.textColor4 }}>支付宝钱包(元)</Text>
+          <Text style={{ color: Skin1.textColor4 }}>{yuebao?.yuebaoName}钱包(元)</Text>
           <Text style={{ color: Skin1.textColor4, marginTop: 4 }}>{yuebao ? parseInt(yuebao?.balance).toFixed(2) : 0}</Text>
         </View>
       </View>
@@ -67,6 +67,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
       }}>
         <TextInput
           placeholder={'请输入验证密码'}
+          secureTextEntry={true}
           style={{
             backgroundColor: '#e6e6e6',
             height: 36,
