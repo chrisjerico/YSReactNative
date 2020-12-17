@@ -1,11 +1,9 @@
 import * as React from 'react'
-import { SafeAreaView, StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { SafeAreaView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { pop } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { UGColor } from '../../../public/theme/UGThemeColor'
-import { TAB_ITEM_HEIGHT } from '../../../public/components/bank/list/ManageBankListComponent'
 
 interface BaseScreenProps {
     children?: any
