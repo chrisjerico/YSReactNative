@@ -54,6 +54,7 @@
     "react-native-modal-dropdown": "^0.7.0",
     "react-native-modal-patch": "https://github.com/HarvestProfit/react-native-modal-patch.git",
     "react-native-picker": "^4.3.7",
+    "react-native-plain-calendar": "^1.0.5",
     "react-native-progress": "^4.0.3",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.3",
