@@ -2,7 +2,7 @@
 // https://appstatic.woyovr.com
 // https://appstatic.guolaow.com
 
-const RES_BASE_URL = 'https://appstatic.woyovr.com/'
+const RES_BASE_URL = 'https://appstatic.guolaow.com/'
 export const ROULETTE_LOGO = RES_BASE_URL + 'assets/c018dzp.gif'    //大转盘
 
 export const Res = {

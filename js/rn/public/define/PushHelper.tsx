@@ -423,10 +423,12 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            navigate(PageName.ManageBankListComponent, {})
-            return
-            // subId = MenuType.YHK
-            // break
+            if (B_DEBUG) {
+              navigate(PageName.ManageBankListComponent, {})
+              return
+            }
+            subId = MenuType.YHK
+            break
           }
           case UGUserCenterType.利息宝: {
             subId = MenuType.LXB
