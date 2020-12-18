@@ -1,14 +1,14 @@
-import AppDefine from '../AppDefine';
-import {ANEvent} from './ANEvent';
-import {httpClient} from "../../network/httpClient";
-import {CMD} from "./hp/CmdDefine";
-import {UGUserCenterItem} from "../../../redux/model/全局/UGSysConfModel";
-import APIRouter from "../../network/APIRouter";
-import {UGStore} from "../../../redux/store/UGStore";
-import {NA_DATA} from "./hp/DataDefine";
-import {ugLog} from "../../tools/UgLog";
-import {stringToNumber} from "../../tools/tars";
-import {initDomain} from "../../config/MultiDomainUrls";
+import AppDefine from '../AppDefine'
+import { ANEvent } from './ANEvent'
+import { httpClient } from '../../network/httpClient'
+import { CMD } from './hp/CmdDefine'
+import { UGUserCenterItem } from '../../../redux/model/全局/UGSysConfModel'
+import APIRouter from '../../network/APIRouter'
+import { UGStore } from '../../../redux/store/UGStore'
+import { NA_DATA } from './hp/DataDefine'
+import { ugLog } from '../../tools/UgLog'
+import { stringToNumber } from '../../tools/tars'
+import { initDomain } from '../../config/MultiDomainUrls'
 
 export class ANHelper extends ANEvent {
   // 监听安卓事件
@@ -51,7 +51,7 @@ export class ANHelper extends ANEvent {
   static async setup() {
     super.setup()
 
-    await initDomain();
+    await initDomain()
 
     // await this.callAsync(CMD.INIT_PAGES, {
     //   'com.phoenix.lotterys.my.activity.LoginActivity': "LEFSignInPage",
@@ -76,8 +76,12 @@ export class ANHelper extends ANEvent {
       }),
 
       //加载用户中心条目信息
-      ANHelper.callAsync(CMD.ASK_MINE_ITEMS).catch((error) => {
+      this.callAsync(CMD.ASK_MINE_ITEMS).catch((error) => {
         ugLog('ASK_MINE_ITEMS=', error)
+      }),
+
+      this.callAsync(CMD.AN_VERSION).then((result) => {
+        ugLog('AN_VERSION=', result)
       }),
     ])
 
@@ -85,9 +89,10 @@ export class ANHelper extends ANEvent {
     const siteId = res[1]
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
+    const appVersion = res[4]
 
     //ugLog('host=  =', host)
-    AppDefine.host = host;
+    AppDefine.host = host
     httpClient.defaults.baseURL = host
     AppDefine.siteId = siteId
 
@@ -110,7 +115,7 @@ export class ANHelper extends ANEvent {
     const banner = net_response[3]?.data?.data ?? {}
     const rightMenu = net_response[4]?.data?.data ?? []
     console.log('--------sysConf_net-------', sysConf_net)
-    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
+    UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
     UGStore.save()
   }
 
@@ -119,7 +124,7 @@ export class ANHelper extends ANEvent {
    * @param host
    */
   static refreshHost(host?: string) {
-    AppDefine.host = host;
+    AppDefine.host = host
     httpClient.defaults.baseURL = host
   }
 }
