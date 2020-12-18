@@ -12,7 +12,7 @@ import {
   ScrollView,
   Text,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { HomeHeaderButtonBar } from './component/homePage/HomeHeaderButtonBar'
@@ -43,7 +43,6 @@ import NavBlock from './component/homePage/NavBlock'
 import Carousel from 'react-native-banner-carousel'
 
 
-
 const LCHomePage = ({ navigation, setProps }) => {
   const { width } = useDimensions().screen
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
@@ -52,6 +51,7 @@ const LCHomePage = ({ navigation, setProps }) => {
   const [content, setContent] = useState('')
   const { goTo, refresh, info } = useHomePage({})
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
+  const {showCoupon} = sysInfo
   const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, announcements, bannersInterval } = homeInfo
   const { rankingListSwitch, webName, midBannerTimer } = sysInfo
 
@@ -166,23 +166,26 @@ const LCHomePage = ({ navigation, setProps }) => {
           />
         )}
         <HomeTabView homeGames={homeGames} />
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
-          <Icon style={{ paddingRight: 4 }} size={16} name={'gift'} />
-          <TouchableWithoutFeedback onPress={() => {
-            push(PageName.PromotionListPage)
-          }}>
-            <Text style={{ fontSize: 18, color: '#333333', lineHeight: 22, marginVertical: 10 }}>优惠活动</Text>
-          </TouchableWithoutFeedback>
-          <View style={{ flex: 1 }} />
-          <TouchableWithoutFeedback onPress={() => {
-            push(PageName.PromotionListPage)
-          }}>
-            <Text style={{ fontSize: 18, color: '#333333', textAlign: 'center' }}>查看更多>></Text>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={{ backgroundColor: 'white', marginHorizontal: 10, borderRadius: 16 }}>
-          <PromotionsBlock />
-        </View>
+        {showCoupon && <>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
+            <Icon style={{ paddingRight: 4 }} size={16} name={'gift'} />
+            <TouchableWithoutFeedback onPress={() => {
+              push(PageName.PromotionListPage)
+            }}>
+              <Text style={{ fontSize: 18, color: '#333333', lineHeight: 22, marginVertical: 10 }}>优惠活动</Text>
+            </TouchableWithoutFeedback>
+            <View style={{ flex: 1 }} />
+            <TouchableWithoutFeedback onPress={() => {
+              push(PageName.PromotionListPage)
+            }}>
+              <Text style={{ fontSize: 18, color: '#333333', textAlign: 'center' }}>查看更多>></Text>
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={{ backgroundColor: 'white', marginHorizontal: 10, borderRadius: 16 }}>
+            <PromotionsBlock />
+          </View>
+        </>
+        }
         {rankingListSwitch === 2 ? <SafeAreaView style={{ marginHorizontal: 10 }}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon style={{ paddingRight: 4 }} size={16} name={'bar-chart-o'} />

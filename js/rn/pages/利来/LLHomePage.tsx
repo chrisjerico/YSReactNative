@@ -36,9 +36,9 @@ import Activitys from '../../public/views/tars/Activitys'
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { info, refresh } = useHomePage({})
-  const { homeInfo } = info
-  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo
-  const { loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, m_promote_pos, isTest, redBagLogo } = info
+  const { homeInfo, loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, isTest, redBagLogo } = info
+  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo``
+  const {showCoupon} = sysInfo
   const { uid } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
 
@@ -68,7 +68,7 @@ const LLHomePage = ({ setProps, navigation }) => {
                                                     onRefresh={onRefresh} />} style={{ flex: 1 }}>
           <HomeHeaderButtonBar logoIcon={mobile_logo} />
           <HomeTabView />
-          {m_promote_pos && (
+          {showCoupon && (
             <>
               <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 8, marginTop: 10 }}

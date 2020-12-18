@@ -54,6 +54,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
     homePage: PageName.LCHomePage,
     signInPage: PageName.LCLoginPage,
   })
+  const [haveBottomTab, setHaveBottomTab] = useState(false)
   const { signUp } = sign
   const { showRecommendGuy } = show
   const {
@@ -91,6 +92,14 @@ const LCRegisterPage = ({ navigation, setProps }) => {
     allowreg,
     closeregreason,
   } = SystemStore
+
+  useEffect(() => {
+    AppDefine.checkHeaderShowBackButton((status) => {
+      console.log('stat', status)
+      setHaveBottomTab(status)
+      setProps()
+    })
+  }, [])
 
   const reRenderCode = async () => {
     try {
@@ -144,7 +153,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
           paddingVertical: 20,
         }}>
           <ScrollView showsVerticalScrollIndicator={false}
-                      style={{ marginHorizontal: 12, maxHeight: 550 }}>
+                      style={{ marginHorizontal: 12, maxHeight: haveBottomTab ? 500 : 550 }}>
             <Text style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</Text>
             <View style={{
               flexDirection: 'row',
