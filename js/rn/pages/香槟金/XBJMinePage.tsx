@@ -23,12 +23,10 @@ import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP';
 import { AvatarModel } from '../../public/network/Model/SystemAvatarListModel';
 
 // 定义Props
-export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {
-  list?: AvatarModel[]; // 头像列表
-}
+export interface XBJMineProps extends UGBasePageProps<XBJMineProps> {}
 
 export const XBJMinePage = (props: XBJMineProps) => {
-  const { setProps, list } = props;
+  const { setProps } = props;
   const { current: v } = useRef<{} & JDSalaryListCP & JDAvatarListCP>({});
   const { mBonsSwitch, checkinSwitch, missionSwitch } = UGStore.globalProps.sysConf;
   const { avatar, usr, curLevelGrade, curLevelTitle, balance, unreadMsg } = UGStore.globalProps.userInfo;
@@ -86,11 +84,6 @@ export const XBJMinePage = (props: XBJMineProps) => {
         UGUserModel.updateFromNetwork();
       },
     })
-
-    // 获取头像列表
-    api.system.avatarList().setCompletionBlock(({ data: list }) => {
-      setProps({ list: list })
-    });
   }, []);
 
   return (
@@ -99,7 +92,6 @@ export const XBJMinePage = (props: XBJMineProps) => {
         <View style={{ padding: 16, borderRadius: 4, backgroundColor: style.cellBgColor }}>
           <View style={{ flexDirection: 'row' }}>
             <TouchableOpacity onPress={() => {
-              return;
               v?.showAvatarList && v?.showAvatarList();
             }} >
               <FastImage source={{ uri: avatarURL }} style={{ width: 56, height: 56, borderRadius: 28, backgroundColor: '#00000022' }} />

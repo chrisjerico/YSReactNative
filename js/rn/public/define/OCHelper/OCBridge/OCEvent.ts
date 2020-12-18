@@ -17,6 +17,7 @@ export enum OCEventType {
   UGNotificationUserLogout = 'UGNotificationUserLogout',
   viewWillAppear = 'viewWillAppear',
   AppDefineSetupSiteAndSkinParams = 'AppDefine-SetupSiteAndSkinParams',
+  TZImagePickerControllerDidFinishPickingPhotosHandle = 'TZImagePickerController-DidFinishPickingPhotosHandle',
 }
 
 export class OCEvent extends OCCall {
@@ -27,7 +28,7 @@ export class OCEvent extends OCCall {
 
     // 监听原生发过来的事件通知
     this.emitter.addListener('EventReminder', (params: { _EventName: OCEventType; params: any }) => {
-      // console.log('OCEvent rn收到oc通知：', params);
+      console.log('OCEvent rn收到oc通知：', params._EventName);
 
       this.events
         .filter((v) => {
