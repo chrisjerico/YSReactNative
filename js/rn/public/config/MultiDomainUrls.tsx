@@ -154,6 +154,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c035': [
     'https://5504578.com',
   ],
+  'c041': [
+    'https://70258.com',
+  ],
   'c048': [
     'https://f811.cc',
     'https://f822.cc',
@@ -177,9 +180,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://papghawshugposwaughwsoohu.com',
   ],
   'c085': [
-    'https://www.ysap03xyw.cc',
     'https://www.ysap01ntd.cc',
     'https://www.ysay02psi.cc',
+    'https://www.ysap03xyw.cc',
     'https://www.ysay04upx.cc',
     'https://www.ysay05432.xyz',
   ],
@@ -221,23 +224,27 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://app116csj.me',
   ],
   'c117': [
-    'https://877171.com',
+    'https://646482.com',
+    'https://646481.com',
+    'https://404061.com',
+    'https://404069.com',
+    'https://404079.com',
   ],
   'c120': [
     'https://asafew435yrtgre.net',
   ],
   'c126': [
-    'https://jzcp46.com',
-    'https://jzcp466.com',
-    'https://jzcp48.com',
-    'https://jzcp488.com',
+    'https://jz8444.com',
+    'https://jz5444.com',
+    'https://jz7444.com',
+    'https://jz6444.com',
   ],
   'c126b': [
-    'https://781789.com',
     'https://bc44698.com',
     'https://b66224.com',
     'https://b62244.com',
     'https://b62224.com',
+    'https://781789.com',
   ],
   'c134': [
     'https://19972015.com',
@@ -336,11 +343,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'http://rdiuyotdhjo533fsddylvgi.com',
   ],
   'c208': [
-    'https://771771h.com',
-    'https://771771l.com',
-    'https://771771a.com',
-    'https://771771k.com',
+    'https://771771r.com',
+    'https://771771s.com',
     'https://771771i.com',
+    'https://771771j.com',
+    'https://771771k.com',
   ],
   'c211': [
     'https://4dr4p8dm4.net',
@@ -349,11 +356,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://00852030.com',
   ],
   'c213': [
-    'https://app213xpj.me',
-    'https://c213aapp.me',
-    'https://c213app01.cc',
-    'https://app213xpj.cc',
-    'https://app213xpj.com',
+    'https://appxpj1.cc',
+    'https://appxpj1.co',
+    'https://appxpj1.com',
+    'https://appxpj1.me',
+    'https://appxpj1.org',
   ],
   'c217': [
     'https://9999app-sa5g6erty9r8ujtk5oi9rtg2k6e55uer9999-app.com',
@@ -381,7 +388,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://5566569.com',
   ],
   'c242': [
-    'https://568978.com',
+    'https://499918.com',
+    'https://894556.com',
+    'https://067055.com',
+    'https://065155.com',
+    'https://012633.com',
   ],
   'c245': [
     'https://4823app.com',
@@ -407,6 +418,9 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   'c257': [
     'https://hg88991.com',
   ],
+  'c259': [
+    'https://663638.com',
+  ],
   'l001': [
     'https://4988wap.com',
   ],
@@ -414,7 +428,7 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://7033303.com',
+    'https://7033306.com',
   ],
   'h003b': [
     'https://betv5.com',

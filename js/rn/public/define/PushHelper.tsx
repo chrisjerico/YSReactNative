@@ -10,7 +10,7 @@ import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
 import { Toast } from '../tools/ToastUtils'
-import { ugLog } from '../tools/UgLog'
+import { B_DEBUG, ugLog } from '../tools/UgLog'
 import { hideLoading, showLoading, showMessage } from '../widget/UGLoadingCP'
 import { ANHelper } from './ANHelper/ANHelper'
 import { CMD, OPEN_PAGE_PMS } from './ANHelper/hp/CmdDefine'
@@ -217,7 +217,7 @@ export default class PushHelper {
     }
   }
 
-  static openWebView(url: string) {
+  static openWebView(url?: string) {
     switch (Platform.OS) {
       case 'ios':
         OCHelper.call(({ vc }) => ({
@@ -407,6 +407,10 @@ export default class PushHelper {
         let subId = ''
         switch (code) {
           case UGUserCenterType.存款: {
+            if (B_DEBUG) {
+              navigate(PageName.CapitalComponent, {})
+              // return
+            }
             subId = MenuType.CZ
             break
           }
@@ -419,7 +423,10 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            // navigate(PageName.ManageBankListView, {})
+            if (B_DEBUG) {
+              navigate(PageName.ManageBankListComponent, {})
+              return
+            }
             subId = MenuType.YHK
             break
           }

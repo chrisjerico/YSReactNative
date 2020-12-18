@@ -60,6 +60,7 @@ const CodePushKeysForIOS = {
   c252: 'spzTpSgi5H7ebn9SV7pZ4XV4oZl54ksvOXqog',
   c254: 'NQoF3CTLMIK3l34dlDCUTeVcmUUG4ksvOXqog',
   c257: 'YmkUvFvTTxCKblY9MxGBASL7XGkc4ksvOXqog',
+  c259:'cP9P5NmuUrCWz7jOyGyEP1S64gFj4ksvOXqog',
   h003b: '6Ezn6jgJhZnOwslpQCeBp2hDFO6b4ksvOXqog',
   l002: '3pcbblg7f9ZygsdecDisvV2LwTRv4ksvOXqog',
 }
@@ -83,7 +84,7 @@ export async function getIOSCodePushKey(): Promise<string> {
     return OCHelper.CodePushKey == 'LocalCode' ? CodePushKeysForIOS.master : OCHelper.CodePushKey
   }
   const siteId = await OCHelper.call('AppDefine.shared.SiteId')
-  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.a002
+  return CodePushKeysForIOS[siteId] ?? CodePushKeysForIOS.master
 }
 
 export const CodePushKeysForAndroid = {
