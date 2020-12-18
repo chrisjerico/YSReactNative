@@ -36,6 +36,8 @@ export class UGThemeColor {
   progress?: Progress
   // promition
   promotion?: Promotion
+  // 用于替换oc颜色（优先级高）
+  ocSkin?:UGThemeColor
 }
 
 interface Progress {

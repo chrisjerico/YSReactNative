@@ -22,7 +22,7 @@ const config = {
     16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
+    19: getHtml5ImagePlatform('c091', 'qqkf'), // QQ客服
     20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
   },
   menus: [

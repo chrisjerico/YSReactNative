@@ -45,6 +45,9 @@ export async function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)
     }
+    if (skitType.indexOf('乐FUN') != -1) {
+      pages = pages.concat(LEFPages)
+    }
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
@@ -99,6 +102,43 @@ export async function setRnPageInfo() {
       break
   }
 }
+
+// 乐FUN
+const LEFPages = [
+  {
+    // 登录
+    vcName: 'UGLoginViewController',
+    rnName: PageName.LEFSignInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LEFSignUpPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 首页
+    tabbarItemPath: '/home',
+    rnName: PageName.LEFHomePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 我的页
+    tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
+    rnName: PageName.LEFMinePage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: false,
+  },
+]
 
 // 香槟金
 const XBJPages = [

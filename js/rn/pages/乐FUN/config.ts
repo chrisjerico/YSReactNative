@@ -10,7 +10,7 @@ const config = {
     5: getHtml5Image(21, 'center/menu-myreco'), // 推荐收益
     6: getHtml5Image(21, 'center/menu-rule-1'), // 彩票注单记录
     7: getHtml5Image(21, 'center/menu-account'), // 其他注单记录
-    8: getHtml5Image(21, 'hbdz-icon', 'gif'), // 额度转换
+    8: getHtml5Image(23, 'center/transfer'), // 额度转换
     9: getHtml5Image(21, 'center/menu-notice'), // 站内信
     10: getHtml5Image(21, 'center/menu-password'), // 安全中心
     11: getHtml5Image(21, 'center/task'), // 任务中心
@@ -21,7 +21,7 @@ const config = {
     16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
-    19: getHtml5ImagePlatform('c064', 'qqkf'), // QQ客服
+    19: getHtml5ImagePlatform('c091', 'qqkf'), // QQ客服
     20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
   }
 }

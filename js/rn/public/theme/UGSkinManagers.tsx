@@ -39,7 +39,7 @@ export default class UGSkinManagers extends UGThemeColor {
     ...KSThemeColor, // 凯时
     ...BYThemeColor, // 白曜
     ...HJThemeColor, //黑金
-    ...LEFThemeColor, //黑金
+    ...LEFThemeColor, //乐FUN
     ...XBJThemeColor, // 香槟金
     ...OtherThemeColor, // 其他
   }
@@ -76,6 +76,7 @@ export default class UGSkinManagers extends UGThemeColor {
       277: `越南`, //这个值 要与 后台站点一致
       27: `摩登红`,
       28: `黑金`,
+      30: '乐FUN',
     }
     console.log('pi fu =', mobileTemplateCategory)
     let key = dict[mobileTemplateCategory]
@@ -102,10 +103,12 @@ export default class UGSkinManagers extends UGThemeColor {
 
   // 应用主题色到iOS原生代码
   static async updateOcSkin() {
-    const skin = Skin1
+    let skin = Skin1
     if (Platform.OS != 'ios') {
       return
     }
+    skin = Object.assign({}, skin, skin.ocSkin)
+    
     // 已上线模板
     const isOnlineSkin = skin.skitType.indexOf('尊龙') != -1 || skin.skitType.indexOf('香槟金') != -1 || skin.skitType.indexOf('威尼斯') != -1 || skin.skitType.indexOf('宝石红') != -1
     const ok = devConfig.isDebug || devConfig.isTest() || isOnlineSkin

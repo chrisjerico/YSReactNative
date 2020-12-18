@@ -27,6 +27,14 @@ export const LEFThemeColor: { [x: string]: UGThemeColor } = {
     themeLightColor: '#FFECEC',
     isBlack: false,
     is23: false,
-    yubaoBgColor: "#8E8E8E"
+    yubaoBgColor: "#8E8E8E",
+
+    ocSkin: {
+      skitType: '乐FUN',
+      skitString: '乐FUN',
+      textColor2: '#555',
+      tabBarBgColor: '#fff',
+      tabNoSelectColor: '#9D9D9D',
+    }
   },
 }

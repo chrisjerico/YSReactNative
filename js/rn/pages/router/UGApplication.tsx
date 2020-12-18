@@ -138,6 +138,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
+        <Router.TabScreen name={PageName.LEFSignInPage} component={UGPage(LEFSignInPage)} />
+        <Router.TabScreen name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
       </Router.TabNavigator>
     )

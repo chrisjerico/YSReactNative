@@ -111,7 +111,9 @@ const LEFHomePage = ({navigation, setProps}) => {
             onPressSignIn={() => push(PageName.LEFSignInPage)}
             onPressSignUp={() => push(PageName.LEFSignUpPage)}
             onPressUser={() => {
-              // PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+              if (Platform.OS == 'ios') {
+                PushHelper.pushUserCenterType(UGUserCenterType.我的页)
+              }
               ANHelper.callAsync(CMD.OPEN_RIGHT_MENU)
             }}
           />
