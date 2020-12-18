@@ -159,7 +159,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c048': [
     'https://f28z.com',
-    'https://f28x.com',
     'https://f28e.com',
     'https://f28o.com',
   ],
