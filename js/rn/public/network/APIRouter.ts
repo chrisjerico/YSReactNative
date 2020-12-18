@@ -6,14 +6,20 @@ import { CMD } from '../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../define/OCHelper/OCHelper'
 import { UGStore } from './../../redux/store/UGStore'
 import { CachePolicyEnum, httpClient } from './httpClient'
+import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
 import { BalanceModel } from './Model/BalanceModel'
+import { BankDetailListModel } from './Model/bank/BankDetailListModel'
+import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
 import { BannerModel } from './Model/BannerModel'
 import { FloatADModel } from './Model/FloatADModel'
+import { GoldenEggListModel } from './Model/GoldenEggListModel'
 import { HomeADModel } from './Model/HomeADModel'
 import { HomeGamesModel } from './Model/HomeGamesModel'
+import { HomeRecommendModel } from './Model/HomeRecommendModel'
 import { LhcdocCategoryListModel } from './Model/LhcdocCategoryListModel'
 import { LoginModel } from './Model/LoginModel'
 import { LottoGamesModel } from './Model/LottoGamesModel'
+import { NormalModel } from './Model/NormalModel'
 import { NoticeModel } from './Model/NoticeModel'
 import { OnlineModel } from './Model/OnlineModel'
 import { PlayOddDataModel } from './Model/PlayOddDataModel'
@@ -21,24 +27,18 @@ import { PromotionsModel } from './Model/PromotionsModel'
 import { RankListModel } from './Model/RankListModel'
 import { RedBagDetailActivityModel } from './Model/RedBagDetailActivityModel'
 import { RegisterModel } from './Model/RegisterModel'
+import { ScratchListModel } from './Model/ScratchListModel'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TurntableListModel } from './Model/TurntableListModel'
-import { YueBaoStatModel } from './Model/YueBaoStatModel'
-import { HomeRecommendModel } from './Model/HomeRecommendModel'
+import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
 import { UserInfoModel } from './Model/UserInfoModel'
-import { ugLog } from '../tools/UgLog'
-import { GoldenEggListModel } from './Model/GoldenEggListModel'
-import { ScratchListModel } from './Model/ScratchListModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
-import { ActivityWinApplyListModel } from './Model/ActivityWinApplyListModel'
-import { ManageBankCardModel } from './Model/bank/ManageBankCardModel'
-import { BankDetailListModel } from './Model/bank/BankDetailListModel'
-import { NormalModel } from './Model/NormalModel'
-import { DepositListData, DepositRecordModel } from './Model/wd/DepositRecordModel'
-import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
+import { DepositRecordModel } from './Model/wd/DepositRecordModel'
+import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
+import { YueBaoStatModel } from './Model/YueBaoStatModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -63,6 +63,25 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static user_changeLoginPwd = async ({ oldPwd, newPwd }) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.post<UserChangeLoginPwdModel>('c=user&a=changeLoginPwd', {
+      old_pwd: oldPwd,
+      new_pwd: newPwd,
+      token: tokenParams,
+    })
+  }
+
   static activity_winApplyList = async () => {
     return httpClient.get<ActivityWinApplyListModel>('c=activity&a=winApplyList')
   }
@@ -189,13 +208,12 @@ class APIRouter {
         tokenParams += '&token=' + user?.token
         break
       case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          {
-            params: {
-              status: 0,
-              type: category,
-            },
-          })
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            status: 0,
+            type: category,
+          },
+        })
         tokenParams += '&token=' + pms?.token + '&type=' + pms?.type + '&status=' + pms?.status
         break
     }
@@ -246,8 +264,7 @@ class APIRouter {
    * page 第几页
    * rows 每页多少条
    */
-  static capital_rechargeRecordList = async ({startDate, endDate, page, rows}:
-                                               IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
+  static capital_rechargeRecordList = async ({ startDate, endDate, page, rows }: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -259,20 +276,15 @@ class APIRouter {
       case 'android':
         // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         // tokenParams += '&token=' + pms?.token
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          {
-            params: {
-              startDate: startDate,
-              endDate: endDate,
-              page: page,
-              rows: rows,
-            },
-          })
-        tokenParams += '&token=' + pms?.token
-          + '&startDate=' + pms?.startDate
-          + '&endDate=' + pms?.endDate
-          + '&page=' + pms?.page
-          + '&rows=' + pms?.rows
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            page: page,
+            rows: rows,
+          },
+        })
+        tokenParams += '&token=' + pms?.token + '&startDate=' + pms?.startDate + '&endDate=' + pms?.endDate + '&page=' + pms?.page + '&rows=' + pms?.rows
 
         break
     }
@@ -287,8 +299,7 @@ class APIRouter {
    * page 第几页
    * rows 每页多少条
    */
-  static capital_withdrawalRecordList = async ({startDate, endDate, page, rows}:
-                                                 IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
+  static capital_withdrawalRecordList = async ({ startDate, endDate, page, rows }: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -300,20 +311,15 @@ class APIRouter {
       case 'android':
         // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         // tokenParams += '&token=' + pms?.token
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          {
-            params: {
-              startDate: startDate,
-              endDate: endDate,
-              page: page,
-              rows: rows,
-            },
-          })
-        tokenParams += '&token=' + pms?.token
-          + '&startDate=' + pms?.startDate
-          + '&endDate=' + pms?.endDate
-          + '&page=' + pms?.page
-          + '&rows=' + pms?.rows
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            page: page,
+            rows: rows,
+          },
+        })
+        tokenParams += '&token=' + pms?.token + '&startDate=' + pms?.startDate + '&endDate=' + pms?.endDate + '&page=' + pms?.page + '&rows=' + pms?.rows
 
         break
     }
@@ -328,8 +334,7 @@ class APIRouter {
    * page 第几页
    * rows 每页多少条
    */
-  static capital_capitalDetailRecordList = async ({startDate, endDate, page, rows, group}:
-                                                    ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
+  static capital_capitalDetailRecordList = async ({ startDate, endDate, page, rows, group }: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) return null
 
     let tokenParams = ''
@@ -341,23 +346,17 @@ class APIRouter {
       case 'android':
         // const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
         // tokenParams += '&token=' + pms?.token
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS,
-          {
-            params: {
-              startDate: startDate,
-              endDate: endDate,
-              page: page,
-              rows: rows,
-              group: group,
-            },
-          })
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            page: page,
+            rows: rows,
+            group: group,
+          },
+        })
 
-        tokenParams += '&token=' + pms?.token
-          + '&startDate=' + pms?.startDate
-          + '&endDate=' + pms?.endDate
-          + '&page=' + pms?.page
-          + '&rows=' + pms?.rows
-          + '&group=' + pms?.group
+        tokenParams += '&token=' + pms?.token + '&startDate=' + pms?.startDate + '&endDate=' + pms?.endDate + '&page=' + pms?.page + '&rows=' + pms?.rows + '&group=' + pms?.group
 
         break
     }

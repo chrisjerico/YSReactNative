@@ -227,7 +227,7 @@ const WNZHomePage = () => {
             }}
           />
           <BannerBlock
-            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5), marginBottom: 5 }}
+            containerStyle={{ aspectRatio: 540 / 110, marginTop: scale(5), marginBottom: scale(10) }}
             visible={midBanners?.length > 0}
             autoplayTimeout={midBannerTimer}
             showOnlineNum={false}
@@ -257,6 +257,7 @@ const WNZHomePage = () => {
               tabBarStyle={{
                 marginHorizontal: scale(5),
               }}
+              enableMinWidth={false}
               showIndicator={false}
               focusTabColor={WNZThemeColor.威尼斯.themeColor}
               renderScene={({ item }) => renderGameSubTypeComponent(item)}
