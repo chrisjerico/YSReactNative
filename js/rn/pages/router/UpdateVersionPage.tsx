@@ -97,6 +97,11 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             case CodePush.SyncStatus.UNKNOWN_ERROR:
               console.log('rn热更新出错❌')
               setProps({ progress: 1, text: '更新出错...' })
+
+              // 更新出错时无限重试
+              Platform.OS == 'ios' && setTimeout(() => {
+                CodePushSync(options)
+              }, 1000);
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
