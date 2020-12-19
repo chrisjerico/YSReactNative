@@ -20,7 +20,7 @@ import { TAB_ITEM_HEIGHT } from '../../../public/components/bank/list/ManageBank
 
 interface BaseScreenProps {
     children?: any
-    screenName: string
+    screenName: string //标题
     style?: StyleProp<ViewStyle>
     icon?: 'angle-left' | 'home'
     rightButton?: JSX.Element
