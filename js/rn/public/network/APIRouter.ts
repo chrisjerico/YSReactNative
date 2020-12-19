@@ -31,6 +31,7 @@ import { ScratchListModel } from './Model/ScratchListModel'
 import { SystemAvatarListModel } from './Model/SystemAvatarListModel'
 import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
+import { TicketHistoryModel } from './Model/TicketHistoryModel'
 import { TurntableListModel } from './Model/TurntableListModel'
 import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
 import { UserInfoModel } from './Model/UserInfoModel'
@@ -63,6 +64,21 @@ export interface UserReg {
 }
 
 class APIRouter {
+  static ticket_history = async () => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.get<TicketHistoryModel>('c=ticket&a=history&category=lottery&status=1&endDate=&startDate=2020-12-16&rows=20&token=' + tokenParams + '&page=1')
+  }
+
   static user_changeLoginPwd = async ({ oldPwd, newPwd }) => {
     let tokenParams = ''
     switch (Platform.OS) {

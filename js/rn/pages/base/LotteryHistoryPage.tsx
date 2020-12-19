@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import { pop } from '../../public/navigation/RootNavigation'
+import APIRouter from '../../public/network/APIRouter'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
 import List from '../../public/views/tars/List'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
@@ -28,6 +29,14 @@ const TotalHistory = ({ tabLabel }) => {
 
 const LotteryHistoryPage = () => {
   const [rightMenuVisible, setRightMenuVisible] = useState(false)
+
+  useEffect(() => {
+    APIRouter.ticket_history()
+      .then((value) => {
+        console.log('----------------LotteryHistoryPage-------', value?.data?.data)
+      })
+      .catch((error) => {})
+  }, [])
   return (
     <>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
