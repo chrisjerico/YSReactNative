@@ -39,6 +39,8 @@ import { CapitalDetailModel } from './Model/wd/CapitalDetailModel'
 import { DepositRecordModel } from './Model/wd/DepositRecordModel'
 import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
+import { ugLog } from '../tools/UgLog'
+import { Toast } from '../tools/ToastUtils'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -176,7 +178,10 @@ class APIRouter {
    * 银行卡和虚拟币等信息
    */
   static user_bankCardList = async (): Promise<AxiosResponse<ManageBankCardModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
 
     let tokenParams = ''
     switch (Platform.OS) {
@@ -198,7 +203,10 @@ class APIRouter {
    * category: 定义在 BankConst
    */
   static user_bankInfoList = async (category: string): Promise<AxiosResponse<BankDetailListModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
 
     let tokenParams = ''
     switch (Platform.OS) {
@@ -233,7 +241,10 @@ class APIRouter {
    *
    */
   static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
     return httpClient.post<NormalModel>('c=user&a=bindBank', params)
   }
 
@@ -243,7 +254,10 @@ class APIRouter {
    * fullName: 真名
    */
   static user_bindRealName = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
     return httpClient.post<NormalModel>('c=user&a=profileName', params)
   }
 
@@ -253,7 +267,10 @@ class APIRouter {
    * fund_pwd: 取款密码
    */
   static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
     return httpClient.post<NormalModel>('c=user&a=addFundPwd', params)
   }
 
@@ -265,7 +282,10 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_rechargeRecordList = async ({ startDate, endDate, page, rows }: IDepositRecordListParams): Promise<AxiosResponse<DepositRecordModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
 
     let tokenParams = ''
     switch (Platform.OS) {
@@ -300,7 +320,10 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_withdrawalRecordList = async ({ startDate, endDate, page, rows }: IDepositRecordListParams): Promise<AxiosResponse<WithdrawalRecordModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
 
     let tokenParams = ''
     switch (Platform.OS) {
@@ -335,7 +358,10 @@ class APIRouter {
    * rows 每页多少条
    */
   static capital_capitalDetailRecordList = async ({ startDate, endDate, page, rows, group }: ICapitalDetailParams): Promise<AxiosResponse<CapitalDetailModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) return null
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
 
     let tokenParams = ''
     switch (Platform.OS) {

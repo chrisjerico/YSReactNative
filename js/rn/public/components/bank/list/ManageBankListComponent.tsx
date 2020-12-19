@@ -33,6 +33,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
+  let tabController //tab选择器
 
   const {
     systemInfo,
@@ -125,7 +126,14 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
       needNameInputRef?.current?.reload()
     } else {
       push(PageName.AddBankComponent, {
-        refreshBankList: () => {
+        refreshBankList: (accountType: string) => {
+          // ugLog('accountType=', accountType)
+          categoryData?.map((item, index) => {
+            ugLog('accountType=', accountType, item.type)
+            if (accountType == item.type.toString()) {
+              tabController?.goToPage(index)
+            }
+          })
           requestManageBankData(null)
         },
         bankCardData: bankCardData,
@@ -133,9 +141,11 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     }
   }
 
-  const rightButton = <TouchableWithoutFeedback onPress={addNewAccount}>
-    <Text style={_styles.right_button}>新增</Text>
-  </TouchableWithoutFeedback>
+  const rightButton = anyEmpty(categoryData) ?
+    null :
+    <TouchableWithoutFeedback onPress={addNewAccount}>
+      <Text style={_styles.right_button}>新增</Text>
+    </TouchableWithoutFeedback>
 
   return (
     <BaseScreen style={_styles.container}
@@ -146,6 +156,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
           anyEmpty(categoryData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <ScrollableTabView
+              ref={instance => tabController = instance}
               tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
               tabBarActiveTextColor={Skin1.themeColor}
