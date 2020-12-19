@@ -33,6 +33,7 @@ import { SystemConfigModel } from './Model/SystemConfigModel'
 import { TaskChangeAvatarModel } from './Model/TaskChangeAvatarModel'
 import { TicketHistoryModel } from './Model/TicketHistoryModel'
 import { TurntableListModel } from './Model/TurntableListModel'
+import { UserChangeFundPwdModel } from './Model/UserChangeFundPwdModel'
 import { UserChangeLoginPwdModel } from './Model/UserChangeLoginPwdModel'
 import { UserInfoModel } from './Model/UserInfoModel'
 import { UserMsgListModel } from './Model/UserMsgListModel'
@@ -77,6 +78,25 @@ class APIRouter {
         break
     }
     return httpClient.get<TicketHistoryModel>('c=ticket&a=history&category=lottery&status=1&endDate=&startDate=2020-12-16&rows=20&token=' + tokenParams + '&page=1')
+  }
+
+  static user_changeFundPwd = async ({ oldPwd, newPwd }) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+    return httpClient.post<UserChangeFundPwdModel>('c=user&a=changeFundPwd', {
+      old_pwd: oldPwd,
+      new_pwd: newPwd,
+      token: tokenParams,
+    })
   }
 
   static user_changeLoginPwd = async ({ oldPwd, newPwd }) => {

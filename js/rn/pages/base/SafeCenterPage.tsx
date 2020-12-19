@@ -88,8 +88,8 @@ const SignInPassword = ({ tabLabel }) => {
 }
 
 const TakeMoneyPassword = ({ tabLabel }) => {
-  const oldPassword = useRef(null)
-  const newPassword = useRef(null)
+  const oldPwd = useRef(null)
+  const newPwd = useRef(null)
   const confirmNewPwd = useRef(null)
 
   return (
@@ -98,14 +98,14 @@ const TakeMoneyPassword = ({ tabLabel }) => {
         title={'旧取款密码'}
         placeholder={'请输入旧取款密码'}
         onChangeText={(text) => {
-          oldPassword.current = text
+          oldPwd.current = text
         }}
       />
       <Form
         title={'新密码'}
         placeholder={'请输4位数字取款新密码'}
         onChangeText={(text) => {
-          newPassword.current = text
+          newPwd.current = text
         }}
       />
       <Form
@@ -115,7 +115,35 @@ const TakeMoneyPassword = ({ tabLabel }) => {
           confirmNewPwd.current = text
         }}
       />
-      <Button title={'提交'} titleStyle={{ color: '#ffffff' }} containerStyle={styles.button} />
+      <Button
+        title={'提交'}
+        titleStyle={{ color: '#ffffff' }}
+        containerStyle={styles.button}
+        onPress={() => {
+          if (newPwd.current == confirmNewPwd.current) {
+            showLoading()
+            APIRouter.user_changeFundPwd({
+              oldPwd: oldPwd.current?.md5(),
+              newPwd: newPwd.current?.md5(),
+            })
+              .then((value) => {
+                console.log('------------value?.data------', value?.data)
+                const code = value?.data?.code
+                const msg = value?.data?.msg
+                if (code) {
+                  showError(msg)
+                } else {
+                  showSuccess(msg)
+                }
+              })
+              .catch((error) => {
+                showError(error)
+              })
+          } else {
+            showError('新密码不一致')
+          }
+        }}
+      />
     </View>
   )
 }
