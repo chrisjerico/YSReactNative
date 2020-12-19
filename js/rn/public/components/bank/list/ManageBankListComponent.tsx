@@ -2,7 +2,7 @@ import { Alert, FlatList, Linking, StyleSheet, Text, TouchableWithoutFeedback, V
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
-import { anyEmpty } from '../../../tools/Ext'
+import { anyEmpty, arrayLength } from '../../../tools/Ext'
 import { scale } from '../../../tools/Scale'
 import { Skin1 } from '../../../theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
@@ -33,6 +33,9 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
+  const [showRightButton, setShowRightButton] = useState(false) //是否显示右边按钮
+  const [selectType, setSelectType] = useState<number>() //选中了哪个账户
+
   let tabController //tab选择器
 
   const {
@@ -44,6 +47,15 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     requestManageBankData,
     bindRealName,
   } = UseManageBankList()
+
+  useEffect(() => {
+    //判断要不要显示右边按钮
+    categoryData?.map((item) => {
+      if (item.type == selectType) {
+        setShowRightButton(arrayLength(item.data) < item.number)
+      }
+    })
+  }, [selectType, categoryData])
 
   /**
    * 绘制银行信息
@@ -137,11 +149,12 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
           requestManageBankData(null)
         },
         bankCardData: bankCardData,
+        selectType: selectType
       })
     }
   }
 
-  const rightButton = anyEmpty(categoryData) ?
+  const rightButton = anyEmpty(categoryData) || !showRightButton ?
     null :
     <TouchableWithoutFeedback onPress={addNewAccount}>
       <Text style={_styles.right_button}>新增</Text>
@@ -156,6 +169,9 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
           anyEmpty(categoryData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <ScrollableTabView
+              onChangeTab={({ i }) => {
+                setSelectType(categoryData[i].type)
+              }}
               ref={instance => tabController = instance}
               tabBarUnderlineStyle={[_styles.tab_bar_underline,
                 { backgroundColor: Skin1.themeColor }]}
