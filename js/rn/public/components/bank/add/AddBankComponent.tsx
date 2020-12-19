@@ -48,7 +48,7 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../network/Model/bank/BankDetailListModel'
 
 interface IRouteParams {
-  refreshBankList?: () => any,
+  refreshBankList?: (accountType: string) => any,
   bankCardData?: ManageBankCardData,
 }
 
@@ -339,8 +339,8 @@ const AddBankComponent = ({ navigation, route }) => {
                             wxAccount: wxAccount,
                             wxPhone: wxPhone,
                             aliAccount: aliAccount,
-                            callBack: () => {
-                              refreshBankList()
+                            callBack: (accountType) => {
+                              refreshBankList(accountType)
                             },
                           })
 
