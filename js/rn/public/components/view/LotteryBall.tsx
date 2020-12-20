@@ -33,7 +33,7 @@ const LotteryBall = ({
                      }: ILotteryBall) => {
 
   const width = anyEmpty(size) ? scale(44) : size //球的大小
-  const txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
+  let txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
   let bColor //球的颜色
   let ballUrl //球的url
   let round //球的圆角
@@ -45,8 +45,9 @@ const LotteryBall = ({
     bColor = anyEmpty(ballColor) ? UGColor.BlueColor4 : ballColor
     round = 999
   } else if (type == BallType.colorful) {
-    ballUrl = getColorfulBallColor(ballColor)
+    ballUrl = getColorfulBallColor(ballNumber)
     round = 0
+    txColor = UGColor.TextColor2
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
     round = 999
@@ -63,14 +64,16 @@ const LotteryBall = ({
       style]}>
       {
         type == BallType.colorful ?
-          <FastImage style={[
-            _styles.colorful_ball_item,
-            { width: size }]}
-                     resizeMode={'contain'}
-                     source={{ uri: ballUrl }}/> :
-          null
+          [
+            <FastImage style={[
+              _styles.colorful_ball_item,
+              { width: width }]}
+                       resizeMode={'contain'}
+                       source={{ uri: ballUrl }}/>,
+            <Text style={[_styles.ball_colorful_text, { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
+          ] :
+          <Text style={[_styles.ball_text, { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
       }
-      <Text style={[_styles.ball_text, { color: txColor, fontSize: width/2 }]}>{ballNumber}</Text>
     </View>
   )
 }
@@ -86,7 +89,10 @@ const _styles = StyleSheet.create({
     position: 'absolute',
   },
   ball_text: {
-    color: 'white',
+    fontSize: scale(18),
+    textAlign: 'center',
+  },
+  ball_colorful_text: {
     fontSize: scale(18),
     textAlign: 'center',
   },

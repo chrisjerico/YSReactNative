@@ -61,11 +61,11 @@ const HallGameListComponent = ({
                 <View style={CommStyles.flex}/>,
                 <View style={_styles.ball_container}>
                   {
-                    balls.map((item) => <LotteryBall type={BallType.round}
+                    balls.map((item) => <LotteryBall type={BallType.colorful}
                                                      ballNumber={item}/>)
                   }
                   <Text style={_styles.text_content_plus}>{'+'}</Text>
-                  <LotteryBall type={BallType.round}
+                  <LotteryBall type={BallType.colorful}
                                ballNumber={lastBall}/>
                 </View>,
                 <View style={_styles.date_container}>
@@ -146,6 +146,7 @@ const _styles = StyleSheet.create({
   },
   start_game_button: {
     width: scale(180),
+    height: scale(40),
     borderTopLeftRadius: scale(38),
     borderTopRightRadius: scale(16),
     borderBottomRightRadius: scale(38),
@@ -153,7 +154,7 @@ const _styles = StyleSheet.create({
     borderWidth: scale(1),
   },
   start_game_text: {
-    fontSize: scale(26),
+    fontSize: scale(24),
   },
   ball_container: {
     flexDirection: 'row',
