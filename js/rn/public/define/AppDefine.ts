@@ -12,7 +12,7 @@ export default class AppDefine {
   static height = Dimensions.get('window').height
   static iOS = Platform.OS == 'ios'
   static onePx = 1 / PixelRatio.get()
-  static defaultAvatar = 'https://appstatic.woyovr.com/assets/money-2.png'
+  static defaultAvatar = 'https://appstatic.guolaow.com/assets/money-2.png'
 
   static checkHeaderShowBackButton(callback: (show: boolean) => void) {
     if (Platform.OS != 'ios') return
