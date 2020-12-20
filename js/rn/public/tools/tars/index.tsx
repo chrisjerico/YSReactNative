@@ -73,7 +73,7 @@ export const useHtml5Image = (host: string = AppDefine.host) => {
     if (siteId) {
       return host + '/platform/' + siteId?.toString() + '/images/' + path + '.' + type
     } else {
-      return host + '/images/' + path + '.' + type
+      return host + '/' + path + '.' + type
     }
   }
   return { getHtml5Image, getHtml5ImagePlatform }

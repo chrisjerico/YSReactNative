@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet,RefreshControl, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet,RefreshControl, Image, ImageBackground } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
+import { useHtml5Image } from '../../../public/tools/tars';
+
+const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
+
 
 export default class QDTestPage extends Component {
  
@@ -21,13 +25,18 @@ export default class QDTestPage extends Component {
     // 渲染列表项
     _renderItem = ({index, item}) => {
         console.log(index);
+        console.log('img = ', getHtml5ImagePlatform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
         return (
             <View key={item.key} style={styles.itemViewStyle}>
                 <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
                 <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
-                <Image style={styles.itemImageStyle } source={{uri: item.logo}}>
-                    
-                </Image>
+                <ImageBackground style={styles.itemImageStyle } source={{uri: 'https://appstatic.woyovr.com/assets/sigined.png'}}>
+                     <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                     <Image style={[styles.itemImageImageStyle ]} source={{uri: 'https://appstatic.woyovr.com//web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png'}}/>
+                     <ImageBackground style={styles.itemImageImage2Style } source={{uri: 'https://appstatic.woyovr.com/assets/signIn_grey.png'}}>
+                     <Text style={[styles.itemImageImageTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                     </ImageBackground>
+                </ImageBackground>
             </View>
         );
     }
@@ -141,23 +150,44 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 4,
         marginRight: 4,
-        // justifyContent: 'center',//控制子元素居中
+        // justifyContent: 'center',//控制子元素垂直居中
         alignItems: 'center'
     },
     itemTextStyle: {
-        color: 'red',
+        color: 'black',
         fontSize: 13
     },
     itemTextSizeStyle: {
         marginTop: 5,
-        alignItems: 'center'// 文本居中
+        alignItems: 'center'//控制子元素水平居中
     },
     itemImageStyle: {
         height: 98,
         width: 80,
         marginTop: 5,
         resizeMode: "stretch",
-        
+        alignItems: 'center' 
+    },
+    itemImageTextStyle: {
+        color: 'black',
+        fontSize: 18
+    },
+    itemImageImageStyle: {
+        height: 27,
+        width: 33,
+        marginTop: 5,
+        resizeMode: "stretch",
+    },
+    itemImageImage2Style: {
+        height: 18,
+        width: 60,
+        marginTop: 10,
+        resizeMode: "stretch",
+        alignItems: 'center' 
+    },
+    itemImageImageTextStyle: {
+        color: 'black',
+        fontSize: 13
     },
     separatorStyle: {
         borderColor: '#A4A4A4',
