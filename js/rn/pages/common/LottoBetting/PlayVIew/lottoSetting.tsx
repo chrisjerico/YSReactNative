@@ -80,7 +80,7 @@ export const getSZBallColor = (ballName: string) => {
  */
 export const getVegetableBallColor = (ballName: string) => {
   const color = VegetablePics[ballName]
-  return !anyEmpty(color) ? color : SzPics['01']
+  return !anyEmpty(color) ? color : VegetablePics['01']
 }
 
 /**

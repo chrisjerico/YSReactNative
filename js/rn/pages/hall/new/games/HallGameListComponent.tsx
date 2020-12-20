@@ -61,7 +61,7 @@ const HallGameListComponent = ({
                 <View style={CommStyles.flex}/>,
                 <View style={_styles.ball_container}>
                   {
-                    balls.map((item) => <LotteryBall type={BallType.colorful}
+                    balls.map((item) => <LotteryBall type={BallType.vegetable}
                                                      ballNumber={item}/>)
                   }
                   <Text style={_styles.text_content_plus}>{'+'}</Text>

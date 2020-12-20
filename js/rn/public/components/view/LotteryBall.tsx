@@ -2,13 +2,14 @@ import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import {
   getColorfulBallColor,
   getHKballColor,
-  getSQBallColor,
+  getSQBallColor, getSZBallColor, getVegetableBallColor,
 } from '../../../pages/common/LottoBetting/PlayVIew/lottoSetting'
 import { anyEmpty } from '../../tools/Ext'
 import { scale } from '../../tools/Scale'
 import { UGColor } from '../../theme/UGThemeColor'
 import FastImage from 'react-native-fast-image'
 import React from 'react'
+import { ugLog } from '../../tools/UgLog'
 
 interface ILotteryBall {
   type?: string, //球的种类 BallType
@@ -48,9 +49,42 @@ const LotteryBall = ({
     ballUrl = getColorfulBallColor(ballNumber)
     round = 0
     txColor = UGColor.TextColor2
+  } else if (type == BallType.sz) {
+    ballUrl = getSZBallColor(ballNumber)
+    round = 0
+  } else if (type == BallType.vegetable) {
+    ballUrl = getVegetableBallColor(ballNumber)
+    round = 0
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
     round = 999
+  }
+
+  /**
+   * 绘制球
+   * @param type 球的类型
+   */
+  const renderBalls = (type?: string) => {
+    switch (type) {
+      case BallType.colorful:
+        return [
+          <FastImage style={[
+            _styles.colorful_ball_item,
+            { width: width }]}
+                     resizeMode={'contain'}
+                     source={{ uri: ballUrl }}/>,
+          <Text style={[_styles.ball_colorful_text, { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
+        ]
+      case BallType.sz:
+      case BallType.vegetable:
+        return <FastImage style={[
+          _styles.colorful_ball_item,
+          { width: width }]}
+                          resizeMode={'contain'}
+                          source={{ uri: ballUrl }}/>
+      default:
+        return <Text style={[_styles.ball_text, { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+    }
   }
 
   return (
@@ -63,16 +97,7 @@ const LotteryBall = ({
       },
       style]}>
       {
-        type == BallType.colorful ?
-          [
-            <FastImage style={[
-              _styles.colorful_ball_item,
-              { width: width }]}
-                       resizeMode={'contain'}
-                       source={{ uri: ballUrl }}/>,
-            <Text style={[_styles.ball_colorful_text, { color: txColor, fontSize: width * 3 / 7 }]}>{ballNumber}</Text>,
-          ] :
-          <Text style={[_styles.ball_text, { color: txColor, fontSize: width / 2 }]}>{ballNumber}</Text>
+        renderBalls(type)
       }
     </View>
   )
@@ -107,6 +132,8 @@ const BallType = {
   'square': '方球',
   'colorful': '花球',
   'pure': '纯色球',
+  'vegetable': '蔬菜',
+  'sz': '骰子',
 }
 
 export default LotteryBall
