@@ -55,7 +55,7 @@ export const getHKballColor = (BallName: string) => {
  * 得到花球
  * @param BallName
  */
-export const getColorfulBallColor = (ballName: string) => {
+export const getColorfulBallPic = (ballName: string) => {
   if (redSet.includes(ballName)) {
     return Res.red_ball
   } else if (blueSet.includes(ballName)) {
@@ -69,7 +69,7 @@ export const getColorfulBallColor = (ballName: string) => {
  * 得到骰子
  * @param BallName
  */
-export const getSZBallColor = (ballName: string) => {
+export const getSZBallPic = (ballName: string) => {
   const color = SzPics[ballName]
   return !anyEmpty(color) ? color : SzPics['01']
 }
@@ -78,7 +78,7 @@ export const getSZBallColor = (ballName: string) => {
  * 得到农场
  * @param BallName
  */
-export const getVegetableBallColor = (ballName: string) => {
+export const getVegetableBallPic = (ballName: string) => {
   const color = VegetablePics[ballName]
   return !anyEmpty(color) ? color : VegetablePics['01']
 }

@@ -35,14 +35,67 @@ const HallGameListComponent = ({
                                     }}/>
 
   /**
-   * 绘制提示标题
+   * 绘制球
+   * @param gameType 游戏种类
+   */
+  const renderBalls = (gameType?: string,
+                       ballStr?: string) => {
+    let balls = anyEmpty(ballStr) ? [] : ballStr.split(',').map((item) => ('0' + item).slice(-2)) //球的数组
+    let lastBall = balls.pop() //最后一个球
+    let ballStyle = BallStyles[gameType] //球的样式
+    ballStyle = anyEmpty(ballStyle) ? BallStyles['lhc'] : ballStyle
+
+    let ballView
+    switch (gameType) {
+      case 'bjkl8':
+        ballView = (
+          [
+            <View style={_styles.ball_wrap_container}>
+              {
+                [
+                  [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                                                                   size={scale(38)}
+                                                                   ballNumber={item}/>),
+                ]
+              }
+            </View>,
+          ]
+        )
+        break
+      default:
+        ballView = (
+          [
+            <View style={CommStyles.flex}/>,
+            <View style={_styles.ball_container}>
+              {
+                [
+                  balls?.map((item) => <LotteryBall type={ballStyle}
+                                                    ballNumber={item}/>),
+                  lastBall && <Text style={_styles.text_content_plus}>{'+'}</Text>,
+                  lastBall && <LotteryBall type={ballStyle}
+                                           ballNumber={lastBall}/>,
+                ]
+              }
+            </View>,
+          ]
+        )
+        break
+    }
+
+    return anyEmpty(balls) ?
+      <View style={_styles.start_game_container}>
+        <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
+                titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
+                title={'立即游戏'}/>
+      </View> :
+      ballView
+  }
+
+  /**
+   * 绘制彩票信息
    * @param item
    */
   const renderItemContent = (item: HallGameListData) => {
-
-    const balls = anyEmpty(item.preNum) ? [] : item.preNum.split(',').map((item) => ('0' + item).slice(-2))
-    const lastBall = balls.pop()
-
     return (
       <View style={_styles.ball_item_container}>
         <FastImage style={_styles.item_logo}
@@ -51,28 +104,18 @@ const HallGameListComponent = ({
         <View style={CommStyles.flex}>
           <Text style={_styles.text_content_title}>{item.title}</Text>
           {
-            anyEmpty(balls) ?
-              <View style={_styles.start_game_container}>
-                <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
-                        titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
-                        title={'立即游戏'}/>
-              </View> :
-              [
-                <View style={CommStyles.flex}/>,
-                <View style={_styles.ball_container}>
-                  {
-                    balls.map((item) => <LotteryBall type={BallType.vegetable}
-                                                     ballNumber={item}/>)
-                  }
-                  <Text style={_styles.text_content_plus}>{'+'}</Text>
-                  <LotteryBall type={BallType.colorful}
-                               ballNumber={lastBall}/>
-                </View>,
-                <View style={_styles.date_container}>
-                  <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
-                  <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
-                </View>,
-              ]
+            [
+              renderBalls(item?.gameType, item?.preNum),
+              <View style={_styles.date_container}>
+                {
+                  anyEmpty(item?.preDisplayNumber) ? null :
+                    <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
+                }
+                {
+                  anyEmpty(item?.preOpenTime) ? null : <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
+                }
+              </View>,
+            ]
           }
         </View>
       </View>
@@ -100,12 +143,33 @@ const HallGameListComponent = ({
   )
 }
 
+/**
+ * 球的样式
+ */
+const BallStyles = {
+  'lhc': BallType.round, //六合彩
+  'qxc': BallType.pure, //"七星彩系列"
+  'cqssc': BallType.pure, //"时时彩系列"
+  'pk10': BallType.square, //"赛车系列"
+  'xyft': BallType.square, //"飞艇系列"
+  'yncp': BallType.pure, //"越南彩系列"
+  'fc3d': BallType.pure, //"3D系列"
+  'gdkl10': BallType.pure, //"快乐10分系列"
+  'pk10nn': BallType.square, //"牛牛系列"
+  'xync': BallType.vegetable, //"幸运农场系列"
+  'bjkl8': BallType.pure, //"快乐8系列"
+  'dlt': BallType.red_blue, //"大乐透系列"
+  'pcdd': BallType.pure, //"蛋蛋系列"
+  'jsk3': BallType.sz, //"快三系列"
+  'gd11x5': BallType.pure, //"11选5系列"
+}
+
 const CONTENT_ITEM_HEIGHT = scale(140) //内容高度
 
 const _styles = StyleSheet.create({
   ball_item_container: {
     flex: 1,
-    height: CONTENT_ITEM_HEIGHT,
+    minHeight: CONTENT_ITEM_HEIGHT,
     padding: scale(8),
     flexDirection: 'row',
     alignItems: 'center',
@@ -159,6 +223,11 @@ const _styles = StyleSheet.create({
   ball_container: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  ball_wrap_container: {//换行
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   ball_item: {
     margin: scale(4),

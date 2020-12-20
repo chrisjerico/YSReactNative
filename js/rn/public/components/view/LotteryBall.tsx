@@ -1,8 +1,8 @@
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import {
-  getColorfulBallColor,
+  getColorfulBallPic,
   getHKballColor,
-  getSQBallColor, getSZBallColor, getVegetableBallColor,
+  getSQBallColor, getSZBallPic, getVegetableBallPic,
 } from '../../../pages/common/LottoBetting/PlayVIew/lottoSetting'
 import { anyEmpty } from '../../tools/Ext'
 import { scale } from '../../tools/Scale'
@@ -46,14 +46,14 @@ const LotteryBall = ({
     bColor = anyEmpty(ballColor) ? UGColor.BlueColor4 : ballColor
     round = 999
   } else if (type == BallType.colorful) {
-    ballUrl = getColorfulBallColor(ballNumber)
+    ballUrl = getColorfulBallPic(ballNumber)
     round = 0
     txColor = UGColor.TextColor2
   } else if (type == BallType.sz) {
-    ballUrl = getSZBallColor(ballNumber)
+    ballUrl = getSZBallPic(ballNumber)
     round = 0
   } else if (type == BallType.vegetable) {
-    ballUrl = getVegetableBallColor(ballNumber)
+    ballUrl = getVegetableBallPic(ballNumber)
     round = 0
   } else {
     bColor = anyEmpty(ballColor) ? getHKballColor(ballNumber) : ballColor
@@ -134,6 +134,7 @@ const BallType = {
   'pure': '纯色球',
   'vegetable': '蔬菜',
   'sz': '骰子',
+  'red_blue': '红蓝',
 }
 
 export default LotteryBall
