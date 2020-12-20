@@ -31,6 +31,11 @@ export interface HallGameListData {
   curOpenTime?: string //"2020-12-20 13:20:00"
   curCloseTime?: string // "2020-12-20 13:19:50"
   displayNumber?: string // 2012200041
+  preIssue?: string //"2012200041"
+  preOpenTime?: string //"2020-12-20 13:20:00"
+  preNum?: string // 40,22,25,33,31,20,27
+  preDisplayNumber?: string // 2012200041
+  preResult?: string // "鸡,兔,鼠,龙,马,蛇,狗"
   sort?: string //
   serverTime?: string // "2020-12-20 13:17:37"
   serverTimestamp?: string // 1608441457015

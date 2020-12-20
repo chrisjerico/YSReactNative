@@ -29,9 +29,10 @@ const LotteryBall = ({
                        ballNumber,
                        textColor,
                        ballColor,
+                       style,
                      }: ILotteryBall) => {
 
-  const width = anyEmpty(size) ? scale(60) : size //球的大小
+  const width = anyEmpty(size) ? scale(44) : size //球的大小
   const txColor = !anyEmpty(textColor) ? textColor : 'white' //文字的颜色
   let bColor //球的颜色
   let ballUrl //球的url
@@ -52,11 +53,14 @@ const LotteryBall = ({
   }
 
   return (
-    <View style={[_styles.ball_item, {
-      backgroundColor: bColor,
-      borderRadius: round,
-      width: width,
-    }]}>
+    <View style={[_styles.ball_item,
+      {
+        backgroundColor: bColor,
+        borderRadius: round,
+        width: width,
+        margin: scale(2),
+      },
+      style]}>
       {
         type == BallType.colorful ?
           <FastImage style={[
@@ -66,7 +70,7 @@ const LotteryBall = ({
                      source={{ uri: ballUrl }}/> :
           null
       }
-      <Text style={[_styles.ball_text, { color: txColor }]}>{ballNumber}</Text>
+      <Text style={[_styles.ball_text, { color: txColor, fontSize: width/2 }]}>{ballNumber}</Text>
     </View>
   )
 }
@@ -82,7 +86,6 @@ const _styles = StyleSheet.create({
     position: 'absolute',
   },
   ball_text: {
-    flex: 1,
     color: 'white',
     fontSize: scale(18),
     textAlign: 'center',

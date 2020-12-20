@@ -8,6 +8,8 @@ import EmptyView from '../../../../public/components/view/empty/EmptyView'
 import { scale } from '../../../../public/tools/Scale'
 import { UGColor } from '../../../../public/theme/UGThemeColor'
 import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
+import Button from '../../../../public/views/tars/Button'
+import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -36,29 +38,46 @@ const HallGameListComponent = ({
    * 绘制提示标题
    * @param item
    */
-  const renderItemContent = (item: HallGameListData) => <View style={_styles.ball_item_container}>
-    <FastImage style={_styles.item_logo}
-               resizeMode={'contain'}
-               source={{ uri: item.pic }}/>
-    <View style={CommStyles.flex}>
-      <Text style={_styles.text_content_title}>{item.title}</Text>
-      <View style={_styles.ball_container}>
-        {
-          [
-            ['0', '2', '3', '4', '5'].map((item) => <LotteryBall type={BallType.square}
-                                                                 ballNumber={item}/>),
-            <Text style={_styles.text_content_plus}>{'+'}</Text>,
-            <LotteryBall type={BallType.square}
-                         ballNumber={'9'}/>,
-          ]
-        }
+  const renderItemContent = (item: HallGameListData) => {
+
+    const balls = anyEmpty(item.preNum) ? [] : item.preNum.split(',').map((item) => ('0' + item).slice(-2))
+    const lastBall = balls.pop()
+
+    return (
+      <View style={_styles.ball_item_container}>
+        <FastImage style={_styles.item_logo}
+                   resizeMode={'contain'}
+                   source={{ uri: item.pic }}/>
+        <View style={CommStyles.flex}>
+          <Text style={_styles.text_content_title}>{item.title}</Text>
+          {
+            anyEmpty(balls) ?
+              <View style={_styles.start_game_container}>
+                <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
+                        titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
+                        title={'立即游戏'}/>
+              </View> :
+              [
+                <View style={CommStyles.flex}/>,
+                <View style={_styles.ball_container}>
+                  {
+                    balls.map((item) => <LotteryBall type={BallType.round}
+                                                     ballNumber={item}/>)
+                  }
+                  <Text style={_styles.text_content_plus}>{'+'}</Text>
+                  <LotteryBall type={BallType.round}
+                               ballNumber={lastBall}/>
+                </View>,
+                <View style={_styles.date_container}>
+                  <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
+                  <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
+                </View>,
+              ]
+          }
+        </View>
       </View>
-      <View style={_styles.date_container}>
-        <Text style={_styles.text_content_issue}>{item.isSeal}</Text>
-        <Text style={_styles.text_content_date}>{item.curOpenTime}</Text>
-      </View>
-    </View>
-  </View>
+    )
+  }
 
   return (
     <View style={CommStyles.flex}>
@@ -67,6 +86,7 @@ const HallGameListComponent = ({
           anyEmpty(gameData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList refreshControl={refreshCT}
+                        showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item}-${index}`}
                         data={gameData}
                         renderItem={({ item, index }) => {
@@ -80,37 +100,37 @@ const HallGameListComponent = ({
   )
 }
 
-// const CONTENT_ITEM_HEIGHT = scale(80) //内容高度
+const CONTENT_ITEM_HEIGHT = scale(140) //内容高度
 
 const _styles = StyleSheet.create({
   ball_item_container: {
     flex: 1,
-    paddingHorizontal: scale(8),
+    height: CONTENT_ITEM_HEIGHT,
+    padding: scale(8),
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.BackgroundColor3,
   },
   text_content_title: {
-    flex: 1,
     color: UGColor.TextColor2,
-    fontSize: scale(20),
-    textAlign: 'center',
+    fontSize: scale(24),
+    textAlign: 'left',
   },
   text_content_issue: {
-    flex: 1,
-    color: UGColor.TextColor2,
+    color: UGColor.TextColor3,
     fontSize: scale(18),
     textAlign: 'center',
   },
   text_content_date: {
-    color: UGColor.TextColor2,
+    flex: 1,
+    color: UGColor.TextColor3,
     fontSize: scale(18),
-    textAlign: 'center',
+    textAlign: 'right',
   },
   text_content_plus: {
-    color: UGColor.TextColor1,
-    fontSize: scale(22),
+    color: UGColor.TextColor3,
+    fontSize: scale(32),
     textAlign: 'center',
     paddingHorizontal: scale(16),
   },
@@ -119,9 +139,25 @@ const _styles = StyleSheet.create({
     aspectRatio: 1,
     marginRight: scale(8),
   },
+  start_game_container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  start_game_button: {
+    width: scale(180),
+    borderTopLeftRadius: scale(38),
+    borderTopRightRadius: scale(16),
+    borderBottomRightRadius: scale(38),
+    borderBottomLeftRadius: scale(16),
+    borderWidth: scale(1),
+  },
+  start_game_text: {
+    fontSize: scale(26),
+  },
   ball_container: {
-    width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   ball_item: {
     margin: scale(4),

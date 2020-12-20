@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native'
 import * as React from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
+import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './games/HallGameListComponent'
@@ -30,10 +30,12 @@ const GameHallPage = ({ navigation, setProps }) => {
     userInfo,
   } = UseGameHall()
 
+  useEffect(()=>{
+    requestGameData()
+  }, [])
+
   /**
-   * 请求存款记录
-   * clear: 从头请求
-   * selPage: 指定哪一页
+   * 请求游戏数据
    */
   const requestGameData = async () => {
     setRefreshing(true)
@@ -74,7 +76,7 @@ const GameHallPage = ({ navigation, setProps }) => {
               tabBarInactiveTextColor={Skin1.textColor1}
               tabBarTextStyle={{ fontSize: scale(20) }}
               style={[{ flex: 1 }]}
-              renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+              renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
               {
                 gameData?.map((tabItem, index) => {
                     return (
