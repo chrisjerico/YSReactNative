@@ -58,11 +58,6 @@ export class ANHelper extends ANEvent {
     //
     // })
 
-    // 设置接口域名
-    this.callAsync(CMD.AN_VERSION).then((result) => {
-      ugLog('AN_VERSION=', result)
-    })
-
     // 获取系统配置信息
     const res = await Promise.all([
       // 设置接口域名

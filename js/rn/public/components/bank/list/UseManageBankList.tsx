@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import APIRouter from '../../../network/APIRouter'
 import { ugLog } from '../../../tools/UgLog'
-import { anyEmpty, anyLength } from '../../../tools/Ext'
+import { anyEmpty, anyLength, arrayLength } from '../../../tools/Ext'
 import { AllAccountListData, ManageBankCardData } from '../../../network/Model/bank/ManageBankCardModel'
 import { RefreshControl } from 'react-native'
 import * as React from 'react'
@@ -54,7 +54,20 @@ const UseManageBankList = () => {
       let actData = res?.data
       if(anyEmpty(actData?.allAccountList)) return
 
+      actData?.allAccountList?.map((item) => {
+        //0和null不限制
+        // ugLog('Number(item.number)=', Number(item.number), item.number)
+        if (Number(item.number) <= 0) {
+          item.number = '999'
+        } else if(arrayLength(item.data) > Number(item.number)) {
+          //避免在全部里面数量计算出现偏差
+          item.number = arrayLength(item.data).toString()
+        }
+        // ugLog('Number(item.number)2=', item.name, Number(item.number), item.number, arrayLength(item.data), arrayLength(item.data) < Number(item.number))
+      })
+
       actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
+
       setBankCardData(actData)
       generateListData(actData)
     }).finally(() => {
@@ -71,13 +84,19 @@ const UseManageBankList = () => {
 
     const tabAll: AllAccountListData = {
       type: 0,
+      isshow: true,
+      number: '0',
       name: '全部',
       data: [],
     }
 
     actListData?.map((item, index) => {
       if (!anyEmpty(item.data)) {
+
         tabAll.data = tabAll.data.concat(item.data)
+        tabAll.number = (Number(tabAll.number) + Number(item.number)).toString()
+
+        //ugLog('tabNumber2=', tabAll.number, item.number)
       }
     })
 

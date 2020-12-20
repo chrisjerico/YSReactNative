@@ -22,7 +22,7 @@ import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
 import { OCHelper } from '../../../define/OCHelper/OCHelper'
 import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
 import { getGameList } from '../../../utils/getGameList'
-import { anyEmpty } from '../../../tools/Ext'
+import { anyEmpty, arrayLength } from '../../../tools/Ext'
 import { scale } from '../../../tools/Scale'
 import { Skin1 } from '../../../theme/UGSkinManagers'
 import { LEFThemeColor } from '../../../theme/colors/LEFThemeColor'
@@ -48,8 +48,9 @@ import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../network/Model/bank/BankDetailListModel'
 
 interface IRouteParams {
-  refreshBankList?: () => any,
-  bankCardData?: ManageBankCardData,
+  refreshBankList?: (accountType: string) => any, //刷新账户列表方法
+  bankCardData?: ManageBankCardData, //当前的账户数据
+  selectType?: number, //当前选中的是哪个条目
 }
 
 /**
@@ -85,7 +86,7 @@ const AddBankComponent = ({ navigation, route }) => {
    * refreshBankList: 刷新银行卡列表
    * bankCardData: 银行卡数据
    */
-  const { refreshBankList, bankCardData }: IRouteParams = route?.params
+  const { refreshBankList, bankCardData, selectType }: IRouteParams = route?.params
 
   const {
     userInfo,
@@ -104,7 +105,7 @@ const AddBankComponent = ({ navigation, route }) => {
    */
   let bankList = bankCardData?.allAccountList
   useEffect(() => {
-    let accountTypes = bankList.map(
+    let accountTypes = bankList.filter((item) => arrayLength(item.data) < Number(item.number)).map(
       (item, index) =>
         ({
           label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
@@ -112,7 +113,7 @@ const AddBankComponent = ({ navigation, route }) => {
                                                                      style={_styles.bank_name_icon}/>,
         }))
     !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountType(accountTypes[0].value)
+    !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
   }, [])
 
   /**
@@ -339,8 +340,8 @@ const AddBankComponent = ({ navigation, route }) => {
                             wxAccount: wxAccount,
                             wxPhone: wxPhone,
                             aliAccount: aliAccount,
-                            callBack: () => {
-                              refreshBankList()
+                            callBack: (accountType) => {
+                              refreshBankList(accountType)
                             },
                           })
 

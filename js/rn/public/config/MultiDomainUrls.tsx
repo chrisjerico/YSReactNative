@@ -159,8 +159,6 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
   ],
   'c048': [
     'https://f28z.com',
-    'https://f28c.com',
-    'https://f28x.com',
     'https://f28e.com',
     'https://f28o.com',
   ],
@@ -193,7 +191,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://83f9.com',
   ],
   'c092': [
-    'https://2013vip5.com',
+    'https://2013asd-555.com',
+    'https://2013tgb-555.com',
+    'https://2013qwe-555.com',
+    'https://2013qaz-555.com',
+    'https://2013wsx-555.com',
   ],
   'c105b': [
     'https://390qp8.com',
@@ -247,11 +249,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://781789.com',
   ],
   'c134': [
-    'https://19972015.com',
-    'https://19972023.com',
-    'https://19972022.com',
-    'https://19972018.com',
-    'https://19972017.com',
+    'https://20041997.com',
+    'https://20251997.com',
+    'https://20261997.com',
+    'https://20271997.com',
+    'https://20141997.com'
   ],
   'c137': [
     'https://7033005.com',
@@ -428,7 +430,11 @@ const MultiDomainUrls: { [x: string]: Array<string> } = {
     'https://demo.gbbet.com',
   ],
   'l002': [
-    'https://7033306.com',
+    'https://70333p.org',
+    'https://70333o.org',
+    'https://70333i.org',
+    'https://70333u.org',
+    'https://70333y.org',
   ],
   'h003b': [
     'https://betv5.com',

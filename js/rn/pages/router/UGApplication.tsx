@@ -130,6 +130,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.JXHSignInPage} component={JXHSignInPage} />
         <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
         <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
         <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />

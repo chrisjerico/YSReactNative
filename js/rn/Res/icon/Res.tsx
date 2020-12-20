@@ -1,5 +1,5 @@
 // 图片服务器域名：
-// https://appstatic.woyovr.com
+// https://appstatic.guolaow.com
 // https://appstatic.guolaow.com
 
 /**
