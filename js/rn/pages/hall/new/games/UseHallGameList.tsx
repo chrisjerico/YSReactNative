@@ -6,7 +6,7 @@ import APIRouter from '../../../../../network/APIRouter'
 import { anyEmpty, arrayEmpty } from '../../../../../tools/Ext'
 import { ugLog } from '../../../../../tools/UgLog'
 import { Toast } from '../../../../../tools/ToastUtils'
-import { HallGameListData } from '../../../../network/Model/game/HallGameModel'
+import { HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
 
 /**
  * 游戏大厅列表

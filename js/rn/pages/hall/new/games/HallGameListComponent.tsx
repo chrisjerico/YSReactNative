@@ -1,13 +1,13 @@
 import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { HallGameListData } from '../../../../network/Model/game/HallGameModel'
+import { HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
 import FastImage from 'react-native-fast-image'
-import CommStyles from '../../../../../pages/base/CommStyles'
-import { anyEmpty } from '../../../../tools/Ext'
-import EmptyView from '../../../view/empty/EmptyView'
-import { scale } from '../../../../tools/Scale'
-import { UGColor } from '../../../../theme/UGThemeColor'
-import LotteryBall, { BallType } from '../../../view/LotteryBall'
+import CommStyles from '../../../base/CommStyles'
+import { anyEmpty } from '../../../../public/tools/Ext'
+import EmptyView from '../../../../public/components/view/empty/EmptyView'
+import { scale } from '../../../../public/tools/Scale'
+import { UGColor } from '../../../../public/theme/UGThemeColor'
+import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
