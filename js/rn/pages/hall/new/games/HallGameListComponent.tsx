@@ -54,8 +54,8 @@ const HallGameListComponent = ({
         }
       </View>
       <View style={_styles.date_container}>
-        <Text style={_styles.text_content_issue}>{item.category}</Text>
-        <Text style={_styles.text_content_date}>{item.status}</Text>
+        <Text style={_styles.text_content_issue}>{item.isSeal}</Text>
+        <Text style={_styles.text_content_date}>{item.curOpenTime}</Text>
       </View>
     </View>
   </View>
