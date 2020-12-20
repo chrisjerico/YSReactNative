@@ -81,4 +81,5 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',
   ActivityRewardPage = 'ActivityRewardPage',
   LotteryHistoryPage = 'LotteryHistoryPage',
+  QDTestPage = "QDTestPage"
 }

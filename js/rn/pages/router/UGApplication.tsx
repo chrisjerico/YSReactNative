@@ -78,6 +78,7 @@ import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
+import QDTestPage from '../经典/签到/QDTestPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -139,6 +140,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
+        <Router.TabScreen name={PageName.QDTestPage} component={UGPage(QDTestPage)} />
       </Router.TabNavigator>
     )
   }
