@@ -103,6 +103,7 @@ export async function setRnPageInfo() {
   switch (Platform.OS) {
     case 'ios':
       await OCHelper.call('AppDefine.shared.setRnPageInfos:', [pages])
+      await OCHelper.call('AppDefine.shared.setImageHost:', ['https://appstatic.guolaow.com'])
       break
     case 'android':
       break
