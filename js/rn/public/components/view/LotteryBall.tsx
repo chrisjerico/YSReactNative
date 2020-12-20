@@ -134,7 +134,6 @@ const BallType = {
   'pure': '纯色球',
   'vegetable': '蔬菜',
   'sz': '骰子',
-  'red_blue': '红蓝',
 }
 
 export default LotteryBall

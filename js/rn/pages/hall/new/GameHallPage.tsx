@@ -60,7 +60,7 @@ const GameHallPage = ({ navigation, setProps }) => {
   const renderDataList = (item: HallGameData) =>
     <HallGameListComponent tabLabel={item?.gameTypeName}
                            refreshing={refreshing}
-                           gameData={item?.list}
+                           gameData={item}
                            requestGameData={requestGameData}/>
 
   return (

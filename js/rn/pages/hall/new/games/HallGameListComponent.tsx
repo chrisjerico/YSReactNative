@@ -1,6 +1,6 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
+import { HallGameData, HallGameListData } from '../../../../public/network/Model/game/HallGameModel'
 import FastImage from 'react-native-fast-image'
 import CommStyles from '../../../base/CommStyles'
 import { anyEmpty } from '../../../../public/tools/Ext'
@@ -10,10 +10,12 @@ import { UGColor } from '../../../../public/theme/UGThemeColor'
 import LotteryBall, { BallType } from '../../../../public/components/view/LotteryBall'
 import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
+import PushHelper from '../../../../public/define/PushHelper'
+import { SeriesId } from '../../../../public/models/Enum'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
-  gameData?: Array<HallGameListData> //所有数据
+  gameData?: HallGameData //所有数据
   requestGameData?: () => void //请求数据
 }
 
@@ -47,22 +49,53 @@ const HallGameListComponent = ({
 
     let ballView
     switch (gameType) {
-      case 'bjkl8':
+      case 'bjkl8'://北京快8
         ballView = (
           [
             <View style={_styles.ball_wrap_container}>
               {
-                [
-                  [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
-                                                                   size={scale(38)}
-                                                                   ballNumber={item}/>),
-                ]
+
+                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                                                                 size={scale(38)}
+                                                                 ballNumber={item}/>)
               }
             </View>,
           ]
         )
         break
-      default:
+      case 'pk10'://赛车系列
+      case 'xyft'://飞艇系列
+      case 'pk10nn'://牛牛系列
+        ballView = (
+          [
+            <View style={CommStyles.flex}/>,
+            <View style={_styles.ball_container}>
+              {
+                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                                                                 size={scale(39)}
+                                                                 ballNumber={item}/>)
+              }
+            </View>,
+          ]
+        )
+        break
+      case 'dlt'://大乐透系列
+        ballView = (
+          [
+            <View style={CommStyles.flex}/>,
+            <View style={_styles.ball_container}>
+              {
+                [...balls, lastBall]?.map((item, index) => <LotteryBall type={ballStyle}
+                                                                        ballColor={index < balls.length - 1 ?
+                                                                          UGColor.RedColor5 :
+                                                                          UGColor.BlueColor6}
+                                                                        ballNumber={item}/>)
+              }
+            </View>,
+          ]
+        )
+        break
+      case 'lhc'://六合彩
         ballView = (
           [
             <View style={CommStyles.flex}/>,
@@ -75,6 +108,19 @@ const HallGameListComponent = ({
                   lastBall && <LotteryBall type={ballStyle}
                                            ballNumber={lastBall}/>,
                 ]
+              }
+            </View>,
+          ]
+        )
+        break
+      default:
+        ballView = (
+          [
+            <View style={CommStyles.flex}/>,
+            <View style={_styles.ball_container}>
+              {
+                [...balls, lastBall]?.map((item) => <LotteryBall type={ballStyle}
+                                                                 ballNumber={item}/>)
               }
             </View>,
           ]
@@ -97,28 +143,38 @@ const HallGameListComponent = ({
    */
   const renderItemContent = (item: HallGameListData) => {
     return (
-      <View style={_styles.ball_item_container}>
-        <FastImage style={_styles.item_logo}
-                   resizeMode={'contain'}
-                   source={{ uri: item.pic }}/>
-        <View style={CommStyles.flex}>
-          <Text style={_styles.text_content_title}>{item.title}</Text>
-          {
-            [
-              renderBalls(item?.gameType, item?.preNum),
-              <View style={_styles.date_container}>
-                {
-                  anyEmpty(item?.preDisplayNumber) ? null :
-                    <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
-                }
-                {
-                  anyEmpty(item?.preOpenTime) ? null : <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
-                }
-              </View>,
-            ]
-          }
+      <TouchableWithoutFeedback onPress={() => {
+        PushHelper.pushHomeGame(
+          Object.assign({}, item, {
+            seriesId: '1',
+            gameId: item.id,
+            subId: item.id,
+          })
+        )
+      }}>
+        <View style={_styles.ball_item_container}>
+          <FastImage style={_styles.item_logo}
+                     resizeMode={'contain'}
+                     source={{ uri: item.pic }}/>
+          <View style={CommStyles.flex}>
+            <Text style={_styles.text_content_title}>{item.title}</Text>
+            {
+              [
+                renderBalls(gameData?.gameType, item?.preNum),
+                <View style={_styles.date_container}>
+                  {
+                    anyEmpty(item?.preDisplayNumber) ? null :
+                      <Text style={_styles.text_content_issue}>{'第' + item.preDisplayNumber + '期'}</Text>
+                  }
+                  {
+                    anyEmpty(item?.preOpenTime) ? null : <Text style={_styles.text_content_date}>{item.preOpenTime}</Text>
+                  }
+                </View>,
+              ]
+            }
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 
@@ -126,12 +182,12 @@ const HallGameListComponent = ({
     <View style={CommStyles.flex}>
       {
         [
-          anyEmpty(gameData)
+          anyEmpty(gameData?.list)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList refreshControl={refreshCT}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item}-${index}`}
-                        data={gameData}
+                        data={gameData?.list}
                         renderItem={({ item, index }) => {
                           return (
                             renderItemContent(item)
@@ -158,7 +214,7 @@ const BallStyles = {
   'pk10nn': BallType.square, //"牛牛系列"
   'xync': BallType.vegetable, //"幸运农场系列"
   'bjkl8': BallType.pure, //"快乐8系列"
-  'dlt': BallType.red_blue, //"大乐透系列"
+  'dlt': BallType.round, //"大乐透系列"
   'pcdd': BallType.pure, //"蛋蛋系列"
   'jsk3': BallType.sz, //"快三系列"
   'gd11x5': BallType.pure, //"11选5系列"
