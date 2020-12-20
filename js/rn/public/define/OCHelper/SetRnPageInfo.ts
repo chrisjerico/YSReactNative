@@ -215,6 +215,7 @@ const LLPages = [
   {
     // 我的页
     tabbarItemPath: '/user',
+    vcName: 'UGMineSkinViewController',
     rnName: PageName.LLMinePage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
