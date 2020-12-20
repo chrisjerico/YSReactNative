@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, StyleSheet,RefreshControl } from 'react-native';
+import { View, Text, FlatList, StyleSheet,RefreshControl, Image } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
 
 export default class QDTestPage extends Component {
@@ -23,7 +23,11 @@ export default class QDTestPage extends Component {
         console.log(index);
         return (
             <View key={item.key} style={styles.itemViewStyle}>
-                <Text style={styles.itemTextStyle}>{item.key}</Text>
+                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                <Image style={styles.itemImageStyle } source={{uri: item.logo}}>
+                    
+                </Image>
             </View>
         );
     }
@@ -137,12 +141,23 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginLeft: 4,
         marginRight: 4,
-        justifyContent: 'center',
+        // justifyContent: 'center',//控制子元素居中
         alignItems: 'center'
     },
     itemTextStyle: {
         color: 'red',
-        fontSize: 20
+        fontSize: 13
+    },
+    itemTextSizeStyle: {
+        marginTop: 5,
+        alignItems: 'center'// 文本居中
+    },
+    itemImageStyle: {
+        height: 98,
+        width: 80,
+        marginTop: 5,
+        resizeMode: "stretch",
+        
     },
     separatorStyle: {
         borderColor: '#A4A4A4',
