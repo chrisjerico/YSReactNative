@@ -1,63 +1,74 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../../tools/Ext'
-import { scale } from '../../../../../tools/Scale'
-import { ugLog } from '../../../../../tools/UgLog'
-import { UGColor } from '../../../../../theme/UGThemeColor'
-import UseHallGameList from './UseHallGameList'
-import EmptyView from '../../../../view/empty/EmptyView'
-import { DepositListData } from '../../../../../network/Model/wd/HallGameModel'
-import CommStyles from '../../../../../../pages/base/CommStyles'
+import { HallGameListData } from '../../../../network/Model/game/HallGameModel'
+import FastImage from 'react-native-fast-image'
+import CommStyles from '../../../../../pages/base/CommStyles'
+import { anyEmpty } from '../../../../tools/Ext'
+import EmptyView from '../../../view/empty/EmptyView'
+import { scale } from '../../../../tools/Scale'
+import { UGColor } from '../../../../theme/UGThemeColor'
+import LotteryBall, { BallType } from '../../../view/LotteryBall'
+
+interface IHallGameList {
+  refreshing?: boolean //刷新
+  gameData?: Array<HallGameListData> //所有数据
+  requestGameData?: () => void //请求数据
+}
 
 /**
  * 游戏大厅列表
  * @param navigation
  * @constructor
  */
-const HallGameListComponent = () => {
-  const {
-    refreshCT,
-    gameData,
-    requestGameData,
-  } = UseHallGameList()
+const HallGameListComponent = ({
+                                 refreshing,
+                                 gameData,
+                                 requestGameData,
+                               }: IHallGameList) => {
+
+  //刷新控件
+  const refreshCT = <RefreshControl refreshing={refreshing}
+                                    onRefresh={() => {
+                                      requestGameData()
+                                    }}/>
 
   /**
    * 绘制提示标题
    * @param item
    */
-  const renderTitleHint = () => <View style={_styles.text_title_container}>
-    <Text style={_styles.text_title_0}>{'日期'}</Text>
-    <Text style={_styles.text_title_0}>{'金额'}</Text>
-    <Text style={_styles.text_title_0}>{'类型'}</Text>
-    <Text style={_styles.text_title_0}>{'状态'}</Text>
-  </View>
-
-  /**
-   * 绘制提示标题
-   * @param item
-   */
-  const renderItemContent = (item: GameListData) => <View style={_styles.text_item_container}>
-    <Text style={_styles.text_content_0}>{item.applyTime}</Text>
-    <Text style={_styles.text_content_0}>{item.amount}</Text>
-    <Text style={_styles.text_content_0}>{item.category}</Text>
-    <Text style={_styles.text_content_0}>{item.status}</Text>
+  const renderItemContent = (item: HallGameListData) => <View style={_styles.ball_item_container}>
+    <FastImage style={_styles.item_logo}
+               resizeMode={'contain'}
+               source={{ uri: item.pic }}/>
+    <View style={CommStyles.flex}>
+      <Text style={_styles.text_content_title}>{item.title}</Text>
+      <View style={_styles.ball_container}>
+        {
+          [
+            ['0', '2', '3', '4', '5'].map((item) => <LotteryBall type={BallType.square}
+                                                                 ballNumber={item}/>),
+            <Text style={_styles.text_content_plus}>{'+'}</Text>,
+            <LotteryBall type={BallType.square}
+                         ballNumber={'9'}/>,
+          ]
+        }
+      </View>
+      <View style={_styles.date_container}>
+        <Text style={_styles.text_content_issue}>{item.category}</Text>
+        <Text style={_styles.text_content_date}>{item.status}</Text>
+      </View>
+    </View>
   </View>
 
   return (
     <View style={CommStyles.flex}>
       {
         [
-          renderTitleHint(),
           anyEmpty(gameData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <FlatList refreshControl={refreshCT}
                         keyExtractor={(item, index) => `${item}-${index}`}
                         data={gameData}
-              // ListEmptyComponent={() => <EmptyView/>}
-                        onEndReached={({ distanceFromEnd }) => {
-                          requestGameData({ clear: false })
-                        }}
-                        onEndReachedThreshold={0.1}
                         renderItem={({ item, index }) => {
                           return (
                             renderItemContent(item)
@@ -69,38 +80,55 @@ const HallGameListComponent = () => {
   )
 }
 
-const TAB_ITEM_HEIGHT = scale(70) //tab高度
-const CONTENT_ITEM_HEIGHT = scale(80) //内容高度
+// const CONTENT_ITEM_HEIGHT = scale(80) //内容高度
 
 const _styles = StyleSheet.create({
-  text_title_container: {
-    backgroundColor: UGColor.BackgroundColor2,
-    height: TAB_ITEM_HEIGHT,
-    margin: scale(8),
+  ball_item_container: {
+    flex: 1,
+    paddingHorizontal: scale(8),
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: scale(8),
-  },
-  text_item_container: {
-    flex: 1,
-    marginHorizontal: scale(8),
     borderBottomWidth: scale(1),
     borderBottomColor: UGColor.BackgroundColor3,
-    height: CONTENT_ITEM_HEIGHT,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
-  text_title_0: {
-    flex: 1,
-    color: UGColor.TextColor3,
-    fontSize: scale(22),
-    textAlign: 'center',
-  },
-  text_content_0: {
+  text_content_title: {
     flex: 1,
     color: UGColor.TextColor2,
     fontSize: scale(20),
     textAlign: 'center',
+  },
+  text_content_issue: {
+    flex: 1,
+    color: UGColor.TextColor2,
+    fontSize: scale(18),
+    textAlign: 'center',
+  },
+  text_content_date: {
+    color: UGColor.TextColor2,
+    fontSize: scale(18),
+    textAlign: 'center',
+  },
+  text_content_plus: {
+    color: UGColor.TextColor1,
+    fontSize: scale(22),
+    textAlign: 'center',
+    paddingHorizontal: scale(16),
+  },
+  item_logo: {
+    width: scale(80),
+    aspectRatio: 1,
+    marginRight: scale(8),
+  },
+  ball_container: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  ball_item: {
+    margin: scale(4),
+  },
+  date_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
 })

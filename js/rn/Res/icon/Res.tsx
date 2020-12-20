@@ -17,4 +17,9 @@ export const Res = {
   btc: RES_BASE_URL + 'assets/btc.png',                         //虚拟币标记
   empty: RES_BASE_URL + 'assets/empty.png',                         //空
   edit: RES_BASE_URL + 'assets/szxxhdpi.png',                         //编辑
+
+  //球类:
+  red_ball: RES_BASE_URL + 'assets/ball/ball_red.png',
+  green_ball: RES_BASE_URL + 'assets/ball/ball_green.png',
+  blue_ball: RES_BASE_URL + 'assets/ball/ball_blue.png',
 }

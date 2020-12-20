@@ -41,6 +41,7 @@ import { WithdrawalRecordModel } from './Model/wd/WithdrawalRecordModel'
 import { YueBaoStatModel } from './Model/YueBaoStatModel'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
+import { HallGameModel } from './Model/game/HallGameModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -585,6 +586,10 @@ class APIRouter {
   static lhcdoc_lotteryNumber = async () => {
     return httpClient.get('c=lhcdoc&a=lotteryNumber')
   }
+
+  /**
+   * 游戏大厅数据
+   */
   static game_lotteryGames = async (): Promise<AxiosResponse<LottoGamesModel>> => {
     //@ts-ignore
     return httpClient.get<LottoGamesModel>('c=game&a=lotteryGames', {
@@ -593,6 +598,18 @@ class APIRouter {
       cachePolicy: CachePolicyEnum?.cacheByTime,
       expiredTime: 3,
     })
+  }
+
+  /**
+   * 游戏大厅数据
+   */
+  static game_lotteryHallGames = async (): Promise<AxiosResponse<HallGameModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    return httpClient.get<HallGameModel>('c=game&a=lotteryGames')
   }
 
   static game_playOdds = async (id: string): Promise<AxiosResponse<PlayOddDataModel>> => {

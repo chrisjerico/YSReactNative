@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../tools/Ext'
 import { scale } from '../../../tools/Scale'
@@ -8,12 +8,12 @@ import { Skin1 } from '../../../theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import { UGColor } from '../../../theme/UGThemeColor'
 import EmptyView from '../../view/empty/EmptyView'
-import UseCapital from './UseCapital'
-import { CapitalConst } from '../const/CapitalConst'
-import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
-import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListComponent'
-import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 import HallGameListComponent from './games/HallGameListComponent'
+import { HallGameData } from '../../../network/Model/game/HallGameModel'
+import APIRouter from '../../../network/APIRouter'
+import { ugLog } from '../../../tools/UgLog'
+import { Toast } from '../../../tools/ToastUtils'
+import UseGameHall from './UseGameHall'
 
 /**
  * 游戏大厅
@@ -22,41 +22,52 @@ import HallGameListComponent from './games/HallGameListComponent'
  */
 const GameHallComponent = ({ navigation, setProps }) => {
 
-  const needNameInputRef = useRef(null)
-  const [tabIndex, setTabIndex] = useState<number>(0)
+  const [refreshing, setRefreshing] = useState(false) //是否刷新中
+  const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
 
   const {
     systemInfo,
     userInfo,
-    categoryData,
     bankCardData,
-  } = UseCapital()
+  } = UseGameHall()
 
   /**
-   * 绘制各列表
+   * 请求存款记录
+   * clear: 从头请求
+   * selPage: 指定哪一页
+   */
+  const requestGameData = async () => {
+    setRefreshing(true)
+    APIRouter.game_lotteryHallGames().then(({ data: res }) => {
+      let resData = res?.data
+      ugLog('datas res=', res)
+      if (res?.code == 0) {
+        setGameData(resData)
+
+      } else {
+        Toast(res?.msg)
+      }
+    }).finally(() => {
+      setRefreshing(false)
+    })
+  }
+
+  /**
+   * 绘制各Tab列表
    * @param item
    */
-  const renderRecordList = (item: string) => {
-    switch (item) {
-      case CapitalConst.DEPOSIT:
-        return <HallGameListComponent tabLabel={item}/>
-      case CapitalConst.WITHDRAWAL:
-        return <HallGameListComponent tabLabel={item}/>
-      case CapitalConst.DEPOSIT_RECORD:
-        return <HallGameListComponent tabLabel={item}/>
-      case CapitalConst.WITHDRAWAL_RECORD:
-        return <HallGameListComponent tabLabel={item}/>
-      case CapitalConst.CAPITAL_DETAIL:
-        return <HallGameListComponent tabLabel={item}/>
-    }
-  }
+  const renderDataList = (item: HallGameData) =>
+    <HallGameListComponent tabLabel={item?.gameTypeName}
+                           refreshing={refreshing}
+                           gameData={item?.list}
+                           requestGameData={requestGameData}/>
 
   return (
     <BaseScreen style={_styles.container}
                 screenName={'彩票大厅'}>
       {
         [
-          anyEmpty(categoryData)
+          anyEmpty(gameData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <ScrollableTabView
               tabBarUnderlineStyle={_styles.tab_bar_underline}
@@ -66,9 +77,9 @@ const GameHallComponent = ({ navigation, setProps }) => {
               style={[{ flex: 1 }]}
               renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
               {
-                categoryData?.map((tabItem, index) => {
+                gameData?.map((tabItem, index) => {
                     return (
-                      renderRecordList(tabItem)
+                      renderDataList(tabItem)
                     )
                   },
                 )

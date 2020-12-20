@@ -6,6 +6,7 @@ import APIRouter from '../../../../../network/APIRouter'
 import { anyEmpty, arrayEmpty } from '../../../../../tools/Ext'
 import { ugLog } from '../../../../../tools/UgLog'
 import { Toast } from '../../../../../tools/ToastUtils'
+import { HallGameListData } from '../../../../network/Model/game/HallGameModel'
 
 /**
  * 游戏大厅列表
@@ -13,9 +14,8 @@ import { Toast } from '../../../../../tools/ToastUtils'
  */
 const UseHallGameList = () => {
 
-  const [refreshing, setRefreshing] = useState(false)
-
-  const [gameData, setGameData] = useState<Array<GameListData>>([])//所有数据
+  const [refreshing, setRefreshing] = useState(false) //是否刷新中
+  const [gameData, setGameData] = useState<Array<HallGameListData>>([])//所有数据
 
   const [pageIndex, setPageIndex] = useState(1)//当前第几页
 
@@ -79,8 +79,6 @@ const UseHallGameList = () => {
 
   return {
     refreshCT,
-    gameData,
-    requestGameData,
   }
 }
 
