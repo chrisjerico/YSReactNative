@@ -32,7 +32,7 @@ const RightMenu = ({ menu, onMenuClick }: IRightMenu, ref?: RefObject<any>) => {
              onBackButtonPress={() => setShow(false)}
              animationIn={'slideInRight'}
              animationOut={'slideOutRight'}
-             backdropOpacity={0.2}>
+             backdropOpacity={0.1}>
         <View style={_styles.content}>
           <View style={_styles.item_container}>
             {
