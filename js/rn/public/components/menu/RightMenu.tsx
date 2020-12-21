@@ -82,7 +82,6 @@ const _styles = StyleSheet.create({
   item_name: {
     color: UGColor.TextColor1,
     fontSize: scale(22),
-    marginLeft: scale(16),
   },
 
 })

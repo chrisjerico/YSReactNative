@@ -2,7 +2,7 @@ import * as React from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 
 /**
- * 游戏大厅
+ * 新游戏大厅
  * @constructor
  */
 const UseGameHall = () => {

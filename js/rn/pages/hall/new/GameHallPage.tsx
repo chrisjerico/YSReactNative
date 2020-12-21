@@ -28,7 +28,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 
 /**
- * 游戏大厅
+ * 新游戏大厅
  * @param navigation
  * @constructor
  */
