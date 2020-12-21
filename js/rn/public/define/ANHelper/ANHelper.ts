@@ -105,11 +105,13 @@ export class ANHelper extends ANEvent {
     //@ts-ignore
     const sysConf_net = net_response[1]?.data?.data ?? {}
     const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-    const sysConf = Object.assign({}, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
+    const sysConf = Object.assign({}, sysConf_net, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
     const gameLobby = net_response[2]?.data?.data ?? []
     const banner = net_response[3]?.data?.data ?? {}
     const rightMenu = net_response[4]?.data?.data ?? []
     console.log('--------sysConf_net-------', sysConf_net)
+    console.log('--------sysConf_android-------', sysConf_android)
+    console.log('--------sysConf-------', sysConf)
     UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: sysConf_net })
     UGStore.save()
   }

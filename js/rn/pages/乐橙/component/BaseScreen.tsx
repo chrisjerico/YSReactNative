@@ -16,7 +16,6 @@ import {OCHelper} from "../../../public/define/OCHelper/OCHelper";
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
-import { TAB_ITEM_HEIGHT } from '../../../public/components/bank/list/ManageBankListComponent'
 
 interface BaseScreenProps {
     children?: any

@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
@@ -14,6 +14,18 @@ import APIRouter from '../../../public/network/APIRouter'
 import { ugLog } from '../../../public/tools/UgLog'
 import { Toast } from '../../../public/tools/ToastUtils'
 import UseGameHall from './UseGameHall'
+import Modal from 'react-native-modal'
+import RightMenu from '../../../public/components/menu/RightMenu'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import PushHelper from '../../../public/define/PushHelper'
+import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel'
+import SafeAreaHeader from '../../../public/views/tars/SafeAreaHeader'
+import { BZHThemeColor } from '../../../public/theme/colors/BZHThemeColor'
+import BackBtnComponent from '../../../public/components/tars/BackBtnComponent'
+import { PageName } from '../../../public/navigation/Navigation'
+import MineHeader from '../../../public/views/tars/MineHeader'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
+import CommStyles from '../../base/CommStyles'
 
 /**
  * 游戏大厅
@@ -22,6 +34,7 @@ import UseGameHall from './UseGameHall'
  */
 const GameHallPage = ({ navigation, setProps }) => {
 
+  const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
 
@@ -128,14 +141,69 @@ const GameHallPage = ({ navigation, setProps }) => {
     }
   }
 
+  /**
+   * 绘制右按钮
+   */
+  const rightButton = <TouchableWithoutFeedback onPress={() => {
+    refMenu?.current?.toggleMenu()
+  }}>
+    <Icon size={scale(30)}
+          name={'bars'}
+          style={{ padding: scale(16) }}
+          color={'white'}/>
+  </TouchableWithoutFeedback>
+
+  const menuStr = [['即时注单', userInfo?.unsettleAmount], ['今日已结'], ['下注结果'], ['提现']]
+  /**
+   * 绘制菜单
+   * @param index
+   */
+  const renderMenu = (index) => {
+    refMenu?.current?.toggleMenu()
+    switch (index) {
+      case 0:
+        PushHelper.pushUserCenterType(UGUserCenterType.即时注单)
+        break
+      case 1:
+        PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录)
+        break
+      case 2:
+        PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录)
+        break
+      case 3:
+        PushHelper.pushUserCenterType(UGUserCenterType.取款)
+        break
+    }
+  }
+
   return (
-    <BaseScreen style={_styles.container}
-                hideLeft={true}
-                screenName={'彩票大厅'}>
+    // <BaseScreen style={_styles.container}
+    //             hideLeft={true}
+    //             rightButton={rightButton}
+    //             screenName={'彩票大厅'}>
+    //   {
+    //     [
+    //       renderAllData(),
+    //       <RightMenu ref={refMenu}
+    //                  onMenuClick={renderMenu}
+    //                  menu={menuStr}/>,
+    //     ]
+    //   }
+    // </BaseScreen>
+    <View style={CommStyles.flex}>
+      <SafeAreaHeader headerColor={Skin1.themeColor}>
+        <MineHeader title={'彩票大厅'}
+                    showRightTitle={true}
+                    rightButton={rightButton}
+                    showBackBtn={false}/>
+      </SafeAreaHeader>
       {
         renderAllData()
       }
-    </BaseScreen>
+      <RightMenu ref={refMenu}
+                 onMenuClick={renderMenu}
+                 menu={menuStr}/>
+    </View>
   )
 }
 

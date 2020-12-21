@@ -102,6 +102,7 @@ export enum UGColor {
   LineColor1 = '#ccc',
   LineColor2 = '#aaa',
   LineColor3 = '#eee',
+  LineColor4 = '#ddd',
 
   // 背景色
   BackgroundColor1 = '#FBFBFB',
