@@ -4,6 +4,7 @@ import { ANHelper } from "../../../define/ANHelper/ANHelper";
 import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
 import { OCHelper } from "../../../define/OCHelper/OCHelper";
 import { SalaryModel } from "../../Model/SalaryModel";
+import { UGSignInModel } from '../../../../redux/model/other/UGcheckinBonusModel';
 
 
 export class api_task {
@@ -26,8 +27,14 @@ export class api_task {
 
   // 用户签到列表
   static checkinList() {
-    return this.c.get('checkinList');
+    return this.c.get<UGSignInModel>('checkinList');
   }
+
+    // 领取连续签到奖励
+  static checkinBonus(type:string) {
+    return this.c.post('checkinBonus', {type:type});
+  }
+  
 
   // 用户签到
   static checkin(
@@ -62,10 +69,6 @@ export class api_task {
     return this.c.post('creditsExchange', {money:money});
   }
 
-  // 领取连续签到奖励
-  static checkinBonus(type:string) {
-    return this.c.post('checkinBonus', {type:type});
-  }
 
   // 领取任务
   static get(mid:string) {

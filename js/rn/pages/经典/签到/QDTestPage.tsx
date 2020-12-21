@@ -1,63 +1,107 @@
-import React, { Component } from 'react';
+
 import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackground } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppDefine from '../../../public/define/AppDefine';
 import { useHtml5Image } from '../../../public/tools/tars';
+import React, { useEffect, useRef, useState, Component } from 'react'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
+import { UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
+import moment from "moment/moment";
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
 
+const QDTestPage = () => {
 
-export default class QDTestPage extends Component {
+    const [list, setList] = useState<Array<UGCheckinListModel>>([])
+    const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})
 
-    state = {
-        list: [],
-        refreshing: false
-    };
-
-    componentDidMount() {
-        // 初始化数据
-        let list = [];
-        for (var i = 0; i < 7; i++) {
-            list.push({ key: 'key' + (i + 1) });
-        }
-        this.setState({ list: list });
+   //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
+    function formatTime(numberStr ,format){
+        const date = moment(numberStr).toDate();//转Date
+        var nowtime = date.format(format); //调用
+        return  nowtime;
     }
 
+    function checkinState(item: UGCheckinListModel){
+      
+        var returnStr = '';
+        if(item.isCheckin)
+        {
+            returnStr = '已签到';
+        }
+        else{
+            
+             if(item.whichDay  >=  checkinListModel.serverTime ){
+                returnStr = '签到';
+             }
+             else{
+                returnStr = '补签';
+             }
+        }
+        return returnStr;
+    }
+
+    function imgbgCheckinState(item: UGCheckinListModel){
+      
+        var returnStr = '';
+        if(item.isCheckin)
+        {
+            returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
+        }
+        else{
+            if(item.whichDay  >=  checkinListModel.serverTime ){
+                returnStr = 'https://appstatic.guolaow.com/assets/signIn_blue.png';
+             }
+             else{
+                if (item.mkCheckinSwitch && item.isMakeup) {
+                    returnStr = 'https://appstatic.guolaow.com/assets/signIn_red.png';
+                }
+                else{
+                    returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
+                }
+             }
+        }
+        return returnStr;
+    }
+
+    useEffect(() => {
+
+        api.task.checkinList().setCompletionBlock(({ data }) => {
+            // console.log('签到总开关', data.checkinSwitch);
+            // console.log('签到数据：=', data);
+
+            setCheckinListModel(data)
+            setList(checkinListModel.checkinList)
+        }, (err) => {
+            console.log('err = ', err);
+
+        });
+
+    }, [])
+
+
     // 渲染列表项
-    _renderItem = ({ index, item }) => {
+    const _renderItem = ({ index, item }) => {
         console.log(index);
         console.log('img = ', getHtml5ImagePlatform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
 
         return (
             <View key={item.key} style={styles.itemViewStyle}>
-                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
-                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{formatTime(item?.whichDay,'MM月dd日')}</Text>
+                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item?.week}</Text>
                 <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden' }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/signed.png' }}>
-                    <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{item.key}</Text>
+                    <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+'+item?.integral}</Text>
                     <Image style={[styles.itemImageImageStyle]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
-                    <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: 'https://appstatic.guolaow.com/assets/signIn_blue.png' }}>
-                        <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle]}>{item.key}</Text>
+                    <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
+                        <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle]}>{checkinState(item)}</Text>
                     </ImageBackground>
                 </ImageBackground>
             </View>
         );
     }
 
-    // 分割线
-    _renderSeparator = () => {
-        return (
-            class Separator extends Component {
-                render() {
-                    return (
-                        <View style={styles.separatorStyle} />
-                    );
-                }
-            }
-        );
-    }
-
-    _renderListEmptyComp = () => {
+    const _renderListEmptyComp = () => {
         return (
             <View>
                 <Text>没有数据时显示本段文字</Text>
@@ -65,106 +109,115 @@ export default class QDTestPage extends Component {
         );
     }
 
-    // 底部加载
-    _onEndReached = () => {
-        this.setState({ refreshing: true });
-        // 关于更新state里数组的两种方式
-        //setState({ 'arrary': [...this.state.array, newItem]}).
-        //setState({ 'array' : [...this.state.array].concat(newList|newItem)}).
-        let newList = [];
-        for (var i = 0; i < 3; i++) {
-            newList.push({ key: '(new)key' + Math.floor(Math.random() * 10000) });
-        }
+    return (
+        <View style={{ flex: 1 }}>
+            <View style={styles.headerViewStyle}>
+                <Text style={styles.headerTextStyle}>我的APP</Text>
+            </View>
+            {/* 签到记录 */}
+            <View style={[{ height: 40, backgroundColor: '#0000FF' }]}>
+                <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
+                    <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, backgroundColor: 'yellow', borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                        onPress={() => {
+                            console.log('点击了')
+                        }} />
+                </View>
+            </View>
+            <ScrollView onScroll={() => { }}>
+                {/* 签到领积分 */}
+                <View style={[{ height: 110, backgroundColor: '#0000FF' }]}>
+                    <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center' }}>
+                        <Text style={[{ fontSize: 41, color: '#FBF2D5' }]}>{'签到领积分'}</Text>
+                        <View style={[{ marginTop: 16, backgroundColor: '#FFAA2F', borderRadius: 5, }]}>
+                            <Text style={[{ fontSize: 13, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'用 积 分 兑 换 现 金'}</Text>
+                        </View>
 
-        setTimeout(() => {
-            this.setState({ list: [...this.state.list].concat(newList), refreshing: false });
-        }, 2000);
-    }
+                    </View>
+                    <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center', }}>
+                        <Text style={[{ fontSize: 18, color: '#FBF2D5' }]}>{'已连续'}</Text>
+                        <Text style={[{ fontSize: 27, color: 'red', marginVertical: -7 }]}>{checkinListModel.checkinTimes}</Text>
+                        <Text style={[{ fontSize: 18, color: '#FBF2D5' }]}>{'天签到'}</Text>
 
-    // 顶部加载
-    _onRefresh = () => {
-        this.setState({ refreshing: true });
-        setTimeout(() => {
-            this.setState({ refreshing: false });
-            // this.myFlatList.scrollToEnd(); // 滚动到底部
-            // this.myFlatList.scrollToIndex({animated: true, index:10}); // 将位于索引值为index的元素滚动到可视区域首行位置
-            // this.myFlatList.flashScrollIndicators(); // 短暂地显示滚动指示器
-        }, 2000);
-    }
+                    </View>
+                </View>
+                {/* faselist */}
+                <View style={[{
+                    borderRadius: 5, overflow: 'hidden', borderColor: '#EDFAFE', height: 400, borderWidth: 4, marginLeft: 5,
+                    marginRight: 5,
+                }]}>
+                    <FlatList
+                        style={[styles.scrollViewStyle]}
+                        data={list} // 数据源
+                        renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+                        showsVerticalScrollIndicator={false} // 当此属性为true的时候，显示一个垂直方向的滚动条，默认为: true
+                        scrollEnabled={false}
+                        showsHorizontalScrollIndicator={false} // 当此属性为true的时候，显示一个水平方向的滚动条，默认为: true
+                        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+                        numColumns={4}
+                    />
 
-    render() {
-        console.log(this.state.list);
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={styles.headerViewStyle}>
-                    <Text style={styles.headerTextStyle}>我的APP</Text>
                 </View>
 
-                <ScrollView onScroll={() => { }}>
+                {/* 马上签到 */}
+                <View style={{ alignItems: 'center', marginTop: -20, justifyContent: 'center' }}>
+                    <Button title={'马上签到'} containerStyle={{ width: 140, height: 40, backgroundColor: '#0000FF', borderRadius: 25, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 22 }}
+                        onPress={() => {
+                            console.log('点击了')
+                        }} />
+                </View>
 
-                    <View style={[{ height: 200, backgroundColor: '#0000FF' }]}>
-                        <View style={{ flexDirection: 'row', marginTop: 5, justifyContent: 'center' }}>
-                            <Text style={[{ fontSize: 41, color: '#FBF2D5' }]}>{'签到领积分'}</Text>
-                            <View style={[{  marginTop: 16, backgroundColor:'#FFAA2F',borderRadius: 5,}]}>
-                                <Text style={[{ fontSize: 13, color: 'white',marginHorizontal:10 , marginVertical:5, }]}>{'用 积 分 兑 换 现 金'}</Text>
+                {/* 签到礼包 */}
+                <View style={[{ height: 260, backgroundColor: '#0000FF' }]}>
+                    <Text style={[{ fontSize: 18, color: '#FBF2D5', marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</Text>
+                    <View style={[{ height: 120, backgroundColor: '#0000FF', marginTop: 10, marginHorizontal: 12 }]}>
+                        <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
+                        <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                            <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+
+
+                            <View style={[]}>
+                                <Text style={[{ fontSize: 17, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                <Text style={[{ fontSize: 13, color: '#9A9A9A', marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
                             </View>
-
+                            <View style={{ flex: 1 }} />
+                            {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
+                            <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                onPress={() => {
+                                    console.log('点击了')
+                                }} />
                         </View>
-                    </View>
+
+                        <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
+                        <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                            <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
 
 
-
-                    <View style={[{
-                        borderRadius: 5, overflow: 'hidden', borderColor: '#EDFAFE', height: 400, borderWidth: 4, marginLeft: 5,
-                        marginRight: 5,
-                    }]}>
-                        <FlatList
-                            style={[styles.scrollViewStyle]}
-                            ref={(view) => { this.myFlatList = view; }}
-                            data={this.state.list} // 数据源
-                            renderItem={this._renderItem} // 从数据源中挨个取出数据并渲染到列表中
-                            showsVerticalScrollIndicator={false} // 当此属性为true的时候，显示一个垂直方向的滚动条，默认为: true
-                            scrollEnabled={false}
-                            showsHorizontalScrollIndicator={false} // 当此属性为true的时候，显示一个水平方向的滚动条，默认为: true
-                            // ItemSeparatorComponent = {this._renderSeparator()} // 行与行之间的分隔线组件。不会出现在第一行之前和最后一行之后
-                            ListEmptyComponent={this._renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
-                            // onEndReachedThreshold={0.01} // 决定当距离内容最底部还有多远时触发onEndReached回调，范围0~1，如0.01表示触底时触发
-                            // onEndReached={this._onEndReached} // 在列表底部往下滑时触发该函数。表示当列表被滚动到距离内容最底部不足onEndReachedThreshold的距离时调用
-                            numColumns={4}
-                        // refreshControl={
-                        //     <RefreshControl
-                        //         // refreshing={this.state.refreshing} // 在等待加载新数据时将此属性设为 true，列表就会显示出一个正在加载的符号
-                        //         // onRefresh={this._onRefresh.bind(this)} // 在列表顶部往下滑时触发该函数。如果设置了此选项，则会在列表头部添加一个标准的RefreshControl控件，以便实现“下拉刷新”的功能
-                        //         // tintColor="#ffffff" // 指定刷新指示器的背景色(iOS)
-                        //         // title="加载中..." // 指定刷新指示器下显示的文字(iOS)
-                        //         // titleColor="#000000" // 指定刷新指示器下显示的文字的颜色(iOS)
-                        //         // colors={['#ff0000', '#00ff00', '#0000ff']} // 刷新指示器在刷新期间的过渡颜色(Android)
-                        //         // progressBackgroundColor="#ffffff" // 指定刷新指示器的背景色(Android)
-                        //     />
-                        // }
-                        />
+                            <View style={[]}>
+                                <Text style={[{ fontSize: 17, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                <Text style={[{ fontSize: 13, color: '#9A9A9A', marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                            </View>
+                            <View style={{ flex: 1 }} />
+                            {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
+                            <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                onPress={() => {
+                                    console.log('点击了')
+                                }} />
+                        </View>
 
                     </View>
 
-                    <View style={{ alignItems: 'center', marginTop: -20, justifyContent: 'center' }}>
-                        <Button title={'马上签到'} containerStyle={{ width: 140, height: 40, backgroundColor: '#0000FF', borderRadius: 25, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 22 }}
-                            onPress={() => {
-                                console.log('点击了')
-                            }} />
-                    </View>
+                </View>
 
 
-                    <View style={[{ height: 500, backgroundColor: '#0000FF' }]}>
+            </ScrollView>
 
-                    </View>
+        </View>
+    )
 
-
-                </ScrollView>
-
-            </View>
-        );
-    }
 }
+
+
+export default QDTestPage
 
 const styles = StyleSheet.create({
     scrollViewStyle: {
