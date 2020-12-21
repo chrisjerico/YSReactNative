@@ -130,6 +130,7 @@ const GameHallPage = ({ navigation, setProps }) => {
 
   return (
     <BaseScreen style={_styles.container}
+                hideLeft={true}
                 screenName={'彩票大厅'}>
       {
         renderAllData()

@@ -23,10 +23,11 @@ interface BaseScreenProps {
     screenName: string //标题
     style?: StyleProp<ViewStyle>
     icon?: 'angle-left' | 'home'
+    hideLeft?: boolean // 隐藏左边的按钮
     rightButton?: JSX.Element
 }
 
-export const BaseScreen = ({children, screenName, style, icon, rightButton}: BaseScreenProps) => {
+export const BaseScreen = ({children, screenName, style, icon, hideLeft, rightButton}: BaseScreenProps) => {
     return (
         <View style={[{flex: 1, backgroundColor: Skin1.bgColor[0]}, style]}>
             <SafeAreaView style={{backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
@@ -46,21 +47,25 @@ export const BaseScreen = ({children, screenName, style, icon, rightButton}: Bas
                         alignSelf: "center",
                         color: Skin1.navBarTitleColor //根据当前主题来
                     }}>{screenName}</Text>
-                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
-                        pop()
-                        switch (Platform.OS) {
-                          case 'ios':
-                              OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-                            break;
-                          case 'android':
+                    {
+                        hideLeft ?
+                          null :
+                          <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
+                              pop()
+                              switch (Platform.OS) {
+                                  case 'ios':
+                                      OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                                      break;
+                                  case 'android':
 
-                            break;
-                        }
-                    }}>
-                        <Icon size={33} name={icon || 'angle-left'}
-                              color={ Skin1.navBarTitleColor } //根据当前主题来
-                        />
-                    </TouchableOpacity>
+                                      break;
+                              }
+                          }}>
+                              <Icon size={33} name={icon || 'angle-left'}
+                                    color={ Skin1.navBarTitleColor } //根据当前主题来
+                              />
+                          </TouchableOpacity>
+                    }
                     <View style={_styles.right_container}>
                         {
                             rightButton
