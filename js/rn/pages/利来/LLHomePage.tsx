@@ -37,7 +37,7 @@ const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
   const { info, refresh } = useHomePage({})
   const { homeInfo, loading, refreshing, userInfo, sysInfo, floatAds, onRefresh, isTest, redBagLogo } = info
-  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo``
+  const { rankLists, redBag, goldenEggs, scratchs, roulette } = homeInfo
   const {showCoupon} = sysInfo
   const { uid } = userInfo
   const { mobile_logo, rankingListSwitch, webName } = sysInfo
