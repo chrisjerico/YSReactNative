@@ -32,6 +32,7 @@ import PromotionsBlock from '../../public/components/PromotionsBlock'
 import LinearGradient from 'react-native-linear-gradient'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import Activitys from '../../public/views/tars/Activitys'
+import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 
 const LLHomePage = ({ setProps, navigation }) => {
   LogBox.ignoreLogs(['Animated:'])
