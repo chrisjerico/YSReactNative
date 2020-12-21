@@ -50,6 +50,7 @@ export enum PageName {
   BYSignUpPage = 'BYSignUpPage',
   LEFHomePage = 'LEFHomePage', //乐FUN
   GameHallPage = 'GameHallPage', //游戏大厅页
+  FreedomHallPage = 'FreedomHallPage', //自由大厅页
   LEFMinePage = 'LEFMinePage',
   LEFSignInPage = 'LEFSignInPage',
   LEFSignUpPage = 'LEFSignUpPage',

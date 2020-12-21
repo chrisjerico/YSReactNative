@@ -79,6 +79,7 @@ import ManageBankListComponent from '../../public/components/bank/list/ManageBan
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 import GameHallPage from '../hall/new/GameHallPage'
+import FreedomHallPage from '../hall/fd/FreedomHallPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -139,6 +140,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
         <Router.TabScreen name={PageName.GameHallPage} component={UGPage(GameHallPage)} />
+        <Router.TabScreen name={PageName.FreedomHallPage} component={UGPage(FreedomHallPage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
       </Router.TabNavigator>
