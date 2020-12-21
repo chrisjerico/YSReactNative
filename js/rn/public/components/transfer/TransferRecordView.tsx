@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, View, Text, SafeAreaView, Dimensions, TouchableOpacity, Platform } from 'react-native'
-import AppDefine from '../define/AppDefine'
-import { api } from '../network/NetworkRequest1/NetworkRequest1'
-import { Skin1 } from '../theme/UGSkinManagers'
-import { pop } from '../navigation/RootNavigation'
-import { OCHelper } from '../define/OCHelper/OCHelper'
+import { Dimensions, FlatList, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import AppDefine from '../../define/AppDefine'
+import { api } from '../../network/NetworkRequest1/NetworkRequest1'
+import { Skin1 } from '../../theme/UGSkinManagers'
+import { pop } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -67,7 +66,8 @@ export const TransferRecordView = () => {
       <LinearGradient colors={Skin1.bgColor}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 1 }}>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', borderBottomColor: "#cccccc",
+          borderBottomWidth: 1, }}>
           <View
             style={{ flex: 1, paddingVertical: 16, borderRightWidth: 1, borderColor: '#d9d9d9' }}>
             <Text style={{ alignSelf: 'center', color: Skin1.isBlack ? "#fff" : "#000" }}>游戏</Text>

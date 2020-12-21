@@ -101,8 +101,18 @@ export async function setRnPageInfo() {
     userCenterItemCode: 8,
     fd_prefersNavigationBarHidden: true,
     vcName: 'UGBalanceConversionController',
-    允许游客访问: true,
-    允许未登录访问: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
+  //额度转页
+  pages.push({
+    rnName: PageName.TransferTKLMainView,
+    userCenterItemCode: 8,
+    fd_prefersNavigationBarHidden: true,
+    vcName: 'TKLMainViewController',
+    允许游客访问: false,
+    允许未登录访问: false,
   })
 
   if (skitType.indexOf('尊龙') != -1) {

@@ -79,6 +79,7 @@ export enum PageName {
   UserMessagePage = 'UserMessagePage',
   UserInfoPage = 'UserInfoPage',
   TransferView = 'TransferView',
+  TransferTKLMainView = 'TransferTKLMainView',
   TransferRecordView = 'TransferRecordView',
   FeedbackView = 'FeedbackView',
   AlipayView = 'AlipayView',

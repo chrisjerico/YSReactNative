@@ -10,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import AppDefine from '../define/AppDefine'
+import AppDefine from '../../define/AppDefine'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Animated, {
   block,
@@ -25,14 +25,14 @@ import Animated, {
   timing,
   Value,
 } from 'react-native-reanimated'
-import { api } from '../network/NetworkRequest1/NetworkRequest1'
-import useHomePage from '../hooks/tars/useHomePage'
-import { navigate, pop } from '../navigation/RootNavigation'
-import { PageName } from '../navigation/Navigation'
-import { Skin1 } from '../theme/UGSkinManagers'
-import { OCHelper } from '../define/OCHelper/OCHelper'
+import { api } from '../../network/NetworkRequest1/NetworkRequest1'
+import useHomePage from '../../hooks/tars/useHomePage'
+import { navigate, pop } from '../../navigation/RootNavigation'
+import { PageName } from '../../navigation/Navigation'
+import { Skin1 } from '../../theme/UGSkinManagers'
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 import LinearGradient from 'react-native-linear-gradient'
-import UGUserModel from '../../redux/model/全局/UGUserModel'
+import UGUserModel from '../../../redux/model/全局/UGUserModel'
 
 const myWallet = { title: '我的钱包', id: 0 }
 const dataArr = [myWallet]
@@ -130,7 +130,6 @@ export const TransferView = ({ setProps, navigation }) => {
             key={1}
             text={'转出钱包'}
             animation={animation}
-            defaultZIndex={3}
             zIndex={zIndex}
             open={open}
             setOpen={setOpen}
@@ -156,7 +155,6 @@ export const TransferView = ({ setProps, navigation }) => {
             placeholder={`请选择转入钱包`}
             text={'转入钱包'}
             animation={animation2}
-            defaultZIndex={2}
             zIndex={zIndex2}
             open={open}
             setOpen={setOpen}
@@ -228,15 +226,14 @@ export const TransferView = ({ setProps, navigation }) => {
               <View style={{
                 borderRadius: 4,
                 marginTop: 12,
+                backgroundColor: Skin1.themeColor,
               }}>
-                <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-                  <Text style={{
-                    fontSize: 17,
-                    color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-                    alignSelf: 'center',
-                    paddingVertical: 10,
-                  }}>一键提取</Text>
-                </LinearGradient>
+                <Text style={{
+                  fontSize: 17,
+                  color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
+                  alignSelf: 'center',
+                  paddingVertical: 10,
+                }}>一键提取</Text>
               </View>
             </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => {
@@ -255,7 +252,7 @@ export const TransferView = ({ setProps, navigation }) => {
                       style={{
                         marginLeft: 12,
                         fontSize: 17,
-                        color: Skin1.isBlack? "#fff" : Skin1.textColor1,
+                        color: Skin1.isBlack ? '#fff' : Skin1.textColor1,
                         alignSelf: 'center',
                       }}>{`帐号余额: ￥${balance || 0}`}</Text>
                     <Animated.View
@@ -352,7 +349,7 @@ const AccListView = ({ data, updateWallet, setUpdateWallet }: { data: any[], upd
         renderItem={({ item }) => {
           const wallet = updateWallet.find((wallet) => wallet.id === item.id)
           return (
-            <AccItem item={item} updateBalance={wallet && wallet.balance} setUpdateWallet={setUpdateWallet}/>
+            <AccItem item={item} updateBalance={wallet && wallet.balance} setUpdateWallet={setUpdateWallet} />
           )
         }} />
     </SafeAreaView>
@@ -360,7 +357,7 @@ const AccListView = ({ data, updateWallet, setUpdateWallet }: { data: any[], upd
 }
 
 const TransferPicker = ({ placeholder = '请选择钱包', text, animation, data, wallet, setWallet, zIndex, open, onPress }:
-                          { placeholder?: string, text: string, enable?: boolean, animation: any, defaultZIndex, zIndex, data: any, wallet: any, setWallet: (item: any) => void, onPress: () => void }) => {
+                          { placeholder?: string, text: string, enable?: boolean, animation: any, zIndex, data: any, wallet: any, setWallet: (item: any) => void, onPress: () => void }) => {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', zIndex }}>
       <Text style={{ fontSize: 16, textAlign: 'center', color: Skin1.isBlack ? 'white' : '#111' }}>{text}</Text>
