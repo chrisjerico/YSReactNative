@@ -1,5 +1,5 @@
 
-import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackground } from 'react-native';
+import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackground, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import AppDefine from '../../../public/define/AppDefine';
@@ -8,6 +8,10 @@ import React, { useEffect, useRef, useState, Component } from 'react'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
 import moment from "moment/moment";
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
+import { Toast } from '../../../public/tools/ToastUtils';
+import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
+import { setProps } from '../../base/UGPage';
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
 
@@ -16,67 +20,159 @@ const QDTestPage = () => {
     const [list, setList] = useState<Array<UGCheckinListModel>>([])
     const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})
 
-   //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
-    function formatTime(numberStr ,format){
+    //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
+    function formatTime(numberStr, format) {
         const date = moment(numberStr).toDate();//转Date
         var nowtime = date.format(format); //调用
-        return  nowtime;
+        return nowtime;
     }
 
-    function checkinState(item: UGCheckinListModel){
-      
+    function checkinState(item: UGCheckinListModel) {
+
         var returnStr = '';
-        if(item.isCheckin)
-        {
+        if (item.isCheckin) {
             returnStr = '已签到';
         }
-        else{
-            
-             if(item.whichDay  >=  checkinListModel.serverTime ){
+        else {
+
+            if (item.whichDay >= checkinListModel.serverTime) {
                 returnStr = '签到';
-             }
-             else{
+            }
+            else {
                 returnStr = '补签';
-             }
+            }
         }
         return returnStr;
     }
 
-    function imgbgCheckinState(item: UGCheckinListModel){
-      
+    function imgbgCheckinState(item: UGCheckinListModel) {
+
         var returnStr = '';
-        if(item.isCheckin)
-        {
+        if (item.isCheckin) {
             returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
         }
-        else{
-            if(item.whichDay  >=  checkinListModel.serverTime ){
+        else {
+            if (item.whichDay >= checkinListModel.serverTime) {
                 returnStr = 'https://appstatic.guolaow.com/assets/signIn_blue.png';
-             }
-             else{
-                if (item.mkCheckinSwitch && item.isMakeup) {
+            }
+            else {
+                if (checkinListModel.mkCheckinSwitch && item.isMakeup) {
                     returnStr = 'https://appstatic.guolaow.com/assets/signIn_red.png';
                 }
-                else{
+                else {
                     returnStr = 'https://appstatic.guolaow.com/assets/signInGrey.png';
                 }
-             }
+            }
         }
         return returnStr;
     }
 
-    useEffect(() => {
+    function checkinImgBg(item: UGCheckinListModel) {
 
+        var returnStr = '';
+        if (item.isCheckin) {
+            returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/signed.png';
+        }
+        else {
+                returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/nosign.png';
+        }
+        return returnStr;
+    }
+    // 今日签到
+    function mUGSignInButtonClicked() {
+        console.log('checkinListModel.serverTime==',checkinListModel.serverTime);
+        
+        checkinDataWithType('0',checkinListModel.serverTime);
+    }
+    // cell 点击方法
+    function itemAction(item: UGCheckinListModel) {
+
+        console.log('点击item=',item);
+        
+        if (item.isCheckin) {
+            return;
+        }
+        if (item.whichDay >= checkinListModel.serverTime) {
+            checkinDataWithType('0',item.whichDay);
+        }
+        else {
+
+            if (checkinListModel.mkCheckinSwitch && item.isMakeup) {
+                 for (const k  in checkinListModel.checkinList) {
+                     const clm = checkinListModel.checkinList[k];
+                     if (clm == item) {
+                        checkinDataWithType('1',item.whichDay);
+                         break;
+                     }
+                     if (!clm.isCheckin) {
+                        Toast('必须从前往后补签')
+                        break;
+                     }
+                 }
+            }
+            else {
+                Toast('补签通道已关闭') 
+            }
+        }
+       
+    }
+
+    // 网络请求========================================================================================================
+      //得到领取连续签到奖励数据
+      function checkinBonusData(type:string) {
+          console.log('123');
+          
+          showLoading()
+        api.task.checkinBonus(type).setCompletionBlock(({ data, msg }) => {
+            hideLoading()
+            // console.log('签到总开关', data.checkinSwitch);
+            // console.log('签到数据：=', data);
+            checkinList();
+            Alert.alert('温馨提示', msg, [{text:'确认'}])
+        }, (err) => {
+            console.log('err = ', err);
+            // Toast(err.message)
+
+        });
+    }
+    //用户签到（签到类型：0是签到，1是补签）
+    function checkinDataWithType(type:string, date:string ) {
+        api.task.checkin(type,date).setCompletionBlock(({ data, msg }) => {
+            // console.log('签到总开关', data.checkinSwitch);
+            // console.log('签到数据：=', data);
+            checkinList();
+            Alert.alert('温馨提示', msg, [{text:'确认'}])
+            OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationGetUserInfo'])
+            
+        }, (err) => {
+            console.log('err = ', err);
+            // Toast(err.message)
+
+        });
+    }
+
+     //用户签到列表
+     function checkinList() {
         api.task.checkinList().setCompletionBlock(({ data }) => {
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
 
             setCheckinListModel(data)
-            setList(checkinListModel.checkinList)
+            setList(data.checkinList)
+            
         }, (err) => {
             console.log('err = ', err);
+            // Toast(err.message)
 
         });
+    }
+
+
+
+
+    useEffect(() => {
+
+        checkinList()
 
     }, [])
 
@@ -88,15 +184,21 @@ const QDTestPage = () => {
 
         return (
             <View key={item.key} style={styles.itemViewStyle}>
-                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{formatTime(item?.whichDay,'MM月dd日')}</Text>
+                <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{formatTime(item?.whichDay, 'MM月dd日')}</Text>
                 <Text style={[styles.itemTextStyle, styles.itemTextSizeStyle]}>{item?.week}</Text>
-                <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden' }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/signed.png' }}>
-                    <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+'+item?.integral}</Text>
-                    <Image style={[styles.itemImageImageStyle]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
-                    <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
-                        <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle]}>{checkinState(item)}</Text>
+
+                <TouchableOpacity onPress={() => {
+                    itemAction(item)
+                }}>
+                    <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden' }]} source={{ uri: checkinImgBg(item) }}>
+                        <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</Text>
+                        <Image style={[styles.itemImageImageStyle]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
+                        <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
+                            <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle]}>{checkinState(item)}</Text>
+                        </ImageBackground>
                     </ImageBackground>
-                </ImageBackground>
+
+                </TouchableOpacity>
             </View>
         );
     }
@@ -119,7 +221,8 @@ const QDTestPage = () => {
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
                     <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, backgroundColor: 'yellow', borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                         onPress={() => {
-                            console.log('点击了')
+                            console.log('签到记录点击了')
+                           
                         }} />
                 </View>
             </View>
@@ -162,7 +265,8 @@ const QDTestPage = () => {
                 <View style={{ alignItems: 'center', marginTop: -20, justifyContent: 'center' }}>
                     <Button title={'马上签到'} containerStyle={{ width: 140, height: 40, backgroundColor: '#0000FF', borderRadius: 25, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 22 }}
                         onPress={() => {
-                            console.log('点击了')
+                            console.log('马上签到点击了')
+                            mUGSignInButtonClicked()
                         }} />
                 </View>
 
@@ -183,7 +287,8 @@ const QDTestPage = () => {
                             {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
                             <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                                 onPress={() => {
-                                    console.log('点击了')
+                                    console.log('领取点击了')
+                                    checkinBonusData('5')
                                 }} />
                         </View>
 
@@ -200,7 +305,8 @@ const QDTestPage = () => {
                             {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
                             <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
                                 onPress={() => {
-                                    console.log('点击了')
+                                    console.log('领取2点击了')
+                                    checkinBonusData('7')
                                 }} />
                         </View>
 

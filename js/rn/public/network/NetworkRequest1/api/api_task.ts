@@ -38,7 +38,7 @@ export class api_task {
 
   // 用户签到
   static checkin(
-    type: boolean,//签到类型：0是签到，1是补签
+    type: string,//签到类型：0是签到，1是补签
     date:string,// 要签的日期2020-10-05
   ) {
     return this.c.post('checkin', {type:type, date:date});
