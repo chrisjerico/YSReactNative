@@ -12,6 +12,7 @@ import Button from '../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../public/theme/UGSkinManagers'
 import PushHelper from '../../../../public/define/PushHelper'
 import { SeriesId } from '../../../../public/models/Enum'
+import UseGameHall from '../UseGameHall'
 
 interface IHallGameList {
   refreshing?: boolean //刷新
@@ -29,6 +30,11 @@ const HallGameListComponent = ({
                                  gameData,
                                  requestGameData,
                                }: IHallGameList) => {
+
+  const {
+    systemInfo,
+    userInfo,
+  } = UseGameHall()
 
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
@@ -160,7 +166,7 @@ const HallGameListComponent = ({
             <Text style={_styles.text_content_title}>{item.title}</Text>
             {
               [
-                renderBalls(gameData?.gameType, item?.preNum),
+                renderBalls(item?.parentGameType, item?.preNum),
                 <View style={_styles.date_container}>
                   {
                     anyEmpty(item?.preDisplayNumber) ? null :

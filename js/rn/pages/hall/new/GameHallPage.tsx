@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
-import { anyEmpty } from '../../../public/tools/Ext'
+import { anyEmpty, arrayEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
@@ -30,7 +30,7 @@ const GameHallPage = ({ navigation, setProps }) => {
     userInfo,
   } = UseGameHall()
 
-  useEffect(()=>{
+  useEffect(() => {
     requestGameData()
   }, [])
 
@@ -43,6 +43,34 @@ const GameHallPage = ({ navigation, setProps }) => {
       let resData = res?.data
       ugLog('datas res=', res)
       if (res?.code == 0) {
+        //parentGameType 是 越南彩，gameType 可能是越南彩下面的某一个彩
+        resData?.map((parentItem) => {
+          parentItem?.list?.map((item) => {
+            item.parentGameType = parentItem.gameType
+          })
+        })
+
+        if (!arrayEmpty(resData)) {
+          let allList = []
+          //Tab显示还是隐藏
+          if (systemInfo?.picTypeshow != '1') {
+            resData.map((parentItem) => {
+              if (!arrayEmpty(parentItem?.list)) {
+                allList = allList.concat(parentItem.list)
+              }
+            })
+
+            ugLog('alllIST=', allList)
+
+            //所有元素组合在一起
+            let newArr = resData.slice(0, 1)
+            newArr[0].list = allList
+            resData = newArr
+          }
+
+        }
+
+
         setGameData(resData)
 
       } else {
@@ -63,30 +91,48 @@ const GameHallPage = ({ navigation, setProps }) => {
                            gameData={item}
                            requestGameData={requestGameData}/>
 
+  /**
+   * 绘制所有的数据
+   */
+  const renderAllData = () => {
+    if (systemInfo?.picTypeshow != '1') {
+      return (
+        anyEmpty(gameData)
+          ? <EmptyView style={{ flex: 1 }}/>
+          : renderDataList(gameData[0])
+      )
+
+    } else {
+      return (
+        anyEmpty(gameData)
+          ? <EmptyView style={{ flex: 1 }}/>
+          : <ScrollableTabView
+            tabBarUnderlineStyle={[_styles.tab_bar_underline,
+              { backgroundColor: Skin1.themeColor }]}
+            tabBarActiveTextColor={Skin1.themeColor}
+            tabBarInactiveTextColor={Skin1.textColor1}
+            tabBarTextStyle={{ fontSize: scale(20) }}
+            style={[{ flex: 1 }]}
+            renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
+            {
+              gameData?.map((tabItem, index) => {
+                  return (
+                    renderDataList(tabItem)
+                  )
+                },
+              )
+            }
+          </ScrollableTabView>
+      )
+
+    }
+  }
+
   return (
     <BaseScreen style={_styles.container}
                 screenName={'彩票大厅'}>
       {
-        [
-          anyEmpty(gameData)
-            ? <EmptyView style={{ flex: 1 }}/>
-            : <ScrollableTabView
-              tabBarUnderlineStyle={_styles.tab_bar_underline}
-              tabBarActiveTextColor={Skin1.themeColor}
-              tabBarInactiveTextColor={Skin1.textColor1}
-              tabBarTextStyle={{ fontSize: scale(20) }}
-              style={[{ flex: 1 }]}
-              renderTabBar={() => <ScrollableTabBar style={_styles.tab_bar}/>}>
-              {
-                gameData?.map((tabItem, index) => {
-                    return (
-                      renderDataList(tabItem)
-                    )
-                  },
-                )
-              }
-            </ScrollableTabView>,
-        ]
+        renderAllData()
       }
     </BaseScreen>
   )
@@ -99,7 +145,6 @@ const _styles = StyleSheet.create({
   },
   tab_bar_underline: {
     height: scale(3),
-    backgroundColor: Skin1.themeColor,
   },
   item_container: {
     paddingHorizontal: scale(32),

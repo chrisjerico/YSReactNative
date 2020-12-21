@@ -77,6 +77,8 @@ export default interface UGSystemModel {
   chatRoomServer: string
   chatRoomSwitch: boolean
   chatShareBetMinAmount: string
+  mobileGameHall: string//用户中心类型
+  picTypeshow: string//风格tab打开还是关闭
   checkinSwitch: string
   closeregreason: string
   coinPwdAuditOptionAry: string[]

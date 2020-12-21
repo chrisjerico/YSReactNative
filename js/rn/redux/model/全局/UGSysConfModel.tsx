@@ -154,6 +154,8 @@ export default class UGSysConfModel {
   mobileTemplateCategory?: string // 模板号      9 简约
   mobileTemplateLhcStyle?: string // 六合配色方案
   mobileTemplateStyle?: string // 新年红 简约 香槟金 配色方案
+  mobileGameHall: string//用户中心类型
+  picTypeshow: string//风格tab打开还是关闭
   webName?: string // 首页底部文字   网址名称*/;
   serviceQQ1?: string // QQ客服q1
   serviceQQ2?: string // QQ客服q2

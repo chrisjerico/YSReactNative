@@ -24,6 +24,7 @@ export interface HallGameListData {
   customise?: string
   isInstant?: string
   lowFreq?: string
+  parentGameType //父类游戏类型
   gameType?: string
   pic?: string
   openCycle?: string //"20分钟一期"
