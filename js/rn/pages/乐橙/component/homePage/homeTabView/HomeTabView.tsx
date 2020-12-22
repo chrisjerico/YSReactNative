@@ -10,12 +10,10 @@ import { UGStore } from '../../../../../redux/store/UGStore'
 import PushHelper from '../../../../../public/define/PushHelper'
 import useHomePage from '../../../../../public/hooks/tars/useHomePage'
 
-export const HomeTabView = ({ homeGames }) => {
+export const HomeTabView = ({ homeGames, goToPromotionPage }) => {
   const [height, setHeight] = useState(77)
   const userStore = UGStore.globalProps.userInfo
   const { uid = '' } = userStore
-  const { goTo, refresh, value } = useHomePage({})
-  const { goToPromotionPage } = goTo
 
   useEffect(() => {
     homeGames && calculateHeight(0)

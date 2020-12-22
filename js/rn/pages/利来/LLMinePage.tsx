@@ -299,7 +299,7 @@ const LLMinePage = ({ navigation, setProps }) => {
                     {item.name === '站内信' && unreadMsg > 0 && (
                       <View style={{
                         position: 'absolute',
-                        left: 80,
+                        left: 85,
                         backgroundColor: 'red',
                         borderRadius: 30,
                         justifyContent: 'center',

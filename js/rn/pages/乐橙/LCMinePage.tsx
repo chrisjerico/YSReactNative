@@ -21,7 +21,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 const LCMinePage = () => {
   const userStore = UGStore.globalProps.userInfo
-  const { uid = '' } = userStore
+  const { uid = '', unreadMsg } = userStore
   const { UGUserCenterItem } = useMemberItems()
   useEffect(() => {
     userStore && uid == '' && PushHelper.pushLogin()
@@ -77,6 +77,18 @@ const LCMinePage = () => {
                   <View style={{ marginRight: 20 }}>
                     <Icon size={20} name={'angle-right'} />
                   </View>
+                  {item.name === '站内信' && unreadMsg > 0 && (
+                    <View style={{
+                      position: 'absolute',
+                      left: 85,
+                      backgroundColor: 'red',
+                      borderRadius: 30,
+                      justifyContent: 'center',
+                      width: 20,
+                      height: 20,
+                    }}>
+                      <Text style={{ alignSelf: 'center', color: 'white' }}>{unreadMsg}</Text>
+                    </View>)}
                 </View>
               </TouchableWithoutFeedback>
             )} />
@@ -90,13 +102,15 @@ const LCMinePage = () => {
               justifyContent: 'center',
             }}
             colors={['#df830f', '#ffc200']}>
-            <TouchableWithoutFeedback onPress={loginOut} style={{
-              height: 55,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 8,
-            }}>
+            <TouchableWithoutFeedback onPress={loginOut}>
+              <View style={{
+                height: 55,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 8,
+              }}>
               <Text style={{ color: 'white', fontSize: 21, alignSelf: 'center' }}>退出登录</Text>
+              </View>
             </TouchableWithoutFeedback>
           </LinearGradient>
         </SafeAreaView>
