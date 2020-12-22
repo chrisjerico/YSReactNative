@@ -197,7 +197,7 @@ const WNZHomePage = () => {
                   titleContainerStyle={{ aspectRatio: 4 }}
                   titleStyle={{
                     color: AppDefine.siteId == 'c245' ? '#000000' : config?.navColors[index],
-                    fontSize: scale(23),
+                    fontSize: scale(20),
                   }}
                   circleColor={'transparent'}
                   onPress={() => {
@@ -256,6 +256,9 @@ const WNZHomePage = () => {
               tabBarBackgroundColor={'#ffffff'}
               tabBarStyle={{
                 marginHorizontal: scale(5),
+              }}
+              tabTextStyle={{
+                fontSize: scale(20),
               }}
               enableMinWidth={false}
               showIndicator={false}
