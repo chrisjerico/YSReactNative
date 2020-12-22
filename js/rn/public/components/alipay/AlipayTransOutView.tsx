@@ -16,8 +16,10 @@ export const AlipayTransOutView = ({ yuebao, getData }: { yuebao: Yuebao, getDat
     api.yuebao.transfer(money, 'out', md5(fundPwd)).promise.then(async ({ data }) => {
       await setShowModal(false)
       pop()
+      data && Alert.alert('转出成功')
       getData()
     }).catch( (error) => {
+      Alert.alert('转出失败')
       setShowModal(false)
     })
   }

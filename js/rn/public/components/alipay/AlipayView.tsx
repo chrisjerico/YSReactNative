@@ -75,7 +75,7 @@ export const AlipayView = ({ setProps }) => {
             <Text style={{
               fontSize: 18,
               color: Skin1.isBlack ? '#ffffff' : '#111111',
-            }}>{yuebao?.weekProfit ? parseInt(yuebao?.weekProfit).toFixed(0) : 0}</Text>
+            }}>{yuebao?.weekProfit ? yuebao?.weekProfit : 0}</Text>
             <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本周收益</Text>
           </View>
           <View
@@ -91,7 +91,7 @@ export const AlipayView = ({ setProps }) => {
               style={{
                 fontSize: 18,
                 color: Skin1.isBlack ? '#ffffff' : '#111111',
-              }}>{yuebao?.monthProfit ? yuebao?.monthProfit: 0}</Text>
+              }}>{yuebao?.monthProfit ? yuebao?.monthProfit : 0}</Text>
             <Text style={{ fontSize: 14, marginTop: 20, color: Skin1.textColor2 }}>本月收益</Text>
           </View>
           <View style={{ alignItems: 'center', flex: 1, paddingVertical: 40, height: 147 }}>
@@ -150,12 +150,12 @@ export const AlipayView = ({ setProps }) => {
         alignSelf: 'center',
         marginTop: 28,
       }}>
-        <Text numberOfLines={4}
-              style={{ color: '#f14b47' }}>{yuebao?.intro || '利息宝上线了，欢迎大家试用！ 1、复利结算，利滚利，收益更高。 2、结算快，每分钟结算一次，存入即开始收益。\n' +
-        '          3、转入转出无限制，随时随地享收益11。'}</Text>
+        <Text
+          style={{ color: '#f14b47' }}>
+          {yuebao?.intro || '利息宝上线了，欢迎大家试用！ 1、复利结算，利滚利，收益更高。 2、结算快，每分钟结算一次，存入即开始收益。\n' + '3、转入转出无限制，随时随地享收益11。'}</Text>
       </View>
       {showMoneyImg && <Image style={{ width: 400, height: 400, position: 'absolute', top: AppDefine.height / 5 }}
-              source={{ uri: httpClient.defaults.baseURL + '/images/yuebaoMoney.png' }} />}
+                              source={{ uri: httpClient.defaults.baseURL + '/images/yuebaoMoney.png' }} />}
     </View>
   )
 }
@@ -195,7 +195,7 @@ const Header = ({ setProps, name, setShowMoneyImg }) => {
             fontSize: 20,
             flex: 1,
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
-          }}>{name || `支付宝`}</Text>
+          }}>{name || ``}</Text>
           <View style={{ position: 'absolute', right: 12 }}>
             <UrgeWithPleasureComponent setShowMoneyImg={setShowMoneyImg} />
           </View>
@@ -205,7 +205,7 @@ const Header = ({ setProps, name, setShowMoneyImg }) => {
   )
 }
 
-const UrgeWithPleasureComponent = memo(({setShowMoneyImg}) => (
+const UrgeWithPleasureComponent = memo(({ setShowMoneyImg }) => (
   <CountdownCircleTimer
     isPlaying
     duration={60}
