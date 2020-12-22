@@ -42,6 +42,7 @@ const useSignUp = (options: Options = {}) => {
           onSuccess && onSuccess()
         }
       } else {
+        console.log('-------------msg_reg_msg---------', msg_reg_msg)
         onError && onError(msg_reg_msg)
       }
     } catch (error) {

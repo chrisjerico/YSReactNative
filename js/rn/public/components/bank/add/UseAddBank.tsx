@@ -183,7 +183,21 @@ const UseAddBank = () => {
     showLoading()
     APIRouter.user_addBank(params).then((result) => {
       if (result?.data?.code == 0) {
-        callBack && callBack()
+        switch (curAccountType.toString()) {
+          case BankConst.BANK:
+            Toast('添加银行卡成功')
+            break
+          case BankConst.BTC:
+            Toast('添加虚拟币成功')
+            break
+          case BankConst.WX:
+            Toast('添加微信成功')
+            break
+          case BankConst.ALI:
+            Toast('添加支付宝成功')
+            break
+        }
+        callBack && callBack(curAccountType)
         pop()
       } else {
         Toast(result?.data?.msg)
@@ -274,7 +288,7 @@ interface IAddAccount {
   wxAccount?: string, //请输入微信号
   wxPhone?: string, //请输入微信所绑定手机号
   aliAccount?: string, //请输入您的支付宝账号
-  callBack?: () => void //成功回调
+  callBack?: (accountType: string) => void //成功回调
 }
 
 export default UseAddBank

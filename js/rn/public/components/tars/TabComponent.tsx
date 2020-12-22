@@ -29,6 +29,7 @@ interface TabComponentProps {
   showIndicator?: boolean
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
+  enableMinWidth?: boolean
 }
 
 interface RenderTabBar {
@@ -88,6 +89,7 @@ const TabComponent = ({
   showIndicator = true,
   tabBarStyle,
   locked = true,
+  enableMinWidth = true,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
     if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
@@ -122,10 +124,10 @@ const TabComponent = ({
     }
     const tabCount = getTabCount()
     const width = tabCount ? AppDefine.width / tabCount : 0
-    if (width < minTabWidth) {
+    if (enableMinWidth && width < minTabWidth) {
       return minTabWidth + scale(20)
     } else {
-      return width + scale(20)
+      return width //+ scale(20)
     }
   }
 
@@ -183,50 +185,49 @@ const TabComponent = ({
               showsVerticalScrollIndicator={false}
               contentOffset={{ x: getTabXPosition(initialTabIndex), y: 0 }}
               scrollEventThrottle={5000}>
-              <View style={[tabStyle, { height: defaultTabHeight, flexDirection: 'row' }]}>
-                {tabGames?.map((item, index) => {
-                  const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
-                  return (
-                    <TouchableWithoutFeedback
-                      key={index}
-                      onPress={() => {
-                        goToPage(index)
-                      }}>
-                      <View
+              {tabGames?.map((item, index) => {
+                const title = StringUtils.getInstance().deleteHtml(item?.name ?? item?.categoryName ?? '')
+                return (
+                  <TouchableWithoutFeedback
+                    key={index}
+                    onPress={() => {
+                      goToPage(index)
+                    }}>
+                    <View
+                      style={[
+                        styles.tabContainer,
+                        tabStyle,
+                        {
+                          width: getTabWidth(),
+                        },
+                      ]}>
+                      <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit={true}
                         style={[
+                          styles.tabText,
+                          tabTextStyle,
                           {
-                            width: getTabWidth(),
+                            color: activeTab == index ? focusTabColor : tabTextColor,
                           },
-                          styles.tabTextContainer,
                         ]}>
-                        <Text
-                          numberOfLines={1}
-                          adjustsFontSizeToFit={true}
+                        {title}
+                      </Text>
+                      {showIndicator && (
+                        <View
                           style={[
-                            styles.tabText,
-                            tabTextStyle,
+                            styles.focusBar,
                             {
-                              color: activeTab == index ? focusTabColor : tabTextColor,
+                              width: '50%',
+                              backgroundColor: activeTab == index ? focusTabColor : 'transparent',
                             },
-                          ]}>
-                          {title}
-                        </Text>
-                        {showIndicator && (
-                          <View
-                            style={[
-                              styles.focusBar,
-                              {
-                                width: '50%',
-                                backgroundColor: activeTab == index ? focusTabColor : 'transparent',
-                              },
-                            ]}
-                          />
-                        )}
-                      </View>
-                    </TouchableWithoutFeedback>
-                  )
-                })}
-              </View>
+                          ]}
+                        />
+                      )}
+                    </View>
+                  </TouchableWithoutFeedback>
+                )
+              })}
             </ScrollView>
           </View>
         )
@@ -273,7 +274,7 @@ const styles = StyleSheet.create({
     fontSize: scale(25),
     marginBottom: scale(5),
   },
-  tabTextContainer: {
+  tabContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',

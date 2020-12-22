@@ -97,6 +97,11 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
             case CodePush.SyncStatus.UNKNOWN_ERROR:
               console.log('rn热更新出错❌')
               setProps({ progress: 1, text: '更新出错...' })
+
+              // 更新出错时无限重试
+              Platform.OS == 'ios' && setTimeout(() => {
+                CodePushSync(options)
+              }, 1000);
               break
             case CodePush.SyncStatus.UPDATE_INSTALLED:
               console.log('rn热更新安装成功，正在重启RN')
@@ -140,7 +145,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         const sysConf: UGSysConfModel = await OCHelper.call('UGSystemConfigModel.currentConfig')
         await initConfig(sysConf, !isFirst)
         // 检查更新
-        await OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/'])
+        await OCHelper.call('CodePushConfig.current.setServerURL:', ['http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000/'])
         await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
         const CodePushKey = await getIOSCodePushKey()
         console.log('OCHelper.CodePushKey = ', CodePushKey)
