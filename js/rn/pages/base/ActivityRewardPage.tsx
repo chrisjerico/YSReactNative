@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Animated, Image, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../public/define/AppDefine'
@@ -31,12 +31,14 @@ const RewardList = ({ data, uniqueKey, onPress, onPressApply }) => (
       return (
         <>
           <TouchableWithoutFeedback onPress={onPress}>
-            <View style={{ width: '100%', aspectRatio: 3, backgroundColor: 'red' }}>
+            {/* <View style={{ width: '100%', aspectRatio: 3, backgroundColor: 'red' }}> */}
+            <ImageBackground source={{ uri: 'winapply_default' }} style={{ width: '100%', aspectRatio: 3 }}>
               <View style={{ flex: 3 }}></View>
               <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.3)', justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: '#ffffff' }}>{name}</Text>
               </View>
-            </View>
+            </ImageBackground>
+            {/* </View> */}
           </TouchableWithoutFeedback>
           <Button
             title={'点击申请'}
