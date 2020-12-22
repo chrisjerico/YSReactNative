@@ -12,6 +12,9 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
+import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import LinearGradient from 'react-native-linear-gradient'
+
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
 
@@ -212,12 +215,12 @@ const QDTestPage = () => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
-            <View style={styles.headerViewStyle}>
+        <LinearGradient style={{ flex: 1, }} start={{x:0,y:1}} end={{x:1,y:1}} colors={Skin1.bgColor}>
+            <LinearGradient style={{height: 80,justifyContent: 'center',alignItems: 'center'}} colors={Skin1.navBarBgColor}>
                 <Text style={styles.headerTextStyle}>我的APP</Text>
-            </View>
+            </LinearGradient>
             {/* 签到记录 */}
-            <View style={[{ height: 40, backgroundColor: '#0000FF' }]}>
+            <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
                     <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, backgroundColor: 'yellow', borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                         onPress={() => {
@@ -317,7 +320,7 @@ const QDTestPage = () => {
 
             </ScrollView>
 
-        </View>
+        </LinearGradient>
     )
 
 }
