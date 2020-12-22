@@ -95,7 +95,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
         setProps({
           navbarOpstions: { hidden: false, gradientColor:['#0000', '#0000'], hideUnderline: true, back: true },
           backgroundColor: Skin1.bgColor,
-          backgroundImage:'https://appstatic.woyovr.com/assets/login_bg.jpg',
+          backgroundImage:'https://appstatic.guolaow.com/assets/login_bg.jpg',
           rememberPassword: isRemember,
           didFocus: (params) => {
             if (params?.usr?.length) {
@@ -251,7 +251,7 @@ export const XBJLoginPage = (props: XBJLoginProps) => {
           onPress={() => {
             navigate<XBJRegisterProps>(PageName.XBJRegisterPage);
           }}>
-          <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
+          <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>注册新用户</Text>
         </TouchableOpacity>
       </View>

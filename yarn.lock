@@ -2788,6 +2788,11 @@ data-urls@^1.1.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
+date-fns@>=2.2.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
+
 dayjs@^1.8.15:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.9.4.tgz#fcde984e227f4296f04e7b05720adad2e1071f1b"
@@ -7022,6 +7027,13 @@ react-native-picker@^4.3.7:
   version "4.3.7"
   resolved "https://registry.yarnpkg.com/react-native-picker/-/react-native-picker-4.3.7.tgz#9842e8c62ff0d8b676e9514d9f9172413c0518a8"
   integrity sha1-mELoxi/w2LZ26VFNn5FyQTwFGKg=
+
+react-native-plain-calendar@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-plain-calendar/-/react-native-plain-calendar-1.0.5.tgz#85546086c027893e6b69dc264f8918d0a15c2baf"
+  integrity sha512-PEFbOcv6XDNKGEndY6NqPJW4Fjq3ECZsE8nxzrsv3IPpJAvY+zCs6qUnOT9SUlRr2/EicTU/MyU8hNx7kaS35w==
+  dependencies:
+    date-fns ">=2.2.1"
 
 react-native-progress@^4.0.3:
   version "4.1.2"

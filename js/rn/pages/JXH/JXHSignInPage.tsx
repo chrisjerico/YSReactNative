@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 're
 import FormComponent from '../../public/components/tars/FormComponent'
 import useSignInPage from '../../public/hooks/tars/useSignInPage'
 import { PageName } from '../../public/navigation/Navigation'
-import { popToRoot } from '../../public/navigation/RootNavigation'
+import { pop } from '../../public/navigation/RootNavigation'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import Button from '../../public/views/tars/Button'
 import CheckBox from '../../public/views/tars/CheckBox'
@@ -28,7 +28,7 @@ const JXHSignInPage = () => {
   return (
     <>
       <SafeAreaHeader headerColor={'#000000'}>
-        <MineHeader showBackBtn={true} onPressBackBtn={popToRoot} showRightTitle={false} backBtnColor={'#cfa461'} />
+        <MineHeader showBackBtn={true} onPressBackBtn={pop} showRightTitle={false} backBtnColor={'#cfa461'} />
       </SafeAreaHeader>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.formContainer}>
@@ -63,7 +63,7 @@ const JXHSignInPage = () => {
             showLogo={false}
             onPress={signIn}
           />
-          <Button title={'返回首页'} containerStyle={styles.popButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={popToRoot} />
+          <Button title={'返回首页'} containerStyle={styles.popButton} titleStyle={{ color: '#ffffff', fontSize: scale(23) }} onPress={pop} />
         </View>
       </ScrollView>
     </>

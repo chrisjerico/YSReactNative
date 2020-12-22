@@ -1,6 +1,7 @@
-import {UGBridge} from '../../ANHelper/UGBridge';
-import {ugLog} from "../../../tools/UgLog";
-import {Platform} from "react-native";
+import { OCEventType } from './OCEvent';
+import { UGBridge } from '../../ANHelper/UGBridge';
+import { ugLog } from "../../../tools/UgLog";
+import { Platform } from "react-native";
 
 // 变量
 class OCFuncVariable {
@@ -72,10 +73,12 @@ export class OCCall extends UGBridge {
 export class NSValue {
   valueType: string;
   string: string;
+  event?: OCEventType;
 
-  constructor(valueType: 'CGRect' | 'CGPoint' | 'CGSize' | 'UIEdgeInsets' | 'UIOffset' | 'CGAffineTransform' | 'CGVector', string: string) {
+  constructor(valueType: 'CGRect' | 'CGPoint' | 'CGSize' | 'UIEdgeInsets' | 'UIOffset' | 'CGAffineTransform' | 'CGVector' | 'RNBlock', string: string, event?: OCEventType) {
     this.valueType = valueType;
     this.string = string;
+    this.event = event;
   }
 
   static CGRectMake(x: number, y: number, w: number, h: number): NSValue {
@@ -104,5 +107,9 @@ export class NSValue {
 
   static CGVectorMake(dx: number, dy: number): NSValue {
     return new NSValue('CGVector', `{${dx}, ${dy}}`);
+  }
+
+  static Block(argTypes: ('Object' | 'Number')[], event: OCEventType) {
+    return new NSValue('RNBlock', argTypes.toString(), event);
   }
 }

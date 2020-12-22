@@ -74,6 +74,7 @@ import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import CodePush from 'react-native-code-push'
+import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
 import { TransferView } from '../../public/components/transfer/TransferView'
 import { FeedbackView } from '../../public/components/FeedbackView'
@@ -133,6 +134,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.TransferView} component={UGPage(TransferView)}/>
         {/*<Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />*/}
         <Router.TabScreen name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
+        <Router.TabScreen name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
@@ -144,6 +146,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.JXHSignInPage} component={JXHSignInPage} />
         <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
         <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
         <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
@@ -217,6 +220,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.LotteryHistoryPage} component={UGPage(LotteryHistoryPage)} />
     </Router.StackNavigator>
   )
 }

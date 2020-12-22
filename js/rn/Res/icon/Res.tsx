@@ -1,8 +1,13 @@
 // 图片服务器域名：
-// https://appstatic.woyovr.com
+// https://appstatic.guolaow.com
 // https://appstatic.guolaow.com
 
-const RES_BASE_URL = 'https://appstatic.woyovr.com/'
+/**
+ * 全局资源统一管理
+ *
+ */
+
+const RES_BASE_URL = 'https://appstatic.guolaow.com/'
 export const ROULETTE_LOGO = RES_BASE_URL + 'assets/c018dzp.gif'    //大转盘
 
 export const Res = {

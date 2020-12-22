@@ -77,25 +77,25 @@ export class UGUserCenterItem {
 
   // 默认图标
   static defaultLogos: { [x: number]: string } = {
-    1: 'https://appstatic.woyovr.com/assets/chongzhi@2x.png', // 存款
-    2: 'https://appstatic.woyovr.com/assets/tixian@2x.png', // 取款
-    3: 'https://appstatic.woyovr.com/assets/yinhangqia@2x.png', // 银行卡管理
-    4: 'https://appstatic.woyovr.com/assets/lixibao.png', // 利息宝
-    5: 'https://appstatic.woyovr.com/assets/shouyisel.png', // 推荐收益
-    6: 'https://appstatic.woyovr.com/assets/zdgl@2x.png', // 彩票注单记录
-    7: 'https://appstatic.woyovr.com/assets/zdgl@2x.png', // 其他注单记录
-    8: 'https://appstatic.woyovr.com/assets/change@2x.png', // 额度转换
-    9: 'https://appstatic.woyovr.com/assets/zhanneixin@2x.png', // 站内信
-    10: 'https://appstatic.woyovr.com/assets/ziyuan@2x.png', // 安全中心
-    11: 'https://appstatic.woyovr.com/assets/renwuzhongxin.png', // 任务中心
-    12: 'https://appstatic.woyovr.com/assets/gerenzhongxinxuanzhong.png', // 个人信息
-    13: 'https://appstatic.woyovr.com/assets/yijian.png', // 建议反馈
-    14: 'https://appstatic.woyovr.com/assets/zaixiankefu@2x.png', // 在线客服
-    15: 'https://appstatic.woyovr.com/assets/zdgl@2x.png', // 活动彩金
-    16: 'https://appstatic.woyovr.com/assets/changlong@2x.png', // 长龙助手
-    17: 'https://appstatic.woyovr.com/assets/menu-activity.png', // 全民竞猜
-    18: 'https://appstatic.woyovr.com/assets/kj_trend.png', // 开奖走势
-    19: 'https://appstatic.woyovr.com/assets/usrCenter_qq.png', // QQ客服
+    1: 'https://appstatic.guolaow.com/assets/chongzhi@2x.png', // 存款
+    2: 'https://appstatic.guolaow.com/assets/tixian@2x.png', // 取款
+    3: 'https://appstatic.guolaow.com/assets/yinhangqia@2x.png', // 银行卡管理
+    4: 'https://appstatic.guolaow.com/assets/lixibao.png', // 利息宝
+    5: 'https://appstatic.guolaow.com/assets/shouyisel.png', // 推荐收益
+    6: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 彩票注单记录
+    7: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 其他注单记录
+    8: 'https://appstatic.guolaow.com/assets/change@2x.png', // 额度转换
+    9: 'https://appstatic.guolaow.com/assets/zhanneixin@2x.png', // 站内信
+    10: 'https://appstatic.guolaow.com/assets/ziyuan@2x.png', // 安全中心
+    11: 'https://appstatic.guolaow.com/assets/renwuzhongxin.png', // 任务中心
+    12: 'https://appstatic.guolaow.com/assets/gerenzhongxinxuanzhong.png', // 个人信息
+    13: 'https://appstatic.guolaow.com/assets/yijian.png', // 建议反馈
+    14: 'https://appstatic.guolaow.com/assets/zaixiankefu@2x.png', // 在线客服
+    15: 'https://appstatic.guolaow.com/assets/zdgl@2x.png', // 活动彩金
+    16: 'https://appstatic.guolaow.com/assets/changlong@2x.png', // 长龙助手
+    17: 'https://appstatic.guolaow.com/assets/menu-activity.png', // 全民竞猜
+    18: 'https://appstatic.guolaow.com/assets/kj_trend.png', // 开奖走势
+    19: 'https://appstatic.guolaow.com/assets/usrCenter_qq.png', // QQ客服
   }
 
   constructor(props: UGUserCenterItem) {

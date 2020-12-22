@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import LinearGradient from "react-native-linear-gradient"
-import { View, Text, ListRenderItemInfo } from "react-native"
+import { View, Text, ListRenderItemInfo, Platform } from "react-native"
 import { Button, Icon } from "react-native-elements"
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
@@ -9,9 +9,13 @@ import { SalaryModel } from '../../../public/network/Model/SalaryModel'
 import { hideLoading, showLoading, showSuccess } from '../../../public/widget/UGLoadingCP'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 import { AnimationFadeView, AnimationMoveView } from '../../../public/tools/animation/AnimationViews'
-import { AvatarModel } from '../../../public/network/Model/SystemAvatarListModel'
+import { AvatarModel, AvatarSettingModel } from '../../../public/network/Model/SystemAvatarListModel'
 import FastImage from 'react-native-fast-image'
 import { UGStore } from '../../../redux/store/UGStore'
+import { UGColor } from '../../../public/theme/UGThemeColor'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
+import { OCEventType } from '../../../public/define/OCHelper/OCBridge/OCEvent'
+import { NSValue } from '../../../public/define/OCHelper/OCBridge/OCCall'
 
 
 export interface JDAvatarListCP {
@@ -19,9 +23,10 @@ export interface JDAvatarListCP {
 }
 
 interface JDAvatarListVars {
-  list?: AvatarModel[]
+  list?: AvatarModel[];
   show?: boolean;
-  selected?: AvatarModel;
+  selected?: AvatarModel;// 当前选中的头像
+  isAcceptUpload?: boolean;// 是否允许上传图片
 
   fastList?: FlatList<AvatarModel>;
   offsetX?: number;
@@ -37,11 +42,17 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
       if (!v.list) {
         // 俸禄数据
         showLoading();
-        api.system.avatarList().setCompletionBlock(({ data: list }) => {
+        api.user.getAvatarSetting().setCompletionBlock(async ({ data }) => {
           hideLoading();
-          v.list = list;
-          v.selected = list[0];
-          v.show = !v.show;
+          if (Platform.OS == 'ios') {
+            const iosCanUpload = await OCHelper.call('AppDefine.shared.isCanUploadAvatar')
+            v.isAcceptUpload = iosCanUpload && data?.isAcceptUpload;
+          } else {
+            v.isAcceptUpload = data?.isAcceptUpload;
+          }
+          v.list = data?.publicAvatarList;
+          v.selected = v.list[0];
+          v.show = true;
           setState({});
         });
       } else {
@@ -55,6 +66,39 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
     <AnimationMoveView show={v.show} direction='bottom' backgroundColor='#0005' >
       <View style={{ flex: 1 }} />
       <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width, backgroundColor: '#fff' }}>
+        {v.isAcceptUpload != false && (
+          <View style={{ marginTop: 6, marginLeft: 5, flexDirection: 'row' }}>
+            <Button title='选择头像' buttonStyle={{ marginTop: 0.5, backgroundColor: 'transparent' }} titleStyle={{ fontSize: 14, color: UGColor.RedColor3 }} />
+            <Button title='上传头像' buttonStyle={{ backgroundColor: 'transparent' }} titleStyle={{ fontSize: 14 }} onPress={() => {
+              if (Platform.OS) {
+                // 打开原生相册
+                OCHelper.call('UGNavigationController.current.presentViewController:animated:completion:', [{
+                  selectors: 'TZImagePickerController.alloc.initWithMaxImagesCount:delegate:[setAllowPickingVideo:][setDidFinishPickingPhotosHandle:]',
+                  args1: [1],
+                  args2: [false],
+                  args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
+                }, true]);
+                // 上传图片
+                OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
+                OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, ({ 0: imgs }: { 0: string[] }) => {
+                  if (imgs?.length) {
+                    showLoading()
+                    api.user.uploadAvatar(imgs[0]).setCompletionBlock(({ data, msg }) => {
+                      showSuccess(msg)
+                      v.show = false;
+                      setState({})
+                      if (data?.isReview) {
+                        UGStore.dispatch({ type: 'merge', userInfo: { avatar: imgs[0] } });
+                      }
+                    });
+                  }
+                })
+              } else {
+                //TODO Android
+              }
+            }} />
+          </View>
+        )}
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
           <FastImage source={{ uri: v.selected?.url }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
@@ -87,13 +131,13 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
             }} />
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-          <Button title="保存头像" titleStyle={{ fontSize: 14 }} buttonStyle={{ width: 100 }} onPress={() => {
+          <Button title="保存头像" titleStyle={{ fontSize: 14 }} buttonStyle={{ width: 100, backgroundColor:UGColor.RedColor3 }} onPress={() => {
             if (!v.selected) return;
             showLoading();
-            api.task.changeAvatar(v.selected.filename).setCompletionBlock((res) => {
+            api.user.updateAvatar(v.selected.id).setCompletionBlock((res) => {
               showSuccess(res.msg);
               v.show = false;
-              UGStore.dispatch({ type: 'merge', userInfo: { avatar: v.selected.filename } });
+              UGStore.dispatch({ type: 'merge', userInfo: { avatar: v.selected.url } });
               setState({})
             })
           }} />
