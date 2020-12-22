@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import FormComponent, { FormComponentProps } from '../../public/components/tars/FormComponent'
+import FormComponent from '../../public/components/tars/FormComponent'
 import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
@@ -8,7 +8,7 @@ import { Skin1 } from '../../public/theme/UGSkinManagers'
 import Button from '../../public/views/tars/Button'
 import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
-import { showError, showLoading } from '../../public/widget/UGLoadingCP'
+import { showError, showLoading, showSuccess } from '../../public/widget/UGLoadingCP'
 
 const Form = ({ title, placeholder, onChangeText }) => {
   return (
@@ -63,16 +63,16 @@ const SignInPassword = ({ tabLabel }) => {
           if (newPwd.current == confirmNewPwd.current) {
             showLoading()
             APIRouter.user_changeLoginPwd({
-              oldPwd: 'aaaaa',
-              newPwd: 'asasass',
+              oldPwd: oldPwd.current?.md5(),
+              newPwd: newPwd.current?.md5(),
             })
               .then((value) => {
-                const data = value?.data?.data
+                const code = value?.data?.code
                 const msg = value?.data?.msg
-                if (data) {
-                  console.log('---------data-----', data)
-                } else {
+                if (code) {
                   showError(msg)
+                } else {
+                  showSuccess(msg)
                 }
               })
               .catch((error) => {
@@ -88,12 +88,62 @@ const SignInPassword = ({ tabLabel }) => {
 }
 
 const TakeMoneyPassword = ({ tabLabel }) => {
+  const oldPwd = useRef(null)
+  const newPwd = useRef(null)
+  const confirmNewPwd = useRef(null)
+
   return (
     <View style={{ flex: 1, marginTop: 35 }}>
-      <Form title={'旧取款密码'} placeholder={'请输入旧取款密码'} />
-      <Form title={'新密码'} placeholder={'请输4位数字取款新密码'} />
-      <Form title={'确认新密码'} placeholder={'请输4位数字取款新密码'} />
-      <Button title={'提交'} titleStyle={{ color: '#ffffff' }} containerStyle={styles.button} />
+      <Form
+        title={'旧取款密码'}
+        placeholder={'请输入旧取款密码'}
+        onChangeText={(text) => {
+          oldPwd.current = text
+        }}
+      />
+      <Form
+        title={'新密码'}
+        placeholder={'请输4位数字取款新密码'}
+        onChangeText={(text) => {
+          newPwd.current = text
+        }}
+      />
+      <Form
+        title={'确认新密码'}
+        placeholder={'请输4位数字取款新密码'}
+        onChangeText={(text) => {
+          confirmNewPwd.current = text
+        }}
+      />
+      <Button
+        title={'提交'}
+        titleStyle={{ color: '#ffffff' }}
+        containerStyle={styles.button}
+        onPress={() => {
+          if (newPwd.current == confirmNewPwd.current) {
+            showLoading()
+            APIRouter.user_changeFundPwd({
+              oldPwd: oldPwd.current?.md5(),
+              newPwd: newPwd.current?.md5(),
+            })
+              .then((value) => {
+                console.log('------------value?.data------', value?.data)
+                const code = value?.data?.code
+                const msg = value?.data?.msg
+                if (code) {
+                  showError(msg)
+                } else {
+                  showSuccess(msg)
+                }
+              })
+              .catch((error) => {
+                showError(error)
+              })
+          } else {
+            showError('新密码不一致')
+          }
+        }}
+      />
     </View>
   )
 }
@@ -105,8 +155,8 @@ const SafeCenterPage = () => {
         <MineHeader title={'安全中心'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
       <ScrollableTabViewComponent indicatorStyle={{ width: '23%', backgroundColor: Skin1.themeColor }}>
-        <SignInPassword tabLabel={'登录密码'} />
-        <TakeMoneyPassword tabLabel={'取款密码'} />
+        <SignInPassword tabLabel={'登录密码'} key={'登录密码'} />
+        <TakeMoneyPassword tabLabel={'取款密码'} key={'取款密码'} />
       </ScrollableTabViewComponent>
     </>
   )

@@ -87,11 +87,11 @@ export const getActivityPosition = (position: number) => {
   if (position == 1) {
     return { left: 0, top: scale(100) }
   } else if (position == 2) {
-    return { left: 0, bottom: scale(20) }
+    return { left: 0, bottom: scale(200) }
   } else if (position == 3) {
     return { right: 0, top: scale(100) }
   } else if (position == 4) {
-    return { right: 0, bottom: scale(20) }
+    return { right: 0, bottom: scale(200) }
   } else {
     return {}
   }
