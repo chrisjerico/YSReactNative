@@ -76,8 +76,24 @@ const ApplyReward = ({ tabLabel, list, onPress, onPressApply }: ApplyRewardProps
   )
 }
 
-const ApplyFeedBack = ({ tabLabel }) => {
-  return <View style={{ flex: 1, marginTop: 35 }}></View>
+const ApplyFeedBack = ({ tabLabel, list }) => {
+  return (
+    <List
+      uniqueKey={'ApplyFeedBack'}
+      ListHeaderComponent={() => (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around', borderBottomColor: '#d9d9d9', borderBottomWidth: AppDefine.onePx, paddingVertical: 10 }}>
+          <Text style={{ fontWeight: '500' }}>{'申请日期'}</Text>
+          <Text style={{ fontWeight: '500' }}>{'申请金额'}</Text>
+          <Text style={{ fontWeight: '500' }}>{'状态'}</Text>
+        </View>
+      )}
+      data={list}
+      scrollEnabled={true}
+      renderItem={({ item }) => {
+        return null
+      }}
+    />
+  )
 }
 
 const ActivityRewardPage = () => {
@@ -95,16 +111,29 @@ const ActivityRewardPage = () => {
   }
 
   const [loading, setLoading] = useState(true)
-  const [list, setList] = useState([])
+  const [winApplyList, setWinApplyList] = useState([])
+  const [applyWinLog, setApplyWinLog] = useState([])
+
   const [activityVisible, setActivityVisible] = useState(false)
   const [applyVisible, setApplyVisible] = useState(false)
   const [activityContent, setActivityContent] = useState('')
 
   useEffect(() => {
-    APIRouter.activity_winApplyList()
+    Promise.all([
+      APIRouter.activity_winApplyList().catch((error) => {
+        console.log(error)
+      }),
+      APIRouter.activity_applyWinLog().catch((error) => {
+        console.log(error)
+      }),
+    ])
       .then((value) => {
-        const list = value?.data?.data?.list
-        setList(list)
+        //@ts-ignore
+        const winApplyList = value[0]?.data?.data?.list
+        //@ts-ignore
+        const applyWinLog = value[1]?.data?.data?.list
+        setWinApplyList(winApplyList)
+        setApplyWinLog(applyWinLog)
       })
       .finally(() => {
         setLoading(false)
@@ -151,7 +180,7 @@ const ActivityRewardPage = () => {
             }}>
             <ApplyReward
               tabLabel={'申请彩金'}
-              list={list}
+              list={winApplyList}
               onPress={() => {
                 setActivityVisible(true)
               }}
@@ -160,7 +189,7 @@ const ActivityRewardPage = () => {
                 setActivityContent(win_apply_content)
               }}
             />
-            <ApplyFeedBack tabLabel={'申请反馈'} />
+            <ApplyFeedBack tabLabel={'申请反馈'} list={applyWinLog} />
           </ScrollableTabView>
         )}
       </View>
