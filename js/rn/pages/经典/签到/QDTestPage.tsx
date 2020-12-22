@@ -22,6 +22,7 @@ const QDTestPage = () => {
 
     const [list, setList] = useState<Array<UGCheckinListModel>>([])
     const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})
+    const [hide1], setHide1] = useState<boolean>(false)
 
     //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
@@ -77,61 +78,61 @@ const QDTestPage = () => {
             returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/signed.png';
         }
         else {
-                returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/nosign.png';
+            returnStr = 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/nosign.png';
         }
         return returnStr;
     }
     // 今日签到
     function mUGSignInButtonClicked() {
-        console.log('checkinListModel.serverTime==',checkinListModel.serverTime);
-        
-        checkinDataWithType('0',checkinListModel.serverTime);
+        console.log('checkinListModel.serverTime==', checkinListModel.serverTime);
+
+        checkinDataWithType('0', checkinListModel.serverTime);
     }
     // cell 点击方法
     function itemAction(item: UGCheckinListModel) {
 
-        console.log('点击item=',item);
-        
+        console.log('点击item=', item);
+
         if (item.isCheckin) {
             return;
         }
         if (item.whichDay >= checkinListModel.serverTime) {
-            checkinDataWithType('0',item.whichDay);
+            checkinDataWithType('0', item.whichDay);
         }
         else {
 
             if (checkinListModel.mkCheckinSwitch && item.isMakeup) {
-                 for (const k  in checkinListModel.checkinList) {
-                     const clm = checkinListModel.checkinList[k];
-                     if (clm == item) {
-                        checkinDataWithType('1',item.whichDay);
-                         break;
-                     }
-                     if (!clm.isCheckin) {
+                for (const k in checkinListModel.checkinList) {
+                    const clm = checkinListModel.checkinList[k];
+                    if (clm == item) {
+                        checkinDataWithType('1', item.whichDay);
+                        break;
+                    }
+                    if (!clm.isCheckin) {
                         Toast('必须从前往后补签')
                         break;
-                     }
-                 }
+                    }
+                }
             }
             else {
-                Toast('补签通道已关闭') 
+                Toast('补签通道已关闭')
             }
         }
-       
+
     }
 
     // 网络请求========================================================================================================
-      //得到领取连续签到奖励数据
-      function checkinBonusData(type:string) {
-          console.log('123');
-          
-          showLoading()
+    //得到领取连续签到奖励数据
+    function checkinBonusData(type: string) {
+        console.log('123');
+
+        showLoading()
         api.task.checkinBonus(type).setCompletionBlock(({ data, msg }) => {
             hideLoading()
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
             checkinList();
-            Alert.alert('温馨提示', msg, [{text:'确认'}])
+            Alert.alert('温馨提示', msg, [{ text: '确认' }])
         }, (err) => {
             console.log('err = ', err);
             // Toast(err.message)
@@ -139,14 +140,14 @@ const QDTestPage = () => {
         });
     }
     //用户签到（签到类型：0是签到，1是补签）
-    function checkinDataWithType(type:string, date:string ) {
-        api.task.checkin(type,date).setCompletionBlock(({ data, msg }) => {
+    function checkinDataWithType(type: string, date: string) {
+        api.task.checkin(type, date).setCompletionBlock(({ data, msg }) => {
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
             checkinList();
-            Alert.alert('温馨提示', msg, [{text:'确认'}])
+            Alert.alert('温馨提示', msg, [{ text: '确认' }])
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationGetUserInfo'])
-            
+
         }, (err) => {
             console.log('err = ', err);
             // Toast(err.message)
@@ -154,15 +155,15 @@ const QDTestPage = () => {
         });
     }
 
-     //用户签到列表
-     function checkinList() {
+    //用户签到列表
+    function checkinList() {
         api.task.checkinList().setCompletionBlock(({ data }) => {
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
 
             setCheckinListModel(data)
             setList(data.checkinList)
-            
+
         }, (err) => {
             console.log('err = ', err);
             // Toast(err.message)
@@ -197,7 +198,7 @@ const QDTestPage = () => {
                         <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</Text>
                         <Image style={[styles.itemImageImageStyle]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
                         <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
-                            <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle]}>{checkinState(item)}</Text>
+                            <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle, { marginTop: 2 }]}>{checkinState(item)}</Text>
                         </ImageBackground>
                     </ImageBackground>
 
@@ -215,23 +216,23 @@ const QDTestPage = () => {
     }
 
     return (
-        <LinearGradient style={{ flex: 1, }} start={{x:0,y:1}} end={{x:1,y:1}} colors={Skin1.bgColor}>
-            <LinearGradient style={{height: 80,justifyContent: 'center',alignItems: 'center'}} colors={Skin1.navBarBgColor}>
-                <Text style={styles.headerTextStyle}>我的APP</Text>
+        <LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
+            <LinearGradient style={{ height: 80, justifyContent: 'center', alignItems: 'center' }} colors={Skin1.navBarBgColor}>
+                <Text style={[{ fontSize: 20, color: '#FFFFFF' }]}>我的APP</Text>
             </LinearGradient>
             {/* 签到记录 */}
             <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
-                    <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, backgroundColor: 'yellow', borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                    <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                         onPress={() => {
                             console.log('签到记录点击了')
-                           
+
                         }} />
                 </View>
             </View>
             <ScrollView onScroll={() => { }}>
                 {/* 签到领积分 */}
-                <View style={[{ height: 110, backgroundColor: '#0000FF' }]}>
+                <View style={[{ height: 110, }]}>
                     <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center' }}>
                         <Text style={[{ fontSize: 41, color: '#FBF2D5' }]}>{'签到领积分'}</Text>
                         <View style={[{ marginTop: 16, backgroundColor: '#FFAA2F', borderRadius: 5, }]}>
@@ -240,19 +241,19 @@ const QDTestPage = () => {
 
                     </View>
                     <View style={{ flexDirection: 'row', marginTop: 15, justifyContent: 'center', }}>
-                        <Text style={[{ fontSize: 18, color: '#FBF2D5' }]}>{'已连续'}</Text>
+                        <Text style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'已连续'}</Text>
                         <Text style={[{ fontSize: 27, color: 'red', marginVertical: -7 }]}>{checkinListModel.checkinTimes}</Text>
-                        <Text style={[{ fontSize: 18, color: '#FBF2D5' }]}>{'天签到'}</Text>
+                        <Text style={[{ fontSize: 18, color: Skin1.textColor1 }]}>{'天签到'}</Text>
 
                     </View>
                 </View>
                 {/* faselist */}
                 <View style={[{
                     borderRadius: 5, overflow: 'hidden', borderColor: '#EDFAFE', height: 400, borderWidth: 4, marginLeft: 5,
-                    marginRight: 5,
+                    marginRight: 5, backgroundColor: Skin1.isBlack ? Skin1.homeContentColor : 'white'
                 }]}>
                     <FlatList
-                        style={[styles.scrollViewStyle]}
+                        style={[{ flex: 1, marginLeft: 10, marginRight: 10, }]}
                         data={list} // 数据源
                         renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
                         showsVerticalScrollIndicator={false} // 当此属性为true的时候，显示一个垂直方向的滚动条，默认为: true
@@ -274,50 +275,53 @@ const QDTestPage = () => {
                 </View>
 
                 {/* 签到礼包 */}
-                <View style={[{ height: 260, backgroundColor: '#0000FF' }]}>
-                    <Text style={[{ fontSize: 18, color: '#FBF2D5', marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</Text>
-                    <View style={[{ height: 120, backgroundColor: '#0000FF', marginTop: 10, marginHorizontal: 12 }]}>
-                        <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
-                        <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
-                            <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+                {1 == 1 && <View style={[{ height: 200, backgroundColor: Skin1.homeContentColor }]}>
+                    <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</Text>
+                    <View style={[{ marginTop: 10, marginHorizontal: 12 }]}>
 
-
-                            <View style={[]}>
-                                <Text style={[{ fontSize: 17, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
-                                <Text style={[{ fontSize: 13, color: '#9A9A9A', marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                        <View>
+                            <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
+                            <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+                                <View style={[]}>
+                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                </View>
+                                <View style={{ flex: 1 }} />
+                                {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
+                                <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                    onPress={() => {
+                                        console.log('领取点击了')
+                                        checkinBonusData('5')
+                                    }} />
                             </View>
-                            <View style={{ flex: 1 }} />
-                            {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                            <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
-                                onPress={() => {
-                                    console.log('领取点击了')
-                                    checkinBonusData('5')
-                                }} />
                         </View>
 
-                        <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
-                        <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
-                            <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
+                        <View>
+                            <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
+                            <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                                <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
 
 
-                            <View style={[]}>
-                                <Text style={[{ fontSize: 17, color: 'white', marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
-                                <Text style={[{ fontSize: 13, color: '#9A9A9A', marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                <View style={[]}>
+                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                    <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
+                                </View>
+                                <View style={{ flex: 1 }} />
+                                {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
+                                <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                    onPress={() => {
+                                        console.log('领取2点击了')
+                                        checkinBonusData('7')
+                                    }} />
                             </View>
-                            <View style={{ flex: 1 }} />
-                            {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                            <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
-                                onPress={() => {
-                                    console.log('领取2点击了')
-                                    checkinBonusData('7')
-                                }} />
+
                         </View>
+
 
                     </View>
 
-                </View>
-
-
+                </View>}
             </ScrollView>
 
         </LinearGradient>
@@ -329,22 +333,7 @@ const QDTestPage = () => {
 export default QDTestPage
 
 const styles = StyleSheet.create({
-    scrollViewStyle: {
-        flex: 1,
-        marginLeft: 10,
-        marginRight: 10,
-        // backgroundColor: '#7B68EE',
-    },
-    headerViewStyle: {
-        height: 50,
-        backgroundColor: '#f4511e',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    headerTextStyle: {
-        fontSize: 20,
-        color: '#FFFFFF'
-    },
+
     itemViewStyle: {
         height: 185,
         width: (AppDefine.width - 50 - 20) / 4,
@@ -357,7 +346,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     itemTextStyle: {
-        color: 'black',
+        color: Skin1.textColor1,
         fontSize: 13
     },
     itemTextSizeStyle: {
