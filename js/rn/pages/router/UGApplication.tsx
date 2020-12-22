@@ -134,6 +134,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.TransferView} component={UGPage(TransferView)}/>
         {/*<Router.TabScreen name={PageName.VietnamMine} component={UGPage(MinePage)} />*/}
         <Router.TabScreen name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
+        <Router.TabScreen name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
         <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} options={{ unmountOnBlur: true }} />
         <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
         <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />

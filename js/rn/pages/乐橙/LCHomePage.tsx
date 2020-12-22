@@ -117,7 +117,7 @@ const LCHomePage = ({ navigation, setProps }) => {
           borderRadius: 16,
           paddingLeft: 5,
         }}>
-          <FastImage source={{ uri: 'http://test61f.fhptcdn.com/views/mobileTemplate/19/images/notice.png' }}
+          <FastImage source={{ uri: httpClient.defaults.baseURL + '/views/mobileTemplate/19/images/notice.png' }}
                      style={{ width: 12, height: 12, marginRight: 4 }} />
           <MarqueeHorizontal textStyle={{ color: 'black', fontSize: 16 }}
                              bgContainerStyle={{ backgroundColor: 'white' }}
