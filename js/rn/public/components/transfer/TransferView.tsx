@@ -90,15 +90,18 @@ export const TransferView = ({ setProps, navigation }) => {
         Alert.alert('请选择需要转出和转入的游戏类型') :
         Alert.alert('输入钱包和输出钱包不能一致')
     } else {
-      const { data } = await api.real.manualTransfer(transOut.id, transIn.id, money).promise
-      Alert.alert(data.msg)
-      const update1 = transIn.id == 0 ? { data: { balance: 0 } } : await checkBalance(transIn.id)
-      const update2 = transOut.id == 0 ? { data: { balance: 0 } } : await checkBalance(transOut.id)
-      setUpdateWallet([{ id: transIn.id, balance: update1.data.balance }, {
-        id: transOut.id,
-        balance: update2.data.balance,
-      }])
-      UGUserModel.updateFromNetwork()
+      api.real.manualTransfer(transOut.id, transIn.id, money).promise.then( async ({data}) => {
+
+        const update1 = transIn.id == 0 ? { data: { balance: 0 } } : await checkBalance(transIn.id)
+        const update2 = transOut.id == 0 ? { data: { balance: 0 } } : await checkBalance(transOut.id)
+        setUpdateWallet([{ id: transIn.id, balance: update1.data.balance }, {
+          id: transOut.id,
+          balance: update2.data.balance,
+        }])
+        UGUserModel.updateFromNetwork()
+      }).catch((err) => {
+        Alert.alert(err)
+      })
     }
   }
 

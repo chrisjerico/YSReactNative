@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
-import { FlatList, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
+import { Alert, FlatList, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import { Skin1 } from '../../theme/UGSkinManagers'
 import { Yuebao } from '../../type/YuebaoInterface'
 import md5 from 'blueimp-md5'
 import useHomePage from '../../hooks/tars/useHomePage'
 import { pop } from '../../navigation/RootNavigation'
 
-const quickArr = [100, 500, 1000, 5000, 10000, '全部金額']
+const quickArr = [100, 500, 1000, 5000, 10000, '全部金额']
 export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData: () => void }) => {
   const { goTo, refresh, info } = useHomePage({})
   const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
@@ -17,7 +17,10 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
   const transIn = () => {
     api.yuebao.transfer(money, 'in', md5(pwd)).promise.then(({ data }) => {
       data && getData()
+      data && Alert.alert('转入成功')
       pop()
+    }).catch(() => {
+      Alert.alert('转入失败')
     })
   }
 
@@ -27,11 +30,11 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
         <View style={{ backgroundColor: Skin1.themeColor, flex: 1, alignItems: 'center', paddingVertical: 8 }}>
           <Text style={{ color: Skin1.textColor4 }}>余额(元)</Text>
           <Text
-            style={{ color: Skin1.textColor4, marginTop: 4 }}>{userInfo.balance ? parseInt(userInfo.balance).toFixed(2) : 0}</Text>
+            style={{ color: Skin1.textColor4, marginTop: 4 }}>{userInfo.balance ? userInfo.balance : 0}</Text>
         </View>
         <View style={{ backgroundColor: Skin1.themeColor, flex: 1, alignItems: 'center', paddingVertical: 8 }}>
           <Text style={{ color: Skin1.textColor4 }}>{yuebao?.yuebaoName}钱包(元)</Text>
-          <Text style={{ color: Skin1.textColor4, marginTop: 4 }}>{yuebao ? parseInt(yuebao?.balance).toFixed(2) : 0}</Text>
+          <Text style={{ color: Skin1.textColor4, marginTop: 4 }}>{yuebao ? yuebao?.balance : 0}</Text>
         </View>
       </View>
       <View style={{
@@ -106,7 +109,7 @@ export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData
         numColumns={3}
         renderItem={({ item }) => {
           const text = typeof item == 'number' ? item + '元' : item
-          const active = item === money || (money === parseInt(yuebao?.balance) && item == '全部金額')
+          const active = item === money || (money === parseInt(yuebao?.balance) && item == '全部金额')
           return (
             <TouchableWithoutFeedback onPress={() => {
               setMoney(item = typeof item == 'number' ? item : parseInt(yuebao.balance))

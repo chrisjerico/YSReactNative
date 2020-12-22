@@ -36,7 +36,7 @@ export const AlipayProfitView = () => {
           </View>
         )}
         ListHeaderComponent={() => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.intoViewColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.themeLightColor }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -68,7 +68,7 @@ export const AlipayProfitView = () => {
         )}
         data={data}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.moneyCellColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.themeDarkColor }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -86,7 +86,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#ffffff' }}>{Math.round(item.profitAmount)/ 1000}K</Text>
+              <Text style={{ fontSize: 16, color: '#ffffff' }}>{item.profitAmount}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -96,7 +96,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#ffffff' }}>{(item.balance/ 1000).toFixed(3)}K</Text>
+              <Text style={{ fontSize: 16, color: '#ffffff' }}>{item.balance}</Text>
             </View>
           </View>
         )}

@@ -36,7 +36,7 @@ export const AlipayTransferRecordView = () => {
         style={{backgroundColor: '#f3f3f3', flex: 1}}
         contentContainerStyle={{ backgroundColor: '#f3f3f3'}}
         ListHeaderComponent={() => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.intoViewColor}}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.themeLightColor}}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -72,7 +72,7 @@ export const AlipayTransferRecordView = () => {
         )}
         data={data}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.moneyCellColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.themeDarkColor }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
