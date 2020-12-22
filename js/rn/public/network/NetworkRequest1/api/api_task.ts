@@ -5,6 +5,7 @@ import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
 import { OCHelper } from "../../../define/OCHelper/OCHelper";
 import { SalaryModel } from "../../Model/SalaryModel";
 import { UGSignInModel } from '../../../../redux/model/other/UGcheckinBonusModel';
+import { UGSignInHistoryModel } from '../../../../redux/model/other/UGSignInHistoryModel';
 
 
 export class api_task {
@@ -46,7 +47,7 @@ export class api_task {
 
   // 用户签到历史
   static checkinHistory() {
-    return this.c.get('checkinHistory');
+    return this.c.get<UGSignInHistoryModel[]>('checkinHistory');
   }
 
   // 任务大厅

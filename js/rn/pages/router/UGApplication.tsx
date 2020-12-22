@@ -79,6 +79,7 @@ import ManageBankListComponent from '../../public/components/bank/list/ManageBan
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 import QDTestPage from '../经典/签到/QDTestPage'
+import JDSignInHistoryPage from '../经典/签到/JDSignInHistoryPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -142,6 +143,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
         <Router.TabScreen name={PageName.QDTestPage} component={UGPage(QDTestPage)} />
+        <Router.TabScreen name={PageName.JDSignInHistoryPage} component={UGPage(JDSignInHistoryPage)} />
       </Router.TabNavigator>
     )
   }

@@ -14,7 +14,7 @@ import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
-import { bool, objectOf } from 'prop-types';
+import  {JDSignInHistoryPage  }from './JDSignInHistoryPage';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
@@ -30,6 +30,8 @@ const QDTestPage = () => {
     const [checkinBonusModel1, setCheckinBonusModel1] = useState<UGcheckinBonusModel>({})
     const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})
     const [kisCheckIn, setKisCheckIn] = useState<boolean>(false)
+
+    const {k :v} = useRef<JDSignInHistoryPage >({})
 
     //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
@@ -291,14 +293,15 @@ const QDTestPage = () => {
     }
 
     return (
-        <LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
+        [<LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
             {/* 签到记录 */}
             <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
                     <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                         onPress={() => {
-                            console.log('签到记录点击了')
-
+                
+                                        console.log('签到记录点击了')
+                                        v?.showSalaryAlert && v?.showSalaryAlert()
                         }} />
                 </View>
             </View>
@@ -357,7 +360,7 @@ const QDTestPage = () => {
 
                         {hide1 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
-                            <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                            <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', height: 60 }}>
                                 <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
                                 <View style={[]}>
                                     <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus1}</Text>
@@ -374,7 +377,7 @@ const QDTestPage = () => {
                         </View>}
                         {hide2 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
-                            <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
+                            <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center', height: 60 }}>
                                 <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
 
 
@@ -399,7 +402,8 @@ const QDTestPage = () => {
                 </View>}
             </ScrollView>
 
-        </LinearGradient>
+        </LinearGradient>,
+        <JDSignInHistoryPage c_ref={v} />]
     )
 
 }
