@@ -4,12 +4,10 @@ import * as React from 'react'
 import { UGStore } from '../../../../redux/store/UGStore'
 import FastImage from 'react-native-fast-image'
 import { httpClient } from '../../../../public/network/httpClient'
-import useHomePage from '../../../../public/hooks/tars/useHomePage'
 import PushHelper from '../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../redux/model/全局/UGSysConfModel'
 
-export const HomeHeaderButtonBar = () => {
-  const { info } = useHomePage({})
+export const HomeHeaderButtonBar = ({info}) => {
   const { userInfo } = info
   const { balance, uid } = userInfo
   const sysStore = UGStore.globalProps.sysConf

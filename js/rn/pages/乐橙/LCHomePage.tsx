@@ -25,8 +25,6 @@ import FastImage from 'react-native-fast-image'
 import { MarqueeHorizontal } from 'react-native-marquee-ab'
 import PromotionsBlock from '../../public/components/PromotionsBlock'
 import RedBagItem from '../../public/components/RedBagItem'
-import { ANHelper } from '../../public/define/ANHelper/ANHelper'
-import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
 import AppDefine from '../../public/define/AppDefine'
 import { NSValue } from '../../public/define/OCHelper/OCBridge/OCCall'
 import PushHelper from '../../public/define/PushHelper'
@@ -43,22 +41,20 @@ import NavBlock from './component/homePage/NavBlock'
 import Carousel from 'react-native-banner-carousel'
 
 
-const LCHomePage = ({ navigation, setProps }) => {
+const LCHomePage = ({ setProps }) => {
   const { width } = useDimensions().screen
   const [originalNoticeString, setOriginalNoticeString] = useState<string>()
   const [noticeFormat, setNoticeFormat] = useState<{ label: string, value: string }[]>([])
   const [show, setShow] = useState(false)
   const [content, setContent] = useState('')
-  const { goTo, refresh, info } = useHomePage({})
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
+  const { refresh, info, goTo } = useHomePage({})
+  const { loading, userInfo, sysInfo, homeInfo } = info
+  const {goToPromotionPage} = goTo
   const {showCoupon} = sysInfo
   const { homeGames, navs, rankLists, banners, onlineNum, redBag, notices, midBanners, announcements, bannersInterval } = homeInfo
   const { rankingListSwitch, webName, midBannerTimer } = sysInfo
 
   useEffect(() => {
-    if (announcements) {
-      openPopup(announcements)
-    }
     const timer = setInterval(() => {
       setProps()
     }, 3000)
@@ -80,29 +76,13 @@ const LCHomePage = ({ navigation, setProps }) => {
     }
   }, [notices])
 
-  const openPopup = (data: any) => {
-    console.log(data)
-    const dataModel = data.data?.popup.map((item, index) => {
-      return Object.assign({ clsName: 'UGNoticeModel', hiddenBottomLine: 'No' }, item)
-    })
-    switch (Platform.OS) {
-      case 'ios':
-        OCHelper.call('UGPlatformNoticeView.alloc.initWithFrame:[setDataArray:].show', [NSValue.CGRectMake(20, 60, AppDefine.width - 40, AppDefine.height * 0.8)], [dataModel])
-        break
-      case 'android':
-        ANHelper.callAsync(CMD.OPEN_POP_NOTICE, data.data)
-        break
-    }
-  }
-
-
   useEffect(() => {
     setProps()
   }, [userInfo.uid])
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-      <HomeHeaderButtonBar />
+      <HomeHeaderButtonBar info={info} />
       <ScrollView showsVerticalScrollIndicator={false}
                   refreshControl={<RefreshControl style={{ backgroundColor: '#ffffff' }} refreshing={loading}
                                                   onRefresh={refresh} />}
@@ -165,7 +145,7 @@ const LCHomePage = ({ navigation, setProps }) => {
             }}
           />
         )}
-        <HomeTabView homeGames={homeGames} />
+        <HomeTabView homeGames={homeGames} goToPromotionPage={goToPromotionPage} />
         {showCoupon && <>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 10 }}>
             <Icon style={{ paddingRight: 4 }} size={16} name={'gift'} />
@@ -236,7 +216,7 @@ const TurntableListItem = () => {
   const [turntableListVisiable, setTurntableListVisiable] = useState(false)
   const [turntableList, setTurntableList] = useState<TurntableListModel>()
   useEffect(() => {
-    if (turntableList && turntableList != null) {
+    if (turntableList) {
       setTurntableListVisiable(true)
     }
   }, [turntableList])

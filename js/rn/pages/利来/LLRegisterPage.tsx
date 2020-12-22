@@ -116,7 +116,7 @@ export const LLRegisterPage = () => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}
                   style={{ marginHorizontal: 36, marginTop: 28, marginBottom: 30 }}>
-        <LLRegisterInput isPwd={false} visible={showRecommendGuy} onChangeText={(text) => {
+        <LLRegisterInput isPwd={false} visible={showInviteCode} onChangeText={(text) => {
           onChangeInviteCode(text)
         }}
                          placeholder={'邀请码'}
