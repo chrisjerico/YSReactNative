@@ -1,8 +1,8 @@
 
 export class UGcheckinBonusModel {
   clsName?: string = "UGcheckinBonusModel";
-  BonusInt?: string;  /**<   20趣味豆 */
-  BonusSwitch?: string; /**<   签到开关，1显示0隐藏 */
+  int?: string;  /**<   20趣味豆 */
+  switch?: string; /**<   签到开关，1显示0隐藏 */
   isComplete?: boolean; /**<   是否已经领取  true   是，   false  否 */
   isCheckin?: boolean;    /**<   是否可以领取  true   是，   false  否 */
 

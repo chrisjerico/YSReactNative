@@ -6,7 +6,7 @@ import AppDefine from '../../../public/define/AppDefine';
 import { useHtml5Image } from '../../../public/tools/tars';
 import React, { useEffect, useRef, useState, Component } from 'react'
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
-import { UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
+import { UGcheckinBonusModel, UGCheckinListModel, UGSignInModel } from '../../../redux/model/other/UGcheckinBonusModel';
 import moment from "moment/moment";
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import { Toast } from '../../../public/tools/ToastUtils';
@@ -14,6 +14,7 @@ import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
+import { objectOf } from 'prop-types';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
@@ -22,14 +23,31 @@ const QDTestPage = () => {
 
     const [list, setList] = useState<Array<UGCheckinListModel>>([])
     const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})
-    const [hide1], setHide1] = useState<boolean>(false)
-
+    const [hide1, setHide1] = useState<boolean>(false)
+    const [hide2, setHide2] = useState<boolean>(false)
+    const [bonus1, setBonus1] = useState<string>('')
+    const [bonus2, setBonus2] = useState<string>('')
+    const [checkinBonusModel1, setCheckinBonusModel1] = useState<UGcheckinBonusModel>({})
+    const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})
     //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
         const date = moment(numberStr).toDate();//转Date
         var nowtime = date.format(format); //调用
         return nowtime;
     }
+
+    function btnTitle(item: UGcheckinBonusModel) {
+
+        var returnStr = '';
+        if (item.isComplete) {
+            returnStr = '已领取';
+        }
+        else {
+            returnStr = '领取'; 
+        }
+        return returnStr;
+    }
+    
 
     function checkinState(item: UGCheckinListModel) {
 
@@ -164,6 +182,35 @@ const QDTestPage = () => {
             setCheckinListModel(data)
             setList(data.checkinList)
 
+            let  checkinBonusArray   =  data.checkinBonus;
+
+            if (checkinBonusArray.length >= 2) {
+
+              let obj =  checkinBonusArray[0];   
+              let obj2 =  checkinBonusArray[1]; 
+              
+              console.log('5=========== ',obj);
+              
+              
+              setHide1(Boolean(obj.switch))
+              setHide2(Boolean(obj2.switch))
+
+              console.log('5= ',obj.int);
+              console.log('7= ',obj.int);
+              
+
+              setBonus1('5天礼包('+obj.int+')')
+              setBonus2('7天礼包('+obj2.int+')')
+
+              setCheckinBonusModel1(obj)
+              setCheckinBonusModel2(obj2)
+
+                
+            }
+
+
+
+
         }, (err) => {
             console.log('err = ', err);
             // Toast(err.message)
@@ -275,48 +322,47 @@ const QDTestPage = () => {
                 </View>
 
                 {/* 签到礼包 */}
-                {1 == 1 && <View style={[{ height: 200, backgroundColor: Skin1.homeContentColor }]}>
+                {hide1 && hide2 && <View style={[{ height: 200, backgroundColor: Skin1.homeContentColor }]}>
                     <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginLeft: 12, marginTop: 10 }]}>{'连续签到礼包'}</Text>
                     <View style={[{ marginTop: 10, marginHorizontal: 12 }]}>
 
-                        <View>
+                        {hide1 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
                             <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
                                 <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
                                 <View style={[]}>
-                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus1}</Text>
                                     <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                                <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                <Button title={btnTitle(checkinBonusModel2)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                                     onPress={() => {
                                         console.log('领取点击了')
                                         checkinBonusData('5')
                                     }} />
                             </View>
-                        </View>
-
-                        <View>
+                        </View>}
+                        {hide2 && <View>
                             <View style={[{ height: 1, backgroundColor: '#F4F4F4' }]}></View>
                             <View style={{ flexDirection: 'row', marginTop: 15, alignItems: 'center', height: 60 }}>
                                 <Image style={[{ height: 40, width: 40, }]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/award5.png' }} />
 
 
                                 <View style={[]}>
-                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{'5天礼包(3开心乐)'}</Text>
+                                    <Text style={[{ fontSize: 17, color: Skin1.textColor1, marginHorizontal: 10, marginVertical: 5, }]}>{bonus2}</Text>
                                     <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginHorizontal: 10, marginVertical: 5, }]}>{'连续签到5天即可领取'}</Text>
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                                <Button title={'领取'} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                <Button title={btnTitle(checkinBonusModel2)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
                                     onPress={() => {
                                         console.log('领取2点击了')
                                         checkinBonusData('7')
                                     }} />
                             </View>
 
-                        </View>
+                        </View>}
 
 
                     </View>
