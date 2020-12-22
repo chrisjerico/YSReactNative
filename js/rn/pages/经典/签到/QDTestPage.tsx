@@ -14,7 +14,7 @@ import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
-import { objectOf } from 'prop-types';
+import { bool, objectOf } from 'prop-types';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
@@ -29,12 +29,41 @@ const QDTestPage = () => {
     const [bonus2, setBonus2] = useState<string>('')
     const [checkinBonusModel1, setCheckinBonusModel1] = useState<UGcheckinBonusModel>({})
     const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})
+    const [kisCheckIn, setKisCheckIn] = useState<boolean>(false)
+
     //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
         const date = moment(numberStr).toDate();//转Date
         var nowtime = date.format(format); //调用
         return nowtime;
     }
+
+
+    function lqbtnOpacity(item: UGcheckinBonusModel) {
+
+        var returnStr = 1.0;
+        if (!item.isComplete && item.isCheckin) {
+            returnStr = 1;
+        }
+        else {
+            returnStr = 0.5;
+        }
+        return returnStr;
+    }
+
+
+    function btnOpacity(item: boolean) {
+
+        var returnStr = 1.0;
+        if (item) {
+            returnStr = 0.8;
+        }
+        else {
+            returnStr = 1.0;
+        }
+        return returnStr;
+    }
+
 
     function btnTitle(item: UGcheckinBonusModel) {
 
@@ -43,11 +72,11 @@ const QDTestPage = () => {
             returnStr = '已领取';
         }
         else {
-            returnStr = '领取'; 
+            returnStr = '领取';
         }
         return returnStr;
     }
-    
+
 
     function checkinState(item: UGCheckinListModel) {
 
@@ -182,34 +211,33 @@ const QDTestPage = () => {
             setCheckinListModel(data)
             setList(data.checkinList)
 
-            let  checkinBonusArray   =  data.checkinBonus;
+            let checkinBonusArray = data.checkinBonus;
 
             if (checkinBonusArray.length >= 2) {
 
-              let obj =  checkinBonusArray[0];   
-              let obj2 =  checkinBonusArray[1]; 
-              
-              console.log('5=========== ',obj);
-              
-              
-              setHide1(Boolean(obj.switch))
-              setHide2(Boolean(obj2.switch))
+                let obj = checkinBonusArray[0];
+                let obj2 = checkinBonusArray[1];
 
-              console.log('5= ',obj.int);
-              console.log('7= ',obj.int);
-              
+                setHide1(Boolean(obj.switch))
+                setHide2(Boolean(obj2.switch))
 
-              setBonus1('5天礼包('+obj.int+')')
-              setBonus2('7天礼包('+obj2.int+')')
+                setBonus1('5天礼包(' + obj.int + ')')
+                setBonus2('7天礼包(' + obj2.int + ')')
 
-              setCheckinBonusModel1(obj)
-              setCheckinBonusModel2(obj2)
+                setCheckinBonusModel1(obj)
+                setCheckinBonusModel2(obj2)
 
-                
             }
 
-
-
+            let isOk = false
+            for (const key in data.checkinList) {
+                const clm = data.checkinList[key];
+                if (clm.whichDay == data.serverTime) {
+                    isOk = clm.isCheckin
+                    setKisCheckIn(isOk)
+                    break
+                }
+            }
 
         }, (err) => {
             console.log('err = ', err);
@@ -224,7 +252,7 @@ const QDTestPage = () => {
     useEffect(() => {
 
         checkinList()
-
+        setProps({navbarOpstions:{hidden:false, back:true, title:'签到'}})
     }, [])
 
 
@@ -241,9 +269,9 @@ const QDTestPage = () => {
                 <TouchableOpacity onPress={() => {
                     itemAction(item)
                 }}>
-                    <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden' }]} source={{ uri: checkinImgBg(item) }}>
+                    <ImageBackground style={[styles.itemImageStyle, { borderRadius: 5, overflow: 'hidden', }]} source={{ uri: checkinImgBg(item) }}>
                         <Text style={[styles.itemImageTextStyle, styles.itemTextSizeStyle]}>{'+' + item?.integral}</Text>
-                        <Image style={[styles.itemImageImageStyle]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
+                        <Image style={[styles.itemImageImageStyle,]} source={{ uri: 'https://appstatic.guolaow.com/web/static/vueTemplate/vue/images/my/userInfo/sign/gold.png' }} />
                         <ImageBackground style={[styles.itemImageImage2Style,]} source={{ uri: imgbgCheckinState(item) }}>
                             <Text style={[styles.itemImageImageTextStyle, styles.itemImageImageTextSizeStyle, { marginTop: 2 }]}>{checkinState(item)}</Text>
                         </ImageBackground>
@@ -264,9 +292,6 @@ const QDTestPage = () => {
 
     return (
         <LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
-            <LinearGradient style={{ height: 80, justifyContent: 'center', alignItems: 'center' }} colors={Skin1.navBarBgColor}>
-                <Text style={[{ fontSize: 20, color: '#FFFFFF' }]}>我的APP</Text>
-            </LinearGradient>
             {/* 签到记录 */}
             <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
@@ -314,9 +339,13 @@ const QDTestPage = () => {
 
                 {/* 马上签到 */}
                 <View style={{ alignItems: 'center', marginTop: -20, justifyContent: 'center' }}>
-                    <Button title={'马上签到'} containerStyle={{ width: 140, height: 40, backgroundColor: '#0000FF', borderRadius: 25, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 22 }}
+                    <Button title={kisCheckIn ? '今日已签' : '马上签到'} containerStyle={{ width: 140, height: 40, backgroundColor: '#0000FF', borderRadius: 25, overflow: 'hidden', opacity: btnOpacity(kisCheckIn) }} titleStyle={{ color: 'white', fontSize: 22 }}
                         onPress={() => {
                             console.log('马上签到点击了')
+
+                            if (kisCheckIn) {
+                                return
+                            }
                             mUGSignInButtonClicked()
                         }} />
                 </View>
@@ -336,7 +365,7 @@ const QDTestPage = () => {
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                                <Button title={btnTitle(checkinBonusModel2)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                <Button title={btnTitle(checkinBonusModel1)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden', opacity: lqbtnOpacity(checkinBonusModel1) }} titleStyle={{ color: 'white', fontSize: 13 }}
                                     onPress={() => {
                                         console.log('领取点击了')
                                         checkinBonusData('5')
@@ -355,7 +384,7 @@ const QDTestPage = () => {
                                 </View>
                                 <View style={{ flex: 1 }} />
                                 {/* <View style={[{backgroundColor: 'yellow', height:60, width:100}]}> */}
-                                <Button title={btnTitle(checkinBonusModel2)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden' }} buttonStyle={{ backgroundColor: 'red' }} titleStyle={{ color: 'white', fontSize: 13 }}
+                                <Button title={btnTitle(checkinBonusModel2)} containerStyle={{ width: 100, height: 34, borderRadius: 5, overflow: 'hidden', opacity: lqbtnOpacity(checkinBonusModel1) }} titleStyle={{ color: 'white', fontSize: 13 }}
                                     onPress={() => {
                                         console.log('领取2点击了')
                                         checkinBonusData('7')
