@@ -10,7 +10,7 @@ import { stringToNumber } from '../../tools/tars'
 import { DomainUrls, initDomain } from '../../config/MultiDomainUrls'
 
 export class OCHelper extends OCEvent {
-  static CodePushKey = UGBridge.core.CodePushKey
+  static CodePushKey = UGBridge.core.CodePushKey ?? ''
 
   // 调用OC函数
   static call = OCCall.call
@@ -23,7 +23,7 @@ export class OCHelper extends OCEvent {
 
   // 通知原生代码RN已初始化完毕
   static launchFinish() {
-    UGBridge.core.launchFinish()
+    UGBridge.core.launchFinish && UGBridge.core.launchFinish()
   }
 
   // 配置

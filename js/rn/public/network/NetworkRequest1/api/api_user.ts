@@ -6,6 +6,7 @@ import { ANHelper } from "../../../define/ANHelper/ANHelper";
 import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
 import { OCHelper } from "../../../define/OCHelper/OCHelper";
 import { Data } from "../../Model/RegisterModel";
+import { AvatarSettingModel } from '../../Model/SystemAvatarListModel';
 
 
 
@@ -186,12 +187,17 @@ export class api_user {
 
   // 获取头像配置
   static getAvatarSetting() {
-    return this.c.post('getAvatarSetting');
+    return this.c.post<AvatarSettingModel>('getAvatarSetting');
   }
 
   // 修改头像
   static updateAvatar(publicAvatarId:string) {// 公用头像ID
     return this.c.post('updateAvatar', {publicAvatarId:publicAvatarId});
+  }
+
+  // 上传头像
+  static uploadAvatar(files: string) {// 图片文件路径
+    return this.c.post<{isReview:boolean}>('uploadAvatar', {}, {files:files});
   }
 
   // 上传身份证（待完善）

@@ -57,7 +57,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
     navigation.setOptions({ unmountOnBlur: false })
     setProps({
       backgroundColor: Skin1.bgColor,
-      backgroundImage: 'https://appstatic.woyovr.com/assets/login_bg.jpg',
+      backgroundImage: 'https://appstatic.guolaow.com/assets/login_bg.jpg',
       navbarOpstions: { hidden: true, backgroundColor: 'transparent', hideUnderline: true, back: true },
       didFocus: () => {
         v.reloadSlide();
@@ -170,7 +170,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           onPress={() => {
             navigate(PageName.XBJLoginPage);
           }}>
-          <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
+          <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/entry_login_toggle_btn.png' }} style={{ marginLeft: 17, width: 20, height: 20, opacity: 0.6 }} />
           <Text style={{ marginLeft: 18, marginTop: 20, width: 20, fontSize: 16, lineHeight: 30, color: 'white', opacity: 0.6 }}>返回登录</Text>
         </TouchableOpacity>
         <View style={{ flex: 1, backgroundColor: 'rgba(255, 255, 255, 0.3)', padding: 24 }}>
@@ -205,7 +205,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
               }}
             />
           </View>
-          {hide_reco && <UGTextField
+          {hide_reco != 0 && <UGTextField
             type="推荐人ID"
             placeholder={'推荐人ID' + (hide_reco == 1 ? '（选填）' : '')}
             value={parseInt(domainBindAgentId) > 0 ? domainBindAgentId : ''}

@@ -22,13 +22,13 @@ const config = {
     11: getHtml5Image(23, 'center/my_redenvelope'), // 任务中心
     12: getHtml5Image(23, 'center/user_info'), // 个人信息
     13: getHtml5Image(7, 'zhmx'), // 建议反馈
-    14: 'https://appstatic.woyovr.com/assets/wnz/service.png', // 在线客服
+    14: 'https://appstatic.guolaow.com/assets/wnz/service.png', // 在线客服
     15: getHtml5Image(23, 'center/my_activity'), // 活动彩金
-    16: 'https://appstatic.woyovr.com/assets/wnz/long.png', // 长龙助手
+    16: 'https://appstatic.guolaow.com/assets/wnz/long.png', // 长龙助手
     17: getHtml5Image(23, 'center/rule'), // 全民竞猜
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
-    19: 'https://appstatic.woyovr.com/assets/wnz/qq.png', // QQ客服
-    20: 'https://appstatic.woyovr.com/assets/wnz/award.png', // 開獎網
+    19: 'https://appstatic.guolaow.com/assets/wnz/qq.png', // QQ客服
+    20: 'https://appstatic.guolaow.com/assets/wnz/award.png', // 開獎網
   },
   navColors: ['#edb93f', '#77674d', '#e62e25', '#52b653', '#007aff'],
   moreGame: [

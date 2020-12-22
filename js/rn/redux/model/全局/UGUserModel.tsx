@@ -47,6 +47,11 @@ export default class UGUserModel extends UGLoginModel {
       UGStore.dispatch({ type: 'merge', userInfo: user })
       UGStore.save();
       completed && completed();
+
+      // 更新原生数据
+      if (Platform.OS == 'ios' && user && Object.keys(user).length) {
+        OCHelper.call('UGUserModel.currentUser.setValuesWithDictionary:', [user]);
+      }
     })
   }
   static getYS(user: UGLoginModel | Data): UGUserModel {

@@ -105,14 +105,16 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
         if (!willTransition || currentPage == PageName.TransitionPage) {
             console.log('跳转到', page);
             if (action == RouterType.Stack) {
+                switch (Platform.OS) {
+                    case "ios":
+                    OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
+                    break;
+                  case "android":
+                    ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
+                    break;
+                }
                 const canPop = navigationRef?.current?.getRootState().routes.length > 1;
-              switch (Platform.OS) {
-                case "ios":
-                  break;
-                case "android":
-                  ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
-                  break;
-              }
+              
                 if (canPop && currentPage == PageName.TransitionPage) {
                     navigationRef?.current?.dispatch(StackActions.replace(page, props));
                 } else {
