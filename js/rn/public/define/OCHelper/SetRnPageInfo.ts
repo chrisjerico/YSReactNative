@@ -18,7 +18,14 @@ export async function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
-
+    pages.push({
+      tabbarItemPath:'/Sign',
+      vcName: 'UGSigInCodeViewController',
+      rnName: PageName.JDSigInPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     
   }
 

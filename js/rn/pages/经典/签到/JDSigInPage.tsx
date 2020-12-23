@@ -14,7 +14,7 @@ import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
-import { JDSignInHistoryCP } from './JDSignInHistoryCP';
+import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
