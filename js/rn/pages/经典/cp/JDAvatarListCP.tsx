@@ -51,7 +51,6 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
             v.isAcceptUpload = data?.isAcceptUpload;
           }
           v.list = data?.publicAvatarList;
-          v.selected = v.list[0];
           v.show = true;
           setState({});
         });
@@ -100,7 +99,7 @@ export const JDAvatarListCP = ({ c_ref }: { c_ref: JDAvatarListCP }) => {
           </View>
         )}
         <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center' }}>
-          <FastImage source={{ uri: v.selected?.url }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
+          <FastImage source={{ uri: v.selected?.url ?? UGStore.globalProps?.userInfo?.avatar }} style={{ width: 95, height: 95, backgroundColor: '#fff', borderRadius: 50 }} />
         </View>
         <Text style={{ marginTop: 9, textAlign: 'center', color: '#fff' }}>头像预览</Text>
         <View style={{ marginTop: 12, flexDirection: 'row', height: 100, paddingHorizontal: 12 }}>

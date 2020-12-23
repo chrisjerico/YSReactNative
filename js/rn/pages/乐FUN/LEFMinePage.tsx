@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import MineHeaderComponent from '../../public/components/temp/MineHeaderComponent'
 import {RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/temp/PickAvatarComponent'
@@ -22,6 +22,7 @@ import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {pop, push} from "../../public/navigation/RootNavigation";
 import HomeHeader from "./views/HomeHeader";
 import MineHeader from "../../public/views/temp/MineHeader";
+import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP'
 
 const LEFMinePage = () => {
   const {getHtml5Image} = useHtml5Image()
@@ -35,7 +36,7 @@ const LEFMinePage = () => {
     homePage: PageName.LEFHomePage,
     defaultUserCenterLogos: config?.defaultUserCenterLogos,
   })
-
+  const { current: v } = useRef<{} & JDAvatarListCP>({});
   const {
     balance,
     taskRewardTotal,
@@ -88,7 +89,9 @@ const LEFMinePage = () => {
         <ProfileBlock
           balance={balance}
           taskRewardTotal={taskRewardTotal}
-          onPressAvatar={onPressAvatar}
+          onPressAvatar={() => {
+            v?.showAvatarList && v?.showAvatarList();
+          }}
           level={curLevelGrade}
           avatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
           name={usr}
@@ -115,7 +118,7 @@ const LEFMinePage = () => {
                 }}
                 imageContainerStyle={{width: '50%'}
                 }
-                titleContainerStyle={{aspectRatio: 3.5}}
+                titleContainerStyle={{aspectRatio: 3}}
                 titleStyle={{fontSize: scale(24), fontWeight: '300'}}
                 enableCircle={false}
                 logo={logo}
@@ -162,12 +165,7 @@ const LEFMinePage = () => {
         />
         <BottomGap/>
       </ScrollView>
-      <PickAvatarComponent
-        ref={pickAvatarComponentRef}
-        color={LEFThemeColor.乐FUN.themeColor}
-        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
-        onSaveAvatarSuccess={onSaveAvatarSuccess}
-      />
+      <JDAvatarListCP c_ref={v} />
     </>
   )
 }
