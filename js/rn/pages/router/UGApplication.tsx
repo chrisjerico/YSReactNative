@@ -77,7 +77,7 @@ import CodePush from 'react-native-code-push'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
-import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
+import CapitalPage from '../cpt/list/CapitalPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 // TabbarController
@@ -159,7 +159,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListComponent} component={UGPage(ManageBankListComponent)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.CapitalComponent} component={UGPage(CapitalComponent)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.CapitalPage} component={UGPage(CapitalPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.AddBankComponent} component={UGPage(AddBankComponent)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />

@@ -413,7 +413,7 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
-              navigate(PageName.CapitalComponent, {})
+              navigate(PageName.CapitalPage, {})
               // return
             }
             subId = MenuType.CZ
