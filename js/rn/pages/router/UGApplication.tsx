@@ -201,6 +201,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LotteryHistoryPage} component={UGPage(LotteryHistoryPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.JDSigInPage} component={UGPage(JDSigInPage)} />
     </Router.StackNavigator>
   )
 }
