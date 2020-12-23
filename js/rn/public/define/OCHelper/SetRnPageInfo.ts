@@ -20,7 +20,8 @@ export async function setRnPageInfo() {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
 
     pages.push({
-      vcName: 'UGMissionCenterViewController',
+      tabbarItemPath:'/Sign',
+      vcName: 'UGSigInCodeViewController',
       rnName: PageName.QDTestPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,

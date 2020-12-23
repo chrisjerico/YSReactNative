@@ -61,17 +61,17 @@ export const JDSignInHistoryPage = ({ c_ref,c_name,c_money }: { c_ref: JDSignInH
 
   return (
     <AnimationFadeView show = {v.show}>
-      <View style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
+ <LinearGradient colors={Skin1.bgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, borderRadius: 10, overflow: 'hidden' }}>
         <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 50, justifyContent: 'center' }}>
           <Text style={{ textAlign: 'center', color: Skin1.textColor1, fontSize: 17 }}>{'已经连续签到'+v.name+'天'}</Text>
-          <Text style={{ textAlign: 'center', color: '#fff', fontSize: 16 }}>{'累计积分'+v.checkinMoney+'分'}</Text>
+          <Text style={{ textAlign: 'center', color: Skin1.textColor2, fontSize: 16 }}>{'累计积分'+v.checkinMoney+'分'}</Text>
         </LinearGradient>
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: 45 }}>
           <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>签到日期</Text>
           <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>奖励</Text>
           <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>说明</Text>
         </View>
-        <View style={{ height: 0.5, backgroundColor: '#aaa' }} />
+        <View style={{ height: 0.5,}} />
         <FlatList showsVerticalScrollIndicator={false} data={v.list} renderItem={SalaryCell} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         <Button
           title="关闭"
@@ -82,7 +82,7 @@ export const JDSignInHistoryPage = ({ c_ref,c_name,c_money }: { c_ref: JDSignInH
             setState({})
           }}
         />
-      </View>
+      </LinearGradient>
     </AnimationFadeView>
   )
 }
