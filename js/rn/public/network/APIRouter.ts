@@ -604,11 +604,6 @@ class APIRouter {
    * 游戏大厅数据
    */
   static game_lotteryHallGames = async (): Promise<AxiosResponse<HallGameModel>> => {
-    if (UGStore.globalProps.userInfo?.isTest) {
-      Toast('请登录')
-      return null
-    }
-
     return httpClient.get<HallGameModel>('c=game&a=lotteryGames')
   }
 
