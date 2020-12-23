@@ -4,6 +4,8 @@ import { ANHelper } from '../../define/ANHelper/ANHelper'
 import { CMD } from '../../define/ANHelper/hp/CmdDefine'
 import { OCHelper } from '../../define/OCHelper/OCHelper'
 import APIRouter from '../../network/APIRouter'
+import { anyEmpty } from '../../tools/Ext'
+import { ugLog } from '../../tools/UgLog'
 
 interface Options {
   onStart?: () => any
@@ -40,6 +42,9 @@ const useSignOut = (options: Options = {}) => {
     }
   }
   const signOut = () => {
+    //已退出不能重复执行
+    if(anyEmpty(UGStore.globalProps.userInfo?.uid)) return
+
     Alert.alert('温馨提示', '确定退出账号', [
       { text: '取消', style: 'cancel' },
       {
