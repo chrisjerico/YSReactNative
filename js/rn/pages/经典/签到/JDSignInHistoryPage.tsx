@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { View, Text } from "react-native";
+import { View, Text, ListRenderItemInfo } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AppDefine from "../../../public/define/AppDefine";
 import { api } from "../../../public/network/NetworkRequest1/NetworkRequest1";
@@ -8,7 +8,7 @@ import { AnimationFadeView } from "../../../public/tools/animation/AnimationView
 import { UGSignInHistoryModel } from "../../../redux/model/other/UGSignInHistoryModel";
 import { Button } from 'react-native-elements';
 import { hideLoading, showLoading } from "../../../public/widget/UGLoadingCP";
-
+import { FlatList } from 'react-native-gesture-handler'
 
 export interface JDSignInHistoryPage {
   showSalaryAlert?: () => void
@@ -17,18 +17,23 @@ export interface JDSignInHistoryPage {
 interface JDSignInHistoryVars {
   list?: UGSignInHistoryModel[]
   show?: boolean
+  name?:string
+  checkinMoney?:string
 }
 
 
 
-export const JDSignInHistoryPage = ({ c_ref }: { c_ref: JDSignInHistoryPage }) => {
+export const JDSignInHistoryPage = ({ c_ref,c_name,c_money }: { c_ref: JDSignInHistoryPage,c_name:string,c_money:string }) => {
   const [, setState] = useState({})
   const { current: v } = useRef<JDSignInHistoryVars>({})
 
   // 初始化
   useEffect(() => {
+
     c_ref &&
     (c_ref.showSalaryAlert = () =>{
+
+
       if (!v.list) {
         showLoading()
         api.task.checkinHistory().setCompletionBlock(({ data }) => {
@@ -41,7 +46,6 @@ export const JDSignInHistoryPage = ({ c_ref }: { c_ref: JDSignInHistoryPage }) =
         }, (err) => {
           console.log('err = ', err);
           // Toast(err.message)
-    
         });
       }
       else{
@@ -49,25 +53,26 @@ export const JDSignInHistoryPage = ({ c_ref }: { c_ref: JDSignInHistoryPage }) =
         setState({})
       }
     }
-
     )
 
   }, [])
+  v.name = c_name;
+  v.checkinMoney = c_money;
 
   return (
     <AnimationFadeView show = {v.show}>
       <View style={{ width: AppDefine.width - 55, height: AppDefine.height - 260, backgroundColor: '#fff', borderRadius: 10, overflow: 'hidden' }}>
-        <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 45, justifyContent: 'center' }}>
-          <Text style={{ textAlign: 'center', color: '#fff', fontSize: 17 }}>领取俸禄</Text>
+        <LinearGradient colors={Skin1.navBarBgColor} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} style={{ height: 50, justifyContent: 'center' }}>
+          <Text style={{ textAlign: 'center', color: Skin1.textColor1, fontSize: 17 }}>{'已经连续签到'+v.name+'天'}</Text>
+          <Text style={{ textAlign: 'center', color: '#fff', fontSize: 16 }}>{'累计积分'+v.checkinMoney+'分'}</Text>
         </LinearGradient>
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', height: 45 }}>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>等级</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>周俸禄</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>月俸禄</Text>
-          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>领取</Text>
+          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>签到日期</Text>
+          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>奖励</Text>
+          <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>说明</Text>
         </View>
         <View style={{ height: 0.5, backgroundColor: '#aaa' }} />
-
+        <FlatList showsVerticalScrollIndicator={false} data={v.list} renderItem={SalaryCell} keyExtractor={(pm, idx) => `key${idx}`} ListFooterComponent={<View style={{ height: 100 }} />} />
         <Button
           title="关闭"
           style={{ marginVertical: 10, marginHorizontal: 13 }}
@@ -82,4 +87,16 @@ export const JDSignInHistoryPage = ({ c_ref }: { c_ref: JDSignInHistoryPage }) =
   )
 }
 
+const SalaryCell = ({ item }: ListRenderItemInfo<UGSignInHistoryModel>) => {
+  return (
+    <View>
+      <View style={{ flexDirection: 'row', height: 45 }}>
+        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.checkinDate}</Text>
+        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.integral}</Text>
+        <Text style={{ alignSelf: 'center', textAlign: 'center', flex: 1 ,color: Skin1.textColor1}}>{item.remark}</Text>
+      </View>
+      <View style={{ height: 0.5, backgroundColor: Skin1.homeContentColor }} />
+    </View>
+  )
+}
 

@@ -14,7 +14,7 @@ import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP';
 import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
-import  {JDSignInHistoryPage  }from './JDSignInHistoryPage';
+import { JDSignInHistoryPage } from './JDSignInHistoryPage';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
@@ -31,7 +31,7 @@ const QDTestPage = () => {
     const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})
     const [kisCheckIn, setKisCheckIn] = useState<boolean>(false)
 
-    const {k :v} = useRef<JDSignInHistoryPage >({})
+    const { current: v } = useRef<JDSignInHistoryPage>({})
 
     //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
@@ -40,6 +40,12 @@ const QDTestPage = () => {
         return nowtime;
     }
 
+    function checkinTime(item: UGSignInModel) {
+
+        var returnStr :string = item?.checkinMoney?.toString();
+        
+        return returnStr;
+    }
 
     function lqbtnOpacity(item: UGcheckinBonusModel) {
 
@@ -254,7 +260,7 @@ const QDTestPage = () => {
     useEffect(() => {
 
         checkinList()
-        setProps({navbarOpstions:{hidden:false, back:true, title:'签到'}})
+        setProps({ navbarOpstions: { hidden: false, back: true, title: '签到' } })
     }, [])
 
 
@@ -299,9 +305,9 @@ const QDTestPage = () => {
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>
                     <Button title={'签到记录'} containerStyle={{ width: 70, height: 30, borderRadius: 5, overflow: 'hidden' }} titleStyle={{ color: 'white', fontSize: 13 }}
                         onPress={() => {
-                
-                                        console.log('签到记录点击了')
-                                        v?.showSalaryAlert && v?.showSalaryAlert()
+
+                            console.log('签到记录点击了')
+                            v?.showSalaryAlert && v?.showSalaryAlert()
                         }} />
                 </View>
             </View>
@@ -403,7 +409,7 @@ const QDTestPage = () => {
             </ScrollView>
 
         </LinearGradient>,
-        <JDSignInHistoryPage c_ref={v} />]
+        <JDSignInHistoryPage {...{ c_ref: v, c_name: checkinTime(checkinListModel),c_money:checkinListModel?.checkinMoney }} />]
     )
 
 }
