@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ManageBankCardData } from '../../../network/Model/bank/ManageBankCardModel'
-import { UGStore } from '../../../../redux/store/UGStore'
+import { ManageBankCardData } from '../../../public/network/Model/bank/ManageBankCardModel'
+import { UGStore } from '../../../redux/store/UGStore'
 import { CapitalConst } from '../const/CapitalConst'
 
 /**

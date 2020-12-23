@@ -77,7 +77,7 @@ import CodePush from 'react-native-code-push'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
-import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
+import CapitalPage from '../cpt/list/CapitalPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 
@@ -100,7 +100,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.SeriesLobbyPage, UGPage(SeriesLobbyPage)],// 游戏大厅二级页面（xx系列游戏列表）
   [PageName.TrendView, UGPage(TrendView)],//开奖走势
   [PageName.ManageBankListComponent, UGPage(ManageBankListComponent)],//银行卡管理（我的提款账户列表）
-  [PageName.CapitalComponent, UGPage(CapitalComponent)],//存款取款资金明细
+  [PageName.CapitalPage, UGPage(CapitalPage)],//存款取款资金明细
   [PageName.AddBankComponent, UGPage(AddBankComponent)],//添加提款账户
   [PageName.LottoBetting, UGPage(LottoBetting)],//下注页（未完成）
   [PageName.UserMessagePage, UGPage(UserMessagePage)],//站内信

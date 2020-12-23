@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
-import APIRouter from '../../../../../network/APIRouter'
-import { anyEmpty, arrayEmpty, arrayLength } from '../../../../../tools/Ext'
-import { ugLog } from '../../../../../tools/UgLog'
-import { Toast } from '../../../../../tools/ToastUtils'
-import { CapitalGroupData, CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
+import APIRouter from '../../../../../public/network/APIRouter'
+import { anyEmpty, arrayEmpty, arrayLength } from '../../../../../public/tools/Ext'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import { Toast } from '../../../../../public/tools/ToastUtils'
+import { CapitalGroupData, CapitalListData } from '../../../../../public/network/Model/wd/CapitalDetailModel'
 
 /**
  * 资金明细记录
