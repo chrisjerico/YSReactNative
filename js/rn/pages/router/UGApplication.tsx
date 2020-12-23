@@ -80,6 +80,8 @@ import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
+import JDSigInPage from '../经典/签到/JDSigInPage'
+
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -144,6 +146,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.FreedomHallPage} component={UGPage(FreedomHallPage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
+        <Router.TabScreen name={PageName.JDSigInPage} component={UGPage(JDSigInPage)} />
       </Router.TabNavigator>
     )
   }

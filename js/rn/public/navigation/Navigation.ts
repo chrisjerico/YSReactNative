@@ -21,6 +21,7 @@ export enum PageName {
   TrendView = 'TrendView',//开奖走势
   LottoSelector = 'LottoSelector',//切换彩种页
   LottoBetting = 'LottoBetting',//下注页（未完成）
+  JDSigInPage = 'JDSigInPage',
 
 
   // ———————————— 模板页面 —————————————
