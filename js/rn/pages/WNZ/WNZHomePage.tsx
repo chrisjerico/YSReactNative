@@ -1,17 +1,18 @@
 import React, { useRef } from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
+import AnimatedRankComponent from '../../public/components/tars/AnimatedRankComponent'
 import GameSubTypeComponent from '../../public/components/tars/GameSubTypeComponent'
 import MenuModalComponent from '../../public/components/tars/MenuModalComponent'
 import TabComponent from '../../public/components/tars/TabComponent'
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
-import { GameType } from '../../public/models/Enum'
+import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale } from '../../public/tools/Scale'
-import { goToUserCenterType, stringToNumber, useHtml5Image } from '../../public/tools/tars'
+import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -24,8 +25,6 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
-
-const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -48,21 +47,17 @@ const WNZHomePage = () => {
 
   const { signOut, tryPlay } = sign
 
-  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames } = homeInfo
+  const { midBanners, navs, officialGames, customiseGames, homeGamesConcat, homeGames, rankLists } = homeInfo
 
   const { uid, usr, balance } = userInfo
 
-  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch } = sysInfo
+  const { mobile_logo, midBannerTimer, chatRoomSwitch, appVersion, mobileHomeGameTypeSwitch, rankingListType } = sysInfo
   const tabGames = [
     {
-      name: '官方玩法',
-      logo: getHtml5Image(23, 'home/gfwf'),
       // @ts-ignore
       games: officialGames?.slice(0, 9).concat(config?.moreGame),
     },
     {
-      name: '信用玩法',
-      logo: getHtml5Image(23, 'home/xywf'),
       // @ts-ignore
       games: customiseGames?.slice(0, 9).concat(config?.moreGame),
     },
@@ -150,6 +145,7 @@ const WNZHomePage = () => {
       {...userInfo}
       {...sysInfo}
       {...goTo}
+      rankingListType={AppDefine.siteId == 'c245' ? RankingListType.不顯示 : rankingListType}
       loading={loading}
       refreshing={refreshing}
       refresh={refresh}
@@ -276,38 +272,43 @@ const WNZHomePage = () => {
             initialTabIndex={0}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
+            fixedHeight={[null, 350]}
             renderTabBar={TabBar}
-            renderScene={({ item, tab, index }) => {
-              return (
-                <List
-                  uniqueKey={'WNZHomePageTabComponent' + index}
-                  style={{ backgroundColor: '#ffffff' }}
-                  numColumns={2}
-                  //@ts-ignore
-                  data={item}
-                  renderItem={({ item, index }) => {
+            renderScene={({ item, index: sceneIndex }) => {
+              if (AppDefine.siteId == 'c245' && sceneIndex) {
+                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} />
+              } else {
+                return (
+                  <List
+                    uniqueKey={'WNZHomePageTabComponent' + sceneIndex}
+                    style={{ backgroundColor: '#ffffff' }}
+                    numColumns={2}
                     //@ts-ignore
-                    const { title, pic, openCycle, id } = item
-                    return (
-                      <RowGameButtom
-                        showRightBorder={index % 2 == 0}
-                        showLogoBall={title == '更多游戏' ? false : true}
-                        logo={pic}
-                        name={title}
-                        desc={openCycle}
-                        logoBallText={tab == '官方玩法' ? '官' : '信'}
-                        onPress={
-                          title == '更多游戏'
-                            ? goToUserCenterType.游戏大厅
-                            : () => {
-                                PushHelper.pushLottery(stringToNumber(id))
-                              }
-                        }
-                      />
-                    )
-                  }}
-                />
-              )
+                    data={item}
+                    renderItem={({ item, index }) => {
+                      //@ts-ignore
+                      const { title, pic, openCycle, id } = item
+                      return (
+                        <RowGameButtom
+                          showRightBorder={index % 2 == 0}
+                          showLogoBall={title == '更多游戏' ? false : true}
+                          logo={pic}
+                          name={title}
+                          desc={openCycle}
+                          logoBallText={sceneIndex ? '信' : AppDefine.siteId == 'c245' ? '热' : '官'}
+                          onPress={
+                            title == '更多游戏'
+                              ? goToUserCenterType.游戏大厅
+                              : () => {
+                                  PushHelper.pushLottery(stringToNumber(id))
+                                }
+                          }
+                        />
+                      )
+                    }}
+                  />
+                )
+              }
             }}
           />
         </>

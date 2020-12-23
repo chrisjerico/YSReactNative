@@ -23,9 +23,7 @@ interface TabComponentProps {
   numColumns: number
   tabTextColor?: string
   tabBarBackgroundColor?: string
-  fixedHeight?: number
-  fixedHeightIndex?: number[]
-  enableFixedHeight?: boolean
+  fixedHeight?: number[]
   showIndicator?: boolean
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
@@ -83,17 +81,15 @@ const TabComponent = ({
   renderTabBar,
   tabTextColor = '#000000',
   tabBarBackgroundColor,
-  fixedHeight,
-  fixedHeightIndex,
-  enableFixedHeight,
+  fixedHeight = [],
   showIndicator = true,
   tabBarStyle,
   locked = true,
   enableMinWidth = true,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
-    if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
-      return fixedHeight
+    if (fixedHeight[index]) {
+      return fixedHeight[index]
     } else {
       const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
       if (games) {

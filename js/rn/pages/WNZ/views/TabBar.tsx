@@ -19,20 +19,22 @@ const tabs = [
   },
 ]
 
-const Tab = ({ logo, name, focused, onPress }) => {
+const c245Names = ['热门彩种', '中奖排行']
+
+const Tab = ({ logo, name, focused, onPress, index }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.tabContainer}>
         <View style={styles.titleContainer}>
           <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
-          <Text style={styles.titleText}>{name}</Text>
+          <Text style={styles.titleText}>{AppDefine.siteId == 'c245' ? c245Names[index] : name}</Text>
         </View>
-        {name == '官方玩法' && <View style={styles.grayLineContainer} />}
+        {!index && <View style={styles.grayLineContainer} />}
         <View
           style={[
             styles.bottomLineContainer,
             {
-              backgroundColor: focused ? (name == '官方玩法' ? '#80c025' : '#f44600') : 'transparent',
+              backgroundColor: focused ? (index ? '#f44600' : '#80c025') : 'transparent',
             },
           ]}
         />
@@ -46,7 +48,7 @@ const TabBar = ({ activeTab, goToPage }) => {
     <View style={{ flexDirection: 'row' }}>
       {tabs?.map((item, index) => {
         const { logo, name } = item
-        return <Tab key={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
+        return <Tab key={index} index={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
       })}
     </View>
   )
