@@ -80,8 +80,8 @@ export class ANHelper extends ANEvent {
         ugLog('ASK_MINE_ITEMS=', error)
       }),
 
-      this.callAsync(CMD.AN_VERSION).then((result) => {
-        ugLog('AN_VERSION=', result)
+      this.callAsync(CMD.AN_VERSION).catch((error) => {
+        ugLog('AN_VERSION=', error)
       }),
     ])
 
@@ -89,7 +89,7 @@ export class ANHelper extends ANEvent {
     const siteId = res[1]
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
-    const appVersion = res[4]
+    const appVersion = res[4]?.version_name
 
     //ugLog('host=  =', host)
     AppDefine.host = host
