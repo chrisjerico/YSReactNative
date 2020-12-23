@@ -42,8 +42,8 @@ const JDSigInPage = () => {
 
     function checkinTime(item: UGSignInModel) {
 
-        var returnStr :string = item?.checkinMoney?.toString();
-        
+        var returnStr: string = item?.checkinMoney?.toString();
+
         return returnStr;
     }
 
@@ -260,7 +260,15 @@ const JDSigInPage = () => {
     useEffect(() => {
 
         checkinList()
-        setProps({ navbarOpstions: { hidden: false, back: true, title: '签到' } })
+        setProps({
+            navbarOpstions: { hidden: false, title: '签到' },
+            didFocus: () => {
+                AppDefine.checkHeaderShowBackButton((show) => {
+                    setProps({ navbarOpstions: { back: show } });
+                })
+            }
+        })
+
     }, [])
 
 
@@ -406,10 +414,13 @@ const JDSigInPage = () => {
                     </View>
 
                 </View>}
+
+                <View style={[{ height: 200, }]}>
+                </View>
             </ScrollView>
 
         </LinearGradient>,
-        <JDSignInHistoryCP {...{ c_ref: v, c_name: checkinTime(checkinListModel),c_money:checkinListModel?.checkinMoney }} />]
+        <JDSignInHistoryCP {...{ c_ref: v, c_name: checkinTime(checkinListModel), c_money: checkinListModel?.checkinMoney }} />]
     )
 
 }
