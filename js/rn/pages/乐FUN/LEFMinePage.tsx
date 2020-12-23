@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import MineHeaderComponent from '../../public/components/temp/MineHeaderComponent'
 import {RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/temp/PickAvatarComponent'
@@ -22,14 +22,11 @@ import {LEFThemeColor} from "../../public/theme/colors/LEFThemeColor";
 import {pop, push} from "../../public/navigation/RootNavigation";
 import HomeHeader from "./views/HomeHeader";
 import MineHeader from "../../public/views/temp/MineHeader";
-import { JDAvatarListCP } from '../经典/cp/JDAvatarListCP'
-import { JDSalaryListCP } from '../经典/cp/JDSalaryListCP'
 
 const LEFMinePage = () => {
-
   const {getHtml5Image} = useHtml5Image()
   const {
-    avatarRef,
+    pickAvatarComponentRef,
     onPressAvatar,
     onSaveAvatarSuccess,
     value,
@@ -165,8 +162,12 @@ const LEFMinePage = () => {
         />
         <BottomGap/>
       </ScrollView>
-
-      <JDAvatarListCP c_ref={avatarRef} />
+      <PickAvatarComponent
+        ref={pickAvatarComponentRef}
+        color={LEFThemeColor.乐FUN.themeColor}
+        initAvatar={isTest || !avatar ? getHtml5Image(18, 'money-2') : avatar}
+        onSaveAvatarSuccess={onSaveAvatarSuccess}
+      />
     </>
   )
 }
