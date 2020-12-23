@@ -145,7 +145,7 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         const sysConf: UGSysConfModel = await OCHelper.call('UGSystemConfigModel.currentConfig')
         await initConfig(sysConf, !isFirst)
         // 检查更新
-        await OCHelper.call('CodePushConfig.current.setServerURL:', ['https://push.fhptcdn.com/'])
+        await OCHelper.call('CodePushConfig.current.setServerURL:', ['http://ec2-18-163-2-208.ap-east-1.compute.amazonaws.com:3000/'])
         await OCHelper.call('CodePushConfig.current.setAppVersion:', ['1.2'])
         const CodePushKey = await getIOSCodePushKey()
         console.log('OCHelper.CodePushKey = ', CodePushKey)

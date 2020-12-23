@@ -52,7 +52,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     //判断要不要显示右边按钮
     categoryData?.map((item) => {
       if (item.type == selectType) {
-        setShowRightButton(arrayLength(item.data) < item.number)
+        setShowRightButton(arrayLength(item.data) < Number(item.number))
       }
     })
   }, [selectType, categoryData])

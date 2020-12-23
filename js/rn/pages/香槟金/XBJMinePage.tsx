@@ -37,7 +37,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
     textColor: Skin1.isBlack ? '#fff' : '#000',
     lineColor: Skin1.isBlack ? '#777' : '#bbb',
   };
-  const avatarURL = avatar?.length ? avatar : 'https://appstatic.woyovr.com/assets/money-2.png';
+  const avatarURL = avatar?.length ? avatar : 'https://appstatic.guolaow.com/assets/money-2.png';
   const dataArray = UGSysConfModel.getUserCenterItems();
 
   let cells = dataArray?.map(item => {
@@ -71,7 +71,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             onPress={() => {
               PushHelper.pushUserCenterType(UGUserCenterType.站内信);
             }}>
-            <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/zhanneixin@3x.png' }} style={{ marginRight: 16, width: 20, height: 20 }} />
+            <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/zhanneixin@3x.png' }} style={{ marginRight: 16, width: 20, height: 20 }} />
           </TouchableOpacity>
         ),
       },
@@ -113,21 +113,21 @@ export const XBJMinePage = (props: XBJMineProps) => {
               {missionSwitch != '1' && <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.任务中心)
               }}>
-                <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/missionhall@2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
+                <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/missionhall@2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row' }} >
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff', marginRight: 18 }}>任务中心</Text>
                 </FastImage>
               </TouchableOpacity>}
               {checkinSwitch != '0' && <TouchableOpacity onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.每日签到)
               }}>
-                <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/dailysign@2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
+                <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/dailysign@2x.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }}>
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>每日签到</Text>
                 </FastImage>
               </TouchableOpacity>}
               {(mBonsSwitch == false) && <TouchableOpacity onPress={() => {
                 v?.showSalaryAlert && v?.showSalaryAlert();
               }}>
-                <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >
+                <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/usercenter03.png' }} style={{ paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, flexDirection: 'row', marginTop: 5 }} >
                   <Text style={{ textAlign: 'right', fontSize: 9, color: '#fff' }}>领取俸禄</Text>
                 </FastImage>
               </TouchableOpacity>}
@@ -140,7 +140,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <Image source={{ uri: 'https://appstatic.woyovr.com/assets/icon_wallet_deposit_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Image source={{ uri: 'https://appstatic.guolaow.com/assets/icon_wallet_deposit_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
               <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>存款</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -148,7 +148,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.额度转换);
               }}>
-              <Image source={{ uri: 'https://appstatic.woyovr.com/assets/icon_wallet_transfer_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Image source={{ uri: 'https://appstatic.guolaow.com/assets/icon_wallet_transfer_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
               <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>额度转换</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -156,7 +156,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.取款);
               }}>
-              <Image source={{ uri: 'https://appstatic.woyovr.com/assets/icon_wallet_withdraw_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Image source={{ uri: 'https://appstatic.guolaow.com/assets/icon_wallet_withdraw_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
               <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>取款</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -164,7 +164,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
               onPress={() => {
                 PushHelper.pushUserCenterType(UGUserCenterType.存款);
               }}>
-              <Image source={{ uri: 'https://appstatic.woyovr.com/assets/icon_mine_vip_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
+              <Image source={{ uri: 'https://appstatic.guolaow.com/assets/icon_mine_vip_u.png' }} style={{ width: 35, height: 21, tintColor: style.navImageTintColor }} />
               <Text style={{ marginTop: 11, fontSize: 12, color: style.textColor }}>资金管理</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ alignItems: 'center', borderRadius: 100 }} onPress={() => {
@@ -183,7 +183,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             }}>
             <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>推荐收益</Text>
             <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>现金奖励等你拿</Text>
-            <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 80, height: 53 }} />
+            <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 80, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
             containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: style.cellBgColor, flex: 1, marginRight: 12 }}
@@ -192,7 +192,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             }}>
             <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>彩金申请</Text>
             <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>新手有好礼</Text>
-            <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
+            <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
           <TouchableOpacity
             containerStyle={{ padding: 12, borderRadius: 4, backgroundColor: style.cellBgColor, flex: 1 }}
@@ -201,7 +201,7 @@ export const XBJMinePage = (props: XBJMineProps) => {
             }}>
             <Text style={{ marginTop: -3, fontSize: 14, color: style.textColor }}>任务中心</Text>
             <Text style={{ marginTop: 4, fontSize: 10, color: style.textColor }}>领取丰富大奖</Text>
-            <FastImage source={{ uri: 'https://appstatic.woyovr.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
+            <FastImage source={{ uri: 'https://appstatic.guolaow.com/assets/quanyuanfuli@3x.png' }} style={{ marginTop: 9, marginBottom: -1, width: 92, height: 53 }} />
           </TouchableOpacity>
         </View>)}
         <View style={{ marginTop: 12, borderRadius: 4, backgroundColor: style.cellBgColor }}>{cells}</View>

@@ -78,6 +78,8 @@ import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
+import GameHallPage from '../hall/new/GameHallPage'
+import FreedomHallPage from '../hall/fd/FreedomHallPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -130,6 +132,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
         <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
         <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
+        <Router.TabScreen name={PageName.JXHSignInPage} component={JXHSignInPage} />
         <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
         <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
         <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
@@ -137,6 +140,8 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
         <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
         <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
+        <Router.TabScreen name={PageName.GameHallPage} component={UGPage(GameHallPage)} />
+        <Router.TabScreen name={PageName.FreedomHallPage} component={UGPage(FreedomHallPage)} />
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
       </Router.TabNavigator>

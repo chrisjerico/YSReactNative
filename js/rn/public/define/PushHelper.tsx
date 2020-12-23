@@ -438,6 +438,14 @@ export default class PushHelper {
             subId = MenuType.SYTJ
             break
           }
+          case UGUserCenterType.即时注单: {
+            subId = MenuType.JSZD
+            break
+          }
+          case UGUserCenterType.彩票注单记录: {
+            subId = MenuType.TZJL
+            break
+          }
           case UGUserCenterType.彩票注单记录: {
             subId = MenuType.TZJL
             break

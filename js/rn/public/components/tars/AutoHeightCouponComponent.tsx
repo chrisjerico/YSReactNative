@@ -53,6 +53,7 @@ const AutoHeightCouponComponent = ({ title, pic, onPress, content, containerStyl
               `<head>
   <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
   <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+  <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
   <style>body{width:100%;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:0}</style>
   </head>` +
               `<script>
