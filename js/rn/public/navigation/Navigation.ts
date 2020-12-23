@@ -78,6 +78,9 @@ export enum PageName {
   LEFSignInPage = 'LEFSignInPage',//乐FUN-登录
   LEFSignUpPage = 'LEFSignUpPage',//乐FUN-注册
 
+  GameHallPage = 'GameHallPage', //游戏大厅页
+  FreedomHallPage = 'FreedomHallPage', //自由大厅页
+
   KSHomePage = 'KSHomePage',//凯时-首页
   KSSignInPage = 'KSSignInPage',//凯时-登录
   KSSignUpPage = 'KSSignUpPage',//凯时-注册
@@ -86,4 +89,13 @@ export enum PageName {
   XBJLoginPage = 'XBJLoginPage',//香槟金-登录
   XBJRegisterPage = 'XBJRegisterPage',//香槟金-注册
   XBJMinePage = 'XBJMinePage',//香槟金-我的页
+
+  GDRegisterPage = 'GDRegisterPage',
+  GDLoginPage = 'GDLoginPage',
+
+  VietnamHome = 'VietnamHome',
+  VietnamLogin = 'VietnamLogin',
+  VietnamRegister = 'VietnamRegister',
+  VietnamMine = 'VietnamMine',
+  VietnamGameList = 'VietnamGameList',
 }

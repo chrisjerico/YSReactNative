@@ -58,7 +58,7 @@ export default class UGUserModel extends UGLoginModel {
     var temp = Object.assign(new UGUserModel(), user);
     temp['clsName'] = 'UGUserModel';
     temp.sessid = user['API-SID'];
-    temp.token = user['API-SID'];
+    temp.token = user['API-TOKEN'];
     return temp;
   }
   static checkLogin() {

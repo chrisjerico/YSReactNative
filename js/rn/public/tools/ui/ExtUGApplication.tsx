@@ -45,6 +45,8 @@ export default class ExtUGApplication {
     PageName.BYHomePage,
     PageName.BYMinePage,
     PageName.LEFHomePage,
+    PageName.GameHallPage,
+    PageName.FreedomHallPage,
     PageName.LEFMinePage,
     PageName.UpdateVersionPage,
     PageName.JDPromotionListPage,

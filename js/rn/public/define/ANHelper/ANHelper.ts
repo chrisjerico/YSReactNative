@@ -80,8 +80,8 @@ export class ANHelper extends ANEvent {
         ugLog('ASK_MINE_ITEMS=', error)
       }),
 
-      this.callAsync(CMD.AN_VERSION).then((result) => {
-        ugLog('AN_VERSION=', result)
+      this.callAsync(CMD.AN_VERSION).catch((error) => {
+        ugLog('AN_VERSION=', error)
       }),
     ])
 
@@ -89,7 +89,7 @@ export class ANHelper extends ANEvent {
     const siteId = res[1]
     const sysConf_android = res[2] ?? {}
     const userCenterItems = JSON.parse(res[3])?.map((item: any) => new UGUserCenterItem(item)) ?? []
-    const appVersion = res[4]
+    const appVersion = res[4]?.version_name
 
     //ugLog('host=  =', host)
     AppDefine.host = host
@@ -110,12 +110,14 @@ export class ANHelper extends ANEvent {
     //@ts-ignore
     const sysConf_net = net_response[1]?.data?.data ?? {}
     const { loginVCode, login_to, adSliderTimer, appDownloadUrl } = sysConf_net
-    const sysConf = Object.assign({}, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
+    const sysConf = Object.assign({}, sysConf_net, sysConf_android, { loginVCode, login_to, adSliderTimer: stringToNumber(adSliderTimer), appDownloadUrl, userCenterItems })
     const gameLobby = net_response[2]?.data?.data ?? []
     const banner = net_response[3]?.data?.data ?? {}
     const rightMenu = net_response[4]?.data?.data ?? []
     console.log('--------sysConf_net-------', sysConf_net)
     UGStore.dispatch({ type: 'merge', userInfo, sysConf, gameLobby, banner, rightMenu, sys: Object.assign({}, sysConf_net, { appVersion }) })
+    console.log('--------sysConf_android-------', sysConf_android)
+    console.log('--------sysConf-------', sysConf)
     UGStore.save()
   }
 
