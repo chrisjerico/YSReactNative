@@ -200,6 +200,8 @@ const WNZMinePage = () => {
                             navigate(PageName.ActivityRewardPage)
                           } else if (code == UGUserCenterType.彩票注单记录) {
                             navigate(PageName.LotteryHistoryPage)
+                          } else if (code == UGUserCenterType.推荐收益) {
+                            navigate(PageName.IncomeRecommendPage)
                           } else {
                             PushHelper.pushUserCenterType(code)
                           }

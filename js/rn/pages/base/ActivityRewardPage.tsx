@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Image, ImageBackground, Modal, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
+import ScrollableTabViewComponent from '../../public/components/tars/ScrollableTabViewComponent'
 import AppDefine from '../../public/define/AppDefine'
 import { pop } from '../../public/navigation/RootNavigation'
 import APIRouter from '../../public/network/APIRouter'
@@ -97,19 +98,6 @@ const ApplyFeedBack = ({ tabLabel, list }) => {
 }
 
 const ActivityRewardPage = () => {
-  const x = useRef(new Animated.Value(83)).current
-  const inAnimated = useRef(false)
-
-  const move = (index: number) => {
-    Animated.timing(x, {
-      toValue: index ? 297 : 82,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      inAnimated.current = false
-    })
-  }
-
   const [loading, setLoading] = useState(true)
   const [winApplyList, setWinApplyList] = useState([])
   const [applyWinLog, setApplyWinLog] = useState([])
@@ -149,35 +137,7 @@ const ActivityRewardPage = () => {
         {loading ? (
           <ProgressCircle />
         ) : (
-          <ScrollableTabView
-            style={{ flex: 1 }}
-            renderTabBar={(props) => {
-              const { tabs, activeTab, goToPage } = props
-              return (
-                <>
-                  <View style={{ width: '100%', height: 40, flexDirection: 'row' }}>
-                    {tabs?.map((item, index) => {
-                      return (
-                        <TouchableWithoutFeedback
-                          key={index}
-                          onPress={() => {
-                            if (!inAnimated.current) {
-                              inAnimated.current = true
-                              goToPage(index)
-                              move(index)
-                            }
-                          }}>
-                          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: '#000000', fontSize: 12 }}>{item}</Text>
-                          </View>
-                        </TouchableWithoutFeedback>
-                      )
-                    })}
-                  </View>
-                  <Animated.View style={{ width: 50, backgroundColor: '#000000', height: 5, transform: [{ translateX: x }] }} />
-                </>
-              )
-            }}>
+          <ScrollableTabViewComponent indicatorStyle={{ width: 50 }} tabBarScrollEnabled={false}>
             <ApplyReward
               tabLabel={'申请彩金'}
               list={winApplyList}
@@ -190,7 +150,7 @@ const ActivityRewardPage = () => {
               }}
             />
             <ApplyFeedBack tabLabel={'申请反馈'} list={applyWinLog} />
-          </ScrollableTabView>
+          </ScrollableTabViewComponent>
         )}
       </View>
       <Modal transparent={true} style={{ flex: 1, backgroundColor: 'transparent' }} visible={activityVisible}>

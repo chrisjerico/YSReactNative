@@ -394,6 +394,10 @@ export default class PushHelper {
             // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
+          case UGUserCenterType.银行卡管理: {
+            navigate(PageName.ManageBankListComponent, {})
+            break
+          }
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
@@ -424,8 +428,8 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
-              navigate(PageName.ManageBankListComponent, {})
-              return
+            navigate(PageName.ManageBankListComponent, {})
+            return
             // }
             // subId = MenuType.YHK
             break

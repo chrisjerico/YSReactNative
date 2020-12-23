@@ -231,7 +231,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return Scene && <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={StringUtils.getInstance().deleteHtml(tab)} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )
