@@ -16,7 +16,6 @@ export default class ExtUGApplication {
   //Router.PageNameLists.tabList
   static TAB_LIST = [
     PageName.LXBView,
-    PageName.VietnamHome,
     PageName.LCMinePage,
     PageName.LCHomePage,
     PageName.TransitionPage,
@@ -46,6 +45,8 @@ export default class ExtUGApplication {
     PageName.BYHomePage,
     PageName.BYMinePage,
     PageName.LEFHomePage,
+    PageName.GameHallPage,
+    PageName.FreedomHallPage,
     PageName.LEFMinePage,
     PageName.UpdateVersionPage,
     PageName.JDPromotionListPage,
@@ -57,8 +58,6 @@ export default class ExtUGApplication {
     PageName.ZLRegisterPage,
     PageName.JDPromotionListPage,
     PageName.PromotionListPage,
-    PageName.GDLoginPage,
-    PageName.GDRegisterPage,
     PageName.BZHSignUpPage,
     PageName.BZHSignInPage,
     PageName.LottoBetting,
@@ -73,9 +72,6 @@ export default class ExtUGApplication {
     PageName.BYSignInPage,
     PageName.LEFSignUpPage,
     PageName.LEFSignInPage,
-    PageName.VietnamLogin,
-    PageName.VietnamRegister,
-    PageName.VietnamGameList,
   ]
 
   /**

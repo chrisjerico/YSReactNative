@@ -12,12 +12,13 @@ interface MineHeaderProps {
   onPressBackBtn?: () => any
   showBackBtn?: boolean
   rightTitle?: string
+  rightButton?: JSX.Element
   backBtnColor?: string
   titleStyle?: StyleProp<TextStyle>
   rightTitleStyle?: StyleProp<TextStyle>
 }
 
-const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, backBtnColor = '#ffffff', titleStyle, rightTitleStyle }: MineHeaderProps) => {
+const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHeader, showBackBtn = false, onPressBackBtn, rightTitle, rightButton, backBtnColor = '#ffffff', titleStyle, rightTitleStyle }: MineHeaderProps) => {
   return (
     <View style={styles.container}>
       {showBackBtn ? (
@@ -29,12 +30,12 @@ const MineHeader = ({ showRightTitle = false, onPressRightTitle, title, renderHe
       ) : (
           <View style={{ flex: 1 }} />
         )}
-      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle} onPressRightTitle={onPressRightTitle} />}
+      {renderHeader ? renderHeader() : <DefaultHeader title={title} rightTitle={rightTitle} rightButton={rightButton} showRightTitle={showRightTitle} titleStyle={titleStyle} rightTitleStyle={rightTitleStyle} onPressRightTitle={onPressRightTitle} />}
     </View>
   )
 }
 
-const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, titleStyle, rightTitleStyle }) => {
+const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, rightButton, titleStyle, rightTitleStyle }) => {
   return (
     <>
       <View style={{ flex: 1, alignItems: 'center' }}>
@@ -43,7 +44,9 @@ const DefaultHeader = ({ title, showRightTitle, onPressRightTitle, rightTitle, t
       {showRightTitle ? (
         <TouchableWithoutFeedback onPress={onPressRightTitle}>
           <View style={{ flex: 1, alignItems: 'flex-end', height: '100%', justifyContent: 'center' }}>
-            <Text style={[styles.rightTextStyle, rightTitleStyle]}>{rightTitle ?? '客服'}</Text>
+            {
+              rightButton ? rightButton : <Text style={[styles.rightTextStyle, rightTitleStyle]}>{rightTitle ?? '客服'}</Text>
+            }
           </View>
         </TouchableWithoutFeedback>
       ) : (

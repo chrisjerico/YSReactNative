@@ -11,6 +11,7 @@ import {
 import useLogOut from './useLogOut'
 import useRerender from './useRerender'
 import useSys from './useSys'
+import { JDAvatarListCP } from '../../../pages/经典/cp/JDAvatarListCP'
 
 interface DefaultUserCenterLogos {
   1: string; // 存款
@@ -40,7 +41,7 @@ interface UseMinePage {
 
 const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   // states
-  const pickAvatarComponentRef = useRef(null)
+  const { current: avatarRef } = useRef<{} & JDAvatarListCP>({});
   const { rerender } = useRerender()
 
   // stores
@@ -80,7 +81,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
 
   const signOut = logOut
 
-  const onPressAvatar = () => pickAvatarComponentRef?.current?.open()
+  const onPressAvatar = () => avatarRef?.showAvatarList()
 
   const onSaveAvatarSuccess = rerender
 
@@ -107,7 +108,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos }: UseMinePage) => {
   }
 
   return {
-    pickAvatarComponentRef,
+    avatarRef,
     onPressAvatar,
     onSaveAvatarSuccess,
     value,

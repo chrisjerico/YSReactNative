@@ -78,70 +78,124 @@ import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
 import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
+import GameHallPage from '../hall/new/GameHallPage'
+import FreedomHallPage from '../hall/fd/FreedomHallPage'
+
+
+
+
+
+const pageComponents: [PageName, React.ComponentType<any>][] = [
+
+  // ———————————— 通用页面 —————————————
+
+  [PageName.LXBView, UGPage(LXBView)],//利息宝
+  [PageName.JDVirtualCurrencyTutorialPage, UGPage(JDVirtualCurrencyTutorialPage)],//虚拟币充值教程
+  [PageName.TransitionPage, UGPage(TransitionPage)],//过渡页
+  [PageName.PromotionListPage, UGPage(PromotionListPage)],//优惠活动列表
+  [PageName.JDPromotionListPage, UGPage(JDPromotionListPage)],//优惠活动列表
+  [PageName.PromotionPage, PromotionPage],//优惠活动
+  [PageName.GameHallPage, UGPage(GameHallPage)],//游戏大厅页
+  [PageName.FreedomHallPage, UGPage(FreedomHallPage)],//自由大厅页
+  [PageName.SeriesLobbyPage, UGPage(SeriesLobbyPage)],// 游戏大厅二级页面（xx系列游戏列表）
+  [PageName.TrendView, UGPage(TrendView)],//开奖走势
+  [PageName.ManageBankListComponent, UGPage(ManageBankListComponent)],//银行卡管理（我的提款账户列表）
+  [PageName.CapitalComponent, UGPage(CapitalComponent)],//存款取款资金明细
+  [PageName.AddBankComponent, UGPage(AddBankComponent)],//添加提款账户
+  [PageName.LottoBetting, UGPage(LottoBetting)],//下注页（未完成）
+  [PageName.UserMessagePage, UGPage(UserMessagePage)],//站内信
+  [PageName.UserInfoPage, UGPage(UserInfoPage)],// 用户信息页
+  [PageName.SafeCenterPage, UGPage(SafeCenterPage)],//安全中心
+  [PageName.ActivityRewardPage, UGPage(ActivityRewardPage)],//申请彩金
+  [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)],//彩票投注记录
+
+
+  // ———————————— 模板页面 —————————————
+
+  [PageName.LCMinePage, UGPage(LCMinePage)],//乐橙-我的页
+  [PageName.LCHomePage, UGPage(LCHomePage)],//乐橙-首页
+  [PageName.LCLoginPage, UGPage(LCLoginPage)],//乐橙-登录
+  [PageName.LCRegisterPage, UGPage(LCRegisterPage)],//乐橙-注册
+
+  [PageName.LEFMinePage, UGPage(LEFMinePage)],//乐FUN-我的页
+  [PageName.LEFHomePage, UGPage(LEFHomePage)],//乐FUN-首页
+  [PageName.LEFSignInPage, UGPage(LEFSignInPage)],//乐FUN-登录
+  [PageName.LEFSignUpPage, UGPage(LEFSignUpPage)],//乐FUN-注册
+
+  [PageName.WNZHomePage, UGPage(WNZHomePage)],//威尼斯-首页
+  [PageName.WNZMinePage, UGPage(WNZMinePage)],//威尼斯-我的页
+  [PageName.WNZSignInPage, WNZSignInPage],//威尼斯-登录
+  [PageName.WNZSignUpPage, WNZSignUpPage],//威尼斯-注册
+
+  [PageName.KSHomePage, UGPage(KSHomePage)],//凯时-首页
+  [PageName.KSMinePage, UGPage(KSMinePage)],//凯时-我的页
+  [PageName.KSSignInPage, KSSignInPage],//凯时-登录
+  [PageName.KSSignUpPage, KSSignUpPage],//凯时-注册
+
+  [PageName.JXHSignInPage, JXHSignInPage],//金星黑-登录
+  [PageName.JXHHomePage, UGPage(JXHHomePage)],//金星黑-首页
+  [PageName.JXHMinePage, UGPage(JXHMinePage)],//金星黑-我的页
+  [PageName.JXHSignUpPage, JXHSignUpPage],//金星黑-注册
+
+  [PageName.HJHomePage, UGPage(HJHomePage)],//黑金-主页
+  [PageName.HJLoginPage, UGPage(HJLoginPage)],//黑金-登录
+  [PageName.HJRegisterPage, UGPage(HJRegisterPage)],//黑金-注册
+  [PageName.HJMinePage, UGPage(HJMinePage)],//黑金-我的
+  [PageName.HJGameCategoryPage, UGPage(HJGameCategoryPage)],//黑金分类条目
+
+  [PageName.XBJLoginPage, UGPage(XBJLoginPage)],//香槟金-登录
+  [PageName.XBJRegisterPage, UGPage(XBJRegisterPage)],//香槟金-注册
+  [PageName.XBJMinePage, UGPage(XBJMinePage)],//香槟金-我的页
+
+  [PageName.ZLHomePage, UGPage(ZLHomePage)], //尊龙-主页
+  [PageName.ZLMinePage, UGPage(ZLMinePage)], //尊龙-我的
+  [PageName.ZLLoginPage, UGPage(ZLLoginPage)],//尊龙-登录
+  [PageName.ZLRegisterPage, UGPage(ZLRegisterPage)],//尊龙-注册
+
+  [PageName.LHTHomePage, UGPage(LHTHomePage)],//六合厅-首页
+  [PageName.LHTMinePage, UGPage(LHTMinePage)],//六合厅-我的页
+  [PageName.LHTSignInPage, LHTSignInPage],//六合厅-登录
+  [PageName.LHTSignUpPage, LHTSignUpPage],//六合厅-注册
+  [PageName.LHTPreferencePage, LHTPreferencePage],//六合厅-首页彩种偏好设置
+
+  [PageName.BYSignInPage, BYSignInPage],//白曜-登录
+  [PageName.BYSignUpPage, BYSignUpPage],//白曜-注册
+  [PageName.BYHomePage, UGPage(BYHomePage)], //白曜-首页
+  [PageName.BYMinePage, UGPage(BYMinePage)],//白曜-我的页
+
+  [PageName.BZHHomePage, UGPage(BZHHomePage)],//宝石红-首页
+  [PageName.BZHMinePage, UGPage(BZHMinePage)],//宝石红-我的页
+  [PageName.BZHGameLobbyPage, BZHGameLobbyPage],//宝石红-游戏大厅
+  [PageName.BZHSignUpPage, BZHSignUpPage],//宝石红-注册
+  [PageName.BZHSignInPage, BZHSignInPage],//宝石红-登录
+
+  [PageName.LLHomePage, UGPage(LLHomePage)],//利来-首页
+  [PageName.LLMinePage, UGPage(LLMinePage)],//利来-我的页
+  [PageName.LLLoginPage, UGPage(LLLoginPage)],//利来-登录
+  [PageName.LLRegisterPage, UGPage(LLRegisterPage)],//利来-注册
+
+]
+
+
+
+
+
 // TabbarController
-class TabBarController extends Component<{
-  navigation: StackNavigationProp<{}>
-}> {
-  newProps = {
-    hideNavBar: true,
-    hideTabBar: true,
-  }
-  tabBarOptions: BottomTabBarOptions = {}
-
-  constructor(props: any) {
-    super(props)
-  }
-
-  shouldComponentUpdate() {
-    return false
-  }
-
+class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }> {
+  shouldComponentUpdate() { return false }
   componentDidMount() {
     CodePush.notifyAppReady()
     this.props.navigation.setOptions({ headerStyle: { height: 0 } })
   }
-
   render() {
     const initialName = ExtUGApplication.tabUI()
     ugLog('tab initialName=', initialName)
     return (
-      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={this.tabBarOptions}>
-        <Router.TabScreen name={PageName.LXBView} component={UGPage(LXBView)} />
-        <Router.TabScreen name={PageName.LCMinePage} component={UGPage(LCMinePage)} />
-        <Router.TabScreen name={PageName.LCHomePage} component={UGPage(LCHomePage)} />
-        <Router.TabScreen name={PageName.TransitionPage} component={UGPage(TransitionPage)} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
-        <Router.TabScreen name={PageName.XBJRegisterPage} component={UGPage(XBJRegisterPage)} />
-        <Router.TabScreen name={PageName.XBJMinePage} component={UGPage(XBJMinePage)} />
-        <Router.TabScreen name={PageName.ZLHomePage} component={UGPage(ZLHomePage)} />
-        <Router.TabScreen name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
-        <Router.TabScreen name={PageName.HJHomePage} component={UGPage(HJHomePage)} />
-        <Router.TabScreen name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} options={{ unmountOnBlur: true }} />
-        <Router.TabScreen name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-        <Router.TabScreen name={PageName.LLHomePage} component={UGPage(LLHomePage)} />
-        <Router.TabScreen name={PageName.LLMinePage} component={UGPage(LLMinePage)} />
-        <Router.TabScreen name={PageName.LHTHomePage} component={UGPage(LHTHomePage)} />
-        <Router.TabScreen name={PageName.LHTMinePage} component={UGPage(LHTMinePage)} />
-        <Router.TabScreen name={PageName.BZHHomePage} component={UGPage(BZHHomePage)} />
-        <Router.TabScreen name={PageName.BZHMinePage} component={UGPage(BZHMinePage)} />
-        <Router.TabScreen name={PageName.WNZHomePage} component={UGPage(WNZHomePage)} />
-        <Router.TabScreen name={PageName.WNZMinePage} component={UGPage(WNZMinePage)} />
-        <Router.TabScreen name={PageName.WNZSignInPage} component={WNZSignInPage} />
-        <Router.TabScreen name={PageName.KSHomePage} component={UGPage(KSHomePage)} />
-        <Router.TabScreen name={PageName.KSMinePage} component={UGPage(KSMinePage)} />
-        <Router.TabScreen name={PageName.JXHSignInPage} component={JXHSignInPage} />
-        <Router.TabScreen name={PageName.JXHHomePage} component={UGPage(JXHHomePage)} />
-        <Router.TabScreen name={PageName.JXHMinePage} component={UGPage(JXHMinePage)} />
-        <Router.TabScreen name={PageName.BYHomePage} component={UGPage(BYHomePage)} />
-        <Router.TabScreen name={PageName.BYMinePage} component={UGPage(BYMinePage)} />
-        <Router.TabScreen name={PageName.BZHGameLobbyPage} component={BZHGameLobbyPage} />
-        <Router.TabScreen name={PageName.PromotionPage} component={PromotionPage} />
-        <Router.TabScreen name={PageName.LEFHomePage} component={UGPage(LEFHomePage)} />
-        <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
-        <Router.TabScreen name={PageName.LEFSignInPage} component={UGPage(LEFSignInPage)} />
-        <Router.TabScreen name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage)} />
-        <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
+      <Router.TabNavigator initialRouteName={initialName} screenOptions={{ tabBarVisible: false }} tabBarOptions={{}}>
+        <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
+        {pageComponents.map(({ 0: page, 1: component }) => {
+          return <Router.TabScreen name={page} component={component} />
+        })}
       </Router.TabNavigator>
     )
   }
@@ -150,52 +204,13 @@ class TabBarController extends Component<{
 const StackScreens = () => {
   const initialName = ExtUGApplication.stackUI()
   ugLog('stack initialName=', initialName)
-
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
-      <Router.StackScreen name={' '} component={TabBarController} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.SeriesLobbyPage} component={UGPage(SeriesLobbyPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TrendView} component={UGPage(TrendView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ManageBankListComponent} component={UGPage(ManageBankListComponent)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.CapitalComponent} component={UGPage(CapitalComponent)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.AddBankComponent} component={UGPage(AddBankComponent)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LLLoginPage} component={UGPage(LLLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LLRegisterPage} component={UGPage(LLRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LCLoginPage} component={UGPage(LCLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LCRegisterPage} component={UGPage(LCRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignInPage} component={BYSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BYSignUpPage} component={BYSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignInPage} component={UGPage(LEFSignInPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LEFSignUpPage} component={UGPage(LEFSignUpPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLLoginPage} component={UGPage(ZLLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLRegisterPage} component={UGPage(ZLRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJLoginPage} component={UGPage(HJLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJRegisterPage} component={UGPage(HJRegisterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJMinePage} component={UGPage(HJMinePage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.HJGameCategoryPage} component={UGPage(HJGameCategoryPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.JDPromotionListPage} component={UGPage(JDPromotionListPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionListPage} component={UGPage(PromotionListPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.PromotionPage} component={PromotionPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignInPage} component={LHTSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTSignUpPage} component={LHTSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignUpPage} component={BZHSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.BZHSignInPage} component={BZHSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignInPage} component={WNZSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZSignUpPage} component={WNZSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.WNZMinePage} component={WNZMinePage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignInPage} component={KSSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.KSSignUpPage} component={KSSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignInPage} component={JXHSignInPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.JXHSignUpPage} component={JXHSignUpPage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LottoBetting} component={UGPage(LottoBetting)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ZLMinePage} component={UGPage(ZLMinePage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LHTPreferencePage} component={LHTPreferencePage} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.XBJLoginPage} component={UGPage(XBJLoginPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.UserMessagePage} component={UGPage(UserMessagePage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.UserInfoPage} component={UGPage(UserInfoPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.SafeCenterPage} component={UGPage(SafeCenterPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.LotteryHistoryPage} component={UGPage(LotteryHistoryPage)} />
+      <Router.StackScreen name={'RNTabBarController'} component={TabBarController} />
+      {pageComponents.map(({ 0: page, 1: component }) => {
+        console.log('page2 = ', page, component);
+        return <Router.StackScreen options={{ headerShown: false }} name={page} component={component} />
+      })}
     </Router.StackNavigator>
   )
 }
@@ -209,4 +224,3 @@ const UGApplication = () => {
   )
 }
 export default UGApplication
-// NavController

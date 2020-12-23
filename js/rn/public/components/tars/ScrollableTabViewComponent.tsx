@@ -36,6 +36,7 @@ const ScrollableTabViewComponent = ({ children, indicatorStyle }: ScrollableTabV
               {tabs?.map((item, index) => {
                 return (
                   <TouchableWithoutFeedback
+                    key={index}
                     onPress={() => {
                       if (!inAnimated.current) {
                         inAnimated.current = true
