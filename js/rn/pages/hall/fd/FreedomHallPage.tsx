@@ -26,6 +26,8 @@ import { PageName } from '../../../public/navigation/Navigation'
 import MineHeader from '../../../public/views/tars/MineHeader'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
+import FastImage from 'react-native-fast-image'
+import { Res } from '../../../Res/icon/Res'
 
 /**
  * 自由游戏大厅
@@ -96,12 +98,36 @@ const FreedomHallPage = ({ navigation, setProps }) => {
                       style={{ backgroundColor: UGColor.BackgroundColor1 }}
                       showsVerticalScrollIndicator={false}>
           {
-            gameData?.map((tabItem, index) => {
-              return (
-                renderDataList(tabItem)
-              )
-            })
-
+            [
+              <FastImage style={_styles.top_bg_image}
+                         resizeMode={'stretch'}
+                         source={{ uri: Res.game_select }}/>,
+              <View style={_styles.top_container}>
+                <View style={_styles.top_item_content}>
+                  <FastImage style={_styles.top_item_icon}
+                             resizeMode={'contain'}
+                             source={{ uri: Res.gameListjrsy }}/>
+                  <Text style={_styles.top_item_text}>{'今日输赢'}</Text>
+                </View>
+                <View style={_styles.top_item_content}>
+                  <FastImage style={_styles.top_item_icon}
+                             resizeMode={'contain'}
+                             source={{ uri: Res.gameListlskj }}/>
+                  <Text style={_styles.top_item_text}>{'开奖结果'}</Text>
+                </View>
+                <View style={_styles.top_item_content}>
+                  <FastImage style={_styles.top_item_icon}
+                             resizeMode={'contain'}
+                             source={{ uri: Res.gameListyhhd }}/>
+                  <Text style={_styles.top_item_text}>{'优惠活动'}</Text>
+                </View>
+              </View>,
+              gameData?.map((tabItem, index) => {
+                return (
+                  renderDataList(tabItem)
+                )
+              }),
+            ]
           }
         </ScrollView>)
   }
@@ -160,7 +186,30 @@ const FreedomHallPage = ({ navigation, setProps }) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
+  top_container: {
+    width: '100%',
+    aspectRatio: 2.8,
+    flexDirection: 'row',
+  },
+  top_bg_image: {
+    width: '100%',
+    aspectRatio: 3.2,
+    position: 'absolute',
+  },
+  top_item_content: {
+    flex: 1,
+    alignItems: 'center',
+    padding: scale(16),
+  },
+  top_item_icon: {
+    width: scale(60),
+    aspectRatio: 1,
+  },
+  top_item_text: {
+    color: UGColor.TextColor2,
+    paddingTop: scale(8),
+    fontSize: scale(20),
+  },
 })
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽

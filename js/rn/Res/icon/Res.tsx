@@ -31,6 +31,25 @@ export const Res = {
   sz5: RES_BASE_URL + 'assets/ball/sz5.png',
   sz6: RES_BASE_URL + 'assets/ball/sz6.png',
 
+  //彩票分类图标
+  c11x5: RES_BASE_URL + 'assets/lottery/c11x5.png',
+  car: RES_BASE_URL + 'assets/lottery/car.png',
+  ft: RES_BASE_URL + 'assets/lottery/ft.png',
+  happy: RES_BASE_URL + 'assets/lottery/happy.png',
+  hot: RES_BASE_URL + 'assets/lottery/hot.png',
+  js: RES_BASE_URL + 'assets/lottery/js.png',
+  k3: RES_BASE_URL + 'assets/lottery/k3.png',
+  lh: RES_BASE_URL + 'assets/lottery/lh.png',
+  nn: RES_BASE_URL + 'assets/lottery/nn.png',
+  pcdd: RES_BASE_URL + 'assets/lottery/pcdd.png',
+  qxc: RES_BASE_URL + 'assets/lottery/qxc.png',
+  shishi: RES_BASE_URL + 'assets/lottery/shishi.png',
+  other: RES_BASE_URL + 'assets/lottery/other.png',
+  game_select: RES_BASE_URL + 'assets/lottery/game_select.png',
+  gameListjrsy: RES_BASE_URL + 'assets/lottery/gameListjrsy.png',
+  gameListlskj: RES_BASE_URL + 'assets/lottery/gameListlskj.png',
+  gameListyhhd: RES_BASE_URL + 'assets/lottery/gameListyhhd.png',
+
   //农场
   xync_num_01: RES_BASE_URL + 'assets/ball/xync_num_01.png',
   xync_num_02: RES_BASE_URL + 'assets/ball/xync_num_02.png',
