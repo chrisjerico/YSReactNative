@@ -91,15 +91,16 @@ export const TransferView = ({ setProps, navigation }) => {
         Alert.alert('输入钱包和输出钱包不能一致')
     } else {
       api.real.manualTransfer(transOut.id, transIn.id, money).promise.then( async ({data}) => {
-
         const update1 = transIn.id == 0 ? { data: { balance: 0 } } : await checkBalance(transIn.id)
         const update2 = transOut.id == 0 ? { data: { balance: 0 } } : await checkBalance(transOut.id)
         setUpdateWallet([{ id: transIn.id, balance: update1.data.balance }, {
           id: transOut.id,
           balance: update2.data.balance,
         }])
+        data && Alert.alert('转入成功')
         UGUserModel.updateFromNetwork()
       }).catch((err) => {
+        Alert.alert('转入失败')
         Alert.alert(err)
       })
     }
@@ -110,6 +111,8 @@ export const TransferView = ({ setProps, navigation }) => {
       Alert.alert(data.msg)
       UGUserModel.updateFromNetwork()
     })
+    const { data } = await api.game.realGames().promise
+    setData(data.data)
   }
 
   const onGreyBGPress = () => {
@@ -255,12 +258,12 @@ export const TransferView = ({ setProps, navigation }) => {
                       style={{
                         marginLeft: 12,
                         fontSize: 17,
-                        color: Skin1.isBlack ? '#fff' : Skin1.textColor1,
+                        color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
                         alignSelf: 'center',
                       }}>{`帐号余额: ￥${balance || 0}`}</Text>
                     <Animated.View
                       style={{ transform: [{ rotate: spin }], height: 20, width: 20, marginLeft: 16 }}>
-                      <Icon size={20} name={'reload1'} color={Skin1.isBlack ? '#fff' : Skin1.textColor1} />
+                      <Icon size={20} name={'reload1'} color={Skin1.isBlack ? '#fff' : Skin1.textColor4} />
                     </Animated.View>
                   </View>
                 </LinearGradient>
@@ -420,6 +423,15 @@ const AccItem = ({ item, updateBalance, setUpdateWallet }: { item: any, updateBa
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg'],
   })
+
+  useEffect(() => {
+    updateBalance && setBalance(updateBalance)
+  }, [updateBalance])
+
+  useEffect(() => {
+    setBalance('*****')
+  }, [item])
+
   const checkBalance = async (id) => {
     const { data } = await api.real.checkBalance(id).promise
     data && setBalance(data.data.balance)
@@ -436,7 +448,7 @@ const AccItem = ({ item, updateBalance, setUpdateWallet }: { item: any, updateBa
     }}>
       <Image style={{ alignSelf: 'center', width: 24, height: 24 }} source={{ uri: item.pic }} />
       <Text style={{ fontSize: 14, paddingLeft: 16, flex: 1 }}>{item.title || ''}</Text>
-      <Text style={{ color: '#F75000' }}>{`￥${updateBalance || balance}`}</Text>
+      <Text style={{ color: '#F75000' }}>{`￥${balance}`}</Text>
       <TouchableWithoutFeedback onPress={() => {
         animatedSpin(spinValue, setSpinValue)
         checkBalance(item.id)
