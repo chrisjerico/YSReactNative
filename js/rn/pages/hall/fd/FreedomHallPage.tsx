@@ -144,7 +144,7 @@ const FreedomHallPage = ({ navigation, setProps }) => {
           color={'white'}/>
   </TouchableWithoutFeedback>
 
-  const menuStr = [['即时注单', userInfo?.unsettleAmount], ['今日已结'], ['下注结果'], ['提现']]
+  const menuStr = [['即时注单', userInfo?.unsettleAmount], ['今日已结'], ['开奖结果'], ['提现']]
   /**
    * 绘制菜单
    * @param index
