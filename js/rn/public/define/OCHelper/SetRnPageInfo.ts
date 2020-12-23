@@ -19,9 +19,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      tabbarItemPath:'/Sign',
-      vcName: 'UGSigInCodeViewController',
-      rnName: PageName.JDSigInPage,
+      vcName: 'UGFeedBackController',
+      rnName: PageName.JDFeedBackPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -52,10 +51,10 @@ export async function setRnPageInfo() {
       pages = pages.concat(BYPages)
     }
     if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
+      pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
-    pages.push({
+    pages.push({// [pages addobject:]
       tabbarItemPath:'/Sign',
       vcName: 'UGSigInCodeViewController',
       rnName: PageName.JDSigInPage,

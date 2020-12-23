@@ -81,7 +81,7 @@ import CapitalComponent from '../../public/components/cpt/list/CapitalComponent'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
-
+import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
 // TabbarController
 class TabBarController extends Component<{
   navigation: StackNavigationProp<{}>
@@ -147,6 +147,7 @@ class TabBarController extends Component<{
         <Router.TabScreen name={PageName.LEFMinePage} component={UGPage(LEFMinePage)} />
         <Router.TabScreen name={PageName.JDVirtualCurrencyTutorialPage} component={UGPage(JDVirtualCurrencyTutorialPage)} />
         <Router.TabScreen name={PageName.JDSigInPage} component={UGPage(JDSigInPage)} />
+        <Router.TabScreen name={PageName.JDFeedBackPage} component={UGPage(JDFeedBackPage)} />
       </Router.TabNavigator>
     )
   }
@@ -202,6 +203,7 @@ const StackScreens = () => {
       <Router.StackScreen options={{ headerShown: false }} name={PageName.ActivityRewardPage} component={UGPage(ActivityRewardPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.LotteryHistoryPage} component={UGPage(LotteryHistoryPage)} />
       <Router.StackScreen options={{ headerShown: false }} name={PageName.JDSigInPage} component={UGPage(JDSigInPage)} />
+      <Router.StackScreen options={{ headerShown: false }} name={PageName.JDFeedBackPage} component={UGPage(JDFeedBackPage)} />
     </Router.StackNavigator>
   )
 }
