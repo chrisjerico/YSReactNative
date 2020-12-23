@@ -19,6 +19,8 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
+import { anyEmpty } from '../tools/Ext'
+import { UGStore } from '../../redux/store/UGStore'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -69,6 +71,9 @@ export default class PushHelper {
   }
   // 登出
   static async pushLogout() {
+    //已退出不能重复执行
+    if(anyEmpty(UGStore.globalProps.userInfo?.uid)) return
+
     switch (Platform.OS) {
       case 'ios':
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
