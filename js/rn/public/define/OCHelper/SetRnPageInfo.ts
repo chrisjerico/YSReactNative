@@ -54,6 +54,14 @@ export async function setRnPageInfo() {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
+    //建议反馈
+    pages.push({
+      vcName: 'UGFeedBackController',
+      rnName: PageName.JDFeedBackPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     
   }
 
