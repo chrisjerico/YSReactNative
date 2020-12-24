@@ -63,6 +63,7 @@ export class OCHelper extends OCEvent {
 
       // 处理原生iOS第三方日志服务器拒绝导致报错（清空本地未翻译的日志）2020-12-24添加（大概一两个月后可以删除）
       await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [{}, 'LanguageNotFoundStrings'])
+      await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [{ selectors: 'NSDate.date' }, 'LanguageUpdateTime'])
       await OCHelper.call('NSUserDefaults.standardUserDefaults.synchronize')
       await OCHelper.call('LanguageHelper.shared.setNotFoundStrings:')
 
