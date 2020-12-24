@@ -13,7 +13,7 @@ const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
     {
       idKey:'1',
-      name: '在线',
+      name: '在线客服',
       imgUrl: 'https://appstatic.guolaow.com/web/images/zxkf.png',
       remark: '游戏过程中遇到问题（如充值提款等），请联系在线客服以便我们为您及时处理。',
     },

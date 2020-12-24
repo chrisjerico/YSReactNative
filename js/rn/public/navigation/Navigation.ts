@@ -23,7 +23,7 @@ export enum PageName {
   LottoBetting = 'LottoBetting',//下注页（未完成）
   JDSigInPage = 'JDSigInPage',//签到
   JDFeedBackPage = 'JDFeedBackPage',//建议反馈
-
+  JDWriteMessagePage = 'JDWriteMessagePage',//建议反馈 提交界面
 
   // ———————————— 模板页面 —————————————
 

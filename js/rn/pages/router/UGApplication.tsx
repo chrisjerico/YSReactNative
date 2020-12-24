@@ -82,7 +82,7 @@ import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
-
+import JDWriteMessagePage from '../经典/建议反馈/JDWriteMessagePage'
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
 
@@ -109,7 +109,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)],//彩票投注记录
   [PageName.JDSigInPage, UGPage(JDSigInPage)],//签到
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)],//建议反馈
-
+  [PageName.JDWriteMessagePage, UGPage(JDWriteMessagePage)],//建议反馈 提交
 
   // ———————————— 模板页面 —————————————
 

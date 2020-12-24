@@ -1,11 +1,11 @@
-import { devConfig } from './../../../../../config'
+import { Platform } from 'react-native'
+import { releaseConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
+import AppDefine from '../AppDefine'
+import { devConfig } from './../../../../../config'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
-import { Platform } from 'react-native'
-import AppDefine from '../AppDefine'
-import { releaseConfig } from '../../../../../config'
 
 // 配置需要被替换的oc页面（替换成rn）
 export async function setRnPageInfo() {
@@ -19,8 +19,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'UGFeedBackController',
-      rnName: PageName.JDFeedBackPage,
+      vcName: 'UGWriteMessageViewController',
+      rnName: PageName.JDWriteMessagePage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
