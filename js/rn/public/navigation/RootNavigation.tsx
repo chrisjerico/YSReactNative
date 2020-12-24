@@ -42,13 +42,17 @@ export function pop(): boolean {
     } else {
         switch (Platform.OS) {
           case 'ios':
-            if (count == 1) {
-                OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
-                    OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+                OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+                    if (ocCount == 1) {
+                        // 返回首页
+                        OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
+                            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+                        })
+                    } else {
+                        // 返回上一页
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    }
                 })
-            } else {
-                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-            }
             break;
           case 'android':
             ANHelper.callAsync(CMD.FINISH_ACTIVITY)
