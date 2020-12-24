@@ -62,8 +62,9 @@ export class OCHelper extends OCEvent {
       initDomain(siteId)
 
       // 处理原生iOS第三方日志服务器拒绝导致报错（清空本地未翻译的日志）2020-12-24添加（大概一两个月后可以删除）
-      OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [undefined, 'LanguageNotFoundStrings'])
-      OCHelper.call('LanguageHelper.shared.setNotFoundStrings:')
+      await OCHelper.call('NSUserDefaults.standardUserDefaults.setObject:forKey:', [{}, 'LanguageNotFoundStrings'])
+      await OCHelper.call('NSUserDefaults.standardUserDefaults.synchronize')
+      await OCHelper.call('LanguageHelper.shared.setNotFoundStrings:')
 
       // net
       const apis = ['user_info', 'system_config', 'game_homeRecommend', 'system_banners', 'system_mobileRight'].map(async (router) => {
