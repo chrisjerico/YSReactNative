@@ -207,7 +207,7 @@ const StackScreens = () => {
   ugLog('stack initialName=', initialName)
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
-      <Router.StackScreen name={'RNTabBarController'} component={TabBarController} />
+      <Router.StackScreen name={' '} component={TabBarController} />
       {pageComponents.map(({ 0: page, 1: component }) => {
         console.log('page2 = ', page, component);
         return <Router.StackScreen options={{ headerShown: false }} name={page} component={component} />

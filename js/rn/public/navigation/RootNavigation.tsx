@@ -110,6 +110,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
                     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
                     break;
                   case "android":
+                      ugLog('goFirstTransitionPage getStackLength()=', getStackLength())
                     ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
                     break;
                 }
