@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -22,6 +22,13 @@ const tabs = [
 const c245Names = ['热门彩种', '中奖排行']
 
 const Tab = ({ logo, name, focused, onPress, index }) => {
+  if (AppDefine.siteId == 'c254' && name == tabs[1]?.name) {
+    useEffect(() => {
+      setTimeout(() => {
+        onPress && onPress()
+      }, 500);
+    }, [])
+  }
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.tabContainer}>
