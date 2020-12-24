@@ -54,17 +54,20 @@ export async function setRnPageInfo() {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
-    pages.push({// [pages addobject:]
-      tabbarItemPath:'/Sign',
-      vcName: 'UGSigInCodeViewController',
-      rnName: PageName.JDSigInPage,
-      fd_prefersNavigationBarHidden: true,
-      允许游客访问: true,
-      允许未登录访问: true,
-    })
+    
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+  // 签到页
+  pages.push({
+    tabbarItemPath:'/Sign',
+    vcName: 'UGSigInCodeViewController',
+    rnName: PageName.JDSigInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
+
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
