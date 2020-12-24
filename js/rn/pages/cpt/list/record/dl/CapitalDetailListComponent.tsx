@@ -22,8 +22,8 @@ import { useState } from 'react'
  */
 const CapitalDetailListComponent = () => {
 
-  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //选择开始日期
-  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //选择结束日期
+  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
+  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //正在选择结束日期
   const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
   const [endDate, setEndDate] = useState<string>(null)//选中的开始日期
 
