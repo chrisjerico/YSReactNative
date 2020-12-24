@@ -94,7 +94,7 @@ const JDFeedBackPage = () => {
             <View style={{ flex: 1 }} />
             <Text style={[{ fontSize: 20, color: Skin1.textColor1 }]}>{'›'}</Text>
           </View >
-          <View style={[{ height: 1.5, backgroundColor: '#F4F4F4', marginLeft: 13, marginTop: 8 }]}></View>
+          <View style={[{ height: 1.5, backgroundColor: '#AEAEAE', marginLeft: 11, marginTop: 8 }]}></View>
           <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginLeft: 10, marginTop: 10, marginRight: 70 }]}>{item.remark}</Text>
         </View>
       </TouchableOpacity>
