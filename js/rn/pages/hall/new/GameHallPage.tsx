@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
@@ -26,6 +26,8 @@ import { PageName } from '../../../public/navigation/Navigation'
 import MineHeader from '../../../public/views/tars/MineHeader'
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
+import { setProps } from '../../base/UGPage'
+import { pop } from '../../../public/navigation/RootNavigation'
 
 /**
  * 新游戏大厅
@@ -45,6 +47,11 @@ const GameHallPage = ({ navigation, setProps }) => {
 
   useEffect(() => {
     requestGameData()
+    setProps({
+      didFocus: () => {
+        !gameData?.length && requestGameData()
+      }
+    })
   }, [])
 
   /**
@@ -195,7 +202,8 @@ const GameHallPage = ({ navigation, setProps }) => {
         <MineHeader title={'彩票大厅'}
                     showRightTitle={true}
                     rightButton={rightButton}
-                    showBackBtn={false}/>
+                    onPressBackBtn={()=>{ pop() }}
+                    showBackBtn={Platform.OS == 'ios'}/>
       </SafeAreaHeader>
       {
         renderAllData()

@@ -42,7 +42,13 @@ export function pop(): boolean {
     } else {
         switch (Platform.OS) {
           case 'ios':
-            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            if (count == 1) {
+                OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
+                    OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+                })
+            } else {
+                OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+            }
             break;
           case 'android':
             ANHelper.callAsync(CMD.FINISH_ACTIVITY)
