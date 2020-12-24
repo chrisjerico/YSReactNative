@@ -80,9 +80,8 @@ import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
 import CapitalPage from '../cpt/list/CapitalPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
-
-
-
+import JDSigInPage from '../经典/签到/JDSigInPage'
+import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
 
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
@@ -108,6 +107,8 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.SafeCenterPage, UGPage(SafeCenterPage)],//安全中心
   [PageName.ActivityRewardPage, UGPage(ActivityRewardPage)],//申请彩金
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)],//彩票投注记录
+  [PageName.JDSigInPage, UGPage(JDSigInPage)],//签到
+  [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)],//建议反馈
 
 
   // ———————————— 模板页面 —————————————
