@@ -45,8 +45,8 @@ export class ANEvent extends UGBridge {
           push(page, params)
           break
         case 'jump':
-          // jumpTo(page, params, true)
-          navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
+          jumpTo(page, null, false)
+          // navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
           break
         case 'refresh':
         default:

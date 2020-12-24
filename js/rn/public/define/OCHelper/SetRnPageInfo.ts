@@ -66,6 +66,22 @@ export async function setRnPageInfo() {
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+  // 彩票大厅（第三样式）
+  pages = pages.concat([{
+    vcName: 'UGLotteryHomeController',
+    rnName: PageName.GameHallPage,
+    tabbarItemPath: '/gameHall',
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }, {
+    vcName: 'NewLotteryHomeViewController',
+    rnName: PageName.GameHallPage,
+    tabbarItemPath: '/gameHall',
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  }])
   // 签到页
   pages.push({
     tabbarItemPath:'/Sign',

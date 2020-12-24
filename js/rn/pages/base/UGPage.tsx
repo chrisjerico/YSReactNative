@@ -62,7 +62,8 @@ export default (Page: Function) => {
       })
       navigation.removeListener('transitionEnd', null)
       navigation.addListener('transitionEnd', (e) => {
-        if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
+        ugLog('当前routes=', e?.data?.closing, navigationRef?.current?.getRootState()?.routes?.length)
+        if (e?.data?.closing && navigationRef?.current?.getRootState()?.routes?.length == 1) {
           this._showMainTab()
         }
       })

@@ -80,7 +80,7 @@ export enum PageName {
   LEFSignInPage = 'LEFSignInPage',//乐FUN-登录
   LEFSignUpPage = 'LEFSignUpPage',//乐FUN-注册
 
-  GameHallPage = 'GameHallPage', //游戏大厅页
+  GameHallPage = 'GameHallPage', //彩票大厅页（第三样式）
   FreedomHallPage = 'FreedomHallPage', //自由大厅页
 
   KSHomePage = 'KSHomePage',//凯时-首页

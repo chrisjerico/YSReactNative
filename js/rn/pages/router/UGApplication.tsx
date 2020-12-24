@@ -94,7 +94,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.PromotionListPage, UGPage(PromotionListPage)],//优惠活动列表
   [PageName.JDPromotionListPage, UGPage(JDPromotionListPage)],//优惠活动列表
   [PageName.PromotionPage, PromotionPage],//优惠活动
-  [PageName.GameHallPage, UGPage(GameHallPage)],//游戏大厅页
+  [PageName.GameHallPage, UGPage(GameHallPage)],///彩票大厅页
   [PageName.FreedomHallPage, UGPage(FreedomHallPage)],//自由大厅页
   [PageName.SeriesLobbyPage, UGPage(SeriesLobbyPage)],// 游戏大厅二级页面（xx系列游戏列表）
   [PageName.TrendView, UGPage(TrendView)],//开奖走势
@@ -207,10 +207,13 @@ const StackScreens = () => {
   ugLog('stack initialName=', initialName)
   return (
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
-      <Router.StackScreen name={'RNTabBarController'} component={TabBarController} />
+      <Router.StackScreen name={' '} component={TabBarController} />
       {pageComponents.map(({ 0: page, 1: component }) => {
-        console.log('page2 = ', page, component);
-        return <Router.StackScreen options={{ headerShown: false }} name={page} component={component} />
+        if (page.indexOf('Home') == -1) {
+          return <Router.StackScreen options={{ headerShown: false }} name={page} component={component} />
+        }
+      }).filter((v) => {
+        if (v) return v;
       })}
     </Router.StackNavigator>
   )

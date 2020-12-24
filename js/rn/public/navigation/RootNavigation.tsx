@@ -42,7 +42,17 @@ export function pop(): boolean {
     } else {
         switch (Platform.OS) {
           case 'ios':
-            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+                    if (ocCount == 1) {
+                        // 返回首页
+                        OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
+                            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+                        })
+                    } else {
+                        // 返回上一页
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    }
+                })
             break;
           case 'android':
             ANHelper.callAsync(CMD.FINISH_ACTIVITY)
@@ -110,6 +120,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
                     OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [true, true]);
                     break;
                   case "android":
+                      ugLog('goFirstTransitionPage getStackLength()=', getStackLength())
                     ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 8});
                     break;
                 }
