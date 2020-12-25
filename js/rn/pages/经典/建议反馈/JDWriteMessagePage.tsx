@@ -1,7 +1,6 @@
 
 import AppDefine from '../../../public/define/AppDefine';
 import React, { useEffect, useRef, useState, Component } from 'react'
-import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { TextInput } from 'react-native-gesture-handler'
 import { View, Text, FlatList, Image, ImageBackground, TouchableOpacity, StyleSheet, Platform } from 'react-native';
@@ -15,16 +14,24 @@ import { OCEventType } from '../../../public/define/OCHelper/OCBridge/OCEvent';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { showLoading, showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGStore } from '../../../redux/store/UGStore';
+import { number, string } from 'prop-types';
+import { pop } from '../../../public/navigation/RootNavigation';
 
 interface JDWriteMessagePage {
   list?: UGSignInHistoryModel[]
+  imgPaths?: string[]
+  type?: number
+  messageType?:string
 }
 
 const itemWith = (AppDefine.width - 120) / 3;
 
-const JDWriteMessagePage = () => {
+const JDWriteMessagePage = ({setProps}) => {
 
-
+  const { current: imgPaths } = useRef<Array<string>>([])
+  const [remark, setRemark] = useState('')
+  const [type, setType] = useState(0)
+  const [messageType, setMessageType] = useState('反馈类型：提交建议')
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
     {
       idKey: 'add',
@@ -32,7 +39,6 @@ const JDWriteMessagePage = () => {
     },
 
   ])
-
 
   Array.prototype.indexOf = function (val) {
     for (var i = 0; i < this.length; i++) {
@@ -105,14 +111,43 @@ const JDWriteMessagePage = () => {
     return returnStr;
   }
 
+  //网络请求
+  function addFeedback(imgs?: Array<string>) {
+    showLoading()
+    api.user.addFeedback( type.toString(), '', remark, imgs).setCompletionBlock(({ data, msg }) => {
+      console.log('数据：=', data);
+      showSuccess(msg)
+      pop()
+
+    }, (err) => {
+      console.log('err = ', err);
+      // Toast(err.message)
+    });
+  }
+
   useEffect(() => {
 
     setProps({
-      navbarOpstions: { hidden: false, title: '建议反馈' },
-      didFocus: () => {
-        AppDefine.checkHeaderShowBackButton((show) => {
-          setProps({ navbarOpstions: { back: show } });
-        })
+      navbarOpstions: { hidden: false, title: '建议反馈', back:true },
+      didFocus: (params) => {
+        console.log('RU CAN111', params);
+        let dic = params;
+        // console.log("输出最初的字典元素: "); 
+        for (var key in dic) {
+          // console.log("key: " + key + " ,value: " + dic[key]);
+          if (key == 'feedType') {
+            setType(dic[key])
+            if (dic[key] == 0) {
+              setMessageType('反馈类型：提交建议')
+              console.log("反馈类型：提交建议" );
+              OCHelper.call('self.navigationItem[setTitle:]',['9999'])
+            } else {
+              setMessageType('反馈类型：我要投诉')
+              console.log("反馈类型：提交建议" );
+            }
+          }
+
+        }
       }
     })
 
@@ -156,9 +191,10 @@ const JDWriteMessagePage = () => {
 
       <View style={[{ marginHorizontal: 15 }]}>
 
-        <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginTop: 30, }]}>{'反馈类型：提交建议'}</Text>
+        <Text style={[{ fontSize: 18, color: Skin1.textColor1, marginTop: 30, }]}>{messageType}</Text>
 
-        <TextInput style={{ marginTop: 20, borderColor: '#d9d9d9', height: 120, paddingHorizontal: 10, borderWidth: AppDefine.onePx, color: Skin1.textColor1, }}
+        <TextInput onChangeText={(text) => setRemark(text)}
+          style={{ marginTop: 20, borderColor: '#d9d9d9', height: 120, paddingHorizontal: 10, borderWidth: AppDefine.onePx, color: Skin1.textColor1, }}
           placeholder={'请输入反馈内容'}
           multiline
           maxLength={200} />
@@ -184,7 +220,52 @@ const JDWriteMessagePage = () => {
           title="提交"
           style={{ marginTop: 50, }}
           onPress={() => {
+            let imgsList = [];
+            if (list?.length >= 2) {
+              for (let i = 0; i < list.length; i++) {
+                if (list[i].idKey == 'img') {
+                  imgsList.push(list[i].imgUrl)
+                }
+              }
+              console.log('提交的图片数组：' + imgsList[0]);
+              if (imgsList?.length) {
 
+                showLoading()
+
+                for (let i = 0; i < imgsList.length; i++) {
+                  api.user.uploadFeedback(imgsList).setCompletionBlock(({ data, msg }) => {
+                    showSuccess(msg)
+                    imgPaths.length = 0
+                    // console.log('返回的数据'+JSON.stringify(data));
+                    let dic = data;
+                    // console.log("输出最初的字典元素: "); 
+                    for (var key in dic) {
+                      // console.log("key: " + key + " ,value: " + dic[key]);
+                      if (key == 'url') {
+                        imgPaths?.push(dic[key])
+                      }
+
+                    }
+                    console.log('imgPaths?.length=' + imgPaths?.length);
+                    console.log('imgsList?.length=' + imgsList?.length);
+                    if (imgPaths?.length == imgsList?.length) {
+                      //建议反馈
+                      console.log('要建议反馈了');
+
+                      addFeedback(imgPaths)
+                    }
+                  });
+                }
+
+
+
+              }
+
+            }
+            else {
+              //建议反馈
+              addFeedback()
+            }
           }}
         />
       </View>

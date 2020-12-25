@@ -8,6 +8,8 @@ import { UGSignInHistoryModel } from '../../../redux/model/other/UGSignInHistory
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import PushHelper from '../../../public/define/PushHelper';
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
+import { push } from '../../../public/navigation/RootNavigation';
+import { PageName } from '../../../public/navigation/Navigation';
 
 const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
@@ -63,20 +65,10 @@ const JDFeedBackPage = () => {
           // OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [14])
         } 
         else if (item.idKey == '2') {
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
-            selectors: 'AppDefine.viewControllerWithStoryboardID:;.navigationItem[setTitle:][setFeedType:]',
-            args1: ['UGWriteMessageViewController'],
-            args2: ['建议反馈'],
-            args3: [0],
-          }, true])
+          push(PageName.JDWriteMessagePage, {feedType:0})
         } 
         else if (item.idKey == '3') {
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
-            selectors: 'AppDefine.viewControllerWithStoryboardID:;.navigationItem[setTitle:][setFeedType:]',
-            args1: ['UGWriteMessageViewController'],
-            args2: ['投诉建议'],
-            args3: [1],
-          }, true])
+          push(PageName.JDWriteMessagePage, {feedType:1})
         }
         else if (item.idKey == '4') {
           OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
