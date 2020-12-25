@@ -417,8 +417,8 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
-              navigate(PageName.CapitalPage, {})
-              // return
+              push(PageName.CapitalPage)
+              return
             }
             subId = MenuType.CZ
             break
@@ -433,7 +433,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
-              navigate(PageName.ManageBankListComponent, {})
+              push(PageName.ManageBankListComponent)
               return
             // }
             // subId = MenuType.YHK

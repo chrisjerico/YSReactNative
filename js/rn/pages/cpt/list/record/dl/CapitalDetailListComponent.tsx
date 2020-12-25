@@ -22,8 +22,8 @@ import { useState } from 'react'
  */
 const CapitalDetailListComponent = () => {
 
-  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //选择开始日期
-  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //选择结束日期
+  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
+  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //正在选择结束日期
   const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
   const [endDate, setEndDate] = useState<string>(null)//选中的开始日期
 
@@ -44,10 +44,14 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendarTitle = () => <View>
     <View style={_styles.text_title_container}>
-      <Text style={_styles.calendar_item_title}>{'日间'}</Text>
+      <Text style={_styles.calendar_item_title}>{'日期'}</Text>
       <TouchableWithoutFeedback onPress={() => {
-        setSelectEndDate(false)
-        setSelectStartDate(!selectStartDate)
+        //如果另外一个日历打开的，先关闭掉
+        if (selectEndDate) {
+          setSelectEndDate(false)
+        } else {
+          setSelectStartDate(!selectStartDate)
+        }
       }}>
         <View style={_styles.calendar_item_container}>
           <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
@@ -56,8 +60,12 @@ const CapitalDetailListComponent = () => {
       </TouchableWithoutFeedback>
       <Text style={_styles.calendar_item_title}>{'至'}</Text>
       <TouchableWithoutFeedback onPress={() => {
-        setSelectStartDate(false)
-        setSelectEndDate(!selectEndDate)
+        //如果另外一个日历打开的，先关闭掉
+        if (selectStartDate) {
+          setSelectStartDate(false)
+        } else {
+          setSelectEndDate(!selectEndDate)
+        }
       }}>
         <View style={_styles.calendar_item_container}>
           <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
@@ -79,7 +87,7 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendar = () => (
     selectStartDate || selectEndDate ?
-      <View style={{ position: 'absolute', backgroundColor: 'white', width: '100%' }}>
+      <View style={_styles.calendar_wid}>
         <Calendar.Picker onDayPress={(date: Date) => {
           let curDate = date.format('yyyy-MM-dd')
           ugLog('renderCalendar date=', curDate)
@@ -228,6 +236,12 @@ const _styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  calendar_wid: {
+    position: 'absolute',
+    backgroundColor: UGColor.BackgroundColor2,
+    width: '100%',
+    paddingBottom: scale(32),
   },
   calendar_item_container: {
     backgroundColor: 'white',

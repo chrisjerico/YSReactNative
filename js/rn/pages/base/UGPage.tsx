@@ -112,7 +112,7 @@ export default (Page: Function) => {
             OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true])
             break
           case 'android':
-            ugLog('ug page menu')
+            ugLog('ug page menu visible 1')
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 })
             break
         }
