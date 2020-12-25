@@ -12,6 +12,7 @@ import { PayAisleListData } from '../../../../../public/network/Model/wd/PayAisl
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
+import HTML from 'react-native-render-html'
 
 /**
  * 支付通道记录
@@ -31,8 +32,8 @@ const PayListComponent = () => {
    */
   const renderItemContent = (item: PayAisleListData) => {
     let icon = item.bank_sort_icon
-    if(anyEmpty(icon)) icon = PayIcon[item.code]
-    if(anyEmpty(icon)) icon = PayIcon['39']
+    if (anyEmpty(icon)) icon = PayIcon[item.code]
+    if (anyEmpty(icon)) icon = PayIcon['39']
 
     return (
       <TouchableWithoutFeedback onPress={() => {
@@ -46,7 +47,8 @@ const PayListComponent = () => {
               textZoom={scale(380)}
               javaScriptEnabled
               showsVerticalScrollIndicator={false}
-              source={{html: item.tip}}
+              source={{ html: item.tip }}
+              // source={{ html: `<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=0.8"></head><body>${item.tip}</body></html>` }}
             />
           </View>
         </View>
@@ -86,7 +88,7 @@ const _styles = StyleSheet.create({
   text_item_container: {
     flex: 1,
     justifyContent: 'center',
-    paddingLeft: scale(16)
+    paddingLeft: scale(16),
   },
   text_title_0: {
     color: UGColor.TextColor2,
