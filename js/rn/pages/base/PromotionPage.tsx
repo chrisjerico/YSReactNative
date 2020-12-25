@@ -134,7 +134,7 @@ const PromotionPage = (props: any) => {
                 const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
                 return (
                   <AutoHeightCouponComponent
-                    title={title}
+                    title={title?.length ? title : '优惠活动'}
                     pic={pic}
                     content={content}
                     onPress={onPress}
@@ -160,7 +160,7 @@ const PromotionPage = (props: any) => {
               const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
               return (
                 <AutoHeightCouponComponent
-                  title={title}
+                  title={title?.length ? title : '优惠活动'}
                   pic={pic}
                   content={content}
                   onPress={onPress}
