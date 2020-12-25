@@ -57,11 +57,12 @@ const JDWriteMessagePage = () => {
         args2: [false],
         args3: [NSValue.Block(['Object', 'Object', 'Number'], OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)]
       }, true]);
-      // 上传图片
+      // Block回调
       OCHelper.removeEvents(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle)
-      OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, ({ 0: imgs }: { 0: string[] }) => {
-        if (imgs?.length) {
-          imgs.forEach((url) => {
+      OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
+        const imgURLs = args[0]
+        if (imgURLs?.length) {
+          imgURLs.forEach((url) => {
             list.unshift({ idKey: 'img', imgUrl: url, })
           })
           setProps()
@@ -126,15 +127,19 @@ const JDWriteMessagePage = () => {
         <TouchableOpacity style={[{ backgroundColor: '#E7EAEA', height: itemWith, width: itemWith, }]} onPress={() => {
           itemAddAction(item, index)
         }}>
-          <ImageBackground style={[{ height: itemWith, width: itemWith }]} source={{ uri: item.imgUrl }}>
-            {checkinImg(item) && <TouchableOpacity onPress={() => {
-              itemDelAction(item, index)
-            }}>
-              <View style={[{ height: 40, width: 40, }]}>
-                <Image style={[{ height: 25, width: 25, marginTop: 2, marginLeft: 2 }]} source={{ uri: 'https://appstatic.guolaow.com/web/platform/c069/templates/images/close.png' }} />
-
-              </View>
-            </TouchableOpacity>}
+          <ImageBackground style={[{ flex: 1 }]} source={{ uri: item.imgUrl }}>
+            {checkinImg(item) && (
+              <TouchableOpacity style={[{ flexDirection: 'row' }]} onPress={() => {
+                itemDelAction(item, index)
+              }}>
+                <View style={{ flex: 1 }} />
+                <View style={[{ height: 40, width: 40, marginTop: 0, flexDirection: 'row' }]}>
+                  <View style={{ flex: 1 }} />
+                  <Image style={[{ height: 25, width: 25, marginRight: 0 }]} source={{ uri: 'https://appstatic.guolaow.com/web/platform/c069/templates/images/close.png' }} />
+                </View>
+              </TouchableOpacity>
+            )
+            }
           </ImageBackground>
 
         </TouchableOpacity>
