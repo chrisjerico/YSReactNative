@@ -52,7 +52,7 @@ export class OCCall extends UGBridge {
       temp = {ret: sel};
     }
     for (const k in temp) {
-      var obj = {};
+      const obj = {};
       obj[k] = temp[k];
       array.push(obj);
     }

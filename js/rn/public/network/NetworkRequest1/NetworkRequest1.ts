@@ -32,6 +32,7 @@ export function CheckError(sm: CCSessionModel<any>): Error {
   if (Platform.OS == 'ios') {
     // api请求信息添加到iOS下拉调试页面
     const params = { ...sm.params, token: UGUserModel.getToken() };
+    sm.res.info = undefined
     OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [sm.url], args2: [params], args3: [sm.res] }]);
   }
 
