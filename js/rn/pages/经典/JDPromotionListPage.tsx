@@ -14,8 +14,9 @@ import { getStackLength } from '../../public/navigation/RootNavigation';
 import { api } from '../../public/network/NetworkRequest1/NetworkRequest1';
 
 
+type TopTabStyle = '背景透明' | '背景不透明' | '没有选中背景色'
 interface JDPromotionListVars {
-  style1: '背景透明' | '背景不透明'; // 标题栏样式
+  tabStyle: TopTabStyle; // 标题栏样式
   scrollEnabled: boolean;
 }
 
@@ -34,7 +35,7 @@ export interface JDPromotionListProps extends UGBasePageProps<JDPromotionListPro
 export const JDPromotionListPage = (props: JDPromotionListProps) => {
   const { setProps, containerStyle } = props;
   const { current: v } = useRef<JDPromotionListVars>({
-    style1: '背景透明',
+    tabStyle: '背景透明',
     scrollEnabled: true,
   });
 
@@ -88,10 +89,13 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
   }, [])
 
   if ('c217'.indexOf(AppDefine.siteId) != -1) {
-    v.style1 = '背景不透明';
+    v.tabStyle = '背景不透明';
   }
   if ('c245'.indexOf(AppDefine.siteId) != -1) {
     v.scrollEnabled = false;
+  }
+  if (Skin1.skitType.indexOf('威尼斯') != -1) {
+    v.tabStyle = '没有选中背景色'
   }
 
   const { dataArray = [], showTopBar = true } = props;
@@ -113,7 +117,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
               return plm.title;
             })}
             hidden={!showTopBar}
-            style={v?.style1}
+            style={v?.tabStyle}
           />
         );
       }}>
@@ -124,7 +128,7 @@ export const JDPromotionListPage = (props: JDPromotionListProps) => {
 
 
 // 顶部标题栏
-function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?: '背景透明' | '背景不透明' }) {
+function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?: TopTabStyle }) {
   if (props.hidden) {
     return null;
   }
@@ -160,7 +164,8 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
     );
   }
 
-  return (
+  const noBgColor = props.style === '没有选中背景色'
+  return ([
     <View style={{ marginLeft: 5, flexDirection: 'row', height: props.hidden ? 0 : 45 }}>
       {titles.map((title, idx) => {
         return (
@@ -169,9 +174,9 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
             onPress={() => {
               props.goToPage(idx);
             }}
-            style={{
+            style={[{
               marginTop: 11,
-              marginHorizontal: 2,
+              marginHorizontal: 5,
               paddingHorizontal: 5,
               height: 27,
               paddingTop: 6,
@@ -181,11 +186,17 @@ function TopBar(props: TabBarProps & { hidden: boolean; titles: string[], style?
               color: idx == props.activeTab ? 'white' : Skin1.bgTextColor,
               borderRadius: 3,
               overflow: 'hidden',
-            }}>
+            },
+            noBgColor ? {
+              backgroundColor: 'transparent',
+              color: idx == props.activeTab ? '#da4453' : Skin1.bgTextColor,
+            } : {}
+            ]}>
             {title}
           </Text>
         );
       })}
-    </View>
-  );
+    </View>,
+    <View style={{ height: noBgColor ? 1 : 0, backgroundColor: '#ccc', width: '100%' }} />
+  ]);
 }

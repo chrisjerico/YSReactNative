@@ -26,8 +26,8 @@ const PromotionPage = (props: any) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1)
   const totalList = useRef([])
-  const showUnderline = AppDefine.siteId == 'c108'
-  const showItemBorder = AppDefine.siteId == 'c108'
+  const showUnderline = Skin1.skitType.indexOf('威尼斯') != -1
+  const showItemBorder = Skin1.skitType.indexOf('威尼斯') != -1
 
   useEffect(() => {
     APIRouter.system_promotions().then((response) => {
@@ -134,7 +134,7 @@ const PromotionPage = (props: any) => {
                 const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
                 return (
                   <AutoHeightCouponComponent
-                    title={title}
+                    title={title?.length ? title : '优惠活动'}
                     pic={pic}
                     content={content}
                     onPress={onPress}
@@ -156,14 +156,17 @@ const PromotionPage = (props: any) => {
             renderItem={({ item, index }) => {
               const { title, pic, content } = item
               const onPress = (setShowPop: any) => handleOnPress({ item, setShowPop, index })
+              const titleStyle = showItemBorder ? { height: title?.length ? -5 : 0, marginVertical: 0 } : undefined
+              const containerStyle = showItemBorder ? { borderWidth: 1.5, borderRadius: 8, borderColor: '#b06065', marginTop: 10,  padding: 9 } : {}
               return (
                 <AutoHeightCouponComponent
-                  title={title}
+                  title={title?.length ? title : '优惠活动'}
                   pic={pic}
                   content={content}
                   onPress={onPress}
                   slide={style == 'slide' && selectedItemIndex == index}
-                  titleStyle={{ color: Skin1?.promotion?.couponTitleColor }}
+                  containerStyle={containerStyle}
+                  titleStyle={{ color: Skin1?.promotion?.couponTitleColor,  ...titleStyle}}
                 />
               )
             }}

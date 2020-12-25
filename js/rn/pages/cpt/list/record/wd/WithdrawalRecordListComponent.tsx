@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Alert, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
@@ -8,6 +8,7 @@ import UseWithdrawalRecordList from './UseWithdrawalRecordList'
 import EmptyView from '../../../../../public/components/view/empty/EmptyView'
 import { WithdrawalListData } from '../../../../../public/network/Model/wd/WithdrawalRecordModel'
 import CommStyles from '../../../../base/CommStyles'
+import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
 
 /**
  * 取款记录
@@ -21,6 +22,32 @@ const WithdrawalRecordListComponent = () => {
     requestWithdrawalData,
   } = UseWithdrawalRecordList()
 
+  // {"list":[{"type":"1","orderNo":"2020121420453711154468","bankName":"工商银行","bankCard":"6215","bankAccount":"急急急","amount":"1.00","status":"处理中","applyTime":"2020-12-14 20:45:37","remark":"","arriveTime":"","fee":0}],"total":1}
+
+  /**
+   * 显示条目内容对话框
+   * @param item
+   */
+  const showItemDialog = (item: WithdrawalListData) => {
+    Alert.alert('查看详情',
+      '交易编号: ' + item.orderNo
+      + '\n发起时间: ' + item.applyTime
+      + '\n到账时间: ' + item.arriveTime
+      + '\n交易类型: ' + '提现'
+      + '\n交易金额: ' + item.amount
+      + '\n手续费用: ' + item.fee
+      + '\n交易状态: ' + item.status
+      + '\n提款方式: ' + item.bankName
+      + '\n账号: ' + item.bankCard
+      + '\n持卡人: ' + item.bankAccount
+      + '\n备注: ' + item.remark,
+      [
+        {
+          text: '确定',
+        },
+      ])
+  }
+
   /**
    * 绘制提示标题
    * @param item
@@ -32,14 +59,16 @@ const WithdrawalRecordListComponent = () => {
   </View>
 
   /**
-   * 绘制提示标题
+   * 绘制条目内容
    * @param item
    */
-  const renderItemContent = (item: WithdrawalListData) => <View style={_styles.text_item_container}>
-    <Text style={_styles.text_content_0}>{item.applyTime}</Text>
-    <Text style={_styles.text_content_0}>{item.amount}</Text>
-    <Text style={_styles.text_content_0}>{item.status}</Text>
-  </View>
+  const renderItemContent = (item: WithdrawalListData) => <TouchableWithoutFeedback onPress={() => showItemDialog(item)}>
+    <View style={_styles.text_item_container}>
+      <Text style={_styles.text_content_0}>{item.applyTime}</Text>
+      <Text style={_styles.text_content_0}>{item.amount}</Text>
+      <Text style={_styles.text_content_0}>{item.status}</Text>
+    </View>
+  </TouchableWithoutFeedback>
 
   return (
     <View style={CommStyles.flex}>

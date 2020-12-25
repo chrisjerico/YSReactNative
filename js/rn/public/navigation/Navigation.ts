@@ -14,9 +14,9 @@ export enum PageName {
   ActivityRewardPage = 'ActivityRewardPage',//申请彩金
   LotteryHistoryPage = 'LotteryHistoryPage',//彩票投注记录
   SafeCenterPage = 'SafeCenterPage',//安全中心
-  ManageBankListComponent = 'ManageBankListComponent',//银行卡管理（我的提款账户列表）
+  ManageBankListPage = 'ManageBankListPage',//银行卡管理（我的提款账户列表）
   CapitalPage = 'CapitalPage',//存款取款资金明细
-  AddBankComponent = 'AddBankComponent',//添加提款账户
+  AddBankPage = 'AddBankPage',//添加提款账户
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',//虚拟币充值教程
   TrendView = 'TrendView',//开奖走势
   LottoSelector = 'LottoSelector',//切换彩种页

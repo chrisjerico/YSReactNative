@@ -1,27 +1,27 @@
 import { Alert, FlatList, Linking, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
-import { anyEmpty, arrayLength } from '../../../tools/Ext'
-import { scale } from '../../../tools/Scale'
-import { Skin1 } from '../../../theme/UGSkinManagers'
+import { BaseScreen } from '../../乐橙/component/BaseScreen'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { scale } from '../../../public/tools/Scale'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
 import UseManageBankList, { getBankIcon } from './UseManageBankList'
-import { ugLog } from '../../../tools/UgLog'
-import { UGColor } from '../../../theme/UGThemeColor'
-import { Res } from '../../../../Res/icon/Res'
-import EmptyView from '../../view/empty/EmptyView'
-import { push } from '../../../navigation/RootNavigation'
-import { PageName } from '../../../navigation/Navigation'
-import { HJThemeColor } from '../../../theme/colors/HJThemeColor'
-import APIRouter from '../../../network/APIRouter'
-import { UGStore } from '../../../../redux/store/UGStore'
-import PushHelper from '../../../define/PushHelper'
-import { AllAccountListData, BankInfoParam } from '../../../network/Model/bank/ManageBankCardModel'
+import { ugLog } from '../../../public/tools/UgLog'
+import { UGColor } from '../../../public/theme/UGThemeColor'
+import { Res } from '../../../Res/icon/Res'
+import EmptyView from '../../../public/components/view/empty/EmptyView'
+import { push } from '../../../public/navigation/RootNavigation'
+import { PageName } from '../../../public/navigation/Navigation'
+import { HJThemeColor } from '../../../public/theme/colors/HJThemeColor'
+import APIRouter from '../../../public/network/APIRouter'
+import { UGStore } from '../../../redux/store/UGStore'
+import PushHelper from '../../../public/define/PushHelper'
+import { AllAccountListData, BankInfoParam } from '../../../public/network/Model/bank/ManageBankCardModel'
 import { BankConst } from '../const/BankConst'
-import ReloadSlidingVerification from '../../tars/ReloadSlidingVerification'
-import NeedNameInputComponent from '../../tars/NeedNameInputComponent'
+import ReloadSlidingVerification from '../../../public/components/tars/ReloadSlidingVerification'
+import NeedNameInputComponent from '../../../public/components/tars/NeedNameInputComponent'
 import WebView from 'react-native-webview'
 
 /**
@@ -29,7 +29,7 @@ import WebView from 'react-native-webview'
  * @param navigation
  * @constructor
  */
-const ManageBankListComponent = ({ navigation, setProps }) => {
+const ManageBankListPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -137,7 +137,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     if (anyEmpty(userInfo?.fullName)) {
       needNameInputRef?.current?.reload()
     } else {
-      push(PageName.AddBankComponent, {
+      push(PageName.AddBankPage, {
         refreshBankList: (accountType: string) => {
           // ugLog('accountType=', accountType)
           categoryData?.map((item, index) => {
@@ -285,4 +285,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default ManageBankListComponent
+export default ManageBankListPage
