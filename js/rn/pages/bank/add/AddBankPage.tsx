@@ -11,21 +11,21 @@ import {
 } from 'react-native'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { chunkArray } from '../../../tools/ChunkArr'
-import { getTrendData } from '../../../utils/getTrendData'
-import { TrendData } from '../../../interface/trendData'
+import { chunkArray } from '../../../public/tools/ChunkArr'
+import { getTrendData } from '../../../public/utils/getTrendData'
+import { TrendData } from '../../../public/interface/trendData'
 import Svg, { Line } from 'react-native-svg'
-import APIRouter from '../../../network/APIRouter'
-import { ChooseGameModal } from '../../ChooseGameModal'
-import PushHelper from '../../../define/PushHelper'
-import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
-import { OCHelper } from '../../../define/OCHelper/OCHelper'
-import { hideLoading, showLoading } from '../../../widget/UGLoadingCP'
-import { getGameList } from '../../../utils/getGameList'
-import { anyEmpty, arrayLength } from '../../../tools/Ext'
-import { scale } from '../../../tools/Scale'
-import { Skin1 } from '../../../theme/UGSkinManagers'
-import { LEFThemeColor } from '../../../theme/colors/LEFThemeColor'
+import APIRouter from '../../../public/network/APIRouter'
+import { ChooseGameModal } from '../../../public/components/ChooseGameModal'
+import PushHelper from '../../../public/define/PushHelper'
+import { BaseScreen } from '../../乐橙/component/BaseScreen'
+import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
+import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
+import { getGameList } from '../../../public/utils/getGameList'
+import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
+import { scale } from '../../../public/tools/Scale'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import { LEFThemeColor } from '../../../public/theme/colors/LEFThemeColor'
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
 import {
@@ -33,19 +33,19 @@ import {
   BankInfoParam,
   ManageBankCardData,
   ManageBankCardModel,
-} from '../../../network/Model/bank/ManageBankCardModel'
+} from '../../../public/network/Model/bank/ManageBankCardModel'
 import UseAddBank from './UseAddBank'
-import { ugLog } from '../../../tools/UgLog'
-import { UGColor, UGThemeColor } from '../../../theme/UGThemeColor'
-import { Res } from '../../../../Res/icon/Res'
-import EmptyView from '../../view/empty/EmptyView'
+import { ugLog } from '../../../public/tools/UgLog'
+import { UGColor, UGThemeColor } from '../../../public/theme/UGThemeColor'
+import { Res } from '../../../Res/icon/Res'
+import EmptyView from '../../../public/components/view/empty/EmptyView'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import UGDropDownPicker from './view/UGDropdownPicker'
 import { BankConst } from '../const/BankConst'
-import Button from '../../../views/tars/Button'
+import Button from '../../../public/views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
-import { BankDetailListData } from '../../../network/Model/bank/BankDetailListModel'
+import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -58,7 +58,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const AddBankComponent = ({ navigation, route }) => {
+const AddBankPage = ({ navigation, route }) => {
 
   const [loginPwd, setLoginPwd] = useState(null) //登录密码
   const [fundPwd, setFundPwd] = useState(null) //取款密码
@@ -438,4 +438,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default AddBankComponent
+export default AddBankPage
