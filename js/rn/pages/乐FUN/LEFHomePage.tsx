@@ -80,6 +80,7 @@ const LEFHomePage = ({navigation, setProps}) => {
       didFocus: async () => {
         switch (Platform.OS) {
           case 'android':
+            ugLog('ug page menu visible 2')
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
             break;
         }

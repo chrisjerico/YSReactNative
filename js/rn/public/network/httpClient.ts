@@ -1,5 +1,7 @@
+import { devConfig } from './../../../../config';
 import axios, { AxiosRequestConfig } from 'axios'
 import { Platform } from 'react-native'
+import UGUserModel from '../../redux/model/全局/UGUserModel'
 import { UGStore } from '../../redux/store/UGStore'
 import { ANHelper } from '../define/ANHelper/ANHelper'
 import { CMD } from '../define/ANHelper/hp/CmdDefine'
@@ -21,6 +23,7 @@ interface CustomAxiosConfig extends AxiosRequestConfig {
   cachePolicy: CachePolicyEnum
   expiredTime: number
   noToken?: boolean
+  orParams?: {[x:string]: any}
 }
 export const httpClient = axios.create({
   baseURL: AppDefine?.host,
@@ -68,6 +71,13 @@ httpClient.interceptors.response.use(
   (response) => {
     //@ts-ignore
     const { config }: { config: CustomAxiosConfig } = response
+
+    if (devConfig.isTest() && Platform.OS == 'ios') {
+      // api请求信息添加到iOS下拉调试页面
+      const data = JSON.parse(JSON.stringify(response?.data))
+      data.info = undefined;
+      OCHelper.call('LogVC.addRequestModel:', [{ selectors: 'CCSessionModel.new[setUrlString:][setParams:][setResObject:]', args1: [config?.url], args2: [Object.assign({token:UGUserModel.getToken()}, config?.orParams)], args3: [data] }]);
+    }
 
     //ugLog("http ful filled res 2 = ", JSON.stringify(response))
 
@@ -137,8 +147,9 @@ httpClient.interceptors.request.use(async (config: CustomAxiosConfig) => {
   }
 
   const params = Object.assign({}, publicParams, { ...config.params, ...config.data })
+  devConfig.isTest() && (config.orParams = params)
+  
   let { isEncrypt = true } = config
-
   let encryptData = await encryptParams(params, isEncrypt);
 
   //ugLog('http isEncrypt encryptData 1 =', isEncrypt, config.url, encryptData)

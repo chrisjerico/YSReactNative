@@ -24,6 +24,8 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
+import { ugLog } from '../../public/tools/UgLog'
+import { anyEmpty } from '../../public/tools/Ext'
 
 const { getHtml5Image } = useHtml5Image('http://t132f.fhptcdn.com')
 
@@ -83,13 +85,13 @@ const WNZHomePage = () => {
       }}
       subTypeNumColumns={4}
       renderSubType={({ item, index }) => {
-        const { title } = item
+        const { title, name } = item
         return (
           <Button
             key={index}
             containerStyle={styles.subTypeButton}
             titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
-            title={title}
+            title={anyEmpty(title) ? name : title}
             onPress={() => {
               PushHelper.pushHomeGame(item)
             }}
@@ -97,7 +99,8 @@ const WNZHomePage = () => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        ugLog('games title=', title, name)
         const flagType = parseInt(tipFlag)
         return (
           <View style={styles.gameContainer}>
@@ -107,7 +110,7 @@ const WNZHomePage = () => {
               showRightTopFlag={flagType > 0 && flagType < 4}
               showCenterFlag={flagType == 4}
               flagIcon={hotIcon}
-              title={name}
+              title={anyEmpty(title) ? name : title}
               containerStyle={{
                 width: '100%',
                 backgroundColor: '#ffffff',
@@ -143,7 +146,6 @@ const WNZHomePage = () => {
       }}
     />
   )
-
   return (
     <HomePage
       {...homeInfo}

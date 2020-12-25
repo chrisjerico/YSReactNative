@@ -80,8 +80,9 @@ export class UGStore {
   // 发送通知
   private static callbacks: { page: PageName; callback: () => void }[] = []
 
-  static dispatch<P>(act: UGAction<P>) {
+  static dispatch<P>(act: UGAction<P>, willRender = true) {
     this.globalProps = RootReducer(this.globalProps, act)
+    if (!willRender) return
     if (act.page) {
       for (const cb of this.callbacks) {
         cb.page == act.page && cb.callback()

@@ -112,7 +112,7 @@ export default (Page: Function) => {
             OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true])
             break
           case 'android':
-            ugLog('ug page menu')
+            ugLog('ug page menu visible 1')
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 })
             break
         }
@@ -124,9 +124,9 @@ export default (Page: Function) => {
       this.unsubscribe && this.unsubscribe()
     }
 
-    setProps<P>(props: P): void {
+    setProps<P>(props: P, willRender = true): void {
       // console.log('setProps, name = ', this.props.route.name, props);
-      UGStore.dispatch({ type: 'merge', page: this.props.route.name, props: props })
+      UGStore.dispatch({ type: 'merge', page: this.props.route.name, props: props }, willRender)
     }
 
     render() {
@@ -146,6 +146,6 @@ export default (Page: Function) => {
 }
 
 // 全局使用的setProps （刷新当前正在显示的页面）
-export function setProps<P extends UGBasePageProps>(props?: P, willRender?: boolean): void {
-  UGStore.dispatch({ type: 'merge', page: getCurrentPage(), props: props })
+export function setProps<P extends UGBasePageProps>(props?: P, willRender = true): void {
+  UGStore.dispatch({ type: 'merge', page: getCurrentPage(), props: props }, willRender)
 }
