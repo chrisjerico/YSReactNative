@@ -15,12 +15,14 @@ export enum PageName {
   LotteryHistoryPage = 'LotteryHistoryPage',//彩票投注记录
   SafeCenterPage = 'SafeCenterPage',//安全中心
   ManageBankListComponent = 'ManageBankListComponent',//银行卡管理（我的提款账户列表）
-  CapitalComponent = 'CapitalComponent',//存款取款资金明细
+  CapitalPage = 'CapitalPage',//存款取款资金明细
   AddBankComponent = 'AddBankComponent',//添加提款账户
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',//虚拟币充值教程
   TrendView = 'TrendView',//开奖走势
   LottoSelector = 'LottoSelector',//切换彩种页
   LottoBetting = 'LottoBetting',//下注页（未完成）
+  JDSigInPage = 'JDSigInPage',//签到
+  JDFeedBackPage = 'JDFeedBackPage',//建议反馈
 
 
   // ———————————— 模板页面 —————————————
@@ -78,6 +80,9 @@ export enum PageName {
   LEFSignInPage = 'LEFSignInPage',//乐FUN-登录
   LEFSignUpPage = 'LEFSignUpPage',//乐FUN-注册
 
+  GameHallPage = 'GameHallPage', //彩票大厅页（第三样式）
+  FreedomHallPage = 'FreedomHallPage', //自由大厅页
+
   KSHomePage = 'KSHomePage',//凯时-首页
   KSSignInPage = 'KSSignInPage',//凯时-登录
   KSSignUpPage = 'KSSignUpPage',//凯时-注册
@@ -97,4 +102,13 @@ export enum PageName {
   TransferTKLMainView = 'TransferTKLMainView',
   TransferView = 'TransferView',
   SupFeedbackSubmitView = 'SupFeedbackSubmitView',
+
+  GDRegisterPage = 'GDRegisterPage',
+  GDLoginPage = 'GDLoginPage',
+
+  VietnamHome = 'VietnamHome',
+  VietnamLogin = 'VietnamLogin',
+  VietnamRegister = 'VietnamRegister',
+  VietnamMine = 'VietnamMine',
+  VietnamGameList = 'VietnamGameList',
 }

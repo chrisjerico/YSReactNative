@@ -1,4 +1,5 @@
 import {
+  Alert,
   Dimensions,
   Image,
   SafeAreaView,
@@ -9,7 +10,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native'
-import { navigate, pop } from '../../public/navigation/RootNavigation'
+import { navigate, pop, push } from '../../public/navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import * as React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -28,6 +29,7 @@ import LetterVerificationCode from '../common/LetterVerificationCode'
 import { hideLoading, showLoading } from '../../public/widget/UGLoadingCP'
 import { ToastError, ToastSuccess } from '../../public/tools/tars'
 import { AgentType } from '../../public/models/Enum'
+import ReloadSlidingVerification from '../../public/components/tars/ReloadSlidingVerification'
 
 interface RegisterData {
   acc: string
@@ -47,19 +49,17 @@ interface RegisterData {
 const LCRegisterPage = ({ navigation, setProps }) => {
   const [regType, setRegType] = useState<'user' | 'agent'>('user')
   const [data, setData] = useState<RegisterData>({ acc: '', pwd: '', confirmPwd: '', phoneNumber: '' })
-  const [code, setCode] = useState('')
-  const SystemStore = UGStore.globalProps.sysConf
   const regex = RegExp('^[A-Za-z0-9]{6,15}$')
   const [showPwd, setShowPwd] = useState(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState(false)
   const [showFundPwd, setShowFundPwd] = useState(false)
-  const { show, onChange, sign } = useSignUpPage({
+  const { show, onChange, sign, reference } = useSignUpPage({
     homePage: PageName.LCHomePage,
     signInPage: PageName.LCLoginPage,
   })
   const [haveBottomTab, setHaveBottomTab] = useState(false)
   const { signUp } = sign
-  const { showRecommendGuy } = show
+  const { showRecommendGuy, showSms, showName, showEmail, showInviteCode, showAgentButton, showFundPassword, showPhoneNumber, showQQ, showSlideCode, showWx } = show
   const {
     onChangeRecommendGuy,
     onChangeAccount,
@@ -77,72 +77,34 @@ const LCRegisterPage = ({ navigation, setProps }) => {
     onChangeInviteCode,
   } = onChange
 
-  const {
-    mobile_logo = '',
-    rankingListSwitch,
-    hide_reco, // 代理人 0不填，1选填，2必填
-    reg_name, // 真实姓名 0不填，1选填，2必填
-    reg_fundpwd, // 取款密码 0不填，1选填，2必填
-    reg_qq, // QQ 0不填，1选填，2必填
-    reg_wx, // 微信 0不填，1选填，2必填
-    reg_phone, // 手机 0不填，1选填，2必填
-    reg_email, // 邮箱 0不填，1选填，2必填
-    reg_vcode, // 0无验证码，1图形验证码 2滑块验证码 3点击显示图形验证码
-    pass_limit, // 注册密码强度，0、不限制；1、数字字母；2、数字字母符合
-    pass_length_min, // 注册密码最小长度
-    pass_length_max, // 注册密码最大长度,
-    agentRegbutton,// 是否开启代理注册，0=关闭；1=开启
-    smsVerify, // 手机短信验证
-    showInviteCode,
-  } = SystemStore
-
   useEffect(() => {
     AppDefine.checkHeaderShowBackButton((status) => {
-      console.log('stat', status)
       setHaveBottomTab(status)
       setProps()
     })
   }, [])
-  useEffect(() => {
-    console.log('smsVerify', smsVerify)
-  }, [smsVerify])
 
-  const reRenderCode = async () => {
-    try {
-      const { data } = await APIRouter.secure_imgCaptcha()
-      setCode(data)
-    } catch (error) {
-    }
-  }
+  const fetchSms = async (phoneNumber) => {
+    if(phoneNumber) {
+      try {
+        showLoading()
+        const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
+        const { code, msg } = data ?? {}
 
-  const fetchSms = async () => {
-    try {
-      showLoading()
-      const { data } = await APIRouter.secure_smsCaptcha(data.phoneNumber)
-      const { code, msg } = data ?? {}
-
-      hideLoading()
-      if (code != 0) {
-        throw { message: msg }
-      } else {
-        ToastSuccess(msg)
+        hideLoading()
+        if (code != 0) {
+          throw { message: msg }
+        } else {
+          ToastSuccess(msg)
+        }
+      } catch (error) {
+        hideLoading()
+        ToastError(error?.message)
       }
-    } catch (error) {
-      hideLoading()
-      ToastError(error?.message)
+    } else {
+      Alert.alert('请填写手机号')
     }
   }
-
-  const getVcode = useMemo(() => {
-    ugLog('sliding reg_vcode=', reg_vcode)
-    if (reg_vcode == 0) {
-      return null
-    } else if (reg_vcode == 3 || reg_vcode == 1) {
-      return <LetterVerificationCode reg_vcode={reg_vcode} onPress={reRenderCode} code={code} />
-    } else {
-      return <SlidingVerification onChange={onChangeSlideCode} />
-    }
-  }, [reg_vcode, code])
 
   return (
     <SafeAreaView style={{ backgroundColor: 'gold', flex: 1 }}>
@@ -249,9 +211,9 @@ const LCRegisterPage = ({ navigation, setProps }) => {
             </View>
             {data.pwd != '' && data.pwd != data.confirmPwd &&
             <Text style={{ marginTop: 12, fontSize: 12, color: '#e00013' }}>*密码不一致</Text>}
-            <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={reg_name}
+            <RegisterItem placeHolder={'请输入真实姓名'} iconName={'user-o'} config={showName}
                           onChangeText={(text) => onChaneRealName(text)} />
-            <View style={{
+            {showFundPassword && <View style={{
               flexDirection: 'row',
               paddingVertical: 10,
               borderWidth: 1,
@@ -269,21 +231,21 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                 <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
                        source={{ uri: showFundPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
               </TouchableWithoutFeedback>
-            </View>
-            <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={reg_qq}
+            </View>}
+            <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={showQQ}
                           onChangeText={(text) => onChaneQQ(text)} />
-            <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={reg_wx}
+            <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={showWx}
                           onChangeText={(text) => onChaneWeChat(text)} />
-            <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={reg_phone}
+            <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={showPhoneNumber || showSms}
                           onChangeText={(text) => {
                             onChanePhone(text)
                             setData({ ...data, phoneNumber: text })
                           }} />
-            <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={smsVerify}
-                          onChangeText={(text) => onChaneSms(text)} onPressSms={fetchSms} />
-            <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={reg_email}
+            <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={showSms}
+                          onChangeText={(text) => onChaneSms(text)} onPressSms={() => fetchSms(data.phoneNumber)} />
+            <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={showEmail}
                           onChangeText={(text) => onChangeEmail(text)} />
-            {agentRegbutton == '1' ?
+            {showAgentButton ?
               <View style={{
                 marginTop: 8,
                 justifyContent: 'center',
@@ -293,6 +255,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                 marginHorizontal: 122,
                 paddingVertical: 2,
                 borderRadius: 4,
+                minWidth: 135,
               }}>
                 <TouchableWithoutFeedback onPress={() => {
                   onChangeAgent(AgentType.用户注册)
@@ -324,16 +287,24 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                 </TouchableWithoutFeedback>
               </View>
               : null}
-            {getVcode}
+            <ReloadSlidingVerification
+              ref={reference?.slideCodeRef}
+              show={true}
+              onChange={onChangeSlideCode}
+              backgroundColor={'#ffffff'}
+              containerStyle={{
+                backgroundColor: '#ffffff',
+              }}
+            />
             <TouchableOpacity
               onPress={signUp}
               style={{ paddingVertical: 16, marginTop: 12, borderRadius: 8, backgroundColor: '#ff9c06' }}>
               <Text style={{ alignSelf: 'center', color: 'white', fontSize: 16 }}>注册</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate(PageName.LCLoginPage)}>
+            <TouchableOpacity onPress={() => push(PageName.LCLoginPage)}>
               <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回登录</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate(PageName.LCHomePage)}>
+            <TouchableOpacity onPress={() => push(PageName.LCHomePage)}>
               <Text style={{ marginTop: 28, alignSelf: 'center', color: '#7e7e7e' }}>返回首页</Text>
             </TouchableOpacity>
           </ScrollView>
@@ -344,47 +315,3 @@ const LCRegisterPage = ({ navigation, setProps }) => {
 }
 
 export default LCRegisterPage
-
-const SlidingVerification = ({ onChange }: { onChange: (data: any) => void }) => {
-  const webViewScript = `setTimeout(function() {
-document.getElementById('app').style.background = 'white'
-window.ReactNativeWebView.postMessage(document.getElementById('nc_1-stage-1').offsetHeight);
-}, 500);
-true;`
-  const [webviewHeight, setWebViewHeight] = useState(0)
-  const hadnleMessage = (e: WebViewMessageEvent) => {
-    let eData = e?.nativeEvent?.data
-    console.log('sliding response: ' + eData)
-
-    if (typeof eData == 'string') {
-      setWebViewHeight(parseInt(eData) * 1.5)
-    } else {
-      onChange(eData)
-    }
-  }
-  const webViewRef = useRef<WebView>()
-  useEffect(() => {
-    const listener = EventRegister.addEventListener('reload', (data) => {
-      webViewRef?.current?.reload()
-    })
-    return (() => EventRegister.removeEventListener(this.listener))
-  }, [])
-
-  let slidingUrl = `${AppDefine.host}/dist/index.html#/swiperverify?platform=native`
-  ugLog('slidingUrl=' + slidingUrl)
-
-  return (
-    <View style={{ height: webviewHeight }}>
-      <WebView
-        ref={webViewRef}
-        style={{ minHeight: webviewHeight, backgroundColor: 'white' }}
-        containerStyle={{ backgroundColor: 'white', height: 10 }}
-        javaScriptEnabled
-        injectedJavaScript={webViewScript}
-        startInLoadingState
-        source={{ uri: slidingUrl }}
-        onMessage={hadnleMessage}
-      />
-    </View>
-  )
-}

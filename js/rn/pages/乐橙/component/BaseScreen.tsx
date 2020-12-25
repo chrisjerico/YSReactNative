@@ -4,16 +4,18 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { pop } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
+import { UGColor } from '../../../public/theme/UGThemeColor'
 
 interface BaseScreenProps {
     children?: any
-    screenName: string
+    screenName: string //标题
     style?: StyleProp<ViewStyle>
     icon?: 'angle-left' | 'home'
+    hideLeft?: boolean // 隐藏左边的按钮
     rightButton?: JSX.Element
 }
 
-export const BaseScreen = ({children, screenName, style, icon, rightButton}: BaseScreenProps) => {
+export const BaseScreen = ({children, screenName, style, icon, hideLeft, rightButton}: BaseScreenProps) => {
     return (
         <View style={[{flex: 1, backgroundColor: Skin1.homeContentColor}, style]}>
             <SafeAreaView style={{backgroundColor: Skin1.themeColor, borderBottomColor: "#cccccc", borderBottomWidth: 1}}>

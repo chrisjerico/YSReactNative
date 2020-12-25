@@ -1,18 +1,18 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../../tools/Ext'
-import { scale } from '../../../../../tools/Scale'
-import { UGColor } from '../../../../../theme/UGThemeColor'
-import EmptyView from '../../../../view/empty/EmptyView'
-import { WithdrawalListData } from '../../../../../network/Model/wd/WithdrawalRecordModel'
-import CommStyles from '../../../../../../pages/base/CommStyles'
+import { anyEmpty } from '../../../../../public/tools/Ext'
+import { scale } from '../../../../../public/tools/Scale'
+import { UGColor } from '../../../../../public/theme/UGThemeColor'
+import EmptyView from '../../../../../public/components/view/empty/EmptyView'
+import { WithdrawalListData } from '../../../../../public/network/Model/wd/WithdrawalRecordModel'
+import CommStyles from '../../../../base/CommStyles'
 import UseCapitalDetailRecordList from './UseCapitalDetailRecordList'
-import { CapitalListData } from '../../../../../network/Model/wd/CapitalDetailModel'
-import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
+import { CapitalListData } from '../../../../../public/network/Model/wd/CapitalDetailModel'
+import UGDropDownPicker from '../../../../../public/components/bank/add/view/UGDropdownPicker'
 import Icon from 'react-native-vector-icons/Entypo'
-import { ugLog } from '../../../../../tools/UgLog'
+import { ugLog } from '../../../../../public/tools/UgLog'
 import { Calendar } from 'react-native-plain-calendar'
-import { Skin1 } from '../../../../../theme/UGSkinManagers'
+import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import { useState } from 'react'
 
 /**
@@ -22,8 +22,8 @@ import { useState } from 'react'
  */
 const CapitalDetailListComponent = () => {
 
-  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //选择开始日期
-  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //选择结束日期
+  const [selectStartDate, setSelectStartDate] = useState<boolean>(false) //正在选择开始日期
+  const [selectEndDate, setSelectEndDate] = useState<boolean>(false) //正在选择结束日期
   const [startDate, setStartDate] = useState<string>(null)//选中的开始日期
   const [endDate, setEndDate] = useState<string>(null)//选中的开始日期
 
@@ -44,10 +44,14 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendarTitle = () => <View>
     <View style={_styles.text_title_container}>
-      <Text style={_styles.calendar_item_title}>{'日间'}</Text>
+      <Text style={_styles.calendar_item_title}>{'日期'}</Text>
       <TouchableWithoutFeedback onPress={() => {
-        setSelectEndDate(false)
-        setSelectStartDate(!selectStartDate)
+        //如果另外一个日历打开的，先关闭掉
+        if (selectEndDate) {
+          setSelectEndDate(false)
+        } else {
+          setSelectStartDate(!selectStartDate)
+        }
       }}>
         <View style={_styles.calendar_item_container}>
           <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
@@ -56,8 +60,12 @@ const CapitalDetailListComponent = () => {
       </TouchableWithoutFeedback>
       <Text style={_styles.calendar_item_title}>{'至'}</Text>
       <TouchableWithoutFeedback onPress={() => {
-        setSelectStartDate(false)
-        setSelectEndDate(!selectEndDate)
+        //如果另外一个日历打开的，先关闭掉
+        if (selectStartDate) {
+          setSelectStartDate(false)
+        } else {
+          setSelectEndDate(!selectEndDate)
+        }
       }}>
         <View style={_styles.calendar_item_container}>
           <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
@@ -79,7 +87,7 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendar = () => (
     selectStartDate || selectEndDate ?
-      <View style={{ position: 'absolute', backgroundColor: 'white', width: '100%' }}>
+      <View style={_styles.calendar_wid}>
         <Calendar.Picker onDayPress={(date: Date) => {
           let curDate = date.format('yyyy-MM-dd')
           ugLog('renderCalendar date=', curDate)
@@ -228,6 +236,12 @@ const _styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  calendar_wid: {
+    position: 'absolute',
+    backgroundColor: UGColor.BackgroundColor2,
+    width: '100%',
+    paddingBottom: scale(32),
   },
   calendar_item_container: {
     backgroundColor: 'white',

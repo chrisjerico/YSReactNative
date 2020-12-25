@@ -115,6 +115,7 @@ const LCHomePage = ({ setProps }) => {
                 customHeight={150} />}
         {navs.length > 0 && (
           <NavBlock
+            info={info}
             navs={navs}
             containerStyle={{ alignItems: 'center' }}
             renderNav={(item, index) => {

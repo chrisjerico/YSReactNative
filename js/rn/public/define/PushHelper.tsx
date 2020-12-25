@@ -19,6 +19,8 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
+import { anyEmpty } from '../tools/Ext'
+import { UGStore } from '../../redux/store/UGStore'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -69,6 +71,9 @@ export default class PushHelper {
   }
   // 登出
   static async pushLogout() {
+    //已退出不能重复执行
+    if(anyEmpty(UGStore.globalProps.userInfo?.uid)) return
+
     switch (Platform.OS) {
       case 'ios':
         await OCHelper.call('UGUserModel.setCurrentUser:', [])
@@ -394,6 +399,10 @@ export default class PushHelper {
             // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
+          case UGUserCenterType.即时注单: {
+            OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, 24])
+            break
+          }
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
@@ -408,8 +417,8 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
-              navigate(PageName.CapitalComponent, {})
-              // return
+              push(PageName.CapitalPage)
+              return
             }
             subId = MenuType.CZ
             break
@@ -424,7 +433,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
-              navigate(PageName.ManageBankListComponent, {})
+              push(PageName.ManageBankListComponent)
               return
             // }
             // subId = MenuType.YHK
@@ -436,6 +445,14 @@ export default class PushHelper {
           }
           case UGUserCenterType.推荐收益: {
             subId = MenuType.SYTJ
+            break
+          }
+          case UGUserCenterType.即时注单: {
+            subId = MenuType.JSZD
+            break
+          }
+          case UGUserCenterType.彩票注单记录: {
+            subId = MenuType.TZJL
             break
           }
           case UGUserCenterType.彩票注单记录: {

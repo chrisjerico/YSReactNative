@@ -6,10 +6,10 @@ interface NavBlockProps {
     navs: any[];
     containerStyle?: ViewStyle;
     renderNav: (item: any, index: number) => any;
+    info: any
 }
 
-const NavBlock = ({renderNav, containerStyle}: NavBlockProps) => {
-    const { info } = useHomePage({})
+const NavBlock = ({renderNav, containerStyle, info}: NavBlockProps) => {
     const { homeInfo } = info
     const { navs} = homeInfo
     return (

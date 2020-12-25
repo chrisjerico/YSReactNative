@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react'
-import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle } from 'react-native'
+import { Animated, StyleSheet, Text, View, ViewStyle, StyleProp, TextStyle, Easing } from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { RankingListType } from '../../models/Enum'
 import { scale } from '../../tools/Scale'
@@ -25,6 +25,8 @@ interface AnimatedRankComponentProps {
   iconStyle?: StyleProp<TextStyle>
 }
 
+const itemHeight = 30
+
 const AnimatedRankComponent = ({
   containerStyle,
   iconTitleContainerStyle,
@@ -39,19 +41,24 @@ const AnimatedRankComponent = ({
   iconStyle,
 }: AnimatedRankComponentProps) => {
   const listHeight = 180
-  const itemHeight = 40
   const count = rankLists?.length
-  const height = useRef(new Animated.Value(listHeight)).current
+  const height = useRef(new Animated.Value(0)).current
+
+  // 往末尾插入6条数据，在倒数第6条时再回到第一条，使效果看起来像是衔接着循环滚动一样
+  rankLists = rankLists.concat(rankLists.filter((v, i) => {
+    if (i < 6) return v
+  }))
 
   const animated = () => {
     Animated.timing(height, {
-      toValue: -(count * itemHeight),
+      toValue: -(count * itemHeight + 100),
       delay: 1000,
       duration: (count + 4.5) * duration,
       useNativeDriver: true,
+      easing: Easing.linear,
     }).start(({ finished }) => {
       if (finished) {
-        height?.setValue(listHeight)
+        height?.setValue(0)
         animated()
       }
     })
@@ -147,7 +154,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: 30,
+    height: itemHeight,
     marginVertical: 5,
   },
   title: {
