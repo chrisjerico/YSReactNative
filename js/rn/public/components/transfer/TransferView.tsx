@@ -100,8 +100,7 @@ export const TransferView = ({ setProps, navigation }) => {
         data && Alert.alert('转入成功')
         UGUserModel.updateFromNetwork()
       }).catch((err) => {
-        Alert.alert('转入失败')
-        Alert.alert(err)
+        //Alert.alert('转入失败')
       })
     }
   }
