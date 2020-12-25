@@ -18,13 +18,13 @@ import { number, string } from 'prop-types';
 import { pop } from '../../../public/navigation/RootNavigation';
 
 interface JDWriteMessagePage {
-  list?: UGSignInHistoryModel[]
-  imgPaths?: string[]
-  type?: number
-  messageType?:string
+  list?: UGSignInHistoryModel[]  //添加图片fastList 数据
+  imgPaths?: string[]           //图片上传数据
+  type?: number                  //反馈类型 0 建议  1 投诉
+  messageType?:string           //反馈类型：提交建议   反馈类型：我要投诉
 }
 
-const itemWith = (AppDefine.width - 120) / 3;
+const itemWith = (AppDefine.width - 120) / 3; //图片的宽 高
 
 const JDWriteMessagePage = ({setProps}) => {
 
