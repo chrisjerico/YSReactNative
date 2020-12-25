@@ -29,7 +29,7 @@ import WebView from 'react-native-webview'
  * @param navigation
  * @constructor
  */
-const ManageBankListComponent = ({ navigation, setProps }) => {
+const ManageBankListPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -137,7 +137,7 @@ const ManageBankListComponent = ({ navigation, setProps }) => {
     if (anyEmpty(userInfo?.fullName)) {
       needNameInputRef?.current?.reload()
     } else {
-      push(PageName.AddBankComponent, {
+      push(PageName.AddBankPage, {
         refreshBankList: (accountType: string) => {
           // ugLog('accountType=', accountType)
           categoryData?.map((item, index) => {
@@ -285,4 +285,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default ManageBankListComponent
+export default ManageBankListPage

@@ -433,7 +433,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
-              push(PageName.ManageBankListComponent)
+              push(PageName.ManageBankListPage)
               return
             // }
             // subId = MenuType.YHK

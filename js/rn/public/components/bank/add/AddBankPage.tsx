@@ -58,7 +58,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const AddBankComponent = ({ navigation, route }) => {
+const AddBankPage = ({ navigation, route }) => {
 
   const [loginPwd, setLoginPwd] = useState(null) //登录密码
   const [fundPwd, setFundPwd] = useState(null) //取款密码
@@ -438,4 +438,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default AddBankComponent
+export default AddBankPage

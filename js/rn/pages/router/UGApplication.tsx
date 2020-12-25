@@ -75,8 +75,8 @@ import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import CodePush from 'react-native-code-push'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
-import ManageBankListComponent from '../../public/components/bank/list/ManageBankListComponent'
-import AddBankComponent from '../../public/components/bank/add/AddBankComponent'
+import ManageBankListPage from '../../public/components/bank/list/ManageBankListPage'
+import AddBankPage from '../../public/components/bank/add/AddBankPage'
 import CapitalPage from '../cpt/list/CapitalPage'
 import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
@@ -98,9 +98,9 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.FreedomHallPage, UGPage(FreedomHallPage)],//自由大厅页
   [PageName.SeriesLobbyPage, UGPage(SeriesLobbyPage)],// 游戏大厅二级页面（xx系列游戏列表）
   [PageName.TrendView, UGPage(TrendView)],//开奖走势
-  [PageName.ManageBankListComponent, UGPage(ManageBankListComponent)],//银行卡管理（我的提款账户列表）
+  [PageName.ManageBankListPage, UGPage(ManageBankListPage)],//银行卡管理（我的提款账户列表）
   [PageName.CapitalPage, UGPage(CapitalPage)],//存款取款资金明细
-  [PageName.AddBankComponent, UGPage(AddBankComponent)],//添加提款账户
+  [PageName.AddBankPage, UGPage(AddBankPage)],//添加提款账户
   [PageName.LottoBetting, UGPage(LottoBetting)],//下注页（未完成）
   [PageName.UserMessagePage, UGPage(UserMessagePage)],//站内信
   [PageName.UserInfoPage, UGPage(UserInfoPage)],// 用户信息页
