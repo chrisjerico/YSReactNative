@@ -22,14 +22,14 @@ const UseDepositRecordList = () => {
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
-                                      requestDepositData({ clear: true, selPage: 1 })
+                                      requestDepositData({ clear: true })
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestDepositData({ clear: true, selPage: 1 })
+    requestDepositData({ clear: true })
   }, [])
 
   /**
@@ -42,7 +42,10 @@ const UseDepositRecordList = () => {
     //pageIndex为1的时候，不再执行加载更多
     if(!clear && pageIndex == 1) return
 
-    clear && setRefreshing(true)
+    if (clear) {//从第1页开始请求
+      setRefreshing(true)
+      selPage = 1
+    }
     const date = new Date().format('yyyy-MM-dd')
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
