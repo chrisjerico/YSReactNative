@@ -1,3 +1,4 @@
+import { devConfig } from './../../../../../config';
 import { UGStore } from './../../../redux/store/UGStore';
 import { Platform } from 'react-native';
 import { api_activity } from './api/api_activity';
@@ -29,7 +30,7 @@ import UGUserModel from '../../../redux/model/全局/UGUserModel';
 // 校验错误信息
 export function CheckError(sm: CCSessionModel<any>): Error {
 
-  if (Platform.OS == 'ios') {
+  if (devConfig.isTest() && Platform.OS == 'ios') {
     // api请求信息添加到iOS下拉调试页面
     const params = { ...sm.params, token: UGUserModel.getToken() };
     sm.res.info = undefined

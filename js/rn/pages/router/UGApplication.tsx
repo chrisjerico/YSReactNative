@@ -94,7 +94,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.PromotionListPage, UGPage(PromotionListPage)],//优惠活动列表
   [PageName.JDPromotionListPage, UGPage(JDPromotionListPage)],//优惠活动列表
   [PageName.PromotionPage, PromotionPage],//优惠活动
-  [PageName.GameHallPage, UGPage(GameHallPage)],///彩票大厅页
+  [PageName.GameHallPage, UGPage(GameHallPage)],///彩票大厅页（样式三）
   [PageName.FreedomHallPage, UGPage(FreedomHallPage)],//自由大厅页
   [PageName.SeriesLobbyPage, UGPage(SeriesLobbyPage)],// 游戏大厅二级页面（xx系列游戏列表）
   [PageName.TrendView, UGPage(TrendView)],//开奖走势
