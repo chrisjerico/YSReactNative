@@ -121,6 +121,17 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)],//彩票投注记录
   [PageName.JDSigInPage, UGPage(JDSigInPage)],//签到
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)],//建议反馈
+  [PageName.AlipayView, UGPage(AlipayView)],
+  [PageName.AlipayTransferView, UGPage(AlipayTransferView)],
+  [PageName.AlipayTransferRecordView, UGPage(AlipayTransferRecordView)],
+  [PageName.AlipayProfitView, UGPage(AlipayProfitView)],
+  [PageName.FeedbackView, UGPage(FeedbackView)],
+  [PageName.FeedbackSubmitView, UGPage(FeedbackSubmitView)],
+  [PageName.FeedbackRecordView, UGPage(FeedbackRecordView)],
+  [PageName.SupFeedbackSubmitView, UGPage(SupFeedbackSubmitView)],
+  [PageName.TransferRecordView, UGPage(TransferRecordView)],
+  [PageName.TransferView, UGPage(TransferView)],
+  [PageName.TransferTKLMainView, UGPage(TransferTKLMainView)],
 
 
   // ———————————— 模板页面 —————————————
@@ -227,17 +238,6 @@ const StackScreens = () => {
       }).filter((v) => {
         if (v) return v;
       })}
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayView} component={UGPage(AlipayView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayTransferView} component={UGPage(AlipayTransferView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayTransferRecordView} component={UGPage(AlipayTransferRecordView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.AlipayProfitView} component={UGPage(AlipayProfitView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackView} component={UGPage(FeedbackView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackSubmitView} component={UGPage(FeedbackSubmitView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.FeedbackRecordView} component={UGPage(FeedbackRecordView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.SupFeedbackSubmitView} component={UGPage(SupFeedbackSubmitView)} />
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferRecordView} component={UGPage(TransferRecordView)}/>
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferView} component={UGPage(TransferView)}/>
-      <Router.StackScreen options={{ headerShown: false }} name={PageName.TransferTKLMainView} component={UGPage(TransferTKLMainView)}/>
     </Router.StackNavigator>
   )
 }
