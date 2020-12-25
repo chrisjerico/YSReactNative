@@ -8,7 +8,7 @@ import { WithdrawalListData } from '../../../../../public/network/Model/wd/Withd
 import CommStyles from '../../../../base/CommStyles'
 import UseCapitalDetailRecordList from './UseCapitalDetailRecordList'
 import { CapitalListData } from '../../../../../public/network/Model/wd/CapitalDetailModel'
-import UGDropDownPicker from '../../../../../public/components/bank/add/view/UGDropdownPicker'
+import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
 import Icon from 'react-native-vector-icons/Entypo'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { Calendar } from 'react-native-plain-calendar'
