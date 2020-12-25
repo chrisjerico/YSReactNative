@@ -81,6 +81,7 @@ export enum UGColor {
   RedColor2 = '#da4453',
   RedColor3 = '#fc6e51',
   RedColor4 = '#e9573f',
+  RedColor5 = '#e3080c',
   YellowColor1 = '#ffce54',
   YellowColor2 = '#f6bb42',
   GreenColor1 = '#a0d468',
@@ -91,6 +92,7 @@ export enum UGColor {
   BlueColor2 = '#3bafda',
   BlueColor3 = '#5d9cec',
   BlueColor4 = '#4a89dc',
+  BlueColor6 = '#0a5196',
   PurpleColor1 = '#ac92ec',
   PurpleColor2 = '#967adc',
   PinkColor1 = '#ec87c0',
@@ -100,6 +102,7 @@ export enum UGColor {
   LineColor1 = '#ccc',
   LineColor2 = '#aaa',
   LineColor3 = '#eee',
+  LineColor4 = '#ddd',
 
   // 背景色
   BackgroundColor1 = '#FBFBFB',

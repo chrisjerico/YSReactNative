@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native'
 import * as React from 'react'
 import { useRef, useState } from 'react'
-import { BaseScreen } from '../../../../pages/乐橙/component/BaseScreen'
-import { anyEmpty } from '../../../tools/Ext'
-import { scale } from '../../../tools/Scale'
-import { Skin1 } from '../../../theme/UGSkinManagers'
+import { BaseScreen } from '../../乐橙/component/BaseScreen'
+import { anyEmpty } from '../../../public/tools/Ext'
+import { scale } from '../../../public/tools/Scale'
+import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
-import { UGColor } from '../../../theme/UGThemeColor'
-import EmptyView from '../../view/empty/EmptyView'
+import { UGColor } from '../../../public/theme/UGThemeColor'
+import EmptyView from '../../../public/components/view/empty/EmptyView'
 import UseCapital from './UseCapital'
 import { CapitalConst } from '../const/CapitalConst'
 import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
@@ -19,7 +19,7 @@ import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
  * @param navigation
  * @constructor
  */
-const CapitalComponent = ({ navigation, setProps }) => {
+const CapitalPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
@@ -58,7 +58,8 @@ const CapitalComponent = ({ navigation, setProps }) => {
           anyEmpty(categoryData)
             ? <EmptyView style={{ flex: 1 }}/>
             : <ScrollableTabView
-              tabBarUnderlineStyle={_styles.tab_bar_underline}
+              tabBarUnderlineStyle={[_styles.tab_bar_underline,
+                { backgroundColor: Skin1.themeColor }]}
               tabBarActiveTextColor={Skin1.themeColor}
               tabBarInactiveTextColor={Skin1.textColor1}
               tabBarTextStyle={{ fontSize: scale(20) }}
@@ -86,7 +87,6 @@ const _styles = StyleSheet.create({
   },
   tab_bar_underline: {
     height: scale(3),
-    backgroundColor: Skin1.themeColor,
   },
   item_container: {
     paddingHorizontal: scale(32),
@@ -135,4 +135,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default CapitalComponent
+export default CapitalPage

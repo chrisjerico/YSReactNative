@@ -60,9 +60,10 @@ export default (Page: Function) => {
         }
         this.setProps({})
       })
-      navigation.removeListener("transitionEnd", null)
-      navigation.addListener("transitionEnd", (e) => {
-        if (e.data.closing && navigationRef?.current?.getRootState().routes.length == 1) {
+      navigation.removeListener('transitionEnd', null)
+      navigation.addListener('transitionEnd', (e) => {
+        ugLog('当前routes=', e?.data?.closing, navigationRef?.current?.getRootState()?.routes?.length)
+        if (e?.data?.closing && navigationRef?.current?.getRootState()?.routes?.length == 1) {
           this._showMainTab()
         }
       })
@@ -111,7 +112,7 @@ export default (Page: Function) => {
             OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true])
             break
           case 'android':
-            ugLog('ug page menu')
+            ugLog('ug page menu visible 1')
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, { visibility: 0 })
             break
         }

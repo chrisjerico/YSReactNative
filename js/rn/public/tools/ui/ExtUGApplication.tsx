@@ -22,7 +22,6 @@ export default class ExtUGApplication {
     PageName.ZLHomePage,
     PageName.ZLMinePage,
     PageName.ZLLoginPage,
-    PageName.ZLRegisterPage,
     PageName.WNZSignInPage,
     PageName.WNZSignUpPage,
     PageName.HJHomePage,
@@ -45,23 +44,20 @@ export default class ExtUGApplication {
     PageName.BYHomePage,
     PageName.BYMinePage,
     PageName.LEFHomePage,
+    PageName.GameHallPage,
+    PageName.FreedomHallPage,
     PageName.LEFMinePage,
     PageName.UpdateVersionPage,
-    PageName.JDPromotionListPage,
   ]
 
   //在Application初始化之前使用，只能手动初始化 stack列表
   //Router.PageNameLists.stackList
   static STACK_LIST = [
     PageName.ZLRegisterPage,
-    PageName.JDPromotionListPage,
-    PageName.PromotionListPage,
     PageName.BZHSignUpPage,
     PageName.BZHSignInPage,
     PageName.LottoBetting,
     PageName.ZLMinePage,
-    PageName.WNZHomePage,
-    PageName.WNZMinePage,
     PageName.KSSignInPage,
     PageName.KSSignUpPage,
     PageName.LLRegisterPage,
@@ -85,7 +81,7 @@ export default class ExtUGApplication {
         //     : PageName[ANHelper.callSync(CMD.CURRENT_PAGE)];
         let currentScene
         // B_DEBUG ?
-        //   currentScene = PageName[PageName.BZHHomePage] :
+        //   currentScene = PageName[PageName.WNZHomePage] :
           currentScene = PageName[ANHelper.callSync(CMD.CURRENT_PAGE)]
         ugLog('ext currentScene=', currentScene)
         if (anyEmpty(currentScene)) {

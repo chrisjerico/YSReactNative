@@ -26,7 +26,7 @@ export enum CMD {
   UNIVERSAL = 'UNIVERSAL', //万能函数
   AN_VERSION = 'AN_VERSION', //版本号
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
-  FINISH_ACTIVITY = 'FINISH_ACTIVITY',        //关闭activity
+  FINISH_ACTIVITY = 'FINISH_ACTIVITY', //关闭activity
   APP_THEME_COLOR = 'UGSkinManagers.currentSkin.navBarBgColor.hexString', //设置主题色
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
   CURRENT_PAGE = 'CURRENT_PAGE', //当前的界面
@@ -43,27 +43,31 @@ export enum CMD {
   ASK_FOR_TOKEN = 'ASK_FOR_TOKEN', //得到 token
   ASK_FOR_TOKEN_AND_RSA = 'ASK_FOR_TOKEN_AND_RSA', //得到 token和rsa
   ACCESS_TOKEN = 'ACCESS_TOKEN', //得到 access token
-  SAVE_DATA = 'SAVE_DATA',      //存储数据
-  LOAD_DATA = 'LOAD_DATA'      //加载数据
+  SAVE_DATA = 'SAVE_DATA', //存储数据
+  LOAD_DATA = 'LOAD_DATA', //加载数据
+  AN_VERSION = 'AN_VERSION',
 }
 
 /**
  * 打开界面参数
  */
 export const OPEN_PAGE_PMS = {
-  LaunchActivity: {//启动页
+  LaunchActivity: {
+    //启动页
     toActivity: true,
     packageName: 'com.phoenix.lotterys.main',
-    className: 'LaunchActivity'
+    className: 'LaunchActivity',
   },
-  LoginActivity: {//登录界面
+  LoginActivity: {
+    //登录界面
     toActivity: true,
     packageName: 'com.phoenix.lotterys.my.activity',
-    className: 'LoginActivity'
+    className: 'LoginActivity',
   },
-  RegeditActivity: {//注册界面
+  RegeditActivity: {
+    //注册界面
     toActivity: true,
     packageName: 'com.phoenix.lotterys.my.activity',
-    className: 'RegeditActivity'
-  }
+    className: 'RegeditActivity',
+  },
 }

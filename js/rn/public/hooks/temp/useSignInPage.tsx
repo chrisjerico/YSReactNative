@@ -18,6 +18,7 @@ import {ugLog} from "../../tools/UgLog";
 import {ANHelper} from "../../define/ANHelper/ANHelper";
 import {CMD} from "../../define/ANHelper/hp/CmdDefine";
 import {Platform} from "react-native";
+import { OCHelper } from '../../define/OCHelper/OCHelper'
 
 interface SlidingVerification {
   nc_csessionid: string;
@@ -62,6 +63,9 @@ const useSignInPage = ({
     homePage && navigate(homePage, {})
     switch (Platform.OS) {
       case 'ios':
+        OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
+          OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+        })
         break;
       case 'android':
         ANHelper.callAsync(CMD.RELOAD_PAGE, {key: 'home_page'}).then()
