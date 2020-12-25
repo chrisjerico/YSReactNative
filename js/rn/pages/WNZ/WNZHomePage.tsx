@@ -276,7 +276,7 @@ const WNZHomePage = () => {
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
               if (AppDefine.siteId == 'c245' && sceneIndex) {
-                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} />
+                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{height:0}} />
               } else {
                 return (
                   <List
