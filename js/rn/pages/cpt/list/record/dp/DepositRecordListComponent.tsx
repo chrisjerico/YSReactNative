@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Alert, FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import { scale } from '../../../../../public/tools/Scale'
@@ -22,6 +22,27 @@ const DepositRecordListComponent = () => {
   } = UseDepositRecordList()
 
   /**
+   * 显示条目内容对话框
+   * @param item
+   */
+  const showItemDialog = (item: DepositListData) => {
+    Alert.alert('查看详情',
+      '交易编号: ' + item.orderNo
+      + '\n发起时间: ' + item.applyTime
+      + '\n交易类型: ' + item.category
+      + '\n交易金额: ' + item.amount
+      + '\n交易状态: ' + item.status
+      + '\n存款人: ' + item.username
+      + '\n存款时间: ' + item.arriveTime
+      + '\n备注: ' + item.remark,
+      [
+        {
+          text: '确定',
+        },
+      ])
+  }
+
+  /**
    * 绘制提示标题
    * @param item
    */
@@ -33,15 +54,18 @@ const DepositRecordListComponent = () => {
   </View>
 
   /**
-   * 绘制提示标题
+   * 绘制条目内容
    * @param item
    */
-  const renderItemContent = (item: DepositListData) => <View style={_styles.text_item_container}>
-    <Text style={_styles.text_content_0}>{item.applyTime}</Text>
-    <Text style={_styles.text_content_0}>{item.amount}</Text>
-    <Text style={_styles.text_content_0}>{item.category}</Text>
-    <Text style={_styles.text_content_0}>{item.status}</Text>
-  </View>
+  const renderItemContent = (item: DepositListData) =>
+    <TouchableWithoutFeedback onPress={() => showItemDialog(item)}>
+      <View style={_styles.text_item_container}>
+        <Text style={_styles.text_content_0}>{item.applyTime}</Text>
+        <Text style={_styles.text_content_0}>{item.amount}</Text>
+        <Text style={_styles.text_content_0}>{item.category}</Text>
+        <Text style={_styles.text_content_0}>{item.status}</Text>
+      </View>
+    </TouchableWithoutFeedback>
 
   return (
     <View style={CommStyles.flex}>
