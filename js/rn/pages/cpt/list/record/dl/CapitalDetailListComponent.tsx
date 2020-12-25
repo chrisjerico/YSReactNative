@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/Entypo'
 import { ugLog } from '../../../../../public/tools/UgLog'
 import { Calendar } from 'react-native-plain-calendar'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 /**
  * 资金明细记录
@@ -39,6 +39,34 @@ const CapitalDetailListComponent = () => {
   } = UseCapitalDetailRecordList()
 
   /**
+   * 监听日期有改动
+   */
+  useEffect(() => {
+    if (!anyEmpty(startDate) && !anyEmpty(endDate)) {
+      requestListDetailData({
+        clear: true,
+        startDate: startDate,
+        endDate: endDate,
+      })
+    } else if (anyEmpty(startDate) && anyEmpty(endDate)) {
+      requestListDetailData({
+        clear: true,
+      })
+    }
+  }, [startDate, endDate])
+
+  /**
+   * 监听分组有改动
+   */
+  useEffect(() => {
+    requestListDetailData({
+      clear: true,
+      startDate: startDate,
+      endDate: endDate,
+    })
+  }, [curGroup])
+
+  /**
    * 绘制日历标题
    * @param item
    */
@@ -54,7 +82,8 @@ const CapitalDetailListComponent = () => {
         }
       }}>
         <View style={_styles.calendar_item_container}>
-          <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
+          <Text style={_styles.calendar_item_text}
+                numberOfLines={1}>{anyEmpty(startDate) ? '----------' : startDate}</Text>
           <Icon size={scale(20)} name={'calendar'}/>
         </View>
       </TouchableWithoutFeedback>
@@ -68,7 +97,7 @@ const CapitalDetailListComponent = () => {
         }
       }}>
         <View style={_styles.calendar_item_container}>
-          <Text style={_styles.calendar_item_text} numberOfLines={1}>{'2010-01-01'}</Text>
+          <Text style={_styles.calendar_item_text} numberOfLines={1}>{anyEmpty(endDate) ? '----------' : endDate}</Text>
           <Icon size={scale(20)} name={'calendar'}/>
         </View>
       </TouchableWithoutFeedback>
@@ -90,11 +119,10 @@ const CapitalDetailListComponent = () => {
       <View style={_styles.calendar_wid}>
         <Calendar.Picker onDayPress={(date: Date) => {
           let curDate = date.format('yyyy-MM-dd')
-          ugLog('renderCalendar date=', curDate)
-          if(selectStartDate) {
+          if (selectStartDate) {//设置起始日期
             setSelectStartDate(false)
             setStartDate(curDate)
-          } else if (selectEndDate) {
+          } else if (selectEndDate) {//设置终止日期
             setSelectEndDate(false)
             setEndDate(curDate)
           }
@@ -134,7 +162,6 @@ const CapitalDetailListComponent = () => {
         defaultValue={curGroup}
         onChangeItem={item => {
           setCurGroup(item.value)
-          requestListDetailData({ clear: true, selGroup: item.value, selPage: 1 })
         }}/>
     </View>
     <View style={_styles.text_title_container}>
@@ -174,11 +201,16 @@ const CapitalDetailListComponent = () => {
           : <FlatList refreshControl={refreshCT}
                       keyExtractor={(item, index) => `${item}-${index}`}
                       data={capitalDetailData}
+                      showsVerticalScrollIndicator={false}
             // ListEmptyComponent={() => <EmptyView/>}
                       onEndReached={({ distanceFromEnd }) => {
-                        requestListDetailData({ clear: false })
+                        requestListDetailData({
+                          clear: false,
+                          startDate: startDate,
+                          endDate: endDate,
+                        })
                       }}
-                      onEndReachedThreshold={0.1}
+                      onEndReachedThreshold={0.2}
                       renderItem={({ item, index }) => {
                         return (
                           renderItemContent(item)
