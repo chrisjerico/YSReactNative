@@ -44,6 +44,7 @@ import { YueBaoStatModel } from './Model/YueBaoStatModel'
 import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
+import { PayAisleModel } from './Model/wd/PayAisleModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -347,6 +348,34 @@ class APIRouter {
     }
 
     return httpClient.get<DepositRecordModel>('c=recharge&a=logs&' + tokenParams)
+  }
+
+  /**
+   * 支付通道
+   * startDate 开始日期
+   * endDate 结束日期
+   * page 第几页
+   * rows 每页多少条
+   */
+  static capital_rechargeCashier = async (): Promise<AxiosResponse<PayAisleModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams = 'token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS)
+        tokenParams = 'token=' + pms?.token
+        break
+    }
+
+    return httpClient.get<PayAisleModel>('c=recharge&a=cashier&' + tokenParams)
   }
 
   /**
