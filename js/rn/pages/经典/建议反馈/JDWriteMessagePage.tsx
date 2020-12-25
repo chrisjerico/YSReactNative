@@ -87,7 +87,6 @@ const JDWriteMessagePage = ({setProps}) => {
       Toast('最多添加3张图片')
       return;
     }
-
     if (item.idKey == 'add') {
       //+加条数据
       openPhotoPick(4 - list?.length)
@@ -130,7 +129,6 @@ const JDWriteMessagePage = ({setProps}) => {
     setProps({
       navbarOpstions: { hidden: false, title: '建议反馈', back:true },
       didFocus: (params) => {
-        console.log('RU CAN111', params);
         let dic = params;
         // console.log("输出最初的字典元素: "); 
         for (var key in dic) {
@@ -139,11 +137,8 @@ const JDWriteMessagePage = ({setProps}) => {
             setType(dic[key])
             if (dic[key] == 0) {
               setMessageType('反馈类型：提交建议')
-              console.log("反馈类型：提交建议" );
-              OCHelper.call('self.navigationItem[setTitle:]',['9999'])
             } else {
               setMessageType('反馈类型：我要投诉')
-              console.log("反馈类型：提交建议" );
             }
           }
 
@@ -182,9 +177,6 @@ const JDWriteMessagePage = ({setProps}) => {
 
     );
   }
-
-  console.log('list = ', list);
-
 
   return (
     <View style={[{ backgroundColor: Skin1.textColor4 }]}>
@@ -227,11 +219,9 @@ const JDWriteMessagePage = ({setProps}) => {
                   imgsList.push(list[i].imgUrl)
                 }
               }
-              console.log('提交的图片数组：' + imgsList[0]);
+
               if (imgsList?.length) {
-
                 showLoading()
-
                 for (let i = 0; i < imgsList.length; i++) {
                   api.user.uploadFeedback(imgsList).setCompletionBlock(({ data, msg }) => {
                     showSuccess(msg)
@@ -251,7 +241,6 @@ const JDWriteMessagePage = ({setProps}) => {
                     if (imgPaths?.length == imgsList?.length) {
                       //建议反馈
                       console.log('要建议反馈了');
-
                       addFeedback(imgPaths)
                     }
                   });
