@@ -12,7 +12,7 @@ import {
 import AppDefine from '../../define/AppDefine'
 import LinearGradient from 'react-native-linear-gradient'
 import { Skin1 } from '../../theme/UGSkinManagers'
-import { navigate, pop } from '../../navigation/RootNavigation'
+import { navigate, pop, push } from '../../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 import Animated, {
@@ -112,8 +112,8 @@ export const TransferTKLMainView = () => {
   return (
     <View style={{ flex: 1 }}>
       <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-        <Header pressRecord={() => navigate(PageName.TransferRecordView)} />
-        <TabBar activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Header pressRecord={() => push(PageName.TransferRecordView)} />
+        <TabBar data={data} activeTab={activeTab} setActiveTab={setActiveTab} />
         <View style={{ paddingHorizontal: 12, paddingTop: 16, flexDirection: 'row', zIndex: 2 }}>
           <TransferPicker
             key={1}
@@ -251,11 +251,13 @@ export const TransferTKLMainView = () => {
   )
 }
 
-const TabBar = ({ activeTab, setActiveTab }) => {
+const TabBar = ({ activeTab, setActiveTab, data }) => {
+  useEffect(() => {})
   return (
     <View style={{ flexDirection: 'row' }}>
       {tab.map((item, index) => {
-        return (
+        return data && data.filter((dataItem) => dataItem.category == item.category).length > 0 ?
+        (
           <TouchableWithoutFeedback key={`tab-${index}`} onPress={() => setActiveTab(item)}>
             <View style={{
               flex: 1,
@@ -263,12 +265,12 @@ const TabBar = ({ activeTab, setActiveTab }) => {
               alignItems: 'center',
               borderBottomWidth: 1,
               paddingVertical: 16,
-              borderColor: activeTab == item ? Skin1.tabSelectedColor : Skin1.textColor3,
+              borderColor: activeTab == item ? "#e00212" : Skin1.textColor3,
             }}>
-              <Text style={{ color: activeTab == item ? Skin1.tabSelectedColor : Skin1.textColor3 }}>{item.title}</Text>
+              <Text style={{ color: activeTab == item ? "#e00212" : Skin1.textColor3 }}>{item.title}</Text>
             </View>
           </TouchableWithoutFeedback>
-        )
+        ) : <></>
       })}
     </View>
   )
