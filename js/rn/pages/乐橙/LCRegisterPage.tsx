@@ -53,13 +53,25 @@ const LCRegisterPage = ({ navigation, setProps }) => {
   const [showPwd, setShowPwd] = useState(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState(false)
   const [showFundPwd, setShowFundPwd] = useState(false)
-  const { show, onChange, sign, reference } = useSignUpPage({
+  const { show, onChange, sign, reference, placeholder } = useSignUpPage({
     homePage: PageName.LCHomePage,
     signInPage: PageName.LCLoginPage,
   })
   const [haveBottomTab, setHaveBottomTab] = useState(false)
   const { signUp } = sign
-  const { showRecommendGuy, showSms, showName, showEmail, showInviteCode, showAgentButton, showFundPassword, showPhoneNumber, showQQ, showSlideCode, showWx } = show
+  const { showRecommendGuy, showSms, showName, showEmail, showInviteCode, showAgentButton, showFundPassword, showPhoneNumber, showQQ, showSlideCode, showWx,  } = show
+  const {
+    recommendGuyPlaceholder,
+    accountPlaceholder,
+    passwordPlaceholder,
+    confirmPasswordPlaceholder,
+    fundPasswordPlaceholder,
+    qqPlaceholder,
+    wxPlaceholder,
+    emailPlaceholder,
+    smsPlaceholder,
+    inviteCodePlaceholder,
+  } = placeholder
   const {
     onChangeRecommendGuy,
     onChangeAccount,
@@ -85,7 +97,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
   }, [])
 
   const fetchSms = async (phoneNumber) => {
-    if(phoneNumber) {
+    if (phoneNumber) {
       try {
         showLoading()
         const { data } = await APIRouter.secure_smsCaptcha(phoneNumber)
@@ -141,10 +153,10 @@ const LCRegisterPage = ({ navigation, setProps }) => {
           <ScrollView showsVerticalScrollIndicator={false}
                       style={{ marginHorizontal: 12, maxHeight: haveBottomTab ? 500 : 550 }}>
             <Text style={{ color: 'red', fontSize: 14 }}>为了您的资金安全，请使用真实资料!</Text>
-            <RegisterItem placeHolder={'邀请码'} iconName={'user-o'} config={showInviteCode}
+            <RegisterItem placeHolder={inviteCodePlaceholder || '邀请码'} iconName={'user-o'} config={showInviteCode}
                           onChangeText={(text) => onChangeInviteCode(text)} />
             {showInviteCode == 1 && <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>邀请码，如没有可不填写</Text>}
-            <RegisterItem placeHolder={'推荐人'} iconName={'user-o'} config={showRecommendGuy}
+            <RegisterItem placeHolder={recommendGuyPlaceholder || '推荐人'} iconName={'user-o'} config={showRecommendGuy}
                           onChangeText={(text) => onChangeRecommendGuy(text)} />
             {showRecommendGuy && <Text style={{ marginTop: 12, fontSize: 12, color: 'red' }}>推荐人ID，如没有可不填写</Text>}
             <View style={{
@@ -156,7 +168,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
               marginTop: 12,
             }}>
               <Icon style={{ marginRight: 12 }} size={25} color={'gold'} name={'user-o'} />
-              <TextInput placeholder={'帐号'} style={{ flex: 1 }} onChangeText={(text) => {
+              <TextInput placeholder={accountPlaceholder || '帐号'} style={{ flex: 1 }} onChangeText={(text) => {
                 onChangeAccount(text)
                 setData({ ...data, acc: text })
               }} />
@@ -180,7 +192,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                 onChangeText={(text) => {
                   onChangePassword(text)
                   setData({ ...data, pwd: text })
-                }} placeholder={'密码'}
+                }} placeholder={passwordPlaceholder || '密码'}
                 style={{ flex: 1 }} />
               <TouchableWithoutFeedback onPress={() => setShowPwd(!showPwd)}>
                 <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
@@ -203,7 +215,7 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                            setData({ ...data, confirmPwd: text },
                            )
                          }}
-                         placeholder={'确认密码'} style={{ flex: 1 }} />
+                         placeholder={confirmPasswordPlaceholder || '确认密码'} style={{ flex: 1 }} />
               <TouchableWithoutFeedback onPress={() => setShowConfirmPwd(!showConfirmPwd)}>
                 <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
                        source={{ uri: showConfirmPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
@@ -226,24 +238,24 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                          maxLength={4}
                          keyboardType={'numeric'}
                          onChangeText={(text) => onChaneFundPassword(text)}
-                         placeholder={'请输入4数字取款密码'} style={{ flex: 1 }} />
+                         placeholder={fundPasswordPlaceholder || '请输入4数字取款密码'} style={{ flex: 1 }} />
               <TouchableWithoutFeedback onPress={() => setShowFundPwd(!showFundPwd)}>
                 <Image style={{ height: 15, width: 18, marginRight: 8, resizeMode: 'stretch' }}
                        source={{ uri: showFundPwd ? httpClient.defaults.baseURL + '/images/icon-eyes.png' : httpClient.defaults.baseURL + '/images/icon-eye.png' }} />
               </TouchableWithoutFeedback>
             </View>}
-            <RegisterItem placeHolder={'请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={showQQ}
+            <RegisterItem placeHolder={qqPlaceholder || '请输入QQ帐号'} iconName={'qq'} iconType={'AntDesign'} config={showQQ}
                           onChangeText={(text) => onChaneQQ(text)} />
-            <RegisterItem placeHolder={'请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={showWx}
+            <RegisterItem placeHolder={wxPlaceholder || '请输入微信号'} iconName={'wechat'} iconType={'AntDesign'} config={showWx}
                           onChangeText={(text) => onChaneWeChat(text)} />
             <RegisterItem placeHolder={'请输入手机号码'} iconName={'mobile'} config={showPhoneNumber || showSms}
                           onChangeText={(text) => {
                             onChanePhone(text)
                             setData({ ...data, phoneNumber: text })
                           }} />
-            <RegisterItem placeHolder={'请输入手机短信验证码'} iconName={'unlock-alt'} config={showSms}
-                          onChangeText={(text) => onChaneSms(text)} onPressSms={() => fetchSms(data.phoneNumber)} />
-            <RegisterItem placeHolder={'请输入邮箱地址'} iconName={'envelope-o'} config={showEmail}
+            <RegisterItem placeHolder={smsPlaceholder || '请输入手机短信验证码'} iconName={'unlock-alt'} config={showSms}
+                          onChangeText={(text) => onChaneSms(text)} phoneNumber={data.phoneNumber} />
+            <RegisterItem placeHolder={emailPlaceholder || '请输入邮箱地址'} iconName={'envelope-o'} config={showEmail}
                           onChangeText={(text) => onChangeEmail(text)} />
             {showAgentButton ?
               <View style={{
@@ -251,24 +263,27 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'row',
-                backgroundColor: '#bfbfbf',
-                marginHorizontal: 122,
-                paddingVertical: 2,
-                borderRadius: 4,
-                minWidth: 135,
               }}>
                 <TouchableWithoutFeedback onPress={() => {
                   onChangeAgent(AgentType.用户注册)
                   setRegType(AgentType.用户注册)
                 }}>
                   <View style={{
-                    backgroundColor: regType == AgentType.用户注册 ? '#3ba2d0' : '#bfbfbf',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 5,
-                    borderRadius: 4,
+                    backgroundColor: '#bfbfbf',
+                    paddingVertical: 2,
+                    paddingLeft: 4,
+                    borderTopLeftRadius: 4,
+                    borderBottomLeftRadius: 4,
                   }}>
-                    <Text style={{ color: regType == AgentType.用户注册 ? 'white' : '#919191' }}>普通用户</Text>
+                    <View style={{
+                      backgroundColor: regType == AgentType.用户注册 ? '#3ba2d0' : '#bfbfbf',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: 5,
+                      borderRadius: 4,
+                    }}>
+                      <Text style={{ color: regType == AgentType.用户注册 ? 'white' : '#919191' }}>普通用户</Text>
+                    </View>
                   </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
@@ -276,20 +291,28 @@ const LCRegisterPage = ({ navigation, setProps }) => {
                   setRegType(AgentType.代理注册)
                 }}>
                   <View style={{
-                    backgroundColor: regType == AgentType.代理注册 ? '#3ba2d0' : '#bfbfbf',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 5,
-                    borderRadius: 4,
+                    backgroundColor: '#bfbfbf',
+                    paddingVertical: 2,
+                    paddingLeft: 4,
+                    borderTopRightRadius: 4,
+                    borderBottomRightRadius: 4,
                   }}>
-                    <Text style={{ color: regType == AgentType.代理注册 ? 'white' : '#919191' }}>注册代理</Text>
+                    <View style={{
+                      backgroundColor: regType == AgentType.代理注册 ? '#3ba2d0' : '#bfbfbf',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: 5,
+                      borderRadius: 4,
+                    }}>
+                      <Text style={{ color: regType == AgentType.代理注册 ? 'white' : '#919191' }}>注册代理</Text>
+                    </View>
                   </View>
                 </TouchableWithoutFeedback>
               </View>
               : null}
             <ReloadSlidingVerification
               ref={reference?.slideCodeRef}
-              show={true}
+              show={showSlideCode}
               onChange={onChangeSlideCode}
               backgroundColor={'#ffffff'}
               containerStyle={{
