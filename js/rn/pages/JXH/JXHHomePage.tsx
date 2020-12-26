@@ -6,7 +6,6 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate } from '../../public/navigation/RootNavigation'
-import { httpClient } from '../../public/network/httpClient'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType } from '../../public/tools/tars'
 import HomePage from '../../public/views/tars/HomePage'
@@ -93,9 +92,7 @@ const JXHHomePage = () => {
               tabGames={homeGames}
               itemHeight={scale(200)}
               renderScene={renderScene}
-              fixedHeight={scale(900)}
-              fixedHeightIndex={[0]}
-              enableFixedHeight
+              fixedHeight={[scale(900), null]}
             />
           </>
         )}

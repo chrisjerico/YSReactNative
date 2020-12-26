@@ -52,7 +52,7 @@ const LotteryHistoryPage = () => {
           }}
         />
       </SafeAreaHeader>
-      <ScrollableTabViewComponent indicatorStyle={{ width: '50%' }}>
+      <ScrollableTabViewComponent indicatorStyle={{ width: '50%' }} tabBarScrollEnabled={false}>
         <View tabLabel={'已中奖'} key={'已中奖'} />
         <View tabLabel={'未中奖'} key={'未中奖'} />
         <View tabLabel={'等待开奖'} key={'等待开奖'} />
