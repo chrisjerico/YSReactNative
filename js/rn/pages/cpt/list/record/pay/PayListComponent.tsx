@@ -12,7 +12,8 @@ import { PayAisleListData } from '../../../../../public/network/Model/wd/PayAisl
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import HTML from 'react-native-render-html'
+import { push } from '../../../../../public/navigation/RootNavigation'
+import { PageName } from '../../../../../public/navigation/Navigation'
 
 /**
  * 支付通道记录
@@ -37,6 +38,19 @@ const PayListComponent = () => {
 
     return (
       <TouchableWithoutFeedback onPress={() => {
+        push(PageName.OnlinePayPage, {
+          // refreshBankList: (accountType: string) => {
+          //   // ugLog('accountType=', accountType)
+          //   categoryData?.map((item, index) => {
+          //     ugLog('accountType=', accountType, item.type)
+          //     if (accountType == item.type.toString()) {
+          //       tabController?.goToPage(index)
+          //     }
+          //   })
+          //   requestManageBankData(null)
+          // },
+          payData: item,
+        })
       }}>
         <View style={_styles.item_container}>
           <FastImage source={{ uri: icon }}

@@ -16,6 +16,7 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',//安全中心
   ManageBankListPage = 'ManageBankListPage',//银行卡管理（我的提款账户列表）
   CapitalPage = 'CapitalPage',//存款取款资金明细
+  OnlinePayPage = 'OnlinePayPage',//在线支付
   AddBankPage = 'AddBankPage',//添加提款账户
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',//虚拟币充值教程
   TrendView = 'TrendView',//开奖走势

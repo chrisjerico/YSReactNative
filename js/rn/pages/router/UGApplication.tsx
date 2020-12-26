@@ -82,6 +82,7 @@ import GameHallPage from '../hall/new/GameHallPage'
 import FreedomHallPage from '../hall/fd/FreedomHallPage'
 import JDSigInPage from '../经典/签到/JDSigInPage'
 import JDFeedBackPage from '../经典/建议反馈/JDFeedBackPage'
+import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
@@ -100,6 +101,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.TrendView, UGPage(TrendView)],//开奖走势
   [PageName.ManageBankListPage, UGPage(ManageBankListPage)],//银行卡管理（我的提款账户列表）
   [PageName.CapitalPage, UGPage(CapitalPage)],//存款取款资金明细
+  [PageName.OnlinePayPage, UGPage(OnlinePayPage)],//在线支付
   [PageName.AddBankPage, UGPage(AddBankPage)],//添加提款账户
   [PageName.LottoBetting, UGPage(LottoBetting)],//下注页（未完成）
   [PageName.UserMessagePage, UGPage(UserMessagePage)],//站内信
