@@ -73,7 +73,6 @@ const GameSubTypeComponent = ({
         initialNumToRender={arrayLength(mainGames)}
         data={mainGames}
         renderItem={({ item, index }) => {
-          ugLog('games title 2 =', item.title, item.name)
           return renderGame({ item, index, showGameSubType })
         }}
       />
