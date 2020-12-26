@@ -32,7 +32,7 @@ const PayListComponent = () => {
    * @param item
    */
   const renderItemContent = (item: PayAisleListData) => {
-    let icon = item.bank_sort_icon
+    let icon = item.bank_sort_icon //优先从后台拿图片
     if (anyEmpty(icon)) icon = PayIcon[item.code]
     if (anyEmpty(icon)) icon = PayIcon['39']
 

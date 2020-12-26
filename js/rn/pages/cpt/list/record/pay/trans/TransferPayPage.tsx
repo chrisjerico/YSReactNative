@@ -18,7 +18,7 @@ import { PayAisleData, PayAisleListData } from '../../../../../../public/network
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import UseOnlinePay from './UseOnlinePay'
+import UseTransferPay from './UseTransferPay'
 import { ManageBankCardData } from '../../../../../../public/network/Model/bank/ManageBankCardModel'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Button from '../../../../../../public/views/tars/Button'
@@ -35,7 +35,7 @@ interface IRouteParams {
  * @param navigation
  * @constructor
  */
-const OnlinePayPage = ({ navigation, route }) => {
+const TransferPayPage = ({ navigation, route }) => {
 
   const { payData }: IRouteParams = route?.params
 
@@ -45,7 +45,7 @@ const OnlinePayPage = ({ navigation, route }) => {
     setInputMoney,
     selPayChannel,
     setSelPayChannel,
-  } = UseOnlinePay()
+  } = UseTransferPay()
 
   /**
    * 输入金额
@@ -217,4 +217,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default OnlinePayPage
+export default TransferPayPage

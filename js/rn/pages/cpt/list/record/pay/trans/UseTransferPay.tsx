@@ -12,7 +12,7 @@ import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisle
  * 支付通道记录
  * @constructor
  */
-const UseOnlinePay = () => {
+const UseTransferPay = () => {
 
   const moneyOption = ['1', '10', '50', '100', '500', '1000', '5000', '10000', '50000', '100000'] //金额选项
 
@@ -47,5 +47,5 @@ const UseOnlinePay = () => {
   }
 }
 
-export default UseOnlinePay
+export default UseTransferPay
 
