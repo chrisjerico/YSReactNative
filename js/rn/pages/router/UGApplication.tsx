@@ -91,12 +91,13 @@ import { AlipayTransferView } from '../../public/components/alipay/AlipayTransfe
 import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
 import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
+import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
+import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
   // ———————————— 通用页面 —————————————
 
-  [PageName.LXBView, UGPage(LXBView)], //利息宝
   [PageName.JDVirtualCurrencyTutorialPage, UGPage(JDVirtualCurrencyTutorialPage)], //虚拟币充值教程
   [PageName.TransitionPage, UGPage(TransitionPage)], //过渡页
   [PageName.PromotionListPage, UGPage(PromotionListPage)], //优惠活动列表
