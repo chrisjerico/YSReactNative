@@ -6,7 +6,6 @@ export enum PageName {
   JDPromotionListPage = 'JDPromotionListPage', //优惠活动列表
   PromotionPage = 'PromotionPage',//优惠活动
   PromotionListPage = 'PromotionListPage',//优惠活动列表
-  LXBView = 'LXBView',//利息宝
   UpdateVersionPage = 'UpdateVersionPage',//版本更新页
   SeriesLobbyPage = 'SeriesLobbyPage',// 游戏大厅二级页面（xx系列游戏列表）
   UserMessagePage = 'UserMessagePage',//站内信

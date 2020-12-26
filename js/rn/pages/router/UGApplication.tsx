@@ -49,7 +49,6 @@ import LEFHomePage from '../乐FUN/LEFHomePage'
 import LEFMinePage from '../乐FUN/LEFMinePage'
 import LEFSignInPage from '../乐FUN/LEFSignInPage'
 import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
-import LXBView from '../乐橙/component/minePage/LXBView'
 import LCHomePage from '../乐橙/LCHomePage'
 import LCLoginPage from '../乐橙/LCLoginPage'
 import LCMinePage from '../乐橙/LCMinePage'
@@ -100,7 +99,6 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
 
   // ———————————— 通用页面 —————————————
 
-  [PageName.LXBView, UGPage(LXBView)],//利息宝
   [PageName.JDVirtualCurrencyTutorialPage, UGPage(JDVirtualCurrencyTutorialPage)],//虚拟币充值教程
   [PageName.TransitionPage, UGPage(TransitionPage)],//过渡页
   [PageName.PromotionListPage, UGPage(PromotionListPage)],//优惠活动列表
@@ -121,17 +119,17 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)],//彩票投注记录
   [PageName.JDSigInPage, UGPage(JDSigInPage)],//签到
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)],//建议反馈
-  [PageName.AlipayView, UGPage(AlipayView)],
-  [PageName.AlipayTransferView, UGPage(AlipayTransferView)],
-  [PageName.AlipayTransferRecordView, UGPage(AlipayTransferRecordView)],
-  [PageName.AlipayProfitView, UGPage(AlipayProfitView)],
-  [PageName.FeedbackView, UGPage(FeedbackView)],
-  [PageName.FeedbackSubmitView, UGPage(FeedbackSubmitView)],
-  [PageName.FeedbackRecordView, UGPage(FeedbackRecordView)],
-  [PageName.SupFeedbackSubmitView, UGPage(SupFeedbackSubmitView)],
-  [PageName.TransferRecordView, UGPage(TransferRecordView)],
-  [PageName.TransferView, UGPage(TransferView)],
-  [PageName.TransferTKLMainView, UGPage(TransferTKLMainView)],
+  [PageName.AlipayView, UGPage(AlipayView)], //利息宝
+  [PageName.AlipayTransferView, UGPage(AlipayTransferView)], //利息宝额度转
+  [PageName.AlipayTransferRecordView, UGPage(AlipayTransferRecordView)], //利息宝记录
+  [PageName.AlipayProfitView, UGPage(AlipayProfitView)], //利息宝收益
+  [PageName.FeedbackView, UGPage(FeedbackView)], //建议反馈
+  [PageName.FeedbackSubmitView, UGPage(FeedbackSubmitView)], //建议反馈
+  [PageName.FeedbackRecordView, UGPage(FeedbackRecordView)], //建议反馈记录
+  [PageName.SupFeedbackSubmitView, UGPage(SupFeedbackSubmitView)], //建议反馈记录反馈
+  [PageName.TransferRecordView, UGPage(TransferRecordView)], //额度转页记录
+  [PageName.TransferView, UGPage(TransferView)], //额度转页
+  [PageName.TransferTKLMainView, UGPage(TransferTKLMainView)], //额度转页
 
 
   // ———————————— 模板页面 —————————————
