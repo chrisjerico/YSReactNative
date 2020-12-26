@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -106,10 +106,6 @@ const TabComponent = ({
   const scroll = useRef(null)
   const tabRef = useRef(null)
 
-  useEffect(() => {
-    tabRef?.current?.goToPage(initialTabIndex)
-  }, [initialTabIndex])
-
   const getTabCount = () => {
     return tabGames?.length ?? 0
   }
@@ -167,6 +163,7 @@ const TabComponent = ({
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
       locked={locked}
+      initialPage={initialTabIndex}
       renderTabBar={(props) => {
         const { activeTab, goToPage } = props
         return renderTabBar ? (

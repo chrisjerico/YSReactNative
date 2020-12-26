@@ -18,6 +18,14 @@ export async function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+    pages.push({
+      vcName: 'UGFeedBackController',
+      rnName: PageName.JDFeedBackPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+
   }
 
   // 测试环境（未上线的内容）
@@ -43,11 +51,41 @@ export async function setRnPageInfo() {
       pages = pages.concat(BYPages)
     }
     if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
+      pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
+    }
+
+    // 彩票大厅（第三样式）
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat([{
+        vcName: 'UGLotteryHomeController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }, {
+        vcName: 'NewLotteryHomeViewController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }])
     }
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+
+  // 签到页
+  pages.push({
+    tabbarItemPath: '/Sign',
+    vcName: 'UGSigInCodeViewController',
+    rnName: PageName.JDSigInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
+
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',

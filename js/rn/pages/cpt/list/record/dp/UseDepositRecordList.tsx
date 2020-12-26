@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { RefreshControl } from 'react-native'
-import { DepositListData } from '../../../../../network/Model/wd/DepositRecordModel'
-import APIRouter from '../../../../../network/APIRouter'
-import { anyEmpty, arrayEmpty } from '../../../../../tools/Ext'
-import { ugLog } from '../../../../../tools/UgLog'
-import { Toast } from '../../../../../tools/ToastUtils'
+import { DepositListData } from '../../../../../public/network/Model/wd/DepositRecordModel'
+import APIRouter from '../../../../../public/network/APIRouter'
+import { anyEmpty, arrayEmpty } from '../../../../../public/tools/Ext'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import { Toast } from '../../../../../public/tools/ToastUtils'
 
 /**
  * 存款记录
@@ -22,14 +22,14 @@ const UseDepositRecordList = () => {
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
-                                      requestDepositData({ clear: true, selPage: 1 })
+                                      requestDepositData({ clear: true })
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestDepositData({ clear: true, selPage: 1 })
+    requestDepositData({ clear: true })
   }, [])
 
   /**
@@ -42,7 +42,10 @@ const UseDepositRecordList = () => {
     //pageIndex为1的时候，不再执行加载更多
     if(!clear && pageIndex == 1) return
 
-    clear && setRefreshing(true)
+    if (clear) {//从第1页开始请求
+      setRefreshing(true)
+      selPage = 1
+    }
     const date = new Date().format('yyyy-MM-dd')
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
@@ -53,7 +56,7 @@ const UseDepositRecordList = () => {
       rows: "20",
     }).then(({ data: res }) => {
       let listData = res?.data?.list
-      ugLog('datas res=', res)
+      ugLog('data res=', reqPage, JSON.stringify(res?.data))
       if (res?.code == 0) {
         //没有更多数据了
         if (clear) {

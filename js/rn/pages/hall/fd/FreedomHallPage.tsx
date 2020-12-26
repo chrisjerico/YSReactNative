@@ -28,6 +28,8 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../Res/icon/Res'
+import LinearGradient from 'react-native-linear-gradient'
+import { push } from '../../../public/navigation/RootNavigation'
 
 /**
  * 自由游戏大厅
@@ -103,24 +105,38 @@ const FreedomHallPage = ({ navigation, setProps }) => {
                          resizeMode={'stretch'}
                          source={{ uri: Res.game_select }}/>,
               <View style={_styles.top_container}>
-                <View style={_styles.top_item_content}>
-                  <FastImage style={_styles.top_item_icon}
-                             resizeMode={'contain'}
-                             source={{ uri: Res.gameListjrsy }}/>
-                  <Text style={_styles.top_item_text}>{'今日输赢'}</Text>
-                </View>
-                <View style={_styles.top_item_content}>
-                  <FastImage style={_styles.top_item_icon}
-                             resizeMode={'contain'}
-                             source={{ uri: Res.gameListlskj }}/>
-                  <Text style={_styles.top_item_text}>{'开奖结果'}</Text>
-                </View>
-                <View style={_styles.top_item_content}>
-                  <FastImage style={_styles.top_item_icon}
-                             resizeMode={'contain'}
-                             source={{ uri: Res.gameListyhhd }}/>
-                  <Text style={_styles.top_item_text}>{'优惠活动'}</Text>
-                </View>
+                <TouchableWithoutFeedback onPress={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录)
+                }}>
+                  <View style={_styles.top_item_content}>
+                    <FastImage style={_styles.top_item_icon}
+                               resizeMode={'contain'}
+                               source={{ uri: Res.gameListjrsy }}/>
+                    <Text style={_styles.top_item_text}>{'今日输赢'}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => {
+                  PushHelper.pushUserCenterType(UGUserCenterType.开奖结果)
+                }}>
+                  <View style={_styles.top_item_content}>
+                    <FastImage style={_styles.top_item_icon}
+                               resizeMode={'contain'}
+                               source={{ uri: Res.gameListlskj }}/>
+                    <Text style={_styles.top_item_text}>{'开奖记录'}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => {
+                  push(PageName.PromotionPage, {
+                    showBackBtn: true,
+                  })
+                }}>
+                  <View style={_styles.top_item_content}>
+                    <FastImage style={_styles.top_item_icon}
+                               resizeMode={'contain'}
+                               source={{ uri: Res.gameListyhhd }}/>
+                    <Text style={_styles.top_item_text}>{'优惠活动'}</Text>
+                  </View>
+                </TouchableWithoutFeedback>
               </View>,
               gameData?.map((tabItem, index) => {
                 return (

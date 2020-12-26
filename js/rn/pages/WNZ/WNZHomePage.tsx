@@ -9,10 +9,12 @@ import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
 import { GameType, RankingListType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
+import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
+import { ugLog } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -78,13 +80,13 @@ const WNZHomePage = () => {
       }}
       subTypeNumColumns={4}
       renderSubType={({ item, index }) => {
-        const { title } = item
+        const { title, name } = item
         return (
           <Button
             key={index}
             containerStyle={styles.subTypeButton}
             titleStyle={{ color: '#ffffff', fontSize: scale(15) }}
-            title={title}
+            title={anyEmpty(title) ? name : title}
             onPress={() => {
               PushHelper.pushHomeGame(item)
             }}
@@ -92,7 +94,8 @@ const WNZHomePage = () => {
         )
       }}
       renderGame={({ item, index, showGameSubType }) => {
-        const { logo, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
+        ugLog('games title=', title, name)
         const flagType = parseInt(tipFlag)
         return (
           <View style={styles.gameContainer}>
@@ -102,7 +105,7 @@ const WNZHomePage = () => {
               showRightTopFlag={flagType > 0 && flagType < 4}
               showCenterFlag={flagType == 4}
               flagIcon={hotIcon}
-              title={name}
+              title={anyEmpty(title) ? name : title}
               containerStyle={{
                 width: '100%',
                 backgroundColor: '#ffffff',
@@ -125,7 +128,7 @@ const WNZHomePage = () => {
                   showGameSubType(index)
                 } else {
                   if (gameId == GameType.大厅) {
-                    navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
+                    push(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
                   } else {
                     //@ts-ignore
                     PushHelper.pushHomeGame(item)
@@ -138,7 +141,6 @@ const WNZHomePage = () => {
       }}
     />
   )
-
   return (
     <HomePage
       {...homeInfo}
@@ -269,14 +271,14 @@ const WNZHomePage = () => {
             numColumns={2}
             enableAutoScrollTab={false}
             tabBarScrollEnabled={false}
-            initialTabIndex={0}
+            initialTabIndex={1}
             baseHeight={scale(82)}
             itemHeight={scale(100)}
-            fixedHeight={[null, 350]}
+            fixedHeight={AppDefine.siteId == 'c245' ? [null, 350] : []}
             renderTabBar={TabBar}
             renderScene={({ item, index: sceneIndex }) => {
               if (AppDefine.siteId == 'c245' && sceneIndex) {
-                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{height:0}} />
+                return <AnimatedRankComponent rankLists={rankLists} type={rankingListType} containerStyle={{ backgroundColor: '#ffffff' }} iconTitleContainerStyle={{ height: 0 }} />
               } else {
                 return (
                   <List

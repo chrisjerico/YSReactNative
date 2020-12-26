@@ -45,8 +45,8 @@ export class ANEvent extends UGBridge {
           push(page, params)
           break
         case 'jump':
-          // jumpTo(page, params, true)
-          navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
+          jumpTo(page, null, false)
+          // navigate(params.vcName) || navigate(RnPageModel.getPageName(params.vcName))
           break
         case 'refresh':
         default:
@@ -72,6 +72,7 @@ export class ANEvent extends UGBridge {
       ugLog('检查界面：', JSON.stringify(params));
       switch (params?.type) {
         case 'main_menu_status':
+          ugLog('ug page menu visible 3=', getStackLength())
           ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: getStackLength() < 2 ? 0 : 8});
           break;
       }

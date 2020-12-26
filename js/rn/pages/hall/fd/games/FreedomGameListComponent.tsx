@@ -179,91 +179,91 @@ const LeftColumnStyles = {
   'lhc': {
     icon: Res.lh,
     textColor: '#3f5dd7',
-    startColor: '#3f5dd733',
+    startColor: '#3f5dd722',
     endColor: UGColor.BackgroundColor1,
   }, //六合彩
   'qxc': {
     icon: Res.qxc,
     textColor: '#9c3ed8',
-    startColor: '#9c3ed833',
+    startColor: '#9c3ed822',
     endColor: UGColor.BackgroundColor1,
   }, //"七星彩系列"
   'cqssc': {
     icon: Res.shishi,
     textColor: '#1d91e6',
-    startColor: '#1d91e633',
+    startColor: '#1d91e622',
     endColor: UGColor.BackgroundColor1,
   }, //"时时彩系列"
   'pk10': {
     icon: Res.car,
     textColor: '#169d11',
-    startColor: '#169d1133',
+    startColor: '#169d1122',
     endColor: UGColor.BackgroundColor1,
   }, //"赛车系列"
   'xyft': {
     icon: Res.ft,
     textColor: '#fb7c71',
-    startColor: '#fb7c7133',
+    startColor: '#fb7c7122',
     endColor: UGColor.BackgroundColor1,
   }, //"飞艇系列"
   'yncp': {
     icon: Res.js,
     textColor: '#1d53d4',
-    startColor: '#1d53d433',
+    startColor: '#1d53d422',
     endColor: UGColor.BackgroundColor1,
   }, //"越南彩系列"
   'fc3d': {
     icon: Res.hot,
     textColor: '#e40001',
-    startColor: '#e4000133',
+    startColor: '#e4000122',
     endColor: UGColor.BackgroundColor1,
   }, //"3D系列"
   'gdkl10': {
     icon: Res.happy,
     textColor: '#516bf3',
-    startColor: '#516bf333',
+    startColor: '#516bf322',
     endColor: UGColor.BackgroundColor1,
   }, //"快乐10分系列"
   'pk10nn': {
     icon: Res.nn,
     textColor: '#9e1920',
-    startColor: '#9e192033',
+    startColor: '#9e192022',
     endColor: UGColor.BackgroundColor1,
   }, //"牛牛系列"
   'xync': {
     icon: Res.js,
     textColor: '#1d53d4',
-    startColor: '#1d53d433',
+    startColor: '#1d53d422',
     endColor: UGColor.BackgroundColor1,
   }, //"幸运农场系列"
   'bjkl8': {
     icon: Res.other,
     textColor: '#16a0b0',
-    startColor: '#16a0b033',
+    startColor: '#16a0b022',
     endColor: UGColor.BackgroundColor1,
   }, //"快乐8系列"
   'dlt': {
     icon: Res.hot,
     textColor: '#e40001',
-    startColor: '#e4000133',
+    startColor: '#e4000122',
     endColor: UGColor.BackgroundColor1,
   }, //"大乐透系列"
   'pcdd': {
     icon: Res.pcdd,
     textColor: '#fea61b',
-    startColor: '#fea61b33',
+    startColor: '#fea61b22',
     endColor: UGColor.BackgroundColor1,
   }, //"蛋蛋系列"
   'jsk3': {
     icon: Res.k3,
     textColor: '#d74e02',
-    startColor: '#d74e0233',
+    startColor: '#d74e0222',
     endColor: UGColor.BackgroundColor1,
   }, //"快三系列"
   'gd11x5': {
     icon: Res.c11x5,
     textColor: '#8951c4',
-    startColor: '#8951c433',
+    startColor: '#8951c422',
     endColor: UGColor.BackgroundColor1,
   }, //"11选5系列"
 }

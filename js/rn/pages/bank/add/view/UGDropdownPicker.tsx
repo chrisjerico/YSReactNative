@@ -1,5 +1,5 @@
-import { scale } from '../../../../tools/Scale'
-import { UGColor } from '../../../../theme/UGThemeColor'
+import { scale } from '../../../../public/tools/Scale'
+import { UGColor } from '../../../../public/theme/UGThemeColor'
 import DropDownPicker from 'react-native-dropdown-picker'
 import * as React from 'react'
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native'
