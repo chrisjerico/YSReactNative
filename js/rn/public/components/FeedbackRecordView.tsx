@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import { Skin1 } from '../theme/UGSkinManagers'
-import { navigate, pop } from '../navigation/RootNavigation'
+import { push, pop } from '../navigation/RootNavigation'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Animated, {
   block,
@@ -148,7 +148,7 @@ export const FeedbackRecordView = () => {
         data={record}
         renderItem={({ item }) => {
           return (
-            <TouchableWithoutFeedback onPress={() => navigate(PageName.SupFeedbackSubmitView, { item })}>
+            <TouchableWithoutFeedback onPress={() => push(PageName.SupFeedbackSubmitView, { item })}>
               <View style={{ flexDirection: 'row', flex: 1, borderBottomWidth: 0.5, borderColor: '#d9d9d9' }}>
                 <View style={{
                   width: 100,
@@ -259,8 +259,8 @@ const Picker = ({ data, value, setValue, height = 120 }:
             <View style={{ flex: 1 }} />
             <Icon color={Skin1.isBlack ? '#fff' : Skin1.textColor2}
                   style={{ alignSelf: 'center', transform: [{ rotateX: open ? '180deg' : '0deg' }], marginRight: 4 }}
-                  size={16}
-                  name={'caretdown'} />
+                  size={22}
+                  name={'caret-down'} />
           </View>
         </TouchableWithoutFeedback>
         <Animated.View

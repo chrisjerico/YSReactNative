@@ -47,12 +47,13 @@ const GameHallPage = ({ navigation, setProps }) => {
 
   useEffect(() => {
     requestGameData()
-    setProps({
-      didFocus: () => {
-        !gameData?.length && requestGameData()
-      }
-    })
   }, [])
+
+  setProps({
+    didFocus: () => {
+      !gameData?.length && requestGameData()
+    }
+  }, false)
 
   /**
    * 请求游戏数据

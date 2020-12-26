@@ -26,6 +26,7 @@ export enum CMD {
   UNIVERSAL = 'UNIVERSAL', //万能函数
   AN_VERSION = 'AN_VERSION', //版本号
   MOVE_TO_BACK = 'MOVE_TO_BACK', //移动当前 Activity 到后台
+  COPY_TO_CLIPBOARD = 'COPY_TO_CLIPBOARD', //复制到粘贴板
   FINISH_ACTIVITY = 'FINISH_ACTIVITY', //关闭activity
   APP_THEME_COLOR = 'UGSkinManagers.currentSkin.navBarBgColor.hexString', //设置主题色
   RN_PAGES = 'AppDefine.shared.setRnPageInfos:', //rn的界面
@@ -45,7 +46,6 @@ export enum CMD {
   ACCESS_TOKEN = 'ACCESS_TOKEN', //得到 access token
   SAVE_DATA = 'SAVE_DATA', //存储数据
   LOAD_DATA = 'LOAD_DATA', //加载数据
-  AN_VERSION = 'AN_VERSION',
 }
 
 /**

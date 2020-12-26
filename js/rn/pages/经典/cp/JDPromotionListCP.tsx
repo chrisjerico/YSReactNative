@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { Platform, View } from 'react-native';
+import { Platform, StyleProp, View, ViewStyle } from 'react-native';
 import { Text, Card } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import WebView from 'react-native-webview';
@@ -24,6 +24,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
   style1: '贴边' | '行边框' | '外边框' | '不贴边' = '不贴边'; // 行样式
   style2: 'slide' | 'popup' | 'page' = 'page'; // 详情样式：slide折叠、popup弹窗、page内页
   list: Array<UGPromoteModel> = [];
+  itemStyle : StyleProp<ViewStyle> = {}
 
   constructor(props) {
     super(props);
@@ -35,6 +36,10 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
       this.style1 = '行边框';
     } else if ('c012'.indexOf(AppDefine.siteId) != -1) {
       this.style1 = '外边框';
+    }
+    if (Skin1.skitType.indexOf('威尼斯') != -1) {
+      this.style1 = '行边框'
+      this.itemStyle = {borderColor:'#b06065', backgroundColor:'transparent'}
     }
     this.style2 = style2;
     this.list = list.map((item: UGPromoteModel) => {
@@ -131,7 +136,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
                 html:`
                 <head>
                 <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-                <style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style>
+                <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
                 <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
                 <style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style>
                 </head>` + `
@@ -152,7 +157,7 @@ export default class JDPromotionListCP extends Component<IProps, IState> {
     );
 
     if (this.style1 === '行边框') {
-      return <Card containerStyle={{ margin: cardMargin, borderRadius: 8, paddingHorizontal: 0, paddingVertical: 3, backgroundColor: Skin1.homeContentColor }}>{contentView}</Card>;
+      return <Card containerStyle={[{ margin: cardMargin, borderRadius: 8, paddingHorizontal: 0, paddingVertical: 3, backgroundColor: Skin1.homeContentColor, }, this.itemStyle]}>{contentView}</Card>;
     }
     return contentView;
   }

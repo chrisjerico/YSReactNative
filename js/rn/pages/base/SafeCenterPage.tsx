@@ -154,7 +154,7 @@ const SafeCenterPage = () => {
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'安全中心'} showBackBtn onPressBackBtn={pop} />
       </SafeAreaHeader>
-      <ScrollableTabViewComponent indicatorStyle={{ width: '23%', backgroundColor: Skin1.themeColor }}>
+      <ScrollableTabViewComponent indicatorStyle={{ width: '23%', backgroundColor: Skin1.themeColor }} tabBarScrollEnabled={false}>
         <SignInPassword tabLabel={'登录密码'} key={'登录密码'} />
         <TakeMoneyPassword tabLabel={'取款密码'} key={'取款密码'} />
       </ScrollableTabViewComponent>
