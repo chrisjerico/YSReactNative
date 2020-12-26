@@ -95,7 +95,6 @@ const WNZHomePage = () => {
       }}
       renderGame={({ item, index, showGameSubType }) => {
         const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
-        ugLog('games title=', title, name)
         const flagType = parseInt(tipFlag)
         return (
           <View style={styles.gameContainer}>
