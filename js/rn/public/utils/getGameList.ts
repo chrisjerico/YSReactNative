@@ -1,9 +1,9 @@
+import { UGNextIssueModel } from './../network/Model/LottoGamesModel';
 import AppDefine from "../define/AppDefine";
 import {useEffect, useState} from "react";
 import APIRouter from "../network/APIRouter";
-import {Datum} from "../network/Model/LottoGamesModel";
 
-export const getGameList = (data: Datum[]) => {
+export const getGameList = (data: UGNextIssueModel[]) => {
     console.log(AppDefine.siteId)
     let games = []
     if (data)
@@ -1440,7 +1440,7 @@ export const getGameList = (data: Datum[]) => {
             }];
     }
 
-    let trendGameList = []
+    let trendGameList: UGNextIssueModel[] = []
     if (AppDefine.siteId != 'c085_2' || AppDefine.siteId != 'c085_3') {
         for (let i = 0; i < games.length; i++) {
             debugger
