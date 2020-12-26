@@ -55,6 +55,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   } else {
     // 自定义Reducer写在这里。。。
     state.BettingReducer = BettingReducer(state.BettingReducer, act as any)
+    act.page && (state[act.page] = { ...state[act.page], ...act.props })
   }
   return state
 }

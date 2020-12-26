@@ -13,7 +13,7 @@ export const GameListView = ({list, onPress}: { list: List[], onPress: (list: Li
             numColumns={2} data={fillArray(list, 2)}
             renderItem={({item}) => {
                 return item.icon && item.icon != "" ? (
-                    <ImageButton imgStyle={{height: 145, margin: 10, flex: 0.5}} uri={item.icon}
+                    <ImageButton imgStyle={{height: 145, marginVertical: 4, marginHorizontal: 6, flex: 0.5}} uri={item.icon}
                                  onPress={() => onPress(item)}/>
                 ) : (<View style={{height: 145, flex: 0.5}}/>)
             }}/>

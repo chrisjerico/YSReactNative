@@ -1,18 +1,7 @@
-import * as React from "react";
-import {
-    Dimensions,
-    Platform,
-    SafeAreaView,
-    StyleProp,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    ViewStyle,
-} from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {pop} from "../../../public/navigation/RootNavigation";
-import {OCHelper} from "../../../public/define/OCHelper/OCHelper";
+import * as React from 'react'
+import { SafeAreaView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { pop } from '../../../public/navigation/RootNavigation'
 import { scale } from '../../../public/tools/Scale'
 import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import { UGColor } from '../../../public/theme/UGThemeColor'
@@ -28,8 +17,8 @@ interface BaseScreenProps {
 
 export const BaseScreen = ({children, screenName, style, icon, hideLeft, rightButton}: BaseScreenProps) => {
     return (
-        <View style={[{flex: 1, backgroundColor: Skin1.bgColor[0]}, style]}>
-            <SafeAreaView style={{backgroundColor: "#ffffff", borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
+        <View style={[{flex: 1, backgroundColor: Skin1.homeContentColor}, style]}>
+            <SafeAreaView style={{backgroundColor: Skin1.themeColor, borderBottomColor: "#cccccc", borderBottomWidth: 1}}>
                 <View style={{
                     backgroundColor: Skin1.themeColor, //根据当前主题来
                     width: scale(540),
@@ -46,25 +35,11 @@ export const BaseScreen = ({children, screenName, style, icon, hideLeft, rightBu
                         alignSelf: "center",
                         color: Skin1.navBarTitleColor //根据当前主题来
                     }}>{screenName}</Text>
-                    {
-                        hideLeft ?
-                          null :
-                          <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => {
-                              pop()
-                              switch (Platform.OS) {
-                                  case 'ios':
-                                      OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
-                                      break;
-                                  case 'android':
-
-                                      break;
-                              }
-                          }}>
-                              <Icon size={33} name={icon || 'angle-left'}
-                                    color={ Skin1.navBarTitleColor } //根据当前主题来
-                              />
-                          </TouchableOpacity>
-                    }
+                    <TouchableOpacity style={{width: 30, position: "absolute", left: 20}} onPress={() => pop()}>
+                        <Icon size={33} name={icon || 'angle-left'}
+                              color={ Skin1.navBarTitleColor } //根据当前主题来
+                        />
+                    </TouchableOpacity>
                     <View style={_styles.right_container}>
                         {
                             rightButton

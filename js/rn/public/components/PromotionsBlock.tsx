@@ -1,15 +1,14 @@
-import {View, FlatList, TouchableWithoutFeedback, Text, TouchableOpacity, Linking, Image} from "react-native"
-import React, {useEffect, useState} from 'react'
-import useGetHomeInfo from "../hooks/useGetHomeInfo"
-import usePopUpView from "../hooks/usePopUpView"
-import FastImage, {FastImageProperties} from "react-native-fast-image"
-import AppDefine from "../define/AppDefine"
-import AutoHeightWebView from "react-native-autoheight-webview"
-import {useDimensions} from "@react-native-community/hooks"
-import {httpClient} from "../network/httpClient";
-import {Res} from "../../Res/icon/Resources";
-import {List} from "../network/Model/PromotionsModel";
-import PushHelper from "../define/PushHelper";
+import { FlatList, Linking, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
+import React, { useState } from 'react'
+import useGetHomeInfo from '../hooks/useGetHomeInfo'
+import usePopUpView from '../hooks/usePopUpView'
+import FastImage, { FastImageProperties } from 'react-native-fast-image'
+import AppDefine from '../define/AppDefine'
+import AutoHeightWebView from 'react-native-autoheight-webview'
+import { useDimensions } from '@react-native-community/hooks'
+import { httpClient } from '../network/httpClient'
+import { List } from '../network/Model/PromotionsModel'
+import PushHelper from '../define/PushHelper'
 
 const PromotionsBlock = ({horizontal = false, titleVisible = true}: { horizontal?: boolean, titleVisible?: boolean }) => {
     const {couponListData,} = useGetHomeInfo(['system_promotions'])

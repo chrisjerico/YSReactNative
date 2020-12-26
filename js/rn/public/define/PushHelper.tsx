@@ -284,10 +284,10 @@ export default class PushHelper {
             showMessage('敬请期待')
             break
           }
-          case UGUserCenterType.开奖走势: {
-            push(PageName.TrendView, {})
-            break
-          }
+          // case UGUserCenterType.开奖走势: {
+          //   navigate(PageName.TrendView, {})
+          //   break
+          // }
           case UGUserCenterType.资金明细: {
             PushHelper.pushCategory(7, 28)
             break
@@ -488,7 +488,7 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.建议反馈: {
-            subId = MenuType.TSZX
+            navigate(PageName.FeedbackView)
             break
           }
           case UGUserCenterType.在线客服: {

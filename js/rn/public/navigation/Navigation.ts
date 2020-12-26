@@ -5,7 +5,6 @@ export enum PageName {
   JDPromotionListPage = 'JDPromotionListPage', //优惠活动列表
   PromotionPage = 'PromotionPage', //优惠活动
   PromotionListPage = 'PromotionListPage', //优惠活动列表
-  LXBView = 'LXBView', //利息宝
   UpdateVersionPage = 'UpdateVersionPage', //版本更新页
   SeriesLobbyPage = 'SeriesLobbyPage', // 游戏大厅二级页面（xx系列游戏列表）
   UserMessagePage = 'UserMessagePage', //站内信
@@ -26,6 +25,10 @@ export enum PageName {
   LottoBetting = 'LottoBetting', //下注页（未完成）
   JDSigInPage = 'JDSigInPage', //签到
   JDFeedBackPage = 'JDFeedBackPage', //建议反馈
+
+  OnlinePayPage = 'OnlinePayPage',//在线支付
+  TransferPayPage = 'TransferPayPage',//银行卡支付
+
 
   // ———————————— 模板页面 —————————————
 
@@ -90,9 +93,20 @@ export enum PageName {
   KSSignUpPage = 'KSSignUpPage', //凯时-注册
   KSMinePage = 'KSMinePage', //凯时-我的页
 
-  XBJLoginPage = 'XBJLoginPage', //香槟金-登录
-  XBJRegisterPage = 'XBJRegisterPage', //香槟金-注册
-  XBJMinePage = 'XBJMinePage', //香槟金-我的页
+  XBJLoginPage = 'XBJLoginPage',//香槟金-登录
+  XBJRegisterPage = 'XBJRegisterPage',//香槟金-注册
+  XBJMinePage = 'XBJMinePage',//香槟金-我的页
+  FeedbackRecordView = 'FeedbackRecordView',
+  FeedbackSubmitView = 'FeedbackSubmitView',
+  AlipayProfitView = 'AlipayProfitView',
+  AlipayTransferRecordView = 'AlipayTransferRecordView',
+  AlipayTransferView = 'AlipayTransferView',
+  AlipayView = 'AlipayView',
+  FeedbackView = 'FeedbackView',
+  TransferRecordView = 'TransferRecordView',
+  TransferTKLMainView = 'TransferTKLMainView',
+  TransferView = 'TransferView',
+  SupFeedbackSubmitView = 'SupFeedbackSubmitView',
 
   GDRegisterPage = 'GDRegisterPage',
   GDLoginPage = 'GDLoginPage',
