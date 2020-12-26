@@ -15,6 +15,7 @@ export interface ResponseObject<T = {} | [] | string> {
   code: number;
   msg: string;
   data: T;
+  info: object
 }
 
 export class CCSessionModel<T = {} | [] | string> {

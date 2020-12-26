@@ -1,19 +1,42 @@
 import React, { useRef } from 'react'
-import { Animated, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { Animated, StyleProp, StyleSheet, Text, TouchableWithoutFeedback, View, ViewStyle, ScrollView } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
 import AppDefine from '../../define/AppDefine'
 
 interface ScrollableTabViewComponentProps {
   children?: any
   indicatorStyle?: StyleProp<ViewStyle>
+  showIndicator?: boolean
+  renderTabBar?: ({ activeTab, goToPage }: RenderTabBar) => any
+  tabBarScrollEnabled?: boolean
+  fixedTabWidth?: number
+  minTabWidth?: number
+  enableMinWidth?: boolean
+  initialTabIndex?: number
 }
 
-const ScrollableTabViewComponent = ({ children, indicatorStyle }: ScrollableTabViewComponentProps) => {
+interface RenderTabBar {
+  activeTab: number
+  goToPage: (pageNumber: number) => any
+}
+
+const ScrollableTabViewComponent = ({
+  children,
+  indicatorStyle,
+  showIndicator = true,
+  renderTabBar,
+  tabBarScrollEnabled = true,
+  fixedTabWidth,
+  enableMinWidth,
+  minTabWidth,
+  initialTabIndex = 0,
+}: ScrollableTabViewComponentProps) => {
   const x = useRef(new Animated.Value(0)).current
   const inAnimated = useRef(false)
+  const scroll = useRef(null)
+  const tabCount = children?.length
 
-  const move = (value: number) => {
+  const indicatorMoveTo = (value: number) => {
     Animated.timing(x, {
       toValue: value,
       duration: 300,
@@ -23,38 +46,104 @@ const ScrollableTabViewComponent = ({ children, indicatorStyle }: ScrollableTabV
     })
   }
 
+  const getTabWidth = () => {
+    if (fixedTabWidth) {
+      return fixedTabWidth
+    }
+    const width = tabCount ? AppDefine.width / tabCount : 0
+    if (enableMinWidth && width < minTabWidth) {
+      return minTabWidth
+    } else {
+      return width
+    }
+  }
+
+  const tabWidth = getTabWidth()
+
+  const getScrollViewXPosition = (index: number) => {
+    const maxWidth = tabWidth * tabCount
+    const windowsContainTab = AppDefine.width / tabWidth
+    const scrllToEndIndex = tabCount - windowsContainTab
+    const halfTab = windowsContainTab / 2
+    const tabIndex = index > scrllToEndIndex ? 2 * index - halfTab - scrllToEndIndex : index - halfTab - 1
+    const x = tabIndex * tabWidth
+    if (x >= maxWidth) {
+      return maxWidth
+    } else if (x <= 0) {
+      return 0
+    } else {
+      return x
+    }
+  }
+
+  const scrollTabTo = (x: number) => {
+    scroll?.current?.scrollTo({
+      x: x,
+      y: 0,
+      animated: true,
+    })
+  }
+
+  const changeIndex = ({ i }) => {
+    // const height = getSceneHeight(i)
+    // setHeight(height)
+    const x = getScrollViewXPosition(i)
+    scrollTabTo(x)
+    indicatorMoveTo(tabWidth * i)
+  }
+
   return (
     <ScrollableTabView
       style={{ flex: 1 }}
+      onChangeTab={changeIndex}
       renderTabBar={(props) => {
         const { tabs, activeTab, goToPage } = props
-        const tabCount = tabs?.length
-        const tabWidth = AppDefine.width / tabCount
-        return (
-          <>
-            <View style={styles.container}>
-              {tabs?.map((item, index) => {
-                return (
-                  <TouchableWithoutFeedback
-                    key={index}
-                    onPress={() => {
-                      if (!inAnimated.current) {
-                        inAnimated.current = true
-                        goToPage(index)
-                        move(tabWidth * index)
-                      }
-                    }}>
-                    <View style={styles.tab}>
-                      <Text style={styles.tabText}>{item}</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                )
-              })}
-            </View>
-            <Animated.View style={[styles.indicatorContainer, { width: AppDefine.width / tabCount, transform: [{ translateX: x }] }]}>
-              <View style={[styles.indicator, indicatorStyle]} />
-            </Animated.View>
-          </>
+        return renderTabBar ? (
+          renderTabBar({ activeTab, goToPage })
+        ) : (
+          <View style={styles.tabBarScrollViewContainer}>
+            <ScrollView
+              scrollEnabled={tabBarScrollEnabled}
+              ref={scroll}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              contentOffset={{ x: getScrollViewXPosition(initialTabIndex), y: 0 }}
+              scrollEventThrottle={5000}>
+              <View style={styles.tabBarContainer}>
+                <View style={{ flexDirection: 'row', flex: 35 }}>
+                  {tabs?.map((item, index) => {
+                    return (
+                      <TouchableWithoutFeedback
+                        key={index}
+                        onPress={() => {
+                          if (!inAnimated.current) {
+                            inAnimated.current = true
+                            goToPage(index)
+                            indicatorMoveTo(tabWidth * index)
+                          }
+                        }}>
+                        <View
+                          style={[
+                            styles.tab,
+                            {
+                              width: tabWidth,
+                            },
+                          ]}>
+                          <Text style={styles.tabText}>{item}</Text>
+                        </View>
+                      </TouchableWithoutFeedback>
+                    )
+                  })}
+                </View>
+                {showIndicator && (
+                  <Animated.View style={[styles.indicatorContainer, { width: tabWidth, transform: [{ translateX: x }] }]}>
+                    <View style={[styles.indicator, indicatorStyle]} />
+                  </Animated.View>
+                )}
+              </View>
+            </ScrollView>
+          </View>
         )
       }}>
       {children}
@@ -63,13 +152,15 @@ const ScrollableTabViewComponent = ({ children, indicatorStyle }: ScrollableTabV
 }
 
 const styles = StyleSheet.create({
-  container: {
+  tabBarScrollViewContainer: {
     width: '100%',
     height: 40,
-    flexDirection: 'row',
+  },
+  tabBarContainer: {
+    height: 40,
+    backgroundColor: 'transparent',
   },
   tab: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },

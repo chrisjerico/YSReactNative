@@ -2,13 +2,15 @@ import { Platform } from 'react-native'
 import { LotteryType } from '../../redux/model/全局/UGLotteryModel'
 import { UGTabbarItem, UGUserCenterType } from '../../redux/model/全局/UGSysConfModel'
 import UGUserModel from '../../redux/model/全局/UGUserModel'
+import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
-import { navigate, popToRoot, push } from '../navigation/RootNavigation'
+import { popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
+import { anyEmpty } from '../tools/Ext'
 import { Toast } from '../tools/ToastUtils'
 import { B_DEBUG, ugLog } from '../tools/UgLog'
 import { hideLoading, showLoading, showMessage } from '../widget/UGLoadingCP'
@@ -19,8 +21,6 @@ import AppDefine from './AppDefine'
 import { NSValue } from './OCHelper/OCBridge/OCCall'
 import { OCHelper } from './OCHelper/OCHelper'
 import { RnPageModel } from './OCHelper/SetRnPageInfo'
-import { anyEmpty } from '../tools/Ext'
-import { UGStore } from '../../redux/store/UGStore'
 
 export default class PushHelper {
   static pushAnnouncement(data: PushAnnouncement[]) {
@@ -72,7 +72,7 @@ export default class PushHelper {
   // 登出
   static async pushLogout() {
     //已退出不能重复执行
-    if(anyEmpty(UGStore.globalProps.userInfo?.uid)) return
+    if (anyEmpty(UGStore.globalProps.userInfo?.uid)) return
 
     switch (Platform.OS) {
       case 'ios':
@@ -399,6 +399,10 @@ export default class PushHelper {
             // OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{ selectors: 'UGLotteryRecordController.new' }, true])
             break
           }
+          case UGUserCenterType.银行卡管理: {
+            push(PageName.ManageBankListComponent, {})
+            break
+          }
           case UGUserCenterType.即时注单: {
             OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, 24])
             break
@@ -418,7 +422,7 @@ export default class PushHelper {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
               push(PageName.CapitalPage)
-              return
+              // return
             }
             subId = MenuType.CZ
             break
@@ -433,11 +437,11 @@ export default class PushHelper {
           }
           case UGUserCenterType.银行卡管理: {
             // if (B_DEBUG) {
-              push(PageName.ManageBankListComponent)
-              return
+            push(PageName.ManageBankListPage)
+            return
             // }
             // subId = MenuType.YHK
-            break
+            // break
           }
           case UGUserCenterType.利息宝: {
             subId = MenuType.LXB
@@ -506,7 +510,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.开奖走势: {
             // Toast('敬请期待')
-            navigate(PageName.TrendView, {})
+            push(PageName.TrendView, {})
             return
           }
           case UGUserCenterType.QQ客服: {
