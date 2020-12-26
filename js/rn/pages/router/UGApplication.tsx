@@ -81,6 +81,9 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
+import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
   // ———————————— 通用页面 —————————————
@@ -106,6 +109,8 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)], //彩票投注记录
   [PageName.JDSigInPage, UGPage(JDSigInPage)], //签到
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)], //建议反馈
+  [PageName.OnlinePayPage, UGPage(OnlinePayPage)],//在线支付
+  [PageName.TransferPayPage, UGPage(TransferPayPage)],//银行支付
 
   // ———————————— 模板页面 —————————————
 

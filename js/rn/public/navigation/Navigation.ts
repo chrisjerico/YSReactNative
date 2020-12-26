@@ -27,6 +27,10 @@ export enum PageName {
   JDSigInPage = 'JDSigInPage', //签到
   JDFeedBackPage = 'JDFeedBackPage', //建议反馈
 
+  OnlinePayPage = 'OnlinePayPage',//在线支付
+  TransferPayPage = 'TransferPayPage',//银行卡支付
+
+
   // ———————————— 模板页面 —————————————
 
   LHTHomePage = 'LHTHomePage', //六合厅-首页
