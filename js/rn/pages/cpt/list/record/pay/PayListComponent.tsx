@@ -38,19 +38,29 @@ const PayListComponent = () => {
 
     return (
       <TouchableWithoutFeedback onPress={() => {
-        push(PageName.OnlinePayPage, {
-          // refreshBankList: (accountType: string) => {
-          //   // ugLog('accountType=', accountType)
-          //   categoryData?.map((item, index) => {
-          //     ugLog('accountType=', accountType, item.type)
-          //     if (accountType == item.type.toString()) {
-          //       tabController?.goToPage(index)
-          //     }
-          //   })
-          //   requestManageBankData(null)
-          // },
-          payData: item,
-        })
+        switch (item?.id) {
+          case 'alipay_online':
+          case 'wechat_online':
+            push(PageName.OnlinePayPage, {
+              // refreshBankList: (accountType: string) => {
+              //   // ugLog('accountType=', accountType)
+              //   categoryData?.map((item, index) => {
+              //     ugLog('accountType=', accountType, item.type)
+              //     if (accountType == item.type.toString()) {
+              //       tabController?.goToPage(index)
+              //     }
+              //   })
+              //   requestManageBankData(null)
+              // },
+              payData: item,
+            })
+            break;
+          case 'bank_transfer':
+            push(PageName.TransferPayPage, {
+              payData: item,
+            })
+            break;
+        }
       }}>
         <View style={_styles.item_container}>
           <FastImage source={{ uri: icon }}

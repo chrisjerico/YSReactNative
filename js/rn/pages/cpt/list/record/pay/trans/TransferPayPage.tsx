@@ -1,5 +1,5 @@
 import {
-  FlatList,
+  FlatList, Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -25,6 +25,8 @@ import Button from '../../../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../../../public/theme/UGSkinManagers'
 import { BaseScreen } from '../../../../../乐橙/component/BaseScreen'
 import { ugLog } from '../../../../../../public/tools/UgLog'
+import { ANHelper } from '../../../../../../public/define/ANHelper/ANHelper'
+import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -43,6 +45,10 @@ const TransferPayPage = ({ navigation, route }) => {
     moneyOption,
     inputMoney,
     setInputMoney,
+    inputName,
+    setInputName,
+    inputRemark,
+    setInputRemark,
     selPayChannel,
     setSelPayChannel,
   } = UseTransferPay()
@@ -58,26 +64,54 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 选择金额
    */
-  const renderChoiceMoney = () => <View style={_styles.choice_money_container}>
+  const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
       moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
-        <View style={_styles.choice_money_item_container}>
-          <Text style={_styles.choice_money_item_text}>{item + '元'}</Text>
+        <View style={_styles.choose_channel_item_container}>
+          <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
       </TouchableOpacity>)
     }
   </View>
 
   /**
+   * 已选择的渠道单个条目
+   */
+  const renderSelectedChannelItem = (title: string) => <View style={_styles.choose_result_title_item}>
+    <Text style={_styles.choose_result_title}>{title}</Text>
+    <TouchableOpacity onPress={() => {
+      switch (Platform.OS) {
+        case 'ios':
+          //TODO iOS 复制 title 到粘贴板
+          break
+        case 'android':
+          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+          break
+      }
+    }}>
+      <Text style={_styles.choose_result_copy}>复制</Text>
+    </TouchableOpacity>
+  </View>
+
+  /**
    * 已选择的渠道
    */
   const renderSelectedChannel = () => <View>
-    <Text style={_styles.choice_money_title}>{
-      anyEmpty(payData.channel[selPayChannel]?.fcomment) ?
-        payData.channel[selPayChannel]?.payeeName :
-        payData.channel[selPayChannel]?.fcomment
-    }</Text>
-    <Text style={_styles.choice_money_hint}>UG集团你梦想的起航！来UG成就的你梦想</Text>
+    <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+    <View style={_styles.choose_result_container}>
+      <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
+        <Text style={_styles.choose_result_title}>{payData.channel[selPayChannel]?.address}</Text>
+      </View>
+      {
+        renderSelectedChannelItem(payData.channel[selPayChannel]?.domain)
+      }
+      {
+        renderSelectedChannelItem(payData.channel[selPayChannel]?.account)
+      }
+      {
+        renderSelectedChannelItem(payData.channel[selPayChannel]?.branchAddress)
+      }
+    </View>
   </View>
 
   /**
@@ -101,6 +135,21 @@ const TransferPayPage = ({ navigation, route }) => {
     }
   </View>
 
+  /**
+   * 输入转账信息
+   */
+  const renderInputInfo = () => <View style={_styles.input_info_container}>
+    <TextInput style={_styles.input_info}
+               value={inputName}
+               onChangeText={(text) => setInputName(text)}
+               placeholder={'请填写实际转账人姓名'}/>
+    <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+    <TextInput style={_styles.input_info}
+               value={inputRemark}
+               onChangeText={(text) => setInputRemark(text)}
+               placeholder={'请填写备注信息'}/>
+  </View>
+
 
   return (
     <BaseScreen screenName={payData.name}>
@@ -108,11 +157,19 @@ const TransferPayPage = ({ navigation, route }) => {
                   style={_styles.container}>
         {
           [
+            renderAllChannel(),
+            renderSelectedChannel(),
             renderInputMoney(),
             renderChoiceMoney(),
-            renderSelectedChannel(),
-            renderAllChannel(),
           ]
+        }
+
+        <Text style={_styles.select_channel_hint}>
+          温馨提示：为确保财务第一时间为您添加游戏额度，请您尽量不要转账整数（例如：欲入￥5000，请￥5000.68）谢谢！
+        </Text>
+
+        {
+          renderInputInfo()
         }
 
         <Button title={'开始充值'}
@@ -130,6 +187,7 @@ const TransferPayPage = ({ navigation, route }) => {
                   // })
 
                 }}/>
+        <View style={{ height: scale(200) }}/>
       </ScrollView>
     </BaseScreen>
 
@@ -149,18 +207,56 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     fontSize: scale(22),
   },
-  choice_money_container: {
+  choose_channel_container: {
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: scale(16),
   },
-  choice_money_item_container: {
+  choose_result_container: {
+    flex: 1,
+    alignItems: 'center',
+    marginBottom: scale(16),
+    borderBottomLeftRadius: scale(8),
+    borderBottomRightRadius: scale(8),
+    borderWidth: scale(1),
+    borderColor: UGColor.LineColor4,
+    paddingVertical: scale(8),
+  },
+  choose_result_title_item: {
+    flex: 1,
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+    flexDirection: 'row',
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(8),
+    // borderTopWidth: scale(1),
+    // borderTopColor: UGColor.LineColor4,
+  },
+  choose_result_title: {
+    flex: 1,
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+  },
+  choose_result_copy: {
+    color: UGColor.RedColor2,
+    fontSize: scale(24),
+  },
+  choose_result_hint: {
+    color: 'white',
+    backgroundColor: UGColor.RedColor2,
+    fontSize: scale(20),
+    paddingVertical: scale(4),
+    paddingHorizontal: scale(8),
+    borderTopLeftRadius: scale(8),
+    borderTopRightRadius: scale(8),
+  },
+  choose_channel_item_container: {
     width: scale(168),
     justifyContent: 'center',
     alignItems: 'center',
   },
-  choice_money_item_text: {
+  choose_channel_item_text: {
     width: '90%',
     color: UGColor.TextColor2,
     fontSize: scale(22),
@@ -172,18 +268,10 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     backgroundColor: UGColor.BackgroundColor4,
   },
-  choice_money_title: {
-    color: UGColor.TextColor2,
-    fontSize: scale(24),
-  },
-  choice_money_hint: {
-    color: UGColor.RedColor2,
-    fontSize: scale(20),
-  },
   select_channel_container: {
     flex: 1,
     marginTop: scale(16),
-    marginBottom: scale(48),
+    marginBottom: scale(16),
     borderRadius: scale(8),
     borderWidth: scale(1),
     borderColor: UGColor.LineColor4,
@@ -199,7 +287,27 @@ const _styles = StyleSheet.create({
   select_channel_text: {
     color: UGColor.TextColor3,
     fontSize: scale(22),
-    paddingLeft: scale(16),
+    paddingHorizontal: scale(16),
+  },
+  select_channel_hint: {
+    color: UGColor.TextColor3,
+    fontSize: scale(20),
+    paddingVertical: scale(4),
+    paddingHorizontal: scale(8),
+  },
+  input_info_container: {
+    flex: 1,
+    paddingVertical: scale(12),
+    marginBottom: scale(32),
+  },
+  input_info: {
+    width: '100%',
+    padding: scale(12),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+    fontSize: scale(22),
+    color: UGColor.TextColor2,
   },
   submit_text: {
     fontSize: scale(22),

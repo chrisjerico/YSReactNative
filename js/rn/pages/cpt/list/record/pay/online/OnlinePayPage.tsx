@@ -58,11 +58,11 @@ const OnlinePayPage = ({ navigation, route }) => {
   /**
    * 选择金额
    */
-  const renderChoiceMoney = () => <View style={_styles.choice_money_container}>
+  const renderChoiceMoney = () => <View style={_styles.choose_channel_container}>
     {
       moneyOption.map((item) => <TouchableOpacity onPress={() => setInputMoney(item)}>
-        <View style={_styles.choice_money_item_container}>
-          <Text style={_styles.choice_money_item_text}>{item + '元'}</Text>
+        <View style={_styles.choose_channel_item_container}>
+          <Text style={_styles.choose_channel_item_text}>{item + '元'}</Text>
         </View>
       </TouchableOpacity>)
     }
@@ -72,12 +72,12 @@ const OnlinePayPage = ({ navigation, route }) => {
    * 已选择的渠道
    */
   const renderSelectedChannel = () => <View>
-    <Text style={_styles.choice_money_title}>{
+    <Text style={_styles.choose_channel_title}>{
       anyEmpty(payData.channel[selPayChannel]?.fcomment) ?
         payData.channel[selPayChannel]?.payeeName :
         payData.channel[selPayChannel]?.fcomment
     }</Text>
-    <Text style={_styles.choice_money_hint}>UG集团你梦想的起航！来UG成就的你梦想</Text>
+    <Text style={_styles.choose_channel_hint}>UG集团你梦想的起航！来UG成就的你梦想</Text>
   </View>
 
   /**
@@ -130,6 +130,7 @@ const OnlinePayPage = ({ navigation, route }) => {
                   // })
 
                 }}/>
+        <View style={{height: scale(200)}}/>
       </ScrollView>
     </BaseScreen>
 
@@ -149,18 +150,18 @@ const _styles = StyleSheet.create({
     borderColor: UGColor.LineColor4,
     fontSize: scale(22),
   },
-  choice_money_container: {
+  choose_channel_container: {
     alignItems: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginBottom: scale(16),
   },
-  choice_money_item_container: {
+  choose_channel_item_container: {
     width: scale(168),
     justifyContent: 'center',
     alignItems: 'center',
   },
-  choice_money_item_text: {
+  choose_channel_item_text: {
     width: '90%',
     color: UGColor.TextColor2,
     fontSize: scale(22),
@@ -172,11 +173,11 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     backgroundColor: UGColor.BackgroundColor4,
   },
-  choice_money_title: {
+  choose_channel_title: {
     color: UGColor.TextColor2,
     fontSize: scale(24),
   },
-  choice_money_hint: {
+  choose_channel_hint: {
     color: UGColor.RedColor2,
     fontSize: scale(20),
   },
@@ -199,7 +200,7 @@ const _styles = StyleSheet.create({
   select_channel_text: {
     color: UGColor.TextColor3,
     fontSize: scale(22),
-    paddingLeft: scale(16),
+    paddingHorizontal: scale(16),
   },
   submit_text: {
     fontSize: scale(22),

@@ -15,7 +15,7 @@ export interface PayAisleData {
 }
 
 export interface PayAisleListData {
-  id?: string
+  id?: string //alipay_online
   code?: string
   name?: string //支付宝转账
   sort?: string
