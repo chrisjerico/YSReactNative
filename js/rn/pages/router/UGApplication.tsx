@@ -12,6 +12,7 @@ import { UGLoadingCP } from '../../public/widget/UGLoadingCP'
 import AddBankPage from '../bank/add/AddBankPage'
 import ManageBankListPage from '../bank/list/ManageBankListPage'
 import ActivityRewardPage from '../base/ActivityRewardPage'
+import IncomeRecommendPage from '../base/IncomeRecommendPage'
 import LotteryHistoryPage from '../base/LotteryHistoryPage'
 import PromotionPage from '../base/PromotionPage'
 import SafeCenterPage from '../base/SafeCenterPage'
@@ -106,6 +107,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.LotteryHistoryPage, UGPage(LotteryHistoryPage)], //彩票投注记录
   [PageName.JDSigInPage, UGPage(JDSigInPage)], //签到
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)], //建议反馈
+  [PageName.IncomeRecommendPage, UGPage(IncomeRecommendPage)], //建议反馈
 
   // ———————————— 模板页面 —————————————
 
