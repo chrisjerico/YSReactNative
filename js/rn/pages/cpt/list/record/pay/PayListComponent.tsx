@@ -62,6 +62,7 @@ const PayListComponent = () => {
           case 'bank_transfer':
           case 'alipay_transfer':
           case 'yxsm_transfer':
+          case 'yunshanfu_transfer':
             push(PageName.TransferPayPage, {
               payData: item,
             })

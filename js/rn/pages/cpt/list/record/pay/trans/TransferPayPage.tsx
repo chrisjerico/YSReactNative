@@ -165,7 +165,7 @@ const TransferPayPage = ({ navigation, route }) => {
         }
 
         <Text style={_styles.select_channel_hint}>
-          温馨提示：为确保财务第一时间为您添加游戏额度，请您尽量不要转账整数（例如：欲入￥5000，请￥5000.68）谢谢！
+          {payData.prompt}
         </Text>
 
         {
