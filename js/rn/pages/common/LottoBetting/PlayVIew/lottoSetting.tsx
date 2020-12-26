@@ -43,11 +43,11 @@ const blueSet = ["03", "04", "09", "10", "14", "15", "20", "25", "26", "31", "36
 const greenSet = ["05", "06", "11", "16", "17", "21", "22", "27", "28", "32", "33", "38", "39", "43", "44", "49"]
 export const getHKballColor = (BallName: string) => {
   if (redSet.includes(BallName)) {
-    return 'rgba(197, 52, 60,1)'
+    return '#e23'
   } else if (blueSet.includes(BallName)) {
-    return 'rgba(86, 170, 236,1)'
+    return '#4bf'
   } else {
-    return 'rgba(96, 174, 108,1)'
+    return '#3b6'
   }
 }
 

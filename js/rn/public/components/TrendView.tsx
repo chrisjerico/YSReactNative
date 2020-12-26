@@ -14,6 +14,7 @@ import { hideLoading, showLoading } from '../widget/UGLoadingCP'
 import { getGameList } from '../utils/getGameList'
 import { anyEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
+import { httpClient } from '../network/httpClient'
 
 const TrendView = ({ navigation }) => {
   const [trendData, setTrendData] = useState<TrendData>()
@@ -436,7 +437,7 @@ const TrendView = ({ navigation }) => {
               alignItems: 'center',
             }}
             onPress={() => getData()}>
-            <Image style={{ width: 20, height: 20 }} source={{ uri: 'https://test10.6yc.com/images/kj_refresh.png' }} />
+            <Image style={{ width: 20, height: 20 }} source={{ uri: httpClient.defaults.baseURL + '/images/kj_refresh.png' }} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{

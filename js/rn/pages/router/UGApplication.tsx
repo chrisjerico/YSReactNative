@@ -55,7 +55,6 @@ import LEFHomePage from '../乐FUN/LEFHomePage'
 import LEFMinePage from '../乐FUN/LEFMinePage'
 import LEFSignInPage from '../乐FUN/LEFSignInPage'
 import LEFSignUpPage from '../乐FUN/LEFSignUpPage'
-import LXBView from '../乐橙/component/minePage/LXBView'
 import LCHomePage from '../乐橙/LCHomePage'
 import LCLoginPage from '../乐橙/LCLoginPage'
 import LCMinePage from '../乐橙/LCMinePage'
@@ -81,6 +80,17 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import { TransferRecordView } from '../../public/components/transfer/TransferRecordView'
+import { TransferView } from '../../public/components/transfer/TransferView'
+import { FeedbackView } from '../../public/components/FeedbackView'
+import { FeedbackSubmitView } from '../../public/components/FeedbackSubmitView'
+import { FeedbackRecordView } from '../../public/components/FeedbackRecordView'
+import { SupFeedbackSubmitView } from '../../public/components/SupFeedbackSubmitView'
+import { AlipayView } from '../../public/components/alipay/AlipayView'
+import { AlipayTransferView } from '../../public/components/alipay/AlipayTransferView'
+import { AlipayTransferRecordView } from '../../public/components/alipay/AlipayTransferRecordView'
+import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitView'
+import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 
@@ -88,7 +98,6 @@ import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
 const pageComponents: [PageName, React.ComponentType<any>][] = [
   // ———————————— 通用页面 —————————————
 
-  [PageName.LXBView, UGPage(LXBView)], //利息宝
   [PageName.JDVirtualCurrencyTutorialPage, UGPage(JDVirtualCurrencyTutorialPage)], //虚拟币充值教程
   [PageName.TransitionPage, UGPage(TransitionPage)], //过渡页
   [PageName.PromotionListPage, UGPage(PromotionListPage)], //优惠活动列表
@@ -111,6 +120,17 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.JDFeedBackPage, UGPage(JDFeedBackPage)], //建议反馈
   [PageName.OnlinePayPage, UGPage(OnlinePayPage)],//在线支付
   [PageName.TransferPayPage, UGPage(TransferPayPage)],//银行支付
+  [PageName.AlipayView, UGPage(AlipayView)], //利息宝
+  [PageName.AlipayTransferView, UGPage(AlipayTransferView)], //利息宝额度转
+  [PageName.AlipayTransferRecordView, UGPage(AlipayTransferRecordView)], //利息宝记录
+  [PageName.AlipayProfitView, UGPage(AlipayProfitView)], //利息宝收益
+  [PageName.FeedbackView, UGPage(FeedbackView)], //建议反馈
+  [PageName.FeedbackSubmitView, UGPage(FeedbackSubmitView)], //建议反馈
+  [PageName.FeedbackRecordView, UGPage(FeedbackRecordView)], //建议反馈记录
+  [PageName.SupFeedbackSubmitView, UGPage(SupFeedbackSubmitView)], //建议反馈记录反馈
+  [PageName.TransferRecordView, UGPage(TransferRecordView)], //额度转页记录
+  [PageName.TransferView, UGPage(TransferView)], //额度转页
+  [PageName.TransferTKLMainView, UGPage(TransferTKLMainView)], //额度转页
 
   // ———————————— 模板页面 —————————————
 

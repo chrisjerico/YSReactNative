@@ -44,6 +44,7 @@ const handleSignIn = async ({ user_login_data, user_login_msg, onSuccess, onErro
       switch (Platform.OS) {
         case 'ios':
           await OCHelper.call('UGUserModel.setCurrentUser:', currentUser)
+          await OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationLoginComplete']);
           break
         case 'android':
           await ANHelper.callAsync(CMD.SAVE_DATA, {
