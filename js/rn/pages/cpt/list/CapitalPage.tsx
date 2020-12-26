@@ -82,7 +82,9 @@ const CapitalPage = ({ navigation, setProps }) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: UGColor.BackgroundColor1
+  },
   tab_bar: {
     backgroundColor: '#f4f4f4',
   },

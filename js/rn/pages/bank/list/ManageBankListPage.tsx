@@ -178,7 +178,7 @@ const ManageBankListPage = ({ navigation, setProps }) => {
               tabBarActiveTextColor={Skin1.themeColor}
               tabBarInactiveTextColor={Skin1.textColor1}
               tabBarTextStyle={{ fontSize: scale(20) }}
-              style={[{ flex: 1 }]}
+              style={[_styles.bg_container]}
               renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
               {
                 categoryData?.map((tabItem, index) => {
@@ -231,7 +231,12 @@ const ManageBankListPage = ({ navigation, setProps }) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: UGColor.BackgroundColor1
+  },
+  bg_container: {
+    flex: 1,
+  },
   tab_bar: {
     backgroundColor: '#f4f4f4',
   },
@@ -278,7 +283,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(20),
     padding: scale(8),
   },
-
 })
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
