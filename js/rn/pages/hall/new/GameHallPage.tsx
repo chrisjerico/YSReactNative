@@ -185,19 +185,6 @@ const GameHallPage = ({ navigation, setProps }) => {
   }
 
   return (
-    // <BaseScreen style={_styles.container}
-    //             hideLeft={true}
-    //             rightButton={rightButton}
-    //             screenName={'彩票大厅'}>
-    //   {
-    //     [
-    //       renderAllData(),
-    //       <RightMenu ref={refMenu}
-    //                  onMenuClick={renderMenu}
-    //                  menu={menuStr}/>,
-    //     ]
-    //   }
-    // </BaseScreen>
     <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'彩票大厅'}

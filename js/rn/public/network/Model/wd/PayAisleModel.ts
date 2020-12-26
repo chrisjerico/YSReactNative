@@ -42,7 +42,7 @@ export interface PayChannelBean {
   onlineType?: string
   rechType?: string
   branchAddress?: string
-  para?: Array<PayParaBean>
+  para?: PayParaBean
   isSelect?: boolean
   maximum?: string
   mininum?: string

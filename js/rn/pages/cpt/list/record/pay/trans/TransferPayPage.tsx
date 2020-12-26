@@ -197,6 +197,7 @@ const TransferPayPage = ({ navigation, route }) => {
 const _styles = StyleSheet.create({
   container: {
     padding: scale(16),
+    backgroundColor: UGColor.BackgroundColor1,
     flex: 1,
   },
   input_money: {

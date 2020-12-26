@@ -41,6 +41,10 @@ const PayListComponent = () => {
         switch (item?.id) {
           case 'alipay_online':
           case 'wechat_online':
+          case 'tenpay_online':
+          case 'aliyin_transfer':
+          case 'bank_online':
+          case 'yinlian_online':
             push(PageName.OnlinePayPage, {
               // refreshBankList: (accountType: string) => {
               //   // ugLog('accountType=', accountType)
@@ -56,6 +60,8 @@ const PayListComponent = () => {
             })
             break;
           case 'bank_transfer':
+          case 'alipay_transfer':
+          case 'yxsm_transfer':
             push(PageName.TransferPayPage, {
               payData: item,
             })
@@ -105,7 +111,7 @@ const _styles = StyleSheet.create({
     flex: 1,
     padding: scale(16),
     borderBottomWidth: scale(1),
-    borderBottomColor: UGColor.BackgroundColor3,
+    borderBottomColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
   },
