@@ -79,6 +79,7 @@ const PayListComponent = () => {
           case 'xlsm_transfer'://闲聊扫码
           case 'zfbzyhk_transfer'://支付宝转银行卡
           case 'wxzfbsm_transfer'://"微信支付宝扫码"
+          case 'liaobei_transfer'://"聊呗转账"
             push(PageName.TransferPayPage, {
               payData: item,
             })

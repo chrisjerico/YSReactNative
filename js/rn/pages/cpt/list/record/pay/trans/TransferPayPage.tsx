@@ -14,11 +14,11 @@ import { scale } from '../../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../../public/components/view/empty/EmptyView'
 import CommStyles from '../../../../../base/CommStyles'
-import { PayAisleData, PayAisleListData } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { PayAisleData, PayAisleListData, PayChannelBean } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import UseTransferPay from './UseTransferPay'
+import UseTransferPay, { ITransName } from './UseTransferPay'
 import { ManageBankCardData } from '../../../../../../public/network/Model/bank/ManageBankCardModel'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Button from '../../../../../../public/views/tars/Button'
@@ -32,6 +32,7 @@ import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
 import { useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
+import { TransferConst } from '../../../../const/CapitalConst'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -57,6 +58,7 @@ const TransferPayPage = ({ navigation, route }) => {
     setInputRemark,
     selPayChannel,
     setSelPayChannel,
+    transName,
   } = UseTransferPay()
 
   /**
@@ -83,15 +85,16 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道单个条目
    */
-  const renderSelectedChannelItem = (title: string) => <View style={_styles.choose_result_title_item}>
-    <Text style={_styles.choose_result_title}>{title}</Text>
+  const renderSelectedChannelItem = (title: string,
+                                     copyText: string) => <View style={_styles.choose_result_title_item}>
+    <Text style={_styles.choose_result_title}>{title + copyText}</Text>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
           break
         case 'android':
-          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
           break
       }
       Toast('复制成功')
@@ -105,20 +108,20 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderSelectedChannel = () => {
     const payChannelBean = payData?.channel[selPayChannel]
+    let nameHint: ITransName = transName(payData, payChannelBean)
+
     return <View>
       <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-          <Text style={_styles.choose_result_title}>{payChannelBean?.address}</Text>
+          <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
         </View>
         {
           [
-            renderSelectedChannelItem(payChannelBean?.domain),
-            renderSelectedChannelItem(payChannelBean?.account),
-            renderSelectedChannelItem(payChannelBean?.branchAddress),
-            anyEmpty(payChannelBean?.qrcode) ?
-              null :
-              <TouchableImage
+            nameHint?.payee_des && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
+            nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
+            nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
+            payChannelBean?.qrcode && <TouchableImage
                 pic={payChannelBean?.qrcode}
                 containerStyle={{ aspectRatio: 1, width: scale(240) }}
                 resizeMode={'contain'}
@@ -156,13 +159,13 @@ const TransferPayPage = ({ navigation, route }) => {
    * 输入转账信息
    */
   const renderInputInfo = () => {
-    let nameHint = transName[payData?.id]
+    let nameHint: ITransName = transName(payData)
 
     return <View style={_styles.input_info_container}>
       <TextInput style={_styles.input_info}
                  value={inputName}
                  onChangeText={(text) => setInputName(text)}
-                 placeholder={nameHint}/>
+                 placeholder={nameHint?.trans_hint}/>
       <View style={_styles.date_info_container}>
         <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
         <Icon size={scale(20)} name={'calendar'}/>
@@ -173,7 +176,6 @@ const TransferPayPage = ({ navigation, route }) => {
                  placeholder={'请填写备注信息'}/>
     </View>
   }
-
 
   return (
     <BaseScreen screenName={payData.name}>
@@ -374,19 +376,6 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-/**
- * 转账名称提示语
- */
-const transName = {
-  'bank_transfer': '请填写实际转账人姓名',
-  'alipay_transfer': '请填写付款的支付宝真实姓名',
-  'yxsm_transfer': '请填写付款的账号',
-  'tenpay_online': '请填写付款的云闪付用户昵称',
-  'wxzsm_transfer': '请填写付款的账号',
-  'wxsm_transfer': '请填写微信昵称或商户单号后六位',
-  'ysf_transfer': '请填写实际转账人姓名',
-}
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽

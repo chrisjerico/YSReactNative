@@ -28,7 +28,7 @@ const UseBtcPay = () => {
 
     APIRouter.capital_rechargeCashier().then(({ data: res }) => {
       let listData = res?.data
-      ugLog('data res=', JSON.stringify(res?.data))
+      //ugLog('data res=', JSON.stringify(res?.data))
       if (res?.code == 0) {
 
       } else {
