@@ -9,8 +9,8 @@ import { pop } from '../../navigation/RootNavigation'
 
 const quickArr = [100, 500, 1000, 5000, 10000, '全部金额']
 export const AlipayTransInView = ({ yuebao, getData }: { yuebao: Yuebao, getData: () => void }) => {
-  const { goTo, refresh, info } = useHomePage({})
-  const { loading, refreshing, userInfo, sysInfo, homeInfo } = info
+  const { info } = useHomePage({})
+  const { userInfo } = info
   const [money, setMoney] = useState<number>()
   const [pwd, setPwd] = useState('')
 

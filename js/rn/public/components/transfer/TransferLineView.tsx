@@ -9,10 +9,20 @@ import { UGStore } from '../../../redux/store/UGStore'
 import { useHtml5Image } from '../../tools/tars'
 import { httpClient } from '../../network/httpClient'
 import UGUserModel from '../../../redux/model/全局/UGUserModel'
+import { api } from '../../network/NetworkRequest1/NetworkRequest1'
 
 export const TransferLineView = () => {
   const [activeTab, setActiveTab] = useState(tab[0])
+  const [data, setData] = useState<any>()
 
+  useEffect(() => {
+    getData()
+  }, [])
+
+  const getData = async () => {
+    const { data } = await api.game.realGames().promise
+    setData(data.data)
+  }
   return (
     <View>
       <Header />

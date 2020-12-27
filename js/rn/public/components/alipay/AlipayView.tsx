@@ -49,7 +49,7 @@ export const AlipayView = ({ setProps }) => {
       <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} />
       <View style={{ alignItems: 'center', marginTop: 24 }}>
         <Text style={{ color: Skin1.textColor2 }}>今日收益(元)</Text>
-        <Text style={{ marginTop: 16, fontSize: 30 }}>0</Text>
+        <Text style={{ marginTop: 16, fontSize: 30 }}>{yuebao?.todayProfit || 0}</Text>
         <View style={{ flexDirection: 'row', marginTop: 12 }}>
           <Text style={{ color: Skin1.textColor2 }}>{yuebao?.yuebaoName || ''}余额：</Text>
           <Text style={{ color: '#fb4f48' }}>{`${yuebao?.balance || 0.0000000000}元`}</Text>
