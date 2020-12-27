@@ -8,6 +8,7 @@ import AppDefine from '../../../public/define/AppDefine';
 import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
+import { scale } from '../../../public/tools/Scale';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
@@ -95,7 +96,7 @@ const JDAgentPage = ({ }) => {
         />
 
         <TextInput onChangeText={(text) => setRemark(text)}
-          style={{ marginTop: 20, height: 120, marginHorizontal: 20, color: Skin1.textColor1, }}
+          style={{ marginTop: scale(20), height: scale(120), marginHorizontal: scale(20), color: Skin1.textColor1,fontSize:scale(22) }}
           placeholder={'申请理由(6-30个字符必填项)'}
           multiline
           // maxLength={200}
@@ -104,7 +105,8 @@ const JDAgentPage = ({ }) => {
         </TextInput>
         <Button
           title="申请"
-          style={{ marginTop: 20, marginHorizontal: 30, }}
+          style={{ marginTop: scale(20), marginHorizontal: scale(30) }}
+          buttonStyle={{height:scale(66)}}
           onPress={() => {
             if (qq.length || phone.length) {
             }
@@ -128,7 +130,7 @@ const JDAgentPage = ({ }) => {
 
           }}
         />
-        {showText(agentApplyInfo) && <Text style={{ fontSize: 15, paddingVertical: 20, textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</Text>}
+        {showText(agentApplyInfo) && <Text style={{ fontSize: scale(22), paddingVertical: scale(20), textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</Text>}
       </View>}
       {/* 展示界面 */}
       {show2(agentApplyInfo) && <View style={{}}>
@@ -159,7 +161,7 @@ const JDAgentPage = ({ }) => {
           rightContent={agentApplyInfo.reviewResult} />
         <Button
           title="再次申请"
-          style={{ marginTop: 20, marginHorizontal: 30, }}
+          style={{ marginTop: scale(20), marginHorizontal: scale(30), height:scale(66) }}
           onPress={() => {
             agentApplyInfo.reviewStatus = 0;
             setAgentApplyInfo(agentApplyInfo)

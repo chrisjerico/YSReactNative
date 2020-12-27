@@ -2,6 +2,7 @@ import { Image, Text, TextInput, TouchableWithoutFeedback, View } from "react-na
 import * as React from "react";
 import { useState } from "react";
 import { Skin1 } from "../../../public/theme/UGSkinManagers";
+import { scale } from "../../../public/tools/Scale";
 
 interface JDAgentInput {
   placeholder?: string  //输入框提示文字
@@ -23,20 +24,19 @@ export const JDAgentInput = ({ onChangeText, placeholder, img, content,rightCont
     borderBottomWidth: 1,
     borderBottomColor: "#d1d0d0",
     backgroundColor:Skin1.textColor4,
-    paddingTop: 0,
+    paddingTop: 5,
   }}>
-    {imgVisible && <Image style={{ height: 20, width: 20, marginLeft: 20, resizeMode: "stretch" }}
+    {imgVisible && <Image style={{ height: scale(30), width: scale(30), marginLeft: scale(20), resizeMode: "stretch" }}
       source={{ uri: img }} />}
-    <Text style={{ fontSize: 15, paddingVertical: 20, marginLeft: 20 ,color:Skin1.textColor1}} >{content}</Text>
+    <Text style={{ fontSize: scale(22), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{content}</Text>
     {contentVisible && isInput && <TextInput
-      maxLength={15}
       onChangeText={onChangeText}
-      style={{ fontSize: 15, paddingVertical: 20, flex: 1, textAlign: 'right', paddingHorizontal: 20 ,color:Skin1.textColor1}}
+      style={{ fontSize: scale(22), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1}}
       placeholderTextColor={Skin1.textColor3}
       placeholder={placeholder}
       editable ={editable}
        >{inputContent}</TextInput>}
-    {!isInput && <Text style={{ fontSize: 15, paddingVertical: 20, flex: 1, textAlign: 'right', paddingHorizontal: 20 ,color:Skin1.textColor1 }} >{rightContent}</Text>}
+    {!isInput && <Text style={{ fontSize: scale(22), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1 }} >{rightContent}</Text>}
 
   </View>
 
