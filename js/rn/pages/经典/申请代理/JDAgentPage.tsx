@@ -1,24 +1,18 @@
 
 
-import { View, Text, FlatList, StyleSheet, RefreshControl, Image, ImageBackground, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
-import AppDefine from '../../../public/define/AppDefine';
-import React, { useEffect, useRef, useState, Component } from 'react'
-import { setProps } from '../../base/UGPage';
-import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import { UGSignInHistoryModel } from '../../../redux/model/other/UGSignInHistoryModel';
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
-import PushHelper from '../../../public/define/PushHelper';
-import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
-import { pop, push } from '../../../public/navigation/RootNavigation';
-import { PageName } from '../../../public/navigation/Navigation';
-import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
-import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
-import { JDAgentInput } from './JDAgentInput';
-import { httpClient } from '../../../public/network/httpClient';
-import { TextInput } from 'react-native-gesture-handler'
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
+import { TextInput } from 'react-native-gesture-handler';
+import AppDefine from '../../../public/define/AppDefine';
+import { pop } from '../../../public/navigation/RootNavigation';
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
+import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import { Toast } from '../../../public/tools/ToastUtils';
 import { showSuccess } from '../../../public/widget/UGLoadingCP';
+import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
+import { setProps } from '../../base/UGPage';
+import { JDAgentInput } from './JDAgentInput';
 interface JDAgentPage {
 
 }
