@@ -96,7 +96,7 @@ const JDAgentPage = ({ }) => {
         />
 
         <TextInput onChangeText={(text) => setRemark(text)}
-          style={{ marginTop: scale(20), height: scale(120), marginHorizontal: scale(20), color: Skin1.textColor1,fontSize:scale(22) }}
+          style={{ marginTop: scale(20), height: scale(120), marginHorizontal: scale(20), color: Skin1.textColor1,fontSize:scale(26) }}
           placeholder={'申请理由(6-30个字符必填项)'}
           multiline
           // maxLength={200}
@@ -130,7 +130,7 @@ const JDAgentPage = ({ }) => {
 
           }}
         />
-        {showText(agentApplyInfo) && <Text style={{ fontSize: scale(22), paddingVertical: scale(20), textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</Text>}
+        {showText(agentApplyInfo) && <Text style={{ fontSize: scale(26), paddingVertical: scale(20), textAlign: 'center', color: 'red' }} >{'您已申请代理，请耐心等待工作人员审核'}</Text>}
       </View>}
       {/* 展示界面 */}
       {show2(agentApplyInfo) && <View style={{}}>

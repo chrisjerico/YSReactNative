@@ -28,15 +28,15 @@ export const JDAgentInput = ({ onChangeText, placeholder, img, content,rightCont
   }}>
     {imgVisible && <Image style={{ height: scale(30), width: scale(30), marginLeft: scale(20), resizeMode: "stretch" }}
       source={{ uri: img }} />}
-    <Text style={{ fontSize: scale(22), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{content}</Text>
+    <Text style={{ fontSize: scale(26), paddingVertical: scale(20), marginLeft: scale(20) ,color:Skin1.textColor1}} >{content}</Text>
     {contentVisible && isInput && <TextInput
       onChangeText={onChangeText}
-      style={{ fontSize: scale(22), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1}}
+      style={{ fontSize: scale(26), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1}}
       placeholderTextColor={Skin1.textColor3}
       placeholder={placeholder}
       editable ={editable}
        >{inputContent}</TextInput>}
-    {!isInput && <Text style={{ fontSize: scale(22), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1 }} >{rightContent}</Text>}
+    {!isInput && <Text style={{ fontSize: scale(26), paddingVertical: scale(20), flex: 1, textAlign: 'right', paddingHorizontal: scale(20) ,color:Skin1.textColor1 }} >{rightContent}</Text>}
 
   </View>
 
