@@ -9,8 +9,8 @@ import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import APIRouter from '../../../../public/network/APIRouter'
 import { ToastError, ToastSuccess } from '../../../../public/tools/tars'
 
-export const RegisterItem = ({ config, placeHolder, iconName, iconType = 'font-awesome', onChangeText, phoneNumber }:
-                               { config?: any, placeHolder: string, iconName: string, iconType?: string, onChangeText: (text) => void, phoneNumber?: string }) => {
+export const RegisterItem = ({ sms = false, config, placeHolder, iconName, iconType = 'font-awesome', onChangeText, phoneNumber }:
+                               { sms?: boolean, config?: any, placeHolder: string, iconName: string, iconType?: string, onChangeText: (text) => void, phoneNumber?: string }) => {
   const [disableSms, setDisableSms] = useState(false)
   const [sec, setSec] = useState(60)
   let interval
@@ -71,7 +71,7 @@ export const RegisterItem = ({ config, placeHolder, iconName, iconType = 'font-a
           <Icon type={iconType} size={25} color={'gold'} name={iconName} />
           <TextInput onChangeText={(text) => onChangeText(text)} placeholder={placeHolder}
                      style={{ flex: 1, marginLeft: 12 }} />
-          {placeHolder == '请输入手机短信验证码' &&
+          {sms &&
           <TouchableWithoutFeedback onPress={() => disableSms ? null : fetchSms(phoneNumber)}>
             <View style={disableSms ? [styles.disabledContainer] : [styles.container, {
               aspectRatio: 4,
