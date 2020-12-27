@@ -21,12 +21,12 @@ interface JDWriteMessagePage {
   list?: UGSignInHistoryModel[]  //添加图片fastList 数据
   imgPaths?: string[]           //图片上传数据
   type?: number                  //反馈类型 0 建议  1 投诉
-  messageType?:string           //反馈类型：提交建议   反馈类型：我要投诉
+  messageType?: string           //反馈类型：提交建议   反馈类型：我要投诉
 }
 
 const itemWith = (AppDefine.width - 120) / 3; //图片的宽 高
 
-const JDWriteMessagePage = ({setProps}) => {
+const JDWriteMessagePage = ({ setProps }) => {
 
   const { current: imgPaths } = useRef<Array<string>>([])
   const [remark, setRemark] = useState('')
@@ -68,11 +68,34 @@ const JDWriteMessagePage = ({setProps}) => {
       OCHelper.addEvent(OCEventType.TZImagePickerControllerDidFinishPickingPhotosHandle, (args: [imgs: string[], assets: [], isSelectOriginalPhoto: boolean]) => {
         const imgURLs = args[0]
         if (imgURLs?.length) {
-          imgURLs.forEach((url) => {
-            list.unshift({ idKey: 'img', imgUrl: url, })
-          })
-          setProps()
+
+          let imgs = [];
+          imgs.push(imgURLs);
+          showLoading()
+
+          api.user.uploadFeedback(imgs).setCompletionBlock(({ data, msg }) => {
+            showSuccess(msg)
+            imgs.length = 0
+            // console.log('返回的数据'+JSON.stringify(data));
+            let dic = data;
+            // console.log("输出最初的字典元素: "); 
+            for (var key in dic) {
+              // console.log("key: " + key + " ,value: " + dic[key]);
+              if (key == 'url') {
+                imgPaths?.push(dic[key])
+              }
+            }
+            //上传成功
+            console.log('上传成功');
+            //上传后台得到数据url
+            imgURLs.forEach((url) => {
+              list.unshift({ idKey: 'img', imgUrl: url, })
+            })
+            setProps()
+
+          });
         }
+
       })
     } else {
       //TODO Android
@@ -113,9 +136,10 @@ const JDWriteMessagePage = ({setProps}) => {
   //网络请求
   function addFeedback(imgs?: Array<string>) {
     showLoading()
-    api.user.addFeedback( type.toString(), '', remark, imgs).setCompletionBlock(({ data, msg }) => {
+    api.user.addFeedback(type.toString(), '', remark, imgs).setCompletionBlock(({ data, msg }) => {
       console.log('数据：=', data);
       showSuccess(msg)
+      imgPaths.length = 0
       pop()
 
     }, (err) => {
@@ -127,7 +151,7 @@ const JDWriteMessagePage = ({setProps}) => {
   useEffect(() => {
 
     setProps({
-      navbarOpstions: { hidden: false, title: '建议反馈', back:true },
+      navbarOpstions: { hidden: false, title: '建议反馈', back: true },
       didFocus: (params) => {
         let dic = params;
         // console.log("输出最初的字典元素: "); 
@@ -212,44 +236,10 @@ const JDWriteMessagePage = ({setProps}) => {
           title="提交"
           style={{ marginTop: 50, }}
           onPress={() => {
-            let imgsList = [];
-            if (list?.length >= 2) {
-              for (let i = 0; i < list.length; i++) {
-                if (list[i].idKey == 'img') {
-                  imgsList.push(list[i].imgUrl)
-                }
-              }
-
-              if (imgsList?.length) {
-                showLoading()
-                for (let i = 0; i < imgsList.length; i++) {
-                  api.user.uploadFeedback(imgsList).setCompletionBlock(({ data, msg }) => {
-                    showSuccess(msg)
-                    imgPaths.length = 0
-                    // console.log('返回的数据'+JSON.stringify(data));
-                    let dic = data;
-                    // console.log("输出最初的字典元素: "); 
-                    for (var key in dic) {
-                      // console.log("key: " + key + " ,value: " + dic[key]);
-                      if (key == 'url') {
-                        imgPaths?.push(dic[key])
-                      }
-
-                    }
-                    console.log('imgPaths?.length=' + imgPaths?.length);
-                    console.log('imgsList?.length=' + imgsList?.length);
-                    if (imgPaths?.length == imgsList?.length) {
-                      //建议反馈
-                      console.log('要建议反馈了');
-                      addFeedback(imgPaths)
-                    }
-                  });
-                }
-
-
-
-              }
-
+            if (imgPaths?.length) {
+              //建议反馈
+              console.log('要建议反馈了');
+              addFeedback(imgPaths)
             }
             else {
               //建议反馈
