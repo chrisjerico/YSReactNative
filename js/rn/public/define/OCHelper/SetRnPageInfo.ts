@@ -1,7 +1,7 @@
-import { devConfig } from './../../../../../config'
+import { devConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
-import { Skin1 } from './../../theme/UGSkinManagers'
+import { Skin1 } from '../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
 import { Platform } from 'react-native'
 import AppDefine from '../AppDefine'
@@ -25,7 +25,7 @@ export async function setRnPageInfo() {
       允许游客访问: true,
       允许未登录访问: true,
     })
-    
+
   }
 
   // 测试环境（未上线的内容）
@@ -54,29 +54,31 @@ export async function setRnPageInfo() {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
-    
+    // 彩票大厅（第三样式）
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat([{
+        vcName: 'UGLotteryHomeController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }, {
+        vcName: 'NewLotteryHomeViewController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }])
+    }
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
-  // 彩票大厅（第三样式）
-  pages = pages.concat([{
-    vcName: 'UGLotteryHomeController',
-    rnName: PageName.GameHallPage,
-    tabbarItemPath: '/gameHall',
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  }, {
-    vcName: 'NewLotteryHomeViewController',
-    rnName: PageName.GameHallPage,
-    tabbarItemPath: '/gameHall',
-    fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
-  }])
+
   // 签到页
   pages.push({
-    tabbarItemPath:'/Sign',
+    tabbarItemPath: '/Sign',
     vcName: 'UGSigInCodeViewController',
     rnName: PageName.JDSigInPage,
     fd_prefersNavigationBarHidden: true,
@@ -112,6 +114,44 @@ export async function setRnPageInfo() {
     允许游客访问: true,
     允许未登录访问: true,
   })
+
+  //利息宝页
+  // pages.push({
+  //   rnName: PageName.AlipayView,
+  //   userCenterItemCode: 4,
+  //   fd_prefersNavigationBarHidden: true,
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //建议反馈页
+  pages.push({
+    rnName: PageName.FeedbackView,
+    userCenterItemCode: 13,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'UGBalanceConversionController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferTKLMainView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'TKLMainViewController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
@@ -233,6 +273,14 @@ const LCPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LCRegisterPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

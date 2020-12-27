@@ -10,12 +10,13 @@ import { Res } from '../../Res/icon/Resources'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Toast } from '../tools/ToastUtils'
 
+
 export enum UGLoadingType {
-  Message, // 文本提示
-  Loading, // 转圈
-  Success, // 打勾
-  Error, // ❌
-  Reload, // 加载失败，点击重试
+  Message,// 文本提示
+  Loading,// 转圈
+  Success,// 打勾
+  Error,// ❌
+  Reload,// 加载失败，点击重试
 }
 
 export class UGLoadingProps {
@@ -44,9 +45,11 @@ export function showMessage(text?: string) {
 export function showLoading(text?: string, backgroundColor?: string[]) {
   showHUD({ type: UGLoadingType.Loading, text: text, backgroundColor: backgroundColor })
 }
+
 export function showSuccess(text?: string) {
   showHUD({ type: UGLoadingType.Success, text: text })
 }
+
 export function showError(text?: string) {
   showHUD({ type: UGLoadingType.Error, text: text })
 }
@@ -60,6 +63,7 @@ export function showError(text?: string) {
 export function showReload(text?: string, backgroundColor?: string[], reloadClick?: () => void) {
   showHUD({ type: UGLoadingType.Reload, text: text, backgroundColor: backgroundColor, reloadClick: reloadClick })
 }
+
 export function showHUD(props: UGLoadingProps) {
   console.log(props?.text)
   if (props?.type != UGLoadingType.Loading) {
@@ -94,8 +98,10 @@ export function hideLoading() {
   }
 }
 
+
 // ——————————————————————————————————————————————————————————————————————————————————————————
 let refreshLoadingFunc: Function
+
 export class UGLoadingCP extends Component {
   constructor(p) {
     super(p)
@@ -103,6 +109,7 @@ export class UGLoadingCP extends Component {
       this.setState({})
     }).bind(this)
   }
+
   render() {
     if (UGLoadingProps.shared) {
       return <UGLoadingCP1 {...UGLoadingProps.shared} />
@@ -110,6 +117,7 @@ export class UGLoadingCP extends Component {
     return null
   }
 }
+
 
 let lastProps: UGLoadingProps
 
@@ -153,6 +161,7 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           lastProps === props && hideLoading()
         }, 20000)
       default:
+
     }
   }, [lastProps])
 
@@ -167,12 +176,19 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
           {type == UGLoadingType.Loading && <FastImage style={[styles.icon, { width: 50, height: 50 }]} source={Res.加载中} />}
           {type == UGLoadingType.Success && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载成功} />}
           {type == UGLoadingType.Error && <FastImage style={[styles.icon, { width: 30, height: 30 }]} source={Res.加载失败} />}
-          {text && <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }}>{text}</Text>}
+          {text && typeof text == 'string' && <Text style={{ color: 'black', textAlign: 'center', fontSize: 15, lineHeight: 18 }} >{text}</Text>}
           {type == UGLoadingType.Reload && (
             <Button
-              buttonStyle={{ margin: 10, marginTop: 18, marginBottom: 0, paddingHorizontal: 18, backgroundColor: Skin1.themeColor, borderRadius: 8 }}
+              buttonStyle={{
+                margin: 10,
+                marginTop: 18,
+                marginBottom: 0,
+                paddingHorizontal: 18,
+                backgroundColor: Skin1.themeColor,
+                borderRadius: 8,
+              }}
               titleStyle={{ fontSize: 16 }}
-              title="点击重试"
+              title={'点击重试'}
               onPress={reloadClick}
             />
           )}
@@ -191,9 +207,6 @@ export const UGLoadingCP1 = (props: UGLoadingProps) => {
 
 const styles = StyleSheet.create({
   icon: {
-    marginHorizontal: 20,
-    marginTop: 8,
-    marginBottom: 15,
-    alignSelf: 'center',
+    marginHorizontal: 20, marginTop: 8, marginBottom: 15, alignSelf: 'center',
   },
 })

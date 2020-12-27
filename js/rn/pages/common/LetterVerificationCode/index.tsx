@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { View, Image, TouchableWithoutFeedback, TextInput, Text } from "react-native"
-import { Icon } from "react-native-vector-icons/Icon"
+import  Icon from "react-native-vector-icons"
 import { Controller } from "react-hook-form"
 import React from 'react'
 

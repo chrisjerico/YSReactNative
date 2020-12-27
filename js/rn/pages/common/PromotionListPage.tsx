@@ -55,7 +55,7 @@ const PromotionListPage = ({ navigation }) => {
       categoriesArray = [...new Set(categoriesArray)]
       categoriesArray.sort()
       setCategories(categoriesArray)
-    } catch (error) {}
+    } catch (error) { }
   }
 
   return (
@@ -114,7 +114,7 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
     if (data?.linkUrl != '') {
       Linking.openURL(data?.linkUrl)
     } else if (data.linkCategory == 0 && data.linkPosition == 0) {
-      onPopViewPress(data, type, onPress ? onPress : () => {})
+      onPopViewPress(data, type, onPress ? onPress : () => { })
     } else {
       PushHelper.pushCategory(data.linkCategory, data.linkPosition)
     }
@@ -156,7 +156,8 @@ export const PromotionLists = ({ dataSource, filter, promotionData }: { dataSour
                   html:
                     `<head>
             <meta name='viewport' content='initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no'>
-            <style>table{border-collapse: collapse}img{width:auto !important;max-width:100%;height:auto !important}</style>
+            <style>img{width:auto !important;max-width:100%;height:auto !important}</style>
+            <style>table,table tr th, table tr td { border:1px solid; border-collapse: collapse}</style>
             <style>body{width:100%-20;word-break: break-all;word-wrap: break-word;vertical-align: middle;overflow: hidden;margin:10}</style>
           </head>` +
                     `<script>

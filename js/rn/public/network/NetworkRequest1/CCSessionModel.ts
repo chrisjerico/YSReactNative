@@ -15,6 +15,7 @@ export interface ResponseObject<T = {} | [] | string> {
   code: number;
   msg: string;
   data: T;
+  info: object
 }
 
 export class CCSessionModel<T = {} | [] | string> {
@@ -24,7 +25,7 @@ export class CCSessionModel<T = {} | [] | string> {
   res: ResponseObject<T>;
   err: Error;
   status: number;
-  promise: Promise<AxiosResponse<ResponseObject<T>>>;
+  promise: Promise<AxiosResponse<T>>;
 
   // 只写
   noShowErrorHUD: boolean;

@@ -85,10 +85,14 @@ export default class UGSkinManagers extends UGThemeColor {
     }
     console.log('RN皮肤 = ', key)
     let theme = { ...new UGThemeColor(), ...this.allThemeColor[key] }
-    theme.themeColor = theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
-    theme.themeDarkColor = theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
-    theme.themeLightColor = theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
-    theme.bgTextColor = chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
+    theme.themeColor =
+      theme.themeColor ?? chroma.scale(theme.navBarBgColor)(0.5).hex()
+    theme.themeDarkColor =
+      theme.themeDarkColor ?? chroma(theme.themeColor).darken().hex()
+    theme.themeLightColor =
+      theme.themeLightColor ?? chroma(theme.themeColor).brighten().hex()
+    theme.bgTextColor =
+      chroma(theme.bgColor[0]).hex() == '#ffffff' ? '#999' : 'white'
     let skin = new UGSkinManagers()
     Object.assign(skin, Skin1)
     Object.assign(skin, theme)
@@ -112,7 +116,9 @@ export default class UGSkinManagers extends UGThemeColor {
     if (!ok) return
 
     //
-    await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [skin])
+    await OCHelper.call('UGSkinManagers.currentSkin.setValuesWithDictionary:', [
+      skin,
+    ])
     for (const k in skin) {
       if (k.toLowerCase().indexOf('color') != -1) {
         const v: string | string[] = skin[k]
@@ -128,17 +134,20 @@ export default class UGSkinManagers extends UGThemeColor {
               selectors: 'UIColor.colorWithPatternImage:',
               args1: [
                 {
-                  selectors: 'UIImage.gradientImageWithBounds:andColors:andGradientType:',
+                  selectors:
+                    'UIImage.gradientImageWithBounds:andColors:andGradientType:',
                   args1: [
                     NSValue.CGRectMake(0, 0, AppDefine.width, AppDefine.height),
                     [
                       {
-                        selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:',
+                        selectors:
+                          'UIColor.colorWithHexString:.colorWithAlphaComponent:',
                         args1: [c1],
                         args2: [a1],
                       },
                       {
-                        selectors: 'UIColor.colorWithHexString:.colorWithAlphaComponent:',
+                        selectors:
+                          'UIColor.colorWithHexString:.colorWithAlphaComponent:',
                         args1: [c2],
                         args2: [a2],
                       },

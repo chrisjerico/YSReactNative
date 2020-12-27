@@ -13,6 +13,7 @@ import { CapitalConst } from '../const/CapitalConst'
 import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
 import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListComponent'
 import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
+import PayListComponent from './record/pay/PayListComponent'
 
 /**
  * 存款提现
@@ -38,7 +39,7 @@ const CapitalPage = ({ navigation, setProps }) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <PayListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.DEPOSIT_RECORD:
@@ -81,7 +82,9 @@ const CapitalPage = ({ navigation, setProps }) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: 'white'
+  },
   tab_bar: {
     backgroundColor: '#f4f4f4',
   },

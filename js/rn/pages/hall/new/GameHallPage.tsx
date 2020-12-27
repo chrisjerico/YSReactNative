@@ -47,12 +47,13 @@ const GameHallPage = ({ navigation, setProps }) => {
 
   useEffect(() => {
     requestGameData()
-    setProps({
-      didFocus: () => {
-        !gameData?.length && requestGameData()
-      }
-    })
   }, [])
+
+  setProps({
+    didFocus: () => {
+      !gameData?.length && requestGameData()
+    }
+  }, false)
 
   /**
    * 请求游戏数据
@@ -184,19 +185,6 @@ const GameHallPage = ({ navigation, setProps }) => {
   }
 
   return (
-    // <BaseScreen style={_styles.container}
-    //             hideLeft={true}
-    //             rightButton={rightButton}
-    //             screenName={'彩票大厅'}>
-    //   {
-    //     [
-    //       renderAllData(),
-    //       <RightMenu ref={refMenu}
-    //                  onMenuClick={renderMenu}
-    //                  menu={menuStr}/>,
-    //     ]
-    //   }
-    // </BaseScreen>
     <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'彩票大厅'}

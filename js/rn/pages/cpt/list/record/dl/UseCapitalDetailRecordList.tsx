@@ -24,14 +24,14 @@ const UseCapitalDetailRecordList = () => {
   //刷新控件
   const refreshCT = <RefreshControl refreshing={refreshing}
                                     onRefresh={() => {
-                                      requestListDetailData({clear: true, selPage: 1})
+                                      requestListDetailData({ clear: true })
                                     }}/>
 
   /**
    * 初始化1次数据
    */
   useEffect(() => {
-    requestListDetailData({ clear: true, selPage: 1 })
+    requestListDetailData({ clear: true })
   }, [])
 
   /**
@@ -41,20 +41,29 @@ const UseCapitalDetailRecordList = () => {
    * selPage: 指定哪一页
    */
 
-  const requestListDetailData = async ({clear,
+  const requestListDetailData = async ({
+                                         clear,
                                          selGroup,
-                                         selPage}: IReqCapitalDetail) => {
+                                         selPage,
+                                         startDate,
+                                         endDate,
+                                       }: IReqCapitalDetail) => {
     //pageIndex为1的时候，不再执行 加载更多操作
     if (!clear && pageIndex == 1) return
 
-    clear && setRefreshing(true)
-    const date = new Date().format('yyyy-MM-dd')
+    if (clear) {//从第1页开始请求
+      setRefreshing(true)
+      selPage = 1
+    }
+
+    const stDate = !anyEmpty(startDate) ? startDate : '2010-01-01'
+    const edDate = !anyEmpty(endDate) ? endDate : new Date().format('yyyy-MM-dd')
     let reqGroup = !anyEmpty(selGroup) ? selGroup : groups[curGroup].value.toString()
     let reqPage = !anyEmpty(selPage) ? selPage : pageIndex
 
     APIRouter.capital_capitalDetailRecordList({
-      startDate: '2020-01-01',
-      endDate: date,
+      startDate: stDate,
+      endDate: edDate,
       page: reqPage.toString(),
       rows: '20',
       group: reqGroup,
@@ -62,7 +71,7 @@ const UseCapitalDetailRecordList = () => {
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
 
-      ugLog('datas res=', reqPage, JSON.stringify(res?.data?.list))
+      ugLog('data res=', reqPage, JSON.stringify(res?.data))
       if (res?.code == 0) {
         //每一次需要注入数据
         if (arrayLength(groups) <= 1 && !arrayEmpty(cpGroups)) {
@@ -107,11 +116,15 @@ const UseCapitalDetailRecordList = () => {
  * clear: 从头请求
  * selGroup: 指定哪个分类
  * selPage: 指定哪一页
+ * startDate: 开始日期
+ * endDate: 结束日期
  */
 interface IReqCapitalDetail {
   clear: boolean,
   selGroup?: string,
   selPage?: number,
+  startDate?: string,
+  endDate?: string,
 }
 
 export default UseCapitalDetailRecordList
