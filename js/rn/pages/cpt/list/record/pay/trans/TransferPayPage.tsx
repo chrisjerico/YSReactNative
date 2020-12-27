@@ -163,7 +163,10 @@ const TransferPayPage = ({ navigation, route }) => {
                  value={inputName}
                  onChangeText={(text) => setInputName(text)}
                  placeholder={nameHint}/>
-      <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+      <View style={_styles.date_info_container}>
+        <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+        <Icon size={scale(20)} name={'calendar'}/>
+      </View>
       <TextInput style={_styles.input_info}
                  value={inputRemark}
                  onChangeText={(text) => setInputRemark(text)}
@@ -346,6 +349,20 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: UGColor.TextColor2,
   },
+  date_info_container: {
+    flexDirection: 'row',
+    padding: scale(12),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+    alignItems: 'center',
+  },
+  date_info: {
+    flex: 1,
+    fontSize: scale(22),
+    color: UGColor.TextColor2,
+  },
+
   submit_text: {
     fontSize: scale(22),
     color: 'white',

@@ -62,11 +62,33 @@ const BtcPayPage = ({ navigation, route }) => {
   /**
    * 输入金额
    */
-  const renderInputMoney = () => <TextInput style={_styles.input_money}
-                                            value={inputMoney}
-                                            keyboardType={'numeric'}
-                                            onChangeText={(text) => setInputMoney(text)}
-                                            placeholder={'请填写存款金额'}/>
+  const renderInputMoney = () => <View style={_styles.btc_input_info_container}>
+    <TextInput style={_styles.input_money}
+               value={inputMoney}
+               keyboardType={'numeric'}
+               onChangeText={(text) => setInputMoney(text)}
+               placeholder={'请填写存款金额'}/>
+    <View style={_styles.btc_hint_container}>
+      <Text style={_styles.choose_result_title}>虚拟币金额: </Text>
+      <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
+      <TouchableOpacity onPress={() => {
+        switch (Platform.OS) {
+          case 'ios':
+            //TODO iOS 复制 title 到粘贴板
+            break
+          case 'android':
+            // ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+            break
+        }
+        Toast('复制成功')
+      }}>
+        <Text style={_styles.choose_result_copy}>复制</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={_styles.btc_hint_container}>
+      <Text style={_styles.btc_type}>{'0 USDT = 6.48 CNY'}</Text>
+    </View>
+  </View>
   /**
    * 选择金额
    */
@@ -155,14 +177,12 @@ const BtcPayPage = ({ navigation, route }) => {
    * 输入转账信息
    */
   const renderInputInfo = () => {
-    let nameHint = transName[payData?.id]
 
     return <View style={_styles.input_info_container}>
-      <TextInput style={_styles.input_info}
-                 value={inputName}
-                 onChangeText={(text) => setInputName(text)}
-                 placeholder={nameHint}/>
-      <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+      <View style={_styles.date_info_container}>
+        <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+        <Icon size={scale(20)} name={'calendar'}/>
+      </View>
       <TextInput style={_styles.input_info}
                  value={inputRemark}
                  onChangeText={(text) => setInputRemark(text)}
@@ -269,10 +289,30 @@ const _styles = StyleSheet.create({
     // borderTopWidth: scale(1),
     // borderTopColor: UGColor.LineColor4,
   },
+  btc_input_info_container: {
+    flex: 1,
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+  },
+  btc_hint_container: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(8),
+    justifyContent: 'center',
+    // borderTopWidth: scale(1),
+    // borderTopColor: UGColor.LineColor4,
+  },
   choose_result_title: {
     flex: 1,
     color: UGColor.TextColor2,
     fontSize: scale(24),
+  },
+  btc_type: {
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+    fontStyle: 'italic',
   },
   choose_result_copy: {
     color: UGColor.RedColor2,
@@ -338,11 +378,24 @@ const _styles = StyleSheet.create({
     marginBottom: scale(32),
   },
   input_info: {
-    width: '100%',
+    flex: 1,
     padding: scale(12),
     borderWidth: scale(1),
     borderRadius: scale(8),
     borderColor: UGColor.LineColor4,
+    fontSize: scale(22),
+    color: UGColor.TextColor2,
+  },
+  date_info_container: {
+    flexDirection: 'row',
+    padding: scale(12),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+    alignItems: 'center',
+  },
+  date_info: {
+    flex: 1,
     fontSize: scale(22),
     color: UGColor.TextColor2,
   },
@@ -357,19 +410,6 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-/**
- * 转账名称提示语
- */
-const transName = {
-  'bank_transfer': '请填写实际转账人姓名',
-  'alipay_transfer': '请填写付款的支付宝真实姓名',
-  'yxsm_transfer': '请填写付款的账号',
-  'tenpay_online': '请填写付款的云闪付用户昵称',
-  'wxzsm_transfer': '请填写付款的账号',
-  'wxsm_transfer': '请填写微信昵称或商户单号后六位',
-  'ysf_transfer': '请填写实际转账人姓名',
-}
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
