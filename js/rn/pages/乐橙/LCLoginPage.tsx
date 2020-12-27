@@ -13,14 +13,16 @@ import WebView, { WebViewMessageEvent } from 'react-native-webview'
 import { EventRegister } from "react-native-event-listeners"
 import AppDefine from '../../public/define/AppDefine'
 import { httpClient } from '../../public/network/httpClient'
+import NeedNameInputComponent from '../../public/components/tars/NeedNameInputComponent'
 
 const LCLoginPage = () => {
-  const { sign, value, onChange, navigateTo, show, valid } = useSignInPage({
+  const { sign, value, onChange, navigateTo, show, valid, reference } = useSignInPage({
     homePage: PageName.LCHomePage,
     signUpPage: PageName.LCRegisterPage,
   })
+  const { slideCodeRef, needNameInputRef } = reference
   const { showSignInSlideCode } = show
-  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode } = onChange
+  const { onChangePassword, onChangeAccount, onChangeRemember, onChangeSlideCode, onSubmitFullName } = onChange
   const { remember, account, password } = value
   const { signIn, tryPlay } = sign
   const { navigateToSignUpPage } = navigateTo
@@ -133,6 +135,7 @@ const LCLoginPage = () => {
             onPress={() => navigate(PageName.LCHomePage)}>
             <Text style={{ alignSelf: 'center', paddingVertical: 20, color: 'black' }}>返回首页</Text>
           </TouchableOpacity>
+          <NeedNameInputComponent ref={needNameInputRef} onSubmitFullName={onSubmitFullName} />
         </View>
       </View>
     </BaseScreen>
