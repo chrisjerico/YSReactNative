@@ -114,14 +114,16 @@ const TransferPayPage = ({ navigation, route }) => {
             renderSelectedChannelItem(payChannelBean?.domain),
             renderSelectedChannelItem(payChannelBean?.account),
             renderSelectedChannelItem(payChannelBean?.branchAddress),
-            <TouchableImage
-              pic={payChannelBean?.qrcode}
-              containerStyle={{ aspectRatio: 1, height: scale(240) }}
-              resizeMode={'contain'}
-              onPress={() => {
-                setBigPic(payChannelBean?.qrcode)
-              }}
-            />,
+            anyEmpty(payChannelBean?.qrcode) ?
+              null :
+              <TouchableImage
+                pic={payChannelBean?.qrcode}
+                containerStyle={{ aspectRatio: 1, width: scale(240) }}
+                resizeMode={'contain'}
+                onPress={() => {
+                  setBigPic(payChannelBean?.qrcode)
+                }}
+              />,
           ]
         }
       </View>
@@ -151,17 +153,21 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 输入转账信息
    */
-  const renderInputInfo = () => <View style={_styles.input_info_container}>
-    <TextInput style={_styles.input_info}
-               value={inputName}
-               onChangeText={(text) => setInputName(text)}
-               placeholder={'请填写实际转账人姓名'}/>
-    <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
-    <TextInput style={_styles.input_info}
-               value={inputRemark}
-               onChangeText={(text) => setInputRemark(text)}
-               placeholder={'请填写备注信息'}/>
-  </View>
+  const renderInputInfo = () => {
+    let nameHint = transName[payData?.id]
+
+    return <View style={_styles.input_info_container}>
+      <TextInput style={_styles.input_info}
+                 value={inputName}
+                 onChangeText={(text) => setInputName(text)}
+                 placeholder={nameHint}/>
+      <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+      <TextInput style={_styles.input_info}
+                 value={inputRemark}
+                 onChangeText={(text) => setInputRemark(text)}
+                 placeholder={'请填写备注信息'}/>
+    </View>
+  }
 
 
   return (
@@ -349,6 +355,19 @@ const _styles = StyleSheet.create({
   },
 
 })
+
+/**
+ * 转账名称提示语
+ */
+const transName = {
+  'bank_transfer': '请填写实际转账人姓名',
+  'alipay_transfer': '请填写付款的支付宝真实姓名',
+  'yxsm_transfer': '请填写付款的账号',
+  'tenpay_online': '请填写付款的云闪付用户昵称',
+  'wxzsm_transfer': '请填写付款的账号',
+  'wxsm_transfer': '请填写微信昵称或商户单号后六位',
+  'ysf_transfer': '请填写实际转账人姓名',
+}
 
 export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽

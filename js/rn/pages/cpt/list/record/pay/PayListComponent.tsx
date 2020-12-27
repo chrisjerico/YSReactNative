@@ -45,6 +45,8 @@ const PayListComponent = () => {
           case 'aliyin_transfer':
           case 'bank_online':
           case 'yinlian_online':
+          case 'huobi_online':
+          case 'xnb_online':
             push(PageName.OnlinePayPage, {
               // refreshBankList: (accountType: string) => {
               //   // ugLog('accountType=', accountType)
@@ -64,6 +66,8 @@ const PayListComponent = () => {
           case 'yxsm_transfer':
           case 'yunshanfu_transfer':
           case 'wxzsm_transfer':
+          case 'wxsm_transfer':
+          case 'ysf_transfer':
             push(PageName.TransferPayPage, {
               payData: item,
             })
@@ -138,7 +142,8 @@ const _styles = StyleSheet.create({
 })
 
 /**
- * 本地支付通道图标
+ * 本地支付通道图标，应该使用id类似 xnb_online 来判断
+ * code 判断难阅读
  */
 const PayIcon = {
   '2': Res.bank_online,
@@ -157,7 +162,7 @@ const PayIcon = {
   '20': Res.yunshanfu,
   '21': Res.qq_online,
   '22': Res.wx_zfb,
-  '23': Res.wx_zfb,
+  '23': Res.btc_deposit_icon,
   '24': Res.xnb_icon,
   '25': Res.zfb_icon,
   '26': Res.jd,
