@@ -105,15 +105,15 @@ const BtcPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道单个条目
    */
-  const renderSelectedChannelItem = (title: string) => <View style={_styles.choose_result_title_item}>
-    <Text style={_styles.choose_result_title}>{title}</Text>
+  const renderSelectedChannelItem = (title: string, copyText: string) => <View style={_styles.choose_result_title_item}>
+    <Text style={_styles.choose_result_title}>{title + copyText}</Text>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
           break
         case 'android':
-          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
           break
       }
       Toast('复制成功')
@@ -135,8 +135,8 @@ const BtcPayPage = ({ navigation, route }) => {
         </View>
         {
           [
-            renderSelectedChannelItem('链名称: ' + payChannelBean?.address),
-            renderSelectedChannelItem('充值地址: ' + payChannelBean?.account),
+            renderSelectedChannelItem('链名称: ', payChannelBean?.address),
+            renderSelectedChannelItem('充值地址: ', payChannelBean?.account),
             anyEmpty(payChannelBean?.qrcode) ?
               null :
               <TouchableImage
