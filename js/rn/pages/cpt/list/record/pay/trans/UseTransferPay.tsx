@@ -9,7 +9,7 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 
 /**
- * 支付通道记录
+ * 转账支付
  * @constructor
  */
 const UseTransferPay = () => {

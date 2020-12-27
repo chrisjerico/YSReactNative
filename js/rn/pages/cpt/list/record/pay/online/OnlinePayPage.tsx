@@ -34,7 +34,7 @@ interface IRouteParams {
 }
 
 /**
- * 支付通道记录
+ * 在线支付
  * @param navigation
  * @constructor
  */

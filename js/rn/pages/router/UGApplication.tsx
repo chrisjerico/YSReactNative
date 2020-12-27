@@ -94,6 +94,7 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 
 /**
  * 所有界面
@@ -123,6 +124,7 @@ const pageComponents = {
   [PageName.JDFeedBackPage]: UGPage(JDFeedBackPage), //建议反馈
   [PageName.OnlinePayPage]: UGPage(OnlinePayPage), //在线支付
   [PageName.TransferPayPage]: UGPage(TransferPayPage), //银行支付
+  [PageName.BtcPayPage]: UGPage(BtcPayPage), //虚拟币支付
   [PageName.AlipayView]: UGPage(AlipayView), //利息宝
   [PageName.AlipayTransferView]: UGPage(AlipayTransferView), //利息宝额度转
   [PageName.AlipayTransferRecordView]: UGPage(AlipayTransferRecordView), //利息宝记录

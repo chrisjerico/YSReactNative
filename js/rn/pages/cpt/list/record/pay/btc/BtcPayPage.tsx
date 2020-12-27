@@ -18,7 +18,7 @@ import { PayAisleData, PayAisleListData } from '../../../../../../public/network
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import UseTransferPay from './UseTransferPay'
+import UseBtcPay from './UseBtcPay'
 import { ManageBankCardData } from '../../../../../../public/network/Model/bank/ManageBankCardModel'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Button from '../../../../../../public/views/tars/Button'
@@ -38,11 +38,11 @@ interface IRouteParams {
 }
 
 /**
- * 转账支付
+ * BTC支付
  * @param navigation
  * @constructor
  */
-const TransferPayPage = ({ navigation, route }) => {
+const BtcPayPage = ({ navigation, route }) => {
 
   const { payData }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
@@ -57,7 +57,7 @@ const TransferPayPage = ({ navigation, route }) => {
     setInputRemark,
     selPayChannel,
     setSelPayChannel,
-  } = UseTransferPay()
+  } = UseBtcPay()
 
   /**
    * 输入金额
@@ -109,13 +109,12 @@ const TransferPayPage = ({ navigation, route }) => {
       <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-          <Text style={_styles.choose_result_title}>{payChannelBean?.address}</Text>
+          <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
         </View>
         {
           [
-            renderSelectedChannelItem(payChannelBean?.domain),
-            renderSelectedChannelItem(payChannelBean?.account),
-            renderSelectedChannelItem(payChannelBean?.branchAddress),
+            renderSelectedChannelItem('链名称: ' + payChannelBean?.address),
+            renderSelectedChannelItem('充值地址: ' + payChannelBean?.account),
             anyEmpty(payChannelBean?.qrcode) ?
               null :
               <TouchableImage
@@ -278,6 +277,7 @@ const _styles = StyleSheet.create({
   choose_result_copy: {
     color: UGColor.RedColor2,
     fontSize: scale(24),
+    paddingLeft: scale(16),
   },
   choose_result_hint: {
     color: 'white',
@@ -375,4 +375,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default TransferPayPage
+export default BtcPayPage

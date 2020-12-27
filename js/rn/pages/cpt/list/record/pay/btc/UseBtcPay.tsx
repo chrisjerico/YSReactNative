@@ -9,14 +9,16 @@ import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 
 /**
- * 在线支付
+ * BTC支付
  * @constructor
  */
-const UseOnlinePay = () => {
+const UseBtcPay = () => {
 
   const moneyOption = ['1', '10', '50', '100', '500', '1000', '5000', '10000', '50000', '100000'] //金额选项
 
   const [inputMoney, setInputMoney] = useState(null) //输入金额
+  const [inputName, setInputName] = useState(null) //输入姓名
+  const [inputRemark, setInputRemark] = useState(null) //输入备注
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
 
   /**
@@ -41,11 +43,15 @@ const UseOnlinePay = () => {
     moneyOption,
     inputMoney,
     setInputMoney,
+    inputName,
+    setInputName,
+    inputRemark,
+    setInputRemark,
     selPayChannel,
     setSelPayChannel,
     requestPayData,
   }
 }
 
-export default UseOnlinePay
+export default UseBtcPay
 

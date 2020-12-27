@@ -72,6 +72,11 @@ const PayListComponent = () => {
               payData: item,
             })
             break;
+          case 'xnb_transfer':
+            push(PageName.BtcPayPage, {
+              payData: item,
+            })
+            break;
         }
       }}>
         <View style={_styles.item_container}>
