@@ -39,14 +39,14 @@ const PayListComponent = () => {
     return (
       <TouchableWithoutFeedback onPress={() => {
         switch (item?.id) {
-          case 'alipay_online':
-          case 'wechat_online':
-          case 'tenpay_online':
-          case 'aliyin_transfer':
-          case 'bank_online':
-          case 'yinlian_online':
-          case 'huobi_online':
-          case 'xnb_online':
+          case 'alipay_online'://"支付宝转账"
+          case 'wechat_online'://"微信在线支付"
+          case 'tenpay_online'://"云闪付在线支付"
+          case 'aliyin_transfer'://"支付宝-银联"
+          case 'bank_online'://"网银在线支付"
+          case 'yinlian_online'://银联钱包在线支付
+          case 'huobi_online'://"火币钱包"
+          case 'xnb_online'://"虚拟币
             push(PageName.OnlinePayPage, {
               // refreshBankList: (accountType: string) => {
               //   // ugLog('accountType=', accountType)
@@ -61,18 +61,29 @@ const PayListComponent = () => {
               payData: item,
             })
             break;
-          case 'bank_transfer':
-          case 'alipay_transfer':
-          case 'yxsm_transfer':
-          case 'yunshanfu_transfer':
-          case 'wxzsm_transfer':
-          case 'wxsm_transfer':
-          case 'ysf_transfer':
+          case 'bank_transfer'://"银行卡转账"
+          case 'alipay_transfer'://"支付宝转账"
+          case 'yxsm_transfer'://"易信扫码支付"
+          case 'yunshanfu_transfer'://云闪付
+          case 'wxzsm_transfer'://"微信赞赏码支付"
+          case 'wxsm_transfer'://"微信扫码"
+          case 'ysf_transfer'://"云闪付扫码"
+          case 'tenpay_transfer'://"财付通转账"
+          case 'wechat_transfer'://"微信转账"
+          case 'qqpay_transfer'://QQ钱包转账
+          case 'wechat_alipay_transfer'://微信支付宝转账
+          case 'alihb_online'://支付宝红包支付
+          case 'jdzz_transfer'://"京东钱包转账"
+          case 'ddhb_transfer'://"钉钉红包"
+          case 'dshb_transfer'://多闪红包
+          case 'xlsm_transfer'://闲聊扫码
+          case 'zfbzyhk_transfer'://支付宝转银行卡
+          case 'wxzfbsm_transfer'://"微信支付宝扫码"
             push(PageName.TransferPayPage, {
               payData: item,
             })
             break;
-          case 'xnb_transfer':
+          case 'xnb_transfer'://虚拟币充值
             push(PageName.BtcPayPage, {
               payData: item,
             })
@@ -81,6 +92,7 @@ const PayListComponent = () => {
       }}>
         <View style={_styles.item_container}>
           <FastImage source={{ uri: icon }}
+                     resizeMode={'contain'}
                      style={_styles.pay_icon}/>
           <View style={_styles.text_item_container}>
             <Text style={_styles.text_title_0}>{item.name}</Text>
@@ -177,6 +189,7 @@ const PayIcon = {
   '30': Res.xlsm,
   '31': Res.zfb_icon,
   '32': Res.zfb_icon,
+  '33': Res.wx_zfb,
   '34': Res.wechat_online,
   '35': Res.yxsm_transfer,
   '36': Res.yunshanfu,
