@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../../../public/tools/Ext'
 import { scale } from '../../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../../public/components/view/empty/EmptyView'
@@ -27,6 +27,10 @@ import { BaseScreen } from '../../../../../乐橙/component/BaseScreen'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { ANHelper } from '../../../../../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
+import PushHelper from '../../../../../../public/define/PushHelper'
+import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
+import Modal from 'react-native-modal'
+import { useState } from 'react'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -40,6 +44,7 @@ interface IRouteParams {
 const TransferPayPage = ({ navigation, route }) => {
 
   const { payData }: IRouteParams = route?.params
+  const [bigPic, setBigPic] = useState(null) //是否有大图片
 
   const {
     moneyOption,
@@ -105,13 +110,19 @@ const TransferPayPage = ({ navigation, route }) => {
           <Text style={_styles.choose_result_title}>{payChannelBean?.address}</Text>
         </View>
         {
-          renderSelectedChannelItem(payChannelBean?.domain)
-        }
-        {
-          renderSelectedChannelItem(payChannelBean?.account)
-        }
-        {
-          renderSelectedChannelItem(payChannelBean?.branchAddress)
+          [
+            renderSelectedChannelItem(payChannelBean?.domain),
+            renderSelectedChannelItem(payChannelBean?.account),
+            renderSelectedChannelItem(payChannelBean?.branchAddress),
+            <TouchableImage
+              pic={payChannelBean?.qrcode}
+              containerStyle={{ aspectRatio: 1, height: scale(240) }}
+              resizeMode={'contain'}
+              onPress={() => {
+                setBigPic(payChannelBean?.qrcode)
+              }}
+            />,
+          ]
         }
       </View>
     </View>
@@ -132,7 +143,6 @@ const TransferPayPage = ({ navigation, route }) => {
               <Icon size={scale(32)} name={'circle-o'}/>
           }
           <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
-
         </View>
       </TouchableOpacity>)
     }
@@ -192,12 +202,28 @@ const TransferPayPage = ({ navigation, route }) => {
                 }}/>
         <View style={{ height: scale(200) }}/>
       </ScrollView>
+
+      <Modal isVisible={!anyEmpty(bigPic)}
+             style={_styles.modal_content}
+             onBackdropPress={() => setBigPic(null)}
+             onBackButtonPress={() => setBigPic(null)}
+             animationIn={'fadeIn'}
+             animationOut={'fadeOut'}
+             backdropOpacity={0.3}>
+        <FastImage source={{ uri: bigPic }}
+                   style={{ aspectRatio: 1, width: scale(500) }}
+                   resizeMode={'contain'}/>
+      </Modal>
     </BaseScreen>
 
   )
 }
 
 const _styles = StyleSheet.create({
+  modal_content: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     padding: scale(16),
     backgroundColor: UGColor.BackgroundColor1,
@@ -219,7 +245,6 @@ const _styles = StyleSheet.create({
   },
   choose_result_container: {
     flex: 1,
-    alignItems: 'center',
     marginBottom: scale(16),
     borderBottomLeftRadius: scale(8),
     borderBottomRightRadius: scale(8),
