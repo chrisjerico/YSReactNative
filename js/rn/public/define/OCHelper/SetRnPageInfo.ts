@@ -1,11 +1,13 @@
 import { Platform } from 'react-native'
 import { releaseConfig } from '../../../../../config'
+import JDAgentPage from '../../../pages/经典/申请代理/JDAgentPage'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
 import AppDefine from '../AppDefine'
 import { devConfig } from './../../../../../config'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
+
 
 // 配置需要被替换的oc页面（替换成rn）
 export async function setRnPageInfo() {
@@ -19,8 +21,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'UGWriteMessageViewController',
-      rnName: PageName.JDWriteMessagePage,
+      vcName: 'UGAgentViewController',
+      rnName: PageName.JDAgentPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
