@@ -63,6 +63,7 @@ const PayListComponent = () => {
           case 'alipay_transfer':
           case 'yxsm_transfer':
           case 'yunshanfu_transfer':
+          case 'wxzsm_transfer':
             push(PageName.TransferPayPage, {
               payData: item,
             })
@@ -112,7 +113,7 @@ const _styles = StyleSheet.create({
     flex: 1,
     padding: scale(16),
     borderBottomWidth: scale(1),
-    borderBottomColor: 'white',
+    borderBottomColor: UGColor.LineColor4,
     flexDirection: 'row',
     alignItems: 'center',
   },

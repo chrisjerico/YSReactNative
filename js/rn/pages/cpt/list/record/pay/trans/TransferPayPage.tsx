@@ -96,23 +96,26 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道
    */
-  const renderSelectedChannel = () => <View>
-    <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
-    <View style={_styles.choose_result_container}>
-      <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-        <Text style={_styles.choose_result_title}>{payData.channel[selPayChannel]?.address}</Text>
+  const renderSelectedChannel = () => {
+    const payChannelBean = payData?.channel[selPayChannel]
+    return <View>
+      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <View style={_styles.choose_result_container}>
+        <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
+          <Text style={_styles.choose_result_title}>{payChannelBean?.address}</Text>
+        </View>
+        {
+          renderSelectedChannelItem(payChannelBean?.domain)
+        }
+        {
+          renderSelectedChannelItem(payChannelBean?.account)
+        }
+        {
+          renderSelectedChannelItem(payChannelBean?.branchAddress)
+        }
       </View>
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.domain)
-      }
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.account)
-      }
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.branchAddress)
-      }
     </View>
-  </View>
+  }
 
   /**
    * 选择渠道
