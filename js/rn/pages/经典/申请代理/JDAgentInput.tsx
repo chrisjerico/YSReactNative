@@ -13,17 +13,19 @@ interface JDAgentInput {
   isInput?: boolean  // 最左边👉 true  TextInput   false Text 类型  默认true
   editable?:boolean  //输入框是否可编辑，默认true
   inputContent?: string      //输入框文本内容 默认‘’
+  backgroundColor?:string   // 背景颜色 默认‘Skin1.textColor4’
+
 }
 
 
-export const JDAgentInput = ({ onChangeText, placeholder, img, content,rightContent,inputContent='', imgVisible = true, contentVisible = true, isInput = true ,editable = true}: { onChangeText?: (text) => void, placeholder?: string, img: string, content?: string,rightContent?: string,inputContent?:string, imgVisible?: boolean, contentVisible?: boolean, isInput?: boolean ,editable?:boolean}) => {
+export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, placeholder, img, content,rightContent,inputContent='', imgVisible = true, contentVisible = true, isInput = true ,editable = true}: { onChangeText?: (text) => void, backgroundColor?:string,placeholder?: string, img: string, content?: string,rightContent?: string,inputContent?:string, imgVisible?: boolean, contentVisible?: boolean, isInput?: boolean ,editable?:boolean}) => {
 
   return <View style={{
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#d1d0d0",
-    backgroundColor:Skin1.textColor4,
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#d1d0d0",
+    backgroundColor:backgroundColor,
     paddingTop: 5,
   }}>
     {imgVisible && <Image style={{ height: scale(30), width: scale(30), marginLeft: scale(20), resizeMode: "stretch" }}

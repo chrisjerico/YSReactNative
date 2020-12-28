@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, FlatList, } from 'react-native';
 import { Button } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { TextInput } from 'react-native-gesture-handler';
+import RedBagItem from '../../../public/components/RedBagItem';
 import AppDefine from '../../../public/define/AppDefine';
 import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
@@ -58,14 +59,36 @@ const JDRedEnveloperPage = ({ }) => {
   // 渲染列表项
   const _renderItem = ({ index, item }) => {
     return (
-      <View style={styles.item}>
-        <Text style={styles.text}>{item}</Text>
+      <View style={{ flexDirection: 'row', height: 60, backgroundColor: index % 2 ? 'white' : '#F7F8F8' }}>
+        <View style={[styles.item,]}>
+          <Text style={styles.text}>{'2020-12-25'}</Text>
+          <Text style={styles.text}>{'11:04:02'}</Text>
+        </View>
+        <View style={styles.item}>
+          <Text style={styles.text}>{'过期'}</Text>
+        </View>
+        <View style={styles.item}>
+          <Text style={[styles.text,{color: 'red',}]}>{'+448.69'}</Text>
+        </View>
       </View>
     );
   }
 
   return (
+
     <View style={styles.container}>
+      <View style={{ flexDirection: 'row', height: 60 }}>
+        <View style={styles.item}>
+          <Text style={styles.text}>{'时间'}</Text>
+        </View>
+        <View style={styles.item}>
+          <Text style={styles.text}>{'类型'}</Text>
+        </View>
+        <View style={styles.item}>
+          <Text style={styles.text}>{'输赢'}</Text>
+        </View>
+      </View>
+
       <FlatList
         data={dataArray}
         renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
@@ -84,17 +107,18 @@ const JDRedEnveloperPage = ({ }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   item: {
-    backgroundColor: "#169",
-    height: 200,
-    margin: 15,
-    justifyContent: "center",
-    alignItems: "center"
+    flex: 1,
+    borderColor: '#E4E7EA',
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
-    color: "white",
-    fontSize: 20,
+    color: Skin1.textColor1,
+    fontSize: 18
   }
 });
 

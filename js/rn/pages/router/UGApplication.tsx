@@ -95,6 +95,7 @@ import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 
 /**
  * 所有界面
@@ -137,6 +138,7 @@ const pageComponents = {
   [PageName.TransferTKLMainView]: UGPage(TransferTKLMainView), //额度转页
   [PageName.IncomeRecommendPage]: UGPage(IncomeRecommendPage),
   [PageName.JDRedEnveloperPage]: UGPage(JDRedEnveloperPage),//红包扫雷
+  [PageName.JDAgentPage]: UGPage(JDAgentPage),//申请代理
   // ———————————— 模板页面 —————————————
 
   [PageName.LCMinePage]: UGPage(LCMinePage), //乐橙-我的页
