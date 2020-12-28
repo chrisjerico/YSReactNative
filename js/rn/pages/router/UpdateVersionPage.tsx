@@ -215,17 +215,17 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
     }
   }, [bCodePush, bBanner])
 
-  // useEffect(() => {
-  //   //设置一个计数器给用户倒计时
-  //   const interval = setInterval(() => {
-  //     ugLog('counter=', counter)
-  //     setProps({ counter: counter + 1 })
-  //   }, 1000)
-  //   return () => {
-  //     // ugLog('clear interval')
-  //     clearInterval(interval)
-  //   }
-  // }, [counter])
+  useEffect(() => {
+    //设置一个计数器给用户倒计时
+    const interval = setInterval(() => {
+      ugLog('counter=', counter)
+      setProps({ counter: counter + 1 })
+    }, 1000)
+    return () => {
+      // ugLog('clear interval')
+      clearInterval(interval)
+    }
+  }, [counter])
 
   const initConfig = async (sysConf: UGSysConfModel, willLaunch = true) => {
     UGStore.dispatch({ type: 'merge', sysConf: sysConf })
