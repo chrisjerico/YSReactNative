@@ -33,7 +33,7 @@ const JDSigInPage = () => {
 
     const { current: v } = useRef<JDSignInHistoryCP>({})
 
-    //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
+    //AD时间把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
         const date = moment(numberStr).toDate();//转Date
         var nowtime = date.format(format); //调用
