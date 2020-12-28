@@ -300,26 +300,8 @@ class APIRouter {
    */
   static open_onlinepay = async (params: IRechargeOnlineParams) => {
     let tokenParams = ''
-    switch (Platform.OS) {
-      case 'ios':
-        //TODO iOS 完成 type=category, status=0 加密转换
-        const user = await OCHelper.call('UGUserModel.currentUser')
-        tokenParams += '&token=' + user?.token
-        break
-      case 'android':
-        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
-          params: {
-            payId: params.payId,
-            gateway: params.gateway,
-            money: params.money,
-          },
-        })
-        ugLog('pms = ', JSON.stringify(pms))
-        for (let key in pms) {
-          tokenParams += '&' + key + '=' + pms[key]
-        }
-        // tokenParams += '&token=' + pms?.token + '&type=' + pms?.type + '&status=' + pms?.status
-        break
+    for (let key in params) {
+      tokenParams += '&' + key + '=' + params[key]
     }
     let url = AppDefine?.host + '?c=recharge&a=payUrl&' + tokenParams
 
