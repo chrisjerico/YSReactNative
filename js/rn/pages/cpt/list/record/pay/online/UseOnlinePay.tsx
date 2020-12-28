@@ -7,6 +7,7 @@ import { anyEmpty, arrayEmpty } from '../../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
 
 /**
  * 在线支付
@@ -24,11 +25,12 @@ const UseOnlinePay = () => {
    */
   const requestPayData = async (params: IRechargeOnlineParams) => {
 
-    if(!params?.money) {
+    if (!params?.money) {
       Toast('请输入金额')
       return
     }
 
+    showLoading()
     APIRouter.recharge_onlinePay(params).then(({ data: res }) => {
       //ugLog('data res=', JSON.stringify(res?.data))
       if (res?.code == 0) {
@@ -37,7 +39,7 @@ const UseOnlinePay = () => {
         Toast(res?.msg)
       }
     }).finally(() => {
-
+      hideLoading()
     })
   }
 

@@ -59,6 +59,7 @@ const TransferPayPage = ({ navigation, route }) => {
     selPayChannel,
     setSelPayChannel,
     transName,
+    requestPayData,
   } = UseTransferPay()
 
   /**
@@ -203,14 +204,14 @@ const TransferPayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    amount: inputMoney,
+                    channel: payData?.channel[selPayChannel]?.id,
+                    payee: payData?.channel[selPayChannel]?.account,
+                    payer: inputName,
+                    remark: inputRemark,
+                    depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                  })
 
                 }}/>
         <View style={{ height: scale(200) }}/>

@@ -295,6 +295,17 @@ class APIRouter {
   }
 
   /**
+   * 离线存款
+   */
+  static recharge_transfer = async (params: IRechargeOfflineParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=recharge&a=transfer', params)
+  }
+
+  /**
    * 跳转在线存款
    * @param params
    */

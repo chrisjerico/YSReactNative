@@ -7,6 +7,7 @@ import { anyEmpty, arrayEmpty } from '../../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData, PayAisleListData, PayChannelBean } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
 
 /**
  * 转账支付
@@ -24,18 +25,19 @@ const UseTransferPay = () => {
   /**
    * 请求支付通道记录
    */
-  const requestPayData = async () => {
+  const requestPayData = async (params: IRechargeOfflineParams) => {
 
-    APIRouter.capital_rechargeCashier().then(({ data: res }) => {
-      let listData = res?.data
+    ugLog('params=', JSON.stringify(params))
+    showLoading()
+    APIRouter.recharge_transfer(params).then(({ data: res }) => {
       //ugLog('data res=', JSON.stringify(res?.data))
+      Toast(res?.msg)
       if (res?.code == 0) {
 
-      } else {
-        Toast(res?.msg)
+
       }
     }).finally(() => {
-
+      hideLoading()
     })
   }
 
@@ -60,7 +62,7 @@ const TMP = {
   'payee': '账号: ',
   'bank_account': '银行名称: ',
   'account_address': '支行名称: ',
-  'type': 'other'
+  'type': 'other',
 }
 
 const BNK = {
@@ -68,7 +70,7 @@ const BNK = {
   'payee': '收款人: ',
   'bank_account': '银行账号: ',
   'account_address': '开户地址: ',
-  'type': 'bank'
+  'type': 'bank',
 }
 
 const LB = {
@@ -76,14 +78,13 @@ const LB = {
   'payee': '收款人: ',
   'bank_account': '聊呗账号: ',
   'account_address': '开户地址: ',
-  'type': 'bank'
+  'type': 'bank',
 }
 
 /**
  * 转账提示语
  */
 const transName = (payData?: PayAisleListData, payChannelBean?: PayChannelBean): ITransName => {
-  ugLog('payData?.id type=', payData?.id)
   let transInfo
   switch (payData?.id) {
     case 'bank_transfer'://"银行卡转账"
