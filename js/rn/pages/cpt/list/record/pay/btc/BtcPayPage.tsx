@@ -32,6 +32,7 @@ import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
 import { useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
+import AppDefine from '../../../../../../public/define/AppDefine'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -46,6 +47,7 @@ const BtcPayPage = ({ navigation, route }) => {
 
   const intentData: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
+  const [smallPic, setSmallPic] = useState(null) //当前小图
 
   const {
     newRate,
@@ -66,6 +68,10 @@ const BtcPayPage = ({ navigation, route }) => {
   useEffect(()=>{
     setPayData(intentData?.payData)
   }, [])
+
+  useEffect(() => {
+    setSmallPic(AppDefine?.host + '/lib/phpqrcode/image.php?url=' + payData?.channel[selPayChannel]?.account)
+  }, [selPayChannel, payData])
 
   /**
    * 输入金额
@@ -146,14 +152,14 @@ const BtcPayPage = ({ navigation, route }) => {
           [
             renderSelectedChannelItem('链名称: ', payChannelBean?.address),
             renderSelectedChannelItem('充值地址: ', payChannelBean?.account),
-            anyEmpty(payChannelBean?.qrcode) ?
+            anyEmpty(smallPic) ?
               null :
               <TouchableImage
-                pic={payChannelBean?.qrcode}
+                pic={smallPic}
                 containerStyle={{ aspectRatio: 1, width: scale(240) }}
                 resizeMode={'contain'}
                 onPress={() => {
-                  setBigPic(payChannelBean?.qrcode)
+                  setBigPic(smallPic)
                 }}
               />,
           ]

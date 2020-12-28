@@ -65,10 +65,7 @@ const UseBtcPay = () => {
 
     ugLog('params=', JSON.stringify(params))
     showLoading()
-    APIRouter.recharge_transfer({
-
-      ...params
-    }).then(({ data: res }) => {
+    APIRouter.recharge_transfer(params).then(({ data: res }) => {
       //ugLog('data res=', JSON.stringify(res?.data))
       Toast(res?.msg)
       if (res?.code == 0) {
