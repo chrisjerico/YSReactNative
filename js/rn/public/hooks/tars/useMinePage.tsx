@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { UGStore } from '../../../redux/store/UGStore'
 import { Necessity } from '../../models/Enum'
 import { PageName } from '../../navigation/Navigation'
-import { navigate } from '../../navigation/RootNavigation'
+import { push } from '../../navigation/RootNavigation'
 import { hideLoading, showError, showLoading } from '../../widget/UGLoadingCP'
 import useRerender from './useRerender'
 import useSignOut from './useSignOut'
@@ -58,7 +58,7 @@ const useMinePage = ({ homePage, defaultUserCenterLogos, onSuccessSignOut }: Use
     onSuccess: () => {
       hideLoading()
       // showLoading({ type: UGLoadingType.Success, text: '退出成功' })
-      navigate(homePage, {})
+      push(homePage, {})
       onSuccessSignOut && onSuccessSignOut()
     },
     onError: (error) => {
