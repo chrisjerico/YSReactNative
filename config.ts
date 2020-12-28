@@ -8,7 +8,6 @@ export const devConfig = {
   }, // 是否是测试环境
 
   skinKey: '经典',
-  // 测试1
 }
 
 // 线上环境配置（这几个站点写死经典模板）
