@@ -84,7 +84,7 @@ const WithdrawalRecordListComponent = () => {
                         onEndReached={({ distanceFromEnd }) => {
                           requestWithdrawalData({clear: false})
                         }}
-                        onEndReachedThreshold={0.1}
+                        onEndReachedThreshold={0.2}
                         renderItem={({ item, index }) => {
                           return (
                             renderItemContent(item)

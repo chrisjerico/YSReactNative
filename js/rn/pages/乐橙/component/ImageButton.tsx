@@ -12,7 +12,7 @@ interface ImageButtonProps {
 const defaultImgStyle: StyleProp<ImageStyle> = {
     height: "100%",
     width: "100%",
-    resizeMode: "contain",
+    resizeMode: 'stretch',
     alignSelf: "center"
 }
 export const ImageButton = ({uri, imgStyle, source, onPress}: ImageButtonProps) => {

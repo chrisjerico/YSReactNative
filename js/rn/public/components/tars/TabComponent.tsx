@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { ScrollView, StyleProp, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import AppDefine from '../../define/AppDefine'
@@ -23,9 +23,7 @@ interface TabComponentProps {
   numColumns: number
   tabTextColor?: string
   tabBarBackgroundColor?: string
-  fixedHeight?: number
-  fixedHeightIndex?: number[]
-  enableFixedHeight?: boolean
+  fixedHeight?: number[]
   showIndicator?: boolean
   tabBarStyle?: StyleProp<ViewStyle>
   locked?: boolean
@@ -83,17 +81,15 @@ const TabComponent = ({
   renderTabBar,
   tabTextColor = '#000000',
   tabBarBackgroundColor,
-  fixedHeight,
-  fixedHeightIndex,
-  enableFixedHeight,
+  fixedHeight = [],
   showIndicator = true,
   tabBarStyle,
   locked = true,
   enableMinWidth = true,
 }: TabComponentProps) => {
   const getSceneHeight = (index: number) => {
-    if (enableFixedHeight && fixedHeightIndex?.indexOf(index) > -1) {
-      return fixedHeight
+    if (fixedHeight[index]) {
+      return fixedHeight[index]
     } else {
       const games = tabGames?.[index]?.list ?? tabGames?.[index]?.games
       if (games) {
@@ -109,10 +105,6 @@ const TabComponent = ({
   const [height, setHeight] = useState(getSceneHeight(initialTabIndex))
   const scroll = useRef(null)
   const tabRef = useRef(null)
-
-  useEffect(() => {
-    tabRef?.current?.goToPage(initialTabIndex)
-  }, [initialTabIndex])
 
   const getTabCount = () => {
     return tabGames?.length ?? 0
@@ -171,6 +163,7 @@ const TabComponent = ({
       style={[containerStyle, { height }]}
       onChangeTab={changeIndex}
       locked={locked}
+      initialPage={initialTabIndex}
       renderTabBar={(props) => {
         const { activeTab, goToPage } = props
         return renderTabBar ? (
@@ -235,7 +228,7 @@ const TabComponent = ({
       {tabGames?.map((ele: TabGame, index) => {
         const tab = ele?.name ?? ele?.categoryName ?? ''
         const item = ele?.list ?? ele?.games ?? []
-        return Scene && <Scene key={index} tabLabel={tab} item={item} index={index} tab={tab} />
+        return Scene && <Scene key={index} tabLabel={StringUtils.getInstance().deleteHtml(tab)} item={item} index={index} tab={tab} />
       })}
     </ScrollableTabView>
   )

@@ -1,6 +1,6 @@
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { RecommendTabView } from './recommendTab/RecommendTabView'
 import { LotteryTabView } from './lotteyTab/LotteryTabView'
 import { GameListView } from './lotteyTab/GameListView'
@@ -8,8 +8,9 @@ import { Icon, List } from '../../../../../public/network/Model/HomeGamesModel'
 import { View } from 'react-native'
 import { UGStore } from '../../../../../redux/store/UGStore'
 import PushHelper from '../../../../../public/define/PushHelper'
+import useHomePage from '../../../../../public/hooks/tars/useHomePage'
 
-export const HomeTabView = ({ homeGames }) => {
+export const HomeTabView = ({ homeGames, goToPromotionPage }) => {
   const [height, setHeight] = useState(77)
   const userStore = UGStore.globalProps.userInfo
   const { uid = '' } = userStore
@@ -54,9 +55,17 @@ export const HomeTabView = ({ homeGames }) => {
         h = h + Math.ceil((list.length - 2) / 3) * 100
       }
     } else {
-      h = list.length >= 2 ? Math.ceil(list.length / 2) * 165 + h : h
+      h = list.length >= 2 ? Math.ceil(list.length / 2) * 153 + h : h
     }
     setHeight(h)
+  }
+
+  const test = (list: List) => {
+    if (list.gameId == 9) {
+      goToPromotionPage()
+    } else {
+      PushHelper.pushHomeGame(list)
+    }
   }
 
   const onPress = (list: List) => {
@@ -69,11 +78,11 @@ export const HomeTabView = ({ homeGames }) => {
 
   const getTab = (item: Icon, index: number) => {
     return index == 0 ? (
-      <RecommendTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
+      <RecommendTabView onPress={test} key={index} list={item.list} tabLabel={item.name} />
     ) : index == 1 ? (
-      <LotteryTabView onPress={onPress} key={index} list={item.list} tabLabel={item.name} />
+      <LotteryTabView onPress={test} key={index} list={item.list} tabLabel={item.name} />
     ) : (
-      <GameListView list={item.list} key={index} onPress={onPress} tabLabel={item.name} />
+      <GameListView list={item.list} key={index} onPress={test} tabLabel={item.name} />
     )
   }
 

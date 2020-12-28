@@ -119,10 +119,50 @@ export async function setRnPageInfo() {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
+    linkCategory:7,//导航链接
+    linkPosition:54,//导航链接ID
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
   })
+
+  //利息宝页
+  // pages.push({
+  //   rnName: PageName.AlipayView,
+  //   userCenterItemCode: 4,
+  //   fd_prefersNavigationBarHidden: true,
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //建议反馈页
+  pages.push({
+    rnName: PageName.FeedbackView,
+    userCenterItemCode: 13,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'UGBalanceConversionController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferTKLMainView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'TKLMainViewController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
@@ -244,6 +284,14 @@ const LCPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LCRegisterPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

@@ -11,7 +11,7 @@ const useMemberItems = () => {
         switch (Platform.OS) {
           case 'ios':
               const dataArray = await OCHelper.call('UGSystemConfigModel.currentConfig.userCenter')
-              setItems(dataArray.map(item => new UGUserCenterItem(item)))
+            setItems(dataArray.filter((item) => item.code < 20).map(item => new UGUserCenterItem(item)))
             break;
           case 'android':
               ANHelper.callAsync(CMD.ASK_MINE_ITEMS)

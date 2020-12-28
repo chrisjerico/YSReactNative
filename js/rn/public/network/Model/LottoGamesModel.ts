@@ -1,4 +1,4 @@
-export interface List {
+export interface UGNextIssueModel {
   id: string;
   isSeal: string;
   isClose: string;
@@ -18,6 +18,7 @@ export interface List {
   serverTime: string;
   serverTimestamp: string;
 }
+export type List = UGNextIssueModel
 
 export interface Data {
   gameType: string;

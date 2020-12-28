@@ -6,7 +6,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import { navigate, push } from '../../public/navigation/RootNavigation'
+import { push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
@@ -188,18 +188,28 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
+                      } else if (code == UGUserCenterType.个人信息) {
+                        navigate(PageName.UserInfoPage)
+                      } else if (code == UGUserCenterType.站内信) {
+                        navigate(PageName.UserMessagePage)
+                      } else if (code == UGUserCenterType.安全中心) {
+                        navigate(PageName.SafeCenterPage)
+                      } else if (code == UGUserCenterType.活动彩金) {
+                        navigate(PageName.ActivityRewardPage)
                       } else {
                         if (__DEV__) {
                           if (code == UGUserCenterType.个人信息) {
-                            navigate(PageName.UserInfoPage)
+                            push(PageName.UserInfoPage)
                           } else if (code == UGUserCenterType.站内信) {
-                            navigate(PageName.UserMessagePage)
+                            push(PageName.UserMessagePage)
                           } else if (code == UGUserCenterType.安全中心) {
-                            navigate(PageName.SafeCenterPage)
+                            push(PageName.SafeCenterPage)
                           } else if (code == UGUserCenterType.活动彩金) {
-                            navigate(PageName.ActivityRewardPage)
+                            push(PageName.ActivityRewardPage)
                           } else if (code == UGUserCenterType.彩票注单记录) {
-                            navigate(PageName.LotteryHistoryPage)
+                            push(PageName.LotteryHistoryPage)
+                          } else if (code == UGUserCenterType.推荐收益) {
+                            push(PageName.IncomeRecommendPage)
                           } else {
                             PushHelper.pushUserCenterType(code)
                           }
