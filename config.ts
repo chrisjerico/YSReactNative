@@ -1,5 +1,4 @@
 import { isTest } from './js/rn/public/config/CodePushKeys'
-// 测试2
 // 调试环境配置
 export const devConfig = {
   isDebug: __DEV__, // 是否本地环境
