@@ -55,9 +55,17 @@ const WNZMinePage = () => {
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
   const usuallyTools = otherTools?.filter((ele) =>
-    [UGUserCenterType.额度转换, UGUserCenterType.全民竞猜, UGUserCenterType.利息宝, UGUserCenterType.开奖走势, UGUserCenterType.建议反馈, UGUserCenterType.存款, UGUserCenterType.取款].includes(
-      ele?.code
-    )
+    [
+      UGUserCenterType.额度转换,
+      UGUserCenterType.全民竞猜,
+      UGUserCenterType.利息宝,
+      UGUserCenterType.开奖走势,
+      UGUserCenterType.建议反馈,
+      UGUserCenterType.存款,
+      UGUserCenterType.取款,
+      UGUserCenterType.存款纪录,
+      UGUserCenterType.取款纪录
+    ].includes(ele?.code)
   )
 
   const userTools = otherTools?.filter((ele) =>
@@ -88,7 +96,11 @@ const WNZMinePage = () => {
     ].includes(ele?.code)
   )
 
-  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
+  const activityTools = otherTools?.filter((ele) => [
+    UGUserCenterType.任务中心,
+    UGUserCenterType.优惠活动,
+    UGUserCenterType.推荐收益
+  ].includes(ele?.code))
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
