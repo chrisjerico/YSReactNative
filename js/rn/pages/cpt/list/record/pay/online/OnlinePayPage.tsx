@@ -53,6 +53,7 @@ const OnlinePayPage = ({ navigation, route }) => {
     setInputMoney,
     selPayChannel,
     setSelPayChannel,
+    requestPayData,
   } = UseOnlinePay()
 
   useEffect(() => {
@@ -149,14 +150,11 @@ const OnlinePayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    money: inputMoney,
+                    payId: payData?.channel[selPayChannel]?.id,
+                    gateway: curSelBank,
+                  })
 
                 }}/>
         <View style={{ height: scale(300) }}/>

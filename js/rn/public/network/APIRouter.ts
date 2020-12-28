@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { Platform } from 'react-native'
+import { Linking, Platform } from 'react-native'
 import SlideCodeModel from '../../redux/model/other/SlideCodeModel'
 import { ANHelper } from '../define/ANHelper/ANHelper'
 import { CMD } from '../define/ANHelper/hp/CmdDefine'
@@ -45,6 +45,7 @@ import { ugLog } from '../tools/UgLog'
 import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
+import AppDefine from '../define/AppDefine'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -280,6 +281,50 @@ class APIRouter {
     }
 
     return httpClient.get<BankDetailListModel>('c=system&a=bankList&' + tokenParams)
+  }
+
+  /**
+   * 在线存款
+   */
+  static recharge_onlinePay = async (params: IRechargeOnlineParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=recharge&a=onlinePay', params)
+  }
+
+  /**
+   * 跳转在线存款
+   * @param params
+   */
+  static open_onlinepay = async (params: IRechargeOnlineParams) => {
+    let tokenParams = ''
+    switch (Platform.OS) {
+      case 'ios':
+        //TODO iOS 完成 type=category, status=0 加密转换
+        const user = await OCHelper.call('UGUserModel.currentUser')
+        tokenParams += '&token=' + user?.token
+        break
+      case 'android':
+        const pms = await ANHelper.callAsync(CMD.ENCRYPTION_PARAMS, {
+          params: {
+            payId: params.payId,
+            gateway: params.gateway,
+            money: params.money,
+          },
+        })
+        ugLog('pms = ', JSON.stringify(pms))
+        for (let key in pms) {
+          tokenParams += '&' + key + '=' + pms[key]
+        }
+        // tokenParams += '&token=' + pms?.token + '&type=' + pms?.type + '&status=' + pms?.status
+        break
+    }
+    let url = AppDefine?.host + '?c=recharge&a=payUrl&' + tokenParams
+
+    ugLog('pay url=', url)
+    Linking.openURL(url)
   }
 
   /**
