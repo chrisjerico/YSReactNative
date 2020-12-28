@@ -30,7 +30,7 @@ import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
 import PushHelper from '../../../../../../public/define/PushHelper'
 import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 
 interface IRouteParams {
@@ -44,20 +44,28 @@ interface IRouteParams {
  */
 const BtcPayPage = ({ navigation, route }) => {
 
-  const { payData }: IRouteParams = route?.params
+  const intentData: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
 
   const {
+    newRate,
     moneyOption,
     inputMoney,
     setInputMoney,
-    inputName,
-    setInputName,
+    btcMoney,
+    setBtcMoney,
     inputRemark,
     setInputRemark,
     selPayChannel,
     setSelPayChannel,
+    payData,
+    setPayData,
+    requestPayData,
   } = UseBtcPay()
+
+  useEffect(()=>{
+    setPayData(intentData?.payData)
+  }, [])
 
   /**
    * 输入金额
@@ -69,7 +77,7 @@ const BtcPayPage = ({ navigation, route }) => {
                onChangeText={(text) => setInputMoney(text)}
                placeholder={'请填写存款金额'}/>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.choose_result_title}>虚拟币金额: </Text>
+      <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
       <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
       <TouchableOpacity onPress={() => {
         switch (Platform.OS) {
@@ -77,7 +85,7 @@ const BtcPayPage = ({ navigation, route }) => {
             //TODO iOS 复制 title 到粘贴板
             break
           case 'android':
-            // ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+            ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
             break
         }
         Toast('复制成功')
@@ -86,9 +94,10 @@ const BtcPayPage = ({ navigation, route }) => {
       </TouchableOpacity>
     </View>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.btc_type}>{'0 USDT = 6.48 CNY'}</Text>
+      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newRate}CNY`}</Text>
     </View>
   </View>
+
   /**
    * 选择金额
    */
@@ -192,7 +201,7 @@ const BtcPayPage = ({ navigation, route }) => {
 
 
   return (
-    <BaseScreen screenName={payData.name}>
+    <BaseScreen screenName={payData?.name}>
       <ScrollView showsVerticalScrollIndicator={false}
                   style={_styles.container}>
         {
@@ -205,7 +214,7 @@ const BtcPayPage = ({ navigation, route }) => {
         }
 
         <Text style={_styles.select_channel_hint}>
-          {payData.prompt}
+          {payData?.prompt}
         </Text>
 
         {
@@ -217,14 +226,14 @@ const BtcPayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    amount: inputMoney,
+                    channel: payData?.channel[selPayChannel]?.id,
+                    payee: payData?.channel[selPayChannel]?.account,
+                    payer: `${btcMoney}${payData?.channel[selPayChannel]?.domain}`,
+                    remark: inputRemark,
+                    depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                  })
 
                 }}/>
         <View style={{ height: scale(200) }}/>

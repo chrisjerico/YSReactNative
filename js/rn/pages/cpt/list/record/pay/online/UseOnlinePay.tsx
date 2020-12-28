@@ -21,7 +21,7 @@ const UseOnlinePay = () => {
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
 
   /**
-   * 请求支付通道记录
+   * 开始存款
    */
   const requestPayData = async (params: IRechargeOnlineParams) => {
 

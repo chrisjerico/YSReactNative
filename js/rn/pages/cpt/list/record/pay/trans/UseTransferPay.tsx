@@ -23,9 +23,13 @@ const UseTransferPay = () => {
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
 
   /**
-   * 请求支付通道记录
+   * 开始存款
    */
   const requestPayData = async (params: IRechargeOfflineParams) => {
+    if (!params?.amount) {
+      Toast('请输入金额')
+      return
+    }
 
     ugLog('params=', JSON.stringify(params))
     showLoading()

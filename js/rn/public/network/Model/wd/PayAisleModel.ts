@@ -47,6 +47,7 @@ export interface PayChannelBean {
   maximum?: string
   mininum?: string
   fcomment?: string
+  currencyRate?: string
 }
 
 export interface PayParaBean {
