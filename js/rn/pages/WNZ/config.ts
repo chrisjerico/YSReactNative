@@ -160,7 +160,7 @@ const config = {
     {
       name: '会员中心',
       icon: 'https://cdn01.gangdongyumatou.cn/platform/c245/images/hyzx.png',
-      onPress: goToUserCenterType.个人信息,
+      onPress: goToUserCenterType.我的页,
     },
     {
       name: '充值中心',
