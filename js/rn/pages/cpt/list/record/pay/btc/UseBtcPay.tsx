@@ -31,15 +31,16 @@ const UseBtcPay = () => {
       setBtcMoney(0)
       rateMoney(Number(payData?.channel[selPayChannel]?.currencyRate))
 
-      // APIRouter.system_currencyRate({
-      //   from: 'CNY',
-      //   to: 'USD',
-      //   amount: '1',
-      //   float: payData?.channel[selPayChannel]?.branchAddress
-      // }).then(({ data: res }) => {
-      //   ugLog('rate res=', res)
-      //   setNewRate(rateMoney(Number(res?.data?.rate)))
-      // })
+      //再调用一次实时汇率
+      APIRouter.system_currencyRate({
+        from: 'CNY',
+        to: 'USD',
+        amount: '1',
+        float: payData?.channel[selPayChannel]?.branchAddress
+      }).then(({ data: res }) => {
+        ugLog('实时汇率=', res)
+        rateMoney(Number(res?.data?.rate))
+      })
     }
 
   }, [payData, selPayChannel])

@@ -25,7 +25,7 @@ import { ugLog } from '../../../public/tools/UgLog'
 const CapitalPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
-  const [tabIndex, setTabIndex] = useState<number>(1)
+  const [tabIndex, setTabIndex] = useState<number>(0)
   const [refreshCount, setRefreshCount] = useState(0)
 
   // let tabController //tab选择器
