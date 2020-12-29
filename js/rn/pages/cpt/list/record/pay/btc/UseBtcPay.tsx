@@ -65,16 +65,19 @@ const UseBtcPay = () => {
 
     ugLog('params=', JSON.stringify(params))
     showLoading()
-    APIRouter.recharge_transfer(params).then(({ data: res }) => {
-      //ugLog('data res=', JSON.stringify(res?.data))
-      Toast(res?.msg)
-      if (res?.code == 0) {
+    const resRate = await APIRouter.system_currencyRate({
+      from: 'CNY',
+      to: 'USD',
+      amount: '1',
+      float: payData?.channel[selPayChannel]?.branchAddress
+    }).then(({ data: res }) => res)
 
-
-      }
-    }).finally(() => {
-      hideLoading()
-    })
+    const res = await APIRouter.recharge_transfer(params)
+      .then(({ data: res }) => res)
+    //ugLog('data res=', JSON.stringify(res?.data))
+    hideLoading()
+    Toast(res?.msg)
+    return res?.code
   }
 
   return {
