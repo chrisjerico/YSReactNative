@@ -194,6 +194,7 @@ const HallGameListComponent = ({
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => `${item}-${index}`}
                         data={gameData?.list}
+                        ListHeaderComponent={<View style={{height:5}} />}
                         ListFooterComponent={<View style={{height:80}} />}
                         renderItem={({ item, index }) => {
                           return (

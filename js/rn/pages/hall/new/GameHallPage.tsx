@@ -9,7 +9,7 @@ import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native
 import { UGColor } from '../../../public/theme/UGThemeColor'
 import EmptyView from '../../../public/components/view/empty/EmptyView'
 import HallGameListComponent from './games/HallGameListComponent'
-import { HallGameData } from '../../../public/network/Model/game/HallGameModel'
+import { HallGameData, GroupGameData, HallGameModel1 } from '../../../public/network/Model/game/HallGameModel'
 import APIRouter from '../../../public/network/APIRouter'
 import { ugLog } from '../../../public/tools/UgLog'
 import { Toast } from '../../../public/tools/ToastUtils'
@@ -40,7 +40,10 @@ const GameHallPage = ({ navigation, setProps }) => {
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
-  const { current: v } = useRef<{ isGroup: boolean }>({ isGroup: true });
+  const { current: v } = useRef<{
+    hallGames?: HallGameData[]
+    isGroup: boolean
+  }>({ isGroup: true });
 
   const {
     systemInfo,
@@ -63,23 +66,58 @@ const GameHallPage = ({ navigation, setProps }) => {
   const requestGameData = async () => {
     setRefreshing(true)
 
-    // 先请求分组数据，若没有分组再请求彩票大厅数据
-    if (v.isGroup) {
-      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
-        sm.noShowErrorHUD = true
-        setRefreshing(false)
-        if (data?.length) {
-          setGameData(data?.map((v): HallGameData => {
-            return { gameTypeName: v?.name, list: v?.lotteries }
-          }))
-        } else {
-          v.isGroup = false
-          requestGameData()
-        }
+    // 处理分组数据
+    function groupGameToHallGame(groups: GroupGameData[]): HallGameData[] {
+      const temp: { [x: string]: HallGameData } = {}
+      groups?.forEach((group) => {
+        group?.lotteries?.forEach((l) => {
+          v.hallGames?.forEach((hall) => {
+            hall?.list?.forEach((g) => {
+              g.pic = g.pic ?? l.logo
+              if (l?.id != g?.id) return
+              if (temp[group?.id] == undefined) {
+                temp[group?.id] = { ...hall, list: [] }
+              }
+              temp[group?.id].list?.push(g)
+            })
+          })
+        })
       })
-      return
+      return Object.values(temp)
     }
 
+    // 刷新UI
+    function refreshUI(data: HallGameData[]) {
+      setRefreshing(false)
+
+      // 是否显示分类
+      if (systemInfo?.picTypeshow != '1') {
+        let temp: HallGameModel1[] = []
+        data?.forEach(element => {
+          temp = temp.concat(element?.list)
+        });
+        data[0].list = temp
+        setGameData([data?.[0]])
+      } else {
+        setGameData(data)
+      }
+    }
+
+    // 获取分组数据
+    function getGroup() {
+      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
+        sm.noShowErrorHUD = true
+
+        if (data?.length) {
+          refreshUI(groupGameToHallGame(data))
+        } else {
+          v.isGroup = false
+          refreshUI(v.hallGames)
+        }
+      })
+    }
+
+    // 获取彩票数据
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
       //ugLog('data res=', res)
@@ -90,30 +128,12 @@ const GameHallPage = ({ navigation, setProps }) => {
             item.parentGameType = parentItem.gameType
           })
         })
-
-        if (!arrayEmpty(resData)) {
-          let allList = []
-          //Tab显示还是隐藏
-          if (systemInfo?.picTypeshow != '1') {
-            resData.map((parentItem) => {
-              if (!arrayEmpty(parentItem?.list)) {
-                allList = allList.concat(parentItem.list)
-              }
-            })
-
-            ugLog('alllIST=', allList)
-
-            //所有元素组合在一起
-            let newArr = resData.slice(0, 1)
-            newArr[0].list = allList
-            resData = newArr
-          }
-
+        v.hallGames = resData
+        if (v.isGroup) {
+          getGroup()
+        } else {
+          refreshUI(resData)
         }
-
-
-        setGameData(resData)
-
       } else {
         Toast(res?.msg)
       }

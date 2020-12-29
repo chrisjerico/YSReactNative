@@ -17,7 +17,7 @@ export interface HallGameData {
 
 
 // 彩票分组接口（game.lotteryGroupGames）
-export interface HallGameGroup {
+export interface GroupGameData {
   id?: string
   name?: string
   logo?: string
