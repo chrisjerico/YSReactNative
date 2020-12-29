@@ -110,6 +110,8 @@ export async function setRnPageInfo() {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
+    linkCategory:7,//导航链接
+    linkPosition:54,//导航链接ID
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

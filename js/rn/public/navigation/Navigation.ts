@@ -28,6 +28,7 @@ export enum PageName {
 
   OnlinePayPage = 'OnlinePayPage',//在线支付
   TransferPayPage = 'TransferPayPage',//银行卡支付
+  BtcPayPage = 'BtcPayPage',//虚拟币支付
 
 
   // ———————————— 模板页面 —————————————

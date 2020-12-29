@@ -31,10 +31,11 @@ import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
- * 支付通道记录
+ * 在线支付
  * @param navigation
  * @constructor
  */
@@ -43,7 +44,7 @@ const OnlinePayPage = ({ navigation, route }) => {
   const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
   const [accountItems, setAccountItems] = useState(null) //账户有哪些
 
-  const { payData }: IRouteParams = route?.params
+  const { payData, refreshTabPage }: IRouteParams = route?.params
 
   let bankController //银行选择
 
@@ -53,6 +54,7 @@ const OnlinePayPage = ({ navigation, route }) => {
     setInputMoney,
     selPayChannel,
     setSelPayChannel,
+    requestPayData,
   } = UseOnlinePay()
 
   useEffect(() => {
@@ -149,14 +151,11 @@ const OnlinePayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    money: inputMoney,
+                    payId: payData?.channel[selPayChannel]?.id,
+                    gateway: curSelBank,
+                  })
 
                 }}/>
         <View style={{ height: scale(300) }}/>

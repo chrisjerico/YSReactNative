@@ -407,6 +407,10 @@ export default class PushHelper {
             OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, 24])
             break
           }
+          case UGUserCenterType.优惠活动: {
+            push(PageName.JDPromotionListPage)
+            break
+          }
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
