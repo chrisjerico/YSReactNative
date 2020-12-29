@@ -70,7 +70,7 @@ const CapitalDetailListComponent = () => {
    * 绘制日历标题
    * @param item
    */
-  const renderCalendarTitle = () => <View>
+  const renderCalendarTitle = () => <View key={'renderCalendarTitle'}>
     <View style={_styles.text_title_container}>
       <Text style={_styles.calendar_item_title}>{'日期'}</Text>
       <TouchableWithoutFeedback onPress={() => {
@@ -116,7 +116,8 @@ const CapitalDetailListComponent = () => {
    */
   const renderCalendar = () => (
     selectStartDate || selectEndDate ?
-      <View style={_styles.calendar_wid}>
+      <View key={'renderCalendar'}
+            style={_styles.calendar_wid}>
         <Calendar.Picker onDayPress={(date: Date) => {
           let curDate = date.format('yyyy-MM-dd')
           if (selectStartDate) {//设置起始日期
@@ -154,7 +155,7 @@ const CapitalDetailListComponent = () => {
    * 绘制提示标题
    * @param item
    */
-  const renderTitleHint = () => <View>
+  const renderTitleHint = () => <View key={'renderTitleHint'}>
     <View style={_styles.capital_type_picker}>
       <UGDropDownPicker
         controller={instance => capitalController = instance}
@@ -192,7 +193,8 @@ const CapitalDetailListComponent = () => {
    * 绘制内容
    * @param item
    */
-  const renderListContent = () => <View style={CommStyles.flex}>
+  const renderListContent = () => <View key={'renderListContent'}
+                                        style={CommStyles.flex}>
     {
       [
         renderTitleHint(),

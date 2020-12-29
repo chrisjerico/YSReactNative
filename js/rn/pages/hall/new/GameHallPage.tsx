@@ -28,13 +28,20 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 import { setProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
+
+interface IRouteParams {
+  showBackButton?: boolean //是否显示返回按钮
+}
 
 /**
  * 新游戏大厅
  * @param navigation
  * @constructor
  */
-const GameHallPage = ({ navigation, setProps }) => {
+const GameHallPage = ({ navigation, route }) => {
+
+  const { showBackButton }: IRouteParams = route?.params
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
@@ -191,7 +198,7 @@ const GameHallPage = ({ navigation, setProps }) => {
                     showRightTitle={true}
                     rightButton={rightButton}
                     onPressBackBtn={()=>{ pop() }}
-                    showBackBtn={Platform.OS == 'ios'}/>
+                    showBackBtn={Platform.OS == 'ios' || showBackButton}/>
       </SafeAreaHeader>
       {
         renderAllData()

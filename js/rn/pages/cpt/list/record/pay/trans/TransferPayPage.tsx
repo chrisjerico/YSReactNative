@@ -30,12 +30,15 @@ import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
 import PushHelper from '../../../../../../public/define/PushHelper'
 import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
-import { TransferConst } from '../../../../const/CapitalConst'
+import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
+import CapitalContext from '../../../CapitalContext'
+import { pop } from '../../../../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
@@ -45,8 +48,9 @@ interface IRouteParams {
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData }: IRouteParams = route?.params
+  const { payData, refreshTabPage }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
+  const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
     moneyOption,
@@ -61,6 +65,13 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    if (!anyEmpty(goPage)) {
+      refreshTabPage(goPage)
+      pop()
+    }
+  }, [goPage])
 
   /**
    * 输入金额
@@ -123,13 +134,13 @@ const TransferPayPage = ({ navigation, route }) => {
             nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
             nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
             payChannelBean?.qrcode && <TouchableImage
-                pic={payChannelBean?.qrcode}
-                containerStyle={{ aspectRatio: 1, width: scale(240) }}
-                resizeMode={'contain'}
-                onPress={() => {
-                  setBigPic(payChannelBean?.qrcode)
-                }}
-              />,
+              pic={payChannelBean?.qrcode}
+              containerStyle={{ aspectRatio: 1, width: scale(240) }}
+              resizeMode={'contain'}
+              onPress={() => {
+                setBigPic(payChannelBean?.qrcode)
+              }}
+            />,
           ]
         }
       </View>
@@ -211,6 +222,10 @@ const TransferPayPage = ({ navigation, route }) => {
                     payer: inputName,
                     remark: inputRemark,
                     depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                  }).then(res => {
+                    if (res == 0) {
+                      setGoPage(CapitalConst.DEPOSIT_RECORD)
+                    }
                   })
 
                 }}/>
