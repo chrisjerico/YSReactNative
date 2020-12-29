@@ -94,6 +94,7 @@ export const TransferTKLMainView = () => {
     api.real.autoTransferOut().setCompletionBlock((data) => {
       Alert.alert(data.msg)
       UGUserModel.updateFromNetwork()
+      getData()
     })
   }
 
@@ -113,7 +114,11 @@ export const TransferTKLMainView = () => {
     <View style={{ flex: 1 }}>
       <LinearGradient style={{ flex: 1 }} colors={Skin1.bgColor} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
         <Header pressRecord={() => push(PageName.TransferRecordView)} />
-        <TabBar data={data} activeTab={activeTab} setActiveTab={setActiveTab} />
+        <TabBar data={data} activeTab={activeTab} setActiveTab={(item) => {
+          setActiveTab(item)
+          setTransIn(undefined)
+          setTransOut(undefined)
+        }} />
         <View style={{ paddingHorizontal: 12, paddingTop: 16, flexDirection: 'row', zIndex: 2 }}>
           <TransferPicker
             key={1}
