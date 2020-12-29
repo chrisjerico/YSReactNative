@@ -16,9 +16,10 @@ import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import CapitalContext from '../../CapitalContext'
 import { useContext, useEffect } from 'react'
+import { CapitalConst } from '../../../const/CapitalConst'
 
 interface IRouteParams {
-  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
+  // refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
@@ -69,7 +70,7 @@ const PayListComponent = ({ navigation, route }) => {
               //   requestManageBankData(null)
               // },
               payData: item,
-              refreshTabPage
+              refreshTabPage: refreshTabPage,
 
             })
             break;
@@ -94,13 +95,13 @@ const PayListComponent = ({ navigation, route }) => {
           case 'liaobei_transfer'://"聊呗转账"
             push(PageName.TransferPayPage, {
               payData: item,
-              refreshTabPage,
+              refreshTabPage: refreshTabPage,
             })
             break;
           case 'xnb_transfer'://虚拟币充值
             push(PageName.BtcPayPage, {
               payData: item,
-              refreshTabPage,
+              refreshTabPage: refreshTabPage,
             })
             break;
         }
