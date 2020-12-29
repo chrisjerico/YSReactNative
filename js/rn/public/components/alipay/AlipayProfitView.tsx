@@ -36,7 +36,7 @@ export const AlipayProfitView = () => {
           </View>
         )}
         ListHeaderComponent={() => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.themeLightColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.isBlack ? '#111' : "#fff" }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -44,7 +44,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>结算时间</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111"}}>结算时间</Text>
             </View>
             <View style={{
               flex: 1,
@@ -53,7 +53,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>收益</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>收益</Text>
             </View>
             <View style={{
               flex: 1,
@@ -62,13 +62,13 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>余额</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</Text>
             </View>
           </View>
         )}
         data={data}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.themeDarkColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.isBlack ? '#111' : "#fff" }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -76,7 +76,7 @@ export const AlipayProfitView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: '#ffffff' }}>{item.settleTime}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.settleTime}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -86,7 +86,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#ffffff' }}>{item.profitAmount}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.profitAmount}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -96,7 +96,7 @@ export const AlipayProfitView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#ffffff' }}>{item.balance}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.balance}</Text>
             </View>
           </View>
         )}
