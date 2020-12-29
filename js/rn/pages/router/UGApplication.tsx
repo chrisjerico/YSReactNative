@@ -94,6 +94,7 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 
 
 /**
@@ -125,6 +126,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   JDFeedBackPage, //建议反馈
   OnlinePayPage, //在线支付
   TransferPayPage, //银行支付
+  BtcPayPage, //虚拟币支付
   AlipayView, //利息宝
   AlipayTransferView, //利息宝额度转
   AlipayTransferRecordView, //利息宝记录
