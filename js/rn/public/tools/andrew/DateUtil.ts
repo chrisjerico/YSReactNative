@@ -27,9 +27,6 @@ class DateUtil{
   static stampformat(timestamp:string, formater :string) { 
     if (!timestamp)return '';
       formater = (formater != null)? formater : 'yyyy-MM-dd hh:mm';
-
-      console.log('timestamp',timestamp );
-      
       if (timestamp.length  == 13) {
         let strInt = parseInt(timestamp)
       return moment(strInt).format(formater)
@@ -38,7 +35,6 @@ class DateUtil{
       {
          let str = timestamp + '000'
         let strInt = parseInt(str)
-        console.log('strInt=========',strInt);
         return moment(strInt).format(formater)
       }
      
