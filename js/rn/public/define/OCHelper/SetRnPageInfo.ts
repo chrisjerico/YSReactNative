@@ -20,8 +20,8 @@ export async function setRnPageInfo() {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'UGAgentViewController',
-      rnName: PageName.JDAgentPage,
+      vcName: 'RedEnvelopeVCViewController',
+      rnName: PageName.JDRedEnveloperPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
