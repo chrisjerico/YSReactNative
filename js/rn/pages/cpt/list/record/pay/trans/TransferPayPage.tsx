@@ -32,8 +32,9 @@ import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
 import { useContext, useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
-import { TransferConst } from '../../../../const/CapitalConst'
+import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
 import CapitalContext from '../../../CapitalContext'
+import { pop } from '../../../../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
@@ -47,9 +48,9 @@ interface IRouteParams {
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData }: IRouteParams = route?.params
+  const { payData, refreshTabPage }: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
-  const { refreshTabPage } = useContext(CapitalContext)
+  const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
     moneyOption,
@@ -64,6 +65,13 @@ const TransferPayPage = ({ navigation, route }) => {
     transName,
     requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    if (!anyEmpty(goPage)) {
+      refreshTabPage(goPage)
+      pop()
+    }
+  }, [goPage])
 
   /**
    * 输入金额
@@ -215,10 +223,9 @@ const TransferPayPage = ({ navigation, route }) => {
                     remark: inputRemark,
                     depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
                   }).then(res => {
-                    ugLog('res=', res)
-                    // if (res == '0') {
-                    //
-                    // }
+                    if (res == 0) {
+                      setGoPage(CapitalConst.DEPOSIT_RECORD)
+                    }
                   })
 
                 }}/>

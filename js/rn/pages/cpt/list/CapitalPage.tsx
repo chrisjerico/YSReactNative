@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 import * as React from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
@@ -26,6 +26,7 @@ const CapitalPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
+  const [refreshCount, setRefreshCount] = useState(0)
 
   let tabController //tab选择器
 
@@ -41,8 +42,16 @@ const CapitalPage = ({ navigation, setProps }) => {
    * @param pageIndex
    */
   const refreshTabPage = (pageName: string) => {
-    ugLog('refresh 1 ok', pageName)
-    // tabController?.goToPage(pageIndex)
+    setRefreshCount(refreshCount + 1)
+    switch (pageName) {
+      case CapitalConst.DEPOSIT_RECORD:
+        tabController?.goToPage(2)
+        break
+      case CapitalConst.WITHDRAWAL_RECORD:
+        tabController?.goToPage(3)
+        break
+    }
+
   }
 
   /**
@@ -52,7 +61,7 @@ const CapitalPage = ({ navigation, setProps }) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <PayListComponent tabLabel={item} />
+        return <PayListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.DEPOSIT_RECORD:
@@ -66,7 +75,7 @@ const CapitalPage = ({ navigation, setProps }) => {
 
   return (
     <CapitalContext.Provider value={{
-      refreshTabPage,
+      refreshTabPage: refreshTabPage,
     }}>
       <BaseScreen style={_styles.container}
                   screenName={'我的提款账户'}>
