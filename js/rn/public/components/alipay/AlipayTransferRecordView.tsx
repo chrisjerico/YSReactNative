@@ -36,7 +36,7 @@ export const AlipayTransferRecordView = () => {
         style={{backgroundColor: '#f3f3f3', flex: 1}}
         contentContainerStyle={{ backgroundColor: '#f3f3f3'}}
         ListHeaderComponent={() => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#fff', borderBottomWidth: 0.5, backgroundColor: Skin1.themeLightColor}}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.isBlack ? '#111' : "#fff"}}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -44,7 +44,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>时间</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>时间</Text>
             </View>
             <View style={{
               flex: 1,
@@ -53,7 +53,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>类型</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>类型</Text>
             </View>
             <View style={{
               flex: 1,
@@ -62,17 +62,17 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16 }}>帐变金额</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>帐变金额</Text>
             </View>
             <View
               style={{ flex: 1, alignItems: 'center', paddingVertical: 12 }}>
-              <Text style={{ fontSize: 16 }}>余额</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>余额</Text>
             </View>
           </View>
         )}
         data={data}
         renderItem={({ item }) => (
-          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.themeDarkColor }}>
+          <View style={{ flexDirection: 'row', borderBottomColor: '#ccc', borderBottomWidth: 0.5, backgroundColor: Skin1.isBlack ? "#111" : "#fff" }}>
             <View style={{
               flex: 1,
               borderRightWidth: 0.5,
@@ -80,7 +80,7 @@ export const AlipayTransferRecordView = () => {
               alignItems: 'center',
               paddingVertical: 12,
             }}>
-              <Text style={{ fontSize: 16, color: '#fff' }}>{item.changeTime}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.changeTime}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -90,7 +90,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#fff' }}>{item.category}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.category}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -100,7 +100,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#fff' }}>{item.amount}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.amount}</Text>
             </View>
             <View style={{
               flex: 1,
@@ -108,7 +108,7 @@ export const AlipayTransferRecordView = () => {
               paddingVertical: 12,
               justifyContent: 'center'
             }}>
-              <Text style={{ fontSize: 16, color: '#fff' }}>{item.newBalance}</Text>
+              <Text style={{ fontSize: 16, color: Skin1.isBlack ? '#fff' : "#111" }}>{item.newBalance}</Text>
             </View>
           </View>
         )}
