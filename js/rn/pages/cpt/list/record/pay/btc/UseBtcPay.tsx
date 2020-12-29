@@ -21,17 +21,31 @@ const UseBtcPay = () => {
   const [inputMoney, setInputMoney] = useState(null) //输入金额
   const [btcMoney, setBtcMoney] = useState(0) //btc金额
   const [newRate, setNewRate] = useState(1) //新计算的汇率
+  const [newUsd, setNewUsd] = useState(1) //新计算的1比1美元
   const [inputRemark, setInputRemark] = useState(null) //输入备注
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
 
   useEffect(() => {
-    setNewRate(rateMoney())
-    setInputMoney(null)
-    setBtcMoney(0)
+    if (payData != null) {
+      setInputMoney(null)
+      setBtcMoney(0)
+      rateMoney(Number(payData?.channel[selPayChannel]?.currencyRate))
+
+      // APIRouter.system_currencyRate({
+      //   from: 'CNY',
+      //   to: 'USD',
+      //   amount: '1',
+      //   float: payData?.channel[selPayChannel]?.branchAddress
+      // }).then(({ data: res }) => {
+      //   ugLog('rate res=', res)
+      //   setNewRate(rateMoney(Number(res?.data?.rate)))
+      // })
+    }
+
   }, [payData, selPayChannel])
 
   useEffect(() => {
-    const money = Math.round(100 * inputMoney / newRate)/100
+    const money = Math.round(inputMoney * 100 * newRate) / 100
     setBtcMoney(money)
   }, [inputMoney])
 
@@ -40,18 +54,26 @@ const UseBtcPay = () => {
    * 汇率 * ( 1 + 浮动汇率 / 100 ) = 结果
    * 为保证精度不丢失，对数据放大 10000倍 再缩小
    */
-  const rateMoney = (): number => {
+  const rateMoney = (convertRate: number) => {
     const channel = payData?.channel[selPayChannel]
-    const convertRate = Number(channel?.currencyRate) //原始汇率
-    const floatRate = Number(channel?.branchAddress) //浮动汇率
-    let newRate = Math.round((convertRate * 10000) * (100 + floatRate))
-    newRate /= 10000 * 100
+    if (channel?.domain == 'CGP') {
+      setNewRate(1)
+      setNewUsd(1)
+    } else {
 
-    if(newRate <= 0) return 1
+      // const convertRate = Number(channel?.currencyRate) //原始汇率
+      const floatRate = Number(channel?.branchAddress) //浮动汇率
+      let newRate = Math.round((convertRate * 10000) * (100 + floatRate))
+      newRate /= 10000 * 100
 
-    newRate = Math.round(100 / newRate)/100
-    ugLog('汇率=', newRate)
-    return newRate
+      if(newRate <= 0) return 1
+
+      setNewRate(newRate)
+
+      let usd = Math.round(100 / newRate)/100
+      ugLog('1比1美元 汇率=', convertRate, newRate, usd)
+      setNewUsd(usd)
+    }
   }
 
   /**
@@ -65,12 +87,6 @@ const UseBtcPay = () => {
 
     ugLog('params=', JSON.stringify(params))
     showLoading()
-    const resRate = await APIRouter.system_currencyRate({
-      from: 'CNY',
-      to: 'USD',
-      amount: '1',
-      float: payData?.channel[selPayChannel]?.branchAddress
-    }).then(({ data: res }) => res)
 
     const res = await APIRouter.recharge_transfer(params)
       .then(({ data: res }) => res)
@@ -82,6 +98,7 @@ const UseBtcPay = () => {
 
   return {
     newRate,
+    newUsd,
     moneyOption,
     inputMoney,
     setInputMoney,

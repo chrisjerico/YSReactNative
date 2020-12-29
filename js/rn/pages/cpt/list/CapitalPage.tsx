@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
@@ -25,10 +25,10 @@ import { ugLog } from '../../../public/tools/UgLog'
 const CapitalPage = ({ navigation, setProps }) => {
 
   const needNameInputRef = useRef(null)
-  const [tabIndex, setTabIndex] = useState<number>(0)
+  const [tabIndex, setTabIndex] = useState<number>(1)
   const [refreshCount, setRefreshCount] = useState(0)
 
-  let tabController //tab选择器
+  // let tabController //tab选择器
 
   const {
     systemInfo,
@@ -42,17 +42,24 @@ const CapitalPage = ({ navigation, setProps }) => {
    * @param pageIndex
    */
   const refreshTabPage = (pageName: string) => {
-    ugLog('refresh count=', refreshCount)
-    setRefreshCount(refreshCount + 1)
+    ugLog('refresh count 2 =', pageName, refreshCount)
+
     switch (pageName) {
       case CapitalConst.DEPOSIT_RECORD:
-        tabController?.goToPage(3)
+        // tabController?.goToPage(2)
+        setTabIndex(2)
         break
       case CapitalConst.WITHDRAWAL_RECORD:
-        tabController?.goToPage(4)
+        // tabController?.goToPage(3)
+        setTabIndex(3)
         break
     }
 
+    setRefreshCount(refreshCount + 1)
+    // const timer = setTimeout(() => {
+    //   clearTimeout(timer)
+    //   setRefreshCount(refreshCount + 1)
+    // }, 3000)
   }
 
   /**
@@ -62,18 +69,15 @@ const CapitalPage = ({ navigation, setProps }) => {
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <PayListComponent tabLabel={item}/>
+        return <PayListComponent tabLabel={item} key={item}/>
       case CapitalConst.WITHDRAWAL:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <View tabLabel={item} key={item}/>
       case CapitalConst.DEPOSIT_RECORD:
-        return <DepositRecordListComponent tabLabel={item}
-                                           key={refreshCount + item}/>
+        return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.WITHDRAWAL_RECORD:
-        return <WithdrawalRecordListComponent tabLabel={item}
-                                              key={refreshCount + item}/>
+        return <WithdrawalRecordListComponent tabLabel={item}/>
       case CapitalConst.CAPITAL_DETAIL:
-        return <CapitalDetailListComponent tabLabel={item}
-                                           key={refreshCount + item}/>
+        return <CapitalDetailListComponent tabLabel={item}/>
     }
   }
 
@@ -88,7 +92,13 @@ const CapitalPage = ({ navigation, setProps }) => {
             anyEmpty(categoryData)
               ? <EmptyView style={{ flex: 1 }}/>
               : <ScrollableTabView
-                ref={instance => tabController = instance}
+                key={'ScrollableTabView' + refreshCount}
+                initialPage={tabIndex}
+                onChangeTab={value => {
+                  // ugLog('tab index=', value?.from, value?.i)
+                  setTabIndex(value?.i)
+                }}
+                // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                   { backgroundColor: Skin1.themeColor }]}
                 tabBarActiveTextColor={Skin1.themeColor}

@@ -55,6 +55,7 @@ const BtcPayPage = ({ navigation, route }) => {
 
   const {
     newRate,
+    newUsd,
     moneyOption,
     inputMoney,
     setInputMoney,
@@ -111,7 +112,7 @@ const BtcPayPage = ({ navigation, route }) => {
       </TouchableOpacity>
     </View>
     <View style={_styles.btc_hint_container}>
-      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newRate}CNY`}</Text>
+      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newUsd}CNY`}</Text>
     </View>
   </View>
 

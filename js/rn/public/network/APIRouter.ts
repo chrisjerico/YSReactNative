@@ -46,6 +46,7 @@ import { Toast } from '../tools/ToastUtils'
 import { HallGameModel } from './Model/game/HallGameModel'
 import { PayAisleModel } from './Model/wd/PayAisleModel'
 import AppDefine from '../define/AppDefine'
+import { NewRateModel } from './Model/wd/NewRateModel'
 //api 統一在這邊註冊
 //httpClient.["method"]<DataModel>
 export interface UserReg {
@@ -571,9 +572,9 @@ class APIRouter {
   }
 
   /**
-   * 汇率
+   * 实时汇率
    */
-  static system_currencyRate = async (params: ICurrencyRateParams): Promise<AxiosResponse<NormalModel>> => {
+  static system_currencyRate = async (params: ICurrencyRateParams): Promise<AxiosResponse<NewRateModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
@@ -596,7 +597,7 @@ class APIRouter {
         break
     }
 
-    return httpClient.get<BankDetailListModel>('c=system&a=currencyRate&' + tokenParams)
+    return httpClient.get<NewRateModel>('c=system&a=currencyRate&' + tokenParams)
   }
 
   static system_mobileRight = async () => {
