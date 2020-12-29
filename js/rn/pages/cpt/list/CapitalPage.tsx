@@ -42,13 +42,14 @@ const CapitalPage = ({ navigation, setProps }) => {
    * @param pageIndex
    */
   const refreshTabPage = (pageName: string) => {
+    ugLog('refresh count=', refreshCount)
     setRefreshCount(refreshCount + 1)
     switch (pageName) {
       case CapitalConst.DEPOSIT_RECORD:
-        tabController?.goToPage(2)
+        tabController?.goToPage(3)
         break
       case CapitalConst.WITHDRAWAL_RECORD:
-        tabController?.goToPage(3)
+        tabController?.goToPage(4)
         break
     }
 
@@ -65,11 +66,14 @@ const CapitalPage = ({ navigation, setProps }) => {
       case CapitalConst.WITHDRAWAL:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.DEPOSIT_RECORD:
-        return <DepositRecordListComponent tabLabel={item}/>
+        return <DepositRecordListComponent tabLabel={item}
+                                           key={refreshCount + item}/>
       case CapitalConst.WITHDRAWAL_RECORD:
-        return <WithdrawalRecordListComponent tabLabel={item}/>
+        return <WithdrawalRecordListComponent tabLabel={item}
+                                              key={refreshCount + item}/>
       case CapitalConst.CAPITAL_DETAIL:
-        return <CapitalDetailListComponent tabLabel={item}/>
+        return <CapitalDetailListComponent tabLabel={item}
+                                           key={refreshCount + item}/>
     }
   }
 
