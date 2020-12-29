@@ -109,6 +109,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   PromotionListPage, //优惠活动列表
   JDPromotionListPage, //优惠活动列表
   PromotionPage, //优惠活动
+  // 彩票大厅-默认
+  // 彩票大厅-分组
   GameHallPage, // 彩票大厅-新版
   FreedomHallPage, //彩票大厅-自由版
   SeriesLobbyPage, // 游戏大厅二级页面（xx系列游戏列表）
@@ -138,7 +140,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferRecordView, //额度转页记录
   TransferView, //额度转页
   TransferTKLMainView, //额度转页
-  IncomeRecommendPage,
+  IncomeRecommendPage,//推荐收益
 
   // ———————————— 模板页面 —————————————
 

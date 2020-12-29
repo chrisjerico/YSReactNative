@@ -1,3 +1,4 @@
+import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
@@ -55,22 +56,28 @@ export async function setRnPageInfo() {
     }
 
     // 彩票大厅（第三样式）
-    if (skitType.indexOf('威尼斯') != -1) {
-      pages = pages.concat([{
-        vcName: 'UGLotteryHomeController',
-        rnName: PageName.GameHallPage,
-        tabbarItemPath: '/gameHall',
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }, {
-        vcName: 'NewLotteryHomeViewController',
-        rnName: PageName.GameHallPage,
-        tabbarItemPath: '/gameHall',
-        fd_prefersNavigationBarHidden: true,
-        允许游客访问: true,
-        允许未登录访问: true,
-      }])
+    {
+      const { mobileGameHall } = UGStore.globalProps.sysConf
+      let page: PageName = undefined;
+      page = mobileGameHall == '1' ? PageName.GameHallPage : page;
+      page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
+      if (page) {
+        pages = pages.concat([{
+          vcName: 'UGLotteryHomeController',
+          rnName: page,
+          tabbarItemPath: '/gameHall',
+          fd_prefersNavigationBarHidden: true,
+          允许游客访问: true,
+          允许未登录访问: true,
+        }, {
+          vcName: 'NewLotteryHomeViewController',
+          rnName: page,
+          tabbarItemPath: '/gameHall',
+          fd_prefersNavigationBarHidden: true,
+          允许游客访问: true,
+          允许未登录访问: true,
+        }])
+      }
     }
   }
 

@@ -143,6 +143,7 @@ const FreedomHallPage = ({ navigation, setProps }) => {
                   renderDataList(tabItem)
                 )
               }),
+              <View style={{height:80}}/>
             ]
           }
         </ScrollView>)
