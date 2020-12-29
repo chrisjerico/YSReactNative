@@ -46,7 +46,7 @@ export const AlipayView = ({ setProps }) => {
 
   return (
     <View>
-      <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} />
+      <Header setShowMoneyImg={setShowMoneyImg} setProps={setProps} name={yuebao?.yuebaoName} getYuebao={getYuebao} />
       <View style={{ alignItems: 'center', marginTop: 24 }}>
         <Text style={{ color: Skin1.textColor2 }}>今日收益(元)</Text>
         <Text style={{ marginTop: 16, fontSize: 30 }}>{yuebao?.todayProfit || 0}</Text>
@@ -161,7 +161,7 @@ export const AlipayView = ({ setProps }) => {
 }
 
 
-const Header = ({ setProps, name, setShowMoneyImg }) => {
+const Header = ({ setProps, name, setShowMoneyImg, getYuebao }) => {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
@@ -197,7 +197,10 @@ const Header = ({ setProps, name, setShowMoneyImg }) => {
             color: Skin1.isBlack ? '#fff' : Skin1.textColor4,
           }}>{name || ``}</Text>
           <View style={{ position: 'absolute', right: 12 }}>
-            <UrgeWithPleasureComponent setShowMoneyImg={setShowMoneyImg} />
+            <UrgeWithPleasureComponent  setShowMoneyImg={() => {
+              getYuebao()
+              setShowMoneyImg()
+            }} />
           </View>
         </View>
       </SafeAreaView>
