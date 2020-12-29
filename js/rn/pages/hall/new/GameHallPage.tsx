@@ -62,7 +62,7 @@ const GameHallPage = ({ navigation, setProps }) => {
     setRefreshing(true)
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
-      ugLog('datas res=', res)
+      //ugLog('data res=', res)
       if (res?.code == 0) {
         //parentGameType 是 越南彩，gameType 可能是越南彩下面的某一个彩
         resData?.map((parentItem) => {
@@ -185,19 +185,6 @@ const GameHallPage = ({ navigation, setProps }) => {
   }
 
   return (
-    // <BaseScreen style={_styles.container}
-    //             hideLeft={true}
-    //             rightButton={rightButton}
-    //             screenName={'彩票大厅'}>
-    //   {
-    //     [
-    //       renderAllData(),
-    //       <RightMenu ref={refMenu}
-    //                  onMenuClick={renderMenu}
-    //                  menu={menuStr}/>,
-    //     ]
-    //   }
-    // </BaseScreen>
     <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'彩票大厅'}

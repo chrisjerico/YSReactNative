@@ -71,7 +71,7 @@ const UseCapitalDetailRecordList = () => {
       let listData = res?.data?.list
       let cpGroups = res?.data?.groups
 
-      ugLog('data res=', reqPage, JSON.stringify(res?.data))
+      //ugLog('data res=', reqPage, JSON.stringify(res?.data))
       if (res?.code == 0) {
         //每一次需要注入数据
         if (arrayLength(groups) <= 1 && !arrayEmpty(cpGroups)) {

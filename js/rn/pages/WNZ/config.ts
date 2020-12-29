@@ -29,6 +29,16 @@ const config = {
     18: getHtml5Image(null, 'kj_trend'), // 开奖走势
     19: 'https://appstatic.guolaow.com/assets/wnz/qq.png', // QQ客服
     20: 'https://appstatic.guolaow.com/assets/wnz/award.png', // 開獎網
+    22: getHtml5Image(23, 'center/electronic'), // 电子游戏
+    23: getHtml5Image(23, 'center/live'), // 真人游戏
+    24: getHtml5Image(23, 'center/chess'), // 棋牌游戏
+    26: getHtml5Image(23, 'center/vr'), // 电竞游戏
+    27: getHtml5Image(23, 'center/sport'), // 体育游戏
+    30: getHtml5Image(23, 'center/recharge_record'), // 存款纪录
+    31: getHtml5Image(23, 'center/withdraw-order'), // 取款纪录
+    32: getHtml5Image(23, 'center/account_bill'), // 资金明细
+    33: getHtml5Image(23, 'center/activity_hall'), // 优惠活动
+    34: getHtml5Image(23, 'center/my_chat'), // 聊天室
   },
   navColors: ['#edb93f', '#77674d', '#e62e25', '#52b653', '#007aff'],
   moreGame: [

@@ -94,111 +94,115 @@ import HJLoginPage from '../黑金/HJLoginPage'
 import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
+import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
+
 
 /**
  * 所有界面
  */
-const pageComponents = {
+const pageComponents: { [key in PageName]?: Function } = {
+
   // ———————————— 通用页面 —————————————
 
-  [PageName.JDVirtualCurrencyTutorialPage]: UGPage(JDVirtualCurrencyTutorialPage), //虚拟币充值教程
-  [PageName.TransitionPage]: UGPage(TransitionPage), //过渡页
-  [PageName.PromotionListPage]: UGPage(PromotionListPage), //优惠活动列表
-  [PageName.JDPromotionListPage]: UGPage(JDPromotionListPage), //优惠活动列表
-  [PageName.PromotionPage]: PromotionPage, //优惠活动
-  [PageName.GameHallPage]: UGPage(GameHallPage), ///彩票大厅页（样式三）
-  [PageName.FreedomHallPage]: UGPage(FreedomHallPage), //自由大厅页
-  [PageName.SeriesLobbyPage]: UGPage(SeriesLobbyPage), // 游戏大厅二级页面（xx系列游戏列表）
-  [PageName.TrendView]: UGPage(TrendView), //开奖走势
-  [PageName.ManageBankListPage]: UGPage(ManageBankListPage), //银行卡管理（我的提款账户列表）
-  [PageName.CapitalPage]: UGPage(CapitalPage), //存款取款资金明细
-  [PageName.AddBankPage]: UGPage(AddBankPage), //添加提款账户
-  [PageName.LottoBetting]: UGPage(LottoBetting), //下注页（未完成）
-  [PageName.UserMessagePage]: UGPage(UserMessagePage), //站内信
-  [PageName.UserInfoPage]: UGPage(UserInfoPage), // 用户信息页
-  [PageName.SafeCenterPage]: UGPage(SafeCenterPage), //安全中心
-  [PageName.ActivityRewardPage]: UGPage(ActivityRewardPage), //申请彩金
-  [PageName.LotteryHistoryPage]: UGPage(LotteryHistoryPage), //彩票投注记录
-  [PageName.JDSigInPage]: UGPage(JDSigInPage), //签到
-  [PageName.JDFeedBackPage]: UGPage(JDFeedBackPage), //建议反馈
-  [PageName.OnlinePayPage]: UGPage(OnlinePayPage), //在线支付
-  [PageName.TransferPayPage]: UGPage(TransferPayPage), //银行支付
-  [PageName.AlipayView]: UGPage(AlipayView), //利息宝
-  [PageName.AlipayTransferView]: UGPage(AlipayTransferView), //利息宝额度转
-  [PageName.AlipayTransferRecordView]: UGPage(AlipayTransferRecordView), //利息宝记录
-  [PageName.AlipayProfitView]: UGPage(AlipayProfitView), //利息宝收益
-  [PageName.FeedbackView]: UGPage(FeedbackView), //建议反馈
-  [PageName.FeedbackSubmitView]: UGPage(FeedbackSubmitView), //建议反馈
-  [PageName.FeedbackRecordView]: UGPage(FeedbackRecordView), //建议反馈记录
-  [PageName.SupFeedbackSubmitView]: UGPage(SupFeedbackSubmitView), //建议反馈记录反馈
-  [PageName.TransferRecordView]: UGPage(TransferRecordView), //额度转页记录
-  [PageName.TransferView]: UGPage(TransferView), //额度转页
-  [PageName.TransferTKLMainView]: UGPage(TransferTKLMainView), //额度转页
-  [PageName.IncomeRecommendPage]: UGPage(IncomeRecommendPage),
+  JDVirtualCurrencyTutorialPage, //虚拟币充值教程
+  TransitionPage, //过渡页
+  PromotionListPage, //优惠活动列表
+  JDPromotionListPage, //优惠活动列表
+  PromotionPage, //优惠活动
+  GameHallPage, // 彩票大厅-新版
+  FreedomHallPage, //彩票大厅-自由版
+  SeriesLobbyPage, // 游戏大厅二级页面（xx系列游戏列表）
+  TrendView, //开奖走势
+  ManageBankListPage, //银行卡管理（我的提款账户列表）
+  CapitalPage, //存款取款资金明细
+  AddBankPage, //添加提款账户
+  LottoBetting, //下注页（未完成）
+  UserMessagePage, //站内信
+  UserInfoPage, // 用户信息页
+  SafeCenterPage, //安全中心
+  ActivityRewardPage, //申请彩金
+  LotteryHistoryPage, //彩票投注记录
+  JDSigInPage, //签到
+  JDFeedBackPage, //建议反馈
+  OnlinePayPage, //在线支付
+  TransferPayPage, //银行支付
+  BtcPayPage, //虚拟币支付
+  AlipayView, //利息宝
+  AlipayTransferView, //利息宝额度转
+  AlipayTransferRecordView, //利息宝记录
+  AlipayProfitView, //利息宝收益
+  FeedbackView, //建议反馈
+  FeedbackSubmitView, //建议反馈
+  FeedbackRecordView, //建议反馈记录
+  SupFeedbackSubmitView, //建议反馈记录反馈
+  TransferRecordView, //额度转页记录
+  TransferView, //额度转页
+  TransferTKLMainView, //额度转页
+  IncomeRecommendPage,
 
   // ———————————— 模板页面 —————————————
 
-  [PageName.LCMinePage]: UGPage(LCMinePage), //乐橙-我的页
-  [PageName.LCHomePage]: UGPage(LCHomePage), //乐橙-首页
-  [PageName.LCLoginPage]: UGPage(LCLoginPage), //乐橙-登录
-  [PageName.LCRegisterPage]: UGPage(LCRegisterPage), //乐橙-注册
+  LCMinePage, //乐橙-我的页
+  LCHomePage, //乐橙-首页
+  LCLoginPage, //乐橙-登录
+  LCRegisterPage, //乐橙-注册
 
-  [PageName.LEFMinePage]: UGPage(LEFMinePage), //乐FUN-我的页
-  [PageName.LEFHomePage]: UGPage(LEFHomePage), //乐FUN-首页
-  [PageName.LEFSignInPage]: UGPage(LEFSignInPage), //乐FUN-登录
-  [PageName.LEFSignUpPage]: UGPage(LEFSignUpPage), //乐FUN-注册
+  LEFMinePage, //乐FUN-我的页
+  LEFHomePage, //乐FUN-首页
+  LEFSignInPage, //乐FUN-登录
+  LEFSignUpPage, //乐FUN-注册
 
-  [PageName.WNZHomePage]: UGPage(WNZHomePage), //威尼斯-首页
-  [PageName.WNZMinePage]: UGPage(WNZMinePage), //威尼斯-我的页
-  [PageName.WNZSignInPage]: WNZSignInPage, //威尼斯-登录
-  [PageName.WNZSignUpPage]: WNZSignUpPage, //威尼斯-注册
+  WNZHomePage, //威尼斯-首页
+  WNZMinePage, //威尼斯-我的页
+  WNZSignInPage, //威尼斯-登录
+  WNZSignUpPage, //威尼斯-注册
 
-  [PageName.KSHomePage]: UGPage(KSHomePage), //凯时-首页
-  [PageName.KSMinePage]: UGPage(KSMinePage), //凯时-我的页
-  [PageName.KSSignInPage]: KSSignInPage, //凯时-登录
-  [PageName.KSSignUpPage]: KSSignUpPage, //凯时-注册
+  KSHomePage, //凯时-首页
+  KSMinePage, //凯时-我的页
+  KSSignInPage, //凯时-登录
+  KSSignUpPage, //凯时-注册
 
-  [PageName.JXHSignInPage]: JXHSignInPage, //金星黑-登录
-  [PageName.JXHHomePage]: UGPage(JXHHomePage), //金星黑-首页
-  [PageName.JXHMinePage]: UGPage(JXHMinePage), //金星黑-我的页
-  [PageName.JXHSignUpPage]: JXHSignUpPage, //金星黑-注册
+  JXHSignInPage, //金星黑-登录
+  JXHHomePage, //金星黑-首页
+  JXHMinePage, //金星黑-我的页
+  JXHSignUpPage, //金星黑-注册
 
-  [PageName.HJHomePage]: UGPage(HJHomePage), //黑金-主页
-  [PageName.HJLoginPage]: UGPage(HJLoginPage), //黑金-登录
-  [PageName.HJRegisterPage]: UGPage(HJRegisterPage), //黑金-注册
-  [PageName.HJMinePage]: UGPage(HJMinePage), //黑金-我的
-  [PageName.HJGameCategoryPage]: UGPage(HJGameCategoryPage), //黑金分类条目
+  HJHomePage, //黑金-主页
+  HJLoginPage, //黑金-登录
+  HJRegisterPage, //黑金-注册
+  HJMinePage, //黑金-我的
+  HJGameCategoryPage, //黑金分类条目
 
-  [PageName.XBJLoginPage]: UGPage(XBJLoginPage), //香槟金-登录
-  [PageName.XBJRegisterPage]: UGPage(XBJRegisterPage), //香槟金-注册
-  [PageName.XBJMinePage]: UGPage(XBJMinePage), //香槟金-我的页
+  XBJLoginPage, //香槟金-登录
+  XBJRegisterPage, //香槟金-注册
+  XBJMinePage, //香槟金-我的页
 
-  [PageName.ZLHomePage]: UGPage(ZLHomePage), //尊龙-主页
-  [PageName.ZLMinePage]: UGPage(ZLMinePage), //尊龙-我的
-  [PageName.ZLLoginPage]: UGPage(ZLLoginPage), //尊龙-登录
-  [PageName.ZLRegisterPage]: UGPage(ZLRegisterPage), //尊龙-注册
+  ZLHomePage, //尊龙-主页
+  ZLMinePage, //尊龙-我的
+  ZLLoginPage, //尊龙-登录
+  ZLRegisterPage, //尊龙-注册
 
-  [PageName.LHTHomePage]: UGPage(LHTHomePage), //六合厅-首页
-  [PageName.LHTMinePage]: UGPage(LHTMinePage), //六合厅-我的页
-  [PageName.LHTSignInPage]: LHTSignInPage, //六合厅-登录
-  [PageName.LHTSignUpPage]: LHTSignUpPage, //六合厅-注册
-  [PageName.LHTPreferencePage]: LHTPreferencePage, //六合厅-首页彩种偏好设置
+  LHTHomePage, //六合厅-首页
+  LHTMinePage, //六合厅-我的页
+  LHTSignInPage, //六合厅-登录
+  LHTSignUpPage, //六合厅-注册
+  LHTPreferencePage, //六合厅-首页彩种偏好设置
 
-  [PageName.BYSignInPage]: BYSignInPage, //白曜-登录
-  [PageName.BYSignUpPage]: BYSignUpPage, //白曜-注册
-  [PageName.BYHomePage]: UGPage(BYHomePage), //白曜-首页
-  [PageName.BYMinePage]: UGPage(BYMinePage), //白曜-我的页
+  BYSignInPage, //白曜-登录
+  BYSignUpPage, //白曜-注册
+  BYHomePage, //白曜-首页
+  BYMinePage, //白曜-我的页
 
-  [PageName.BZHHomePage]: UGPage(BZHHomePage), //宝石红-首页
-  [PageName.BZHMinePage]: UGPage(BZHMinePage), //宝石红-我的页
-  [PageName.BZHGameLobbyPage]: BZHGameLobbyPage, //宝石红-游戏大厅
-  [PageName.BZHSignUpPage]: BZHSignUpPage, //宝石红-注册
-  [PageName.BZHSignInPage]: BZHSignInPage, //宝石红-登录
+  BZHHomePage, //宝石红-首页
+  BZHMinePage, //宝石红-我的页
+  BZHGameLobbyPage, //宝石红-游戏大厅
+  BZHSignUpPage, //宝石红-注册
+  BZHSignInPage, //宝石红-登录
 
-  [PageName.LLHomePage]: UGPage(LLHomePage), //利来-首页
-  [PageName.LLMinePage]: UGPage(LLMinePage), //利来-我的页
-  [PageName.LLLoginPage]: UGPage(LLLoginPage), //利来-登录
-  [PageName.LLRegisterPage]: UGPage(LLRegisterPage), //利来-注册
+  LLHomePage, //利来-首页
+  LLMinePage, //利来-我的页
+  LLLoginPage, //利来-登录
+  LLRegisterPage, //利来-注册
 }
 
 // TabbarController
@@ -218,7 +222,7 @@ class TabBarController extends Component<{ navigation: StackNavigationProp<{}> }
         <Router.TabScreen name={PageName.UpdateVersionPage} component={UGPage(UpdateVersionPage)} />
         {Object.keys(pageComponents).map((key) => {
           // ugLog('tab page key=', key)
-          return <Router.TabScreen name={key} component={pageComponents[key]} />
+          return <Router.TabScreen name={key} component={UGPage(pageComponents[key])} />
         })}
       </Router.TabNavigator>
     )
@@ -232,10 +236,10 @@ const StackScreens = () => {
     <Router.StackNavigator initialRouteName={initialName} headerMode={'screen'}>
       <Router.StackScreen name={' '} component={TabBarController} />
       {Object.keys(pageComponents)
-        .filter((value) => value.indexOf('Home') <= 0)
+        .filter((value) => value.indexOf('Home') <= 0) //过滤掉首页
         .map((key) => {
           // ugLog('stack page key=', key)
-          return <Router.StackScreen options={{ headerShown: false }} name={key} component={pageComponents[key]} />
+          return <Router.StackScreen options={{ headerShown: false }} name={key} component={UGPage(pageComponents[key])} />
         })}
     </Router.StackNavigator>
   )

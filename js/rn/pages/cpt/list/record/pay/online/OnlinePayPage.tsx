@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../../../public/tools/Ext'
 import { scale } from '../../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../../public/components/view/empty/EmptyView'
@@ -25,19 +25,27 @@ import Button from '../../../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../../../public/theme/UGSkinManagers'
 import { BaseScreen } from '../../../../../乐橙/component/BaseScreen'
 import { ugLog } from '../../../../../../public/tools/UgLog'
+import UGDropDownPicker from '../../../../../bank/add/view/UGDropdownPicker'
+import { useEffect, useState } from 'react'
+import { getBankIcon } from '../../../../../bank/list/UseManageBankList'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
 }
 
 /**
- * 支付通道记录
+ * 在线支付
  * @param navigation
  * @constructor
  */
 const OnlinePayPage = ({ navigation, route }) => {
 
+  const [curSelBank, setCurSelBank] = useState(null) //选择了哪个银行
+  const [accountItems, setAccountItems] = useState(null) //账户有哪些
+
   const { payData }: IRouteParams = route?.params
+
+  let bankController //银行选择
 
   const {
     moneyOption,
@@ -45,7 +53,20 @@ const OnlinePayPage = ({ navigation, route }) => {
     setInputMoney,
     selPayChannel,
     setSelPayChannel,
+    requestPayData,
   } = UseOnlinePay()
+
+  useEffect(() => {
+    //重新绘制银行选择界面
+    bankController?.close()
+    let banks = payData?.channel[selPayChannel]?.para?.bankList?.map(
+      (item, index) =>
+        ({
+          label: item.name, value: item.code,
+        }))
+    !anyEmpty(banks) && setAccountItems(banks)
+    !anyEmpty(banks) && setCurSelBank(banks[0].value)
+  }, [selPayChannel])
 
   /**
    * 输入金额
@@ -112,6 +133,15 @@ const OnlinePayPage = ({ navigation, route }) => {
             renderChoiceMoney(),
             renderSelectedChannel(),
             renderAllChannel(),
+            !anyEmpty(curSelBank) && <UGDropDownPicker
+              items={accountItems}
+              controller={instance => bankController = instance}
+              defaultValue={curSelBank}
+              dropDownMaxHeight={scale(320)}
+              onChangeItem={item => {
+                setCurSelBank(item.value)
+              }
+              }/>,
           ]
         }
 
@@ -120,17 +150,14 @@ const OnlinePayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    money: inputMoney,
+                    payId: payData?.channel[selPayChannel]?.id,
+                    gateway: curSelBank,
+                  })
 
                 }}/>
-        <View style={{height: scale(200)}}/>
+        <View style={{ height: scale(300) }}/>
       </ScrollView>
     </BaseScreen>
 
@@ -140,6 +167,7 @@ const OnlinePayPage = ({ navigation, route }) => {
 const _styles = StyleSheet.create({
   container: {
     padding: scale(16),
+    backgroundColor: UGColor.BackgroundColor1,
     flex: 1,
   },
   input_money: {
@@ -184,7 +212,7 @@ const _styles = StyleSheet.create({
   select_channel_container: {
     flex: 1,
     marginTop: scale(16),
-    marginBottom: scale(48),
+    marginBottom: scale(16),
     borderRadius: scale(8),
     borderWidth: scale(1),
     borderColor: UGColor.LineColor4,
@@ -210,6 +238,7 @@ const _styles = StyleSheet.create({
     width: '100%',
     height: scale(66),
     borderRadius: scale(8),
+    marginTop: scale(48),
   },
 
 })

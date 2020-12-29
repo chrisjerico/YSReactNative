@@ -15,7 +15,6 @@ export default class ExtUGApplication {
   //在Application初始化之前使用，只能手动初始化 tab列表
   //Router.PageNameLists.tabList
   static TAB_LIST = [
-    PageName.LXBView,
     PageName.LCMinePage,
     PageName.LCHomePage,
     PageName.TransitionPage,

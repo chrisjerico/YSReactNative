@@ -14,11 +14,11 @@ import { scale } from '../../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../../public/components/view/empty/EmptyView'
 import CommStyles from '../../../../../base/CommStyles'
-import { PayAisleData, PayAisleListData, PayChannelBean } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { PayAisleData, PayAisleListData } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import UseTransferPay, { ITransName } from './UseTransferPay'
+import UseBtcPay from './UseBtcPay'
 import { ManageBankCardData } from '../../../../../../public/network/Model/bank/ManageBankCardModel'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Button from '../../../../../../public/views/tars/Button'
@@ -30,46 +30,80 @@ import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
 import PushHelper from '../../../../../../public/define/PushHelper'
 import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
 import Modal from 'react-native-modal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
-import { TransferConst } from '../../../../const/CapitalConst'
+import AppDefine from '../../../../../../public/define/AppDefine'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
 }
 
 /**
- * 转账支付
+ * BTC支付
  * @param navigation
  * @constructor
  */
-const TransferPayPage = ({ navigation, route }) => {
+const BtcPayPage = ({ navigation, route }) => {
 
-  const { payData }: IRouteParams = route?.params
+  const intentData: IRouteParams = route?.params
   const [bigPic, setBigPic] = useState(null) //是否有大图片
+  const [smallPic, setSmallPic] = useState(null) //当前小图
 
   const {
+    newRate,
     moneyOption,
     inputMoney,
     setInputMoney,
-    inputName,
-    setInputName,
+    btcMoney,
+    setBtcMoney,
     inputRemark,
     setInputRemark,
     selPayChannel,
     setSelPayChannel,
-    transName,
+    payData,
+    setPayData,
     requestPayData,
-  } = UseTransferPay()
+  } = UseBtcPay()
+
+  useEffect(()=>{
+    setPayData(intentData?.payData)
+  }, [])
+
+  useEffect(() => {
+    setSmallPic(AppDefine?.host + '/lib/phpqrcode/image.php?url=' + payData?.channel[selPayChannel]?.account)
+  }, [selPayChannel, payData])
 
   /**
    * 输入金额
    */
-  const renderInputMoney = () => <TextInput style={_styles.input_money}
-                                            value={inputMoney}
-                                            keyboardType={'numeric'}
-                                            onChangeText={(text) => setInputMoney(text)}
-                                            placeholder={'请填写存款金额'}/>
+  const renderInputMoney = () => <View style={_styles.btc_input_info_container}>
+    <TextInput style={_styles.input_money}
+               value={inputMoney}
+               keyboardType={'numeric'}
+               onChangeText={(text) => setInputMoney(text)}
+               placeholder={'请填写存款金额'}/>
+    <View style={_styles.btc_hint_container}>
+      <Text style={_styles.choose_result_title}>{`虚拟币金额: ${btcMoney}`}</Text>
+      <Text style={_styles.btc_type}>{payData?.channel[selPayChannel]?.domain}</Text>
+      <TouchableOpacity onPress={() => {
+        switch (Platform.OS) {
+          case 'ios':
+            //TODO iOS 复制 title 到粘贴板
+            break
+          case 'android':
+            ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: btcMoney })
+            break
+        }
+        Toast('复制成功')
+      }}>
+        <Text style={_styles.choose_result_copy}>复制</Text>
+      </TouchableOpacity>
+    </View>
+    <View style={_styles.btc_hint_container}>
+      <Text style={_styles.btc_type}>{`1${payData?.channel[selPayChannel]?.domain} = ${newRate}CNY`}</Text>
+    </View>
+  </View>
+
   /**
    * 选择金额
    */
@@ -86,8 +120,7 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道单个条目
    */
-  const renderSelectedChannelItem = (title: string,
-                                     copyText: string) => <View style={_styles.choose_result_title_item}>
+  const renderSelectedChannelItem = (title: string, copyText: string) => <View style={_styles.choose_result_title_item}>
     <Text style={_styles.choose_result_title}>{title + copyText}</Text>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
@@ -109,25 +142,24 @@ const TransferPayPage = ({ navigation, route }) => {
    */
   const renderSelectedChannel = () => {
     const payChannelBean = payData?.channel[selPayChannel]
-    let nameHint: ITransName = transName(payData, payChannelBean)
-
     return <View>
       <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
       <View style={_styles.choose_result_container}>
         <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-          <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
+          <Text style={_styles.choose_result_title}>{'币种: ' + payChannelBean?.domain}</Text>
         </View>
         {
           [
-            nameHint?.payee_des && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
-            nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
-            nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
-            payChannelBean?.qrcode && <TouchableImage
-                pic={payChannelBean?.qrcode}
+            renderSelectedChannelItem('链名称: ', payChannelBean?.address),
+            renderSelectedChannelItem('充值地址: ', payChannelBean?.account),
+            anyEmpty(smallPic) ?
+              null :
+              <TouchableImage
+                pic={smallPic}
                 containerStyle={{ aspectRatio: 1, width: scale(240) }}
                 resizeMode={'contain'}
                 onPress={() => {
-                  setBigPic(payChannelBean?.qrcode)
+                  setBigPic(smallPic)
                 }}
               />,
           ]
@@ -160,13 +192,8 @@ const TransferPayPage = ({ navigation, route }) => {
    * 输入转账信息
    */
   const renderInputInfo = () => {
-    let nameHint: ITransName = transName(payData)
 
     return <View style={_styles.input_info_container}>
-      <TextInput style={_styles.input_info}
-                 value={inputName}
-                 onChangeText={(text) => setInputName(text)}
-                 placeholder={nameHint?.trans_hint}/>
       <View style={_styles.date_info_container}>
         <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
         <Icon size={scale(20)} name={'calendar'}/>
@@ -178,8 +205,9 @@ const TransferPayPage = ({ navigation, route }) => {
     </View>
   }
 
+
   return (
-    <BaseScreen screenName={payData.name}>
+    <BaseScreen screenName={payData?.name}>
       <ScrollView showsVerticalScrollIndicator={false}
                   style={_styles.container}>
         {
@@ -192,7 +220,7 @@ const TransferPayPage = ({ navigation, route }) => {
         }
 
         <Text style={_styles.select_channel_hint}>
-          {payData.prompt}
+          {payData?.prompt}
         </Text>
 
         {
@@ -208,7 +236,7 @@ const TransferPayPage = ({ navigation, route }) => {
                     amount: inputMoney,
                     channel: payData?.channel[selPayChannel]?.id,
                     payee: payData?.channel[selPayChannel]?.account,
-                    payer: inputName,
+                    payer: `${btcMoney}${payData?.channel[selPayChannel]?.domain}`,
                     remark: inputRemark,
                     depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
                   })
@@ -276,14 +304,35 @@ const _styles = StyleSheet.create({
     // borderTopWidth: scale(1),
     // borderTopColor: UGColor.LineColor4,
   },
+  btc_input_info_container: {
+    flex: 1,
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+  },
+  btc_hint_container: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: scale(16),
+    paddingVertical: scale(8),
+    justifyContent: 'center',
+    // borderTopWidth: scale(1),
+    // borderTopColor: UGColor.LineColor4,
+  },
   choose_result_title: {
     flex: 1,
     color: UGColor.TextColor2,
     fontSize: scale(24),
   },
+  btc_type: {
+    color: UGColor.TextColor2,
+    fontSize: scale(24),
+    fontStyle: 'italic',
+  },
   choose_result_copy: {
     color: UGColor.RedColor2,
     fontSize: scale(24),
+    paddingLeft: scale(16),
   },
   choose_result_hint: {
     color: 'white',
@@ -344,7 +393,7 @@ const _styles = StyleSheet.create({
     marginBottom: scale(32),
   },
   input_info: {
-    width: '100%',
+    flex: 1,
     padding: scale(12),
     borderWidth: scale(1),
     borderRadius: scale(8),
@@ -365,7 +414,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: UGColor.TextColor2,
   },
-
   submit_text: {
     fontSize: scale(22),
     color: 'white',
@@ -382,4 +430,4 @@ export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
 export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
 export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
-export default TransferPayPage
+export default BtcPayPage
