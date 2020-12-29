@@ -14,6 +14,8 @@ import DepositRecordListComponent from './record/dp/DepositRecordListComponent'
 import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListComponent'
 import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 import PayListComponent from './record/pay/PayListComponent'
+import CapitalContext from './CapitalContext'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 存款提现
@@ -25,6 +27,8 @@ const CapitalPage = ({ navigation, setProps }) => {
   const needNameInputRef = useRef(null)
   const [tabIndex, setTabIndex] = useState<number>(0)
 
+  let tabController //tab选择器
+
   const {
     systemInfo,
     userInfo,
@@ -33,13 +37,22 @@ const CapitalPage = ({ navigation, setProps }) => {
   } = UseCapital()
 
   /**
+   * 刷新哪个界面
+   * @param pageIndex
+   */
+  const refreshTabPage = (pageName: string) => {
+    ugLog('refresh 1 ok', pageName)
+    // tabController?.goToPage(pageIndex)
+  }
+
+  /**
    * 绘制各列表
    * @param item
    */
   const renderRecordList = (item: string) => {
     switch (item) {
       case CapitalConst.DEPOSIT:
-        return <PayListComponent tabLabel={item}/>
+        return <PayListComponent tabLabel={item} />
       case CapitalConst.WITHDRAWAL:
         return <DepositRecordListComponent tabLabel={item}/>
       case CapitalConst.DEPOSIT_RECORD:
@@ -52,38 +65,43 @@ const CapitalPage = ({ navigation, setProps }) => {
   }
 
   return (
-    <BaseScreen style={_styles.container}
-                screenName={'我的提款账户'}>
-      {
-        [
-          anyEmpty(categoryData)
-            ? <EmptyView style={{ flex: 1 }}/>
-            : <ScrollableTabView
-              tabBarUnderlineStyle={[_styles.tab_bar_underline,
-                { backgroundColor: Skin1.themeColor }]}
-              tabBarActiveTextColor={Skin1.themeColor}
-              tabBarInactiveTextColor={Skin1.textColor1}
-              tabBarTextStyle={{ fontSize: scale(20) }}
-              style={[{ flex: 1 }]}
-              renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
-              {
-                categoryData?.map((tabItem, index) => {
-                    return (
-                      renderRecordList(tabItem)
-                    )
-                  },
-                )
-              }
-            </ScrollableTabView>,
-        ]
-      }
-    </BaseScreen>
+    <CapitalContext.Provider value={{
+      refreshTabPage,
+    }}>
+      <BaseScreen style={_styles.container}
+                  screenName={'我的提款账户'}>
+        {
+          [
+            anyEmpty(categoryData)
+              ? <EmptyView style={{ flex: 1 }}/>
+              : <ScrollableTabView
+                ref={instance => tabController = instance}
+                tabBarUnderlineStyle={[_styles.tab_bar_underline,
+                  { backgroundColor: Skin1.themeColor }]}
+                tabBarActiveTextColor={Skin1.themeColor}
+                tabBarInactiveTextColor={Skin1.textColor1}
+                tabBarTextStyle={{ fontSize: scale(20) }}
+                style={[{ flex: 1 }]}
+                renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+                {
+                  categoryData?.map((tabItem, index) => {
+                      return (
+                        renderRecordList(tabItem)
+                      )
+                    },
+                  )
+                }
+              </ScrollableTabView>,
+          ]
+        }
+      </BaseScreen>
+    </CapitalContext.Provider>
   )
 }
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   tab_bar: {
     backgroundColor: '#f4f4f4',

@@ -36,6 +36,7 @@ import AppDefine from '../../../../../../public/define/AppDefine'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
