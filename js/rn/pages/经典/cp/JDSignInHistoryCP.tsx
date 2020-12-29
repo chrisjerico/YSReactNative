@@ -36,16 +36,13 @@ export const JDSignInHistoryCP = ({ c_ref,c_name,c_money }: { c_ref: JDSignInHis
 
       if (!v.list) {
         showLoading()
-        api.task.checkinHistory().setCompletionBlock(({ data }) => {
+        api.task.checkinHistory().useSuccess(({ data }) => {
           hideLoading()
           console.log('用户签到历史：=', data);
           v.list = data
           v.show = !v.show
           setState({})
 
-        }, (err) => {
-          console.log('err = ', err);
-          // Toast(err.message)
         });
       }
       else{

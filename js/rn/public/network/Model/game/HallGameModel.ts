@@ -8,13 +8,24 @@ export interface HallGameModel {
   data?: Array<HallGameData>
 }
 
+// 彩票大厅接口（game.lotteryGames）
 export interface HallGameData {
   gameType?: string //lhc
   gameTypeName?: string // 六合彩系列"
-  list?: HallGameListData[]
+  list?: HallGameModel1[]
 }
 
-export interface HallGameListData {
+
+// 彩票分组接口（game.lotteryGroupGames）
+export interface HallGameGroup {
+  id?: string
+  name?: string
+  logo?: string
+  lotteries?: HallGameModel2[]
+}
+
+
+export interface HallGameModel1 {
   id?: string //
   isSeal?: string //
   isClose?: string //
@@ -24,7 +35,6 @@ export interface HallGameListData {
   customise?: string
   isInstant?: string
   lowFreq?: string
-  parentGameType //父类游戏类型
   gameType?: string
   pic?: string
   openCycle?: string //"20分钟一期"
@@ -40,4 +50,24 @@ export interface HallGameListData {
   sort?: string //
   serverTime?: string // "2020-12-20 13:17:37"
   serverTimestamp?: string // 1608441457015
+
+  // 自定义参数
+  parentGameType?: string //父类游戏类型
 }
+
+interface HallGameModel2 {
+  isSeal ?: string
+  id ?: string
+  customise ?: string
+  lowFreq ?: string
+  serverTimestamp ?: string
+  title ?: string
+  logo ?: string
+  isInstant ?: string
+  gameType ?: string
+  serverTime ?: string
+  isClose ?: string
+  name ?: string
+}
+
+export type HallGameListData = HallGameModel1 & HallGameModel2

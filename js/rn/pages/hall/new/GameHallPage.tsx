@@ -28,6 +28,7 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 import { setProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1'
 
 /**
  * 新游戏大厅
@@ -39,6 +40,7 @@ const GameHallPage = ({ navigation, setProps }) => {
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
   const [gameData, setGameData] = useState<Array<HallGameData>>([])//所有数据
+  const { current: v } = useRef<{ isGroup: boolean }>({ isGroup: true });
 
   const {
     systemInfo,
@@ -60,6 +62,24 @@ const GameHallPage = ({ navigation, setProps }) => {
    */
   const requestGameData = async () => {
     setRefreshing(true)
+
+    // 先请求分组数据，若没有分组再请求彩票大厅数据
+    if (v.isGroup) {
+      api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
+        sm.noShowErrorHUD = true
+        setRefreshing(false)
+        if (data?.length) {
+          setGameData(data?.map((v): HallGameData => {
+            return { gameTypeName: v?.name, list: v?.lotteries }
+          }))
+        } else {
+          v.isGroup = false
+          requestGameData()
+        }
+      })
+      return
+    }
+
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
       //ugLog('data res=', res)

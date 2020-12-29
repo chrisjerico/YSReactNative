@@ -1,3 +1,4 @@
+import { HallGameGroup } from '../../Model/game/HallGameModel';
 import { CCSessionReq, SampleAPI } from './../CCSessionModel';
 
 
@@ -51,7 +52,7 @@ export class api_game {
 
   // 彩票分组列表
   static lotteryGroupGames() {
-    return this.c.get('lotteryGroupGames');
+    return this.c.get<HallGameGroup[]>('lotteryGroupGames');
   }
 
   // 获取彩票号码和赔率

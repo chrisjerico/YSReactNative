@@ -182,37 +182,29 @@ const JDSigInPage = () => {
         console.log('123');
 
         showLoading()
-        api.task.checkinBonus(type).setCompletionBlock(({ data, msg }) => {
+        api.task.checkinBonus(type).useSuccess(({ data, msg }) => {
             hideLoading()
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
             checkinList();
             Alert.alert('温馨提示', msg, [{ text: '确认' }])
-        }, (err) => {
-            console.log('err = ', err);
-            // Toast(err.message)
-
         });
     }
     //用户签到（签到类型：0是签到，1是补签）
     function checkinDataWithType(type: string, date: string) {
-        api.task.checkin(type, date).setCompletionBlock(({ data, msg }) => {
+        api.task.checkin(type, date).useSuccess(({ data, msg }) => {
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
             checkinList();
             Alert.alert('温馨提示', msg, [{ text: '确认' }])
             OCHelper.call('NSNotificationCenter.defaultCenter.postNotificationName:object:', ['UGNotificationGetUserInfo'])
 
-        }, (err) => {
-            console.log('err = ', err);
-            // Toast(err.message)
-
         });
     }
 
     //用户签到列表
     function checkinList() {
-        api.task.checkinList().setCompletionBlock(({ data }) => {
+        api.task.checkinList().useSuccess(({ data }) => {
             // console.log('签到总开关', data.checkinSwitch);
             // console.log('签到数据：=', data);
 
@@ -246,10 +238,6 @@ const JDSigInPage = () => {
                     break
                 }
             }
-
-        }, (err) => {
-            console.log('err = ', err);
-            // Toast(err.message)
 
         });
     }
