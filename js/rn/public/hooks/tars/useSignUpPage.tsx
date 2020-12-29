@@ -283,7 +283,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
   }
 
   const _signUp = () => {
-    // if (allowReg) {
     if (valid) {
       const params = {
         inviter: recommendGuy, // 推荐人ID
@@ -307,9 +306,6 @@ const useSignUpPage = ({ homePage, signInPage, onSuccessSignOut }: UseRegisterPa
     } else {
       showError(getValidErrorMessage() || '')
     }
-    // } else {
-    //   Alert.alert(null, closeregreason, [{ text: '确定', style: 'cancel' }])
-    // }
   }
 
   const value = {
