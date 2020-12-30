@@ -83,7 +83,7 @@ const GameHallPage = ({ navigation, route }) => {
               g.pic = g.pic ?? l.logo
               if (l?.id != g?.id) return
               if (temp[group?.id] == undefined) {
-                temp[group?.id] = { ...hall, list: [] }
+                temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] }
               }
               temp[group?.id].list?.push(g)
             })
@@ -115,6 +115,7 @@ const GameHallPage = ({ navigation, route }) => {
       api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
         sm.noShowErrorHUD = true
 
+        data = data?.filter((v) => v.id != '0')
         if (data?.length) {
           refreshUI(groupGameToHallGame(data))
         } else {
