@@ -346,7 +346,6 @@ const AccListView = ({ data, updateWallet, setUpdateWallet }: { data: any[], upd
         data={data}
         renderItem={({ item }) => {
           const wallet = updateWallet.find((wallet) => wallet.id === item.id)
-          wallet && console.log('wallet', wallet)
           return (
             <AccItem item={item} updateBalance={wallet && wallet.balance} setUpdateWallet={setUpdateWallet} />
           )

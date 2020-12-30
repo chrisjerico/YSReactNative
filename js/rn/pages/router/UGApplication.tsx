@@ -93,6 +93,7 @@ import { AlipayProfitView } from '../../public/components/alipay/AlipayProfitVie
 import { TransferTKLMainView } from '../../public/components/transfer/TransferTKLMainView'
 import OnlinePayPage from '../cpt/list/record/pay/online/OnlinePayPage'
 import TransferPayPage from '../cpt/list/record/pay/trans/TransferPayPage'
+import { TransferLineView } from '../../public/components/transfer/TransferLineView'
 
 
 const pageComponents: [PageName, React.ComponentType<any>][] = [
@@ -130,6 +131,7 @@ const pageComponents: [PageName, React.ComponentType<any>][] = [
   [PageName.SupFeedbackSubmitView, UGPage(SupFeedbackSubmitView)], //建议反馈记录反馈
   [PageName.TransferRecordView, UGPage(TransferRecordView)], //额度转页记录
   [PageName.TransferView, UGPage(TransferView)], //额度转页
+  [PageName.TransferLineView, UGPage(TransferLineView)], //额度转页
   [PageName.TransferTKLMainView, UGPage(TransferTKLMainView)], //额度转页
 
   // ———————————— 模板页面 —————————————

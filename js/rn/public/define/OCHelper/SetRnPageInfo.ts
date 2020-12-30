@@ -153,6 +153,16 @@ export async function setRnPageInfo() {
     允许未登录访问: false,
   })
 
+  //额度转页
+  pages.push({
+    rnName: PageName.TransferLineView,
+    userCenterItemCode: 8,
+    fd_prefersNavigationBarHidden: true,
+    vcName: 'LineConversionHeaderVC',
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
   }
