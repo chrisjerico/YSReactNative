@@ -17,7 +17,7 @@ export class api_chat {
     endTime?: string,
     operate?: number,// 1-发送红包，2-抢红包，3-过期退回，4-踩雷赔付，5-获得赔付，6-幸运奖励，7-多雷奖励
   }) {
-    return this.c.post('redBagLogPage', Object.assign({ rows: 3 }, params))
+    return this.c.post('redBagLogPage', Object.assign({ rows: 20 }, params))
   }
 
   // 会话列表

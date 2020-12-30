@@ -18,28 +18,28 @@ import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { setProps, UGBasePageProps } from '../../base/UGPage';
 import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { is } from 'immer/dist/internal';
-
-
+import RefreshListView, { RefreshState } from '../RefreshListView';
 
 interface JDRedEnveloperPage {
-  isLoading?: boolean //是否下拉刷新
   pageSize?: number//每页多少条数据
   pageNumber?: number//当前显示第几页
   items?: Array<RedBagLogModel>//界面数据
   type?: string//红包类型 1-普通红包 2-扫雷红包
-  isShowFoot?: boolean //是否上拉加载
-  MJRefreshState?:number//
+  refreshState?: number//
+  noMore?:boolean
 }
 
 const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 
-  let { current: v } = useRef<JDRedEnveloperPage>({ pageSize: 3, pageNumber: 1, type: '1', isShowFoot: true, items: [], isLoading: false })
-
-  // let [items,setItems] = useState<Array<RedBagLogModel>>([])
-  // const { current: pageSize } = useRef<number>(20);
-  // let { current: pageNumber } = useRef<number>(1);
-  // let {current: type} = useRef<string>('1');
-  // let {current: isShowFoot} = useRef(true)
+  let { current: v } = useRef<JDRedEnveloperPage>(
+    {
+      pageSize: 3,
+      pageNumber: 1,
+      type: '1',
+      items: [],
+      refreshState: RefreshState.Idle,
+      noMore:false
+    })
 
   //初始化
   useEffect(() => {
@@ -57,7 +57,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
             } else {
               setProps({ navbarOpstions: { title: '扫雷记录' } }, false)
             }
-            loadData()
+            onHeaderRefresh()
           }
 
         }
@@ -90,18 +90,19 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     return returnStr
   }
   //下拉刷新
-  function loadData() {
+  const onHeaderRefresh = () => {
     v.pageNumber = 1
+    v.refreshState = RefreshState.HeaderRefreshing
+    console.log('下拉刷新');
     loadWBData()
   }
 
   //上拉加载更多数据
-  function loadMoreData() {
+  const onFooterRefresh = () => {
     v.pageNumber = v.pageNumber + 1
-    console.log('上拉加载更多数据');
-    console.log('当前显示第几页===',v.pageNumber);
-    console.log('isShowFoot===',v.isShowFoot);
+    v.refreshState = RefreshState.FooterRefreshing
     
+    console.log('上拉加载');
     loadWBData()
   }
 
@@ -110,44 +111,44 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       type: parseInt(v.type),
       page: v.pageNumber,
     }
-    if (v.pageNumber == 1) {
-      v.isLoading = true
-      setProps()
-    }
+    console.log('页码===',v.pageNumber);
     api.chat.redBagLogPage(params).setCompletionBlock(({ data }) => {
-      if (v.pageNumber) {
+      let dicData = data;
+      if (v.pageNumber == 1) {
         v.items.length = 0
+        v.items = JSON.parse(JSON.stringify(dicData['list']))
+        v.refreshState = v.items.length < 1 ? RefreshState.EmptyData : RefreshState.Idle
+        console.log('下拉刷新数据 ====',v.items);
         setProps()
       }
-      let dicData = data;
-      v.items = v.items.concat(JSON.parse(JSON.stringify(dicData['list'])))
-      if (v.pageNumber) {
-        v.isLoading = false
+      else {
+        
+        if (v.noMore) {
+          return
+        }
+        else{
+          v.items = v.items.concat(JSON.parse(JSON.stringify(dicData['list'])))
+          dicData['list'].count < v.pageSize ? v.refreshState = RefreshState.NoMoreData : v.refreshState = RefreshState.Idle
+  
+          if (dicData['list'].count < v.pageSize) {
+            v.noMore = true;
+          }
+          else{
+            v.noMore = false;
+          }
+          console.log('上拉加载更多数据 ====',v.items);
+          setProps()
+        }
+        
       }
-
-      if (dicData['list'].count < v.pageSize) {
-        v.isShowFoot = false
-      } else {
-        v.isShowFoot = true
-      }
-      setProps()
+     
     }, (err) => {
-      v.isLoading = false
       console.log('err = ', err);
-      setProps()
+      v.refreshState = RefreshState.Failure
+      // setProps()
       // Toast(err.message)
 
     });
-  }
-
-
-
-  function footLabel(isShow: boolean) {
-    if (isShow) {
-      return '正在加载更多'
-    } else {
-      return ''
-    }
   }
 
   //数据为空展示页面
@@ -168,20 +169,6 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         }}>暂无更多数据</Text>
       </View>
     );
-  }
-
-  //上拉页面样式
-  function renderLoadMoreView() {
-    return <View style={styles.loadMore}>
-      {v.isShowFoot &&
-        <ActivityIndicator
-          style={styles.indicator}
-          size={"large"}
-          // color={"red"}
-          animating={true}
-        />}
-      <Text>{footLabel(v.isShowFoot)}</Text>
-    </View>
   }
 
   // 渲染列表项
@@ -217,20 +204,38 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         </View>
       </View>
 
-      <FlatList
+      {/* <FlatList
         data={v.items}
         renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
+        keyExtractor={(item,index)=>index.toString()}
         ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
         //下拉刷新
         refreshing={v.isLoading}
         onRefresh={() => {
-          loadData(); //下拉刷新加载数据
+          onHeaderRefresh(); //下拉刷新加载数据
         }}
         //设置上拉加载
-        ListFooterComponent={() => renderLoadMoreView()}
+        ListFooterComponent={() => onFooterStyle()}
         // onEndReachedThreshold={0.1}
         onEndReached={() => loadMoreData()}
+      /> */}
+
+      <RefreshListView
+        data={v.items}
+        renderItem={_renderItem}
+        keyExtractor={(item,index)=>index.toString()}
+        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
+        refreshState={v.refreshState}
+        onHeaderRefresh={onHeaderRefresh}
+        onFooterRefresh={onFooterRefresh}
+
+        // 可选
+        footerRefreshingText='玩命加载中 >.<'
+        footerFailureText='我擦嘞，居然失败了 =.=!'
+        footerNoMoreDataText='-我是有底线的-'
+        footerEmptyDataText='-好像什么东西都没有-'
       />
+
     </View>
   )
 }
