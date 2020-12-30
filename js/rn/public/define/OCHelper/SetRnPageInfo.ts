@@ -8,8 +8,14 @@ import { Platform } from 'react-native'
 import AppDefine from '../AppDefine'
 import { releaseConfig } from '../../../../../config'
 
+let __launchFinish = false
+
 // 配置需要被替换的oc页面（替换成rn）
-export async function setRnPageInfo() {
+export async function setRnPageInfo(force = false) {
+  if (!force && !__launchFinish) return
+  __launchFinish = true
+
+  const { sysConf } = UGStore.globalProps
   let pages: Array<RnPageModel> = []
 
   let skitType = Skin1.skitType
@@ -57,7 +63,7 @@ export async function setRnPageInfo() {
 
     // 彩票大厅（第三样式）
     {
-      const { mobileGameHall } = UGStore.globalProps.sysConf
+      const { mobileGameHall } = sysConf
       let page: PageName = undefined;
       page = mobileGameHall == '1' ? PageName.GameHallPage : page;
       page = mobileGameHall == '2' ? PageName.FreedomHallPage : page;
@@ -68,14 +74,14 @@ export async function setRnPageInfo() {
           tabbarItemPath: '/gameHall',
           fd_prefersNavigationBarHidden: true,
           允许游客访问: true,
-          允许未登录访问: true,
+          允许未登录访问: false,
         }, {
           vcName: 'NewLotteryHomeViewController',
           rnName: page,
           tabbarItemPath: '/gameHall',
           fd_prefersNavigationBarHidden: true,
           允许游客访问: true,
-          允许未登录访问: true,
+          允许未登录访问: false,
         }])
       }
     }

@@ -237,11 +237,9 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
         // 设置皮肤
         await UGSkinManagers.updateSkin(sysConf)
         // 配置替换rn的页面
-        await setRnPageInfo()
-        // 通知iOS进入首页
+        await setRnPageInfo(true)
+        // 通知iOS显示上一个RN页面
         willLaunch && await OCHelper.call('ReactNativeVC.showLastRnPage')
-        // 请求系统配置数据（从原生获取的配置数据被原生处理过，不太好用）
-        UGSysConfModel.updateFromNetwork()
         // RN初始化完毕
         await OCHelper.call('ReactNativeHelper.launchFinish')
         // RN版本更新完毕，进入首页
