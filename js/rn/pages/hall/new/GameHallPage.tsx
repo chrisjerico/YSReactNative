@@ -115,8 +115,7 @@ const GameHallPage = ({ navigation, route }) => {
       api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
         sm.noShowErrorHUD = true
 
-        data = data?.filter((v) => v.id != '0')
-        if (data?.length) {
+        if (data?.length && !(data?.length == 1 && data[0].id == '0')) {  // 若只有一个“其他“分组，则不显示分组
           refreshUI(groupGameToHallGame(data))
         } else {
           v.isGroup = false
