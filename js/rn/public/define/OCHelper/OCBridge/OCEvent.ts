@@ -66,7 +66,7 @@ export class OCEvent extends OCCall {
         default:
           console.log('成为焦点：', currentPage, params)
           const { didFocus } = UGStore.getPageProps(currentPage)
-          didFocus && didFocus()
+          didFocus && didFocus(params)
       }
     })
 
