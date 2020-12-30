@@ -1,12 +1,13 @@
 import { UGStore } from './../../../redux/store/UGStore';
 import { devConfig } from '../../../../../config'
+import { Platform } from 'react-native'
+import { releaseConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
-import { Skin1 } from '../../theme/UGSkinManagers'
-import { OCHelper } from './OCHelper'
-import { Platform } from 'react-native'
 import AppDefine from '../AppDefine'
-import { releaseConfig } from '../../../../../config'
+import { Skin1 } from './../../theme/UGSkinManagers'
+import { OCHelper } from './OCHelper'
+
 
 let __launchFinish = false
 
@@ -26,8 +27,8 @@ export async function setRnPageInfo(force = false) {
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
     pages.push({
-      vcName: 'UGFeedBackController',
-      rnName: PageName.JDFeedBackPage,
+      vcName: 'RedEnvelopeVCViewController',
+      rnName: PageName.JDRedEnveloperPage,
       fd_prefersNavigationBarHidden: true,
       允许游客访问: true,
       允许未登录访问: true,
@@ -61,6 +62,15 @@ export async function setRnPageInfo(force = false) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
 
+    // 申请代理
+    pages.push({
+      vcName: 'UGAgentViewController',
+      rnName: PageName.JDAgentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+    
     // 彩票大厅（第三样式）
     {
       const { mobileGameHall } = sysConf

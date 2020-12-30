@@ -21,19 +21,19 @@ const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6y
 
 const JDSigInPage = () => {
 
-    const [list, setList] = useState<Array<UGCheckinListModel>>([])
-    const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})
-    const [hide1, setHide1] = useState<boolean>(false)
-    const [hide2, setHide2] = useState<boolean>(false)
-    const [bonus1, setBonus1] = useState<string>('')
-    const [bonus2, setBonus2] = useState<string>('')
-    const [checkinBonusModel1, setCheckinBonusModel1] = useState<UGcheckinBonusModel>({})
-    const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})
-    const [kisCheckIn, setKisCheckIn] = useState<boolean>(false)
+    const [list, setList] = useState<Array<UGCheckinListModel>>([])//签到FastList 数据
+    const [checkinListModel, setCheckinListModel] = useState<UGSignInModel>({})//签到数据（全部）
+    const [hide1, setHide1] = useState<boolean>(false)//控制连续签到5天View 隐藏
+    const [hide2, setHide2] = useState<boolean>(false)//控制连续签到7天View 隐藏
+    const [bonus1, setBonus1] = useState<string>('')//连续签到5天View 显示的礼包数
+    const [bonus2, setBonus2] = useState<string>('')//连续签到7天View 显示的礼包数
+    const [checkinBonusModel1, setCheckinBonusModel1] = useState<UGcheckinBonusModel>({})//连续签到5天View 数据
+    const [checkinBonusModel2, setCheckinBonusModel2] = useState<UGcheckinBonusModel>({})//连续签到7天View 数据
+    const [kisCheckIn, setKisCheckIn] = useState<boolean>(false)// true '今日已签' :  false '马上签到'
 
     const { current: v } = useRef<JDSignInHistoryCP>({})
 
-    //把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
+    //AD时间把'2012-12-31' 转成对应格式 'MM月dd日' 字符串
     function formatTime(numberStr, format) {
         const date = moment(numberStr).toDate();//转Date
         var nowtime = date.format(format); //调用

@@ -95,6 +95,8 @@ import HJMinePage from '../黑金/HJMinePage'
 import HJRegisterPage from '../黑金/HJRegisterPage'
 import { UpdateVersionPage } from './UpdateVersionPage'
 import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
+import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
+import JDAgentPage from '../经典/申请代理/JDAgentPage'
 
 
 /**
@@ -103,7 +105,6 @@ import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 const pageComponents: { [key in PageName]?: Function } = {
 
   // ———————————— 通用页面 —————————————
-
   JDVirtualCurrencyTutorialPage, //虚拟币充值教程
   TransitionPage, //过渡页
   PromotionListPage, //优惠活动列表
@@ -141,6 +142,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TransferView, //额度转页
   TransferTKLMainView, //额度转页
   IncomeRecommendPage,//推荐收益
+  JDAgentPage,//申请代理
+  JDRedEnveloperPage,//红包扫雷
 
   // ———————————— 模板页面 —————————————
 
