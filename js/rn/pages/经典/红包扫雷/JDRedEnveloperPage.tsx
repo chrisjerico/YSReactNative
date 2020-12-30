@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, RefreshControl, } from 'react-native';
 import { Button } from 'react-native-elements';
 import FastImage from 'react-native-fast-image';
 import { TextInput } from 'react-native-gesture-handler';
@@ -17,8 +17,6 @@ import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
 import { setProps, UGBasePageProps } from '../../base/UGPage';
 import DateUtil from '../../../public/tools/andrew/DateUtil';
-import { is } from 'immer/dist/internal';
-import RefreshListView, { RefreshState } from '../RefreshListView';
 
 
 
@@ -27,8 +25,12 @@ interface JDRedEnveloperPage {
   pageNumber?: number//当前显示第几页
   items?: Array<RedBagLogModel>//界面数据
   type?: string//红包类型 1-普通红包 2-扫雷红包
-  refreshState?: number//
-  noMore?: boolean
+  state :{
+    showFoot?:number//控制foot， 0：点击重新加载   1：'数据加载中…  2 ：已加载全部数据(空)
+    isRefreshing?: boolean//下拉刷新开始结束 
+    isLastPage?:boolean //是否是最后一页 
+  }
+
 }
 
 const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
@@ -39,9 +41,14 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       pageNumber: 1,
       type: '1',
       items: [],
-      refreshState: RefreshState.Idle,
-      noMore: false
+      state :{
+        showFoot:0,
+        isRefreshing:true,
+        isLastPage:false
+      }
     })
+
+  const [isHeader, setIsHeader] = useState<boolean>(true)//控制View 隐藏
 
   //初始化
   useEffect(() => {
@@ -59,6 +66,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
             } else {
               setProps({ navbarOpstions: { title: '扫雷记录' } }, false)
             }
+
             onHeaderRefresh()
           }
 
@@ -93,18 +101,19 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
   }
   //下拉刷新
   const onHeaderRefresh = () => {
+    v.state.isRefreshing = true
+    setIsHeader(true)
     v.pageNumber = 1
-    v.refreshState = RefreshState.HeaderRefreshing
     console.log('下拉刷新');
     loadWBData()
   }
 
   //上拉加载更多数据
   const onFooterRefresh = () => {
-    v.pageNumber = v.pageNumber + 1
-    v.refreshState = RefreshState.FooterRefreshing
-
+    v.pageNumber ++
     console.log('上拉加载');
+    v.state.showFoot = 1
+    setProps()
     loadWBData()
   }
 
@@ -116,42 +125,99 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     console.log('页码===', v.pageNumber);
     api.chat.redBagLogPage(params).setCompletionBlock(({ data }) => {
       let dicData = data;
+
+      if (dicData['list'].count == 0) {
+        return
+      }
       if (v.pageNumber == 1) {
+        v.state.isRefreshing = false
+        setIsHeader(false)
         v.items.length = 0
-        v.items = JSON.parse(JSON.stringify(dicData['list']))
-        v.refreshState = v.items.length < 1 ? RefreshState.EmptyData : RefreshState.Idle
         console.log('下拉刷新数据 ====', v.items);
+        v.items = JSON.parse(JSON.stringify(dicData['list']))
+        console.log('下拉刷新数据 ====', v.items);
+        console.log('v.state.isRefreshing ====', v.state.isRefreshing);
+        console.log('isHeader ====', isHeader);
         setProps()
       }
       else {
-
-        if (v.noMore) {
+        if (v.state.isLastPage) {
           return
         }
         else {
-          v.items = v.items.concat(JSON.parse(JSON.stringify(dicData['list'])))
-          dicData['list'].count < v.pageSize ? v.refreshState = RefreshState.NoMoreData : v.refreshState = RefreshState.Idle
-
+          v.state.showFoot = 0
           if (dicData['list'].count < v.pageSize) {
-            v.noMore = true;
+            v.state.isLastPage = true;
+            v.state.showFoot = 3
           }
-          else {
-            v.noMore = false;
-          }
+          v.items = v.items.concat(JSON.parse(JSON.stringify(dicData['list'])))
           console.log('上拉加载更多数据 ====', v.items);
           setProps()
         }
-
       }
 
     }, (err) => {
       console.log('err = ', err);
-      v.refreshState = RefreshState.Failure
       // setProps()
       // Toast(err.message)
-
     });
   }
+
+  function onEndReached(){
+    // setTimeout(() => {
+      
+    // }, 1000);
+    console.log('onEndReached');
+    //如果是正在加载中或没有更多数据了，则返回
+    if(v.state.showFoot != 0 ){
+      console.log('正在加载中或没有更多数据了，则返回');
+        return ;
+    }
+    //如果当前页大于或等于总页数，那就是到最后一页了，返回
+    if(v.state.isLastPage){
+      console.log('当前页大于或等于总页数，那就是到最后一页了，则返回');
+        return;
+    } 
+      //是否已是下拉刷新 返回     
+    if(v.state.isRefreshing  ){
+      console.log('已是下拉刷新 返回  ');
+        return ;
+    }
+    //底部显示正在加载更多数据
+    v.state.showFoot = 0
+    //获取数据
+  
+    onFooterRefresh();
+}
+
+  //上拉加载布局
+  const renderFooter= () => {
+    if (v.state.showFoot === 0) {
+        return (
+            <View style={{alignItems:'center',justifyContent:'flex-start',backgroundColor:'blue'}}>
+                <Text style={{color:'#999999',fontSize:18,marginTop:10,marginBottom:10,}}>
+                    拖动加载数据
+                </Text>
+            </View>
+        );
+    } else if (v.state.showFoot === 1) {
+        return (
+            <View style={{alignItems:'center',justifyContent:'flex-start',backgroundColor:'blue'}}>
+                <ActivityIndicator />
+                <Text>正在加载...</Text>
+            </View>
+        );
+    } else if (v.state.showFoot === 1) {
+        return (
+          <View style={{alignItems:'center',justifyContent:'flex-start',backgroundColor:'blue'}}>
+          <Text style={{color:'#999999',fontSize:18,marginTop:10,marginBottom:10,}}>
+              
+          </Text>
+      </View>
+        );
+    }
+}
+
 
   //数据为空展示页面
   const _renderListEmptyComp = () => {
@@ -206,39 +272,37 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         </View>
       </View>
 
-      {/* <FlatList
+      <FlatList
         data={v.items}
         renderItem={_renderItem} // 从数据源中挨个取出数据并渲染到列表中
-        keyExtractor={(item,index)=>index.toString()}
+        keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
         //下拉刷新
-        refreshing={v.isLoading}
-        onRefresh={() => {
-          onHeaderRefresh(); //下拉刷新加载数据
-        }}
+        //设置下拉刷新样式
+        refreshControl={
+          <RefreshControl
+              title={"Loading"} //android中设置无效
+              colors={["red"]} //android
+              tintColor={"red"} //ios
+              titleColor={"red"}
+              refreshing={v.state.isRefreshing}
+              // refreshing={isHeader}
+              onRefresh={() => {
+                
+                onHeaderRefresh(); //下拉刷新加载数据
+              }}
+          />
+      }
         //设置上拉加载
-        ListFooterComponent={() => onFooterStyle()}
-        // onEndReachedThreshold={0.1}
-        onEndReached={() => loadMoreData()}
-      /> */}
-
-      {/* <RefreshListView
-        data={v.items}
-        renderItem={_renderItem}
-        keyExtractor={(item,index)=>index.toString()}
-        ListEmptyComponent={_renderListEmptyComp()} // 列表为空时渲染该组件。可以是 React Component, 也可以是一个 render 函数，或者渲染好的 element
-        refreshState={v.refreshState}
-        onHeaderRefresh={onHeaderRefresh}
-        onFooterRefresh={onFooterRefresh}
-
-        // 可选
-        // footerRefreshingText='玩命加载中 >.<'
-        // footerFailureText='我擦嘞，居然失败了 =.=!'
-        // footerNoMoreDataText='-我是有底线的-'
-        // footerEmptyDataText='-好像什么东西都没有-'
-      /> */}
-
-
+        ListFooterComponent={() => renderFooter()}
+        onEndReachedThreshold={50}
+        
+        onEndReached={() => {
+          console.log('==============1');
+          
+          onEndReached()
+        }}
+      />
 
     </View>
   )
