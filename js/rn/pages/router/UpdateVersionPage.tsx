@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import CodePush, { SyncOptions } from 'react-native-code-push'
 import * as Progress from 'react-native-progress'
+import { useSafeArea } from 'react-native-safe-area-context'
 import { getIOSCodePushKey } from '../../public/config/CodePushKeys'
 import { ANHelper } from '../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../public/define/ANHelper/hp/CmdDefine'
@@ -276,10 +277,8 @@ export const UpdateVersionPage = (props: UpdateVersionProps) => {
 
   return (
     <View style={_styles.container}>
-      <View style={_styles.content}>
-        <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="#aaa" color="white" height={4} width={AppDefine.width} />
-        <Text style={_styles.title}>{text + showNetwork}</Text>
-      </View>
+      <Progress.Bar progress={progress} borderWidth={0} borderRadius={0} unfilledColor="transparent" color="#0000003f" height={useSafeArea()?.top + 20} width={AppDefine.width} />
+      <Text style={_styles.title}>{'  ' + text + showNetwork}</Text>
       <View style={_styles.container_timer}>
         <Progress.Circle
           progress={circleProgress / 10}
@@ -325,7 +324,6 @@ const _styles = StyleSheet.create({
   },
   content: {
     width: '100%',
-    backgroundColor: '#0000003f',
     marginBottom: 300,
   },
   subComponent: {
@@ -340,6 +338,7 @@ const _styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '500',
     fontSize: scale(18),
+    marginTop: -20
   },
   counter_container: {
     position: 'absolute',
