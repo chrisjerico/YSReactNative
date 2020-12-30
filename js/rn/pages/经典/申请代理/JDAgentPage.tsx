@@ -58,12 +58,8 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
 
   //代理申请信息
   function teamAgentApplyInfo() {
-    api.team.agentApplyInfo().setCompletionBlock(({ data, msg }) => {
+    api.team.agentApplyInfo().useSuccess(({ data, msg }) => {
       setAgentApplyInfo(JSON.parse(JSON.stringify(data)))
-    }, (err) => {
-      console.log('err = ', err);
-      // Toast(err.message)
-
     });
   }
 
@@ -146,7 +142,7 @@ const JDAgentPage = ({ route, setProps }: UGBasePageProps) => {
               "phone": phone,
               "content": remark,
             }
-            api.team.agentApply(qq, phone, remark).setCompletionBlock(({ data, msg }) => {
+            api.team.agentApply(qq, phone, remark).useSuccess(({ data, msg }) => {
 
 
 

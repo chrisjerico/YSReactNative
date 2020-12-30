@@ -105,8 +105,8 @@ export async function setRnPageInfo(force = false) {
     vcName: 'UGSigInCodeViewController',
     rnName: PageName.JDSigInPage,
     fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
+    允许游客访问: false,
+    允许未登录访问: false,
   })
 
   // 优惠活动列表页
