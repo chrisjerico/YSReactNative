@@ -407,6 +407,10 @@ export default class PushHelper {
             OCHelper.call('UGNavigationController.current.pushViewControllerWithLinkCategory:linkPosition:', [7, 24])
             break
           }
+          case UGUserCenterType.优惠活动: {
+            push(PageName.JDPromotionListPage)
+            break
+          }
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
@@ -421,7 +425,7 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
-              push(PageName.CapitalPage)
+              // push(PageName.CapitalPage)
               // return
             }
             subId = MenuType.CZ

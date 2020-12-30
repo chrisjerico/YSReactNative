@@ -8,6 +8,8 @@ import { UGSignInHistoryModel } from '../../../redux/model/other/UGSignInHistory
 import { OCHelper } from '../../../public/define/OCHelper/OCHelper';
 import PushHelper from '../../../public/define/PushHelper';
 import { UGUserCenterType } from '../../../redux/model/全局/UGSysConfModel';
+import { push } from '../../../public/navigation/RootNavigation';
+import { PageName } from '../../../public/navigation/Navigation';
 
 const JDFeedBackPage = () => {
   const [list, setList] = useState<Array<UGSignInHistoryModel>>([
@@ -63,20 +65,10 @@ const JDFeedBackPage = () => {
           // OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [14])
         } 
         else if (item.idKey == '2') {
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
-            selectors: 'AppDefine.viewControllerWithStoryboardID:;.navigationItem[setTitle:][setFeedType:]',
-            args1: ['UGWriteMessageViewController'],
-            args2: ['建议反馈'],
-            args3: [0],
-          }, true])
+          push(PageName.JDWriteMessagePage, {feedType:0})
         } 
         else if (item.idKey == '3') {
-          OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
-            selectors: 'AppDefine.viewControllerWithStoryboardID:;.navigationItem[setTitle:][setFeedType:]',
-            args1: ['UGWriteMessageViewController'],
-            args2: ['投诉建议'],
-            args3: [1],
-          }, true])
+          push(PageName.JDWriteMessagePage, {feedType:1})
         }
         else if (item.idKey == '4') {
           OCHelper.call('UGNavigationController.current.pushViewController:animated:', [{
@@ -94,7 +86,7 @@ const JDFeedBackPage = () => {
             <View style={{ flex: 1 }} />
             <Text style={[{ fontSize: 20, color: Skin1.textColor1 }]}>{'›'}</Text>
           </View >
-          <View style={[{ height: 1.5, backgroundColor: '#F4F4F4', marginLeft: 13, marginTop: 8 }]}></View>
+          <View style={[{ height: 1.5, backgroundColor: '#AEAEAE', marginLeft: 11, marginTop: 8 }]}></View>
           <Text style={[{ fontSize: 13, color: Skin1.textColor2, marginLeft: 10, marginTop: 10, marginRight: 70 }]}>{item.remark}</Text>
         </View>
       </TouchableOpacity>

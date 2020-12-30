@@ -1,15 +1,16 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { RefreshControl } from 'react-native'
+import { Linking, RefreshControl } from 'react-native'
 import { DepositListData } from '../../../../../../public/network/Model/wd/DepositRecordModel'
 import APIRouter from '../../../../../../public/network/APIRouter'
 import { anyEmpty, arrayEmpty } from '../../../../../../public/tools/Ext'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { Toast } from '../../../../../../public/tools/ToastUtils'
 import { PayAisleData } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { hideLoading, showLoading } from '../../../../../../public/widget/UGLoadingCP'
 
 /**
- * 支付通道记录
+ * 在线支付
  * @constructor
  */
 const UseOnlinePay = () => {
@@ -20,20 +21,25 @@ const UseOnlinePay = () => {
   const [selPayChannel, setSelPayChannel] = useState(0) //选择支付渠道
 
   /**
-   * 请求支付通道记录
+   * 开始存款
    */
-  const requestPayData = async () => {
+  const requestPayData = async (params: IRechargeOnlineParams) => {
 
-    APIRouter.capital_rechargeCashier().then(({ data: res }) => {
-      let listData = res?.data
-      ugLog('data res=', JSON.stringify(res?.data))
+    if (!params?.money) {
+      Toast('请输入金额')
+      return
+    }
+
+    showLoading()
+    APIRouter.recharge_onlinePay(params).then(({ data: res }) => {
+      //ugLog('data res=', JSON.stringify(res?.data))
       if (res?.code == 0) {
-
+        APIRouter.open_onlinepay(params)
       } else {
         Toast(res?.msg)
       }
     }).finally(() => {
-
+      hideLoading()
     })
   }
 

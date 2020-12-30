@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import AppDefine from '../../../public/define/AppDefine'
@@ -33,7 +33,9 @@ const Tab = ({ logo, name, focused, onPress, index }) => {
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.tabContainer}>
         <View style={styles.titleContainer}>
-          <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
+          <ImageBackground source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1, justifyContent:'center', alignItems:'center' }} resizeMode={'contain'} >
+            <Text style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{AppDefine.siteId == 'c245' ? (index ? '榜' : '热') : (index ? '信' : '官') }</Text>
+          </ImageBackground>
           <Text style={styles.titleText}>{AppDefine.siteId == 'c245' ? c245Names[index] : name}</Text>
         </View>
         {!index && <View style={styles.grayLineContainer} />}

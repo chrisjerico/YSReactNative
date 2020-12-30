@@ -12,6 +12,7 @@ interface IUGDropdownPicker {
   style?: StyleProp<ViewStyle>;
   onOpen?: () => void;
   onClose?: () => void;
+  dropDownMaxHeight?: number;
 }
 /**
  * 选择器

@@ -15,32 +15,56 @@ import { getGameList } from '../utils/getGameList'
 import { anyEmpty } from '../tools/Ext'
 import { scale } from '../tools/Scale'
 import { httpClient } from '../network/httpClient'
+import { UGBasePageProps } from '../../pages/base/UGPage'
+import { UGNextIssueModel } from '../network/Model/LottoGamesModel'
 
-const TrendView = ({ navigation }) => {
+const TrendView = ({ navigation, setProps }: UGBasePageProps) => {
   const [trendData, setTrendData] = useState<TrendData>()
   const [headerArr, setHeaderArr] = useState([])
   const { width: screenWidth } = Dimensions.get('screen')
   const itemWidth = screenWidth / 6 - 4
   const [showModal, setShowModal] = useState(false)
   const [defaultNumber, setDefaultNumber] = useState(0)
-  const [currentGame, setCurrentGame] = useState()
-  let [games, setGames] = useState([])
+  const [currentGame, setCurrentGame] = useState<UGNextIssueModel>()
+  let [games, setGames] = useState<UGNextIssueModel[]>([])
 
   useEffect(() => {
     currentGame && games.length > 0 && getData()
   }, [defaultNumber, currentGame, games])
 
   useEffect(() => {
-    APIRouter.game_lotteryGames().then(({ data: res }) => {
-      let arr = []
-      res.data.map((item) => {
-        arr = arr.concat(item.list)
-      })
-      const list = getGameList(arr)
-      setGames(list)
-      !currentGame && setCurrentGame(list[0])
+    let list: UGNextIssueModel[]
+    async function findCurrentGame() {
+      if (!list) {
+        APIRouter.game_lotteryGames().then(async ({ data: res }) => {
+          let arr: UGNextIssueModel[] = []
+          res.data.map((item) => {
+            arr = arr.concat(item.list)
+          })
+          list = getGameList(arr)
+          setGames(list)
+          findCurrentGame()
+        })
+        return
+      }
 
-    })
+      if (Platform.OS == 'ios') {
+        // 如果上一个页面是下注页，则取出其gameId
+        const cnt: number = await OCHelper.call('UGNavigationController.current.viewControllers.count')
+        const gameId: string = await OCHelper.call('UGNavigationController.current.viewControllers.objectAtIndex:.gameId', [cnt - 2])
+        // 查看当前下注游戏的走势图
+        const ret = list.filter((v) => {
+          if (v.id == gameId) return v;
+        })
+        if (ret?.length) {
+          setCurrentGame(ret[0])
+          return
+        }
+      }
+      setCurrentGame(list[0])
+    }
+    findCurrentGame()
+    setProps({ didFocus: findCurrentGame }, false)
   }, [])
 
   // useEffect(() => {

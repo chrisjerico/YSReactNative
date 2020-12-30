@@ -83,7 +83,7 @@ const Header = () => {
           width: '100%',
           alignSelf: 'center',
           color: Skin1.navBarTitleColor,
-        }}>意见123反馈</Text>
+        }}>意见反馈</Text>
         <TouchableOpacity style={{ width: 30, position: 'absolute', left: 20 }} onPress={() => pop()}>
           <Icon size={33} color={Skin1.navBarTitleColor} name={'angle-left'} />
         </TouchableOpacity>

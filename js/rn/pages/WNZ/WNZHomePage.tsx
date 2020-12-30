@@ -14,7 +14,6 @@ import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { anyEmpty } from '../../public/tools/Ext'
 import { scale } from '../../public/tools/Scale'
 import { goToUserCenterType, stringToNumber } from '../../public/tools/tars'
-import { ugLog } from '../../public/tools/UgLog'
 import BannerBlock from '../../public/views/tars/BannerBlock'
 import Button from '../../public/views/tars/Button'
 import GameButton from '../../public/views/tars/GameButton'
@@ -27,6 +26,7 @@ import HomeHeader from './views/HomeHeader'
 import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 
 const WNZHomePage = () => {
   const menu = useRef(null)
@@ -95,7 +95,6 @@ const WNZHomePage = () => {
       }}
       renderGame={({ item, index, showGameSubType }) => {
         const { logo, title, name, hotIcon, tipFlag, subType, icon, gameId, subId } = item
-        ugLog('games title=', title, name)
         const flagType = parseInt(tipFlag)
         return (
           <View style={styles.gameContainer}>
@@ -128,7 +127,20 @@ const WNZHomePage = () => {
                   showGameSubType(index)
                 } else {
                   if (gameId == GameType.大厅) {
-                    push(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: WNZThemeColor.威尼斯.themeColor, homePage: PageName.WNZHomePage })
+                    if (subId == 47 && sysInfo?.mobileGameHall == '1') {//新彩票大厅
+                      push(PageName.GameHallPage, { showBackButton: true })
+
+                    } else if (subId == 47 && sysInfo?.mobileGameHall == '2') {//自由彩票大厅
+                      push(PageName.FreedomHallPage, { showBackButton: true })
+
+                    } else {
+                      push(PageName.SeriesLobbyPage,
+                        { gameId,
+                          subId,
+                          name,
+                          headerColor: Skin1.themeColor,
+                          homePage: PageName.WNZHomePage })
+                    }
                   } else {
                     //@ts-ignore
                     PushHelper.pushHomeGame(item)

@@ -116,8 +116,8 @@ export class api_user {
   }
 
   // 提交反馈
-  static addFeedback(type:string, pid:string, content:string) {
-    return this.c.post('addFeedback', {type:type, pid:pid, content:content});
+  static addFeedback(type:string, pid:string, content:string,imgPaths:string[]) {
+    return this.c.post('addFeedback', {type:type, pid:pid, content:content ,imgPaths:imgPaths.toString});
   }
 
   // 刪除全部站內信
@@ -203,6 +203,16 @@ export class api_user {
   // 上传身份证（待完善）
   static uploadIdentity(files) {
     return this.c.post('uploadIdentity');
+  }
+
+
+  // 上传建议反馈图片
+  static uploadFeedback(files: string[]) {// 图片文件路径
+    const fs = {}
+    files.forEach((v, i)=>{
+      fs['files[' + i + ']'] = v
+    })
+    return this.c.post<{isReview:boolean}>('uploadFeedback', {}, fs);
   }
 
 }
