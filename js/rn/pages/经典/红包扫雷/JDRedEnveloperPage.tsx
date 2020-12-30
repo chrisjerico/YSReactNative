@@ -260,7 +260,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', height: 60, backgroundColor:'#F7F8F8'}}>
         <View style={styles.item}>
-          <Text style={styles.text}>{'时间'}</Text>
+          <Text style={styles.text}>{'时间2'}</Text>
         </View>
         <View style={styles.item}>
           <Text style={styles.text}>{'类型'}</Text>
