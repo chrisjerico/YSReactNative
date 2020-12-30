@@ -1,22 +1,12 @@
 
-import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator, RefreshControl, TouchableOpacity, } from 'react-native';
-import { Button } from 'react-native-elements';
-import FastImage from 'react-native-fast-image';
-import { TextInput } from 'react-native-gesture-handler';
-import RedBagItem from '../../../public/components/RedBagItem';
+import React, { useEffect, useRef } from 'react';
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppDefine from '../../../public/define/AppDefine';
-import { pop } from '../../../public/navigation/RootNavigation';
 import { api } from '../../../public/network/NetworkRequest1/NetworkRequest1';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
-import { scale } from '../../../public/tools/Scale';
-import { Toast } from '../../../public/tools/ToastUtils';
-import { showSuccess } from '../../../public/widget/UGLoadingCP';
-import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
-import { UGAgentApplyInfo } from "../../../redux/model/全局/UGSysConfModel";
-import { setProps, UGBasePageProps } from '../../base/UGPage';
 import DateUtil from '../../../public/tools/andrew/DateUtil';
+import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
+import { UGBasePageProps } from '../../base/UGPage';
 
 interface JDRedEnveloperPage {
   pageSize?: number//每页多少条数据
@@ -241,13 +231,13 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
   // 渲染列表项
   const _renderItem = ({ index, item }) => {
     return (
-      <View style={{ flexDirection: 'row', height: 60, backgroundColor: index % 2 ? '#F7F8F8' : Skin1.isBlack?Skin1.CLBgColor :'white' }}>
+      <View style={{ flexDirection: 'row', height: 60, backgroundColor: index % 2 ? Skin1.isBlack ? '#707070' :'#F7F8F8' : Skin1.isBlack ? Skin1.CLBgColor :'white' }}>
         <View style={[styles.item,]}>
-          <Text style={styles.text}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</Text>
-          <Text style={styles.text}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</Text>
+          <Text style={[styles.text,{color:Skin1.textColor1}]}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</Text>
+          <Text style={[styles.text,{color:Skin1.textColor1}]}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</Text>
         </View>
         <View style={styles.item}>
-          <Text style={styles.text}>{item.operateText}</Text>
+          <Text style={[styles.text,{color:Skin1.textColor1}]}>{item.operateText}</Text>
         </View>
         <View style={styles.item}>
           <Text style={[styles.text, { color: labelColor(item), }]}>{labelStr(item)}</Text>
@@ -258,15 +248,15 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', height: 60, backgroundColor:'#F7F8F8'}}>
+      <View style={{ flexDirection: 'row', height: 60, backgroundColor:Skin1.isBlack ? Skin1.textColor4 :'#F7F8F8'}}>
         <View style={styles.item}>
-          <Text style={styles.text}>{'时间2'}</Text>
+          <Text style={[styles.text,{color:Skin1.textColor1}]}>{'时间'}</Text>
         </View>
         <View style={styles.item}>
-          <Text style={styles.text}>{'类型'}</Text>
+        <Text style={[styles.text,{color:Skin1.textColor1}]}>{'类型'}</Text>
         </View>
         <View style={styles.item}>
-          <Text style={styles.text}>{'输赢'}</Text>
+        <Text style={[styles.text,{color:Skin1.textColor1}]}>{'输赢'}</Text> 
         </View>
       </View>
 
