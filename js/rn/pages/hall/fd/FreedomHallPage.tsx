@@ -1,4 +1,4 @@
-import { RefreshControl, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Platform, RefreshControl, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
@@ -29,7 +29,7 @@ import CommStyles from '../../base/CommStyles'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../Res/icon/Res'
 import LinearGradient from 'react-native-linear-gradient'
-import { push } from '../../../public/navigation/RootNavigation'
+import { pop, push } from '../../../public/navigation/RootNavigation'
 
 /**
  * 自由游戏大厅
@@ -126,7 +126,7 @@ const FreedomHallPage = ({ navigation, setProps }) => {
                   </View>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={() => {
-                  push(PageName.PromotionPage, {
+                  push(PageName.JDPromotionListPage, {
                     showBackBtn: true,
                   })
                 }}>
@@ -190,7 +190,8 @@ const FreedomHallPage = ({ navigation, setProps }) => {
         <MineHeader title={'彩票大厅'}
                     showRightTitle={true}
                     rightButton={rightButton}
-                    showBackBtn={false}/>
+                    onPressBackBtn={()=>{pop()}}
+                    showBackBtn={Platform.OS == 'ios'}/>
       </SafeAreaHeader>
       {
         renderAllData()
