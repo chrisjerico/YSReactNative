@@ -20,13 +20,15 @@ import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { is } from 'immer/dist/internal';
 import RefreshListView, { RefreshState } from '../RefreshListView';
 
+
+
 interface JDRedEnveloperPage {
   pageSize?: number//每页多少条数据
   pageNumber?: number//当前显示第几页
   items?: Array<RedBagLogModel>//界面数据
   type?: string//红包类型 1-普通红包 2-扫雷红包
   refreshState?: number//
-  noMore?:boolean
+  noMore?: boolean
 }
 
 const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
@@ -38,7 +40,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       type: '1',
       items: [],
       refreshState: RefreshState.Idle,
-      noMore:false
+      noMore: false
     })
 
   //初始化
@@ -101,7 +103,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
   const onFooterRefresh = () => {
     v.pageNumber = v.pageNumber + 1
     v.refreshState = RefreshState.FooterRefreshing
-    
+
     console.log('上拉加载');
     loadWBData()
   }
@@ -111,37 +113,37 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       type: parseInt(v.type),
       page: v.pageNumber,
     }
-    console.log('页码===',v.pageNumber);
+    console.log('页码===', v.pageNumber);
     api.chat.redBagLogPage(params).setCompletionBlock(({ data }) => {
       let dicData = data;
       if (v.pageNumber == 1) {
         v.items.length = 0
         v.items = JSON.parse(JSON.stringify(dicData['list']))
         v.refreshState = v.items.length < 1 ? RefreshState.EmptyData : RefreshState.Idle
-        console.log('下拉刷新数据 ====',v.items);
+        console.log('下拉刷新数据 ====', v.items);
         setProps()
       }
       else {
-        
+
         if (v.noMore) {
           return
         }
-        else{
+        else {
           v.items = v.items.concat(JSON.parse(JSON.stringify(dicData['list'])))
           dicData['list'].count < v.pageSize ? v.refreshState = RefreshState.NoMoreData : v.refreshState = RefreshState.Idle
-  
+
           if (dicData['list'].count < v.pageSize) {
             v.noMore = true;
           }
-          else{
+          else {
             v.noMore = false;
           }
-          console.log('上拉加载更多数据 ====',v.items);
+          console.log('上拉加载更多数据 ====', v.items);
           setProps()
         }
-        
+
       }
-     
+
     }, (err) => {
       console.log('err = ', err);
       v.refreshState = RefreshState.Failure
@@ -220,7 +222,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         onEndReached={() => loadMoreData()}
       /> */}
 
-      <RefreshListView
+      {/* <RefreshListView
         data={v.items}
         renderItem={_renderItem}
         keyExtractor={(item,index)=>index.toString()}
@@ -230,14 +232,17 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         onFooterRefresh={onFooterRefresh}
 
         // 可选
-        footerRefreshingText='玩命加载中 >.<'
-        footerFailureText='我擦嘞，居然失败了 =.=!'
-        footerNoMoreDataText='-我是有底线的-'
-        footerEmptyDataText='-好像什么东西都没有-'
-      />
+        // footerRefreshingText='玩命加载中 >.<'
+        // footerFailureText='我擦嘞，居然失败了 =.=!'
+        // footerNoMoreDataText='-我是有底线的-'
+        // footerEmptyDataText='-好像什么东西都没有-'
+      /> */}
+
+
 
     </View>
   )
+
 }
 
 
