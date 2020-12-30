@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import AppDefine from '../../public/define/AppDefine'
 import PushHelper from '../../public/define/PushHelper'
 import useHomePage from '../../public/hooks/tars/useHomePage'
+import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
 import { navigate, push } from '../../public/navigation/RootNavigation'
 import { LHThemeColor } from '../../public/theme/colors/LHThemeColor'
@@ -99,7 +100,7 @@ const LHTHomePage = () => {
             onPressAd={() => PushHelper.pushLottery(LotteryType.新加坡六合彩)}
             onPressSmileLogo={goToUserCenterType.在线客服}
             renderNav={(item, index) => {
-              const { icon, name, logo, gameId } = item
+              const { icon, name, logo, gameId, subId } = item
               return (
                 <GameButton
                   key={index}
@@ -110,9 +111,12 @@ const LHTHomePage = () => {
                   logo={icon ? icon : logo}
                   title={name}
                   onPress={() => {
-                    if (gameId == 9) {
+                    if (gameId == GameType.大厅) {
+                      navigate(PageName.SeriesLobbyPage, { gameId, subId, name, headerColor: LHThemeColor.六合厅.themeColor, homePage: PageName.LHTHomePage })
+                    } else if (gameId == GameType.优惠活动) {
                       goToPromotionPage()
                     } else {
+                      //@ts-ignore
                       PushHelper.pushHomeGame(item)
                     }
                   }}

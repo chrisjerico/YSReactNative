@@ -4,6 +4,8 @@ import { ANHelper } from "../../../define/ANHelper/ANHelper";
 import { CMD } from "../../../define/ANHelper/hp/CmdDefine";
 import { OCHelper } from "../../../define/OCHelper/OCHelper";
 import { SalaryModel } from "../../Model/SalaryModel";
+import { UGSignInModel } from '../../../../redux/model/other/UGcheckinBonusModel';
+import { UGSignInHistoryModel } from '../../../../redux/model/other/UGSignInHistoryModel';
 
 
 export class api_task {
@@ -26,12 +28,12 @@ export class api_task {
 
   // 用户签到列表
   static checkinList() {
-    return this.c.get('checkinList');
+    return this.c.get<UGSignInModel>('checkinList');
   }
 
   // 用户签到
   static checkin(
-    type: boolean,//签到类型：0是签到，1是补签
+    type: string,//签到类型：0是签到，1是补签
     date:string,// 要签的日期2020-10-05
   ) {
     return this.c.post('checkin', {type:type, date:date});
@@ -39,7 +41,7 @@ export class api_task {
 
   // 用户签到历史
   static checkinHistory() {
-    return this.c.get('checkinHistory');
+    return this.c.get<UGSignInHistoryModel[]>('checkinHistory');
   }
 
   // 任务大厅

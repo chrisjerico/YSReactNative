@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import AppDefine from '../../../public/define/AppDefine'
@@ -19,20 +19,31 @@ const tabs = [
   },
 ]
 
-const Tab = ({ logo, name, focused, onPress }) => {
+const c245Names = ['热门彩种', '中奖排行']
+
+const Tab = ({ logo, name, focused, onPress, index }) => {
+  if (AppDefine.siteId == 'c254' && name == tabs[1]?.name) {
+    useEffect(() => {
+      setTimeout(() => {
+        onPress && onPress()
+      }, 500);
+    }, [])
+  }
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.tabContainer}>
         <View style={styles.titleContainer}>
-          <FastImage source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1 }} resizeMode={'contain'} />
-          <Text style={styles.titleText}>{name}</Text>
+          <ImageBackground source={{ uri: logo }} style={{ width: scale(55), aspectRatio: 1, justifyContent:'center', alignItems:'center' }} resizeMode={'contain'} >
+            <Text style={{marginTop:1,marginLeft:1, padding:1, color:'white', fontSize:14, backgroundColor:index ? '#C84C4E' : '#80c025'}}>{AppDefine.siteId == 'c245' ? (index ? '榜' : '热') : (index ? '信' : '官') }</Text>
+          </ImageBackground>
+          <Text style={styles.titleText}>{AppDefine.siteId == 'c245' ? c245Names[index] : name}</Text>
         </View>
-        {name == '官方玩法' && <View style={styles.grayLineContainer} />}
+        {!index && <View style={styles.grayLineContainer} />}
         <View
           style={[
             styles.bottomLineContainer,
             {
-              backgroundColor: focused ? (name == '官方玩法' ? '#80c025' : '#f44600') : 'transparent',
+              backgroundColor: focused ? (index ? '#f44600' : '#80c025') : 'transparent',
             },
           ]}
         />
@@ -46,7 +57,7 @@ const TabBar = ({ activeTab, goToPage }) => {
     <View style={{ flexDirection: 'row' }}>
       {tabs?.map((item, index) => {
         const { logo, name } = item
-        return <Tab key={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
+        return <Tab key={index} index={index} logo={logo} name={name} focused={index == activeTab} onPress={() => goToPage(index)} />
       })}
     </View>
   )

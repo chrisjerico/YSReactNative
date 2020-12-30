@@ -11,8 +11,19 @@ import {CMD} from "../define/ANHelper/hp/CmdDefine";
 export const navigationRef = React.createRef<NavigationContainerRef>();
 
 
-export function navigate<P>(page: PageName, props?: P, willTransition?: boolean): boolean {
-    return goFirstTransitionPage(page, props, undefined, willTransition);
+/**
+ * @deprecated
+ *
+ * 废弃的方法，请使用 push 或 jumpTo
+ * 廢棄的方法，請使用 push 或 jumpTo
+ *
+ * @param page
+ * @param props
+ * @param willTransition
+ */
+export function navigate<P extends object>(page: PageName, props?: P, willTransition?: boolean): boolean {
+    //return goFirstTransitionPage(page, props, undefined, willTransition);
+    return push(page, props, willTransition)
 }
 
 export function push<P extends object>(page: PageName, props?: P, willTransition?: boolean): boolean {
@@ -32,6 +43,7 @@ export function pop(): boolean {
                 OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
                 break;
             case "android":
+                ugLog('ug page menu visible 4')
                 ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
                 break;
         }
@@ -42,7 +54,17 @@ export function pop(): boolean {
     } else {
         switch (Platform.OS) {
           case 'ios':
-            OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                OCHelper.call('UGNavigationController.current.viewControllers.count').then((ocCount) => {
+                    if (ocCount == 1) {
+                        // 返回首页
+                        OCHelper.call('UGNavigationController.current.popToRootViewControllerAnimated:', [true]).then(() => {
+                            OCHelper.call('UGTabbarController.shared.setSelectedIndex:', [0])
+                        })
+                    } else {
+                        // 返回上一页
+                        OCHelper.call('UGNavigationController.current.popViewControllerAnimated:', [true]);
+                    }
+                })
             break;
           case 'android':
             ANHelper.callAsync(CMD.FINISH_ACTIVITY)
@@ -61,6 +83,7 @@ export function popToRoot() {
             OCHelper.call('ReactNativeVC.setTabbarHidden:animated:', [false, true]);
             break;
         case "android":
+            ugLog('ug page menu visible 5')
             ANHelper.callAsync(CMD.VISIBLE_MAIN_TAB, {visibility: 0});
             break;
     }
@@ -103,7 +126,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
 
     try {
         if (!willTransition || currentPage == PageName.TransitionPage) {
-            console.log('跳转到', page);
+            console.log('跳转到=', page, action);
             if (action == RouterType.Stack) {
                 switch (Platform.OS) {
                     case "ios":
@@ -114,7 +137,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
                     break;
                 }
                 const canPop = navigationRef?.current?.getRootState().routes.length > 1;
-              
+
                 if (canPop && currentPage == PageName.TransitionPage) {
                     navigationRef?.current?.dispatch(StackActions.replace(page, props));
                 } else {
@@ -125,7 +148,7 @@ function goFirstTransitionPage(page: PageName, props: any, action?: RouterType, 
                 navigationRef?.current?.dispatch(TabActions.jumpTo(page, props));
             }
         } else {
-            console.log('跳转到过渡页');
+            console.log('跳转到过渡页=', action);
             //检查一下Native主页下面的tab是显示还是隐藏
             if (action == RouterType.Stack) {
                 switch (Platform.OS) {

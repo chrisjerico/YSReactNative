@@ -1,11 +1,12 @@
-import { devConfig } from './../../../../../config'
+import { Platform } from 'react-native'
+import { releaseConfig } from '../../../../../config'
 import { PageName } from '../../navigation/Navigation'
 import { Router, RouterType } from '../../navigation/Router'
+import AppDefine from '../AppDefine'
+import { devConfig } from './../../../../../config'
 import { Skin1 } from './../../theme/UGSkinManagers'
 import { OCHelper } from './OCHelper'
-import { Platform } from 'react-native'
-import AppDefine from '../AppDefine'
-import { releaseConfig } from '../../../../../config'
+
 
 // 配置需要被替换的oc页面（替换成rn）
 export async function setRnPageInfo() {
@@ -18,6 +19,14 @@ export async function setRnPageInfo() {
   // 本地编译
   if (devConfig.isDebug) {
     devConfig?.skinKey && (skitType = devConfig?.skinKey) // 測試開發
+    pages.push({
+      vcName: 'RedEnvelopeVCViewController',
+      rnName: PageName.JDRedEnveloperPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+
   }
 
   // 测试环境（未上线的内容）
@@ -43,7 +52,35 @@ export async function setRnPageInfo() {
       pages = pages.concat(BYPages)
     }
     if (skitType.indexOf('凯时') != -1) {
-      pages = pages.concat(KSPages)
+      pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
+    }
+
+    // 申请代理
+    pages.push({
+      vcName: 'UGAgentViewController',
+      rnName: PageName.JDAgentPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
+    
+    // 彩票大厅（第三样式）
+    if (skitType.indexOf('威尼斯') != -1) {
+      pages = pages.concat([{
+        vcName: 'UGLotteryHomeController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }, {
+        vcName: 'NewLotteryHomeViewController',
+        rnName: PageName.GameHallPage,
+        tabbarItemPath: '/gameHall',
+        fd_prefersNavigationBarHidden: true,
+        允许游客访问: true,
+        允许未登录访问: true,
+      }])
     }
     if (skitType.indexOf('乐FUN') != -1) {
       pages = pages.concat(LEFPages)
@@ -51,6 +88,17 @@ export async function setRnPageInfo() {
   }
 
   // —————————————————— 以下为已上线内容 ————————————————————————
+
+  // 签到页
+  pages.push({
+    tabbarItemPath: '/Sign',
+    vcName: 'UGSigInCodeViewController',
+    rnName: PageName.JDSigInPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  })
+
   // 优惠活动列表页
   pages.push({
     vcName: 'UGPromotionsController',
@@ -75,10 +123,50 @@ export async function setRnPageInfo() {
   pages.push({
     rnName: PageName.TrendView,
     userCenterItemCode: 18,
+    linkCategory:7,//导航链接
+    linkPosition:54,//导航链接ID
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,
   })
+
+  //利息宝页
+  // pages.push({
+  //   rnName: PageName.AlipayView,
+  //   userCenterItemCode: 4,
+  //   fd_prefersNavigationBarHidden: true,
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //建议反馈页
+  pages.push({
+    rnName: PageName.FeedbackView,
+    userCenterItemCode: 13,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+  })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'UGBalanceConversionController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
+
+  //额度转页
+  // pages.push({
+  //   rnName: PageName.TransferTKLMainView,
+  //   userCenterItemCode: 8,
+  //   fd_prefersNavigationBarHidden: true,
+  //   vcName: 'TKLMainViewController',
+  //   允许游客访问: false,
+  //   允许未登录访问: false,
+  // })
 
   if (skitType.indexOf('尊龙') != -1) {
     pages = pages.concat(ZLPages)
@@ -237,6 +325,14 @@ const LCPages = [
     // 登录
     vcName: 'UGLoginViewController',
     rnName: PageName.LCLoginPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: true,
+    允许未登录访问: true,
+  },
+  {
+    // 注册
+    vcName: 'UGRegisterViewController',
+    rnName: PageName.LCRegisterPage,
     fd_prefersNavigationBarHidden: true,
     允许游客访问: true,
     允许未登录访问: true,

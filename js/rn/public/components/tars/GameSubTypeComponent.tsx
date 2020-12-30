@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { Game, SubType } from '../../models/Interface'
 import List from '../../views/tars/List'
+import { ugLog } from '../../tools/UgLog'
+import { arrayLength } from '../../tools/Ext'
 
 interface RenderGame {
   item: Game
@@ -60,6 +62,7 @@ const GameSubTypeComponent = ({
   const mainGames = sliceCount == -1 ? games : games?.slice(0, sliceCount) ?? []
   const subGames = sliceCount == -1 ? [] : games?.slice(sliceCount, games?.length) ?? []
 
+  ugLog('renderGameSub mainGames=', JSON.stringify(mainGames))
   return (
     <View style={containerStyle}>
       <List
@@ -67,6 +70,7 @@ const GameSubTypeComponent = ({
         contentContainerStyle={contentContainerStyle}
         removeClippedSubviews
         numColumns={numColumns}
+        initialNumToRender={arrayLength(mainGames)}
         data={mainGames}
         renderItem={({ item, index }) => {
           return renderGame({ item, index, showGameSubType })
@@ -78,6 +82,7 @@ const GameSubTypeComponent = ({
         contentContainerStyle={contentContainerStyle}
         removeClippedSubviews
         numColumns={numColumns}
+        initialNumToRender={arrayLength(subGames)}
         data={subGames}
         renderItem={({ item, index }) => {
           return renderGame({

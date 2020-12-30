@@ -1,4 +1,4 @@
-import {StyleSheet, View, ViewStyle} from "react-native";
+import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native'
 import React, { useEffect } from 'react'
 import useHomePage from '../../../../public/hooks/tars/useHomePage'
 
@@ -6,28 +6,17 @@ interface NavBlockProps {
     navs: any[];
     containerStyle?: ViewStyle;
     renderNav: (item: any, index: number) => any;
+    info: any
 }
 
-const NavBlock = ({renderNav, containerStyle}: NavBlockProps) => {
-    const { value } = useHomePage({})
-    const { homeInfo } = value
+const NavBlock = ({renderNav, containerStyle, info}: NavBlockProps) => {
+    const { homeInfo } = info
     const { navs} = homeInfo
     return (
-        <View style={[styles.container, containerStyle]}>
+        <ScrollView showsHorizontalScrollIndicator={false} bounces={false} contentContainerStyle={{ backgroundColor: '#ffffff'}} horizontal={true}>
             {navs.map(renderNav)}
-        </View>
+        </ScrollView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        aspectRatio: 540 / 130,
-        backgroundColor: '#ffffff',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-})
 
 export default NavBlock

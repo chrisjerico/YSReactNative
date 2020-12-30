@@ -32,6 +32,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   const state: IGlobalState = Object.assign({}, prevState)
 
   if (act.type == 'reset') {
+    //@ts-ignore
     act.sysConf && (state.sysConf = act.sysConf ?? {})
     act.userInfo && (state.userInfo = act.userInfo ?? {})
     act.sign && (state.sign = act.sign ?? {})
@@ -54,6 +55,7 @@ function RootReducer(prevState: IGlobalState, act: UGAction): IGlobalState {
   } else {
     // 自定义Reducer写在这里。。。
     state.BettingReducer = BettingReducer(state.BettingReducer, act as any)
+    act.page && (state[act.page] = { ...state[act.page], ...act.props })
   }
   return state
 }
@@ -80,8 +82,9 @@ export class UGStore {
   // 发送通知
   private static callbacks: { page: PageName; callback: () => void }[] = []
 
-  static dispatch<P>(act: UGAction<P>) {
+  static dispatch<P>(act: UGAction<P>, willRender = true) {
     this.globalProps = RootReducer(this.globalProps, act)
+    if (!willRender) return
     if (act.page) {
       for (const cb of this.callbacks) {
         cb.page == act.page && cb.callback()

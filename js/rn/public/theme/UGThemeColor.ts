@@ -110,6 +110,7 @@ export enum UGColor {
   BackgroundColor1 = '#FBFBFB',
   BackgroundColor2 = '#F7F7F7',
   BackgroundColor3 = '#dedede',
+  BackgroundColor4 = '#F4F4F4',
 
   // 文字颜色
   TextColor1 = '#222',
