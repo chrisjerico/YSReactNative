@@ -31,11 +31,19 @@ export class CCSessionModel<T = {} | [] | string> {
   noShowErrorHUD: boolean;
   success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void;
   failure: (err: Error, sm: CCSessionModel<T>) => void;
-  setCompletionBlock(success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void, failure?: (err: Error, sm: CCSessionModel<T>) => void) {
-    this.success = success;
-    this.failure = failure;
-    return this;
-  };
+  completion: (res: ResponseObject<T>, err: Error, sm: CCSessionModel<T>) => void
+  useCompletion(completion: (res: ResponseObject<T>, err: Error, sm: CCSessionModel<T>) => void) {
+    this.completion = completion
+    return this
+  }
+  useSuccess(success: (res: ResponseObject<T>, sm: CCSessionModel<T>) => void) {
+    this.success = success
+    return this
+  }
+  useFailure(failure: (err: Error, sm: CCSessionModel<T>) => void) {
+    this.failure = failure
+    return this
+  }
 }
 
 
@@ -123,6 +131,7 @@ export class CCSessionReq {
 
       // 向外回调
       sm.success && sm.success(res?.data, sm)
+      sm.completion && sm.completion(sm.res, sm.err, sm)
       return Promise.resolve(res);
     }).catch((err: AxiosError<ResponseObject<T>>) => {
       if (!sm.err && err.response) {
@@ -137,6 +146,7 @@ export class CCSessionReq {
 
       // 向外回调
       sm.failure && sm.failure(sm.err, sm)
+      sm.completion && sm.completion(sm.res, sm.err, sm)
       // 显示错误信息
       !sm.noShowErrorHUD && sm.err?.message && showError(sm.err?.message);
       return Promise.reject(err);

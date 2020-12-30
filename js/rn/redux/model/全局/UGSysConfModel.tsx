@@ -129,7 +129,7 @@ export default class UGSysConfModel {
     return temp.filter((ele) => ele)
   }
   static updateFromNetwork(completed?: () => void) {
-    return api.system.config().setCompletionBlock(({ data }, sm) => {
+    return api.system.config().useSuccess(({ data }, sm) => {
       sm.noShowErrorHUD = true
       UGStore.dispatch({ type: 'merge', sysConf: data })
       completed && completed()

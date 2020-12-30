@@ -149,7 +149,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
       email: v.email,
       regType: props.isAgent ? 'agent' : 'user',
     }).then((sm) => {
-      sm.setCompletionBlock(({ data: { autoLogin } }) => {
+      sm.useSuccess(({ data: { autoLogin } }) => {
         showSuccess('注册成功');
         navigation.setOptions({ unmountOnBlur: true })
         didRegisterSuccess(v.account, v.pwd1, autoLogin);
@@ -273,7 +273,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
           {smsVerify != false && <UGTextField
             type="短信验证码"
             didSmsButtonClick={startCountdown => {
-              api.secure.smsCaptcha(v.phone).setCompletionBlock(() => {
+              api.secure.smsCaptcha(v.phone).useSuccess(() => {
                 startCountdown();
               });
             }}
@@ -320,7 +320,7 @@ export const XBJRegisterPage = (props: XBJRegisterProps) => {
 async function didRegisterSuccess(acct: string, pwd: string, autoLogin: boolean) {
   if (autoLogin) {
     api.user.logout().noShowErrorHUD = true;
-    const { data: loginData } = await api.user.login(acct, pwd).setCompletionBlock(undefined, (_, sm) => {
+    const { data: loginData } = await api.user.login(acct, pwd).useFailure((_, sm) => {
       // 自动登录失败
       sm.noShowErrorHUD = true
       jumpTo(PageName.XBJLoginPage, { usr: acct, pwd: pwd })

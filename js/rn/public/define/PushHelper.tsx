@@ -308,7 +308,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const scratchList = data?.scratchList?.map((v) => {
@@ -334,7 +334,7 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               // 数据转换为原生格式
               const list = data?.map((v) => {
@@ -547,7 +547,7 @@ export default class PushHelper {
           case UGUserCenterType.刮刮乐: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.scratchList().setCompletionBlock(({ data }) => {
+            api.activity.scratchList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'ggl', data: data })
             })
@@ -556,7 +556,7 @@ export default class PushHelper {
           case UGUserCenterType.砸金蛋: {
             if (!UGUserModel.checkLogin()) return
             showLoading()
-            api.activity.goldenEggList().setCompletionBlock(({ data }) => {
+            api.activity.goldenEggList().useSuccess(({ data }) => {
               hideLoading()
               ANHelper.callAsync(CMD.OPEN_ACTIVITIES, { key: 'zjd', data: data })
             })
