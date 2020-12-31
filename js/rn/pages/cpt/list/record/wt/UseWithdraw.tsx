@@ -29,7 +29,7 @@ const UseWithdraw = () => {
   const requestManageBankData = async () => {
     APIRouter.user_bankCardList().then(({ data: res }) => {
       let actData = res?.data
-      ugLog('requestManageBankData data res=', JSON.stringify(res?.data))
+      //ugLog('requestManageBankData data res=', JSON.stringify(res?.data))
 
       if(anyEmpty(actData?.allAccountList)) return
 

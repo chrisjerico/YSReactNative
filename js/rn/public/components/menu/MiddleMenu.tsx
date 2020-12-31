@@ -16,12 +16,12 @@ interface IMiddleMenuItem {
   title?: string //菜单名字
   subTitle?: string // 次级名字
   icon?: string //图标地址
-  id?: string //识别字条
+  id?: string //识别标识
 }
 
 interface IMiddleMenu {
   menu?: Array<IMiddleMenuItem> //菜单
-  onMenuClick?: (index: number) => void //点击了哪个菜单
+  onMenuClick?: (index: number, item: IMiddleMenuItem) => void //点击了哪个菜单
 }
 
 /**
@@ -55,7 +55,7 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                       showsVerticalScrollIndicator={false}>
             {
               menu?.map((item, index) =>
-                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index)}>
+                <TouchableOpacity onPress={() => onMenuClick && onMenuClick(index, item)}>
                   <View style={[_styles.item_content, index != 0 ? null : { borderTopWidth: 0 }]}>
                     <FastImage source={{ uri: item.icon }}
                                resizeMode={'contain'}
@@ -119,4 +119,5 @@ const _styles = StyleSheet.create({
 })
 
 export default forwardRef(MiddleMenu)
+export { IMiddleMenuItem }
 
