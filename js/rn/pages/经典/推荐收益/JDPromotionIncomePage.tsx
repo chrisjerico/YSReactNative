@@ -23,8 +23,19 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
 
   let { current: v } = useRef<JDPromotionIncomePage>(
     {
-      tabNames: ["推荐信息", "会员管理", "投注报表", "投注记录", "域名绑定", "存款报表",
-        "存款记录", "提款报表", "提款记录", "真人报表", "真人记录"]
+      tabNames: [
+      PromotionConst.推荐信息,
+      PromotionConst.真人记录, 
+      PromotionConst.投注报表, 
+      PromotionConst.投注记录, 
+      PromotionConst.域名绑定, 
+      PromotionConst.存款报表,
+      PromotionConst.存款记录,
+      PromotionConst.提款报表, 
+      PromotionConst.提款记录, 
+      PromotionConst.真人报表,
+      PromotionConst.真人记录
+    ]
     })
   const [tabIndex, setTabIndex] = useState<number>(0)
   /**
@@ -51,23 +62,25 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
     switch (item) {
       case "推荐信息":
         return <JDPromotionTablePage tabLabel={item} key={item} title={item} />
-      case PromotionConst.Member:
+      case PromotionConst.会员管理:
         return <JDPromotionTablePage tabLabel={item} key={item} title={item} />
-      case PromotionConst.BettingReport:
+      case PromotionConst.投注报表:
         return <JDPromotionTablePage tabLabel={item} title={item} />
-      case PromotionConst.BettingRecord:
+      case PromotionConst.投注记录:
         return <JDPromotionTablePage tabLabel={item} title={item} />
-      case PromotionConst.DepositStatement:
+      case PromotionConst.域名绑定:
         return <JDPromotionTablePage tabLabel={item} title={item} />
-      case PromotionConst.DepositRecord:
+      case PromotionConst.存款报表:
+        return <JDPromotionTablePage tabLabel={item} title={item} />
+      case PromotionConst.存款记录:
         return <JDPromotionTablePage tabLabel={item} key={item} title={item} />
-      case PromotionConst.WithdrawalReport:
+      case PromotionConst.提款报表:
         return <JDPromotionTablePage tabLabel={item} key={item} title={item} />
-      case PromotionConst.WithdrawalRcord:
+      case PromotionConst.提款记录:
         return <JDPromotionTablePage tabLabel={item} title={item} />
-      case PromotionConst.RealityReport:
+      case PromotionConst.真人报表:
         return <JDPromotionTablePage tabLabel={item} title={item} />
-      case PromotionConst.RealityRcord:
+      case PromotionConst.真人记录:
         return <JDPromotionTablePage tabLabel={item} title={item} />
     }
   }
@@ -103,7 +116,7 @@ const JDPromotionIncomePage = ({ route, setProps }: UGBasePageProps) => {
             </ScrollableTabView>,
         ]
       }
-      
+
     </View >
   )
 

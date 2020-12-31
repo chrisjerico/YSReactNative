@@ -1,15 +1,16 @@
 /**
  * 推荐收益常量
  */
-export const PromotionConst = {
-  Member: '会员管理',
-  BettingReport: '投注报表',
-  BettingRecord: '投注记录',
-  DomainBinding: '域名绑定',
-  DepositStatement: '存款报表',
-  DepositRecord: '存款记录',
-  WithdrawalReport: '提款报表',
-  WithdrawalRcord: '提款记录',
-  RealityReport: '真人报表',
-  RealityRcord: '真人记录',
+export enum PromotionConst {
+  会员管理 = '会员管理',
+  投注报表 = '投注报表',
+  投注记录 = '投注记录',
+  域名绑定 = '域名绑定',
+  存款报表 = '存款报表',
+  存款记录 = '存款记录',
+  提款报表 = '提款报表',
+  提款记录 = '提款记录',
+  真人报表 = '真人报表',
+  真人记录 = '真人记录',
+  推荐信息 = "推荐信息"
 }
