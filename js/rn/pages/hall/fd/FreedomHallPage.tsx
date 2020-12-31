@@ -162,7 +162,7 @@ const FreedomHallPage = ({ navigation, setProps }) => {
 
   const menuStr = [['即时注单', userInfo?.unsettleAmount], ['今日已结'], ['开奖记录'], ['提现']]
   /**
-   * 绘制菜单
+   * 点击菜单
    * @param index
    */
   const renderMenu = (index) => {

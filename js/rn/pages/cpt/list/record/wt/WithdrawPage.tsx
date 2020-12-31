@@ -1,52 +1,24 @@
-import {
-  Dimensions, FlatList,
-  Image,
-  Platform, RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text, TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { chunkArray } from '../../../public/tools/ChunkArr'
-import { getTrendData } from '../../../public/utils/getTrendData'
-import { TrendData } from '../../../public/interface/trendData'
-import Svg, { Line } from 'react-native-svg'
-import APIRouter from '../../../public/network/APIRouter'
-import { ChooseGameModal } from '../../../public/components/ChooseGameModal'
-import PushHelper from '../../../public/define/PushHelper'
-import { BaseScreen } from '../../乐橙/component/BaseScreen'
-import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
-import { hideLoading, showLoading } from '../../../public/widget/UGLoadingCP'
-import { getGameList } from '../../../public/utils/getGameList'
-import { anyEmpty, arrayLength } from '../../../public/tools/Ext'
-import { scale } from '../../../public/tools/Scale'
-import { Skin1 } from '../../../public/theme/UGSkinManagers'
-import { LEFThemeColor } from '../../../public/theme/colors/LEFThemeColor'
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view'
+import { useContext, useEffect, useRef, useState } from 'react'
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
 import FastImage from 'react-native-fast-image'
-import {
-  AllAccountListData,
-  BankInfoParam,
-  ManageBankCardData,
-  ManageBankCardModel,
-} from '../../../public/network/Model/bank/ManageBankCardModel'
-import UseAddBank from './UseAddBank'
-import { ugLog } from '../../../public/tools/UgLog'
-import { UGColor, UGThemeColor } from '../../../public/theme/UGThemeColor'
-import { Res } from '../../../Res/icon/Res'
-import EmptyView from '../../../public/components/view/empty/EmptyView'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
-import UGDropDownPicker from './view/UGDropdownPicker'
-import { BankConst } from '../const/BankConst'
-import Button from '../../../public/views/tars/Button'
-import { getBankIcon } from '../list/UseManageBankList'
-import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
 import CapitalContext from '../../CapitalContext'
+import UseWithdraw from './UseWithdraw'
+import { ManageBankCardData } from '../../../../../public/network/Model/bank/ManageBankCardModel'
+import { anyEmpty } from '../../../../../public/tools/Ext'
+import Button from '../../../../../public/views/tars/Button'
+import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
+import { scale } from '../../../../../public/tools/Scale'
+import EmptyView from '../../../../../public/components/view/empty/EmptyView'
+import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
+import { UGColor } from '../../../../../public/theme/UGThemeColor'
+import { getBankIcon } from '../../../../bank/list/UseManageBankList'
+import { ugLog } from '../../../../../public/tools/UgLog'
+import RightMenu from '../../../../../public/components/menu/RightMenu'
+import MiddleMenu from '../../../../../public/components/menu/MiddleMenu'
+import PushHelper from '../../../../../public/define/PushHelper'
+import { UGUserCenterType } from '../../../../../redux/model/全局/UGSysConfModel'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -62,86 +34,61 @@ interface IRouteParams {
 const WithdrawPage = ({ navigation, route }) => {
 
   const { getYueBaoInfo } = useContext(CapitalContext) //余额宝信息
+  const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
+  const [amount, setAmount] = useState(null) //取款金额
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
-  const [curAccountType, setCurAccountType] = useState(null) //选择了银行、微信、支付宝、虚拟币
+  const [curBank, setCurBank] = useState(null) //选择了银行、微信、支付宝、虚拟币里面的哪个
+  const [bankItems, setBankItems] = useState(null) //选择银行卡有哪些
+  const refMenu = useRef(null)
 
-  const [accountItems, setAccountItems] = useState(null) //账户有哪些
-
-  /**
-   * refreshBankList: 刷新银行卡列表
-   * bankCardData: 银行卡数据
-   */
-  const { refreshBankList, bankCardData, selectType }: IRouteParams = route?.params
 
   const {
     userInfo,
     systemInfo,
-    bankDetailData,
-    btcDetailData,
-    bankDetailItems,
-    btcDetailItems,
-    requestBankDetailData,
-    addBankAccount,
-    bindPassword,
-  } = UseAddBank()
+    bankCardData,
+  } = UseWithdraw()
 
-  /**
-   * 账户列表
-   */
-  let bankList = bankCardData?.allAccountList
+  //重新组合银行选择数据
   useEffect(() => {
-    let accountTypes = bankList.filter((item) => arrayLength(item.data) < Number(item.number)).map(
-      (item, index) =>
-        ({
-          label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
-                                                                     resizeMode={'contain'}
-                                                                     style={_styles.bank_name_icon}/>,
-        }))
-    !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
-  }, [])
-
-  /**
-   * 绘制余额取款
-   */
-  const renderYuE = () => <View style={_styles.item_bank_2nd_content}>
-    <View style={_styles.bank_bank_name_2nd_container}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setBankAddr(text)}
-                 placeholder={'请输入您的银行卡开户地址'}/>
-    </View>
-    <View style={_styles.bank_bank_name_2nd_container}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setBankNumber(text)}
-                 placeholder={'请输入您的银行卡卡号'}/>
-    </View>
-    {
-      systemInfo?.switchBindVerify == 1 && <View style={_styles.bank_bank_name_2nd_container}>
-        <TextInput style={_styles.input_name}
-                   onChangeText={text => setBankPassword(text)}
-                   placeholder={'请输入提款密碼'}/>
-      </View>
+    let bankItems = []
+    bankCardData?.allAccountList?.map(
+      (bkItem, index) =>
+        bkItem?.data?.map((item) =>
+          ({
+            title: `${bkItem.name} (${item.bankName}, ${item.ownerName})`,
+            subTitle: `${item.bankCard}`,
+            id: item.type,
+            icon: getBankIcon(item.type.toString())?.uri,
+          })),
+    ).map((item) =>
+      bankItems = [...bankItems, ...item])
+    ugLog('bankItems=', bankItems)
+    if(!anyEmpty(bankItems)) {
+      setCurBank(bankItems[0].value)
+      refMenu?.current?.toggleMenu()
     }
 
-  </View>
+    setBankItems(bankItems)
+
+  }, [bankCardData])
 
   /**
-   * 绘制金额和密码
+   * 绘制取款到余额
    */
-  const renderBalanceAndPassword = () => <View style={_styles.item_pwd_container}>
+  const renderToYuE = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.item_pwd_content}>
       <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
         <TextInput style={_styles.input_name}
                    secureTextEntry={true}
-                   onChangeText={text => setLoginPwd(text)}
-                   placeholder={'请输入当前登录密码'}/>
+                   onChangeText={text => setAmount(text)}
+                   placeholder={'请填写取款金额'}/>
       </View>
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
                    maxLength={4}
                    secureTextEntry={true}
-                   onChangeText={text => setFundPwd(text)}
-                   placeholder={'请输入您的4位数字提款密码'}/>
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请填写取款密码'}/>
       </View>
     </View>
 
@@ -162,102 +109,172 @@ const WithdrawPage = ({ navigation, route }) => {
             }}/>
   </View>
 
-  return (
-    <BaseScreen style={_styles.container} screenName={'绑定提款账户'}>
-      {
-        anyEmpty(userInfo?.hasFundPwd) ?
-          renderBindPwd() ://先绑定密码
-          (
-            anyEmpty(bankList) ?
-              <EmptyView style={{ flex: 1 }}/> : //没有数据
-              <View style={_styles.item_bank_container}>
-                {
-                  !anyEmpty(curAccountType) && <UGDropDownPicker
-                    items={accountItems}
-                    defaultValue={curAccountType}
-                    onOpen={() => {
-                      bankController?.close()
-                      btcController?.close()
-                      chainController?.close()
-                    }}
-                    onChangeItem={item => {
-                      setCurAccountType(item.value)
-                    }
-                    }/>
-                }
-                <View style={{ height: scale(32) }}/>
-                {
-                  [
-                    // 绘制银行
-                    curAccountType == BankConst.BANK && !anyEmpty(curBankID) && <UGDropDownPicker
-                      items={bankDetailItems}
-                      controller={instance => bankController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curBankID}
-                      onChangeItem={item => setCurBankID(item.value)}/>,
-                    curAccountType == BankConst.BANK && renderBank(),
+  /**
+   * 绘制取款到余额宝银行卡
+   */
+  const renderToYuEBank = () => <View style={_styles.item_pwd_container}>
+    {
+      !anyEmpty(bankItems) && <UGDropDownPicker
+        items={bankItems}
+        defaultValue={curBank}
+        onChangeItem={item => {
+          setCurBank(item.value)
+        }
+        }/>
+    }
+    <View style={_styles.item_pwd_content}>
+      <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
+        <TextInput style={_styles.input_name}
+                   secureTextEntry={true}
+                   onChangeText={text => setAmount(text)}
+                   placeholder={'请填写取款金额'}/>
+      </View>
+      <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请填写取款密码'}/>
+      </View>
+    </View>
 
-                    //绘制虚拟币
-                    curAccountType == BankConst.BTC && !anyEmpty(curBtcID) && <UGDropDownPicker
-                      items={btcDetailItems}
-                      controller={instance => btcController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curBtcID}
-                      onOpen={() => {
-                        chainController?.close()
-                      }}
-                      onChangeItem={item => {
-                        setCurBtcID(item.value)
-                      }}/>,
-                    //绘制链
-                    curAccountType == BankConst.BTC && !anyEmpty(curChainValue) && !anyEmpty(chainDetailItems) &&
-                    <UGDropDownPicker
-                      items={chainDetailItems}
-                      controller={instance => chainController = instance}
-                      style={_styles.bank_picker}
-                      defaultValue={curChainValue}
-                      onChangeItem={item => setCurChainValue(item.value)}/>,
-                    curAccountType == BankConst.BTC && renderBtc(),
+    <TouchableOpacity>
+      <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+    </TouchableOpacity>
+    {
+      userInfo?.yuebaoSwitch && <TouchableOpacity>
+        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
+      </TouchableOpacity>
+    }
 
-                    //绘制微信
-                    curAccountType == BankConst.WX && renderWx(),
-                    //绘制支付宝
-                    curAccountType == BankConst.ALI && renderAli(),
-                  ]
-                }
+    <Button title={'提交'}
+            titleStyle={_styles.submit_text}
+            containerStyle={[_styles.submit_bt,
+              { backgroundColor: Skin1.themeColor }]}
+            onPress={() => {
+              // bindPassword({
+              //   login_pwd: loginPwd,
+              //   fund_pwd: fundPwd,
+              //   fund_pwd2: fundPwd2,
+              //   callBack: () => {
+              //     setLoginPwd(null)
+              //   },
+              // })
 
-                <Text style={_styles.real_name}>{'真实姓名：' + userInfo?.fullName}</Text>
-                <Button title={'提交'}
-                        titleStyle={_styles.submit_text}
-                        containerStyle={[_styles.submit_bt,
-                          { backgroundColor: Skin1.themeColor }]}
-                        onPress={() => {
-                          addBankAccount({
-                            curAccountType: curAccountType,
-                            curBankID: curBankID,
-                            curBtcID: curBtcID,
-                            curChainValue: curChainValue,
-                            bankAddr: bankAddr,
-                            bankNumber: bankNumber,
-                            bankPassword: bankPassword,
-                            btcAddr: btcAddr,
-                            wxAccount: wxAccount,
-                            wxPhone: wxPhone,
-                            aliAccount: aliAccount,
-                            callBack: (accountType) => {
-                              refreshBankList(accountType)
-                            },
-                          })
+            }}/>
+  </View>
 
-                        }}/>
-              </View>
+  /**
+   * 点击菜单
+   * @param index
+   */
+  const clickMenu = (index) => {
+    refMenu?.current?.toggleMenu()
+    // switch (index) {
+    //   case 0:
+    //     PushHelper.pushUserCenterType(UGUserCenterType.即时注单)
+    //     break
+    //   case 1:
+    //     PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录)
+    //     break
+    //   case 2:
+    //     PushHelper.pushUserCenterType(UGUserCenterType.开奖结果)
+    //     break
+    //   case 3:
+    //     PushHelper.pushUserCenterType(UGUserCenterType.取款)
+    //     break
+    // }
+  }
 
+  /**
+   * 绘制取款到银行卡
+   */
+  const renderToBank = () => <View style={_styles.item_pwd_container}>
+    <View style={_styles.item_pwd_content}>
+      <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
+        <TextInput style={_styles.input_name}
+                   secureTextEntry={true}
+                   onChangeText={text => setAmount(text)}
+                   placeholder={'请填写取款金额'}/>
+      </View>
+      <View style={_styles.bank_bank_name_2nd_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请填写取款密码'}/>
+      </View>
+    </View>
+
+    <TouchableOpacity>
+      <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+    </TouchableOpacity>
+    {
+      userInfo?.yuebaoSwitch && <TouchableOpacity>
+        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到' + systemInfo?.yuebaoName + '取款'}</Text>
+      </TouchableOpacity>
+    }
+
+    <Button title={'提交'}
+            titleStyle={_styles.submit_text}
+            containerStyle={[_styles.submit_bt,
+              { backgroundColor: Skin1.themeColor }]}
+            onPress={() => {
+              // bindPassword({
+              //   login_pwd: loginPwd,
+              //   fund_pwd: fundPwd,
+              //   fund_pwd2: fundPwd2,
+              //   callBack: () => {
+              //     setLoginPwd(null)
+              //   },
+              // })
+
+            }}/>
+
+    <MiddleMenu ref={refMenu}
+               onMenuClick={clickMenu}
+               menu={bankItems}/>
+  </View>
+
+  /**
+   * 绘制取款条目
+   */
+  const renderItem = () => {
+    return tabIndex == 0 ?
+      renderToBank() :
+      <ScrollableTabView
+        onChangeTab={value => {
+          setTabIndex(value?.i)
+        }}
+        // ref={instance => tabController = instance}
+        tabBarUnderlineStyle={[_styles.tab_bar_underline,
+          { backgroundColor: Skin1.themeColor }]}
+        tabBarActiveTextColor={Skin1.themeColor}
+        tabBarInactiveTextColor={Skin1.textColor1}
+        tabBarTextStyle={{ fontSize: scale(20) }}
+        style={[{ flex: 1 }]}
+        renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+        {
+          tabMenus?.map((tabItem, index) => {
+              return index == 0 ? renderToYuEBank() : renderToYuE()
+            },
           )
+        }
+      </ScrollableTabView>
+  }
+
+  return (
+    <View style={_styles.container}>
+      {
+        getYueBaoInfo == null ?
+          <EmptyView style={{ flex: 1 }}/> :
+          renderItem()
       }
-    </BaseScreen>
+    </View>
   )
 }
 
+const tabMenus = ['取款到银行卡', '取款到余额'] //TAB菜单
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: UGColor.BackgroundColor1,
@@ -310,8 +327,7 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     marginHorizontal: scale(16),
   },
-  real_name: {
-    color: UGColor.TextColor2,
+  forget_pwd: {
     paddingVertical: scale(32),
     fontSize: scale(22),
   },
@@ -336,6 +352,12 @@ const _styles = StyleSheet.create({
   bank_name_icon: {
     width: scale(32),
     height: scale(32),
+  },
+  tab_bar: {
+    backgroundColor: '#f4f4f4',
+  },
+  tab_bar_underline: {
+    height: scale(3),
   },
 
 })
