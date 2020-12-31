@@ -95,7 +95,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     loadWBData()
   }
 
-  //上拉加载更多数据
+  //点击（上拉）加载更多数据
   const onFooterRefresh = () => {
     v.pageNumber++
     console.log('上拉加载');
@@ -109,7 +109,6 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       type: parseInt(v.type),
       page: v.pageNumber,
     }
-    console.log('页码===', v.pageNumber);
     console.log('页码===', v.pageNumber);
     api.chat.redBagLogPage(params).setCompletionBlock(({ data }) => {
       let dicData = data;
