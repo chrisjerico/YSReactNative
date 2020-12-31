@@ -101,11 +101,10 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到余额
    */
-  const renderToYuE = (itemTitle: string) => <View style={_styles.item_pwd_container}
-                                                   tabLabel={itemTitle}>
+  const renderToYuE = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
-                 secureTextEntry={true}
+                 keyboardType={'numeric'}
                  onChangeText={text => setAmount(text)}
                  placeholder={'请填写取款金额'}/>
     </View>
@@ -132,6 +131,7 @@ const WithdrawPage = ({ navigation, route }) => {
               // })
 
             }}/>
+
     {
       renderSwitchButton()
     }
@@ -140,11 +140,22 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到余额宝银行卡
    */
-  const renderToYuEBank = (itemTitle: string) => <View style={_styles.item_pwd_container}
-                                                       tabLabel={itemTitle}>
+  const renderToYuEBank = () => <View style={_styles.item_pwd_container}>
+
+    <TouchableOpacity onPress={() => {
+      refMenu?.current?.toggleMenu()
+    }}>
+      <View style={_styles.input_container}>
+        <Text style={_styles.input_name}>
+          {
+            curBank?.id
+          }
+        </Text>
+      </View>
+    </TouchableOpacity>
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
-                 secureTextEntry={true}
+                 keyboardType={'numeric'}
                  onChangeText={text => setAmount(text)}
                  placeholder={'请填写取款金额'}/>
     </View>
@@ -171,6 +182,7 @@ const WithdrawPage = ({ navigation, route }) => {
               // })
 
             }}/>
+
     {
       renderSwitchButton()
     }
@@ -265,25 +277,31 @@ const WithdrawPage = ({ navigation, route }) => {
   const renderItem = () => {
     return withdrawType == 0 ?
       renderToBank() :
-      <ScrollableTabView
-        onChangeTab={value => {
-          setTabIndex(value?.i)
-        }}
-        // ref={instance => tabController = instance}
-        tabBarUnderlineStyle={[_styles.tab_bar_underline,
-          { backgroundColor: Skin1.themeColor }]}
-        tabBarActiveTextColor={Skin1.themeColor}
-        tabBarInactiveTextColor={Skin1.textColor1}
-        tabBarTextStyle={{ fontSize: scale(20) }}
-        style={[{ flex: 1 }]}
-        renderTabBar={() => <DefaultTabBar style={_styles.tab_bar}/>}>
+      <View>
+        <View style={_styles.sub_tab_container}>
+          <TouchableOpacity onPress={() => setTabIndex(0)}>
+            <View
+              style={[_styles.sub_tab_item,
+                { borderBottomColor: tabIndex == 0 ? Skin1.themeColor : 'transparent' }]}>
+              <Text
+                style={[_styles.sub_tab_text,
+                  { color: tabIndex == 0 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[0]}</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setTabIndex(1)}>
+            <View
+              style={[_styles.sub_tab_item,
+                { borderBottomColor: tabIndex == 1 ? Skin1.themeColor : 'transparent' }]}>
+              <Text
+                style={[_styles.sub_tab_text,
+                  { color: tabIndex == 1 ? Skin1.themeColor : UGColor.TextColor3 }]}>{tabMenus[1]}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
         {
-          [
-            renderToYuEBank(tabMenus[0]),
-            renderToYuE(tabMenus[1]),
-          ]
+          tabIndex == 0 ? renderToYuEBank() : renderToYuE()
         }
-      </ScrollableTabView>
+      </View>
   }
 
   return (
@@ -345,6 +363,20 @@ const _styles = StyleSheet.create({
   tab_bar_underline: {
     height: scale(3),
   },
+  sub_tab_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sub_tab_item: {
+    paddingVertical: scale(12),
+    paddingHorizontal: scale(32),
+    borderBottomWidth: scale(2),
+  },
+  sub_tab_text: {
+    fontSize: scale(20),
+  },
+
 
 })
 
