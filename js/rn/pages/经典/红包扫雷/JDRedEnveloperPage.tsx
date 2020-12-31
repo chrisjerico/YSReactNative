@@ -7,7 +7,7 @@ import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import DateUtil from '../../../public/tools/andrew/DateUtil';
 import { RedBagLogModel } from '../../../redux/model/other/RedBagLogModel';
 import { UGBasePageProps } from '../../base/UGPage';
-
+import { scale } from "../../../public/tools/Scale";
 interface JDRedEnveloperPage {
   pageSize?: number//每页多少条数据
   pageNumber?: number//当前显示第几页
@@ -103,7 +103,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     setProps()
     loadWBData()
   }
-
+  // 网络请求
   function loadWBData() {
     let params = {
       type: parseInt(v.type),
@@ -128,9 +128,9 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         v.state.isLastPage = true;
         v.state.showFoot = 2
       }
-      console.log('网络数据长度：',arrayData.length);
-      console.log('showFoot==',v.state.showFoot);
-      
+      console.log('网络数据长度：', arrayData.length);
+      console.log('showFoot==', v.state.showFoot);
+
       setProps()
 
     }, (err) => {
@@ -139,11 +139,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
       // Toast(err.message)
     });
   }
-
+  // 点击刷新
   function onEndReached() {
     console.log('onEndReached');
-    console.log('showFoot ==',v.state.showFoot);
-    
+    console.log('showFoot ==', v.state.showFoot);
+
     //如果是正在加载中或没有更多数据了，则返回
     if (v.state.showFoot != 0) {
       console.log('正在加载中或没有更多数据了，则返回');
@@ -171,8 +171,8 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
           onEndReached()
         }}
         >
-          <View style={{ height: 60, alignItems: 'center', justifyContent: 'flex-start', }}>
-            <Text style={{ color: Skin1.textColor2, fontSize: 18, marginTop: 10, marginBottom: 10, }}>
+          <View style={styles.foot}>
+            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
               点击重新加载
                 </Text>
           </View>
@@ -184,9 +184,11 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
           // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
-          <View style={{ height: 60, alignItems: 'center', justifyContent: 'flex-start', }}>
+          <View style={styles.foot}>
             <ActivityIndicator />
-            <Text style={{ color: Skin1.textColor2, fontSize: 18, marginTop: 10, marginBottom: 10, }}>正在加载...</Text>
+            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+              正在加载...
+              </Text>
           </View>
         </TouchableOpacity>
       );
@@ -196,9 +198,9 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
           // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >
-          <View style={{ height: 60, alignItems: 'center', justifyContent: 'flex-start', }}>
-            <Text style={{ color: Skin1.textColor2, fontSize: 18, marginTop: 10, marginBottom: 10, }}>
-  
+          <View style={styles.foot}>
+            <Text style={[styles.footText, { color: Skin1.textColor2 }]}>
+
             </Text>
 
           </View>
@@ -218,12 +220,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={{
-          color: Skin1.textColor3,
-          fontSize: 18,
-          marginTop: 15
-
-        }}>暂无更多数据</Text>
+        <Text style={[{color: Skin1.textColor3,},styles.listEmpty, ]}>暂无更多数据</Text>
       </View>
     );
   }
@@ -231,13 +228,13 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
   // 渲染列表项
   const _renderItem = ({ index, item }) => {
     return (
-      <View style={{ flexDirection: 'row', height: 60, backgroundColor: index % 2 ? Skin1.isBlack ? '#707070' :'#F7F8F8' : Skin1.isBlack ? Skin1.CLBgColor :'white' }}>
+      <View style={[styles.viewItem, { backgroundColor: index % 2 ? Skin1.isBlack ? '#707070' : '#F7F8F8' : Skin1.isBlack ? Skin1.CLBgColor : 'white' }]}>
         <View style={[styles.item,]}>
-          <Text style={[styles.text,{color:Skin1.textColor1}]}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</Text>
-          <Text style={[styles.text,{color:Skin1.textColor1}]}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</Text>
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "YYYY-MM-DD")}</Text>
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{DateUtil.stampformat(item.createTime, "hh:mm:ss")}</Text>
         </View>
         <View style={styles.item}>
-          <Text style={[styles.text,{color:Skin1.textColor1}]}>{item.operateText}</Text>
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{item.operateText}</Text>
         </View>
         <View style={styles.item}>
           <Text style={[styles.text, { color: labelColor(item), }]}>{labelStr(item)}</Text>
@@ -248,15 +245,15 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', height: 60, backgroundColor:Skin1.isBlack ? Skin1.textColor4 :'#F7F8F8'}}>
+      <View style={[styles.viewItem, { backgroundColor: Skin1.isBlack ? Skin1.textColor4 : '#F7F8F8' }]}>
         <View style={styles.item}>
-          <Text style={[styles.text,{color:Skin1.textColor1}]}>{'时间'}</Text>
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'时间'}</Text>
         </View>
         <View style={styles.item}>
-        <Text style={[styles.text,{color:Skin1.textColor1}]}>{'类型'}</Text>
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'类型'}</Text>
         </View>
         <View style={styles.item}>
-        <Text style={[styles.text,{color:Skin1.textColor1}]}>{'输赢'}</Text> 
+          <Text style={[styles.text, { color: Skin1.textColor1 }]}>{'输赢'}</Text>
         </View>
       </View>
 
@@ -282,13 +279,13 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         }
         //设置上拉加载
         ListFooterComponent={() => renderFooter()}
-        // onEndReachedThreshold={0}//上拉刷新测试发现经常不触发
-        // onEndReached={() => {
-        //   onEndReached()
-        // }}
-        // onContentSizeChange={() => {
-        //   console.log('onContentSizeChange');
-        // }}
+      // onEndReachedThreshold={0}//上拉刷新测试发现经常不触发
+      // onEndReached={() => {
+      //   onEndReached()
+      // }}
+      // onContentSizeChange={() => {
+      //   console.log('onContentSizeChange');
+      // }}
       />
 
     </View>
@@ -300,7 +297,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:Skin1.isBlack?Skin1.CLBgColor :'#F1F2F5'
+    backgroundColor: Skin1.isBlack ? Skin1.CLBgColor : '#F1F2F5'
   },
   item: {
     flex: 1,
@@ -310,14 +307,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 18
+    fontSize: scale(18)
   },
   loadMore: {
     alignItems: "center"
   },
   indicator: {
     color: "red",
-    margin: 10
+    margin: scale(10)
+  },
+  foot: {
+    height: scale(60),
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  footText: {
+    fontSize: scale(18),
+    marginTop: scale(10),
+    marginBottom: scale(10),
+  },
+  viewItem: {
+    flexDirection: 'row',
+    height: scale(60),
+  },
+  listEmpty:{
+    fontSize: scale(18),
+    marginTop: scale(15),
   }
 });
 
