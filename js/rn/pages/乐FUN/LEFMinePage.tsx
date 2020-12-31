@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import MineHeaderComponent from '../../public/components/temp/MineHeaderComponent'
-import {RefreshControl, ScrollView} from 'react-native'
+import {Platform, RefreshControl, ScrollView} from 'react-native'
 import PickAvatarComponent from '../../public/components/temp/PickAvatarComponent'
 import RefreshControlComponent from '../../public/components/temp/RefreshControlComponent'
 import PushHelper from '../../public/define/PushHelper'
@@ -72,6 +72,7 @@ const LEFMinePage = () => {
           title={'会员中心'}
           titleColor={LEFThemeColor.乐FUN.textColor2}
           onPressBackBtn={pop}
+          showBackBtn={Platform.OS=='ios'}
           showCustomerService={true}
           customerIcon={'menu-fold'}
           onPressCustomerService={()=>{

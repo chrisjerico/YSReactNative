@@ -15,6 +15,7 @@ import { setProps } from '../../base/UGPage';
 import { Skin1 } from '../../../public/theme/UGSkinManagers';
 import LinearGradient from 'react-native-linear-gradient'
 import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
+import chroma from 'chroma-js';
 
 
 const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
@@ -306,8 +307,9 @@ const JDSigInPage = () => {
         );
     }
 
+    const bgColor = chroma(Skin1.bgColor[0]).name() == 'white' ? ['#ccc', '#ccc'] : Skin1.bgColor
     return (
-        [<LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={Skin1.bgColor}>
+        [<LinearGradient style={{ flex: 1, }} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={bgColor}>
             {/* 签到记录 */}
             <View style={[{ height: 40, }]}>
                 <View style={{ marginLeft: AppDefine.width - 70 - 15, justifyContent: 'center', marginTop: 5, }}>

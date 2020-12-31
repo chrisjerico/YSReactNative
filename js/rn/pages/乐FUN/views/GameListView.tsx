@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import * as React from "react";
-import {List, SubType} from "../../../public/network/Model/HomeGamesModel";
+import {HomeGameModel, List, SubType} from "../../../public/network/Model/HomeGamesModel";
 import PushHelper from "../../../public/define/PushHelper";
 import {fillArray} from "../../利来/utils/fillArray";
 import {ImageButton} from "../../利来/component/ImageButton";
@@ -170,7 +170,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
    * @param index 点击的游戏索引
    * @param partIndex 点击了第几部分的游戏
    */
-  const renderItem = (item, index, partIndex) => {
+  const renderItem = (item : HomeGameModel, index, partIndex) => {
     return <TouchableWithoutFeedback key={'renderItem_' + index + "_" + partIndex}
                                      onPress={() => onPress(item, index, partIndex)}>
       <View style={[_styles.container_item, {width: width / 2}]}>
@@ -181,7 +181,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                        source={{uri: item.icon}}/>
             <View style={CommStyles.flex}>
               <Text style={_styles.list_title}>
-                {anyEmpty(item?.title) ? item?.name : item?.title}
+                {anyEmpty(item?.name) ? item?.title : item?.name}
               </Text>
             </View>
             <AntDesign
@@ -213,7 +213,7 @@ export const GameListView = ({listData, refreshHeight}: IGameList) => {
                                 }}>
         <View style={[_styles.sub_item_container, {width: width / 3}]}>
           <View style={_styles.sub_item}>
-            <Text style={_styles.sub_title}>{anyEmpty(item?.title) ? item?.name : item?.title}</Text>
+            <Text style={_styles.sub_title}>{anyEmpty(item?.name) ? item?.title : item?.name}</Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
