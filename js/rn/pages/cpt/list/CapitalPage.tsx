@@ -106,7 +106,7 @@ const CapitalPage = ({ navigation, setProps }) => {
       refreshTabPage: refreshTabPage,
     }}>
       <BaseScreen style={_styles.container}
-                  screenName={'我的提款账户'}>
+                  screenName={'资金管理'}>
         {
           [
             renderMineInfo(),
