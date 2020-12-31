@@ -54,7 +54,14 @@ export async function setRnPageInfo() {
     if (skitType.indexOf('凯时') != -1) {
       pages = pages.concat(KSPages)// [pages addObjectsFromArray:多个页面]
     }
-
+    //红包扫雷
+    pages.push({
+      vcName: 'RedEnvelopeVCViewController',
+      rnName: PageName.JDRedEnveloperPage,
+      fd_prefersNavigationBarHidden: true,
+      允许游客访问: true,
+      允许未登录访问: true,
+    })
     // 申请代理
     pages.push({
       vcName: 'UGAgentViewController',
@@ -89,14 +96,22 @@ export async function setRnPageInfo() {
 
   // —————————————————— 以下为已上线内容 ————————————————————————
 
+//红包扫雷
+ pages.push({
+    vcName: 'RedEnvelopeVCViewController',
+    rnName: PageName.JDRedEnveloperPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+   })
   // 签到页
   pages.push({
     tabbarItemPath: '/Sign',
     vcName: 'UGSigInCodeViewController',
     rnName: PageName.JDSigInPage,
     fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
+    允许游客访问: false,
+    允许未登录访问: false,
   })
 
   // 优惠活动列表页

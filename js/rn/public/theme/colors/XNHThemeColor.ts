@@ -3,7 +3,7 @@ import {UGThemeColor} from '../UGThemeColor';
 // 新年红
 export const XNHThemeColor: {[x: string]: UGThemeColor} = {
   //新年红
-  新年红0: {
+  新年红: {
     skitType: '新年红0',
     skitString: '新年红 0默认风格',
     bgColor: ['#F5F5F5', '#F5F5F5'],
