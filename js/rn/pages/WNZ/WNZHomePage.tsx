@@ -27,6 +27,7 @@ import MenuButton from './views/MenuButton'
 import RowGameButtom from './views/RowGameButtom'
 import TabBar from './views/TabBar'
 import { Skin1 } from '../../public/theme/UGSkinManagers'
+import { ugLog } from '../../public/tools/UgLog'
 
 const WNZHomePage = () => {
   const menu = useRef(null)

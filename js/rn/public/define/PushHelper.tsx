@@ -6,7 +6,7 @@ import { UGStore } from '../../redux/store/UGStore'
 import { SeriesId } from '../models/Enum'
 import { PushAnnouncement, PushHomeGame, PushWheel } from '../models/Interface'
 import { PageName } from '../navigation/Navigation'
-import { popToRoot, push } from '../navigation/RootNavigation'
+import { navigate, popToRoot, push } from '../navigation/RootNavigation'
 import { httpClient } from '../network/httpClient'
 import { RedBagDetailActivityModel } from '../network/Model/RedBagDetailActivityModel'
 import { api } from '../network/NetworkRequest1/NetworkRequest1'
@@ -425,7 +425,7 @@ export default class PushHelper {
         switch (code) {
           case UGUserCenterType.存款: {
             if (B_DEBUG) {
-              // push(PageName.CapitalPage)
+              push(PageName.CapitalPage)
               // return
             }
             subId = MenuType.CZ
@@ -493,7 +493,7 @@ export default class PushHelper {
           }
           case UGUserCenterType.建议反馈: {
             navigate(PageName.FeedbackView)
-            break
+            return
           }
           case UGUserCenterType.在线客服: {
             subId = MenuType.KF
@@ -572,11 +572,12 @@ export default class PushHelper {
           }
         }
 
-        ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
-          seriesId: '7',
-          subId: subId,
-        })
-        break
+        if(!anyEmpty(subId)) {
+          ANHelper.callAsync(CMD.OPEN_NAVI_PAGE, {
+            seriesId: '7',
+            subId: subId,
+          })
+        }
     }
   }
 }
