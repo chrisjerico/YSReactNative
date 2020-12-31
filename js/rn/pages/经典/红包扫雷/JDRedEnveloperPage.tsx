@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: scale(18)
+    fontSize: scale(24)
   },
   loadMore: {
     alignItems: "center"
@@ -322,16 +322,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   footText: {
-    fontSize: scale(18),
+    fontSize: scale(24),
     marginTop: scale(10),
     marginBottom: scale(10),
   },
   viewItem: {
     flexDirection: 'row',
-    height: scale(60),
+    height: scale(66),
   },
   listEmpty:{
-    fontSize: scale(18),
+    fontSize: scale(24),
     marginTop: scale(15),
   }
 });
