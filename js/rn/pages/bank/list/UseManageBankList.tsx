@@ -52,6 +52,7 @@ const UseManageBankList = () => {
     setRefreshing(true)
     APIRouter.user_bankCardList().then(({ data: res }) => {
       let actData = res?.data
+      //ugLog('requestManageBankData=', JSON.stringify(actData))
       if(anyEmpty(actData?.allAccountList)) return
 
       actData?.allAccountList?.map((item) => {

@@ -21,6 +21,7 @@ import PushHelper from '../../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../../redux/model/全局/UGSysConfModel'
 import CommStyles from '../../../../base/CommStyles'
 import { Input } from 'react-native-elements'
+import { BankConst } from '../../../../bank/const/BankConst'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -37,10 +38,7 @@ const WithdrawPage = ({ navigation, route }) => {
 
   const { getYueBaoInfo } = useContext(CapitalContext) //余额宝信息
   const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
-  const [withdrawType, setWithdrawType] = useState(0) //当前 余额取款 0 还是 余额宝取款 1
-  const [amount, setAmount] = useState(null) //取款金额
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
-  const [curBank, setCurBank] = useState<BankInfoParam>(null) //选择了银行、微信、支付宝、虚拟币里面的哪个
   const refMenu = useRef(null)
 
 
@@ -50,6 +48,14 @@ const WithdrawPage = ({ navigation, route }) => {
     bankCardData,
     bankInfoParamList,
     menuItem,
+    curBank,
+    setCurBank,
+    withdrawType,
+    setWithdrawType,
+    newUsd,
+    btcMoney,
+    inputMoney,
+    setInputMoney,
   } = UseWithdraw()
 
   useEffect(() => {
@@ -82,7 +88,7 @@ const WithdrawPage = ({ navigation, route }) => {
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
                  keyboardType={'numeric'}
-                 onChangeText={text => setAmount(text)}
+                 onChangeText={text => setInputMoney(text)}
                  placeholder={'请填写取款金额'}/>
     </View>
     <View style={_styles.input_container}>
@@ -137,10 +143,17 @@ const WithdrawPage = ({ navigation, route }) => {
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    keyboardType={'numeric'}
-                   onChangeText={text => setAmount(text)}
+                   onChangeText={text => setInputMoney(text)}
                    placeholder={'请填写取款金额'}/>
       </View>
-      <Text style={_styles.max_hint}>{`单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
+      {
+        curBank?.type != BankConst.BTC ?
+          null :
+          <Text style={_styles.btc_hint}>{
+            `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+          }</Text>
+      }
+      <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
         Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
       }`}</Text>
       <View style={_styles.input_container}>
@@ -219,9 +232,16 @@ const WithdrawPage = ({ navigation, route }) => {
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    keyboardType={'numeric'}
-                   onChangeText={text => setAmount(text)}
+                   onChangeText={text => setInputMoney(text)}
                    placeholder={'请填写取款金额'}/>
       </View>
+      {
+        curBank?.type != BankConst.BTC ?
+          null :
+          <Text style={_styles.btc_hint}>{
+            `= ${btcMoney} ${curBank?.bankCode},    1 ${curBank?.bankCode} = ${newUsd} CNY`
+          }</Text>
+      }
       <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
         Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
       }`}</Text>
@@ -332,6 +352,11 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor1,
     fontSize: scale(22),
     marginHorizontal: scale(16),
+  },
+  btc_hint: {
+    color: UGColor.RedColor4,
+    fontSize: scale(20),
+    paddingBottom: scale(16),
   },
   max_hint: {
     color: UGColor.TextColor3,
