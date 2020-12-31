@@ -181,7 +181,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     } else if (v.state.showFoot === 1) {
       return (
         <TouchableOpacity onPress={() => {
-          onEndReached()  //测试的时候可以打开，打开也没有影响
+          // onEndReached()  //测试的时候可以打开，打开也没有影响
         }}
         >
           <View style={{ height: 60, alignItems: 'center', justifyContent: 'flex-start', }}>
@@ -193,7 +193,7 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
     } else if (v.state.showFoot === 2) {
       return (
         <TouchableOpacity onPress={() => {
-          onEndReached()//测试的时候可以打开，打开也没有影响
+          // onEndReached()//测试的时候可以打开，打开也没有影响
         }}
         >
           <View style={{ height: 60, alignItems: 'center', justifyContent: 'flex-start', }}>
@@ -282,13 +282,13 @@ const JDRedEnveloperPage = ({ route, setProps }: UGBasePageProps) => {
         }
         //设置上拉加载
         ListFooterComponent={() => renderFooter()}
-        onEndReachedThreshold={0}
-        onEndReached={() => {
-          onEndReached()
-        }}
-        onContentSizeChange={() => {
-          console.log('onContentSizeChange');
-        }}
+        // onEndReachedThreshold={0}//上拉刷新测试发现经常不触发
+        // onEndReached={() => {
+        //   onEndReached()
+        // }}
+        // onContentSizeChange={() => {
+        //   console.log('onContentSizeChange');
+        // }}
       />
 
     </View>
@@ -310,7 +310,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: Skin1.textColor1,
     fontSize: 18
   },
   loadMore: {
