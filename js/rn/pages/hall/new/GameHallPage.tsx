@@ -28,13 +28,20 @@ import { OCHelper } from '../../../public/define/OCHelper/OCHelper'
 import CommStyles from '../../base/CommStyles'
 import { setProps } from '../../base/UGPage'
 import { pop } from '../../../public/navigation/RootNavigation'
+import { PayAisleListData } from '../../../public/network/Model/wd/PayAisleModel'
+
+interface IRouteParams {
+  showBackButton?: boolean //是否显示返回按钮
+}
 
 /**
  * 新游戏大厅
  * @param navigation
  * @constructor
  */
-const GameHallPage = ({ navigation, setProps }) => {
+const GameHallPage = ({ navigation, route }) => {
+
+  const { showBackButton }: IRouteParams = route?.params
 
   const refMenu = useRef(null)
   const [refreshing, setRefreshing] = useState(false) //是否刷新中
@@ -62,7 +69,7 @@ const GameHallPage = ({ navigation, setProps }) => {
     setRefreshing(true)
     APIRouter.game_lotteryHallGames().then(({ data: res }) => {
       let resData = res?.data
-      ugLog('datas res=', res)
+      //ugLog('data res=', res)
       if (res?.code == 0) {
         //parentGameType 是 越南彩，gameType 可能是越南彩下面的某一个彩
         resData?.map((parentItem) => {
@@ -185,26 +192,13 @@ const GameHallPage = ({ navigation, setProps }) => {
   }
 
   return (
-    // <BaseScreen style={_styles.container}
-    //             hideLeft={true}
-    //             rightButton={rightButton}
-    //             screenName={'彩票大厅'}>
-    //   {
-    //     [
-    //       renderAllData(),
-    //       <RightMenu ref={refMenu}
-    //                  onMenuClick={renderMenu}
-    //                  menu={menuStr}/>,
-    //     ]
-    //   }
-    // </BaseScreen>
     <View style={CommStyles.flex}>
       <SafeAreaHeader headerColor={Skin1.themeColor}>
         <MineHeader title={'彩票大厅'}
                     showRightTitle={true}
                     rightButton={rightButton}
                     onPressBackBtn={()=>{ pop() }}
-                    showBackBtn={Platform.OS == 'ios'}/>
+                    showBackBtn={Platform.OS == 'ios' || showBackButton}/>
       </SafeAreaHeader>
       {
         renderAllData()

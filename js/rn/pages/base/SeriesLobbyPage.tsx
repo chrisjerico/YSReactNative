@@ -14,6 +14,8 @@ import MineHeader from '../../public/views/tars/MineHeader'
 import SafeAreaHeader from '../../public/views/tars/SafeAreaHeader'
 import TouchableImage from '../../public/views/tars/TouchableImage'
 import { UGStore } from '../../redux/store/UGStore'
+import { anyEmpty } from '../../public/tools/Ext'
+import { Skin1 } from '../../public/theme/UGSkinManagers'
 
 const subIds = {
   42: '真人',
@@ -26,7 +28,7 @@ const subIds = {
 }
 
 const SeriesLobbyPage = ({ route }) => {
-  const { subId, name, headerColor, homePage } = route?.params ?? { subId: 43, name: '' }
+  const { subId, name, headerColor, homePage, showBackButton } = route?.params ?? { subId: 43, name: '' }
   const subIdTitle = subIds[subId]
   const gameLobby = UGStore.globalProps.gameLobby
   const banner = UGStore.globalProps.banner
@@ -36,9 +38,9 @@ const SeriesLobbyPage = ({ route }) => {
   const { games, categoryName } = item ?? {}
   return (
     <>
-      <SafeAreaHeader headerColor={headerColor}>
+      <SafeAreaHeader headerColor={anyEmpty(headerColor) ? Skin1.themeColor : headerColor}>
         <MineHeader
-          showBackBtn={true}
+          showBackBtn={anyEmpty(showBackButton) ? true : showBackButton == '1'}
           onPressBackBtn={() => {
             switch (Platform.OS) {
               case 'ios':

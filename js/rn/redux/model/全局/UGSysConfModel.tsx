@@ -53,16 +53,17 @@ export enum UGUserCenterType {
   电竞注单 = 26,
   体育注单 = 27,
   UG注单 = 28,
+  存款纪录 = 30,
+  取款纪录 = 31,
+  资金明细 = 32,
+  优惠活动 = 33,
+  聊天室 = 34,
   // 自定义（从100+开始写，前面的都是后台定制的）
   彩票大厅 = 100,
-  聊天室 = 101,
   每日签到 = 102,
   登出 = 103,
   游戏大厅 = 104,
   我的页 = 105,
-  存款纪录 = 106,
-  取款纪录 = 107,
-  资金明细 = 108,
   开奖结果 = 109,
   砸金蛋 = 110,
   刮刮乐 = 111,
@@ -193,6 +194,7 @@ export default class UGSysConfModel {
   allowMemberCancelBet?: boolean // 是否允许会员撤单，1允许 0不允许
   m_promote_pos?: boolean // 优惠活动显示在首页还是内页，1首页，0内页
   yuebaoSwitch?: boolean // 未登录时是否允许访问利息宝
+  yuebaoName?: string // 利息宝名字
   chatFollowSwitch?: boolean // 是否允许聊天室跟注
   switchBindVerify?: number // 新增提款账号時，校验取款密码
   switchAgentRecharge?: boolean // 给下级会员充值开关

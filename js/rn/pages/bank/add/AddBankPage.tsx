@@ -355,7 +355,9 @@ const AddBankPage = ({ navigation, route }) => {
 }
 
 const _styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: UGColor.BackgroundColor1
+  },
   item_pwd_container: {
     padding: scale(32),
     flex: 1,

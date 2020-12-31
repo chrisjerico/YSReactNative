@@ -9,16 +9,16 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
-import { anyEmpty } from '../../../../../../public/tools/Ext'
+import { anyEmpty, arrayLength } from '../../../../../../public/tools/Ext'
 import { scale } from '../../../../../../public/tools/Scale'
 import { UGColor } from '../../../../../../public/theme/UGThemeColor'
 import EmptyView from '../../../../../../public/components/view/empty/EmptyView'
 import CommStyles from '../../../../../base/CommStyles'
-import { PayAisleData, PayAisleListData } from '../../../../../../public/network/Model/wd/PayAisleModel'
+import { PayAisleData, PayAisleListData, PayChannelBean } from '../../../../../../public/network/Model/wd/PayAisleModel'
 import FastImage from 'react-native-fast-image'
 import { Res } from '../../../../../../Res/icon/Res'
 import WebView from 'react-native-webview'
-import UseTransferPay from './UseTransferPay'
+import UseTransferPay, { ITransName } from './UseTransferPay'
 import { ManageBankCardData } from '../../../../../../public/network/Model/bank/ManageBankCardModel'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Button from '../../../../../../public/views/tars/Button'
@@ -27,19 +27,30 @@ import { BaseScreen } from '../../../../../乐橙/component/BaseScreen'
 import { ugLog } from '../../../../../../public/tools/UgLog'
 import { ANHelper } from '../../../../../../public/define/ANHelper/ANHelper'
 import { CMD } from '../../../../../../public/define/ANHelper/hp/CmdDefine'
+import PushHelper from '../../../../../../public/define/PushHelper'
+import TouchableImage from '../../../../../../public/views/tars/TouchableImage'
+import Modal from 'react-native-modal'
+import { useContext, useEffect, useState } from 'react'
+import { Toast } from '../../../../../../public/tools/ToastUtils'
+import { CapitalConst, TransferConst } from '../../../../const/CapitalConst'
+import CapitalContext from '../../../CapitalContext'
+import { pop } from '../../../../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   payData?: PayAisleListData, //当前的账户数据
+  refreshTabPage?: (pageName: string) => void, //刷新哪个界面
 }
 
 /**
- * 支付通道记录
+ * 转账支付
  * @param navigation
  * @constructor
  */
 const TransferPayPage = ({ navigation, route }) => {
 
-  const { payData }: IRouteParams = route?.params
+  const { payData, refreshTabPage }: IRouteParams = route?.params
+  const [bigPic, setBigPic] = useState(null) //是否有大图片
+  const [goPage, setGoPage] = useState(null) //跳转哪个界面
 
   const {
     moneyOption,
@@ -51,7 +62,16 @@ const TransferPayPage = ({ navigation, route }) => {
     setInputRemark,
     selPayChannel,
     setSelPayChannel,
+    transName,
+    requestPayData,
   } = UseTransferPay()
+
+  useEffect(()=>{
+    if (!anyEmpty(goPage)) {
+      refreshTabPage(goPage)
+      pop()
+    }
+  }, [goPage])
 
   /**
    * 输入金额
@@ -77,17 +97,19 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道单个条目
    */
-  const renderSelectedChannelItem = (title: string) => <View style={_styles.choose_result_title_item}>
-    <Text style={_styles.choose_result_title}>{title}</Text>
+  const renderSelectedChannelItem = (title: string,
+                                     copyText: string) => <View style={_styles.choose_result_title_item}>
+    <Text style={_styles.choose_result_title}>{title + copyText}</Text>
     <TouchableOpacity onPress={() => {
       switch (Platform.OS) {
         case 'ios':
           //TODO iOS 复制 title 到粘贴板
           break
         case 'android':
-          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: title })
+          ANHelper.callAsync(CMD.COPY_TO_CLIPBOARD, { value: copyText })
           break
       }
+      Toast('复制成功')
     }}>
       <Text style={_styles.choose_result_copy}>复制</Text>
     </TouchableOpacity>
@@ -96,23 +118,34 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 已选择的渠道
    */
-  const renderSelectedChannel = () => <View>
-    <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
-    <View style={_styles.choose_result_container}>
-      <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
-        <Text style={_styles.choose_result_title}>{payData.channel[selPayChannel]?.address}</Text>
+  const renderSelectedChannel = () => {
+    const payChannelBean = payData?.channel[selPayChannel]
+    let nameHint: ITransName = transName(payData, payChannelBean)
+
+    return <View>
+      <Text style={_styles.choose_result_hint}>请先转账成功后再点下一步提交存款</Text>
+      <View style={_styles.choose_result_container}>
+        <View style={[_styles.choose_result_title_item, { borderTopWidth: 0 }]}>
+          <Text style={_styles.choose_result_title}>{nameHint?.bank_name + nameHint?.bank_name_des}</Text>
+        </View>
+        {
+          [
+            nameHint?.payee_des && renderSelectedChannelItem(nameHint?.payee, nameHint?.payee_des),
+            nameHint?.bank_account_des && renderSelectedChannelItem(nameHint?.bank_account, nameHint?.bank_account_des),
+            nameHint?.account_address_des && renderSelectedChannelItem(nameHint?.account_address, nameHint?.account_address_des),
+            payChannelBean?.qrcode && <TouchableImage
+              pic={payChannelBean?.qrcode}
+              containerStyle={{ aspectRatio: 1, width: scale(240) }}
+              resizeMode={'contain'}
+              onPress={() => {
+                setBigPic(payChannelBean?.qrcode)
+              }}
+            />,
+          ]
+        }
       </View>
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.domain)
-      }
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.account)
-      }
-      {
-        renderSelectedChannelItem(payData.channel[selPayChannel]?.branchAddress)
-      }
     </View>
-  </View>
+  }
 
   /**
    * 选择渠道
@@ -129,7 +162,6 @@ const TransferPayPage = ({ navigation, route }) => {
               <Icon size={scale(32)} name={'circle-o'}/>
           }
           <Text style={_styles.select_channel_text}>{item?.payeeName}</Text>
-
         </View>
       </TouchableOpacity>)
     }
@@ -138,18 +170,24 @@ const TransferPayPage = ({ navigation, route }) => {
   /**
    * 输入转账信息
    */
-  const renderInputInfo = () => <View style={_styles.input_info_container}>
-    <TextInput style={_styles.input_info}
-               value={inputName}
-               onChangeText={(text) => setInputName(text)}
-               placeholder={'请填写实际转账人姓名'}/>
-    <Text style={_styles.input_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
-    <TextInput style={_styles.input_info}
-               value={inputRemark}
-               onChangeText={(text) => setInputRemark(text)}
-               placeholder={'请填写备注信息'}/>
-  </View>
+  const renderInputInfo = () => {
+    let nameHint: ITransName = transName(payData)
 
+    return <View style={_styles.input_info_container}>
+      <TextInput style={_styles.input_info}
+                 value={inputName}
+                 onChangeText={(text) => setInputName(text)}
+                 placeholder={nameHint?.trans_hint}/>
+      <View style={_styles.date_info_container}>
+        <Text style={_styles.date_info}>{new Date().format('yyyy年MM月dd日 hh时mm分')}</Text>
+        <Icon size={scale(20)} name={'calendar'}/>
+      </View>
+      <TextInput style={_styles.input_info}
+                 value={inputRemark}
+                 onChangeText={(text) => setInputRemark(text)}
+                 placeholder={'请填写备注信息'}/>
+    </View>
+  }
 
   return (
     <BaseScreen screenName={payData.name}>
@@ -165,7 +203,7 @@ const TransferPayPage = ({ navigation, route }) => {
         }
 
         <Text style={_styles.select_channel_hint}>
-          温馨提示：为确保财务第一时间为您添加游戏额度，请您尽量不要转账整数（例如：欲入￥5000，请￥5000.68）谢谢！
+          {payData.prompt}
         </Text>
 
         {
@@ -177,26 +215,47 @@ const TransferPayPage = ({ navigation, route }) => {
                 containerStyle={[_styles.submit_bt,
                   { backgroundColor: Skin1.themeColor }]}
                 onPress={() => {
-                  // bindPassword({
-                  //   login_pwd: loginPwd,
-                  //   fund_pwd: fundPwd,
-                  //   fund_pwd2: fundPwd2,
-                  //   callBack: () => {
-                  //     setLoginPwd(null)
-                  //   },
-                  // })
+                  requestPayData({
+                    amount: inputMoney,
+                    channel: payData?.channel[selPayChannel]?.id,
+                    payee: payData?.channel[selPayChannel]?.account,
+                    payer: inputName,
+                    remark: inputRemark,
+                    depositTime: new Date().format('yyyy-MM-dd hh:mm:ss'),
+                  }).then(res => {
+                    if (res == 0) {
+                      setGoPage(CapitalConst.DEPOSIT_RECORD)
+                    }
+                  })
 
                 }}/>
         <View style={{ height: scale(200) }}/>
       </ScrollView>
+
+      <Modal isVisible={!anyEmpty(bigPic)}
+             style={_styles.modal_content}
+             onBackdropPress={() => setBigPic(null)}
+             onBackButtonPress={() => setBigPic(null)}
+             animationIn={'fadeIn'}
+             animationOut={'fadeOut'}
+             backdropOpacity={0.3}>
+        <FastImage source={{ uri: bigPic }}
+                   style={{ aspectRatio: 1, width: scale(500) }}
+                   resizeMode={'contain'}/>
+      </Modal>
     </BaseScreen>
 
   )
 }
 
 const _styles = StyleSheet.create({
+  modal_content: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     padding: scale(16),
+    backgroundColor: UGColor.BackgroundColor1,
     flex: 1,
   },
   input_money: {
@@ -215,7 +274,6 @@ const _styles = StyleSheet.create({
   },
   choose_result_container: {
     flex: 1,
-    alignItems: 'center',
     marginBottom: scale(16),
     borderBottomLeftRadius: scale(8),
     borderBottomRightRadius: scale(8),
@@ -309,6 +367,20 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     color: UGColor.TextColor2,
   },
+  date_info_container: {
+    flexDirection: 'row',
+    padding: scale(12),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    borderColor: UGColor.LineColor4,
+    alignItems: 'center',
+  },
+  date_info: {
+    flex: 1,
+    fontSize: scale(22),
+    color: UGColor.TextColor2,
+  },
+
   submit_text: {
     fontSize: scale(22),
     color: 'white',

@@ -3,7 +3,7 @@ import { UGAgentApplyInfo } from "../../../../redux/model/全局/UGSysConfModel"
 
 
 export class api_team {
-  static c = new SampleAPI('c=item&a=');
+  static c = new SampleAPI('c=team&a=');
 
   // 获取代理申请信息（推荐收益）
   static agentApplyInfo() {

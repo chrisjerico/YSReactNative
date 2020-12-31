@@ -6,7 +6,7 @@ import PushHelper from '../../public/define/PushHelper'
 import useMinePage from '../../public/hooks/tars/useMinePage'
 import { GameType } from '../../public/models/Enum'
 import { PageName } from '../../public/navigation/Navigation'
-import { push } from '../../public/navigation/RootNavigation'
+import { navigate, push } from '../../public/navigation/RootNavigation'
 import { WNZThemeColor } from '../../public/theme/colors/WNZThemeColor'
 import { scale, scaleHeight } from '../../public/tools/Scale'
 import { goToUserCenterType, useHtml5Image } from '../../public/tools/tars'
@@ -55,9 +55,17 @@ const WNZMinePage = () => {
   const otherTools = tools?.slice(2, tools?.length ?? 2) ?? []
 
   const usuallyTools = otherTools?.filter((ele) =>
-    [UGUserCenterType.额度转换, UGUserCenterType.全民竞猜, UGUserCenterType.利息宝, UGUserCenterType.开奖走势, UGUserCenterType.建议反馈, UGUserCenterType.存款, UGUserCenterType.取款].includes(
-      ele?.code
-    )
+    [
+      UGUserCenterType.额度转换,
+      UGUserCenterType.全民竞猜,
+      UGUserCenterType.利息宝,
+      UGUserCenterType.开奖走势,
+      UGUserCenterType.建议反馈,
+      UGUserCenterType.存款,
+      UGUserCenterType.取款,
+      UGUserCenterType.存款纪录,
+      UGUserCenterType.取款纪录
+    ].includes(ele?.code)
   )
 
   const userTools = otherTools?.filter((ele) =>
@@ -88,7 +96,11 @@ const WNZMinePage = () => {
     ].includes(ele?.code)
   )
 
-  const activityTools = otherTools?.filter((ele) => [UGUserCenterType.任务中心, UGUserCenterType.游戏大厅, UGUserCenterType.推荐收益].includes(ele?.code))
+  const activityTools = otherTools?.filter((ele) => [
+    UGUserCenterType.任务中心,
+    UGUserCenterType.优惠活动,
+    UGUserCenterType.推荐收益
+  ].includes(ele?.code))
   // @ts-ignore
   const defaultMenus = uid ? config.menuSignOut.concat(config.menus) : config.menuSignIn.concat(config.menus)
   return (
@@ -188,14 +200,6 @@ const WNZMinePage = () => {
                             },
                           },
                         ])
-                      } else if (code == UGUserCenterType.个人信息) {
-                        navigate(PageName.UserInfoPage)
-                      } else if (code == UGUserCenterType.站内信) {
-                        navigate(PageName.UserMessagePage)
-                      } else if (code == UGUserCenterType.安全中心) {
-                        navigate(PageName.SafeCenterPage)
-                      } else if (code == UGUserCenterType.活动彩金) {
-                        navigate(PageName.ActivityRewardPage)
                       } else {
                         if (__DEV__) {
                           if (code == UGUserCenterType.个人信息) {
