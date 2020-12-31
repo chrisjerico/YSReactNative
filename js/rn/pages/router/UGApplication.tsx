@@ -97,6 +97,7 @@ import { UpdateVersionPage } from './UpdateVersionPage'
 import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
+import JDPromotionIncomePage from '../经典/推荐收益/JDPromotionIncomePage'
 
 
 /**
@@ -142,6 +143,7 @@ const pageComponents: { [key in PageName]?: Function } = {
   IncomeRecommendPage,
   JDAgentPage,//申请代理
   JDRedEnveloperPage,//红包扫雷
+  JDPromotionIncomePage,//推荐收益
 
   // ———————————— 模板页面 —————————————
 

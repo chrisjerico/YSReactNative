@@ -18,7 +18,18 @@ interface JDAgentInput {
 }
 
 
-export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, placeholder, img, content,rightContent,inputContent='', imgVisible = true, contentVisible = true, isInput = true ,editable = true}: { onChangeText?: (text) => void, backgroundColor?:string,placeholder?: string, img: string, content?: string,rightContent?: string,inputContent?:string, imgVisible?: boolean, contentVisible?: boolean, isInput?: boolean ,editable?:boolean}) => {
+export const JDAgentInput = ({ onChangeText,backgroundColor=Skin1.textColor4, placeholder, img, content,rightContent,inputContent='', imgVisible = true, contentVisible = true, isInput = true ,editable = true}:
+ { onChangeText?: (text) => void, 
+  backgroundColor?:string,
+  placeholder?: string, 
+  img: string, 
+  content?: string,
+  rightContent?: string,
+  inputContent?:string, 
+  imgVisible?: boolean,
+   contentVisible?: boolean,
+    isInput?: boolean ,
+    editable?:boolean}) => {
 
   return <View style={{
     flexDirection: "row",

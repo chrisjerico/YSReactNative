@@ -28,7 +28,7 @@ export enum PageName {
   TransferPayPage = 'TransferPayPage',
   JDRedEnveloperPage = 'JDRedEnveloperPage',
   JDAgentPage = "JDAgentPage",
-
+  JDPromotionIncomePage = "JDPromotionIncomePage",
 
   // ———————————— 模板页面 —————————————
   LHTHomePage = 'LHTHomePage',
@@ -115,5 +115,5 @@ export enum PageName {
   VietnamRegister = 'VietnamRegister',
   VietnamMine = 'VietnamMine',
   VietnamGameList = 'VietnamGameList',
-  
+
 }
