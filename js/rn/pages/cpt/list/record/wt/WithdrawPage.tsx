@@ -40,8 +40,7 @@ const WithdrawPage = ({ navigation, route }) => {
   const [withdrawType, setWithdrawType] = useState(0) //当前 余额取款 0 还是 余额宝取款 1
   const [amount, setAmount] = useState(null) //取款金额
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
-  const [curBank, setCurBank] = useState<IMiddleMenuItem>(null) //选择了银行、微信、支付宝、虚拟币里面的哪个
-  const [bankItems, setBankItems] = useState(null) //选择银行卡有哪些
+  const [curBank, setCurBank] = useState<BankInfoParam>(null) //选择了银行、微信、支付宝、虚拟币里面的哪个
   const refMenu = useRef(null)
 
 
@@ -49,39 +48,17 @@ const WithdrawPage = ({ navigation, route }) => {
     userInfo,
     systemInfo,
     bankCardData,
+    bankInfoParamList,
+    menuItem,
   } = UseWithdraw()
 
-  //重新组合银行选择数据
   useEffect(() => {
-    let bankItems = []
-    bankCardData?.allAccountList?.map(
-      (bkItem, index) =>
-        bkItem?.data?.map((item) => {
-          item.parentTypeName = bkItem?.name
-          return (
-            ({
-              title: `${bkItem.name} (${item.bankName}, ${item.ownerName})`,
-              subTitle: `${item.bankCard}`,
-              id: `${bkItem.name} (${item.bankName}, ${item.bankCard}, ${item.ownerName})`,
-              icon: getBankIcon(item.type.toString())?.uri,
-            })
-          )
-        }),
-    ).map((item) =>
-      bankItems = [...bankItems, ...item],
-    )
-    // ugLog('bankItems=', bankItems)
-    if (!anyEmpty(bankItems)) {
-      setCurBank(bankItems[0])
+    if (!anyEmpty(bankInfoParamList)) {
+      setCurBank(bankInfoParamList[0])
       // refMenu?.current?.toggleMenu()
     }
 
-
-    setBankItems(bankItems)
-
-    setWithdrawType(0)
-
-  }, [bankCardData])
+  }, [bankInfoParamList])
 
   /**
    * 底部按钮
@@ -140,53 +117,61 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到余额宝银行卡
    */
-  const renderToYuEBank = () => <View style={_styles.item_pwd_container}>
+  const renderToYuEBank = () => {
+    //找出当前是银行卡还是支付宝等等
+    let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
-    <TouchableOpacity onPress={() => {
-      refMenu?.current?.toggleMenu()
-    }}>
+    return <View style={_styles.item_pwd_container}>
+
+      <TouchableOpacity onPress={() => {
+        refMenu?.current?.toggleMenu()
+      }}>
+        <View style={_styles.input_container}>
+          <Text style={_styles.input_name}>
+            {
+              curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
+            }
+          </Text>
+        </View>
+      </TouchableOpacity>
       <View style={_styles.input_container}>
-        <Text style={_styles.input_name}>
-          {
-            curBank?.id
-          }
-        </Text>
+        <TextInput style={_styles.input_name}
+                   keyboardType={'numeric'}
+                   onChangeText={text => setAmount(text)}
+                   placeholder={'请填写取款金额'}/>
       </View>
-    </TouchableOpacity>
-    <View style={_styles.input_container}>
-      <TextInput style={_styles.input_name}
-                 keyboardType={'numeric'}
-                 onChangeText={text => setAmount(text)}
-                 placeholder={'请填写取款金额'}/>
+      <Text style={_styles.max_hint}>{`单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
+        Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
+      }`}</Text>
+      <View style={_styles.input_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请填写取款密码'}/>
+      </View>
+
+      <Button title={'提交'}
+              titleStyle={_styles.submit_text}
+              containerStyle={[_styles.submit_bt,
+                { backgroundColor: Skin1.themeColor }]}
+              onPress={() => {
+                // bindPassword({
+                //   login_pwd: loginPwd,
+                //   fund_pwd: fundPwd,
+                //   fund_pwd2: fundPwd2,
+                //   callBack: () => {
+                //     setLoginPwd(null)
+                //   },
+                // })
+
+              }}/>
+
+      {
+        renderSwitchButton()
+      }
     </View>
-    <View style={_styles.input_container}>
-      <TextInput style={_styles.input_name}
-                 maxLength={4}
-                 secureTextEntry={true}
-                 onChangeText={text => setBankPassword(text)}
-                 placeholder={'请填写取款密码'}/>
-    </View>
-
-    <Button title={'提交'}
-            titleStyle={_styles.submit_text}
-            containerStyle={[_styles.submit_bt,
-              { backgroundColor: Skin1.themeColor }]}
-            onPress={() => {
-              // bindPassword({
-              //   login_pwd: loginPwd,
-              //   fund_pwd: fundPwd,
-              //   fund_pwd2: fundPwd2,
-              //   callBack: () => {
-              //     setLoginPwd(null)
-              //   },
-              // })
-
-            }}/>
-
-    {
-      renderSwitchButton()
-    }
-  </View>
+  }
 
   /**
    * 点击菜单
@@ -194,7 +179,7 @@ const WithdrawPage = ({ navigation, route }) => {
    */
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
-    setCurBank(item)
+    setCurBank(bankInfoParamList[index])
     // switch (index) {
     //   case 0:
     //     PushHelper.pushUserCenterType(UGUserCenterType.即时注单)
@@ -214,62 +199,70 @@ const WithdrawPage = ({ navigation, route }) => {
   /**
    * 绘制取款到银行卡
    */
-  const renderToBank = () => <View style={_styles.item_pwd_container}>
+  const renderToBank = () => {
+    //找出当前是银行卡还是支付宝等等
+    let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
-    <TouchableOpacity onPress={() => {
-      refMenu?.current?.toggleMenu()
-    }}>
+    return <View style={_styles.item_pwd_container}>
+
+      <TouchableOpacity onPress={() => {
+        refMenu?.current?.toggleMenu()
+      }}>
+        <View style={_styles.input_container}>
+          <Text style={_styles.input_name}>
+            {
+              curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
+            }
+          </Text>
+        </View>
+      </TouchableOpacity>
       <View style={_styles.input_container}>
-        <Text style={_styles.input_name}>
-          {
-            curBank?.id
-          }
-        </Text>
+        <TextInput style={_styles.input_name}
+                   keyboardType={'numeric'}
+                   onChangeText={text => setAmount(text)}
+                   placeholder={'请填写取款金额'}/>
       </View>
-    </TouchableOpacity>
-    <View style={_styles.input_container}>
-      <TextInput style={_styles.input_name}
-                 keyboardType={'numeric'}
-                 onChangeText={text => setAmount(text)}
-                 placeholder={'请填写取款金额'}/>
-    </View>
-    <View style={_styles.input_container}>
-      <TextInput style={_styles.input_name}
-                 maxLength={4}
-                 secureTextEntry={true}
-                 onChangeText={text => setBankPassword(text)}
-                 placeholder={'请填写取款密码'}/>
-    </View>
-
-    <Button title={'提交'}
-            titleStyle={_styles.submit_text}
-            containerStyle={[_styles.submit_bt,
-              { backgroundColor: Skin1.themeColor }]}
-            onPress={() => {
-              // bindPassword({
-              //   login_pwd: loginPwd,
-              //   fund_pwd: fundPwd,
-              //   fund_pwd2: fundPwd2,
-              //   callBack: () => {
-              //     setLoginPwd(null)
-              //   },
-              // })
-
-            }}/>
-
-    <View style={_styles.forget_pwd_container}>
-      <TouchableOpacity>
-        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
-      </TouchableOpacity>
-    </View>
-    {
-      userInfo?.yuebaoSwitch &&
-      <View style={_styles.forget_pwd_container}><TouchableOpacity onPress={() => setWithdrawType(1)}>
-        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到' + systemInfo?.yuebaoName + '取款'}</Text>
-      </TouchableOpacity>
+      <Text style={_styles.max_hint}>{tipsItem && `单笔下限${Number(tipsItem?.minWithdrawMoney)}, 单笔上限${
+        Number(tipsItem?.maxWithdrawMoney) <= 0 ? '不限' : Number(tipsItem?.maxWithdrawMoney)
+      }`}</Text>
+      <View style={_styles.input_container}>
+        <TextInput style={_styles.input_name}
+                   maxLength={4}
+                   secureTextEntry={true}
+                   onChangeText={text => setBankPassword(text)}
+                   placeholder={'请填写取款密码'}/>
       </View>
-    }
-  </View>
+
+      <Button title={'提交'}
+              titleStyle={_styles.submit_text}
+              containerStyle={[_styles.submit_bt,
+                { backgroundColor: Skin1.themeColor }]}
+              onPress={() => {
+                // bindPassword({
+                //   login_pwd: loginPwd,
+                //   fund_pwd: fundPwd,
+                //   fund_pwd2: fundPwd2,
+                //   callBack: () => {
+                //     setLoginPwd(null)
+                //   },
+                // })
+
+              }}/>
+
+      <View style={_styles.forget_pwd_container}>
+        <TouchableOpacity>
+          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
+        </TouchableOpacity>
+      </View>
+      {
+        userInfo?.yuebaoSwitch &&
+        <View style={_styles.forget_pwd_container}><TouchableOpacity onPress={() => setWithdrawType(1)}>
+          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到' + systemInfo?.yuebaoName + '取款'}</Text>
+        </TouchableOpacity>
+        </View>
+      }
+    </View>
+  }
 
   /**
    * 绘制取款条目
@@ -314,7 +307,7 @@ const WithdrawPage = ({ navigation, route }) => {
 
       <MiddleMenu ref={refMenu}
                   onMenuClick={clickMenu}
-                  menu={bankItems}/>
+                  menu={menuItem}/>
     </View>
   )
 }
@@ -339,6 +332,11 @@ const _styles = StyleSheet.create({
     color: UGColor.TextColor1,
     fontSize: scale(22),
     marginHorizontal: scale(16),
+  },
+  max_hint: {
+    color: UGColor.TextColor3,
+    fontSize: scale(20),
+    paddingBottom: scale(16),
   },
   forget_pwd_container: {
     height: scale(44),
