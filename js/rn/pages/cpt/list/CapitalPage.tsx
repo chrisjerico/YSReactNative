@@ -103,7 +103,8 @@ const CapitalPage = ({ navigation, setProps }) => {
 
   return (
     <CapitalContext.Provider value={{
-      refreshTabPage: refreshTabPage,
+      refreshTabPage,
+      getYueBaoInfo: () => yueBaoData
     }}>
       <BaseScreen style={_styles.container}
                   screenName={'资金管理'}>

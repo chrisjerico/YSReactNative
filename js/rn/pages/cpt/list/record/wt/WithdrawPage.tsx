@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { chunkArray } from '../../../public/tools/ChunkArr'
 import { getTrendData } from '../../../public/utils/getTrendData'
 import { TrendData } from '../../../public/interface/trendData'
@@ -46,6 +46,7 @@ import { BankConst } from '../const/BankConst'
 import Button from '../../../public/views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
+import CapitalContext from '../../CapitalContext'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -60,27 +61,11 @@ interface IRouteParams {
  */
 const WithdrawPage = ({ navigation, route }) => {
 
-  const [loginPwd, setLoginPwd] = useState(null) //登录密码
-  const [fundPwd, setFundPwd] = useState(null) //取款密码
-  const [fundPwd2, setFundPwd2] = useState(null) //取款密码
-  const [bankAddr, setBankAddr] = useState(null)//请输入您的银行卡开户地址
-  const [bankNumber, setBankNumber] = useState(null) //请输入您的银行卡卡号
+  const { getYueBaoInfo } = useContext(CapitalContext) //余额宝信息
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
-  const [btcAddr, setBtcAddr] = useState(null) //请输入您的虚拟币收款钱包地址
-  const [wxAccount, setWxAccount] = useState(null) //请输入微信号
-  const [wxPhone, setWxPhone] = useState(null) //请输入微信所绑定手机号
-  const [aliAccount, setAliAccount] = useState(null) //请输入您的支付宝账号
   const [curAccountType, setCurAccountType] = useState(null) //选择了银行、微信、支付宝、虚拟币
-  const [curBankID, setCurBankID] = useState(null) //选择了哪个银行
-  const [curBtcID, setCurBtcID] = useState(null) //选择了哪个虚拟币
-  const [curChainValue, setCurChainValue] = useState(null) //选择了哪个链
 
   const [accountItems, setAccountItems] = useState(null) //账户有哪些
-  const [chainDetailItems, setChainDetailItems] = useState(null) //链有哪些
-
-  let bankController //银行选择
-  let btcController //币种选择
-  let chainController //链选择
 
   /**
    * refreshBankList: 刷新银行卡列表
@@ -117,45 +102,9 @@ const WithdrawPage = ({ navigation, route }) => {
   }, [])
 
   /**
-   * 监听银行数据变动
+   * 绘制余额取款
    */
-  useEffect(() => {
-    !anyEmpty(bankDetailItems) && setCurBankID(bankDetailItems[0].value)
-  }, [bankDetailItems])
-
-  /**
-   * 监听虚拟币数据变动
-   */
-  useEffect(() => {
-    !anyEmpty(btcDetailItems) && setCurBtcID(btcDetailItems[0].value)
-  }, [btcDetailItems])
-
-  /**
-   * 监听虚拟币数据变动，可能改变链内容
-   */
-  useEffect(() => {
-    if (curBtcID > 0) {
-      let btcInfo: BankDetailListData = btcDetailData?.data.find((item) => item.id == curBtcID)
-      let homeStr = btcInfo.home
-      if (!anyEmpty(homeStr)) {
-        let chainItems = homeStr?.split(',').map(
-          (item, index) => ({ label: item, value: item }))
-        setChainDetailItems(chainItems)
-        setCurChainValue(chainItems[0].value)
-      } else {
-        setChainDetailItems(null)
-        setCurChainValue(null)
-      }
-
-    } else {
-      setCurChainValue(null)
-    }
-  }, [bankDetailData, curBtcID])
-
-  /**
-   * 绘制银行
-   */
-  const renderBank = () => <View style={_styles.item_bank_2nd_content}>
+  const renderYuE = () => <View style={_styles.item_bank_2nd_content}>
     <View style={_styles.bank_bank_name_2nd_container}>
       <TextInput style={_styles.input_name}
                  onChangeText={text => setBankAddr(text)}
@@ -177,47 +126,9 @@ const WithdrawPage = ({ navigation, route }) => {
   </View>
 
   /**
-   * 绘制虚拟币
+   * 绘制金额和密码
    */
-  const renderBtc = () => <View style={_styles.item_bank_2nd_content}>
-    <View style={_styles.bank_bank_name_2nd_container}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setBtcAddr(text)}
-                 placeholder={'请输入您的虚拟币收款钱包地址'}/>
-    </View>
-  </View>
-
-  /**
-   * 绘制微信
-   */
-  const renderWx = () => <View style={_styles.item_bank_2nd_content_wx}>
-    <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setWxAccount(text)}
-                 placeholder={'请输入微信号'}/>
-    </View>
-    <View style={_styles.bank_bank_name_2nd_container}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setWxPhone(text)}
-                 placeholder={'请输入微信所绑定手机号'}/>
-    </View>
-  </View>
-
-  /**
-   * 绘制支付宝
-   */
-  const renderAli = () => <View style={_styles.item_bank_2nd_content_wx}>
-    <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
-      <TextInput style={_styles.input_name}
-                 onChangeText={text => setAliAccount(text)}
-                 placeholder={'请输入您的支付宝账号'}/>
-    </View>
-  </View>
-
-  /**
-   * 绘制绑定密码
-   */
-  const renderBindPwd = () => <View style={_styles.item_pwd_container}>
+  const renderBalanceAndPassword = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.item_pwd_content}>
       <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
         <TextInput style={_styles.input_name}
@@ -232,13 +143,6 @@ const WithdrawPage = ({ navigation, route }) => {
                    onChangeText={text => setFundPwd(text)}
                    placeholder={'请输入您的4位数字提款密码'}/>
       </View>
-      <View style={_styles.bank_bank_name_2nd_container}>
-        <TextInput style={_styles.input_name}
-                   maxLength={4}
-                   secureTextEntry={true}
-                   onChangeText={text => setFundPwd2(text)}
-                   placeholder={'请确认您的提款密码'}/>
-      </View>
     </View>
 
     <Button title={'提交'}
@@ -246,14 +150,14 @@ const WithdrawPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              bindPassword({
-                login_pwd: loginPwd,
-                fund_pwd: fundPwd,
-                fund_pwd2: fundPwd2,
-                callBack: () => {
-                  setLoginPwd(null)
-                },
-              })
+              // bindPassword({
+              //   login_pwd: loginPwd,
+              //   fund_pwd: fundPwd,
+              //   fund_pwd2: fundPwd2,
+              //   callBack: () => {
+              //     setLoginPwd(null)
+              //   },
+              // })
 
             }}/>
   </View>
@@ -356,7 +260,7 @@ const WithdrawPage = ({ navigation, route }) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: UGColor.BackgroundColor1
+    backgroundColor: UGColor.BackgroundColor1,
   },
   item_pwd_container: {
     padding: scale(32),
