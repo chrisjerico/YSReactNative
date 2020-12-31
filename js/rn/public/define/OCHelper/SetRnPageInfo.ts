@@ -93,14 +93,22 @@ export async function setRnPageInfo() {
 
   // —————————————————— 以下为已上线内容 ————————————————————————
 
+//红包扫雷
+ pages.push({
+    vcName: 'RedEnvelopeVCViewController',
+    rnName: PageName.JDRedEnveloperPage,
+    fd_prefersNavigationBarHidden: true,
+    允许游客访问: false,
+    允许未登录访问: false,
+   })
   // 签到页
   pages.push({
     tabbarItemPath: '/Sign',
     vcName: 'UGSigInCodeViewController',
     rnName: PageName.JDSigInPage,
     fd_prefersNavigationBarHidden: true,
-    允许游客访问: true,
-    允许未登录访问: true,
+    允许游客访问: false,
+    允许未登录访问: false,
   })
 
   // 优惠活动列表页
