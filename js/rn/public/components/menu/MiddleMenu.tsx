@@ -49,7 +49,7 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
              onBackButtonPress={() => setShow(false)}
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
-             backdropOpacity={0.1}>
+             backdropOpacity={0.3}>
         <View style={_styles.content}>
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}>
@@ -88,6 +88,7 @@ const _styles = StyleSheet.create({
   content: {},
   sv_container: {
     width: scale(460),
+    marginVertical: scale(120),
     borderRadius: scale(8),
     backgroundColor: UGColor.BackgroundColor1,
   },

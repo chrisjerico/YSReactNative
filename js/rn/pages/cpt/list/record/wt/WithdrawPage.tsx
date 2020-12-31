@@ -20,6 +20,7 @@ import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/me
 import PushHelper from '../../../../../public/define/PushHelper'
 import { UGUserCenterType } from '../../../../../redux/model/全局/UGSysConfModel'
 import CommStyles from '../../../../base/CommStyles'
+import { Input } from 'react-native-elements'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -70,9 +71,9 @@ const WithdrawPage = ({ navigation, route }) => {
       bankItems = [...bankItems, ...item],
     )
     // ugLog('bankItems=', bankItems)
-    if (!anyEmpty(bankItems))  {
+    if (!anyEmpty(bankItems)) {
       setCurBank(bankItems[0])
-      refMenu?.current?.toggleMenu()
+      // refMenu?.current?.toggleMenu()
     }
 
 
@@ -202,19 +203,21 @@ const WithdrawPage = ({ navigation, route }) => {
    * 绘制取款到银行卡
    */
   const renderToBank = () => <View style={_styles.item_pwd_container}>
-    <View style={_styles.input_container}>
-      <TouchableOpacity onPress={() => {
-                          refMenu?.current?.toggleMenu()
-                        }}>
+
+    <TouchableOpacity onPress={() => {
+      refMenu?.current?.toggleMenu()
+    }}>
+      <View style={_styles.input_container}>
         <Text style={_styles.input_name}>
           {
             curBank?.id
           }
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
     <View style={_styles.input_container}>
       <TextInput style={_styles.input_name}
+                 keyboardType={'numeric'}
                  onChangeText={text => setAmount(text)}
                  placeholder={'请填写取款金额'}/>
     </View>
@@ -305,10 +308,8 @@ const _styles = StyleSheet.create({
   },
   item_pwd_container: {
     padding: scale(32),
-    flex: 1,
   },
   input_container: {
-    color: UGColor.TextColor1,
     height: scale(70),
     borderWidth: scale(1),
     borderColor: UGColor.LineColor1,
