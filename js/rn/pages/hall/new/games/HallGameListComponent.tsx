@@ -135,7 +135,7 @@ const HallGameListComponent = ({
     }
 
     return anyEmpty(balls) ?
-      <View style={_styles.start_game_container}>
+      <View style={_styles.start_game_container} pointerEvents={'none'}>
         <Button containerStyle={[_styles.start_game_button, { borderColor: Skin1.themeColor }]}
                 titleStyle={[_styles.start_game_text, { color: Skin1.themeColor }]}
                 title={'立即游戏'}/>
