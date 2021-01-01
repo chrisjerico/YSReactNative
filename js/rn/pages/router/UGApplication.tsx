@@ -97,6 +97,8 @@ import { UpdateVersionPage } from './UpdateVersionPage'
 import BtcPayPage from '../cpt/list/record/pay/btc/BtcPayPage'
 import JDRedEnveloperPage from '../经典/红包扫雷/JDRedEnveloperPage'
 import JDAgentPage from '../经典/申请代理/JDAgentPage'
+import SetPasswordPage from '../base/pwd/SetPasswordPage'
+import ForgetPasswordPage from '../base/pwd/ft/ForgetPasswordPage'
 
 
 /**
@@ -116,6 +118,8 @@ const pageComponents: { [key in PageName]?: Function } = {
   TrendView, //开奖走势
   ManageBankListPage, //银行卡管理（我的提款账户列表）
   CapitalPage, //存款取款资金明细
+  SetPasswordPage, //设置资金密码
+  ForgetPasswordPage, //忘记密码
   AddBankPage, //添加提款账户
   LottoBetting, //下注页（未完成）
   UserMessagePage, //站内信

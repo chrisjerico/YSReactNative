@@ -5,7 +5,7 @@ import Modal from 'react-native-modal'
 import * as React from 'react'
 import { forwardRef, RefObject, useImperativeHandle, useState } from 'react'
 import { ugLog } from '../../tools/UgLog'
-import { arrayLength } from '../../tools/Ext'
+import { anyEmpty, arrayLength } from '../../tools/Ext'
 import { Skin1 } from '../../theme/UGSkinManagers'
 import { getBankIcon } from '../../../pages/bank/list/UseManageBankList'
 import FastImage from 'react-native-fast-image'
@@ -50,7 +50,10 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
              animationIn={'fadeIn'}
              animationOut={'fadeOut'}
              backdropOpacity={0.3}>
-        <View style={_styles.content}>
+        <View style={[
+          _styles.content,
+          { height: arrayLength(menu) * ITEM_HEIGHT },
+        ]}>
           <ScrollView style={_styles.sv_container}
                       showsVerticalScrollIndicator={false}>
             {
@@ -61,10 +64,11 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
                                resizeMode={'contain'}
                                style={_styles.bank_name_icon}/>
                     <View style={_styles.item_sub_content}>
-                      <Text style={_styles.item_name}>{item.title}</Text>
+                      <Text numberOfLines={1}
+                            style={_styles.item_name}>{item.title}</Text>
                       {
-                        item.subTitle && <Text
-                          style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
+                        !anyEmpty(item.subTitle) && <Text numberOfLines={1}
+                                                          style={[_styles.item_sub_name, { color: Skin1.themeColor }]}>
                           {'( ' + item.subTitle + ' )'}
                         </Text>
                       }
@@ -79,6 +83,8 @@ const MiddleMenu = ({ menu, onMenuClick }: IMiddleMenu, ref?: any) => {
   )
 }
 
+const ITEM_HEIGHT = scale(72) //每个条目高度
+
 const _styles = StyleSheet.create({
   container: {},
   modal_content: {
@@ -88,13 +94,12 @@ const _styles = StyleSheet.create({
   content: {},
   sv_container: {
     width: scale(460),
-    marginVertical: scale(120),
     borderRadius: scale(8),
     backgroundColor: UGColor.BackgroundColor1,
   },
   item_content: {
+    height: ITEM_HEIGHT,
     paddingHorizontal: scale(24),
-    paddingVertical: scale(12),
     borderTopWidth: scale(1),
     alignItems: 'center',
     borderTopColor: UGColor.LineColor4,
@@ -112,9 +117,9 @@ const _styles = StyleSheet.create({
     fontSize: scale(20),
   },
   bank_name_icon: {
-    width: scale(32),
-    height: scale(32),
-    marginRight: scale(16),
+    width: scale(42),
+    aspectRatio: 1,
+    marginRight: scale(8),
   },
 
 })

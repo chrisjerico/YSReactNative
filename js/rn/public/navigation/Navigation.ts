@@ -1,3 +1,5 @@
+import BtcPayPage from '../../pages/cpt/list/record/pay/btc/BtcPayPage'
+
 export enum PageName {
   // ———————————— 通用页面 —————————————
   TransitionPage = 'TransitionPage',
@@ -13,8 +15,11 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',
   IncomeRecommendPage = 'IncomeRecommendPage',
   ManageBankListPage = 'ManageBankListPage',
-  CapitalPage = 'CapitalPage',
-  AddBankPage = 'AddBankPage',
+  BtcPayPage = 'BtcPayPage',//虚拟币支付
+  CapitalPage = 'CapitalPage',//资金管理
+  SetPasswordPage = 'SetPasswordPage',//取消界面
+  ForgetPasswordPage = 'ForgetPasswordPage',//忘记密码
+  AddBankPage = 'AddBankPage',//添加银行卡
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',

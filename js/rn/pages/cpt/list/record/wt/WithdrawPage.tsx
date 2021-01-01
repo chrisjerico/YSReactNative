@@ -3,7 +3,6 @@ import * as React from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
 import CapitalContext from '../../CapitalContext'
 import UseWithdraw from './UseWithdraw'
-import { ManageBankCardData } from '../../../../../public/network/Model/bank/ManageBankCardModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import Button from '../../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
@@ -13,16 +12,9 @@ import { UGColor } from '../../../../../public/theme/UGThemeColor'
 import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
 import { BankConst } from '../../../../bank/const/BankConst'
 import { CapitalConst } from '../../../const/CapitalConst'
-import { Toast } from '../../../../../public/tools/ToastUtils'
 import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
-import { ugLog } from '../../../../../public/tools/UgLog'
-
-interface IRouteParams {
-  refreshBankList?: (accountType: string) => any, //刷新账户列表方法
-  bankCardData?: ManageBankCardData, //当前的账户数据
-  selectType?: number, //当前选中的是哪个条目
-}
+import Icon from 'react-native-vector-icons/Entypo'
 
 /**
  * 添加银行卡管理
@@ -54,6 +46,7 @@ const WithdrawPage = ({ navigation, route }) => {
     showAddBank,
     requestManageBankData,
     confirmWithdraw,
+    yueBao2YuE,
   } = UseWithdraw()
 
   useEffect(() => {
@@ -69,11 +62,11 @@ const WithdrawPage = ({ navigation, route }) => {
    */
   const renderSwitchButton = () => <View>
     <View style={_styles.forget_pwd_container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
       </TouchableOpacity>
     </View>
-    <View style={_styles.forget_pwd_container}>
+    <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
       <TouchableOpacity onPress={() => setWithdrawType(0)}>
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
       </TouchableOpacity>
@@ -103,9 +96,9 @@ const WithdrawPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              confirmWithdraw().then(res => {
+              yueBao2YuE().then(res => {
                 if (res == 0) {
-                  refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
+                  refreshTabPage(null)
                 }
               })
             }}/>
@@ -116,25 +109,40 @@ const WithdrawPage = ({ navigation, route }) => {
   </View>
 
   /**
-   * 绘制取款到余额宝银行卡
+   * 绘制绑定卡
    */
-  const renderToYuEBank = () => {
+  const renderBind = () => {
+    return <TouchableOpacity onPress={() => {
+      push(PageName.AddBankPage, {
+        refreshBankList: (accountType: string) => { //添加成功
+          requestManageBankData()
+        },
+        bankCardData: bankCardData,
+        selectType: Number(curBank?.type),
+      })
+    }}>
+      <View style={[_styles.bind_bt, { borderColor: Skin1.themeColor }]}>
+        <Icon size={scale(36)}
+              color={Skin1.themeColor}
+              name={'plus'}/>
+        <Text style={[_styles.bind_text, { color: Skin1.themeColor }]}>
+          {
+            `绑定${curBank?.parentTypeName}`
+          }
+        </Text>
+      </View>
+    </TouchableOpacity>
+
+  }
+
+  /**
+   * 绘制输入金额和密码
+   */
+  const renderYuEInputAmount = () => {
     //找出当前是银行卡还是支付宝等等
     let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
-    return <View style={_styles.item_pwd_container}>
-
-      <TouchableOpacity onPress={() => {
-        refMenu?.current?.toggleMenu()
-      }}>
-        <View style={_styles.input_container}>
-          <Text style={_styles.input_name}>
-            {
-              curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
-            }
-          </Text>
-        </View>
-      </TouchableOpacity>
+    return <View>
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    keyboardType={'numeric'}
@@ -170,6 +178,33 @@ const WithdrawPage = ({ navigation, route }) => {
                   }
                 })
               }}/>
+    </View>
+  }
+
+  /**
+   * 绘制取款到余额宝银行卡
+   */
+  const renderToYuEBank = () => {
+
+    return <View style={_styles.item_pwd_container}>
+
+      <TouchableOpacity onPress={() => {
+        refMenu?.current?.toggleMenu()
+      }}>
+        <View style={_styles.input_container}>
+          <Text style={_styles.input_name}>
+            {
+              curBank != null &&
+              `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
+            }
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {
+        curBank?.notBind ?
+          renderBind() :
+          renderYuEInputAmount()
+      }
 
       {
         renderSwitchButton()
@@ -187,25 +222,13 @@ const WithdrawPage = ({ navigation, route }) => {
   }
 
   /**
-   * 绘制取款到银行卡
+   * 绘制输入金额和密码
    */
-  const renderToBank = () => {
+  const renderInputAmount = () => {
     //找出当前是银行卡还是支付宝等等
     let tipsItem = bankCardData?.allAccountList?.find((item) => item?.type?.toString() == curBank?.type)
 
-    return <View style={_styles.item_pwd_container}>
-
-      <TouchableOpacity onPress={() => {
-        refMenu?.current?.toggleMenu()
-      }}>
-        <View style={_styles.input_container}>
-          <Text style={_styles.input_name}>
-            {
-              curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
-            }
-          </Text>
-        </View>
-      </TouchableOpacity>
+    return <View>
       <View style={_styles.input_container}>
         <TextInput style={_styles.input_name}
                    keyboardType={'numeric'}
@@ -241,15 +264,41 @@ const WithdrawPage = ({ navigation, route }) => {
                   }
                 })
               }}/>
+    </View>
+  }
 
-      <View style={_styles.forget_pwd_container}>
-        <TouchableOpacity>
+  /**
+   * 绘制取款到银行卡
+   */
+  const renderToBank = () => {
+
+    return <View style={_styles.item_pwd_container}>
+
+      <TouchableOpacity onPress={() => {
+        refMenu?.current?.toggleMenu()
+      }}>
+        <View style={_styles.input_container}>
+          <Text style={_styles.input_name}>
+            {
+              curBank && `${curBank?.parentTypeName} (${curBank?.bankName}, ${curBank?.bankCard}, ${curBank?.ownerName})`
+            }
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {
+        curBank?.notBind ?
+          renderBind() :
+          renderInputAmount()
+      }
+
+      <View style={[_styles.forget_pwd_container]}>
+        <TouchableOpacity onPress={() => push(PageName.ForgetPasswordPage, {})}>
           <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
         </TouchableOpacity>
       </View>
       {
         userInfo?.yuebaoSwitch &&
-        <View style={_styles.forget_pwd_container}>
+        <View style={[_styles.forget_pwd_container, { marginTop: 0 }]}>
           <TouchableOpacity onPress={() => setWithdrawType(1)}>
             <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
               '切换到' + systemInfo?.yuebaoName + '取款'
@@ -264,7 +313,14 @@ const WithdrawPage = ({ navigation, route }) => {
    * 绘制取款条目
    */
   const renderItem = () => {
-    if (showAddBank) {
+    if (!userInfo?.hasFundPwd) {//判断有没有资金密码
+      return <EmptyView style={{ flex: 1 }}
+                        text={'您还未设置资金密码'}
+                        buttonText={'设置资金密码'}
+                        buttonCallback={() => {
+                          push(PageName.SetPasswordPage, {})
+                        }}/>
+    } else if (showAddBank) {
       return <EmptyView style={{ flex: 1 }}
                         text={'您还未绑定提款账户'}
                         buttonText={'添加提款账户'}
@@ -323,7 +379,7 @@ const WithdrawPage = ({ navigation, route }) => {
   )
 }
 
-const tabMenus = ['取款到银行卡', '取款到余额'] //TAB菜单
+const tabMenus = ['渠道提款', '提款到余额'] //TAB菜单
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: UGColor.BackgroundColor1,
@@ -358,9 +414,10 @@ const _styles = StyleSheet.create({
   forget_pwd_container: {
     height: scale(44),
     alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginTop: scale(32),
   },
   forget_pwd: {
-    paddingVertical: scale(32),
     fontSize: scale(22),
   },
   submit_text: {
@@ -392,12 +449,21 @@ const _styles = StyleSheet.create({
   sub_tab_text: {
     fontSize: scale(20),
   },
+  bind_bt: {
+    height: scale(68),
+    borderWidth: scale(1),
+    borderRadius: scale(8),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  bind_text: {
+    fontSize: scale(22),
+    marginLeft: scale(8),
+  },
 
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default WithdrawPage

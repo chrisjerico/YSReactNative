@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
@@ -15,10 +15,11 @@ import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListCompo
 import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 import PayListComponent from './record/pay/PayListComponent'
 import CapitalContext from './CapitalContext'
-import { ugLog } from '../../../public/tools/UgLog'
 import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
 import WithdrawPage from './record/wt/WithdrawPage'
+import { push } from '../../../public/navigation/RootNavigation'
+import { PageName } from '../../../public/navigation/Navigation'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 存款提现
@@ -46,25 +47,21 @@ const CapitalPage = ({ navigation, setProps }) => {
    * 刷新哪个界面
    * @param pageIndex
    */
-  const refreshTabPage = (pageName: string) => {
-    ugLog('refresh count 2 =', pageName, refreshCount)
+  const refreshTabPage = (pageName?: string) => {
+    //ugLog('refresh count 2 =', pageName, refreshCount)
+    requestYueBao()
 
     switch (pageName) {
       case CapitalConst.DEPOSIT_RECORD:
-        // tabController?.goToPage(2)
         setTabIndex(2)
+        setRefreshCount(refreshCount + 1)
         break
       case CapitalConst.WITHDRAWAL_RECORD:
-        // tabController?.goToPage(3)
         setTabIndex(3)
+        setRefreshCount(refreshCount + 1)
         break
     }
 
-    setRefreshCount(refreshCount + 1)
-    // const timer = setTimeout(() => {
-    //   clearTimeout(timer)
-    //   setRefreshCount(refreshCount + 1)
-    // }, 3000)
   }
 
   /**
@@ -97,7 +94,7 @@ const CapitalPage = ({ navigation, setProps }) => {
       <Text style={_styles.mine_info_name}>{userInfo?.usr}</Text>
       <Text style={_styles.mine_info_balance}>{'用户余额: ' + userInfo?.balance}</Text>
       {
-        yueBaoData &&
+        yueBaoData != null &&
         <Text style={_styles.mine_info_balance}>{yueBaoData?.yuebaoName + '余额: ' + yueBaoData?.balance}</Text>
       }
     </View>
@@ -118,10 +115,7 @@ const CapitalPage = ({ navigation, setProps }) => {
               <ScrollableTabView
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
-                onChangeTab={value => {
-                  // ugLog('tab index=', value?.from, value?.i)
-                  setTabIndex(value?.i)
-                }}
+                onChangeTab={value => {}}
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                   { backgroundColor: Skin1.themeColor }]}
@@ -181,9 +175,5 @@ const _styles = StyleSheet.create({
   },
 
 })
-
-export const GRID_LEFT_HEADER_WIDTH = scale(150) //左侧头宽
-export const GRID_ITEM_WIDTH = scale(66) //一个格子宽
-export const GRID_ITEM_HEIGHT = scale(46) //一个格子高
 
 export default CapitalPage
