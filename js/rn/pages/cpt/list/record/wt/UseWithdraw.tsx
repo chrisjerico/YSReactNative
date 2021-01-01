@@ -160,7 +160,7 @@ const UseWithdraw = () => {
   }
 
   /**
-   * 请求提现
+   * 请求余额提现到银行卡
    */
   const confirmWithdraw = async () => {
     if(anyEmpty(inputMoney)) {
@@ -177,6 +177,30 @@ const UseWithdraw = () => {
       pwd: md5(bankPassword),
       id: curBank?.id,
       virtual_amount: curBank?.type != BankConst.BTC ? '' : btcMoney?.toString(),
+    }).then(({ data: res }) => res)
+    hideLoading()
+    Toast(res?.msg)
+
+    return res?.code
+  }
+
+  /**
+   * 请求余额宝 转到 余额
+   */
+  const yueBao2YuE = async () => {
+    if(anyEmpty(inputMoney)) {
+      Toast('请输入金额')
+      return
+    } else if(anyEmpty(bankPassword)) {
+      Toast('请输入密码')
+      return
+    }
+
+    showLoading()
+    const res = await APIRouter.yuebao_transfer({
+      money: inputMoney,
+      pwd: md5(bankPassword),
+      inOrOut: 'out',
     }).then(({ data: res }) => res)
     hideLoading()
     Toast(res?.msg)
@@ -203,6 +227,7 @@ const UseWithdraw = () => {
     showAddBank,
     requestManageBankData,
     confirmWithdraw,
+    yueBao2YuE,
   }
 }
 

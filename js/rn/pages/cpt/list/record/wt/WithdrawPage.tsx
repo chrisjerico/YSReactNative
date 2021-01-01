@@ -54,6 +54,7 @@ const WithdrawPage = ({ navigation, route }) => {
     showAddBank,
     requestManageBankData,
     confirmWithdraw,
+    yueBao2YuE,
   } = UseWithdraw()
 
   useEffect(() => {
@@ -95,7 +96,7 @@ const WithdrawPage = ({ navigation, route }) => {
                  maxLength={4}
                  secureTextEntry={true}
                  onChangeText={text => setBankPassword(text)}
-                 placeholder={'请填写取款密码'}/>
+                 placeholder={'请填写取款密码2'}/>
     </View>
 
     <Button title={'提交'}
@@ -103,9 +104,9 @@ const WithdrawPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              confirmWithdraw().then(res => {
+              yueBao2YuE().then(res => {
                 if (res == 0) {
-                  refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
+                  refreshTabPage(null)
                 }
               })
             }}/>

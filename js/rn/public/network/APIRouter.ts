@@ -324,7 +324,7 @@ class APIRouter {
   }
 
   /**
-   * 提现申请
+   * 余额提现申请
    *
    */
   static withdraw_apply = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
@@ -333,6 +333,18 @@ class APIRouter {
       return null
     }
     return httpClient.post<NormalModel>('c=withdraw&a=apply', params)
+  }
+
+  /**
+   * 利息宝转入转出
+   *
+   */
+  static yuebao_transfer = async (params: IYueBao2YuEParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=yuebao&a=transfer', params)
   }
 
   /**

@@ -46,25 +46,21 @@ const CapitalPage = ({ navigation, setProps }) => {
    * 刷新哪个界面
    * @param pageIndex
    */
-  const refreshTabPage = (pageName: string) => {
-    ugLog('refresh count 2 =', pageName, refreshCount)
+  const refreshTabPage = (pageName?: string) => {
+    //ugLog('refresh count 2 =', pageName, refreshCount)
+    requestYueBao()
 
     switch (pageName) {
       case CapitalConst.DEPOSIT_RECORD:
-        // tabController?.goToPage(2)
         setTabIndex(2)
+        setRefreshCount(refreshCount + 1)
         break
       case CapitalConst.WITHDRAWAL_RECORD:
-        // tabController?.goToPage(3)
         setTabIndex(3)
+        setRefreshCount(refreshCount + 1)
         break
     }
 
-    setRefreshCount(refreshCount + 1)
-    // const timer = setTimeout(() => {
-    //   clearTimeout(timer)
-    //   setRefreshCount(refreshCount + 1)
-    // }, 3000)
   }
 
   /**
