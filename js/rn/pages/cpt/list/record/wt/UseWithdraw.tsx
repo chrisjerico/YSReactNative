@@ -130,7 +130,7 @@ const UseWithdraw = () => {
       actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
 
 
-      //ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
+      ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
 
       let bankItems = new Array<BankInfoParam>()
       // actData?.allAccountList?.map(
@@ -154,7 +154,7 @@ const UseWithdraw = () => {
               ownerName: '无',
               bankCard: '无',
               type: item?.type?.toString(),
-              unBind: true,
+              notBind: true,
             }]
           }
         } else {

@@ -57,5 +57,5 @@ export interface BankInfoParam {
   bankCode?: string //
   bankBackgroundImage?: string //
 
-  unBind?: boolean //本地使用，未绑定数据
+  notBind?: boolean //本地使用，未绑定数据
 }

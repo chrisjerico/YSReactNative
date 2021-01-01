@@ -107,14 +107,15 @@ const AddBankPage = ({ navigation, route }) => {
    */
   let bankList = bankCardData?.allAccountList
   useEffect(() => {
-    let accountTypes = bankList.filter((item) => arrayLength(item.data) < Number(item.number)).map(
+    let accountTypes = bankList.filter((item) =>
+      arrayLength(item.data) < Number(item.number) || Number(item.number) == 0).map(
       (item, index) =>
         ({
           label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
                                                                      resizeMode={'contain'}
                                                                      style={_styles.bank_name_icon}/>,
         }))
-    if(anyEmpty(accountTypes)) {
+    if (anyEmpty(accountTypes)) {
       Toast('不能添加更多账户')
       pop()
     } else {
@@ -363,7 +364,7 @@ const AddBankPage = ({ navigation, route }) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: UGColor.BackgroundColor1
+    backgroundColor: UGColor.BackgroundColor1,
   },
   item_pwd_container: {
     padding: scale(32),
