@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import * as React from 'react'
 import { useState } from 'react'
 import { BaseScreen } from '../../../乐橙/component/BaseScreen'
@@ -8,6 +8,7 @@ import { UGColor } from '../../../../public/theme/UGThemeColor'
 import Button from '../../../../public/views/tars/Button'
 import { pop } from '../../../../public/navigation/RootNavigation'
 import UseForgetPassword from './UseForgetPassword'
+import Icon from 'react-native-vector-icons/Entypo'
 
 interface IRouteParams {
   onCallback?: () => any, //设置密码成功
@@ -20,15 +21,15 @@ interface IRouteParams {
  */
 const ForgetPasswordPage = ({ navigation, route }) => {
 
-  const [loginPwd, setLoginPwd] = useState(null) //登录密码
-  const [fundPwd, setFundPwd] = useState(null) //取款密码
-  const [fundPwd2, setFundPwd2] = useState(null) //取款密码
-
   const { onCallback }: IRouteParams = route?.params
 
   const {
     userInfo,
     systemInfo,
+    bankCard,
+    setBankCard,
+    fundPassword,
+    setFundPassword,
     bindPassword,
   } = UseForgetPassword()
 
@@ -37,25 +38,33 @@ const ForgetPasswordPage = ({ navigation, route }) => {
    */
   const renderBindPwd = () => <View style={_styles.item_pwd_container}>
     <View style={_styles.item_pwd_content}>
-      <View style={[_styles.bank_bank_name_2nd_container, { borderTopWidth: 0 }]}>
+      <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
                    secureTextEntry={true}
-                   onChangeText={text => setLoginPwd(text)}
-                   placeholder={'请输入当前登录密码'}/>
+                   onChangeText={text => setBankCard(text)}
+                   placeholder={'输入提款银行卡号'}/>
       </View>
       <View style={_styles.bank_bank_name_2nd_container}>
         <TextInput style={_styles.input_name}
                    maxLength={4}
                    secureTextEntry={true}
-                   onChangeText={text => setFundPwd(text)}
-                   placeholder={'请输入您的4位数字提款密码'}/>
+                   onChangeText={text => setFundPassword(text)}
+                   placeholder={'新的四位取款密码'}/>
       </View>
-      <View style={_styles.bank_bank_name_2nd_container}>
-        <TextInput style={_styles.input_name}
-                   maxLength={4}
-                   secureTextEntry={true}
-                   onChangeText={text => setFundPwd2(text)}
-                   placeholder={'请确认您的提款密码'}/>
+      <View style={_styles.add_img_container}>
+        <Text style={_styles.add_img_text}>{'身份证正反面: '}</Text>
+        <View style={_styles.add_img_bt_container}>
+          <View style={_styles.add_img}>
+            <Icon size={scale(72)}
+                  color={Skin1.themeColor}
+                  name={'plus'}/>
+          </View>
+          <View style={_styles.add_img}>
+            <Icon size={scale(72)}
+                  color={Skin1.themeColor}
+                  name={'plus'}/>
+          </View>
+        </View>
       </View>
     </View>
 
@@ -64,15 +73,15 @@ const ForgetPasswordPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              bindPassword({
-                login_pwd: loginPwd,
-                fund_pwd: fundPwd,
-                fund_pwd2: fundPwd2,
-                callBack: () => {
-                  onCallback && onCallback()
-                  pop()
-                },
-              })
+              // bindPassword({
+              //   login_pwd: loginPwd,
+              //   fund_pwd: fundPwd,
+              //   fund_pwd2: fundPwd2,
+              //   callBack: () => {
+              //     onCallback && onCallback()
+              //     pop()
+              //   },
+              // })
 
             }}/>
   </View>
@@ -88,7 +97,7 @@ const ForgetPasswordPage = ({ navigation, route }) => {
 
 const _styles = StyleSheet.create({
   container: {
-    backgroundColor: UGColor.BackgroundColor1
+    backgroundColor: UGColor.BackgroundColor1,
   },
   item_pwd_container: {
     padding: scale(32),
@@ -100,30 +109,12 @@ const _styles = StyleSheet.create({
     borderRadius: scale(8),
     marginBottom: scale(64),
   },
-  item_bank_container: {
-    paddingHorizontal: scale(32),
-    paddingTop: scale(32),
-    flex: 1,
-  },
-  item_bank_2nd_content: {
-    borderWidth: scale(1),
-    borderTopWidth: 0,
-    borderColor: UGColor.LineColor1,
-    borderRadius: scale(8),
-    borderTopRightRadius: 0,
-    borderTopLeftRadius: 0,
-  },
-  item_bank_2nd_content_wx: {
-    borderWidth: scale(1),
-    borderColor: UGColor.LineColor1,
-    borderRadius: scale(8),
-  },
   bank_bank_name_2nd_container: {
     flexDirection: 'row',
     color: UGColor.TextColor1,
     alignItems: 'center',
     height: scale(70),
-    borderTopWidth: scale(1),
+    borderBottomWidth: scale(1),
     borderColor: UGColor.LineColor1,
   },
   bank_name: {
@@ -138,20 +129,6 @@ const _styles = StyleSheet.create({
     fontSize: scale(22),
     marginHorizontal: scale(16),
   },
-  real_name: {
-    color: UGColor.TextColor2,
-    paddingVertical: scale(32),
-    fontSize: scale(22),
-  },
-  right_icon: {
-    marginRight: scale(16),
-  },
-  bank_picker: {
-    backgroundColor: UGColor.BackgroundColor1,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderBottomWidth: 0,
-  },
   submit_text: {
     fontSize: scale(22),
     color: 'white',
@@ -161,10 +138,27 @@ const _styles = StyleSheet.create({
     height: scale(66),
     borderRadius: scale(8),
   },
-  bank_name_icon: {
-    width: scale(32),
-    height: scale(32),
+  add_img_text: {
+    fontSize: scale(24),
+    color: UGColor.TextColor3,
   },
+  add_img: {
+    borderWidth: scale(2),
+    borderRadius: scale(8),
+    borderStyle: 'dashed',
+    borderColor: UGColor.LineColor2,
+    marginHorizontal: scale(16),
+    padding: scale(58),
+  },
+  add_img_container: {
+    padding: scale(16),
+  },
+  add_img_bt_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: scale(16),
+  },
+
 
 })
 

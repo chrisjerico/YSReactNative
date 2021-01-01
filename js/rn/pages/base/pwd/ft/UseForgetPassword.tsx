@@ -5,6 +5,7 @@ import { UGStore } from '../../../../redux/store/UGStore'
 import { Toast } from '../../../../public/tools/ToastUtils'
 import { hideLoading, showLoading } from '../../../../public/widget/UGLoadingCP'
 import md5 from 'blueimp-md5'
+import { useState } from 'react'
 
 /**
  * 忘记密码
@@ -14,6 +15,9 @@ const UseForgetPassword = () => {
 
   const userInfo = UGStore.globalProps.userInfo //用户信息
   const systemInfo = UGStore.globalProps.sysConf //系统信息
+
+  const [bankCard, setBankCard] = useState(null) //银行卡
+  const [fundPassword, setFundPassword] = useState(null) //设置资金密码
 
   /**
    * 绑定密码
@@ -61,6 +65,10 @@ const UseForgetPassword = () => {
   return {
     userInfo,
     systemInfo,
+    bankCard,
+    setBankCard,
+    fundPassword,
+    setFundPassword,
     bindPassword,
   }
 }
