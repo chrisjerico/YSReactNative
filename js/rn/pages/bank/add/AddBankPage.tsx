@@ -46,6 +46,8 @@ import { BankConst } from '../const/BankConst'
 import Button from '../../../public/views/tars/Button'
 import { getBankIcon } from '../list/UseManageBankList'
 import { BankDetailListData } from '../../../public/network/Model/bank/BankDetailListModel'
+import { Toast } from '../../../public/tools/ToastUtils'
+import { pop } from '../../../public/navigation/RootNavigation'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -112,8 +114,13 @@ const AddBankPage = ({ navigation, route }) => {
                                                                      resizeMode={'contain'}
                                                                      style={_styles.bank_name_icon}/>,
         }))
-    !anyEmpty(bankList) && setAccountItems(accountTypes)
-    !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    if(anyEmpty(accountTypes)) {
+      Toast('不能添加更多账户')
+      pop()
+    } else {
+      !anyEmpty(bankList) && setAccountItems(accountTypes)
+      !anyEmpty(bankList) && setCurAccountType(selectType > 0 ? selectType : accountTypes[0].value)
+    }
   }, [])
 
   /**

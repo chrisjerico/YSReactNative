@@ -36,6 +36,7 @@ const UseWithdraw = () => {
   const [btcMoney, setBtcMoney] = useState(0) //btc金额
   const [inputMoney, setInputMoney] = useState(null) //取款金额
   const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
+  const [showAddBank, setShowAddBank] = useState(false) //是否显示添加银行卡等帐户
 
 
   /**
@@ -140,6 +141,7 @@ const UseWithdraw = () => {
       )
 
       setBankInfoParamList(bankItems)
+      setShowAddBank(anyEmpty(bankItems))
 
       //缓存列表显示选项
       const menu = bankItems?.map((item) => {
@@ -174,7 +176,7 @@ const UseWithdraw = () => {
       money: inputMoney,
       pwd: md5(bankPassword),
       id: curBank?.id,
-      virtual_amount: btcMoney?.toString(),
+      virtual_amount: curBank?.type != BankConst.BTC ? '' : btcMoney?.toString(),
     }).then(({ data: res }) => res)
     hideLoading()
     Toast(res?.msg)
@@ -198,6 +200,8 @@ const UseWithdraw = () => {
     setInputMoney,
     bankPassword,
     setBankPassword,
+    showAddBank,
+    requestManageBankData,
     confirmWithdraw,
   }
 }

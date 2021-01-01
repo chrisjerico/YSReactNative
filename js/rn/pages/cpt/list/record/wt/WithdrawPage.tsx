@@ -1,28 +1,22 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as React from 'react'
 import { useContext, useEffect, useRef, useState } from 'react'
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view'
-import FastImage from 'react-native-fast-image'
 import CapitalContext from '../../CapitalContext'
 import UseWithdraw from './UseWithdraw'
-import { BankInfoParam, ManageBankCardData } from '../../../../../public/network/Model/bank/ManageBankCardModel'
+import { ManageBankCardData } from '../../../../../public/network/Model/bank/ManageBankCardModel'
 import { anyEmpty } from '../../../../../public/tools/Ext'
 import Button from '../../../../../public/views/tars/Button'
 import { Skin1 } from '../../../../../public/theme/UGSkinManagers'
 import { scale } from '../../../../../public/tools/Scale'
 import EmptyView from '../../../../../public/components/view/empty/EmptyView'
-import UGDropDownPicker from '../../../../bank/add/view/UGDropdownPicker'
 import { UGColor } from '../../../../../public/theme/UGThemeColor'
-import { getBankIcon } from '../../../../bank/list/UseManageBankList'
-import { ugLog } from '../../../../../public/tools/UgLog'
-import RightMenu from '../../../../../public/components/menu/RightMenu'
 import MiddleMenu, { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMenu'
-import PushHelper from '../../../../../public/define/PushHelper'
-import { UGUserCenterType } from '../../../../../redux/model/全局/UGSysConfModel'
-import CommStyles from '../../../../base/CommStyles'
-import { Input } from 'react-native-elements'
 import { BankConst } from '../../../../bank/const/BankConst'
 import { CapitalConst } from '../../../const/CapitalConst'
+import { Toast } from '../../../../../public/tools/ToastUtils'
+import { push } from '../../../../../public/navigation/RootNavigation'
+import { PageName } from '../../../../../public/navigation/Navigation'
+import { ugLog } from '../../../../../public/tools/UgLog'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -41,7 +35,6 @@ const WithdrawPage = ({ navigation, route }) => {
   const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
   const refMenu = useRef(null)
 
-
   const {
     userInfo,
     systemInfo,
@@ -58,6 +51,8 @@ const WithdrawPage = ({ navigation, route }) => {
     setInputMoney,
     bankPassword,
     setBankPassword,
+    showAddBank,
+    requestManageBankData,
     confirmWithdraw,
   } = UseWithdraw()
 
@@ -78,9 +73,10 @@ const WithdrawPage = ({ navigation, route }) => {
         <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'忘记取款密码?'}</Text>
       </TouchableOpacity>
     </View>
-    <View style={_styles.forget_pwd_container}><TouchableOpacity onPress={() => setWithdrawType(0)}>
-      <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
-    </TouchableOpacity>
+    <View style={_styles.forget_pwd_container}>
+      <TouchableOpacity onPress={() => setWithdrawType(0)}>
+        <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到余额取款'}</Text>
+      </TouchableOpacity>
     </View>
   </View>
 
@@ -253,9 +249,12 @@ const WithdrawPage = ({ navigation, route }) => {
       </View>
       {
         userInfo?.yuebaoSwitch &&
-        <View style={_styles.forget_pwd_container}><TouchableOpacity onPress={() => setWithdrawType(1)}>
-          <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{'切换到' + systemInfo?.yuebaoName + '取款'}</Text>
-        </TouchableOpacity>
+        <View style={_styles.forget_pwd_container}>
+          <TouchableOpacity onPress={() => setWithdrawType(1)}>
+            <Text style={[_styles.forget_pwd, { color: Skin1.themeColor }]}>{
+              '切换到' + systemInfo?.yuebaoName + '取款'
+            }</Text>
+          </TouchableOpacity>
         </View>
       }
     </View>
@@ -265,6 +264,21 @@ const WithdrawPage = ({ navigation, route }) => {
    * 绘制取款条目
    */
   const renderItem = () => {
+    if (showAddBank) {
+      return <EmptyView style={{ flex: 1 }}
+                        text={'您还未绑定提款账户'}
+                        buttonText={'添加提款账户'}
+                        buttonCallback={() => {
+                          push(PageName.AddBankPage, {
+                            refreshBankList: (accountType: string) => { //添加成功
+                              requestManageBankData()
+                            },
+                            bankCardData: bankCardData,
+                            selectType: 0,
+                          })
+                        }}/>
+    }
+
     return withdrawType == 0 ?
       renderToBank() :
       <View>
@@ -343,6 +357,7 @@ const _styles = StyleSheet.create({
   },
   forget_pwd_container: {
     height: scale(44),
+    alignItems: 'flex-start',
   },
   forget_pwd: {
     paddingVertical: scale(32),
