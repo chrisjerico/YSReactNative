@@ -324,6 +324,18 @@ class APIRouter {
   }
 
   /**
+   * 提现申请
+   *
+   */
+  static withdraw_apply = async (params: IRequestWithdrawParams): Promise<AxiosResponse<NormalModel>> => {
+    if (UGStore.globalProps.userInfo?.isTest) {
+      Toast('请登录')
+      return null
+    }
+    return httpClient.post<NormalModel>('c=withdraw&a=apply', params)
+  }
+
+  /**
    * 银行卡和虚拟币等信息
    * @param params 增加银行卡，虚拟币，微信，支付宝
    * type: 增加银行卡，虚拟币，微信，支付宝

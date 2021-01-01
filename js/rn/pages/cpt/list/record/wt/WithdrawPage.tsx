@@ -22,6 +22,7 @@ import { UGUserCenterType } from '../../../../../redux/model/全局/UGSysConfMod
 import CommStyles from '../../../../base/CommStyles'
 import { Input } from 'react-native-elements'
 import { BankConst } from '../../../../bank/const/BankConst'
+import { CapitalConst } from '../../../const/CapitalConst'
 
 interface IRouteParams {
   refreshBankList?: (accountType: string) => any, //刷新账户列表方法
@@ -36,9 +37,8 @@ interface IRouteParams {
  */
 const WithdrawPage = ({ navigation, route }) => {
 
-  const { getYueBaoInfo } = useContext(CapitalContext) //余额宝信息
+  const { getYueBaoInfo, refreshTabPage } = useContext(CapitalContext) //余额宝信息
   const [tabIndex, setTabIndex] = useState<number>(0) //当前是哪个Tab
-  const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
   const refMenu = useRef(null)
 
 
@@ -56,6 +56,9 @@ const WithdrawPage = ({ navigation, route }) => {
     btcMoney,
     inputMoney,
     setInputMoney,
+    bankPassword,
+    setBankPassword,
+    confirmWithdraw,
   } = UseWithdraw()
 
   useEffect(() => {
@@ -104,15 +107,11 @@ const WithdrawPage = ({ navigation, route }) => {
             containerStyle={[_styles.submit_bt,
               { backgroundColor: Skin1.themeColor }]}
             onPress={() => {
-              // bindPassword({
-              //   login_pwd: loginPwd,
-              //   fund_pwd: fundPwd,
-              //   fund_pwd2: fundPwd2,
-              //   callBack: () => {
-              //     setLoginPwd(null)
-              //   },
-              // })
-
+              confirmWithdraw().then(res => {
+                if (res == 0) {
+                  refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
+                }
+              })
             }}/>
 
     {
@@ -169,15 +168,11 @@ const WithdrawPage = ({ navigation, route }) => {
               containerStyle={[_styles.submit_bt,
                 { backgroundColor: Skin1.themeColor }]}
               onPress={() => {
-                // bindPassword({
-                //   login_pwd: loginPwd,
-                //   fund_pwd: fundPwd,
-                //   fund_pwd2: fundPwd2,
-                //   callBack: () => {
-                //     setLoginPwd(null)
-                //   },
-                // })
-
+                confirmWithdraw().then(res => {
+                  if (res == 0) {
+                    refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
+                  }
+                })
               }}/>
 
       {
@@ -193,20 +188,6 @@ const WithdrawPage = ({ navigation, route }) => {
   const clickMenu = (index: number, item: IMiddleMenuItem) => {
     refMenu?.current?.toggleMenu()
     setCurBank(bankInfoParamList[index])
-    // switch (index) {
-    //   case 0:
-    //     PushHelper.pushUserCenterType(UGUserCenterType.即时注单)
-    //     break
-    //   case 1:
-    //     PushHelper.pushUserCenterType(UGUserCenterType.彩票注单记录)
-    //     break
-    //   case 2:
-    //     PushHelper.pushUserCenterType(UGUserCenterType.开奖结果)
-    //     break
-    //   case 3:
-    //     PushHelper.pushUserCenterType(UGUserCenterType.取款)
-    //     break
-    // }
   }
 
   /**
@@ -258,15 +239,11 @@ const WithdrawPage = ({ navigation, route }) => {
               containerStyle={[_styles.submit_bt,
                 { backgroundColor: Skin1.themeColor }]}
               onPress={() => {
-                // bindPassword({
-                //   login_pwd: loginPwd,
-                //   fund_pwd: fundPwd,
-                //   fund_pwd2: fundPwd2,
-                //   callBack: () => {
-                //     setLoginPwd(null)
-                //   },
-                // })
-
+                confirmWithdraw().then(res => {
+                  if (res == 0) {
+                    refreshTabPage(CapitalConst.WITHDRAWAL_RECORD)
+                  }
+                })
               }}/>
 
       <View style={_styles.forget_pwd_container}>
@@ -336,6 +313,7 @@ const tabMenus = ['取款到银行卡', '取款到余额'] //TAB菜单
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: UGColor.BackgroundColor1,
+    flex: 1,
   },
   item_pwd_container: {
     padding: scale(32),

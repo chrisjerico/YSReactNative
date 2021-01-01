@@ -13,6 +13,8 @@ import { IMiddleMenuItem } from '../../../../../public/components/menu/MiddleMen
 import { BankConst } from '../../../../bank/const/BankConst'
 import { Toast } from '../../../../../public/tools/ToastUtils'
 import { BankDetailListData, BankDetailListModel } from '../../../../../public/network/Model/bank/BankDetailListModel'
+import { hideLoading, showLoading } from '../../../../../public/widget/UGLoadingCP'
+import { pop } from '../../../../../public/navigation/RootNavigation'
 
 /**
  * 银行卡管理
@@ -33,6 +35,7 @@ const UseWithdraw = () => {
   const [newUsd, setNewUsd] = useState(1) //新计算的1比1美元
   const [btcMoney, setBtcMoney] = useState(0) //btc金额
   const [inputMoney, setInputMoney] = useState(null) //取款金额
+  const [bankPassword, setBankPassword] = useState(null) //请输入您的提款密码
 
 
   /**
@@ -42,11 +45,16 @@ const UseWithdraw = () => {
     requestManageBankData()
   }, [])
 
+  /**
+   * 切换标签刷新汇率
+   */
   useEffect(() =>{
-    //切换标签刷新汇率
     requestBankDetailData(BankConst.BTC)
   }, [withdrawType])
 
+  /**
+   * 根据当前选项计算汇率
+   */
   useEffect(() =>{
     rateMoney()
   }, [btcDetailData, curBank])
@@ -133,6 +141,7 @@ const UseWithdraw = () => {
 
       setBankInfoParamList(bankItems)
 
+      //缓存列表显示选项
       const menu = bankItems?.map((item) => {
         return (
           ({
@@ -143,50 +152,35 @@ const UseWithdraw = () => {
         )
       })
       setMenuItem(menu)
-
-      //
-      // let bankItems = []
-      // bankCardData?.allAccountList?.map(
-      //   (bkItem, index) =>
-      //     bkItem?.data?.map((item) => {
-      //       item.parentTypeName = bkItem?.name
-      //       return (
-      //         ({
-      //           title: `${bkItem.name} (${item.bankName}, ${item.ownerName})`,
-      //           subTitle: `${item.bankCard}`,
-      //           id: `${bkItem.name} (${item.bankName}, ${item.bankCard}, ${item.ownerName})`,
-      //           icon: getBankIcon(item.type.toString())?.uri,
-      //         })
-      //       )
-      //     }),
-      // ).map((item) =>
-      //   bankItems = [...bankItems, ...item],
-      // )
-      // // ugLog('bankItems=', bankItems)
-      // if (!anyEmpty(bankItems)) {
-      //   setCurBank(bankItems[0])
-      //   // refMenu?.current?.toggleMenu()
-      // }
-      //
-      //
-      // setBankItems(bankItems)
-
-
       setBankCardData(actData)
-
-      // let accountTypes = actData.allAccountList.map(
-      //   (item, index) =>
-      //     ({
-      //       label: item.name, value: item.type, icon: () => <FastImage source={getBankIcon(item.type.toString())}
-      //                                                                  resizeMode={'contain'}
-      //                                                                  style={_styles.bank_name_icon}/>,
-      //     }))
-      // !anyEmpty(bankList) && setAccountItems(accountTypes)
-
 
     })
   }
 
+  /**
+   * 请求提现
+   */
+  const confirmWithdraw = async () => {
+    if(anyEmpty(inputMoney)) {
+      Toast('请输入金额')
+      return
+    } else if(anyEmpty(bankPassword)) {
+      Toast('请输入密码')
+      return
+    }
+
+    showLoading()
+    const res = await APIRouter.withdraw_apply({
+      money: inputMoney,
+      pwd: md5(bankPassword),
+      id: curBank?.id,
+      virtual_amount: btcMoney?.toString(),
+    }).then(({ data: res }) => res)
+    hideLoading()
+    Toast(res?.msg)
+
+    return res?.code
+  }
 
   return {
     userInfo,
@@ -202,6 +196,9 @@ const UseWithdraw = () => {
     btcMoney,
     inputMoney,
     setInputMoney,
+    bankPassword,
+    setBankPassword,
+    confirmWithdraw,
   }
 }
 
