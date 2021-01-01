@@ -76,6 +76,7 @@ const GameHallPage = ({ navigation, route }) => {
     // 处理分组数据
     function groupGameToHallGame(groups: GroupGameData[]): HallGameData[] {
       const temp: { [x: string]: HallGameData } = {}
+      const array : HallGameData[] = []
       groups?.forEach((group) => {
         group?.lotteries?.forEach((l) => {
           v.hallGames?.forEach((hall) => {
@@ -83,14 +84,14 @@ const GameHallPage = ({ navigation, route }) => {
               g.pic = g.pic ?? l.logo
               if (l?.id != g?.id) return
               if (temp[group?.id] == undefined) {
-                temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] }
+                array.push(temp[group?.id] = { gameType: hall.gameType, gameTypeName: group.name, list: [] })
               }
               temp[group?.id].list?.push(g)
             })
           })
         })
       })
-      return Object.values(temp)
+      return array
     }
 
     // 刷新UI
@@ -114,8 +115,12 @@ const GameHallPage = ({ navigation, route }) => {
     function getGroup() {
       api.game.lotteryGroupGames().useCompletion(({ data, msg }, err, sm) => {
         sm.noShowErrorHUD = true
-
-        if (data?.length && !(data?.length == 1 && data[0].id == '0')) {  // 若只有一个“其他“分组，则不显示分组
+        
+        // 若只有一个“其他“分组，则不显示分组
+        const other = data?.filter((v) => v.id == '0')[0]
+        data = data?.filter((v) => v.id != '0')
+        if (data?.length) {
+          data.push(other)
           refreshUI(groupGameToHallGame(data))
         } else {
           v.isGroup = false
