@@ -13,8 +13,9 @@ export enum PageName {
   SafeCenterPage = 'SafeCenterPage',
   IncomeRecommendPage = 'IncomeRecommendPage',
   ManageBankListPage = 'ManageBankListPage',
-  CapitalPage = 'CapitalPage',
-  AddBankPage = 'AddBankPage',
+  CapitalPage = 'CapitalPage',//资金管理
+  SetPasswordPage = 'SetPasswordPage',//取消界面
+  AddBankPage = 'AddBankPage',//添加银行卡
   JDVirtualCurrencyTutorialPage = 'JDVirtualCurrencyTutorialPage',
   TrendView = 'TrendView',
   LottoSelector = 'LottoSelector',

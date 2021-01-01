@@ -49,20 +49,20 @@ const UseWithdraw = () => {
   /**
    * 切换标签刷新汇率
    */
-  useEffect(() =>{
+  useEffect(() => {
     requestBankDetailData(BankConst.BTC)
   }, [withdrawType])
 
   /**
    * 根据当前选项计算汇率
    */
-  useEffect(() =>{
+  useEffect(() => {
     rateMoney()
   }, [btcDetailData, curBank])
 
   useEffect(() => {
     //只有虚拟币才计算
-    if(curBank?.type != BankConst.BTC) {
+    if (curBank?.type != BankConst.BTC) {
       setBtcMoney(0)
       return
     }
@@ -91,7 +91,7 @@ const UseWithdraw = () => {
    * 为保证精度不丢失，对数据放大 10000倍 再缩小
    */
   const rateMoney = () => {
-    if(curBank?.type != BankConst.BTC) return
+    if (curBank?.type != BankConst.BTC) return
     //当前是哪个币
     //ugLog('rateMoney curBank=', JSON.stringify(curBank))
     const curBtc = btcDetailData?.find((item) => item.code == curBank?.bankCode)
@@ -106,11 +106,11 @@ const UseWithdraw = () => {
       let newRate = Math.round((Number(curBtc?.currencyRate) * 10000) * (100 + floatRate))
       newRate /= 10000 * 100
 
-      if(newRate <= 0) return 1
+      if (newRate <= 0) return 1
 
       setNewRate(newRate)
 
-      let usd = Math.round(100 / newRate)/100
+      let usd = Math.round(100 / newRate) / 100
       //ugLog('1比1美元 汇率=', curBtc?.currencyRate, newRate, usd)
       setNewUsd(usd)
     }
@@ -122,25 +122,32 @@ const UseWithdraw = () => {
   const requestManageBankData = async () => {
     APIRouter.user_bankCardList().then(({ data: res }) => {
       let actData = res?.data
-      //ugLog('requestManageBankData data res=', JSON.stringify(res?.data))
+      ugLog('requestManageBankData data 2 res=', JSON.stringify(actData))
 
       if (anyEmpty(actData?.allAccountList)) return
 
       //过滤不显示的
       actData.allAccountList = actData?.allAccountList?.filter((item) => item.isshow)
 
+
+      ugLog('requestManageBankData actData.allAccountList=', JSON.stringify(actData.allAccountList))
+
       let bankItems = new Array<BankInfoParam>()
       actData?.allAccountList?.map(
         (bkItem, index) =>
-          bkItem?.data?.map((item) => {
-            item.parentTypeName = bkItem?.name
-            return item
-          }),
-      ).map((item) =>
+          bkItem?.data == null ?
+            [] :
+            bkItem?.data?.map((item) => {
+              item.parentTypeName = bkItem?.name
+              return item
+            }),
+      )?.map((item) =>
         bankItems = [...bankItems, ...item],
       )
 
       setBankInfoParamList(bankItems)
+
+      ugLog('requestManageBankData bankItems=', JSON.stringify(bankItems))
       setShowAddBank(anyEmpty(bankItems))
 
       //缓存列表显示选项
@@ -163,10 +170,10 @@ const UseWithdraw = () => {
    * 请求余额提现到银行卡
    */
   const confirmWithdraw = async () => {
-    if(anyEmpty(inputMoney)) {
+    if (anyEmpty(inputMoney)) {
       Toast('请输入金额')
       return
-    } else if(anyEmpty(bankPassword)) {
+    } else if (anyEmpty(bankPassword)) {
       Toast('请输入密码')
       return
     }
@@ -188,10 +195,10 @@ const UseWithdraw = () => {
    * 请求余额宝 转到 余额
    */
   const yueBao2YuE = async () => {
-    if(anyEmpty(inputMoney)) {
+    if (anyEmpty(inputMoney)) {
       Toast('请输入金额')
       return
-    } else if(anyEmpty(bankPassword)) {
+    } else if (anyEmpty(bankPassword)) {
       Toast('请输入密码')
       return
     }

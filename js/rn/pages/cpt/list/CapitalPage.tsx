@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { BaseScreen } from '../../乐橙/component/BaseScreen'
 import { anyEmpty } from '../../../public/tools/Ext'
 import { scale } from '../../../public/tools/Scale'
@@ -15,10 +15,11 @@ import WithdrawalRecordListComponent from './record/wd/WithdrawalRecordListCompo
 import CapitalDetailListComponent from './record/dl/CapitalDetailListComponent'
 import PayListComponent from './record/pay/PayListComponent'
 import CapitalContext from './CapitalContext'
-import { ugLog } from '../../../public/tools/UgLog'
 import FastImage from 'react-native-fast-image'
-import WebView from 'react-native-webview'
 import WithdrawPage from './record/wt/WithdrawPage'
+import { push } from '../../../public/navigation/RootNavigation'
+import { PageName } from '../../../public/navigation/Navigation'
+import { ugLog } from '../../../public/tools/UgLog'
 
 /**
  * 存款提现
@@ -114,10 +115,7 @@ const CapitalPage = ({ navigation, setProps }) => {
               <ScrollableTabView
                 key={'ScrollableTabView' + refreshCount}
                 initialPage={tabIndex}
-                onChangeTab={value => {
-                  // ugLog('tab index=', value?.from, value?.i)
-                  setTabIndex(value?.i)
-                }}
+                onChangeTab={value => {}}
                 // ref={instance => tabController = instance}
                 tabBarUnderlineStyle={[_styles.tab_bar_underline,
                   { backgroundColor: Skin1.themeColor }]}

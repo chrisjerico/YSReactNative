@@ -18,12 +18,6 @@ import { push } from '../../../../../public/navigation/RootNavigation'
 import { PageName } from '../../../../../public/navigation/Navigation'
 import { ugLog } from '../../../../../public/tools/UgLog'
 
-interface IRouteParams {
-  refreshBankList?: (accountType: string) => any, //刷新账户列表方法
-  bankCardData?: ManageBankCardData, //当前的账户数据
-  selectType?: number, //当前选中的是哪个条目
-}
-
 /**
  * 添加银行卡管理
  * @param navigation
@@ -96,7 +90,7 @@ const WithdrawPage = ({ navigation, route }) => {
                  maxLength={4}
                  secureTextEntry={true}
                  onChangeText={text => setBankPassword(text)}
-                 placeholder={'请填写取款密码2'}/>
+                 placeholder={'请填写取款密码'}/>
     </View>
 
     <Button title={'提交'}
@@ -265,7 +259,14 @@ const WithdrawPage = ({ navigation, route }) => {
    * 绘制取款条目
    */
   const renderItem = () => {
-    if (showAddBank) {
+    if (!userInfo?.hasFundPwd) {//判断有没有资金密码
+      return <EmptyView style={{ flex: 1 }}
+                        text={'您还未设置资金密码'}
+                        buttonText={'设置资金密码'}
+                        buttonCallback={() => {
+                          push(PageName.SetPasswordPage, {})
+                        }}/>
+    } else if (showAddBank) {
       return <EmptyView style={{ flex: 1 }}
                         text={'您还未绑定提款账户'}
                         buttonText={'添加提款账户'}
@@ -324,7 +325,7 @@ const WithdrawPage = ({ navigation, route }) => {
   )
 }
 
-const tabMenus = ['取款到银行卡', '取款到余额'] //TAB菜单
+const tabMenus = ['渠道提款', '提款到余额'] //TAB菜单
 const _styles = StyleSheet.create({
   container: {
     backgroundColor: UGColor.BackgroundColor1,
