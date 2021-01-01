@@ -4,7 +4,7 @@ import PushHelper from '../../define/PushHelper'
 import { RedBagDetailActivityModel } from '../../network/Model/RedBagDetailActivityModel'
 import { scale } from '../../tools/Scale'
 import { getActivityPosition, goToUserCenterType } from '../../tools/tars'
-import { ROULETTE_LOGO } from '../../../Res/icon/Res'
+import { icon_刮刮乐, icon_砸金蛋, ROULETTE_LOGO } from '../../../Res/icon/Res'
 
 interface ActivitysProps {
   refreshing: boolean
@@ -69,7 +69,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(450), right: 0 }}
         enableFastImage={false}
         show={uid && goldenEggs}
-        logo={'https://i.ibb.co/BTQ52Zg/egg.png'}
+        logo={icon_砸金蛋}
         onPress={goToUserCenterType.砸金蛋}
       />
       <ActivityComponent
@@ -77,7 +77,7 @@ const Activitys = ({ refreshing, redBagLogo, uid, redBag, roulette, floatAds, go
         containerStyle={{ top: scale(570), right: 0 }}
         enableFastImage={false}
         show={uid && scratchs}
-        logo={'https://i.ibb.co/0J51pH9/scratch.png'}
+        logo={icon_刮刮乐}
         onPress={goToUserCenterType.刮刮乐}
       />
       {floatAds?.map((item: any, index) => {

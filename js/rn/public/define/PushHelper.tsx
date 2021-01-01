@@ -400,7 +400,11 @@ export default class PushHelper {
             break
           }
           case UGUserCenterType.银行卡管理: {
-            push(PageName.ManageBankListComponent, {})
+            if (__DEV__) {
+              push(PageName.ManageBankListPage, {})
+            } else {
+              OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [UGUserCenterType.银行卡管理])
+            }
             break
           }
           case UGUserCenterType.即时注单: {
@@ -414,6 +418,7 @@ export default class PushHelper {
           default: {
             OCHelper.call('UGNavigationController.current.pushVCWithUserCenterItemType:', [code]).then((succ) => {
               if (!succ) {
+                console.log('跳转原生页面失败，请对接');
               }
             })
           }

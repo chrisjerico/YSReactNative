@@ -18,7 +18,7 @@ import { JDSignInHistoryCP } from '../cp/JDSignInHistoryCP';
 import chroma from 'chroma-js';
 
 
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com')
+const { getHtml5Image, img_platform } = useHtml5Image('http://test10.6yc.com')
 
 const JDSigInPage = () => {
 
@@ -276,7 +276,7 @@ const JDSigInPage = () => {
     // 渲染列表项
     const _renderItem = ({ index, item }) => {
         console.log(index);
-        console.log('img = ', getHtml5ImagePlatform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
+        console.log('img = ', img_platform(undefined, 'static/vueTemplate/vue/images/my/userInfo/signed'));
 
         return (
             <View key={item.key} style={styles.itemViewStyle}>

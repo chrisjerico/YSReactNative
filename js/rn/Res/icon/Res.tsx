@@ -2,13 +2,16 @@
 // https://appstatic.guolaow.com
 // https://appstatic.guolaow.com
 
+import { RES_BASE_URL, useHtml5Image } from "../../public/tools/tars"
+const { getHtml5Image, img_platform, img_home, img_assets } = useHtml5Image('http://test05.6yc.com')
+
 /**
  * 全局资源统一管理
  *
  */
-
-const RES_BASE_URL = 'https://appstatic.guolaow.com/'
 export const ROULETTE_LOGO = RES_BASE_URL + 'assets/c018dzp.gif'    //大转盘
+export const icon_砸金蛋 = img_home('zjd/zjd')    //大转盘
+export const icon_刮刮乐 = img_assets('gyg')    //大转盘
 
 export const Res = {
   bankhl1: RES_BASE_URL + 'assets/bankhl1.png',          //银行卡标记

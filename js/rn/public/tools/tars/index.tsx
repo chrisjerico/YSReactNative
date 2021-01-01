@@ -61,26 +61,44 @@ export const ToastStatus = (msg: any) => {
   }
 }
 
-export const useHtml5Image = (host: string = AppDefine.host) => {
-  const getHtml5Image = (id: number, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
-    if (id) {
-      return host + '/views/mobileTemplate/' + id?.toString() + '/images/' + path + '.' + type
-    } else {
-      return host + '/images/' + path + '.' + type
-    }
-  }
-  const getHtml5ImagePlatform = (siteId: string, path: string, type: 'png' | 'jpg' | 'gif' | 'svg' = 'png') => {
-    if (siteId) {
-      return host + '/platform/' + siteId?.toString() + '/images/' + path + '.' + type
-    } else {
-      return host + '/' + path + '.' + type
-    }
-  }
-  return { getHtml5Image, getHtml5ImagePlatform }
-}
+type ImageType = 'png' | 'jpg' | 'gif' | 'svg'
 
-export const getIbbImage = (path: string) => {
-  return 'https://i.ibb.co/' + path + '.png'
+export const RES_BASE_URL = 'https://appstatic.guolaow.com/'
+
+export const useHtml5Image = (host: string = AppDefine.host) => {
+
+  function getImage(pType: string, p1: string, p2?: string, suffix: ImageType = 'png') {
+    // 替换 pType 中的 {p1}、{p2}
+    let path: string
+    if (p2?.length) {
+      path = pType.replace(/\{p1\}/, p1)
+      path = path.replace(/\{p2\}/, p2)
+    } else {
+      path = pType.replace(/\{p1\}.*/, p1)
+    }
+    return host + '/' + path + '.' + suffix
+  }
+
+  // 替换掉第一个入参中的 {p1}、{p2} 会得到完整路径
+  return {
+    getHtml5Image: (id: number, path: string, type: ImageType = 'png') =>
+      getImage('views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
+
+    img_mobileTemplate: (id: number, path: string, type: ImageType = 'png') =>
+      getImage('views/mobileTemplate/{p1}/images/{p2}', id?.toString(), path, type),
+
+    img_home: (path: string, type: ImageType = 'png') =>
+      getImage('views/home/images/{p1}', path, undefined, type),
+
+    img_platform: (siteId: string, path?: string, type: ImageType = 'png') =>
+      getImage('platform/{p1}/images/{p2}', siteId, path, type),
+
+    img_images: (path: string, type: ImageType = 'png') =>
+      getImage('images/{p1}', path, undefined, type),
+
+    img_assets: (path: string, type: ImageType = 'png') =>
+      getImage(RES_BASE_URL + '/{p1}', path, undefined, type),
+  }
 }
 
 export const getActivityPosition = (position: number) => {

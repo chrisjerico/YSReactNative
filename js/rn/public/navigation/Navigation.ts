@@ -11,7 +11,6 @@ export enum PageName {
   ActivityRewardPage = 'ActivityRewardPage',
   LotteryHistoryPage = 'LotteryHistoryPage',
   SafeCenterPage = 'SafeCenterPage',
-  ManageBankListComponent = 'ManageBankListComponent',
   CapitalComponent = 'CapitalComponent',
   AddBankComponent = 'AddBankComponent',
   IncomeRecommendPage = 'IncomeRecommendPage',

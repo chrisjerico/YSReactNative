@@ -1,5 +1,5 @@
 import { useHtml5Image } from '../../public/tools/tars'
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test10.6yc.com/')
+const { getHtml5Image, img_platform } = useHtml5Image('http://test10.6yc.com/')
 
 const config = {
   defaultUserCenterLogos: {

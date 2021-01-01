@@ -1,5 +1,5 @@
 import { useHtml5Image } from '../../public/tools/tars'
-const { getHtml5Image, getHtml5ImagePlatform } = useHtml5Image('http://test05.6yc.com')
+const { getHtml5Image, img_platform } = useHtml5Image('http://test05.6yc.com')
 
 const config = {
   defaultUserCenterLogos: {
@@ -18,11 +18,11 @@ const config = {
     13: getHtml5Image(21, 'center/menu-feedback'), // 建议反馈
     14: getHtml5Image(21, 'zxkf'), // 在线客服
     15: getHtml5Image(21, 'center/money'), // 活动彩金
-    16: getHtml5ImagePlatform('c092', 'changlong_logo'), // 长龙助手
+    16: img_platform('c092', 'changlong_logo'), // 长龙助手
     17: getHtml5Image(21, 'center/menu-activity'), // 全民竞猜
     18: getHtml5Image(21, 'center/kj_trend'), // 开奖走势
-    19: getHtml5ImagePlatform('c091', 'qqkf'), // QQ客服
-    20: getHtml5ImagePlatform('c006', 'kjw'), // 開獎網
+    19: img_platform('c091', 'qqkf'), // QQ客服
+    20: img_platform('c006', 'kjw'), // 開獎網
     22: getHtml5Image(23, 'center/electronic'), // 电子注单
     23: getHtml5Image(23, 'center/live'), // 真人注单
     24: getHtml5Image(23, 'center/chess'), // 棋牌注单
