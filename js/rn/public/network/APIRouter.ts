@@ -337,16 +337,9 @@ class APIRouter {
 
   /**
    * 银行卡和虚拟币等信息
-   * @param params 增加银行卡，虚拟币，微信，支付宝
-   * type: 增加银行卡，虚拟币，微信，支付宝
-   * bank_id:
-   * bank_card:
-   * bank_addr:
-   * pwd:
-   * owner_name:
    *
    */
-  static user_addBank = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static user_addBank = async (params: IAddBankParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
@@ -359,7 +352,7 @@ class APIRouter {
    * @param params 真名
    * fullName: 真名
    */
-  static user_bindRealName = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static user_bindRealName = async (params: IBindRealNameParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
@@ -372,7 +365,7 @@ class APIRouter {
    * login_pwd: 登录密码
    * fund_pwd: 取款密码
    */
-  static user_bindPwd = async (params: {}): Promise<AxiosResponse<NormalModel>> => {
+  static user_bindPwd = async (params: IBindPasswordParams): Promise<AxiosResponse<NormalModel>> => {
     if (UGStore.globalProps.userInfo?.isTest) {
       Toast('请登录')
       return null
